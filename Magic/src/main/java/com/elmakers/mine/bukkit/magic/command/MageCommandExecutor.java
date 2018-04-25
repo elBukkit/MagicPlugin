@@ -646,6 +646,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             mage.lockClass(activeClass.getKey());
         }
         mage.setActiveClass(targetClass.getKey());
+        mage.deactivate();
+        mage.checkWand();
         sender.sendMessage("Switched class to " + classKey + " for " + player.getName());
 
         return true;

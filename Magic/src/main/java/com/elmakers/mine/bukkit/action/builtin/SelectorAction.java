@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -156,6 +157,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected boolean applyToWand = false;
         protected boolean showConfirmation = false;
         protected boolean showUnavailable = false;
+        protected boolean switchClass = false;
         protected int experience;
         protected int sp;
         protected int currency = 0;
@@ -172,6 +174,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             applyToWand = configuration.getBoolean("apply_to_wand", applyToWand);
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
+            if (configuration.contains("switch_class")) {
+                switchClass = true;
+                unlockClass = configuration.getString("switch_class");
+            }
             currency = configuration.getInt("currency", currency);
             experience = configuration.getInt("experience", experience);
             sp = configuration.getInt("sp", sp);
@@ -330,6 +336,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             this.castSpell = defaults.castSpell;
             this.applyToWand = defaults.applyToWand;
             this.unlockClass = defaults.unlockClass;
+            this.switchClass = defaults.switchClass;
             this.currency = defaults.currency;
             this.sp = defaults.sp;
             this.experience = defaults.experience;
@@ -558,7 +565,16 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                     context.showMessage(hasClassMessage);
                     return SpellResult.NO_TARGET;
                 }
+                MageClass activeClass = mage.getActiveClass();
                 mage.unlockClass(unlockClass);
+                if (switchClass) {
+                    if (activeClass != null) {
+                        mage.lockClass(activeClass.getKey());
+                    }
+                    mage.setActiveClass(unlockClass);
+                    mage.deactivate();
+                    mage.checkWand();
+                }
             }
 
             if (applyToWand && items != null) {
