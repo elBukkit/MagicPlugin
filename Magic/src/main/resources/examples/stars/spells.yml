@@ -23,7 +23,7 @@ starshop:
       cost: 5000
       limit: 1
     - unlock_class: sith
-      selected: "You gave in to the darkside as a $name for $cost"
+      selected: "You gave in to the dark side as a $name for $cost"
       items:
       - lightsaber_hilt
       - nether_star@2
@@ -44,6 +44,22 @@ starshop:
     quiet: false
     loud: true
     selected: "You bought $item for $cost"
+
+starclass:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      - class: Selector
+  parameters:
+    options:
+    - switch_class: jedi
+      selected: "You became $name"
+      icon: lightsaber_blue
+    - switch_class: sith
+      selected: "You gave in to the dark side"
+      icon: lightsaber_red
 
 starshopextra:
     icon: wood_hoe:14
