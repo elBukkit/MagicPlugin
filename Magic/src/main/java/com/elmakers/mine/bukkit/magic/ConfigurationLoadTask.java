@@ -71,21 +71,75 @@ public class ConfigurationLoadTask implements Runnable {
         allPvpRestricted = properties.getBoolean("pvp_restricted", false);
         noPvpRestricted = properties.getBoolean("allow_pvp_restricted", false);
         saveDefaultConfigs = properties.getBoolean("save_default_configs", true);
+        exampleDefaults = properties.getString("example", exampleDefaults);
+        addExamples = properties.getStringList("add_examples");
     }
 
     private ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
-        ConfigurationSection configuration = loadConfigFile("config", true, false);
+        ConfigurationSection configuration = loadMainConfiguration("config");
         loadInitialProperties(configuration);
+        if (addExamples != null && addExamples.size() > 0) {
+            if (addExamples != null && addExamples.size() > 0) {
+                getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
+            }
+        }
+        if (exampleDefaults != null && exampleDefaults.length() > 0) {
+            if (exampleDefaults != null && exampleDefaults.length() > 0) {
+                getLogger().info("Overriding configuration with example: " + exampleDefaults);
+            }
+
+            // Reload config, examples will be used this time.
+            configuration = loadMainConfiguration("config");
+        }
+
         return configuration;
     }
 
-    private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults)
-        throws IOException, InvalidConfigurationException {
-        return loadConfigFile(fileName, loadDefaults, disableDefaults, null);
+    private ConfigurationSection loadMainConfiguration(String fileName) throws InvalidConfigurationException, IOException {
+        ConfigurationSection overrides = loadOverrides(fileName);
+
+        boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
+        String examplesFileName = usingExample ? "examples/" + exampleDefaults + "/" + fileName + ".yml" : null;
+        String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
+
+        // Start with default configs
+        YamlConfiguration config = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
+        getLogger().info(" Based on defaults " + defaultsFileName);
+
+        // Load an example if one is specified
+        if (usingExample) {
+            InputStream input = plugin.getResource(examplesFileName);
+            if (input != null)  {
+                ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                ConfigurationUtils.addConfigurations(config, exampleConfig);
+                getLogger().info(" Using " + examplesFileName);
+            }
+        }
+
+        // Apply overrides after loading defaults and examples
+        ConfigurationUtils.addConfigurations(config, overrides);
+
+        // Apply file overrides last
+        File configSubFolder = new File(configFolder, fileName);
+        loadConfigFolder(config, configSubFolder, false);
+
+        // Save default configs for inspection
+        if (saveDefaultConfigs) {
+            try {
+                // For the main config file we just save the defaults directly, it has a
+                // lot of comments that are useful to see.
+                plugin.saveResource(defaultsFileName, true);
+            } catch (Exception ex) {
+                getLogger().warning("Couldn't write defaults file: " + defaultsFileName);
+            }
+        } else  {
+            deleteDefaults(defaultsFileName);
+        }
+
+        return config;
     }
 
-    private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, ConfigurationSection mainConfiguration)
-        throws IOException, InvalidConfigurationException {
+    private ConfigurationSection loadOverrides(String fileName) throws IOException, InvalidConfigurationException {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
         if (!configFile.exists()) {
@@ -93,13 +147,19 @@ public class ConfigurationLoadTask implements Runnable {
             plugin.saveResource(configFileName, false);
         }
 
+        getLogger().info("Loading " + configFile.getName());
+        return CompatibilityUtils.loadConfiguration(configFile);
+    }
+
+    private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, ConfigurationSection mainConfiguration)
+        throws IOException, InvalidConfigurationException {
+
+        ConfigurationSection overrides = loadOverrides(fileName);
         boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
 
         String examplesFileName = usingExample ? "examples/" + exampleDefaults + "/" + fileName + ".yml" : null;
         String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 
-        getLogger().info("Loading " + configFile.getName());
-        ConfigurationSection overrides = CompatibilityUtils.loadConfiguration(configFile);
         YamlConfiguration config = new YamlConfiguration();
 
         YamlConfiguration defaultConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
@@ -161,18 +221,21 @@ public class ConfigurationLoadTask implements Runnable {
         File savedDefaults = new File(configFolder, defaultsFileName);
         if (saveDefaultConfigs) {
             try {
-                // This is a bit of a hack, for the main config file we just save the defaults directly, it has a
-                // lot of comments that are useful to see.
-                if (fileName.equals("config")) {
-                    plugin.saveResource(defaultsFileName, true);
-                } else {
-                    config.options().header(header);
-                    config.save(savedDefaults);
-                }
+                config.options().header(header);
+                config.save(savedDefaults);
             } catch (Exception ex) {
                 getLogger().warning("Couldn't write defaults file: " + defaultsFileName);
             }
-        } else if (savedDefaults.exists()) {
+        } else  {
+            deleteDefaults(defaultsFileName);
+        }
+
+        return config;
+    }
+
+    private void deleteDefaults(String defaultsFileName) {
+        File savedDefaults = new File(configFolder, defaultsFileName);
+        if (savedDefaults.exists()) {
             try {
                 savedDefaults.delete();
                 getLogger().info("Deleting defaults file: " + defaultsFileName + ", save_default_configs is false");
@@ -180,8 +243,6 @@ public class ConfigurationLoadTask implements Runnable {
                 getLogger().warning("Couldn't delete defaults file: " + defaultsFileName + ", contents may be outdated");
             }
         }
-
-        return config;
     }
 
     private void enableAll(ConfigurationSection rootSection, boolean enabled) {
@@ -225,26 +286,6 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         return config;
-    }
-
-    private ConfigurationSection loadExamples(ConfigurationSection properties) throws InvalidConfigurationException, IOException {
-        exampleDefaults = properties.getString("example", exampleDefaults);
-        addExamples = properties.getStringList("add_examples");
-
-        if ((exampleDefaults != null && exampleDefaults.length() > 0) || (addExamples != null && addExamples.size() > 0)) {
-            // Reload config, example will be used this time.
-            if (exampleDefaults != null && exampleDefaults.length() > 0)
-            {
-                getLogger().info("Overriding configuration with example: " + exampleDefaults);
-            }
-            if (addExamples != null && addExamples.size() > 0)
-            {
-                getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
-            }
-            properties = loadConfigFile("config", true, false);
-        }
-
-        return properties;
     }
 
     private ConfigurationSection mapSpells(ConfigurationSection spellConfiguration) throws InvalidConfigurationException, IOException {
@@ -393,7 +434,6 @@ public class ConfigurationLoadTask implements Runnable {
         // Load main configuration
         try {
             mainConfiguration = loadMainConfiguration();
-            mainConfiguration = loadExamples(mainConfiguration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading config.yml", ex);
             success = false;
