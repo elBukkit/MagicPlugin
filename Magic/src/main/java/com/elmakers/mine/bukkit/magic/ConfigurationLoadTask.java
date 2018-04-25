@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -151,8 +152,14 @@ public class ConfigurationLoadTask implements Runnable {
         return CompatibilityUtils.loadConfiguration(configFile);
     }
 
-    private ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, ConfigurationSection mainConfiguration)
+    private ConfigurationSection loadConfigFile(String fileName, ConfigurationSection mainConfiguration)
         throws IOException, InvalidConfigurationException {
+
+        boolean loadDefaults = mainConfiguration.getBoolean("load_default_" + fileName, true);
+        loadDefaults = loadDefaults && mainConfiguration.getBoolean("load_default_configs", true);
+        boolean disableDefaults = mainConfiguration.getBoolean("disable_default_" + fileName, false);
+
+        ConfigurationSection mainSection = mainConfiguration.getConfigurationSection(fileName);
 
         ConfigurationSection overrides = loadOverrides(fileName);
         boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
@@ -165,6 +172,7 @@ public class ConfigurationLoadTask implements Runnable {
         YamlConfiguration defaultConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
         String header = defaultConfig.options().header();
 
+        // Load defaults
         if (loadDefaults) {
             getLogger().info(" Based on defaults " + defaultsFileName);
             if (disableDefaults) {
@@ -173,21 +181,49 @@ public class ConfigurationLoadTask implements Runnable {
             ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
 
+        // Load example
         if (usingExample && loadDefaults) {
+            boolean disableInherited = false;
+            // Load inherited configs first
+            List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
+            if (inherits != null) {
+                List<String> skip = ConfigurationUtils.getStringList(mainConfiguration, "skip_inherited");
+                if (!skip.contains(fileName)) {
+                    for (String inheritFrom : inherits) {
+                        String inheritFileName = "examples/" + inheritFrom + "/" + fileName + ".yml";
+                        InputStream input = plugin.getResource(inheritFileName);
+                        if (input != null) {
+                            List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
+                            ConfigurationSection inheritedConfig = CompatibilityUtils.loadConfiguration(input);
+
+                            if (disable.contains(fileName)) {
+                                disableInherited = true;
+                                disableAll(inheritedConfig);
+                            }
+
+                            ConfigurationUtils.addConfigurations(config, inheritedConfig);
+                            getLogger().info(" Inheriting from " + inheritFrom);
+                        }
+                    }
+                }
+            }
+
             InputStream input = plugin.getResource(examplesFileName);
-            if (input != null)
-            {
+            if (input != null) {
                 ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                 if (disableDefaults) {
                     disableAll(exampleConfig);
+                } else if (disableInherited) {
+                    enableAll(exampleConfig);
                 }
                 ConfigurationUtils.addConfigurations(config, exampleConfig);
                 getLogger().info(" Using " + examplesFileName);
             }
         }
 
-        if (mainConfiguration != null) {
-            ConfigurationUtils.addConfigurations(overrides, mainConfiguration);
+        // Load anything relevant from the main config
+        if (mainSection != null) {
+            ConfigurationUtils.addConfigurations(overrides, mainSection);
         }
 
         // Re-enable anything we are overriding
@@ -195,6 +231,7 @@ public class ConfigurationLoadTask implements Runnable {
             enableAll(overrides);
         }
 
+        // Add in examples
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 examplesFileName = "examples/" + example + "/" + fileName + ".yml";
@@ -218,6 +255,7 @@ public class ConfigurationLoadTask implements Runnable {
         File configSubFolder = new File(configFolder, fileName);
         loadConfigFolder(config, configSubFolder, disableDefaults);
 
+        // Save defaults
         File savedDefaults = new File(configFolder, defaultsFileName);
         if (saveDefaultConfigs) {
             try {
@@ -443,12 +481,7 @@ public class ConfigurationLoadTask implements Runnable {
         loadedConfigurations.clear();
         for (String configurationFile : CONFIG_FILES) {
             try {
-                boolean loadDefaults = mainConfiguration.getBoolean("load_default_" + configurationFile, true);
-                loadDefaults = loadDefaults && mainConfiguration.getBoolean("load_default_configs", true);
-                boolean disableDefaults = mainConfiguration.getBoolean("disable_default_" + configurationFile, false);
-
-                ConfigurationSection configuration = loadConfigFile(configurationFile, loadDefaults, disableDefaults,
-                        mainConfiguration.getConfigurationSection(configurationFile));
+                ConfigurationSection configuration = loadConfigFile(configurationFile, mainConfiguration);
 
                 // Spells require special processing
                 if (configurationFile.equals("spells")) {
