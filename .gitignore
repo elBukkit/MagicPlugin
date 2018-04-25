@@ -7,3 +7,6 @@ src/main/resources/spells.defaults.yml
 src/main/resources/wands.defaults.yml
 **/original_skin.png
 **/mc_creds.php
+.gradle
+build
+**/gradle/wrapper
