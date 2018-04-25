@@ -64,7 +64,7 @@ public class ItemController {
             try {
                 data = new ItemData(key);
             } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "Error creating item: " + key, ex);
+                controller.getLogger().log(Level.WARNING, "Error creating item: " + key);
             }
         }
         return data;
