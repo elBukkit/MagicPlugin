@@ -3237,3 +3237,39 @@ glideranimation:
         bypass: true
         oty: 3
         undo: 1000
+
+changeworld:
+  name: Change Worlds
+  description: Go to the nether or the end
+  icon: diamond_axe:73
+  actions:
+    cast:
+    - class: Selector
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Sphere
+        duration: 2000
+    - sound: magic.zap
+  parameters:
+    target: self
+    tonether:
+    - class: ChangeWorld
+      target_world: world_nether
+    toend:
+    - class: ChangeWorld
+      target_world: world_the_end
+    tooverworld:
+    - class: ChangeWorld
+      target_world: world
+    options:
+      - icon: netherrack
+        name: To Nether
+        actions: tonether
+      - icon: ender_stone
+        name: To End
+        actions: toend
+      - icon: grass
+        name: To Overworld
+        actions: tooverworld

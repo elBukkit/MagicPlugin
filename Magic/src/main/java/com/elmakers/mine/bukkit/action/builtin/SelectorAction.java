@@ -21,7 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -47,7 +47,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
 
-public class SelectorAction extends BaseSpellAction implements GUIAction, CostReducer
+public class SelectorAction extends CompoundAction implements GUIAction, CostReducer
 {
     protected double costScale = 1;
     protected boolean autoClose = true;
@@ -150,6 +150,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         protected @Nullable String unlockClass = null;
         protected @Nullable String selectedMessage = null;
         protected @Nullable String unlockKey = null;
+        protected @Nullable String actions = null;
         protected @Nonnull String unlockSection = "unlocked";
         protected @Nullable Collection<Requirement> requirements;
         protected @Nullable List<String> commands;
@@ -186,6 +187,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             unlockSection = configuration.getString("unlock_section", unlockSection);
             showConfirmation = configuration.getBoolean("confirm", showConfirmation);
             costType = configuration.getString("cost_type", costType);
+            actions = configuration.getString("actions", actions);
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
             commands = ConfigurationUtils.getStringList(configuration, "commands");
 
@@ -217,6 +219,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                         items.add(parseItem(itemKey));
                     }
                 }
+            }
+
+            if (actions != null) {
+                addHandler(context.getSpell(), actions);
             }
 
             // Prevent out of bounds exceptions later
@@ -347,6 +353,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             this.costType = defaults.costType;
             this.showUnavailable = defaults.showUnavailable;
             this.commands = defaults.commands;
+            this.actions = defaults.actions;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
@@ -650,6 +657,10 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 VaultController.getInstance().depositPlayer(mage.getPlayer(), currency);
             }
 
+            if (actions != null) {
+                startActions(actions);
+            }
+
             Cost required = takeCosts(reducer, context);
             if (required != null) {
                 String baseMessage = getMessage("insufficient");
@@ -807,7 +818,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
         this.context = context;
 
         defaultConfiguration = new SelectorConfiguration(parameters);
@@ -846,6 +856,9 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                 numSlots = Math.max(slot + 1, numSlots);
             }
         }
+
+        // Have to do this after adding options since options may register action handlers
+        super.prepare(context, parameters);
     }
 
     public SpellResult showItems(CastContext context) {
@@ -860,7 +873,7 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         Inventory displayInventory = getInventory(context);
         mage.activateGUI(this, displayInventory);
 
-        return SpellResult.PENDING;
+        return SpellResult.CAST;
     }
 
     protected String getInventoryTitle()
@@ -963,18 +976,19 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
         finalResult = null;
     }
 
+    @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        isActive = false;
+        finalResult = null;
+    }
+
     public RequirementsResult checkDefaultRequirements(CastContext context) {
         return defaultConfiguration.checkRequirements(context);
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
-        if (isActive) {
-            return SpellResult.PENDING;
-        }
-        if (finalResult != null) {
-            return finalResult;
-        }
+    public SpellResult start(CastContext context) {
         RequirementsResult check = checkDefaultRequirements(context);
         if (!check.result.isSuccess()) {
             context.sendMessage(check.message);
@@ -986,6 +1000,15 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
             return SpellResult.NO_ACTION;
         }
         return showItems(context);
+    }
+
+    @Override
+    public SpellResult step(CastContext context) {
+        if (isActive) {
+            return SpellResult.PENDING;
+        }
+
+        return finalResult == null ? SpellResult.NO_ACTION : finalResult;
     }
 
     @Nullable
