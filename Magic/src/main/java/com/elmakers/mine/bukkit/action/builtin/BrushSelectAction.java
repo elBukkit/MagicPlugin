@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -81,11 +83,9 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     return;
                 } else if (set.equals("variants")) {
                     MaterialAndData baseMaterial = new MaterialAndData(item);
-                    String baseName = baseMaterial.getBaseName();
+                    String baseName = getBaseName(baseMaterial);
                     String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
-                    String brushKey = com.elmakers.mine.bukkit.wand.Wand.getBrush(item);
-                    MaterialAndData brushMaterial = new MaterialAndData(brushKey);
-                    List<ItemStack> variantList = variants.get(brushMaterial.getMaterial());
+                    List<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
                     int invSize = ((variantList.size() + 9) / 9) * 9;
                     Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
                     for (ItemStack variantItem : variantList)
@@ -140,38 +140,64 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
             if (brushItem != null) {
                 MaterialAndData material = new MaterialAndData(brushKey);
+                Material baseColor = DefaultMaterials.getBaseColor(material.getMaterial());
+
                 if (previous != null && material.getMaterial() == previous.getMaterial())
                 {
                     List<ItemStack> variantList = variants.get(material.getMaterial());
-                    ItemStack lastAdded = brushes.get(brushes.size() - 1);
                     if (variantList == null)
                     {
-                        String baseName = material.getBaseName();
+                        ItemStack lastAdded = brushes.get(brushes.size() - 1);
                         variantList = new ArrayList<>();
                         variantList.add(lastAdded);
                         brushes.remove(brushes.size() - 1);
-                        ItemStack category = InventoryUtils.getCopy(lastAdded);
-                        ItemMeta meta = category.getItemMeta();
-                        String name = context.getMessage("variant_name", "" + ChatColor.AQUA + "$variant");
-                        meta.setDisplayName(name.replace("$variant", baseName));
-                        List<String> lore = new ArrayList<>();
-                        String description = context.getMessage("variant_description", "Choose a type of $variant");
-                        lore.add(description.replace("$variant", baseName));
-                        meta.setLore(lore);
-                        category.setItemMeta(meta);
-                        InventoryUtils.setMeta(category, "brush_set", "variants");
                         variants.put(material.getMaterial(), variantList);
-                        brushes.add(category);
                     }
                     variantList.add(brushItem);
-                }
-                else
-                {
+                } else if (baseColor != null) {
+                    List<ItemStack> variantList = variants.get(baseColor);
+                    if (variantList == null)
+                    {
+                        variantList = new ArrayList<>();
+                        variants.put(baseColor, variantList);
+                    }
+                    variantList.add(brushItem);
+                } else {
                     brushes.add(brushItem);
                 }
                 previous = material;
             }
         }
+
+        for (Map.Entry<Material, List<ItemStack>> entry : variants.entrySet()) {
+            MaterialAndData material = new MaterialAndData(entry.getKey());
+            List<ItemStack> items = entry.getValue();
+            if (items.size() == 1) {
+                brushes.add(items.get(0));
+                continue;
+            }
+
+            String materialName = getBaseName(material);
+            ItemStack category = new ItemStack(material.getMaterial());
+            category = CompatibilityUtils.makeReal(category);
+            ItemMeta meta = category.getItemMeta();
+            String name = context.getMessage("variant_name", "" + ChatColor.AQUA + "$variant");
+            meta.setDisplayName(name.replace("$variant", materialName));
+            List<String> lore = new ArrayList<>();
+            String description = context.getMessage("variant_description", "Choose a type of $variant");
+            lore.add(description.replace("$variant", materialName));
+            meta.setLore(lore);
+            category.setItemMeta(meta);
+            InventoryUtils.setMeta(category, "brush_set", "variants");
+            brushes.add(category);
+        }
+
+        Collections.sort(brushes, new Comparator<ItemStack>() {
+            @Override
+            public int compare(ItemStack o1, ItemStack o2) {
+                return o1.getItemMeta().getDisplayName().compareToIgnoreCase(o2.getItemMeta().getDisplayName());
+            }
+        });
 
         ItemStack schematicItem = null;
         if (schematics.size() == 1) {
@@ -223,5 +249,13 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
+    }
+
+    private String getBaseName(MaterialAndData material) {
+        // Bit of a hack to get a base material name
+        String materialName = material.getName();
+        materialName = materialName.replace("White ", "");
+        materialName = materialName.replace("white ", "");
+        return materialName;
     }
 }

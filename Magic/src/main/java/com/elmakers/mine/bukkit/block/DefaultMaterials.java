@@ -133,6 +133,11 @@ public class DefaultMaterials {
     }
 
     @Nullable
+    public static Material getBaseColor(@Nullable Material material) {
+        return material == null ? null : getInstance().colorMap.get(material);
+    }
+
+    @Nullable
     public Material getBaseMaterial(@Nullable Material material) {
         material = material == null ? null : colorMap.get(material);
         if (material == null && colorMap.size() > 0) {

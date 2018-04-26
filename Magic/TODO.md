@@ -4,8 +4,6 @@
 
 ### Things still needing fixing
 
- - Brush menu organization, can we group materials together still- maybe share some kind of map with Alter
- - Fix engineer paths (maybe validate brushes on path load)
  - Brush selector on a sub-page for beds says "diamond axe sub-types"?
 
 ### Things to verify 
