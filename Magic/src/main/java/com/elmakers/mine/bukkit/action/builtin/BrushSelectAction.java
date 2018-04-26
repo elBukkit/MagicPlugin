@@ -180,6 +180,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             String materialName = getBaseName(material);
             ItemStack category = new ItemStack(material.getMaterial());
             category = CompatibilityUtils.makeReal(category);
+            if (category == null) continue;
             ItemMeta meta = category.getItemMeta();
             String name = context.getMessage("variant_name", "" + ChatColor.AQUA + "$variant");
             meta.setDisplayName(name.replace("$variant", materialName));
