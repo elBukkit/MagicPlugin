@@ -128,27 +128,35 @@ spells:
     arrow_light:
         name: Light Arrow
         description: Fire an arrow of pure light
+        cast_player_message: "a:$player short a $spell at you"
     arrow_bomb:
         name: Bomb Arrow
         description: Fire an exploding arrow
+        cast_player_message: "a:$player short a $spell at you"
     arrow_poison:
         name: Poison Arrow
         description: Fire a arrow that bursts into a poison cloud
+        cast_player_message: "a:$player short a $spell at you"
     arrow_regular:
         name: Normal Arrow
         description: Fire a normal arrow
+        cast_player_message: "a:$player short a $spell at you"
     arrow_blink:
         name: Blink Arrow
         description: Teleport to the location where your arrow lands
+        cast_player_message: "a:$player short a $spell at you"
     arrow_fire:
         name: Fire Arrow
         description: Lights a fire where it lands
+        cast_player_message: "a:$player short a $spell at you"
     arrow_ice:
         name: Ice Arrow
         description: Freeze the area where it lands
+        cast_player_message: "a:$player short an $spell at you"
     arrow_shock:
         name: Shock Arrow
         description: Electrify the target
+        cast_player_message: "a:$player short a $spell at you"
     toss:
         name: Toss
         description: Toss a block

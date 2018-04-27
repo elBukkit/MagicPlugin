@@ -26,7 +26,7 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class MageTrigger {
     public enum MageTriggerType {
-        INTERVAL, DEATH, DAMAGE, SPAWN
+        INTERVAL, DEATH, DAMAGE, SPAWN, LAUNCH
     }
 
     protected MageTriggerType type;
@@ -76,7 +76,7 @@ public class MageTrigger {
         return type;
     }
 
-    private void cast(Mage mage, String castSpell) {
+    private void cast(Mage mage, String castSpell, double bowpull) {
         if (castSpell.length() > 0) {
             String[] parameters = null;
             Spell spell = null;
@@ -89,6 +89,17 @@ public class MageTrigger {
                 }
                 spell = mage.getSpell(castSpell);
             }
+            if (bowpull > 0) {
+                if (parameters == null) {
+                    parameters = new String[]{"bowpull", Double.toString(bowpull)};
+                } else {
+                    String[] existing = parameters;
+                    parameters = new String[existing.length + 2];
+                    System.arraycopy(existing, 0, parameters, 0, existing.length);
+                    parameters[existing.length - 2] = "bowpull";
+                    parameters[existing.length - 1] = Double.toString(bowpull);
+                }
+            }
             if (spell != null) {
                 spell.cast(parameters);
             }
@@ -96,10 +107,14 @@ public class MageTrigger {
     }
 
     public void execute(Mage mage) {
-        execute(mage, 0);
+        execute(mage, 0, 0);
     }
 
     public void execute(Mage mage, double damage) {
+        execute(mage, damage, 0);
+    }
+
+    public void execute(Mage mage, double damage, double bowpull) {
         if (minDamage > 0 && damage < minDamage) return;
         if (maxDamage > 0 && damage > maxDamage) return;
 
@@ -115,8 +130,8 @@ public class MageTrigger {
             }
         }
         if (spells != null && !spells.isEmpty()) {
-            String deathSpell = RandomUtils.weightedRandom(spells);
-            cast(mage, deathSpell);
+            String spell = RandomUtils.weightedRandom(spells);
+            cast(mage, spell, bowpull);
         }
         if (commands != null) {
             Entity topDamager = mage.getTopDamager();

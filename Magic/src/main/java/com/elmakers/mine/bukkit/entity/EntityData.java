@@ -934,6 +934,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    public boolean onLaunch(Mage mage, double pull) {
+        if (mageData != null) {
+            return mageData.onLaunch(mage, pull);
+        }
+        return false;
+    }
+
     public void tick(Mage mage) {
         if (mageData != null) {
             mageData.tick(mage);

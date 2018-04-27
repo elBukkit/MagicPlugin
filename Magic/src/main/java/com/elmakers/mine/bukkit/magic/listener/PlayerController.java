@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -13,13 +11,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -43,7 +39,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.projectiles.ProjectileSource;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -61,7 +56,6 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
-    private static final double MAX_ARROW_SPEED = 3;
     private final MagicController controller;
     private int clickCooldown = 150;
     private boolean enableCreativeModeEjecting = true;
@@ -71,7 +65,6 @@ public class PlayerController implements Listener {
     private boolean cancelInteractOnLeftClick = true;
     private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
-    private boolean launching = false;
     private long lastDropWarn = 0;
 
     public PlayerController(MagicController controller) {
@@ -745,48 +738,5 @@ public class PlayerController implements Listener {
                 spell.cast();
             }
         }
-    }
-
-    @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        if (launching || event.isCancelled()) return;
-
-        Projectile projectile = event.getEntity();
-        ProjectileSource shooter = projectile.getShooter();
-        // Not really handling magic mobs with magic bows...
-        if (!(shooter instanceof Player)) return;
-
-        Player player = (Player)shooter;
-        Mage mage = controller.getRegisteredMage(player);
-        if (mage == null) return;
-        Wand wand = mage.getActiveWand();
-        if (wand == null) return;
-
-        if (wand.getIcon().getMaterial() != Material.BOW) return;
-        double minPull = wand.getDouble("cast_min_bowpull");
-        double pull = Math.min(1.0, projectile.getVelocity().length() / MAX_ARROW_SPEED);
-
-        if (minPull > 0 && pull < minPull) {
-            if (wand.isInventoryOpen()) event.setCancelled(true);
-            return;
-        }
-
-        Spell spell = wand.getActiveSpell();
-        if (spell == null) {
-            if (wand.isInventoryOpen()) event.setCancelled(true);
-            return;
-        }
-
-        event.setCancelled(true);
-        String[] parameters = {"bowpull", Double.toString(pull)};
-
-        // prevent recursion!
-        launching = true;
-        try {
-            wand.cast(parameters);
-        } catch (Exception ex) {
-            controller.getLogger().log(Level.SEVERE, "Error casting bow spell", ex);
-        }
-        launching = false;
     }
 }

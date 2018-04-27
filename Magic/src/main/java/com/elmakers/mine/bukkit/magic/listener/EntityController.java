@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,13 +31,17 @@ import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -46,6 +51,7 @@ import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class EntityController implements Listener {
+    private static final double MAX_ARROW_SPEED = 3;
     private final MagicController controller;
     private double meleeDamageReduction = 0;
     private boolean preventMeleeDamage = false;
@@ -55,6 +61,7 @@ public class EntityController implements Listener {
     private boolean    preventWandMeleeDamage = true;
     private int ageDroppedItems    = 0;
     private Map<EntityType, Double> entityDamageReduction;
+    private boolean launching = false;
 
     public void loadProperties(ConfigurationSection properties) {
         preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
@@ -475,5 +482,64 @@ public class EntityController implements Listener {
         {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        if (launching || event.isCancelled()) return;
+
+        Projectile projectile = event.getEntity();
+        ProjectileSource shooter = projectile.getShooter();
+        if (!(shooter instanceof Entity)) {
+            return;
+        }
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage((Entity)shooter);
+        if (mage == null) return;
+
+        double pull = Math.min(1.0, projectile.getVelocity().length() / MAX_ARROW_SPEED);
+        if (!(shooter instanceof Player)) {
+            EntityData mobData = mage.getEntityData();
+            if (mobData != null) {
+                launching = true;
+                try {
+                    if (mobData.onLaunch(mage, pull)) {
+                        event.setCancelled(true);
+                    }
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.SEVERE, "Error casting bow spell from mob " + mobData.getName(), ex);
+                }
+                launching = false;
+            }
+            return;
+        }
+
+        Wand wand = mage.getActiveWand();
+        if (wand == null) return;
+
+        if (wand.getIcon().getMaterial() != Material.BOW) return;
+        double minPull = wand.getDouble("cast_min_bowpull");
+
+        if (minPull > 0 && pull < minPull) {
+            if (wand.isInventoryOpen()) event.setCancelled(true);
+            return;
+        }
+
+        Spell spell = wand.getActiveSpell();
+        if (spell == null) {
+            if (wand.isInventoryOpen()) event.setCancelled(true);
+            return;
+        }
+
+        event.setCancelled(true);
+        String[] parameters = {"bowpull", Double.toString(pull)};
+
+        // prevent recursion!
+        launching = true;
+        try {
+            wand.cast(parameters);
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.SEVERE, "Error casting bow spell", ex);
+        }
+        launching = false;
     }
 }

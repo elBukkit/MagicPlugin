@@ -11,6 +11,7 @@
  - Fix mobs spawned with a disguise looking glitchy for 1 tick
  - Add "cast.spells" property to automata
  - Add item pickup sound for items picked up with a wand inventory open
+ - Add "launch" trigger to magic mobs, support using magic bow spells (See: archer mob)
  
  # 7.4.2 
 

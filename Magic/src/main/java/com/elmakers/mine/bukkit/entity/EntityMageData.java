@@ -114,6 +114,17 @@ public class EntityMageData {
         }
     }
 
+    public boolean onLaunch(Mage mage, double bowpull) {
+        List<MageTrigger> launchTriggers = getTriggers(MageTriggerType.LAUNCH);
+        if (launchTriggers == null) return false;
+
+        for (MageTrigger trigger : launchTriggers) {
+            trigger.execute(mage, 0, bowpull);
+        }
+
+        return true;
+    }
+
     public void onDamage(Mage mage, double damage) {
         List<MageTrigger> damageTriggers = getTriggers(MageTriggerType.DAMAGE);
         if (damageTriggers == null) return;
