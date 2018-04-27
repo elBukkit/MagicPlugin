@@ -16,13 +16,9 @@ auto_rollback_explosions:
 - primed_tnt
 
 # We are mixing in all of the configs here to show them off.
-add_examples:
-- stars
-- potter
-- bending
-- war
-- rpg
-- arenas
+example: ""
+github_configs:
+- https://github.com/grisstyl/BetterPotter/
 
 # Just leaving this here for now, to re-enable wand enchanting:
 # enable_enchanting: true
