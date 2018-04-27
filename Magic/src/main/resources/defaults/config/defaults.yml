@@ -271,6 +271,7 @@ wand_inventory_open_sound: magic.wandup,1,1
 wand_inventory_cycle_sound: magic.paperturn,1,1
 wand_inventory_close_sound: magic.wanddown,1,1
 wand_no_action_sound: note_bass,1.0,0.7
+wand_pickup_item_sound: entity_item_pickup,1,1
 
 # If true, fill wands with all known spells on creation, and on every activation
 fill_wands: false

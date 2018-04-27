@@ -3003,6 +3003,7 @@ public class MagicController implements MageController {
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
         Wand.noActionSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_no_action_sound"));
+        Wand.itemPickupSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_pickup_item_sound"));
 
         if (blockPhysicsManager != null) {
             blockPhysicsManager.setVelocityScale(properties.getDouble("block_physics_velocity_scale", 1));

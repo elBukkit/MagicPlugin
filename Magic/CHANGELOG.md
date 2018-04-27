@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 7.4.3
+
+ - Add item pickup sound for items picked up with a wand inventory open
+
 # 7.4.2 
 
  - Fix breaking some plugins' auto-updaters

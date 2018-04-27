@@ -251,6 +251,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
     public static SoundEffect noActionSound = null;
+    public static SoundEffect itemPickupSound = null;
     public static String WAND_KEY = "wand";
     public static String UPGRADE_KEY = "wand_upgrade";
     public static String WAND_SELF_DESTRUCT_KEY = null;
