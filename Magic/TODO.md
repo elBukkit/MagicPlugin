@@ -2,10 +2,6 @@
    
 ## 8.0
 
-### Things still needing fixing
-
- - Brush selector on a sub-page for beds says "diamond axe sub-types"?
-
 ### Things to verify 
 
  - Wand brush migration
@@ -23,6 +19,8 @@
  - It'd be really cool to support configs from remote repos....
    Github has an API for fetching a list of files, maybe can use that?
    https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
+   
+ - Add option for custom display name for wands
  
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
  - Goldwalker blocks didn't undo? (Can not reproduce)

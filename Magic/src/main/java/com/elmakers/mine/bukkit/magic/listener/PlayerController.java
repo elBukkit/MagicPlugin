@@ -663,6 +663,7 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
             if (mage.addToStoredInventory(event.getItem().getItemStack())) {
                 event.getItem().remove();
+                mage.playSoundEffect(Wand.itemPickupSound);
             }
         }
     }
