@@ -1768,9 +1768,6 @@ public class MagicController implements MageController {
         items.load(loader.items);
         getLogger().info("Loaded " + items.getCount() + " items");
 
-        mobs.load(loader.mobs);
-        getLogger().info("Loaded " + mobs.getCount() + " mob templates");
-
         loadSpells(loader.spells);
         getLogger().info("Loaded " + spells.size() + " spells");
 
@@ -1788,6 +1785,9 @@ public class MagicController implements MageController {
 
         loadWandTemplates(loader.wands);
         getLogger().info("Loaded " + getWandTemplates().size() + " wands");
+
+        mobs.load(loader.mobs);
+        getLogger().info("Loaded " + mobs.getCount() + " mob templates");
 
         crafting.load(loader.crafting);
         getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
