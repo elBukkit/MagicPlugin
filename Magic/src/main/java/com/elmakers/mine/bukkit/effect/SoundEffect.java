@@ -52,6 +52,13 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
                     pitch = 1;
                 }
             }
+            if (pieces.length > 3) {
+                try {
+                    range = Integer.parseInt(pieces[3]);
+                } catch (Exception ex) {
+                    range = 0;
+                }
+            }
         }
     }
 
@@ -89,7 +96,7 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
         if (soundName == null) {
             return "";
         }
-        return soundName + "," + volume + "," + pitch;
+        return soundName + "," + volume + "," + pitch + "," + range;
     }
 
     @Override
