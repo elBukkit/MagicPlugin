@@ -16,7 +16,13 @@
 # Set
 # example: ""
 # in your config.yml to turn this off.
+#
+# You may also choose from any of the builtin examples, such as
+# stars, bending, potter, war
 # 
 
 example: survival
 
+# You can use this to load community configurations from github repositories
+# github_configs:
+# - https://github.com/grisstyl/BetterPotter/

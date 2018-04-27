@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.magic;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -25,6 +28,10 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class ConfigurationLoadTask implements Runnable {
     private final MagicController controller;
@@ -49,6 +56,7 @@ public class ConfigurationLoadTask implements Runnable {
 
     private String exampleDefaults = null;
     private Collection<String> addExamples = null;
+    private Collection<String> githubExamples = null;
 
     private ConfigurationSection mainConfiguration;
 
@@ -74,20 +82,27 @@ public class ConfigurationLoadTask implements Runnable {
         saveDefaultConfigs = properties.getBoolean("save_default_configs", true);
         exampleDefaults = properties.getString("example", exampleDefaults);
         addExamples = properties.getStringList("add_examples");
+        githubExamples = properties.getStringList("github_configs");
     }
 
     private ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
         ConfigurationSection configuration = loadMainConfiguration("config");
         loadInitialProperties(configuration);
+
+        if (githubExamples != null && githubExamples.size() > 0) {
+            getLogger().info("Loading remote configurations: " + githubExamples);
+
+            // Reload config, examples will be used this time.
+            configuration = loadMainConfiguration("config");
+
+            // Reload initial properties, in case the remote configs specify examples
+            loadInitialProperties(configuration);
+        }
         if (addExamples != null && addExamples.size() > 0) {
-            if (addExamples != null && addExamples.size() > 0) {
-                getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
-            }
+            getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
         }
         if (exampleDefaults != null && exampleDefaults.length() > 0) {
-            if (exampleDefaults != null && exampleDefaults.length() > 0) {
-                getLogger().info("Overriding configuration with example: " + exampleDefaults);
-            }
+            getLogger().info("Overriding configuration with example: " + exampleDefaults);
 
             // Reload config, examples will be used this time.
             configuration = loadMainConfiguration("config");
@@ -114,6 +129,14 @@ public class ConfigurationLoadTask implements Runnable {
                 ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                 ConfigurationUtils.addConfigurations(config, exampleConfig);
                 getLogger().info(" Using " + examplesFileName);
+            }
+        }
+
+        // Load remote examples if specified
+        if (githubExamples != null) {
+            for (String url : githubExamples) {
+                ConfigurationSection remoteConfig = loadGithubConfiguration(fileName, url);
+                ConfigurationUtils.addConfigurations(config, remoteConfig);
             }
         }
 
@@ -221,6 +244,14 @@ public class ConfigurationLoadTask implements Runnable {
             }
         }
 
+        // Load remote examples if specified
+        if (githubExamples != null) {
+            for (String url : githubExamples) {
+                ConfigurationSection remoteConfig = loadGithubConfiguration(fileName, url);
+                ConfigurationUtils.addConfigurations(config, remoteConfig);
+            }
+        }
+
         // Load anything relevant from the main config
         if (mainSection != null) {
             ConfigurationUtils.addConfigurations(overrides, mainSection);
@@ -324,6 +355,111 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         return config;
+    }
+
+    private ConfigurationSection loadRemoteConfiguration(String urlString) {
+        YamlConfiguration configuration = new YamlConfiguration();
+        InputStream openStream = null;
+        try {
+            URL url = new URL(urlString);
+            openStream = url.openStream();
+            configuration.load(new InputStreamReader(openStream));
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Error reading remote configuration: " + urlString, ex);
+        } finally {
+            if (openStream != null) {
+                try {
+                    openStream.close();
+                } catch (IOException ignore) {
+                }
+            }
+        }
+
+        return configuration;
+    }
+
+    @Nullable
+    private JsonElement loadJSON(String urlString) {
+        JsonElement element = null;
+        BufferedReader openStream = null;
+        try {
+            URL url = new URL(urlString);
+            openStream = new BufferedReader(new InputStreamReader(url.openStream()));
+            StringBuffer buffer = new StringBuffer();
+            int read;
+            char[] chars = new char[1024];
+            while ((read = openStream.read(chars)) != -1)
+                buffer.append(chars, 0, read);
+
+            JsonParser parser = new JsonParser();
+            element = parser.parse(buffer.toString());
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Error reading remote file: " + urlString);
+        } finally {
+            if (openStream != null) {
+                try {
+                    openStream.close();
+                } catch (IOException ignore) {
+                }
+            }
+        }
+
+        return element;
+    }
+
+    private ConfigurationSection loadGithubConfiguration(String fileName, String url) {
+        ConfigurationSection configuration = new MemoryConfiguration();
+
+        // Fix up URLs
+        if (!url.endsWith("/")) {
+            url += "/";
+        }
+        String baseFile = url;
+        baseFile = baseFile.replace("github.com", "raw.githubusercontent.com");
+
+        String apiURL = url;
+        apiURL = apiURL.replace("github.com", "api.github.com/repos");
+        if (url.contains("tree/master")) {
+            apiURL = apiURL.replace("tree/master", "contents");
+            apiURL = apiURL.replace("tree/master", "master");
+        } else {
+            apiURL += "contents/";
+            baseFile += "master/";
+        }
+        baseFile += fileName + ".yml";
+        apiURL += fileName;
+
+        // First look for a base file
+        getLogger().info("Loading " + baseFile);
+        ConfigurationSection base = loadRemoteConfiguration(baseFile);
+        ConfigurationUtils.addConfigurations(configuration, base);
+
+        // Scan folder for contents
+        getLogger().info("  Scanning " + apiURL);
+        JsonElement folderContents = loadJSON(apiURL);
+        if (folderContents != null) {
+            getLogger().info(folderContents.getClass().getName());
+            if (folderContents.isJsonObject()) {
+                JsonObject object = (JsonObject)folderContents;
+                if (object.has("message")) {
+                    getLogger().info("     " + object.get("message").getAsString());
+                }
+            } else if (folderContents.isJsonArray()) {
+                JsonArray array = (JsonArray)folderContents;
+                getLogger().info("   Size: " + array.size());
+                for (int i = 0; i < array.size(); i++) {
+                    JsonElement fileElement = array.get(i);
+                    getLogger().info(fileElement.getAsString());
+                    if (fileElement.isJsonObject()) {
+                        JsonObject fileObject = (JsonObject)fileElement;
+                        if (fileObject.has("type")) {
+                            getLogger().info(fileObject.get("name").getAsString());
+                        }
+                    }
+                }
+            }
+        }
+        return configuration;
     }
 
     private ConfigurationSection mapSpells(ConfigurationSection spellConfiguration) throws InvalidConfigurationException, IOException {
