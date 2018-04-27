@@ -261,5 +261,29 @@
                 <updatePolicy>never</updatePolicy>
             </snapshots>
         </repository>
+        <repository>
+            <id>addstar-repo</id>
+            <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>addstar-snapshot-repo</id>
+            <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
     </repositories>
 </project>
