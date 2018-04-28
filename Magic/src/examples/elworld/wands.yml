@@ -188,3 +188,10 @@ butterfly:
   name: Butterfly Wand
   effects:
     activate: butterfly
+
+customname:
+  inherit: base_wand
+  name: Custom
+  path: beginner
+  spells: missile, blink, fling, arrow
+  display_name: "&3$name &5$path .. &4$spell"

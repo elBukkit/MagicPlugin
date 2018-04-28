@@ -12,6 +12,7 @@
  - Add "cast.spells" property to automata
  - Add item pickup sound for items picked up with a wand inventory open
  - Add "launch" trigger to magic mobs, support using magic bow spells (See: archer mob)
+ - Add "display_name" property to wands, for making a custome name (no spell info, etc)
  
  # 7.4.2 
 

@@ -2061,7 +2061,38 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return name;
     }
 
+    private String getCustomName(String displayName, SpellTemplate spell, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
+        String name = displayName;
+
+        // $name
+        name = name.replace("$name", wandName);
+
+        // $path
+        String pathName = getPathName();
+        if (pathName != null) {
+            name = name.replace("$path", pathName);
+        }
+
+        // $spell
+        String spellName = spell == null ? "" : spell.getName();
+        name = name.replace("$spell", spellName);
+
+        // $brush
+        String brushName = brush == null ? "" : brush.getName();
+        name = name.replace("$brush", brushName);
+
+        // $uses
+        name = name.replace("$uses", Integer.toString(getRemainingUses()));
+
+        return ChatColor.translateAlternateColorCodes('&', name);
+    }
+
     private String getActiveWandName(SpellTemplate spell, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
+        String customName = getString("display_name");
+        if (customName != null && !customName.isEmpty()) {
+            return getCustomName(customName, spell, brush);
+        }
+
         // Build wand name
         int remaining = getRemainingUses();
         String wandColorPrefix = (hasUses && remaining <= 1) ? "single_use_prefix" : isModifiable()
