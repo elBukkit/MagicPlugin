@@ -22,69 +22,69 @@ SludgePoison:
   - TargetWithin 4
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> push area true"}
+  - command{c="castp <mob.uuid> push area true"}
 PullArea:
   Cooldown: 100
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> pull area true"}
+  - command{c="castp <mob.uuid> pull area true"}
 Push:
   Cooldown: 10
   Conditions:
   - TargetWithin 5
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> push"}
+  - command{c="castp <mob.uuid> push"}
 Pull:
   Cooldown: 10
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> pull"}
+  - command{c="castp <mob.uuid> pull"}
 Lightning:
   Cooldown: 80
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> lightning"}
+  - command{c="castp <mob.uuid> lightning"}
 Fireball:
   Cooldown: 20
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> fireball"}
+  - command{c="castp <mob.uuid> fireball"}
 Wither:
   Cooldown: 40
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> wither"}
+  - command{c="castp <mob.uuid> wither"}
 Curse:
   Cooldown: 120
   Conditions:
   - TargetWithin 8
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> curse"}
+  - command{c="castp <mob.uuid> curse"}
 ArrowRain:
   Cooldown: 50
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> arrowrain"}
+  - command{c="castp <mob.uuid> arrowrain"}
 Fling:
   Cooldown: 4
   Conditions:
   - TargetInLineOfSight
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> fling pdy 1"}
+  - command{c="castp <mob.uuid> fling pdy 1"}
 Fire:
   Cooldown: 8
   Conditions:
@@ -93,133 +93,133 @@ Fire:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> fire"}
+  - command{c="castp <mob.uuid> fire"}
 Inferno:
   Cooldown: 80
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> inferno"}
+  - command{c="castp <mob.uuid> inferno"}
 Flamethrower:
   Cooldown: 70
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> flamethrower"}
+  - command{c="castp <mob.uuid> flamethrower"}
 Grenade:
   Cooldown: 120
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> grenade"}
+  - command{c="castp <mob.uuid> grenade"}
 Frag:
   Cooldown: 200
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> frag"}
+  - command{c="castp <mob.uuid> frag"}
 Meteor:
   Cooldown: 240
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> meteor"}
+  - command{c="castp <mob.uuid> meteor"}
 Lava:
   Cooldown: 110
   Conditions:
   - TargetWithin 8
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> lava"}
+  - command{c="castp <mob.uuid> lava"}
 Missile:
   Cooldown: 20
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> missile"}
+  - command{c="castp <mob.uuid> missile"}
 Cushion:
   Cooldown: 20
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> cushion"}
+  - command{c="castp <mob.uuid> cushion"}
 Stream:
   Cooldown: 30
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> stream"}
+  - command{c="castp <mob.uuid> stream"}
 Frost:
   Cooldown: 40
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> frost"}
+  - command{c="castp <mob.uuid> frost"}
 IceShell:
   Cooldown: 60
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> shell undo 5000 brush packed_ice"}
+  - command{c="castp <mob.uuid> shell undo 5000 brush packed_ice"}
 IceBlob:
   Cooldown: 100
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> blob undo 3000 brush packed_ice"}
+  - command{c="castp <mob.uuid> blob undo 3000 brush packed_ice"}
 IceShields:
   Cooldown: 100
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> shields brush packed_ice"}
+  - command{c="castp <mob.uuid> shields brush packed_ice"}
 Blob:
   Cooldown: 90
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> blob undo 5000 brush stone"}
+  - command{c="castp <mob.uuid> blob undo 5000 brush stone"}
 Earth:
   Cooldown: 30
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> earth"}
+  - command{c="castp <mob.uuid> earth"}
 Breach:
   Cooldown: 110
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> breach"}
+  - command{c="castp <mob.uuid> breach"}
 Toss:
   Cooldown: 50
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> toss brush stone"}
+  - command{c="castp <mob.uuid> toss brush stone"}
 StoneShield:
   Cooldown: 50
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp <mob.l.w>,<mob.uuid> shields brush stone"}
+  - command{c="castp <mob.uuid> shields brush stone"}
 
 Firebending:
   Cooldown: 5
