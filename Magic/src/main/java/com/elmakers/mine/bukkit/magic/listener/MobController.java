@@ -38,18 +38,21 @@ public class MobController implements Listener {
         this.controller = controller;
     }
 
-    public void load(ConfigurationSection configuration) {
-        Set<String> mobKeys = configuration.getKeys(false);
-        for (String mobKey : mobKeys) {
-            ConfigurationSection mobConfiguration = configuration.getConfigurationSection(mobKey);
-            if (!mobConfiguration.getBoolean("enabled", true)) continue;
-            EntityData mob = new EntityData(controller, mobKey, mobConfiguration);
-            mobs.put(mobKey, mob);
+    public void clear() {
+        mobs.clear();
+        mobsByName.clear();
+    }
 
-            String mobName = mob.getName();
-            if (mobName != null && !mobName.isEmpty()) {
-                mobsByName.put(mobName, mob);
-            }
+    public void load(String mobKey, ConfigurationSection mobConfiguration) {
+        if (!mobConfiguration.getBoolean("enabled", true)) {
+            return;
+        }
+        EntityData mob = new EntityData(controller, mobKey, mobConfiguration);
+        mobs.put(mobKey, mob);
+
+        String mobName = mob.getName();
+        if (mobName != null && !mobName.isEmpty()) {
+            mobsByName.put(mobName, mob);
         }
     }
 

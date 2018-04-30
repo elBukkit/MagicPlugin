@@ -13,6 +13,7 @@
  - Add "launch" trigger to magic mobs, support using magic bow spells (See: archer mob)
  - Add "display_name" property to wands, for making a custome name (no spell info, etc)
  - Allow for custom mob triggers, add Trigger action to trigger via spells
+ - Mob configs support inheritance
  
 # 7.4.3
 
