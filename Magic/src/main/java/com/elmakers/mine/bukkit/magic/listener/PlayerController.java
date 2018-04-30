@@ -577,7 +577,9 @@ public class PlayerController implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event)
     {
         // Automatically re-activate mages.
-        controller.getMage(event.getPlayer());
+        Player player = event.getPlayer();
+        controller.getMage(player);
+        controller.checkVanished(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
