@@ -201,7 +201,7 @@ public class RideEntityAction extends BaseSpellAction
         if (currentMount == null) {
             return SpellResult.CAST;
         }
-        if (!mount.isValid()) {
+        if (!mount.isValid() || mount != currentMount) {
             remount(context);
             if (mount == null) {
                 return SpellResult.CAST;
