@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,6 +46,11 @@ public class InventoryController implements Listener {
     private boolean enableInventoryCasting = true;
     private boolean enableInventorySelection = true;
 
+    // offhand, helmet, chestplate, leggings, boots
+    private static final Integer[] armorSlotList = new Integer[] {39,38,37,36};
+    private static final Set<Integer> armorSlots = new HashSet<>(Arrays.asList(armorSlotList));
+    private static final int OFFHAND_SLOT = 40;
+
     public InventoryController(MagicController controller) {
         this.controller = controller;
     }
@@ -56,18 +65,34 @@ public class InventoryController implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryDrag(InventoryDragEvent event) {
-        Mage mage = controller.getMage(event.getWhoClicked());
+        HumanEntity clicked = event.getWhoClicked();
+        Mage mage = controller.getMage(clicked);
         GUIAction activeGUI = mage.getActiveGUI();
         if (activeGUI != null) {
             activeGUI.dragged(event);
             return;
         }
 
-        // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
-        // This could possibly be narrowed down to events only effecting held item slots and armor
-        ItemStack oldCursor = event.getOldCursor();
-        if (oldCursor.hasItemMeta() && Wand.isWand(InventoryUtils.makeReal(oldCursor))) {
-            controller.onArmorUpdated(mage);
+        // Only check if clicking an armor slot or the held item slot
+        Set<Integer> slots = event.getInventorySlots();
+        boolean isArmorSlot = !Collections.disjoint(slots, armorSlots);
+        boolean isOffhandSlot = slots.contains(OFFHAND_SLOT);
+        boolean isHeldSlot = slots.contains(clicked.getInventory().getHeldItemSlot());
+        if (isArmorSlot || isOffhandSlot || isHeldSlot) {
+            // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
+            ItemStack oldCursor = event.getOldCursor();
+            oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
+
+            // Prevent wearing spells
+            if (isArmorSlot && Wand.isSpell(oldCursor)) {
+                event.setCancelled(true);
+                return;
+            }
+
+            // Update armor if moving magic items around
+            if (Wand.isWand(oldCursor)) {
+                controller.onArmorUpdated(mage);
+            }
         }
 
         if (!enableItemHacks) return;
@@ -165,6 +190,16 @@ public class InventoryController implements Listener {
                 controller.onArmorUpdated(mage);
             }
         }
+
+        // Another check for wearing spells
+        boolean clickedSpell = Wand.isSpell(clickedItem);
+        boolean clickedWearable = controller.isWearable(clickedItem);
+        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedSpell && clickedWearable)
+        {
+            event.setCancelled(true);
+            return;
+        }
+
         boolean isHotbar = event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
         if (isHotbar && event.getSlotType() == InventoryType.SlotType.ARMOR)
         {
@@ -213,7 +248,7 @@ public class InventoryController implements Listener {
                 return;
             }
 
-            if (Wand.isSpell(clickedItem) && clickedItem.getAmount() != 1)
+            if (clickedSpell && clickedItem.getAmount() != 1)
             {
                 clickedItem.setAmount(1);
             }
@@ -238,16 +273,6 @@ public class InventoryController implements Listener {
             {
                 event.setCancelled(true);
                 return;
-            }
-
-            // Can't wear spells
-            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
-            {
-                if (controller.isWearable(clickedItem))
-                {
-                    event.setCancelled(true);
-                    return;
-                }
             }
 
             // Safety check for something that ought not to be possible
@@ -320,7 +345,7 @@ public class InventoryController implements Listener {
         // Check for armor changing
         if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
         {
-            if (controller.isWearable(clickedItem)) {
+            if (clickedWearable) {
                 controller.onArmorUpdated(mage);
             }
         }
