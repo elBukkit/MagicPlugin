@@ -1,0 +1,21 @@
+vanish:
+    icon: diamond_axe:116
+    icon_disabled: diamond_hoe:116
+    icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+    category: staff
+    tags: noduel
+    toggle: undo
+    actions:
+        cast:
+        - class: Vanish
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: magic.vanish
+        - class: EffectRing
+          particle: smoke_normal
+          location: target
+    parameters:
+        target: self
+        cooldown: 1000
+    

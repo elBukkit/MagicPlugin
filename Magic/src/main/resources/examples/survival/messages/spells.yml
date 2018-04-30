@@ -1622,3 +1622,6 @@ spells:
     nobabies:
       name: No Babies
       description: Make all baby mobs grow up into adults
+    vanish:
+      name: Vanish
+      description: Make yourself completely invisible to other players.
