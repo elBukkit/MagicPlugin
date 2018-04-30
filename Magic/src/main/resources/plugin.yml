@@ -215,7 +215,7 @@ commands:
     usage: |
 
        /mitem add enchant <enchantment> <level>
-       /mitem add attribute <attribute> <value>
+       /mitem add attribute <attribute> <value> <slot> <operation>
        /mitem add flag <flag>
        /mitem add lore <some text>
        /mitem add unbreakable
