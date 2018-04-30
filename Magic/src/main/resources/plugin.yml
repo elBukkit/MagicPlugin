@@ -210,6 +210,7 @@ commands:
         /mitem type       Change the type of an item
         /mitem damage     Change the damage state of an item
         /mitem export     Export all items, names and worth a CSV file
+        /mitem spawn      Spawn a specific item at a location
     permission: Magic.commands.mitem
   "mitem add":
     description: Add enchantments, attributes or lore to an item
@@ -302,6 +303,12 @@ commands:
     description: Show the value of an item
     usage: /mitem worth
     permission: Magic.commands.mitem.worth
+  "mitem spawn":
+    description: Spawn an item at a specific location
+    usage: |
+            /mitem spawn <type> <x> <y> <z> <world>
+            /mitem spawn <type> <uuid>
+    permission: Magic.commands.mitem.spawn
   mconfig:
     description: Modify Magic configuration in-game
     permission: Magic.commands.mconfig
@@ -1037,6 +1044,7 @@ permissions:
     - Magic.commands.mitem.type
     - Magic.commands.mitem.damage
     - Magic.commands.mitem.skull
+    - Magic.commands.mitem.spawn
   Magic.commands.mitem.add:
     description: Player may add enchantments, attributes and lore to an item
     type: boolean
@@ -1095,6 +1103,10 @@ permissions:
     default: op
   Magic.commands.mitem.skull:
     description: Player may create a player skull from a written book
+    type: boolean
+    default: op
+  Magic.commands.mitem.spawn:
+    description: Player may spawn items into the world
     type: boolean
     default: op
   Magic.commands.mconfig:

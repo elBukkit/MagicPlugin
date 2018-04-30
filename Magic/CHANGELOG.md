@@ -4,6 +4,7 @@
 
  - Add item pickup sound for items picked up with a wand inventory open
  - Fix some issues with vanilla item attributes not stacking
+ - Added /mitem spawn command, for spawning magic items in the world (mythic mob drops, command blocks, etc)
 
 # 7.4.2 
 
