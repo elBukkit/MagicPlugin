@@ -6,6 +6,8 @@
  - Fix some issues with vanilla item attributes not stacking
  - Added /mitem spawn command, for spawning magic items in the world (mythic mob drops, command blocks, etc)
  - Fix a few ways players could wear skull-based spells
+ - Fix some strange behavior with riding a broom and chair plugins
+ - Limited-use wands will consume uses when their spell misses
 
 # 7.4.2 
 
