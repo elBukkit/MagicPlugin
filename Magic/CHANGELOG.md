@@ -10,13 +10,16 @@
  - Add support for parrot variants in mob configs
  - Fix mobs spawned with a disguise looking glitchy for 1 tick
  - Add "cast.spells" property to automata
- - Add item pickup sound for items picked up with a wand inventory open
  - Add "launch" trigger to magic mobs, support using magic bow spells (See: archer mob)
  - Add "display_name" property to wands, for making a custome name (no spell info, etc)
+ 
+# 7.4.3
+
+ - Add item pickup sound for items picked up with a wand inventory open
  - Fix some issues with vanilla item attributes not stacking
  - Added /mitem spawn command, for spawning magic items in the world (mythic mob drops, command blocks, etc)
  - Fix a few ways players could wear skull-based spells
- 
+  
  # 7.4.2 
 
  - Fix breaking some plugins' auto-updaters
@@ -32,7 +35,6 @@
  - Fix annoying warning from PaperSpigot about crafting recipes
  - Better handling for wearing pumpkins
  - Add a couple of new parameters to Orient and ChangeContext actions
-
 
 # 7.4
 
