@@ -97,6 +97,19 @@ public enum SpellResult {
     }
 
     /**
+     * Determine if this result is a success or not,
+     * possibly counting no_target as a success.
+     *
+     * @return True if this cast was a success.
+     */
+    public boolean isSuccess(boolean castOnNoTarget) {
+        if (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION) {
+            return castOnNoTarget;
+        }
+        return isSuccess();
+    }
+
+    /**
      * Determine if this result is a free cast or not.
      *
      * @return True if this cast should not consume costs.
