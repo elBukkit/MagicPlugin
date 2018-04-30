@@ -12,9 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
@@ -22,6 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -32,6 +36,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
@@ -51,9 +56,12 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if (args.length > 0 && args[0].equalsIgnoreCase("delete"))
+        if (args.length == 0) {
+            return false;
+        }
+        if (args[0].equalsIgnoreCase("delete"))
         {
-            if (!api.hasPermission(sender, "Magic.commands.item.delete")) {
+            if (!api.hasPermission(sender, "Magic.commands.mitem.delete")) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -65,10 +73,22 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        // Everything beyond this point is is-game only and requires a sub-command
-        if (args.length == 0) {
-            return false;
+        if (args[0].equalsIgnoreCase("spawn"))
+        {
+            if (!api.hasPermission(sender, "Magic.commands.mitem.spawn")) {
+                sendNoPermission(sender);
+                return true;
+            }
+            if (args.length < 2) {
+                sender.sendMessage("Usage: /mitem spawn <itemkey>");
+                return true;
+            }
+            String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+            onItemSpawn(sender, args2);
+            return true;
         }
+
+        // Everything beyond this point is is-game only and requires a sub-command
         if (!(sender instanceof Player)) {
             return false;
         }
@@ -104,6 +124,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mitem.", "type");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "damage");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "skull");
+            addIfPermissible(sender, options, "Magic.commands.mitem.", "spawn");
         }
 
         if (args.length == 2)
@@ -137,6 +158,25 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 for (Material material : Material.values()) {
                     options.add(material.name().toLowerCase());
                 }
+            }
+
+            if (subCommand.equalsIgnoreCase("spawn")) {
+                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                for (SpellTemplate spell : spellList) {
+                    addIfPermissible(sender, options, "Magic.create.", spell.getKey());
+                }
+                Collection<String> allWands = api.getWandKeys();
+                for (String wandKey : allWands) {
+                    addIfPermissible(sender, options, "Magic.create.", wandKey);
+                }
+                for (Material material : Material.values()) {
+                    addIfPermissible(sender, options, "Magic.create.", material.name().toLowerCase());
+                }
+                Collection<String> allItems = api.getController().getItemKeys();
+                for (String itemKey : allItems) {
+                    addIfPermissible(sender, options, "Magic.create.", itemKey);
+                }
+                addIfPermissible(sender, options, "Magic.create.", "sp");
             }
 
             if (subCommand.equalsIgnoreCase("damage")) {
@@ -527,6 +567,58 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             player.sendMessage(api.getMessages().get("item.no_item"));
             return false;
         }
+        return true;
+    }
+
+    public boolean onItemSpawn(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player) && args.length < 2) {
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "mitem spawn <item> <x> <y> <z> <world>");
+            return true;
+        }
+        String itemType = args[0];
+        ItemStack item = controller.createItem(itemType);
+        if (item == null) {
+            sender.sendMessage(ChatColor.RED + "Invalid item: " + ChatColor.WHITE + itemType);
+            return true;
+        }
+        Location location = null;
+        if (args.length == 2) {
+            Entity target = CompatibilityUtils.getEntity(UUID.fromString(args[1]));
+            if (target == null) {
+                sender.sendMessage(ChatColor.RED + "Could not find entity with UUID: " + ChatColor.WHITE + args[1]);
+                return true;
+            }
+            location = target.getLocation();
+        } else {
+            if (sender instanceof Player) {
+                location = ((Player)sender).getLocation();
+                if (args.length > 4) {
+                    location.setWorld(Bukkit.getWorld(args[4]));
+                }
+            } else {
+                location = new Location(Bukkit.getWorld(args[4]), 0.0f, 0.0f, 0.0f);
+            }
+            if (args.length > 4 && location.getWorld() == null) {
+                sender.sendMessage(ChatColor.RED + "Invalid world: " + ChatColor.WHITE + args[4]);
+                return true;
+            }
+            try {
+                if (args.length > 1) {
+                    location.setX(Double.parseDouble(args[1]));
+                    if (args.length > 2) {
+                        location.setY(Double.parseDouble(args[2]));
+                        if (args.length > 3) {
+                            location.setZ(Double.parseDouble(args[3]));
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "mitem spawn <item> <x> <y> <z> <world>");
+                return true;
+            }
+        }
+
+        location.getWorld().dropItem(location, item);
         return true;
     }
 

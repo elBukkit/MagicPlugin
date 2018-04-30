@@ -14,6 +14,7 @@
  - Add "launch" trigger to magic mobs, support using magic bow spells (See: archer mob)
  - Add "display_name" property to wands, for making a custome name (no spell info, etc)
  - Fix some issues with vanilla item attributes not stacking
+ - Added /mitem spawn command, for spawning magic items in the world (mythic mob drops, command blocks, etc)
  
  # 7.4.2 
 
