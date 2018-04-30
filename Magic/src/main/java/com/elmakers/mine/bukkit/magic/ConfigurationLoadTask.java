@@ -188,7 +188,7 @@ public class ConfigurationLoadTask implements Runnable {
             List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
             if (inherits != null) {
                 List<String> skip = ConfigurationUtils.getStringList(mainConfiguration, "skip_inherited");
-                if (!skip.contains(fileName)) {
+                if (skip == null || !skip.contains(fileName)) {
                     for (String inheritFrom : inherits) {
                         String inheritFileName = "examples/" + inheritFrom + "/" + fileName + ".yml";
                         InputStream input = plugin.getResource(inheritFileName);
@@ -196,7 +196,7 @@ public class ConfigurationLoadTask implements Runnable {
                             List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
                             ConfigurationSection inheritedConfig = CompatibilityUtils.loadConfiguration(input);
 
-                            if (disable.contains(fileName)) {
+                            if (disable != null && disable.contains(fileName)) {
                                 disableInherited = true;
                                 disableAll(inheritedConfig);
                             }
