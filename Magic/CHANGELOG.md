@@ -3,6 +3,7 @@
 # 7.4.3
 
  - Add item pickup sound for items picked up with a wand inventory open
+ - Fix some issues with vanilla item attributes not stacking
 
 # 7.4.2 
 

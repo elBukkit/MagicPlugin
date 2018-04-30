@@ -999,6 +999,24 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
+
+    // Taken from CraftBukkit code.
+    private static String toMinecraftAttribute(Attribute attribute) {
+        String bukkit = attribute.name();
+        int first = bukkit.indexOf('_');
+        int second = bukkit.indexOf('_', first + 1);
+
+        StringBuilder sb = new StringBuilder(bukkit.toLowerCase(java.util.Locale.ENGLISH));
+
+        sb.setCharAt(first, '.');
+        if (second != -1) {
+            sb.deleteCharAt(second);
+            sb.setCharAt(second, bukkit.charAt(second + 1));
+        }
+
+        return sb.toString();
+    }
+
     public static boolean removeItemAttribute(ItemStack item, Attribute attribute) {
         try {
             Object handle = getHandle(item);
@@ -1006,27 +1024,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object tag = getTag(handle);
             if (tag == null) return false;
 
-            // Well this is ugly. 
-            // TODO Replace with API!
-            String attributeName = null;
-            switch (attribute) {
-                case GENERIC_ATTACK_SPEED:
-                    attributeName = "generic.attackSpeed";
-                    break;
-                case GENERIC_ATTACK_DAMAGE:
-                    attributeName = "generic.attackDamage";
-                    break;
-                case GENERIC_MOVEMENT_SPEED:
-                    attributeName = "generic.movementSpeed";
-                    break;
-                default:
-                    break;
-            }
-
-            if (attributeName == null) {
-                return false;
-            }
-            
+            String attributeName = toMinecraftAttribute(attribute);
             Object attributesNode = getNode(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
@@ -1050,8 +1048,12 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return true;
     }
-    
+
     public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot) {
+        return setItemAttribute(item, attribute, value, slot, 0);
+    }
+    
+    public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
         try {
             Object handle = getHandle(item);
             if (handle == null) {
@@ -1062,46 +1064,9 @@ public class CompatibilityUtils extends NMSUtils {
             
             Object attributesNode = getNode(tag, "AttributeModifiers");
             Object attributeNode = null;
-            String attributeName = null;
-            UUID attributeUUID = null;
-            int attributeOperation = 0;
-            
-            switch (attribute) {
-                case GENERIC_ATTACK_SPEED:
-                    attributeName = "generic.attackSpeed";
-                    attributeUUID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
-                    break;
-                case GENERIC_ATTACK_DAMAGE:
-                    attributeName = "generic.attackDamage";
-                    attributeUUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
-                    break;
-                case GENERIC_MOVEMENT_SPEED:
-                    attributeName = "generic.movementSpeed";
-                    attributeUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
-                    break;
-                case GENERIC_MAX_HEALTH:
-                    attributeName = "generic.maxHealth";
-                    attributeUUID = UUID.fromString("5D6F0BA2-1186-46AC-B896-C61C5CEE99CC");
-                    break;
-                case GENERIC_LUCK:
-                    attributeName = "generic.luck";
-                    attributeUUID = UUID.fromString("03C3C89D-7037-4B42-869F-B146BCB64D2E");
-                    break;
-                case GENERIC_ARMOR:
-                    attributeName = "generic.armor";
-                    attributeUUID = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
-                    break;
-                case GENERIC_KNOCKBACK_RESISTANCE:
-                    attributeName = "generic.knockbackResistance";
-                    attributeUUID = UUID.fromString("00000000-0001-481f-0000-000000040fe5");
-                    break;
-                default:
-                    break;
-            }
-            
-            if (attributeName == null) {
-                return false;
-            }
+            UUID attributeUUID = UUID.randomUUID();
+
+            String attributeName = toMinecraftAttribute(attribute);
             if (attributesNode == null) {
                 attributesNode = class_NBTTagList.newInstance();
                 class_NBTTagCompound_setMethod.invoke(tag, "AttributeModifiers", attributesNode);
