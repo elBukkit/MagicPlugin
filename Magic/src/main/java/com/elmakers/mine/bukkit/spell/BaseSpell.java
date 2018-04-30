@@ -1446,7 +1446,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         processResult(result, parameters);
 
-        boolean success = result.isSuccess();
+        boolean success = result.isSuccess(castOnNoTarget);
         boolean free = result.isFree(castOnNoTarget);
         if (!free) {
             if (costs != null && !mage.isCostFree()) {
