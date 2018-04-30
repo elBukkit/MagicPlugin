@@ -1848,6 +1848,24 @@ public class NMSUtils {
         return null;
     }
 
+    public static Entity getEntity(UUID uuid) {
+        for (World world : Bukkit.getWorlds()) {
+            try {
+                Object worldHandle = getHandle(world);
+                final Map<UUID, Entity> entityMap = (Map<UUID, Entity>)class_WorldServer_entitiesByUUIDField.get(worldHandle);
+                if (entityMap != null) {
+                    Object nmsEntity = entityMap.get(uuid);
+                    if (nmsEntity != null) {
+                        return getBukkitEntity(nmsEntity);
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     public static void setEnvironment(World world, World.Environment environment) {
         try {
             class_CraftWorld_environmentField.set(world, environment);
