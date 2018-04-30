@@ -45,6 +45,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         super(api);
     }
 
+    public enum AttributeOperation {
+        ADD, MULTIPLY_SUM, MULTIPLY
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("delete"))
@@ -197,6 +201,17 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 options.add("legs");
                 options.add("chest");
                 options.add("head");
+            }
+        }
+
+        if (args.length == 6)
+        {
+            String subCommand = args[0];
+            String subCommand2 = args[1];
+            if (subCommand.equalsIgnoreCase("add") && subCommand2.equalsIgnoreCase("attribute")) {
+                for (AttributeOperation operation : AttributeOperation.values()) {
+                    options.add(operation.name().toLowerCase());
+                }
             }
         }
 
@@ -759,7 +774,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    public boolean onItemAddAttribute(Player player, ItemStack item, String attributeName, String attributeValue, String attributeSlot)
+    public boolean onItemAddAttribute(Player player, ItemStack item, String attributeName, String attributeValue, String attributeSlot, AttributeOperation operation)
     {
         Attribute attribute = null;
         if (attributeName == null) return false;
@@ -780,7 +795,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
 
         ItemStack newItem = CompatibilityUtils.makeReal(item);
-        if (CompatibilityUtils.setItemAttribute(newItem, attribute, value, attributeSlot)) {
+        if (CompatibilityUtils.setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal())) {
             if (attributeSlot == null) {
                 attributeSlot = "(All Slots)";
             }
@@ -789,7 +804,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             player.sendMessage(api.getMessages().get("item.attribute_added")
                     .replace("$attribute", attribute.name())
                     .replace("$value", Double.toString(value))
-                    .replace("$slot", attributeSlot));
+                    .replace("$slot", attributeSlot)
+                    .replace("$operation", operation.name().toLowerCase()));
         } else {
             player.sendMessage(api.getMessages().get("item.attribute_not_added").replace("$attribute", attribute.name()));
         }
@@ -980,7 +996,15 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
         if (addCommand.equalsIgnoreCase("attribute")) {
             String slot = parameters.length > 3 ? parameters[3] : null;
-            return onItemAddAttribute(player, item, parameters[1], parameters[2], slot);
+            AttributeOperation operation = AttributeOperation.ADD;
+            if (parameters.length > 4) {
+                try {
+                    operation = AttributeOperation.valueOf(parameters[4].toUpperCase());
+                } catch (Exception ex) {
+                    player.sendMessage(ChatColor.RED + "Invalid operation: " + parameters[4]);
+                }
+            }
+            return onItemAddAttribute(player, item, parameters[1], parameters[2], slot, operation);
         }
         return false;
     }

@@ -28,7 +28,7 @@ item:
     enchant_unsafe: "You do not have permission to add unsafe enchantments"
     no_attribute: "That item does not have the $attribute attribute"
     attribute_removed: "Removed the $attribute attribute from your item"
-    attribute_added: "Set the $attribute attribute on your item to $value for $slot"
+    attribute_added: "Set the $attribute attribute on your item to $value for $slot ($operation)"
     attribute_not_added: "Could not set the $attribute attribute on your item"
     skull: Your book has been turned into a skull
     skull_no_book: You must hold a written book with skull data in it
