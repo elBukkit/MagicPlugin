@@ -2844,6 +2844,8 @@ public class MagicController implements MageController {
         }
 
         mages.clear();
+        mobMages.clear();
+        vanished.clear();
         pendingConstruction.clear();
         spells.clear();
     }
@@ -3097,6 +3099,7 @@ public class MagicController implements MageController {
     public void removeMage(String id) {
         mages.remove(id);
         mobMages.remove(id);
+        vanished.remove(id);
     }
 
     public void saveMage(Mage mage, boolean asynchronous)
@@ -5376,6 +5379,20 @@ public class MagicController implements MageController {
         return effects.keySet();
     }
 
+    public void setVanished(Mage mage, boolean isVanished) {
+        if (isVanished) {
+            vanished.put(mage.getId(), mage);
+        } else {
+            vanished.remove(mage.getId());
+        }
+    }
+
+    public void checkVanished(Player player) {
+        for (Mage mage : vanished.values()) {
+            DeprecatedUtils.hidePlayer(plugin, player, mage.getPlayer());
+        }
+    }
+
     /*
      * Private data
      */
@@ -5480,6 +5497,7 @@ public class MagicController implements MageController {
     private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();
+    private final Map<String, Mage> vanished                                = new HashMap<>();
     private final Set<Mage> pendingConstruction                             = new HashSet<>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
     private final Map<String, WeakReference<Schematic>> schematics          = new HashMap<>();

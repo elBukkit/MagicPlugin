@@ -22,6 +22,7 @@
  - Fix a few ways players could wear skull-based spells
  - Fix some strange behavior with riding a broom and chair plugins
  - Limited-use wands will consume uses when their spell misses
+ - Fix Vanish action not working if a player relogs
 
 # 7.4.2 
 
