@@ -5786,7 +5786,7 @@ public class MagicController implements MageController {
 
     public void checkVanished(Player player) {
         for (Mage mage : vanished.values()) {
-            DeprecatedUtils.hidePlayer(plugin, player, mage.getPlayer());
+            player.hidePlayer(mage.getPlayer());
         }
     }
 
