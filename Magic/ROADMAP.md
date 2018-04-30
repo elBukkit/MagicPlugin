@@ -20,7 +20,6 @@ This is a *very rough* approximation of where Magic is headed in future versions
      - leave combat (??)
      - change target
      - ... explode, teleport - getting very specific now
-     - custom signals triggered by spells
      
 ## 7.7
 

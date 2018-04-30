@@ -28,7 +28,7 @@ public class EntityMageData {
 
     protected long tickInterval;
     protected long lifetime;
-    protected Map<MageTriggerType, List<MageTrigger>> triggers;
+    protected Map<String, List<MageTrigger>> triggers;
     protected ConfigurationSection mageProperties;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
@@ -72,19 +72,17 @@ public class EntityMageData {
             triggers = new HashMap<>();
             for (String triggerKey : triggerKeys) {
                 MageTrigger trigger = new MageTrigger(controller, triggerKey, triggerConfig.getConfigurationSection(triggerKey));
-                if (trigger.isValid()) {
-                    List<MageTrigger> typeTriggers = triggers.get(trigger.getType());
-                    if (typeTriggers == null) {
-                        typeTriggers = new ArrayList<>();
-                        triggers.put(trigger.getType(), typeTriggers);
-                    }
-                    typeTriggers.add(trigger);
+                List<MageTrigger> typeTriggers = triggers.get(trigger.getType());
+                if (typeTriggers == null) {
+                    typeTriggers = new ArrayList<>();
+                    triggers.put(trigger.getType(), typeTriggers);
                 }
+                typeTriggers.add(trigger);
             }
         }
 
         // Default to 1-second interval if any interval triggers are set but no interval was specified
-        if (triggers != null && tickInterval <= 0 && triggers.containsKey(MageTriggerType.INTERVAL)) {
+        if (triggers != null && tickInterval <= 0 && triggers.containsKey(MageTriggerType.INTERVAL.name())) {
             tickInterval = 1000;
         }
         if (tickInterval < lifetime / 2) {
@@ -103,7 +101,21 @@ public class EntityMageData {
 
     @Nullable
     private List<MageTrigger> getTriggers(MageTriggerType type) {
+        return getTriggers(type.name());
+    }
+
+    @Nullable
+    private List<MageTrigger> getTriggers(String type) {
         return triggers == null ? null : triggers.get(type);
+    }
+
+    public boolean trigger(Mage mage, String triggerKey) {
+        List<MageTrigger> triggers = getTriggers(triggerKey);
+        if (triggers == null || triggers.isEmpty()) return false;
+        for (MageTrigger trigger : triggers) {
+            trigger.execute(mage);
+        }
+        return true;
     }
 
     public void onDeath(Mage mage) {

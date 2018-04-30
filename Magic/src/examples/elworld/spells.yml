@@ -3273,3 +3273,28 @@ changeworld:
       - icon: grass
         name: To Overworld
         actions: tooverworld
+
+timebomb_electrify:
+  actions:
+    cast:
+    - class: Electrify
+  parameters:
+    target: self
+
+timebomb_explode:
+  actions:
+    cast:
+    - class: Explosion
+    - class: Kill
+  parameters:
+    target: self
+    size: 3
+
+timebomb_trigger:
+  icon: tnt
+  actions:
+    cast:
+    - class: Trigger
+  parameters:
+    range: 32
+    trigger: detonate

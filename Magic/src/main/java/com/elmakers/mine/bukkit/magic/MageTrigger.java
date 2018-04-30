@@ -29,7 +29,7 @@ public class MageTrigger {
         INTERVAL, DEATH, DAMAGE, SPAWN, LAUNCH
     }
 
-    protected MageTriggerType type;
+    protected String type;
     protected Deque<WeightedPair<String>> spells;
     protected Collection<EffectPlayer> effects;
     protected List<String> commands;
@@ -44,10 +44,11 @@ public class MageTrigger {
     public MageTrigger(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         String typeString = configuration.getString("type", key);
         try {
-            type = MageTriggerType.valueOf(typeString.toUpperCase());
+            String upperType = typeString.toUpperCase();
+            MageTriggerType knownType = MageTriggerType.valueOf(upperType);
+            type = upperType;
         } catch (Exception ex) {
-            controller.getLogger().warning("Invalid mage trigger type: " + typeString);
-            type = null;
+            type = typeString;
         }
 
         if (configuration.contains("cast")) {
@@ -68,11 +69,7 @@ public class MageTrigger {
         }
     }
 
-    public boolean isValid() {
-        return type != null;
-    }
-
-    public MageTriggerType getType() {
+    public String getType() {
         return type;
     }
 

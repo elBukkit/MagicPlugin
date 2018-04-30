@@ -12,6 +12,7 @@
  - Add "cast.spells" property to automata
  - Add "launch" trigger to magic mobs, support using magic bow spells (See: archer mob)
  - Add "display_name" property to wands, for making a custome name (no spell info, etc)
+ - Allow for custom mob triggers, add Trigger action to trigger via spells
  
 # 7.4.3
 

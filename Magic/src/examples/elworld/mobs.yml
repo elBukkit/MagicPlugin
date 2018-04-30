@@ -64,7 +64,6 @@ basher:
   - gold_nugget@16
   - sp:16
 
-
 killercar:
   name: Carrie
   type: pig_zombie
@@ -89,3 +88,16 @@ killercar:
   potion_effects:
   - type: speed
     amplifier: 1
+
+timebomb:
+  name: Time Bomb
+  type: creeper
+  triggers:
+    interval:
+      cast:
+        fling: 200
+        none: 20
+    detonate:
+      cast:
+        timebomb_electrify: 100
+        timebomb_explode: 10

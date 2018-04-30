@@ -947,6 +947,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    public boolean trigger(Mage mage, String trigger) {
+        if (mageData == null) {
+            return false;
+        }
+
+        return mageData.trigger(mage, trigger);
+    }
+
     @Override
     public String getInteractSpell() {
         return interactSpell;

@@ -663,4 +663,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     MageEffectContext getEffectContext();
 
     long getCreatedTime();
+
+    boolean trigger(String trigger);
 }

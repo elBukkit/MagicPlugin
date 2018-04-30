@@ -3819,5 +3819,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public long getCreatedTime() {
         return created;
     }
+
+    @Override
+    public boolean trigger(String trigger) {
+        if (entityData == null) {
+            return false;
+        }
+
+        return entityData.trigger(this, trigger);
+    }
 }
 
