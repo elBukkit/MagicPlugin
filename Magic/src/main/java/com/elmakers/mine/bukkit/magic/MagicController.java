@@ -1786,7 +1786,7 @@ public class MagicController implements MageController {
         loadWandTemplates(loader.wands);
         getLogger().info("Loaded " + getWandTemplates().size() + " wands");
 
-        mobs.load(loader.mobs);
+        loadMobs(loader.mobs);
         getLogger().info("Loaded " + mobs.getCount() + " mob templates");
 
         crafting.load(loader.crafting);
@@ -4091,6 +4091,16 @@ public class MagicController implements MageController {
         for (String key : wandKeys)
         {
             loadWandTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
+        }
+    }
+
+    public void loadMobs(ConfigurationSection properties) {
+        mobs.clear();
+
+        Set<String> mobKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        for (String key : mobKeys) {
+            mobs.load(key, resolveConfiguration(key, properties, templateConfigurations));
         }
     }
 

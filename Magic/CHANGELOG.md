@@ -9,6 +9,7 @@
  - Fix some strange behavior with riding a broom and chair plugins
  - Limited-use wands will consume uses when their spell misses
  - Fix Vanish action not working if a player relogs
+ - Mob configs support inheritance
 
 # 7.4.2 
 
