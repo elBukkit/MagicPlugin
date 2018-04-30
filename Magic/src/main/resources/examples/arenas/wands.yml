@@ -91,6 +91,7 @@ warrior:
     left_click: none
     right_click: none
     swap: cycle_hotbar
+    drop: toggle
     quick_cast: true
     mana_max: 50
     mana: 50
