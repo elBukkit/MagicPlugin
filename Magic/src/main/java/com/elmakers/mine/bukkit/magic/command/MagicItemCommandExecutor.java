@@ -277,6 +277,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         String tag = args[0];
         String[] path = StringUtils.split(tag, '.');
+        ItemStack newItem = CompatibilityUtils.makeReal(item);
         Object node = InventoryUtils.getTag(item);
         if (args.length == 1) {
             int i = 0;
@@ -293,6 +294,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             CompatibilityUtils.removeMeta(node, path[path.length - 1]);
+            item.setItemMeta(newItem.getItemMeta());
             player.sendMessage(ChatColor.GREEN + "Removed: " + ChatColor.DARK_GREEN + tag);
             return true;
         }
@@ -309,6 +311,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 InventoryUtils.setMeta(node, key, value);
             }
         }
+        item.setItemMeta(newItem.getItemMeta());
         player.sendMessage(ChatColor.GREEN + "Set: " + ChatColor.DARK_GREEN + tag + " to " + ChatColor.AQUA + " " + value);
         return true;
     }
@@ -771,11 +774,13 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (CompatibilityUtils.setItemAttribute(item, attribute, value, attributeSlot)) {
+        ItemStack newItem = CompatibilityUtils.makeReal(item);
+        if (CompatibilityUtils.setItemAttribute(newItem, attribute, value, attributeSlot)) {
             if (attributeSlot == null) {
                 attributeSlot = "(All Slots)";
             }
 
+            item.setItemMeta(newItem.getItemMeta());
             player.sendMessage(api.getMessages().get("item.attribute_added")
                     .replace("$attribute", attribute.name())
                     .replace("$value", Double.toString(value))
