@@ -355,6 +355,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     warpName = config.getString("name", warpName);
                 }
             }
+            warpName = ChatColor.translateAlternateColorCodes('&', warpName);
             String unlockMessage = context.getMessage("unlock_warp").replace("$name", warpName);
             context.sendMessage(unlockMessage);
 
