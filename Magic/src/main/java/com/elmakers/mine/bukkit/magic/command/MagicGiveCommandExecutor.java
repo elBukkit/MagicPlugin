@@ -84,7 +84,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        Set<String> customCosts = controller.getCustomCosts();
+        Set<String> customCosts = controller.getCustomCurrencies();
         if (itemName.equalsIgnoreCase("xp")) {
             api.giveExperienceToPlayer(player, count);
             sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " experience to " + ChatColor.GOLD + player.getName());
@@ -96,9 +96,8 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             return true;
         } else if (customCosts.contains(itemName)) {
             Mage mage = controller.getMage(player);
-            double value = mage.getData().getDouble(itemName, 0);
-            mage.getData().set(itemName, value + count);
-            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " " + controller.getMessages().get("costs." + itemName, itemName)
+            mage.addCurrency(itemName, count);
+            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " " + controller.getMessages().get("currency." + itemName + ".name", itemName)
                     + " to " + ChatColor.GOLD + player.getName());
             return true;
         } else {
@@ -144,7 +143,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             }
             addIfPermissible(sender, options, "Magic.create.", "xp");
             addIfPermissible(sender, options, "Magic.create.", "sp");
-            Collection<String> customCosts = api.getController().getCustomCosts();
+            Collection<String> customCosts = api.getController().getCustomCurrencies();
             for (String cost : customCosts) {
                 addIfPermissible(sender, options, "Magic.create.", cost);
             }

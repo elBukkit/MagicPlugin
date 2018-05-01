@@ -70,16 +70,6 @@ currency:
     name: Emerald
     name_plural: Emeralds
 
-# Here you can define custom costs
-# These can be named in the "costs" section of messages.yml, see the defaults costs.yml file for examples.
-# Example:
-# custom_costs:
-#   - ac
-#   - tc
-# in messages.yml:
-# costs:
-#   ac: Academic Credits
-#   tc: Test Credits
-#   ac_amount: $amount AC
-#   tc_amount: $amount TC
-custom_costs: []
+# Here you can define custom currencies
+# These can be named in the "currency" section of messages.yml, see the potter example configs for details.
+custom_currency: {}

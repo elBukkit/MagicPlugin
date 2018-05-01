@@ -117,6 +117,7 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
+import com.elmakers.mine.bukkit.economy.Currency;
 import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -2549,7 +2550,7 @@ public class MagicController implements MageController {
         spEnabled = properties.getBoolean("sp_enabled", true);
         spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
         spMaximum = properties.getInt("sp_max", 9999);
-        customCosts = new HashSet<>(ConfigurationUtils.getStringList(properties, "custom_costs"));
+        loadCustomCurrencies(properties.getConfigurationSection("custom_currency"));
 
         populateEntityTypes(undoEntityTypes, properties, "entity_undo_types");
         populateEntityTypes(friendlyEntityTypes, properties, "friendly_entity_types");
@@ -2630,7 +2631,7 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.effect.EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
 
         // Set up auto-save timer
-        int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;;
+        int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;
         if (autoSaveIntervalTicks > 1) {
             final AutoSaveTask autoSave = new AutoSaveTask(this);
             autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoSave,
@@ -2832,6 +2833,14 @@ public class MagicController implements MageController {
                     getLogger().warning("Unknown entity type: " + typeString + " in " + key);
                 }
             }
+        }
+    }
+
+    protected void loadCustomCurrencies(ConfigurationSection configuration) {
+        customCurrencies.clear();
+        Set<String> keys = configuration.getKeys(false);
+        for (String key : keys) {
+            customCurrencies.put(key, new Currency(configuration.getConfigurationSection(key)));
         }
     }
 
@@ -4365,34 +4374,63 @@ public class MagicController implements MageController {
             } else if (magicItemKey.contains("item:")) {
                 String itemKey = magicItemKey.substring(5);
                 itemStack = createGenericItem(itemKey);
-            } else if (items != null) {
-                ItemData itemData = items.get(magicItemKey);
-                if (itemData != null) {
-                    return itemData.getItemStack(amount);
-                }
-                MaterialAndData item = new MaterialAndData(magicItemKey);
-                if (item.isValid()) {
-                    return item.getItemStack(amount);
-                }
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
-                if (wand != null) {
-                    ItemStack wandItem = wand.getItem();
-                    if (wandItem != null) {
-                        wandItem.setAmount(amount);
+            } else {
+                String[] pieces = StringUtils.split(magicItemKey, ':');
+                if (pieces.length > 1 && customCurrencies.containsKey(pieces[0])) {
+                    String costKey = pieces[0];
+                    String costAmount = pieces[1];
+                    itemStack = getURLSkull(skillPointIcon);
+                    ItemMeta meta = itemStack.getItemMeta();
+                    meta.setDisplayName(messages.get("currency." + costKey + ".amount").replace("$amount", costAmount));
+                    int intAmount;
+                    try {
+                        intAmount = Integer.parseInt(costAmount);
+                    } catch (Exception ex) {
+                        getLogger().warning("Invalid amount in custom cost: " + magicItemKey);
+                        return null;
                     }
-                    return wandItem;
+
+                    String spDescription = messages.get("currency." + costKey + ".description", messages.get("currency.description"));
+                    if (spDescription.length() > 0)
+                    {
+                        List<String> lore = new ArrayList<>();
+                        lore.add(ChatColor.translateAlternateColorCodes('&', spDescription));
+                        meta.setLore(lore);
+                    }
+                    itemStack.setItemMeta(meta);
+                    Object earnNode = InventoryUtils.getNode(itemStack, "earn");
+                    InventoryUtils.setMetaInt(earnNode, "amount", intAmount);
+                    InventoryUtils.setMeta(earnNode, "type", costKey);
                 }
-                // Spells may be using the | delimiter for levels
-                // I am regretting overloading this delimiter!
-                String spellKey = magicItemKey.replace(":", "|");
-                itemStack = createSpellItem(spellKey, brief);
-                if (itemStack != null) {
-                    itemStack.setAmount(amount);
-                    return itemStack;
-                }
-                itemStack = createBrushItem(magicItemKey);
-                if (itemStack != null) {
-                    itemStack.setAmount(amount);
+                if (itemStack == null && items != null) {
+                    ItemData itemData = items.get(magicItemKey);
+                    if (itemData != null) {
+                        return itemData.getItemStack(amount);
+                    }
+                    MaterialAndData item = new MaterialAndData(magicItemKey);
+                    if (item.isValid()) {
+                        return item.getItemStack(amount);
+                    }
+                    com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
+                    if (wand != null) {
+                        ItemStack wandItem = wand.getItem();
+                        if (wandItem != null) {
+                            wandItem.setAmount(amount);
+                        }
+                        return wandItem;
+                    }
+                    // Spells may be using the | delimiter for levels
+                    // I am regretting overloading this delimiter!
+                    String spellKey = magicItemKey.replace(":", "|");
+                    itemStack = createSpellItem(spellKey, brief);
+                    if (itemStack != null) {
+                        itemStack.setAmount(amount);
+                        return itemStack;
+                    }
+                    itemStack = createBrushItem(magicItemKey);
+                    if (itemStack != null) {
+                        itemStack.setAmount(amount);
+                    }
                 }
             }
 
@@ -4512,8 +4550,14 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public Set<String> getCustomCosts() {
-        return customCosts;
+    @Nonnull
+    public Set<String> getCustomCurrencies() {
+        return customCurrencies.keySet();
+    }
+
+    @Nullable
+    public Currency getCustomCurrency(String key) {
+        return customCurrencies.get(key);
     }
 
     @Nullable
@@ -5559,7 +5603,7 @@ public class MagicController implements MageController {
     private Material                            defaultMaterial                = Material.DIRT;
     private Set<EntityType>                     undoEntityTypes             = new HashSet<>();
     private Set<EntityType>                     friendlyEntityTypes         = new HashSet<>();
-    private Set<String>                         customCosts                 = new HashSet<>();
+    private Map<String, Currency>               customCurrencies            = new HashMap<>();
 
     private PhysicsHandler                        physicsHandler                = null;
 

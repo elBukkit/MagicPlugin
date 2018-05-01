@@ -89,6 +89,7 @@ import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
+import com.elmakers.mine.bukkit.economy.Currency;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.effect.MageEffectContext;
@@ -3397,6 +3398,53 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isAtMaxSkillPoints() {
         return getSkillPoints() >= controller.getSPMaximum();
+    }
+
+    @Nullable
+    private Currency initCurrency(String type) {
+        Currency currency = controller.getCustomCurrency(type);
+        if (!data.contains(type)) {
+            data.set(type, currency == null ? 0.0 : currency.getDefaultValue());
+        }
+        return currency;
+    }
+
+    @Override
+    public double getCurrency(String type) {
+        initCurrency(type);
+        return data.getDouble(type);
+    }
+
+    @Override
+    public void addCurrency(String type, double delta) {
+        Currency currency = initCurrency(type);
+        double newValue = data.getDouble(type) + delta;
+        if (currency != null && currency.hasMaxValue()) {
+            newValue = Math.min(newValue, currency.getMaxValue());
+        }
+        data.set(type, newValue);
+    }
+
+    @Override
+    public void removeCurrency(String type, double delta) {
+        initCurrency(type);
+        double current = data.getDouble(type);
+        data.set(type, current - delta);
+    }
+
+    @Override
+    public void setCurrency(String type, double amount) {
+        data.set(type, amount);
+    }
+
+    @Override
+    public boolean isAtMaxCurrency(String type) {
+        Currency currency = initCurrency(type);
+        if (currency == null || !currency.hasMaxValue()) {
+            return false;
+        }
+        double value = data.getDouble(type);
+        return value >= currency.getMaxValue();
     }
 
     @Override

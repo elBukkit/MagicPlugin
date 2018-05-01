@@ -52,8 +52,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         } else if (key.toLowerCase().equals("levels")) {
             this.type = Type.LEVELS;
         } else {
-            Set<String> customCosts = controller.getCustomCosts();
-            if (customCosts.contains(key)) {
+            Set<String> customCurrencies = controller.getCustomCurrencies();
+            if (customCurrencies.contains(key)) {
                 customType = key;
                 type = Type.CUSTOM;
             } else {
@@ -114,7 +114,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case HUNGER:
                 return player != null && player.getFoodLevel() >= getAmount(reducer);
             case CUSTOM:
-                return mage.getData().getDouble(customType, 0) >= getAmount(reducer);
+                return mage.getCurrency(customType) >= getAmount(reducer);
         }
 
         return false;
@@ -177,8 +177,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 }
                 break;
             case CUSTOM:
-                double current = mage.getData().getDouble(customType, 0);
-                mage.getData().set(customType, current - getAmount(reducer));
+                mage.removeCurrency(customType, getAmount(reducer));
                 break;
         }
     }
@@ -257,7 +256,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case CURRENCY:
                 return messages.getCurrencyPlural();
             case CUSTOM:
-                return messages.get("costs." + customType);
+                return messages.get("currency." + customType + ".name");
         }
         return "";
     }
@@ -293,7 +292,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case CURRENCY:
                 return messages.get("costs.currency_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
             case CUSTOM:
-                return messages.get("costs." + customType + "_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
+                return messages.get("currency." + customType + ".amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
         }
         return "";
     }

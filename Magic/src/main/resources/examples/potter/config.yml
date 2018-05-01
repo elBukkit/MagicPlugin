@@ -47,7 +47,11 @@ resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-potter-R
 # Default class
 default_mage_class: wizard
 
-# Set up some custom costs
-custom_costs:
- - tc
- - ac
+# Set up some custom currency
+custom_currency:
+ tc:
+  max: 9999
+  default: 0
+ ac:
+  max: 9999
+  default: 0

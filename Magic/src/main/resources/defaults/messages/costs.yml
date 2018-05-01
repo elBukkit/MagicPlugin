@@ -15,3 +15,6 @@ costs:
     currency: Dollar
     currency_plural: Dollars
     currency_amount: "$$amount"
+
+currency:
+    description: Right-click to deposit

@@ -18,14 +18,16 @@ wand:
     mana_regeneration_boost: "&d&oEnergy Regeneration Boost: $amount%"
 
 costs:
-    xp_amount: $amount XP
     mana_amount: $amount Energy
     mana: Energy
-    xp: XP
-    tc: Test Credits
-    ac: Academic Credits
-    tc_amount: $amount TC
-    ac_amount: $amount AC
+
+currency:
+    tc:
+      amount: $amount TC
+      name: Test Credits
+    ac:
+      amount: $amount AC
+      name: Academic Credits
 
 spell:
     undoable: "Counterable"

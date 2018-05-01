@@ -530,6 +530,13 @@ public interface Mage extends CostReducer, CooldownReducer {
     void addSkillPoints(int delta);
     void setSkillPoints(int sp);
     boolean isAtMaxSkillPoints();
+
+    double getCurrency(String type);
+    void addCurrency(String type, double delta);
+    void removeCurrency(String type, double delta);
+    void setCurrency(String type, double amount);
+    boolean isAtMaxCurrency(String type);
+
     @Nullable
     WandUpgradePath getBoundWandPath(String templateKey);
     boolean unbind(String template);
