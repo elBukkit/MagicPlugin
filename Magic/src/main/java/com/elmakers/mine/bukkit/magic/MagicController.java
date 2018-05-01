@@ -1479,6 +1479,8 @@ public class MagicController implements MageController {
         messages.load(loader.getMessages());
         loadMaterials(loader.getMaterials());
 
+        loadCustomCurrencies(currencyConfiguration);
+
         loadEffects(loader.getEffects());
         getLogger().info("Loaded " + effects.size() + " effect lists");
 
@@ -2361,6 +2363,7 @@ public class MagicController implements MageController {
         maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
         materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
         blockItems = properties.getConfigurationSection("block_items");
+        currencyConfiguration = properties.getConfigurationSection("custom_currency");
         loadBlockSkins(properties.getConfigurationSection("block_skins"));
         loadMobSkins(properties.getConfigurationSection("mob_skins"));
         loadMobEggs(properties.getConfigurationSection("mob_eggs"));
@@ -2550,7 +2553,6 @@ public class MagicController implements MageController {
         spEnabled = properties.getBoolean("sp_enabled", true);
         spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
         spMaximum = properties.getInt("sp_max", 9999);
-        loadCustomCurrencies(properties.getConfigurationSection("custom_currency"));
 
         populateEntityTypes(undoEntityTypes, properties, "entity_undo_types");
         populateEntityTypes(friendlyEntityTypes, properties, "friendly_entity_types");
@@ -4376,12 +4378,24 @@ public class MagicController implements MageController {
                 itemStack = createGenericItem(itemKey);
             } else {
                 String[] pieces = StringUtils.split(magicItemKey, ':');
-                if (pieces.length > 1 && customCurrencies.containsKey(pieces[0])) {
+                Currency currency = customCurrencies.get(pieces[0]);
+                if (pieces.length > 1 && currency != null) {
                     String costKey = pieces[0];
                     String costAmount = pieces[1];
-                    itemStack = getURLSkull(skillPointIcon);
+
+                    MaterialAndData itemType = currency.getItemType();
+                    if (itemType == null) {
+                        itemStack = getURLSkull(skillPointIcon);
+                    } else {
+                        itemStack = itemType.getItemStack(1);
+                    }
+
                     ItemMeta meta = itemStack.getItemMeta();
-                    meta.setDisplayName(messages.get("currency." + costKey + ".amount").replace("$amount", costAmount));
+                    String name = messages.get("currency." + costKey + ".name", costKey);
+                    String itemName = messages.get("currency." + costKey + ".item_name", messages.get("currency.item_name"));
+                    itemName = itemName.replace("$type", name);
+                    itemName = itemName.replace("$amount", costAmount);
+                    meta.setDisplayName(itemName);
                     int intAmount;
                     try {
                         intAmount = Integer.parseInt(costAmount);
@@ -4398,9 +4412,10 @@ public class MagicController implements MageController {
                         meta.setLore(lore);
                     }
                     itemStack.setItemMeta(meta);
-                    Object earnNode = InventoryUtils.getNode(itemStack, "earn");
-                    InventoryUtils.setMetaInt(earnNode, "amount", intAmount);
-                    InventoryUtils.setMeta(earnNode, "type", costKey);
+                    itemStack = CompatibilityUtils.makeReal(itemStack);
+                    Object currencyNode = InventoryUtils.createNode(itemStack, "currency");
+                    InventoryUtils.setMetaInt(currencyNode, "amount", intAmount);
+                    InventoryUtils.setMeta(currencyNode, "type", costKey);
                 }
                 if (itemStack == null && items != null) {
                     ItemData itemData = items.get(magicItemKey);
@@ -5540,6 +5555,7 @@ public class MagicController implements MageController {
     private WarpController                        warpController                    = null;
     private Collection<ConfigurationSection>    materialColors                  = null;
     private ConfigurationSection                blockItems                  = null;
+    private ConfigurationSection                currencyConfiguration       = null;
     private Map<Material, String>               blockSkins                  = new HashMap<>();
     private Map<EntityType, String>             mobSkins                    = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullItems                  = new HashMap<>();

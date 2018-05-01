@@ -47,6 +47,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.economy.Currency;
 import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -462,6 +463,46 @@ public class PlayerController implements Listener {
         }
 
         Mage mage = controller.getMage(player);
+
+        // Check for right-clicking SP or currency items
+        if (isRightClick) {
+            Integer sp = Wand.getSP(itemInHand);
+            if (sp != null) {
+                if (mage.isAtMaxSkillPoints()) {
+                    String limitMessage = controller.getMessages().get("sp.limit");
+                    limitMessage = limitMessage.replace("$amount", Integer.toString(controller.getSPMaximum()));
+                    mage.sendMessage(limitMessage);
+                } else {
+                    mage.addSkillPoints(sp);
+                    mage.sendMessage(controller.getMessages().get("sp.deposited"));
+                    player.getInventory().setItemInMainHand(null);
+                }
+                event.setCancelled(true);
+                return;
+            }
+            Double value = Wand.getCurrencyAmount(itemInHand);
+            if (value != null) {
+                String currencyKey = Wand.getCurrencyType(itemInHand);
+                if (mage.isAtMaxCurrency(currencyKey)) {
+                    Currency currency = controller.getCustomCurrency(currencyKey);
+                    String limitMessage = controller.getMessages().get("currency." + currencyKey + ".limit", controller.getMessages().get("currency.limit"));
+                    limitMessage = limitMessage.replace("$amount", Integer.toString((int)Math.ceil(currency.getMaxValue())));
+                    limitMessage = limitMessage.replace("$type", controller.getMessages().get("currency." + currencyKey + ".name", currencyKey));
+                    mage.sendMessage(limitMessage);
+                } else {
+                    mage.addCurrency(currencyKey, value);
+                    player.getInventory().setItemInMainHand(null);
+
+                    String balanceMessage = controller.getMessages().get("currency." + currencyKey + ".deposited", controller.getMessages().get("currency.deposited"));
+                    balanceMessage = balanceMessage.replace("$amount", Integer.toString((int)Math.ceil(value)));
+                    balanceMessage = balanceMessage.replace("$balance", Integer.toString((int)Math.ceil(mage.getCurrency(currencyKey))));
+                    balanceMessage = balanceMessage.replace("$type", controller.getMessages().get("currency." + currencyKey + ".name", currencyKey));
+                    mage.sendMessage(balanceMessage);
+                }
+                event.setCancelled(true);
+                return;
+            }
+        }
 
         Wand wand = mage.checkWand();
         if (action == Action.RIGHT_CLICK_BLOCK) {

@@ -17,4 +17,13 @@ costs:
     currency_amount: "$$amount"
 
 currency:
+    item_name: "&e$amount &6$type"
     description: Right-click to deposit
+    limit: "a:&eThe limit for &6$type &eis &c$amount"
+    deposited: "a:&aDeposited &2$amount &6$type&a, balance: &2$balance"
+
+sp:
+    name: "&e$amount &6Spell Points"
+    description: Will be absorbed by your wand
+    limit: "a:&eThe limit for &6Spell Points &eis &c$amount"
+    deposited: "a:&aDeposited &2$amount &6Spell Points&a, balance: &2$balance"

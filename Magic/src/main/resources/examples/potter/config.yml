@@ -52,6 +52,8 @@ custom_currency:
  tc:
   max: 9999
   default: 0
+  item: skull:http://textures.minecraft.net/texture/b11206551e723c356c23b32383abd19e6d7e9e5988f191e7866ae89ed6cb24
  ac:
   max: 9999
   default: 0
+  item: skull:http://textures.minecraft.net/texture/82d8ccac4d982bf3199761c1c74b9aa18e312ff5ca0a6e51b77a87abad610b

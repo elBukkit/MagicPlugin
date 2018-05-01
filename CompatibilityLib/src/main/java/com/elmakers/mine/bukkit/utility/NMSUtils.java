@@ -173,6 +173,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getStringMethod;
     protected static Method class_NBTTagCompound_getBooleanMethod;
     protected static Method class_NBTTagCompound_getIntMethod;
+    protected static Method class_NBTTagCompound_getDoubleMethod;
     protected static Method class_NBTTagCompound_getByteMethod;
     protected static Method class_NBTTagCompound_getMethod;
     protected static Method class_NBTTagCompound_getCompoundMethod;
@@ -401,6 +402,7 @@ public class NMSUtils {
             class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
             class_NBTTagCompound_getShortMethod = class_NBTTagCompound.getMethod("getShort", String.class);
             class_NBTTagCompound_getIntMethod = class_NBTTagCompound.getMethod("getInt", String.class);
+            class_NBTTagCompound_getDoubleMethod = class_NBTTagCompound.getMethod("getDouble", String.class);
             class_NBTTagCompound_getBooleanMethod = class_NBTTagCompound.getMethod("getBoolean", String.class);
             class_NBTTagCompound_getByteMethod = class_NBTTagCompound.getMethod("getByte", String.class);
             class_NBTTagCompound_getByteArrayMethod = class_NBTTagCompound.getMethod("getByteArray", String.class);
@@ -1381,6 +1383,17 @@ public class NMSUtils {
         Integer meta = null;
         try {
             meta = (Integer)class_NBTTagCompound_getIntMethod.invoke(node, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
+    }
+
+    public static Double getMetaDouble(Object node, String tag) {
+        if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
+        Double meta = null;
+        try {
+            meta = (Double)class_NBTTagCompound_getDoubleMethod.invoke(node, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }

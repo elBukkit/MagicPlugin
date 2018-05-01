@@ -256,7 +256,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case CURRENCY:
                 return messages.getCurrencyPlural();
             case CUSTOM:
-                return messages.get("currency." + customType + ".name");
+                return messages.get("currency." + customType + ".name", customType);
         }
         return "";
     }
@@ -292,7 +292,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case CURRENCY:
                 return messages.get("costs.currency_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
             case CUSTOM:
-                return messages.get("currency." + customType + ".amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
+                return messages.get("currency." + customType + ".amount", customType).replace("$amount", Integer.toString(getRoundedAmount(reducer)));
         }
         return "";
     }

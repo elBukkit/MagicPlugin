@@ -33,6 +33,7 @@ public class CastingCost extends Cost implements com.elmakers.mine.bukkit.api.sp
     }
 
     @Override
+    @Deprecated
     public int getXP() {
         return getXP(null);
     }

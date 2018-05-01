@@ -28,10 +28,6 @@ worlds:
         name: The Nether
     world_the_end:
         name: The End
-        
-sp:
-    name: "&e$amount &6Spell Points"
-    description: Will be absorbed by your wand
     
 cooldown:
     wait_seconds: another $seconds seconds
