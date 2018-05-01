@@ -3319,7 +3319,14 @@ acshop:
           - item: earthquake
             costs:
               sp: 2000
+          - icon: diamond
+            name: AC -> TC
+            costs:
+              ac: 100
+            earns:
+              tc: 10
     parameters:
+        cost_type: ac
         quiet: true
         confirm_filler: stained_glass:2
 

@@ -29,7 +29,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -37,7 +36,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -146,6 +144,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable List<ItemStack> items;
         protected @Nullable List<Cost> costs = null;
         protected @Nonnull String costType = "currency";
+        protected @Nonnull String earnType = "currency";
         protected @Nullable String castSpell = null;
         protected @Nullable String unlockClass = null;
         protected @Nullable String selectedMessage = null;
@@ -155,13 +154,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable Collection<Requirement> requirements;
         protected @Nullable List<String> commands;
         protected @Nullable List<CostModifier> costModifiers;
+        protected @Nullable List<Cost> earns = null;
         protected boolean applyToWand = false;
         protected boolean showConfirmation = false;
         protected boolean showUnavailable = false;
         protected boolean switchClass = false;
-        protected int experience;
-        protected int sp;
-        protected int currency = 0;
         protected int limit = 0;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
@@ -179,14 +176,12 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 switchClass = true;
                 unlockClass = configuration.getString("switch_class");
             }
-            currency = configuration.getInt("currency", currency);
-            experience = configuration.getInt("experience", experience);
-            sp = configuration.getInt("sp", sp);
             limit = configuration.getInt("limit", limit);
             unlockKey = configuration.getString("unlock", unlockKey);
             unlockSection = configuration.getString("unlock_section", unlockSection);
             showConfirmation = configuration.getBoolean("confirm", showConfirmation);
             costType = configuration.getString("cost_type", costType);
+            earnType = configuration.getString("earn_type", earnType);
             actions = configuration.getString("actions", actions);
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
             commands = ConfigurationUtils.getStringList(configuration, "commands");
@@ -238,6 +233,15 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     costs = new ArrayList<>();
                 }
                 costs.add(new Cost(context.getController(), costType, cost));
+            }
+
+            earns = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "earns"));
+            int earn = configuration.getInt("earn");
+            if (earn > 0) {
+                if (earns == null) {
+                    earns = new ArrayList<>();
+                }
+                earns.add(new Cost(context.getController(), earnType, earn));
             }
         }
 
@@ -343,14 +347,12 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.applyToWand = defaults.applyToWand;
             this.unlockClass = defaults.unlockClass;
             this.switchClass = defaults.switchClass;
-            this.currency = defaults.currency;
-            this.sp = defaults.sp;
-            this.experience = defaults.experience;
             this.limit = defaults.limit;
             this.unlockKey = defaults.unlockKey;
             this.unlockSection = defaults.unlockSection;
             this.showConfirmation = defaults.showConfirmation;
             this.costType = defaults.costType;
+            this.earnType = defaults.earnType;
             this.showUnavailable = defaults.showUnavailable;
             this.commands = defaults.commands;
             this.actions = defaults.actions;
@@ -628,13 +630,6 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 unlocks.set(unlockKey, true);
             }
 
-            if (sp != 0) {
-                if (mage.isAtMaxSkillPoints()) {
-                    return SpellResult.NO_TARGET;
-                }
-                mage.addSkillPoints(sp);
-            }
-
             if (items != null && !applyToWand) {
                 for (ItemStack item : items) {
                     ItemStack copy = InventoryUtils.getCopy(item);
@@ -649,12 +644,14 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
-            if (experience != 0) {
-                mage.giveExperience(experience);
-            }
-
-            if (currency != 0 && VaultController.hasEconomy()) {
-                VaultController.getInstance().depositPlayer(mage.getPlayer(), currency);
+            if (earns != null) {
+                boolean givenAny = false;
+                for (Cost cost : earns) {
+                    givenAny = cost.give(mage, wand) || givenAny;
+                }
+                if (!givenAny) {
+                    return SpellResult.NO_TARGET;
+                }
             }
 
             if (actions != null) {
@@ -900,31 +897,9 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
     protected String getBalanceDescription(CastContext context) {
         Mage mage = context.getMage();
-        Player player = mage.getPlayer();
-        Messages messages = context.getController().getMessages();
-        String description = "";
-        switch (defaultConfiguration.getCostType()) {
-            case "xp":
-                String xpAmount = Integer.toString(mage.getExperience());
-                description = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-                break;
-            case "sp":
-                String spAmount = Integer.toString(mage.getSkillPoints());
-                description = messages.get("costs.sp_amount").replace("$amount", spAmount);
-                break;
-            case "levels":
-                int levels = player == null ? 0 : player.getLevel();
-                String levelAmount = Integer.toString(levels);
-                description = messages.get("costs.levels_amount").replace("$amount", levelAmount);
-                break;
-            default:
-                if (VaultController.hasEconomy()) {
-                    double balance = VaultController.getInstance().getBalance(player);
-                    description = VaultController.getInstance().format(balance);
-                }
-        }
-
-        return description;
+        Cost cost = new Cost(context.getController(), defaultConfiguration.getCostType(), 1);
+        cost.setAmount(cost.getBalance(mage, context.getWand()));
+        return cost.getFullDescription(context.getController().getMessages());
     }
 
     protected Inventory getInventory(CastContext context)

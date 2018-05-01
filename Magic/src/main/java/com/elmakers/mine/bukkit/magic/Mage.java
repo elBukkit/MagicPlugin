@@ -3150,15 +3150,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
+        Player player = getPlayer();
+        if (player == null) return;
+
         if (hasStoredInventory()) {
-            addToStoredInventory(itemStack);
+            if (!addToStoredInventory(itemStack)) {
+                player.getWorld().dropItem(player.getLocation(), itemStack);
+            }
             return;
         }
 
         // Place directly in hand if possible
-        Player player = getPlayer();
-        if (player == null) return;
-
         PlayerInventory inventory = player.getInventory();
         ItemStack inHand = inventory.getItemInMainHand();
         if (inHand == null || inHand.getType() == Material.AIR) {

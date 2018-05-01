@@ -21,9 +21,7 @@
    - CurrencyProvider support via API
    - Spell worth / earns in terms of custom currency
    - SpellShop / ItemShop support
-   - Support for balance / give
-   - Selector support generalized to give costs instead of separate xp/sp/etc
-   - Generalized selector and shop support for balance display
+   - Generalized shop support for balance display
    - Some kind of ledger item or balance action, or maybe command to see balance?
   
 ## Future

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -192,6 +193,130 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         deduct(mage, mage.getActiveWand(), null);
     }
 
+    @Override
+    public boolean give(Mage mage, CasterProperties caster) {
+        if (caster == null) {
+            caster = mage.getActiveProperties();
+        }
+        boolean result = true;
+        Player player = mage.getPlayer();
+        switch (type) {
+            case ITEM:
+                ItemStack itemStack = getItemStack();
+                mage.giveItem(itemStack);
+                break;
+            case XP:
+                mage.giveExperience(getRoundedAmount());
+                break;
+            case LEVELS:
+                if (player != null) {
+                    int newLevel = player.getLevel() + getRoundedAmount();
+                    player.setLevel(newLevel);
+                }
+                break;
+            case MANA:
+                if (caster.getMana() >= caster.getManaMax()) {
+                    result = false;
+                } else {
+                    float newMana = (float)Math.min(caster.getManaMax(), caster.getMana() + amount);
+                    caster.setMana(newMana);
+                }
+                break;
+            case CURRENCY:
+                VaultController vault = VaultController.getInstance();
+                if (vault != null) {
+                    vault.depositPlayer(mage.getPlayer(), amount);
+                }
+                break;
+            case SP:
+                mage.addSkillPoints(getRoundedAmount());
+                break;
+            case HEALTH:
+                LivingEntity living = mage.getLivingEntity();
+                if (living != null) {
+                    double maxHealth = CompatibilityUtils.getMaxHealth(living);
+                    if (living.getHealth() >= maxHealth) {
+                        result = false;
+                    } else {
+                        living.setHealth(Math.min(maxHealth, living.getHealth() + amount));
+                    }
+                }
+                break;
+            case HUNGER:
+                if (player != null) {
+                    if (player.getFoodLevel() >= 10) {
+                        result = false;
+                    } else {
+                        player.setFoodLevel(Math.min(10, player.getFoodLevel() + getRoundedAmount()));
+                    }
+                }
+                break;
+            case CUSTOM:
+                if (mage.isAtMaxCurrency(customType)) {
+                    result = false;
+                } else {
+                    mage.addCurrency(customType, amount);
+                }
+                break;
+            default:
+                result = false;
+        }
+        return result;
+    }
+
+    @Override
+    public double getBalance(Mage mage, CasterProperties caster) {
+        if (caster == null) {
+            caster = mage.getActiveProperties();
+        }
+        double balance = 0;
+        Player player = mage.getPlayer();
+        switch (type) {
+            case ITEM:
+                ItemStack itemStack = getItemStack();
+                Inventory inventory = mage.getInventory();
+                for (ItemStack item : inventory.getContents()) {
+                    if (item.equals(itemStack)) {
+                        balance += item.getAmount();
+                    }
+                }
+                break;
+            case XP:
+                balance = mage.getExperience();
+                break;
+            case LEVELS:
+                balance = mage.getLevel();
+                break;
+            case MANA:
+                balance = caster.getMana();
+                break;
+            case CURRENCY:
+                VaultController vault = VaultController.getInstance();
+                if (vault != null) {
+                    balance = vault.getBalance(mage.getPlayer());
+                }
+                break;
+            case SP:
+                balance = mage.getSkillPoints();
+                break;
+            case HEALTH:
+                LivingEntity living = mage.getLivingEntity();
+                if (living != null) {
+                    balance = living.getHealth();
+                }
+                break;
+            case HUNGER:
+                if (player != null) {
+                    balance = player.getFoodLevel();
+                }
+                break;
+            case CUSTOM:
+                balance = mage.getCurrency(customType);
+                break;
+        }
+        return balance;
+    }
+
     protected int getRoundedCost(double cost, CostReducer reducer) {
         return (int)Math.ceil(getReducedCost(cost, reducer));
     }
@@ -210,6 +335,10 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             reducedAmount = reducedAmount * reducer.getCostScale();
         }
         return reducedAmount;
+    }
+
+    public int getRoundedAmount() {
+        return (int)Math.ceil(amount);
     }
 
     public int getRoundedAmount(CostReducer reducer)

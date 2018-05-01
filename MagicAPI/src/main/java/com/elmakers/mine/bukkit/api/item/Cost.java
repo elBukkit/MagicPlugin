@@ -80,6 +80,24 @@ public interface Cost {
     void deduct(Mage mage);
 
     /**
+     * Give these costs to the specified Mage
+     *
+     * @param mage The mage to give these costs to
+     * @param caster A optional caster, to be used for mana costs
+     * @return false if the costs could not be given (e.g. mage is at max already)
+     */
+    boolean give(Mage mage, CasterProperties caster);
+
+    /**
+     * Get the amount of this cost type a Mage has.
+     *
+     * @param mage The mage to check
+     * @param caster A optional caster, to be used for mana costs
+     * @return the amount of this cost type the Mage has.
+     */
+    double getBalance(Mage mage, CasterProperties caster);
+
+    /**
      * Get a human-readable description of this cost.
      *
      * <p>For XP, display text will be determined by the
