@@ -2549,6 +2549,7 @@ public class MagicController implements MageController {
         spEnabled = properties.getBoolean("sp_enabled", true);
         spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
         spMaximum = properties.getInt("sp_max", 9999);
+        customCosts = new HashSet<>(ConfigurationUtils.getStringList(properties, "custom_costs"));
 
         populateEntityTypes(undoEntityTypes, properties, "entity_undo_types");
         populateEntityTypes(friendlyEntityTypes, properties, "friendly_entity_types");
@@ -4510,6 +4511,11 @@ public class MagicController implements MageController {
         return WandUpgradePath.getPath(key);
     }
 
+    @Override
+    public Set<String> getCustomCosts() {
+        return customCosts;
+    }
+
     @Nullable
     @Override
     public ItemStack deserialize(ConfigurationSection root, String key) {
@@ -5553,6 +5559,7 @@ public class MagicController implements MageController {
     private Material                            defaultMaterial                = Material.DIRT;
     private Set<EntityType>                     undoEntityTypes             = new HashSet<>();
     private Set<EntityType>                     friendlyEntityTypes         = new HashSet<>();
+    private Set<String>                         customCosts                 = new HashSet<>();
 
     private PhysicsHandler                        physicsHandler                = null;
 

@@ -14,6 +14,10 @@
  - Add "display_name" property to wands, for making a custome name (no spell info, etc)
  - Allow for custom mob triggers, add Trigger action to trigger via spells
  - Mob configs support inheritance
+ - Add support for custom costs
+   - Costs defined in config.yml, named in messages.yml
+   - Can be used in casting costs and Selector costs
+   - Can be given with /mgive
  
 # 7.4.3
 

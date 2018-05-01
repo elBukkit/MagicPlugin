@@ -506,4 +506,6 @@ public interface MageController {
 
     @Nullable
     Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey);
+
+    Set<String> getCustomCosts();
 }

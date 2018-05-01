@@ -22,6 +22,10 @@ costs:
     mana_amount: $amount Energy
     mana: Energy
     xp: XP
+    tc: Test Credits
+    ac: Academic Credits
+    tc_amount: $amount TC
+    ac_amount: $amount AC
 
 spell:
     undoable: "Counterable"

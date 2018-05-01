@@ -17,6 +17,7 @@ public interface CastingCost extends Cost {
      *
      * @return The raw XP cost, without reduction.
      */
+    @Deprecated
     int getXP();
 
     /**
@@ -25,6 +26,7 @@ public interface CastingCost extends Cost {
      * @param reducer The CostReducer to use to calculate costs
      * @return The XP amount cost
      */
+    @Deprecated
     int getXP(CostReducer reducer);
 
     /**

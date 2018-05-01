@@ -24,6 +24,11 @@ add_examples:
 - rpg
 - arenas
 
+# Testing custom costs
+custom_costs:
+ - tc
+ - ac
+
 # Just leaving this here for now, to re-enable wand enchanting:
 # enable_enchanting: true
 # sp_enabled: false

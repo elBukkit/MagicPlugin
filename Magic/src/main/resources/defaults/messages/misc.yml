@@ -33,24 +33,6 @@ sp:
     name: "&e$amount &6Spell Points"
     description: Will be absorbed by your wand
     
-costs:
-    sp_amount: $amount SP
-    xp_amount: $amount XP
-    levels_amount: $amount XP Levels
-    mana_amount: $amount Mana
-    mana: Mana
-    xp: XP
-    levels: XP Levels
-    sp: Spell Points
-    hunger: Energy
-    health: Health
-    health_amount: $amount Health
-    hunger_amount: $amount Energy
-    heroes_mana: $amount Mana
-    currency: Dollar
-    currency_plural: Dollars
-    currency_amount: "$$amount"
-    
 cooldown:
     wait_seconds: another $seconds seconds
     wait_minutes: another $minutes minutes
