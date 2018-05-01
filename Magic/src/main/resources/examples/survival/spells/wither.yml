@@ -15,6 +15,7 @@ wither:
           - class: AreaOfEffect
             actions:
             - class: PotionEffect
+            - class: Damage
     effects:
         cast:
         - sound: entity_wither_shoot
@@ -59,6 +60,7 @@ wither:
         cooldown: 5000
         start: 1
         break_blocks: false
+        damage: 1
     costs:
         mana: 60
 
