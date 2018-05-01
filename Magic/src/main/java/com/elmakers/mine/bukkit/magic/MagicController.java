@@ -4383,7 +4383,7 @@ public class MagicController implements MageController {
                     String costKey = pieces[0];
                     String costAmount = pieces[1];
 
-                    MaterialAndData itemType = currency.getItemType();
+                    MaterialAndData itemType = currency.getIcon();
                     if (itemType == null) {
                         itemStack = getURLSkull(skillPointIcon);
                     } else {

@@ -8,12 +8,12 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 public class Currency {
     private final double defaultValue;
     private final double maxValue;
-    private final MaterialAndData itemType;
+    private final MaterialAndData icon;
 
     public Currency(ConfigurationSection configuration) {
         defaultValue = configuration.getDouble("default", 0);
         maxValue = configuration.getDouble("max", -1);
-        itemType = ConfigurationUtils.getMaterialAndData(configuration, "item");
+        icon = ConfigurationUtils.getMaterialAndData(configuration, "icon");
     }
 
     public double getDefaultValue() {
@@ -28,7 +28,7 @@ public class Currency {
         return maxValue >= 0;
     }
 
-    public MaterialAndData getItemType() {
-        return itemType;
+    public MaterialAndData getIcon() {
+        return icon;
     }
 }

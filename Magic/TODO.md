@@ -17,6 +17,16 @@
 ## 7.5
   
  - Cancelling an armorstandprojectile will cause the armor stand to stay 
+ - Custom Currency
+   - CurrencyProvider support via API
+   - Spell worth / earns in terms of custom currency
+   - SpellShop / ItemShop support
+   - Support for balance / give
+   - Selector support generalized to give costs instead of separate xp/sp/etc
+   - Generalized selector and shop support for balance display
+   - Some kind of ledger item or balance action, or maybe command to see balance?
+  
+## Future
   
  - It'd be really cool to support configs from remote repos....
    Github has an API for fetching a list of files, maybe can use that?
@@ -28,8 +38,6 @@
  - Goldwalker blocks didn't undo? (Can not reproduce)
   
  - Optional lore on wands to say which classes they work with
- - Option for Selector for switch class rather than unlock class
- - Selector that can run action handlers instead of needing separate spells
      
  - Update skill icon lore when armor updates (to take buffs into account)
  
