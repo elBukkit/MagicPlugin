@@ -5574,10 +5574,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return INVENTORY_SIZE;
     }
 
-    public float getEarnMultiplier() {
-        return earnMultiplier;
-    }
-
     public boolean usesSP() {
         return hasSpellProgression && controller.isSPEnabled() && controller.isSPEarnEnabled() && earnMultiplier > 0;
     }
