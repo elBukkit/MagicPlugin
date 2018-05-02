@@ -3,7 +3,7 @@ talisman:
   indestructible: true
   mana_max_boost: 0.3
   mana_regeneration_boost: 0.2
-  sp_multiplier: 1.5
+  earn_multiplier: 1.5
   color: random
   effect_bubbles: true
   keep: true

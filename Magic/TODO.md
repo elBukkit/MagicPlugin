@@ -23,6 +23,7 @@
    - SpellShop / ItemShop support
    - Generalized shop support for balance display
    - Some kind of ledger item or balance action, or maybe command to see balance?
+   - Wand SP display customization, choose currency type
   
 ## Future
   

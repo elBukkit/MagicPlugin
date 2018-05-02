@@ -45,7 +45,7 @@ wand:
     mana_regeneration_boosted: "&eMana Regeneration: $amount &f(&b$mana&f)&d/s"
     mana_boost: "&eMana Boost: $percent%"
     mana_regeneration_boost: "&eMana Regeneration Boost: $percent%"
-    sp_multiplier: "&6SP Earn Boost: $percent%"
+    earn_multiplier: "&6$type Earn Boost: $percent%"
     block_chance: "&bBlocking $roman"
     reflect_chance: "&bReflective $roman"
     cost_reduction: "&6Cost Reduction $roman"

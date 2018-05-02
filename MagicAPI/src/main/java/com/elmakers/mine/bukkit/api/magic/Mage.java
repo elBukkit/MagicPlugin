@@ -548,7 +548,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isReflected(double angle);
     boolean isBlocked(double angle);
     int getLastHeldMapId();
-    float getSPMultiplier();
+    float getEarnMultiplier();
     @Nonnull
     Collection<MageClass> getClasses();
     @Nonnull
@@ -672,4 +672,10 @@ public interface Mage extends CostReducer, CooldownReducer {
     long getCreatedTime();
 
     boolean trigger(String trigger);
+
+    /**
+     * @deprecated Use getEarnMultiplier instead.
+     */
+    @Deprecated
+    float getSPMultiplier();
 }

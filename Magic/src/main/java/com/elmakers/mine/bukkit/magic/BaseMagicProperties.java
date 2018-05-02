@@ -61,7 +61,7 @@ public class BaseMagicProperties implements MagicProperties {
             "quick_cast", "left_click", "right_click", "drop", "swap",
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
-            "sp_multiplier", "class", "classes",
+            "earn_multiplier", "class", "classes",
             "consume_spell", "stack", "unstashable", "unmoveable", "attributes"
     );
 

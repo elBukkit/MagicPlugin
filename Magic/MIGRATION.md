@@ -6,6 +6,7 @@
  - Make sure you do not have any material sets defined in materials.yml that contain a material of the same name as the set.
  - MusicSpell deleted, use MusicAction instead
  - BlockPhysics integration removed
+ - sp_multiplier wand/class property changed to earn_multiplier
  
 ## 7.4
 

@@ -163,7 +163,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected float costReduction = 0;
     protected Map<String, Double> protection;
     private float power = 0;
-    private float spMultiplier = 1;
+    private float earnMultiplier = 1;
 
     private float blockFOV = 0;
     private float blockChance = 0;
@@ -1578,7 +1578,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         blockCooldown = getInt("block_cooldown");
 
         manaPerDamage = getFloat("mana_per_damage");
-        spMultiplier = getFloat("sp_multiplier", 1);
+        earnMultiplier = getFloat("earn_multiplier", getFloat("sp_multiplier", 1));
 
         String singleClass = getString("class");
         if (singleClass != null && !singleClass.isEmpty()) {
@@ -2280,8 +2280,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
-        if (spMultiplier > 1) {
-            ConfigurationUtils.addIfNotEmpty(getPropertyString("sp_multiplier", spMultiplier - 1), lore);
+        if (earnMultiplier > 1) {
+            String earnDescription = getPropertyString("earn_multiplier", earnMultiplier - 1);
+            earnDescription = earnDescription.replace("$type", "SP");
+            ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
         }
         ConfigurationSection attributes = getConfigurationSection("attributes");
         if (attributes != null) {
@@ -3685,7 +3687,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (mage != null && !mage.isAtMaxSkillPoints() && controller.skillPointItemsEnabled()) {
             Integer sp = getSP(item);
             if (sp != null) {
-                int amount = (int)Math.floor(mage.getSPMultiplier() * sp * item.getAmount());
+                int amount = (int)Math.floor(mage.getEarnMultiplier() * sp * item.getAmount());
                 mage.addSkillPoints(amount);
                 return true;
             }
@@ -5572,12 +5574,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return INVENTORY_SIZE;
     }
 
-    public float getSPMultiplier() {
-        return spMultiplier;
+    public float getEarnMultiplier() {
+        return earnMultiplier;
     }
 
     public boolean usesSP() {
-        return hasSpellProgression && controller.isSPEnabled() && controller.isSPEarnEnabled() && spMultiplier > 0;
+        return hasSpellProgression && controller.isSPEnabled() && controller.isSPEarnEnabled() && earnMultiplier > 0;
     }
 
     @Override

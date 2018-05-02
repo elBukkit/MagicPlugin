@@ -527,7 +527,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (mage != null && !mage.isAtMaxSkillPoints() && controller.skillPointItemsEnabled()) {
             Integer sp = Wand.getSP(item);
             if (sp != null) {
-                int amount = (int)Math.floor(mage.getSPMultiplier() * sp * item.getAmount());
+                int amount = (int)Math.floor(mage.getEarnMultiplier() * sp * item.getAmount());
                 mage.addSkillPoints(amount);
                 return true;
             }

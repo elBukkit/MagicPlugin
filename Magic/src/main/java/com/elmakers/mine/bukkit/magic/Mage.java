@@ -193,7 +193,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float cooldownReduction = 0;
     private float consumeReduction = 0;
     private float powerMultiplier = 1;
-    private float spMultiplier = 1;
+    private float earnMultiplier = 1;
 
     private boolean costFree = false;
     private boolean cooldownFree = false;
@@ -3231,7 +3231,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     protected void addPassiveEffects(CasterProperties properties, boolean activeReduction) {
-        spMultiplier = (float)(spMultiplier * properties.getDouble("sp_multiplier", 1.0));
+        earnMultiplier = (float)(earnMultiplier * properties.getDouble("earn_multiplier", 1.0));
 
        boolean stack = properties.getBoolean("stack", false);
        addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
@@ -3262,7 +3262,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         weakness.clear();
         attributes.clear();
 
-        spMultiplier = 1;
+        earnMultiplier = 1;
         cooldownReduction = 0;
         costReduction = 0;
         consumeReduction = 0;
@@ -3275,7 +3275,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (activeClass != null)
         {
             addPassiveEffects(activeClass, true);
-            spMultiplier = (float)(spMultiplier * activeClass.getDouble("sp_multiplier", 1.0));
+            earnMultiplier = (float)(earnMultiplier * activeClass.getDouble("earn_multiplier", 1.0));
         }
         if (activeWand != null && !activeWand.isPassive())
         {
@@ -3288,7 +3288,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addPassiveEffects(offhandWand, false);
             effectivePotionEffects.putAll(offhandWand.getPotionEffects());
 
-            spMultiplier *= offhandWand.getSPMultiplier();
+            earnMultiplier *= offhandWand.getEarnMultiplier();
         }
         for (Wand armorWand : activeArmor.values())
         {
@@ -3676,8 +3676,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    @Deprecated
     public float getSPMultiplier() {
-        return spMultiplier;
+        return earnMultiplier;
+    }
+
+    @Override
+    public float getEarnMultiplier() {
+        return earnMultiplier;
     }
 
     @Override
