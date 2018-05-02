@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.item.Cost;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
@@ -34,6 +35,21 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     SpellKey getSpellKey();
     @Nullable
     Color getColor();
+
+    /**
+     * The cost to purchase this spell.
+     *
+     * @return The cost of this spell, or null if this spell is free.
+     */
+    @Nullable
+    Cost getCost();
+
+    /**
+     * How much this spell is worth. This will be the same as the amount provided by getCost, or zero
+     * if this spell is free.
+     *
+     * @return How much this spell is worth, in whatever currency the spellshop is configured to work in.
+     */
     double getWorth();
     double getEarns();
     double getRange();
@@ -47,6 +63,12 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     String getDisabledIconURL();
     boolean hasIcon();
     boolean hasCastPermission(CommandSender sender);
+
+    /**
+     * The costs to cast this spell.
+     *
+     * @return A list of casting costs, or null if this spell is free to cast.
+     */
     @Nullable
     Collection<CastingCost> getCosts();
     @Nullable

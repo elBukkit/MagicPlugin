@@ -2,6 +2,9 @@ package com.elmakers.mine.bukkit.item;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -488,5 +491,23 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     @Override
     public String toString() {
         return type + ":" + amount;
+    }
+
+    @Nullable
+    public static Cost parseCost(MageController controller, String costString, String defaultType) {
+        Cost cost = null;
+        if (costString != null && !costString.isEmpty()) {
+            String[] pieces = StringUtils.split(costString, ' ');
+            int amount = 0;
+            try {
+                amount = Integer.parseInt(pieces[0]);
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid cost string: " + costString);
+            }
+            String type = pieces.length > 1 ? pieces[1] : defaultType;
+            cost = new Cost(controller, type, amount);
+        }
+
+        return cost;
     }
 }

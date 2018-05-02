@@ -179,7 +179,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private String usage;
     private String creatorId;
     private String creatorName;
-    private double worth;
+    private Cost cost;
     private Cost earns;
     private Color color;
     private String particle;
@@ -924,26 +924,17 @@ public class BaseSpell implements MageSpell, Cloneable {
         iconURL = node.getString("icon_url");
         iconDisabledURL = node.getString("icon_disabled_url");
         color = ConfigurationUtils.getColor(node, "color", null);
-        worth = node.getDouble("worth", 0);
         if (node.contains("worth_sp")) {
-            worth = node.getDouble("worth_sp", 0) * controller.getWorthSkillPoints();
+            double worth = node.getDouble("worth_sp", 0) * controller.getWorthSkillPoints();
+            cost = new Cost(controller, "sp", worth);
+        } else {
+            cost = Cost.parseCost(controller, node.getString("worth"), "sp");
         }
         int spEarns = node.getInt("earns_sp", 0);
         if (spEarns > 0) {
             earns = new Cost(controller, "sp", spEarns);
         } else {
-            String earnsString = node.getString("earns");
-            if (earnsString != null && !earnsString.isEmpty()) {
-                String[] pieces = StringUtils.split(earnsString, ' ');
-                int amount = 0;
-                try {
-                    amount = Integer.parseInt(pieces[0]);
-                } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid earn string in " + spellKey.getKey() + ": " + earnsString);
-                }
-                String type = pieces.length > 1 ? pieces[1] : "sp";
-                earns = new Cost(controller, type, amount);
-            }
+            earns = Cost.parseCost(controller, node.getString("earns"), "sp");
         }
         earnCooldown = node.getInt("earns_cooldown", 0);
         category = controller.getCategory(node.getString("category"));
@@ -2022,7 +2013,13 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public final double getWorth()
     {
-        return worth;
+        return cost == null ? 0.0 : cost.getAmount();
+    }
+
+    @Override
+    @Nullable
+    public Cost getCost() {
+        return cost;
     }
 
     @Override
@@ -2675,7 +2672,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (earns != null && controller.isSPEnabled() && controller.isSPEarnEnabled()) {
             int scaledEarn = earns.getRoundedAmount();
             if (mage != null) {
-                scaledEarn = (int)Math.floor(mage.getSPMultiplier() * scaledEarn);
+                scaledEarn = (int)Math.floor(mage.getEarnMultiplier() * scaledEarn);
             }
             if (scaledEarn > 0) {
                 Cost scaled = new Cost(earns);
@@ -2769,7 +2766,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
                 if (scaledEarn > 0) {
                     Cost earnCost = new Cost(earns);
-                    earnCost.setAmount(Math.floor(mage.getSPMultiplier() * scaledEarn));
+                    earnCost.setAmount(Math.floor(mage.getEarnMultiplier() * scaledEarn));
                     if (earnCost.give(mage, activeProperties)) {
                         if (scaled) {
                             context.playEffects("earn_scaled_sp");
