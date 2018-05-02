@@ -21,6 +21,7 @@ currency:
     description: Right-click to deposit
     limit: "a:&eThe limit for &6$type &eis &c$amount"
     deposited: "a:&aDeposited &2$amount &6$type&a, balance: &2$balance"
+    earned: "a:&6+&e$earned"
 
 sp:
     name: "&e$amount &6Spell Points"

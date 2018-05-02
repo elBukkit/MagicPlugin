@@ -13,7 +13,7 @@ spell:
     level_description: Level $level
     progress_description: "&6Progress: &b$level&6/&3$max_level"
     quick_cast: "&2Quick Cast"
-    earns: "&2Earns up to &6$earns &eSP"
+    earns: "&2Earns up to &6$earns"
     description_lore: "&b$description"
     level_lore: "&6$level"
     toggle: "&aCast to toggle on and off"

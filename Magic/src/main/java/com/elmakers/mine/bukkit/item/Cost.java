@@ -73,6 +73,14 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         }
     }
 
+    public Cost(Cost copy) {
+        this.item = copy.item;
+        this.itemWildcard = copy.itemWildcard;
+        this.amount = copy.amount;
+        this.type = copy.type;
+        this.customType = copy.customType;
+    }
+
     @Override
     public boolean isEmpty(CostReducer reducer) {
         switch (this.type) {
@@ -229,7 +237,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 }
                 break;
             case SP:
-                mage.addSkillPoints(getRoundedAmount());
+                if (mage.isAtMaxSkillPoints()) {
+                    result = false;
+                } else {
+                    mage.addSkillPoints(getRoundedAmount());
+                }
                 break;
             case HEALTH:
                 LivingEntity living = mage.getLivingEntity();
@@ -348,6 +360,10 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     public double getAmount(CostReducer reducer) {
         return getReducedCost(amount, reducer);
+    }
+
+    public double getAmount() {
+        return amount;
     }
 
     public boolean isConsumeFree(CostReducer reducer)

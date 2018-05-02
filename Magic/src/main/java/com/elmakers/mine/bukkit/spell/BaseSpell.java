@@ -58,6 +58,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
@@ -74,6 +75,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -178,7 +180,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private String creatorId;
     private String creatorName;
     private double worth;
-    private int earns;
+    private Cost earns;
     private Color color;
     private String particle;
     private SpellCategory category;
@@ -926,7 +928,23 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (node.contains("worth_sp")) {
             worth = node.getDouble("worth_sp", 0) * controller.getWorthSkillPoints();
         }
-        earns = node.getInt("earns_sp", 0);
+        int spEarns = node.getInt("earns_sp", 0);
+        if (spEarns > 0) {
+            earns = new Cost(controller, "sp", spEarns);
+        } else {
+            String earnsString = node.getString("earns");
+            if (earnsString != null && !earnsString.isEmpty()) {
+                String[] pieces = StringUtils.split(earnsString, ' ');
+                int amount = 0;
+                try {
+                    amount = Integer.parseInt(pieces[0]);
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid earn string in " + spellKey.getKey() + ": " + earnsString);
+                }
+                String type = pieces.length > 1 ? pieces[1] : "sp";
+                earns = new Cost(controller, type, amount);
+            }
+        }
         earnCooldown = node.getInt("earns_cooldown", 0);
         category = controller.getCategory(node.getString("category"));
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
@@ -2008,7 +2026,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public final double getEarns()
     {
-        return earns;
+        return earns == null ? 0 : earns.getAmount();
     }
 
     @Override
@@ -2652,13 +2670,15 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        if (earns > 0 && controller.isSPEnabled() && controller.isSPEarnEnabled()) {
-            int scaledEarn = earns;
+        if (earns != null && controller.isSPEnabled() && controller.isSPEarnEnabled()) {
+            int scaledEarn = earns.getRoundedAmount();
             if (mage != null) {
                 scaledEarn = (int)Math.floor(mage.getSPMultiplier() * scaledEarn);
             }
             if (scaledEarn > 0) {
-                String earnsText = messages.get("spell.earns").replace("$earns", Integer.toString(scaledEarn));
+                Cost scaled = new Cost(earns);
+                scaled.setAmount(scaledEarn);
+                String earnsText = messages.get("spell.earns").replace("$earns", scaled.getFullDescription(controller.getMessages()));
                 if (!earnsText.isEmpty()) {
                     lore.add(earnsText);
                 }
@@ -2735,21 +2755,27 @@ public class BaseSpell implements MageSpell, Cloneable {
                 && offhandWand.getItem().equals(wand.getItem())) {
                 wand = offhandWand;
             }
-            WandUpgradePath path = wand == null ? null : wand.getPath();
-            if (earns > 0 && wand != null && path != null && path.earnsSP() && controller.isSPEnabled() && controller.isSPEarnEnabled() && !mage.isAtMaxSkillPoints()) {
+            CasterProperties activeProperties = mage.getActiveProperties();
+            ProgressionPath path = activeProperties.getPath();
+            if (earns != null && path != null && path.earnsSP() && controller.isSPEnabled() && controller.isSPEarnEnabled()) {
                 long now = System.currentTimeMillis();
-                int scaledEarn = earns;
+                int scaledEarn = earns.getRoundedAmount();
+                boolean scaled = false;
                 if (spellData.getLastEarn() > 0 && earnCooldown > 0 && now < spellData.getLastEarn() + earnCooldown) {
-                    scaledEarn = (int)Math.floor((double)earns * (now - spellData.getLastEarn()) / earnCooldown);
-                    if (scaledEarn > 0) {
-                        context.playEffects("earn_scaled_sp");
-                    }
-                } else {
-                    context.playEffects("earn_sp");
+                    scaledEarn = (int)Math.floor((double)scaledEarn * (now - spellData.getLastEarn()) / earnCooldown);
+                    scaled = true;
                 }
                 if (scaledEarn > 0) {
-                    mage.addSkillPoints((int)Math.floor(mage.getSPMultiplier() * scaledEarn));
-                    spellData.setLastEarn(now);
+                    Cost earnCost = new Cost(earns);
+                    earnCost.setAmount(Math.floor(mage.getSPMultiplier() * scaledEarn));
+                    if (earnCost.give(mage, activeProperties)) {
+                        if (scaled) {
+                            context.playEffects("earn_scaled_sp");
+                        } else {
+                            context.playEffects("earn_sp");
+                        }
+                        spellData.setLastEarn(now);
+                    }
                 }
             }
 

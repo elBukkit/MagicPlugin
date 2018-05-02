@@ -74,6 +74,7 @@ import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -3424,6 +3425,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (currency != null && currency.hasMaxValue()) {
             newValue = Math.min(newValue, currency.getMaxValue());
         }
+
+        Messages messages = controller.getMessages();
+        String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.earned"));
+        if (delta > 0 && earnMessage != null && !earnMessage.isEmpty()) {
+            String amountString = messages.get("currency." + type + ".amount", type).replace("$amount",Integer.toString((int)Math.ceil(delta)));
+            sendMessage(earnMessage.replace("$earned", amountString));
+        }
+
         data.set(type, newValue);
     }
 
