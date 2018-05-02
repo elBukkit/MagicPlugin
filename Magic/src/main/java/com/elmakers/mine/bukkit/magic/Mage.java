@@ -443,7 +443,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 Map.Entry<UUID, DamagedBy> entry = it.next();
                 DamagedBy damaged = entry.getValue();
                 Entity entity = damaged.getEntity();
-                if (entity != null) {
+                if (entity != null && entity.isValid() && !entity.isDead()) {
                     boolean withinRange = withinRange(entity);
                     if (withinRange && damaged.damage > topDamage) {
                         topEntity = entity;
