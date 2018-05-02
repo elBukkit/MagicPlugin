@@ -1,0 +1,6 @@
+testwand:
+  inherit: base_wand
+  icon: wood_hoe:1
+  mana: 500
+  mana_max: 500
+  mana_regeneration: 50

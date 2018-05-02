@@ -1,0 +1,4 @@
+wands:
+  testwand:
+    name: Test Wand
+    description: An empty wand to use for testing spells.
