@@ -19,7 +19,7 @@
  - Cancelling an armorstandprojectile will cause the armor stand to stay 
  - Custom Currency
    - CurrencyProvider support via API
-   - Spell worth / earns in terms of custom currency
+   - Spell worth in terms of custom currency
    - SpellShop / ItemShop support
    - Generalized shop support for balance display
    - Some kind of ledger item or balance action, or maybe command to see balance?

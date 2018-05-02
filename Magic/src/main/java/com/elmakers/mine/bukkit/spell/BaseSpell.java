@@ -1041,6 +1041,8 @@ public class BaseSpell implements MageSpell, Cloneable {
                     String referenceKey = effectsNode.getString(effectKey);
                     if (effects.containsKey(referenceKey)) {
                         effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
+                    } else {
+                        effects.put(effectKey, controller.getEffects(referenceKey));
                     }
                 }
                 else
