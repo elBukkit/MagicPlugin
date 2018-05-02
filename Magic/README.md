@@ -13,6 +13,7 @@ Players may obtain or craft wands that can past a variety of configurable spells
   - killme
   - Boosik
   - Dr00bles
+  - grisstyl
 - 3D Artist: Dr00bles
 - 2D Artists:
   - Dr00bles
