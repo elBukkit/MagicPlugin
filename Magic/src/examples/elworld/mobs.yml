@@ -101,3 +101,9 @@ timebomb:
       cast:
         timebomb_electrify: 100
         timebomb_explode: 10
+
+blocky:
+  name: Blocky
+  type: falling_block
+  material: glass
+  gravity: false

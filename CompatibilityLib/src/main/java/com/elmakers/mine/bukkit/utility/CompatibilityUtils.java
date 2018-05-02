@@ -808,6 +808,16 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static void setGravity(Entity entity, boolean gravity) {
+        if (class_Entity_setNoGravity == null) return;
+        try {
+            Object handle = getHandle(entity);
+            class_Entity_setNoGravity.invoke(handle, !gravity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void setDisabledSlots(ArmorStand armorStand, int disabledSlots) {
         if (class_EntityArmorStand_disabledSlotsField == null) return;
         try {

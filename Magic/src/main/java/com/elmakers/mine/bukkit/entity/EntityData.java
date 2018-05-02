@@ -102,6 +102,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isSilent;
     protected boolean isTamed;
     protected boolean hasAI = true;
+    protected boolean hasGravity = true;
     protected int fireTicks;
 
     protected DyeColor dyeColor;
@@ -293,6 +294,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isTamed = parameters.getBoolean("tamed", false);
         isBaby = parameters.getBoolean("baby", false);
         hasAI = parameters.getBoolean("ai", true);
+        hasGravity = parameters.getBoolean("gravity", true);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -698,6 +700,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             rabbit.setRabbitType(rabbitType);
         } else if (entity instanceof ExperienceOrb && xp != null) {
             ((ExperienceOrb)entity).setExperience(xp);
+        }
+
+        // Armor stands handle gravity themselves, for now
+        if (!hasGravity && !(entity instanceof ArmorStand)) {
+            CompatibilityUtils.setGravity(entity, hasGravity);
         }
 
         if (entity instanceof LivingEntity) {
