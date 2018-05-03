@@ -10,6 +10,7 @@
  - Limited-use wands will consume uses when their spell misses
  - Fix Vanish action not working if a player relogs
  - Mob configs support inheritance
+ - Fix some issues with certain actions getting cancelled and not cleaning up properly
 
 # 7.4.2 
 
