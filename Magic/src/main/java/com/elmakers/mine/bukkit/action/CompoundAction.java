@@ -56,8 +56,13 @@ public abstract class CompoundAction extends BaseSpellAction
     protected SpellResult startActions(String handlerKey) {
         Preconditions.checkState(actionContext != null);
 
+        ActionHandler handler = currentHandler == null ? null : handlers.get(currentHandler);
+        if (handler != null) {
+            handler.finish(actionContext);
+        }
+
         currentHandler = handlerKey;
-        ActionHandler handler = handlers.get(currentHandler);
+        handler = handlers.get(currentHandler);
         if (handler != null) {
             handler.reset(actionContext);
         } else {
@@ -105,15 +110,21 @@ public abstract class CompoundAction extends BaseSpellAction
             }
 
             if (!next(context)) {
-                if (handler != null) {
-                    handler.finish(actionContext);
-                }
                 break;
             }
 
             result = result.min(step(context));
         }
         return result;
+    }
+
+    @Override
+    public void finish(CastContext context) {
+        super.finish(context);
+        ActionHandler handler = currentHandler == null ? null : handlers.get(currentHandler);
+        if (handler != null) {
+            handler.finish(actionContext);
+        }
     }
 
     @Override
