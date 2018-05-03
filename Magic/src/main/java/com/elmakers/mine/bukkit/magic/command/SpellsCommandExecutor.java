@@ -46,7 +46,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
         Player player = sender instanceof Player ? (Player)sender : null;
         for (SpellTemplate spell : spellVariants)
         {
-            if (spell.isHidden()) continue;
+            if (spell.isHidden() || spell.getSpellKey().getLevel() > 1) continue;
             SpellCategory spellCategory = spell.getCategory();
             if (spellCategory != null && spellCategory.getKey().equalsIgnoreCase(category)
                 && (player == null || spell.hasCastPermission(player)))
@@ -127,7 +127,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
             {
                 continue;
             }
-            if (spell.getCategory() == null || spell.isHidden()) continue;
+            if (spell.getCategory() == null || spell.isHidden() || spell.getSpellKey().getLevel() > 1) continue;
             spellCount++;
         }
 
