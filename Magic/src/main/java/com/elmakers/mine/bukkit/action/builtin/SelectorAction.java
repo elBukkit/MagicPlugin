@@ -581,8 +581,6 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         mage.lockClass(activeClass.getKey());
                     }
                     mage.setActiveClass(unlockClass);
-                    mage.deactivate();
-                    mage.checkWand();
                 }
             }
 
