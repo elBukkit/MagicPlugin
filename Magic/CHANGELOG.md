@@ -3,9 +3,10 @@
 # 7.5
 
  - Maybe 1.13 support (not tested yet)
- - The survival configs are now contained in an example, defaults are mostly empty but load survival example.
+ - The survival configs are now contained in an example
+   Defaults are mostly empty but load the survival example by default.
+   The files put on your server in the defaults folder are the merged configs, and so will include survival as before
    This shouldn't affect most of you, but if you notice something weird about your custom configs please let me know!
- - The files in the defaults/ folder will now include anything loaded from example configs
  - The map brush can now work with concrete, glazed terracotta and several other block types
  - Add support for parrot variants in mob configs
  - Fix mobs spawned with a disguise looking glitchy for 1 tick
@@ -13,14 +14,15 @@
  - Add "launch" trigger to magic mobs, support using magic bow spells (See: archer mob)
  - Add "display_name" property to wands, for making a custome name (no spell info, etc)
  - Allow for custom mob triggers, add Trigger action to trigger via spells
- - Mob configs support inheritance
- - Add support for custom costs
-   - Costs defined in config.yml, named in messages.yml
-   - Can be used in casting costs and Selector costs
-   - Can be given with /mgive
+ - Add support for custom currencies
+   - Currencies defined in config.yml, named in messages.yml
+   - Can be used in casting costs, Selector costs, spell earning (in place of SP)
+   - Can be given with /mgive, in virtual or item form (right-click item to deposit)
  - Add use_wand_color option to Firework action
  - Colors can now use simple color names (red, blue, etc) or hex codes
  
+# 7.4.4
+
 # 7.4.3
 
  - Add item pickup sound for items picked up with a wand inventory open
@@ -30,6 +32,8 @@
  - Fix some strange behavior with riding a broom and chair plugins
  - Limited-use wands will consume uses when their spell misses
  - Fix Vanish action not working if a player relogs
+ - Mob configs support inheritance
+ - Fix some issues with certain actions getting cancelled and not cleaning up properly
 
 # 7.4.2 
 
