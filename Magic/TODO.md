@@ -18,12 +18,19 @@
   
  - Cancelling an armorstandprojectile will cause the armor stand to stay 
  - Custom Currency
-   - CurrencyProvider support via API
+   - Maybe define all costs in terms of Currency objects? (xp,sp, etc builtins)
    - Spell worth in terms of custom currency
    - SpellShop / ItemShop support
    - Generalized shop support for balance display
    - Some kind of ledger item or balance action, or maybe command to see balance?
    - Wand SP display customization, choose currency type
+   - CurrencyProvider support via API
+   
+ - There seems to be an undo issue here somewhere.
+   - Goldwalker blocks didn't undo once on sandbox (Can not reproduce)
+   - Nathanwolf auto at dev spawn has some permanent blocks now
+   - Random blocks show up in mob arena sometimes (web, broken floor)
+   - Can't find a pattern. Tried world save... don't know. :(
   
 ## Future
   
@@ -34,7 +41,6 @@
  - Add option for custom display name for wands
  
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
- - Goldwalker blocks didn't undo? (Can not reproduce)
   
  - Optional lore on wands to say which classes they work with
      
