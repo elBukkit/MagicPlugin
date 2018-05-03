@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.4.4
+
 # 7.4.3
 
  - Add item pickup sound for items picked up with a wand inventory open
