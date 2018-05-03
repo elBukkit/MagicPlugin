@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import org.bukkit.Color;
@@ -16,6 +15,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.effect.EffectUtils;
+import com.elmakers.mine.bukkit.utility.ColorHD;
 
 public class FireworkAction extends BaseProjectileAction
 {
@@ -113,13 +113,8 @@ public class FireworkAction extends BaseProjectileAction
     }
 
     protected Color getColor(String name) {
-        try {
-            Field colorConstant = Color.class.getField(name.toUpperCase());
-            return (Color)colorConstant.get(null);
-        } catch (Exception ignored) {
-        }
-
-        return Color.WHITE;
+        ColorHD color = new ColorHD(name);
+        return color.getColor();
     }
 
     protected Type getType(String name) {

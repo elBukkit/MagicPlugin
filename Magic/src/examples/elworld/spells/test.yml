@@ -1,61 +1,10 @@
-testblast:
-    icon: diamond_pickaxe:44
-    icon_disabled: diamond_pickaxe:344
-    upgrade_required_casts: 30
-    category: earthbending
-    pvp_restricted: true
-    worth: 150
-    actions:
-      cast:
-      - class: ChangeContext
-        target_caster: true
-        target_offset: 0,-2,0
-        actions:
-        - class: CheckBlock
-        - class: Brush
-          sample: true
-          actions:
-          -   class: ChangeContext
-              relative_source_offset: 1,4,0
-              actions:
-              - class: ChangeParameters
-                destructible: destructible_replace
-              - class: EntityProjectile
-                tick:
-                - class: AreaOfEffect
-                  actions:
-                  - class: Damage
-                  - class: Velocity
-                  - class: FallProtection
-                    duration: 0
-    effects:
-      cast:
-      - class: EffectSingle
-        sound: bending.earth1
-        sound_pitch: 1.5
-        location: origin
-      projectile:
-       - location: origin
-         effectlib:
-           class: SphereEffect
-           particle: block_crack
-           radius: 0.5
-           particles: 5
-    parameters:
-      reorient: false
-      target: LivingEntity
-      target_type: Damageable
-      radius: 1.5
-      velocity: 24
-      range: 35
-      duration: 1000
-      increment_data: false
-      player_damage: 3.0
-      entity_damage: 3.0
-      cooldown: 7000
-      destructible: earth
-      transparent: transparent
-      undo: 1000
-      type: falling_block
-    costs:
-        mana: 125
+firework:
+  icon: sulphur
+  actions:
+    cast:
+    - class: Firework
+  parameters:
+    color: "FF0000"
+    color2: "00FF00"
+    range: 10
+    use_wand_color: false

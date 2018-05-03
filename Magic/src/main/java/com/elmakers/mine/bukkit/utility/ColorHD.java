@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Color;
 
@@ -8,6 +11,8 @@ public class ColorHD implements Cloneable {
     private static long BITS_PER_COMPONENT = BYTES_PER_COMPONENT * 8;
     private static long COMPONENT_SHIFT = BITS_PER_COMPONENT - 8;
     private static long BIT_MASK = (1L << BITS_PER_COMPONENT) - 1;
+
+    private static Map<String, Color> colorMap;
 
     private final long red;
     private final long green;
@@ -64,15 +69,22 @@ public class ColorHD implements Cloneable {
             green = g;
             blue = b;
         } else {
-            long effectColor = 0;
-            try {
-                effectColor = Integer.parseInt(hexColor, 16);
-            } catch (Exception ignored) {
-            }
+            Color namedColor = getColorByName(hexColor);
+            if (namedColor != null) {
+                red = (long)namedColor.getRed() << COMPONENT_SHIFT;
+                blue = (long)namedColor.getBlue() << COMPONENT_SHIFT;
+                green = (long)namedColor.getGreen() << COMPONENT_SHIFT;
+            } else {
+                long effectColor = 0;
+                try {
+                    effectColor = Integer.parseInt(hexColor, 16);
+                } catch (Exception ignored) {
+                }
 
-            red = ((effectColor >> 16) & 0xFF) << COMPONENT_SHIFT;
-            green = ((effectColor >> 8) & 0xFF) << COMPONENT_SHIFT;
-            blue = ((effectColor) & 0xFF) << COMPONENT_SHIFT;
+                red = ((effectColor >> 16) & 0xFF) << COMPONENT_SHIFT;
+                green = ((effectColor >> 8) & 0xFF) << COMPONENT_SHIFT;
+                blue = ((effectColor) & 0xFF) << COMPONENT_SHIFT;
+            }
         }
         Color testCreate = null;
         try {
@@ -130,5 +142,30 @@ public class ColorHD implements Cloneable {
         double weightG = 4.0;
         double weightB = 2 + (255 - rmean) / 256.0;
         return weightR * r * r + weightG * g * g + weightB * b * b;
+    }
+
+    private static Color getColorByName(String name) {
+        if (colorMap == null) {
+            colorMap = new HashMap<>();
+            colorMap.put("WHITE", Color.fromRGB(16777215));
+            colorMap.put("SILVER", Color.fromRGB(12632256));
+            colorMap.put("GRAY", Color.fromRGB(8421504));
+            colorMap.put("BLACK", Color.fromRGB(0));
+            colorMap.put("RED", Color.fromRGB(16711680));
+            colorMap.put("MAROON", Color.fromRGB(8388608));
+            colorMap.put("YELLOW", Color.fromRGB(16776960));
+            colorMap.put("OLIVE", Color.fromRGB(8421376));
+            colorMap.put("LIME", Color.fromRGB(65280));
+            colorMap.put("GREEN", Color.fromRGB(32768));
+            colorMap.put("AQUA", Color.fromRGB(65535));
+            colorMap.put("TEAL", Color.fromRGB(32896));
+            colorMap.put("BLUE", Color.fromRGB(255));
+            colorMap.put("NAVY", Color.fromRGB(128));
+            colorMap.put("FUCHSIA", Color.fromRGB(16711935));
+            colorMap.put("PURPLE", Color.fromRGB(8388736));
+            colorMap.put("ORANGE", Color.fromRGB(16753920));
+        }
+
+        return colorMap.get(name.toUpperCase());
     }
 }

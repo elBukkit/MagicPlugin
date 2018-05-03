@@ -25,6 +25,7 @@
    - Some kind of ledger item or balance action, or maybe command to see balance?
    - Wand SP display customization, choose currency type
    - CurrencyProvider support via API
+   - Add decimal formatter to amounts: DecimalFormat formatter = new DecimalFormat("#,###.00");
    
  - There seems to be an undo issue here somewhere.
    - Goldwalker blocks didn't undo once on sandbox (Can not reproduce)

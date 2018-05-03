@@ -18,6 +18,8 @@
    - Costs defined in config.yml, named in messages.yml
    - Can be used in casting costs and Selector costs
    - Can be given with /mgive
+ - Add use_wand_color option to Firework action
+ - Colors can now use simple color names (red, blue, etc) or hex codes
  
 # 7.4.3
 
