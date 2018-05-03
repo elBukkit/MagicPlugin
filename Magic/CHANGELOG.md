@@ -2,6 +2,8 @@
 
 # 7.4.4
 
+ - Fix the switch_class option in a Selector menu keeping the menu open
+
 # 7.4.3
 
  - Add item pickup sound for items picked up with a wand inventory open

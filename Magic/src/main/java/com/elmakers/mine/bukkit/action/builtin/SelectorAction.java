@@ -572,8 +572,6 @@ public class SelectorAction extends BaseSpellAction implements GUIAction, CostRe
                         mage.lockClass(activeClass.getKey());
                     }
                     mage.setActiveClass(unlockClass);
-                    mage.deactivate();
-                    mage.checkWand();
                 }
             }
 
