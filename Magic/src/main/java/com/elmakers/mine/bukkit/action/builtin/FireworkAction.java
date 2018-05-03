@@ -32,6 +32,7 @@ public class FireworkAction extends BaseProjectileAction
     private double speed;
     private double dyOffset;
     private boolean silent;
+    private boolean useWandColor;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -61,6 +62,7 @@ public class FireworkAction extends BaseProjectileAction
         startDistance = parameters.getInt("start", 0);
         speed = parameters.getDouble("speed", 0.1);
         dyOffset = parameters.getDouble("dy_offset", 0);
+        useWandColor = parameters.getBoolean("use_wand_color", true);
         if (parameters.contains("ticks_flown")) {
             ticksFlown = parameters.getInt("ticks_flown");
         } else {
@@ -95,7 +97,7 @@ public class FireworkAction extends BaseProjectileAction
             }
         }
 
-        FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
+        FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail, useWandColor);
         Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown, silent);
 
         if (firework == null) {

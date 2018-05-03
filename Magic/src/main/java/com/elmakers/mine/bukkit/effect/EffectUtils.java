@@ -97,12 +97,15 @@ public class EffectUtils extends NMSUtils {
 
         return entity;
     }
-
     public static FireworkEffect getFireworkEffect(CastContext context, Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail) {
+        return getFireworkEffect(context, color1, color2, fireworkType, flicker, trail, true);
+    }
+
+    public static FireworkEffect getFireworkEffect(CastContext context, Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail, boolean useWandColor) {
         Mage mage = context.getMage();
         Random random = context.getRandom();
         Color wandColor = mage.getEffectColor();
-        if (wandColor != null) {
+        if (wandColor != null && useWandColor) {
             color1 = wandColor;
             color2 = wandColor.mixColors(color1, Color.WHITE);
         } else {
