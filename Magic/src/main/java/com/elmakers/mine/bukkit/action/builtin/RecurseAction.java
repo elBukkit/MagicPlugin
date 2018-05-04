@@ -1,15 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -24,7 +21,7 @@ import com.elmakers.mine.bukkit.block.BlockFace;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DirectionUtils;
 
 public class RecurseAction extends CompoundAction {
     protected int recursionDepth;
@@ -51,87 +48,6 @@ public class RecurseAction extends CompoundAction {
     protected Deque<StackEntry> stack;
     protected Set<Long> touched;
 
-    public static final String[] EXAMPLE_DIRECTIONS = {"cardinal", "all", "plane", "up", "down", "north", "south", "east", "west"};
-    private static final List<BlockFace> cardinalDirections = Arrays.asList(
-        BlockFace.NORTH, BlockFace.SOUTH,
-        BlockFace.EAST, BlockFace.WEST,
-        BlockFace.UP, BlockFace.DOWN
-    );
-    private static final List<BlockFace> allDirections = Arrays.asList(
-        BlockFace.UP, BlockFace.DOWN,
-        BlockFace.NORTH, BlockFace.SOUTH,
-        BlockFace.EAST, BlockFace.WEST,
-
-        BlockFace.NORTH_EAST, BlockFace.NORTH_WEST,
-        BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST,
-
-        BlockFace.UP_NORTH, BlockFace.UP_EAST,
-        BlockFace.UP_SOUTH, BlockFace.UP_WEST,
-
-        BlockFace.UP_NORTH_EAST, BlockFace.UP_NORTH_WEST,
-        BlockFace.UP_SOUTH_EAST, BlockFace.UP_SOUTH_WEST,
-
-        BlockFace.DOWN_NORTH, BlockFace.DOWN_EAST,
-        BlockFace.DOWN_SOUTH, BlockFace.DOWN_WEST,
-
-        BlockFace.DOWN_NORTH_EAST, BlockFace.DOWN_NORTH_WEST,
-        BlockFace.DOWN_SOUTH_EAST, BlockFace.DOWN_SOUTH_WEST
-    );
-    private static final List<BlockFace> planeDirections = Arrays.asList(
-        BlockFace.NORTH, BlockFace.SOUTH,
-        BlockFace.EAST, BlockFace.WEST,
-        BlockFace.NORTH_EAST, BlockFace.NORTH_WEST,
-        BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST
-    );
-
-    @Nullable
-    protected BlockFace getBlockFace(String name) {
-        try {
-            return BlockFace.valueOf(name.toUpperCase());
-        } catch (Exception ignored) {
-        }
-        return null;
-    }
-
-    @Nullable
-    protected List<BlockFace> getDirections(String name) {
-        if (name == null) {
-            return null;
-        }
-        if (name.equalsIgnoreCase("cardinal")) {
-            return cardinalDirections;
-        }
-        if (name.equalsIgnoreCase("all")) {
-            return allDirections;
-        }
-        if (name.equalsIgnoreCase("plane")) {
-            return planeDirections;
-        }
-        BlockFace single = getBlockFace(name);
-        if (single == null) return null;
-        List<BlockFace> singleSet = new ArrayList<>();
-        singleSet.add(single);
-        return singleSet;
-    }
-
-    @Nullable
-    protected List<BlockFace> getDirections(ConfigurationSection parameters, String key) {
-        if (parameters.isString(key)) {
-            String name = parameters.getString(key);
-            return getDirections(name);
-        }
-
-        Collection<String> faceList = ConfigurationUtils.getStringList(parameters, key);
-        if (faceList == null) return null;
-
-        List<BlockFace> faceSet = new ArrayList<>();
-        for (String face : faceList) {
-            faceSet.addAll(getDirections(face));
-        }
-
-        return faceSet;
-    }
-
     @Override
     public void reset(CastContext context) {
         super.reset(context);
@@ -154,10 +70,7 @@ public class RecurseAction extends CompoundAction {
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
-        directions = getDirections(parameters, "faces");
-        if (directions == null) {
-            directions = cardinalDirections;
-        }
+        directions = DirectionUtils.getDirections(parameters, "faces");
         replaceable = null;
         touched = new HashSet<>();
         stack = new ArrayDeque<>();
@@ -283,7 +196,7 @@ public class RecurseAction extends CompoundAction {
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("faces")) {
-            examples.addAll(Arrays.asList((EXAMPLE_DIRECTIONS)));
+            examples.addAll(Arrays.asList((DirectionUtils.EXAMPLE_DIRECTIONS)));
         } else if (parameterKey.equals("depth") || parameterKey.equals("size")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
