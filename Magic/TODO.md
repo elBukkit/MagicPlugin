@@ -39,6 +39,8 @@
    Github has an API for fetching a list of files, maybe can use that?
    https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
    
+ - Need a lock or something to prevent saving an UndoList as it is being modified. Got a CME.
+   
  - Add option for custom display name for wands
  
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
