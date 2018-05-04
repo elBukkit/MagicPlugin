@@ -14,12 +14,19 @@ import com.elmakers.mine.bukkit.block.BlockFace;
 
 public class DirectionUtils {
 
-    public static final String[] EXAMPLE_DIRECTIONS = {"cardinal", "all", "plane", "up", "down", "north", "south", "east", "west"};
+    public static final String[] EXAMPLE_DIRECTIONS = {"cardinal", "all", "plane", "neighbors", "up", "down", "north", "south", "east", "west"};
+
     private static final List<BlockFace> cardinalDirections = Arrays.asList(
         BlockFace.NORTH, BlockFace.SOUTH,
         BlockFace.EAST, BlockFace.WEST,
         BlockFace.UP, BlockFace.DOWN
     );
+
+    private static final List<BlockFace> neighborDirections = Arrays.asList(
+        BlockFace.NORTH, BlockFace.SOUTH,
+        BlockFace.EAST, BlockFace.WEST
+    );
+
     private static final List<BlockFace> allDirections = Arrays.asList(
         BlockFace.UP, BlockFace.DOWN,
         BlockFace.NORTH, BlockFace.SOUTH,
@@ -40,6 +47,7 @@ public class DirectionUtils {
         BlockFace.DOWN_NORTH_EAST, BlockFace.DOWN_NORTH_WEST,
         BlockFace.DOWN_SOUTH_EAST, BlockFace.DOWN_SOUTH_WEST
     );
+
     private static final List<BlockFace> planeDirections = Arrays.asList(
         BlockFace.NORTH, BlockFace.SOUTH,
         BlockFace.EAST, BlockFace.WEST,
@@ -48,7 +56,16 @@ public class DirectionUtils {
     );
 
     @Nullable
-    static public List<BlockFace> getDirections(String name) {
+    public static BlockFace getBlockFace(String name) {
+        try {
+            return BlockFace.valueOf(name.toUpperCase());
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    @Nullable
+    public static List<BlockFace> getDirections(String name) {
         if (name == null) {
             return null;
         }
@@ -61,6 +78,9 @@ public class DirectionUtils {
         if (name.equalsIgnoreCase("plane")) {
             return planeDirections;
         }
+        if (name.equalsIgnoreCase("neighbors")) {
+            return neighborDirections;
+        }
         BlockFace single = getBlockFace(name);
         if (single == null) return null;
         List<BlockFace> singleSet = new ArrayList<>();
@@ -68,30 +88,26 @@ public class DirectionUtils {
         return singleSet;
     }
 
-    @Nullable
-    static public BlockFace getBlockFace(String name) {
-        try {
-            return BlockFace.valueOf(name.toUpperCase());
-        } catch (Exception ignored) {
-        }
-        return null;
-    }
-
     @Nonnull
-    static public List<BlockFace> getDirections(ConfigurationSection parameters, String key) {
+    public static List<BlockFace> getDirections(ConfigurationSection parameters, String key) {
+        List<BlockFace> faceSet = null;
         if (parameters.isString(key)) {
             String name = parameters.getString(key);
-            return getDirections(name);
+            faceSet = getDirections(name);
         }
 
-        Collection<String> faceList = ConfigurationUtils.getStringList(parameters, key);
-        if (faceList == null) {
-            return cardinalDirections;
+        if (faceSet == null) {
+            Collection<String> faceList = ConfigurationUtils.getStringList(parameters, key);
+            if (faceList != null) {
+                faceSet = new ArrayList<>();
+                for (String face : faceList) {
+                    faceSet.addAll(getDirections(face));
+                }
+            }
         }
 
-        List<BlockFace> faceSet = new ArrayList<>();
-        for (String face : faceList) {
-            faceSet.addAll(getDirections(face));
+        if (faceSet == null) {
+            faceSet = cardinalDirections;
         }
 
         return faceSet;

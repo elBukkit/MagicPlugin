@@ -56,6 +56,8 @@ public class PlaneAction extends VolumeAction {
         super.reset(context);
         MaterialBrush brush = context.getBrush();
         Location targetLocation = context.getTargetLocation();
+        if (targetLocation == null) return;
+
         Location orientLocation = targetLocation.clone();
         switch (brushAxis) {
             case X:

@@ -6,7 +6,6 @@ pillar:
     tags: noduel
     worth: 1000
     earns_sp: 10
-    consume: true
     actions:
         cast:
         - class: BlockSearch

@@ -1079,7 +1079,10 @@ spells:
         description: Raises a pillar up
         cast: You create a pillar of $material
         no_target: Can't pillar any further
-        no_target: Can't pillar any further
+    raise:
+        name: Raise
+        description: Raises the ground up to form a nice slope
+        cast: You raise up the ground
     place:
         name: Place
         description: Place a block at your target

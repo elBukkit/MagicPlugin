@@ -1,0 +1,56 @@
+raise:
+  icon: diamond_axe:88
+  icon_disabled: diamond_hoe:88
+  icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
+  category: engineering
+  tags: noduel
+  worth: 1000
+  earns_sp: 10
+  actions:
+    cast:
+    - class: Disc
+      actions:
+      - class: Cover
+        actions:
+        - class: RaiseBlocks
+        - class: PlayEffects
+          effects: raise
+  effects:
+    cast:
+    - sound: block_stone_break
+      location: origin
+    - class: EffectTrail
+      particle: block_crack
+      particle_count: 4
+      material: dirt
+    raise:
+    - location: target
+      particle: block_crack
+      particle_count: 100
+      particle_offset_x: 0.2
+      particle_offset_y: 5
+      particle_offset_z: 0.2
+      offset: 0,-2,0
+  parameters:
+    range: 32
+    radius: 16
+    vertical_range: 32
+    consume: true
+    destructible: destructible_replace
+    transparent: destructible_replace
+    slopes:
+      1: 100
+      2: 50
+      3: 5
+    faces:
+    - down
+    - north
+    - north_east
+    - east
+    - south_east
+    - south
+    - south_west
+    - west
+    - north_west
+  costs:
+    mana: 50
