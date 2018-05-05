@@ -50,6 +50,15 @@ mob:
                class: AtomEffect
                particle_nucleus: drip_lava
                particle_orbital: drip_lava
+        undo_entity:
+        - location: target
+          effectlib:
+            class: Smoke
+            duration: 500
+            particle_count: 10
+            particle_offset_x: 0.5
+            particle_offset_y: 0.5
+            particle_offset_z: 0.5
     parameters:
         entity_types:
             zombie: 100

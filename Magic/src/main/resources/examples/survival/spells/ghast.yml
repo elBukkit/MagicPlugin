@@ -37,6 +37,15 @@ ghast:
              particle: drip_lava
              radius: 2
              particles: 20
+        undo_entity:
+        - location: target
+          effectlib:
+            class: Smoke
+            duration: 1000
+            particle_count: 40
+            particle_offset_x: 1.5
+            particle_offset_y: 1.5
+            particle_offset_z: 1.5
     parameters:
         target: block
         type: ghast
