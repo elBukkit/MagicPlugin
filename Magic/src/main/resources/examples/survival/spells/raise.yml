@@ -37,8 +37,8 @@ raise:
     radius: 16
     vertical_range: 32
     consume: true
-    destructible: destructible_replace
-    transparent: destructible_replace
+    destructible: "!earth"
+    transparent: "!earth"
     slopes:
       1: 100
       2: 50
