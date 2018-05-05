@@ -96,6 +96,11 @@ recall:
         description: Return to the training mansion
         icon_url: http://textures.minecraft.net/texture/43e6aef534bc455c1d13d692fa193cac6efcce7c875b185375114b71c63929
         locked: false
+      hogwarts:
+        name: Hogwarts
+        description: Home of witchcraft and wizardry!
+        icon: diamond_hoe:196
+        locked: false
       town:
         name: The Capitol
         description: The only town we know of
