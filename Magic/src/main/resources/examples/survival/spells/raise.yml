@@ -2,6 +2,8 @@ raise:
   icon: diamond_axe:88
   icon_disabled: diamond_hoe:88
   icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
+  example_thumbnail: https://thumbs.gfycat.com/ClassicUnhappyElephantbeetle-size_restricted.gif
+  example_link: https://gfycat.com/gifs/detail/ClassicUnhappyElephantbeetle
   category: engineering
   tags: noduel
   worth: 1000
