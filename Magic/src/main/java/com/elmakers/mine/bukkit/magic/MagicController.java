@@ -1614,9 +1614,11 @@ public class MagicController implements MageController {
 
     private void loadAutomatonTemplates(ConfigurationSection automataConfiguration) {
         Set<String> keys = automataConfiguration.getKeys(false);
-        automatonTemplates.clear();;
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        automatonTemplates.clear();
         for (String key : keys) {
-            AutomatonTemplate template = new AutomatonTemplate(this, key, automataConfiguration.getConfigurationSection(key));
+            ConfigurationSection config = resolveConfiguration(key, automataConfiguration, templateConfigurations);
+            AutomatonTemplate template = new AutomatonTemplate(this, key, config);
             automatonTemplates.put(key, template);
         }
 
@@ -3734,11 +3736,11 @@ public class MagicController implements MageController {
     @Nullable
     protected ConfigurationSection resolveConfiguration(String key, ConfigurationSection properties, Map<String, ConfigurationSection> configurations, Set<String> resolving) {
         // Catch circular dependencies
-        if (resolvingKeys.contains(key)) {
-            getLogger().log(Level.WARNING, "Circular dependency detected: " + StringUtils.join(resolvingKeys, " -> ") + " -> " + key);
+        if (resolving.contains(key)) {
+            getLogger().log(Level.WARNING, "Circular dependency detected: " + StringUtils.join(resolving, " -> ") + " -> " + key);
             return properties;
         }
-        resolvingKeys.add(key);
+        resolving.add(key);
 
         ConfigurationSection configuration = configurations.get(key);
         if (configuration == null) {
