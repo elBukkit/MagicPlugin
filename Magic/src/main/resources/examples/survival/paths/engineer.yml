@@ -32,6 +32,7 @@ engineer:
       - tree
       - supertorch
       - raise
+      - flatten
       - brushselect
     # Engineer wands can gain material brushes, they get some number of them per spell purchase as below
     material_count:

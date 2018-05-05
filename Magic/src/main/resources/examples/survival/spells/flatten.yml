@@ -1,4 +1,4 @@
-raise:
+flatten:
   icon: diamond_axe:88
   icon_disabled: diamond_hoe:88
   icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
@@ -12,18 +12,19 @@ raise:
       actions:
       - class: Cover
         actions:
-        - class: RaiseBlocks
+        - class: LowerBlocks
         - class: PlayEffects
-          effects: raise
+          effects: lower
   effects:
     cast:
     - sound: block_stone_break
       location: origin
     - class: EffectTrail
+      reverse: true
       particle: block_crack
       particle_count: 4
       material: dirt
-    raise:
+    lower:
     - location: target
       particle: block_crack
       particle_count: 10
@@ -34,13 +35,6 @@ raise:
     range: 32
     radius: 16
     vertical_range: 32
-    consume: true
-    destructible: destructible_replace
-    transparent: destructible_replace
-    slopes:
-      1: 100
-      2: 50
-      3: 5
     faces:
     - down
     - north

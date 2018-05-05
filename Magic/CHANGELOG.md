@@ -20,6 +20,7 @@
    - Can be given with /mgive, in virtual or item form (right-click item to deposit)
  - Add use_wand_color option to Firework action
  - Colors can now use simple color names (red, blue, etc) or hex codes
+ - Add Raise and Flatten engineering spells
  
 # 7.4.4
 

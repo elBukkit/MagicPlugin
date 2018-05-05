@@ -1083,6 +1083,10 @@ spells:
         name: Raise
         description: Raises the ground up to form a nice slope
         cast: You raise up the ground
+    flatten:
+        name: Flatten
+        description: Lower the ground to flatten it to the lowest point in the area
+        cast: You flatten the hills
     place:
         name: Place
         description: Place a block at your target
