@@ -253,9 +253,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         if (nodeList != null) {
             for (ConfigurationSection listNode : nodeList) {
                 // The owner will get set by UndoQueue.load
-                // This is .. kind of hacky, but allows us to use UndoList as a data
-                // storage mechanism instead of making a separate DAO for it right now.
-                UndoList list = new com.elmakers.mine.bukkit.block.UndoList(null);
+                UndoList list = new com.elmakers.mine.bukkit.block.UndoList(controller);
                 list.load(listNode);
                 undoData.getBlockList().add(list);
             }

@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
@@ -108,6 +109,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         this(mage);
         this.name = name;
+    }
+
+    public UndoList(@Nonnull MageController controller)
+    {
+        this.plugin = controller.getPlugin();
+        createdTime = System.currentTimeMillis();
+        modifiedTime = createdTime;
     }
 
     public UndoList(Mage mage)
