@@ -21,7 +21,7 @@
  - Add use_wand_color option to Firework action
  - Colors can now use simple color names (red, blue, etc) or hex codes
  - Add Raise and Flatten engineering spells
- - Fix setting boolean values via /mage setdata
+ - Fix setting boolean values via /mage setdata, See: https://github.com/elBukkit/MagicPlugin/wiki/Vanity-Items
  
 # 7.4.4
 

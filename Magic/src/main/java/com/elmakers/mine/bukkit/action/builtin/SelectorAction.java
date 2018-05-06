@@ -186,6 +186,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
             commands = ConfigurationUtils.getStringList(configuration, "commands");
 
+            if (costType != null && (costType.isEmpty() || costType.equalsIgnoreCase("none"))) {
+                costType = null;
+            }
+
             selectedMessage = configuration.getString("selected", selectedMessage);
             if (selectedMessage == null) {
                selectedMessage = getMessage("selected");
@@ -228,7 +232,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
             costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
             int cost = configuration.getInt("cost");
-            if (cost > 0) {
+            if (cost > 0 && costType != null) {
                 if (costs == null) {
                     costs = new ArrayList<>();
                 }
@@ -467,6 +471,15 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     String costDescription = cost.has(context.getMage(), context.getWand(), reducer) ? costString : requiredCostString;
                     costDescription = costDescription.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer));
                     InventoryUtils.wrapText(costDescription, lore);
+                }
+            } else if (unlockKey != null && !unlockKey.isEmpty() && !unlocked) {
+                unavailable = true;
+                String lockedMessage = getMessage("locked");
+                if (!lockedMessage.isEmpty()) {
+                    InventoryUtils.wrapText(lockedMessage, lore);
+                    if (unavailableMessage == null) {
+                        unavailableMessage = lockedMessage;
+                    }
                 }
             }
 
@@ -895,7 +908,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
     protected String getBalanceDescription(CastContext context) {
         Mage mage = context.getMage();
-        Cost cost = new Cost(context.getController(), defaultConfiguration.getCostType(), 1);
+        String costType = defaultConfiguration.getCostType();
+        if (costType == null) {
+            return "";
+        }
+        Cost cost = new Cost(context.getController(), costType, 1);
         cost.setAmount(cost.getBalance(mage, context.getWand()));
         return cost.getFullDescription(context.getController().getMessages());
     }

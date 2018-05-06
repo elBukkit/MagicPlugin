@@ -33,6 +33,7 @@ shops:
   cost_heading: ""
   #cost_heading: "&6Click to purchase"
   unlock_cost_lore: "&6Unlock Cost: &e$cost"
+  locked: "&cLocked, &eUnlock in Donation Shop"
   required_cost_lore: "&cCosts: &4$cost"
   required_unlock_cost_lore: "&cUnlock Cost: &4$cost"
   has_class: "You already have class $class"

@@ -15,6 +15,7 @@ colorshop:
         - holding_wand: true
         cost_type: sp
         unlock_section: wand_colors
+        show_unavailable: true
         apply_to_wand: true
         options:
         - item: redeffects

@@ -153,6 +153,7 @@
      - Temporary max mana
      - Temporary faster mana regeneration
      - Temporary anything else you can think of really, the more we can add, the better :)
+ - Add a TeamProvider for Factions
  - Upgrades to Spells
    - Can only choose 1 of the 3 and only when applicable (actual bonus could be customized)
    - Bonus to max distance x2

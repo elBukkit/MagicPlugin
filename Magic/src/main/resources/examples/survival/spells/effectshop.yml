@@ -13,6 +13,7 @@ effectshop:
         - holding_wand: true
         unlock_section: wand_effects
         apply_to_wand: true
+        show_unavailable: true
         cost_type: sp
         options:
         - item: bubbleeffects
