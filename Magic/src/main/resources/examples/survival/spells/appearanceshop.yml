@@ -41,7 +41,6 @@ appearanceshop:
         - item: none
         - item: none
         - item: none
-        - item: none
         - item: appearance_moon
           unlock: moon
           confirm: true

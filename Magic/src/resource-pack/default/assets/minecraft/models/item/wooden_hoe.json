@@ -43,6 +43,7 @@
     {"predicate": {"damaged": 0, "damage": 0.6}, "model": "item/custom/lixwglow"},
     {"predicate": {"damaged": 0, "damage": 0.616666666666667}, "model": "item/custom/wandb"},
     {"predicate": {"damaged": 0, "damage": 0.633333333333333}, "model": "item/custom/sortinghat"},
+    {"predicate": {"damaged": 0, "damage": 0.65}, "model": "item/custom/staff_survival2"},
 
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/wooden_hoe"}
   ]

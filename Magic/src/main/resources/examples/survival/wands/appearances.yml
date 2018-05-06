@@ -25,8 +25,8 @@ appearance_engineer:
 
 appearance_architect:
     upgrade: true
-    icon: wood_hoe:5
-    upgrade_icon: wood_hoe:5
+    icon: wood_hoe:39
+    upgrade_icon: wood_hoe:39
 
 appearance_conduit:
     upgrade: true
