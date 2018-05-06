@@ -60,7 +60,7 @@ public class MultiplyAction extends CompoundAction
 
     @Override
     public void finish(CastContext context) {
-        super.reset(context);
+        super.finish(context);
         for (ActionHandler handler : multiplied) {
             handler.finish(context);
         }

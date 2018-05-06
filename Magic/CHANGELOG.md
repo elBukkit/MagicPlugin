@@ -25,6 +25,7 @@
 # 7.4.4
 
  - Fix the switch_class option in a Selector menu keeping the menu open
+ - Fix Chop and Mine spells, broken in 7.4.3
 
 # 7.4.3
 
