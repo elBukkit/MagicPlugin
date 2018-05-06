@@ -2,7 +2,9 @@ package com.elmakers.mine.bukkit.action;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -28,6 +30,7 @@ public abstract class CompoundAction extends BaseSpellAction
     protected @Nullable CastContext actionContext;
 
     protected Map<String, ActionHandler> handlers = new HashMap<>();
+    protected Set<ActionHandler> ran = new HashSet<>();
     protected @Nullable String currentHandler = null;
     protected State state = State.NOT_STARTED;
 
@@ -55,16 +58,11 @@ public abstract class CompoundAction extends BaseSpellAction
 
     protected SpellResult startActions(String handlerKey) {
         Preconditions.checkState(actionContext != null);
-
-        ActionHandler handler = currentHandler == null ? null : handlers.get(currentHandler);
-        if (handler != null) {
-            handler.finish(actionContext);
-        }
-
         currentHandler = handlerKey;
-        handler = handlers.get(currentHandler);
+        ActionHandler handler = handlers.get(currentHandler);
         if (handler != null) {
             handler.reset(actionContext);
+            ran.add(handler);
         } else {
             currentHandler = null;
         }
@@ -121,10 +119,10 @@ public abstract class CompoundAction extends BaseSpellAction
     @Override
     public void finish(CastContext context) {
         super.finish(context);
-        ActionHandler handler = currentHandler == null ? null : handlers.get(currentHandler);
-        if (handler != null) {
-            handler.finish(actionContext);
+        for (ActionHandler handler : ran) {
+            handler.finish(context);
         }
+        ran.clear();
     }
 
     @Override
