@@ -61,7 +61,7 @@ colorshop:
           unlock: "lightgray"
         - item: browneffects
           cost: 200
-          unlock: "grown"
+          unlock: "brown"
         - item: darkgreeneffects
           cost: 200
           unlock: "darkgreen"
