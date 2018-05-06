@@ -32,9 +32,15 @@ appearanceshop:
         - item: appearance_engineer
           requirements:
           - path: engineer
+        - item: appearance_architect
+          requirements:
+          - path: architect
         - item: appearance_conduit
           requirements:
           - path: conduit
+        - item: none
+        - item: none
+        - item: none
         - item: none
         - item: appearance_moon
           unlock: moon

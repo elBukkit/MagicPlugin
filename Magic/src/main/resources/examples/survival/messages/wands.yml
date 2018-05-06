@@ -345,40 +345,40 @@ wands:
         inventory_instructions: "&r&bRight-click to open the spell inventory and drag spells to your hotbar to cast them."
     appearance_beginner:
         name: Beginner Wand Appearance
-        description: Will change the appearance of your wand
+        description: A good starter wand
     appearance_student:
         name: Student Wand Appearance
-        description: Will change the appearance of your wand
+        description: Its magic is starting to grow
     appearance_apprentice:
         name: Apprentice Wand Appearance
-        description: Will change the appearance of your wand
+        description: It has transformed!
     appearance_master:
         name: Wizard Wand Appearance
-        description: Will change the appearance of your wand
+        description: A powerful magical instrument
     appearance_engineer:
         name: Engineer Wand Appearance
-        description: Will change the appearance of your wand
+        description: A powerful staff imbued with ancient magic
     appearance_architect:
         name: Architect Wand Appearance
-        description: Will change the appearance of your wand
+        description: A powerful staff used for massive constructions
     appearance_conduit:
         name: Conduit Wand Appearance
-        description: Will change the appearance of your wand
+        description: A staff used by wizards of ages past
     appearance_magicka:
         name: Magicka Wand Appearance
-        description: Will change the appearance of your wand
+        description: A large staff with a crescent moon holding powerful magical energy
     appearance_moon:
         name: Moon Wand Appearance
-        description: Will change the appearance of your wand
+        description: A wand that may have been used by an ancient sailor
     appearance_spire:
         name: Spire Wand Appearance
-        description: Will change the appearance of your wand
+        description: A wizard tower you can hold in your hand
     appearance_claw:
         name: Claw Wand Appearance
-        description: Will change the appearance of your wand
+        description: A menacingly dark claw holding powerful magical orbs
     appearance_orb:
         name: Orb Wand Appearance
-        description: Will change the appearance of your wand
+        description: A wand lovingly imbued with a powerful orb
     uberwand:
         name: "Überwand"
         description: The Ultimate Wand
