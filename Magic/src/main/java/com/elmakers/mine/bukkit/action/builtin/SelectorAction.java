@@ -54,6 +54,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
     private Map<Integer, SelectorOption> showingItems;
+    private int itemCount;
     private int numSlots;
     private int has = 0;
     private String title;
@@ -75,6 +76,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
         public RequirementsResult(SpellResult result) {
             this(result, context.getMessage(result.name().toLowerCase()));
+        }
+
+        @Override
+        public String toString() {
+            return result.toString() + " " + message;
         }
     }
 
@@ -159,6 +165,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable List<CostModifier> costModifiers;
         protected @Nullable List<Cost> earns = null;
         protected boolean applyToWand = false;
+        protected boolean applyToCaster = false;
         protected boolean showConfirmation = false;
         protected boolean showUnavailable = false;
         protected boolean switchClass = false;
@@ -173,6 +180,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
         protected void parse(ConfigurationSection configuration) {
             applyToWand = configuration.getBoolean("apply_to_wand", applyToWand);
+            applyToCaster = configuration.getBoolean("apply_to_caster", applyToCaster);
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
             if (configuration.contains("switch_class")) {
@@ -407,6 +415,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.costs = defaults.costs;
             this.castSpell = defaults.castSpell;
             this.applyToWand = defaults.applyToWand;
+            this.applyToCaster = defaults.applyToCaster;
             this.unlockClass = defaults.unlockClass;
             this.switchClass = defaults.switchClass;
             this.limit = defaults.limit;
@@ -683,14 +692,21 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
-            if (applyToWand && items != null) {
+            CasterProperties caster = null;
+            if (applyToWand) {
                 if (wand == null) {
                     context.showMessage("no_wand", getDefaultMessage(context, "no_wand"));
                     return SpellResult.NO_TARGET;
                 }
+                caster = wand;
+            } else if (applyToCaster) {
+                caster = mage.getActiveProperties();
+            }
+
+            if (caster != null && items != null) {
                 boolean anyApplied = false;
                 for (ItemStack item : items) {
-                    anyApplied = wand.addItem(item) || anyApplied;
+                    anyApplied = caster.addItem(item) || anyApplied;
                 }
                 if (!anyApplied) {
                     String inapplicable = getMessage("not_applicable").replace("$item", name);
@@ -727,7 +743,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 unlocks.set(unlockKey, true);
             }
 
-            if (items != null && !applyToWand) {
+            if (items != null && caster == null) {
                 for (ItemStack item : items) {
                     ItemStack copy = InventoryUtils.getCopy(item);
                     mage.giveItem(copy);
@@ -973,6 +989,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
             Integer targetSlot = option.getSlot();
             int slot = targetSlot == null ? numSlots : targetSlot;
+            if (!option.isPlaceholder()) itemCount++;
             showingItems.put(slot, option);
             numSlots = Math.max(slot + 1, numSlots);
         }
@@ -1095,7 +1112,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             return check.result;
         }
 
-        if (showingItems.isEmpty()) {
+        if (itemCount == 0) {
             context.showMessage("no_items", getDefaultMessage(context, "no_items"));
             return SpellResult.NO_ACTION;
         }
