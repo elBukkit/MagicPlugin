@@ -1,4 +1,12 @@
 
+# This is a modifier on the default survival configs
+inherit: survival
+
+skip_inherited:
+ - paths
+ - crafting
+ - classes
+
 # Set this to true to add the cooldown timers on skills
 # This will involve scanning players' hotbars all the time, even
 # when not holding wands.
