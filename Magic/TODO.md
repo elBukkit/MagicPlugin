@@ -1,23 +1,13 @@
 # TODO
-   
-## 8.0
-
-### Things to verify 
-
- - Wand brush migration
- - Check schematics
- - Check book -> skull feature
- - Check torch action
- - Tag sign facing
- - Check capture spell
- - Check map brush
- - Check custom colored blob/reflect/platform/shell
- - Check secure/lockpick
 
 ## 7.5
   
  - Cancelling an armorstandprojectile will cause the armor stand to stay 
  - Custom Currency
+   - Selector should auto-calculate costs if not set, using item/spell worth.
+   - Selector/Shop needs to send messages when global requirements are not met
+   - Need action for upgrading wand path, separate but intertwined with shop
+ 
    - Maybe define all costs in terms of Currency objects? (xp,sp, etc builtins)
    - Spell worth in terms of custom currency
    - SpellShop / ItemShop support
@@ -33,6 +23,20 @@
    - Random blocks show up in mob arena sometimes (web, broken floor)
    - Can't find a pattern. Tried world save... don't know. :(
   
+## 1.13
+
+### Things to verify 
+
+ - Wand brush migration
+ - Check schematics
+ - Check book -> skull feature
+ - Check torch action
+ - Tag sign facing
+ - Check capture spell
+ - Check map brush
+ - Check custom colored blob/reflect/platform/shell
+ - Check secure/lockpick
+
 ## Future
   
  - It'd be really cool to support configs from remote repos....

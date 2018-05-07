@@ -41,6 +41,10 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     public Cost(MageController controller, String key, double cost)
     {
         this.amount = cost;
+        this.setType(controller, key);
+    }
+
+    protected void setType(MageController controller, String key) {
         if (key.toLowerCase().equals("xp")) {
             this.type = Type.XP;
         } else if (key.toLowerCase().equals("sp")) {
@@ -55,6 +59,13 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             this.type = Type.HUNGER;
         } else if (key.toLowerCase().equals("levels")) {
             this.type = Type.LEVELS;
+        } else if (key.toLowerCase().equals("item")) {
+            this.type = Type.ITEM;
+            itemWildcard = false;
+            this.item = controller.getWorthItem().clone();
+            if (this.item != null) {
+                this.item.setAmount((int)Math.ceil(amount));
+            }
         } else {
             Set<String> customCurrencies = controller.getCustomCurrencies();
             if (customCurrencies.contains(key)) {
@@ -509,5 +520,46 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         }
 
         return cost;
+    }
+
+    public boolean checkSupported(MageController controller, String fallbackType) {
+        switch (type) {
+            case SP:
+                if (!controller.isSPEnabled()) {
+                    setType(controller, fallbackType);
+                    return true;
+                }
+                return false;
+            case CURRENCY:
+                if (!controller.isVaultCurrencyEnabled()) {
+                    setType(controller, fallbackType);
+                    return true;
+                }
+                return false;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean checkSupported(MageController controller, String fallbackType, String secondaryFallbackType) {
+        boolean modified = checkSupported(controller, fallbackType);
+        if (modified) {
+            checkSupported(controller, secondaryFallbackType);
+
+            switch (type) {
+                case XP:
+                    scale(1.0 / controller.getWorthXP());
+                    break;
+                case SP:
+                    scale(1.0 / controller.getWorthSkillPoints());
+                    break;
+                case ITEM:
+                    scale(1.0 / controller.getWorthItemAmount());
+                    break;
+            }
+        }
+
+        return modified;
     }
 }

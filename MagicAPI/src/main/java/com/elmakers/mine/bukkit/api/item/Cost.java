@@ -4,6 +4,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -173,4 +174,15 @@ public interface Cost {
      * @param scale The cost multiplier.
      */
     void scale(double scale);
+
+    /**
+     * Convert this to cost to a different type if the current cost is not supported.
+     * If the first fallback is also not supported, the second fallback will be used.
+     *
+     * @param controller The controller to use to check for currency support
+     * @param fallbackType The type to use if this costs' type is not supported
+     * @param secondaryFallbackType The type to use if this cost type and the fallback are not supported
+     * @return true if this cost was converted
+     */
+    boolean checkSupported(MageController controller, String fallbackType, String secondaryFallbackType);
 }

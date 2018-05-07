@@ -4806,6 +4806,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean isVaultCurrencyEnabled() {
+        return VaultController.hasEconomy();
+    }
+
+    @Override
     public void deleteMage(final String id) {
         final Mage mage = getRegisteredMage(id);
         if (mage != null) {

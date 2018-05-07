@@ -24,6 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.item.Cost;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -36,7 +37,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -145,9 +145,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable List<Cost> costs = null;
         protected @Nonnull String costType = "currency";
         protected @Nonnull String earnType = "currency";
+        protected @Nonnull String costTypeFallback = "item";
         protected @Nullable String castSpell = null;
         protected @Nullable String unlockClass = null;
         protected @Nullable String selectedMessage = null;
+        protected @Nullable String selectedFreeMessage = null;
         protected @Nullable String unlockKey = null;
         protected @Nullable String actions = null;
         protected @Nonnull String unlockSection = "unlocked";
@@ -182,6 +184,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             showConfirmation = configuration.getBoolean("confirm", showConfirmation);
             costType = configuration.getString("cost_type", costType);
             earnType = configuration.getString("earn_type", earnType);
+            costTypeFallback = configuration.getString("cost_type_fallback", costTypeFallback);
             actions = configuration.getString("actions", actions);
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
             commands = ConfigurationUtils.getStringList(configuration, "commands");
@@ -192,7 +195,17 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
             selectedMessage = configuration.getString("selected", selectedMessage);
             if (selectedMessage == null) {
-               selectedMessage = getMessage("selected");
+                selectedMessage = getMessage("selected");
+            }
+
+            // Blanking out "selected" will also blank out "selected_free".
+            if (selectedMessage.isEmpty()) {
+                selectedFreeMessage = "";
+            } else {
+                selectedFreeMessage = configuration.getString("selected_free", selectedFreeMessage);
+                if (selectedFreeMessage == null) {
+                    selectedFreeMessage = getMessage("selected_free");
+                }
             }
 
             Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(configuration, "requirements");
@@ -230,13 +243,38 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
             icon = parseItem(configuration.getString("icon"));
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
-            costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
-            int cost = configuration.getInt("cost");
-            if (cost > 0 && costType != null) {
-                if (costs == null) {
-                    costs = new ArrayList<>();
+            if (costType != null) {
+                costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
+                int cost = configuration.getInt("cost");
+                if (cost > 0) {
+                    if (costs == null) {
+                        costs = new ArrayList<>();
+                    }
+                    costs.add(new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, cost));
                 }
-                costs.add(new Cost(context.getController(), costType, cost));
+
+                if (costs == null && items != null) {
+                    costs = new ArrayList<>();
+                    MageController controller = context.getController();
+                    for (ItemStack item : items) {
+                        Cost itemCost = null;
+                        String spellKey = controller.getSpell(item);
+                        if (spellKey == null) {
+                            double worth = controller.getWorth(item);
+                            if (worth > 0) {
+                                itemCost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, worth);
+                            }
+                        } else {
+                            SpellTemplate spell = controller.getSpellTemplate(spellKey);
+                            itemCost = spell.getCost();
+                        }
+                        if (itemCost != null) {
+                            itemCost.checkSupported(controller, costType, costTypeFallback);
+                            itemCost.scale(controller.getWorthBase());
+                            costs.add(itemCost);
+                        }
+                    }
+                }
             }
 
             earns = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "earns"));
@@ -245,7 +283,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 if (earns == null) {
                     earns = new ArrayList<>();
                 }
-                earns.add(new Cost(context.getController(), earnType, earn));
+                earns.add(new com.elmakers.mine.bukkit.item.Cost(context.getController(), earnType, earn));
             }
         }
 
@@ -257,7 +295,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             List<Cost> costs = new ArrayList<>();
             Collection<String> costKeys = node.getKeys(false);
             for (String key : costKeys) {
-                costs.add(new Cost(context.getController(), key, node.getInt(key, 1)));
+                costs.add(new com.elmakers.mine.bukkit.item.Cost(context.getController(), key, node.getInt(key, 1)));
             }
 
             return costs;
@@ -345,6 +383,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             super();
 
             this.selectedMessage = defaults.selectedMessage;
+            this.selectedFreeMessage = defaults.selectedFreeMessage;
             this.items = defaults.items;
             this.costs = defaults.costs;
             this.castSpell = defaults.castSpell;
@@ -356,6 +395,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.unlockSection = defaults.unlockSection;
             this.showConfirmation = defaults.showConfirmation;
             this.costType = defaults.costType;
+            this.costTypeFallback = defaults.costTypeFallback;
             this.earnType = defaults.earnType;
             this.showUnavailable = defaults.showUnavailable;
             this.commands = defaults.commands;
@@ -394,7 +434,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
             if (name.isEmpty() && items != null) {
-                name = controller.describeItem(items.get(0));
+                ItemStack item = items.get(0);
+                name = controller.describeItem(item);
+                if (item.getAmount() > 1) {
+                    name = Integer.toString(item.getAmount()) + " " + name;
+                }
             }
             if (name.isEmpty() && castSpell != null && !castSpell.isEmpty()) {
                 SpellTemplate spell = controller.getSpellTemplate(castSpell);
@@ -703,7 +747,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         }
 
         public String getSelectedMessage(CostReducer reducer) {
-            return getCostsMessage(reducer, selectedMessage);
+            return getCostsMessage(reducer, costs == null ? selectedFreeMessage : selectedMessage);
         }
 
         public String getCostsMessage(CostReducer reducer, String baseMessage) {
@@ -843,30 +887,34 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         has = 0;
         Collection<ConfigurationSection> optionConfigs = ConfigurationUtils.getNodeList(parameters, "options");
         if (optionConfigs != null) {
-            // Gather list of selector options first, to compute limits
-            List<SelectorOption> options = new ArrayList<>();
-
-            for (ConfigurationSection option : optionConfigs) {
-                SelectorOption newOption = new SelectorOption(defaultConfiguration, option, context, this);
-                if (newOption.hasLimit() && newOption.has(context)) {
-                    has++;
-                }
-                options.add(newOption);
-            }
-            for (SelectorOption option : options) {
-                if (option.isUnavailable() && !option.showIfUnavailable()) {
-                    continue;
-                }
-
-                Integer targetSlot = option.getSlot();
-                int slot = targetSlot == null ? numSlots : targetSlot;
-                showingItems.put(slot, option);
-                numSlots = Math.max(slot + 1, numSlots);
-            }
+            loadOptions(optionConfigs);
         }
 
         // Have to do this after adding options since options may register action handlers
         super.prepare(context, parameters);
+    }
+
+    protected void loadOptions(Collection<ConfigurationSection> optionConfigs) {
+        // Gather list of selector options first, to compute limits
+        List<SelectorOption> options = new ArrayList<>();
+
+        for (ConfigurationSection option : optionConfigs) {
+            SelectorOption newOption = new SelectorOption(defaultConfiguration, option, context, this);
+            if (newOption.hasLimit() && newOption.has(context)) {
+                has++;
+            }
+            options.add(newOption);
+        }
+        for (SelectorOption option : options) {
+            if (option.isUnavailable() && !option.showIfUnavailable()) {
+                continue;
+            }
+
+            Integer targetSlot = option.getSlot();
+            int slot = targetSlot == null ? numSlots : targetSlot;
+            showingItems.put(slot, option);
+            numSlots = Math.max(slot + 1, numSlots);
+        }
     }
 
     public SpellResult showItems(CastContext context) {
@@ -912,7 +960,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         if (costType == null) {
             return "";
         }
-        Cost cost = new Cost(context.getController(), costType, 1);
+        com.elmakers.mine.bukkit.item.Cost cost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, 1);
         cost.setAmount(cost.getBalance(mage, context.getWand()));
         return cost.getFullDescription(context.getController().getMessages());
     }

@@ -385,6 +385,7 @@ public interface MageController {
     boolean isSpellProgressionEnabled();
     boolean isSPEnabled();
     boolean isSPEarnEnabled();
+    boolean isVaultCurrencyEnabled();
     int getSPMaximum();
     void deleteMage(final String id);
     void disableItemSpawn();
