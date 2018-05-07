@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -712,6 +713,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         materialName = materialName.toLowerCase().replace('_', ' ');
+        materialName = WordUtils.capitalize(materialName);
         return materialName;
     }
 
