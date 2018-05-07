@@ -536,9 +536,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                     return true;
                 }
                 return false;
+            default:
+                return false;
         }
-
-        return false;
     }
 
     @Override
@@ -556,6 +556,8 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                     break;
                 case ITEM:
                     scale(1.0 / controller.getWorthItemAmount());
+                    break;
+                default:
                     break;
             }
         }
