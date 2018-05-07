@@ -245,6 +245,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
             MageController controller = context.getController();
             icon = parseItem(configuration.getString("icon"));
+            if (icon != null && icon.hasItemMeta()) {
+                ItemMeta meta = icon.getItemMeta();
+                meta.setLore(null);
+                icon.setItemMeta(meta);
+            }
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
             if (costType != null) {
                 costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
