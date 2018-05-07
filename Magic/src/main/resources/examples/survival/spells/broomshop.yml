@@ -2,13 +2,10 @@ broomshop:
     icon: gold_spade
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
+        auto_close: true
         confirm: true
-        confirm_filler: stained_glass:3
         items:
         - item: wand|crackedbroomstick
           cost: 100

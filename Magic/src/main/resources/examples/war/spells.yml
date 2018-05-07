@@ -1335,26 +1335,11 @@ buyshop:
     hidden: true
     actions:
         cast:
-        -  class: ItemShop
+        - class: Shop
     parameters:
         quiet: true
         confirm: false
         auto_close: false
-        use_items: false
-
-sellshop:
-    icon: sulphur
-    category: shop
-    hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
-    parameters:
-        quiet: true
-        confirm: false
-        auto_close: false
-        use_items: false
-        sell: true
 
 gunshop:
     icon: wood_hoe:14

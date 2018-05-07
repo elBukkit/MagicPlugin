@@ -1484,7 +1484,6 @@ spells:
         name: Automata Shop
         title: "Sell Automata Hearts"
         description: Sell Automata Hearts
-        cost_lore: "Earns: $cost"
         no_items: There is nothing to sell here!
         insufficient: Requires $cost
         confirm_title: "Sell $item"

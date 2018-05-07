@@ -3,13 +3,11 @@ tweakshop:
     icon_url: http://textures.minecraft.net/texture/f6d6ac2ee323f6497c6e2663a7e56ed9523567b68d18a17f8f39736b06ac3cd
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
-        confirm: false
-        require_wand: true
+        requirements:
+        - holding_wand: true
+        apply_to_wand: true
         items:
           - wand|inventorymode
           - wand|chestmode

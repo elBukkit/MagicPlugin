@@ -2,14 +2,14 @@ upgradeshop:
     icon: gold_axe
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
         quiet: true
         confirm_filler: stained_glass:2
         confirm: true
-        require_wand: true
+        requirements:
+        - holding_wand: true
+        apply_to_wand: true
         items:
         - item: wand|antihunger
           cost: 2000

@@ -9,4 +9,5 @@ buyshop:
         quiet: true
         confirm: false
         auto_close: false
+        confirm_filler: stained_glass_pane
 

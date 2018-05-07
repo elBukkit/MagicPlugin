@@ -2,13 +2,10 @@ magicitemshop:
     icon: ender_portal_frame
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
         confirm: true
-        confirm_filler: stained_glass:3
+        auto_close: true
         items:
         - item: wand|ocarina
           cost: 100

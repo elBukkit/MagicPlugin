@@ -479,16 +479,11 @@ potionshop:
     icon: potion
     category: shop
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
-        confirm: true
-        confirm_filler: stained_glass:3
-        use_items: false
-        items:
-        - potion_splash_swiftness_long
+      confirm: true
+      items:
+      - potion_splash_swiftness_long
 
 brushshop:
     inherit: buyshop

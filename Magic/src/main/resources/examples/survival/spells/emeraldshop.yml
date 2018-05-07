@@ -2,14 +2,9 @@ emeraldshop:
     icon: emerald
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
-        confirm: true
-        use_xp: true
-        confirm_filler: stained_glass:5
+        cost_type: xp
         items:
           emerald: 500
 

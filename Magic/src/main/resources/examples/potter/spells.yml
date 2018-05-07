@@ -2826,17 +2826,14 @@ patronus:
     costs:
         mana: 130
 
-broomshop:
+potterbroomshop:
     icon: gold_spade
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
         confirm: true
-        confirm_filler: stained_glass:3
+        auto_close: true
         items:
         - item: wand|firebolt
           cost: 10000
@@ -2848,6 +2845,9 @@ broomshop:
           cost: 500
         - item: wand|bluebottle
           cost: 100
+
+broomshop:
+  inherit: potterbroomshop
 
 potterappearanceshop:
     icon: wood_hoe
@@ -2882,12 +2882,9 @@ bookshop:
     icon: book
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
         quiet: true
-        confirm: false
         items:
         - item: book|charms
         - item: book|creatures

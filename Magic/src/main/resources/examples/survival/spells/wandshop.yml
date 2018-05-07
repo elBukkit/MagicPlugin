@@ -2,13 +2,10 @@ wandshop:
     icon: wooden_hoe
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
         confirm: true
-        confirm_filler: stained_glass:3
+        auto_close: true
         items:
         - item: wand|default
           cost: 3000

@@ -2,15 +2,8 @@ deposits:
     icon: emerald
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: sellshop
     parameters:
-        sell: true
-        quiet: true
-        confirm: false
-        use_items: false
-        auto_close: false
         items:
           - gold_nugget
           - gold_ingot
@@ -31,14 +24,8 @@ withdrawals:
     icon: emerald
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
-        confirm: false
-        use_items: false
-        auto_close: false
         items:
           - gold_nugget
           - gold_ingot
@@ -59,13 +46,8 @@ ledgershop:
     icon: paper
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
-        confirm: true
-        use_items: false
-        confirm_filler: stained_glass_pane
-        items:
-          wand|ledger: 2
+      confirm: true
+      items:
+        wand|ledger: 2

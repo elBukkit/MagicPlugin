@@ -2,12 +2,8 @@ bookshop:
     icon: book
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: buyshop
     parameters:
-        quiet: true
-        confirm: false
         items:
         - item: book|combat
         - item: book|master

@@ -2,13 +2,8 @@ automatashop:
     icon: command
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: sellshop
     parameters:
-        quiet: true
-        auto_close: false
-        sell: true
         items:
           wand|snakeheart: 300
           wand|hunterheart: 500
