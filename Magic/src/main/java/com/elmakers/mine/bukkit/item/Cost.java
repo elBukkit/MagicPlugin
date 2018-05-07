@@ -302,7 +302,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 ItemStack itemStack = getItemStack();
                 Inventory inventory = mage.getInventory();
                 for (ItemStack item : inventory.getContents()) {
-                    if (item.equals(itemStack)) {
+                    if (item != null && item.isSimilar(itemStack)) {
                         balance += item.getAmount();
                     }
                 }
