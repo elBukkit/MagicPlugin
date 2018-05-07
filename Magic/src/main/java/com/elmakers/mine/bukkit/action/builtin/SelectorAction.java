@@ -270,8 +270,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         Cost itemCost = null;
                         String spellKey = controller.getSpell(item);
                         if (spellKey == null) {
-                            double worth = controller.getWorth(item);
-                            if (worth > 0) {
+                            Double worth = controller.getWorth(item);
+                            if (worth != null && worth > 0) {
                                 itemCost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, worth);
                             }
                         } else {
