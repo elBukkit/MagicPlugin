@@ -7,8 +7,9 @@
  - MusicSpell deleted, use MusicAction instead
  - BlockPhysics integration removed
  - sp_multiplier wand/class property changed to earn_multiplier
- - All buy shops converted to use the new Shop action. If you have customized shops and are having issues, you may
-   need to update configs or just change it back to ItemShop.
+ - All buy and sell shops converted to use the new Shop action. 
+   If you have customized shops and are having issues, you may
+   need to update configs or just change it back to ItemShop, but I'm hoping everything translates seamlessly.
  
 ## 7.4
 

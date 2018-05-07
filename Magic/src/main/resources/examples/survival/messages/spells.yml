@@ -1477,10 +1477,9 @@ spells:
         name: Sell Shop
         title: "Sell ($balance&0)"
         description: Sell Sell Sell!
-        cost_lore: "Earn $cost"
         insufficient: "&cRequires &4$cost"
         confirm_title: "Sell $item"
-        deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$cost"
+        deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$earn"
     automatashop:
         name: Automata Shop
         title: "Sell Automata Hearts"

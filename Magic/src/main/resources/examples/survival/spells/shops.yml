@@ -556,9 +556,6 @@ appraiser:
     icon: emerald
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
     parameters:
         scale: 0.9
         items:
