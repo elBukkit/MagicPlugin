@@ -2,16 +2,9 @@
 
 ## 7.5
   
- - Cancelling an armorstandprojectile will cause the armor stand to stay 
  - Custom Currency
-   - Selector should auto-calculate costs if not set, using item/spell worth.
-   - Selector/Shop needs to send messages when global requirements are not met
-   - Need action for upgrading wand path, separate but intertwined with shop
  
    - Maybe define all costs in terms of Currency objects? (xp,sp, etc builtins)
-   - Spell worth in terms of custom currency
-   - SpellShop / ItemShop support
-   - Generalized shop support for balance display
    - Some kind of ledger item or balance action, or maybe command to see balance?
    - Wand SP display customization, choose currency type
    - CurrencyProvider support via API

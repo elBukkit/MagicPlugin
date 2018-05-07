@@ -4,13 +4,19 @@ conduitshop:
     hidden: true
     actions:
         cast:
-        -  class: SpellShop
+        - class: Shop
+        - class: UpgradePath
     parameters:
-        quiet: true
-        path_end: architect
-        auto_upgrade: true
-        use_sp: true
+        requirements:
+        - path_end: architect
+        apply_to_caster: true
         confirm_filler: stained_glass:9
+        confirm: true
+        cost_type: sp
         spells:
+        - none
+        - none
+        - none
+        - none
         - backup
 
