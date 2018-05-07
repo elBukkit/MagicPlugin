@@ -3,18 +3,21 @@ package com.elmakers.mine.bukkit.entity;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class EntityHorseData extends EntityExtraData {
     public Horse.Color color;
     public Horse.Style style;
-    public ItemStack saddle;
-    public ItemStack armor;
+    public ItemData saddle;
+    public ItemData armor;
     public Integer domestication;
     public Integer maxDomestication;
     public Double jumpStrength;
@@ -51,17 +54,25 @@ public class EntityHorseData extends EntityExtraData {
         if (parameters.contains("tamed")) {
             tamed = parameters.getBoolean("tamed");
         }
+
+        saddle = controller.getOrCreateItem(parameters.getString("saddle"));
+        armor = controller.getOrCreateItem(parameters.getString("armor"));
     }
 
     public EntityHorseData(Horse horse) {
         color = horse.getColor();
         style = horse.getStyle();
-        saddle = horse.getInventory().getSaddle();
-        armor = horse.getInventory().getArmor();
+        saddle = getItem(horse.getInventory().getSaddle());
+        armor = getItem(horse.getInventory().getArmor());
         domestication = horse.getDomestication();
         maxDomestication = horse.getMaxDomestication();
         jumpStrength = horse.getJumpStrength();
         tamed = horse.isTamed();
+    }
+
+    @Nullable
+    private ItemData getItem(ItemStack item) {
+        return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
     }
 
     @Override
@@ -69,8 +80,8 @@ public class EntityHorseData extends EntityExtraData {
         if (!(entity instanceof Horse)) return;
         Horse horse = (Horse)entity;
 
-        horse.getInventory().setSaddle(saddle);
-        horse.getInventory().setArmor(armor);
+        horse.getInventory().setSaddle(saddle == null ? null : saddle.getItemStack(1));
+        horse.getInventory().setArmor(armor == null ? null : armor.getItemStack(1));
         if (color != null) {
             horse.setColor(color);
         }
@@ -94,8 +105,8 @@ public class EntityHorseData extends EntityExtraData {
     @Override
     public EntityExtraData clone() {
         EntityHorseData copy = new EntityHorseData();
-        copy.saddle = saddle == null ? null : saddle.clone();
-        copy.armor = armor == null ? null : armor.clone();
+        copy.saddle = saddle;
+        copy.armor = armor;
         copy.color = color;
         copy.domestication = domestication;
         copy.style = style;
