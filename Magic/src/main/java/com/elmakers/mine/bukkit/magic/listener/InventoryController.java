@@ -166,6 +166,11 @@ public class InventoryController implements Listener {
             return;
         }
 
+        if (InventoryUtils.getMetaBoolean(clickedItem, "unmoveable", false)) {
+            event.setCancelled(true);
+            return;
+        }
+
         if (clickedItem != null && NMSUtils.isTemporary(clickedItem)) {
             String message = NMSUtils.getTemporaryMessage(clickedItem);
             if (message != null && message.length() > 1) {
@@ -306,11 +311,6 @@ public class InventoryController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-        }
-
-        if (InventoryUtils.getMetaBoolean(clickedItem, "unmoveable", false)) {
-            event.setCancelled(true);
-            return;
         }
 
         if (isHotbar) {
