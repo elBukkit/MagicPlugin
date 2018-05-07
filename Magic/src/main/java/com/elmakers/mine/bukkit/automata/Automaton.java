@@ -57,9 +57,9 @@ public class Automaton {
         creatorId = node.getString("creator");
         creatorName = node.getString("creator_name");
 
-        int x = node.getInt("x");
-        int y = node.getInt("y");
-        int z = node.getInt("z");
+        double x = node.getDouble("x");
+        double y = node.getDouble("y");
+        double z = node.getDouble("z");
         float yaw = (float)node.getDouble("yaw");
         float pitch = (float)node.getDouble("pitch");
         String worldName = node.getString("world");
@@ -107,9 +107,9 @@ public class Automaton {
         node.set("creatorName", creatorName);
         node.set("template", templateKey);
         node.set("world", location.getWorld().getName());
-        node.set("x", location.getBlockX());
-        node.set("y", location.getBlockY());
-        node.set("z", location.getBlockZ());
+        node.set("x", location.getX());
+        node.set("y", location.getY());
+        node.set("z", location.getZ());
         node.set("yaw", location.getYaw());
         node.set("pitch", location.getPitch());
         node.set("parameters", parameters);
