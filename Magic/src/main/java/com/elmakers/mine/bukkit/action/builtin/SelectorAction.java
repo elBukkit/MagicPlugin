@@ -48,6 +48,7 @@ import de.slikey.effectlib.math.EquationTransform;
 public class SelectorAction extends CompoundAction implements GUIAction, CostReducer
 {
     protected double costScale = 1;
+    protected double earnScale = 1;
     protected boolean autoClose = true;
     protected SelectorConfiguration defaultConfiguration;
     protected MaterialAndData confirmFillMaterial;
@@ -241,21 +242,25 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             if (items != null && items.isEmpty()) {
                 items = null;
             }
+
+            MageController controller = context.getController();
             icon = parseItem(configuration.getString("icon"));
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
             if (costType != null) {
                 costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
-                int cost = configuration.getInt("cost");
+                double cost = configuration.getDouble("cost");
                 if (cost > 0) {
                     if (costs == null) {
                         costs = new ArrayList<>();
                     }
-                    costs.add(new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, cost));
+                    Cost optionCost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, cost);
+                    optionCost.checkSupported(controller, costType, costTypeFallback);
+                    optionCost.scale(controller.getWorthBase());
+                    costs.add(optionCost);
                 }
 
                 if (costs == null && items != null) {
                     costs = new ArrayList<>();
-                    MageController controller = context.getController();
                     for (ItemStack item : items) {
                         Cost itemCost = null;
                         String spellKey = controller.getSpell(item);
@@ -278,12 +283,17 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             earns = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "earns"));
-            int earn = configuration.getInt("earn");
+            double earn = configuration.getDouble("earn");
             if (earn > 0) {
                 if (earns == null) {
                     earns = new ArrayList<>();
                 }
-                earns.add(new com.elmakers.mine.bukkit.item.Cost(context.getController(), earnType, earn));
+
+                Cost earnCost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), earnType, earn);
+                earnCost.checkSupported(controller, costType, costTypeFallback);
+                earnCost.scale(controller.getWorthBase());
+                earnCost.scale(earnScale);
+                earns.add(earnCost);
             }
         }
 
@@ -321,6 +331,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
         public String getCostType() {
             return costType;
+        }
+
+        public String getCostTypeFallback() {
+            return costTypeFallback;
         }
 
         public boolean has(CastContext context) {
@@ -437,7 +451,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 ItemStack item = items.get(0);
                 name = controller.describeItem(item);
                 if (item.getAmount() > 1) {
-                    name = Integer.toString(item.getAmount()) + " " + name;
+                    String template = getMessage("item_amount");
+                    name = template.replace("$name", name).replace("$amount", Integer.toString(item.getAmount()));
                 }
             }
             if (name.isEmpty() && castSpell != null && !castSpell.isEmpty()) {
@@ -447,6 +462,14 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     name = name.replace("$spell", spell.getName());
                 } else {
                     controller.getLogger().warning("Unknown spell in selector config: " + castSpell);
+                }
+            }
+
+            if (name.isEmpty() && icon != null) {
+                name = controller.describeItem(icon);
+                if (icon.getAmount() > 1) {
+                    String template = getMessage("item_amount");
+                    name = template.replace("$name", name).replace("$amount", Integer.toString(icon.getAmount()));
                 }
             }
 
@@ -524,6 +547,20 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     if (unavailableMessage == null) {
                         unavailableMessage = lockedMessage;
                     }
+                }
+            }
+
+            // Add earn lore
+            if (earns != null) {
+                String costHeading = getMessage("earn_heading");
+                if (!costHeading.isEmpty()) {
+                    InventoryUtils.wrapText(costHeading, lore);
+                }
+
+                String earnString = getMessage("earn_lore");
+                for (Cost earn : earns) {
+                    earnString = earnString.replace("$earn", earn.getFullDescription(context.getController().getMessages(), reducer));
+                    InventoryUtils.wrapText(earnString, lore);
                 }
             }
 
@@ -766,7 +803,25 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             if (costString.isEmpty()) {
                 costString = getMessage("nothing");
             }
-            return baseMessage.replace("$item", name).replace("$name", name).replace("$cost", costString);
+
+            String earnString = "";
+            if (earns != null) {
+                for (Cost earn : earns) {
+                    if (!earnString.isEmpty()) {
+                        earnString += ", ";
+                    }
+
+                    earnString += earn.getFullDescription(context.getController().getMessages());
+                }
+            }
+
+            if (earnString.isEmpty()) {
+                earnString = getMessage("nothing");
+            }
+            return baseMessage.replace("$item", name)
+                .replace("$name", name)
+                .replace("$cost", costString)
+                .replace("$earn", earnString);
         }
     }
 
@@ -876,6 +931,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         confirmFillMaterial = ConfigurationUtils.getMaterialAndData(parameters, "confirm_filler", new MaterialAndData(Material.AIR));
         autoClose = parameters.getBoolean("auto_close", true);
         costScale = parameters.getDouble("scale", 1);
+        earnScale = parameters.getDouble("earn_scale", costScale);
         title = parameters.getString("title");
         confirmTitle = parameters.getString("confirm_title");
         confirmUnlockTitle = parameters.getString("unlock_confirm_title");
@@ -961,6 +1017,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             return "";
         }
         com.elmakers.mine.bukkit.item.Cost cost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, 1);
+        cost.checkSupported(context.getController(), defaultConfiguration.getCostTypeFallback());
         cost.setAmount(cost.getBalance(mage, context.getWand()));
         return cost.getFullDescription(context.getController().getMessages());
     }
