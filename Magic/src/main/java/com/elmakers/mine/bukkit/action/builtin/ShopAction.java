@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,6 +11,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -37,11 +39,11 @@ public class ShopAction extends SelectorAction {
 
         // Restore items list. This is kind of messy, but so is this whole action.
         parameters.set("items", itemDefaults);
-        loadItems(context, parameters, "items");
-        loadItems(context, parameters, "spells");
+        loadItems(context, parameters, "items", false);
+        loadItems(context, parameters, "spells", true);
     }
 
-    protected void loadItems(CastContext context, ConfigurationSection parameters, String key) {
+    protected void loadItems(CastContext context, ConfigurationSection parameters, String key, boolean filterSpells) {
         if (parameters.contains(key)) {
             List<ConfigurationSection> itemConfigs = new ArrayList<>();
             if (parameters.isConfigurationSection(key)) {
@@ -66,6 +68,18 @@ public class ShopAction extends SelectorAction {
                         itemConfigs.add(itemConfig);
                     } else {
                         context.getLogger().warning("Invalid item in shop config: " + object);
+                    }
+                }
+            }
+
+            if (filterSpells) {
+                CasterProperties caster = context.getMage().getActiveProperties();
+                Iterator<ConfigurationSection> it = itemConfigs.iterator();
+                while (it.hasNext()) {
+                    ConfigurationSection config = it.next();
+                    String spellName = config.getString("item");
+                    if (spellName != null && caster.hasSpell(spellName)) {
+                        it.remove();
                     }
                 }
             }
