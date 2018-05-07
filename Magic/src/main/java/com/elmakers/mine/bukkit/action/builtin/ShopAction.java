@@ -3,13 +3,13 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -44,18 +44,29 @@ public class ShopAction extends SelectorAction {
     protected void loadItems(CastContext context, ConfigurationSection parameters, String key) {
         if (parameters.contains(key)) {
             List<ConfigurationSection> itemConfigs = new ArrayList<>();
-            List<? extends Object> objects = parameters.getList(key);
-            for (Object object : objects) {
-                if (object instanceof ConfigurationSection) {
-                    itemConfigs.add((ConfigurationSection)object);
-                } else if (object instanceof Map) {
-                     itemConfigs.add(ConfigurationUtils.toConfigurationSection((Map<?, ?>)object));
-                } else if (object instanceof String) {
+            if (parameters.isConfigurationSection(key)) {
+                ConfigurationSection itemSection = parameters.getConfigurationSection(key);
+                Set<String> itemKeys = itemSection.getKeys(false);
+                for (String itemKey : itemKeys) {
                     ConfigurationSection itemConfig = new MemoryConfiguration();
-                    itemConfig.set("item", object);
+                    itemConfig.set("item", itemKey);
+                    itemConfig.set("cost", itemSection.get(itemKey));
                     itemConfigs.add(itemConfig);
-                } else {
-                    context.getLogger().warning("Invalid item in shop config: " + object);
+                }
+            } else {
+                List<? extends Object> objects = parameters.getList(key);
+                for (Object object : objects) {
+                    if (object instanceof ConfigurationSection) {
+                        itemConfigs.add((ConfigurationSection)object);
+                    } else if (object instanceof Map) {
+                         itemConfigs.add(ConfigurationUtils.toConfigurationSection((Map<?, ?>)object));
+                    } else if (object instanceof String) {
+                        ConfigurationSection itemConfig = new MemoryConfiguration();
+                        itemConfig.set("item", object);
+                        itemConfigs.add(itemConfig);
+                    } else {
+                        context.getLogger().warning("Invalid item in shop config: " + object);
+                    }
                 }
             }
 
@@ -82,8 +93,7 @@ public class ShopAction extends SelectorAction {
                     if (sp != null) {
                         costSection.set("sp", sp);
                     } else {
-                        MaterialAndData materialAndData = new MaterialAndData(item);
-                        costSection.set(materialAndData.getKey(), item.getAmount());
+                        costSection.set(itemName, item.getAmount());
                     }
                 }
             }
