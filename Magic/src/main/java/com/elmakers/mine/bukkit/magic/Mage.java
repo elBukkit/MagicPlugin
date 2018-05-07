@@ -2310,7 +2310,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             ItemStack item = contents[index];
             if (item == null) continue;
 
-            if ((!allowVariants && itemStack.isSimilar(item)) || (allowVariants && itemStack.getType() == item.getType() && (item.getItemMeta() == null || item.getItemMeta().getDisplayName() == null)))
+            if ((!allowVariants && controller.itemsAreEqual(itemStack, item)) || (allowVariants && itemStack.getType() == item.getType() && (item.getItemMeta() == null || item.getItemMeta().getDisplayName() == null)))
             {
                 if (amount >= item.getAmount()) {
                     amount -= item.getAmount();
@@ -2346,7 +2346,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         ItemStack[] contents = inventory.getContents();
         for (ItemStack item : contents) {
             if (item != null
-                && ((!allowVariants && itemStack.isSimilar(item)) || (allowVariants && itemStack.getType() == item.getType() && (item.getItemMeta() == null || item.getItemMeta().getDisplayName() == null)))
+                && ((!allowVariants && controller.itemsAreEqual(itemStack, item)) || (allowVariants && itemStack.getType() == item.getType() && (item.getItemMeta() == null || item.getItemMeta().getDisplayName() == null)))
                 && (amount -= item.getAmount()) <= 0)
             {
                 return true;

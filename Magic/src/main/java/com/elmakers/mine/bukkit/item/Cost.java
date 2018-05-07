@@ -115,7 +115,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public boolean has(Mage mage, CasterProperties caster, CostReducer reducer) {
-
         Player player = mage.getPlayer();
         switch (type) {
             case ITEM:
@@ -302,7 +301,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 ItemStack itemStack = getItemStack();
                 Inventory inventory = mage.getInventory();
                 for (ItemStack item : inventory.getContents()) {
-                    if (item != null && item.isSimilar(itemStack)) {
+                    if (item != null && mage.getController().itemsAreEqual(itemStack, item)) {
                         balance += item.getAmount();
                     }
                 }
