@@ -17,7 +17,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.elmakers.mine.bukkit.action.BaseShopAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -34,7 +33,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 @Deprecated
-public class SpellShopAction extends BaseShopAction
+public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAction
 {
     private boolean showPath = true;
     private boolean showExtra = true;
