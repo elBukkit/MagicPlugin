@@ -5,12 +5,13 @@ spellshop:
     category: npc
     hidden: true
     actions:
-        cast:
-        -  class: SpellShop
+      cast:
+      - class: Shop
+      - class: UpgradePath
     parameters:
-        quiet: true
-        confirm_filler: stained_glass:5
-        auto_upgrade: true
-        upgrade_levels: 1
-        use_sp: true
+      show_path_spells: true
+      show_extra_spells: true
+      confirm: true
+      auto_close: true
+      confirm_filler: stained_glass:5
 

@@ -1,17 +1,25 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -19,6 +27,11 @@ public class ShopAction extends SelectorAction {
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
+        boolean showPath = parameters.getBoolean("show_path_spells", false);
+        boolean showExtra = parameters.getBoolean("show_extra_spells", false);
+        boolean showRequired = parameters.getBoolean("show_required_spells", false);
+        boolean showFree = parameters.getBoolean("show_free", false);
+
         // Don't load items as defaults
         Object itemDefaults = parameters.get("items");
         parameters.set("items", null);
@@ -35,12 +48,87 @@ public class ShopAction extends SelectorAction {
             }
         }
 
+        if (!parameters.contains("cost_type") && (showPath || showExtra || showRequired || parameters.contains("spells"))) {
+            parameters.set("cost_type", "sp");
+        }
+
         super.prepare(context, parameters);
 
         // Restore items list. This is kind of messy, but so is this whole action.
         parameters.set("items", itemDefaults);
         loadItems(context, parameters, "items", false);
         loadItems(context, parameters, "spells", true);
+
+        // Auto-populate spells
+        Mage mage = context.getMage();
+        CasterProperties caster = mage.getActiveProperties();
+        ProgressionPath currentPath = caster.getPath();
+        if (currentPath != null) {
+            List<String> spellKeys = new ArrayList<>();
+            if (showPath) {
+                spellKeys.addAll(currentPath.getSpells());
+            }
+            if (showRequired) {
+                spellKeys.addAll(currentPath.getRequiredSpells());
+            }
+            loadSpells(context, spellKeys, showFree, null);
+
+            if (showExtra) {
+                loadSpells(context, currentPath.getExtraSpells(), showFree, getMessage("extra_spell"));
+            }
+        }
+    }
+
+    protected void loadSpells(CastContext context, Collection<String> spellKeys, boolean showFree, String addLore) {
+        Mage mage = context.getMage();
+        CasterProperties caster = mage.getActiveProperties();
+        MageController controller = context.getController();
+        List<SpellTemplate> spells = new ArrayList<>();
+        for (String spellKey : spellKeys) {
+            SpellTemplate spell = controller.getSpellTemplate(spellKey);
+            if (spell == null) {
+                mage.sendDebugMessage(ChatColor.GRAY + " Skipping " + spellKey + ", is invalid", 3);
+                continue;
+            }
+            if (caster.hasSpell(spellKey) && (spell.getWorth() > 0 || showFree)) {
+                mage.sendDebugMessage(ChatColor.GRAY + " Skipping " + spellKey + ", already have it", 3);
+                continue;
+            }
+            if (spell.getWorth() <= 0 && !showFree) {
+                mage.sendDebugMessage(ChatColor.GRAY + " Skipping " + spellKey + ", is free", 3);
+                continue;
+            }
+            if (!spell.hasCastPermission(mage.getCommandSender())) {
+                mage.sendDebugMessage(ChatColor.YELLOW + " Skipping " + spellKey + ", no permission", 3);
+                continue;
+            }
+
+            spells.add(spell);
+        }
+
+        mage.sendDebugMessage(ChatColor.GOLD + "Spells to buy: " + spells.size(), 2);
+
+        if (spells.size() == 0) {
+            return;
+        }
+
+        Collections.sort(spells, new Comparator<SpellTemplate>() {
+            @Override
+            public int compare(SpellTemplate spell1, SpellTemplate spell2) {
+                return Double.compare(spell1.getWorth(), spell2.getWorth());
+            }
+        });
+
+        List<ConfigurationSection> pathSpellConfigs = new ArrayList<>();
+        for (SpellTemplate spell : spells) {
+            ConfigurationSection spellConfig = new MemoryConfiguration();
+            spellConfig.set("item", "spell:" + spell.getKey());
+            if (addLore != null) {
+                spellConfig.set("description", addLore);
+            }
+            pathSpellConfigs.add(spellConfig);
+        }
+        loadOptions(pathSpellConfigs);
     }
 
     protected void loadItems(CastContext context, ConfigurationSection parameters, String key, boolean filterSpells) {
@@ -56,7 +144,7 @@ public class ShopAction extends SelectorAction {
                     itemConfigs.add(itemConfig);
                 }
             } else {
-                List<? extends Object> objects = parameters.getList(key);
+                List<?> objects = parameters.getList(key);
                 for (Object object : objects) {
                     if (object instanceof ConfigurationSection) {
                         itemConfigs.add((ConfigurationSection)object);
@@ -80,6 +168,8 @@ public class ShopAction extends SelectorAction {
                     String spellName = config.getString("item");
                     if (spellName != null && caster.hasSpell(spellName)) {
                         it.remove();
+                    } else {
+                        config.set("item", "spell:" + spellName);
                     }
                 }
             }
@@ -92,13 +182,15 @@ public class ShopAction extends SelectorAction {
                     itemConfig.set("item", null);
                     itemConfig.set("icon", itemName);
                     ItemStack item = parseItem(itemName);
+                    if (item == null) continue;
+
                     Object costs = itemConfig.get("cost");
                     if (costs != null) {
                         itemConfig.set("earn", costs);
                         itemConfig.set("cost", null);
                     } else if (item != null) {
-                        double worth = context.getController().getWorth(item);
-                        if (worth > 0) {
+                        Double worth = context.getController().getWorth(item);
+                        if (worth != null && worth > 0) {
                             itemConfig.set("earn", worth);
                         }
                     }

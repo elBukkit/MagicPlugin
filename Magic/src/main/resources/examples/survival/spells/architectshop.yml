@@ -12,7 +12,6 @@ architectshop:
         apply_to_caster: true
         confirm_filler: stained_glass:9
         confirm: true
-        cost_type: sp
         spells:
         - none
         - none

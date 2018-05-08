@@ -2,13 +2,9 @@ testspellshop:
     icon: iron_hoe
     category: npc
     hidden: true
-    actions:
-        cast:
-        -  class: SpellShop
+    inherit: spellshop
     parameters:
-        quiet: true
-        confirm: false
-        auto_close: false
-        auto_upgrade: true
-        use_sp: true
+      confirm: false
+      auto_close: false
+      scale: 0
 
