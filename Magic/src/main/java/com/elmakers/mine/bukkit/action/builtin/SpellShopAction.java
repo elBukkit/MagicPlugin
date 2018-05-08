@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
+@Deprecated
 public class SpellShopAction extends BaseShopAction
 {
     private boolean showPath = true;

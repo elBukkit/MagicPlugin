@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import de.slikey.effectlib.util.ConfigUtils;
 
+@Deprecated
 public class ItemShopAction extends BaseShopAction
 {
     private List<ShopItem> items = new ArrayList<>();

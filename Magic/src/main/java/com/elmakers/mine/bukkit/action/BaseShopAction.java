@@ -43,6 +43,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
+@Deprecated
 public abstract class BaseShopAction extends BaseSpellAction implements GUIAction
 {
     protected boolean requireWand = false;
