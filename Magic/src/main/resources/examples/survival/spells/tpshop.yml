@@ -4,11 +4,16 @@ tpshop:
     hidden: true
     actions:
         cast:
-        -  class: SpellShop
+        - class: Selector
     parameters:
         quiet: true
         confirm_filler: stained_glass:5
-        cast_spells: true
-        spells:
-          randomtp: 1
+        confirm: true
+        options:
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - cast_spell: randomtp
+          cost: 1
           
