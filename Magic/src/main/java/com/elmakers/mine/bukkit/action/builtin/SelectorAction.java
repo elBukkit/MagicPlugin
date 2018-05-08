@@ -684,11 +684,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     return SpellResult.NO_TARGET;
                 }
                 MageClass activeClass = mage.getActiveClass();
+                if (switchClass && activeClass != null) {
+                    mage.lockClass(activeClass.getKey());
+                }
                 mage.unlockClass(unlockClass);
                 if (switchClass) {
-                    if (activeClass != null) {
-                        mage.lockClass(activeClass.getKey());
-                    }
                     mage.setActiveClass(unlockClass);
                 }
             }

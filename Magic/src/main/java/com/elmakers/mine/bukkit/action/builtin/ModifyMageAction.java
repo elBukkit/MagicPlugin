@@ -88,6 +88,9 @@ public class ModifyMageAction extends BaseSpellAction
                 }
                 targetClass = mage.unlockClass(mageClass);
                 if (targetClass == null) {
+                    if (activeClass != null) {
+                        mage.unlockClass(activeClass.getKey());
+                    }
                     return SpellResult.FAIL;
                 }
                 if (!mage.setActiveClass(mageClass)) {
