@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -1049,6 +1050,13 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         String inventoryTitle = getInventoryTitle();
         String balanceDescription = getBalanceDescription(context);
         inventoryTitle = inventoryTitle.replace("$balance", balanceDescription);
+
+        ProgressionPath path = context.getMage().getActiveProperties().getPath();
+        String pathName = (path == null ? null : path.getName());
+        if (pathName == null) {
+            pathName = "";
+        }
+        inventoryTitle = inventoryTitle.replace("$path", pathName);
 
         int invSize = (int)Math.ceil(numSlots / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
