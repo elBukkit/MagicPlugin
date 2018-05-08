@@ -240,15 +240,15 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             }
             message = message.replace("$roman",property);
         }
-        String valueString = Math.floor(amount) == amount ? Integer.toString((int)amount) : formatter.format(amount);
+        String valueString = Math.floor(amount) == amount ? Integer.toString((int)Math.floor(amount)) : formatter.format(amount);
         if (propertyTemplate != null) {
             valueString = propertyTemplate.replace("$property", valueString);
         }
-        String amountString = Integer.toString((int) amount);
+        String amountString = Integer.toString(Math.round(amount));
         if (propertyTemplate != null) {
             amountString = propertyTemplate.replace("$property", amountString);
         }
-        String percentString = Integer.toString((int) (100.0 * amount));
+        String percentString = Integer.toString((int)Math.round(100.0 * amount));
         if (propertyTemplate != null) {
             percentString = propertyTemplate.replace("$property", percentString);
         }
