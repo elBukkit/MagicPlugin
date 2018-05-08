@@ -1164,4 +1164,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
     public float getCostScale() {
         return (float)costScale;
     }
+
+    protected int getNumSlots() {
+        return numSlots;
+    }
 }

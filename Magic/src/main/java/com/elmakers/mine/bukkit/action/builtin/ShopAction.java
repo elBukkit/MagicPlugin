@@ -71,15 +71,15 @@ public class ShopAction extends SelectorAction {
             if (showRequired) {
                 spellKeys.addAll(currentPath.getRequiredSpells());
             }
-            loadSpells(context, spellKeys, showFree, null);
+            loadSpells(context, spellKeys, showFree, false);
 
             if (showExtra) {
-                loadSpells(context, currentPath.getExtraSpells(), showFree, getMessage("extra_spell"));
+                loadSpells(context, currentPath.getExtraSpells(), showFree, true);
             }
         }
     }
 
-    protected void loadSpells(CastContext context, Collection<String> spellKeys, boolean showFree, String addLore) {
+    protected void loadSpells(CastContext context, Collection<String> spellKeys, boolean showFree, boolean isExtra) {
         Mage mage = context.getMage();
         CasterProperties caster = mage.getActiveProperties();
         MageController controller = context.getController();
@@ -119,7 +119,19 @@ public class ShopAction extends SelectorAction {
             }
         });
 
+        // Add padding
         List<ConfigurationSection> pathSpellConfigs = new ArrayList<>();
+        if (isExtra) {
+            int maxSlot = getNumSlots();
+            int paddedSlot = 8 - (maxSlot + 8) % 9;
+            for (int i = 0; i < paddedSlot; i++) {
+                ConfigurationSection emptyConfig = new MemoryConfiguration();
+                emptyConfig.set("item", "none");
+                pathSpellConfigs.add(emptyConfig);
+            }
+        }
+
+        String addLore = isExtra ? getMessage("extra_spell") : null;
         for (SpellTemplate spell : spells) {
             ConfigurationSection spellConfig = new MemoryConfiguration();
             spellConfig.set("item", "spell:" + spell.getKey());

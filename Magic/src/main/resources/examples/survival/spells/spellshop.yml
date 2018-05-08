@@ -11,6 +11,7 @@ spellshop:
     parameters:
       show_path_spells: true
       show_extra_spells: true
+      apply_to_caster: true
       confirm: true
       auto_close: true
       confirm_filler: stained_glass:5
