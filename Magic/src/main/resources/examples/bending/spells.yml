@@ -721,19 +721,15 @@ bendingshop:
   parameters:
     options:
     - unlock_class: airbender
-      item: airstaff
       cost: 5000
       icon: wood_hoe:34
     - unlock_class: waterbender
-      item: airbending
       cost: 5000
       icon: wood_hoe:20
     - unlock_class: earthbender
-      item: earthbending
       cost: 5000
       icon: wood_hoe:21
     - unlock_class: firebender
-      item: firebending
       cost: 5000
       icon: wood_hoe:22
     selected: "Became $name for $cost"

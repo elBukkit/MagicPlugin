@@ -7,6 +7,7 @@ bender:
   mana_regeneration: 5
 
 waterbender:
+  class_items: waterbending
   parent: bender
   locked: true
   path: waterbending
@@ -18,6 +19,7 @@ waterbender:
     - waterball
 
 airbender:
+  class_items: airstaff
   parent: bender
   locked: true
   path: airbending
@@ -31,6 +33,7 @@ airbender:
     - airscooter
 
 firebender:
+  class_items: firebending
   parent: bender
   locked: true
   path: firebending
@@ -42,6 +45,7 @@ firebender:
     - fireball
 
 earthbender:
+  class_items: earthbending
   parent: bender
   locked: true
   path: earthbending
@@ -55,6 +59,7 @@ earthbender:
     - earthblock
 
 avatar:
+  class_items: avatar
   path: avatar
   mana_regeneration: 40
   mana_max: 500
