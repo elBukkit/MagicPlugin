@@ -182,8 +182,8 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Load example
+        boolean disableInherited = false;
         if (usingExample && loadDefaults) {
-            boolean disableInherited = false;
             // Load inherited configs first
             List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
             if (inherits != null) {
@@ -227,7 +227,7 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Re-enable anything we are overriding
-        if (disableDefaults) {
+        if (disableDefaults || disableInherited) {
             enableAll(overrides);
         }
 
@@ -239,7 +239,7 @@ public class ConfigurationLoadTask implements Runnable {
                 if (input != null)
                 {
                     ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
-                    if (disableDefaults) {
+                    if (disableDefaults || disableInherited) {
                         enableAll(exampleConfig);
                     }
                     ConfigurationUtils.addConfigurations(config, exampleConfig, false);
@@ -253,7 +253,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        loadConfigFolder(config, configSubFolder, disableDefaults);
+        loadConfigFolder(config, configSubFolder, disableDefaults || disableInherited);
 
         // Save defaults
         File savedDefaults = new File(configFolder, defaultsFileName);
