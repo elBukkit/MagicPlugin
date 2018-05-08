@@ -43,13 +43,17 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
-        if (skillItem == null || skillConfig == null) return false;
+        if (skillItem == null) return false;
         Object handle = getHandle(skillItem);
         if (handle == null) return false;
         Object tag = getTag(handle);
         if (tag == null) return false;
 
         setMetaBoolean(tag, "skill", true);
+
+        if (skillConfig == null) {
+            return true;
+        }
 
         if (skillConfig.getBoolean("undroppable", false)) {
             setMetaBoolean(tag, "undroppable", true);
