@@ -52,7 +52,7 @@ public class EntityMageData {
 
         lifetime = parameters.getInt("lifetime", 0);
         tickInterval = parameters.getLong("interval", parameters.getLong("cast_interval", 0));
-        requiresTarget = parameters.getBoolean("cast_requires_target", true);
+        requiresTarget = parameters.getBoolean("cast_requires_target", parameters.getBoolean("interval_requires_target", true));
         trackRadiusSquared = parameters.getDouble("track_radius", 128);
         trackRadiusSquared = trackRadiusSquared * trackRadiusSquared;
 

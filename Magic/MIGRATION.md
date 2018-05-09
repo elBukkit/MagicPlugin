@@ -8,8 +8,9 @@
  - BlockPhysics integration removed
  - sp_multiplier wand/class property changed to earn_multiplier
  - All buy and sell shops converted to use the new Shop action. 
-   If you have customized shops and are having issues, you may
-   need to update configs or just change it back to ItemShop, but I'm hoping everything translates seamlessly.
+   If you have customized shops and are having issues, you may need to update configs or just change it back 
+   to ItemShop, but I'm hoping everything translates seamlessly.
+   If you have copied the "ollivander" spell you may need to modify it, "worth_item" is not supported by the new Shop action.
  
 ## 7.4
 
