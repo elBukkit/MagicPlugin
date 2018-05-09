@@ -678,6 +678,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 mage.unlockClass(unlockClass);
                 if (switchClass) {
                     mage.setActiveClass(unlockClass);
+
+                    // This is here to force reload any changes made to wands
+                    // If this becomes an issue, maybe make it optional
+                    wand = actionContext.checkWand();
                 }
             }
 
