@@ -21,7 +21,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -465,26 +464,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                             inactiveIcon.applyToItem(copy);
                         }
                     }
-                    Player player = mage.getPlayer();
-                    if (putInHand) {
-                        context.getController().giveItemToPlayer(player, copy);
-                    } else {
-                        PlayerInventory inventory = player.getInventory();
-                        ItemStack inHand = inventory.getItemInMainHand();
-                        Integer freeSlot = null;
-                        if (InventoryUtils.isEmpty(inHand)) {
-                            for (int i = 0; i < inventory.getSize() && freeSlot == null; i++) {
-                                if (i != inventory.getHeldItemSlot() && InventoryUtils.isEmpty(inventory.getItem(i))) {
-                                    freeSlot = i;
-                                }
-                            }
-                        }
-                        if (freeSlot == null) {
-                            context.getController().giveItemToPlayer(player, copy);
-                        } else {
-                            inventory.setItem(freeSlot, copy);
-                        }
-                    }
+                    mage.giveItem(copy, putInHand);
                 }
             }
 

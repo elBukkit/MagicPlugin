@@ -170,6 +170,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean showConfirmation = false;
         protected boolean showUnavailable = false;
         protected boolean switchClass = false;
+        protected boolean putInHand = false;
         protected int limit = 0;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
@@ -182,6 +183,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected void parse(ConfigurationSection configuration) {
             applyToWand = configuration.getBoolean("apply_to_wand", applyToWand);
             applyToCaster = configuration.getBoolean("apply_to_caster", applyToCaster);
+            putInHand = configuration.getBoolean("put_in_hand", putInHand);
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
             if (configuration.contains("switch_class")) {
@@ -407,6 +409,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.applyToCaster = defaults.applyToCaster;
             this.unlockClass = defaults.unlockClass;
             this.switchClass = defaults.switchClass;
+            this.putInHand = defaults.putInHand;
             this.limit = defaults.limit;
             this.unlockKey = defaults.unlockKey;
             this.unlockSection = defaults.unlockSection;
@@ -739,7 +742,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             if (items != null && caster == null) {
                 for (ItemStack item : items) {
                     ItemStack copy = InventoryUtils.getCopy(item);
-                    mage.giveItem(copy);
+                    mage.giveItem(copy, putInHand);
                 }
             }
 

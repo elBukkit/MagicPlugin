@@ -3003,17 +3003,12 @@ public class MagicController implements MageController {
         return blockList;
     }
 
+    public boolean isBindOnGive() {
+        return bindOnGive;
+    }
+
     @Override
     public void giveItemToPlayer(Player player, ItemStack itemStack) {
-        // Bind item if configured to do so
-        if (bindOnGive && Wand.isWand(itemStack)) {
-            Wand wand = getWand(itemStack);
-            if (wand.isBound()) {
-                wand.tryToOwn(player);
-                itemStack = wand.getItem();
-            }
-        }
-
         Mage mage = getMage(player);
         mage.giveItem(itemStack);
     }

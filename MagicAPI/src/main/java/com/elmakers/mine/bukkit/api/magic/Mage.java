@@ -523,6 +523,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     void debugPermissions(CommandSender sender, Spell spell);
     CommandSender getDebugger();
     void giveItem(ItemStack item);
+    void giveItem(ItemStack item, boolean putInHand);
     void removeItemsWithTag(String tag);
     void setQuiet(boolean quiet);
     boolean isQuiet();
