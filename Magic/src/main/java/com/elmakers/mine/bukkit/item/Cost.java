@@ -426,9 +426,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public String getFullDescription(Messages messages, CostReducer reducer) {
-        double amount = getAmount(reducer);
-        if (amount == 0) return "";
-
         switch (type) {
             case ITEM:
                 if (item != null && !isConsumeFree(reducer)) {
