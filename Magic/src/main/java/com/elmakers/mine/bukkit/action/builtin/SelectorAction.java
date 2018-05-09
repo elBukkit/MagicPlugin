@@ -204,19 +204,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             selectedMessage = configuration.getString("selected", selectedMessage);
-            if (selectedMessage == null) {
-                selectedMessage = getMessage("selected");
-            }
-
-            // Blanking out "selected" will also blank out "selected_free".
-            if (selectedMessage.isEmpty()) {
-                selectedFreeMessage = "";
-            } else {
-                selectedFreeMessage = configuration.getString("selected_free", selectedFreeMessage);
-                if (selectedFreeMessage == null) {
-                    selectedFreeMessage = getMessage("selected_free");
-                }
-            }
+            selectedFreeMessage = configuration.getString("selected_free", selectedFreeMessage);
 
             Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(configuration, "requirements");
             if (requirementConfigurations != null) {
@@ -806,7 +794,17 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         }
 
         public String getSelectedMessage(CostReducer reducer) {
-            return getCostsMessage(reducer, costs == null ? selectedFreeMessage : selectedMessage);
+            String message = selectedMessage;
+            if (costs == null) {
+                if (selectedFreeMessage != null) {
+                    message = selectedFreeMessage;
+                } else if (message == null) {
+                    message = getMessage("selected_free");
+                }
+            } else if (message == null) {
+                message = getMessage("selected");
+            }
+            return getCostsMessage(reducer, message);
         }
 
         public String getCostsMessage(CostReducer reducer, String baseMessage) {
