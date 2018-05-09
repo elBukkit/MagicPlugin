@@ -1618,6 +1618,8 @@ public class MagicController implements MageController {
         automatonTemplates.clear();
         for (String key : keys) {
             ConfigurationSection config = resolveConfiguration(key, automataConfiguration, templateConfigurations);
+            if (!config.getBoolean("enabled", true)) continue;
+
             AutomatonTemplate template = new AutomatonTemplate(this, key, config);
             automatonTemplates.put(key, template);
         }
