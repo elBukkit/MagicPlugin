@@ -14,7 +14,7 @@ raise:
       actions:
       - class: Cover
         actions:
-        - class: RaiseBlocks
+        - class: RaiseBlock
         - class: PlayEffects
           effects: raise
   effects:

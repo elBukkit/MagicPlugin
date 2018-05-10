@@ -23,7 +23,7 @@ import com.elmakers.mine.bukkit.utility.DirectionUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
-public class RaiseBlocksAction extends BaseSpellAction
+public class RaiseBlockAction extends BaseSpellAction
 {
     private int verticalSearchDistance;
     private List<BlockFace> directions;

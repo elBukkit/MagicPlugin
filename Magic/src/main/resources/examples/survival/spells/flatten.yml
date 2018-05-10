@@ -12,7 +12,7 @@ flatten:
       actions:
       - class: Cover
         actions:
-        - class: LowerBlocks
+        - class: LowerBlock
         - class: PlayEffects
           effects: lower
   effects:

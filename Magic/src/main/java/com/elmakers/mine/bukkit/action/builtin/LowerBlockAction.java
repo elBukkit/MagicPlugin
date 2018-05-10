@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.utility.DirectionUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
-public class LowerBlocksAction extends BaseSpellAction
+public class LowerBlockAction extends BaseSpellAction
 {
     private int verticalSearchDistance;
     private List<BlockFace> directions;
