@@ -92,6 +92,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.event.LoadEvent;
+import com.elmakers.mine.bukkit.api.event.PreLoadEvent;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
@@ -1496,8 +1497,9 @@ public class MagicController implements MageController {
         messages.load(loader.getMessages());
         loadMaterials(loader.getMaterials());
 
-        // Register currencies
-        loadCurrencies(currencyConfiguration);
+        // Register currencies and other preload integrations
+        registerPreLoad(currencyConfiguration);
+
         getLogger().info("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
         loadEffects(loader.getEffects());
@@ -1568,7 +1570,6 @@ public class MagicController implements MageController {
         Bukkit.getPluginManager().callEvent(loadEvent);
 
         // Register attribute providers
-        attributeProviders.clear();
         attributeProviders.addAll(loadEvent.getAttributeProviders());
         if (skillAPIManager != null) {
             attributeProviders.add(skillAPIManager);
@@ -1578,7 +1579,6 @@ public class MagicController implements MageController {
         }
 
         // Register team providers
-        teamProviders.clear();
         teamProviders.addAll(loadEvent.getTeamProviders());
         if (heroesManager != null && useHeroesParties) {
             teamProviders.add(heroesManager);
@@ -1588,7 +1588,6 @@ public class MagicController implements MageController {
         }
 
         // Register requirement processors
-        requirementProcessors.clear();
         requirementProcessors.putAll(loadEvent.getRequirementProcessors());
         if (skillAPIManager != null) {
             requirementProcessors.put("skillapi", skillAPIManager);
@@ -2870,8 +2869,18 @@ public class MagicController implements MageController {
         currencies.put(currency.getKey(), currency);
     }
 
-    protected void loadCurrencies(ConfigurationSection configuration) {
+    protected void registerPreLoad(ConfigurationSection customCurrencies) {
         currencies.clear();
+        attributeProviders.clear();
+        teamProviders.clear();
+        requirementProcessors.clear();
+
+        PreLoadEvent loadEvent = new PreLoadEvent(this);
+        Bukkit.getPluginManager().callEvent(loadEvent);
+
+        attributeProviders.addAll(loadEvent.getAttributeProviders());
+        teamProviders.addAll(loadEvent.getTeamProviders());
+        requirementProcessors.putAll(loadEvent.getRequirementProcessors());
 
         // Load builtin default currencies
         addCurrency(new ItemCurrency(this, getWorthItem(), getWorthItemAmount(), currencyItem.getName(), currencyItem.getPluralName()));
@@ -2885,9 +2894,14 @@ public class MagicController implements MageController {
         addCurrency(new VaultCurrency(this));
 
         // Custom currencies can override the defaults
-        Set<String> keys = configuration.getKeys(false);
+        for (Currency currency : loadEvent.getCurrencies()) {
+            addCurrency(currency);
+        }
+
+        // Configured currencies override everything else
+        Set<String> keys = customCurrencies.getKeys(false);
         for (String key : keys) {
-            addCurrency(new CustomCurrency(this, key, configuration.getConfigurationSection(key)));
+            addCurrency(new CustomCurrency(this, key, customCurrencies.getConfigurationSection(key)));
         }
     }
 

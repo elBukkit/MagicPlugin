@@ -18,8 +18,9 @@
  - Allow for custom mob triggers, add Trigger action to trigger via spells
  - Add support for custom currencies
    - Currencies defined in config.yml, named in messages.yml
-   - Can be used in casting costs, Selector costs, spell earning (in place of SP)
+   - Can be used in casting costs, Selector/Shop costs/earns, spell earning (in place of SP) and worth
    - Can be given with /mgive, in virtual or item form (right-click item to deposit)
+   - Available via the API for plugins to add custom currencies
  - Add use_wand_color option to Firework action
  - Colors can now use simple color names (red, blue, etc) or hex codes
  - Add Raise and Flatten engineering spells
