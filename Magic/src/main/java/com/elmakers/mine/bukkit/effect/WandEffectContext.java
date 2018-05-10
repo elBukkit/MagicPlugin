@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public class WandEffectContext extends MageEffectContext implements com.elmakers.mine.bukkit.api.effect.WandEffectContext {
-    protected final @Nullable Wand wand;
+    protected @Nullable Wand wand;
 
     public WandEffectContext(@Nonnull Mage mage, @Nullable Wand wand) {
         super(mage);
@@ -20,6 +20,16 @@ public class WandEffectContext extends MageEffectContext implements com.elmakers
     @Override
     @Nullable
     public Wand getWand() {
+        return wand;
+    }
+
+    @Override
+    @Nullable
+    public Wand checkWand() {
+        if (wand != null) {
+            wand.deactivate();
+        }
+        wand = mage.checkWand();
         return wand;
     }
 

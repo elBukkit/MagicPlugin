@@ -153,6 +153,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable List<Cost> costs = null;
         protected @Nonnull String costType = "currency";
         protected @Nonnull String earnType = "currency";
+        protected @Nullable String costOverride = null;
         protected @Nonnull String costTypeFallback = "item";
         protected @Nullable String castSpell = null;
         protected @Nullable String unlockClass = null;
@@ -170,6 +171,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean showConfirmation = false;
         protected boolean showUnavailable = false;
         protected boolean switchClass = false;
+        protected boolean putInHand = false;
+        protected boolean free = false;
         protected int limit = 0;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
@@ -182,6 +185,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected void parse(ConfigurationSection configuration) {
             applyToWand = configuration.getBoolean("apply_to_wand", applyToWand);
             applyToCaster = configuration.getBoolean("apply_to_caster", applyToCaster);
+            putInHand = configuration.getBoolean("put_in_hand", putInHand);
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
             if (configuration.contains("switch_class")) {
@@ -193,30 +197,20 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             unlockSection = configuration.getString("unlock_section", unlockSection);
             showConfirmation = configuration.getBoolean("confirm", showConfirmation);
             costType = configuration.getString("cost_type", costType);
+            costOverride = configuration.getString("cost_override", costOverride);
             earnType = configuration.getString("earn_type", earnType);
             costTypeFallback = configuration.getString("cost_type_fallback", costTypeFallback);
             actions = configuration.getString("actions", actions);
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
             commands = ConfigurationUtils.getStringList(configuration, "commands");
+            free = configuration.getBoolean("free", free);
 
-            if (costType != null && (costType.isEmpty() || costType.equalsIgnoreCase("none"))) {
-                costType = null;
+            if (costType.isEmpty() || costType.equalsIgnoreCase("none")) {
+                free = true;
             }
 
             selectedMessage = configuration.getString("selected", selectedMessage);
-            if (selectedMessage == null) {
-                selectedMessage = getMessage("selected");
-            }
-
-            // Blanking out "selected" will also blank out "selected_free".
-            if (selectedMessage.isEmpty()) {
-                selectedFreeMessage = "";
-            } else {
-                selectedFreeMessage = configuration.getString("selected_free", selectedFreeMessage);
-                if (selectedFreeMessage == null) {
-                    selectedFreeMessage = getMessage("selected_free");
-                }
-            }
+            selectedFreeMessage = configuration.getString("selected_free", selectedFreeMessage);
 
             Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(configuration, "requirements");
             if (requirementConfigurations != null) {
@@ -260,7 +254,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 icon.setItemMeta(meta);
             }
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
-            if (costType != null) {
+            if (!free) {
                 costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
                 double cost = configuration.getDouble("cost");
                 if (cost > 0) {
@@ -268,7 +262,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         costs = new ArrayList<>();
                     }
                     Cost optionCost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, cost);
-                    optionCost.checkSupported(controller, costType, costTypeFallback);
+                    if (costOverride != null) {
+                        optionCost.convert(controller, costOverride);
+                    }
+                    optionCost.checkSupported(controller, costTypeFallback);
                     optionCost.scale(controller.getWorthBase());
                     costs.add(optionCost);
                 }
@@ -288,7 +285,12 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                             itemCost = spell.getCost();
                         }
                         if (itemCost != null) {
-                            itemCost.checkSupported(controller, costType, costTypeFallback);
+                            if (costOverride != null) {
+                                itemCost.convert(controller, costOverride);
+                                itemCost.checkSupported(controller, costTypeFallback);
+                            } else {
+                                itemCost.checkSupported(controller, costType, costTypeFallback);
+                            }
                             itemCost.scale(controller.getWorthBase());
                             costs.add(itemCost);
                         }
@@ -419,6 +421,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.applyToCaster = defaults.applyToCaster;
             this.unlockClass = defaults.unlockClass;
             this.switchClass = defaults.switchClass;
+            this.putInHand = defaults.putInHand;
             this.limit = defaults.limit;
             this.unlockKey = defaults.unlockKey;
             this.unlockSection = defaults.unlockSection;
@@ -429,6 +432,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.showUnavailable = defaults.showUnavailable;
             this.commands = defaults.commands;
             this.actions = defaults.actions;
+            this.free = defaults.free;
+            this.costOverride = defaults.costOverride;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
@@ -684,12 +689,16 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     return SpellResult.NO_TARGET;
                 }
                 MageClass activeClass = mage.getActiveClass();
+                if (switchClass && activeClass != null) {
+                    mage.lockClass(activeClass.getKey());
+                }
                 mage.unlockClass(unlockClass);
                 if (switchClass) {
-                    if (activeClass != null) {
-                        mage.lockClass(activeClass.getKey());
-                    }
                     mage.setActiveClass(unlockClass);
+
+                    // This is here to force reload any changes made to wands
+                    // If this becomes an issue, maybe make it optional
+                    wand = actionContext.checkWand();
                 }
             }
 
@@ -747,7 +756,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             if (items != null && caster == null) {
                 for (ItemStack item : items) {
                     ItemStack copy = InventoryUtils.getCopy(item);
-                    mage.giveItem(copy);
+                    mage.giveItem(copy, putInHand);
                 }
             }
 
@@ -806,7 +815,17 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         }
 
         public String getSelectedMessage(CostReducer reducer) {
-            return getCostsMessage(reducer, costs == null ? selectedFreeMessage : selectedMessage);
+            String message = selectedMessage;
+            if (costs == null) {
+                if (selectedFreeMessage != null) {
+                    message = selectedFreeMessage;
+                } else if (message == null) {
+                    message = getMessage("selected_free");
+                }
+            } else if (message == null) {
+                message = getMessage("selected");
+            }
+            return getCostsMessage(reducer, message);
         }
 
         public String getCostsMessage(CostReducer reducer, String baseMessage) {
@@ -1035,10 +1054,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
     protected String getBalanceDescription(CastContext context) {
         Mage mage = context.getMage();
-        String costType = defaultConfiguration.getCostType();
-        if (costType == null) {
+        if (defaultConfiguration.free) {
             return "";
         }
+        String costType = defaultConfiguration.getCostType();
         com.elmakers.mine.bukkit.item.Cost cost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, 1);
         cost.checkSupported(context.getController(), defaultConfiguration.getCostTypeFallback());
         cost.setAmount(cost.getBalance(mage, context.getWand()));

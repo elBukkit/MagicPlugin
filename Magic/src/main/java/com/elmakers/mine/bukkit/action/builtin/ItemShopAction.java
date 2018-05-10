@@ -13,7 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.elmakers.mine.bukkit.action.BaseShopAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -23,7 +22,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import de.slikey.effectlib.util.ConfigUtils;
 
 @Deprecated
-public class ItemShopAction extends BaseShopAction
+public class ItemShopAction extends com.elmakers.mine.bukkit.action.BaseShopAction
 {
     private List<ShopItem> items = new ArrayList<>();
 

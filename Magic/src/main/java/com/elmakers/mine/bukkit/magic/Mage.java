@@ -3140,6 +3140,32 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void giveItem(ItemStack itemStack, boolean putInHand) {
+        if (putInHand) {
+            giveItem(itemStack);
+        } else {
+            Player player = getPlayer();
+            if (player == null) return;
+
+            PlayerInventory inventory = player.getInventory();
+            ItemStack inHand = inventory.getItemInMainHand();
+            Integer freeSlot = null;
+            if (InventoryUtils.isEmpty(inHand)) {
+                for (int i = 0; i < inventory.getSize() && freeSlot == null; i++) {
+                    if (i != inventory.getHeldItemSlot() && InventoryUtils.isEmpty(inventory.getItem(i))) {
+                        freeSlot = i;
+                    }
+                }
+            }
+            if (freeSlot == null) {
+                giveItem(itemStack);
+            } else {
+                inventory.setItem(freeSlot, itemStack);
+            }
+        }
+    }
+
+    @Override
     public void giveItem(ItemStack itemStack) {
         if (InventoryUtils.isEmpty(itemStack)) return;
 
@@ -3153,6 +3179,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         Player player = getPlayer();
         if (player == null) return;
+
+        // Bind item if configured to do so
+        if (controller.isBindOnGive() && Wand.isWand(itemStack)) {
+            Wand wand = controller.getWand(itemStack);
+            if (wand.isBound()) {
+                wand.tryToOwn(player);
+                itemStack = wand.getItem();
+            }
+        }
 
         if (hasStoredInventory()) {
             if (!addToStoredInventory(itemStack)) {
@@ -3501,7 +3536,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.wand.Wand getBoundWand(String template) {
+    public Wand getBoundWand(String template) {
         return boundWands.get(template);
     }
 

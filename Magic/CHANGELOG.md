@@ -2,6 +2,8 @@
 
 # 7.5
 
+ - Please check MIGRATION.md for this release if updating! There were a few potentially breaking changes.
+
  - Maybe 1.13 support (not tested yet)
  - The survival configs are now contained in an example
    Defaults are mostly empty but load the survival example by default.
@@ -22,6 +24,7 @@
  - Colors can now use simple color names (red, blue, etc) or hex codes
  - Add Raise and Flatten engineering spells
  - Fix setting boolean values via /mage setdata, See: https://github.com/elBukkit/MagicPlugin/wiki/Vanity-Items
+ - Add class_items option for classes, for items given when unlocking a class and taken away when locking.
  
 # 7.4.4
 

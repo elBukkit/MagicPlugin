@@ -637,14 +637,19 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.RED + "Player "  + ChatColor.WHITE + player.getName() + ChatColor.RED + " already has class active: " + ChatColor.WHITE + classKey);
             return true;
         }
-        MageClass targetClass = mage.unlockClass(classKey);
-        if (targetClass == null) {
-            sender.sendMessage(ChatColor.RED + "Invalid class: " + ChatColor.WHITE + classKey);
-            return true;
-        }
 
         if (activeClass != null) {
             mage.lockClass(activeClass.getKey());
+        }
+
+        MageClass targetClass = mage.unlockClass(classKey);
+        if (targetClass == null) {
+            sender.sendMessage(ChatColor.RED + "Invalid class: " + ChatColor.WHITE + classKey);
+
+            if (activeClass != null) {
+                mage.unlockClass(activeClass.getKey());
+            }
+            return true;
         }
         mage.setActiveClass(targetClass.getKey());
         mage.deactivate();

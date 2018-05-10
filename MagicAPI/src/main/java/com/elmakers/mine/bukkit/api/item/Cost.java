@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.item;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -180,9 +182,16 @@ public interface Cost {
      * If the first fallback is also not supported, the second fallback will be used.
      *
      * @param controller The controller to use to check for currency support
-     * @param fallbackType The type to use if this costs' type is not supported
-     * @param secondaryFallbackType The type to use if this cost type and the fallback are not supported
+     * @param fallbackTypes The types to use if this costs' type is not supported
      * @return true if this cost was converted
      */
-    boolean checkSupported(MageController controller, String fallbackType, String secondaryFallbackType);
+    boolean checkSupported(@Nonnull MageController controller, @Nonnull String...fallbackTypes);
+
+    /**
+     * Change the type of this cost, converting the amount using global conversion configurations.
+     *
+     * @param controller The controller to look up conversion rates
+     * @param newType The new type of this cost.
+     */
+    void convert(@Nonnull MageController controller, @Nonnull String newType);
 }

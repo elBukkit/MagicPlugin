@@ -63,9 +63,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             this.type = Type.ITEM;
             itemWildcard = false;
             this.item = controller.getWorthItem().clone();
-            if (this.item != null) {
-                this.item.setAmount((int)Math.ceil(amount));
-            }
         } else {
             Set<String> customCurrencies = controller.getCustomCurrencies();
             if (customCurrencies.contains(key)) {
@@ -79,9 +76,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                     itemWildcard = false;
                 }
                 this.item = controller.createItem(key, true);
-                if (this.item != null) {
-                    this.item.setAmount((int)Math.ceil(amount));
-                }
                 this.type = Type.ITEM;
             }
         }
@@ -99,7 +93,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     public boolean isEmpty(CostReducer reducer) {
         switch (this.type) {
             case ITEM:
-                return item == null || getReducedCost(item.getAmount(), reducer) == 0;
+                return item == null || getAmount(reducer) == 0;
             case LEVELS:
             case XP:
             case SP:
@@ -426,9 +420,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public String getFullDescription(Messages messages, CostReducer reducer) {
-        double amount = getAmount(reducer);
-        if (amount == 0) return "";
-
         switch (type) {
             case ITEM:
                 if (item != null && !isConsumeFree(reducer)) {
@@ -463,14 +454,18 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     @Override
     public ItemStack getItemStack()
     {
-        return CompatibilityUtils.getCopy(item);
+        ItemStack item = CompatibilityUtils.getCopy(this.item);
+        if (item != null) {
+            item.setAmount((int)Math.max(1, Math.ceil(amount)));
+        }
+        return item;
     }
 
     protected ItemStack getItemStack(CostReducer reducer)
     {
-        ItemStack item = getItemStack();
+        ItemStack item = CompatibilityUtils.getCopy(this.item);
         if (item != null) {
-            item.setAmount(getRoundedCost(item.getAmount(), reducer));
+            item.setAmount(Math.max(1, getRoundedCost(item.getAmount(), reducer)));
         }
         return item;
     }
@@ -488,9 +483,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     public void setAmount(double amount) {
         this.amount = amount;
-        if (type == Type.ITEM && item != null) {
-            item.setAmount((int)Math.max(1, Math.ceil(amount)));
-        }
     }
 
     @Override
@@ -521,46 +513,63 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         return cost;
     }
 
-    public boolean checkSupported(MageController controller, String fallbackType) {
+    @Nullable
+    private String getFallbackType(MageController controller, String fallbackType) {
         switch (type) {
             case SP:
                 if (!controller.isSPEnabled()) {
-                    setType(controller, fallbackType);
-                    return true;
+                    return fallbackType;
                 }
-                return false;
+                break;
             case CURRENCY:
                 if (!controller.isVaultCurrencyEnabled()) {
-                    setType(controller, fallbackType);
-                    return true;
+                    return fallbackType;
                 }
-                return false;
+                break;
             default:
-                return false;
+                return null;
         }
+        return null;
+    }
+
+    private boolean checkSupportedType(MageController controller, String fallbackType) {
+        String newType = getFallbackType(controller, fallbackType);
+        if (newType == null) return false;
+        convert(controller, newType);
+        return true;
     }
 
     @Override
-    public boolean checkSupported(MageController controller, String fallbackType, String secondaryFallbackType) {
-        boolean modified = checkSupported(controller, fallbackType);
-        if (modified) {
-            checkSupported(controller, secondaryFallbackType);
-
-            switch (type) {
-                case XP:
-                    scale(1.0 / controller.getWorthXP());
-                    break;
-                case SP:
-                    scale(1.0 / controller.getWorthSkillPoints());
-                    break;
-                case ITEM:
-                    scale(1.0 / controller.getWorthItemAmount());
-                    break;
-                default:
-                    break;
+    public boolean checkSupported(MageController controller, String...fallbackTypes) {
+        boolean modified = false;
+        for (String fallbackType : fallbackTypes) {
+            boolean check = checkSupportedType(controller, fallbackType);
+            if (check) {
+                modified = check;
+            } else {
+                break;
             }
         }
 
         return modified;
+    }
+
+    @Override
+    public void convert(MageController controller, String newType) {
+        setType(controller, newType);
+        // TODO: This needs to cross-convert!
+        switch (type) {
+            case XP:
+                scale(1.0 / controller.getWorthXP());
+                break;
+            case SP:
+                scale(1.0 / controller.getWorthSkillPoints());
+                break;
+            case ITEM:
+                scale(1.0 / controller.getWorthItemAmount());
+                break;
+            default:
+                break;
+        }
     }
 }

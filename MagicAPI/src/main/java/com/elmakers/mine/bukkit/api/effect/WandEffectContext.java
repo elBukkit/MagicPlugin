@@ -7,4 +7,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 public interface WandEffectContext extends MageEffectContext {
     @Nullable
     Wand getWand();
+    @Nullable
+    Wand checkWand();
 }

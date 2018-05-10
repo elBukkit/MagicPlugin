@@ -567,8 +567,6 @@ spells:
         description: Make your target bouncy
         cast: Spongify Maxima!
     ollivander:
-        cast: You exchanged $requires for $item
-        insufficient_resources: You must have $requires
         title: "Ollivander"
     bookshop:
         name: Spellbook Shop

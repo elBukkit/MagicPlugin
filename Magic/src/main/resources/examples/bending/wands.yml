@@ -12,6 +12,7 @@ base_bending:
     drop: none
     quiet: 1
     effect_bubbles: false
+    limit_spells_to_path: true
 
 airbending:
     inherit: base_bending
@@ -53,6 +54,7 @@ firebending:
 avatar:
     class: avatar
     inherit: base_bending
+    limit_spells_to_path: false
     migrate_icon: gold_pickaxe
     icon: wood_hoe:23
     migrate_icon: wood_hoe
