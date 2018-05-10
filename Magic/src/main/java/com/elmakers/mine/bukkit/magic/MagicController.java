@@ -2397,15 +2397,20 @@ public class MagicController implements MageController {
         {
             Collection<String> worthItemKeys = currencies.getKeys(true);
             for (String worthItemKey : worthItemKeys) {
-                MaterialAndData material = new MaterialAndData(worthItemKey);
                 ConfigurationSection currencyConfig = currencies.getConfigurationSection(worthItemKey);
+                if (!currencyConfig.getBoolean("enabled", true)) continue;
+                MaterialAndData material = new MaterialAndData(worthItemKey);
                 ItemStack worthItemType = material.getItemStack(1);
                 double worthItemAmount = currencyConfig.getDouble("worth");
                 String worthItemName = currencyConfig.getString("name");
                 String worthItemNamePlural = currencyConfig.getString("name_plural");
 
                 currencyItem = new CurrencyItem(worthItemType, worthItemAmount, worthItemName, worthItemNamePlural);
-                break;
+
+                // This is kind of a hack, but makes it easier to override the default ...
+                if (!worthItemKey.equals("emerald")) {
+                    break;
+                }
             }
         }
         else

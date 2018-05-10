@@ -25,6 +25,7 @@
  - Add Raise and Flatten engineering spells
  - Fix setting boolean values via /mage setdata, See: https://github.com/elBukkit/MagicPlugin/wiki/Vanity-Items
  - Add class_items option for classes, for items given when unlocking a class and taken away when locking.
+ - Fix specifying a custom item-based currency in config.yml
  
 # 7.4.4
 
