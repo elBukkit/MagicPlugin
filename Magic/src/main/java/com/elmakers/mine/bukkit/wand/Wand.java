@@ -515,7 +515,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             hotbars.clear();
             while (hotbars.size() < hotbarCount) {
-                hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, "Wand"));
+                hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, getInventoryTitle()));
             }
             while (hotbars.size() > hotbarCount) {
                 hotbars.remove(0);
@@ -1040,7 +1040,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         if (!added) {
             fullSlot = getHotbarSize() + getInventorySize() * inventories.size();
-            Inventory newInventory = CompatibilityUtils.createInventory(null, getInventorySize(), "Wand");
+            Inventory newInventory = CompatibilityUtils.createInventory(null, getInventorySize(), getInventoryTitle());
             newInventory.addItem(itemStack);
             inventories.add(newInventory);
         }
@@ -1050,7 +1050,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected @Nonnull Inventory getInventoryByIndex(int inventoryIndex) {
         // Auto create
         while (inventoryIndex >= inventories.size()) {
-            inventories.add(CompatibilityUtils.createInventory(null, getInventorySize(), "Wand"));
+            inventories.add(CompatibilityUtils.createInventory(null, getInventorySize(), getInventoryTitle()));
         }
 
         return inventories.get(inventoryIndex);
@@ -2948,16 +2948,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         spell.addLore(messages, mage, wand, lore);
     }
 
+    private String getInventoryTitle() {
+        return getMessage("chest_inventory_title", "Wand");
+    }
+
     protected Inventory getOpenInventory() {
         while (openInventoryPage >= inventories.size()) {
-            inventories.add(CompatibilityUtils.createInventory(null, getInventorySize(), "Wand"));
+            inventories.add(CompatibilityUtils.createInventory(null, getInventorySize(), getInventoryTitle()));
         }
         return inventories.get(openInventoryPage);
     }
 
     protected Inventory getDisplayInventory() {
         if (displayInventory == null || displayInventory.getSize() != getInventorySize()) {
-            displayInventory = CompatibilityUtils.createInventory(null, getInventorySize(), "Wand");
+            displayInventory = CompatibilityUtils.createInventory(null, getInventorySize(), getInventoryTitle());
         }
 
         return displayInventory;
