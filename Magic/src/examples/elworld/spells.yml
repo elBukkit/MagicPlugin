@@ -1144,44 +1144,44 @@ minions:
         mana: 50
 
 recallshop:
-  inherit: spellshop
+  inherit: buyshop
   parameters:
     spells:
     - recall
     confirm: true
     confirm_filler: stained_glass:3
-    auto_upgrade: false
-    use_sp: false
+    auto_close: true
+    cost_override: currency
 
 flingshop:
-  inherit: spellshop
+  inherit: buyshop
   parameters:
     spells:
     - fling
     confirm: true
     confirm_filler: stained_glass:3
-    auto_upgrade: false
-    use_sp: false
+    auto_close: true
+    cost_override: currency
 
 blastshop:
-  inherit: spellshop
+  inherit: buyshop
   parameters:
     spells:
     - blast
     confirm: true
     confirm_filler: stained_glass:3
-    auto_upgrade: false
-    use_sp: false
+    auto_close: true
+    cost_override: currency
 
 pollinateshop:
-  inherit: spellshop
+  inherit: buyshop
   parameters:
     spells:
     - pollinate
     confirm: true
     confirm_filler: stained_glass:3
-    auto_upgrade: false
-    use_sp: false
+    auto_close: true
+    cost_override: currency
 
 intro_spshop:
     inherit: buyshop
@@ -1619,7 +1619,6 @@ laser2:
   inherit: laser
   parameters:
     brush: ice
-
 
 stream2:
   inherit: stream
