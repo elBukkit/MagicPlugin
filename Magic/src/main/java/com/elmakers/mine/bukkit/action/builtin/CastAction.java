@@ -8,11 +8,15 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
+import javax.annotation.Nonnull;
+
 public class CastAction extends BaseSpellAction {
 
-    private String spell;
+    @Nonnull
+    private String spell = "";
+    @Nonnull
+    private Boolean costFree = false, cooldownFree = false;
     private ConfigurationSection spellParameters;
-    private boolean costFree, cooldownFree;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
