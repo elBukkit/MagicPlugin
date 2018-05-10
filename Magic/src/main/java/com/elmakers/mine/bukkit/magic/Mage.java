@@ -299,10 +299,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
     public void setCostFree(boolean free) {
         costFree = free;
     }
 
+    @Override
     public void setCooldownFree(boolean free) {
         cooldownFree = free;
     }
