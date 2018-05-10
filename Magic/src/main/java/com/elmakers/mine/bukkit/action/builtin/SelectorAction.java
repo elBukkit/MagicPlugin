@@ -166,6 +166,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable List<String> commands;
         protected @Nullable List<CostModifier> costModifiers;
         protected @Nullable List<Cost> earns = null;
+        protected @Nonnull String effects = "selected";
         protected boolean applyToWand = false;
         protected boolean applyToCaster = false;
         protected boolean showConfirmation = false;
@@ -204,6 +205,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
             commands = ConfigurationUtils.getStringList(configuration, "commands");
             free = configuration.getBoolean("free", free);
+            effects = configuration.getString("effects", effects);
 
             if (costType.isEmpty() || costType.equalsIgnoreCase("none")) {
                 free = true;
@@ -434,6 +436,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.actions = defaults.actions;
             this.free = defaults.free;
             this.costOverride = defaults.costOverride;
+            this.effects = defaults.effects;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
@@ -788,6 +791,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 costDescription = baseMessage.replace("$cost", costDescription);
                 context.showMessage(costDescription);
                 return SpellResult.INSUFFICIENT_RESOURCES;
+            }
+
+            if (!effects.isEmpty()) {
+                context.playEffects(effects);
             }
 
             return SpellResult.CAST;
