@@ -8,14 +8,10 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
-import javax.annotation.Nonnull;
-
 public class CastAction extends BaseSpellAction {
 
-    @Nonnull
-    private String spell = "";
-    @Nonnull
-    private Boolean costFree = false, cooldownFree = false;
+    private String spell;
+    private boolean costFree, cooldownFree;
     private ConfigurationSection spellParameters;
 
     @Override
@@ -54,7 +50,7 @@ public class CastAction extends BaseSpellAction {
             if (!casted) {
                 return SpellResult.FAIL;
             }
-        } catch (NullPointerException exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
 
