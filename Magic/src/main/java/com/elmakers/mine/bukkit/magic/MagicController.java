@@ -86,6 +86,7 @@ import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -117,7 +118,15 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
-import com.elmakers.mine.bukkit.economy.Currency;
+import com.elmakers.mine.bukkit.economy.CustomCurrency;
+import com.elmakers.mine.bukkit.economy.ExperienceCurrency;
+import com.elmakers.mine.bukkit.economy.HealthCurrency;
+import com.elmakers.mine.bukkit.economy.HungerCurrency;
+import com.elmakers.mine.bukkit.economy.ItemCurrency;
+import com.elmakers.mine.bukkit.economy.LevelCurrency;
+import com.elmakers.mine.bukkit.economy.ManaCurrency;
+import com.elmakers.mine.bukkit.economy.SpellPointCurrency;
+import com.elmakers.mine.bukkit.economy.VaultCurrency;
 import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -549,8 +558,21 @@ public class MagicController implements MageController {
     }
 
     @Override
+    @Deprecated
     public CurrencyItem getCurrency() {
         return currencyItem;
+    }
+
+    @Override
+    @Nullable
+    public Currency getCurrency(String key) {
+        return currencies.get(key);
+    }
+
+    @Override
+    @Nonnull
+    public Set<String> getCurrencyKeys() {
+        return currencies.keySet();
     }
 
     /*
@@ -913,6 +935,18 @@ public class MagicController implements MageController {
             skillAPIManager = null;
             getLogger().info("SkillAPI integration disabled");
         }
+
+        // Try to link to Heroes:
+        try {
+            Plugin heroesPlugin = plugin.getServer().getPluginManager().getPlugin("Heroes");
+            if (heroesPlugin != null) {
+                heroesManager = new HeroesManager(plugin, heroesPlugin);
+            } else {
+                heroesManager = null;
+            }
+        } catch (Throwable ex) {
+            plugin.getLogger().warning(ex.getMessage());
+        }
     }
 
     protected void finalizeIntegration() {
@@ -1066,23 +1100,6 @@ public class MagicController implements MageController {
 
         // Link to NoCheatPlus
         ncpManager.initialize(plugin);
-
-        // Try to link to Heroes:
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Plugin heroesPlugin = plugin.getServer().getPluginManager().getPlugin("Heroes");
-                    if (heroesPlugin != null) {
-                        heroesManager = new HeroesManager(plugin, heroesPlugin);
-                    } else {
-                        heroesManager = null;
-                    }
-                } catch (Throwable ex) {
-                    plugin.getLogger().warning(ex.getMessage());
-                }
-            }
-        }, 2);
 
         // Try to link to dynmap:
         try {
@@ -1479,7 +1496,9 @@ public class MagicController implements MageController {
         messages.load(loader.getMessages());
         loadMaterials(loader.getMaterials());
 
-        loadCustomCurrencies(currencyConfiguration);
+        // Register currencies
+        loadCurrencies(currencyConfiguration);
+        getLogger().info("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
         loadEffects(loader.getEffects());
         getLogger().info("Loaded " + effects.size() + " effect lists");
@@ -1520,18 +1539,17 @@ public class MagicController implements MageController {
         crafting.register(plugin);
         MagicRecipe.FIRST_REGISTER = false;
 
-        // Set up attributes
-        // Delay this by 3 ticks on first load to give other plugins a chance to load and prepare for the LoadEvent
-        // The 3 here is important, because Heroes integration is delayed by 2 ticks.
+        // Set up external integrations via the LoadEvent
+        // Delay this by 1 tick on first load to give other plugins a chance to load and prepare for the LoadEvent
         if (loaded) {
-            initializeAttributes();
+            initializeExternalIntegrations();
         } else {
             plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
-                initializeAttributes();
+                initializeExternalIntegrations();
                 }
-            }, 3);
+            }, 1);
         }
 
         loaded = true;
@@ -1545,7 +1563,7 @@ public class MagicController implements MageController {
         notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
     }
 
-    private void initializeAttributes() {
+    private void initializeExternalIntegrations() {
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
 
@@ -1580,6 +1598,7 @@ public class MagicController implements MageController {
         }
         requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
 
+        // Register attributes
         Set<String> attributes = new HashSet<>();
         attributes.add("bowpull");
         attributes.addAll(this.attributes.keySet());
@@ -2395,7 +2414,7 @@ public class MagicController implements MageController {
         ConfigurationSection currencies = properties.getConfigurationSection("currency");
         if (currencies != null)
         {
-            Collection<String> worthItemKeys = currencies.getKeys(true);
+            Collection<String> worthItemKeys = currencies.getKeys(false);
             for (String worthItemKey : worthItemKeys) {
                 ConfigurationSection currencyConfig = currencies.getConfigurationSection(worthItemKey);
                 if (!currencyConfig.getBoolean("enabled", true)) continue;
@@ -2847,11 +2866,28 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void loadCustomCurrencies(ConfigurationSection configuration) {
-        customCurrencies.clear();
+    protected void addCurrency(Currency currency) {
+        currencies.put(currency.getKey(), currency);
+    }
+
+    protected void loadCurrencies(ConfigurationSection configuration) {
+        currencies.clear();
+
+        // Load builtin default currencies
+        addCurrency(new ItemCurrency(this, getWorthItem(), getWorthItemAmount(), currencyItem.getName(), currencyItem.getPluralName()));
+        addCurrency(new ManaCurrency(this));
+        addCurrency(new ExperienceCurrency(this, getWorthXP()));
+        addCurrency(new HealthCurrency(this));
+        addCurrency(new HungerCurrency(this));
+        addCurrency(new LevelCurrency(this));
+        addCurrency(new ManaCurrency(this));
+        addCurrency(new SpellPointCurrency(this, getWorthSkillPoints()));
+        addCurrency(new VaultCurrency(this));
+
+        // Custom currencies can override the defaults
         Set<String> keys = configuration.getKeys(false);
         for (String key : keys) {
-            customCurrencies.put(key, new Currency(configuration.getConfigurationSection(key)));
+            addCurrency(new CustomCurrency(this, key, configuration.getConfigurationSection(key)));
         }
     }
 
@@ -4382,12 +4418,12 @@ public class MagicController implements MageController {
                 itemStack = createGenericItem(itemKey);
             } else {
                 String[] pieces = StringUtils.split(magicItemKey, ':');
-                Currency currency = customCurrencies.get(pieces[0]);
+                Currency currency = currencies.get(pieces[0]);
                 if (pieces.length > 1 && currency != null) {
                     String costKey = pieces[0];
                     String costAmount = pieces[1];
 
-                    MaterialAndData itemType = currency.getIcon();
+                    com.elmakers.mine.bukkit.api.block.MaterialAndData itemType = currency.getIcon();
                     if (itemType == null) {
                         itemStack = getURLSkull(skillPointIcon);
                     } else {
@@ -4566,17 +4602,6 @@ public class MagicController implements MageController {
     @Override
     public com.elmakers.mine.bukkit.api.wand.WandUpgradePath getPath(String key) {
         return WandUpgradePath.getPath(key);
-    }
-
-    @Override
-    @Nonnull
-    public Set<String> getCustomCurrencies() {
-        return customCurrencies.keySet();
-    }
-
-    @Nullable
-    public Currency getCustomCurrency(String key) {
-        return customCurrencies.get(key);
     }
 
     @Nullable
@@ -5628,7 +5653,7 @@ public class MagicController implements MageController {
     private Material                            defaultMaterial                = Material.DIRT;
     private Set<EntityType>                     undoEntityTypes             = new HashSet<>();
     private Set<EntityType>                     friendlyEntityTypes         = new HashSet<>();
-    private Map<String, Currency>               customCurrencies            = new HashMap<>();
+    private Map<String, Currency> currencies = new HashMap<>();
 
     private PhysicsHandler                        physicsHandler                = null;
 

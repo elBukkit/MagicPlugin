@@ -69,6 +69,7 @@ import com.elmakers.mine.bukkit.api.data.BrushData;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
@@ -90,7 +91,6 @@ import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
-import com.elmakers.mine.bukkit.economy.Currency;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.effect.MageEffectContext;
@@ -3437,7 +3437,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Nullable
     private Currency initCurrency(String type) {
-        Currency currency = controller.getCustomCurrency(type);
+        Currency currency = controller.getCurrency(type);
         if (!data.contains(type)) {
             data.set(type, currency == null ? 0.0 : currency.getDefaultValue());
         }

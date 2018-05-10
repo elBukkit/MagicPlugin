@@ -25,7 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
-import com.elmakers.mine.bukkit.api.block.CurrencyItem;
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -703,21 +703,9 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     }
 
     protected String formatItemAmount(MageController controller, double amount) {
-        CurrencyItem currency = controller.getCurrency();
+        Currency currency = controller.getCurrency("item");
         if (worthItem == null && currency != null) {
-            int evenAmount = (int)Math.ceil(amount);
-            String currencyName = currency.getName();
-            if (currencyName != null && !currencyName.isEmpty()) {
-                if (evenAmount == 1) {
-                    return Integer.toString(evenAmount) + " " + currencyName;
-                }
-
-                String pluralName = currency.getPluralName();
-                if (pluralName == null || pluralName.isEmpty()) {
-                    pluralName = currencyName;
-                }
-                return Integer.toString(evenAmount) + " " + pluralName;
-            }
+            return currency.formatAmount(amount, controller.getMessages());
         }
         return formatItemAmount(controller, getWorthItem(controller), amount);
     }

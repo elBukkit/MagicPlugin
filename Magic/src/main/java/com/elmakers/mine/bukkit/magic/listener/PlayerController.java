@@ -41,13 +41,13 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.economy.Currency;
 import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -484,7 +484,7 @@ public class PlayerController implements Listener {
             if (value != null) {
                 String currencyKey = Wand.getCurrencyType(itemInHand);
                 if (mage.isAtMaxCurrency(currencyKey)) {
-                    Currency currency = controller.getCustomCurrency(currencyKey);
+                    Currency currency = controller.getCurrency(currencyKey);
                     String limitMessage = controller.getMessages().get("currency." + currencyKey + ".limit", controller.getMessages().get("currency.limit"));
                     limitMessage = limitMessage.replace("$amount", Integer.toString((int)Math.ceil(currency.getMaxValue())));
                     limitMessage = limitMessage.replace("$type", controller.getMessages().get("currency." + currencyKey + ".name", currencyKey));

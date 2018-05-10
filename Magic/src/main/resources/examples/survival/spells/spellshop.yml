@@ -13,7 +13,7 @@ spellshop:
         addedspell:
         # This is here for path configs that upgrades mana or other properties on each spell purchase.
         # This is not really used by the default configs anymore.
-        # This will also rank the player up after they purchase the last spell on their curren tpath.
+        # This will also rank the player up after they purchase the last spell on their current path.
         - class: UpgradePath
           upgrade_levels: 1
     effects:

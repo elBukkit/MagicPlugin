@@ -1,42 +1,25 @@
 package com.elmakers.mine.bukkit.item;
 
-import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
-    public enum Type {
-        ITEM,
-        XP,
-        SP,
-        MANA,
-        CURRENCY,
-        HEALTH,
-        HUNGER,
-        LEVELS,
-        CUSTOM
-    }
-
+    protected Currency currency;
     protected ItemStack item;
     protected boolean itemWildcard;
     protected double amount;
-    protected Type type;
-    protected String customType;
 
     public Cost(MageController controller, String key, double cost)
     {
@@ -45,38 +28,17 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     }
 
     protected void setType(MageController controller, String key) {
-        if (key.toLowerCase().equals("xp")) {
-            this.type = Type.XP;
-        } else if (key.toLowerCase().equals("sp")) {
-            this.type = Type.SP;
-        } else if (key.toLowerCase().equals("mana")) {
-            this.type = Type.MANA;
-        } else if (key.toLowerCase().equals("currency")) {
-            this.type = Type.CURRENCY;
-        } else if (key.toLowerCase().equals("health")) {
-            this.type = Type.HEALTH;
-        } else if (key.toLowerCase().equals("hunger")) {
-            this.type = Type.HUNGER;
-        } else if (key.toLowerCase().equals("levels")) {
-            this.type = Type.LEVELS;
-        } else if (key.toLowerCase().equals("item")) {
-            this.type = Type.ITEM;
-            itemWildcard = false;
-            this.item = controller.getWorthItem().clone();
-        } else {
-            Set<String> customCurrencies = controller.getCustomCurrencies();
-            if (customCurrencies.contains(key)) {
-                customType = key;
-                type = Type.CUSTOM;
+        currency = controller.getCurrency(key);
+        if (currency == null) {
+            if (key.endsWith(":*")) {
+                key = key.substring(0,key.length() - 2);
+                itemWildcard = true;
             } else {
-                if (key.endsWith(":*")) {
-                    key = key.substring(0,key.length() - 2);
-                    itemWildcard = true;
-                } else {
-                    itemWildcard = false;
-                }
-                this.item = controller.createItem(key, true);
-                this.type = Type.ITEM;
+                itemWildcard = false;
+            }
+            this.item = controller.createItem(key, true);
+            if (this.item == null) {
+                controller.getLogger().warning("Invalid cost type: " + key);
             }
         }
     }
@@ -85,54 +47,25 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         this.item = copy.item;
         this.itemWildcard = copy.itemWildcard;
         this.amount = copy.amount;
-        this.type = copy.type;
-        this.customType = copy.customType;
+        this.currency = copy.currency;
     }
 
     @Override
     public boolean isEmpty(CostReducer reducer) {
-        switch (this.type) {
-            case ITEM:
-                return item == null || getAmount(reducer) == 0;
-            case LEVELS:
-            case XP:
-            case SP:
-                return getRoundedAmount(reducer) == 0;
-            case MANA:
-                return getMana(reducer) == 0;
-            case CURRENCY:
-            case CUSTOM:
-            default:
-                return getAmount(reducer) == 0;
+        if (item == null && currency == null) {
+            return true;
         }
+        return getAmount(reducer) == 0;
     }
 
     @Override
     public boolean has(Mage mage, CasterProperties caster, CostReducer reducer) {
-        Player player = mage.getPlayer();
-        switch (type) {
-            case ITEM:
-                return isConsumeFree(reducer) || mage.hasItem(getItemStack(reducer), itemWildcard);
-            case XP:
-                return mage.getExperience() >= getRoundedAmount(reducer);
-            case LEVELS:
-                return player != null && player.getLevel() >= getRoundedAmount(reducer);
-            case MANA:
-                return caster == null ? mage.getMana() >= getMana(reducer) : caster.getMana() >= getMana(reducer);
-            case CURRENCY:
-                VaultController vault = VaultController.getInstance();
-                return vault != null && vault.has(mage.getPlayer(), getAmount(reducer));
-            case SP:
-                return mage.getSkillPoints() >= getRoundedAmount(reducer);
-            case HEALTH:
-                LivingEntity living = mage.getLivingEntity();
-                return living != null && living.getHealth() >= getAmount(reducer);
-            case HUNGER:
-                return player != null && player.getFoodLevel() >= getAmount(reducer);
-            case CUSTOM:
-                return mage.getCurrency(customType) >= getAmount(reducer);
+        if (item != null) {
+            return isConsumeFree(reducer) || mage.hasItem(getItemStack(reducer), itemWildcard);
         }
-
+        if (currency != null) {
+            return currency.has(mage, caster, getAmount(reducer));
+        }
         return false;
     }
 
@@ -148,53 +81,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public void deduct(Mage mage, CasterProperties caster, CostReducer reducer) {
-        Player player = mage.getPlayer();
-        switch (type) {
-            case ITEM:
-                if (!isConsumeFree(reducer)) {
-                    ItemStack itemStack = getItemStack(reducer);
-                    mage.removeItem(itemStack, itemWildcard);
-                }
-                break;
-            case XP:
-                mage.removeExperience(getRoundedAmount(reducer));
-                break;
-            case LEVELS:
-                if (player != null) {
-                    int newLevel = Math.max(0, player.getLevel() - getRoundedAmount(reducer));
-                    player.setLevel(newLevel);
-                }
-                break;
-            case MANA:
-                if (caster != null) {
-                    caster.removeMana(getMana(reducer));
-                } else {
-                    mage.removeMana(getMana(reducer));
-                }
-                break;
-            case CURRENCY:
-                VaultController vault = VaultController.getInstance();
-                if (vault != null) {
-                    vault.withdrawPlayer(mage.getPlayer(), getAmount(reducer));
-                }
-                break;
-            case SP:
-                mage.addSkillPoints(-getRoundedAmount(reducer));
-                break;
-            case HEALTH:
-                LivingEntity living = mage.getLivingEntity();
-                if (living != null) {
-                    living.setHealth(Math.max(0, living.getHealth() - getAmount(reducer)));
-                }
-                break;
-            case HUNGER:
-                if (player != null) {
-                    player.setFoodLevel(Math.max(0, player.getFoodLevel() - getRoundedAmount(reducer)));
-                }
-                break;
-            case CUSTOM:
-                mage.removeCurrency(customType, getAmount(reducer));
-                break;
+        if (item != null && !isConsumeFree(reducer)) {
+            ItemStack itemStack = getItemStack(reducer);
+            mage.removeItem(itemStack, itemWildcard);
+        }
+        if (currency != null) {
+            currency.deduct(mage, caster, getAmount(reducer));
         }
     }
 
@@ -210,130 +102,37 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public boolean give(Mage mage, CasterProperties caster) {
-        if (caster == null) {
-            caster = mage.getActiveProperties();
+        boolean result = false;
+        if (item != null) {
+            ItemStack itemStack = getItemStack();
+            mage.giveItem(itemStack);
+            result = true;
         }
-        boolean result = true;
-        Player player = mage.getPlayer();
-        switch (type) {
-            case ITEM:
-                ItemStack itemStack = getItemStack();
-                mage.giveItem(itemStack);
-                break;
-            case XP:
-                mage.giveExperience(getRoundedAmount());
-                break;
-            case LEVELS:
-                if (player != null) {
-                    int newLevel = player.getLevel() + getRoundedAmount();
-                    player.setLevel(newLevel);
-                }
-                break;
-            case MANA:
-                if (caster.getMana() >= caster.getManaMax()) {
-                    result = false;
-                } else {
-                    float newMana = (float)Math.min(caster.getManaMax(), caster.getMana() + amount);
-                    caster.setMana(newMana);
-                }
-                break;
-            case CURRENCY:
-                VaultController vault = VaultController.getInstance();
-                if (vault != null) {
-                    vault.depositPlayer(mage.getPlayer(), amount);
-                }
-                break;
-            case SP:
-                if (mage.isAtMaxSkillPoints()) {
-                    result = false;
-                } else {
-                    mage.addSkillPoints(getRoundedAmount());
-                }
-                break;
-            case HEALTH:
-                LivingEntity living = mage.getLivingEntity();
-                if (living != null) {
-                    double maxHealth = CompatibilityUtils.getMaxHealth(living);
-                    if (living.getHealth() >= maxHealth) {
-                        result = false;
-                    } else {
-                        living.setHealth(Math.min(maxHealth, living.getHealth() + amount));
-                    }
-                }
-                break;
-            case HUNGER:
-                if (player != null) {
-                    if (player.getFoodLevel() >= 10) {
-                        result = false;
-                    } else {
-                        player.setFoodLevel(Math.min(10, player.getFoodLevel() + getRoundedAmount()));
-                    }
-                }
-                break;
-            case CUSTOM:
-                if (mage.isAtMaxCurrency(customType)) {
-                    result = false;
-                } else {
-                    mage.addCurrency(customType, amount);
-                }
-                break;
-            default:
-                result = false;
+        if (currency != null) {
+            result = currency.give(mage, caster, getAmount()) || result;
         }
         return result;
     }
 
     @Override
     public double getBalance(Mage mage, CasterProperties caster) {
-        if (caster == null) {
-            caster = mage.getActiveProperties();
+        if (item != null) {
+            double balance = 0;
+            ItemStack itemStack = getItemStack();
+            Inventory inventory = mage.getInventory();
+            for (ItemStack item : inventory.getContents()) {
+                if (item != null && mage.getController().itemsAreEqual(itemStack, item)) {
+                    balance += item.getAmount();
+                }
+            }
+            return balance;
         }
-        double balance = 0;
-        Player player = mage.getPlayer();
-        switch (type) {
-            case ITEM:
-                ItemStack itemStack = getItemStack();
-                Inventory inventory = mage.getInventory();
-                for (ItemStack item : inventory.getContents()) {
-                    if (item != null && mage.getController().itemsAreEqual(itemStack, item)) {
-                        balance += item.getAmount();
-                    }
-                }
-                break;
-            case XP:
-                balance = mage.getExperience();
-                break;
-            case LEVELS:
-                balance = mage.getLevel();
-                break;
-            case MANA:
-                balance = caster.getMana();
-                break;
-            case CURRENCY:
-                VaultController vault = VaultController.getInstance();
-                if (vault != null) {
-                    balance = vault.getBalance(mage.getPlayer());
-                }
-                break;
-            case SP:
-                balance = mage.getSkillPoints();
-                break;
-            case HEALTH:
-                LivingEntity living = mage.getLivingEntity();
-                if (living != null) {
-                    balance = living.getHealth();
-                }
-                break;
-            case HUNGER:
-                if (player != null) {
-                    balance = player.getFoodLevel();
-                }
-                break;
-            case CUSTOM:
-                balance = mage.getCurrency(customType);
-                break;
+
+        if (currency != null) {
+            return currency.getBalance(mage, caster);
         }
-        return balance;
+
+        return 0;
     }
 
     protected int getRoundedCost(double cost, CostReducer reducer) {
@@ -385,30 +184,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public String getDescription(Messages messages, CostReducer reducer) {
-        if (amount == 0) return "";
-
-        switch (type) {
-            case ITEM:
-                if (item != null && reducer.getConsumeReduction() < 1) {
-                    return messages.describeItem(item);
-                }
-                break;
-            case XP:
-                return messages.get("costs.xp");
-            case LEVELS:
-                return messages.get("costs.levels");
-            case SP:
-                return messages.get("costs.sp");
-            case MANA:
-                return messages.get("costs.mana");
-            case HUNGER:
-                return messages.get("costs.hunger");
-            case HEALTH:
-                return messages.get("costs.health");
-            case CURRENCY:
-                return messages.getCurrencyPlural();
-            case CUSTOM:
-                return messages.get("currency." + customType + ".name", customType);
+        if (item != null) {
+            return messages.describeItem(item);
+        }
+        if (currency != null) {
+            return currency.getName(messages);
         }
         return "";
     }
@@ -420,35 +200,18 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public String getFullDescription(Messages messages, CostReducer reducer) {
-        switch (type) {
-            case ITEM:
-                if (item != null && !isConsumeFree(reducer)) {
-                    return getRoundedAmount(reducer) + " " + messages.describeItem(item);
-                }
-                break;
-            case XP:
-                return messages.get("costs.xp_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
-            case LEVELS:
-                return messages.get("costs.levels_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
-            case SP:
-                return messages.get("costs.sp_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
-            case MANA:
-                return messages.get("costs.mana_amount").replace("$amount", Integer.toString(getMana(reducer)));
-            case HEALTH:
-                return messages.get("costs.health_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
-            case HUNGER:
-                return messages.get("costs.hunger_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
-            case CURRENCY:
-                return messages.get("costs.currency_amount").replace("$amount", Integer.toString(getRoundedAmount(reducer)));
-            case CUSTOM:
-                return messages.get("currency." + customType + ".amount", customType).replace("$amount", Integer.toString(getRoundedAmount(reducer)));
+        if (item != null) {
+            return getRoundedAmount(reducer) + " " + messages.describeItem(item);
+        }
+        if (currency != null) {
+            return currency.formatAmount(getAmount(reducer), messages);
         }
         return "";
     }
 
     @Override
     public boolean isItem() {
-        return type == Type.ITEM && item != null;
+        return item != null;
     }
 
     @Override
@@ -470,15 +233,23 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         return item;
     }
 
+    private boolean isXP() {
+        return currency != null && currency.getKey().equals("xp");
+    }
+
+    private boolean isMana() {
+        return currency != null && currency.getKey().equals("mana");
+    }
+
     @Deprecated
     public int getXP(CostReducer reducer)
     {
-        return type == Type.XP ? getRoundedCost(amount, reducer) : 0;
+        return isXP() ? getRoundedCost(amount, reducer) : 0;
     }
 
     public int getMana(CostReducer reducer)
     {
-        return  type == Type.MANA ? getRoundedCost(amount, reducer) : 0;
+        return isMana() ? getRoundedCost(amount, reducer) : 0;
     }
 
     public void setAmount(double amount) {
@@ -492,7 +263,13 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public String toString() {
-        return type + ":" + amount;
+        if (item != null) {
+            return item.getType().name() + ":" + amount;
+        }
+        if (currency != null) {
+            return currency.getKey() + ":" + amount;
+        }
+        return "Unknown Cost:" + amount;
     }
 
     @Nullable
@@ -514,26 +291,15 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     }
 
     @Nullable
-    private String getFallbackType(MageController controller, String fallbackType) {
-        switch (type) {
-            case SP:
-                if (!controller.isSPEnabled()) {
-                    return fallbackType;
-                }
-                break;
-            case CURRENCY:
-                if (!controller.isVaultCurrencyEnabled()) {
-                    return fallbackType;
-                }
-                break;
-            default:
-                return null;
+    private String getFallbackType(String fallbackType) {
+        if (currency != null && !currency.isValid()) {
+            return fallbackType;
         }
         return null;
     }
 
     private boolean checkSupportedType(MageController controller, String fallbackType) {
-        String newType = getFallbackType(controller, fallbackType);
+        String newType = getFallbackType(fallbackType);
         if (newType == null) return false;
         convert(controller, newType);
         return true;
@@ -556,20 +322,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public void convert(MageController controller, String newType) {
+        double currentWorth = (currency != null) ? currency.getWorth() : 1;
         setType(controller, newType);
-        // TODO: This needs to cross-convert!
-        switch (type) {
-            case XP:
-                scale(1.0 / controller.getWorthXP());
-                break;
-            case SP:
-                scale(1.0 / controller.getWorthSkillPoints());
-                break;
-            case ITEM:
-                scale(1.0 / controller.getWorthItemAmount());
-                break;
-            default:
-                break;
+        double newWorth = (currency != null) ? currency.getWorth() : 1;
+        if (newWorth > 0 && currentWorth > 0) {
+            scale(currentWorth / newWorth);
         }
     }
 }
