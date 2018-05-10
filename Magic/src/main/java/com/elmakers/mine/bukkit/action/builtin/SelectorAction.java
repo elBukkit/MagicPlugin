@@ -239,7 +239,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
-            if (actions != null) {
+            if (actions != null && !actions.isEmpty()) {
                 addHandler(context.getSpell(), actions);
             }
 
