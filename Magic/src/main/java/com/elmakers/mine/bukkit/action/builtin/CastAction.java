@@ -42,20 +42,16 @@ public class CastAction extends BaseSpellAction {
         targetMage.setCostFree(costFree);
         targetMage.setCooldownFree(cooldownFree);
 
-        try {
-            MageSpell mageSpell = targetMage.getSpell(spell);
+        MageSpell mageSpell = targetMage.getSpell(spell);
 
-            if (mageSpell == null) {
-                return SpellResult.FAIL;
-            }
+        if (mageSpell == null) {
+            return SpellResult.FAIL;
+        }
 
-            boolean casted = mageSpell.cast(spellParameters);
+        boolean casted = mageSpell.cast(spellParameters);
 
-            if (!casted) {
-                return SpellResult.FAIL;
-            }
-        } catch (NullPointerException exception) {
-            exception.printStackTrace();
+        if (!casted) {
+            return SpellResult.FAIL;
         }
 
         targetMage.setCostFree(originalCostFree);
