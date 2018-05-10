@@ -7,6 +7,10 @@ default:
   upgrade_commands:
     - broadcast &6@pd &3has advanced to &b$path&3!
   effects:
+      # These effects will play when a wand is modified as a result of being
+      # enchanted or buying a spell.
+      # This doesn't really happen anymore with the default configs, the spellshop
+      # is responsible for playing effects on purchase.
       enchant:
       -  class: EffectSingle
          sound: entity_player_levelup
