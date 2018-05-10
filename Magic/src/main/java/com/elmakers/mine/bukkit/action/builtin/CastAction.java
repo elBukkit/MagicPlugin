@@ -13,9 +13,6 @@ public class CastAction extends BaseSpellAction {
     private ConfigurationSection spellParameters;
     private boolean costFree, cooldownFree;
 
-    private Mage targetMage;
-    private boolean originalCostFree, originalCooldownFree;
-
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
@@ -32,29 +29,29 @@ public class CastAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
-        targetMage = context.getController().getMage(context.getTargetEntity());
+        Mage targetMage = context.getController().getMage(context.getTargetEntity());
 
-        originalCostFree = targetMage.isCostFree();
-        originalCooldownFree = targetMage.isCooldownFree();
+        boolean originalCostFree = targetMage.isCostFree();
+        boolean originalCooldownFree = targetMage.isCooldownFree();
 
         targetMage.setCostFree(costFree);
         targetMage.setCooldownFree(cooldownFree);
 
         try {
-            targetMage.getSpell(spell).cast(spellParameters);
+            @SuppressWarnings("ConstantConditions")
+            boolean casted = targetMage.getSpell(spell).cast(spellParameters);
+
+            if (!casted) {
+                return SpellResult.FAIL;
+            }
         } catch (NullPointerException exception) {
             exception.printStackTrace();
         }
 
-        return SpellResult.CAST;
-    }
-
-    @Override
-    public void finish(CastContext context) {
-        super.finish(context);
-
         targetMage.setCostFree(originalCostFree);
         targetMage.setCooldownFree(originalCooldownFree);
+
+        return SpellResult.CAST;
     }
 
     @Override
