@@ -9,4 +9,4 @@ requirements:
   no_class: "&cYou must be a $class"
   no_required_path: "&cYou must be at least $path!"
   no_path_exact: "&cYou must be at $path!"
-  no_path_end: "Y&cou must be ready to advance from $path!"
+  no_path_end: "&cYou must be ready to advance from $path!"
