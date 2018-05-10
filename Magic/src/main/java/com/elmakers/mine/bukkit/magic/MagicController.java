@@ -4364,7 +4364,7 @@ public class MagicController implements MageController {
     @Override
     public ItemStack createItem(String magicItemKey, boolean brief) {
         ItemStack itemStack = null;
-        if (magicItemKey == null) {
+        if (magicItemKey == null || magicItemKey.isEmpty()) {
             return null;
         }
 
