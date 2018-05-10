@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -38,8 +39,13 @@ public class CastAction extends BaseSpellAction {
         targetMage.setCooldownFree(cooldownFree);
 
         try {
-            @SuppressWarnings("ConstantConditions")
-            boolean casted = targetMage.getSpell(spell).cast(spellParameters);
+            MageSpell mageSpell = targetMage.getSpell(spell);
+
+            if (mageSpell == null) {
+                return SpellResult.FAIL;
+            }
+
+            boolean casted = mageSpell.cast(spellParameters);
 
             if (!casted) {
                 return SpellResult.FAIL;
