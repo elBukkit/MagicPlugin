@@ -27,6 +27,7 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -272,7 +273,11 @@ public interface MageController {
     @Nullable
     ItemStack getWorthItem();
     double getWorthItemAmount();
+    @Nonnull
+    Set<String> getCurrencyKeys();
+    @Deprecated
     CurrencyItem getCurrency();
+    Currency getCurrency(String key);
     boolean itemsAreEqual(ItemStack first, ItemStack second);
 
     void addFlightExemption(Player player, int duration);
@@ -507,7 +512,4 @@ public interface MageController {
 
     @Nullable
     Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey);
-
-    @Nonnull
-    Set<String> getCustomCurrencies();
 }

@@ -27,33 +27,30 @@ public interface Cost {
     boolean isEmpty(CostReducer reducer);
 
     /**
-     * Whether or not this record has any costs associated with it,
-     * after being reduced
+     * Whether or not a mage has the required costs.
      *
      * @param mage The mage to check for costs
      * @param caster A optional caster, to be used for mana costs
      * @param reducer An optional scale for costs
-     * @return True if this has any non-zero costs.
+     * @return True if the mage has these costs.
      */
     boolean has(Mage mage, CasterProperties caster, CostReducer reducer);
 
     /**
-     * Whether or not this record has any costs associated with it,
-     * after being reduced
+     * Whether or not a mage has the required costs.
      *
      * @param mage The mage to check for costs
      * @param wand A optional wand, to be used for mana costs
      * @param reducer An optional scale for costs
-     * @return True if this has any non-zero costs.
+     * @return True if the mage has these costs.
      */
     boolean has(Mage mage, Wand wand, CostReducer reducer);
 
     /**
-     * Whether or not this record has any costs associated with it,
-     * after being reduced
+     * Whether or not a mage has the required costs.
      *
      * @param mage The mage to check for costs
-     * @return True if this has any non-zero costs.
+     * @return True if the mage has these costs.
      */
     boolean has(Mage mage);
 
