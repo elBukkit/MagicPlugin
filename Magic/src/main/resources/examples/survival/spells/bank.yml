@@ -49,5 +49,6 @@ ledgershop:
     inherit: buyshop
     parameters:
       confirm: true
+      auto_close: true
       items:
         wand|ledger: 2
