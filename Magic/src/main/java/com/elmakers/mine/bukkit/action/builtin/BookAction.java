@@ -9,8 +9,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.bukkit.Material;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.InventoryHolder;
@@ -22,6 +23,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class BookAction extends BaseSpellAction {
 
@@ -30,14 +32,14 @@ public class BookAction extends BaseSpellAction {
     @Nonnull
     private String author = "";
     @Nullable
-    private List<String> contents;
+    private ConfigurationSection pages;
 
     private ItemStack createBook(CastContext context, Mage targetMage) {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta meta = (BookMeta) book.getItemMeta();
 
         List<String> pages = replaceContents(context, targetMage);
-        
+
         meta.setTitle(title);
         meta.setAuthor(author);
         meta.setPages(pages);
@@ -57,7 +59,7 @@ public class BookAction extends BaseSpellAction {
         Set<String> currencies = context.getController().getCurrencyKeys();
 
         for (String attr : attributes) {
-            replacements.put("$attribute_" + attr, String.valueOf(targetMage.getProperties().getAttribute(attr)));
+            replacements.put("$attribute_" + attr, String.valueOf(targetMage.getAttribute(attr)));
         }
 
         for (String currency : currencies) {
@@ -65,12 +67,29 @@ public class BookAction extends BaseSpellAction {
         }
 
         List<String> newContents = new ArrayList<>();
-        for (String str : contents) {
-            for (Map.Entry<String, String> entry : replacements.entrySet()) {
-                str = str.replace(entry.getKey(), entry.getValue());
+        Set<String> pageKeys = pages.getKeys(false);
+        for (String pageKey : pageKeys) {
+            int pageNumber = 0;
+            try {
+                pageNumber = Integer.parseInt(pageKey) - 1;
+            } catch (NumberFormatException ex) {
+                context.getController().getLogger().warning("Invalid page number: " + pageKey);
+                continue;
+            }
+            String pageText = "";
+            List<String> lines = ConfigurationUtils.getStringList(pages, pageKey);
+            if (lines == null) {
+                pageText = pages.getString(pageKey);
+            } else {
+                pageText = StringUtils.join(lines, "\n");
             }
 
-            newContents.add(ChatColor.translateAlternateColorCodes('&', str));
+            for (Map.Entry<String, String> entry : replacements.entrySet()) {
+                pageText = pageText.replace(entry.getKey(), entry.getValue());
+            }
+
+            while (newContents.size() <= pageNumber) newContents.add("");
+            newContents.set(pageNumber, ChatColor.translateAlternateColorCodes('&', pageText));
         }
 
         return newContents;
@@ -81,17 +100,17 @@ public class BookAction extends BaseSpellAction {
         super.prepare(context, parameters);
 
         Messages messages = context.getController().getMessages();
-        String titleParam = parameters.getString("title");
-        String authorParam = parameters.getString("author");
+        String titleParam = parameters.getString("title", "");
+        String authorParam = parameters.getString("author", context.getMage().getName());
 
         title = messages.get(titleParam, ChatColor.translateAlternateColorCodes('&', titleParam));
         author = messages.get(authorParam, ChatColor.translateAlternateColorCodes('&', authorParam));
-        contents = parameters.getStringList("contents");
+        pages = parameters.getConfigurationSection("pages");
     }
 
     @Override
     public SpellResult perform(CastContext context) {
-        if (contents == null) {
+        if (pages == null) {
             return SpellResult.FAIL;
         }
         Entity target = context.getTargetEntity();
