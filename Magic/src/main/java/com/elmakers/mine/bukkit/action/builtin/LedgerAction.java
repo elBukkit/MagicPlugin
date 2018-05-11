@@ -32,7 +32,7 @@ public class LedgerAction extends BaseSpellAction {
         String balances = context.getMessage("header");
         for (String key : currencyKeys) {
             Currency currency = controller.getCurrency(key);
-            double amount = mage.getCurrency(key);
+            double amount = currency.getBalance(mage, wand);
             if (amount > 0 && currency != null) {
                 balances += "\n" + currency.formatAmount(amount, controller.getMessages());
             }

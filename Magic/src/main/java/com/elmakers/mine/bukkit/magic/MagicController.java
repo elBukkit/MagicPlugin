@@ -948,6 +948,18 @@ public class MagicController implements MageController {
         } catch (Throwable ex) {
             plugin.getLogger().warning(ex.getMessage());
         }
+
+        // Vault integration
+        Plugin vaultPlugin = pluginManager.getPlugin("Vault");
+        if (vaultPlugin == null) {
+            getLogger().info("Vault not found, 'currency' cost types unavailable");
+        } else {
+            if (VaultController.initialize(plugin, vaultPlugin)) {
+                getLogger().info("Vault found, 'currency' cost types and descriptive item names available");
+            } else {
+                getLogger().warning("Vault integration failed");
+            }
+        }
     }
 
     protected void finalizeIntegration() {
@@ -989,18 +1001,6 @@ public class MagicController implements MageController {
             }
         } else {
             getLogger().info("MobArena integration disabled");
-        }
-
-        // Vault integration is handled internally in MagicLib
-        Plugin vaultPlugin = pluginManager.getPlugin("Vault");
-        if (vaultPlugin == null) {
-            getLogger().info("Vault not found, virtual economy unavailable");
-        } else {
-            if (VaultController.initialize(plugin, vaultPlugin)) {
-                getLogger().info("Vault found, virtual economy and descriptive item names available");
-            } else {
-                getLogger().warning("Vault integration failed");
-            }
         }
 
         // Try to link to Essentials:
