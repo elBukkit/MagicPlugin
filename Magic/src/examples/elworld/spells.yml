@@ -3334,7 +3334,6 @@ acshop:
         quiet: true
         confirm_filler: stained_glass:2
 
-
 earnac:
     icon_url: http://textures.minecraft.net/texture/73b6fd4699e7c8c4ce3024b7882b38ff47f1a249fb8be67992707ec2b8d59c
     icon: diamond_axe:159

@@ -4,11 +4,9 @@
   
  - Custom Currency
  
-   - Maybe define all costs in terms of Currency objects? (xp,sp, etc builtins)
    - Some kind of ledger item or balance action, or maybe command to see balance?
-   - Wand SP display customization, choose currency type
-   - CurrencyProvider support via API
-   - Add decimal formatter to amounts: DecimalFormat formatter = new DecimalFormat("#,###.00");
+
+## Hot Issues
    
  - There seems to be an undo issue here somewhere.
    - Goldwalker blocks didn't undo once on sandbox (Can not reproduce)

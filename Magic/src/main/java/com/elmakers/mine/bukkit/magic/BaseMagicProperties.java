@@ -50,7 +50,7 @@ public class BaseMagicProperties implements MagicProperties {
             "hotbar_count", "hotbar",
             "icon", "icon_inactive", "icon_inactive_delay", "mode",
             "active_effects", "cancel_effects_delay",
-            "brush_mode",
+            "brush_mode", "currency_display",
             "keep", "locked", "quiet", "force", "rename",
             "rename_description",
             "power", "overrides",

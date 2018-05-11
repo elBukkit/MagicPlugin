@@ -195,3 +195,13 @@ customname:
   path: beginner
   spells: missile, blink, fling, arrow
   display_name: "&3$name &5$path .. &4$spell"
+
+acwand:
+  inherit: base_wand
+  name: Earn AC
+  path: beginner
+  spells: earnac
+  currency_display: ac
+  mana: 200
+  mana_max: 200
+  mana_regeneration: 20

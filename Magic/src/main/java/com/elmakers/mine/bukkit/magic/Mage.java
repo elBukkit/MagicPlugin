@@ -3448,12 +3448,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public double getCurrency(String type) {
-        initCurrency(type);
-        return data.getDouble(type);
+        Currency currency = controller.getCurrency(type);
+        return data.getDouble(type, currency == null ? 0.0 : currency.getDefaultValue());
     }
 
     @Override
     public void addCurrency(String type, double delta) {
+        boolean firstEarn = !data.contains(type);
         Currency currency = initCurrency(type);
         double newValue = data.getDouble(type) + delta;
         if (currency != null && currency.hasMaxValue()) {
@@ -3467,7 +3468,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             sendMessage(earnMessage.replace("$earned", amountString));
         }
 
-        data.set(type, newValue);
+        setCurrency(type, newValue);
+        if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
+            if (firstEarn && currency != null) {
+                sendMessage(activeWand.getMessage("earn_instructions").replace("$currency", currency.getName(controller.getMessages())));
+            }
+
+            activeWand.updateMana();
+        }
     }
 
     @Override
@@ -3484,11 +3492,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isAtMaxCurrency(String type) {
-        Currency currency = initCurrency(type);
+        Currency currency = controller.getCurrency(type);
         if (currency == null || !currency.hasMaxValue()) {
             return false;
         }
-        double value = data.getDouble(type);
+        double value = getCurrency(type);
         return value >= currency.getMaxValue();
     }
 
@@ -3529,7 +3537,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         data.set(SKILL_POINT_KEY, amount);
 
-        if (activeWand != null && Wand.spMode != WandManaMode.NONE && activeWand.usesSP()) {
+        if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesSP()) {
             if (firstEarn) {
                 sendMessage(activeWand.getMessage("sp_instructions"));
             }

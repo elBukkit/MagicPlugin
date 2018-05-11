@@ -41,6 +41,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -184,6 +185,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean isSingleUse = false;
     private boolean limitSpellsToPath = false;
     private boolean limitBrushesToPath = false;
+    private Currency currencyDisplay = null;
 
     private float manaPerDamage = 0;
 
@@ -233,7 +235,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private int currentHotbar = 0;
 
     public static WandManaMode manaMode = WandManaMode.BAR;
-    public static WandManaMode spMode = WandManaMode.NUMBER;
+    public static WandManaMode currencyMode = WandManaMode.NUMBER;
     public static boolean regenWhileInactive = true;
     public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
     public static Material DefaultWandMaterial = Material.BLAZE_ROD;
@@ -1682,6 +1684,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         brushMode = parseWandMode(getString("brush_mode"), controller.getDefaultBrushMode());
+        currencyDisplay = controller.getCurrency(getString("currency_display", "sp"));
 
         // Backwards compatibility
         if (getBoolean("mode_drop", false)) {
@@ -3827,12 +3830,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean usesXPBar()
     {
-        return (usesSP() && spMode.useXP()) || (usesMana() && manaMode.useXP());
+        return (usesCurrency() && currencyMode.useXP()) || (usesMana() && manaMode.useXP());
     }
 
     public boolean usesXPNumber()
     {
-        return (usesSP() && spMode.useXPNumber() && controller.isSPEnabled()) || (usesMana() && manaMode.useXP());
+        return (usesCurrency() && currencyMode.useXPNumber()) || (usesMana() && manaMode.useXP());
     }
 
     public boolean hasSpellProgression()
@@ -3876,9 +3879,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             {
                 playerProgress = Math.max(0, mana / effectiveManaMax);
             }
-            if (usesSP() && spMode.useXPNumber())
+            if (usesCurrency() && currencyMode.useXPNumber())
             {
-                playerLevel = mage.getSkillPoints();
+                playerLevel = (int)Math.ceil(currencyDisplay.getBalance(mage, this));
             }
 
             mage.sendExperience(playerProgress, playerLevel);
@@ -5578,8 +5581,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return INVENTORY_SIZE;
     }
 
+    public boolean usesCurrency() {
+        if (currencyDisplay == null || !hasSpellProgression || earnMultiplier <= 0 || !currencyDisplay.isValid()) return false;
+        if (currencyDisplay.getKey().equals("sp") && !controller.isSPEarnEnabled()) return false;
+        return true;
+    }
+
+    public boolean usesCurrency(String type) {
+        return usesCurrency() && currencyDisplay.getKey().equals(type);
+    }
+
     public boolean usesSP() {
-        return hasSpellProgression && controller.isSPEnabled() && controller.isSPEarnEnabled() && earnMultiplier > 0;
+        return controller.isSPEarnEnabled() && usesCurrency("sp");
     }
 
     @Override

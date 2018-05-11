@@ -181,6 +181,7 @@ wand:
     enchant_instructions: "&r&bUpgrade your $wand &bat an enchanting table to add spells and abilities."
     brush_instructions: "&r&eMaterial brushes have been added to your $wand&e. Shift+$toggle to select a brush."
     sp_instructions: "&r&6You have earned some Spell Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"
+    earn_instructions: "&r&6You have earned some $currency! This is displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn less, try mixing it up once you have more spells!"
     hotbar_changed: ""
     spell_activated: "$spell"
     upgrade_prefix: "&6"
