@@ -5,7 +5,7 @@ costs:
     mana_amount: $amount Mana
     mana: Mana
     xp: XP
-    levels: XP Levels
+    levels: Levels
     sp: Spell Points
     hunger: Energy
     health: Health
