@@ -1,25 +1,23 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.*;
-import javax.annotation.Nonnull;
-
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public class BookAction extends BaseSpellAction {
 
     @Nonnull
     private String title = "", author = "";
-    @Nonnull
     private List<String> contents = new ArrayList<>();
 
     private ItemStack createBook(CastContext context, Mage targetMage) {
@@ -42,7 +40,7 @@ public class BookAction extends BaseSpellAction {
         replacements.put("@td", targetMage.getDisplayName());
 
         Set<String> attributes = context.getController().getAttributes();
-        Set<String> currencies = context.getController().getCustomCurrencies();
+        Set<String> currencies = context.getController().getCurrencyKeys();
 
         for (String attr : attributes) {
             replacements.put("$attribute_" + attr, String.valueOf(targetMage.getProperties().getAttribute(attr)));
