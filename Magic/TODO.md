@@ -29,9 +29,7 @@
    https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
    
  - Need a lock or something to prevent saving an UndoList as it is being modified. Got a CME.
-   
- - Add option for custom display name for wands
- 
+    
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
   
  - Optional lore on wands to say which classes they work with
@@ -67,10 +65,6 @@
  - Flag to prevent putting SP in chests
  - Check knockback resistance in Velocity action, or add Mage knockback resistance.
  
- - Some way to reference spells from other spells without having to use a Command
-   actions. Maybe a Cast action, or just some way to reference a set of actions
-   instead of a whole spell.
- 
  - Add an action to simulate the red screen you get while out of bounds. See:
    https://gist.github.com/leonardosnt/ffa8e72b60df197c762d1f2e903cc67f
 
@@ -87,9 +81,8 @@
 
  - Casting blob on an item frame makes the frame disappear. User reports dropped frame, too, but could not reproduce.
  - Spells drop on death with lag (maybe)?
- - Spells can be worn .. ?  Skill icons maybe?
  - PerWorldInventory logout issues, can't reproduce
- - Broom issues when in creative mode
+ - Broom issues when in creative mode (re-opened spigot issue for this)
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - PW would like some custom lore for wand "quiet" and quick cast settings.
  - Recall warps don't show up with /mage getdata?
@@ -123,12 +116,8 @@
  - Async config load on startup option
  - Allow multiple welcome_wand entries
  - An attribute that lets spells level up more quickly
- - Add some sort of integration with Partec plugin (Deprecated since 2015, so probably not)
-   https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
  - Wand Power based on Strength potion effect
  - Add ModifyPower action
- - Add Kingdoms support (It's a premium plugin, sooooooo) 
- - Add support for LockettePro
  
  ZQuest API: https://www.spigotmc.org/resources/zquestapi-feel-the-might-of-java.35327/
  ZQuest How to make Extensions: http://zquestwiki.com/index.php?title=APIcreatingExtensions
@@ -148,13 +137,13 @@
    - Bonus to max distance x2
    - Bonus to travel speed of the spell 40% faster
    - 10% bonus to damage
- - Ability to set the max amount of spells that a wand can have
+ - Ability to set the max amount of spells that a wand (or a path?) can have
  - With the ability to add/remove spells to your list
    - bonus to that would be if you could set a configurable cooldown for being able to change out the spells on your wand
  - If you add permanent bonuses I think it should work more like rune stones with the ability to add certain bonuses to specific armor pieces in the way you would add an enchant to an item. This would allow you to add the buffs to existing armor that already has enchants on them. This would allow for creating an economy around these buffs as you would need to eventually obtain more rune stones to enchant more armor. You could possibly even have a whitelist/blacklist of items that could/could not be enchanted with the rune stone. Of course these buffs would all have to do with making you a better wand caster that fit with the Magic plugin theme.
  - Chance to fizzle should only happen if you have been cursed (I saw a spell that say's reduced chance of fizzle)
  
-## Older stuff
+## To Review
 
  - MagicArenas: Doesn't TP players out on a draw.. ?
  - Getting hit with aqua erecto says "cast unknown" on you?
@@ -177,7 +166,6 @@
  - Undo bugs with pistons.. yuck. https://youtu.be/S-d-XT2r_vM
  
  - Arenas preventing last death Recall isn't working?
- - Spell count limit on wands or paths?
   
  - Show mana from offhand wand (if no wand in main hand)
  - Add builtin "help" command, check messaging for missing commands- shows "no permission"?
@@ -213,39 +201,18 @@
  
  - Overrides with commas in them are broken again
  
- - Reducto hay blocks in the PW park, some drop :|
-
  - Spells acting oddly with Copy - Box, Iterate
-
- - Don't logout players on server change until they quit
-
- - Undo action re-work
-   - Incorporate UndoBatch into Undo action
-     - Make sure to handle special cases, non-cancellable
-
- - Re-work "active", "deactivate" and "cancel" behaviors?
 
  - Lead on possible undo issue- undo another player's spell while building, it still builds another tick or so?
 
- - Spell lore should reflect reduced cooldowns
  - Goggles deactivate on death (maybe only in Azkaban?)
- - Can we save 1 slot in wand inv?
- - Test out silent firework entities
  - Test baby/giant wither bosses:
    You have to set (every tick) the invulnerability of the wither.
    Either you get the data watcher and watch 20 with a value big but below than 1000. I use 600 not to have a too small wither. But there is an easier method which is r() which does it.
    ((CraftWither)wither).getHandle().r(600);
- - Need a way for /cast to be cooldown-free without affecting NPC's, etc.
-   - Add list of cast-command params?
-   - Would be nice to replace the current toggleCastCommand stuff, but need something special for NPCs.. ?
  - Aliases are broken /wand add doesn't activate, spell items don't work
 
- - Show countdown in hotbar for duration-based or active-cost spells
- - Add templates to messages.yml for all the various forms a wand and spell
-   name can take.
-
  - Can't hitbox-target entities standing in a corner? Issues with spiders?
- - Look at/expand "item" parameter to SpawnEntity (why do wither skellies start with a bow?)
  - Add "drops" parameter to Damage action to prevent mobs dropping loot.
 
  - Add /mmap reload command
@@ -259,8 +226,6 @@
 
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
- - Automata aren't cleaning up cmd block + redstone
- - Automata don't re-activate un chunk load events (?)
  - Glitching Fill behavior
  - Spell shop improvements:
    - Color spells player can't afford
@@ -276,17 +241,15 @@
    - or generalized option that works with map, too
  - /magic describe should show info about current spell?
 
-## Old Stuff
+# Old, Possibly Ignored
 
  - Arena spell/schematic
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
  - Collapse blocklist chains on save (?)
- - Enchant count limit for wands
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
 
 ## NEW SPELLS
 
- - level - levels the ground
  - avatar - Goes into "avatar" state- free spells, super power, levitating, special effects- but rapidly decreasing mana while active.
     - will need a spell-based power/protection system, or use potion effects? 
     - would be nice if this could extend from potioneffect and levitate- maybe refactor?
@@ -295,8 +258,6 @@
  - Fix/finish stairs spell
  - Fix tunnel spell
  - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
- - Disguise spells / clone spell
- - Biome modification (mega-frost).
  - Decorate, places paintings at target
 
 ## OTHER STUFF
@@ -304,9 +265,7 @@
  - Customize dynmap map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
  - Make volley multi-sample?
  - Alter names sheep "jeb_", - others "Dinnerbone" ?
- 
- - Fix up alter spell, remove id-based lists
- 
+  
  - Need separate activate/deactivate costs. Fill vs levitate :\
    - Variable costs would be nice, too- for fill and superconstruct.
  - prevent pillar from passing through non-air blocks of different materials than the target
@@ -324,8 +283,12 @@
 
 ## STACK TRACES / EXTRA DEBUG INFO
 
-
 ## PLAYER REQUESTS:
+
+ - Add Kingdoms support (It's a premium plugin, sooooooo) 
+ - Add support for LockettePro
+ - Add some sort of integration with Partec plugin (Deprecated since 2015, so probably not)
+   https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
 
 yoheius
 Feb 13, 2014 at 11:51 - 1 like Unlike
