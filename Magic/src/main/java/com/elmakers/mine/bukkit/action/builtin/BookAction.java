@@ -1,11 +1,18 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -19,18 +26,21 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 public class BookAction extends BaseSpellAction {
 
     @Nonnull
-    private String title = "", author = "";
+    private String title = "";
+    @Nonnull
+    private String author = "";
+    @Nullable
     private List<String> contents;
 
     private ItemStack createBook(CastContext context, Mage targetMage) {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta meta = (BookMeta) book.getItemMeta();
 
-        contents = replaceContents(context, targetMage);
+        List<String> pages = replaceContents(context, targetMage);
         
         meta.setTitle(title);
         meta.setAuthor(author);
-        meta.setPages(contents);
+        meta.setPages(pages);
 
         book.setItemMeta(meta);
 
@@ -54,10 +64,8 @@ public class BookAction extends BaseSpellAction {
             replacements.put("$balance_" + currency, String.valueOf(targetMage.getCurrency(currency)));
         }
 
-        List<String> copy = new ArrayList<>(contents);
         List<String> newContents = new ArrayList<>();
-
-        for (String str : copy) {
+        for (String str : contents) {
             for (Map.Entry<String, String> entry : replacements.entrySet()) {
                 str = str.replace(entry.getKey(), entry.getValue());
             }
@@ -83,15 +91,18 @@ public class BookAction extends BaseSpellAction {
 
     @Override
     public SpellResult perform(CastContext context) {
-        if (context.getTargetEntity() == null) {
+        if (contents == null) {
+            return SpellResult.FAIL;
+        }
+        Entity target = context.getTargetEntity();
+        if (target == null) {
+            return SpellResult.NO_TARGET;
+        }
+        if (!(target instanceof InventoryHolder)) {
             return SpellResult.NO_TARGET;
         }
 
-        if (!(context.getTargetEntity() instanceof InventoryHolder)) {
-            return SpellResult.FAIL;
-        }
-
-        Mage targetMage = context.getController().getMage(context.getTargetEntity());
+        Mage targetMage = context.getController().getMage(target);
         ItemStack book = createBook(context, targetMage);
 
         targetMage.giveItem(book);
