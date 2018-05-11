@@ -19,7 +19,7 @@ public class BookAction extends BaseSpellAction {
 
     @Nonnull
     private String title = "", author = "";
-    private List<String> contents = new ArrayList<>();
+    private List<String> contents;
 
     private ItemStack createBook(CastContext context, Mage targetMage) {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
@@ -75,6 +75,7 @@ public class BookAction extends BaseSpellAction {
 
         title = messages.get(titleParam, titleParam);
         author = messages.get(authorParam, authorParam);
+        contents = parameters.getStringList("contents");
     }
 
     @Override
