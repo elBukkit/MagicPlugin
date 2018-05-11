@@ -59,11 +59,14 @@ public class LedgerAction extends BaseSpellAction {
         List<String> lines = new ArrayList<>();
         for (String key : currencyKeys) {
             Currency currency = controller.getCurrency(key);
+            if (currency == null) {
+                continue;
+            }
             double amount = currency.getBalance(mage, wand);
             if (showTypes != null && !showTypes.contains(key)) {
                 continue;
             }
-            if (amount > 0 && currency != null && (ignoreTypes == null || !ignoreTypes.contains(key))) {
+            if (amount > 0 && (ignoreTypes == null || !ignoreTypes.contains(key))) {
                 if (lines.size() >= 12) {
                     pages.add(header + "\n" + StringUtils.join(lines, "\n"));
                     lines.clear();

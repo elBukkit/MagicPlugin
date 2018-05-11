@@ -530,7 +530,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                         }
                         if (entity != null && entity.isValid()) {
                             CastContext context = getContext();
-                            if (context != null && entity != null && context.hasEffects("undo_entity")) {
+                            if (context != null && context.hasEffects("undo_entity")) {
                                 context.playEffects("undo_entity", 1.0f, null, null, entity.getLocation(), entity, null);
                             }
                             entity.remove();
