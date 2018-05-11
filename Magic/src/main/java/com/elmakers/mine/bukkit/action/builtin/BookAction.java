@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class BookAction extends BaseSpellAction {
@@ -33,9 +34,9 @@ public class BookAction extends BaseSpellAction {
     private String author = "";
     @Nullable
     private ConfigurationSection pages;
+    private boolean giveBook;
 
-    private ItemStack createBook(CastContext context, Mage targetMage) {
-        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+    private ItemStack updateBook(CastContext context, Mage targetMage, ItemStack book) {
         BookMeta meta = (BookMeta) book.getItemMeta();
 
         List<String> pages = replaceContents(context, targetMage);
@@ -106,13 +107,10 @@ public class BookAction extends BaseSpellAction {
         title = messages.get(titleParam, ChatColor.translateAlternateColorCodes('&', titleParam));
         author = messages.get(authorParam, ChatColor.translateAlternateColorCodes('&', authorParam));
         pages = parameters.getConfigurationSection("pages");
+        giveBook = parameters.getBoolean("give_book", false);
     }
 
-    @Override
-    public SpellResult perform(CastContext context) {
-        if (pages == null) {
-            return SpellResult.FAIL;
-        }
+    public SpellResult performGive(CastContext context) {
         Entity target = context.getTargetEntity();
         if (target == null) {
             return SpellResult.NO_TARGET;
@@ -122,7 +120,8 @@ public class BookAction extends BaseSpellAction {
         }
 
         Mage targetMage = context.getController().getMage(target);
-        ItemStack book = createBook(context, targetMage);
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+        updateBook(context, targetMage, book);
 
         targetMage.giveItem(book);
 
@@ -130,12 +129,27 @@ public class BookAction extends BaseSpellAction {
     }
 
     @Override
-    public boolean requiresTarget() {
-        return true;
-    }
+    public SpellResult perform(CastContext context) {
+        if (pages == null) {
+            return SpellResult.FAIL;
+        }
+        if (giveBook) {
+            return performGive(context);
+        }
+        Mage mage = context.getMage();
+        Wand wand = context.getWand();
+        if (wand == null || wand.getItem().getType() != Material.WRITTEN_BOOK) {
+            return SpellResult.NO_TARGET;
+        }
 
-    @Override
-    public boolean requiresTargetEntity() {
-        return true;
+        ItemStack book = wand.getItem();
+        updateBook(context, mage, book);
+        if (wand == mage.getActiveWand()) {
+            mage.getPlayer().getInventory().setItemInMainHand(wand.getItem());
+        } else if (wand == mage.getOffhandWand()) {
+            mage.getPlayer().getInventory().setItemInOffHand(wand.getItem());
+        }
+
+        return SpellResult.CAST;
     }
 }
