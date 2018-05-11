@@ -4,6 +4,7 @@ import java.util.*;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -59,7 +60,7 @@ public class BookAction extends BaseSpellAction {
                 str = str.replace(entry.getKey(), entry.getValue());
             }
 
-            newContents.add(str);
+            newContents.add(ChatColor.translateAlternateColorCodes('&', str));
         }
 
         return newContents;
@@ -73,8 +74,8 @@ public class BookAction extends BaseSpellAction {
         String titleParam = parameters.getString("title");
         String authorParam = parameters.getString("author");
 
-        title = messages.get(titleParam, titleParam);
-        author = messages.get(authorParam, authorParam);
+        title = messages.get(titleParam, ChatColor.translateAlternateColorCodes('&', titleParam));
+        author = messages.get(authorParam, ChatColor.translateAlternateColorCodes('&', authorParam));
         contents = parameters.getStringList("contents");
     }
 
