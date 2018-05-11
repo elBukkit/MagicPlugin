@@ -24,6 +24,8 @@
 
 ## Future
   
+ - Maybe optimize chunk effects/spells with player range
+ 
  - It'd be really cool to support configs from remote repos....
    Github has an API for fetching a list of files, maybe can use that?
    https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
