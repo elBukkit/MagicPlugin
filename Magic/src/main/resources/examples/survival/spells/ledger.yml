@@ -6,3 +6,8 @@ ledger:
     actions:
         cast:
         - class: Ledger
+    parameters:
+      ignore_currencies:
+      - hunger
+      - health
+      - mana
