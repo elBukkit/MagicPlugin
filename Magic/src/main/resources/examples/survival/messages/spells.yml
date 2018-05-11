@@ -1631,4 +1631,6 @@ spells:
     ledger:
       name: Ledger
       title: Ledger
-      header: Balances
+      header: "&2&lBalances"
+      currency_prefix: "&7&l"
+      value_prefix: "&0"

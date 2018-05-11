@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.BookMeta;
@@ -50,7 +52,11 @@ public class LedgerAction extends BaseSpellAction {
 
         MageController controller = context.getController();
         Collection<String> currencyKeys = controller.getCurrencyKeys();
-        String balances = context.getMessage("header");
+        String header = context.getMessage("header");
+        String currencyPrefix = context.getMessage("currency_prefix");
+        String valuePrefix = context.getMessage("value_prefix");
+        List<String> pages = new ArrayList<>();
+        List<String> lines = new ArrayList<>();
         for (String key : currencyKeys) {
             Currency currency = controller.getCurrency(key);
             double amount = currency.getBalance(mage, wand);
@@ -58,10 +64,18 @@ public class LedgerAction extends BaseSpellAction {
                 continue;
             }
             if (amount > 0 && currency != null && (ignoreTypes == null || !ignoreTypes.contains(key))) {
-                balances += "\n" + currency.formatAmount(amount, controller.getMessages());
+                if (lines.size() >= 12) {
+                    pages.add(header + "\n" + StringUtils.join(lines, "\n"));
+                    lines.clear();
+                }
+                lines.add(currencyPrefix + currency.getName(controller.getMessages()));
+                lines.add(valuePrefix + currency.formatAmount(amount, controller.getMessages()));
             }
         }
-        book.setPages(balances);
+        if (!lines.isEmpty()) {
+            pages.add(header + "\n" + StringUtils.join(lines, "\n"));
+        }
+        book.setPages(pages);
         wand.getItem().setItemMeta(book);
         if (wand == mage.getActiveWand()) {
             mage.getPlayer().getInventory().setItemInMainHand(wand.getItem());
