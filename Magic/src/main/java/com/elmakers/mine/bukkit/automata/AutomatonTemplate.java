@@ -65,8 +65,8 @@ public class AutomatonTemplate {
 
     @Nonnull
     public String getName() {
-        String name0 = name;
-        return name0 == null ? key : name0;
+        String name = this.name;
+        return name == null ? key : name;
     }
 
     public int getInterval() {
