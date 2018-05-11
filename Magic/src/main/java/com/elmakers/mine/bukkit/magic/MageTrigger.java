@@ -45,7 +45,7 @@ public class MageTrigger {
         String typeString = configuration.getString("type", key);
         try {
             String upperType = typeString.toUpperCase();
-            MageTriggerType knownType = MageTriggerType.valueOf(upperType);
+            MageTriggerType.valueOf(upperType);
             type = upperType;
         } catch (Exception ex) {
             type = typeString;
