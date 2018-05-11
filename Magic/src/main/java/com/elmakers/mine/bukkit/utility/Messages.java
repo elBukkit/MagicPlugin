@@ -163,7 +163,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             return vault.getCurrency();
         }
 
-        return get("costs.currency");
+        return get("costs.currency_singular");
     }
 
     @Override
@@ -173,7 +173,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             return vault.getCurrencyPlural();
         }
 
-        return get("costs.currency_plural");
+        return get("costs.currency");
     }
 
     @Override

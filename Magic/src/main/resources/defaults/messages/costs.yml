@@ -12,8 +12,8 @@ costs:
     health_amount: $amount Health
     hunger_amount: $amount Energy
     heroes_mana: $amount Mana
-    currency: Dollar
-    currency_plural: Dollars
+    currency_singular: Dollar
+    currency: Dollars
     currency_amount: "$$amount"
 
 currency:
