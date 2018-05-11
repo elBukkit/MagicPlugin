@@ -2,6 +2,8 @@
 
 # 7.5.1
 
+ - Improve Flatten spell using a new reverse_spiral build type
+
 # 7.5
 
  - Please check MIGRATION.md for this release if updating! There were a few potentially breaking changes.

@@ -35,6 +35,7 @@ flatten:
     range: 32
     radius: 16
     vertical_range: 32
+    volume_type: reverse_spiral
     faces:
     - down
     - north
