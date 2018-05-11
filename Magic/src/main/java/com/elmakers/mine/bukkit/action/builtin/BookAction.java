@@ -26,9 +26,11 @@ public class BookAction extends BaseSpellAction {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta meta = (BookMeta) book.getItemMeta();
 
+        contents = replaceContents(context, targetMage);
+        
         meta.setTitle(title);
         meta.setAuthor(author);
-        meta.setPages(replaceContents(context, targetMage));
+        meta.setPages(contents);
 
         book.setItemMeta(meta);
 
@@ -90,9 +92,6 @@ public class BookAction extends BaseSpellAction {
         }
 
         Mage targetMage = context.getController().getMage(context.getTargetEntity());
-
-        contents = replaceContents(context, targetMage);
-
         ItemStack book = createBook(context, targetMage);
 
         targetMage.giveItem(book);
