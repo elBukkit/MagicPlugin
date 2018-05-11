@@ -4,6 +4,7 @@
 
  - Improve Flatten spell using a new reverse_spiral build type
  - Multi-line message support to all of messages.yml using \n
+ - Colorized all path names, mainly for Placeholder API support
 
 # 7.5
 

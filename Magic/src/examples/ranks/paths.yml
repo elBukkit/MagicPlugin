@@ -14,3 +14,33 @@ endermancer:
   - counterspell
   - phase
   - homing
+
+beginner:
+  upgrade_commands:
+    - broadcast §6@pd §3has advanced to §b$path§3!
+    - pex user @pn group add student
+
+student:
+  upgrade_commands:
+    - broadcast §6@pd §3has advanced to §b$path§3!
+    - pex user @pn group add apprentice
+
+apprentice:
+  upgrade_commands:
+    - broadcast §6@pd §3has advanced to §b$path§3!
+    - pex user @pn group add master
+
+master:
+  upgrade_commands:
+    - broadcast §6@pd §3has advanced to §b$path§3!
+    - pex user @pn group add engineer
+
+engineer:
+  upgrade_commands:
+    - broadcast §6@pd §3has advanced to §b$path§3!
+    - pex user @pn group add architect
+
+architect:
+  upgrade_commands:
+    - broadcast §6@pd §3has advanced to §b$path§3!
+    - pex user @pn group add conduit

@@ -33,25 +33,25 @@ categories:
 
 paths:
     youngling:
-        name: Youngling
+        name: "&6Youngling"
     padawan:
-        name: Padawan
+        name: "&6Padawan"
     jedi_knight:
-        name: Jedi Knight
+        name: "&6Jedi Knight"
     jedi_master:
-        name: Jedi Master
+        name: "&eJedi Master"
     acolyte:
-        name: Sith Acolyte
+        name: "&4Sith Acolyte"
     sith_apprentice:
-        name: Sith Apprentice
+        name: "&4Sith Apprentice"
     sith:
-        name: Sith
+        name: "&4Sith"
     marauder:
-        name: Sith Marauder
+        name: "&4Sith Marauder"
     sith_master:
-        name: Sith Master
+        name: "&4Sith Master"
     sith_lord:
-        name: Sith Lord
+        name: "&cSith Lord"
 
 wands:
     blaster:

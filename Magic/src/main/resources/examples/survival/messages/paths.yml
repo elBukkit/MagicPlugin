@@ -1,37 +1,37 @@
 paths:
     beginner:
-        name: Beginner
+        name: "&7Beginner"
         description: Just starting out with magic
     student:
-        name: Student
+        name: "&2Student"
         description: Starting to learn the basics
     apprentice:
-        name: Apprentice
+        name: "&aApprentice"
         description: A good variety of spells
     master:
-        name: Wizard
+        name: "&6Wizard"
         description: The penultimate wizard
         required_spell: "&cNothing new to learn for now! &4What mystery lies ahead?"
     engineer:
-        name: Engineer
+        name: "&5Engineer"
         description: Has engineering spells
     architect:
-        name: Architect
+        name: "&dArchitect"
         description: Has super-powerful engineering spells
     conduit:
-        name: Conduit
+        name: "&3Conduit"
         description: Can manifest blocks from pure energy
     battle:
-        name: Warrior
+        name: "&7Warrior"
         description: Low-level combat spells
     squire:
-        name: Squire
+        name: "&2Squire"
         description: Mid-level combat spells
     soldier:
-        name: Soldier
+        name: "&aSoldier"
         description: High-level combat spells
     knight:
-        name: Knight
+        name: "&6Knight"
         description: Master-level combat spells
     broom:
         name: Broom
@@ -40,8 +40,8 @@ paths:
         name: Blaster
         description: Blaster upgrades
     staff:
-        name: Staff
+        name: "&bStaff"
         description: Staff-only spells
     archer:
-        name: Archer
+        name: "&6Archer"
         description: Archer spells

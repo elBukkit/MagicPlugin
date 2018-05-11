@@ -140,15 +140,15 @@ spells:
 
 paths:
     airbending:
-        name: Airbending
+        name: "&bAirbender"
     waterbending:
-        name: Waterbending
+        name: "&9Waterbender"
     earthbending:
-        name: Earthbending
+        name: "&7Earthbender"
     firebending:
-        name: Firebending
+        name: "&cFirebender"
     avatar:
-        name: Avatar
+        name: "&3Avatar"
         description: Master of all four elements
 
 classes:
