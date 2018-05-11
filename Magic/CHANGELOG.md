@@ -1,32 +1,36 @@
 # CHANGELOG
 
+# 7.5.1
+
 # 7.5
 
  - Please check MIGRATION.md for this release if updating! There were a few potentially breaking changes.
 
  - Maybe 1.13 support (not tested yet)
  - The survival configs are now contained in an example
-   Defaults are mostly empty but load the survival example by default.
-   The files put on your server in the defaults folder are the merged configs, and so will include survival as before
-   This shouldn't affect most of you, but if you notice something weird about your custom configs please let me know!
+   - Defaults are mostly empty but load the survival example by default.
+   - The files put on your server in the defaults folder are the merged configs, and so will include survival as before
+   - This shouldn't affect most of you, but if you notice something weird about your custom configs please let me know!
  - The map brush can now work with concrete, glazed terracotta and several other block types
  - Add support for parrot variants in mob configs
  - Fix mobs spawned with a disguise looking glitchy for 1 tick
  - Add "cast.spells" property to automata
  - Add "launch" trigger to magic mobs, support using magic bow spells (See: archer mob)
- - Add "display_name" property to wands, for making a custome name (no spell info, etc)
+ - Add "display_name" property to wands, for making a custom name (no spell info, etc)
  - Allow for custom mob triggers, add Trigger action to trigger via spells
  - Add support for custom currencies
    - Currencies defined in config.yml, named in messages.yml
    - Can be used in casting costs, Selector/Shop costs/earns, spell earning (in place of SP) and worth
    - Can be given with /mgive, in virtual or item form (right-click item to deposit)
    - Available via the API for plugins to add custom currencies
+   - Ledger action is now a dynamic book that supports all known currencies
  - Add use_wand_color option to Firework action
  - Colors can now use simple color names (red, blue, etc) or hex codes
  - Add Raise and Flatten engineering spells
  - Fix setting boolean values via /mage setdata, See: https://github.com/elBukkit/MagicPlugin/wiki/Vanity-Items
  - Add class_items option for classes, for items given when unlocking a class and taken away when locking.
  - Fix specifying a custom item-based currency in config.yml
+ - Added Book and Cast actions (Thanks, MineStein!)
  
 # 7.4.4
 
