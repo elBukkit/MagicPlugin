@@ -1,13 +1,13 @@
 wands:
-
-    wizardwand:
-        name: Wand
-
-    roguebow:
-        name: Bow
-
-    battlesword:
-        name: Sword
+  wizardwand:
+    name: Wand
+  roguebow:
+    name: Bow
+  battlesword:
+    name: Sword
+  statsheet:
+    name: Stat Sheet
+    description: View your character stats
 
 spells:
   sweep:
@@ -28,44 +28,36 @@ spells:
   backflip:
     name: Backflip
     description: Jump backwards to avoid attacks
-
+  playerstats:
+    name: Player Stats
 
 classes:
-
   wizard:
     name: "Wizard"
     description: "Use wands to cast spells"
-
   warrior:
     name: "Warrior"
     description: "Use powerful physical attacks"
-
   rogue:
     name: "Rogue"
     description: "Stealth and subversion"
 
 attributes:
-
   strength:
     name: Strength
     description: Improved damage from physical attacks
-
   constitution:
     name: Constitution
     description: Improved damage resistance and health
-
   dexterity:
     name: Dexterity
     description: Increase speed and agility
-
   intelligence:
     name: Intelligence
     description: Greater proficiency with magic
-
   wisdom:
     name: Wisdom
     description: Magical resistance and improved mana usage
-
   luck:
     name: Luck
     description: Better chances for success

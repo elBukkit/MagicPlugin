@@ -1,0 +1,21 @@
+playerstats:
+    icon: paper
+    category: specialty
+    hidden: true
+    show_undoable: false
+    actions:
+        cast:
+        - class: Book
+    parameters:
+      pages:
+        1:
+          - "&2&lAttributes:"
+          - "&d&lStrength: &5$attribute_strength"
+          - "&d&lConstitution: &5$attribute_constitution"
+          - "&d&lDexterity: &5$attribute_dexterity"
+          - "&d&lIntelligence: &5$attribute_intelligence"
+          - "&d&lWisdom: &5$attribute_wisdom"
+          - "&d&lLuck: &5$attribute_luck"
+        2:
+          - "&2&lBalance"
+          - "&d&lDollars: &5$balance_currency"
