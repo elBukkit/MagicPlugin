@@ -663,7 +663,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (tags != null && !tags.isEmpty()) {
             Set<String> entityTags = CompatibilityUtils.getTags(entity);
-            entityTags.addAll(tags);
+            if (entityTags != null) {
+                entityTags.addAll(tags);
+            }
         }
 
         if (entity instanceof Creature) {
