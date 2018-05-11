@@ -12,6 +12,7 @@ import org.bukkit.entity.Entity;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.base.Preconditions;
 
 public class AutomatonTemplate {
     @Nonnull
@@ -20,6 +21,7 @@ public class AutomatonTemplate {
     private final ConfigurationSection configuration;
     @Nonnull
     private final String key;
+    @Nullable
     private String name;
     private int interval;
     @Nullable
@@ -30,7 +32,7 @@ public class AutomatonTemplate {
     private Collection<EffectPlayer> effects;
 
     public AutomatonTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
-        this.key = key;
+        this.key = Preconditions.checkNotNull(key);
         this.controller = controller;
         this.configuration = configuration;
         name = configuration.getString("name");
@@ -61,9 +63,10 @@ public class AutomatonTemplate {
         return key;
     }
 
-    @Nullable
+    @Nonnull
     public String getName() {
-        return name == null ? key : name;
+        String name0 = name;
+        return name0 == null ? key : name0;
     }
 
     public int getInterval() {
