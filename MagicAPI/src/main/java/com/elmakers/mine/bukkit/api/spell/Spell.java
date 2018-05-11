@@ -28,10 +28,10 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 public interface Spell extends SpellTemplate {
     MageController getController();
     boolean cast();
-    boolean cast(String[] parameters);
-    boolean cast(String[] parameters, Location defaultLocation);
-    boolean cast(ConfigurationSection parameters, Location defaultLocation);
-    boolean cast(ConfigurationSection parameters);
+    boolean cast(@Nullable String[] parameters);
+    boolean cast(@Nullable String[] parameters, @Nullable Location defaultLocation);
+    boolean cast(@Nullable ConfigurationSection parameters, @Nullable Location defaultLocation);
+    boolean cast(@Nullable ConfigurationSection parameters);
     @Nullable
     Location getLocation();
     Entity getEntity();

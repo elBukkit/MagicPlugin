@@ -35,7 +35,7 @@ public class HeroesSkillSpell extends BaseSpell {
     private boolean isCasting = false;
 
     @Override
-    public boolean cast(ConfigurationSection extraParameters, Location defaultLocation) {
+    public boolean cast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation) {
         // This is a bit of hack to bypass cooldown, cost and other checks
         // and just let Heroes manage that.
         // We still want them overridden for the hotbar to work.

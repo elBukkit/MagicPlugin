@@ -1074,7 +1074,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public boolean cast(String[] extraParameters, Location defaultLocation) {
+    public boolean cast(@Nullable String[] extraParameters, @Nullable Location defaultLocation) {
         ConfigurationSection parameters = null;
         if (extraParameters != null && extraParameters.length > 0) {
             parameters = new MemoryConfiguration();
@@ -1084,13 +1084,13 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public boolean cast(ConfigurationSection parameters)
+    public boolean cast(@Nullable ConfigurationSection parameters)
     {
         return cast(parameters, null);
     }
 
     @Override
-    public boolean cast(ConfigurationSection extraParameters, Location defaultLocation)
+    public boolean cast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation)
     {
         if (mage.isPlayer() && mage.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             if (mage.getDebugLevel() > 0 && extraParameters != null) {
