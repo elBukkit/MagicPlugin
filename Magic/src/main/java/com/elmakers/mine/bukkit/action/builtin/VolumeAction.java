@@ -66,11 +66,26 @@ public class VolumeAction extends CompoundAction
     private Material replaceMaterial;
 
     private enum VolumeType {
-        SPIRAL,
+        SPIRAL(true),
+        REVERSE_SPIRAL(true),
         YZX,
         YXZ,
         ZXY,
-        XZY
+        XZY;
+
+        VolumeType() {
+            symmetrical = false;
+        }
+
+        VolumeType(boolean symmetrical) {
+            this.symmetrical = symmetrical;
+        }
+
+        private final boolean symmetrical;
+
+        public boolean isSymmetrical() {
+            return symmetrical;
+        }
     }
 
     @Override
@@ -138,7 +153,7 @@ public class VolumeAction extends CompoundAction
             xSize = (int)Math.ceil(bounds.getX() / 2) + 1;
             ySize = (int)Math.ceil(bounds.getY() / 2) + 1;
             zSize = (int)Math.ceil(bounds.getZ() / 2) + 1;
-            if (volumeType == VolumeType.SPIRAL) {
+            if (volumeType.isSymmetrical()) {
                 xSize = Math.max(xSize, zSize);
                 zSize = Math.max(xSize, zSize);
             }
@@ -150,7 +165,7 @@ public class VolumeAction extends CompoundAction
             zSize = context.getMage().getRadiusMultiplier() * this.zSize;
             appliedMultiplier = true;
         }
-        if (volumeType == VolumeType.SPIRAL && xSize != zSize) {
+        if (volumeType.isSymmetrical() && xSize != zSize) {
             volumeType = VolumeType.YZX;
         }
 
@@ -175,7 +190,7 @@ public class VolumeAction extends CompoundAction
             zOffset = 0;
         }
 
-        if (volumeType != VolumeType.SPIRAL) {
+        if (!volumeType.isSymmetrical()) {
             min = new Vector(-xSizeCeil, yStart, -zSizeCeil);
             max = new Vector(xSizeCeil, yEnd, zSizeCeil);
         }
@@ -206,6 +221,13 @@ public class VolumeAction extends CompoundAction
             dx = -Math.min(startRadius, xSizeCeil);
             dy = yStart;
             dz = -Math.min(startRadius, zSizeCeil);
+            xDirection = 1;
+            zDirection = 0;
+        } else if (volumeType == VolumeType.REVERSE_SPIRAL) {
+            currentRadius = spiralRadius;
+            dx = -Math.max(startRadius, xSizeCeil);
+            dy = yStart;
+            dz = -Math.max(startRadius, zSizeCeil);
             xDirection = 1;
             zDirection = 0;
         } else {
@@ -321,6 +343,41 @@ public class VolumeAction extends CompoundAction
         return currentRadius <= spiralRadius;
     }
 
+    protected boolean nextReverseSpiral(CastContext context) {
+        dy++;
+        if (dy > yEnd) {
+            dy = yStart;
+            int nextX = dx + xDirection;
+            int nextZ = dz + zDirection;
+            if (currentRadius == 0) {
+                currentRadius--;
+            } else if (xDirection == 1 && dx >= currentRadius) {
+                xDirection = 0;
+                zDirection = 1;
+                dz += zDirection;
+            } else if (zDirection == 1 && dz >= currentRadius) {
+                xDirection = -1;
+                zDirection = 0;
+                dx += xDirection;
+            } else if (xDirection == -1 && dx <= -currentRadius) {
+                xDirection = 0;
+                zDirection = -1;
+                dz += zDirection;
+            } else if (zDirection == -1 && nextZ <= -currentRadius) {
+                currentRadius--;
+                dx = -currentRadius;
+                dz = -currentRadius;
+                xDirection = 1;
+                zDirection = 0;
+            } else {
+                dx = nextX;
+                dz = nextZ;
+            }
+        }
+
+        return currentRadius >= 0;
+    }
+
     @Override
     public SpellResult start(CastContext context) {
         if (!calculateSize(context)) {
@@ -346,6 +403,9 @@ public class VolumeAction extends CompoundAction
         switch (volumeType) {
             case SPIRAL:
                 result = nextSpiral(context);
+                break;
+            case REVERSE_SPIRAL:
+                result = nextReverseSpiral(context);
                 break;
             case YZX:
                 result = nextYZX(context);
