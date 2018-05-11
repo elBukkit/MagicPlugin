@@ -1,7 +1,7 @@
-# Vault integration
 ledger:
   active_spell: ledger
-  icon: paper
+  migrate_icon: paper
+  icon: written_book
   undroppable: true
   keep: true
   indestructible: false

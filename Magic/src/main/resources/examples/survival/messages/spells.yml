@@ -1628,3 +1628,7 @@ spells:
     vanish:
       name: Vanish
       description: Make yourself completely invisible to other players.
+    ledger:
+      name: Ledger
+      title: Ledger
+      header: Balances

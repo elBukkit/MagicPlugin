@@ -1,11 +1,5 @@
 # TODO
 
-## 7.5
-  
- - Custom Currency
- 
-   - Some kind of ledger item or balance action, or maybe command to see balance?
-
 ## Hot Issues
    
  - There seems to be an undo issue here somewhere.

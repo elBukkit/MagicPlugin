@@ -5,8 +5,4 @@ ledger:
     show_undoable: false
     actions:
         cast:
-        - class: Command
-    parameters:
-      op: true
-      command: bal
-
+        - class: Ledger
