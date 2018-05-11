@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -859,20 +860,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             isActionBar = false;
             message = message.substring(2);
         }
-
-        String fullMessage = prefix + message;
-        if (isTitle && player != null) {
-            CompatibilityUtils.sendTitle(player, fullMessage, null, -1, -1, -1);
-            return;
-        }
-        if (isActionBar && player != null) {
-            CompatibilityUtils.sendActionBar(player, fullMessage);
-            return;
-        }
-
-        CommandSender sender = getCommandSender();
-        if (sender != null) {
-            sender.sendMessage(fullMessage);
+        String[] messages = StringUtils.split(message, "\n");
+        for (String line : messages) {
+            String fullMessage = prefix + line;
+            if (isTitle && player != null) {
+                CompatibilityUtils.sendTitle(player, fullMessage, null, -1, -1, -1);
+            } else if (isActionBar && player != null) {
+                CompatibilityUtils.sendActionBar(player, fullMessage);
+            } else {
+                CommandSender sender = getCommandSender();
+                if (sender != null) {
+                    sender.sendMessage(fullMessage);
+                }
+            }
         }
     }
 

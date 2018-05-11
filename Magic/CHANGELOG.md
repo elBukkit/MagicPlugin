@@ -3,6 +3,7 @@
 # 7.5.1
 
  - Improve Flatten spell using a new reverse_spiral build type
+ - Multi-line message support to all of messages.yml using \n
 
 # 7.5
 
