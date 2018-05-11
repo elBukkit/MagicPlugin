@@ -263,8 +263,7 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
             }
             String upgradeDescription = spell.getUpgradeDescription();
             if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                upgradeDescription = controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription;
-                InventoryUtils.wrapText(upgradeDescription,  lore);
+                InventoryUtils.wrapText(upgradeDescription, controller.getMessages().get("spell.upgrade_description_prefix"), lore);
             }
 
             String unpurchasableMessage = null;

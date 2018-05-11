@@ -278,7 +278,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
                 String upgradeDescription = template.getUpgradeDescription().replace("$name", currentSpell.getName());
                 if (!upgradeDescription.isEmpty()) {
-                    mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix") + upgradeDescription);
+                    mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix"), upgradeDescription);
                 }
 
                 SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, getWand(), currentSpell, template);

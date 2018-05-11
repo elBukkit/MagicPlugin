@@ -385,11 +385,22 @@ public class InventoryUtils extends NMSUtils
         wrapText(text, MAX_LORE_LENGTH, list);
     }
 
+    public static void wrapText(String text, String prefix, Collection<String> list)
+    {
+        wrapText(text, prefix, MAX_LORE_LENGTH, list);
+    }
+
     public static void wrapText(String text, int maxLength, Collection<String> list)
+    {
+        wrapText(text, "", maxLength, list);
+    }
+
+    public static void wrapText(String text, String prefix, int maxLength, Collection<String> list)
     {
         String colorPrefix = "";
         String[] lines = StringUtils.split(text, "\n\r");
         for (String line : lines) {
+            line = prefix + line;
             while (line.length() > maxLength)
             {
                 int spaceIndex = line.lastIndexOf(' ', maxLength);
