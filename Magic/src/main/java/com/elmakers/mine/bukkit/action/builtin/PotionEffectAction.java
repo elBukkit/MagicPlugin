@@ -100,7 +100,10 @@ public class PotionEffectAction extends BaseSpellAction
     }
 
     private Collection<PotionEffect> getMappedPotionEffects(ConfigurationSection parameters) {
-        ConfigurationSection section = parameters.getConfigurationSection("add_effects");
+        ConfigurationSection section = parameters.getConfigurationSection("potion_effects");
+        if (section == null) {
+            section = parameters.getConfigurationSection("add_effects");
+        }
         if (section != null) {
             Collection<String> keys = section.getKeys(false);
             Collection<PotionEffect> effects = new ArrayList<>(keys.size());
