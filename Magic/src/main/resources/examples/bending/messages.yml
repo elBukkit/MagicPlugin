@@ -3,11 +3,11 @@
 #
 
 wand:
-    mana_amount: "Energy: §e$amount"
-    mana_regeneration: "Energy Regeneration: §e$amount/s"
-    level_up: "§3You have advanced to §b$path§3!"
-    fully_enchanted: "§cYou have nothing more to learn here."
-    need_more_levels: "§cYou need at least §4$levels §clevels to advance."
+    mana_amount: "Energy: &e$amount"
+    mana_regeneration: "Energy Regeneration: &e$amount/s"
+    level_up: "&3You have advanced to &b$path&3!"
+    fully_enchanted: "&cYou have nothing more to learn here."
+    need_more_levels: "&cYou need at least &4$levels &clevels to advance."
     spell_added: "You have learned the &r&6$name &d&oability!"
     no_path: You must have your powers ready
 
@@ -22,7 +22,7 @@ spell:
     undoable: ""
     reactivate: Reactivating $name
     available_path: Available to $paths
-    required_path: Required for $path graduation
+    required_path: "Required for $path &rgraduation"
 
 categories:
     airbending:

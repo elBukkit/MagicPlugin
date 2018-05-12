@@ -1,10 +1,10 @@
 wands:
     default:
         name: Wand
-        description: $path Magic Wand
+        description: "$path &rMagic Wand"
     wand:
         name: Wand
-        description: $path Magic Wand
+        description: "$path &rMagic Wand"
     starter:
         name: Starter Wand
         description: A Wand with Limited Potential
@@ -27,12 +27,12 @@ wands:
         inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
     magicsword:
         name: Magic Sword
-        description: $path Magic Sword
+        description: "$path &rMagic Sword"
         spell_instructions: "&r&bUse the hotbar buttons to cast spells. Spells require mana, shown in the XP bar."
         inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
     magicbow:
         name: Magic Bow
-        description: $path Magic Bow
+        description: "$path &rMagic Bow"
         spell_instructions: ""
         inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
     mastersword:
@@ -40,13 +40,13 @@ wands:
         description: The legendary sword that seals the darkness
     engineer:
         name: Engineering Wand
-        description: $path Magic Wand
+        description: "$path &rMagic Wand"
     architect:
         name: Architect Wand
-        description: $path Magic Wand
+        description: "$path &rMagic Wand"
     conduit:
         name: Conduit Wand
-        description: $path Magic Wand
+        description: "$path &rMagic Wand"
     architectstaff:
         name: The Architect
         description: With Great Power Comes Great Responsibility
@@ -340,7 +340,7 @@ wands:
         description: Right-click to view skills, drag skill to hotbar to use
     spellbook:
         name: Spell Book
-        description: $path spellbook
+        description: "$path &rSpellbook"
         spell_instructions: "&r&bUse the hotbar button to cast spells that you have put on your hotbar."
         inventory_instructions: "&r&bRight-click to open the spell inventory and drag spells to your hotbar to cast them."
     appearance_beginner:

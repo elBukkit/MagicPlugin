@@ -1,5 +1,11 @@
 # TODO
 
+## 7.5.1
+
+ - Fix potter progression, maybe add spells per year graduation?
+ - Need to fix graduate spells, either support them in spellshop or change them
+    Failed to create item in selector: spell:expelliarmus|5
+
 ## Hot Issues
    
  - There seems to be an undo issue here somewhere.
@@ -62,6 +68,7 @@
    
 ## Suggestions
 
+ - "Residence" integration
  - Option to /wand fill to fill a specific category
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests
