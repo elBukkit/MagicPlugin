@@ -1351,7 +1351,7 @@ spells:
         no_path_end: "You must be ready to advance from $path&r!"
         no_wand: You must be holding a wand!
         confirm_title: "Learn $item"
-        selected: "&d&oYou learned &r&6$item &r&d&ofor &r&a$cost"
+        selected: "t:&d&oYou learned \n&r&6$item\na:&r&d&o-&r&a$cost"
         fail: ""
     engineershop:
         name: Engineer Shop

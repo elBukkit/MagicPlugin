@@ -839,6 +839,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void sendMessage(String prefix, String message) {
         if (message == null || message.length() == 0 || quiet || !controller.showMessages()) return;
 
+        CommandSender sender = getCommandSender();
+        if (sender == null) {
+            return;
+        }
+
         Player player = getPlayer();
         boolean isTitle = false;
         boolean isActionBar = false;
@@ -849,29 +854,42 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             isTitle = true;
             prefix = prefix.substring(2);
         }
-        if (message.startsWith("a:")) {
-            isActionBar = true;
-            // message overrides prefix
-            isTitle = false;
-            message = message.substring(2);
-        } else if (message.startsWith("t:")) {
+
+        if (message.startsWith("t:")) {
             isTitle = true;
             // message overrides prefix
             isActionBar = false;
             message = message.substring(2);
         }
+
         String[] messages = StringUtils.split(message, "\n");
+        if (messages.length == 0) {
+            return;
+        }
+
+        if (isTitle && player != null) {
+            String fullMessage = prefix + messages[0];
+            String subtitle = messages.length > 1 ? prefix + messages[1] : null;
+            CompatibilityUtils.sendTitle(player, fullMessage, subtitle, -1, -1, -1);
+            if (messages.length > 2) {
+                messages = Arrays.copyOfRange(messages, 2, messages.length);
+            } else {
+                return;
+            }
+        }
+
         for (String line : messages) {
+            isActionBar = false;
+            if (line.startsWith("a:")) {
+                isActionBar = true;
+                line = line.substring(2);
+            }
+
             String fullMessage = prefix + line;
-            if (isTitle && player != null) {
-                CompatibilityUtils.sendTitle(player, fullMessage, null, -1, -1, -1);
-            } else if (isActionBar && player != null) {
+            if (isActionBar && player != null) {
                 CompatibilityUtils.sendActionBar(player, fullMessage);
             } else {
-                CommandSender sender = getCommandSender();
-                if (sender != null) {
-                    sender.sendMessage(fullMessage);
-                }
+                sender.sendMessage(fullMessage);
             }
         }
     }

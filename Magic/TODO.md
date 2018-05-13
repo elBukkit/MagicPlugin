@@ -13,7 +13,20 @@
    - Nathanwolf auto at dev spawn has some permanent blocks now
    - Random blocks show up in mob arena sometimes (web, broken floor)
    - Can't find a pattern. Tried world save... don't know. :(
-  
+ - if you use a formula for a parameter and somewhere in the effects you use like $duration 
+   it won't pull the number from the formula.(edited)
+   
+ - Add "default_result" to ActionSpell ?  
+ 
+ - mana: can't use a formula (when i try it just makes the spell free to cast) if it's possible to get this, this would be fantastic as we are planning on using formulas for reduction in costs and stuff.
+ - cooldown: CAN us a formula but it makes it so it no longer appears in the tooltip in a spell (though it does still work with the formula, so i can increase and decrease and the numbers are right, it just won't show in the tooltip)
+ - this one you are aware of but the effectlib ($duration) thing doesn't pull the number correctly if the parameter duration: is a formula.
+ - Error when breaking paintings: https://pastebin.com/Hwp9tPG4
+   [17:07:06 ERROR]: "Silently" catching entity tracking error.
+    net.minecraft.server.v1_10_R1.ReportedException: Adding entity to track
+    at net.minecraft.server.v1_10_R1.EntityTracker.addEntity(EntityTracker.java:141) [spigot.jar:git-Spigot-047f737-270a3a6]
+   
+ 
 ## 1.13
 
 ### Things to verify 
@@ -68,7 +81,8 @@
    
 ## Suggestions
 
- - "Residence" integration
+ - "Residence" integration (requested by Frerduro on Discord)
+   https://github.com/Zrips/Residence
  - Option to /wand fill to fill a specific category
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests
