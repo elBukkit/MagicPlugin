@@ -80,7 +80,10 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     String getDurationDescription(Messages messages);
     long getCooldown();
     @Nullable
+    @Deprecated
     Spell createSpell();
+    @Nullable
+    MageSpell createMageSpell(Mage mage);
     void loadTemplate(String key, ConfigurationSection node);
     void loadPrerequisites(ConfigurationSection node);
     String getPermissionNode();

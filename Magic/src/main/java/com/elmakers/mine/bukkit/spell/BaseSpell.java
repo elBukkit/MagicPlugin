@@ -1023,6 +1023,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         duration = parameters.getInt("duration", 0);
         totalDuration = parameters.getInt("total_duration", -1);
 
+        costReduction = (float)parameters.getDouble("cost_reduction", 0);
+        consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
+        cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
+        if (parameters.getBoolean("free", false)) {
+            costReduction = 2;
+            consumeReduction = 2;
+        }
+
         effects.clear();
         if (node.contains("effects")) {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
@@ -1920,11 +1928,20 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Nullable
     @Override
+    @Deprecated
     public com.elmakers.mine.bukkit.api.spell.Spell createSpell()
+    {
+        return createMageSpell(null);
+    }
+
+    @Nullable
+    @Override
+    public com.elmakers.mine.bukkit.api.spell.MageSpell createMageSpell(Mage mage)
     {
         BaseSpell spell = null;
         try {
             spell = this.getClass().getDeclaredConstructor().newInstance();
+            spell.setMage(mage);
             spell.initialize(controller);
             spell.loadTemplate(spellKey.getKey(), configuration);
             spell.loadPrerequisites(configuration);

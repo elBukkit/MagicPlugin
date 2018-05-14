@@ -1986,11 +1986,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         SpellTemplate spellTemplate = controller.getSpellTemplate(key);
         if (spellTemplate == null) return null;
-        Spell newSpell = spellTemplate.createSpell();
-        if (newSpell == null || !(newSpell instanceof MageSpell)) return null;
-        playerSpell = (MageSpell)newSpell;
-        spells.put(newSpell.getKey(), playerSpell);
-        playerSpell.setMage(this);
+        playerSpell = spellTemplate.createMageSpell(this);
+        if (playerSpell == null) return null;
+        spells.put(playerSpell.getKey(), playerSpell);
         return playerSpell;
     }
 

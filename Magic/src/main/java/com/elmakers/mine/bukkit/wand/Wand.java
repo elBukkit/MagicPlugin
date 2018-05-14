@@ -1098,8 +1098,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (String key : spells) {
             int spellLevel = getSpellLevel(key);
             SpellKey spellKey = new SpellKey(key, spellLevel);
-            SpellTemplate spell = controller.getSpellTemplate(spellKey.getKey());
-            ItemStack itemStack = createSpellItem(spell, "", controller, getActiveMage(), this, false);
+            SpellTemplate spell = mage == null ? controller.getSpellTemplate(spellKey.getKey()) : mage.getSpell(spellKey.getKey());
+            ItemStack itemStack = createSpellItem(spellKey.getKey(), "", false);
             if (itemStack != null)
             {
                 Integer slot = spellInventory.get(spell.getSpellKey().getBaseKey());
@@ -1286,11 +1286,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
-    protected ItemStack createSpellIcon(SpellTemplate spell) {
-        return createSpellItem(spell, "", controller, getActiveMage(), this, false);
-    }
-
-    @Nullable
     public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
         String[] split = spellKey.split(" ", 2);
         return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, wand == null ? null : wand.getActiveMage(), wand, isItem);
@@ -1300,6 +1295,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static ItemStack createSpellItem(String spellKey, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
         String[] split = spellKey.split(" ", 2);
         return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, mage, wand, isItem);
+    }
+
+    @Nullable
+    public ItemStack createSpellItem(String spellKey) {
+        return createSpellItem(spellKey, "", false);
+    }
+
+    @Nullable
+    public ItemStack createSpellItem(String spellKey, String args, boolean isItem) {
+        SpellTemplate spell = mage == null ? controller.getSpellTemplate(spellKey) : mage.getSpell(spellKey);
+        return createSpellItem(spell, args, controller, mage, this, isItem);
     }
 
     @Nullable
@@ -2542,7 +2548,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             addOwnerDescription(lore);
         }
 
-        SpellTemplate spell = controller.getSpellTemplate(getActiveSpellKey());
+        SpellTemplate spell = mage == null ? controller.getSpellTemplate(getActiveSpellKey()) : mage.getSpell(getActiveSpellKey());
         Messages messages = controller.getMessages();
 
         // This is here specifically for a wand that only has
@@ -2999,7 +3005,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (Map.Entry<String, Integer> entry : previousSlots.entrySet()) {
             if (!addedBack.contains(entry.getKey())) {
                 ItemStack current = openInventory.getItem(entry.getValue());
-                ItemStack itemStack = createSpellItem(controller.getSpellTemplate(entry.getKey()), "", controller, getActiveMage(), this, false);
+                ItemStack itemStack = createSpellItem(entry.getKey(), "", false);
                 if (current == null || current.getType() == Material.AIR) {
                     openInventory.setItem(entry.getValue(), itemStack);
                 } else {
@@ -3212,22 +3218,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 playEffects("randomize");
             }
         }
-    }
-
-    @Nullable
-    public static ItemStack createItem(MagicController controller, String templateName) {
-        ItemStack item = createSpellItem(templateName, controller, null, true);
-        if (item == null) {
-            item = createBrushItem(templateName, controller, null, true);
-            if (item == null) {
-                Wand wand = createWand(controller, templateName);
-                if (wand != null) {
-                    item = wand.getItem();
-                }
-            }
-        }
-
-        return item;
     }
 
     @Nullable
@@ -4801,7 +4791,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         saveInventory();
 
-        ItemStack spellItem = createSpellIcon(template);
+        ItemStack spellItem = createSpellItem(spellKey.getKey());
         if (spellItem == null) {
             return false;
         }
