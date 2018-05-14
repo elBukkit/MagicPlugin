@@ -122,7 +122,7 @@ public class EntityMageData {
 
     public boolean onLaunch(Mage mage, double bowpull) {
         Collection<MageTrigger> launchTriggers = getTriggers(MageTriggerType.LAUNCH);
-        if (launchTriggers == null) return false;
+        if (launchTriggers == null || launchTriggers.isEmpty()) return false;
 
         for (MageTrigger trigger : launchTriggers) {
             trigger.execute(mage, 0, bowpull);
