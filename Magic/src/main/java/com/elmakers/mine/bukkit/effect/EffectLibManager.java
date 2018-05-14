@@ -2,8 +2,6 @@ package com.elmakers.mine.bukkit.effect;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -14,7 +12,6 @@ import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -62,25 +59,25 @@ public class EffectLibManager {
     }
 
     @Nullable
-    public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, Map<String, String> parameterMap) {
+    public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap) {
         if (parameterMap == null) {
-            parameterMap = new HashMap<>();
+            parameterMap = new MemoryConfiguration();
         }
         Entity originEntity = origin == null ? null : origin.getEntity();
         if (originEntity != null && originEntity instanceof Player) {
-            parameterMap.put("$name", ((Player)originEntity).getName());
-        } else if (originEntity != null && originEntity instanceof LivingEntity) {
-            parameterMap.put("$name", ((LivingEntity)originEntity).getCustomName());
+            parameterMap.set("$name", originEntity.getName());
+        } else if (originEntity != null) {
+            parameterMap.set("$name", originEntity.getCustomName());
         } else {
-            parameterMap.put("$name", "Unknown");
+            parameterMap.set("$name", "Unknown");
         }
         Entity targetEntity = target == null ? null : target.getEntity();
         if (targetEntity != null && targetEntity instanceof Player) {
-            parameterMap.put("$target", ((Player)targetEntity).getName());
-        } else if (originEntity != null && targetEntity instanceof LivingEntity) {
-            parameterMap.put("$target", ((LivingEntity)targetEntity).getCustomName());
+            parameterMap.set("$target", targetEntity.getName());
+        } else if (originEntity != null) {
+            parameterMap.set("$target", targetEntity.getCustomName());
         } else {
-            parameterMap.put("$target", "Unknown");
+            parameterMap.set("$target", "Unknown");
         }
 
         Effect effect = null;
@@ -115,7 +112,7 @@ public class EffectLibManager {
         }
 
         try {
-            effect = effectManager.start(effectClass, parameters, origin, target, parameterMap);
+            effect = effectManager.start(effectClass, parameters, origin, target, parameterMap, null);
             if (!parameters.contains("material"))
             {
                 MaterialAndData mat = player.getWorkingMaterial();

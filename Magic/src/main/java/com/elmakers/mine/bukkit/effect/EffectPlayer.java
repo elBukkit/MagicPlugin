@@ -121,7 +121,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected float scale = 1.0f;
 
-    protected Map<String, String> parameterMap = null;
+    protected ConfigurationSection parameterMap = null;
 
     public EffectPlayer() {
     }
@@ -715,7 +715,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     @Override
+    @Deprecated
     public void setParameterMap(Map<String, String> map) {
+        this.parameterMap = ConfigurationUtils.toStringConfiguration(map);
+    }
+
+    @Override
+    public void setParameterMap(ConfigurationSection map) {
         this.parameterMap = map;
     }
 

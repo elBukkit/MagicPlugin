@@ -13,6 +13,9 @@
  - Doesn't work if mana isn't full, just refills mana
  
  - REAMDE.md in plugins/Magic breaks config parsing... ?
+ 
+ - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
+   catch the dropped item.
    
  - There seems to be an undo issue here somewhere.
    - Goldwalker blocks didn't undo once on sandbox (Can not reproduce)

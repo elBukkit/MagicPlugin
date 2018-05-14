@@ -51,6 +51,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 
 public class CastContext extends WandEffectContext implements com.elmakers.mine.bukkit.api.action.CastContext {
@@ -447,7 +448,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         return baseSpell != null ? baseSpell.hasEffects(key) : false;
     }
 
-    private void multiplyParameter(String key, Map<String, String> parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
+    private void multiplyParameter(String key, ConfigurationSection parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
         String multiplyKey = key + "_multiplier";
         if (configuration.contains(multiplyKey)) {
             double baseValue = baseConfiguration != null ? baseConfiguration.getInt(key) : 0;
@@ -456,17 +457,15 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             if (multiplier != 1) {
                 value = multiplier * value;
             }
-            // Double-formatting strings won't work as integer parameters in EffectLib, so to be safe we're
-            // storing them as ints.
-            parameterMap.put("$duration", Integer.toString((int)Math.ceil(value)));
+            parameterMap.set("$duration", value);
         }
     }
 
-    private void addParameters(Map<String, String> parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
+    private void addParameters(ConfigurationSection parameterMap, ConfigurationSection configuration, ConfigurationSection baseConfiguration) {
         if (configuration == null) return;
         Collection<String> keys = configuration.getKeys(false);
         for (String key : keys) {
-            parameterMap.put("$" + key, configuration.getString(key));
+            parameterMap.set("$" + key, configuration.get(key));
         }
 
         // Some specific special cases in here to support multipliers used in headshots and upgrades
@@ -480,11 +479,15 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         if (effects.size() == 0) return effects;
 
         // Create parameter map
-        Map<String, String> parameterMap = null;
+        ConfigurationSection parameterMap = null;
         ConfigurationSection workingParameters = spell.getWorkingParameters();
         ConfigurationSection handlerParameters = spell.getHandlerParameters(effectKey);
         if (handlerParameters != null || workingParameters != null) {
-            parameterMap = new HashMap<>();
+            if (workingParameters != null) {
+                parameterMap = ConfigurationUtils.cloneEmptyConfiguration(workingParameters);
+            } else {
+                parameterMap = ConfigurationUtils.cloneEmptyConfiguration(handlerParameters);
+            }
             addParameters(parameterMap, workingParameters, null);
             addParameters(parameterMap, handlerParameters, workingParameters);
         }

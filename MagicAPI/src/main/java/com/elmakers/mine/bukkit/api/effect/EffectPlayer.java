@@ -11,6 +11,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -24,6 +25,8 @@ public interface EffectPlayer {
 
     void setSound(Sound sound);
     void setSound(Sound sound, float volume, float pitch);
+    void setParameterMap(ConfigurationSection parameters);
+    @Deprecated
     void setParameterMap(Map<String, String> parameters);
 
     void setDelayTicks(int ticks);

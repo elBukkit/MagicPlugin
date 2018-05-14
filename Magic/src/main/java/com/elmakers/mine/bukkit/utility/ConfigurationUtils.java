@@ -281,11 +281,16 @@ public class ConfigurationUtils extends ConfigUtils {
          }
      }
 
-    public static ConfigurationSection cloneConfiguration(ConfigurationSection section)
+    public static ConfigurationSection cloneEmptyConfiguration(ConfigurationSection section)
     {
-        ConfigurationSection copy = section instanceof SpellParameters
+        return section instanceof SpellParameters
                 ? new SpellParameters((SpellParameters)section)
                 : new MemoryConfiguration();
+    }
+
+    public static ConfigurationSection cloneConfiguration(ConfigurationSection section)
+    {
+        ConfigurationSection copy = cloneEmptyConfiguration(section);
         return addConfigurations(copy, section);
     }
 
