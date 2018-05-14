@@ -1008,6 +1008,31 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         // Preload some parameters
         parameters.wrap(node.getConfigurationSection("parameters"));
+        updateTemplateParameters();
+
+        effects.clear();
+        if (node.contains("effects")) {
+            ConfigurationSection effectsNode = node.getConfigurationSection("effects");
+            Collection<String> effectKeys = effectsNode.getKeys(false);
+            for (String effectKey : effectKeys) {
+                if (effectsNode.isString(effectKey)) {
+                    String referenceKey = effectsNode.getString(effectKey);
+                    if (effects.containsKey(referenceKey)) {
+                        effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
+                    } else {
+                        effects.put(effectKey, controller.getEffects(referenceKey));
+                    }
+                }
+                else
+                {
+                    effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateTemplateParameters() {
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         bypassCooldown = parameters.getBoolean("bypass_cooldown", false);
         warmup = parameters.getInt("warmup", 0);
@@ -1033,26 +1058,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (parameters.getBoolean("free", false)) {
             costReduction = 2;
             consumeReduction = 2;
-        }
-
-        effects.clear();
-        if (node.contains("effects")) {
-            ConfigurationSection effectsNode = node.getConfigurationSection("effects");
-            Collection<String> effectKeys = effectsNode.getKeys(false);
-            for (String effectKey : effectKeys) {
-                if (effectsNode.isString(effectKey)) {
-                    String referenceKey = effectsNode.getString(effectKey);
-                    if (effects.containsKey(referenceKey)) {
-                        effects.put(effectKey, new ArrayList<>(effects.get(referenceKey)));
-                    } else {
-                        effects.put(effectKey, controller.getEffects(referenceKey));
-                    }
-                }
-                else
-                {
-                    effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
-                }
-            }
         }
     }
 

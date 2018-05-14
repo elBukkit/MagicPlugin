@@ -48,4 +48,12 @@ public interface MageSpell extends Spell, CostReducer {
 
     @Nullable
     Double getAttribute(String attributeKey);
+
+    /**
+     * Force a reload of a subset of special parameters that may appear in spell lore.
+     *
+     * <p>This may be needed after having updated a Mage's attributes, if those attributes are used
+     * in parameters such as cooldown, duration or cost_reduction.
+     */
+    void updateTemplateParameters();
 }

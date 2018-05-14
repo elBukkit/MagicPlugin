@@ -651,6 +651,17 @@ public interface Mage extends CostReducer, CooldownReducer {
     Double getAttribute(String attributeKey);
 
     /**
+     * Notify this Mage that it has had some attributes updated.
+     *
+     * <p>This will force a rebuild of spell parameters that may appear in lore,
+     * so that the lore will correctly reflect the new attribute values.
+     *
+     * <p>This is called automatically if using setAttribute, and so should only be called if
+     * updating attributes via an external AttributeProvider.
+     */
+    void attributesUpdated();
+
+    /**
      * Set the damage type that was last given to a Mage.
      *
      * <p>Set this prior to damaging a mage for custom weakness/protection to work properly.

@@ -3952,5 +3952,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         return entityData.trigger(this, trigger);
     }
+
+    @Override
+    public void attributesUpdated() {
+        // Reload spell parameter so lore updates
+        for (MageSpell spell : spells.values()) {
+            spell.updateTemplateParameters();
+        }
+
+        // Reload active wand
+        if (activeWand != null) {
+            activeWand.deactivate();
+            checkWand();
+        }
+    }
 }
 
