@@ -133,8 +133,10 @@ import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.integration.GenericMetadataNPCSupplier;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
+import com.elmakers.mine.bukkit.integration.NPCSupplierSet;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.SkriptManager;
@@ -1139,6 +1141,9 @@ public class MagicController implements MageController {
         // Check for Shopkeepers, this is an optimization to avoid scanning for metadata if the plugin is not
         // present
         hasShopkeepers = plugin.getServer().getPluginManager().isPluginEnabled("Shopkeepers");
+        if (hasShopkeepers) {
+            npcSuppliers.register(new GenericMetadataNPCSupplier("shopkeeper"));
+        }
 
         // Try to link to Citizens
         try {
@@ -1153,6 +1158,10 @@ public class MagicController implements MageController {
             citizens = null;
             getLogger().warning("Error integrating with Citizens");
             plugin.getLogger().warning(ex.getMessage());
+        }
+
+        if (citizens != null) {
+            npcSuppliers.register(citizens);
         }
 
         // Placeholder API
@@ -3419,18 +3428,12 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isNPC(Entity entity) {
-        if (hasShopkeepers && entity.hasMetadata("shopkeeper")) {
-            return true;
-        }
-        return citizens == null ? false : citizens.isNPC(entity);
+        return npcSuppliers.isNPC(entity);
     }
 
     @Override
     public boolean isStaticNPC(Entity entity) {
-        if (hasShopkeepers && entity.hasMetadata("shopkeeper")) {
-            return true;
-        }
-        return citizens == null ? false : citizens.isStaticNPC(entity);
+        return npcSuppliers.isStaticNPC(entity);
     }
 
     @Override
@@ -5516,6 +5519,13 @@ public class MagicController implements MageController {
         }
     }
 
+    /**
+     * @return The supplier set that is used.
+     */
+    public NPCSupplierSet getNPCSuppliers() {
+        return npcSuppliers;
+    }
+
     /*
      * Private data
      */
@@ -5763,5 +5773,6 @@ public class MagicController implements MageController {
     private List<PVPManager>                    pvpManagers                 = new ArrayList<>();
     private List<AttributeProvider>             attributeProviders          = new ArrayList<>();
     private List<TeamProvider>                  teamProviders               = new ArrayList<>();
+    private NPCSupplierSet                      npcSuppliers                = new NPCSupplierSet();
     private Map<String, RequirementsProcessor>  requirementProcessors       = new HashMap<>();
 }
