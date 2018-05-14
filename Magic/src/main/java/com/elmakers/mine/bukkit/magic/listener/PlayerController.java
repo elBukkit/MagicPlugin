@@ -474,7 +474,10 @@ public class PlayerController implements Listener {
                     mage.sendMessage(limitMessage);
                 } else {
                     mage.addSkillPoints(sp);
-                    mage.sendMessage(controller.getMessages().get("sp.deposited"));
+                    String balanceMessage = controller.getMessages().get("sp.deposited");
+                    balanceMessage = balanceMessage.replace("$amount", Integer.toString(sp));
+                    balanceMessage = balanceMessage.replace("$balance", Integer.toString(mage.getSkillPoints()));
+                    mage.sendMessage(balanceMessage);
                     player.getInventory().setItemInMainHand(null);
                 }
                 event.setCancelled(true);

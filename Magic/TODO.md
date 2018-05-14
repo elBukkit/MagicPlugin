@@ -8,6 +8,12 @@
 
 ## Hot Issues
    
+ - Test transforming wand- why does mana regenerate when it's set to 0?
+ - Mana refills when switching away from wand and switching back
+ - Doesn't work if mana isn't full, just refills mana
+ 
+ - REAMDE.md in plugins/Magic breaks config parsing... ?
+   
  - There seems to be an undo issue here somewhere.
    - Goldwalker blocks didn't undo once on sandbox (Can not reproduce)
    - Nathanwolf auto at dev spawn has some permanent blocks now
@@ -26,6 +32,14 @@
     net.minecraft.server.v1_10_R1.ReportedException: Adding entity to track
     at net.minecraft.server.v1_10_R1.EntityTracker.addEntity(EntityTracker.java:141) [spigot.jar:git-Spigot-047f737-270a3a6]
    
+ - Recall cancelled sometimes when the spell gains SP?
+ 
+## Recent Requests
+   
+ - "Residence" integration (requested by Frerduro on Discord)
+   https://github.com/Zrips/Residence
+ - Specify slot (and operation?) of attributes on wands
+
  
 ## 1.13
 
@@ -81,8 +95,6 @@
    
 ## Suggestions
 
- - "Residence" integration (requested by Frerduro on Discord)
-   https://github.com/Zrips/Residence
  - Option to /wand fill to fill a specific category
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests
