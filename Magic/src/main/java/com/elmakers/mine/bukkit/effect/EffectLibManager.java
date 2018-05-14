@@ -74,7 +74,7 @@ public class EffectLibManager {
         Entity targetEntity = target == null ? null : target.getEntity();
         if (targetEntity != null && targetEntity instanceof Player) {
             parameterMap.set("$target", targetEntity.getName());
-        } else if (originEntity != null) {
+        } else if (targetEntity != null) {
             parameterMap.set("$target", targetEntity.getCustomName());
         } else {
             parameterMap.set("$target", "Unknown");
