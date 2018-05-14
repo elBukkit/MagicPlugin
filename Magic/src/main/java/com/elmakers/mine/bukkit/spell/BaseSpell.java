@@ -282,6 +282,10 @@ public class BaseSpell implements MageSpell, Cloneable {
     private MaterialSet                         passthroughMaterials = null;
     private MaterialSet                         unsafeMaterials = null;
 
+    // Kind of hacky, used in lore generation.
+    private Mage                                reducerMage = null;
+    private Wand                                reducerWand = null;
+
     @Deprecated // Material
     public boolean allowPassThrough(Material mat)
     {
@@ -1906,7 +1910,10 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public float getCostReduction()
     {
-        CostReducer reducer = mageClass != null ? mageClass : (currentCast != null ? currentCast.getWand() : mage);
+        CostReducer reducer = reducerWand == null ? reducerMage : reducerWand;
+        if (reducer == null) {
+            reducer = mageClass != null ? mageClass : (currentCast != null ? currentCast.getWand() : mage);
+        }
         if (reducer == null) {
             reducer = mage;
         }
@@ -2592,10 +2599,6 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore) {
-        CostReducer reducer = wand == null ? mage : wand;
-        if (reducer == null) {
-            reducer = this;
-        }
         if (levelDescription != null && levelDescription.length() > 0) {
             String descriptionTemplate = messages.get("spell.level_lore", "");
             if (!descriptionTemplate.isEmpty()) {
@@ -2665,20 +2668,24 @@ public class BaseSpell implements MageSpell, Cloneable {
                 lore.add(ChatColor.GOLD + brushText);
             }
         }
+        reducerMage = mage;
+        reducerWand = wand;
         if (costs != null) {
             for (CastingCost cost : costs) {
-                if (!cost.isEmpty(reducer)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
+                if (!cost.isEmpty(this)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, this)));
                 }
             }
         }
         if (activeCosts != null) {
             for (CastingCost cost : activeCosts) {
-                if (!cost.isEmpty(reducer)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
+                if (!cost.isEmpty(this)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, this)));
                 }
             }
         }
+        reducerMage = null;
+        reducerWand =  null;
         if (toggle != ToggleType.NONE) {
             String toggleText = messages.get("spell.toggle", "");
             if (!toggleText.isEmpty()) {
