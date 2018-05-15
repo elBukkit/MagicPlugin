@@ -1663,7 +1663,7 @@ placer:
            color_override: colorHelix
            effectlib:
              class: DnaEffect
-             particlesBase: 0
+             particles_base: 5
              particlesHelix: 7
              particleHelix: redstone
              particleBase1: drip_lava
@@ -1672,9 +1672,8 @@ placer:
              iterations: 10
              radius: 0.5
              grow: 0.2
-             baseInterval: 5
+             base_interval: 5
              length: 16
-             particlesBase: 5
         cast:
         -  class: EffectSingle
            particle: drip_lava
