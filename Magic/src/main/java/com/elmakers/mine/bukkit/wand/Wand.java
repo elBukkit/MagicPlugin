@@ -3867,7 +3867,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             if (usesMana() && manaMode.useXPBar())
             {
-                playerProgress = Math.max(0, mana / effectiveManaMax);
+                playerProgress = Math.min(Math.max(0, mana / effectiveManaMax), 1);
             }
             if (usesCurrency() && currencyMode.useXPNumber())
             {
