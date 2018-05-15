@@ -1,11 +1,5 @@
 package com.elmakers.mine.bukkit.api.event;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -20,9 +14,6 @@ import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 public class LoadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private MageController controller;
-    private List<AttributeProvider> attributeProviders = new ArrayList<>();
-    private List<TeamProvider> teamProviders = new ArrayList<>();
-    private Map<String, RequirementsProcessor> requirementProcessors = new HashMap<>();
 
     public LoadEvent(MageController controller) {
         this.controller = controller;
@@ -41,61 +32,18 @@ public class LoadEvent extends Event {
         return controller;
     }
 
-    /**
-     * Register an AttributeProvider, for adding custom attribute support to spells and mages.
-     *
-     * @param provider The provider to add.
-     */
+    @Deprecated
     public void registerAttributeProvider(AttributeProvider provider) {
-        attributeProviders.add(provider);
+        controller.getLogger().warning("Attempt to register an attribute provider at load time: " + provider.getAllAttributes() + ", this is no longer supported and will not work. Please use PreLoadEvent instead.");
     }
 
-    /**
-     * Register a TeamProvider, to be able to make decisions about who players and mobs can target.
-     *
-     * @param provider The provider to add.
-     */
+    @Deprecated
     public void registerTeamProvider(TeamProvider provider) {
-        teamProviders.add(provider);
+        controller.getLogger().warning("Attempt to register a team provider at load time, this is no longer supported and will not work. Please use PreLoadEvent instead.");
     }
 
-    /**
-     * Register a RequirementsProcessor for handling a specific type of requirement.
-     *
-     * <p>Requirement types are 1:1 with processors, each type may only have one processor associated with it.
-     *
-     * <p>Processors must be re-registered with each load.
-     *
-     * <p>Example requirement block, which might appear in a spell, Selector or other config:
-     *
-     * <code>
-     * requirements:
-     * - type: skillapi
-     *   skill: enchanting
-     * - type: avengers
-     *   power: hulkout
-     *   character: Hulk
-     * </code>
-     *
-     * @param requirementType The type of requirements this processor handles
-     * @param processor The processor to register
-     */
+    @Deprecated
     public void registerRequirementsProcessor(String requirementType, RequirementsProcessor processor) {
-        if (requirementProcessors.containsKey(requirementType)) {
-            controller.getLogger().warning("Tried to register RequiremensProcessor twice for same type: " + requirementType);
-        }
-        requirementProcessors.put(requirementType, processor);
-    }
-
-    public Map<String, RequirementsProcessor> getRequirementProcessors() {
-        return requirementProcessors;
-    }
-
-    public Collection<AttributeProvider> getAttributeProviders() {
-        return attributeProviders;
-    }
-
-    public Collection<TeamProvider> getTeamProviders() {
-        return teamProviders;
+        controller.getLogger().warning("Attempt to register a requirement at load time: " + requirementType + ", this is no longer supported and will not work. Please use PreLoadEvent instead.");
     }
 }
