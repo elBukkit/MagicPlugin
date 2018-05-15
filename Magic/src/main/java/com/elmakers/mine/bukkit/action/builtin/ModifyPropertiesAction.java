@@ -108,7 +108,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
         }
         CasterProperties properties = null;
         if (modifyTarget.equals("wand")) {
-            properties = mage.getActiveWand();
+            properties = context.checkWand();
         } else if (modifyTarget.equals("player")) {
             properties = mage.getProperties();
         } else {

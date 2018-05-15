@@ -26,10 +26,15 @@ public class WandEffectContext extends MageEffectContext implements com.elmakers
     @Override
     @Nullable
     public Wand checkWand() {
+        boolean offhand = false;
         if (wand != null) {
+            offhand = wand.isInOffhand();
             wand.deactivate();
         }
         wand = mage.checkWand();
+        if (offhand) {
+            wand = mage.getOffhandWand();
+        }
         return wand;
     }
 

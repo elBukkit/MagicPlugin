@@ -5642,4 +5642,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public Wand getWand() {
         return this;
     }
+
+    @Override
+    public boolean isInOffhand() {
+        return isInOffhand;
+    }
 }
