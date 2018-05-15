@@ -3,8 +3,6 @@
 ## 7.5.1
 
  - Fix potter progression, maybe add spells per year graduation?
- - Need to fix graduate spells, either support them in spellshop or change them
-    Failed to create item in selector: spell:expelliarmus|5
 
 ## Hot Issues
     
@@ -18,11 +16,7 @@
    - Nathanwolf auto at dev spawn has some permanent blocks now
    - Random blocks show up in mob arena sometimes (web, broken floor)
    - Can't find a pattern. Tried world save... don't know. :(
- - if you use a formula for a parameter and somewhere in the effects you use like $duration 
-   it won't pull the number from the formula.(edited)
-   
- - Add "default_result" to ActionSpell ?  
- 
+    
  - Error when breaking paintings: https://pastebin.com/Hwp9tPG4
    [17:07:06 ERROR]: "Silently" catching entity tracking error.
     net.minecraft.server.v1_10_R1.ReportedException: Adding entity to track
@@ -34,9 +28,7 @@
    
  - "Residence" integration (requested by Frerduro on Discord)
    https://github.com/Zrips/Residence
- - Specify slot (and operation?) of attributes on wands
 
- 
 ## 1.13
 
 ### Things to verify 

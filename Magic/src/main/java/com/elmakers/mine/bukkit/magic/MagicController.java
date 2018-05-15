@@ -4403,6 +4403,8 @@ public class MagicController implements MageController {
                 itemStack.setItemMeta(meta);
                 InventoryUtils.setMeta(itemStack, "sp", spAmount);
             } else if (magicItemKey.contains("spell:")) {
+                // Fix delimiter replaced above, to handle spell levels
+                magicItemKey = magicItemKey.replace(":", "|");
                 String spellKey = magicItemKey.substring(6);
                 itemStack = createSpellItem(spellKey, brief);
             } else if (magicItemKey.contains("wand:")) {
