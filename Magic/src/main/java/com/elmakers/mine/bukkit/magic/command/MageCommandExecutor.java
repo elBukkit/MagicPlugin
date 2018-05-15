@@ -502,12 +502,12 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             return true;
         }
         String key = args[0];
+        if (!attributes.contains(key)) {
+            sender.sendMessage(ChatColor.RED + "Unknown attribute: " + ChatColor.YELLOW + key);
+            return true;
+        }
         if (args.length == 1)
         {
-            if (!attributes.contains(key)) {
-                sender.sendMessage(ChatColor.RED + "Unknown attribute: " + ChatColor.YELLOW + key);
-                return true;
-            }
             Double value = mage.getAttribute(key);
             String valueDescription = value == null ? ChatColor.RED + "(not set)" : ChatColor.AQUA + Double.toString(value);
             sender.sendMessage(ChatColor.AQUA + player.getName() + " has " + ChatColor.DARK_AQUA + key + ChatColor.BLUE + " of " + valueDescription);
