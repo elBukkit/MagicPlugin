@@ -30,6 +30,7 @@ public class RaiseBlockAction extends BaseSpellAction
     private Deque<WeightedPair<Integer>> slopeProbability;
     private boolean consumeBlocks = false;
     private boolean consumeVariants = true;
+    private int maxHeight;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -48,6 +49,7 @@ public class RaiseBlockAction extends BaseSpellAction
         consumeVariants = parameters.getBoolean("consume_variants", true);
         verticalSearchDistance = parameters.getInt("vertical_range", context.getVerticalSearchDistance());
         directions = DirectionUtils.getDirections(parameters, "faces");
+        maxHeight = parameters.getInt("max_height", 0);
     }
 
     @Override
@@ -86,6 +88,10 @@ public class RaiseBlockAction extends BaseSpellAction
                     maxHeight = Math.max(check.getY(), maxHeight);
                 }
             }
+        }
+
+        if (this.maxHeight > 0 && maxHeight > this.maxHeight) {
+            maxHeight = this.maxHeight;
         }
 
         int slope = slopeProbability == null ? 0 : RandomUtils.weightedRandom(slopeProbability);
