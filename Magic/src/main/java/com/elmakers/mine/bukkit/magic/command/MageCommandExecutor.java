@@ -486,6 +486,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     public boolean onMageAttribute(CommandSender sender, Player player, String[] args)
     {
         Mage mage = controller.getMage(player);
+        Set<String> internalAttributes = api.getController().getInternalAttributes();
         Set<String> attributes = api.getController().getAttributes();
         if (attributes.isEmpty()) {
             sender.sendMessage(ChatColor.RED + "No attributes configured, see attributes.yml");
@@ -495,9 +496,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             sender.sendMessage(ChatColor.GOLD + "Attributes for: " + ChatColor.AQUA + player.getName());
             for (String key : attributes) {
+                ChatColor attributeType = internalAttributes.contains(key) ? ChatColor.DARK_AQUA : ChatColor.GRAY;
                 Double value = mage.getAttribute(key);
                 String valueDescription = value == null ? ChatColor.RED + "(not set)" : ChatColor.AQUA + Double.toString(value);
-                sender.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.BLUE + " = " + valueDescription);
+                sender.sendMessage(attributeType + key + ChatColor.BLUE + " = " + valueDescription);
             }
             return true;
         }

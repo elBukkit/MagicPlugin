@@ -517,6 +517,11 @@ public class MagicController implements MageController {
 
     @Override
     public @Nonnull Set<String> getAttributes() {
+        return registeredAttributes;
+    }
+
+    @Override
+    public @Nonnull Set<String> getInternalAttributes() {
         return attributes.keySet();
     }
 
@@ -2890,19 +2895,22 @@ public class MagicController implements MageController {
         requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
 
         // Register attributes
-        Set<String> attributes = new HashSet<>();
-        attributes.add("bowpull");
-        attributes.addAll(this.attributes.keySet());
+        registeredAttributes.clear();
+        registeredAttributes.add("bowpull");
+        registeredAttributes.addAll(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {
             Set<String> providerAttributes = provider.getAllAttributes();
             if (providerAttributes != null) {
-                attributes.addAll(providerAttributes);
+                registeredAttributes.addAll(providerAttributes);
             }
         }
 
-        SpellParameters.initializeAttributes(attributes);
+        SpellParameters.initializeAttributes(registeredAttributes);
         SpellParameters.setLogger(getLogger());
-        getLogger().info("Registered attributes: " + attributes);
+        getLogger().info("Registered attributes: " + registeredAttributes);
+
+        // Remove bowpull so we can present this list in getAttributes
+        registeredAttributes.remove("bowpull");
     }
 
     protected void clear()
@@ -5622,6 +5630,7 @@ public class MagicController implements MageController {
     private final Map<String, SpellData>        templateDataMap             = new HashMap<>();
     private final Map<String, SpellCategory>    categories                  = new HashMap<>();
     private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();
+    private final Set<String>                   registeredAttributes        = new HashSet<>();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();
     private final Map<String, Mage> vanished                                = new HashMap<>();
