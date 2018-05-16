@@ -1,9 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -50,22 +48,35 @@ public class BookAction extends BaseSpellAction {
         return book;
     }
 
-    private List<String> replaceContents(CastContext context, Mage targetMage) {
-        Map<String, String> replacements = new HashMap<>();
+    private static class Replacement {
+        public String replace;
+        public String with;
 
-        replacements.put("@tn", targetMage.getName());
-        replacements.put("@td", targetMage.getDisplayName());
+        public Replacement(String replace, String with) {
+            this.replace = replace;
+            this.with = with;
+        }
+    }
+
+    private List<String> replaceContents(CastContext context, Mage targetMage) {
+        List<Replacement> replacements = new ArrayList<>();
+
 
         Set<String> attributes = context.getController().getAttributes();
         Set<String> currencies = context.getController().getCurrencyKeys();
 
         for (String attr : attributes) {
-            replacements.put("$" + attr, Integer.toString((int)Math.ceil(targetMage.getAttribute(attr))));
+            replacements.add(new Replacement("$" + attr, Integer.toString((int)Math.ceil(targetMage.getAttribute(attr)))));
         }
 
         for (String currency : currencies) {
-            replacements.put("$" + currency, Integer.toString((int)Math.ceil(targetMage.getCurrency(currency))));
+            replacements.add(new Replacement("$" + currency, Integer.toString((int)Math.ceil(targetMage.getCurrency(currency)))));
         }
+
+        replacements.add(new Replacement("@tn", targetMage.getName()));
+        replacements.add(new Replacement("@td", targetMage.getDisplayName()));
+        replacements.add(new Replacement("@p", context.getMage().getName()));
+        replacements.add(new Replacement("@pd", context.getMage().getDisplayName()));
 
         List<String> newContents = new ArrayList<>();
         Set<String> pageKeys = pages.getKeys(false);
@@ -85,8 +96,8 @@ public class BookAction extends BaseSpellAction {
                 pageText = StringUtils.join(lines, "\n");
             }
 
-            for (Map.Entry<String, String> entry : replacements.entrySet()) {
-                pageText = pageText.replace(entry.getKey(), entry.getValue());
+            for (Replacement replacement : replacements) {
+                pageText = pageText.replace(replacement.replace, replacement.with);
             }
 
             while (newContents.size() <= pageNumber) newContents.add("");
