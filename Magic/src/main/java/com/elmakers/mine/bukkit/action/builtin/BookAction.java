@@ -19,7 +19,9 @@ import org.bukkit.inventory.meta.BookMeta;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -77,6 +79,14 @@ public class BookAction extends BaseSpellAction {
         replacements.add(new Replacement("@td", targetMage.getDisplayName()));
         replacements.add(new Replacement("@p", context.getMage().getName()));
         replacements.add(new Replacement("@pd", context.getMage().getDisplayName()));
+
+        MageClass mageClass = targetMage.getActiveClass();
+        String className = mageClass != null ? mageClass.getName() : "";
+        ProgressionPath magePath = targetMage.getActiveProperties().getPath();
+        String pathName = magePath != null ? magePath.getName() : "";
+
+        replacements.add(new Replacement("$class", className));
+        replacements.add(new Replacement("$path", pathName));
 
         List<String> newContents = new ArrayList<>();
         Set<String> pageKeys = pages.getKeys(false);
