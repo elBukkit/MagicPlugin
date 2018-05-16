@@ -87,10 +87,14 @@ recall:
         icon: wood_hoe:3
       falcon:
         name: Milennium Falcon
-        description: Testing cross-server warps
-        server: stars
-        locked: true
-        icon: compass
+        description: May the force be with you!
+        locked: false
+        icon: wood_hoe:14
+      airtemple:
+        name: Southern Air Temple
+        description: A relic of a long-lost civilization
+        locked: false
+        icon: wood_hoe:34
       mansion:
         name: The Mansion
         description: Return to the training mansion
