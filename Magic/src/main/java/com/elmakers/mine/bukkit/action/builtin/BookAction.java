@@ -60,11 +60,11 @@ public class BookAction extends BaseSpellAction {
         Set<String> currencies = context.getController().getCurrencyKeys();
 
         for (String attr : attributes) {
-            replacements.put("$attribute_" + attr, Integer.toString((int)Math.ceil(targetMage.getAttribute(attr))));
+            replacements.put("$" + attr, Integer.toString((int)Math.ceil(targetMage.getAttribute(attr))));
         }
 
         for (String currency : currencies) {
-            replacements.put("$balance_" + currency, Integer.toString((int)Math.ceil(targetMage.getCurrency(currency))));
+            replacements.put("$" + currency, Integer.toString((int)Math.ceil(targetMage.getCurrency(currency))));
         }
 
         List<String> newContents = new ArrayList<>();
