@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
@@ -149,27 +150,14 @@ public class EntityController implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
-        if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
+        if (!(entity instanceof ItemFrame) || event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
 
         Entity damager = event.getDamager();
-        /*
-        if (damager instanceof Projectile) {
-            Projectile projectile = (Projectile)damager;
-            ProjectileSource source = projectile.getShooter();
-            if (source instanceof LivingEntity) {
-                damager = (Entity)source;
-            }
-        }
-        if (entity instanceof Creature && damager instanceof LivingEntity) {
-            Creature creature = (Creature)entity;
-            creature.setTarget((LivingEntity)damager);
-        }
-        */
 
         UndoList undoList = controller.getEntityUndo(damager);
         if (undoList != null) {
             // Prevent dropping items from frames,
-            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK || undoList.isScheduled()) {
+            if (undoList.isScheduled()) {
                 undoList.damage(entity);
                 if (!entity.isValid()) {
                     event.setCancelled(true);

@@ -5,6 +5,10 @@
  - Improve Flatten spell using a new reverse_spiral build type
  - Multi-line message support to all of messages.yml using \n
  - Colorized all path names, mainly for Placeholder API support
+ - Fix some odd effects when deactiving Boon
+ - Fix magic mobs using Arrow and other projectile spells
+ - Improved support for using attributes in base spell parameters (cooldown, range, etc will show correctly in lore)
+ - Fixed graduate spell list in potter configs
 
 # 7.5
 

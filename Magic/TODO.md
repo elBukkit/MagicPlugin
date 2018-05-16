@@ -3,15 +3,9 @@
 ## 7.5.1
 
  - Fix potter progression, maybe add spells per year graduation?
- - Need to fix graduate spells, either support them in spellshop or change them
-    Failed to create item in selector: spell:expelliarmus|5
 
 ## Hot Issues
-   
- - Test transforming wand- why does mana regenerate when it's set to 0?
- - Mana refills when switching away from wand and switching back
- - Doesn't work if mana isn't full, just refills mana
- 
+    
  - REAMDE.md in plugins/Magic breaks config parsing... ?
  
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
@@ -22,14 +16,7 @@
    - Nathanwolf auto at dev spawn has some permanent blocks now
    - Random blocks show up in mob arena sometimes (web, broken floor)
    - Can't find a pattern. Tried world save... don't know. :(
- - if you use a formula for a parameter and somewhere in the effects you use like $duration 
-   it won't pull the number from the formula.(edited)
-   
- - Add "default_result" to ActionSpell ?  
- 
- - mana: can't use a formula (when i try it just makes the spell free to cast) if it's possible to get this, this would be fantastic as we are planning on using formulas for reduction in costs and stuff.
- - cooldown: CAN us a formula but it makes it so it no longer appears in the tooltip in a spell (though it does still work with the formula, so i can increase and decrease and the numbers are right, it just won't show in the tooltip)
- - this one you are aware of but the effectlib ($duration) thing doesn't pull the number correctly if the parameter duration: is a formula.
+    
  - Error when breaking paintings: https://pastebin.com/Hwp9tPG4
    [17:07:06 ERROR]: "Silently" catching entity tracking error.
     net.minecraft.server.v1_10_R1.ReportedException: Adding entity to track
@@ -41,9 +28,7 @@
    
  - "Residence" integration (requested by Frerduro on Discord)
    https://github.com/Zrips/Residence
- - Specify slot (and operation?) of attributes on wands
 
- 
 ## 1.13
 
 ### Things to verify 

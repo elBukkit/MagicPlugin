@@ -34,7 +34,7 @@ push:
                 radius: "(t/i) * 4 + 0.2"
                effect:
                  class: DnaEffect
-                 particlesBase: 0
+                 particles_base: 0
                  particles_helix: 7
                  particle_helix: spell
                  particle_base1: spell
@@ -61,7 +61,7 @@ push:
                 radius: "(t/i) * 4 + 0.2"
                effect:
                  class: DnaEffect
-                 particlesBase: 0
+                 particles_base: 0
                  particles_helix: 7
                  particle_helix: spell
                  particle_base1: spell

@@ -465,8 +465,23 @@ public interface MageController {
     String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements);
     @Nonnull
     Set<String> getDamageTypes();
+
+    /**
+     * Get all attributes, including those registered by external plugins.
+     * Note that this does not include the "bowpull" or other specialty attributes.
+     *
+     * @return a Set of all attributes registered.
+     */
     @Nonnull
     Set<String> getAttributes();
+
+    /**
+     * Get all attributes defined in attributes.yml or other configs.
+     *
+     * @return a Set of all attributes configured in Magic configs.
+     */
+    @Nonnull
+    Set<String> getInternalAttributes();
 
     boolean isWand(ItemStack item);
     boolean isSkill(ItemStack item);

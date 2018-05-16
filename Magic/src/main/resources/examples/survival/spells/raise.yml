@@ -33,7 +33,7 @@ raise:
       particle_offset_y: 5
       particle_offset_z: 0.5
   parameters:
-    range: 32
+    range: 64
     radius: 16
     vertical_range: 32
     consume: true

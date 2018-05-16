@@ -254,6 +254,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     String getMageClassKey();
     boolean hasInventory();
     int getHeldSlot();
+    boolean isInOffhand();
 
     /**
      * This method is deprecated, it just converts the Map to a ConfigurationSection.

@@ -191,6 +191,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
 
+import de.slikey.effectlib.math.EquationStore;
+
 public class MagicController implements MageController {
 
     // Special constructor used for interrogation
@@ -515,6 +517,11 @@ public class MagicController implements MageController {
 
     @Override
     public @Nonnull Set<String> getAttributes() {
+        return registeredAttributes;
+    }
+
+    @Override
+    public @Nonnull Set<String> getInternalAttributes() {
         return attributes.keySet();
     }
 
@@ -1493,6 +1500,9 @@ public class MagicController implements MageController {
         // Clear some cache stuff... mainly this is for debugging/testing.
         schematics.clear();
 
+        // Clear the equation store to flush out any equations that failed to parse
+        EquationStore.clear();
+
         // Process loaded data
 
         // Main configuration
@@ -1506,8 +1516,11 @@ public class MagicController implements MageController {
         messages.load(loader.getMessages());
         loadMaterials(loader.getMaterials());
 
+        loadAttributes(loader.getAttributes());
+        getLogger().info("Loaded " + attributes.size() + " attributes");
+
         // Register currencies and other preload integrations
-        registerPreLoad(currencyConfiguration);
+        registerPreLoad();
 
         getLogger().info("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
@@ -1522,9 +1535,6 @@ public class MagicController implements MageController {
 
         loadMageClasses(loader.getClasses());
         getLogger().info("Loaded " + mageClasses.size() + " classes");
-
-        loadAttributes(loader.getAttributes());
-        getLogger().info("Loaded " + attributes.size() + " attributes");
 
         loadAutomatonTemplates(loader.getAutomata());
         getLogger().info("Loaded " + automatonTemplates.size() + " automata templates");
@@ -1550,18 +1560,9 @@ public class MagicController implements MageController {
         crafting.register(plugin);
         MagicRecipe.FIRST_REGISTER = false;
 
-        // Set up external integrations via the LoadEvent
-        // Delay this by 1 tick on first load to give other plugins a chance to load and prepare for the LoadEvent
-        if (loaded) {
-            initializeExternalIntegrations();
-        } else {
-            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                @Override
-                public void run() {
-                initializeExternalIntegrations();
-                }
-            }, 1);
-        }
+        // Notify plugins that we've finished loading.
+        LoadEvent loadEvent = new LoadEvent(this);
+        Bukkit.getPluginManager().callEvent(loadEvent);
 
         loaded = true;
 
@@ -1574,54 +1575,6 @@ public class MagicController implements MageController {
         notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
     }
 
-    private void initializeExternalIntegrations() {
-        LoadEvent loadEvent = new LoadEvent(this);
-        Bukkit.getPluginManager().callEvent(loadEvent);
-
-        // Register attribute providers
-        attributeProviders.addAll(loadEvent.getAttributeProviders());
-        if (skillAPIManager != null) {
-            attributeProviders.add(skillAPIManager);
-        }
-        if (heroesManager != null) {
-            attributeProviders.add(heroesManager);
-        }
-
-        // Register team providers
-        teamProviders.addAll(loadEvent.getTeamProviders());
-        if (heroesManager != null && useHeroesParties) {
-            teamProviders.add(heroesManager);
-        }
-        if (useScoreboardTeams) {
-            teamProviders.add(new ScoreboardTeamProvider());
-        }
-
-        // Register requirement processors
-        requirementProcessors.putAll(loadEvent.getRequirementProcessors());
-        if (skillAPIManager != null) {
-            requirementProcessors.put("skillapi", skillAPIManager);
-        }
-        if (requirementProcessors.containsKey(Requirement.DEFAULT_TYPE)) {
-            getLogger().warning("Something tried to register requirements for the " + Requirement.DEFAULT_TYPE + " type, but that is Magic's job.");
-        }
-        requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
-
-        // Register attributes
-        Set<String> attributes = new HashSet<>();
-        attributes.add("bowpull");
-        attributes.addAll(this.attributes.keySet());
-        for (AttributeProvider provider : attributeProviders) {
-            Set<String> providerAttributes = provider.getAllAttributes();
-            if (providerAttributes != null) {
-                attributes.addAll(providerAttributes);
-            }
-        }
-
-        getLogger().info("Registering attributes: " + attributes);
-        SpellParameters.initializeAttributes(attributes);
-        SpellParameters.setLogger(getLogger());
-    }
-
     private int getPathCount() {
         return WandUpgradePath.getPathKeys().size();
     }
@@ -1632,7 +1585,7 @@ public class MagicController implements MageController {
 
     private void loadAttributes(ConfigurationSection attributeConfiguration) {
         Set<String> keys = attributeConfiguration.getKeys(false);
-        attributes.clear();;
+        attributes.clear();
         for (String key : keys) {
             MagicAttribute attribute = new MagicAttribute(key, attributeConfiguration.getConfigurationSection(key));
             attributes.put(key, attribute);
@@ -2878,7 +2831,7 @@ public class MagicController implements MageController {
         currencies.put(currency.getKey(), currency);
     }
 
-    protected void registerPreLoad(ConfigurationSection customCurrencies) {
+    protected void registerPreLoad() {
         currencies.clear();
         attributeProviders.clear();
         teamProviders.clear();
@@ -2908,10 +2861,56 @@ public class MagicController implements MageController {
         }
 
         // Configured currencies override everything else
-        Set<String> keys = customCurrencies.getKeys(false);
+        Set<String> keys = currencyConfiguration.getKeys(false);
         for (String key : keys) {
-            addCurrency(new CustomCurrency(this, key, customCurrencies.getConfigurationSection(key)));
+            addCurrency(new CustomCurrency(this, key, currencyConfiguration.getConfigurationSection(key)));
         }
+
+        // Register attribute providers
+        attributeProviders.addAll(loadEvent.getAttributeProviders());
+        if (skillAPIManager != null) {
+            attributeProviders.add(skillAPIManager);
+        }
+        if (heroesManager != null) {
+            attributeProviders.add(heroesManager);
+        }
+
+        // Register team providers
+        teamProviders.addAll(loadEvent.getTeamProviders());
+        if (heroesManager != null && useHeroesParties) {
+            teamProviders.add(heroesManager);
+        }
+        if (useScoreboardTeams) {
+            teamProviders.add(new ScoreboardTeamProvider());
+        }
+
+        // Register requirement processors
+        requirementProcessors.putAll(loadEvent.getRequirementProcessors());
+        if (skillAPIManager != null) {
+            requirementProcessors.put("skillapi", skillAPIManager);
+        }
+        if (requirementProcessors.containsKey(Requirement.DEFAULT_TYPE)) {
+            getLogger().warning("Something tried to register requirements for the " + Requirement.DEFAULT_TYPE + " type, but that is Magic's job.");
+        }
+        requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
+
+        // Register attributes
+        registeredAttributes.clear();
+        registeredAttributes.add("bowpull");
+        registeredAttributes.addAll(this.attributes.keySet());
+        for (AttributeProvider provider : attributeProviders) {
+            Set<String> providerAttributes = provider.getAllAttributes();
+            if (providerAttributes != null) {
+                registeredAttributes.addAll(providerAttributes);
+            }
+        }
+
+        SpellParameters.initializeAttributes(registeredAttributes);
+        SpellParameters.setLogger(getLogger());
+        getLogger().info("Registered attributes: " + registeredAttributes);
+
+        // Remove bowpull so we can present this list in getAttributes
+        registeredAttributes.remove("bowpull");
     }
 
     protected void clear()
@@ -4412,6 +4411,8 @@ public class MagicController implements MageController {
                 itemStack.setItemMeta(meta);
                 InventoryUtils.setMeta(itemStack, "sp", spAmount);
             } else if (magicItemKey.contains("spell:")) {
+                // Fix delimiter replaced above, to handle spell levels
+                magicItemKey = magicItemKey.replace(":", "|");
                 String spellKey = magicItemKey.substring(6);
                 itemStack = createSpellItem(spellKey, brief);
             } else if (magicItemKey.contains("wand:")) {
@@ -5629,6 +5630,7 @@ public class MagicController implements MageController {
     private final Map<String, SpellData>        templateDataMap             = new HashMap<>();
     private final Map<String, SpellCategory>    categories                  = new HashMap<>();
     private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();
+    private final Set<String>                   registeredAttributes        = new HashSet<>();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();
     private final Map<String, Mage> vanished                                = new HashMap<>();

@@ -13,7 +13,7 @@ force:
         location: origin
         effectlib:
            class: DnaEffect
-           particlesBase: 0
+           particles_base: 0
            particles_helix: 7
            particle_helix: spell_mob
            particle_base1: spell_mob

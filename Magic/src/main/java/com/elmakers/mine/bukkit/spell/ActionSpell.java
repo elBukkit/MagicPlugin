@@ -143,11 +143,18 @@ public class ActionSpell extends BrushSpell
                 controller.getLogger().log(Level.WARNING, "Spell cast failed for " + getKey(), ex);
                 result = SpellResult.FAIL;
                 try {
+                    currentCast.setResult(result);
+                    currentCast.setInitialResult(result);
                     currentHandler.finish(currentCast);
+                    currentCast.finish();
                 } catch (Exception finishException) {
                     controller.getLogger().log(Level.WARNING, "Failed to clean up failed spell " + getKey(), finishException);
                 }
             }
+        } else {
+            currentCast.setResult(result);
+            currentCast.setInitialResult(result);
+            currentCast.finish();
         }
         return result;
     }
