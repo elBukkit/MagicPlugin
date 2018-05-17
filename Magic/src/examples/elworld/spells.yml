@@ -80,7 +80,7 @@ recall:
         description: Leave this world
         server: chicago
         icon: iron_nugget
-        locked: false
+        locked: true
       walls:
         name: The Walls
         description: A sprawling urbal dueling arena
@@ -107,7 +107,7 @@ recall:
         locked: false
       town:
         name: The Capitol
-        description: The only town we know of
+        description: The capitol city
         locked: false
         icon: compass
       lodge:
