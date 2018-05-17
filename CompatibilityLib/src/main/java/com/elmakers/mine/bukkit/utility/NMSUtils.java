@@ -231,6 +231,7 @@ public class NMSUtils {
     protected static Method class_Parrot_getVariantMethod;
     protected static Method class_Parrot_setVariantMethod;
     protected static Method class_Block_setTypeIdAndDataMethod;
+    protected static Method class_Chunk_isReadyMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -286,7 +287,6 @@ public class NMSUtils {
     protected static Field class_EntityArmorStand_disabledSlotsField;
     protected static Field class_EntityPlayer_playerConnectionField;
     protected static Field class_PlayerConnection_floatCountField;
-    protected static Field class_Chunk_doneField;
     protected static Field class_CraftItemStack_getHandleField;
     protected static Field class_EntityArrow_lifeField = null;
     protected static Field class_EntityArrow_damageField;
@@ -504,8 +504,6 @@ public class NMSUtils {
             class_EntityFallingBlock_fallHurtMaxField = class_EntityFallingBlock.getDeclaredField("fallHurtMax");
             class_EntityFallingBlock_fallHurtMaxField.setAccessible(true);
 
-            class_Chunk_doneField = class_Chunk.getDeclaredField("done");
-            class_Chunk_doneField.setAccessible(true);
             class_CraftItemStack_getHandleField = class_CraftItemStack.getDeclaredField("handle");
             class_CraftItemStack_getHandleField.setAccessible(true);
             
@@ -578,6 +576,13 @@ public class NMSUtils {
                 class_Parrot_getVariantMethod = null;
                 class_Parrot_setVariantMethod = null;
                 Bukkit.getLogger().info("No parrots available on your server.");
+            }
+
+            try {
+                class_Chunk_isReadyMethod = class_Chunk.getMethod("isReady");
+            } catch (Throwable ex) {
+                class_Chunk_isReadyMethod = null;
+                Bukkit.getLogger().info("Couldn't bind to Chunk.isReady, building in ungenerated chunks may be glitchy.");
             }
 
             try {
@@ -1100,15 +1105,17 @@ public class NMSUtils {
         return handle;
     }
 
-    public static boolean isDone(org.bukkit.Chunk chunk) {
+    public static boolean isReady(org.bukkit.Chunk chunk) {
+        if (class_Chunk_isReadyMethod == null) return true;
+
         Object chunkHandle = getHandle(chunk);
-        boolean done = false;
+        boolean ready = true;
         try {
-            done = (Boolean)class_Chunk_doneField.get(chunkHandle);
+            ready = (Boolean)class_Chunk_isReadyMethod.invoke(chunkHandle);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
-        return done;
+        return ready;
     }
 
     public static Object getHandle(org.bukkit.Chunk chunk) {

@@ -1560,4 +1560,42 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return true;
     }
+
+    private static boolean checkSingleChunk(Chunk chunk, boolean load) {
+        if (!chunk.isLoaded()) {
+            if (load) {
+                chunk.load();
+            }
+            return false;
+        }
+        return isReady(chunk);
+    }
+
+    public static boolean checkChunk(Chunk chunk) {
+        return checkChunk(chunk, true, true);
+    }
+
+    public static boolean checkChunk(Chunk chunk, boolean load, boolean checkNeighbors) {
+        if (!checkSingleChunk(chunk, load)) {
+            return false;
+        }
+
+        if (!checkNeighbors) {
+            return true;
+        }
+
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                // Already checked this one
+                if (x == 0 && z == 0) continue;
+
+                Chunk checkChunk = chunk.getWorld().getChunkAt(chunk.getX() + x, chunk.getZ() + z);
+                if (!checkSingleChunk(checkChunk, load)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
