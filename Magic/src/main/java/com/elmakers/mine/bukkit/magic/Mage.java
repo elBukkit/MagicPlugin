@@ -1643,12 +1643,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             List<Batch> processBatches = new ArrayList<>(pendingBatches);
             pendingBatches.clear();
             for (Batch batch : processBatches) {
-                if (updated < maxBlockUpdates) {
-                    int batchUpdated = batch.process(maxBlockUpdates - updated);
-                    updated += batchUpdated;
-                }
+                int batchUpdated = batch.process(Math.max(1, maxBlockUpdates - updated));
+                updated += batchUpdated;
                 if (!batch.isFinished()) {
-                    pendingBatches.add(batch);
+                    pendingBatches.addLast(batch);
                 }
             }
         }
