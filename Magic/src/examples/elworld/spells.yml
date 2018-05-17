@@ -90,6 +90,11 @@ recall:
         description: May the force be with you!
         locked: false
         icon: wood_hoe:14
+      greenfield:
+        name: Greenfield Car Dealership
+        description: Explore a sprawling city
+        locked: false
+        icon: diamond_pickaxe:10
       airtemple:
         name: Southern Air Temple
         description: A relic of a long-lost civilization
