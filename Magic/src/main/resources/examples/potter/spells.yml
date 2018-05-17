@@ -2658,7 +2658,7 @@ bombtastic:
         cast:
         -  class: EffectSingle
            sound: lava_pop
-        explode:
+        hit:
         -  class: EffectSingle
            location: origin
            particle: explosion_huge
@@ -2694,7 +2694,7 @@ dungbomb:
         cast:
         -  class: EffectSingle
            sound: lava_pop
-        explode:
+        hit:
          - class: EffectSingle
            sound: enderdragon_wings
            location: origin
