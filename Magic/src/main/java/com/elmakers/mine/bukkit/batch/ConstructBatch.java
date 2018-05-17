@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,6 +36,7 @@ import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
@@ -71,6 +73,7 @@ public class ConstructBatch extends BrushBatch {
     private boolean applyPhysics = false;
     private boolean consume = false;
     private boolean consumeVariants = true;
+    private boolean checkChunks = true;
 
     private int x = 0;
     private int y = 0;
@@ -161,8 +164,12 @@ public class ConstructBatch extends BrushBatch {
             } else while (delayedBlockIndex < delayedBlocks.size() && processedBlocks <  maxBlocks && !finished) {
                 BlockData delayed = delayedBlocks.get(delayedBlockIndex);
                 Block block = delayed.getBlock();
-                if (!block.getChunk().isLoaded()) {
-                    block.getChunk().load();
+                Chunk chunk = block.getChunk();
+                if (!chunk.isLoaded()) {
+                    chunk.load();
+                    return processedBlocks;
+                }
+                if (!CompatibilityUtils.isReady(chunk)) {
                     return processedBlocks;
                 }
 
@@ -379,8 +386,7 @@ public class ConstructBatch extends BrushBatch {
 
         // Make sure the block is loaded.
         Block block = center.getWorld().getBlockAt(x, y, z);
-        if (!block.getChunk().isLoaded()) {
-            block.getChunk().load();
+        if (checkChunks && !CompatibilityUtils.checkChunk(block.getChunk())) {
             return false;
         }
 
@@ -590,5 +596,8 @@ public class ConstructBatch extends BrushBatch {
     }
     public void setConsumeVariants(boolean variants) {
         this.consumeVariants = variants;
+    }
+    public void setCheckChunks(boolean checkChunks) {
+        this.checkChunks = checkChunks;
     }
 }

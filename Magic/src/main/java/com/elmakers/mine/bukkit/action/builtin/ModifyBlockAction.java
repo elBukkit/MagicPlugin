@@ -37,6 +37,7 @@ public class ModifyBlockAction extends BaseSpellAction {
     private boolean commit = false;
     private boolean consumeBlocks = false;
     private boolean consumeVariants = true;
+    private boolean checkChunk = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -51,6 +52,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         consumeBlocks = parameters.getBoolean("consume", false);
         consumeVariants = parameters.getBoolean("consume_variants", true);
         fallingBlocksHurt = parameters.getBoolean("falling_hurts", false);
+        checkChunk = parameters.getBoolean("check_chunk", false);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction") && !parameters.getString("direction").isEmpty())
         {
@@ -74,6 +76,10 @@ public class ModifyBlockAction extends BaseSpellAction {
         }
 
         Block block = context.getTargetBlock();
+        if (checkChunk && !CompatibilityUtils.checkChunk(block.getChunk())) {
+            return SpellResult.PENDING;
+        }
+
         if (brush.isErase()) {
             if (!context.hasBreakPermission(block)) {
                 return SpellResult.INSUFFICIENT_PERMISSION;

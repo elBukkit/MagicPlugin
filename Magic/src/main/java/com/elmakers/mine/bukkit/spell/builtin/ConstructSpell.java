@@ -69,6 +69,7 @@ public class ConstructSpell extends BrushSpell
         boolean physics = parameters.getBoolean("physics", false);
         boolean commit = parameters.getBoolean("commit", false);
         boolean consume = parameters.getBoolean("consume", false);
+        boolean checkChunks = parameters.getBoolean("check_chunks", true);
         double breakable = parameters.getDouble("breakable", 0);
         double backfireChance = parameters.getDouble("reflect_chance", 0);
         Vector orientTo = null;
@@ -170,6 +171,7 @@ public class ConstructSpell extends BrushSpell
 
         batch.setCommit(commit);
         batch.setConsume(consume);
+        batch.setCheckChunks(checkChunks);
         UndoList undoList = getUndoList();
         if (undoList != null && !currentCast.isConsumeFree()) {
             undoList.setConsumed(consume);
