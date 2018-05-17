@@ -1,0 +1,11 @@
+steal_model3:
+    inherit: steal
+    parameters:
+      sound: war.electricmotor
+      max_speed: 1
+      min_speed: -0.2
+      max_acceleration: 0.02
+      max_deceleration: 0.03
+      braking: 0.008
+      steer_speed: 0.1
+

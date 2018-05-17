@@ -1,0 +1,21 @@
+riotpolicespawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Riot Police Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 32
+        EntityId: zombie_pigman
+        SpawnData:
+          id: zombie_pigman
+          CustomName: Riot Police
+

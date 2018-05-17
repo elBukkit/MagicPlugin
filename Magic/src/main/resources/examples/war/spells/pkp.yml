@@ -1,0 +1,12 @@
+pkp:
+  inherit: ak47
+  parameters:
+    cooldown: 300
+    player_damage: 2
+    entity_damage: 4
+    range: 40
+    spread: 0.15
+    spread_movement_max: 0.4
+    velocity: 3000
+
+

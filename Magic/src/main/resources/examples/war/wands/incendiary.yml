@@ -1,0 +1,7 @@
+incendiary:
+  icon: diamond_pickaxe:8
+  indestructible: true
+  uses: 1
+  right_click: cast
+  active_spell: incendiary
+

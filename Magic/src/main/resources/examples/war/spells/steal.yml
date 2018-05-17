@@ -1,0 +1,13 @@
+steal:
+    inherit: drive_inside
+    actions:
+      cast:
+      - class: AreaOfEffect
+        actions:
+        - class: Damage
+      - class: MountArmorStand
+    parameters:
+      radius: 64
+      damage: 0.000001
+      target_type: PigZombie
+

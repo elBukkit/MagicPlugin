@@ -1,0 +1,116 @@
+drive:
+    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
+    icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
+    category: utility
+    worth: 200
+    show_undoable: false
+    quick_cast: true
+    cancel_effects: true
+    actions:
+      cast:
+      - class: MountArmorStand
+    effects:
+        cast:
+           - class: EffectSingle
+             sound: enderdragon_wings
+        deactivate:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+        crash_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           sound_volume: .3
+           particle_data: 0.4
+        -  class: EffectSingle
+           sound: entity_generic_explode
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 30
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particle_count: 20
+            material: iron_block
+            size: 0.4
+            y_offset: 0
+        crash_entity:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           sound_volume: .3
+           particle_data: 0.4
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 30
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particle_count: 20
+            material: redstone_block
+            size: 0.4
+            y_offset: 0
+        crash:
+        - sound: entity_generic_explode
+          sound_volume: 1
+          sound_pitch: 0.6
+        - class: EffectSingle
+          location: origin
+          entity_effect: hurt
+          particle: explosion_large
+        - class: EffectSingle
+          location: origin
+          effectlib:
+             class: SmokeEffect
+             iterations: 12
+    parameters:
+        target_armor_stand: true
+        start_speed: 0
+        max_speed: 1
+        min_speed: -0.2
+        max_acceleration: 0.01
+        max_deceleration: 0.02
+        braking: 0.005
+        steer_speed: 0.1
+        max_height_above_ground: 0
+        mount_target: true
+        controllable: true
+        pitch_controllable: false
+        sound: war.engine
+        sound_interval: 100
+        sound_max_volume: 1
+        sound_min_volume: 0.01
+        sound_max_pitch: 2
+        sound_min_pitch: 0.5
+        mount_untargetable: false
+        crash_speed: 0.1
+        crash_damage: 10
+        crash_vehicle_damage: 8
+        crash_braking: 0.1
+        crash_entity_fov: 0.5
+        crash_entity_damage: 30
+        crash_entity_vehicle_damage: 1
+        crash_velocity_y_offset: 0.2
+        crash_velocity: 2.0
+        crash_entity_distance: 2.5
+        crash_distance: 1
+        crash_into: LivingEntity
+        crash_dismount_speed: 0.75
+        crash_effects:
+          confusion: 120,3
+

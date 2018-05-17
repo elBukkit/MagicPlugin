@@ -1,0 +1,12 @@
+police:
+  type: pig_zombie
+  item: pistol_item
+  baby: false
+  name: Police
+  health: 20
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    pistol: 80
+    none: 100
+

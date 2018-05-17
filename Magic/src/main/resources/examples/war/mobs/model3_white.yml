@@ -1,0 +1,9 @@
+model3_white:
+  type: armor_stand
+  helmet: model3_white_item
+  invisible: true
+  silent: true
+  name: "&fModel 3"
+  interact_spell: steal_model3
+  disabled_slots: 2039552
+

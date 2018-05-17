@@ -1,0 +1,8 @@
+rocketlauncher:
+  icon: diamond_pickaxe:5
+  inherit: base_gun
+  active_spell: rocketlauncher
+  alternate_spell: reload_rocketlauncher
+  mana: 1
+  mana_max: 1
+

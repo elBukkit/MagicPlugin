@@ -1,0 +1,12 @@
+buyshop:
+    icon: sulphur
+    category: shop
+    hidden: true
+    actions:
+        cast:
+        - class: Shop
+    parameters:
+        quiet: true
+        confirm: false
+        auto_close: false
+

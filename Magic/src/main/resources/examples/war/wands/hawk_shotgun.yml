@@ -1,0 +1,8 @@
+hawk_shotgun:
+  icon: diamond_pickaxe:18
+  inherit: base_gun
+  active_spell: hawk_shotgun
+  alternate_spell: reload_hawk_shotgun
+  mana: 5
+  mana_max: 5
+

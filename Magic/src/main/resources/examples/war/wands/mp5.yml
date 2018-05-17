@@ -1,0 +1,8 @@
+mp5:
+  icon: diamond_pickaxe:21
+  inherit: base_gun
+  active_spell: mp5
+  alternate_spell: reload_mp5
+  mana: 15
+  mana_max: 15
+

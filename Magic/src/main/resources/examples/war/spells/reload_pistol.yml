@@ -1,0 +1,11 @@
+reload_pistol:
+  inherit: incremental_reload
+  effects:
+    reload:
+    - sound: war.deserteagle-reload
+  parameters:
+    delay: 200
+    repeat: 10
+    mana: 2
+    cooldown: 2500
+

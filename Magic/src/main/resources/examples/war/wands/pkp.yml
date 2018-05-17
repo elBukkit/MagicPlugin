@@ -1,0 +1,10 @@
+pkp:
+  icon: diamond_pickaxe:19
+  inherit: base_gun
+  active_spell: pkp
+  alternate_spell: reload_pkp
+  mana: 75
+  mana_max: 75
+  potion_effects:
+    - SLOW:2
+

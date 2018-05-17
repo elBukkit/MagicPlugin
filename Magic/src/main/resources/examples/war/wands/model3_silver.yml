@@ -1,0 +1,9 @@
+model3_silver:
+  name: Model 3
+  icon: diamond_pickaxe:14
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type model3_silver
+  uses: 1
+

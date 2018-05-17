@@ -1,0 +1,18 @@
+
+incremental_reload:
+  icon: sulphur
+  actions:
+    cast:
+    - class: Repeat
+      actions:
+      - class: CheckMana
+        actions:
+        - class: PlayEffects
+        - class: Delay
+        - class: ModifyMana
+  parameters:
+    target: self
+    effects: reload
+    cancel_on_cast_other: true
+    require_mana_not_full: true
+

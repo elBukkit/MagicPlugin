@@ -1,0 +1,7 @@
+drive_inside:
+  inherit: drive
+  parameters:
+    rider_untargetable: true
+    riding_effects:
+      invisibility: 1
+

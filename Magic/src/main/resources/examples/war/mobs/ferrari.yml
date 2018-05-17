@@ -1,0 +1,9 @@
+ferrari:
+  type: armor_stand
+  helmet: ferrari_item
+  invisible: true
+  silent: true
+  name: Ferrari California
+  interact_spell: steal_ferrari
+  disabled_slots: 2039552
+

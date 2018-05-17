@@ -1,0 +1,21 @@
+model3spawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Model 3 Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 2
+        SpawnRange: 3
+        Delay: 200
+        MinSpawnDelay: 300
+        MaxSpawnDelay: 800
+        RequiredPlayerRange: 32
+        EntityId: armor_stand
+        SpawnData:
+          id: armor_stand
+          CustomName: Model 3
+

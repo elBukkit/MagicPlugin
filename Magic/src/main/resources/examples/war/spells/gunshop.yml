@@ -1,0 +1,38 @@
+gunshop:
+    icon: wood_hoe:14
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        confirm_filler: stained_glass:3
+        show_active_icons: true
+        items:
+        - item: pistol
+          cost: 2000
+        - item: mp5
+          cost: 4000
+        - item: ak47
+          cost: 5000
+        - item: pkp
+          cost: 7000
+        - item: thompson
+          cost: 4000
+        - item: shotgun
+          cost: 6000
+        - item: hawk_shotgun
+          cost: 5000
+        - item: sniper
+          cost: 8000
+        - item: rifle
+          cost: 10000
+        - item: rocketlauncher
+          cost: 10000
+        - item: riotshield
+          cost: 2000
+        - item: incendiary@10
+          cost: 5000
+        - item: c4@10
+          cost: 5000
+        - item: flashbang@10
+          cost: 2000
+

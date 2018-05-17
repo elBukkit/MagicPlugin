@@ -1,0 +1,8 @@
+pistol:
+  icon: diamond_pickaxe:3
+  inherit: base_gun
+  active_spell: pistol
+  alternate_spell: reload_pistol
+  mana: 20
+  mana_max: 20
+

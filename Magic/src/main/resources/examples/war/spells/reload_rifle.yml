@@ -1,0 +1,10 @@
+reload_rifle:
+  inherit: incremental_reload
+  effects:
+    reload:
+    - sound: war.sniperrifle-reload
+  parameters:
+    repeat: 10
+    delay: 800
+    cooldown: 5000
+    

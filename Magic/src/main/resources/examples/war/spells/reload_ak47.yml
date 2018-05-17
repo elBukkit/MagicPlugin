@@ -1,0 +1,10 @@
+reload_ak47:
+  inherit: full_reload
+  effects:
+    reload:
+    - sound: war.ak47-reload
+  parameters:
+    delay: 700
+    repeat: 3
+    cooldown: 3000
+

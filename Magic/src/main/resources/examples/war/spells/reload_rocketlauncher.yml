@@ -1,0 +1,10 @@
+reload_rocketlauncher:
+  inherit: full_reload
+  effects:
+    reload:
+    - sound: war.rocketlauncher-reload
+  parameters:
+    repeat: 5
+    delay: 1000
+    cooldown: 5500
+

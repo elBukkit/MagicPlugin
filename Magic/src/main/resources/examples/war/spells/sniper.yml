@@ -1,0 +1,136 @@
+sniper:
+    icon: ghast_tear
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: combat
+    worth: 9999
+    require_break: false
+    require_build: false
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: ModifyBlock
+            ignore_result: true
+    effects:
+        cooldown: []
+        cast:
+        -  class: EffectSingle
+           sound: war.sniperrifle
+           sound_pitch: 0.7
+           location: origin
+           effectlib:
+             class: VortexEffect
+             iterations: 100
+             particle: smoke_normal
+             radius: 0.2
+             grow: 0.5
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: fireworks_spark
+          location: target
+        - particle: redstone
+          location: target
+          color: "#666600"
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: iron_block
+           sound: war.ricochet
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        headshot_armor_stand:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: iron_block
+           sound: war.ricochet
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_x: 0.4
+           particle_offset_y: 0.5
+           particle_offset_z: 0.4
+           particle_data: 0.4
+           sound_pitch: 1.2
+           sound_volume: 0.5
+        hit_block:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+           sample: target
+        -  class: EffectSingle
+           location: target
+           sample: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.8
+           particle_offset_y: 1
+           particle_offset_z: 0.8
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           sound_volume: .3
+           particle_data: 0.4
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 100
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particle_count: 20
+            material: redstone_block
+            size: 0.4
+            y_offset: 0
+    headshot_parameters:
+      damage_multiplier: 4
+    parameters:
+        cooldown: 2000
+        velocity: 3000
+        undo: 30000
+        range: 100
+        hitbox: true
+        entity_hit_count: 5
+        block_hit_count: 4
+        hitbox: true
+        player_damage: 5
+        entity_damage: 7
+        target_breakables: 1
+        destructible: solid
+        destructible_durability: 100
+        brush: erase
+        magic_damage: false
+        target_armor_stand: true
+        spread_movement_max: 0.2
+        spread_movement: 5
+    costs:
+      mana: 1
+      

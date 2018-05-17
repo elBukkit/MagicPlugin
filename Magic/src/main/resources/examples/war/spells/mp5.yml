@@ -1,0 +1,11 @@
+mp5:
+  inherit: ak47
+  parameters:
+    cooldown: 500
+    player_damage: 3
+    entity_damage: 6
+    range: 50
+    spread: 0.1
+    spread_movement_max: 0.4
+    velocity: 3500
+

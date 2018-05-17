@@ -1,0 +1,8 @@
+jetpack:
+  icon: elytra
+  cast_spell: thruster
+  cast_interval: 10
+  cast_min_velocity: 4
+  passive: true
+  indestructible: true
+

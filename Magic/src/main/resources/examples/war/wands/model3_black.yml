@@ -1,0 +1,9 @@
+model3_black:
+  name: Model 3
+  icon: diamond_pickaxe:15
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type model3_black
+  uses: 1
+

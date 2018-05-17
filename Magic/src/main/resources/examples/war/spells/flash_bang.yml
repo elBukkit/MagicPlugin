@@ -1,0 +1,79 @@
+flash_bang:
+    icon: diamond_pickaxe:6
+    icon_url: http://textures.minecraft.net/texture/964590674dbaf76126bd87694bfe97575be8de19aac4a8d9aa5579f8f01ed1
+    category: combat
+    pvp_restricted: true
+    worth: 50
+    actions:
+        cast:
+        - class: ThrowItem
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+            - class: Repeat
+              repeat: 5
+              actions:
+              - class: PlaySound
+                sound: "war.ringing"
+                volume: 0.7
+                range: 0
+              - class: Delay
+                delay: 700
+            - class: PlaySound
+              sound: "war.ringing"
+              volume: 0.5
+              range: 0
+            - class: Delay
+              delay: 700
+            - class: PlaySound
+              sound: "war.ringing"
+              volume: 0.2
+              range: 0
+            - class: Delay
+              delay: 700
+            - class: PlaySound
+              sound: "war.ringing"
+              volume: 0.1
+              range: 0
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_lava_pop
+           location: origin
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: CC9933
+           firework: burst
+           sound: war.flashbang
+           effectlib:
+             class: SphereEffect
+             iterations: 70
+             period: .1
+             particle: redstone
+             color: 0A2A0A
+             radius: 5
+             particles: 20
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SphereEffect
+             iterations: 64
+             particle: smoke_normal
+             radius: 1
+             particles: 20
+    parameters:
+      brush: diamond_pickaxe:6
+      undo: 10000
+      duration: 8000
+      effect_blindness: 1
+      effect_night_vision: 1
+      radius: 5
+      target_self: true
+      cooldown: 500
+      speed: 1
+      age_items: 5960
+      unbreakable: true
+

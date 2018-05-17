@@ -1,0 +1,6 @@
+c4:
+  icon: tnt
+  uses: 1
+  right_click: cast
+  active_spell: c4
+

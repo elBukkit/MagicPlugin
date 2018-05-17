@@ -1,0 +1,11 @@
+reload_hawk_shotgun:
+  inherit: incremental_reload
+  effects:
+    reload:
+    - sound: war.shotgun-reload
+      sound_pitch: 1.5
+  parameters:
+    delay: 500
+    repeat: 6
+    cooldown: 3500
+      

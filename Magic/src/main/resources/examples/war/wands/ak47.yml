@@ -1,0 +1,8 @@
+ak47:
+  icon: diamond_pickaxe:1
+  inherit: base_gun
+  active_spell: ak47
+  alternate_spell: reload_ak47
+  mana: 30
+  mana_max: 30
+

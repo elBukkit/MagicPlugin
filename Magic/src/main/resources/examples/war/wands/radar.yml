@@ -1,0 +1,5 @@
+radar:
+  icon: compass
+  right_click: cast
+  active_spell: radar
+

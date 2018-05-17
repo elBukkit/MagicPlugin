@@ -1,0 +1,9 @@
+ferrari:
+  name: Ferrari California
+  icon: diamond_pickaxe:11
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type ferrari
+  uses: 1
+

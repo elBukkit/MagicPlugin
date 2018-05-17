@@ -1,0 +1,11 @@
+reload_pkp:
+  inherit: full_reload
+  effects:
+    reload:
+    - sound: war.ak47-reload
+      sound_pitch: 1.2
+  parameters:
+    delay: 700
+    repeat: 4
+    cooldown: 3000
+    

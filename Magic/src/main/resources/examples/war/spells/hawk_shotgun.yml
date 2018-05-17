@@ -1,0 +1,9 @@
+hawk_shotgun:
+  inherit: shotgun
+  parameters:
+    spread: 0.2
+    range: 24
+    player_damage: 3
+    entity_damage: 5
+    cooldown: 1200
+

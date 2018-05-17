@@ -1,0 +1,9 @@
+train:
+  type: armor_stand
+  helmet: train_item
+  invisible: true
+  silent: true
+  name: Steam Engine
+  interact_spell: drive
+  disabled_slots: 2039552
+

@@ -1,0 +1,16 @@
+sniper_scope:
+    icon: ghast_tear
+    category: combat
+    toggle: undo
+    actions:
+        cast:
+          - class: PotionEffect
+          - class: Wear
+    parameters:
+        target: self
+        effect_slow: 20
+        duration: 30000
+        undo: 30000
+        item: pumpkin
+        cancel_on_no_wand: true
+

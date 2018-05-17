@@ -1,0 +1,12 @@
+spawn_car:
+    icon: diamond_pickaxe:10
+    actions:
+      cast:
+      - class: SpawnEntity
+      - class: Message
+        ignore_result: true
+    parameters:
+      range: 4
+      message: "Right-click around the driver's door to get in"
+      message_type: action_bar
+      allow_max_range: true

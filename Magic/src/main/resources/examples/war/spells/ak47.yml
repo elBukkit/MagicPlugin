@@ -1,0 +1,140 @@
+ak47:
+    icon: ghast_tear
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: combat
+    worth: 9999
+    upgrade_required_casts: 200
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: BreakBlock
+            ignore_result: true
+    effects:
+        cooldown: []
+        cast:
+        -  class: EffectSingle
+           sound: war.ak47
+           location: origin
+        tick:
+        - particle: smoke_normal
+          location: target
+          particle_count: 3
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: iron_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        headshot_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: iron_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 10
+           particle_offset_x: 0.2
+           particle_offset_y: 0.3
+           particle_offset_z: 0.2
+           particle_data: 0.2
+        break:
+        -  class: EffectSingle
+           location: target
+           sample: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 1.5
+           particle_offset_y: 1
+           particle_offset_z: 1.5
+        hit_block:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+           sample: target
+        -  class: EffectSingle
+           location: target
+           sample: target
+           particle: block_crack
+           particle_count: 20
+           particle_offset_x: 0.8
+           particle_offset_y: 1
+           particle_offset_z: 0.8
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 15
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 0.5
+           particle_data: 0.4
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 15
+            particlesPerIteration: 5
+            iterations: 5
+            particle: block_crack
+            material: redstone_block
+            size: 0.3
+            y_offset: 0
+    headshot_parameters:
+      damage_multiplier: 1.5
+    parameters:
+        velocity: 2000
+        cooldown: 100
+        range: 32
+        hitbox: true
+        player_damage: 3
+        entity_damage: 5
+        target_breakables: 1
+        destructible: solid
+        destructible_durability: 4
+        break_durability: 2
+        undo: 18000
+        spread: 0.2
+        spread_movement_max: 0.5
+        spread_movement: 5
+        magic_damage: false
+        target_armor_stand: true
+    costs:
+      mana: 1
+
+ak47|2:
+  parameters:
+    spread_movement_max: 0.2
+    spread: 0.1
+
+ak47|3:
+  parameters:
+    spread_movement_max: 0.1
+    spread: 0.05
+

@@ -1,0 +1,10 @@
+rifle:
+  icon: diamond_pickaxe:17
+  inherit: base_gun
+  active_spell: rifle
+  alternate_spell: reload_rifle
+  alternate_spell2: sniper_scope
+  swap: alt_cast2
+  mana: 10
+  mana_max: 30
+

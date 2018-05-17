@@ -1,0 +1,17 @@
+riotshield:
+  icon: shield:1
+  indestructible: true
+  block_chance: 1
+  block_fov: 0.5
+  effects:
+    spell_blocked:
+    -  class: EffectSingle
+       sound: war.ricochet
+       sound_volume: 1
+       location: origin
+       effectlib:
+         class: HelixEffect
+         iterations: 1
+         radius: 0.3
+         particle: fireworks_spark
+

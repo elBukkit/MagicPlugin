@@ -1,0 +1,9 @@
+train:
+  name: Steam Engine
+  icon: diamond_pickaxe:12
+  active_spell: spawn_car
+  right_click: cast
+  indestructible: true
+  overrides: type train
+  uses: 1
+

@@ -1,0 +1,37 @@
+radar:
+    icon: compass
+    icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
+    category: utility
+    worth: 50
+    actions:
+        cast:
+         -  class: Orient
+         -  class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: war.radar
+           location: origin
+        -  class: EffectSingle
+           location: target
+           effectlib:
+               class: LineEffect
+               particle: redstone
+    alternate_sneak_parameters:
+        target_type: Player
+    parameters:
+        range: 128
+        fov: 3
+        close_fov: 3
+        fov_weight: 400
+        player_weight: 500
+        target: other_entity
+        target_type: LivingEntity
+        cooldown: 5000
+        ignore_blocks: true
+        loud: true
+        bypass_pvp: true
+        effect_glowing: 1
+        duration: 10000
+        target_armor_stand: true
+

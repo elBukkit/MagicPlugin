@@ -1,0 +1,15 @@
+riotpolice:
+  type: pig_zombie
+  item: shotgun_item
+  baby: false
+  chestplate: iron_chestplate
+  leggings: iron_leggings
+  boots: iron_boots
+  name: Riot Police
+  health: 25
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    shotgun: 50
+    none: 100
+

@@ -1,0 +1,24 @@
+rifle:
+  inherit: sniper
+  effects:
+      cast:
+      -  class: EffectSingle
+         sound: war.sniperrifle
+         sound_pitch: 0.2
+         location: origin
+         effectlib:
+           class: VortexEffect
+           iterations: 100
+           particle: smoke_normal
+           radius: 0.1
+           grow: 0.8
+           updateLocations: false
+           updateDirections: false
+  parameters:
+    cooldown: 3000
+    entity_hit_count: 3
+    block_hit_count: 2
+    velocity: 5000
+    player_damage: 10
+    entity_damage: 15
+
