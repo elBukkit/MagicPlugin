@@ -45,6 +45,7 @@ public class RideEntityAction extends BaseSpellAction
     private int duration = 0;
     private int durationWarning = 0;
     private int liftoffDuration = 0;
+    private int maxAscend;
     private int maxHeightAboveGround;
     private int maxHeight;
     private int exemptionDuration;
@@ -138,6 +139,7 @@ public class RideEntityAction extends BaseSpellAction
         crashSpeed = parameters.getDouble("crash_speed", 0);
         maxHeight = parameters.getInt("max_height", 0);
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", -1);
+        maxAscend = parameters.getInt("max_ascend", 0);
         duration = parameters.getInt("duration", 0);
         durationWarning = parameters.getInt("duration_warning", 0);
         pitchOffset = parameters.getDouble("pitch_offset", 0);
@@ -382,12 +384,25 @@ public class RideEntityAction extends BaseSpellAction
             }
             blocksAbove = blocksAbove - maxHeightAboveGround - 1;
         }
+
         int multiplier = speed < 0 ? -1 : 1;
         if (blocksAbove > 0 && multiplier * direction.getY() > 0) {
             if (blocksAbove > 1) {
                 direction.setY(multiplier * -blocksAbove / 5).normalize();
             } else {
                 direction.setY(0).normalize();
+            }
+        }
+
+        if (maxAscend > 0) {
+            Vector ahead = direction.clone().multiply(0.75);
+            Location checkSlope = currentLocation.clone().add(direction);
+            if (checkSlope.equals(currentLocation)) {
+                checkSlope = checkSlope.add(ahead);
+            }
+            Block checkBlock = checkSlope.getBlock();
+            if (!context.isPassthrough(checkBlock) && context.isPassthrough(checkBlock.getRelative(BlockFace.UP))) {
+                direction.setY(10).normalize();
             }
         }
 
@@ -516,6 +531,9 @@ public class RideEntityAction extends BaseSpellAction
 
     protected boolean checkForCrash(CastContext context, Location source, Vector threshold)
     {
+        if (maxAscend > 0) {
+            source.setY(source.getY() + maxAscend);
+        }
         Block facingBlock = source.getBlock();
         Block targetBlock = source.add(threshold).getBlock();
 

@@ -88,6 +88,7 @@ drive:
         braking: 0.005
         steer_speed: 0.1
         max_height_above_ground: 0
+        max_ascend: 1
         mount_target: true
         controllable: true
         pitch_controllable: false
