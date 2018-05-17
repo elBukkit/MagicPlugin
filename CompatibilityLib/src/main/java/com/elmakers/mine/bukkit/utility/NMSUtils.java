@@ -594,13 +594,13 @@ public class NMSUtils {
                 class_Server_getEntityMethod = Server.class.getMethod("getEntity", UUID.class);
             } catch (Throwable ex) {
                 class_Server_getEntityMethod = null;
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Server.getEntity, entity lookups will be slightly less optimal", ex);
+                Bukkit.getLogger().info("Could not register Server.getEntity, entity lookups will be slightly less optimal");
             }
             try {
                 class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");
             } catch (Throwable ex) {
                 class_ProjectileHitEvent_getHitBlockMethod = null;
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy", ex);
+                Bukkit.getLogger().info("Could not register ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy");
             }
             try {
                 class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.Arrow$PickupStatus");
@@ -608,7 +608,7 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 class_PickupStatus = null;
                 class_Arrow_setPickupStatusMethod = null;
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Arrow.PickupStatus, arrows can not be made to be picked up", ex);
+                Bukkit.getLogger().info("Could not register Arrow.PickupStatus, arrows can not be made to be picked up");
             }
             try {
                 class_CraftPlayer_getProfileMethod = class_CraftPlayer.getMethod("getProfile");
