@@ -401,6 +401,7 @@
                     <exclude>**/defaults/**/*.yml</exclude>
                     <exclude>**/examples/bending/**/*.yml</exclude>
                     <exclude>**/examples/potter/**/*.yml</exclude>
+                    <exclude>**/examples/rpg/**/*.yml</exclude>
                     <exclude>**/examples/stars/**/*.yml</exclude>
                     <exclude>**/examples/survival/**/*.yml</exclude>
                     <exclude>**/examples/war/**/*.yml</exclude>
@@ -496,64 +497,6 @@
                                     </fileset>
                                 </concat>
 
-                                <!-- Survival Configs -->
-
-                                <concat destfile="${project.build.directory}/classes/examples/survival/config.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/config">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/items.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/items">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/classes.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/classes">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/automata.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/automata">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/crafting.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/crafting">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/paths.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/paths">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/messages.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/messages">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/mobs.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/mobs">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/spells.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/spells">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/wands.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/wands">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/effects.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/effects">
-                                        <include name="**/*.yml"/>
-                                    </fileset>
-                                </concat>
-
                                 <!-- Bending configs -->
 
                                 <concat destfile="${project.build.directory}/classes/examples/bending/classes.yml" overwrite="yes" fixlastline="yes">
@@ -640,6 +583,39 @@
                                     </fileset>
                                 </concat>
 
+                                <!-- RPG configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/rpg/attributes.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/rpg/attributes">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/rpg/classes.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/rpg/classes">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/rpg/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/rpg/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/rpg/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/rpg/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/rpg/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/rpg/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/rpg/wands.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/rpg/wands">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
                                 <!-- Stars configs -->
 
                                 <concat destfile="${project.build.directory}/classes/examples/stars/classes.yml" overwrite="yes" fixlastline="yes">
@@ -679,6 +655,64 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/stars/wands.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/stars/wands">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Survival Configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/survival/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/items.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/items">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/classes.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/classes">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/automata.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/automata">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/crafting.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/crafting">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/paths.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/paths">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/mobs.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/mobs">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/wands.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/wands">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/effects.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/effects">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

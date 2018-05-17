@@ -1,0 +1,5 @@
+battlesword:
+    inherit: magicsword
+    effect_color: random
+    class: warrior
+

@@ -1,0 +1,19 @@
+attributes:
+  strength:
+    name: Strength
+    description: Improved damage from physical attacks
+  constitution:
+    name: Constitution
+    description: Improved damage resistance and health
+  dexterity:
+    name: Dexterity
+    description: Increase speed and agility
+  intelligence:
+    name: Intelligence
+    description: Greater proficiency with magic
+  wisdom:
+    name: Wisdom
+    description: Magical resistance and improved mana usage
+  luck:
+    name: Luck
+    description: Better chances for success

@@ -1,0 +1,11 @@
+wands:
+  wizardwand:
+    name: Wand
+  roguebow:
+    name: Bow
+  battlesword:
+    name: Sword
+  statsheet:
+    name: Stat Sheet
+    description: View your character stats
+

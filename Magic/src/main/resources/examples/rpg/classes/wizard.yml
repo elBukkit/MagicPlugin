@@ -9,12 +9,3 @@ wizard:
    - arrow
    - blast
 
-warrior:
-  inherit: base
-  locked: true
-  spells:
-   - wound
-
-rogue:
-  inherit: base
-  locked: true

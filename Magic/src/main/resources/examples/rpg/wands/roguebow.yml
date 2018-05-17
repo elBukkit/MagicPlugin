@@ -1,0 +1,5 @@
+roguebow:
+    inherit: magicbow
+    effect_color: random
+    class: rogue
+

@@ -1,0 +1,6 @@
+warrior:
+  inherit: base
+  locked: true
+  spells:
+   - wound
+

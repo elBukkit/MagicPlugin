@@ -1,0 +1,11 @@
+#
+# Add class-based weapons
+#
+
+wizardwand:
+    inherit: base_wand
+    icon: wood_hoe:1
+    effect_color: random
+    active_spell: missile
+    class: wizard
+

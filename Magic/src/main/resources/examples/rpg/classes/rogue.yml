@@ -1,0 +1,3 @@
+rogue:
+  inherit: base
+  locked: true
