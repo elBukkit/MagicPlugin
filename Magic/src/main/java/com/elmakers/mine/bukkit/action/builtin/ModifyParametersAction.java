@@ -2,12 +2,12 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
-@Deprecated
-public class ChangeParametersAction extends BaseSpellAction {
+public class ModifyParametersAction extends CompoundAction {
     private ConfigurationSection parameters;
 
     @Override
@@ -17,8 +17,12 @@ public class ChangeParametersAction extends BaseSpellAction {
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
+    public SpellResult step(CastContext context) {
         context.setSpellParameters(parameters);
-        return SpellResult.CAST;
+        ActionHandler handler = handlers.get("actions");
+        if (handler != null) {
+            handler.prepare(context, parameters);
+        }
+        return startActions();
     }
 }
