@@ -1,0 +1,36 @@
+earthline:
+  category: earthbending
+  icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
+  icon: diamond_axe:142
+  icon_disabled: diamond_hoe:142
+  worth: 150
+  actions:
+      cast:
+      - class: Line
+        actions:
+        - class: ModifyBlock
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+        - class: Delay
+  effects:
+      cast:
+      - class: EffectSingle
+        sound: water
+  parameters:
+      target: none
+      reorient: true
+      target_type: LivingEntity
+      radius: 2
+      size: 8
+      brush: dirt
+      undo: 800
+      player_damage: 2
+      entity_damage: 4
+      cooldown: 8000
+      delay: 100
+      damage_type: earth
+  costs:
+      mana: 50
+
+

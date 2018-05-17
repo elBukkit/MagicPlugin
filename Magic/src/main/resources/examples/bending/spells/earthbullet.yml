@@ -1,0 +1,65 @@
+earthbullet:
+    icon: diamond_axe:30
+    icon_disabled: diamond_hoe:30
+    upgrade_required_casts: 30
+    category: earthbending
+    pvp_restricted: true
+    worth: 200
+    actions:
+      cast:
+      - class: ChangeContext
+        target_caster: true
+        target_offset: 0,-2,0
+        actions:
+        - class: CheckBlock
+        - class: Brush
+          sample: true
+          actions:
+          - class: Sphere
+            radius: 1
+            actions:
+            - class: BreakBlock
+              break_durability: 5
+          - class: ChangeContext
+            relative_source_offset: 1,4,0
+            actions:
+            - class: EntityProjectile
+              tick:
+              - class: AreaOfEffect
+                actions:
+                - class: Damage
+                - class: Velocity
+                - class: FallProtection
+    effects:
+      cast:
+      - class: EffectSingle
+        sound: enderdragon_wings
+        sound_pitch: 1.2
+        location: origin
+      projectile:
+       - location: origin
+         effectlib:
+           class: SphereEffect
+           particle: block_crack
+           radius: 0.3
+           particles: 5
+           particle_count: 10
+           particle_offset_x: 0.5
+           particle_offset_y: 0.5
+           particle_offset_z: 0.5
+    parameters:
+      type: falling_block
+      target: other
+      target_type: Damageable
+      radius: 1.5
+      velocity: 15
+      range: 40
+      duration: 5000
+      player_damage: 2.0
+      entity_damage: 4.0
+      cooldown: 7000
+      destructible: earth
+      undo: 5000
+    costs:
+        mana: 50
+

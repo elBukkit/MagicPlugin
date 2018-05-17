@@ -1,0 +1,39 @@
+avatar:
+  class_items: avatar
+  path: avatar
+  mana_regeneration: 40
+  mana_max: 500
+  mana: 500
+  parent: bender
+  locked: true
+  limit_spells_to_path: false
+  protection:
+    overall: 0.8
+    fire: 0.8
+    fall: 1
+    physical: 0.8
+    explosion: 0.8
+    water: 0.8
+    air: 0.8
+    earth: 0.8
+  spells:
+    - fling
+    - airblast
+    - suction
+    - force
+    - fireball
+    - compression
+    - fire
+    - lava
+    - lightning
+    - sandspout
+    - breach
+    - breathofice
+    - waterball
+    - airsphere
+    - combustion|2
+    - heal
+    - cure
+    - earthline
+    - airscooter
+

@@ -399,6 +399,7 @@
                 </includes>
                 <excludes>
                     <exclude>**/defaults/**/*.yml</exclude>
+                    <exclude>**/examples/bending/**/*.yml</exclude>
                     <exclude>**/examples/potter/**/*.yml</exclude>
                     <exclude>**/examples/stars/**/*.yml</exclude>
                     <exclude>**/examples/survival/**/*.yml</exclude>
@@ -549,6 +550,49 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/survival/effects.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/survival/effects">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Bending configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/bending/classes.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/bending/classes">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/bending/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/bending/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/bending/materials.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/bending/materials">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/bending/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/bending/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/bending/mobs.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/bending/mobs">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/bending/paths.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/bending/paths">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/bending/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/bending/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/bending/wands.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/bending/wands">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

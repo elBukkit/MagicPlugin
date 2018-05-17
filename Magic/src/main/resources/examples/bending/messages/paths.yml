@@ -1,0 +1,13 @@
+paths:
+    airbending:
+        name: "&bAirbender"
+    waterbending:
+        name: "&9Waterbender"
+    earthbending:
+        name: "&7Earthbender"
+    firebending:
+        name: "&cFirebender"
+    avatar:
+        name: "&3Avatar"
+        description: Master of all four elements
+

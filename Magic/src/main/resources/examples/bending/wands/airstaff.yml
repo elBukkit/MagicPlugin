@@ -1,0 +1,8 @@
+airstaff:
+    inherit: base_bending
+    class: airbender
+    icon: wood_hoe:34
+    effect_color: 'FFFFFF'
+    alternate_spell: airglider
+    drop: alt_cast
+

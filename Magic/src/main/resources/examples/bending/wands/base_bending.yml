@@ -1,0 +1,16 @@
+#
+# Bending Powers, which are represented as wand items
+#
+
+base_bending:
+    hidden: true
+    inherit: base_wand
+    cast_location: 0,-0.6,0.5
+    mode: skills
+    left_click: none
+    swap: none
+    drop: none
+    quiet: 1
+    effect_bubbles: false
+    limit_spells_to_path: true
+

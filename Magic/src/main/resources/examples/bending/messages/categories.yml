@@ -1,0 +1,22 @@
+categories:
+    airbending:
+        name: Airbending
+        description: Spells for moving things with air
+        color: 'DDDDDD'
+    waterbending:
+        name: Waterbending
+        description: Control the element of water
+        color: '000088'
+    earthbending:
+        name: Earthbending
+        description: Control the element of earth
+        color: 'A52A2A'
+    firebending:
+        name: Firebending
+        description: Control the element of fire
+        color: 'FF0000'
+    avatar:
+        name: Avatar
+        description: Avatar State spells
+        color: 'FFFFFF'
+

@@ -1,0 +1,12 @@
+firebender:
+  class_items: firebending
+  parent: bender
+  locked: true
+  path: firebending
+  protection:
+    fire: 0.9
+    lightning: 0.7
+  spells:
+    - fire
+    - fireball
+

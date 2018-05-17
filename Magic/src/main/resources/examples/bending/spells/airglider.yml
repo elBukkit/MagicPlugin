@@ -1,0 +1,44 @@
+airglider:
+    icon: wood_hoe:33
+    category: utility
+    worth: 1000
+    quick_cast: true
+    cancel_effects: true
+    actions:
+        cast:
+        - class: StashWand
+        - class: Wear
+          material: wood_hoe:33
+        - class: FallProtection
+        - class: Velocity
+        - class: Delay
+        - class: Glide
+        - class: FallProtection
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           sound_pitch: 1.5
+           sound_volume: 0.7
+           location: origin
+           source_location: eyes
+           effectlib:
+             class: IconEffect
+             duration: 30000
+             particle: end_rod
+             particle_offset_x: 1
+             particle_offset_y: 1
+             particle_offset_z: 1
+             particle_count: 10
+             y_offset: 0
+    parameters:
+        target: self
+        duration: 10000
+        cooldown: 5000
+        direction: 0,1,0
+        speed: 2
+        delay: 750
+        return_on_finish: true
+    costs:
+        mana: 10
+

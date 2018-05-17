@@ -1,0 +1,7 @@
+firebending:
+    inherit: base_bending
+    class: firebender
+    migrate_icon: gold_pickaxe
+    icon: wood_hoe:22
+    effect_color: '880000'
+

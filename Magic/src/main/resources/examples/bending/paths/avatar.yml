@@ -1,0 +1,32 @@
+avatar:
+    max_mana: 500
+    max_mana_regeneration: 50
+    mana_regeneration: 5
+    mana_max: 30
+    spells:
+      - airsphere
+      - fireball
+      - fire
+      - lava
+      - firestream
+      - combustion
+      - compression
+      - earthline
+      - harden
+      - sandspout
+      - collapse
+      - earthsmash
+      - breathofice
+      - waterball
+      - waterjet
+      - heal
+      - cure
+      - gills
+      - bloodbending
+      - fling
+      - airblast
+      - suction
+      - breach
+      - boon
+      - airscooter
+

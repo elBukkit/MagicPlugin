@@ -1,0 +1,4 @@
+airsphere:
+  inherit: levitate
+  category: avatar
+

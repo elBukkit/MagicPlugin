@@ -1,0 +1,6 @@
+earthsmash:
+  inherit: blast
+  category: earthbending
+  parameters:
+    damage_type: earth
+

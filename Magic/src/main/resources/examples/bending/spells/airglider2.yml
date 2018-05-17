@@ -1,0 +1,55 @@
+airglider2:
+    icon: wood_hoe:33
+    category: utility
+    worth: 1000
+    quick_cast: true
+    cancel_effects: true
+    actions:
+        cast:
+        - class: Wear
+          material: elytra
+          armor_slot: 2
+        - class: StashWand
+        - class: FallProtection
+        - class: Parallel
+          actions:
+          - class: Serial
+            actions:
+            - class: Velocity
+            - class: Delay
+            - class: Glide
+            - class: Cancel
+          - class: MountArmorStand
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           sound_pitch: 1.5
+           sound_volume: 0.7
+           location: origin
+           source_location: eyes
+           effectlib:
+             class: IconEffect
+             duration: 30000
+             particle: end_rod
+             particle_offset_x: 1
+             particle_offset_y: 1
+             particle_offset_z: 1
+             particle_count: 10
+             y_offset: 0
+    parameters:
+        target: self
+        cooldown: 6000
+        direction: 0,1,0
+        delay: 750
+        return_on_finish: true
+        liftoff_duration: 600
+        liftoff_thrust: 0
+        direction: 0,1,0
+        speed: 2
+        helmet_item: wood_hoe:33
+        passenger: true
+    costs:
+        mana: 10
+
+

@@ -1,0 +1,56 @@
+breathofwind:
+    icon: diamond_axe:32
+    icon_disabled: diamond_hoe:32
+    icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
+    category: airbending
+    worth: 150
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: .3
+        tick:
+        - particle: spell
+          location: target
+          particle_count: 8
+          particle_offset_x: 0.8
+          particle_offset_y: 0.8
+          particle_offset_z: 0.8
+        hit:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             particle: spell
+             iterations: 10
+             radius: 3
+        backfire:
+        -  class: EffectSingle
+           sound: magic.zap
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           entity_effect: hurt
+    parameters:
+        target: none
+        reorient: true
+        target_type: LivingEntity
+        player_damage: 2
+        entity_damage: 4
+        target_breakables: 1
+        bypass_backfire: false
+        cooldown: 1000
+        velocity: 40
+        interval: 250
+        hitbox_size: 3
+        damage_type: air
+        pull: -1
+    costs:
+        mana: 40
+

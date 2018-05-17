@@ -1,0 +1,72 @@
+spells:
+  earthblock:
+    name: Earth Block
+    description: Raise a block of earth and throw it at your foes
+  firestream:
+    name: Fire Stream
+    description: Shoot a continuous stream of fire
+  fire_dagger:
+    name: Fire Dagger
+    description: Form a deadly weapon out of pure fire
+  combustion:
+    name: Combustion
+    description: Cause objects to explode
+  airblast:
+    name: Air Blast
+    description: Create a direct pulse of air
+  suction:
+    name: Suction
+    description: Pull your target towards you
+  breathofice:
+    name: Breath of Ice
+    description: Quickly freeze your target
+  waterjet:
+    name: Water Jet
+    description: Shoot a powerful jet of water
+  iceshield:
+    name: Ice Shield
+    description: Protect yourself with a wall of ice
+  waterwhip:
+    name: Water Whip
+    description: Control a damaging stream of water
+  waterball:
+    name: Water Ball
+    description: Trap your opponent in a ball of water
+  bloodbending:
+    name: Water Ball
+    description: Trap your opponent in a ball of water
+  compression:
+    name: Compression
+    description: Compress the surrounding earth into a sphere
+  earthsmash:
+    name: Earth Smash
+    description: Smash your target in a violent explosion
+  earthbullet:
+    name: Earth Bullet
+    description: Compress the ground beneath your feet and launch it as a projectile
+  sandspout:
+    name: Sand Spout
+    description: Bury your target in a whirlwind of sand
+  breathofwind:
+    name: Breath of Wind
+    description: Exhale a powerful gust of wind to damage and push your opponents
+  airbomb:
+    name: Air Bomb
+    description: Force out a gust of wind in all directions
+  airshield:
+    name: Air Shield
+    description: Deflect foes and attacks with a shield of air
+  enhancedspeed:
+    name: Enhanced Speed
+    description: Move faster, jump farther using the air around you
+  airsphere:
+    name: Air Sphere
+    description: Fly in a protective shield of air
+  airglider:
+    name: Air Glider
+    description: Use your staff to ride the wind
+  bendingshop:
+    name: Bending Class
+    confirm_title: "Choose $item"
+    at_limit: "You have already chosen your element!"
+

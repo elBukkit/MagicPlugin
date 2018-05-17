@@ -1,0 +1,7 @@
+breathofice:
+  inherit: frost
+  category: waterbending
+  parameters:
+    damage_type: water
+
+

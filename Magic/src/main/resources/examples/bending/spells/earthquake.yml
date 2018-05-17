@@ -1,0 +1,6 @@
+earthquake:
+  category: earthbending
+  enabled: true
+  parameters:
+    damage_type: earth
+

@@ -1,0 +1,6 @@
+firestream:
+  inherit: flamethrower
+  category: firebending
+  parameters:
+     damage_type: fire
+

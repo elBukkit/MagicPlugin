@@ -1,0 +1,12 @@
+combustion:
+  inherit: boom
+  category: firebending
+  parameters:
+     damage_type: fire
+
+combustion|2:
+  inherit: boom|2
+  category: firebending
+  upgrade_required_path: firebending
+  upgrade_required_casts: 50
+

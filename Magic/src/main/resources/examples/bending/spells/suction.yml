@@ -1,0 +1,4 @@
+suction:
+  inherit: pull
+  category: airbending
+

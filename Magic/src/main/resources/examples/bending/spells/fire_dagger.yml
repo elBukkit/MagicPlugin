@@ -1,0 +1,6 @@
+fire_dagger:
+  inherit: wound
+  parameters:
+    damage_type: fire
+
+

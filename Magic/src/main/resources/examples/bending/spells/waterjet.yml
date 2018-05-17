@@ -1,0 +1,11 @@
+### WATERBENDING
+waterjet:
+  inherit: stream
+  category: waterbending
+  parameters:
+    player_damage: 4
+    entity_damage: 6
+    range: 6
+    speed: 1
+    damage_type: water
+

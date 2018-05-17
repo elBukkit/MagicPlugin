@@ -1,0 +1,14 @@
+earthbender:
+  class_items: earthbending
+  parent: bender
+  locked: true
+  path: earthbending
+  protection:
+    physical: 0.3
+    explosion: 0.2
+    earth: 0.5
+    falling_block: 0.8
+  spells:
+    - compression
+    - earthblock
+

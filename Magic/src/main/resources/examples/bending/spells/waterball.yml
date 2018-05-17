@@ -1,0 +1,4 @@
+waterball:
+  inherit: bubble
+  category: waterbending
+

@@ -1,0 +1,10 @@
+## EARTHBENDING
+compression:
+  inherit: blob
+  category: earthbending
+  parameters:
+     brush: copy
+     check_destructible: true
+     destructible: destructible
+     targetable: earth
+

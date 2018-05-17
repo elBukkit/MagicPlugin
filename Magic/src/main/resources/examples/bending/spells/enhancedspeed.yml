@@ -1,0 +1,29 @@
+enhancedspeed:
+    icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
+    icon: diamond_axe:11
+    icon_disabled: diamond_hoe:11
+    category: airbending
+    worth: 60
+    actions:
+        cast:
+        -  class: PotionEffect
+    effects:
+        cast:
+           - class: EffectSingle
+             sound: enderdragon_wings
+             location: origin
+             source_location: eyes
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 color: FFFFFF
+                 radius: 2.5
+    costs:
+        mana: 50
+    parameters:
+        target: self
+        duration: 10000
+        cooldown: 15000
+        effect_speed: 2
+        effect_jump: 5
+        

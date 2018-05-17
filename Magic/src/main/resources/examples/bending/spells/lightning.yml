@@ -1,0 +1,6 @@
+lightning:
+  category: firebending
+  enabled: true
+  parameters:
+     damage_type: fire
+

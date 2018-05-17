@@ -1,0 +1,20 @@
+wands:
+    airstaff:
+        name: Air Staff
+        description: "Use drop button to glide\n&7Right-click to view bending moves, drag icon to hotbar to use"
+    airbending:
+        name: Airbending
+        description: Right-click to view bending moves, drag icon to hotbar to use
+    waterbending:
+        name: Waterbending
+        description: Right-click to view bending moves, drag icon to hotbar to use
+    earthbending:
+        name: Earthbending
+        description: Right-click to view bending moves, drag icon to hotbar to use
+    firebending:
+        name: Firebending
+        description: Right-click to view bending moves, drag icon to hotbar to use
+    avatar:
+        name: Avatar Powers
+        description: "Master of all four elements\n&7Right-click to view bending moves, drag icon to hotbar to use"
+

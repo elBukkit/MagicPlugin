@@ -1,0 +1,12 @@
+waterbender:
+  class_items: waterbending
+  parent: bender
+  locked: true
+  path: waterbending
+  protection:
+    water: 0.5
+    drowning: 0.75
+  spells:
+    - waterjet
+    - waterball
+

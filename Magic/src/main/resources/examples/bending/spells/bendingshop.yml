@@ -1,0 +1,28 @@
+bendingshop:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    options:
+    - unlock_class: airbender
+      cost: 5000
+      icon: wood_hoe:34
+    - unlock_class: waterbender
+      cost: 5000
+      icon: wood_hoe:20
+    - unlock_class: earthbender
+      cost: 5000
+      icon: wood_hoe:21
+    - unlock_class: firebender
+      cost: 5000
+      icon: wood_hoe:22
+    selected: "Became $name for $cost"
+    confirm: true
+    auto_close: true
+    confirm_filler: stained_glass:3
+    quiet: false
+    loud: true
+    limit: 1

@@ -1,0 +1,21 @@
+classes:
+
+  airbender:
+    name: "Airbender"
+    description: "Master of air"
+
+  waterbender:
+    name: "Waterbender"
+    description: "Master of water"
+
+  earthbender:
+    name: "Earthbender"
+    description: "Master of earth"
+
+  firebender:
+    name: "Firebender"
+    description: "Master of fire"
+
+  avatar:
+    name: "Avatar"
+    description: "Master of all four elements"

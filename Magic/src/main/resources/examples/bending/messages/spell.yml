@@ -1,0 +1,7 @@
+spell:
+    brush: Uses Material Brushes
+    undoable: ""
+    reactivate: Reactivating $name
+    available_path: Available to $paths
+    required_path: "Required for $path &rgraduation"
+

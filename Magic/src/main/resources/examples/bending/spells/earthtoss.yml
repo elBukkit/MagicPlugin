@@ -1,0 +1,7 @@
+earthtoss:
+  inherit: toss
+  category: earthbending
+  parameters:
+   undo: 5000
+   brush: dirt
+

@@ -1,0 +1,10 @@
+#
+# Bending spells
+#
+### FIREBENDING
+
+
+fireball:
+  category: firebending
+  enabled: true
+

@@ -1,0 +1,36 @@
+airshield:
+    icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
+    icon: diamond_axe:22
+    icon_disabled: diamond_hoe:22
+    category: airbending
+    worth: 200
+    actions:
+        cast:
+        -  class: Plane
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield_boom
+           location: origin
+    parameters:
+        allow_max_range: true
+        range: 2
+        radius: 1
+        axis: z
+        brush: web
+        orient: true
+        transparent: transparent_to_construction
+        destructible: air
+        check_destructible: true
+        brushcolor: true
+        undo: 1000
+        cooldown: 3000
+        breakable: 3
+        reflect_chance: 0.75
+        bypass_confusion: true
+        bypass_backfire: true
+    costs:
+        mana: 40
+

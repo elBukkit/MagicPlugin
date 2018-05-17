@@ -1,0 +1,7 @@
+airbending:
+    inherit: base_bending
+    class: airbender
+    migrate_icon: gold_axe
+    icon: wood_hoe:19
+    effect_color: 'FFFFFF'
+
