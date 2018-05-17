@@ -1,0 +1,4 @@
+forceexplode:
+  inherit: boom
+  category: force
+

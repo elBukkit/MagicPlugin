@@ -1,0 +1,5 @@
+blaster_green:
+    class: rebel
+    inherit: blaster
+    effect_color: '00FF00'
+

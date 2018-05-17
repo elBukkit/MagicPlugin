@@ -1,0 +1,7 @@
+force_user:
+  inherit: base
+  limit_spells_to_path: true
+  mana_max: 50
+  mana: 50
+  mana_regeneration: 5
+

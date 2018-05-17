@@ -1,0 +1,6 @@
+lightsaber_purple:
+    inherit: base_lightsaber
+    class: jedi
+    icon: shield:6
+    effect_color: 'FFFF00'
+

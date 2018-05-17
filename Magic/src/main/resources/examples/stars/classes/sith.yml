@@ -1,0 +1,8 @@
+sith:
+  parent: force_user
+  locked: true
+  path: acolyte
+  spells:
+    - forcepush
+    - forceignite
+

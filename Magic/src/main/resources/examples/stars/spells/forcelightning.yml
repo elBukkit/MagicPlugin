@@ -1,0 +1,4 @@
+forcelightning:
+  inherit: chainlightning
+  category: force
+

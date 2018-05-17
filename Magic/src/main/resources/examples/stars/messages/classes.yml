@@ -1,0 +1,17 @@
+classes:
+
+  jedi:
+    name: "Jedi"
+    description: "Be one with the force"
+
+  sith:
+    name: "Sith"
+    description: "Surrender to the dark side"
+
+  rebel:
+    name: "Rebel"
+    description: "Fight for the cause"
+
+  trooper:
+    name: "Trooper"
+    description: "Hunt down the rebel scum"

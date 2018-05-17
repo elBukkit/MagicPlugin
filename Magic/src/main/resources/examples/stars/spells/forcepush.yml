@@ -1,0 +1,4 @@
+forcepush:
+  inherit: push
+  category: force
+

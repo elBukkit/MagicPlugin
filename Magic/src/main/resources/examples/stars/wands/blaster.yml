@@ -1,0 +1,20 @@
+blaster:
+    migrate_icon: monster_eggs:3
+    icon: wood_hoe:12
+    path: blaster
+    mode: cast
+    locked: true
+    hidden: true
+    quiet: 2
+    mana: 100
+    mana_max: 100
+    mana_regeneration: 10
+    active_spell: blaster
+    indestructible: true
+    effect_color: 'FF0000'
+    spells:
+     - blaster
+    lore:
+    - Fire powerful bolts of energy
+    - "&7Reflects off of iron blocks"
+

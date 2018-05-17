@@ -1,0 +1,7 @@
+#
+# Force powers
+#
+forceignite:
+  inherit: fire
+  category: force
+

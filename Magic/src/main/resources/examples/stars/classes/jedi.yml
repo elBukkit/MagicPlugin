@@ -1,0 +1,8 @@
+jedi:
+  parent: force_user
+  locked: true
+  path: youngling
+  spells:
+    - forcepush
+    - forcepull
+

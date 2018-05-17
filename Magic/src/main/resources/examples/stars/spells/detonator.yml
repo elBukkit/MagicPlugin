@@ -1,0 +1,5 @@
+detonator:
+  hidden: true
+  inherit: grenade|2
+
+

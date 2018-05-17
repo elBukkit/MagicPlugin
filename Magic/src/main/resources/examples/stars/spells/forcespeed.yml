@@ -1,0 +1,8 @@
+forcespeed:
+  inherit: boon
+  category: force
+
+forcespeed|2:
+  inherit: boon|2
+  category: force
+

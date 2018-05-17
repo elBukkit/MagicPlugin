@@ -1,0 +1,7 @@
+jedi_master:
+    inherit: jedi_knight
+    max_mana: 200
+    max_mana_regeneration: 20
+    spells:
+      - forcetelekinesis
+

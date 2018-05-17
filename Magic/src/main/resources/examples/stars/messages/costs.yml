@@ -1,0 +1,6 @@
+costs:
+    xp_amount: $amount XP
+    mana_amount: $amount Energy
+    mana: Energy
+    xp: XP
+

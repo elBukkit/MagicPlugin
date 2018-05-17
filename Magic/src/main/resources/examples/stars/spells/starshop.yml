@@ -1,0 +1,47 @@
+#
+# Shops for obtaining sabers and other items
+#
+
+starshop:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    options:
+    - unlock_class: jedi
+      selected: "You became $name for $cost"
+      items:
+      - lightsaber_hilt
+      - nether_star@2
+      - stained_glass:3@2
+      - stained_glass:1@2
+      - stained_glass:2@2
+      - stained_glass:5@2
+      cost: 5000
+      limit: 1
+    - unlock_class: sith
+      selected: "You gave in to the dark side as a $name for $cost"
+      items:
+      - lightsaber_hilt
+      - nether_star@2
+      - stained_glass:14@2
+      cost: 5000
+      limit: 1
+    - item: blaster_blue
+      cost: 1000
+    - item: blaster_green
+      cost: 1000
+    - item: blaster_red
+      cost: 1000
+    - item: detonator
+      cost: 100
+    confirm: true
+    auto_close: true
+    confirm_filler: stained_glass:3
+    quiet: false
+    loud: true
+    selected: "You bought $item for $cost"
+

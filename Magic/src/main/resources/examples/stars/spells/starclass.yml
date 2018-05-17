@@ -1,0 +1,17 @@
+starclass:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      - class: Selector
+  parameters:
+    auto_close: true
+    options:
+    - switch_class: jedi
+      selected: "You became $name"
+      icon: lightsaber_blue
+    - switch_class: sith
+      selected: "You gave in to the dark side"
+      icon: lightsaber_red
+

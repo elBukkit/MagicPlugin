@@ -1,0 +1,8 @@
+forceleap:
+  inherit: fling
+  category: force
+  parameters:
+    cooldown: 10000
+  costs:
+    mana: 20
+

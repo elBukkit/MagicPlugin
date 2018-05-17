@@ -1,0 +1,28 @@
+starshopextra:
+    icon: wood_hoe:14
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        confirm_filler: stained_glass:3
+        show_active_icons: true
+        items:
+        - item: detonator
+          cost: 100
+        - item: wand|blaster_red
+          cost: 1000
+        - item: wand|blaster_green
+          cost: 1000
+        - item: wand|blaster_blue
+          cost: 1000
+        - item: lightsaber_blue
+          cost: 10000
+        - item: lightsaber_green
+          cost: 10000
+        - item: lightsaber_purple
+          cost: 10000
+        - item: lightsaber_orange
+          cost: 10000
+        - item: lightsaber_red
+          cost: 15000
+

@@ -1,0 +1,8 @@
+marauder:
+    inherit: sith
+    upgrade: sith_master
+    max_mana: 200
+    max_mana_regeneration: 20
+    spells:
+      - forcecollapse
+

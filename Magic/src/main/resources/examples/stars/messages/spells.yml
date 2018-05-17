@@ -1,0 +1,46 @@
+spells:
+    forceignite:
+      name: Force Ignite
+      description: Light a fire from a distance
+    forceleap:
+      name: Force Leap
+      description: Fling yourself in any direction
+    forcepush:
+      name: Force Push
+      description: Push things away from yourself
+    forcepull:
+      name: Force Pull
+      description: Pull things toward yourself
+    forcespeed:
+      name: Force Speed
+      description: Use the force to move faster
+    forcelift:
+      name: Force Lift
+      description: Lift your target into the air
+    forcetelekinesis:
+      name: Force Telekinesis
+      description: Fling your target around like a ragdoll
+    forceblast:
+      name: Force Blast
+      description: Break the target apart
+    forceexplode:
+      name: Force Explode
+      description: Use the force to cause an explosion
+    forcecollapse:
+      name: Force Collapse
+      description: Cause your target to collapse and crumble
+    forcethrow:
+      name: Force Throw
+      description: Throw an object using the force
+    forcelightning:
+      name: Force Lightning
+      description: Shoot lightning from your fingertips
+    starshop:
+      name: Star Chooser
+      title: "Choose Your Path"
+      confirm_title: "Choose $item"
+    blaster:
+        name: Blaster
+        description: Fire powerful bolts of energy
+        usage: Reflects off of iron blocks
+

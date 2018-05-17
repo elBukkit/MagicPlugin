@@ -1,0 +1,15 @@
+#
+# Lightsaber creation
+#
+
+lightsaber_hilt:
+  output: lightsaber_hilt
+  output_type: item
+  materials:
+    o: nether_star
+    i: iron_ingot
+    x: emerald
+  row_1: "ioi"
+  row_2: "ioi"
+  row_3: " x "
+

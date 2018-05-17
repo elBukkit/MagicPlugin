@@ -1,0 +1,4 @@
+forceblast:
+  inherit: blast
+  category: force
+

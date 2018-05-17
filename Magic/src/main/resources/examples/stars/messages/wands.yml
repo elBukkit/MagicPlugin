@@ -1,0 +1,27 @@
+wands:
+    blaster:
+        name: Blaster
+    blaster_red:
+        name: Red Blaster
+    blaster_green:
+        name: Green Blaster
+    blaster_blue:
+        name: Blue Blaster
+    detonator:
+        name: Thermal Detonator
+    lightsaber_red:
+        name: Lightsaber
+        description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
+    lightsaber_green:
+        name: Lightsaber
+        description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
+    lightsaber_blue:
+        name: Lightsaber
+        description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
+    lightsaber_orange:
+        name: Lightsaber
+        description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
+    lightsaber_purple:
+        name: Lightsaber
+        description: "Weapon of a $path\n&7Press Q to view force powers, drag to hotbar to use"
+

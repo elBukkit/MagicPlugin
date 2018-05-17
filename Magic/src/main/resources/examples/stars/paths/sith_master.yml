@@ -1,0 +1,9 @@
+sith_master:
+    inherit: marauder
+    upgrade: sith_lord
+    max_mana: 200
+    max_mana_regeneration: 20
+    spells:
+      - forcetelekinesis
+      - forcelift
+

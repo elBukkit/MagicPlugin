@@ -1,0 +1,22 @@
+paths:
+    youngling:
+        name: "&6Youngling"
+    padawan:
+        name: "&6Padawan"
+    jedi_knight:
+        name: "&6Jedi Knight"
+    jedi_master:
+        name: "&eJedi Master"
+    acolyte:
+        name: "&4Sith Acolyte"
+    sith_apprentice:
+        name: "&4Sith Apprentice"
+    sith:
+        name: "&4Sith"
+    marauder:
+        name: "&4Sith Marauder"
+    sith_master:
+        name: "&4Sith Master"
+    sith_lord:
+        name: "&cSith Lord"
+

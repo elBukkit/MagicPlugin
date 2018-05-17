@@ -1,0 +1,8 @@
+padawan:
+    inherit: youngling
+    upgrade: jedi_knight
+    max_mana: 200
+    max_mana_regeneration: 20
+    spells:
+      - forcespeed
+

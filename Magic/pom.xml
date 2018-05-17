@@ -399,8 +399,9 @@
                 </includes>
                 <excludes>
                     <exclude>**/defaults/**/*.yml</exclude>
-                    <exclude>**/examples/survival/**/*.yml</exclude>
                     <exclude>**/examples/potter/**/*.yml</exclude>
+                    <exclude>**/examples/stars/**/*.yml</exclude>
+                    <exclude>**/examples/survival/**/*.yml</exclude>
                     <exclude>**/examples/war/**/*.yml</exclude>
                 </excludes>
             </resource>
@@ -591,6 +592,49 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/potter/wands.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/potter/wands">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Stars configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/stars/classes.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/classes">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/crafting.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/crafting">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/items.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/items">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/paths.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/paths">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/wands.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/wands">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

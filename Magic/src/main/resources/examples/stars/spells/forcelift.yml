@@ -1,0 +1,4 @@
+forcelift:
+  inherit: lift
+  category: force
+

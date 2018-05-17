@@ -1,0 +1,15 @@
+#
+# Star Wars themed in-game text
+#
+
+wand:
+    mana_amount: "Energy: &e$amount"
+    mana_regeneration: "Energy Regeneration: &e$amount/s"
+    level_up: "&3You have advanced to &b$path&3!"
+    fully_enchanted: "&cYou have nothing more to learn here."
+    need_more_levels: "&cYou need at least &4$levels &clevels to advance."
+    spell_added: "You have learned the &r&6$name &d&opower!"
+    no_path: You must be holding your lightsaber
+    spell_instructions: "&r&bUse the hotbar buttons to use Force powers."
+    inventory_instructions: "&r&bUse the drop (Q) button to open/close the Force inventory."
+

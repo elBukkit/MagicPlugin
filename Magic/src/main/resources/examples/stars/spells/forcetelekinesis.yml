@@ -1,0 +1,6 @@
+forcetelekinesis:
+  inherit: force
+  category: force
+  costs:
+    mana: 50
+

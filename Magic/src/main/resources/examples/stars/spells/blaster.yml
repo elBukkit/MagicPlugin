@@ -1,0 +1,68 @@
+blaster:
+    icon: diamond_axe:159
+    icon_disabled: diamond_hoe:159
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: specialty
+    hidden: true
+    worth: 150
+    upgrade_required_casts: 100
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+        tick:
+        -  class: EffectSingle
+           location: target
+           color_override: color
+           effectlib:
+             class: LineEffect
+             type: instant
+             particle: redstone
+             length: 2
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FF8800
+           color2: FF0000
+           firework: burst
+        backfire:
+        -  class: EffectSingle
+           sound: magic.zap
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           entity_effect: hurt
+    parameters:
+        tick_size: 3
+        target: none
+        target_type: Damageable
+        player_damage: 2
+        entity_damage: 4
+        target_breakables: 1
+        bypass_backfire: false
+        cooldown: 1000
+        velocity: 80
+        interval: 250
+        reflective: iron_block
+        spread_movement: 5
+        spread_movement_max: 0.08
+        spread: 0.05
+    costs:
+        mana: 15
+
+blaster|2:
+  parameters:
+    spread_movement_max: 0.04
+    spread: 0.01
+
+blaster|3:
+  parameters:
+    spread_movement_max: 0.02
+    spread: 0
+

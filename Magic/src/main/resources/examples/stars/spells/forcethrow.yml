@@ -1,0 +1,83 @@
+forcethrow:
+    icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
+    icon: diamond_axe:43
+    icon_disabled: diamond_hoe:43
+    category: force
+    worth: 1500
+    pvp_restricted: true
+    actions:
+        cast:
+        - class: MoveBlock
+        - class: Delay
+        - class: ChangeContext
+          actions:
+          - class: Brush
+            sample: true
+            actions:
+            - class: ThrowBlock
+              actions:
+              - class: AreaOfEffect
+                actions:
+                - class: Velocity
+                - class: Damage
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           location: origin
+           sound: enderdragon_wings
+           sound_pitch: 2
+        -  class: EffectSingle
+           target_offset: 0.5,2.5,0.5
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 5
+             period: 2
+             particle: redstone
+             radius: 0.8
+             color: "A52A2A"
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particle: redstone
+             autoOrient: false
+             color: "A52A2A"
+        throw:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particle: redstone
+             autoOrient: true
+             color: "FFA500"
+        no_target:
+        -  class: EffectSingle
+           location: origin
+           sound: enderdragon_wings
+           sound_pitch: 2
+    parameters:
+        brush: erase
+        allow_max_range: false
+        range: 8
+        damage: 4
+        radius: 3
+        check_destructible: true
+        destructible: dirt,grass,stone
+        undo: 15000
+        cooldown: 2000
+        offset: 0,2,0
+        target_offset: 0,2,0
+        target_breakables: 2
+        source_at_target: true
+        delay: 500
+        speed: 1.5
+        item_speed: 0.3
+        living_entity_speed: 0.8
+    costs:
+        mana: 40
+
+
