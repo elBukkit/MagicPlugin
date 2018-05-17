@@ -1,0 +1,13 @@
+randomizedpotterwand:
+  hidden: true
+  inherit: potterwand
+  randomize_icon: wood_step
+  effects:
+    randomize:
+    -  class: EffectSingle
+       sound: entity_player_levelup
+    -  class: EffectRing
+       firework: star
+       radius: 4
+       size: 2
+

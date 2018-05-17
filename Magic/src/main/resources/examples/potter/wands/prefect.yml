@@ -1,0 +1,26 @@
+prefect:
+    icon: nether_star
+    upgrade: true
+    spells:
+     - protego|3
+     - stupefy|3
+     - levicorpus|3
+     - glacius|3
+     - bombarda|2
+     - ferula|2
+     - ascendio|2
+     - vermillious|3
+     - expelliarmus|4
+     - aguamenti|2
+     - reducto|2
+     - finiteincantatem|3
+     - deprimo|3
+     - duro|2
+     - incendio|3
+     - arrow|3
+     - episkey|2
+     - reducio|2
+     - lumos|3
+     - conjunctivitis|2
+     - flipendo|3
+

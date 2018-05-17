@@ -1,0 +1,34 @@
+elder:
+    inherit: base_wand
+    migrate_icon: iron_hoe
+    icon: wood_hoe:27
+    path: graduate
+    organize: true
+    cost_reduction: 2
+    quiet: 1
+    power: 0
+    haste: 0
+    effect_color: 'FF00FF'
+    effect_bubbles: false
+    active_spell: ascendio
+    spells:
+      - apparate
+      - rennervate
+      - stupefy
+      - expelliarmus
+      - ascendio
+      - volo
+      - protego
+      - vulnera
+      - stupefy
+      - vermillious
+      - aguamenti
+      - levicorpus
+      - reducto
+      - deprimo
+      - duro
+      - crucio
+      - imperio
+      - avadakedavra
+      - finiteincantatem
+

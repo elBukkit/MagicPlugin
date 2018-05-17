@@ -1,0 +1,10 @@
+# Special items
+ticket:
+    bound: true
+    undroppable: true
+    icon: paper
+    indestructible: true
+    locked: true
+    keep: true
+    quiet: 2
+

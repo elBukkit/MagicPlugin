@@ -1,0 +1,14 @@
+key:
+    mode: cast
+    quiet: 2
+    active_spell: alohomora
+    icon: shears
+    indestructible: false
+    locked: true
+    effect_color: 'FFFFFF'
+    uses: 1
+    overrides: range 5
+    cost_reduction: 2
+    spells:
+        - alohomora
+

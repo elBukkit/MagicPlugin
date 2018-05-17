@@ -21,7 +21,7 @@ if (!file_exists($spellConfig))
     die("File not found: $spellConfig\n");
 }
 
-$targetFolder = dirname($argv[1]);
+$targetFolder = dirname($argv[1]) . '/' . str_replace('.yml', '', $spellConfig);
 if (!file_exists($targetFolder)) mkdir($targetFolder);
 
 $handle = fopen($spellConfig, "r");

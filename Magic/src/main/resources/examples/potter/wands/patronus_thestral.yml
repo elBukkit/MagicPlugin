@@ -1,0 +1,5 @@
+patronus_thestral:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type horse, patronus.variant skeleton_horse
+

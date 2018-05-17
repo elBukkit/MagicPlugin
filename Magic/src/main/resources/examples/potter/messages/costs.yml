@@ -1,0 +1,4 @@
+costs:
+    mana_amount: $amount Energy
+    mana: Energy
+

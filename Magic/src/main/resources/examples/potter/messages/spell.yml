@@ -1,0 +1,7 @@
+spell:
+    undoable: "Counterable"
+    available_path: Available to $paths
+    required_path: Required for $path graduation
+    required_spell: "You must learn &r&4$spell &d&oto graduate"
+    category: "&7&o$category"
+

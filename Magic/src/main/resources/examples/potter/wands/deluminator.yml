@@ -1,0 +1,15 @@
+deluminator:
+    mode: cast
+    quiet: 2
+    active_spell: deluminate
+    icon: bone
+    indestructible: false
+    locked: true
+    effect_color: '111111'
+    mana: 100
+    mana_max: 100
+    mana_regeneration: 5
+    spells:
+        - deluminate
+
+

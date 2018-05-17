@@ -1,0 +1,5 @@
+grayeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:7
+    effect_color: '808080'

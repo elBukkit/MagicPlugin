@@ -1,0 +1,19 @@
+year5:
+    follows: apprentice
+    upgrade: year6
+    upgrade_item: year6
+    inherit: year4
+    max_mana: 150
+    max_mana_regeneration: 28
+    spells:
+      - stupefy
+      - reducio
+      - petrificustotalus
+      - levicorpus
+      - ferula
+      - lacarnum
+      - evanesco
+      - incarcerous
+    required_spells:
+      - reducto
+

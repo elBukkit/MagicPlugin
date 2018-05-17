@@ -1,0 +1,13 @@
+comet290:
+    mode: cast
+    path: broom
+    active_spell: broom
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
+    indestructible: true
+    locked: true
+    effect_color: 'FF00FF'
+    overrides: broom.mount_boost 2.5, broom.mount_boost_ticks 80, broom.mount_health 14, broom.slow_ticks 6, broom.steer_speed 0.6, broom.slow_steer_speed 0.5, broom.mount_boost_per_jump 1
+    spells:
+        - broom
+

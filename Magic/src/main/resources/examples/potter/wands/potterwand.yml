@@ -1,0 +1,18 @@
+#
+# Add some Harry Potter themed wand templates
+#
+# This was renamed from wand to support mixing configs with defaults
+
+potterwand:
+    inherit: base_wand
+    class: wizard
+    icon: wood_hoe:24,wood_hoe:25,wood_hoe:26
+    migrate_icons:
+      wood_hoe: wood_hoe:24
+      gold_axe: wood_hoe:25
+      gold_pickaxe: wood_hoe:26
+    active_spell: vermillious
+    quiet: 1
+    effect_color: '888888'
+    effect_bubbles: false
+

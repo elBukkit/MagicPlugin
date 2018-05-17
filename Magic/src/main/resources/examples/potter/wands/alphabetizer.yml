@@ -1,0 +1,5 @@
+alphabetizer:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    alphabetize: true

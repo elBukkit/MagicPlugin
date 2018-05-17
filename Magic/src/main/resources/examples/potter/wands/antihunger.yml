@@ -1,0 +1,4 @@
+antihunger:
+    upgrade: true
+    hunger_regeneration: 0.5
+    icon: nether_star

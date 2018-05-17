@@ -1,0 +1,6 @@
+brakes:
+    icon: nether_star
+    path: broom
+    upgrade: true
+    overrides: broom.slow_ticks 10, mount_item diamond_barding
+

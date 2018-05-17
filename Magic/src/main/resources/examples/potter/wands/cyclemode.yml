@@ -1,0 +1,5 @@
+cyclemode:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    mode: cycle

@@ -1,0 +1,15 @@
+graduate:
+    follows: master
+    inherit: year7
+    max_mana_regeneration: 40
+    max_mana: 200
+    spells:
+      - expelliarmus|5
+      - finiteincantatem|4
+      - reducio|3
+      - episkey|3
+      - ferula|3
+      - arrow|4
+      - bogies|3
+      - lacarnum|3
+

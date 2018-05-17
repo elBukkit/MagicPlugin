@@ -1,0 +1,32 @@
+categories:
+    specialty:
+        name: Speciality
+        description: Generally not for casting, these often power magic items.
+    unforgiveable:
+        name: Unforgiveable Hexes
+        description: Casting these spells is a terrible crime.
+    staff:
+        name: Staff Only
+        description: These are generally only for staff
+    elective:
+        name: Electives
+        description: Various subjects you can choose to take on your own.
+    dada:
+        name: DADA
+        description: Defense Against the Dark Arts
+    charms:
+        name: Charms
+        description: Buffs, Boons and Boosts
+    herbology:
+        name: Herbology
+        description: Give your wand a green thumb
+    dark:
+        name: Dark Arts
+        description: Exploring the darker side of magic
+    transfiguration:
+        name: Transfiguration
+        description: Alchemy, polymorphing
+    creatures:
+        name: Care of Magical Creatures
+        description: Keep them under control!
+

@@ -1,0 +1,8 @@
+currency:
+    tc:
+      amount: $amount TC
+      name: Test Credits
+    ac:
+      amount: $amount AC
+      name: Academic Credits
+

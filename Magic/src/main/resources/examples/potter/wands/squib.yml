@@ -1,0 +1,20 @@
+squib:
+    inherit: base_wand
+    icon: stick
+    indestructible: false
+    bound: false
+    keep: false
+    locked: true
+    mana: 100
+    mana_max: 100
+    mana_regeneration: 12
+    uses: 40
+    quiet: 2
+    effect_color: 'FF0000'
+    active_spell: reducto
+    spells:
+      - reducto
+      - deprimo
+      - duro
+
+

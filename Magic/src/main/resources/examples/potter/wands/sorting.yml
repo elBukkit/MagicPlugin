@@ -1,0 +1,16 @@
+sorting:
+    mode: cast
+    active_spell: recall
+    icon: paper
+    indestructible: true
+    locked: true
+    keep: true
+    uses: 1
+    quiet: 2
+    effect_color: 'FFFF00'
+    overrides: warp sortinghat
+    spells:
+        - recall
+
+
+

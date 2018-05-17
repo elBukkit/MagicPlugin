@@ -1,0 +1,13 @@
+crudwand:
+    inherit: base_wand
+    bound: false
+    keep: false
+    icon: stick
+    indestructible: false
+    locked: true
+    mana: 50
+    mana_max: 50
+    mana_regeneration: 5
+    uses: 20
+    effect_color: '440044'
+

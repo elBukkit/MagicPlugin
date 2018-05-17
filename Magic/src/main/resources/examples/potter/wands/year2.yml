@@ -1,0 +1,10 @@
+# Graduation upgrades
+year2:
+    upgrade: true
+    hidden: true
+    path: year1
+    upgrade_path: year2
+    indestructible: false
+    icon: nether_star
+    mana_max: 75
+    mana_regeneration: 10

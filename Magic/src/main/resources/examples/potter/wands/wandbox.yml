@@ -1,0 +1,13 @@
+# This will turn into a potterwand when held
+wandbox:
+  icon: wood_step:2
+  replace_on_activate: potterwand
+  effects:
+    replace:
+    -  class: EffectSingle
+       sound: entity_player_levelup
+    -  class: EffectRing
+       firework: star
+       radius: 4
+       size: 2
+

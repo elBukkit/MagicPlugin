@@ -400,7 +400,7 @@
                 <excludes>
                     <exclude>**/defaults/**/*.yml</exclude>
                     <exclude>**/examples/survival/**/*.yml</exclude>
-                    <exclude>**/examples/potter/spells/*.yml</exclude>
+                    <exclude>**/examples/potter/**/*.yml</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -555,6 +555,31 @@
 
                                 <concat destfile="${project.build.directory}/classes/examples/potter/spells.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/potter/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/potter/classes.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/potter/classes">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/potter/paths.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/potter/paths">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/potter/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/potter/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/potter/mobs.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/potter/mobs">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/potter/wands.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/potter/wands">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

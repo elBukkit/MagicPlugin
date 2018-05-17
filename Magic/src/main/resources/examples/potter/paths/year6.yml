@@ -1,0 +1,15 @@
+year6:
+    follows: apprentice
+    upgrade: year7
+    upgrade_item: year7
+    inherit: year5
+    max_mana: 170
+    max_mana_regeneration: 34
+    spells:
+      - firestorm
+      - engorgio
+      - confringo
+      - confundus
+    required_spells:
+      - apparate
+

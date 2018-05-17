@@ -1,0 +1,5 @@
+patronus_cat_siamese:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type ocelot, patronus.variant siamese_cat
+

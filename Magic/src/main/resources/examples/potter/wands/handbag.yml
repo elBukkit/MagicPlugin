@@ -1,0 +1,11 @@
+handbag:
+    mode: cast
+    quiet: 2
+    active_spell: stash
+    icon: glass_bottle
+    indestructible: false
+    locked: true
+    effect_color: 'FFFF00'
+    spells:
+        - stash
+

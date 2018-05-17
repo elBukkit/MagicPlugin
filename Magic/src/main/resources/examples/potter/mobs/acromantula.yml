@@ -1,0 +1,17 @@
+acromantula:
+  type: spider
+  name: "&2Acromantula"
+  health: 100
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    webbing: 100
+    poison|3: 100
+    none: 50
+  drops:
+  - gold_nugget@8
+  - sp:8
+  potion_effects:
+  - type: speed
+    amplifier: 0
+

@@ -1,0 +1,18 @@
+year7:
+    follows: master
+    upgrade: graduate
+    upgrade_item: graduate
+    inherit: year6
+    max_mana: 190
+    max_mana_regeneration: 36
+    upgrade_commands:
+      - broadcast §6@pd §3has graduated from Hogwarts!
+    spells:
+      - atmos
+      - meteo
+      - disillusion
+      - vulnera
+      - ventus
+    required_spells:
+      - piertotum
+

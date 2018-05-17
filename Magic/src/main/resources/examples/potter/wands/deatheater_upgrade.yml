@@ -1,0 +1,11 @@
+deatheater_upgrade:
+    name: Deatheater Wand
+    icon: wood_hoe:25
+    rename: true
+    upgrade: true
+    effect_color: '#010101'
+    effect_bubbles: true
+    active_spell: morsmordre
+    spells:
+     - morsmordre
+

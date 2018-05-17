@@ -1,0 +1,7 @@
+cleanbroom:
+    icon: nether_star
+    path: broom
+    upgrade: true
+    overrides: broom.mount_item
+
+

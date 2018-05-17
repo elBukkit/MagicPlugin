@@ -1,0 +1,13 @@
+beater:
+    path: beater
+    active_spell: beat
+    icon: stick
+    indestructible: false
+    locked: true
+    mana_max: 20
+    mana: 10
+    mana_regeneration: 10
+    effect_color: 'FF0000'
+    spells:
+        - beat
+

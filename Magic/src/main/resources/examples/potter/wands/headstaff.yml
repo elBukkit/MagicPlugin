@@ -1,0 +1,40 @@
+headstaff:
+    icon: nether_star
+    upgrade: true
+    upgrade_path: graduate
+    mana_max: 200
+    mana_regeneration: 40
+    spells:
+     - expulsion
+     - silencio
+     - silenciomaxima
+     - silenciototalus
+     - amplify
+     - amplifytotalus
+     - jail
+     - meteo
+     - atmos
+     - noxmaxima
+     - expelliarmus|5
+     - finiteincantatem|4
+     - reducio|3
+     - episkey|3
+     - ferula|3
+     - ascendio|3
+     - arrow|4
+     - duro|2
+     - bombarda|2
+     - glacius|3
+     - protego|3
+     - stupefy|3
+     - levicorpus|3
+     - vermillious|3
+     - aguamenti|2
+     - reducto|2
+     - deprimo|3
+     - incendio|3
+     - lumos|3
+     - conjunctivitis|2
+     - flipendo|3
+
+

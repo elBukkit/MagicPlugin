@@ -1,0 +1,58 @@
+#
+# Modify this file to change the behavior of various materials.
+#
+# This controls how magic deals with individual materials in a variety of ways,
+# such as which are indestructible, destructible, transparent, etc.
+#
+# To see all available options, look in the defaults/materials.defaults.yml file.
+#
+# You only need to edit this file if you want to change the default configuration.
+#
+# What materials can be targeted through by default
+
+
+transparent:
+- air
+- snow
+- long_grass
+- dead_bush
+- yellow_flower
+- red_rose
+- brown_mushroom
+- red_mushroom
+- double_plant
+- sapling
+- torch
+- redstone_wire
+- rails
+- powered_rail
+- detector_rail
+- lever
+- redstone_torch_off
+- redstone_torch_on
+- stone_button
+- sugar_cane_block
+- diode_block_off
+- diode_block_on
+- pumpkin_stem
+- melon_stem
+- vine
+- water_lily
+- nether_warts
+- ender_portal
+- cocoa
+- tripwire_hook
+- tripwire
+- flower_pot
+- carrot
+- potato
+- wood_button
+- restone_comparator_off
+- restone_comparator_on
+- activator_rail
+- double_plant
+- carpet
+- water
+- stationary_water
+- portal
+

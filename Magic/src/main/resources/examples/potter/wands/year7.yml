@@ -1,0 +1,9 @@
+year7:
+    upgrade: true
+    hidden: true
+    path: year6
+    upgrade_path: year7
+    indestructible: false
+    icon: nether_star
+    mana_max: 180
+    mana_regeneration: 35

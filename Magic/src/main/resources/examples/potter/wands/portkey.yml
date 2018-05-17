@@ -1,0 +1,17 @@
+#
+# ITEMS
+#
+portkey:
+    mode: cast
+    active_spell: recall
+    icon: flower_pot_item,bowl,glass_bottle,iron_axe,feather,compass
+    indestructible: true
+    locked: true
+    uses: 5
+    keep: true
+    quiet: 2
+    effect_color: 'FFFF00'
+    overrides: allow_marker false
+    spells:
+        - recall
+

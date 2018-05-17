@@ -1,0 +1,12 @@
+floopowder:
+    mode: cast
+    quiet: 2
+    active_spell: floo
+    icon: sulphur
+    indestructible: false
+    locked: true
+    effect_color: 'FF0000'
+    uses: 8
+    spells:
+        - floo
+

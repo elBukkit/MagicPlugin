@@ -1,0 +1,30 @@
+#
+# Add a Harry Potter themed wand progression
+# that mirrors the 7 years of Hogwarts classes.
+#
+
+year1:
+    follows: beginner
+    inherit: default
+    upgrade: year2
+    upgrade_item: year2
+    max_mana: 60
+    max_mana_regeneration: 8
+    mana_regeneration: 1
+    mana_max: 2
+    spells:
+      - flagrate
+      - vermillious
+      - flipendo
+      - periculum
+      - arrow
+      - lumos
+      - incendio
+      - conjunctivitis
+      - fourpoint
+      - arresto
+      - avis
+      - wingardium
+    required_spells:
+      - alohomora
+

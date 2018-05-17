@@ -1,0 +1,6 @@
+booster:
+    icon: nether_star
+    path: broom
+    upgrade: true
+    overrides: broom.mount_boost 2, broom.mount_item gold_barding
+

@@ -1,0 +1,5 @@
+patronus_pig:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type pig
+

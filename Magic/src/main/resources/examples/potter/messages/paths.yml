@@ -1,0 +1,29 @@
+paths:
+    year1:
+        name: First Year
+        description: First years learn a variety of beginning spells, as well as the basics of wand use.
+    year2:
+        name: Second Year
+        description: Spells for second year students.
+    year3:
+        name: Third Year
+        description: Spells for third year students.
+    year4:
+        name: Fourth Year
+        description: Spells for fourth year students.
+    year5:
+        name: Fifth Year
+        description: Spells for fifth year students.
+    year6:
+        name: Sixth Year
+        description: Spells for sixth year students.
+    year7:
+        name: Seventh Year
+        description: Spells for seventh year students.
+    graduate:
+        name: Graduates
+        description: What comes next?
+    broom:
+        name: Broom
+        description: Flying broom upgrades!
+

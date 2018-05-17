@@ -1,0 +1,5 @@
+redeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:14
+    effect_color: 'FF0000'

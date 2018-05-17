@@ -1,0 +1,5 @@
+yelloweffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:4
+    effect_color: 'FFFF00'

@@ -1,0 +1,5 @@
+purpleeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:10
+    effect_color: '800080'

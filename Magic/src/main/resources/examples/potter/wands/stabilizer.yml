@@ -1,0 +1,7 @@
+# Broom upgrades
+stabilizer:
+    icon: nether_star
+    path: broom
+    upgrade: true
+    overrides: broom.steer_speed 3, broom.mount_item iron_barding
+

@@ -1,0 +1,17 @@
+year3:
+    follows: student
+    upgrade: year4
+    upgrade_item: year4
+    inherit: year2
+    max_mana: 110
+    max_mana_regeneration: 15
+    spells:
+      - bombarda
+      - snowball
+      - colorvaria
+      - duro
+      - diffindo
+      - patronus
+    required_spells:
+      - deprimo
+

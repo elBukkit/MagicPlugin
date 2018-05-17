@@ -1,0 +1,12 @@
+dungbombs:
+    mode: cast
+    quiet: 2
+    active_spell: dungbomb
+    icon: magma_cream
+    indestructible: false
+    locked: true
+    effect_color: '00FF00'
+    uses: 12
+    spells:
+        - dungbomb
+

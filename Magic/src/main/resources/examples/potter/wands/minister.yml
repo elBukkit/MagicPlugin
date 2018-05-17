@@ -1,0 +1,13 @@
+minister:
+    mode: cast
+    path: broom
+    active_spell: broom
+    migrate_icon: gold_spade
+    icon: wood_hoe:29
+    indestructible: true
+    locked: true
+    effect_color: '00AAFF'
+    overrides: broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 1, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.5, broom.effect_confusion 0
+    spells:
+        - broom
+

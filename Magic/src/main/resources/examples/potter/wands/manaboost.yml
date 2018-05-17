@@ -1,0 +1,6 @@
+# Other upgrades
+manaboost:
+    upgrade: true
+    indestructible: false
+    icon: glass_bottle
+    mana: 1000

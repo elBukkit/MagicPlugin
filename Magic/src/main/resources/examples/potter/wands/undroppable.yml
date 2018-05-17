@@ -1,0 +1,5 @@
+undroppable:
+    upgrade: true
+    indestructible: false
+    undroppable: true
+    icon: nether_star

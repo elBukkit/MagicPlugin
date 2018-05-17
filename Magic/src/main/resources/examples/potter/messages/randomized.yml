@@ -1,0 +1,49 @@
+randomized:
+   wood:
+     - Acacia
+     - Alder
+     - Apple
+     - Ash
+     - Aspen
+     - Beech
+     - Blackthorn
+     - Black Walnut
+     - Cedar
+     - Cherry
+     - Chestnut
+     - Cypress
+     - Dogwood
+     - Ebony
+     - English Oak
+     - Elder
+     - Elm
+     - Fir
+     - Hawthorn
+     - Hazel
+     - Holly
+     - Hornbeam
+     - Larch
+     - Laurel
+     - Mahogany
+     - Maple
+     - Oak
+     - Olive
+     - Pear
+     - Pine
+     - Poplar
+     - Red Oak
+     - Redwood
+     - Rosewood
+     - Rowan
+     - Silver Lime
+     - Spruce
+     - Sycamore
+     - Vine
+     - Walnut
+     - Willow
+     - Yew
+   core:
+     - Unicorn Tail Hair
+     - Dragon Heartstring
+     - Pheonix Feather
+
