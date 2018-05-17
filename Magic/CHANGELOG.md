@@ -9,6 +9,7 @@
  - Fix magic mobs using Arrow and other projectile spells
  - Improved support for using attributes in base spell parameters (cooldown, range, etc will show correctly in lore)
  - Fixed graduate spell list in potter configs
+ - Cars in war configs can now go up 1 block slopes
 
 # 7.5
 

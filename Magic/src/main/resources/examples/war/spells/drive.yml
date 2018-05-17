@@ -112,6 +112,7 @@ drive:
         crash_distance: 1
         crash_into: LivingEntity
         crash_dismount_speed: 0.75
+        armor_stand_pitch: 0.2
         crash_effects:
           confusion: 120,3
 

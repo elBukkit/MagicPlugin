@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
@@ -105,7 +104,6 @@ public class MountArmorStandAction extends RideEntityAction
     protected void adjustHeading(CastContext context) {
         super.adjustHeading(context);
 
-        Location targetLocation = context.getEntity().getLocation();
         float targetPitch = targetLocation.getPitch();
         if (armorStandPitch != 0 || armorStandRoll != 0) {
             double pitch = armorStandPitch * targetPitch / 180 * Math.PI;

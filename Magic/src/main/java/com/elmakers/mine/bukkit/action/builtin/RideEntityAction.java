@@ -90,6 +90,8 @@ public class RideEntityAction extends BaseSpellAction
 
     protected Vector direction;
     protected Entity mount;
+    protected Location targetLocation;
+    private boolean isAscending;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -293,11 +295,46 @@ public class RideEntityAction extends BaseSpellAction
     }
 
     protected void adjustHeading(CastContext context) {
-        Location targetLocation = context.getEntity().getLocation();
+        targetLocation = context.getEntity().getLocation();
         Vector targetDirection = targetLocation.getDirection();
 
         if (jumpControllable != 0 && context.getMage().isVehicleJumping()) {
             targetDirection.setY(jumpControllable);
+        }
+
+        if (maxAscend > 0) {
+            targetDirection.setY(0);
+            Location checkLocation = targetLocation;
+            Block checkBlock = checkLocation.getBlock();
+            Block oneDown = checkBlock.getRelative(BlockFace.DOWN);
+            if (context.isPassthrough(checkBlock) && context.isPassthrough(oneDown)) {
+                Block twoDown = oneDown.getRelative(BlockFace.DOWN);
+                if (context.isPassthrough(twoDown)) {
+                    if (isAscending) {
+                        checkBlock = twoDown;
+                        checkLocation.setY(checkLocation.getY() - 2);
+                    }
+                } else {
+                    checkBlock = oneDown;
+                    checkLocation.setY(checkLocation.getY() - 1);
+                }
+            }
+            isAscending = false;
+            if (!context.isPassthrough(checkBlock) && context.isPassthrough(checkBlock.getRelative(BlockFace.UP))) {
+                targetDirection.setY(10);
+                isAscending = true;
+            } else {
+                Vector ahead = targetDirection.clone().multiply(0.75);
+                Location checkSlope = checkLocation.clone().add(ahead);
+                if (checkSlope.equals(checkLocation)) {
+                    checkSlope = checkSlope.add(ahead);
+                }
+                checkBlock = checkSlope.getBlock();
+                if (!context.isPassthrough(checkBlock) && context.isPassthrough(checkBlock.getRelative(BlockFace.UP))) {
+                    targetDirection.setY(10);
+                    isAscending = true;
+                }
+            }
         }
 
         if (moveDistance == 0) {
@@ -385,24 +422,16 @@ public class RideEntityAction extends BaseSpellAction
             blocksAbove = blocksAbove - maxHeightAboveGround - 1;
         }
 
+        if (isAscending) {
+            blocksAbove -= (maxAscend + 1);
+        }
+
         int multiplier = speed < 0 ? -1 : 1;
-        if (blocksAbove > 0 && multiplier * direction.getY() > 0) {
+        if (blocksAbove > 0 && multiplier * direction.getY() >= 0) {
             if (blocksAbove > 1) {
                 direction.setY(multiplier * -blocksAbove / 5).normalize();
             } else {
                 direction.setY(0).normalize();
-            }
-        }
-
-        if (maxAscend > 0) {
-            Vector ahead = direction.clone().multiply(0.75);
-            Location checkSlope = currentLocation.clone().add(direction);
-            if (checkSlope.equals(currentLocation)) {
-                checkSlope = checkSlope.add(ahead);
-            }
-            Block checkBlock = checkSlope.getBlock();
-            if (!context.isPassthrough(checkBlock) && context.isPassthrough(checkBlock.getRelative(BlockFace.UP))) {
-                direction.setY(10).normalize();
             }
         }
 

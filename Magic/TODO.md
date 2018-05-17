@@ -28,6 +28,9 @@
    
  - "Residence" integration (requested by Frerduro on Discord)
    https://github.com/Zrips/Residence
+   
+ - Allow use of equations in book action, somehow.
+ - Custom spell lore showing arbitrary parameters (or something)
 
 ## 1.13
 
