@@ -1,0 +1,68 @@
+patronus:
+    icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
+    icon: diamond_axe:131
+    icon_disabled: diamond_hoe:131
+    category: charms
+    worth: 200
+    actions:
+      cast:
+      - class: PlaySound
+      - class: EntityProjectile
+        actions:
+        - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.patronus
+           location: origin
+        hit:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: BigBangEffect
+             explosions: 1
+             sound_volume: 1
+             sound_pitch: 0.8
+             color: 010101
+             color2: 111111
+             color3: 222222
+             fadeColor: 888888
+             iterations: 1
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: CubeEffect
+             particle: enchantment_table
+             iterations: 5
+             period: 2
+        projectile:
+        -  class: EffectSingle
+           location: source
+           effectlib:
+             class: WaveEffect
+             particle: smoke_large
+             cloudParticle: smoke_normal
+             iterations: 8
+             particlesFront: 5
+             particlesBack: 5
+             rows: 10
+    parameters:
+        bypass_weakness: false
+        fizzle_chance: .15
+        target: other_entity
+        target_type: Wither
+        range: 64
+        type: chicken
+        cooldown: 30000
+        velocity: 5
+        track_range: 8
+        track_speed: 0.5
+        type: chicken
+        bypass_backfire: true
+        sound: irongolem_hit
+        damage: 300
+        hitbox_size: 3
+        hitbox: true
+    costs:
+        mana: 130
+

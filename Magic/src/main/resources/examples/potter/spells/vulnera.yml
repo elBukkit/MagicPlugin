@@ -1,0 +1,47 @@
+vulnera:
+    icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
+    icon: diamond_axe:44
+    icon_disabled: diamond_hoe:44
+    category: charms
+    cast_on_no_target: true
+    worth: 50
+    pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HealAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: level_up
+          location: target
+          particle_override: particle_orbital
+          effectlib:
+             class: AtomEffect
+             particle_nucleus: heart
+             particle_orbital: crit
+             iterations: 16
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: LoveEffect
+             iterations: 10
+             period: 2
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        duration: 10000
+        cooldown: 20000
+        bypass_confusion: true
+        effect_regeneration: 1
+        effect_saturation: 1
+        remove_effects:
+        - confusion
+        - wither
+        - slow
+        amount: 1
+    costs:
+        mana: 80
+

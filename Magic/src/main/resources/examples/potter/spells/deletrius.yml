@@ -1,0 +1,16 @@
+deletrius:
+    icon: diamond_axe:118
+    icon_disabled: diamond_hoe:118
+    category: staff
+    class: CommitSpell
+    worth: 150
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: anvil_use
+    parameters:
+        target: self
+        bypass_backfire: true
+    costs:
+        mana: 100
+

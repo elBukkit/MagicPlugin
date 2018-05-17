@@ -1,0 +1,58 @@
+confringo:
+    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
+    icon: diamond_axe:153
+    icon_disabled: diamond_hoe:153
+    category: dark
+    pvp_restricted: true
+    worth: 35
+    actions:
+        cast:
+        -  class: ProjectileAction
+           actions:
+           -  class: CoverAction
+              actions:
+              -  class: BurnAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
+           sound: ghast_fireball
+           sound_volume: 1
+           sound_pitch: -.25
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: lava
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
+    parameters:
+        projectile: LargeFireball
+        fire: false
+        range: 32
+        allow_max_range: true
+        hitbox: true
+        vertical_range: 8
+        bypass_build: true
+        target_breakables: 0
+        radius: 2
+        cooldown: 1000
+        size: 1.25
+        spread: 2
+        speed: 5
+        entity_undo: false
+        undo: 3000
+        cooldown: 13000
+        bypass_backfire: true
+    costs:
+        mana: 100
+

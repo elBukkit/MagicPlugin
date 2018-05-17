@@ -1,0 +1,32 @@
+protegomaxima:
+    icon: diamond_axe:22
+    icon_disabled: diamond_hoe:22
+    category: dada
+    class: ConstructSpell
+    worth: 100
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_death
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 64
+        max_dimension: 64
+        thickness: 1
+        target: select
+        type: sphere
+        check_destructible: true
+        destructible: air
+        transparent: transparent_to_construction
+        bypass_build: true
+        brush: stained_glass
+        undo: 10000
+        reflect_chance: 1
+        bypass_backfire: true
+        bypass_confusion: true
+        bypass_backfire: true
+    costs:
+        mana: 100
+

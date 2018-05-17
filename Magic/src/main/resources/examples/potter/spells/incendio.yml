@@ -1,0 +1,8 @@
+incendio:
+    category: dark
+    inherit: fire
+incendio|2:
+    inherit: fire|2
+incendio|3:
+    inherit: fire|3
+

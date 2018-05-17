@@ -1,0 +1,20 @@
+potterbroomshop:
+    icon: gold_spade
+    category: npc
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        items:
+        - item: wand|firebolt
+          cost: 10000
+        - item: wand|nimbus
+          cost: 5000
+        - item: wand|comet290
+          cost: 1000
+        - item: wand|cleansweep1
+          cost: 500
+        - item: wand|bluebottle
+          cost: 100
+

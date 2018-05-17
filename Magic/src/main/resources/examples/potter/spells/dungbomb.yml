@@ -1,0 +1,41 @@
+dungbomb:
+    icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
+    icon: diamond_axe:93
+    icon_disabled: diamond_hoe:93
+    category: specialty
+    pvp_restricted: true
+    hidden: true
+    worth: 25
+    actions:
+        cast:
+        -  class: TNTAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: lava_pop
+        hit:
+         - class: EffectSingle
+           sound: enderdragon_wings
+           location: origin
+           effectlib:
+               class: SphereEffect
+               particle: redstone
+               radius: 2.5
+               color: '7E3817'
+               iterations: 20
+    parameters:
+        size: 0
+        fuse: 60
+        damage: 4
+        target_self: true
+        radius: 4
+        break_blocks: false
+        cooldown: 6000
+        effect_poison: 1
+        duration: 5000
+        bypass_build: true
+

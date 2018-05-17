@@ -1,0 +1,33 @@
+avis:
+    icon_url: http://textures.minecraft.net/texture/8dd5ea25877fc4f2973e9ae746e77326b9b9dd735ca811cba3bdfb4e47108970
+    icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
+    category: creatures
+    class: FamiliarSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: chicken_egg_pop
+           effectlib:
+             class: DnaEffect
+             particle_helix: drip_lava
+             iterations: 24
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particle_orbital: spell
+    parameters:
+        allow_max_range: true
+        range: 2
+        cooldown: 10000
+        type: chicken
+        baby: true
+        count: 3
+        reason: custom
+        undo: 5000
+    costs:
+        mana: 15
+

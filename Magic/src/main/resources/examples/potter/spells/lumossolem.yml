@@ -1,0 +1,31 @@
+lumossolem:
+    icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
+    icon: diamond_axe:228
+    icon_disabled: diamond_hoe:228
+    category: charms
+    actions:
+      cast:
+      - class: ThrowBlock
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+           location: target
+           effectlib:
+             offset: 0,.5,0
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 5
+    pvp_restricted: true
+    parameters:
+      speed: 1
+      brush: sea_lantern
+      undo: 30000
+    costs:
+        mana: 100
+

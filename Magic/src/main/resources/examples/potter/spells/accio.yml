@@ -1,0 +1,11 @@
+#
+# Harry Potter Canon Spells
+#
+# With help from: http://harrypotterspells.net
+#    and http://harrypotter.wikia.com/wiki/List_of_spells
+#
+
+accio:
+    category: charms
+    inherit: pull
+

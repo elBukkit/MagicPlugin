@@ -1,0 +1,28 @@
+impervius:
+    icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
+    icon: diamond_axe:186
+    icon_disabled: diamond_hoe:186
+    category: transfiguration
+    class: ConstructSpell
+    worth: 30
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        check_destructible: true
+        destructible: water
+        brush: erase
+        radius: 3
+        bypass_build: true
+        transparent: transparent_to_construction
+        undo: 10000
+        select_self: false
+    costs:
+        mana: 65
+

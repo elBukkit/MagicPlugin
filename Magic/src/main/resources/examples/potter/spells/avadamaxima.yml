@@ -1,0 +1,53 @@
+avadamaxima:
+    icon: diamond_axe:170
+    icon_disabled: diamond_hoe:170
+    icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
+    category: staff
+    pvp_restricted: true
+    worth: 1000
+    cast_on_no_target: true
+    hidden: true
+    actions:
+        cast:
+        -  class: CommandAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: wither_spawn
+           sound_volume: 1
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             color: 00FF00
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: "00FF00"
+           firework: ball_large
+        - class: EffectSingle
+          location: target
+          particle_override: particle_orbital
+          effectlib:
+             class: AtomEffect
+             particle_nucleus: villager_happy
+             particle_orbital: villager_happy
+             iterations: 16
+    parameters:
+        commands:
+        - ban @tn you have been Avada Kedavra'd!
+        - say &aAvada Kedavra &c@tn!
+        target_type: Player
+        target: other
+        target_breakables: 1
+        range: 16
+        cooldown: 30000
+        bypass_backfire: true
+        check_protection: true
+        hitbox: true
+        transparent: transparent_to_avada
+    costs:
+        mana: 300
+

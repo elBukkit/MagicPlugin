@@ -1,0 +1,33 @@
+tripudio:
+    icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
+    icon: diamond_axe:11
+    icon_disabled: diamond_hoe:11
+    worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+        -  class: EffectTrail
+           particle: spell
+           particle_data: 2
+           particle_count: 3
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+           effectlib:
+             class: TraceEffect
+             iterations: 200
+             particle: spell
+    costs:
+        mana: 150
+    parameters:
+        target: any
+        range: 10
+        cooldown: 20000
+        target_type: LivingEntity
+        duration: 20000
+        effect_jump: 5
+

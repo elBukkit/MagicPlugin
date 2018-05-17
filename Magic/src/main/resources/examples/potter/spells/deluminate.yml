@@ -1,0 +1,29 @@
+deluminate:
+    hidden: true
+    icon: diamond_axe:85
+    icon_disabled: diamond_hoe:85
+    category: specialty
+    class: ConstructSpell
+    worth: 100
+    cast_on_no_target: true
+    pvp_restricted: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+        -  class: EffectTrail
+           effect: step_sound
+           material: obsidian
+    parameters:
+        bypass_build: true
+        allow_max_range: false
+        range: 32
+        check_destructible: true
+        destructible: torch,fire
+        brush: erase
+        radius: 16
+        transparent: transparent_to_construction
+        undo: 20000
+    costs:
+        mana: 100
+

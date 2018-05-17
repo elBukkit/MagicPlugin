@@ -1,0 +1,35 @@
+pulsus:
+    icon_url: http://textures.minecraft.net/texture/2418aee9b8d2702b5d75cfeabf19edf4b4bb83832fda7324c27781beb1e212f
+    icon: diamond_axe:192
+    icon_disabled: diamond_hoe:192
+    category: dada
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           effectlib:
+             class: FountainEffect
+             particle: spell
+             iterations: 2
+             particlesStrand: 10
+             particlesSpout: 30
+    parameters:
+        fov: 4
+        target_type: Entity
+        item_speed: 4
+        range: 15
+        living_entity_speed: 10
+        push: 1
+        damage: 0.5
+        cooldown: 7000
+        bypass_backfire: true
+    costs:
+        mana: 70
+

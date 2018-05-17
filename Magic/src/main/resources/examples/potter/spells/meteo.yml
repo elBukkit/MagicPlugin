@@ -1,0 +1,4 @@
+meteo:
+    category: staff
+    inherit: day
+

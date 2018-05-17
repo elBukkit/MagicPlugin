@@ -1,0 +1,16 @@
+colorvaria:
+    inherit: superalter
+    category: transfiguration
+    worth: 8
+    parameters:
+        range: 16
+        depth: 8
+        undo: 5000
+        bypass_build: true
+        bypass_backfire: true
+        check_destructible: true
+        destructible: colorable
+        cooldown: 5000
+    costs:
+        mana: 70
+

@@ -1,0 +1,10 @@
+addspell:
+    enabled: true
+
+spellshop:
+    enabled: true
+
+phase:
+    hidden: true
+    enabled: true
+

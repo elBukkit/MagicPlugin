@@ -1,0 +1,8 @@
+conjunctivitis:
+    inherit: blind
+    category: dada
+
+conjunctivitis|2:
+    parameters:
+        duration: 4000
+

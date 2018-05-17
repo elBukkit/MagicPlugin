@@ -1,0 +1,7 @@
+aguamenti:
+    category: charms
+    inherit: bubble
+
+aguamenti|2:
+    inherit: bubble|2
+

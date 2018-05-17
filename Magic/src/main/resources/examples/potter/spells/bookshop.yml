@@ -1,0 +1,14 @@
+bookshop:
+    icon: book
+    category: npc
+    hidden: true
+    inherit: buyshop
+    parameters:
+        quiet: true
+        items:
+        - item: book|charms
+        - item: book|creatures
+        - item: book|herbology
+        - item: book|transfiguration
+        - item: book|elective
+        - item: book|unforgiveable

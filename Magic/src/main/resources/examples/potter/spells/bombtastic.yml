@@ -1,0 +1,37 @@
+bombtastic:
+    icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
+    icon: diamond_axe:93
+    icon_disabled: diamond_hoe:93
+    category: specialty
+    pvp_restricted: true
+    hidden: true
+    worth: 25
+    actions:
+        cast:
+        -  class: TNTAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: DamageAction
+              -  class: VelocityAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: lava_pop
+        hit:
+        -  class: EffectSingle
+           location: origin
+           particle: explosion_huge
+    parameters:
+        size: 0
+        fuse: 60
+        damage: 2
+        target_self: true
+        radius: 8
+        break_blocks: false
+        cooldown: 6000
+        push: 1
+        item_speed: 4
+        living_entity_speed: 3
+        bypass_build: true
+

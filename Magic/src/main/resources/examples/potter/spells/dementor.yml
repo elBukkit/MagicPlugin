@@ -1,0 +1,42 @@
+dementor:
+    icon_url: http://textures.minecraft.net/texture/c8471a90c7b0d6ba70ddf0ea8daf2f8ee999a1efe95f2198d8352e42bd43d1
+    icon: diamond_axe:175
+    icon_disabled: diamond_hoe:175
+    category: specialty
+    hidden: true
+    pvp_restricted: true
+    cast_on_no_target: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: wither_idle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 19070B
+           firework: ball
+        -  class: EffectSingle
+           particle: town_aura
+           location: target
+           effectlib:
+             class: BleedEffect
+             duration: 500
+    costs:
+        mana: 150
+    parameters:
+        range: 13
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        duration: 10000
+        fov: .5
+        effect_wither: 1
+        cooldown: 9000
+

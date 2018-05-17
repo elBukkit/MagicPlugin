@@ -1,0 +1,24 @@
+protego:
+    category: dada
+    inherit: reflect
+
+protego|2:
+    parameters:
+        radius: 1
+        undo: 900
+        reflect_chance: 0.1
+        cooldown: 2000
+        breakable: 2
+    costs:
+        mana: 30
+
+protego|3:
+    parameters:
+        radius: 2
+        undo: 1000
+        cooldown: 2500
+        reflect_chance: .2
+        breakable: 1
+    costs:
+        mana: 50
+

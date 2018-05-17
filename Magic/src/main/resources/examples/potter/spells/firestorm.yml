@@ -1,0 +1,48 @@
+firestorm:
+    icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
+    description: Incinerate your target!
+    icon: diamond_axe:144
+    icon_disabled: diamond_hoe:144
+    category: dark
+    worth: 35
+    pvp_restricted: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: Disc
+           actions:
+           - class: Skip
+             actions:
+             - class: Delay
+           - class: Cover
+             actions:
+             - class: Burn
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: lava
+    parameters:
+        radius: 5
+        thickness: 2
+        fizzle_chance: .5
+        target: self
+        target_type: LivingEntity
+        cooldown: 8000
+        undo: 6000
+        duration: 10000
+        effect_fire_resistance: 100
+        bypass_backfire: true
+        bypass_build: true
+        bypass_break: true
+        skip: 8
+        delay: 500
+    costs:
+        mana: 100
+

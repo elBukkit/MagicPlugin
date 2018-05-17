@@ -1,0 +1,38 @@
+piertotum:
+    icon_url: http://textures.minecraft.net/texture/b47685bb689895deea831ce92bc339d1b1d63b7782f98f252abc09447fbcf8f
+    icon: diamond_axe:53
+    icon_disabled: diamond_hoe:53
+    category: master
+    class: FamiliarSpell
+    worth: 250
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectSingle
+           location: target
+           target_offset: -4,0,0
+           effectlib:
+             class: HillEffect
+             particle: spell_instant
+             particles: 10
+             iterations: 10
+    parameters:
+        allow_max_range: true
+        range: 1
+        spawn_range: 1
+        cooldown: 10000
+        type: iron_golem
+        spread: 0
+        count: 5
+        reason: custom
+        undo: 10000
+        name: Animated Statue
+        entity_undo: false
+    costs:
+        mana: 15
+    costs:
+        mana: 150
+

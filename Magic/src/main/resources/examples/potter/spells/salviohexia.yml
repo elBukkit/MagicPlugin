@@ -1,0 +1,30 @@
+salviohexia:
+    icon: diamond_axe:101
+    icon_disabled: diamond_hoe:101
+    category: staff
+    hidden: true
+    class: ConstructSpell
+    worth: 2000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_retract
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        allow_max_range: false
+        range: 32
+        max_dimension: 64
+        target: select
+        type: cuboid
+        transparent: transparent_to_construction
+        brush: clone
+        check_destructible: false
+        brushmod: erase
+        otworld: ~_backup
+        obworld: ~-_backup
+        brushtarget: true
+        bypass_undo: true
+    costs:
+        mana: 1000
+

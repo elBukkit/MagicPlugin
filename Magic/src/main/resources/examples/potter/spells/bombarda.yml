@@ -1,0 +1,9 @@
+bombarda:
+    inherit: boom
+    category: dada
+
+bombarda|2:
+    parameters:
+        range: 32
+        size: 4
+

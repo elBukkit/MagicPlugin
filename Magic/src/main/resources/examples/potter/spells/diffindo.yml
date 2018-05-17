@@ -1,0 +1,56 @@
+diffindo:
+    icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
+    icon: diamond_axe:133
+    icon_disabled: diamond_hoe:133
+    category: transfiguration
+    class: ConstructSpell
+    cast_on_no_target: true
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: redstone
+             color: FFFF00
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,0.5,0
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 4
+             particle: redstone
+             color: FFFF00
+        -  class: EffectSingle
+           location: target
+           color: FFFF00
+           firework: ball
+    parameters:
+        allow_max_range: false
+        range: 16
+        brush: air
+        falling: true
+        check_destructible: true
+        destructible: gold_ore
+        radius: 2
+        bypass_build: true
+        transparent: transparent_to_construction
+        undo: 15000
+        select_self: false
+    costs:
+        mana: 70
+
+diffindo|2:
+    parameters:
+        radius: 3
+
+diffindo|3:
+    parameters:
+        radius: 4
+

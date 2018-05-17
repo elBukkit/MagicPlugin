@@ -1,0 +1,12 @@
+ollivander:
+  hidden: true
+  inherit: buyshop
+  parameters:
+    put_in_hand: false
+    auto_close: true
+    items:
+      - item: wand:wandbox
+        costs:
+          ticket: 1
+    loud: true
+

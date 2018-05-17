@@ -1,0 +1,4 @@
+fiendfyre:
+    inherit: flamethrower
+    category: dark
+

@@ -1,0 +1,34 @@
+volo:
+    icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
+    icon: diamond_axe:11
+    icon_disabled: diamond_hoe:11
+    category: light
+    worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectTrail
+           location: target
+           particle: spell
+           particle_data: 2
+           particle_count: 3
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: TraceEffect
+             iterations: 200
+             particle: spell
+    costs:
+        mana: 100
+    parameters:
+        target: any
+        range: 32
+        effect_weakness: 1
+        duration: 10000
+        target_type: LivingEntity
+        effect_speed: 5
+

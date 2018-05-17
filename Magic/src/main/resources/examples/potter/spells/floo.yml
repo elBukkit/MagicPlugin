@@ -1,0 +1,26 @@
+floo:
+    hidden: true
+    icon: diamond_axe:22
+    icon_disabled: diamond_hoe:22
+    category: specialty
+    worth: 30
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+           location: target
+           effectlib:
+             class: ShieldEffect
+             iterations: 200
+             period: 2
+             particles: 8
+             particle: flame
+    parameters:
+        target: self
+        duration: 10000
+        effect_fire_resistance: 100
+        cooldown: 7000
+

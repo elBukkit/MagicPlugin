@@ -1,0 +1,4 @@
+periculum:
+    inherit: flare
+    category: charms
+

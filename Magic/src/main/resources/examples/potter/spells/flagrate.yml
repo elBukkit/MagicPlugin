@@ -1,0 +1,29 @@
+flagrate:
+    icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
+    icon: diamond_axe:29
+    icon_disabled: diamond_hoe:29
+    category: charms
+    worth: 20
+    earns_sp: 1
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+        -  class: EffectTrail
+           particle: redstone
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,3,0
+           color_override: color
+           effectlib:
+             class: TextEffect
+             text: $target
+             iterations: 2
+             particle: redstone
+    parameters:
+        allow_max_range: true
+        range: 8
+        cooldown: 30000
+    costs:
+        mana: 5
+

@@ -1,0 +1,46 @@
+confundusmaxima:
+    name: Confundus Maxima
+    description: Silences a target for a Long Period!
+    icon: diamond_axe:8
+    icon_disabled: diamond_hoe:8
+    hidden: true
+    category: dada
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: smoke_normal
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 2E2E2E
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 10
+    costs:
+        mana: 50
+    parameters:
+        range: 32
+        deactivate_target_mage: true
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        duration: 600000
+        cooldown: 1000
+        hitbox: true
+        fov: .12
+        effect_confusion: 5
+        hitbox: true
+

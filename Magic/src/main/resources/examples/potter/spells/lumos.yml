@@ -1,0 +1,49 @@
+lumos:
+    icon: diamond_axe:228
+    icon_disabled: diamond_hoe:228
+    category: charms
+    icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
+    worth: 10
+    actions:
+        cast:
+        -  class: AreaOfEffectAction
+           actions:
+           -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_death
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 3
+        -  class: EffectSingle
+           location: targets
+           target_offset: 10,0,0
+           effectlib:
+             class: SphereEffect
+             iterations: 5
+             period: .1
+             particle: flame
+             radius: 1
+             particles: 20
+    costs:
+        mana: 55
+    parameters:
+        target: self
+        target_self: true
+        radius: 16
+        target_type: LivingEntity
+        duration: 10000
+        effect_night_vision: 5
+        remove_effects:
+        - blindness
+
+lumos|2:
+    parameters:
+        duration: 30000
+
+lumos|3:
+    parameters:
+        duration: 90000
+

@@ -1,0 +1,66 @@
+snowball:
+    icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
+    icon: diamond_axe:59
+    icon_disabled: diamond_hoe:59
+    category: charms
+    pvp_restricted: true
+    worth: 5
+    actions:
+        cast:
+        -  class: ChangeContext
+           actions:
+           - class: ProjectileAction
+             actions:
+             -  class: AreaOfEffectAction
+                target_self: true
+                actions:
+                -  class: PotionEffectAction
+                -  class: DamageAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: step_snow
+           location: origin
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: snowball
+           particle_count: 15
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        -  class: EffectSingle
+           sound: magic.hit
+           sound_pitch: 2
+           location: both
+        -  class: EffectSingle
+           sound: successful_hit
+           sound_pitch: .5
+           location: both
+           requires_entity_target: true
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 1
+             particle: snowball
+    parameters:
+      target: other
+      bypass_weakness: false
+      projectile: Snowball
+      use_target_location: false
+      source_at_target: true
+      target_offset: 0,5,0
+      source_direction: 0,-1,0
+      count: 4
+      radius: 3
+      range: 10
+      allow_max_range: true
+      spread: 20
+      effect_slow: 120,1
+      damage: .25
+      cooldown: 10000
+    costs:
+        mana: 40
+

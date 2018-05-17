@@ -1,0 +1,29 @@
+reparomaxima:
+    icon: diamond_axe:103
+    icon_disabled: diamond_hoe:103
+    category: staff
+    class: ConstructSpell
+    hidden: true
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        target: select
+        allow_max_range: false
+        max_dimension: 64
+        range: 32
+        type: sphere
+        check_destructible: false
+        transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_backup
+        obworld: ~_backup
+        brushtarget: true
+    costs:
+        mana: 500
+

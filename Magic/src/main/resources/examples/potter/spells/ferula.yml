@@ -1,0 +1,42 @@
+ferula:
+    icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
+    icon: diamond_axe:46
+    icon_disabled: diamond_hoe:46
+    category: charms
+    cast_on_no_target: true
+    worth: 50
+    pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: creeper_death
+          location: target
+          particle_override: particle_orbital
+          effectlib:
+             class: AtomEffect
+             particle_nucleus: enchantment_table
+             particle_orbital: villager_angry
+             iterations: 60
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        duration: 7000
+        cooldown: 15000
+        effect_absorption: 1
+        effect_saturation: 1
+    costs:
+        mana: 160
+
+ferula|2:
+    parameters:
+        effect_absorption: 2
+
+ferula|3:
+    parameters:
+        effect_absorption: 4
+

@@ -1,0 +1,40 @@
+deprimomaxima:
+    icon: diamond_axe:114
+    icon_disabled: diamond_hoe:114
+    icon_url: http://textures.minecraft.net/texture/1789289cba5bdef5f92dee5165a99d063f8785db78bdc6b41e3c4b099c04ca4
+    category: staff
+    class: ConstructSpell
+    cast_on_no_target: true
+    hidden: true
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_witch
+             lengthGrow: 0.5
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
+    parameters:
+        allow_max_range: false
+        range: 16
+        brush: air
+        falling: true
+        check_destructible: false
+        indestructible: air
+        radius: 5
+        bypass_build: true
+        transparent: transparent_to_construction
+        undo: 30000
+        select_self: false
+    costs:
+        mana: 200
+

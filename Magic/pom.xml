@@ -400,6 +400,7 @@
                 <excludes>
                     <exclude>**/defaults/**/*.yml</exclude>
                     <exclude>**/examples/survival/**/*.yml</exclude>
+                    <exclude>**/examples/potter/spells/*.yml</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -549,6 +550,15 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+
+                                <!-- Potter configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/potter/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/potter/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
                             </target>
                         </configuration>
                     </execution>

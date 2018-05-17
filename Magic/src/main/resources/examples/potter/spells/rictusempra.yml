@@ -1,0 +1,59 @@
+rictusempra:
+    icon_url: http://textures.minecraft.net/texture/5374b64589d779ac4bf7293ba44dba5630a649a02877a39f4c05e94911ff96a
+    icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
+    category: dada
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: wither_shoot
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 5882FA
+             lengthGrow: 0.7
+        -  class: EffectSingle
+           location: target
+           color: 5882FA
+           firework: ball
+        no_target:
+        -  class: EffectSingle
+           sound: wither_shoot
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 5882FA
+             lengthGrow: 0.7
+        -  class: EffectSingle
+           location: target
+           color: 5882FA
+           firework: ball
+    parameters:
+        range: 35
+        fov: .12
+        hitbox: true
+        target_type: LivingEntity
+        allow_max_range: false
+        item_speed: 2
+        living_entity_speed: 5
+        push: 1
+        cooldown: 2500
+        damage: 1.5
+        target_breakables: 0
+        bypass_backfire: false
+    costs:
+        mana: 40
+

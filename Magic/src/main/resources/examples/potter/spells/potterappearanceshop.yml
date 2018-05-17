@@ -1,0 +1,29 @@
+potterappearanceshop:
+    icon: wood_hoe
+    hidden: true
+    actions:
+        cast:
+        -  class: Selector
+    parameters:
+        auto_close: true
+        confirm_filler: stained_glass:3
+        show_unavailable: true
+        requirements:
+        - wand: wand
+        unlock_section: potter_wand_appearances
+        apply_to_wand: true
+        cost_type: sp
+        options:
+        - item: skinny_upgrade
+          unlock: skinny
+          confirm: true
+          cost: 2000
+        - item: brown_upgrade
+          unlock: brown
+          confirm: true
+          cost: 2000
+        - item: black_upgrade
+          unlock: black
+          confirm: true
+          cost: 2000
+

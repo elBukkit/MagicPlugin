@@ -1,0 +1,40 @@
+fiantoduri:
+    icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
+    icon: diamond_axe:11
+    icon_disabled: diamond_hoe:11
+    category: light
+    worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: FallProtectionAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_death
+        -  class: EffectTrail
+           particle: spell_witch
+           particle_data: 2
+           particle_count: 3
+        - class: EffectSingle
+          sound: orb_pickup
+          location: target
+          particle_override: particle_orbital
+          effectlib:
+             class: AtomEffect
+             particle_nucleus: spell_witch
+             particle_orbital: spell_witch
+             iterations: 70
+    costs:
+        mana: 100
+    parameters:
+        target: any
+        range: 32
+        target_type: LivingEntity
+        cooldown: 30000
+        duration: 7000
+        effect_slow: 10
+        effect_jump: -10
+        protection_count: 1000
+        effect_absorption: 4
+

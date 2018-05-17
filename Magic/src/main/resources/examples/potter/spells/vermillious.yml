@@ -1,0 +1,88 @@
+vermillious:
+    icon_url: http://textures.minecraft.net/texture/73b6fd4699e7c8c4ce3024b7882b38ff47f1a249fb8be67992707ec2b8d59c
+    icon: diamond_axe:159
+    icon_disabled: diamond_hoe:159
+    category: charms
+    pvp_restricted: true
+    worth: 40
+    actions:
+        cast:
+        - class: DamageAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_death
+           sound_volume: 1
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: .5
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 610B0B
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 610B0B
+           color2: 610B0B
+           firework: ball
+        no_target:
+        -  class: EffectSingle
+           sound: irongolem_death
+           sound_volume: 1
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: .5
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 610B0B
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 610B0B
+           color2: 610B0B
+           firework: ball
+        backfire:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 5.0
+           location: origin
+           entity_effect: hurt
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 610B0B
+             lengthGrow: 0.3
+    parameters:
+        range: 48
+        hitbox: true
+        target_type: LivingEntity
+        damage: 2.5
+        cooldown: 3000
+        target_breakables: 0
+        bypass_backfire: false
+    costs:
+        mana: 30
+
+vermillious|2:
+    parameters:
+        range: 24
+        damage: 3
+        target_breakables: 0
+    costs:
+        mana: 50
+
+vermillious|3:
+    parameters:
+        range: 35
+        damage: 3.5
+        target_breakables: 0
+    costs:
+        mana: 70
+

@@ -1,0 +1,31 @@
+reparo:
+    icon: diamond_axe:103
+    icon_disabled: diamond_hoe:103
+    category: staff
+    hidden: true
+    class: ConstructSpell
+    worth: 100
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 32
+        radius: 4
+        type: sphere
+        check_destructible: false
+        transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_backup
+        obworld: ~_backup
+        brushtarget: true
+        cooldown: 10000
+        select_self: false
+    costs:
+        mana: 0
+

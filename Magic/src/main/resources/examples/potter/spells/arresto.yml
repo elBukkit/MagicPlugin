@@ -1,0 +1,32 @@
+arresto:
+    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
+    icon: diamond_axe:226
+    icon_disabled: diamond_hoe:226
+    category: charms
+    worth: 20
+    pvp_restricted: false
+    actions:
+        cast:
+        - class: VelocityAction
+        - class: FallProtectionAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: horse_saddle
+           sound_volume: 1
+           effectlib:
+             class: ShieldEffect
+             iterations: 10
+             particle: spell
+        land:
+        -  class: EffectRing
+           effect: step_sound
+           period: 2
+    parameters:
+        target: self
+        speed: 0
+        cooldown: 3000
+        duration: 20000
+    costs:
+        mana: 5
+

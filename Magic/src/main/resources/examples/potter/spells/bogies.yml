@@ -1,0 +1,16 @@
+bogies:
+    inherit: poison
+    category: creatures
+
+bogies|2:
+    parameters:
+        range: 16
+        duration: 3000
+        effect_poison: 2
+
+bogies|3:
+    parameters:
+        range: 24
+        duration: 3500
+        effect_poison: 3
+

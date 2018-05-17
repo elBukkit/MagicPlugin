@@ -1,0 +1,46 @@
+obscuro:
+    icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
+    icon: diamond_axe:190
+    icon_disabled: diamond_hoe:190
+    category: dada
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 19070B
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 100
+             period: 4
+             particle: smoke_normal
+             radius: 0.5
+             particles: 20
+
+    costs:
+        mana: 25
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target_breakables: 0
+        target: other
+        duration: 3000
+        effect_blindness: 1
+        cooldown: 10000
+        hitbox: true
+

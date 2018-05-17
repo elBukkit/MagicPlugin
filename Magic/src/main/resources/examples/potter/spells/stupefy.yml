@@ -1,0 +1,16 @@
+stupefy:
+    inherit: stun
+    category: dada
+
+stupefy|2:
+    parameters:
+        damage: 3
+        duration: 500
+        target_breakables: 1
+
+stupefy|3:
+    parameters:
+        damage: 3.5
+        duration: 700
+        target_breakables: 2
+

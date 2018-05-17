@@ -1,0 +1,52 @@
+glacius:
+    inherit: frost
+    category: transfiguration
+
+glacius|2:
+    worth: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: snowball
+             particles: 5
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: F5EFFB
+           firework: ball
+        - class: EffectSingle
+          location: target
+          target_offset: 0,2,0
+          effectlib:
+             class: SphereEffect
+             iterations: 15
+             period: 3
+             particle: snowball
+             radius: 8
+    parameters:
+        radius: 2
+        player_damage: 2
+        entity_damage: 6
+        duration: 2000
+        effect_slow: 1
+        undo: 5000
+    costs:
+        mana: 90
+
+glacius|3:
+    worth: 120
+    parameters:
+        radius: 3
+        player_damage: 2.5
+        entity_damage: 8
+        duration: 3000
+        effect_slow: 1
+        undo: 6000
+        freeze_lava: true
+    costs:
+        mana: 125
+

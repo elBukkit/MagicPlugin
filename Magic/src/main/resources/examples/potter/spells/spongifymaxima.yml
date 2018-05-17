@@ -1,0 +1,15 @@
+spongifymaxima:
+    inherit: rubberize
+    category: transfiguration
+    parameters:
+        size: 8
+        check_destructible: false
+        transparent: transparent_to_construction
+        undo: 60000
+        cooldown: 5000
+        bypass_build: true
+        bypass_backfire: true
+        select_self: false
+    costs:
+        mana: 200
+

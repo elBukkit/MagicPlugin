@@ -1,0 +1,13 @@
+arrow:
+    enabled: true
+    category: dada
+
+arrow|2:
+    enabled: true
+
+arrow|3:
+    enabled: true
+
+arrow|4:
+    enabled: true
+

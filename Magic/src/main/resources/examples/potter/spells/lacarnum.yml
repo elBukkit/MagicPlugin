@@ -1,0 +1,47 @@
+lacarnum:
+    icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
+    icon: diamond_axe:153
+    icon_disabled: diamond_hoe:153
+    category: charms
+    pvp_restricted: true
+    worth: 35
+    actions:
+        cast:
+        -  class: IgniteAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+           sound_volume: 1
+           location: both
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
+    parameters:
+        target_type: LivingEntity
+        hitbox: true
+        target: other
+        range: 40
+        cooldown: 2000
+        target_breakables: 0
+        duration: 1000
+    costs:
+        mana: 100
+
+lacarnum|2:
+    parameters:
+        duration: 3000
+        target_breakables: 1
+
+lacarnum|3:
+    parameters:
+        duration: 5000
+        target_breakables: 2
+

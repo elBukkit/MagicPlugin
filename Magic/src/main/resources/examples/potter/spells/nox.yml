@@ -1,0 +1,30 @@
+nox:
+    icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
+    icon: diamond_axe:166
+    icon_disabled: diamond_hoe:166
+    category: charms
+    cast_on_no_target: true
+    worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_mob
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        bypass_confusion: true
+        target_breakables: 1
+        remove_effects:
+        - night_vision
+    costs:
+        mana: 55
+

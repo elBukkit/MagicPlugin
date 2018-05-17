@@ -1,0 +1,77 @@
+flipendo:
+    icon: diamond_axe:32
+    icon_disabled: diamond_hoe:32
+    icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
+    category: dada
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 15
+    actions:
+        cast:
+        - class: VelocityAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           sound_volume: 1
+           effectlib:
+             class: ConeEffect
+             iterations: 12
+             particle: spell_instant
+             color: FFFFFF
+             lengthGrow: 0.1
+    parameters:
+        target_type: Entity
+        range: 16
+        allow_max_range: true
+        item_speed: 2
+        living_entity_speed: .5
+        push: 1
+        cooldown: 1500
+        hitbox: true
+    costs:
+        mana: 40
+
+flipendo|2:
+    worth: 30
+    actions:
+        cast:
+        - class: DamageAction
+        - class: VelocityAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           sound_volume: 1
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: spell_instant
+             color: FFFFFF
+             helixes: 6
+             circles: 4
+             grow: 0.5
+             lengthGrow: 0.3
+    parameters:
+        range: 20
+        item_speed: 2.5
+        living_entity_speed: 1
+        type: push
+        damage: 1
+        target_count: 3
+        cooldown: 3000
+    costs:
+        mana: 70
+
+flipendo|3:
+    worth: 50
+    parameters:
+        range: 32
+        item_speed: 3
+        living_entity_speed: 2
+        target_count: 5
+        damage: 2
+        cooldown: 4500
+    costs:
+        mana: 100
+

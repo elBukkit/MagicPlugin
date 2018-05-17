@@ -1,0 +1,12 @@
+deprimo:
+    inherit: collapse
+    category: transfiguration
+
+deprimo|2:
+    parameters:
+    radius: 3
+
+deprimo|3:
+    parameters:
+    radius: 4
+

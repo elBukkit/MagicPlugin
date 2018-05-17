@@ -1,0 +1,16 @@
+finiteincantatem:
+    inherit: counterspell
+    category: dada
+
+finiteincantatem|2:
+    parameters:
+        fizzle_chance: 0.3
+
+finiteincantatem|3:
+    parameters:
+        fizzle_chance: 0.1
+
+finiteincantatem|4:
+    parameters:
+        fizzle_chance: 0
+

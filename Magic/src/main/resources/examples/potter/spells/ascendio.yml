@@ -1,0 +1,7 @@
+ascendio:
+    inherit: fling
+    category: charms
+
+ascendio|2:
+    inherit: fling|2
+

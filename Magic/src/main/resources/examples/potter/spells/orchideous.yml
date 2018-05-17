@@ -1,0 +1,4 @@
+orchideous:
+    category: herbology
+    inherit: pollinate
+

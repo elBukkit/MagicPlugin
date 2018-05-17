@@ -1,0 +1,38 @@
+aparecium:
+    icon_url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
+    icon: diamond_axe:71
+    icon_disabled: diamond_hoe:71
+    category: charms
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: PowerBlock
+    worth: 15
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 5
+        -  class: EffectRing
+           particle: water_wake
+           particle_count: 3
+           location: target
+    parameters:
+        allow_max_range: true
+        range: 8
+        radius: 5
+        type: sphere
+        power: true
+        cooldown: 9000
+        undo: 4000
+        physics: true
+        bypass_build: true
+        check_destructible: true
+        destructible: powerable
+    costs:
+        mana: 80
+

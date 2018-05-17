@@ -1,0 +1,29 @@
+amplify:
+    icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
+    icon: diamond_axe:8
+    icon_disabled: diamond_hoe:8
+    category: staff
+    hidden: true
+    worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 0.4
+           sound_pitch: 0.1
+           location: origin
+           effectlib:
+             class: AtomEffect
+             particle_nucleus: spell_witch
+             particle_orbital: crit_magicical
+             iterations: 20
+    parameters:
+        commands:
+        - unmute @tn
+        target: other
+        bypass_backfire: true
+        check_protection: true
+

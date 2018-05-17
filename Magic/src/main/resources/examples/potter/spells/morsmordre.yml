@@ -1,0 +1,38 @@
+morsmordre:
+    icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
+    icon: diamond_axe:52
+    icon_disabled: diamond_hoe:52
+    category: dark
+    worth: 20
+    actions:
+        cast:
+        - class: CommandAction
+    effects:
+        cast:
+        -  sound: wither_hurt
+        -  class: EffectTrail
+           particle: redstone
+           color: 00FF00
+        -  location: target
+           target_offset: 0,3,0
+           orient: true
+           effectlib:
+             enable_rotation: false
+             class: ColoredImageEffect
+             fileName: https://i.imgur.com/47aVrwT.gif
+             stepX: 1
+             stepY: 1
+             size: 0.2
+             transparency: true
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 16
+        cooldown: 60000
+        transparent: apparate
+        op: true
+        commands:
+        - broadcast @pd cast &aMorsmordre!
+    costs:
+        mana: 55
+

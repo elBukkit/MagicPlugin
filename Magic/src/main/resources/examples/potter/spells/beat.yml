@@ -1,0 +1,37 @@
+beat:
+    hidden: true
+    icon: stick
+    category: specialty
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: DamageAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: town_aura
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 20
+    costs:
+        mana: 2
+    parameters:
+        fov: 3
+        range: 12
+        deactivate_target_mage: true
+        target_type: LivingEntity
+        target: other
+        duration: 3000
+        damage: 1
+        effect_confusion: 5
+        cooldown: 5000
+

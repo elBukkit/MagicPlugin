@@ -1,0 +1,10 @@
+reducto:
+    inherit: blast
+    category: charms
+
+reducto|2:
+    parameters:
+        radius: 2
+        speed: 1.2
+        destructible: destructible
+

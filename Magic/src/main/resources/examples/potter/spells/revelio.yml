@@ -1,0 +1,32 @@
+revelio:
+    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
+    icon: diamond_axe:72
+    icon_disabled: diamond_hoe:72
+    category: staff
+    worth: 20
+    cast_on_no_target: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+           location: both
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: WarpEffect
+             particle: portal
+    costs:
+        mana: 30
+    parameters:
+       target: other
+       target_type: LivingEntity
+       range: 32
+       fov: 3
+       allow_max_range: true
+       target_breakables: 1
+       remove_effects:
+       - invisibility
+

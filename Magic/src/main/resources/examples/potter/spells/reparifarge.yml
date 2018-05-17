@@ -1,0 +1,4 @@
+reparifarge:
+    inherit: rollback
+    category: staff
+

@@ -1,0 +1,28 @@
+colloportus:
+    icon_url: http://textures.minecraft.net/texture/dea4155d3f45e95c71b441d1a233586dd2efd99e0d85a286e41dea2a5231ab7
+    icon: diamond_axe:183
+    icon_disabled: diamond_hoe:183
+    category: staff
+    class: ConstructSpell
+    worth: 50
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_data: 1
+           particle_count: 5
+    parameters:
+        allow_max_range: true
+        range: 32
+        check_destructible: true
+        destructible: wooden_door
+        brush: iron_door_block
+        radius: 3
+        preserve_data: true
+        transparent: transparent_to_construction
+    costs:
+        mana: 110
+

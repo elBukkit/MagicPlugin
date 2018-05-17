@@ -1,0 +1,63 @@
+immobulus:
+    icon_url: http://textures.minecraft.net/texture/6120acda66c3d37a2952a7622a4a7c7b5a4f5626ecc90179976c1915f30b39f
+    icon: diamond_axe:175
+    icon_disabled: diamond_hoe:175
+    category: dada
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 30
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: FallProtectionAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 380B61
+             lengthGrow: 0.33
+        -  class: EffectSingle
+           location: target
+           color: 380B61
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 55
+             period: .1
+             particle: redstone
+             color: 380B61
+             radius: 1.8
+             particles: 20
+        no_target:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 380B61
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: 380B61
+           firework: burst
+    costs:
+        mana: 50
+    parameters:
+        range: 48
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        duration: 3000
+        protection_count: 1000
+        effect_slow: 20
+        effect_jump: -20
+        cooldown: 10000
+        hitbox: true
+

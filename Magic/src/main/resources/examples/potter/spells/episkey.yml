@@ -1,0 +1,14 @@
+episkey:
+    inherit: heal
+    category: charms
+
+episkey|2:
+    parameters:
+        heal: 4
+        cooldown: 9000
+
+episkey|3:
+    parameters:
+        heal: 6
+        cooldown: 10000
+

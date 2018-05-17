@@ -1,0 +1,32 @@
+expelliarmus:
+    inherit: disarm
+    category: dada
+
+expelliarmus|2:
+    parameters:
+        fizzle_chance: 0.4
+        backfire_chance: 0.2
+        cooldown: 7000
+        target_breakables: 0
+
+expelliarmus|3:
+    parameters:
+        fizzle_chance: 0.3
+        backfire_chance: 0.1
+        cooldown: 8000
+        target_breakables: 1
+
+expelliarmus|4:
+    parameters:
+        fizzle_chance: 0.1
+        backfire_chance: 0.05
+        cooldown: 9000
+        target_breakables: 1
+
+expelliarmus|5:
+    parameters:
+        fizzle_chance: 0
+        backfire_chance: 0
+        cooldown: 12000
+        target_breakables: 2
+
