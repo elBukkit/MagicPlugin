@@ -685,7 +685,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         Block playerBlock = getPlayerBlock();
         if (playerBlock == null) return false;
         playerBlock = playerBlock.getRelative(BlockFace.UP);
-        return isWater(playerBlock.getType());
+        Block eyeBlock = playerBlock.getRelative(BlockFace.UP);
+        return isWater(playerBlock.getType()) && isWater(eyeBlock.getType());
     }
 
     @Nullable
