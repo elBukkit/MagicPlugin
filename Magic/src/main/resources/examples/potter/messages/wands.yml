@@ -23,10 +23,6 @@ wands:
         description: $wood and $core
         upgrade_description: Become a Deatheater!
 
-    flappy:
-        name: Flappy Feather
-        description: Fly, little bird, fly!
-
     squib:
         name: Squib Wand
         description: Kersplode Things
