@@ -3046,15 +3046,21 @@ public class MagicController implements MageController {
     public UndoList getEntityUndo(Entity entity) {
         UndoList blockList = null;
         if (entity == null) return null;
-        Mage mage = getRegisteredMage(entity);
-        if (mage == null && entity instanceof Projectile) {
+        blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
+        if (blockList != null) return blockList;
+
+        if (entity instanceof Projectile) {
             Projectile projectile = (Projectile)entity;
             ProjectileSource source = projectile.getShooter();
-            if (source instanceof LivingEntity) {
-                entity = (LivingEntity)source;
-                mage = getRegisteredMage(entity);
+            if (source instanceof Entity) {
+                entity = (Entity)source;
+
+                blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
+                if (blockList != null) return blockList;
             }
         }
+
+        Mage mage = getRegisteredMage(entity);
         if (mage != null) {
             UndoList undoList = mage.getLastUndoList();
             if (undoList != null) {
@@ -3063,8 +3069,6 @@ public class MagicController implements MageController {
                     blockList = undoList;
                 }
             }
-        } else {
-            blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
         }
 
         return blockList;
