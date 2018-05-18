@@ -1,4 +1,4 @@
-crops:
+all_crops:
 - carrot
 - potato
 - melon_stem
@@ -8,6 +8,7 @@ crops:
 - nether_wart_block
 - nether_warts
 - cocoa
+- crops
 
 # 1.13
 - nether_warts
