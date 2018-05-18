@@ -232,6 +232,7 @@ public class NMSUtils {
     protected static Method class_Parrot_setVariantMethod;
     protected static Method class_Block_setTypeIdAndDataMethod;
     protected static Method class_Chunk_isReadyMethod;
+    protected static Method class_ItemDye_bonemealMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -576,6 +577,14 @@ public class NMSUtils {
                 class_Parrot_getVariantMethod = null;
                 class_Parrot_setVariantMethod = null;
                 Bukkit.getLogger().info("No parrots available on your server.");
+            }
+
+            try {
+                Class<?> class_ItemDye = fixBukkitClass("net.minecraft.server.ItemDye");
+                class_ItemDye_bonemealMethod = class_ItemDye.getMethod("a", class_ItemStack, class_World, class_BlockPosition);
+            } catch (Throwable ex) {
+                class_ItemDye_bonemealMethod = null;
+                Bukkit.getLogger().info("Couldn't bind to ItemDye bonemeal method, Bonemeal action will not work");
             }
 
             try {

@@ -1,0 +1,66 @@
+growth:
+    icon: diamond_axe:167
+    icon_disabled: diamond_hoe:167
+    icon_url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
+    category: engineering
+    worth: 600
+    earns_sp: 8
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Disc
+            actions:
+            - class: Cover
+              actions:
+              - class: Bonemeal
+    effects:
+        cast:
+        - sound: magic.shimmer
+          location: source
+        despawn:
+        - sound: entity_generic_splash
+          sound_volume: 0.2
+          location: source
+          effectlib:
+              class: AtomEffect
+              particle_nucleus: water_drop
+              particle_orbital: drip_water
+              colorNucleus: "0000FF"
+              iterations: 16
+              radius: $radius
+        tick:
+        - location: target
+          particle: water_drop
+          particle_count: 20
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+    parameters:
+        target: block
+        velocity: 80
+        allow_max_range: false
+        range: 32
+        radius: 2
+        vertical_range: 4
+        cooldown: 3000
+        transparent: air
+        destructible: plants
+    costs:
+        mana: 100
+
+growth|2:
+    parameters:
+        radius: 3
+
+growth|3:
+    parameters:
+        radius: 4
+
+growth|4:
+    parameters:
+        radius: 5
+
+
+

@@ -88,6 +88,7 @@ public class CompatibilityUtils extends NMSUtils {
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<>();
     public static Map<Integer, Material> materialIdMap;
+    private static ItemStack dummyItem;
 
     public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
         for (PotionEffect effect: effects) {
@@ -1597,5 +1598,26 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return true;
+    }
+
+    public static boolean applyBonemeal(Location location) {
+        if (class_ItemDye_bonemealMethod == null) return false;
+
+        if (dummyItem == null) {
+             dummyItem = new ItemStack(Material.DIRT, 64);
+             dummyItem = makeReal(dummyItem);
+        }
+        dummyItem.setAmount(64);
+
+        try {
+            Object world = getHandle(location.getWorld());
+            Object itemStack = getHandle(dummyItem);
+            Object blockPosition = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
+            Object result = class_ItemDye_bonemealMethod.invoke(null, itemStack, world, blockPosition);
+            return (Boolean)result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }

@@ -787,6 +787,10 @@ spells:
         description: Light fires from a distance
         cast: You start a fire
         upgrade_description: "Increased radius, longer burn time"
+    growth:
+        name: Growth
+        description: Make plants, crops and saplings grow instantly
+        upgrade_description: "Increased radius"
     alter:
         name: Alter
         description: Alter certain objects
