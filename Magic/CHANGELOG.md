@@ -9,7 +9,7 @@
  - Fix magic mobs using Arrow and other projectile spells
  - Improved support for using attributes in base spell parameters (cooldown, range, etc will show correctly in lore)
  - Fixed graduate spell list in potter configs
- - Cars in war configs can now go up 1 block slopes
+ - Cars in war configs can now go up 1 block slopes, and don't go invisible when shot
  - Add Growth spell (applies bonemeal in a radius)
 
 # 7.5

@@ -15,7 +15,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
@@ -150,8 +149,8 @@ public class EntityController implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
-        if (!(entity instanceof ItemFrame) || event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
-
+        if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
+        if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
         Entity damager = event.getDamager();
 
         UndoList undoList = controller.getEntityUndo(damager);
@@ -245,6 +244,13 @@ public class EntityController implements Listener {
     public void onEntityDeath(EntityDeathEvent event)
     {
         Entity entity = event.getEntity();
+        UndoList pendingUndo = controller.getEntityUndo(entity);
+        if (pendingUndo != null) {
+            com.elmakers.mine.bukkit.api.entity.EntityData data = pendingUndo.getEntityData(entity);
+            if (data != null) {
+                data.removed(entity);
+            }
+        }
         if (entity.hasMetadata("nodrops")) {
             event.setDroppedExp(0);
             event.getDrops().clear();

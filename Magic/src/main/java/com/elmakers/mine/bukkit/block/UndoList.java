@@ -674,10 +674,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         // Kind of a hack to prevent dropping hanging entities that we're going to undo later
         if (undoEntityTypes != null && undoEntityTypes.contains(entity.getType()))
         {
-            if (data != null)
-            {
-                data.removed(entity);
-            }
             // Hacks upon hacks, this prevents item dupe exploits with shooting items out of item
             // frames.
             if (entity instanceof Hanging)
@@ -981,6 +977,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Location location) {
         BlockData blockData = getBlockData(location);
         return blockData == null ? null : blockData.getUndoList();
+    }
+
+    @Override
+    public EntityData getEntityData(Entity entity) {
+        return modifiedEntities.get(entity.getUniqueId());
     }
 
     @Nullable

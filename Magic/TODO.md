@@ -6,6 +6,9 @@
 
 ## Hot Issues
     
+ - Cars look floaty (now?)
+ - Can't /mage add recall|2
+    
  - REAMDE.md in plugins/Magic breaks config parsing... ?
  
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
@@ -124,7 +127,6 @@
   
 ## Not so High-Priority
  
- - Destroyed a car with someone in it, they stayed in invisible car
  - Per-player language settings (See https://www.spigotmc.org/resources/api-languages.22305/)
  - Would be cool to have a configurable max # of maps, and start re-using map ids when limit is hit, LRU
  - Ability to alter flower pots and beds (need to tweak TileEntity data.. doable, but messy to track with Material keys)

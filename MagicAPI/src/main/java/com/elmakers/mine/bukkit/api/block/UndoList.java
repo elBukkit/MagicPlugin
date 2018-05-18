@@ -97,4 +97,5 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     int getRunnableCount();
     @Nullable
     Runnable undoNextRunnable();
+    EntityData getEntityData(Entity entity);
 }
