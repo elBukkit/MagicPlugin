@@ -115,8 +115,4 @@ public class EntityHorseData extends EntityExtraData {
         copy.tamed = tamed;
         return copy;
     }
-
-    @Override
-    public void removed(Entity entity) {
-    }
 }

@@ -27,8 +27,4 @@ public class EntityZombieData extends EntityExtraData {
         copy.isBaby = isBaby;
         return copy;
     }
-
-    @Override
-    public void removed(Entity entity) {
-    }
 }

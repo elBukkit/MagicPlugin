@@ -27,8 +27,4 @@ public class EntitySlimeData extends EntityExtraData {
         copy.size = size;
         return copy;
     }
-
-    @Override
-    public void removed(Entity entity) {
-    }
 }

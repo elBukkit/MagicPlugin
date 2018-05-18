@@ -43,8 +43,4 @@ public class EntityParrotData extends EntityExtraData {
         copy.variant = variant;
         return copy;
     }
-
-    @Override
-    public void removed(Entity entity) {
-    }
 }

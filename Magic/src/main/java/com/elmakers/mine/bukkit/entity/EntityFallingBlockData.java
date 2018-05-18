@@ -39,10 +39,6 @@ public class EntityFallingBlockData extends EntityExtraData {
         return copy;
     }
 
-    @Override
-    public void removed(Entity entity) {
-    }
-
     public void setMaterialAndData(@Nonnull MaterialAndData material) {
         this.material = material;
     }
