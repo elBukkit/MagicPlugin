@@ -3,7 +3,6 @@ smite:
     icon_disabled: diamond_hoe:40
     icon_url: http://textures.minecraft.net/texture/a31cc0ffb1e814e1c82301067ea318356befa65dc1a027afbfd498709cad58
     category: elemental
-    pvp_restricted: true
     worth: 500
     actions:
         cast:
