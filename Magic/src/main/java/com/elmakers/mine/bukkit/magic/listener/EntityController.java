@@ -244,17 +244,15 @@ public class EntityController implements Listener {
     public void onEntityDeath(EntityDeathEvent event)
     {
         Entity entity = event.getEntity();
-        UndoList pendingUndo = controller.getEntityUndo(entity);
-        if (pendingUndo != null) {
-            com.elmakers.mine.bukkit.api.entity.EntityData data = pendingUndo.getEntityData(entity);
-            if (data != null) {
-                data.removed(entity);
-            }
-        }
         if (entity.hasMetadata("nodrops")) {
             event.setDroppedExp(0);
             event.getDrops().clear();
             entity.removeMetadata("nodrops", controller.getPlugin());
+        } else {
+            UndoList pendingUndo = controller.getEntityUndo(entity);
+            if (pendingUndo != null && pendingUndo.isUndoType(entity.getType())) {
+                event.getDrops().clear();
+            }
         }
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
         if (mage == null) return;
