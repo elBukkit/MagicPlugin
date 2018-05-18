@@ -1504,6 +1504,8 @@ public class MagicController implements MageController {
         EquationStore.clear();
 
         // Process loaded data
+        exampleDefaults = loader.getExampleDefaults();
+        addExamples = loader.getAddExamples();
 
         // Main configuration
         loadProperties(loader.getMainConfiguration());

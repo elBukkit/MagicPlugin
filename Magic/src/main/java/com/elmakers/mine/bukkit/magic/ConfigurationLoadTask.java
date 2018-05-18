@@ -79,16 +79,17 @@ public class ConfigurationLoadTask implements Runnable {
     private ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
         ConfigurationSection configuration = loadMainConfiguration("config");
         loadInitialProperties(configuration);
+        boolean reloadConfig = false;
         if (addExamples != null && addExamples.size() > 0) {
-            if (addExamples != null && addExamples.size() > 0) {
-                getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
-            }
+            getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
+            reloadConfig = true;
         }
         if (exampleDefaults != null && exampleDefaults.length() > 0) {
-            if (exampleDefaults != null && exampleDefaults.length() > 0) {
-                getLogger().info("Overriding configuration with example: " + exampleDefaults);
-            }
+            getLogger().info("Overriding configuration with example: " + exampleDefaults);
+            reloadConfig = true;
+        }
 
+        if (reloadConfig) {
             // Reload config, examples will be used this time.
             configuration = loadMainConfiguration("config");
         }
@@ -114,6 +115,19 @@ public class ConfigurationLoadTask implements Runnable {
                 ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                 ConfigurationUtils.addConfigurations(config, exampleConfig);
                 getLogger().info(" Using " + examplesFileName);
+            }
+        }
+        // Add in examples
+        if (addExamples != null && addExamples.size() > 0) {
+            for (String example : addExamples) {
+                examplesFileName = "examples/" + example + "/" + fileName + ".yml";
+                InputStream input = plugin.getResource(examplesFileName);
+                if (input != null)
+                {
+                    ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                    ConfigurationUtils.addConfigurations(config, exampleConfig, false);
+                    getLogger().info(" Added " + examplesFileName);
+                }
             }
         }
 
@@ -578,5 +592,13 @@ public class ConfigurationLoadTask implements Runnable {
 
     public boolean isSuccessful() {
         return success;
+    }
+
+    public String getExampleDefaults() {
+        return exampleDefaults;
+    }
+
+    public Collection<String> getAddExamples() {
+        return addExamples;
     }
 }
