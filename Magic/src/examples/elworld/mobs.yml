@@ -107,3 +107,9 @@ blocky:
   type: falling_block
   material: glass
   gravity: false
+
+fbi:
+  type: pig_zombie
+
+soldier:
+  type: pig_zombie
