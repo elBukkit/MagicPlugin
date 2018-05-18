@@ -6,7 +6,4 @@ public abstract class EntityExtraData implements Cloneable {
     @Override
     public abstract EntityExtraData clone();
     public abstract void apply(Entity entity);
-    public void removed(Entity entity) {
-
-    }
 }

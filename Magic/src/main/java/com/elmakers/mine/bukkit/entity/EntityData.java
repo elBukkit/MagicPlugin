@@ -866,13 +866,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return null;
     }
 
-    @Override
-    public void removed(@Nonnull Entity entity) {
-        if (extraData != null) {
-            extraData.removed(entity);
-        }
-    }
-
     public boolean isRespawn() {
         return respawn;
     }

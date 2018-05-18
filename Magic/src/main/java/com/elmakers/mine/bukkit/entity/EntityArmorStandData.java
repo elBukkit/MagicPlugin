@@ -116,15 +116,4 @@ public class EntityArmorStandData extends EntityExtraData {
         copy.disabledSlots = disabledSlots;
         return copy;
     }
-
-    @Override
-    public void removed(Entity entity) {
-        if (!(entity instanceof ArmorStand)) return;
-        ArmorStand armorStand = (ArmorStand)entity;
-        armorStand.setItemInHand(null);
-        armorStand.setHelmet(null);
-        armorStand.setChestplate(null);
-        armorStand.setLeggings(null);
-        armorStand.setBoots(null);
-    }
 }

@@ -44,5 +44,4 @@ public interface EntityData {
     void setMaterial(@Nonnull MaterialAndData material);
     @Nullable
     MaterialAndData getMaterial();
-    void removed(@Nonnull Entity entity);
 }
