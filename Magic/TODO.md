@@ -7,10 +7,7 @@
 ## Hot Issues
     
  - Cars look floaty (now?)
- - Can't /mage add recall|2
-    
- - REAMDE.md in plugins/Magic breaks config parsing... ?
- 
+     
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
    catch the dropped item.
    

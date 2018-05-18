@@ -292,6 +292,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 Bukkit.getPluginManager().callEvent(addEvent);
             }
         }
+        updated();
 
         return true;
     }
@@ -322,6 +323,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
             sendAddMessage("brush_added", materialName);
         }
+        if (modified) {
+            updated();
+        }
 
         return modified;
     }
@@ -336,6 +340,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (spellLevels.remove(key.getBaseKey()) != null) {
                 setProperty("spell_levels", spellLevels);
             }
+            updated();
         }
 
         return modified;
@@ -346,6 +351,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         boolean modified = brushes.remove(brushKey);
         if (modified) {
             setProperty("brushes", new ArrayList<>(brushes));
+            updated();
         }
 
         return modified;
