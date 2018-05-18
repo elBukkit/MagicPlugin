@@ -1,12 +1,6 @@
 # TODO
 
-## 7.5.1
-
- - Fix potter progression, maybe add spells per year graduation?
-
 ## Hot Issues
-    
- - Cars look floaty (now?)
      
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
    catch the dropped item.
@@ -23,6 +17,10 @@
     at net.minecraft.server.v1_10_R1.EntityTracker.addEntity(EntityTracker.java:141) [spigot.jar:git-Spigot-047f737-270a3a6]
    
  - Recall cancelled sometimes when the spell gains SP?
+ 
+ - Change potter progression, maybe add spells per year graduation?
+ 
+ - Cars look floaty
  
 ## Recent Requests
    
