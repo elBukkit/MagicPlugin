@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.5.2
+
 # 7.5.1
 
  - Improve Flatten spell using a new reverse_spiral build type
