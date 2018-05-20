@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -32,7 +33,7 @@ public class SpellParameters extends ParameterizedConfiguration {
     }
 
     public static void initializeAttributes(Set<String> attrs) {
-        attributes = attrs;
+        attributes = new HashSet<>(attrs);
     }
 
     @Override

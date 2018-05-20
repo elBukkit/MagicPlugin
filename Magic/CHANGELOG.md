@@ -2,6 +2,8 @@
 
 # 7.5.2
 
+ - Fix Magic bow
+
 # 7.5.1
 
  - Improve Flatten spell using a new reverse_spiral build type
