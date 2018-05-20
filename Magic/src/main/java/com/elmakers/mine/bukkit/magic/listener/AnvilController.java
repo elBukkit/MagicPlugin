@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -7,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
@@ -15,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class AnvilController implements Listener {
@@ -31,6 +34,42 @@ public class AnvilController implements Listener {
         combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
         organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
         clearDescriptionOnRename = properties.getBoolean("anvil_rename_clears_description", clearDescriptionOnRename);
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (event.getInventory().getType() != InventoryType.ANVIL)  return;
+        if (!event.getInventorySlots().contains(0)) return;
+
+        // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
+        ItemStack oldCursor = event.getOldCursor();
+        oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
+
+        if (Wand.isWand(oldCursor)) {
+            ItemStack item = event.getNewItems().get(0);
+            if (item != null && item.hasItemMeta()) {
+                item = InventoryUtils.makeReal(item);
+                if (Wand.isWand(item)) {
+                    Wand wand = controller.getWand(item);
+                    wand.updateName(false);
+                    final Inventory inventory = event.getInventory();
+                    final ItemStack finalItem = item;
+
+                    // Changes made during the drag event do nothing.
+                    Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+                        @Override
+                        public void run() {
+                            // Try to prevent quick-clicking dupe exploits
+                            ItemStack item = inventory.getItem(0);
+                            if (item != null && item.hasItemMeta()) {
+                                inventory.setItem(0, finalItem);
+                            }
+                        }
+                    }, 1);
+                }
+            }
+        }
+
     }
 
     @EventHandler
