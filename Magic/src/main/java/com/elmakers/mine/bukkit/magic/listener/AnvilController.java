@@ -137,6 +137,7 @@ public class AnvilController implements Listener {
                     wand.organizeInventory(controller.getMage(player));
                 }
                 wand.tryToOwn(player);
+                wand.saveState();
                 return;
             }
 

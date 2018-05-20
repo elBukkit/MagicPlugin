@@ -3,6 +3,7 @@
 # 7.5.2
 
  - Fix Magic bow
+ - Fix renaming wands on an anvil
 
 # 7.5.1
 
