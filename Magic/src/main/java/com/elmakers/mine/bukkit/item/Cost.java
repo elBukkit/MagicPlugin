@@ -61,7 +61,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     @Override
     public boolean has(Mage mage, CasterProperties caster, CostReducer reducer) {
         if (item != null) {
-            return isConsumeFree(reducer) || mage.hasItem(getItemStack(reducer), itemWildcard);
+            return isConsumeFree(reducer) || isCostFree(reducer) || mage.hasItem(getItemStack(reducer), itemWildcard);
         }
         if (currency != null) {
             return currency.has(mage, caster, getAmount(reducer));
@@ -81,7 +81,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public void deduct(Mage mage, CasterProperties caster, CostReducer reducer) {
-        if (item != null && !isConsumeFree(reducer)) {
+        if (item != null && !isConsumeFree(reducer) && !isCostFree(reducer)) {
             ItemStack itemStack = getItemStack(reducer);
             mage.removeItem(itemStack, itemWildcard);
         }
@@ -175,6 +175,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     public boolean isConsumeFree(CostReducer reducer)
     {
         return reducer != null && reducer.getConsumeReduction() >= 1;
+    }
+
+    public boolean isCostFree(CostReducer reducer)
+    {
+        return reducer != null && reducer.getCostReduction() >= 1;
     }
 
     @Override

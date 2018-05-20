@@ -4,6 +4,7 @@
 
  - Fix Magic bow
  - Fix renaming wands on an anvil
+ - Fix cost free not applying to magic bows
 
 # 7.5.1
 
