@@ -2,6 +2,10 @@
 
 ## Hot Issues
      
+ - Wolf staff doesn't get levelled up spells
+     
+ - Adding first spell to wand makes magic missile look gone (via spell shop, only with wand open)
+     
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
    catch the dropped item.
    

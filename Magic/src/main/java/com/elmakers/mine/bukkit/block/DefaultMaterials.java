@@ -165,6 +165,10 @@ public class DefaultMaterials {
         }
     }
 
+    public static Collection<MaterialAndData> getColorBlocks(Material base) {
+        return getInstance().materialColors.get(base).values();
+    }
+
     public Collection<Map<DyeColor, MaterialAndData>> getAllColorBlocks() {
         return materialColors.values();
     }

@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +32,7 @@ public class RecurseAction extends CompoundAction {
     protected Set<MaterialAndData> replaceable = null;
     protected boolean checker;
     protected boolean replace;
+    protected List<MaterialAndData> debugMaterials;
 
     private static class StackEntry {
         public Block block;
@@ -84,6 +88,25 @@ public class RecurseAction extends CompoundAction {
         recursionDepth = parameters.getInt("size", 32);
         recursionDepth = parameters.getInt("depth", recursionDepth);
 
+        String debugKey = parameters.getString("debug_material");
+        if (debugKey != null && !debugKey.isEmpty()) {
+            Material baseMaterial = Material.getMaterial(debugKey.toUpperCase());
+            if (baseMaterial != null) {
+                debugMaterials = new ArrayList<>(DefaultMaterials.getColorBlocks(baseMaterial));
+                Collections.sort(debugMaterials, new Comparator<MaterialAndData>() {
+                    @Override
+                    public int compare(MaterialAndData o1, MaterialAndData o2) {
+                        if (o1.getMaterial() == o2.getMaterial()) {
+                            return o1.getData() - o2.getData();
+                        }
+                        return o1.getMaterial().name().compareTo(o2.getMaterial().name());
+                    }
+                });
+            }
+        }
+
+        org.bukkit.Bukkit.getLogger().info("Got " + debugMaterials + " from " + debugKey);
+
         if (replace) {
             if (replaceable == null) {
                 replaceable = new HashSet<>();
@@ -137,6 +160,7 @@ public class RecurseAction extends CompoundAction {
     public boolean next(CastContext context) {
         StackEntry current = stack.peek();
         while (!stack.isEmpty() && current.face >= directions.size()) {
+            //org.bukkit.Bukkit.getLogger().info("Popped: " + current.face + " / " + stack.size());
             stack.pop();
             current = stack.peek();
         }
@@ -148,27 +172,50 @@ public class RecurseAction extends CompoundAction {
     {
         StackEntry current = stack.peek();
         Block block = current.block;
+        Block originalBlock = block;
         int faceIndex = current.face++;
+        BlockFace direction = null;
         if (faceIndex >= 0) {
-            block = directions.get(faceIndex).getRelative(block);
+            direction = directions.get(faceIndex);
+            block = direction.getRelative(block);
         }
 
+        if (!context.isDestructible(block))
+        {
+            return SpellResult.NO_TARGET;
+        }
         long id = BlockData.getBlockId(block);
+        if (stack.size() > recursionDepth) {
+            // Prevent blocks that get isolated due to not quite being reached from all 4 directions
+            Block nextBlock = direction == null ? null : direction.getRelative(block);
+            if (nextBlock == null || !touched.contains(BlockData.getBlockId(nextBlock))) {
+                if (debugMaterials != null) {
+                    context.registerForUndo(block);
+                    debugMaterials.get(debugMaterials.size() - 1).modify(block);
+                }
+
+                return startActions();
+            }
+        }
+        if (debugMaterials != null) {
+            context.registerForUndo(originalBlock);
+            debugMaterials.get(faceIndex + 1).modify(originalBlock);
+        }
         if (touched.contains(id))
         {
             return SpellResult.NO_TARGET;
         }
-        if (!context.isDestructible(block))
-        {
-            return SpellResult.NO_TARGET;
+        if (debugMaterials != null) {
+            context.registerForUndo(block);
+            debugMaterials.get(0).modify(block);
         }
         if (replaceable != null && !replaceable.contains(new MaterialAndData(block)))
         {
             return SpellResult.NO_TARGET;
         }
-        if (faceIndex >= 0 && stack.size() <= recursionDepth) {
-            if (checker) {
-                BlockFace direction = directions.get(faceIndex);
+        //org.bukkit.Bukkit.getLogger().info("Face: " + faceIndex + ", " + stack.size());
+        if (faceIndex >= 0) {
+            if (checker && direction != null) {
                 block = direction.getRelative(block);
             }
             stack.push(new StackEntry(block));
@@ -207,5 +254,10 @@ public class RecurseAction extends CompoundAction {
     @Override
     public int getActionCount() {
         return recursionDepth * super.getActionCount();
+    }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
     }
 }

@@ -5,6 +5,7 @@
  - Fix Magic bow
  - Fix renaming wands on an anvil
  - Fix cost free not applying to magic bows
+ - Fix random missed spots inside of large Flood Fill casts
 
 # 7.5.1
 
