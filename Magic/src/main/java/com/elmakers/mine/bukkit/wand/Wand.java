@@ -145,6 +145,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean manualQuickCastDisabled = false;
     private boolean isInOffhand = false;
     private boolean hasId = false;
+    private boolean suspendUpdate = false;
     private int inventoryRows = 1;
     private Vector castLocation;
 
@@ -4723,6 +4724,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void updated() {
+        if (suspendUpdate) return;
         loadProperties();
         if (mage != null) {
             buildInventory();
@@ -4785,9 +4787,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             WandUpgradePath path = getPath();
             if (path != null && !path.containsSpell(spellKey.getBaseKey())) return false;
         }
+        suspendUpdate = true;
         if (!super.addSpell(spellName)) {
+            suspendUpdate = false;
             return false;
         }
+        suspendUpdate = false;
 
         saveInventory();
 
@@ -4969,7 +4974,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (path != null && !path.containsBrush(materialKey)) return false;
         }
 
-        if (!super.addBrush(materialKey)) return false;
+        suspendUpdate = true;
+        if (!super.addBrush(materialKey)) {
+            suspendUpdate = false;
+            return false;
+        }
+        suspendUpdate = false;
 
         saveInventory();
 
@@ -5079,7 +5089,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             WandUpgradePath path = getPath();
             if (path != null && !path.containsBrush(materialKey)) return false;
         }
-        if (!removeBrush(materialKey)) return false;
+
+        suspendUpdate = true;
+        if (!removeBrush(materialKey)) {
+            suspendUpdate = false;
+            return false;
+        }
+        suspendUpdate = false;
 
         saveInventory();
         if (materialKey.equals(activeBrush)) {
@@ -5109,7 +5125,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             WandUpgradePath path = getPath();
             if (path != null && !path.containsSpell(spellKey.getBaseKey())) return false;
         }
-        if (!super.removeSpell(spellName)) return false;
+
+        suspendUpdate = true;
+        if (!super.removeSpell(spellName)) {
+            suspendUpdate = false;
+            return false;
+        }
+        suspendUpdate = false;
 
         saveInventory();
         if (activeSpell != null) {

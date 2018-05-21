@@ -6,6 +6,7 @@
  - Fix renaming wands on an anvil
  - Fix cost free not applying to magic bows
  - Fix random missed spots inside of large Flood Fill casts
+ - Fix wands that are given spell levels via config losing those levels when adding a new spell
 
 # 7.5.1
 
