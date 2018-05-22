@@ -28,10 +28,13 @@ import com.elmakers.mine.bukkit.utility.DirectionUtils;
 
 public class RecurseAction extends CompoundAction {
     protected int recursionDepth;
+    protected int limit;
     protected List<BlockFace> directions;
+    protected Set<BlockFace> priority;
     protected Set<MaterialAndData> replaceable = null;
     protected boolean checker;
     protected boolean replace;
+    protected boolean depthFirst;
     protected List<MaterialAndData> debugMaterials;
 
     private static class StackEntry {
@@ -50,6 +53,8 @@ public class RecurseAction extends CompoundAction {
     }
 
     protected Deque<StackEntry> stack;
+    protected Deque<StackEntry> prioritized;
+    protected StackEntry current;
     protected Set<Long> touched;
 
     @Override
@@ -57,10 +62,13 @@ public class RecurseAction extends CompoundAction {
         super.reset(context);
         touched.clear();
         stack.clear();
+        if (prioritized != null) {
+            prioritized.clear();
+        }
         if (checker) {
-            stack.add(new StackEntry(context.getTargetBlock(), 0));
+            current = new StackEntry(context.getTargetBlock(), 0);
         } else {
-            stack.add(new StackEntry(context.getTargetBlock(), -1));
+            current = new StackEntry(context.getTargetBlock(), -1);;
         }
     }
 
@@ -69,15 +77,28 @@ public class RecurseAction extends CompoundAction {
         super.finish(context);
         touched.clear();
         stack.clear();
+        if (prioritized != null) {
+            prioritized.clear();
+        }
     }
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
+
+        // Parsing this parameter here to pre-prime the stack
+        recursionDepth = parameters.getInt("size", 32);
+        recursionDepth = parameters.getInt("depth", recursionDepth);
+
         directions = DirectionUtils.getDirections(parameters, "faces");
+        if (parameters.contains("priority_faces")) {
+            priority = new HashSet<>(DirectionUtils.getDirections(parameters, "priority_faces"));
+            prioritized = new ArrayDeque<>(recursionDepth + 10);
+        }
+
         replaceable = null;
         touched = new HashSet<>();
-        stack = new ArrayDeque<>();
+        stack = new ArrayDeque<>(recursionDepth + 10);
     }
 
     @Override
@@ -85,8 +106,12 @@ public class RecurseAction extends CompoundAction {
         super.prepare(context, parameters);
         checker = parameters.getBoolean("checkered", false);
         replace = parameters.getBoolean("replace", false);
+        depthFirst = parameters.getBoolean("depth_first", false);
         recursionDepth = parameters.getInt("size", 32);
         recursionDepth = parameters.getInt("depth", recursionDepth);
+
+        limit = parameters.getInt("max_dimension", recursionDepth);
+        limit = parameters.getInt("limit", limit * limit);
 
         String debugKey = parameters.getString("debug_material");
         if (debugKey != null && !debugKey.isEmpty()) {
@@ -156,50 +181,64 @@ public class RecurseAction extends CompoundAction {
 
     @Override
     public boolean next(CastContext context) {
-        StackEntry current = stack.peek();
-        while (!stack.isEmpty() && current.face >= directions.size()) {
-            stack.pop();
-            current = stack.peek();
+        current.face++;
+
+        if (current.face >= directions.size()) {
+            if (stack.isEmpty()) {
+                if (prioritized != null && !prioritized.isEmpty()) {
+                    current = prioritized.pop();
+                } else {
+                    return false;
+                }
+            } else {
+                current = stack.pop();
+            }
         }
-        return !stack.isEmpty();
+        return limit == 0 || touched.size() < limit;
     }
 
     @Override
     public SpellResult step(CastContext context)
     {
-        StackEntry current = stack.peek();
         Block block = current.block;
         Block originalBlock = block;
-        int faceIndex = current.face++;
+        int faceIndex = current.face;
         BlockFace direction = null;
         if (faceIndex >= 0) {
             direction = directions.get(faceIndex);
             block = direction.getRelative(block);
         }
+        boolean prioritize = !depthFirst && priority != null && direction != null && priority.contains(direction);
+        Deque<StackEntry> queue = prioritize ? prioritized : stack;
 
         if (!context.isDestructible(block))
         {
             return SpellResult.NO_TARGET;
         }
         long id = BlockData.getBlockId(block);
-        if (stack.size() > recursionDepth) {
-            // Prevent blocks that get isolated due to not quite being reached from all 4 directions
-            Block nextBlock = direction == null ? null : direction.getRelative(block);
-            if (nextBlock == null || !touched.contains(BlockData.getBlockId(nextBlock))) {
-                if (debugMaterials != null) {
-                    context.registerForUndo(block);
-                    debugMaterials.get(debugMaterials.size() - 1).modify(block);
-                }
-
-                return startActions();
-            }
-        }
         if (debugMaterials != null) {
             context.registerForUndo(originalBlock);
             debugMaterials.get(faceIndex + 1).modify(originalBlock);
         }
         if (touched.contains(id))
         {
+            return SpellResult.NO_TARGET;
+        }
+        if (queue.size() > recursionDepth) {
+            // Prevent blocks that get isolated due to not quite being reached from all 4 directions
+            Block nextBlock = direction == null ? null : direction.getRelative(block);
+            if (nextBlock != null && touched.contains(BlockData.getBlockId(nextBlock))) {
+                if (debugMaterials != null) {
+                    context.registerForUndo(block);
+                    debugMaterials.get(debugMaterials.size() - 2).modify(block);
+                }
+
+                return startActions();
+            }
+            if (debugMaterials != null) {
+                context.registerForUndo(block);
+                debugMaterials.get(debugMaterials.size() - 1).modify(block);
+            }
             return SpellResult.NO_TARGET;
         }
         if (debugMaterials != null) {
@@ -214,7 +253,17 @@ public class RecurseAction extends CompoundAction {
             if (checker && direction != null) {
                 block = direction.getRelative(block);
             }
-            stack.push(new StackEntry(block));
+            if (prioritize) {
+                queue.push(current);
+                queue.addAll(stack);
+                stack.clear();
+                current = new StackEntry(block, -1);
+            } else if (depthFirst) {
+                queue.push(current);
+                current = new StackEntry(block, -1);
+            } else {
+                queue.add(new StackEntry(block));
+            }
         }
 
         touched.add(id);
@@ -234,6 +283,7 @@ public class RecurseAction extends CompoundAction {
         parameters.add("depth");
         parameters.add("size");
         parameters.add("faces");
+        parameters.add("depth_first");
     }
 
     @Override
@@ -242,6 +292,8 @@ public class RecurseAction extends CompoundAction {
             examples.addAll(Arrays.asList((DirectionUtils.EXAMPLE_DIRECTIONS)));
         } else if (parameterKey.equals("depth") || parameterKey.equals("size")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else if (parameterKey.equals("depth_first")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

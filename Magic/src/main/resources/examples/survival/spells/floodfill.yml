@@ -26,6 +26,7 @@ floodfill:
         transparent: transparent_to_construction
         cooldown: 1000
         consume: true
+        priority_faces: down
         faces:
         - down
         - north
