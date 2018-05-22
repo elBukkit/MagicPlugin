@@ -2,7 +2,6 @@
 
 ## Hot Issues
           
- - Right-click spell activation broken?
  - Fix offline skull lag
  - Offline player photos no longer work (until server restart? ... actually couldn't reproduce this :\)
                

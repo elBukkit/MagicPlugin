@@ -39,7 +39,7 @@ mine:
         faces: all
         allow_max_range: false
         range: 32
-        recursion_depth: 2
+        limit: 8
         destructible: ores
         cooldown: 10000
         bypass_undo: true
@@ -50,16 +50,16 @@ mine|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        recursion_depth: 4
+        limit: 16
 
 mine|3:
     upgrade_required_path: engineer
     upgrade_required_casts: 50
     parameters:
-        recursion_depth: 8
+        limit: 32
 
 mine|4:
     parameters:
-        recursion_depth: 8
+        limit: 48
         drop: mining
 

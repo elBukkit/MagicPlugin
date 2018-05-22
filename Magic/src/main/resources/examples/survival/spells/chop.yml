@@ -41,8 +41,8 @@ chop:
         allow_max_range: true
         range: 32
         faces: all
-        recursion_depth: 64
         drop_count: 8
+        limit: 128
         destructible: trees
         cooldown: 5000
         right_arm_transform:
