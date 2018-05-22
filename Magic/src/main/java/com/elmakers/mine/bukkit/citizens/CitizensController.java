@@ -51,6 +51,6 @@ public class CitizensController implements NPCSupplier {
         if (npc == null) {
             return false;
         }
-        return npc.data().has(NPC.DEFAULT_PROTECTED_METADATA);
+        return npc.data().get(NPC.DEFAULT_PROTECTED_METADATA, true);
     }
 }

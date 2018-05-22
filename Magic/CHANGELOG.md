@@ -2,7 +2,8 @@
 
 # 7.5.3
 
- - Add /mtrait mob <mob> command to attach a magic mob profile to an NPC
+ - Add /mtrait mob <mob> command to attach a magic mob profile to an NPC (Sentinel spellcasting)
+ - Really allow spells to target Sentinel NPCs
 
 # 7.5.2
 

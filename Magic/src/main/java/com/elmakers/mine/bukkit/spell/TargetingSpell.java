@@ -340,7 +340,7 @@ public class TargetingSpell extends BaseSpell {
         }
         if (!targetTamed && entity instanceof Tameable && ((Tameable)entity).isTamed()) return false;
         if (entity.hasMetadata("notarget")) return false;
-        if (!targetNPCs && controller.isNPC(entity)) return false;
+        if (!targetNPCs && controller.isStaticNPC(entity)) return false;
         if (!targetArmorStands && entity instanceof ArmorStand) return false;
         if (ignoreEntityTypes != null && ignoreEntityTypes.contains(entity.getType())) {
             return false;
