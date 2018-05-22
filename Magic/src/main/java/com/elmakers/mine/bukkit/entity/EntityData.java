@@ -761,6 +761,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return true;
     }
 
+    @Override
     public void attach(@Nonnull MageController controller, @Nonnull Entity entity) {
         if (mageData != null) {
             Mage apiMage = controller.getMage(entity);
