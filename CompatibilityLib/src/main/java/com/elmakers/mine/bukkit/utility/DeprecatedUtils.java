@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
@@ -120,6 +121,10 @@ public class DeprecatedUtils {
     }
 
     public static void setOwner(SkullMeta skull, String ownerName) {
+        skull.setOwner(ownerName);
+    }
+
+    public static void setOwner(Skull skull, String ownerName) {
         skull.setOwner(ownerName);
     }
 

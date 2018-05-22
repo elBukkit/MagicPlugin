@@ -419,6 +419,7 @@ public interface MageController {
     ItemStack getSkull(Entity entity, String itemName);
     @Nonnull
     ItemStack getSkull(String ownerName, String itemName);
+    void setSkull(Block block, String ownerName);
     @Nonnull
     ItemStack getURLSkull(String url);
     void checkResourcePack(CommandSender sender);

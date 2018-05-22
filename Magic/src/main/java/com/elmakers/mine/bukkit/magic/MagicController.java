@@ -51,6 +51,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
@@ -5255,6 +5256,16 @@ public class MagicController implements MageController {
         ItemStack skull = skullType.getItemStack(1);
         skull = InventoryUtils.setSkullURLAndName(skull, url, ownerName, id);
         return skull;
+    }
+
+    @Override
+    public void setSkull(Block block, String ownerName) {
+        BlockState blockState = block.getState();
+        if (blockState instanceof org.bukkit.block.Skull) {
+            org.bukkit.block.Skull skullBlock = (org.bukkit.block.Skull)blockState;
+            DeprecatedUtils.setOwner(skullBlock, ownerName);
+            blockState.update();
+        }
     }
 
     @Override
