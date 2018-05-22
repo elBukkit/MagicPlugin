@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.citizens;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -20,6 +18,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.google.common.collect.ImmutableSet;
 
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.util.DataKey;
@@ -33,8 +32,7 @@ public abstract class CitizensTrait extends Trait {
     private ItemStack hatItem;
     protected MagicAPI api;
 
-    private static String[] _baseParameters = new String[] { "permission", "invisible", "cost", "mob", "requires", "hat" };
-    protected static Set<String> baseParameters = new HashSet<String>(Arrays.asList(_baseParameters));
+    protected static Set<String> baseParameters = ImmutableSet.of("permission", "invisible", "cost", "mob", "requires", "hat");
 
     protected CitizensTrait(String name) {
         super(name);
