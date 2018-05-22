@@ -105,8 +105,6 @@ public class RecurseAction extends CompoundAction {
             }
         }
 
-        org.bukkit.Bukkit.getLogger().info("Got " + debugMaterials + " from " + debugKey);
-
         if (replace) {
             if (replaceable == null) {
                 replaceable = new HashSet<>();
@@ -160,7 +158,6 @@ public class RecurseAction extends CompoundAction {
     public boolean next(CastContext context) {
         StackEntry current = stack.peek();
         while (!stack.isEmpty() && current.face >= directions.size()) {
-            //org.bukkit.Bukkit.getLogger().info("Popped: " + current.face + " / " + stack.size());
             stack.pop();
             current = stack.peek();
         }
@@ -213,7 +210,6 @@ public class RecurseAction extends CompoundAction {
         {
             return SpellResult.NO_TARGET;
         }
-        //org.bukkit.Bukkit.getLogger().info("Face: " + faceIndex + ", " + stack.size());
         if (faceIndex >= 0) {
             if (checker && direction != null) {
                 block = direction.getRelative(block);
