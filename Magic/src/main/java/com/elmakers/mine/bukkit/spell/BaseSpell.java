@@ -195,6 +195,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private MaterialAndData disabledIcon = null;
     private String iconURL = null;
     private String iconDisabledURL = null;
+    protected Set<EntityType> friendlyEntityTypes = null;
     private double requiredHealth;
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
@@ -1698,7 +1699,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 if (!controller.isPVPAllowed(magePlayer, mage.getLocation())) return false;
             }
         }
-        if (onlyFriendlyFire)
+        if (onlyFriendlyFire && (friendlyEntityTypes == null || !friendlyEntityTypes.contains(entity.getType())))
         {
             return controller.isFriendly(mage.getEntity(), entity);
         }
@@ -1784,6 +1785,20 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassAll = parameters.getBoolean("bypass", false);
         duration = parameters.getInt("duration", 0);
         totalDuration = parameters.getInt("total_duration", 0);
+
+        friendlyEntityTypes = null;
+        if (parameters.contains("friendly_types")) {
+            friendlyEntityTypes = new HashSet<>();
+            Collection<String> typeKeys = ConfigurationUtils.getStringList(parameters, "friendly_types");
+            for (String typeKey : typeKeys) {
+                try {
+                    EntityType entityType = EntityType.valueOf(typeKey.toUpperCase());
+                    friendlyEntityTypes.add(entityType);
+                } catch (Throwable ex) {
+                    controller.getLogger().warning("Unknown entity type in friendly_types of " + getKey() + ": " + typeKey);
+                }
+            }
+        }
     }
 
     @Override
