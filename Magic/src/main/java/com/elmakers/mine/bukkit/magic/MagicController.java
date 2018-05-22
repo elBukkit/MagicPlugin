@@ -2245,6 +2245,7 @@ public class MagicController implements MageController {
         defaultMaterials.loadColors(materialColors);
         defaultMaterials.loadBlockItems(blockItems);
         defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
+        defaultMaterials.setPlayerSkullWallBlock(skullWallBlocks.get(EntityType.PLAYER));
 
         buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
         indestructibleMaterials = materialSetManager
@@ -2766,6 +2767,7 @@ public class MagicController implements MageController {
     protected void loadOtherMaterials(ConfigurationSection configuration) {
         DefaultMaterials defaultMaterials = DefaultMaterials.getInstance();
         defaultMaterials.setGroundSignBlock(getVersionedMaterial(configuration, "ground_sign_block"));
+        defaultMaterials.setWallSignBlock(getVersionedMaterial(configuration, "wall_sign_block"));
         defaultMaterials.setFirework(getVersionedMaterial(configuration, "firework"));
         defaultMaterials.setWallTorch(getVersionedMaterialAndData(configuration, "wall_torch"));
         defaultMaterials.setRedstoneTorchOn(getVersionedMaterialAndData(configuration, "redstone_torch_on"));

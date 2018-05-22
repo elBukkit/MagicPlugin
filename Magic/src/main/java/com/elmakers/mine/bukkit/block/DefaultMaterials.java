@@ -30,7 +30,9 @@ public class DefaultMaterials {
     private MaterialSet saplings = MaterialSets.empty();
 
     private MaterialAndData playerSkullItem = null;
+    private MaterialAndData playerSkullWallBlock = null;
     private Material groundSignBlock = null;
+    private Material wallSignBlock = null;
     private Material firework = null;
     private MaterialAndData wallTorch = null;
     private MaterialAndData redstoneTorchOn = null;
@@ -100,6 +102,15 @@ public class DefaultMaterials {
         return getInstance().groundSignBlock;
     }
 
+    public void setWallSignBlock(Material material) {
+        this.wallSignBlock = material;
+    }
+
+    @Nullable
+    public static Material getWallSignBlock() {
+        return getInstance().wallSignBlock;
+    }
+
     public void setFirework(Material material) {
         this.firework = material;
     }
@@ -116,6 +127,15 @@ public class DefaultMaterials {
     @Nullable
     public static MaterialAndData getPlayerSkullItem() {
         return getInstance().playerSkullItem;
+    }
+
+    public void setPlayerSkullWallBlock(MaterialAndData item) {
+        playerSkullWallBlock = item;
+    }
+
+    @Nullable
+    public static MaterialAndData getPlayerSkullWallBlock() {
+        return getInstance().playerSkullWallBlock;
     }
 
     public void loadBlockItems(ConfigurationSection blocks) {

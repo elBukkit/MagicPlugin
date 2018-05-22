@@ -1,6 +1,9 @@
 # TODO
 
 ## Hot Issues
+          
+ - Fix offline skull lag
+ - Offline player photos no longer work.
                
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
    catch the dropped item.
