@@ -2817,9 +2817,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Entity entity = getEntity();
 
         if (entity == null) return false;
-        if (isNPC) return true;
-
-        if (entity instanceof Player) {
+        if (!isNPC && entity instanceof Player) {
             Player player = (Player)entity;
             return player.isOnline();
         }
