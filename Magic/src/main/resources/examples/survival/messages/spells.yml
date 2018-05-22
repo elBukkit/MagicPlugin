@@ -239,6 +239,8 @@ spells:
         upgrade_description: "Now negates Silence"
     cure|4:
         upgrade_description: "Now cures hunger"
+    cure|5:
+        upgrade_description: "Now cures zombie villagers"
     music:
         name: Music
         description: Play some tunes

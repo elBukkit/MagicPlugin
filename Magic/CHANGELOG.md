@@ -4,6 +4,7 @@
 
  - Add /mtrait mob <mob> command to attach a magic mob profile to an NPC (Sentinel spellcasting)
  - Really allow spells to target Sentinel NPCs
+ - Cure level 5 can cure zombie villagers
 
 # 7.5.2
 

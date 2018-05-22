@@ -9,7 +9,7 @@ cure:
     earns_sp: 20
     actions:
         cast:
-        -  class: PotionEffect
+        - class: PotionEffect
     effects:
         cast:
         - class: EffectSingle
@@ -22,7 +22,7 @@ cure:
              period: 2
              parameters:
                  radius: "(t/i) * 3 + 0.5"
-                 radiusNucleus: "(t/i) * 0.5 + 0.4"
+                 radius_nucleus: "(t/i) * 0.5 + 0.4"
              effect:
                  class: AtomEffect
                  particle_nucleus: heart
@@ -87,4 +87,50 @@ cure|4:
         feed: 1
         delay: 500
         repeat: 10
+
+cure|5:
+    actions:
+        cast:
+        - class: CheckEntity
+          allowed_entities: zombie_villager
+          actions:
+          - class: RemoveEntity
+          - class: ChangeContext
+            target_entity: true
+            target_offset: 0,-0.3,0
+            actions:
+            - class: SpawnEntity
+              type: villager
+              set_target: true
+          - class: PlayEffects
+            effects: cured
+        -  class: PotionEffect
+        -  class: ApplyCooldown
+           clear: true
+           duration: 0
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: Feed
+    effects:
+      cured:
+        - class: EffectSingle
+          sound: entity_zombie_villager_cure
+          location: target
+          source_location: body
+          effectlib:
+             class: Modified
+             iterations: 40
+             period: 2
+             parameters:
+                 radius: "(t/i) * 3 + 0.75"
+                 radius_nucleus: "(t/i) * 0.5 + 0.6"
+             effect:
+                 class: AtomEffect
+                 particle_nucleus: villager_happy
+                 particle_orbital: crit
+                 particles_nucleus: 10
+                 particles_orbital: 30
+    parameters:
+      friendly_types: zombie_villager
 
