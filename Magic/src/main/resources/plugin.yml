@@ -682,6 +682,7 @@ commands:
       /mtrait invisible true
       /mtrait cost 200
       /mtrait permission Magic.npc.use.this.guy
+      /mtrait mob warlock
   mskills:
     description: Get Heroes skills
     usage: /mskills

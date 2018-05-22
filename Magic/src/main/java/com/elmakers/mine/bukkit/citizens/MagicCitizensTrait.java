@@ -209,7 +209,7 @@ public class MagicCitizensTrait extends CitizensTrait {
                 sender.sendMessage(ChatColor.RED + "NOTE: " + ChatColor.YELLOW + "Has no effect unless you also set " + ChatColor.AQUA + "caster true");
             }
         }
-        else if (value == null || value.isEmpty())
+        else if ((value == null || value.isEmpty()) && !baseParameters.contains(key))
         {
             spellKey = key;
             sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell to: " + ChatColor.LIGHT_PURPLE + spellKey);

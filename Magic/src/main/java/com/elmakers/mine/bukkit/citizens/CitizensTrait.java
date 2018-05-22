@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.citizens;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -10,6 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
@@ -21,9 +28,13 @@ public abstract class CitizensTrait extends Trait {
     private String permissionNode;
     private boolean invisible = false;
     private double cost = 0;
+    private String mobKey;
     private ItemStack requireItem = null;
     private ItemStack hatItem;
     protected MagicAPI api;
+
+    private static String[] _baseParameters = new String[] { "permission", "invisible", "cost", "mob", "requires", "hat" };
+    protected static Set<String> baseParameters = new HashSet<String>(Arrays.asList(_baseParameters));
 
     protected CitizensTrait(String name) {
         super(name);
@@ -34,6 +45,7 @@ public abstract class CitizensTrait extends Trait {
         permissionNode = data.getString("permission", null);
         invisible = data.getBoolean("invisible", false);
         cost = data.getDouble("cost", 0);
+        mobKey = data.getString("mob");
         String itemKey = data.getString("requires");
         if (itemKey != null && itemKey.length() > 0) {
             requireItem = api.createItem(itemKey);
@@ -55,6 +67,7 @@ public abstract class CitizensTrait extends Trait {
         if (hatItem != null) {
             data.setString("hat", api.getItemKey(hatItem));
         }
+        data.setString("mob", mobKey);
     }
 
     @Override
@@ -88,6 +101,13 @@ public abstract class CitizensTrait extends Trait {
             }
             if (hatItem != null) {
                 li.getEquipment().setHelmet(hatItem);
+            }
+        }
+        if (entity != null && mobKey != null) {
+            MageController controller = api.getController();
+            EntityData customEntity = controller.getMob(mobKey);
+            if (customEntity != null) {
+                customEntity.attach(controller, entity);
             }
         }
     }
@@ -149,6 +169,9 @@ public abstract class CitizensTrait extends Trait {
         }
         if (hatItem != null) {
             sender.sendMessage(ChatColor.DARK_PURPLE + "Wearing Hat: " + ChatColor.GOLD + api.describeItem(hatItem));
+        }
+        if (mobKey != null) {
+            sender.sendMessage(ChatColor.DARK_PURPLE + "Using mob profile: " + ChatColor.GOLD + mobKey);
         }
     }
 
@@ -220,6 +243,38 @@ public abstract class CitizensTrait extends Trait {
                     sender.sendMessage(ChatColor.DARK_PURPLE + "Set item requirement to " + api.describeItem(requireItem));
                 } catch (Exception ex) {
                     sender.sendMessage(ChatColor.RED + "Invalid item: " + value);
+                }
+            }
+        }
+        else if (key.equalsIgnoreCase("mob"))
+        {
+            MageController controller = api.getController();
+            if (mobKey != null) {
+                try {
+                    Entity entity = npc.getEntity();
+                    if (entity != null) {
+                        Mage mage = controller.getRegisteredMage(entity);
+                        if (mage != null) {
+                            controller.removeMage(mage);
+                        }
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+            if (value == null)
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Cleared mob profile");
+                mobKey = null;
+            }
+            else
+            {
+                EntityData customMob = controller.getMob(value);
+                if (customMob != null) {
+                    mobKey = value;
+                    updateEntity();
+                    sender.sendMessage(ChatColor.DARK_PURPLE + "Set mob to " + mobKey);
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Invalid mob: " + value);
                 }
             }
         }

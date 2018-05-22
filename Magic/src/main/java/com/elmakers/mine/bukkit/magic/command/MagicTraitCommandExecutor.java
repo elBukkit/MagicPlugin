@@ -135,6 +135,10 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
                 options.add(itemKey);
             }
         }
+        else if (lastParameter.equalsIgnoreCase("mob"))
+        {
+            options.addAll(controller.getMobKeys());
+        }
         else if (lastParameter.equalsIgnoreCase("cost"))
         {
             options.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
@@ -157,6 +161,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("invisible");
             options.add("hat");
             options.add("command");
+            options.add("mob");
 
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {

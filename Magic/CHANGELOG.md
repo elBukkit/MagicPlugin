@@ -2,6 +2,8 @@
 
 # 7.5.3
 
+ - Add /mtrait mob <mob> command to attach a magic mob profile to an NPC
+
 # 7.5.2
 
  - Fix Magic bow

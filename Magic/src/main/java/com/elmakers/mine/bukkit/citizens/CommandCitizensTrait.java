@@ -128,7 +128,7 @@ public class CommandCitizensTrait extends CitizensTrait {
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set executor to console");
             }
         }
-        else if (value == null || value.isEmpty())
+        else if ((value == null || value.isEmpty()) && !baseParameters.contains(key))
         {
             command = key;
             sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell to: " + ChatColor.LIGHT_PURPLE + command);

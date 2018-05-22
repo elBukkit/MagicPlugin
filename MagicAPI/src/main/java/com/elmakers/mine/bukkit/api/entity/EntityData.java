@@ -44,4 +44,13 @@ public interface EntityData {
     void setMaterial(@Nonnull MaterialAndData material);
     @Nullable
     MaterialAndData getMaterial();
+
+    /**
+     * Attach this mob to an existing entity. This does not modify the entity, and only has an effect
+     * if this mob has mage data (e.g. is a spellcaster)
+     *
+     * @param controller The MageController, used to create a Mage
+     * @param entity The entity to attach to
+     */
+    void attach(@Nonnull MageController controller, @Nonnull Entity entity);
 }

@@ -748,14 +748,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (!isPlayer && name != null && name.length() > 0) {
             entity.setCustomName(name);
         }
-        boolean needsMage = controller != null && mageData != null;
-        if (needsMage) {
-            Mage apiMage = controller.getMage(entity);
-            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
-            }
-
-            mageData.onSpawn(apiMage);
+        if (controller != null) {
+            attach(controller, entity);
         }
 
         if (controller != null && disguise != null) {
@@ -765,6 +759,17 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         return true;
+    }
+
+    public void attach(@Nonnull MageController controller, @Nonnull Entity entity) {
+        if (mageData != null) {
+            Mage apiMage = controller.getMage(entity);
+            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
+            }
+
+            mageData.onSpawn(apiMage);
+        }
     }
 
     @Nullable
