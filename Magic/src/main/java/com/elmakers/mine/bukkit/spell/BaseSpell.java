@@ -92,7 +92,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public enum ToggleType { NONE, CANCEL, UNDO }
 
-    protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
+    protected static final double LOOK_THRESHOLD = 0.98;
 
     // TODO: Config-drive
     protected static final int MIN_Y = 1;
@@ -659,14 +659,15 @@ public class BaseSpell implements MageSpell, Cloneable {
     {
         Vector direction = getDirection();
         if (direction == null) return false;
-        return direction.getY() > LOOK_THRESHOLD_RADIANS;
+        return direction.getY() > LOOK_THRESHOLD;
     }
 
     public boolean isLookingDown()
     {
         Vector direction = getDirection();
         if (direction == null) return false;
-        return direction.getY() < -LOOK_THRESHOLD_RADIANS;
+        org.bukkit.Bukkit.getLogger().info("Down? " + direction.getY());
+        return direction.getY() < -LOOK_THRESHOLD;
     }
 
     @Nullable
