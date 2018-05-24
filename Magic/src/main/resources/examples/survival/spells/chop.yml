@@ -43,6 +43,7 @@ chop:
         faces: all
         drop_count: 8
         limit: 128
+        depth: 8
         destructible: trees
         cooldown: 5000
         right_arm_transform:
@@ -57,10 +58,12 @@ chop|2:
     upgrade_required_casts: 30
     parameters:
         drop_count: 16
+        depth: 16
 
 chop|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
         drop_count: 32
+        depth: 32
 

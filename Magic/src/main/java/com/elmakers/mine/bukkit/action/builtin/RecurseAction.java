@@ -35,20 +35,24 @@ public class RecurseAction extends CompoundAction {
     protected boolean checker;
     protected boolean replace;
     protected boolean depthFirst;
+    protected boolean debugDepth;
     protected List<MaterialAndData> debugMaterials;
 
     private static class StackEntry {
         public Block block;
         public int face;
+        public int depth;
 
-        public StackEntry(Block block) {
+        public StackEntry(Block block, int depth) {
             this.block = block;
             this.face = 0;
+            this.depth = depth;
         }
 
-        public StackEntry(Block block, int face) {
+        public StackEntry(Block block, int face, int depth) {
             this.block = block;
             this.face = face;
+            this.depth = depth;
         }
     }
 
@@ -66,9 +70,9 @@ public class RecurseAction extends CompoundAction {
             prioritized.clear();
         }
         if (checker) {
-            current = new StackEntry(context.getTargetBlock(), 0);
+            current = new StackEntry(context.getTargetBlock(), 0, 0);
         } else {
-            current = new StackEntry(context.getTargetBlock(), -1);;
+            current = new StackEntry(context.getTargetBlock(), -1, 0);;
         }
     }
 
@@ -109,10 +113,9 @@ public class RecurseAction extends CompoundAction {
         depthFirst = parameters.getBoolean("depth_first", false);
         recursionDepth = parameters.getInt("size", 32);
         recursionDepth = parameters.getInt("depth", recursionDepth);
+        limit = parameters.getInt("limit", 0);
 
-        limit = parameters.getInt("max_dimension", recursionDepth);
-        limit = parameters.getInt("limit", limit * limit);
-
+        debugDepth = parameters.getBoolean("debug_depth", true);
         String debugKey = parameters.getString("debug_material");
         if (debugKey != null && !debugKey.isEmpty()) {
             Material baseMaterial = Material.getMaterial(debugKey.toUpperCase());
@@ -216,7 +219,7 @@ public class RecurseAction extends CompoundAction {
             return SpellResult.NO_TARGET;
         }
         long id = BlockData.getBlockId(block);
-        if (debugMaterials != null) {
+        if (debugMaterials != null && !debugDepth) {
             context.registerForUndo(originalBlock);
             debugMaterials.get(faceIndex + 1).modify(originalBlock);
         }
@@ -224,18 +227,18 @@ public class RecurseAction extends CompoundAction {
         {
             return SpellResult.NO_TARGET;
         }
-        if (queue.size() > recursionDepth) {
+        if (current.depth > recursionDepth) {
             // Prevent blocks that get isolated due to not quite being reached from all 4 directions
             Block nextBlock = direction == null ? null : direction.getRelative(block);
             if (nextBlock != null && touched.contains(BlockData.getBlockId(nextBlock))) {
-                if (debugMaterials != null) {
+                if (debugMaterials != null && !debugDepth) {
                     context.registerForUndo(block);
                     debugMaterials.get(debugMaterials.size() - 2).modify(block);
                 }
 
                 return startActions();
             }
-            if (debugMaterials != null) {
+            if (debugMaterials != null && !debugDepth) {
                 context.registerForUndo(block);
                 debugMaterials.get(debugMaterials.size() - 1).modify(block);
             }
@@ -243,7 +246,11 @@ public class RecurseAction extends CompoundAction {
         }
         if (debugMaterials != null) {
             context.registerForUndo(block);
-            debugMaterials.get(0).modify(block);
+            if (debugDepth) {
+                debugMaterials.get(current.depth % debugMaterials.size()).modify(block);
+            } else {
+                debugMaterials.get(0).modify(block);
+            }
         }
         if (replaceable != null && !replaceable.contains(new MaterialAndData(block)))
         {
@@ -257,12 +264,12 @@ public class RecurseAction extends CompoundAction {
                 queue.push(current);
                 queue.addAll(stack);
                 stack.clear();
-                current = new StackEntry(block, -1);
+                current = new StackEntry(block, -1, current.depth + 1);
             } else if (depthFirst) {
                 queue.push(current);
-                current = new StackEntry(block, -1);
+                current = new StackEntry(block, -1, current.depth + 1);
             } else {
-                queue.add(new StackEntry(block));
+                queue.add(new StackEntry(block, current.depth + 1));
             }
         }
 

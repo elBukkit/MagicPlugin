@@ -2,9 +2,16 @@
 
 ## Hot Issues
           
+ - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
+          
  - Fix offline skull lag
- - Offline player photos no longer work (until server restart? ... actually couldn't reproduce this :\)
-               
+   - Allow setting skull blocks by UUID
+   - Fetch profiles by UUID or name, cache both (... might need name->UUID cache and separately UUID -> profile)
+   - Don't use Skull.setOwner at all, handle online players in SkinUtils so we also cache their profile
+   - Some mode (or maybe MagicArenas does this?) to aggressively cache + update players on login
+ 
+ - Still need some mechanism for automatically applying version-specific configs.
+ 
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
    catch the dropped item.
    
