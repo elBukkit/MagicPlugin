@@ -4382,9 +4382,28 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public ItemStack createItem(String magicItemKey, boolean brief) {
+        return createItem(magicItemKey, null, brief, null);
+    }
+
+    @Nullable
+    @Override
+    public ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback) {
         ItemStack itemStack = null;
         if (magicItemKey == null || magicItemKey.isEmpty()) {
+            if (callback != null) {
+                callback.updated(null);
+            }
             return null;
+        }
+
+        if (magicItemKey.contains("skill:")) {
+            String spellKey = magicItemKey.substring(6);
+            itemStack = Wand.createSpellItem(spellKey, this, mage, null, false);
+            InventoryUtils.setMeta(itemStack, "skill", "true");
+            if (callback != null) {
+                callback.updated(itemStack);
+            }
+            return itemStack;
         }
 
         // Check for amounts
@@ -4409,6 +4428,9 @@ public class MagicController implements MageController {
                 if (!bookCategory.isEmpty() && !bookCategory.equalsIgnoreCase("all")) {
                     category = getCategory(bookCategory);
                     if (category == null) {
+                        if (callback != null) {
+                            callback.updated(null);
+                        }
                         return null;
                     }
                 }
@@ -4476,6 +4498,9 @@ public class MagicController implements MageController {
                         intAmount = Integer.parseInt(costAmount);
                     } catch (Exception ex) {
                         getLogger().warning("Invalid amount in custom cost: " + magicItemKey);
+                        if (callback != null) {
+                            callback.updated(null);
+                        }
                         return null;
                     }
 
@@ -4495,17 +4520,24 @@ public class MagicController implements MageController {
                 if (itemStack == null && items != null) {
                     ItemData itemData = items.get(magicItemKey);
                     if (itemData != null) {
-                        return itemData.getItemStack(amount);
+                        itemStack = itemData.getItemStack(amount);
+                        if (callback != null) {
+                            callback.updated(itemStack);
+                        }
+                        return itemStack;
                     }
                     MaterialAndData item = new MaterialAndData(magicItemKey);
                     if (item.isValid()) {
-                        return item.getItemStack(amount);
+                        return item.getItemStack(amount, callback);
                     }
                     com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
                     if (wand != null) {
                         ItemStack wandItem = wand.getItem();
                         if (wandItem != null) {
                             wandItem.setAmount(amount);
+                        }
+                        if (callback != null) {
+                            callback.updated(wandItem);
                         }
                         return wandItem;
                     }
@@ -4515,6 +4547,9 @@ public class MagicController implements MageController {
                     itemStack = createSpellItem(spellKey, brief);
                     if (itemStack != null) {
                         itemStack.setAmount(amount);
+                        if (callback != null) {
+                            callback.updated(itemStack);
+                        }
                         return itemStack;
                     }
                     itemStack = createBrushItem(magicItemKey);
@@ -4528,6 +4563,9 @@ public class MagicController implements MageController {
             getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
         }
 
+        if (callback != null) {
+            callback.updated(itemStack);
+        }
         return itemStack;
     }
 

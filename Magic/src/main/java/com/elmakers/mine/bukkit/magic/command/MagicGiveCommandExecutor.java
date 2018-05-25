@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -11,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -101,16 +104,22 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
                     + " to " + ChatColor.GOLD + player.getName());
             return true;
         } else {
-            Mage mage = controller.getMage(player);
-            ItemStack item = api.createItem(itemName, mage);
-            if (item == null) {
-                sender.sendMessage(ChatColor.RED + "Unknown item type " + ChatColor.DARK_RED + itemName);
-                return true;
-            }
-            item.setAmount(count);
-            String displayName = api.describeItem(item);
-            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + " " + ChatColor.LIGHT_PURPLE + displayName + ChatColor.AQUA + " to " + ChatColor.GOLD + player.getName());
-            api.giveItemToPlayer(player, item);
+            final Mage mage = controller.getMage(player);
+            final int itemCount = count;
+            final String itemKey = itemName;
+            api.getController().createItem(itemName, mage, false, new ItemUpdatedCallback() {
+                @Override
+                public void updated(@Nullable ItemStack itemStack) {
+                    if (itemStack == null) {
+                        sender.sendMessage(ChatColor.RED + "Unknown item type " + ChatColor.DARK_RED + itemKey);
+                        return;
+                    }
+                    itemStack.setAmount(itemCount);
+                    String displayName = api.describeItem(itemStack);
+                    sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + itemCount + " " + ChatColor.LIGHT_PURPLE + displayName + ChatColor.AQUA + " to " + ChatColor.GOLD + mage.getName());
+                    mage.giveItem(itemStack);
+                }
+            });
         }
 
         return true;

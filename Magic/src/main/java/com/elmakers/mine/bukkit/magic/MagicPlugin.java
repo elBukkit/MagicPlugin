@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.magic.command.RPCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -401,14 +400,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             return null;
         }
 
-        if (magicKey.contains("skill:")) {
-            String spellKey = magicKey.substring(6);
-            itemStack = Wand.createSpellItem(spellKey, controller, mage, null, false);
-            InventoryUtils.setMeta(itemStack, "skill", "true");
-            return itemStack;
-        }
-
-        return controller.createItem(magicKey);
+        return controller.createItem(magicKey, mage, false, null);
     }
 
     @Nullable

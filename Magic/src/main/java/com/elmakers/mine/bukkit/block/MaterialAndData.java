@@ -24,6 +24,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.elmakers.mine.bukkit.api.block.ModifyType;
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.integration.VaultController;
@@ -32,6 +33,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
+import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.google.common.base.Objects;
 
 /**
@@ -585,7 +587,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Nullable
     @Override
     public ItemStack getItemStack(int amount) {
-        if (material == null) return null;
+        return getItemStack(amount, null);
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getItemStack(int amount, ItemUpdatedCallback callback) {
+        if (material == null) {
+            if (callback != null) {
+                callback.updated(null);
+            }
+            return null;
+        }
 
         Material material = convertToItemStackMaterial();
         MaterialAndData item = this;
@@ -595,7 +608,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         ItemStack stack = new ItemStack(material, amount, data == null ? 0 : data);
-        stack = item.applyToItem(stack);
+        stack = item.applyToItem(stack, callback);
         return stack;
     }
 
@@ -604,8 +617,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @Override
-    public ItemStack applyToItem(ItemStack stack)
+    public ItemStack applyToItem(ItemStack stack) {
+        return applyToItem(stack, null);
+    }
+
+    @Override
+    public ItemStack applyToItem(ItemStack stack, ItemUpdatedCallback callback)
     {
+        boolean asynchronous = false;
         stack.setType(material);
         if (data != null) {
             stack.setDurability(data);
@@ -621,8 +640,17 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     InventoryUtils.setSkullProfile(skullMeta, ((BlockSkull)extraData).profile);
                     stack.setItemMeta(meta);
                 } else if (skullData.playerName != null) {
-                    // TODO: Need a way to call an ItemUpdated callback from here?
-                    DeprecatedUtils.setSkullOwner(stack, skullData.playerName, null);
+                    asynchronous = true;
+                    SkullLoadedCallback skullCallback = null;
+                    if (callback != null) {
+                        skullCallback = new SkullLoadedCallback() {
+                            @Override
+                            public void updated(ItemStack itemStack) {
+                                callback.updated(itemStack);
+                            }
+                        };
+                    }
+                    DeprecatedUtils.setSkullOwner(stack, skullData.playerName, skullCallback);
                 }
             }
         } else if (DefaultMaterials.isBanner(material)) {
@@ -648,6 +676,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 ((LeatherArmorMeta)meta).setColor(((LeatherArmorData)extraData).getColor());
                 stack.setItemMeta(meta);
             }
+        }
+        if (!asynchronous && callback != null) {
+            callback.updated(stack);
         }
         return stack;
     }

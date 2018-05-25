@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 
 /**
@@ -65,6 +66,8 @@ public interface MaterialAndData {
     boolean isDifferent(Block block);
     @Nullable
     ItemStack getItemStack(int amount);
+    @Nullable
+    ItemStack getItemStack(int amount, ItemUpdatedCallback callback);
     boolean isValid();
     @Nullable
     String getCommandLine();
@@ -72,4 +75,5 @@ public interface MaterialAndData {
     void setCustomName(String customName);
     void setRawData(Object data);
     ItemStack applyToItem(ItemStack stack);
+    ItemStack applyToItem(ItemStack stack, ItemUpdatedCallback callback);
 }
