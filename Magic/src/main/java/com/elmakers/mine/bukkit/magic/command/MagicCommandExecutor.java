@@ -507,13 +507,16 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             {
                 BlockVector blockLocation = blockData.getLocation();
                 Block block = blockData.getBlock();
+                com.elmakers.mine.bukkit.api.block.UndoList undoList = blockData.getUndoList();
+                String listName = undoList == null ? "Unknown" : undoList.getName();
+                String blockDescription = block == null ? "Unloaded" : block.getType().toString();
                 sender.sendMessage(ChatColor.BLUE + "Block at "
                         + ChatColor.GRAY + blockLocation.getBlockX() + ChatColor.DARK_GRAY + ","
                         + ChatColor.GRAY + blockLocation.getBlockY() + ChatColor.DARK_GRAY + ","
                         + ChatColor.GRAY + blockLocation.getBlockZ()
                         + ChatColor.BLUE + " stored as " + ChatColor.AQUA + blockData.getMaterial()
-                        + ChatColor.BLUE + " is currently " + ChatColor.AQUA + block.getType()
-                        + ChatColor.BLUE + " from " + ChatColor.GOLD + blockData.getUndoList().getName());
+                        + ChatColor.BLUE + " is currently " + ChatColor.AQUA + blockDescription
+                        + ChatColor.BLUE + " from " + ChatColor.GOLD + listName);
             }
             return true;
         }
