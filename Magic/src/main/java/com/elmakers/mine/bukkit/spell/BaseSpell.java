@@ -666,7 +666,6 @@ public class BaseSpell implements MageSpell, Cloneable {
     {
         Vector direction = getDirection();
         if (direction == null) return false;
-        org.bukkit.Bukkit.getLogger().info("Down? " + direction.getY());
         return direction.getY() < -LOOK_THRESHOLD;
     }
 
