@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.5.4
+
 # 7.5.3
 
  - Add /mtrait mob <mob> command to attach a magic mob profile to an NPC (Sentinel spellcasting)
