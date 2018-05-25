@@ -2,7 +2,6 @@
 
 ## Hot Issues
           
- - Skull items... anyway to update them async?
  - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
  
  - Still need some mechanism for automatically applying version-specific configs.

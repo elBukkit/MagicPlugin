@@ -7,6 +7,7 @@
  - Cure level 5 can cure zombie villagers
  - Tightened up alternate_up/down thresholds so it's harder to accidentally alt-cast
  - Fix server lag when creating player skull items or blocks (update MagicArenas if you're using it!)
+ - Fix error on server shutdown if there are players riding brooms
 
 # 7.5.2
 
