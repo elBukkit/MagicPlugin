@@ -2938,6 +2938,10 @@ public class MagicController implements MageController {
         spells.clear();
     }
 
+    public boolean isInitialized() {
+        return initialized;
+    }
+
     protected void unregisterPhysicsHandler(Listener listener)
     {
         BlockPhysicsEvent.getHandlerList().unregister(listener);
