@@ -446,10 +446,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
                 if (skullData.profile != null) {
                     InventoryUtils.setSkullProfile(skull, skullData.profile);
+                    skull.update(true, false);
                 } else if (skullData.playerName != null) {
-                    skull.setOwner(skullData.playerName);
+                    DeprecatedUtils.setOwner(skull, skullData.playerName);
                 }
-                skull.update(true, false);
             } else if (blockState != null && blockState instanceof CreatureSpawner && extraData != null && extraData instanceof BlockMobSpawner) {
                 BlockMobSpawner spawnerData = (BlockMobSpawner)extraData;
                 if (spawnerData.mobName != null && !spawnerData.mobName.isEmpty())

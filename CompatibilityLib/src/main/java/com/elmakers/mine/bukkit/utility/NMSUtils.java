@@ -261,6 +261,8 @@ public class NMSUtils {
     protected static Constructor class_ChatComponentText_constructor;
     protected static Constructor class_NamespacedKey_constructor;
     protected static Constructor class_ShapedRecipe_constructor;
+    protected static Constructor class_GameProfile_constructor;
+    protected static Constructor class_GameProfileProperty_constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -274,6 +276,8 @@ public class NMSUtils {
     protected static Field class_CraftMetaSkull_profile;
     protected static Field class_GameProfile_properties;
     protected static Field class_GameProfileProperty_value;
+    protected static Field class_GameProfileProperty_signature;
+    protected static Field class_GameProfileProperty_name;
     protected static Field class_EntityTNTPrimed_source;
     protected static Field class_NBTTagList_list;
     protected static Field class_AxisAlignedBB_minXField;
@@ -515,6 +519,7 @@ public class NMSUtils {
             class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
             class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
             class_GameProfile = getClass("com.mojang.authlib.GameProfile");
+            class_GameProfile_constructor = class_GameProfile.getConstructor(UUID.class, String.class);
             class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
             class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
             class_CraftSkull_profile.setAccessible(true);
@@ -524,6 +529,11 @@ public class NMSUtils {
             class_GameProfile_properties.setAccessible(true);
             class_GameProfileProperty_value = class_GameProfileProperty.getDeclaredField("value");
             class_GameProfileProperty_value.setAccessible(true);
+            class_GameProfileProperty_signature = class_GameProfileProperty.getDeclaredField("signature");
+            class_GameProfileProperty_signature.setAccessible(true);
+            class_GameProfileProperty_name = class_GameProfileProperty.getDeclaredField("name");
+            class_GameProfileProperty_name.setAccessible(true);
+            class_GameProfileProperty_constructor = class_GameProfileProperty.getConstructor(String.class, String.class, String.class);
 
             class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
             class_BlockPosition_Constructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
