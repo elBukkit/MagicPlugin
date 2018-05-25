@@ -51,7 +51,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Skull;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
@@ -181,6 +181,7 @@ import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.SkinUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -207,6 +208,8 @@ public class MagicController implements MageController {
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
         this.logger = plugin.getLogger();
+
+        SkinUtils.initialize(plugin);
 
         configFolder = plugin.getDataFolder();
         configFolder.mkdirs();
@@ -5259,13 +5262,13 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public void setSkull(Block block, String ownerName) {
-        BlockState blockState = block.getState();
-        if (blockState instanceof org.bukkit.block.Skull) {
-            org.bukkit.block.Skull skullBlock = (org.bukkit.block.Skull)blockState;
-            DeprecatedUtils.setOwner(skullBlock, ownerName);
-            blockState.update();
-        }
+    public void setSkullOwner(Skull skull, String ownerName) {
+        DeprecatedUtils.setOwner(skull, ownerName);
+    }
+
+    @Override
+    public void setSkullOwner(Skull skull, UUID uuid) {
+        DeprecatedUtils.setOwner(skull, uuid);
     }
 
     @Override
@@ -5283,6 +5286,26 @@ public class MagicController implements MageController {
         if (meta instanceof SkullMeta && ownerName != null) {
             SkullMeta skullData = (SkullMeta)meta;
             DeprecatedUtils.setOwner(skullData, ownerName);
+        }
+        skull.setItemMeta(meta);
+        return skull;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getSkull(UUID uuid, String itemName) {
+        MaterialAndData skullType = skullItems.get(EntityType.PLAYER);
+        if (skullType == null) {
+            return new ItemStack(Material.AIR);
+        }
+        ItemStack skull = skullType.getItemStack(1);
+        ItemMeta meta = skull.getItemMeta();
+        if (itemName != null) {
+            meta.setDisplayName(itemName);
+        }
+        if (meta instanceof SkullMeta && uuid != null) {
+            SkullMeta skullData = (SkullMeta)meta;
+            DeprecatedUtils.setOwner(skullData, uuid);
         }
         skull.setItemMeta(meta);
         return skull;

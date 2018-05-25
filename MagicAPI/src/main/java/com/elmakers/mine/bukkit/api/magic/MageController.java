@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
@@ -13,6 +14,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -419,7 +421,10 @@ public interface MageController {
     ItemStack getSkull(Entity entity, String itemName);
     @Nonnull
     ItemStack getSkull(String ownerName, String itemName);
-    void setSkull(Block block, String ownerName);
+    @Nonnull
+    ItemStack getSkull(UUID uuid, String itemName);
+    void setSkullOwner(Skull skull, String ownerName);
+    void setSkullOwner(Skull block, UUID uuid);
     @Nonnull
     ItemStack getURLSkull(String url);
     void checkResourcePack(CommandSender sender);
