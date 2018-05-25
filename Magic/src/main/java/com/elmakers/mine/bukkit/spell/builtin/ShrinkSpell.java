@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,6 +17,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
@@ -140,18 +143,28 @@ public class ShrinkSpell extends BlockSpell
 
 
     protected void dropHead(MageController controller, Entity entity, String itemName) {
-        ItemStack shrunkenHead = controller.getSkull(entity, itemName);
-        if (CompatibilityUtils.isEmpty(shrunkenHead)) return;
-        Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
+        controller.getSkull(entity, itemName, new ItemUpdatedCallback() {
+            @Override
+            public void updated(@Nullable ItemStack itemStack) {
+                if (!CompatibilityUtils.isEmpty(itemStack)) {
+                    Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
+                    location.getWorld().dropItemNaturally(location, itemStack);
+                }
+            }
+        });
     }
 
     protected void dropHead(MageController controller, Location location, String ownerName, String itemName) {
-        ItemStack shrunkenHead = controller.getSkull(ownerName, itemName);
-        if (CompatibilityUtils.isEmpty(shrunkenHead)) return;
-        location.setX(location.getX() + 0.5);
-        location.setY(location.getY() + 0.5);
-        location.setZ(location.getZ() + 0.5);
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
+        controller.getSkull(ownerName, itemName, new ItemUpdatedCallback() {
+            @Override
+            public void updated(@Nullable ItemStack itemStack) {
+                if (!CompatibilityUtils.isEmpty(itemStack)) {
+                    location.setX(location.getX() + 0.5);
+                    location.setY(location.getY() + 0.5);
+                    location.setZ(location.getZ() + 0.5);
+                    location.getWorld().dropItemNaturally(location, itemStack);
+                }
+            }
+        });
     }
 }

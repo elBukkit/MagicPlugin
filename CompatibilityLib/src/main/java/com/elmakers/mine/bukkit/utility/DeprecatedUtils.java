@@ -130,7 +130,7 @@ public class DeprecatedUtils {
         banner.setBaseColor(color);
     }
 
-    public static void setSkullOwner(final ItemStack itemStack, String ownerName) {
+    public static void setSkullOwner(final ItemStack itemStack, String ownerName, final SkullLoadedCallback callback) {
         SkinUtils.fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
             @Override
             public void result(SkinUtils.ProfileResponse response) {
@@ -142,11 +142,14 @@ public class DeprecatedUtils {
                         itemStack.setItemMeta(meta);
                     }
                 }
+                if (callback != null) {
+                    callback.updated(itemStack);
+                }
             }
         });
     }
 
-    public static void setSkullOwner(final ItemStack itemStack, UUID ownerUUID) {
+    public static void setSkullOwner(final ItemStack itemStack, UUID ownerUUID, final SkullLoadedCallback callback) {
         SkinUtils.fetchProfile(ownerUUID, new SkinUtils.ProfileCallback() {
             @Override
             public void result(SkinUtils.ProfileResponse response) {
@@ -157,6 +160,9 @@ public class DeprecatedUtils {
                         InventoryUtils.setSkullProfile(meta, gameProfile);
                         itemStack.setItemMeta(meta);
                     }
+                }
+                if (callback != null) {
+                    callback.updated(itemStack);
                 }
             }
         });

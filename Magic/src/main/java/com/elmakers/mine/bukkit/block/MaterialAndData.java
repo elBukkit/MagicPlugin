@@ -621,7 +621,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     InventoryUtils.setSkullProfile(skullMeta, ((BlockSkull)extraData).profile);
                     stack.setItemMeta(meta);
                 } else if (skullData.playerName != null) {
-                    DeprecatedUtils.setSkullOwner(stack, skullData.playerName);
+                    // TODO: Need a way to call an ItemUpdated callback from here?
+                    DeprecatedUtils.setSkullOwner(stack, skullData.playerName, null);
                 }
             }
         } else if (DefaultMaterials.isBanner(material)) {

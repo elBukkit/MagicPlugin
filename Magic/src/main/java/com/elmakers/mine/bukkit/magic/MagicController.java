@@ -95,6 +95,7 @@ import com.elmakers.mine.bukkit.api.event.LoadEvent;
 import com.elmakers.mine.bukkit.api.event.PreLoadEvent;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -181,6 +182,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
+import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -5272,7 +5274,44 @@ public class MagicController implements MageController {
 
     @Override
     @Nonnull
+    @Deprecated
     public ItemStack getSkull(String ownerName, String itemName) {
+        return getSkull(ownerName, itemName, null);
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getSkull(String ownerName, String itemName, final ItemUpdatedCallback callback) {
+        MaterialAndData skullType = skullItems.get(EntityType.PLAYER);
+        if (skullType == null) {
+            ItemStack air = new ItemStack(Material.AIR);
+            if (callback != null) {
+                callback.updated(air);
+            }
+            return air;
+        }
+        ItemStack skull = skullType.getItemStack(1);
+        ItemMeta meta = skull.getItemMeta();
+        if (itemName != null) {
+            meta.setDisplayName(itemName);
+        }
+        skull.setItemMeta(meta);
+        SkullLoadedCallback skullCallback = null;
+        if (callback != null) {
+            skullCallback = new SkullLoadedCallback() {
+                @Override
+                public void updated(ItemStack itemStack) {
+                    callback.updated(itemStack);
+                }
+            };
+        }
+        DeprecatedUtils.setSkullOwner(skull, ownerName, skullCallback);
+        return skull;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getSkull(UUID uuid, String itemName, ItemUpdatedCallback callback) {
         MaterialAndData skullType = skullItems.get(EntityType.PLAYER);
         if (skullType == null) {
             return new ItemStack(Material.AIR);
@@ -5283,13 +5322,24 @@ public class MagicController implements MageController {
             meta.setDisplayName(itemName);
         }
         skull.setItemMeta(meta);
-        DeprecatedUtils.setSkullOwner(skull, ownerName);
+
+        SkullLoadedCallback skullCallback = null;
+        if (callback != null) {
+            skullCallback = new SkullLoadedCallback() {
+                @Override
+                public void updated(ItemStack itemStack) {
+                    callback.updated(itemStack);
+                }
+            };
+        }
+        DeprecatedUtils.setSkullOwner(skull, uuid, skullCallback);
         return skull;
     }
 
+
     @Override
     @Nonnull
-    public ItemStack getSkull(UUID uuid, String itemName) {
+    public ItemStack getSkull(Player player, String itemName) {
         MaterialAndData skullType = skullItems.get(EntityType.PLAYER);
         if (skullType == null) {
             return new ItemStack(Material.AIR);
@@ -5300,20 +5350,34 @@ public class MagicController implements MageController {
             meta.setDisplayName(itemName);
         }
         skull.setItemMeta(meta);
-        DeprecatedUtils.setSkullOwner(skull, uuid);
+        DeprecatedUtils.setSkullOwner(skull, player.getName(), null);
         return skull;
     }
 
     @Override
     @Nonnull
+    @Deprecated
     public ItemStack getSkull(Entity entity, String itemName) {
+        if (entity instanceof Player) {
+            return getSkull((Player)entity, itemName);
+        }
+        return getSkull(entity, itemName, null);
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getSkull(Entity entity, String itemName, ItemUpdatedCallback callback) {
         String ownerName = null;
         MaterialAndData skullType = skullItems.get(entity.getType());
         if (skullType == null) {
             ownerName = getMobSkin(entity.getType());
             skullType = skullItems.get(EntityType.PLAYER);
             if (skullType == null || ownerName == null) {
-                return new ItemStack(Material.AIR);
+                ItemStack air = new ItemStack(Material.AIR);
+                if (callback != null) {
+                    callback.updated(air);
+                }
+                return air;
             }
         }
         if (entity instanceof Player) {
@@ -5327,7 +5391,18 @@ public class MagicController implements MageController {
         }
         skull.setItemMeta(meta);
         if (ownerName != null) {
-            DeprecatedUtils.setSkullOwner(skull, ownerName);
+            SkullLoadedCallback skullCallback = null;
+            if (callback != null) {
+                skullCallback = new SkullLoadedCallback() {
+                    @Override
+                    public void updated(ItemStack itemStack) {
+                        callback.updated(itemStack);
+                    }
+                };
+            }
+            DeprecatedUtils.setSkullOwner(skull, ownerName, skullCallback);
+        } else if (callback != null) {
+            callback.updated(skull);
         }
         return skull;
     }

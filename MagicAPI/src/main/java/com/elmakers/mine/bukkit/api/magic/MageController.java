@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
@@ -418,11 +419,19 @@ public interface MageController {
     @Nullable
     Material getMobEgg(EntityType mobType);
     @Nonnull
+    @Deprecated
     ItemStack getSkull(Entity entity, String itemName);
     @Nonnull
+    ItemStack getSkull(Entity entity, String itemName, ItemUpdatedCallback callback);
+    @Nonnull
+    ItemStack getSkull(Player player, String itemName);
+    @Nonnull
+    @Deprecated
     ItemStack getSkull(String ownerName, String itemName);
     @Nonnull
-    ItemStack getSkull(UUID uuid, String itemName);
+    ItemStack getSkull(String ownerName, String itemName, ItemUpdatedCallback callback);
+    @Nonnull
+    ItemStack getSkull(UUID uuid, String itemName, ItemUpdatedCallback callback);
     void setSkullOwner(Skull skull, String ownerName);
     void setSkullOwner(Skull block, UUID uuid);
     @Nonnull

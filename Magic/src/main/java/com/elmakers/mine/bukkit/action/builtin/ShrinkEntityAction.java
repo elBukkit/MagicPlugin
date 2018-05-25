@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
@@ -17,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -102,9 +105,13 @@ public class ShrinkEntityAction extends DamageAction
     }
 
     protected void dropHead(CastContext context, Entity entity, String itemName) {
-        ItemStack shrunkenHead = context.getController().getSkull(entity, itemName);
-        Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
-        location.getWorld().dropItemNaturally(location, shrunkenHead);
+        context.getController().getSkull(entity, itemName, new ItemUpdatedCallback() {
+            @Override
+            public void updated(@Nullable ItemStack itemStack) {
+                Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
+                location.getWorld().dropItemNaturally(location, itemStack);
+            }
+        });
     }
 
     @Override

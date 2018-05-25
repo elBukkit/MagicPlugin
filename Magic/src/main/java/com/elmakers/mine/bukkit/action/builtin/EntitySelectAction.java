@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -25,6 +27,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -141,8 +144,13 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
             if (targetEntity == null) continue;
 
             String displayName = DeprecatedUtils.getDisplayName(targetEntity);
-            ItemStack skull = controller.getSkull(targetEntity, displayName);
-            displayInventory.setItem(entry.getKey(), skull);
+            final Integer slot = entry.getKey();
+            ItemStack skull = controller.getSkull(targetEntity, displayName, new ItemUpdatedCallback() {
+                @Override
+                public void updated(@Nullable ItemStack itemStack) {
+                    displayInventory.setItem(slot, itemStack);
+                }
+            });
         }
         active = true;
         mage.activateGUI(this, displayInventory);
