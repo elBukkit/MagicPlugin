@@ -69,7 +69,6 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -5283,11 +5282,8 @@ public class MagicController implements MageController {
         if (itemName != null) {
             meta.setDisplayName(itemName);
         }
-        if (meta instanceof SkullMeta && ownerName != null) {
-            SkullMeta skullData = (SkullMeta)meta;
-            DeprecatedUtils.setOwner(skullData, ownerName);
-        }
         skull.setItemMeta(meta);
+        DeprecatedUtils.setSkullOwner(skull, ownerName);
         return skull;
     }
 
@@ -5303,11 +5299,8 @@ public class MagicController implements MageController {
         if (itemName != null) {
             meta.setDisplayName(itemName);
         }
-        if (meta instanceof SkullMeta && uuid != null) {
-            SkullMeta skullData = (SkullMeta)meta;
-            DeprecatedUtils.setOwner(skullData, uuid);
-        }
         skull.setItemMeta(meta);
+        DeprecatedUtils.setSkullOwner(skull, uuid);
         return skull;
     }
 
@@ -5332,11 +5325,8 @@ public class MagicController implements MageController {
         if (itemName != null) {
             meta.setDisplayName(itemName);
         }
-        if (meta instanceof SkullMeta && ownerName != null) {
-            SkullMeta skullData = (SkullMeta)meta;
-            DeprecatedUtils.setOwner(skullData, ownerName);
-        }
         skull.setItemMeta(meta);
+        DeprecatedUtils.setSkullOwner(skull, ownerName);
         return skull;
     }
 

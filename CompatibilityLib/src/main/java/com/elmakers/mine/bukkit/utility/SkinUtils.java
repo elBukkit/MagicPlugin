@@ -441,7 +441,9 @@ public class SkinUtils extends NMSUtils {
                     return;
                 }
 
-                plugin.getLogger().info("Fetching profile for " + uuid);
+                if (DEBUG) {
+                    plugin.getLogger().info("Fetching profile for " + uuid);
+                }
                 try {
                     String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
                     if (profileJSON.isEmpty()) {

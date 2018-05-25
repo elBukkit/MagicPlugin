@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -12,7 +14,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
@@ -96,6 +100,10 @@ public class DeprecatedUtils {
         return Bukkit.getPlayer(name);
     }
 
+    public static Player getPlayerExact(String name) {
+        return Bukkit.getPlayerExact(name);
+    }
+
     public static void setData(Block block, byte data) {
         // @deprecated Magic value
         block.setData(data);
@@ -120,12 +128,62 @@ public class DeprecatedUtils {
         banner.setBaseColor(color);
     }
 
-    public static void setOwner(SkullMeta skull, String ownerName) {
-        skull.setOwner(ownerName);
+    public static void setSkullOwner(final ItemStack itemStack, String ownerName) {
+        SkinUtils.fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
+            @Override
+            public void result(SkinUtils.ProfileResponse response) {
+                if (response != null) {
+                    Object gameProfile = response.getGameProfile();
+                    ItemMeta meta = itemStack.getItemMeta();
+                    if (meta instanceof SkullMeta) {
+                        InventoryUtils.setSkullProfile(meta, gameProfile);
+                        itemStack.setItemMeta(meta);
+                    }
+                }
+            }
+        });
     }
 
-    public static void setOwner(Skull skull, String ownerName) {
-        skull.setOwner(ownerName);
+    public static void setSkullOwner(final ItemStack itemStack, UUID ownerUUID) {
+        SkinUtils.fetchProfile(ownerUUID, new SkinUtils.ProfileCallback() {
+            @Override
+            public void result(SkinUtils.ProfileResponse response) {
+                if (response != null) {
+                    Object gameProfile = response.getGameProfile();
+                    ItemMeta meta = itemStack.getItemMeta();
+                    if (meta instanceof SkullMeta) {
+                        InventoryUtils.setSkullProfile(meta, gameProfile);
+                        itemStack.setItemMeta(meta);
+                    }
+                }
+            }
+        });
+    }
+
+    public static void setOwner(final Skull skull, UUID uuid) {
+        SkinUtils.fetchProfile(uuid, new SkinUtils.ProfileCallback() {
+            @Override
+            public void result(SkinUtils.ProfileResponse response) {
+                if (response != null) {
+                    Object gameProfile = response.getGameProfile();
+                    InventoryUtils.setSkullProfile(skull, gameProfile);
+                }
+                skull.update(true, false);
+            }
+        });
+    }
+
+    public static void setOwner(final Skull skull, String ownerName) {
+        SkinUtils.fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
+            @Override
+            public void result(SkinUtils.ProfileResponse response) {
+                if (response != null) {
+                    Object gameProfile = response.getGameProfile();
+                    InventoryUtils.setSkullProfile(skull, gameProfile);
+                }
+                skull.update(true, false);
+            }
+        });
     }
 
     public static void showPlayer(Plugin plugin, Player toPlayer, Player showPlayer) {
