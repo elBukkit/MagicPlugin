@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.util.UUID;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -80,7 +81,8 @@ public class DeprecatedUtils {
 
     public static String getName(EntityType entityType) {
         // @deprecated Magic value
-        return entityType.getName();
+        String name = entityType.getName();
+        return WordUtils.capitalize(name);
     }
 
     public static String getDisplayName(Entity entity) {
