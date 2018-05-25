@@ -363,12 +363,11 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                 SkinUtils.fetchProfile(playerName, new SkinUtils.ProfileCallback() {
                     @Override
                     public void result(SkinUtils.ProfileResponse response) {
-                        if (response == null) {
+                        url = response == null ? null : response.getSkinURL();
+                        if (url == null) {
                             enabled = false;
-                        } else {
-                            url = response.getSkinURL();
-                            controller.save();
                         }
+                        controller.save();
                         loading = false;
                     }
                 });

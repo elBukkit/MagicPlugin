@@ -157,6 +157,22 @@ public class SkinUtils extends NMSUtils {
         }
         return gson;
     }
+
+    public static String getTextureURL(String texturesJson) {
+        String url = null;
+        JsonElement element = new JsonParser().parse(texturesJson);
+        if (element != null && element.isJsonObject()) {
+            JsonObject object = element.getAsJsonObject();
+            JsonObject texturesObject = object.getAsJsonObject("textures");
+            if (texturesObject != null && texturesObject.has("SKIN")) {
+                JsonObject skin = texturesObject.getAsJsonObject("SKIN");
+                if (skin != null && skin.has("url")) {
+                    url = skin.get("url").getAsString();
+                }
+            }
+        }
+        return url;
+    }
     
     public static String getProfileURL(Object profile)
     {
@@ -173,18 +189,7 @@ public class SkinUtils extends NMSUtils {
                 Object textureProperty = textures.iterator().next();
                 String texture = (String)class_GameProfileProperty_value.get(textureProperty);
                 String decoded = Base64Coder.decodeString(texture);
-
-                JsonElement element = new JsonParser().parse(decoded);
-                if (element != null && element.isJsonObject()) {
-                    JsonObject object = element.getAsJsonObject();
-                    JsonObject texturesObject = object.getAsJsonObject("textures");
-                    if (texturesObject != null && texturesObject.has("SKIN")) {
-                        JsonObject skin = texturesObject.getAsJsonObject("SKIN");
-                        if (skin != null && skin.has("url")) {
-                            url = skin.get("url").getAsString();
-                        }
-                    }
-                }
+                url = getTextureURL(decoded);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -240,21 +245,26 @@ public class SkinUtils extends NMSUtils {
         return response.toString();
     }
     
-    private static String parseBetween(String s, String startToken, String endToken) {
-        int start = s.indexOf(startToken);
-        if (start < 0) {
-            return null;
-        }
-        s = s.substring(start + startToken.length());
-        int end = s.indexOf(endToken);
-        if (end < 0) {
-            return null;
-        }
-        return s.substring(0, end);
-    }
-    
     private static void engageHoldoff() {
         holdoff = 10 * 60000;
+    }
+
+    private static void synchronizeCallback(final UUIDCallback callback, final UUID uuid) {
+        Bukkit.getScheduler().runTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                callback.result(uuid);
+            }
+        });
+    }
+
+    private static void synchronizeCallback(final ProfileCallback callback, final ProfileResponse response) {
+        Bukkit.getScheduler().runTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                callback.result(response);
+            }
+        });
     }
 
     public static void fetchUUID(final String playerName, final UUIDCallback callback) {
@@ -319,7 +329,7 @@ public class SkinUtils extends NMSUtils {
                         if (uuidJSON.isEmpty()) {
                             engageHoldoff();
                             if (DEBUG) plugin.getLogger().warning("Got empty UUID JSON for " + playerName);
-                            callback.result(null);
+                            synchronizeCallback(callback, null);
                             return;
                         }
 
@@ -331,7 +341,7 @@ public class SkinUtils extends NMSUtils {
                         if (uuidString == null) {
                             engageHoldoff();
                             if (DEBUG) plugin.getLogger().warning("Failed to parse UUID JSON for " + playerName);
-                            callback.result(null);
+                            synchronizeCallback(callback, null);
                             return;
                         }
                         if (DEBUG) plugin.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
@@ -355,7 +365,7 @@ public class SkinUtils extends NMSUtils {
                     uuid = null;
                 }
 
-                callback.result(uuid);
+                synchronizeCallback(callback, uuid);
             }
          }, holdoff);
     }
@@ -437,7 +447,7 @@ public class SkinUtils extends NMSUtils {
                     synchronized (responseCache) {
                         responseCache.put(uuid, fromCache);
                     }
-                    callback.result(fromCache);
+                    synchronizeCallback(callback, fromCache);
                     return;
                 }
 
@@ -447,7 +457,7 @@ public class SkinUtils extends NMSUtils {
                 try {
                     String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
                     if (profileJSON.isEmpty()) {
-                        callback.result(null);
+                        synchronizeCallback(callback, null);
                         engageHoldoff();
                         if (DEBUG) plugin.getLogger().warning("Failed to fetch profile JSON for " + uuid);
                         return;
@@ -455,7 +465,7 @@ public class SkinUtils extends NMSUtils {
                     if (DEBUG) plugin.getLogger().info("Got profile: " + profileJSON);
                     JsonElement element = new JsonParser().parse(profileJSON);
                     if (element == null || !element.isJsonObject()) {
-                        callback.result(null);
+                        synchronizeCallback(callback, null);
                         engageHoldoff();
                         if (DEBUG) plugin.getLogger().warning("Failed to parse profile JSON for " + uuid);
                         return;
@@ -478,20 +488,16 @@ public class SkinUtils extends NMSUtils {
                     }
                     
                     if (encodedTextures == null) {
-                        callback.result(null);
+                        synchronizeCallback(callback, null);
                         engageHoldoff();
                         if (DEBUG) plugin.getLogger().warning("Failed to find textures in profile JSON");
                         return;
                     }
                     String decodedTextures = Base64Coder.decodeString(encodedTextures);
                     if (DEBUG) plugin.getLogger().info("Decoded textures: " + decodedTextures);
-                    String skinURL = parseBetween(decodedTextures, "\"url\":\"", "\"");
-                    if (skinURL == null) {
-                        callback.result(null);
-                        engageHoldoff();
-                        if (DEBUG) plugin.getLogger().warning("Failed to parse textures JSON");
-                        return;
-                    }
+                    String skinURL = getTextureURL(decodedTextures);
+
+                    // A null skin URL here is normal if the player has no skin.
                     if (DEBUG) plugin.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
                     ProfileResponse response = new ProfileResponse(uuid, profileJson.get("name").getAsString(), skinURL, profileJSON);
                     synchronized (responseCache) {
@@ -500,7 +506,7 @@ public class SkinUtils extends NMSUtils {
                     YamlConfiguration saveToCache = new YamlConfiguration();
                     response.save(saveToCache);
                     saveToCache.save(playerCache);
-                    callback.result(response);
+                    synchronizeCallback(callback, response);
                     holdoff = 0;
                 } catch (Exception ex) {
                     if (DEBUG) {
@@ -509,7 +515,7 @@ public class SkinUtils extends NMSUtils {
                         plugin.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid);
                     }
                     engageHoldoff();
-                    callback.result(null);
+                    synchronizeCallback(callback, null);
                 }
             }
         }, holdoff);
