@@ -5326,7 +5326,9 @@ public class MagicController implements MageController {
             meta.setDisplayName(itemName);
         }
         skull.setItemMeta(meta);
-        DeprecatedUtils.setSkullOwner(skull, ownerName);
+        if (ownerName != null) {
+            DeprecatedUtils.setSkullOwner(skull, ownerName);
+        }
         return skull;
     }
 
