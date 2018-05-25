@@ -145,7 +145,7 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
 
             String displayName = DeprecatedUtils.getDisplayName(targetEntity);
             final Integer slot = entry.getKey();
-            ItemStack skull = controller.getSkull(targetEntity, displayName, new ItemUpdatedCallback() {
+            controller.getSkull(targetEntity, displayName, new ItemUpdatedCallback() {
                 @Override
                 public void updated(@Nullable ItemStack itemStack) {
                     displayInventory.setItem(slot, itemStack);
