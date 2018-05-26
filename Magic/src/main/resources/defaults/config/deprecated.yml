@@ -15,8 +15,6 @@ activate_holotext_range: 0
 # These hacks should not be required in 1.8 and up
 # This enables the item drag event interceptor
 enable_custom_item_hacks: false
-# This enables wands ejecting themselves in creative mode
-enable_creative_mode_ejecting: false
 
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
 # wand_item_enchantable: wood_sword

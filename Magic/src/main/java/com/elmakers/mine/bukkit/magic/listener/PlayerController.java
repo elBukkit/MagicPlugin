@@ -59,7 +59,6 @@ import com.elmakers.mine.bukkit.wand.Wand;
 public class PlayerController implements Listener {
     private final MagicController controller;
     private int clickCooldown = 150;
-    private boolean enableCreativeModeEjecting = true;
     private MaterialAndData enchantBlockMaterial;
     private String enchantClickSpell = "spellshop";
     private String enchantSneakClickSpell = "upgrades";
@@ -74,7 +73,6 @@ public class PlayerController implements Listener {
 
     public void loadProperties(ConfigurationSection properties) {
         clickCooldown = properties.getInt("click_cooldown", 0);
-        enableCreativeModeEjecting = properties.getBoolean("enable_creative_mode_ejecting", false);
         enchantBlockMaterial = new MaterialAndData(properties.getString("enchant_block", "enchantment_table"));
         enchantClickSpell = properties.getString("enchant_click");
         enchantSneakClickSpell = properties.getString("enchant_sneak_click");
@@ -663,30 +661,12 @@ public class PlayerController implements Listener {
     {
         if (event.getNewGameMode() == GameMode.CREATIVE) {
             Player player = event.getPlayer();
+            if (!player.isOnline()) return;
+
             Mage mage = controller.getMage(player);
             com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
             if (activeWand != null) {
                 activeWand.closeInventory();
-            }
-
-            if (enableCreativeModeEjecting) {
-                boolean ejected = false;
-                if (activeWand != null) {
-                    activeWand.deactivate();
-                }
-                Inventory inventory = player.getInventory();
-                ItemStack[] contents = inventory.getContents();
-                for (int i = 0; i < contents.length; i++) {
-                    ItemStack item = contents[i];
-                    if (Wand.isWand(item)) {
-                        ejected = true;
-                        inventory.setItem(i, null);
-                        player.getWorld().dropItemNaturally(player.getLocation(), item);
-                    }
-                }
-                if (ejected) {
-                    mage.sendMessage("Ejecting wands, creative mode will destroy them!");
-                }
             }
         }
     }
@@ -721,12 +701,6 @@ public class PlayerController implements Listener {
         }
 
         boolean isWand = Wand.isWand(pickup);
-
-        // Creative mode inventory hacky work-around :\
-        if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand && enableCreativeModeEjecting) {
-            event.setCancelled(true);
-            return;
-        }
 
         // Check to see if this is an item we might undo, and remove it from undo
         UndoList undoList = controller.getEntityUndo(item);
