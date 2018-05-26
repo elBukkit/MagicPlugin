@@ -102,7 +102,7 @@ public class FreezeAction extends BaseSpellAction
                 material = Material.AIR;
             }
         }
-        if (!context.isDestructible(block))
+        if (!context.isDestructible(block) || !context.hasBuildPermission(block))
         {
             return SpellResult.NO_TARGET;
         }

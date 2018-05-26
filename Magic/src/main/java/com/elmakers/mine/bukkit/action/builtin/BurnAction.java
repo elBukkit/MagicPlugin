@@ -33,7 +33,7 @@ public class BurnAction extends BaseSpellAction
         {
             return SpellResult.NO_TARGET;
         }
-        if (!context.isDestructible(block))
+        if (!context.isDestructible(block) || !context.hasBuildPermission(block))
         {
             return SpellResult.NO_TARGET;
         }

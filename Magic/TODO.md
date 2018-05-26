@@ -3,6 +3,8 @@
 ## Hot Issues
           
  - World save and unload need to undo all spells that _affected that world_
+ 
+ - Need to block on multiple simultaneous loads of the same UUID or game profile
           
  - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
  
@@ -18,9 +20,7 @@
    - Can't find a pattern. Tried world save... don't know. :(
    
  - Switching between wands restores mana (but only if they have different active spells..?)
- 
- - Flamethrower spell can now build in a no-build region?
- 
+  
  - Check Blizzard spell: 
     Been messing around with a new blizzard spell, essentially just playing with meteor. I'm noticing that some of the 
     additional random casts after are coming from the caster instead of from the sky, the initial cast comes from the air, 
