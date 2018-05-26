@@ -2,6 +2,8 @@
 
 ## Hot Issues
           
+ - World save and unload need to undo all spells that _affected that world_
+          
  - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
  
  - Still need some mechanism for automatically applying version-specific configs.
@@ -14,6 +16,19 @@
    - Nathanwolf auto at dev spawn has some permanent blocks now
    - Random blocks show up in mob arena sometimes (web, broken floor)
    - Can't find a pattern. Tried world save... don't know. :(
+   
+ - Switching between wands restores mana (but only if they have different active spells..?)
+ 
+ - Flamethrower spell can now build in a no-build region?
+ 
+ - Check Blizzard spell: 
+    Been messing around with a new blizzard spell, essentially just playing with meteor. I'm noticing that some of the 
+    additional random casts after are coming from the caster instead of from the sky, the initial cast comes from the air, 
+    then its about 50/50 from caster or air above target. Let me know if you want to see the spell, its a bit long for the channel.
+   
+ - when multiple players are hit by Flashbang spell, the effects are played successively on each player hit and not simultaneously. 
+   That means that, for instance, if you fire flashbang on a player near to you and you're also hit by it, 
+   the effects will firstly play on the target, and once it's done, they will play to you (so, several seconds after detonation).
     
  - Error when breaking paintings: https://pastebin.com/Hwp9tPG4
    [17:07:06 ERROR]: "Silently" catching entity tracking error.
