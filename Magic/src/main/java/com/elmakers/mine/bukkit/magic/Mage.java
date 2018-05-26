@@ -262,7 +262,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Set<Spell> getActiveSpells() {
-        return new HashSet<Spell>(activeSpells);
+        return new HashSet<>(activeSpells);
     }
 
     @Nullable
@@ -963,8 +963,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null) {
             playerName = player.getName();
             this.playerRef = new WeakReference<>(player);
-            this.entityRef = new WeakReference<Entity>(player);
-            this.commandSenderRef = new WeakReference<CommandSender>(player);
+            this.entityRef = new WeakReference<>(player);
+            this.commandSenderRef = new WeakReference<>(player);
             hasEntity = true;
         } else {
             this.playerRef.clear();
@@ -1992,7 +1992,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Collection<Spell> getSpells() {
-        List<Spell> export = new ArrayList<Spell>(spells.values());
+        List<Spell> export = new ArrayList<>(spells.values());
         return export;
     }
 

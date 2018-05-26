@@ -437,7 +437,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.free = defaults.free;
             this.costOverride = defaults.costOverride;
             this.effects = defaults.effects;
-            this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<String>();
+            this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
             if (placeholder) {

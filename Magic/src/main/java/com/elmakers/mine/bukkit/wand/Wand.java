@@ -4717,7 +4717,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     @Deprecated
     public boolean configure(Map<String, Object> properties) {
-        Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
+        Map<Object, Object> convertedProperties = new HashMap<>(properties);
         configure(ConfigurationUtils.toConfigurationSection(convertedProperties));
         return true;
     }
@@ -5162,7 +5162,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public Map<String, String> getOverrides()
     {
-        return castOverrides == null ? new HashMap<String, String>() : new HashMap<>(castOverrides);
+        return castOverrides == null ? new HashMap<>() : new HashMap<>(castOverrides);
     }
 
     @Override
@@ -5508,7 +5508,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     @Deprecated
     public boolean upgrade(Map<String, Object> properties) {
-        Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
+        Map<Object, Object> convertedProperties = new HashMap<>(properties);
         return upgrade(ConfigurationUtils.toConfigurationSection(convertedProperties));
     }
 

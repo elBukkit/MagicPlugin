@@ -220,7 +220,7 @@ public class Target implements Comparable<Target>
         this.source = sourceLocation;
         this.mage = mage;
         if (mage != null) {
-            this.entityRef = new WeakReference<Entity>(mage.getLivingEntity());
+            this.entityRef = new WeakReference<>(mage.getLivingEntity());
         }
         if (mage != null) this.location = mage.getEyeLocation();
         calculateScore();
@@ -236,7 +236,7 @@ public class Target implements Comparable<Target>
         this.mage = mage;
         this.playerWeight = playerWeight;
         if (mage != null) {
-            this.entityRef = new WeakReference<Entity>(mage.getLivingEntity());
+            this.entityRef = new WeakReference<>(mage.getLivingEntity());
         }
         if (mage != null) this.location = mage.getEyeLocation();
         calculateScore();

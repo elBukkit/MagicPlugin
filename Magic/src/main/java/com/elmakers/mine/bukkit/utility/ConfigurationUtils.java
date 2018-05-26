@@ -684,7 +684,7 @@ public class ConfigurationUtils extends ConfigUtils {
         } else if (o instanceof List) {
             return (List<Object>) o;
         } else if (o instanceof String) {
-            return new ArrayList<Object>(Arrays.asList(StringUtils.split((String) o, ',')));
+            return new ArrayList<>(Arrays.asList(StringUtils.split((String) o, ',')));
         } else {
             List<Object> single = new ArrayList<>();
             single.add(o);
@@ -700,7 +700,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static List<String> getStringList(ConfigurationSection section, String path, List<String> def) {
         List<String> list = getStringList(section, path);
-        return list == null ? (def == null ? new ArrayList<String>() : def) : list;
+        return list == null ? (def == null ? new ArrayList<>() : def) : list;
     }
 
     @Nullable

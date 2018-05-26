@@ -2925,7 +2925,7 @@ public class MagicController implements MageController {
     protected void clear()
     {
         initialized = false;
-        Collection<Mage> saveMages = new ArrayList<Mage>(mages.values());
+        Collection<Mage> saveMages = new ArrayList<>(mages.values());
         for (Mage mage : saveMages)
         {
             playerQuit(mage);
@@ -3321,7 +3321,7 @@ public class MagicController implements MageController {
 
     @Override
     public Collection<com.elmakers.mine.bukkit.api.wand.LostWand> getLostWands() {
-        return new ArrayList<com.elmakers.mine.bukkit.api.wand.LostWand>(lostWands.values());
+        return new ArrayList<>(lostWands.values());
     }
 
     public Collection<Mage> getAutomata() {
@@ -3795,7 +3795,7 @@ public class MagicController implements MageController {
 
     @Override
     public Collection<com.elmakers.mine.bukkit.api.wand.WandTemplate> getWandTemplates() {
-        return new ArrayList<com.elmakers.mine.bukkit.api.wand.WandTemplate>(wandTemplates.values());
+        return new ArrayList<>(wandTemplates.values());
     }
 
     @Nullable

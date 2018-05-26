@@ -45,7 +45,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     // Public API
     @Override
     public List<com.elmakers.mine.bukkit.api.maps.URLMap> getAll() {
-        return new ArrayList<com.elmakers.mine.bukkit.api.maps.URLMap>(idMap.values());
+        return new ArrayList<>(idMap.values());
     }
 
     public void loadConfiguration() {

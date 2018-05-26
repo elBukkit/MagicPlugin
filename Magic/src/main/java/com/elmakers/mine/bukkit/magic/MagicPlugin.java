@@ -394,7 +394,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     @Nullable
     @Override
     public ItemStack createItem(String magicKey, com.elmakers.mine.bukkit.api.magic.Mage mage) {
-        ItemStack itemStack = null;
         if (controller == null) {
             getLogger().log(Level.WARNING, "Calling API before plugin is initialized");
             return null;
