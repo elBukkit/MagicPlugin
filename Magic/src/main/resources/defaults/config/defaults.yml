@@ -584,3 +584,6 @@ config_update_interval: 0
 # This can be used to restrict the use of certain actions.
 # Mainly intended for the sandbox configs.
 restricted_spell_actions: []
+
+# Set this to false to not drop any blocks if breaking a block that was magically modified
+drop_original_block: true

@@ -2621,10 +2621,9 @@ public class MagicController implements MageController {
         // Configure sub-controllers
         explosionController.loadProperties(properties);
         inventoryController.loadProperties(properties);
-        blockController.setUndoOnWorldSave(properties.getBoolean("undo_on_world_save", false));
-        blockController.setCreativeBreakFrequency(properties.getInt("prevent_creative_breaking", 0));
         entityController.loadProperties(properties);
         playerController.loadProperties(properties);
+        blockController.loadProperties(properties);
 
         // Set up other systems
         com.elmakers.mine.bukkit.effect.EffectPlayer.SOUNDS_ENABLED = soundsEnabled;

@@ -5,10 +5,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
@@ -27,6 +29,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -44,6 +47,7 @@ public class BlockController implements Listener {
     private final MagicController controller;
     private boolean undoOnWorldSave = false;
     private int creativeBreakFrequency = 0;
+    private boolean dropOriginalBlock = true;
 
     // This is used only for the BlockBurn event, in other cases we get a source block to check.
     static final List<BlockFace> blockBurnDirections = Arrays.asList(
@@ -56,12 +60,10 @@ public class BlockController implements Listener {
         this.controller = controller;
     }
 
-    public void setUndoOnWorldSave(boolean undo) {
-        this.undoOnWorldSave = undo;
-    }
-
-    public void setCreativeBreakFrequency(int frequency) {
-        this.creativeBreakFrequency = frequency;
+    public void loadProperties(ConfigurationSection properties) {
+        undoOnWorldSave = properties.getBoolean("undo_on_world_save", false);
+        creativeBreakFrequency = properties.getInt("prevent_creative_breaking", 0);
+        dropOriginalBlock = properties.getBoolean("drop_original_block", true);
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -102,7 +104,21 @@ public class BlockController implements Listener {
             if (undoList != null) {
                 if (!undoList.isConsumed()) {
                     event.setCancelled(true);
+                    Collection<ItemStack> items = null;
+                    if (dropOriginalBlock) {
+                        while (modifiedBlock.getPriorState() != null) {
+                            modifiedBlock = modifiedBlock.getPriorState();
+                        }
+                        modifiedBlock.modify(block);
+                        items = block.getDrops();
+                    }
                     block.setType(Material.AIR);
+                    if (items != null) {
+                        Location location = block.getLocation();
+                        for (ItemStack item : items) {
+                            location.getWorld().dropItemNaturally(location, item);
+                        }
+                    }
                 }
                 com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
             }
@@ -334,6 +350,27 @@ public class BlockController implements Listener {
             Mage mage = controller.getRegisteredMage(player);
             if (mage != null) {
                 controller.saveMage(mage, true);
+
+                if (undoOnWorldSave) {
+                    com.elmakers.mine.bukkit.api.block.UndoQueue queue = mage.getUndoQueue();
+                    if (queue != null) {
+                        int undone = queue.undoScheduled();
+                        if (undone > 0) {
+                            controller.info("Undid " + undone + " spells for " + player.getName() + " prior to save of world " + world.getName());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onWorldUnload(WorldUnloadEvent event) {
+        World world = event.getWorld();
+        Collection<Player> players = world.getPlayers();
+        for (Player player : players) {
+            Mage mage = controller.getRegisteredMage(player);
+            if (mage != null) {
 
                 if (undoOnWorldSave) {
                     com.elmakers.mine.bukkit.api.block.UndoQueue queue = mage.getUndoQueue();

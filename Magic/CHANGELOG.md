@@ -2,6 +2,8 @@
 
 # 7.5.4
 
+ - Add drop_original_block option, on by default, blocks now drop when breaking magically modified blocks
+
 # 7.5.3
 
  - Add /mtrait mob <mob> command to attach a magic mob profile to an NPC (Sentinel spellcasting)
