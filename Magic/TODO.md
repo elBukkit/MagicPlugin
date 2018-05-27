@@ -18,11 +18,7 @@
    - Nathanwolf auto at dev spawn has some permanent blocks now
    - Random blocks show up in mob arena sometimes (web, broken floor)
    - Can't find a pattern. Tried world save... don't know. :(
-   
- - Also, I think there's a bug with cooldown reduction on armour, I set it to 0.25 and it's reducing it by 0.2 but on a wand it reduces it by 0.25
-   
- - Switching between wands restores mana (but only if they have different active spells..?)
-  
+        
  - Check Blizzard spell: 
     Been messing around with a new blizzard spell, essentially just playing with meteor. I'm noticing that some of the 
     additional random casts after are coming from the caster instead of from the sky, the initial cast comes from the air, 

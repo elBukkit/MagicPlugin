@@ -3,6 +3,7 @@
 # 7.5.4
 
  - Add drop_original_block option, on by default, blocks now drop when breaking magically modified blocks
+ - Fix wand cost/cooldown reduction not respecting the max settings in config.yml
 
 # 7.5.3
 
