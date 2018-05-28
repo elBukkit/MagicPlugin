@@ -217,6 +217,9 @@ public class MageData {
     }
 
     public ConfigurationSection getProperties() {
+        if (properties == null) {
+            properties = new MemoryConfiguration();
+        }
         return properties;
     }
 
