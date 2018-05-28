@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -165,6 +167,7 @@ public class MobController implements Listener {
     public void onChunkUnload(ChunkUnloadEvent event) {
         Chunk chunk = event.getChunk();
         Collection<Mage> magicMobs = controller.getMobMages();
+        List<Entity> toRemove = null;
 
         for (Mage mage : magicMobs) {
             Entity entity = mage.getEntity();
@@ -177,7 +180,19 @@ public class MobController implements Listener {
             if (chunkZ != location.getBlockZ() >> 4 || chunkX != location.getBlockX() >> 4) continue;
 
             mage.sendDebugMessage(ChatColor.RED + "Despawned", 4);
-            entity.remove();
+
+            if (toRemove == null) {
+                toRemove = new ArrayList<>();
+            }
+            toRemove.add(entity);
+        }
+
+        // Someone on DBO reported getting a CME when entities were removed inline.
+        // I can't really see how that could happen, but I put a fix in anyway.
+        if (toRemove != null) {
+            for (Entity entity : toRemove) {
+                entity.remove();
+            }
         }
     }
 }
