@@ -12,6 +12,7 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
     private boolean enabled = false;
     private Method isOwnerMethod = null;
     private Method isProtectedMethod = null;
+    private boolean isPro = false;
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -23,27 +24,37 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 
     public void initialize(Plugin plugin) {
         if (enabled) {
+            String pluginName = "Lockette";
+            String apiClass = "org.yi.acru.bukkit.Lockette.Lockette";
             Plugin lockettePlugin = plugin.getServer().getPluginManager().getPlugin("Lockette");
+            if (lockettePlugin == null) {
+                lockettePlugin = plugin.getServer().getPluginManager().getPlugin("LockettePro");
+                if (lockettePlugin != null) {
+                    pluginName = "LockettePro";
+                    apiClass = "me.crafter.mc.lockettepro.LocketteProAPI";
+                    isPro = true;
+                }
+            }
             if (lockettePlugin != null)
             {
                 try {
-                    Class<?> locketteClass = Class.forName("org.yi.acru.bukkit.Lockette.Lockette");
-                    isOwnerMethod = locketteClass.getMethod("isOwner", Block.class, String.class);
+                    Class<?> locketteClass = Class.forName(apiClass);
+                    isOwnerMethod = locketteClass.getMethod("isOwner", Block.class, isPro ? Player.class : String.class);
                     isProtectedMethod = locketteClass.getMethod("isProtected", Block.class);
                 } catch (Throwable ex) {
                     ex.printStackTrace();
                 }
 
                 if (isOwnerMethod == null || isProtectedMethod == null) {
-                    plugin.getLogger().info("Lockette integration failed, will not integrate.");
+                    plugin.getLogger().info(pluginName + " integration failed, will not integrate.");
                 } else {
-                    plugin.getLogger().info("Lockette found, will check block protection.");
+                    plugin.getLogger().info(pluginName + " found, will check block protection.");
                 }
             } else {
-                plugin.getLogger().info("Lockette not found, will not integrate.");
+                plugin.getLogger().info("Lockette nor LockettePro found, will not integrate.");
             }
         } else {
-            plugin.getLogger().info("Lockette integration disabled");
+            plugin.getLogger().info("Lockette/LockettePro integration disabled");
         }
     }
 
@@ -64,7 +75,7 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
                     return !(Boolean)isProtectedMethod.invoke(null, block);
                 }
 
-                return (Boolean)isOwnerMethod.invoke(null, block, player.getName());
+                return (Boolean)isOwnerMethod.invoke(null, block, isPro ? player : player.getName());
             } catch (Throwable ex) {
                 ex.printStackTrace();
                 return false;

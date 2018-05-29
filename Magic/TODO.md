@@ -5,6 +5,8 @@
  - World save and unload need to undo all spells that _affected that world_
  
  - Need to block on multiple simultaneous loads of the same UUID or game profile
+ 
+ - Try mobs wearing player skulls (by name and by texture URL)
           
  - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
  

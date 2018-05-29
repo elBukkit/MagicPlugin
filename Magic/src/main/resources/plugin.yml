@@ -24,6 +24,8 @@ softdepend:
   - PlaceholderAPI
   - Skript
   - Citadel
+  - Lockette
+  - LockettePro
 loadbefore:
   - Scavenger
   - SilkSpawners
