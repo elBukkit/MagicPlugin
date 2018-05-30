@@ -1013,8 +1013,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         updateTemplateParameters();
 
         effects.clear();
-        if (node.contains("effects")) {
-            ConfigurationSection effectsNode = node.getConfigurationSection("effects");
+        ConfigurationSection effectsNode = node.getConfigurationSection("effects");
+        if (effectsNode != null) {
             Collection<String> effectKeys = effectsNode.getKeys(false);
             for (String effectKey : effectKeys) {
                 if (effectsNode.isString(effectKey)) {
@@ -1030,6 +1030,8 @@ public class BaseSpell implements MageSpell, Cloneable {
                     effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
                 }
             }
+        } else if (node.contains("effects")) {
+            controller.getLogger().warning("Invalid effects section in spell " + getKey() + ", did you forget to add cast: ?");
         }
     }
 

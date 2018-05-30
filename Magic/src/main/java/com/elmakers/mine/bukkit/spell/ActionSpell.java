@@ -228,6 +228,8 @@ public class ActionSpell extends BrushSpell
                     actions.put(actionKey, handler);
                 }
             }
+        } else if (template.contains("actions")) {
+            controller.getLogger().warning("Invalid actions configuration in spell " + getKey() + ", did you forget to add cast: ?");
         }
         undoable = template.getBoolean("undoable", undoable);
         requiresBreakPermission = template.getBoolean("require_break", requiresBreakPermission);
