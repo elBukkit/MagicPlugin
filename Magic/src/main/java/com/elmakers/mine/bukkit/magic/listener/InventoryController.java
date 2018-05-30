@@ -401,14 +401,19 @@ public class InventoryController implements Listener {
                     player.closeInventory();
                     String spellName = Wand.getSpell(droppedItem);
                     if (spellName != null && !activeWand.isManualQuickCastDisabled() && enableInventoryCasting) {
-                        Spell spell = mage.getSpell(spellName);
+                        final Spell spell = mage.getSpell(spellName);
                         if (spell != null) {
-                            activeWand.cast(spell);
-                            // Just in case a spell has levelled up... jeez!
-                            if (hotbar != null && slot != null)
-                            {
-                                droppedItem = hotbar.getItem(slot);
-                            }
+                            // Delay this one tick because cancelling this event is going to mean the spell icon
+                            // gets put back in the player inventory, and this can cause strange side effects with
+                            // spells levelling up, or spells with GUIs or other inventories.
+                            final Wand castWand = activeWand;
+                            controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(),
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        castWand.cast(spell);
+                                    }
+                                }, 1);
                         }
                     }
                     event.setCancelled(true);

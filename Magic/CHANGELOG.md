@@ -7,6 +7,7 @@
  - Add support for LockettePro
  - Don't allow spamming Blink up into the air
  - Fix strange behavior of Flash Bang when hitting multiple targets
+ - Fix exploits with certain spells (Stash, Workbench) quick-cast
 
 # 7.5.3
 
