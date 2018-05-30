@@ -9,7 +9,6 @@ blink:
     earns_sp: 2
     upgrade_required_path: student
     upgrade_required_casts: 40
-    cast_on_no_target: false
     actions:
         cast:
         - class: ChangeContext
