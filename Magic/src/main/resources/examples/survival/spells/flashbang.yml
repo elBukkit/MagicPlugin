@@ -16,32 +16,34 @@ flashbang:
           actions:
           - class: AreaOfEffect
             actions:
-            - class: PotionEffect
-            - class: Repeat
-              repeat: 5
+            - class: Asynchronous
               actions:
+              - class: PotionEffect
+              - class: Repeat
+                repeat: 5
+                actions:
+                - class: PlaySound
+                  sound: "magic.ringing"
+                  volume: 0.7
+                  radius: 0
+                - class: Delay
+                  delay: 700
               - class: PlaySound
                 sound: "magic.ringing"
-                volume: 0.7
+                volume: 0.5
                 radius: 0
               - class: Delay
                 delay: 700
-            - class: PlaySound
-              sound: "magic.ringing"
-              volume: 0.5
-              radius: 0
-            - class: Delay
-              delay: 700
-            - class: PlaySound
-              sound: "magic.ringing"
-              volume: 0.2
-              radius: 0
-            - class: Delay
-              delay: 700
-            - class: PlaySound
-              sound: "magic.ringing"
-              volume: 0.1
-              radius: 0
+              - class: PlaySound
+                sound: "magic.ringing"
+                volume: 0.2
+                radius: 0
+              - class: Delay
+                delay: 700
+              - class: PlaySound
+                sound: "magic.ringing"
+                volume: 0.1
+                radius: 0
     effects:
         cast:
         -  class: EffectSingle
