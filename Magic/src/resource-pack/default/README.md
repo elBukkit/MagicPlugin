@@ -12,6 +12,7 @@ https://github.com/elBukkit/MagicPlugin/wiki
 - 2D Artists: 
   - Dr00bles
   - Forrest Imel (https://www.unrealengine.com/marketplace/150-fantasy-spell-icons-pack)
+  - MutimEndymion
 - Sound Effects:
   - Dr00bles
   - S-Toad (Flute samples for Ocarina)
