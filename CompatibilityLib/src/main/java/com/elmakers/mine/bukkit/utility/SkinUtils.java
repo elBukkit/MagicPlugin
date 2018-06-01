@@ -34,6 +34,8 @@ public class SkinUtils extends NMSUtils {
     private static boolean DEBUG = false;
     private static final Map<UUID, ProfileResponse> responseCache = new HashMap<>();
     private static final Map<String, UUID> uuidCache = new HashMap<>();
+    private static final Map<String, Object> loadingUUIDs = new HashMap<>();
+    private static final Map<UUID, Object> loadingProfiles = new HashMap<>();
     
     public static class ProfileResponse {
         private final UUID uuid;
@@ -313,59 +315,77 @@ public class SkinUtils extends NMSUtils {
         Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
-                File cacheFolder = new File(plugin.getDataFolder(), "data/profiles");
-                if (!cacheFolder.exists()) {
-                    cacheFolder.mkdirs();
-                }
-
-                UUID uuid;
-                final File playerCache = new File(cacheFolder, playerName + ".yml");
-                try {
-                    if (playerCache.exists()) {
-                        YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
-                        uuid = UUID.fromString(config.getString("uuid"));
-                    } else {
-                        String uuidJSON = fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
-                        if (uuidJSON.isEmpty()) {
-                            engageHoldoff();
-                            if (DEBUG) plugin.getLogger().warning("Got empty UUID JSON for " + playerName);
-                            synchronizeCallback(callback, null);
-                            return;
-                        }
-
-                        String uuidString = null;
-                        JsonElement element = new JsonParser().parse(uuidJSON);
-                        if (element != null && element.isJsonObject()) {
-                            uuidString = element.getAsJsonObject().get("id").getAsString();
-                        }
-                        if (uuidString == null) {
-                            engageHoldoff();
-                            if (DEBUG) plugin.getLogger().warning("Failed to parse UUID JSON for " + playerName);
-                            synchronizeCallback(callback, null);
-                            return;
-                        }
-                        if (DEBUG) plugin.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
-                        uuid = UUID.fromString(addDashes(uuidString));
-
-                        YamlConfiguration config = new YamlConfiguration();
-                        config.set("uuid", uuid.toString());
-                        config.save(playerCache);
+                Object lock;
+                synchronized (loadingUUIDs) {
+                    lock = loadingUUIDs.get(playerName);
+                    if (lock == null) {
+                        lock = new Object();
+                        loadingUUIDs.put(playerName, lock);
                     }
-
+                }
+                synchronized (lock) {
+                    UUID cached;
                     synchronized (uuidCache) {
-                        uuidCache.put(playerName, uuid);
+                        cached = uuidCache.get(playerName);
                     }
-                } catch (Exception ex) {
-                    if (DEBUG) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName, ex);
-                    } else {
-                        plugin.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName);
+                    if (cached != null) {
+                        callback.result(cached);
+                        return;
                     }
-                    engageHoldoff();
-                    uuid = null;
-                }
+                    File cacheFolder = new File(plugin.getDataFolder(), "data/profiles");
+                    if (!cacheFolder.exists()) {
+                        cacheFolder.mkdirs();
+                    }
 
-                synchronizeCallback(callback, uuid);
+                    UUID uuid;
+                    final File playerCache = new File(cacheFolder, playerName + ".yml");
+                    try {
+                        if (playerCache.exists()) {
+                            YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
+                            uuid = UUID.fromString(config.getString("uuid"));
+                        } else {
+                            String uuidJSON = fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
+                            if (uuidJSON.isEmpty()) {
+                                engageHoldoff();
+                                if (DEBUG) plugin.getLogger().warning("Got empty UUID JSON for " + playerName);
+                                synchronizeCallback(callback, null);
+                                return;
+                            }
+
+                            String uuidString = null;
+                            JsonElement element = new JsonParser().parse(uuidJSON);
+                            if (element != null && element.isJsonObject()) {
+                                uuidString = element.getAsJsonObject().get("id").getAsString();
+                            }
+                            if (uuidString == null) {
+                                engageHoldoff();
+                                if (DEBUG) plugin.getLogger().warning("Failed to parse UUID JSON for " + playerName);
+                                synchronizeCallback(callback, null);
+                                return;
+                            }
+                            if (DEBUG) plugin.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
+                            uuid = UUID.fromString(addDashes(uuidString));
+
+                            YamlConfiguration config = new YamlConfiguration();
+                            config.set("uuid", uuid.toString());
+                            config.save(playerCache);
+                        }
+
+                        synchronized (uuidCache) {
+                            uuidCache.put(playerName, uuid);
+                        }
+                    } catch (Exception ex) {
+                        if (DEBUG) {
+                            plugin.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName, ex);
+                        } else {
+                            plugin.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName);
+                        }
+                        engageHoldoff();
+                        uuid = null;
+                    }
+
+                    synchronizeCallback(callback, uuid);
+                }
             }
          }, holdoff);
     }
@@ -436,86 +456,104 @@ public class SkinUtils extends NMSUtils {
         Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
-                File cacheFolder = new File(plugin.getDataFolder(), "data/profiles");
-                if (!cacheFolder.exists()) {
-                    cacheFolder.mkdirs();
+                Object lock;
+                synchronized (loadingUUIDs) {
+                    lock = loadingProfiles.get(uuid);
+                    if (lock == null) {
+                        lock = new Object();
+                        loadingProfiles.put(uuid, lock);
+                    }
                 }
-                final File playerCache = new File(cacheFolder, uuid + ".yml");
-                if (playerCache.exists()) {
-                    YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
-                    ProfileResponse fromCache = new ProfileResponse(config);
+                synchronized (lock) {
+                    ProfileResponse cached;
                     synchronized (responseCache) {
-                        responseCache.put(uuid, fromCache);
+                        cached = responseCache.get(uuid);
                     }
-                    synchronizeCallback(callback, fromCache);
-                    return;
-                }
-
-                if (DEBUG) {
-                    plugin.getLogger().info("Fetching profile for " + uuid);
-                }
-                try {
-                    String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
-                    if (profileJSON.isEmpty()) {
-                        synchronizeCallback(callback, null);
-                        engageHoldoff();
-                        if (DEBUG) plugin.getLogger().warning("Failed to fetch profile JSON for " + uuid);
+                    if (cached != null) {
+                        callback.result(cached);
                         return;
                     }
-                    if (DEBUG) plugin.getLogger().info("Got profile: " + profileJSON);
-                    JsonElement element = new JsonParser().parse(profileJSON);
-                    if (element == null || !element.isJsonObject()) {
-                        synchronizeCallback(callback, null);
-                        engageHoldoff();
-                        if (DEBUG) plugin.getLogger().warning("Failed to parse profile JSON for " + uuid);
+                    File cacheFolder = new File(plugin.getDataFolder(), "data/profiles");
+                    if (!cacheFolder.exists()) {
+                        cacheFolder.mkdirs();
+                    }
+                    final File playerCache = new File(cacheFolder, uuid + ".yml");
+                    if (playerCache.exists()) {
+                        YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
+                        ProfileResponse fromCache = new ProfileResponse(config);
+                        synchronized (responseCache) {
+                            responseCache.put(uuid, fromCache);
+                        }
+                        synchronizeCallback(callback, fromCache);
                         return;
                     }
 
-                    JsonObject profileJson = element.getAsJsonObject();
-                    JsonArray properties = profileJson.getAsJsonArray("properties");
-                    String encodedTextures = null;
-                    for (int i = 0; i < properties.size(); i++) {
-                        JsonElement property = properties.get(i);
-                        if (property.isJsonObject()) {
-                            JsonObject objectProperty = property.getAsJsonObject();
-                            if (objectProperty.has("name") && objectProperty.has("value")) {
-                                if (objectProperty.get("name").getAsString().equals("textures")) {
-                                    encodedTextures = objectProperty.get("value").getAsString();
-                                    break;
+                    if (DEBUG) {
+                        plugin.getLogger().info("Fetching profile for " + uuid);
+                    }
+                    try {
+                        String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
+                        if (profileJSON.isEmpty()) {
+                            synchronizeCallback(callback, null);
+                            engageHoldoff();
+                            if (DEBUG) plugin.getLogger().warning("Failed to fetch profile JSON for " + uuid);
+                            return;
+                        }
+                        if (DEBUG) plugin.getLogger().info("Got profile: " + profileJSON);
+                        JsonElement element = new JsonParser().parse(profileJSON);
+                        if (element == null || !element.isJsonObject()) {
+                            synchronizeCallback(callback, null);
+                            engageHoldoff();
+                            if (DEBUG) plugin.getLogger().warning("Failed to parse profile JSON for " + uuid);
+                            return;
+                        }
+
+                        JsonObject profileJson = element.getAsJsonObject();
+                        JsonArray properties = profileJson.getAsJsonArray("properties");
+                        String encodedTextures = null;
+                        for (int i = 0; i < properties.size(); i++) {
+                            JsonElement property = properties.get(i);
+                            if (property.isJsonObject()) {
+                                JsonObject objectProperty = property.getAsJsonObject();
+                                if (objectProperty.has("name") && objectProperty.has("value")) {
+                                    if (objectProperty.get("name").getAsString().equals("textures")) {
+                                        encodedTextures = objectProperty.get("value").getAsString();
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    if (encodedTextures == null) {
-                        synchronizeCallback(callback, null);
-                        engageHoldoff();
-                        if (DEBUG) plugin.getLogger().warning("Failed to find textures in profile JSON");
-                        return;
-                    }
-                    String decodedTextures = Base64Coder.decodeString(encodedTextures);
-                    if (DEBUG) plugin.getLogger().info("Decoded textures: " + decodedTextures);
-                    String skinURL = getTextureURL(decodedTextures);
 
-                    // A null skin URL here is normal if the player has no skin.
-                    if (DEBUG) plugin.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
-                    ProfileResponse response = new ProfileResponse(uuid, profileJson.get("name").getAsString(), skinURL, profileJSON);
-                    synchronized (responseCache) {
-                        responseCache.put(uuid, response);
+                        if (encodedTextures == null) {
+                            synchronizeCallback(callback, null);
+                            engageHoldoff();
+                            if (DEBUG) plugin.getLogger().warning("Failed to find textures in profile JSON");
+                            return;
+                        }
+                        String decodedTextures = Base64Coder.decodeString(encodedTextures);
+                        if (DEBUG) plugin.getLogger().info("Decoded textures: " + decodedTextures);
+                        String skinURL = getTextureURL(decodedTextures);
+
+                        // A null skin URL here is normal if the player has no skin.
+                        if (DEBUG) plugin.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
+                        ProfileResponse response = new ProfileResponse(uuid, profileJson.get("name").getAsString(), skinURL, profileJSON);
+                        synchronized (responseCache) {
+                            responseCache.put(uuid, response);
+                        }
+                        YamlConfiguration saveToCache = new YamlConfiguration();
+                        response.save(saveToCache);
+                        saveToCache.save(playerCache);
+                        synchronizeCallback(callback, response);
+                        holdoff = 0;
+                    } catch (Exception ex) {
+                        if (DEBUG) {
+                            plugin.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid, ex);
+                        } else {
+                            plugin.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid);
+                        }
+                        engageHoldoff();
+                        synchronizeCallback(callback, null);
                     }
-                    YamlConfiguration saveToCache = new YamlConfiguration();
-                    response.save(saveToCache);
-                    saveToCache.save(playerCache);
-                    synchronizeCallback(callback, response);
-                    holdoff = 0;
-                } catch (Exception ex) {
-                    if (DEBUG) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid, ex);
-                    } else {
-                        plugin.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid);
-                    }
-                    engageHoldoff();
-                    synchronizeCallback(callback, null);
                 }
             }
         }, holdoff);
