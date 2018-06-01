@@ -83,6 +83,7 @@ virus:
         sp: 400
 
 virus_death:
+    hidden: true
     icon: diamond_axe:162
     icon_disabled: diamond_hoe:162
     icon_url: http://textures.minecraft.net/texture/c64f6eeb78485e49b219f40a9d6a8131c539fef932f1cbb5f379adfebdd8c31

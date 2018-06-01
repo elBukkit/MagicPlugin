@@ -1,4 +1,5 @@
 nobabies:
+  hidden: true
   icon: egg
   actions:
     cast:
