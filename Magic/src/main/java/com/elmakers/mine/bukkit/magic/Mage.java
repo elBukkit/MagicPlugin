@@ -1138,6 +1138,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // Load activeClass
             setActiveClass(data.getActiveClass());
 
+            // Re-activate unlocked classes
+            activateClasses();
+
             cooldownExpiration = data.getCooldownExpiration();
             fallProtectionCount = data.getFallProtectionCount();
             fallProtection = data.getFallProtectionDuration();

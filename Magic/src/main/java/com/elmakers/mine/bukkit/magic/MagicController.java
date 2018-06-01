@@ -3125,6 +3125,7 @@ public class MagicController implements MageController {
         final boolean isOpen = wand != null && wand.isInventoryOpen();
         mage.deactivate();
         mage.undoScheduled();
+        mage.deactivateClasses();
 
         // Delay removal one tick to avoid issues with plugins that kill
         // players on logout (CombatTagPlus, etc)
