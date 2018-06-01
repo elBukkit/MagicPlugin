@@ -36,6 +36,8 @@ public class Spawner {
     private final Deque<WeightedPair<Integer>> countProbability;
     private final Set<String> entityNames = new HashSet<>();
     private final Set<EntityType> entityTypes = new HashSet<>();
+    private boolean randomizeYaw = false;
+    private boolean randomizePitch = false;
     private final int playerRange;
     private final int minPlayers;
     private final double probability;
@@ -72,6 +74,8 @@ public class Spawner {
         verticalRadius = configuration.getDouble("vertical_radius");
         locationRetry = configuration.getInt("retries", 4);
         passthrough = controller.getMaterialSetManager().getMaterialSet("passthrough");
+        randomizePitch = configuration.getBoolean("randomize_pitch", false);
+        randomizeYaw = configuration.getBoolean("randomize_yaw", false);
     }
 
     private boolean isSafe(Location location) {
@@ -190,6 +194,14 @@ public class Spawner {
 
             if (target == null) {
                target = location;
+            }
+
+            if (randomizeYaw) {
+                target.setYaw(RandomUtils.getRandom().nextFloat() * 360);
+            }
+
+            if (randomizePitch) {
+                target.setPitch(RandomUtils.getRandom().nextFloat() * 180 - 90);
             }
 
             Entity entity;

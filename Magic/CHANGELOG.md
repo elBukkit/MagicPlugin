@@ -9,6 +9,7 @@
  - Fix strange behavior of Flash Bang when hitting multiple targets
  - Fix exploits with certain spells (Stash, Workbench) quick-cast
  - Add entity_attributes support to mage classes (e.g. classes can grant additional health, attack speed, etc)
+ - Add randomize_yaw and randomize_pitch spawner parameters
 
 # 7.5.3
 
