@@ -4,6 +4,7 @@
 
  - Add entity_attributes support to mage classes (e.g. classes can grant additional health, attack speed, etc)
  - Add health_scale property to mage classes for scaled health display
+ - Support attribute equations in mage class properties
  - Add drop_original_block option, on by default, blocks now drop when breaking magically modified blocks
  - Fix wand cost/cooldown reduction not respecting the max settings in config.yml
  - Add support for LockettePro
