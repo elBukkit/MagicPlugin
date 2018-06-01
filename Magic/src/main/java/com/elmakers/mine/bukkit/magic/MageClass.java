@@ -398,7 +398,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         double healthScale = getDouble("health_scale");
         if (healthScale > 0) {
             Player player = mage.getPlayer();
-            if (player != null && player.getHealthScale() < healthScale) {
+            if (player != null) {
                 player.setHealthScale(healthScale);
             }
         }
@@ -431,6 +431,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
             AttributeInstance attribute = entity.getAttribute(modifier.attribute);
             attribute.removeModifier(modifier.modifier);
         }
+        attributeModifiers = null;
     }
 
     @Nullable
