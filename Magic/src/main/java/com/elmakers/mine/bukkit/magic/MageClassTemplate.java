@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MageClassTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.magic.MageClassTemplate {
     private MageClassTemplate parent;
@@ -39,6 +40,21 @@ public class MageClassTemplate extends BaseMagicProperties implements com.elmake
 
         name = configuration.getString("name", name);
         description = configuration.getString("description", description);
+    }
+
+    private MageClassTemplate(MageClassTemplate copy, ConfigurationSection configuration) {
+        super(copy.controller, configuration);
+        this.isLocked = copy.isLocked;
+        this.name = copy.name;
+        this.description = copy.description;
+        this.key = copy.key;
+        this.parent = copy.parent;
+    }
+
+    public MageClassTemplate getMageTemplate(Mage mage) {
+        MageParameters parameters = new MageParameters(mage);
+        ConfigurationUtils.addConfigurations(parameters, configuration);
+        return new MageClassTemplate(this, parameters);
     }
 
     public @Nonnull String getKey() {

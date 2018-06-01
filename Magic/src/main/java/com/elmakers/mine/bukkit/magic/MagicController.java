@@ -2913,8 +2913,8 @@ public class MagicController implements MageController {
             }
         }
 
-        SpellParameters.initializeAttributes(registeredAttributes);
-        SpellParameters.setLogger(getLogger());
+        MageParameters.initializeAttributes(registeredAttributes);
+        MageParameters.setLogger(getLogger());
         getLogger().info("Registered attributes: " + registeredAttributes);
 
         // Remove bowpull so we can present this list in getAttributes

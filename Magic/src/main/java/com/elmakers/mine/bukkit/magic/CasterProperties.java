@@ -509,11 +509,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
         attributes.set(attributeKey, attributeValue);
         setProperty("attributes", attributes);
-        updated();
         Mage mage = getMage();
         if (mage != null) {
             mage.attributesUpdated();
         }
+        updated();
     }
 
     @Override

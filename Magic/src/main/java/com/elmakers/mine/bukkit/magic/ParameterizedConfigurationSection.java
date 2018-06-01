@@ -34,6 +34,10 @@ public class ParameterizedConfigurationSection extends MemorySection {
         super(parent, path);
     }
 
+    public ParameterizedConfigurationSection(ParameterizedConfigurationSection copy) {
+        super(copy.getParent(), copy.getName());
+    }
+
     public void wrap(ConfigurationSection wrap) {
         Map<String, Object> data = NMSUtils.getMap(wrap);
         if (data != null) {

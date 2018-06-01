@@ -3960,6 +3960,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void attributesUpdated() {
+        updatePassiveEffects();
+
         // Reload spell parameter so lore updates
         for (MageSpell spell : spells.values()) {
             spell.updateTemplateParameters();

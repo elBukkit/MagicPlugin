@@ -76,6 +76,11 @@ public class BaseMagicProperties implements MagicProperties {
         this.controller = (MagicController)controller;
     }
 
+    protected BaseMagicProperties(@Nonnull MagicController controller, ConfigurationSection configuration) {
+        this.controller = controller;
+        this.configuration = configuration;
+    }
+
     public void load(@Nullable ConfigurationSection configuration) {
         this.configuration = ConfigurationUtils.cloneConfiguration(configuration);
     }

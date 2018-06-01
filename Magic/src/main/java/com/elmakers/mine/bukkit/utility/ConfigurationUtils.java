@@ -36,6 +36,8 @@ import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
+import com.elmakers.mine.bukkit.magic.MageParameters;
+import com.elmakers.mine.bukkit.magic.ParameterizedConfigurationSection;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
 
 import de.slikey.effectlib.util.ConfigUtils;
@@ -283,9 +285,16 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static ConfigurationSection cloneEmptyConfiguration(ConfigurationSection section)
     {
-        return section instanceof SpellParameters
-                ? new SpellParameters((SpellParameters)section)
-                : new MemoryConfiguration();
+        if (section instanceof SpellParameters) {
+            return new SpellParameters((SpellParameters)section);
+        }
+        if (section instanceof MageParameters) {
+            return new MageParameters((MageParameters)section);
+        }
+        if (section instanceof ParameterizedConfigurationSection) {
+            return new ParameterizedConfigurationSection((ParameterizedConfigurationSection)section);
+        }
+        return new MemoryConfiguration();
     }
 
     public static ConfigurationSection cloneConfiguration(ConfigurationSection section)

@@ -44,9 +44,9 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
         super(template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, mage.getController());
-        this.template = template;
         this.mageProperties = mage.getProperties();
         this.mage = mage;
+        this.setTemplate(template);
     }
 
     @Override
@@ -245,6 +245,10 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         Wand activeWand = mage.getActiveWand();
         if (activeWand != null) {
             activeWand.updated();
+        }
+        if (!isLocked()) {
+            deactivateAttributes();
+            activateAttributes();
         }
         mage.updatePassiveEffects();
     }
@@ -466,7 +470,6 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
             } else {
                 value = config.getDouble(key);
             }
-
             Attribute attribute = null;
             try {
                 attribute = Attribute.valueOf(attributeKey.toUpperCase());
@@ -485,7 +488,15 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     public void setTemplate(@Nonnull MageClassTemplate template) {
         // TODO: This won't update the "type" field of the base base base class here if the
         // template hierarchy has drastically changed.
-        this.template = template;
+        this.template = template.getMageTemplate(getMage());
+    }
+
+    @Override
+    public void load(@Nullable ConfigurationSection configuration) {
+        this.configuration = new MageParameters(getMage());
+        if (configuration != null) {
+            ConfigurationUtils.addConfigurations(this.configuration, configuration);
+        }
     }
 
     @Override
