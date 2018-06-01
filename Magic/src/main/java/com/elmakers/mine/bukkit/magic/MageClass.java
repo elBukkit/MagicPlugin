@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,8 +10,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +30,17 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     protected final MageProperties mageProperties;
     protected final Mage mage;
     private MageClass parent;
+    private Collection<EntityAttributeModifier> attributeModifiers;
+
+    private static class EntityAttributeModifier {
+        public EntityAttributeModifier(Attribute attribute, AttributeModifier modifier) {
+            this.attribute = attribute;
+            this.modifier = modifier;
+        }
+
+        public final AttributeModifier modifier;
+        public final Attribute attribute;
+    }
 
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
         super(template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, mage.getController());
@@ -318,6 +335,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
     public void onLocked() {
+        deactivateAttributes();
         if (getBoolean("clean_on_lock", false)) {
             Player player = mage.getPlayer();
             if (player != null) {
@@ -350,6 +368,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
     public void onUnlocked() {
+        activateAttributes();
         List<String> classItems = getStringList("class_items");
         if (classItems != null) {
             for (String classItemKey : classItems) {
@@ -374,6 +393,77 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
             }
         }
     }
+
+    public void activateAttributes() {
+        Collection<EntityAttributeModifier> modifiers = getAttributeModifiers();
+        if (modifiers == null) return;
+        LivingEntity entity = mage.getLivingEntity();
+        if (entity == null) return;
+
+        for (EntityAttributeModifier modifier : modifiers) {
+            AttributeInstance attribute = entity.getAttribute(modifier.attribute);
+            attribute.addModifier(modifier.modifier);
+        }
+    }
+
+    public void deactivateAttributes() {
+        if (attributeModifiers == null) return;
+        LivingEntity entity = mage.getLivingEntity();
+        if (entity == null) return;
+
+        for (EntityAttributeModifier modifier : attributeModifiers) {
+            AttributeInstance attribute = entity.getAttribute(modifier.attribute);
+            attribute.removeModifier(modifier.modifier);
+        }
+    }
+
+    @Nullable
+    public Collection<EntityAttributeModifier> getAttributeModifiers() {
+        if (attributeModifiers != null) {
+            return attributeModifiers;
+        }
+
+        ConfigurationSection config = getConfigurationSection("entity_attributes");
+        if (config == null) return null;
+        Set<String> keys = config.getKeys(false);
+        if (keys.isEmpty()) return null;
+        attributeModifiers = new ArrayList<>();
+        for (String key : keys) {
+            String name = "mage_" + getKey() + "_" + key;
+            double value;
+            String attributeKey = key;
+            AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
+            if (config.isConfigurationSection(key)) {
+                ConfigurationSection modifierConfig = config.getConfigurationSection(key);
+                name = modifierConfig.getString("name", name);
+                attributeKey = modifierConfig.getString("attribute", attributeKey);
+                value = modifierConfig.getDouble("value");
+                String operationType = modifierConfig.getString("operation");
+                if (operationType != null && !operationType.isEmpty()) {
+                    try {
+                        operation = AttributeModifier.Operation.valueOf(operationType.toUpperCase());
+                    } catch (Exception ex) {
+                        controller.getLogger().warning("Invalid operation " + operationType + " on entity_attributes." + key + " in mage class " + getKey());
+                    }
+                }
+            } else {
+                value = config.getDouble(key);
+            }
+
+            Attribute attribute = null;
+            try {
+                attribute = Attribute.valueOf(attributeKey.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid attribute " + attributeKey + " on entity_attributes." + key + " in mage class " + getKey());
+            }
+            if (attribute != null) {
+                AttributeModifier modifier = new AttributeModifier(name, value, operation);
+                attributeModifiers.add(new EntityAttributeModifier(attribute, modifier));
+            }
+        }
+
+        return attributeModifiers;
+     }
 
     public void setTemplate(@Nonnull MageClassTemplate template) {
         // TODO: This won't update the "type" field of the base base base class here if the

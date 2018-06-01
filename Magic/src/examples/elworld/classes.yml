@@ -57,3 +57,7 @@ test2:
   clean_on_lock: true
   spells:
   - kill
+
+healthy:
+  entity_attributes:
+    generic_max_health: 10

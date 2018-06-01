@@ -692,4 +692,16 @@ public interface Mage extends CostReducer, CooldownReducer {
      */
     @Deprecated
     float getSPMultiplier();
+
+    /**
+     * This will remove any entity attributes added by unlocked classes.
+     * Primarily used on shutdown, in case someone removes the plugin.
+     */
+    void deactivateClasses();
+
+    /**
+     * Restores any attributes managed by unlocked classes.
+     * Used on login to restore attributes.
+     */
+    void activateClasses();
 }

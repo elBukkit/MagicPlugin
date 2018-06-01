@@ -1,6 +1,11 @@
 # TODO
 
 ## Hot Issues
+
+ - Spells appearing in inventory when using the following commands:
+   wandp @pn restore
+   mage configure @pn spell_levels
+   mage configure @pn spells
           
  - World save and unload need to undo all spells that _affected that world_
  
@@ -103,6 +108,7 @@
    
 ## Suggestions
 
+ - mauto spawner option to randomize facing direction
  - Option to /wand fill to fill a specific category
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests

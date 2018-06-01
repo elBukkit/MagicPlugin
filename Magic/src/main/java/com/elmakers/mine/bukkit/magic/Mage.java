@@ -3962,5 +3962,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             checkWand();
         }
     }
+
+    @Override
+    public void deactivateClasses() {
+        for (MageClass mageClass : classes.values()) {
+            if (!mageClass.isLocked()) {
+                mageClass.deactivateAttributes();
+            }
+        }
+    }
+
+    @Override
+    public void activateClasses() {
+        for (MageClass mageClass : classes.values()) {
+            if (!mageClass.isLocked()) {
+                mageClass.activateAttributes();
+            }
+        }
+    }
 }
 
