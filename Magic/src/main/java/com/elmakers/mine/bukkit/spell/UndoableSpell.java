@@ -177,6 +177,11 @@ public class UndoableSpell extends TargetingSpell {
         return !bypassUndo;
     }
 
+    @Override
+    public boolean isScheduledUndo() {
+        return isUndoable() && autoUndo > 0;
+    }
+
     public void applyPotionEffects(Location location, int radius, Collection<PotionEffect> potionEffects) {
         if (potionEffects == null || radius <= 0 || potionEffects.size() == 0) return;
 

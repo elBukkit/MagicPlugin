@@ -92,6 +92,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     boolean usesBrushSelection();
     boolean isUndoable();
     boolean showUndoable();
+    boolean isScheduledUndo();
     boolean isQuickCast();
     boolean disableManaRegenerationWhenActive();
     String getRequiredUpgradePath();

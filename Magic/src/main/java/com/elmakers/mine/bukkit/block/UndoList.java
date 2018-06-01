@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -46,6 +47,7 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.google.common.base.Preconditions;
 
 /**
  * Implements a Collection of Blocks, for quick getting/putting while iterating
@@ -65,6 +67,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected static BlockComparator        blockComparator = new BlockComparator();
 
     protected Map<Long, BlockData>          watching;
+    private Set<String>                     worlds = new HashSet<>();
     private boolean                         loading = false;
 
     protected Set<Entity>                     entities;
@@ -220,6 +223,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (!super.add(blockData)) {
             return false;
         }
+        worlds.add(blockData.getWorldName());
         modifiedTime = System.currentTimeMillis();
         if (watching != null) {
             BlockData attachedBlock = watching.remove(blockData.getId());
@@ -1091,5 +1095,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public boolean isUndoType(EntityType entityType) {
         return undoEntityTypes != null && undoEntityTypes.contains(entityType);
+    }
+
+    @Override
+    public boolean affectsWorld(@Nonnull World world) {
+        Preconditions.checkNotNull(world);
+        return worlds.contains(world.getName());
     }
 }

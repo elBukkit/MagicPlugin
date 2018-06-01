@@ -4,9 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -99,4 +101,5 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     Runnable undoNextRunnable();
     EntityData getEntityData(Entity entity);
     boolean isUndoType(EntityType entityType);
+    boolean affectsWorld(@Nonnull World world);
 }

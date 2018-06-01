@@ -786,6 +786,11 @@ public class BaseSpell implements MageSpell, Cloneable {
         return false;
     }
 
+    @Override
+    public boolean isScheduledUndo() {
+        return false;
+    }
+
     public void checkActiveCosts() {
         if (activeCosts == null) return;
 
