@@ -395,6 +395,14 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
     public void activateAttributes() {
+        double healthScale = getDouble("health_scale");
+        if (healthScale > 0) {
+            Player player = mage.getPlayer();
+            if (player != null && player.getHealthScale() < healthScale) {
+                player.setHealthScale(healthScale);
+            }
+        }
+
         Collection<EntityAttributeModifier> modifiers = getAttributeModifiers();
         if (modifiers == null) return;
         LivingEntity entity = mage.getLivingEntity();
@@ -407,6 +415,14 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     }
 
     public void deactivateAttributes() {
+        double healthScale = getDouble("health_scale");
+        if (healthScale > 0) {
+            Player player = mage.getPlayer();
+            if (player != null) {
+                player.setHealthScaled(false);
+            }
+        }
+
         if (attributeModifiers == null) return;
         LivingEntity entity = mage.getLivingEntity();
         if (entity == null) return;

@@ -61,3 +61,4 @@ test2:
 healthy:
   entity_attributes:
     generic_max_health: 10
+  health_scale: 20

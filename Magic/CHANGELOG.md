@@ -2,15 +2,17 @@
 
 # 7.5.4
 
+ - Add entity_attributes support to mage classes (e.g. classes can grant additional health, attack speed, etc)
+ - Add health_scale property to mage classes for scaled health display
  - Add drop_original_block option, on by default, blocks now drop when breaking magically modified blocks
  - Fix wand cost/cooldown reduction not respecting the max settings in config.yml
  - Add support for LockettePro
  - Don't allow spamming Blink up into the air
  - Fix strange behavior of Flash Bang when hitting multiple targets
  - Fix exploits with certain spells (Stash, Workbench) quick-cast
- - Add entity_attributes support to mage classes (e.g. classes can grant additional health, attack speed, etc)
  - Add randomize_yaw and randomize_pitch spawner parameters
  - Fix some issues restoring wands
+ 
 
 # 7.5.3
 
