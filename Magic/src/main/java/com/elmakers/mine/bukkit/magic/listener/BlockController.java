@@ -38,7 +38,6 @@ import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -346,25 +345,23 @@ public class BlockController implements Listener {
     }
 
     private void undoPending(World world, String logType) {
-        Collection<Player> players = world.getPlayers();
-        for (Player player : players) {
-            Mage mage = controller.getRegisteredMage(player);
-            if (mage != null) {
-                Collection<Batch> pending = mage.getPendingBatches();
-                int cancelled = 0;
-                for (Batch batch : pending) {
-                    if (batch instanceof SpellBatch) {
-                        Spell spell = ((SpellBatch)batch).getSpell();
-                        if (spell.isScheduledUndo()) {
-                            spell.cancel();
-                            batch.finish();
-                            cancelled++;
-                        }
+        Collection<Mage> mages = controller.getMages();
+        for (Mage mage : mages) {
+            Collection<Batch> pending = mage.getPendingBatches();
+            int cancelled = 0;
+            for (Batch batch : pending) {
+                if (batch instanceof SpellBatch) {
+                    SpellBatch spellBatch = (SpellBatch)batch;
+                    UndoList undoList = spellBatch.getUndoList();
+                    if (undoList != null && undoList.isConsumed() && undoList.affectsWorld(world)) {
+                        spellBatch.getSpell().cancel();
+                        batch.finish();
+                        cancelled++;
                     }
                 }
-                if (cancelled > 0) {
-                    controller.info("Cancelled " + cancelled + " pending spells for " + player.getName() + " prior to " + logType + " of world " + world.getName());
-                }
+            }
+            if (cancelled > 0) {
+                controller.info("Cancelled " + cancelled + " pending spells for " + mage.getName() + " prior to " + logType + " of world " + world.getName());
             }
         }
         Collection<UndoList> pending = controller.getPendingUndo();

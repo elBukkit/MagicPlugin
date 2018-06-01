@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.batch;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 
 public abstract class SpellBatch extends UndoableBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatch {
@@ -33,5 +34,10 @@ public abstract class SpellBatch extends UndoableBatch implements com.elmakers.m
     public String getName() {
         if (spell == null) return "Unknown";
         return spell.getName();
+    }
+
+    @Override
+    public UndoList getUndoList() {
+        return undoList;
     }
 }

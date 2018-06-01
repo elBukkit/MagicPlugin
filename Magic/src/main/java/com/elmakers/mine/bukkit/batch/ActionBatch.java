@@ -86,4 +86,9 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
         if (spell == null) return "Unknown";
         return spell.getName();
     }
+
+    @Override
+    public UndoList getUndoList() {
+        return context.getUndoList();
+    }
 }
