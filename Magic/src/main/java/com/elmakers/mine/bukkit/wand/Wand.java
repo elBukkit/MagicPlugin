@@ -4728,6 +4728,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         loadProperties();
         if (mage != null) {
             buildInventory();
+            if (isInventoryOpen()) {
+                updateInventory();
+            }
         }
         saveState();
         updateMaxMana(false);
