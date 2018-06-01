@@ -20,6 +20,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -48,10 +49,6 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public MagicItemCommandExecutor(MagicAPI api) {
         super(api, "mitem");
-    }
-
-    public enum AttributeOperation {
-        ADD, MULTIPLY_SUM, MULTIPLY
     }
 
     @Override
@@ -249,7 +246,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             String subCommand = args[0];
             String subCommand2 = args[1];
             if (subCommand.equalsIgnoreCase("add") && subCommand2.equalsIgnoreCase("attribute")) {
-                for (AttributeOperation operation : AttributeOperation.values()) {
+                for (AttributeModifier.Operation operation : AttributeModifier.Operation.values()) {
                     options.add(operation.name().toLowerCase());
                 }
             }
@@ -861,7 +858,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    public boolean onItemAddAttribute(Player player, ItemStack item, String attributeName, String attributeValue, String attributeSlot, AttributeOperation operation)
+    public boolean onItemAddAttribute(Player player, ItemStack item, String attributeName, String attributeValue, String attributeSlot, AttributeModifier.Operation operation)
     {
         Attribute attribute = null;
         if (attributeName == null) return false;
@@ -1083,10 +1080,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
         if (addCommand.equalsIgnoreCase("attribute")) {
             String slot = parameters.length > 3 ? parameters[3] : null;
-            AttributeOperation operation = AttributeOperation.ADD;
+            AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
             if (parameters.length > 4) {
                 try {
-                    operation = AttributeOperation.valueOf(parameters[4].toUpperCase());
+                    operation = AttributeModifier.Operation.valueOf(parameters[4].toUpperCase());
                 } catch (Exception ex) {
                     player.sendMessage(ChatColor.RED + "Invalid operation: " + parameters[4]);
                 }
