@@ -2,6 +2,8 @@
 
 # 7.5.5
 
+ - Fix some specific issues Multiply actions interfering with one another
+
 # 7.5.4
 
  - Add entity_attributes support to mage classes (e.g. classes can grant additional health, attack speed, etc)

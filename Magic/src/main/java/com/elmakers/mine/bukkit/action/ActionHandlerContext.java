@@ -9,7 +9,7 @@ public class ActionHandlerContext {
 
     public ActionHandlerContext(com.elmakers.mine.bukkit.api.action.ActionHandler handler, CastContext context) {
         this.actions = handler;
-        this.context = context;
+        this.context = new com.elmakers.mine.bukkit.action.CastContext(context);
     }
 
     public SpellResult perform() {

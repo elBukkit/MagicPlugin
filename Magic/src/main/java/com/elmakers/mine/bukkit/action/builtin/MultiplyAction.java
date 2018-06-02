@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.action.ActionHandlerContext;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -14,7 +15,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MultiplyAction extends CompoundAction
 {
-    private List<ActionHandler> remaining = null;
+    private List<ActionHandlerContext> remaining = null;
     private List<ActionHandler> multiplied = null;
     private int multiply;
 
@@ -52,8 +53,9 @@ public class MultiplyAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        remaining = new ArrayList<>(multiplied);
-        for (ActionHandler handler : remaining) {
+        remaining = new ArrayList<>();
+        for (ActionHandler handler : multiplied) {
+            remaining.add(new ActionHandlerContext(handler, context));
             handler.reset(context);
         }
     }
@@ -72,13 +74,13 @@ public class MultiplyAction extends CompoundAction
         if (remaining.size() == 0) return result;
 
         int startingWork = context.getWorkAllowed();
-        List<ActionHandler> subActions = new ArrayList<>(remaining);
+        List<ActionHandlerContext> subActions = new ArrayList<>(remaining);
         remaining.clear();
         context.setWorkAllowed(0);
         int splitWork = Math.max(1, startingWork / subActions.size());
-        for (ActionHandler action : subActions) {
+        for (ActionHandlerContext action : subActions) {
             context.setWorkAllowed(context.getWorkAllowed() + splitWork);
-            SpellResult actionResult = action.perform(context);
+            SpellResult actionResult = action.perform();
             context.addResult(actionResult);
             if (actionResult.isStop()) {
                 remaining.add(action);

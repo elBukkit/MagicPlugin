@@ -79,6 +79,7 @@ meteor:
         spread: 0.5
         first:
           spread: 0
+          delay: 0
         radius: 3
         delay: rand(0,2000)
         multiply: rand(3,5)
