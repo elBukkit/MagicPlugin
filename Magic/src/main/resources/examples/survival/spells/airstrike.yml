@@ -5,6 +5,7 @@ airstrike:
     category: master
     tags: noduel,nojail
     worth: 1000
+    earns: 5
     actions:
         cast:
         -  class: EntitySelect

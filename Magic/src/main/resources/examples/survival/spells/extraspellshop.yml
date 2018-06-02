@@ -1,0 +1,23 @@
+extraspellshop:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        - class: Shop
+    parameters:
+        requirements:
+        - active_class: mage
+        apply_to_caster: true
+        confirm_filler: stained_glass:2
+        confirm: true
+        spells:
+        - airstrike
+        - sweep
+        - cat
+        - wolf
+        - gasp
+        - holylight
+        - polymorph
+        - boomstown
+

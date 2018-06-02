@@ -3,7 +3,8 @@ boomstown:
    icon_disabled: diamond_hoe:196
    icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
    category: combat
-   worth: 6
+   worth: 1000
+   earns: 8
    actions:
      cast:
        - class: ChangeContext

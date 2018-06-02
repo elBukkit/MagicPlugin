@@ -6,6 +6,7 @@ wolf:
     class: WolfSpell
     pvp_restricted: true
     worth: 150
+    earns: 2
     effects:
         cast:
         -  class: EffectSingle

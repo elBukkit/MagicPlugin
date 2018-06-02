@@ -4,6 +4,7 @@ forest:
     icon_url: http://textures.minecraft.net/texture/31d45096a315b2ebe6239cbb16e7348ba8d5f93a9a37592434faeec7a5
     category: elemental
     worth: 400
+    earns: 10
     actions:
         cast:
         - class: Repeat

@@ -5,6 +5,7 @@ cat:
     category: elemental
     class: OcelotSpell
     worth: 150
+    earns: 2
     effects:
         cast:
         -  class: EffectSingle
