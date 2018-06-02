@@ -58,6 +58,7 @@ public  class MagicRequirement {
     private @Nullable String requiresCompletedPath = null;
     private @Nullable String exactPath = null;
     private @Nullable String mageClass = null;
+    private @Nullable String activeClass = null;
     private @Nullable List<PropertyRequirement> wandProperties = null;
     private @Nullable List<PropertyRequirement> classProperties = null;
     private @Nullable List<PropertyRequirement> attributes = null;
@@ -74,6 +75,10 @@ public  class MagicRequirement {
         requiredTemplate = configuration.getString("wand");
         requireWand = configuration.getBoolean("holding_wand");
         mageClass = configuration.getString("class");
+        activeClass = configuration.getString("active_class");
+        if (activeClass != null && mageClass == null) {
+            mageClass = activeClass;
+        }
 
         if (configuration.contains("wands")) {
             requiredTemplates = new HashSet<>(ConfigurationUtils.getStringList(configuration, "wands"));
@@ -142,6 +147,12 @@ public  class MagicRequirement {
 
         if (mageClass != null && !mageClass.isEmpty()) {
             if (!mage.hasClassUnlocked(mageClass)) {
+                return false;
+            }
+        }
+        if (activeClass != null && !activeClass.isEmpty()) {
+            MageClass currentClass = mage.getActiveClass();
+            if (currentClass == null || !currentClass.getKey().equals(activeClass)) {
                 return false;
             }
         }
@@ -259,6 +270,13 @@ public  class MagicRequirement {
         if (mageClass != null && !mageClass.isEmpty()) {
             if (mage.hasClassUnlocked(mageClass)) {
                 return getMessage(context, "no_class").replace("$class", mageClass);
+            }
+        }
+
+        if (activeClass != null && !activeClass.isEmpty()) {
+            MageClass currentClass = mage.getActiveClass();
+            if (currentClass == null || !currentClass.getKey().equals(activeClass)) {
+                return getMessage(context, "no_class").replace("$class", activeClass);
             }
         }
 
