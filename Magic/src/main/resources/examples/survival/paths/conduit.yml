@@ -14,6 +14,7 @@ conduit:
       - weather
       - capture
       - commit
+      - forest
     materials:
       - clone
       - replicate

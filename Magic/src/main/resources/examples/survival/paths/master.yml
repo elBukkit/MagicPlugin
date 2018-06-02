@@ -42,5 +42,6 @@ master:
       - shrink
       - dragonball
       - neutron
+      - mob
 
 
