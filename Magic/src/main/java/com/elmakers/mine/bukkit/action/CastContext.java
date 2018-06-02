@@ -116,11 +116,14 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity, Location sourceLocation) {
         super(copy.getMage(), copy.getWand());
-        this.location = sourceLocation;
+        this.location = sourceLocation == null ? null : sourceLocation.clone();
         this.entity = sourceEntity;
         this.spell = setSpell((MageSpell)copy.getSpell());
         this.targetEntity = copy.getTargetEntity();
         this.targetLocation = copy.getTargetLocation();
+        if (this.targetLocation != null) {
+            this.targetLocation = this.targetLocation.clone();
+        }
         this.undoList = copy.getUndoList();
         this.targetName = copy.getTargetName();
         this.targetMessagesSent = copy.getTargetMessagesSent();
@@ -130,7 +133,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
         Location centerLocation = copy.getTargetCenterLocation();
         if (centerLocation != null) {
-            targetCenterLocation = centerLocation;
+            targetCenterLocation = centerLocation.clone();
         }
 
         if (copy instanceof CastContext)
