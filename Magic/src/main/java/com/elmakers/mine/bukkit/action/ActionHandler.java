@@ -229,12 +229,12 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
                 isPending = true;
             } else {
                 result = result.min(actionResult);
-            }
-            if (actionResult == SpellResult.STOP) {
-                if (showDebug) {
-                    mage.sendDebugMessage(ChatColor.RED + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase(), 15);
+                if (actionResult.isStop()) {
+                    if (showDebug) {
+                        mage.sendDebugMessage(ChatColor.RED + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase(), 15);
+                    }
+                    cancel(context);
                 }
-                cancel(context);
             }
             if (actionResult.isStop()) {
                 break;
@@ -256,7 +256,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         SpellResult currentResult = context.getResult();
         context.addResult(result);
         SpellResult contextResult = context.processHandlers();
-        if (contextResult == SpellResult.PENDING) {
+        if (contextResult == SpellResult.PENDING || context.getWorkAllowed() <= 0) {
             isPending = true;
         } else {
             context.addResult(contextResult);

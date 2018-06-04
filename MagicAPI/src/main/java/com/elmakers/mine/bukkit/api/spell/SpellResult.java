@@ -8,6 +8,7 @@ package com.elmakers.mine.bukkit.api.spell;
 public enum SpellResult {
     // Order is important here
     STOP(true, false, false, false, true),
+    CANCELLED(true, false, true, false, true),
     PENDING(true, false, false, false, true),
     CAST(true, false, false),
     CAST_SELF(true, false, false),
@@ -31,7 +32,6 @@ public enum SpellResult {
     NO_TARGET(false, false, false),
 
     FAIL(false, true, true),
-    CANCELLED(true, false, true, false, true),
     INSUFFICIENT_RESOURCES(false, true, true),
     INSUFFICIENT_PERMISSION(false, true, true),
 
