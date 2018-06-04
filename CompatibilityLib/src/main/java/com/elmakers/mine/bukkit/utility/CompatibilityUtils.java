@@ -1622,4 +1622,23 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return false;
     }
+
+    public static int[] getServerVersion() {
+        String versionString = getVersionPrefix();
+        int[] version = new int[2];
+        // Format:  v1_12_R1
+        versionString = versionString.substring(1);
+        try {
+            String[] pieces = StringUtils.split(versionString, '_');
+            if (pieces.length > 0) {
+                version[0] = Integer.parseInt(pieces[0]);
+            }
+            if (pieces.length > 1) {
+                version[1] = Integer.parseInt(pieces[1]);
+            }
+        } catch (Exception ex) {
+
+        }
+        return version;
+    }
 }

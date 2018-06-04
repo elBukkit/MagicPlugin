@@ -131,6 +131,17 @@ public class ConfigurationLoadTask implements Runnable {
             }
         }
 
+        // Apply version-specific configs
+        int[] version = CompatibilityUtils.getServerVersion();
+        String versionExample = version[0] + "." + version[1];
+        String versionFileName = "examples/" + versionExample + "/" + fileName + ".yml";
+        InputStream versionInput = plugin.getResource(versionFileName);
+        if (versionInput != null)  {
+            ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput);
+            ConfigurationUtils.addConfigurations(config, versionConfig);
+            getLogger().info(" Using backwards-compatibility configs: " + versionFileName);
+        }
+
         // Apply overrides after loading defaults and examples
         ConfigurationUtils.addConfigurations(config, overrides);
 

@@ -1977,5 +1977,9 @@ public class NMSUtils {
         }
         return false;
     }
+
+    public static String getVersionPrefix() {
+        return versionPrefix;
+    }
 }
 
