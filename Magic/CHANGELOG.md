@@ -1,7 +1,8 @@
 # CHANGELOG
 
-# 7.5.5
+# 7.6
 
+ - Use 1.13 resource packs by default, unless running on 1.12 and using default configs.
  - Fix some specific issues Multiply actions interfering with one another
  - Add extraspellshop, for selling spells not included in the normal paths. 
  - Add Forest and Mob to Conduit and Wizard paths, respectively

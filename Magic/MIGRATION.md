@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 7.6
+
+ - If using an example witha  custom RP, such as skulls or war, you may need to specify the version 7 RP
+   link in your config.yml, unless you've updated to 1.13
+
 ## 7.5
  
  - Now requires Java 8
