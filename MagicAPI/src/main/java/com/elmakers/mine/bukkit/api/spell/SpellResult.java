@@ -7,39 +7,64 @@ package com.elmakers.mine.bukkit.api.spell;
  */
 public enum SpellResult {
     // Order is important here
+
+    // Will stop the current spell cast completely, returning success
     STOP(true, false, false, false, true),
+    // Will stop the current spell cast, but refund casting costs
     CANCELLED(true, false, true, false, true),
+    // Will pause the spell cast until the next tick
     PENDING(true, false, false, false, true),
+    // General success
     CAST(true, false, false),
+    // Success, but cast on self. Actions generally should not return this.
     CAST_SELF(true, false, false),
+    // Success, but cast on a specific target. Actions generally should not return this.
     CAST_TARGET(true, false, false),
+    // An alternate cast was performed. Actions generally should not return any of these.
     ALTERNATE(true, false, false, true),
     ALTERNATE_UP(true, false, false, true),
     ALTERNATE_DOWN(true, false, false, true),
     ALTERNATE_SNEAK(true, false, false, true),
     ALTERNATE_JUMPING(true, false, false, true),
 
+    // The spell cast fizzled. Actions generally should not return this.
     FIZZLE(false, true, false),
+    // The spell cast backfired. Actions generally should not return this.
     BACKFIRE(false, true, false),
+    // The spell cast was blocked. Actions generally should not return this.
     BLOCKED(false, true, false),
 
+    // The spell cast was deactivated. Actions generally should not return this.
     DEACTIVATE(false, false, true),
+    // A target was selected, which will be used in a subsequent cast. Actions generally should not return this.
     TARGET_SELECTED(false, false, true),
 
+    // The spell cast was cancelled because the caster is cursed. Actions generally should not return this.
     CURSED(false, true, true),
+    // The spell failed because it is on cooldown. Actions generally should not return this.
     COOLDOWN(false, true, true),
 
+    // The spell missed, or did not have a valid target.
     NO_TARGET(false, false, false),
 
+    // The spell cast failed due to some internal issue. It's rare that an action would return this.
     FAIL(false, true, true),
+    // The spell cast failed due to not having sufficient casting costs. Actions generally should not return this.
     INSUFFICIENT_RESOURCES(false, true, true),
+    // The spell cast failed due to no permissions (build, break, etc). Actions generally should not return this.
     INSUFFICIENT_PERMISSION(false, true, true),
 
+    // The spell cast requires an entity but none was available.
     ENTITY_REQUIRED(false, true, true),
+    // The spell cast requires a living entity but none was available.
     LIVING_ENTITY_REQUIRED(false, true, true),
+    // The spell cast requires a player but none was available.
     PLAYER_REQUIRED(false, true, true),
+    // The spell cast requires a location but none was available.
     LOCATION_REQUIRED(false, true, true),
+    // The spell cast requires a world but none was available.
     WORLD_REQUIRED(false, true, true),
+    // The spell cast requires a world but no valid world was provided.
     INVALID_WORLD(false, true, true),
 
     // This should always be last
@@ -51,7 +76,7 @@ public enum SpellResult {
     private final boolean alternate;
     private final boolean stop;
 
-    private SpellResult(boolean success, boolean failure, boolean free, boolean alternate, boolean stop) {
+    SpellResult(boolean success, boolean failure, boolean free, boolean alternate, boolean stop) {
         this.success = success;
         this.failure = failure;
         this.free = free;
@@ -59,7 +84,7 @@ public enum SpellResult {
         this.stop = stop;
     }
 
-    private SpellResult(boolean success, boolean failure, boolean free) {
+    SpellResult(boolean success, boolean failure, boolean free) {
         this.success = success;
         this.failure = failure;
         this.free = free;
@@ -67,7 +92,7 @@ public enum SpellResult {
         this.stop = false;
     }
 
-    private SpellResult(boolean success, boolean failure, boolean free, boolean alternate) {
+    SpellResult(boolean success, boolean failure, boolean free, boolean alternate) {
         this.success = success;
         this.failure = failure;
         this.free = free;
