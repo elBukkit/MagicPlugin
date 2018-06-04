@@ -686,6 +686,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void checkActiveSpells(Wand wand) {
+        // This handles any spells that are running now
+        for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
+            Batch batch = iterator.next();
+            if (!(batch instanceof SpellBatch)) continue;
+            SpellBatch spellBatch = (SpellBatch)batch;
+            Spell spell = spellBatch.getSpell();
+            if (spell.cancelOnNoWand() && spell.getCurrentCast().getWand() == wand)
+            {
+                spell.cancel();
+                batch.finish();
+                iterator.remove();
+            }
+        }
+
+        // This handles toggleable spells, which may or may not have an active batch running.
         if (activeSpells.isEmpty()) return;
 
         ArrayList<MageSpell> active = new ArrayList<>(activeSpells);

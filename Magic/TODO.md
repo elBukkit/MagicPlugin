@@ -39,6 +39,8 @@
  
 ## Recent Requests
    
+ - Allow equations in wand parameters
+   
  - "Residence" integration (requested by Frerduro on Discord)
    https://github.com/Zrips/Residence
    
