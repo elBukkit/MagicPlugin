@@ -6,6 +6,7 @@
  - Fix some specific issues Multiply actions interfering with one another
  - Add extraspellshop, for selling spells not included in the normal paths. 
  - Add Forest and Mob to Conduit and Wizard paths, respectively
+ - Fix scale parameter on sell shops
 
 # 7.5.4
 

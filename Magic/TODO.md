@@ -5,9 +5,7 @@
  - Test attributes when reloading mage class configs live
                      
  - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
- 
- - Still need some mechanism for automatically applying version-specific configs.
- 
+  
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
    catch the dropped item.
    
@@ -16,23 +14,7 @@
    - Nathanwolf auto at dev spawn has some permanent blocks now
    - Random blocks show up in mob arena sometimes (web, broken floor)
    - Can't find a pattern. Tried world save... don't know. :(
-        
- - Check Blizzard spell: 
-    Been messing around with a new blizzard spell, essentially just playing with meteor. I'm noticing that some of the 
-    additional random casts after are coming from the caster instead of from the sky, the initial cast comes from the air, 
-    then its about 50/50 from caster or air above target. Let me know if you want to see the spell, its a bit long for the channel.
-   
- - when multiple players are hit by Flashbang spell, the effects are played successively on each player hit and not simultaneously. 
-   That means that, for instance, if you fire flashbang on a player near to you and you're also hit by it, 
-   the effects will firstly play on the target, and once it's done, they will play to you (so, several seconds after detonation).
-    
- - Error when breaking paintings: https://pastebin.com/Hwp9tPG4
-   [17:07:06 ERROR]: "Silently" catching entity tracking error.
-    net.minecraft.server.v1_10_R1.ReportedException: Adding entity to track
-    at net.minecraft.server.v1_10_R1.EntityTracker.addEntity(EntityTracker.java:141) [spigot.jar:git-Spigot-047f737-270a3a6]
-   
- - Recall cancelled sometimes when the spell gains SP?
- 
+  
  - Change potter progression, maybe add spells per year graduation?
  
  - Cars look floaty

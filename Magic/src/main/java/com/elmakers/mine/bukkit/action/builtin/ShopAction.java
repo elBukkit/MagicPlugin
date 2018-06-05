@@ -39,7 +39,7 @@ public class ShopAction extends SelectorAction {
         // Sell shop overrides
         if (parameters.getBoolean("sell")) {
             // Support scale parameter
-            parameters.set("earn_scale", parameters.get("earn_scale"));
+            parameters.set("earn_scale", parameters.get("scale"));
             parameters.set("scale", null);
 
             // Supply selected message
