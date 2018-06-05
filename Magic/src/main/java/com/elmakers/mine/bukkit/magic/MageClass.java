@@ -70,19 +70,15 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     @Override
     @Nullable
-    public Object getProperty(String key) {
-        Object value = null;
+    public ConfigurationSection getPropertyConfiguration(String key) {
         BaseMagicProperties storage = getStorage(key);
         if (storage != null && storage != this) {
-            value = storage.getProperty(key);
+            return storage.getConfiguration();
         }
-        if (value == null) {
-            value = super.getProperty(key);
+        if (configuration.contains(key)) {
+            return configuration;
         }
-        if (value == null) {
-            value = template.getProperty(key);
-        }
-        return value;
+        return template.getConfiguration();
     }
 
     @Override

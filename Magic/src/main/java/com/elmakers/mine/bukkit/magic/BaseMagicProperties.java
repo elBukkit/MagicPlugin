@@ -94,10 +94,14 @@ public class BaseMagicProperties implements MagicProperties {
         return hasOwnProperty(key);
     }
 
+    protected ConfigurationSection getPropertyConfiguration(String key) {
+        return configuration;
+    }
+
     @Override
     @Nullable
     public Object getProperty(String key) {
-        return configuration.get(key);
+        return getPropertyConfiguration(key).get(key);
     }
 
     @Override
@@ -155,8 +159,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public double getDouble(String key, double defaultValue) {
-        Object value = getProperty(key);
-        return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toDouble(value);
+        return getPropertyConfiguration(key).getDouble(key, defaultValue);
     }
 
     public double getDouble(String key) {
@@ -164,8 +167,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public float getFloat(String key, float defaultValue) {
-        Object value = getProperty(key);
-        return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toFloat(value);
+        return (float)getPropertyConfiguration(key).getDouble(key, defaultValue);
     }
 
     public float getFloat(String key) {
@@ -173,8 +175,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public int getInt(String key, int defaultValue) {
-        Object value = getProperty(key);
-        return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toInt(value);
+        return getPropertyConfiguration(key).getInt(key, defaultValue);
     }
 
     public int getInt(String key) {
@@ -182,8 +183,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public long getLong(String key, long defaultValue) {
-        Object value = getProperty(key);
-        return value == null || !(value instanceof Number) ? defaultValue : NumberConversions.toLong(value);
+        return getPropertyConfiguration(key).getLong(key, defaultValue);
     }
 
     public long getLong(String key) {
@@ -191,8 +191,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public boolean getBoolean(String key, boolean defaultValue) {
-        Object value = getProperty(key);
-        return value == null || !(value instanceof Boolean) ? defaultValue : (boolean)value;
+        return getPropertyConfiguration(key).getBoolean(key, defaultValue);
     }
 
     public boolean getBoolean(String key) {
