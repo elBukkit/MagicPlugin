@@ -63,6 +63,7 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
+import com.elmakers.mine.bukkit.magic.MageParameters;
 import com.elmakers.mine.bukkit.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicPropertyType;
@@ -4503,10 +4504,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (!offhand) {
                 mage.setActiveClass(mageClass.getKey());
             }
-            // This double-load here is not really ideal.
-            // Seems hard to prevent without merging Wand construction and activation, though.
-            loadProperties();
         }
+
+        MageParameters wrapped = new MageParameters(mage);
+        wrapped.wrap(configuration);
+        load(wrapped);
+
+        // This double-load here is not really ideal.
+        // Seems hard to prevent without merging Wand construction and activation, though.
+        loadProperties();
 
         mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
 

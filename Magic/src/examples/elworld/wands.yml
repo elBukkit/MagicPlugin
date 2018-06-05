@@ -205,3 +205,12 @@ acwand:
   mana: 200
   mana_max: 200
   mana_regeneration: 20
+
+attributewand:
+  inherit: base_wand
+  name: Test Wand
+  path: beginner
+  spells: missile
+  mana: 0
+  mana_max: intelligence*10
+  mana_regeneration: wisdom*2

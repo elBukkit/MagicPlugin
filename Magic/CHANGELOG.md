@@ -7,6 +7,7 @@
  - Add extraspellshop, for selling spells not included in the normal paths. 
  - Add Forest and Mob to Conduit and Wizard paths, respectively
  - Fix scale parameter on sell shops
+ - Support attribute equations in wand properties and configs
 
 # 7.5.4
 

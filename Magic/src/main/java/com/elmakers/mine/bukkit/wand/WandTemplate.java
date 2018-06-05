@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.magic.MageParameters;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -134,6 +135,33 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
             clearProperty("categories");
             categories = ImmutableSet.copyOf(categoriesList);
         }
+    }
+
+    protected WandTemplate(WandTemplate copy, ConfigurationSection configuration) {
+        super(copy.controller);
+        load(configuration);
+
+        this.key = copy.key;
+        this.effects = copy.effects;
+        this.tags = copy.tags;
+        this.categories = copy.categories;
+        this.creator = copy.creator;
+        this.creatorId = copy.creatorId;
+        this.migrateTemplate = copy.migrateTemplate;
+        this.migrateIcon = copy.migrateIcon;
+        this.icon = copy.icon;
+        this.restorable = copy.restorable;
+        this.migrateIcons = copy.migrateIcons;
+        this.attributes = copy.attributes;
+        this.attributeSlot = copy.attributeSlot;
+        this.parentKey = copy.parentKey;
+    }
+
+
+    public WandTemplate getMageTemplate(Mage mage) {
+        MageParameters parameters = new MageParameters(mage);
+        ConfigurationUtils.addConfigurations(parameters, configuration);
+        return new WandTemplate(this, parameters);
     }
 
     @Override

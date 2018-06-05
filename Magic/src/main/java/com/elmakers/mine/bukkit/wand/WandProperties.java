@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.MageClass;
@@ -19,8 +20,12 @@ public abstract class WandProperties extends TemplatedProperties {
         super(MagicPropertyType.WAND, controller);
     }
 
-    public void setWandTemplate(BaseMagicProperties properties) {
-        this.wandTemplate = properties;
+    public void setWandTemplate(WandTemplate template) {
+        Mage mage = getMage();
+        if (mage != null) {
+            template = template.getMageTemplate(mage);
+        }
+        this.wandTemplate = template;
     }
 
     public void setMageClass(MageClass mageClass) {
