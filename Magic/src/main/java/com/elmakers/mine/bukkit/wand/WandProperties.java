@@ -80,7 +80,7 @@ public abstract class WandProperties extends TemplatedProperties {
         if (configuration.contains(key)) {
             return configuration;
         }
-        return wandTemplate.getConfiguration();
+        return wandTemplate == null ? configuration : wandTemplate.getConfiguration();
     }
 
     public ConfigurationSection getEffectiveConfiguration() {
