@@ -504,7 +504,7 @@ public class TargetingSpell extends BaseSpell {
 
         // Use default range of 32 for configs that didn't specify range
         // Only when targeting is set to on
-        if ((targetType != TargetType.NONE && targetType != TargetType.SELF) && range == 0) {
+        if ((targetType != TargetType.NONE && targetType != TargetType.SELF) && !parameters.contains("range")) {
             range = 32;
         }
 
