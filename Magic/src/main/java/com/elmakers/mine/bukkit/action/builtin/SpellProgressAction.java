@@ -81,6 +81,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                 continue;
             }
             SpellTemplate upgradeSpell = spell.getUpgrade();
+            ProgressionPath currentPath = casterProperties.getPath();
             if (upgradeSpell != null) {
                 ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(upgradeSpell.getKey());
                 if (spellItem != null) {
@@ -100,7 +101,6 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
                         InventoryUtils.wrapText(upgradeDescription, context.getController().getMessages().get("spell.upgrade_description_prefix"), lore);
                     }
-                    ProgressionPath currentPath = casterProperties.getPath();
                     if (requiredPathKey != null && currentPath == null) {
                         continue;
                     }
