@@ -479,19 +479,8 @@ public class TargetingSpell extends BaseSpell {
     }
 
     @Override
-    protected void loadTemplate(ConfigurationSection node)
-    {
-        super.loadTemplate(node);
-
-        // Preload some parameters that may appear in spell lore
-        ConfigurationSection parameters = node.getConfigurationSection("parameters");
-        if (parameters != null)
-        {
-            processTemplateParameters(parameters);
-        }
-    }
-
     protected void processTemplateParameters(ConfigurationSection parameters) {
+        super.processTemplateParameters(parameters);
         range = parameters.getDouble("range", 0);
         boolean hasTargeting = parameters.contains("target");
         targeting.parseTargetType(parameters.getString("target"));
@@ -517,7 +506,6 @@ public class TargetingSpell extends BaseSpell {
     public void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
         targeting.processParameters(parameters);
-        processTemplateParameters(parameters);
         allowMaxRange = parameters.getBoolean("allow_max_range", false);
         checkProtection = parameters.getBoolean("check_protection", false);
         damageResistanceProtection = parameters.getInt("damage_resistance_protection", 0);

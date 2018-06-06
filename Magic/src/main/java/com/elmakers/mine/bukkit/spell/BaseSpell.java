@@ -1041,36 +1041,6 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void updateTemplateParameters() {
-        bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
-        bypassCooldown = parameters.getBoolean("bypass_cooldown", false);
-        warmup = parameters.getInt("warmup", 0);
-        cooldown = parameters.getInt("cooldown", 0);
-        cooldown = parameters.getInt("cool", cooldown);
-        mageCooldown = parameters.getInt("cooldown_mage", 0);
-        displayCooldown = parameters.getInt("display_cooldown", -1);
-        bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
-        bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
-        bypassPermissions = parameters.getBoolean("bypass_permissions", false);
-        bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
-        bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
-        bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
-        bypassProtection = parameters.getBoolean("bypass_protection", false);
-        bypassProtection = parameters.getBoolean("bp", bypassProtection);
-        bypassAll = parameters.getBoolean("bypass", false);
-        duration = parameters.getInt("duration", 0);
-        totalDuration = parameters.getInt("total_duration", -1);
-
-        costReduction = (float)parameters.getDouble("cost_reduction", 0);
-        consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
-        cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
-        if (parameters.getBoolean("free", false)) {
-            costReduction = 2;
-            consumeReduction = 2;
-        }
-    }
-
-    @Override
     public void loadPrerequisites(ConfigurationSection node)
     {
         requiredSpells.addAll(ConfigurationUtils.getPrerequisiteSpells(controller, node, "required_spells", "spell " + getKey(), true));
@@ -1729,7 +1699,43 @@ public class BaseSpell implements MageSpell, Cloneable {
         return new MaterialAndData(DEFAULT_EFFECT_MATERIAL);
     }
 
+
+    @Override
+    public void updateTemplateParameters() {
+        processTemplateParameters(parameters);
+    }
+
+    protected void processTemplateParameters(ConfigurationSection parameters) {
+        bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
+        bypassCooldown = parameters.getBoolean("bypass_cooldown", false);
+        warmup = parameters.getInt("warmup", 0);
+        cooldown = parameters.getInt("cooldown", 0);
+        cooldown = parameters.getInt("cool", cooldown);
+        mageCooldown = parameters.getInt("cooldown_mage", 0);
+        displayCooldown = parameters.getInt("display_cooldown", -1);
+        bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
+        bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
+        bypassPermissions = parameters.getBoolean("bypass_permissions", false);
+        bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
+        bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
+        bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
+        bypassProtection = parameters.getBoolean("bypass_protection", false);
+        bypassProtection = parameters.getBoolean("bp", bypassProtection);
+        bypassAll = parameters.getBoolean("bypass", false);
+        duration = parameters.getInt("duration", 0);
+        totalDuration = parameters.getInt("total_duration", -1);
+
+        costReduction = (float)parameters.getDouble("cost_reduction", 0);
+        consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
+        cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
+        if (parameters.getBoolean("free", false)) {
+            costReduction = 2;
+            consumeReduction = 2;
+        }
+    }
+
     public void processParameters(ConfigurationSection parameters) {
+        processTemplateParameters(parameters);
         fizzleChance = (float)parameters.getDouble("fizzle_chance", 0);
         backfireChance = (float)parameters.getDouble("backfire_chance", 0);
 
@@ -1738,15 +1744,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (locationOverride != null) {
             location = locationOverride;
         }
-        costReduction = (float)parameters.getDouble("cost_reduction", 0);
-        consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
-        cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
-        if (parameters.getBoolean("free", false)) {
-            costReduction = 2;
-            consumeReduction = 2;
-        }
-        bypassCooldown = parameters.getBoolean("bypass_cooldown", false);
-        bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
         cancelOnNoPermission = parameters.getBoolean("cancel_on_no_permission", false);
@@ -1776,22 +1773,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         messageTargets = parameters.getBoolean("message_targets", true);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
         passive = parameters.getBoolean("passive", false);
-
-        cooldown = parameters.getInt("cooldown", 0);
-        cooldown = parameters.getInt("cool", cooldown);
-        displayCooldown = parameters.getInt("display_cooldown", -1);
-        warmup = parameters.getInt("warmup", 0);
-        bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
-        bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
-        bypassPermissions = parameters.getBoolean("bypass_permissions", false);
-        bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
-        bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
-        bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
-        bypassProtection = parameters.getBoolean("bypass_protection", false);
-        bypassProtection = parameters.getBoolean("bp", bypassProtection);
-        bypassAll = parameters.getBoolean("bypass", false);
-        duration = parameters.getInt("duration", 0);
-        totalDuration = parameters.getInt("total_duration", 0);
 
         friendlyEntityTypes = null;
         if (parameters.contains("friendly_types")) {
