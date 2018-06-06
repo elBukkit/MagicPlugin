@@ -94,7 +94,7 @@ public class BaseMagicProperties implements MagicProperties {
         return hasOwnProperty(key);
     }
 
-    protected ConfigurationSection getPropertyConfiguration(String key) {
+    public ConfigurationSection getPropertyConfiguration(String key) {
         return configuration;
     }
 

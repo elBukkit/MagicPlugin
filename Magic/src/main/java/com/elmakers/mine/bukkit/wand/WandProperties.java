@@ -75,7 +75,7 @@ public abstract class WandProperties extends TemplatedProperties {
     public ConfigurationSection getPropertyConfiguration(String key) {
         BaseMagicProperties storage = getStorage(key);
         if (storage != null && storage != this) {
-            return storage.getConfiguration();
+            return storage.getPropertyConfiguration(key);
         }
         if (configuration.contains(key)) {
             return configuration;
