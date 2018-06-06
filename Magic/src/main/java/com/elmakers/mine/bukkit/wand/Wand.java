@@ -3518,6 +3518,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void closeInventory() {
+        closeInventory(true);
+    }
+
+    public void closeInventory(boolean closePlayerInventory) {
         if (!isInventoryOpen()) return;
         controller.disableItemSpawn();
         inventoryWasOpen = true;
@@ -3534,7 +3538,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (mode == WandMode.INVENTORY) {
                     restoreInventory();
                     showActiveIcon(false);
-                } else {
+                } else if (closePlayerInventory) {
                     mage.getPlayer().closeInventory();
                 }
 
@@ -3571,7 +3575,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             restoreInventory();
         }
 
-        if (mode == WandMode.INVENTORY && mage != null) {
+        if (mode == WandMode.INVENTORY && mage != null && closePlayerInventory) {
             try {
                 mage.getPlayer().closeInventory();
             } catch (Throwable ex) {
@@ -3933,6 +3937,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void deactivate() {
+        deactivate(true);
+    }
+
+    public void deactivate(boolean closePlayerInventory) {
         if (mage == null) return;
 
         // Play deactivate FX
@@ -3958,7 +3966,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Mage mage = this.mage;
 
         if (isInventoryOpen()) {
-            closeInventory();
+            closeInventory(closePlayerInventory);
         }
         showActiveIcon(false);
         storedInventory = null;

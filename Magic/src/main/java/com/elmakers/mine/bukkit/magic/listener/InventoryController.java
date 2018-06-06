@@ -539,7 +539,7 @@ public class InventoryController implements Listener {
             // Anyway, check for opening another inventory and close the wand.
             if (event.getView().getType() != InventoryType.CRAFTING) {
                 if (wand.getMode() == WandMode.INVENTORY || !wand.isInventoryOpen()) {
-                    wand.deactivate();
+                    wand.deactivate(false);
                 }
             }
         }

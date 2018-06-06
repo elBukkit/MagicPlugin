@@ -8,6 +8,7 @@
  - Add Forest and Mob to Conduit and Wizard paths, respectively
  - Fix scale parameter on sell shops
  - Support attribute equations in wand properties and configs
+ - Fix incompatibilities with certain GUI plugins such as Jobs Reloaded
 
 # 7.5.4
 
