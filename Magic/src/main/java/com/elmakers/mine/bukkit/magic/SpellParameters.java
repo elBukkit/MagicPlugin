@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.magic;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 
 public class SpellParameters extends MageParameters {
@@ -11,6 +13,12 @@ public class SpellParameters extends MageParameters {
     public SpellParameters(MageSpell spell) {
         super(spell.getMage());
         this.spell = spell;
+    }
+
+    public SpellParameters(MageSpell spell, ConfigurationSection config) {
+        super(spell.getMage());
+        this.spell = spell;
+        wrap(config);
     }
 
     public SpellParameters(SpellParameters copy) {

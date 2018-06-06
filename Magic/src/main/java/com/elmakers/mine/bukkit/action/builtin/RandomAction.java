@@ -10,8 +10,10 @@ import com.elmakers.mine.bukkit.action.ActionContext;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.SpellParameters;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
@@ -19,11 +21,15 @@ public class RandomAction extends CompoundAction
 {
     private Deque<WeightedPair<ActionContext>> actionProbability;
     private ActionContext currentAction = null;
+    private MageSpell mageSpell;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
         super.initialize(spell, parameters);
+        if (spell instanceof MageSpell) {
+            mageSpell = (MageSpell)spell;
+        }
         mapActions();
     }
 
@@ -65,6 +71,10 @@ public class RandomAction extends CompoundAction
                 ConfigurationSection actionParameters = option.getActionParameters();
                 if (actionParameters != null)
                 {
+                    // To support equations
+                    if (mageSpell != null) {
+                        actionParameters = new SpellParameters(mageSpell, actionParameters);
+                    }
                     weight = (float)actionParameters.getDouble("weight", weight);
                 }
                 totalWeight += weight;
