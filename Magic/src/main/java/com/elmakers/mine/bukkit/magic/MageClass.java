@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -247,16 +246,6 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
             activateAttributes();
         }
         mage.updatePassiveEffects();
-    }
-
-    @Nullable
-    @Override
-    public ProgressionPath getPath() {
-        String pathKey = getString("path");
-        if (pathKey == null || pathKey.length() == 0) {
-            pathKey = controller.getDefaultWandPath();
-        }
-        return controller.getPath(pathKey);
     }
 
     @Override
