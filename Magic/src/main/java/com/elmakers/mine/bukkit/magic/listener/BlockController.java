@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -347,7 +348,7 @@ public class BlockController implements Listener {
     private void undoPending(World world, String logType) {
         Collection<Mage> mages = controller.getMages();
         for (Mage mage : mages) {
-            Collection<Batch> pending = mage.getPendingBatches();
+            Collection<Batch> pending = new ArrayList<>(mage.getPendingBatches());
             int cancelled = 0;
             for (Batch batch : pending) {
                 if (batch instanceof SpellBatch) {
@@ -364,7 +365,7 @@ public class BlockController implements Listener {
                 controller.info("Cancelled " + cancelled + " pending spells for " + mage.getName() + " prior to " + logType + " of world " + world.getName());
             }
         }
-        Collection<UndoList> pending = controller.getPendingUndo();
+        Collection<UndoList> pending = new ArrayList<>(controller.getPendingUndo());
         int undone = 0;
         for (UndoList list : pending) {
             if (list.isScheduled() && list.affectsWorld(world)) {
