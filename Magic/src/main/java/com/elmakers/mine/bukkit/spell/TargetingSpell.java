@@ -485,7 +485,7 @@ public class TargetingSpell extends BaseSpell {
         boolean hasTargeting = parameters.contains("target");
         targeting.parseTargetType(parameters.getString("target"));
 
-        // If a range was specified but not a target type, default to none
+        // If a range was specified but not a target type, default to other
         if (range > 0 && !hasTargeting) {
             targeting.setTargetType(TargetType.OTHER);
         }
@@ -504,8 +504,10 @@ public class TargetingSpell extends BaseSpell {
 
     @Override
     public void processParameters(ConfigurationSection parameters) {
-        super.processParameters(parameters);
         targeting.processParameters(parameters);
+
+        // Need to do this *after* targeting.processParameters because it may override some targeting defaults.
+        super.processParameters(parameters);
         allowMaxRange = parameters.getBoolean("allow_max_range", false);
         checkProtection = parameters.getBoolean("check_protection", false);
         damageResistanceProtection = parameters.getInt("damage_resistance_protection", 0);
