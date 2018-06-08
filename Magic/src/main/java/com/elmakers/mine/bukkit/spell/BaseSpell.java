@@ -47,11 +47,13 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -74,7 +76,6 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
@@ -191,7 +192,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private Set<String> requiredUpgradeTags;
     private Collection<PrerequisiteSpell> requiredSpells;
     private List<SpellKey> removesSpells;
-    private MaterialAndData icon = new MaterialAndData(DEFAULT_SPELL_ICON);
+    private MaterialAndData icon =  null;
     private MaterialAndData disabledIcon = null;
     private String iconURL = null;
     private String iconDisabledURL = null;
@@ -930,8 +931,12 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Load basic properties
-        icon = ConfigurationUtils.getMaterialAndData(node, "icon", icon);
-        disabledIcon = ConfigurationUtils.getMaterialAndData(node, "icon_disabled", null);
+        icon = loadIcon(node.getString("icon"));
+        disabledIcon = loadIcon(node.getString("icon_disabled"));
+        if (icon == null) {
+            icon = new com.elmakers.mine.bukkit.block.MaterialAndData(DEFAULT_SPELL_ICON);
+        }
+
         iconURL = node.getString("icon_url");
         iconDisabledURL = node.getString("icon_disabled_url");
         color = ConfigurationUtils.getColor(node, "color", null);
@@ -1038,6 +1043,15 @@ public class BaseSpell implements MageSpell, Cloneable {
         } else if (node.contains("effects")) {
             controller.getLogger().warning("Invalid effects section in spell " + getKey() + ", did you forget to add cast: ?");
         }
+    }
+
+    @Nullable
+    private MaterialAndData loadIcon(String key) {
+        if (key == null || key.isEmpty()) {
+            return null;
+        }
+        ItemData itemData = controller.getOrCreateItem(key);
+        return itemData == null ? null : itemData.getMaterialAndData();
     }
 
     @Override
@@ -1696,9 +1710,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {
-        return new MaterialAndData(DEFAULT_EFFECT_MATERIAL);
+        return new com.elmakers.mine.bukkit.block.MaterialAndData(DEFAULT_EFFECT_MATERIAL);
     }
-
 
     @Override
     public void updateTemplateParameters() {
