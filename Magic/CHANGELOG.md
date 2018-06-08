@@ -9,7 +9,7 @@
  - Fix scale parameter on sell shops
  - Support attribute equations in wand properties and configs
  - Fix incompatibilities with certain GUI plugins such as Jobs Reloaded
- - Support custom items as spell icons (doesn't really do much except let you define them in items.yml)
+ - Support custom items as spell/wand icons (doesn't really do much except let you define them in items.yml)
 
 # 7.5.4
 

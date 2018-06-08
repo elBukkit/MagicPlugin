@@ -43,6 +43,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
@@ -1551,6 +1552,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    @Nullable
+    private MaterialAndData loadIcon(String key) {
+        if (key == null || key.isEmpty()) {
+            return null;
+        }
+        ItemData itemData = controller.getOrCreateItem(key);
+        com.elmakers.mine.bukkit.api.block.MaterialAndData materialData = itemData.getMaterialAndData();
+        return itemData != null && (materialData instanceof MaterialAndData) ? (MaterialAndData)materialData : null;
+    }
+
     @Override
     public void loadProperties() {
         super.loadProperties();
@@ -1806,7 +1817,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 iconKey = wandTemplate.migrateIcon(iconKey);
             }
             if (iconKey != null) {
-                inactiveIcon = new MaterialAndData(iconKey);
+                inactiveIcon = loadIcon(iconKey);
             }
         } else {
             inactiveIcon = null;
@@ -1819,7 +1830,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         randomizeOnActivate = randomizeOnActivate && hasProperty("randomize_icon");
         if (randomizeOnActivate) {
             String randomizeIcon = getString("randomize_icon");
-            setIcon(new MaterialAndData(randomizeIcon));
+            setIcon(loadIcon(randomizeIcon));
             if (item == null) {
                 controller.getLogger().warning("Invalid randomize_icon in wand '" + template + "' config: " + randomizeIcon);
             }
@@ -1837,7 +1848,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (templateConfig != null && iconKey.contains("i.imgur.com")) {
                 iconKey = templateConfig.getString("icon");
             }
-            setIcon(new MaterialAndData(iconKey));
+            setIcon(loadIcon(iconKey));
             if (item == null) {
                 controller.getLogger().warning("Invalid icon in wand '" + template + "' config: " + iconKey);
             }
@@ -1849,7 +1860,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         if (hasProperty("upgrade_icon")) {
-            upgradeIcon = new MaterialAndData(getString("upgrade_icon"));
+            upgradeIcon = loadIcon(getString("upgrade_icon"));
         }
 
         // Add vanilla attributes
