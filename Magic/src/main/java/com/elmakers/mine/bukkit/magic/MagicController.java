@@ -3776,13 +3776,13 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.wand.Wand getWand(ConfigurationSection config) {
+    public Wand getWand(ConfigurationSection config) {
         return new Wand(this, config);
     }
 
     @Nullable
     @Override
-    public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) {
+    public Wand createWand(String wandKey) {
         return Wand.createWand(this, wandKey);
     }
 
@@ -5007,6 +5007,19 @@ public class MagicController implements MageController {
     public ItemData getOrCreateItem(String key) {
         if (key == null || key.isEmpty()) {
             return null;
+        }
+        return items.getOrCreate(key);
+    }
+
+    @Nullable
+    @Override
+    public ItemData getOrCreateItemOrWand(String key) {
+        if (key == null || key.isEmpty()) {
+            return null;
+        }
+        Wand wand = createWand(key);
+        if (wand != null) {
+            return new com.elmakers.mine.bukkit.item.ItemData(wand.getItem());
         }
         return items.getOrCreate(key);
     }

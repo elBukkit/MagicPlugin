@@ -417,11 +417,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
         item = itemData == null ? null : itemData.getItemStack(parameters.getInt("amount", 1));
 
-        itemInHand = controller.getOrCreateItem(parameters.getString("item"));
-        helmet = controller.getOrCreateItem(parameters.getString("helmet"));
-        chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
-        leggings = controller.getOrCreateItem(parameters.getString("leggings"));
-        boots = controller.getOrCreateItem(parameters.getString("boots"));
+        itemInHand = controller.getOrCreateItemOrWand(parameters.getString("item"));
+        helmet = controller.getOrCreateItemOrWand(parameters.getString("helmet"));
+        chestplate = controller.getOrCreateItemOrWand(parameters.getString("chestplate"));
+        leggings = controller.getOrCreateItemOrWand(parameters.getString("leggings"));
+        boots = controller.getOrCreateItemOrWand(parameters.getString("boots"));
 
         canPickupItems = parameters.getBoolean("can_pickup_items", false);
 

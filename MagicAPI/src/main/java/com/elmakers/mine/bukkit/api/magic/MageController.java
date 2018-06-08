@@ -451,6 +451,8 @@ public interface MageController {
     ItemData getItem(ItemStack match);
     @Nullable
     ItemData getOrCreateItem(String key);
+    @Nullable
+    ItemData getOrCreateItemOrWand(String key);
     void unloadItemTemplate(String key);
     void loadItemTemplate(String key, ConfigurationSection itemNode);
     @Nullable

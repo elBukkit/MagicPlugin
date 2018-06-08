@@ -55,8 +55,8 @@ public class EntityHorseData extends EntityExtraData {
             tamed = parameters.getBoolean("tamed");
         }
 
-        saddle = controller.getOrCreateItem(parameters.getString("saddle"));
-        armor = controller.getOrCreateItem(parameters.getString("armor"));
+        saddle = controller.getOrCreateItemOrWand(parameters.getString("saddle"));
+        armor = controller.getOrCreateItemOrWand(parameters.getString("armor"));
     }
 
     public EntityHorseData(Horse horse) {

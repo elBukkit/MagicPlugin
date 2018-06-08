@@ -9,7 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.item.ItemData;
 
 public class ItemController {
@@ -62,15 +61,10 @@ public class ItemController {
     public ItemData getOrCreate(String key) {
         ItemData data = get(key);
         if (data == null) {
-            Wand wand = controller.createWand(key);
-            if (wand != null) {
-                data = new ItemData(wand.getItem());
-            } else {
-                try {
-                    data = new ItemData(key);
-                } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, "Error creating item: " + key);
-                }
+            try {
+                data = new ItemData(key);
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error creating item: " + key);
             }
         }
         return data;

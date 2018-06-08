@@ -110,7 +110,7 @@ public class MagicRecipe {
                 Set<String> keys = materials.getKeys(false);
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
-                    ItemData ingredient = controller.getOrCreateItem(materialKey);
+                    ItemData ingredient = controller.getOrCreateItemOrWand(materialKey);
                     @SuppressWarnings("deprecation")
                     org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getMaterialData();
                     if (material == null) {

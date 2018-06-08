@@ -35,7 +35,7 @@ public class EntityMageData {
     protected double trackRadiusSquared;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
-        requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
+        requiresWand = controller.getOrCreateItemOrWand(parameters.getString("cast_requires_item"));
 
         mageProperties = parameters.getConfigurationSection("mage");
 

@@ -74,7 +74,7 @@ public class MountArmorStandAction extends RideEntityAction
         }
 
         MageController controller = context.getController();
-        ItemData itemType = controller.getOrCreateItem(parameters.getString("helmet_item"));
+        ItemData itemType = controller.getOrCreateItemOrWand(parameters.getString("helmet_item"));
         if (itemType != null) {
             helmetItem = itemType.getItemStack(1);
             if (helmetItem != null) {
