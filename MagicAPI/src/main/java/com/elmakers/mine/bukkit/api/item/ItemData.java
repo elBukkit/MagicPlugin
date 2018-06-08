@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+
 public interface ItemData {
     String getKey();
     double getWorth();
@@ -19,6 +21,8 @@ public interface ItemData {
     Material getType();
     @Nullable
     ItemMeta getItemMeta();
+    @Nullable
+    MaterialAndData getMaterialAndData();
 
     @Nullable
     @Deprecated
