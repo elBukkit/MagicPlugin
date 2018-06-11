@@ -354,7 +354,7 @@ public class BlockController implements Listener {
                 if (batch instanceof SpellBatch) {
                     SpellBatch spellBatch = (SpellBatch)batch;
                     UndoList undoList = spellBatch.getUndoList();
-                    if (undoList != null && undoList.isConsumed() && undoList.affectsWorld(world)) {
+                    if (undoList != null && undoList.isScheduled() && undoList.affectsWorld(world)) {
                         spellBatch.getSpell().cancel();
                         batch.finish();
                         cancelled++;
@@ -381,15 +381,17 @@ public class BlockController implements Listener {
     @EventHandler
     public void onWorldSaveEvent(WorldSaveEvent event) {
         World world = event.getWorld();
+
+        if (undoOnWorldSave) {
+            undoPending(world, "save");
+        }
+
         Collection<Player> players = world.getPlayers();
         for (Player player : players) {
             Mage mage = controller.getRegisteredMage(player);
             if (mage != null) {
                 controller.saveMage(mage, true);
             }
-        }
-        if (undoOnWorldSave) {
-            undoPending(world, "save");
         }
     }
 
