@@ -65,7 +65,7 @@ basher:
   - sp:16
 
 killercar:
-  name: Carrie
+  name: Christine
   type: pig_zombie
   disguise:
     type: armor_stand
