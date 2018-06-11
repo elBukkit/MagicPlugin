@@ -116,4 +116,5 @@ worm_death:
 birth_worm:
   inherit: worm
   parameters:
+    allow_max_range: true
     seed_radius: 2

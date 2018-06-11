@@ -149,4 +149,5 @@ defender_attack:
 birth_defender:
   inherit: defender
   parameters:
+    allow_max_range: true
     seed_radius: 2

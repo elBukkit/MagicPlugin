@@ -109,4 +109,5 @@ snake_death:
 birth_snake:
   inherit: snake
   parameters:
+    allow_max_range: true
     seed_radius: 2

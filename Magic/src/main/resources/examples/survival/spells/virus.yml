@@ -231,4 +231,5 @@ virus_death:
 birth_virus:
   inherit: virus
   parameters:
+    allow_max_range: true
     seed_radius: 2
