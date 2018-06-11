@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.block;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,8 +22,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     protected BoundingBox               area;
     protected @Nullable String          worldName;
 
-    protected Deque<BlockData>          blockList;
-    protected HashSet<Long>             blockIdMap;
+    protected final Deque<BlockData>    blockList = new ArrayDeque<>();
+    protected final HashSet<Long>       blockIdMap = new HashSet<>();
 
     public BlockList()
     {
@@ -60,18 +59,10 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
             return false;
         }
 
-        if (blockIdMap == null)
-        {
-            blockIdMap = new HashSet<>();
+        synchronized (blockList) {
+            blockIdMap.add(blockData.getId());
+            blockList.addLast(blockData);
         }
-
-        if (blockList == null)
-        {
-            blockList = new ArrayDeque<>();
-        }
-
-        blockIdMap.add(blockData.getId());
-        blockList.addLast(blockData);
         return true;
     }
 
@@ -121,31 +112,20 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public void clear()
     {
-        if (blockIdMap != null)
-        {
+        synchronized (blockList) {
             blockIdMap.clear();
+            blockList.clear();
         }
-        if (blockList == null)
-        {
-            return;
-        }
-        blockList.clear();
     }
 
     @Override
     public boolean contains(Block block)
     {
-        if (blockIdMap == null) return false;
         return blockIdMap.contains(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }
 
     public boolean contains(BlockData blockData)
     {
-        if (blockIdMap == null || blockData == null)
-        {
-            return false;
-        }
-
         return blockIdMap.contains(blockData.getId());
     }
 
@@ -159,16 +139,12 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
             return contains((BlockData)arg0);
         }
         // Fall back to map
-        return blockIdMap == null ? false : blockIdMap.contains(arg0);
+        return blockIdMap.contains(arg0);
     }
 
     @Override
     public boolean containsAll(Collection<?> arg0)
     {
-        if (blockIdMap == null)
-        {
-            return false;
-        }
         return blockIdMap.containsAll(arg0);
     }
 
@@ -192,22 +168,18 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public int size()
     {
-        return blockList == null ? 0 : blockList.size();
+        return blockList.size();
     }
 
     @Override
     public boolean isEmpty()
     {
-        return blockList == null || blockList.isEmpty();
+        return blockList.isEmpty();
     }
 
     @Override
     public Iterator<BlockData> iterator()
     {
-        if (blockList == null)
-        {
-            return Collections.<BlockData>emptyList().iterator();
-        }
         return blockList.iterator();
     }
 
@@ -215,10 +187,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     public boolean remove(Object removeObject)
     {
         // Note that we never shrink the BB!
-        if (blockList == null)
-        {
-            return false;
-        }
         if (removeObject instanceof BlockData)
         {
             blockIdMap.remove(((BlockData)removeObject).getId());
@@ -229,10 +197,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public boolean removeAll(Collection<?> removeCollection)
     {
-        if (blockList == null)
-        {
-            return false;
-        }
         for (Object removeObject : removeCollection)
         {
             if (removeObject instanceof BlockData)
@@ -246,10 +210,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public boolean retainAll(Collection<?> arg0)
     {
-        if (blockList == null)
-        {
-            return false;
-        }
         return blockList.retainAll(arg0);
     }
 
@@ -258,37 +218,15 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         this.area = area;
     }
 
-    public void setBlockList(Collection<BlockData> blockList)
-    {
-        this.blockList = null;
-        if (blockList != null)
-        {
-            this.blockList = new ArrayDeque<>(blockList);
-            blockIdMap = new HashSet<>();
-            for (BlockData block : blockList)
-            {
-                blockIdMap.add(block.getId());
-            }
-        }
-    }
-
     @Override
     @Nullable
     public Object[] toArray() {
-        if (blockList == null) {
-            // FIXME: This breaks the contract of Collection
-            return null;
-        }
         return blockList.toArray();
     }
 
     @Override
     @Nullable
     public <T> T[] toArray(T[] arg0) {
-        if (blockList == null) {
-            // FIXME: This breaks the contract of Collection
-            return null;
-        }
         return blockList.toArray(arg0);
     }
 
@@ -308,12 +246,14 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public void save(ConfigurationSection node) {
         node.set("world", worldName);
-        List<String> blockData = new ArrayList<>();
-        if (blockList != null) {
-            for (BlockData block : blockList) {
-                blockData.add(block.toString());
+        synchronized (blockList) {
+            if (!blockList.isEmpty()) {
+                List<String> blockData = new ArrayList<>();
+                    for (BlockData block : blockList) {
+                        blockData.add(block.toString());
+                    }
+                node.set("blocks", blockData);
             }
-            node.set("blocks", blockData);
         }
     }
 
