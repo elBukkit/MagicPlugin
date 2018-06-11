@@ -13,7 +13,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
-import org.bukkit.entity.WitherSkeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 
@@ -78,8 +77,10 @@ public class ShrinkEntityAction extends DamageAction
             context.registerModified(li);
             Slime slime = (Slime)li;
             slime.setSize(slime.getSize() - 1);
+        /*
         } else if (li instanceof WitherSkeleton && skeletons) {
             replaceType = EntityType.SKELETON;
+        */
         } else {
             super.perform(context);
             if ((li.isDead() || li.getHealth() == 0) && !alreadyDead) {
