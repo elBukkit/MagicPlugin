@@ -49,6 +49,6 @@ mob_eggs:
   wither_skeleton: monster_egg,wither_skeleton_spawn_egg
   wolf: monster_egg,wolf_spawn_egg
   zombie_horse: monster_egg,zombie_horse_spawn_egg
-  zombie_pigman: monster_egg,zombie_pigman_spawn_egg
+  pig_zombie: monster_egg,zombie_pigman_spawn_egg
   zombie: monster_egg,zombie_spawn_egg
   zombie_villager: monster_egg,zombie_villager_spawn_egg

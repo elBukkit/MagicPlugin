@@ -42,7 +42,7 @@ public class CaptureAction extends BaseSpellAction {
         }
         Material eggMaterial = context.getController().getMobEgg(targetEntity.getType());
         if (eggMaterial == null) {
-            return SpellResult.FAIL;
+            return SpellResult.NO_TARGET;
         }
         String entityTypeString = CompatibilityUtils.getEntityType(targetEntity);
         if (entityTypeString == null) {
