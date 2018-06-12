@@ -121,12 +121,20 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public boolean contains(Block block)
     {
-        return blockIdMap.contains(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+        boolean contains;
+        synchronized (blockList) {
+            contains = blockIdMap.contains(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+        }
+        return contains;
     }
 
     public boolean contains(BlockData blockData)
     {
-        return blockIdMap.contains(blockData.getId());
+        boolean contains;
+        synchronized (blockList) {
+            contains = blockIdMap.contains(blockData.getId());
+        }
+        return contains;
     }
 
     @Override
@@ -139,13 +147,21 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
             return contains((BlockData)arg0);
         }
         // Fall back to map
-        return blockIdMap.contains(arg0);
+        boolean contains;
+        synchronized (blockList) {
+            contains = blockIdMap.contains(arg0);
+        }
+        return contains;
     }
 
     @Override
     public boolean containsAll(Collection<?> arg0)
     {
-        return blockIdMap.containsAll(arg0);
+        boolean contains;
+        synchronized (blockList) {
+            contains = blockIdMap.containsAll(arg0);
+        }
+        return contains;
     }
 
     // Collection interface- would be great if I could just extend HashSet and
@@ -187,24 +203,32 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     public boolean remove(Object removeObject)
     {
         // Note that we never shrink the BB!
-        if (removeObject instanceof BlockData)
-        {
-            blockIdMap.remove(((BlockData)removeObject).getId());
+        boolean removed;
+        synchronized (blockList) {
+            if (removeObject instanceof BlockData)
+            {
+                blockIdMap.remove(((BlockData)removeObject).getId());
+            }
+            removed = blockList.remove(removeObject);
         }
-        return blockList.remove(removeObject);
+        return removed;
     }
 
     @Override
     public boolean removeAll(Collection<?> removeCollection)
     {
-        for (Object removeObject : removeCollection)
-        {
-            if (removeObject instanceof BlockData)
+        boolean removed;
+        synchronized (blockList) {
+            for (Object removeObject : removeCollection)
             {
-                blockIdMap.remove(((BlockData)removeObject).getId());
+                if (removeObject instanceof BlockData)
+                {
+                    blockIdMap.remove(((BlockData)removeObject).getId());
+                }
             }
+            removed = blockList.removeAll(removeCollection);;
         }
-        return blockList.removeAll(removeCollection);
+        return removed;
     }
 
     @Override
@@ -249,9 +273,9 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         synchronized (blockList) {
             if (!blockList.isEmpty()) {
                 List<String> blockData = new ArrayList<>();
-                    for (BlockData block : blockList) {
-                        blockData.add(block.toString());
-                    }
+                for (BlockData block : blockList) {
+                    blockData.add(block.toString());
+                }
                 node.set("blocks", blockData);
             }
         }
