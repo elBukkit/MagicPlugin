@@ -11,6 +11,7 @@
  - Fix incompatibilities with certain GUI plugins such as Jobs Reloaded
  - Support custom items as spell/wand icons (doesn't really do much except let you define them in items.yml)
  - Fix Capture when used on pigmen
+ - Nerfed Poison Arrow a bit
 
 # 7.5.4
 

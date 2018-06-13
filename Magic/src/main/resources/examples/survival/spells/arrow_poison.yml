@@ -39,10 +39,10 @@ arrow_poison:
     parameters:
       target: none
       projectile: TippedArrow
-      duration: 10000
+      duration: 3000
       potion_effects:
       - type: poison
-        duration: 10000
+        duration: 1000
       speed: "bowpull * 3"
       spread: "1 - bowpull"
       radius: "2 + 4 * bowpull"
