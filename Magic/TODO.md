@@ -2,6 +2,8 @@
 
 ## Hot Issues
           
+ - Right-clicking a door with a wand casts spell?
+
  - Test attributes when reloading mage class configs live
                      
  - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?

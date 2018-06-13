@@ -177,7 +177,9 @@ public class WandLevel {
                 for (int i = 0; i < spellCount; i++) {
                     String spellKey = RandomUtils.weightedRandom(remainingSpells);
                     boolean added = wand.addSpell(spellKey);
-                    mage.sendDebugMessage("Trying to add spell: " + spellKey + " ? " + added);
+                    if (mage != null) {
+                        mage.sendDebugMessage("Trying to add spell: " + spellKey + " ? " + added);
+                    }
                     if (added) {
                         addedSpells = true;
                     }
