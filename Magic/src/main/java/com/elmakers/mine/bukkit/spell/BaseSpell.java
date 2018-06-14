@@ -1480,7 +1480,9 @@ public class BaseSpell implements MageSpell, Cloneable {
                     cost.use(this);
                 }
             }
-            updateCooldown();
+            if (toggle == ToggleType.NONE) {
+                updateCooldown();
+            }
         }
         if (success && toggle != ToggleType.NONE) {
             activate();
