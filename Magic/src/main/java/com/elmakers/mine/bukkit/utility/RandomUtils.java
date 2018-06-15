@@ -122,8 +122,10 @@ public class RandomUtils {
 
     public static <T extends Object> void populateProbabilityList(Class<T> valueClass, Deque<WeightedPair<T>> probabilityMap, List<String> keys) {
         if (keys != null) {
+            float currentThreshold = 0;
             for (String key : keys) {
-                probabilityMap.add(new WeightedPair<>(1.0f, 1.0f, key, valueClass));
+                currentThreshold++;
+                probabilityMap.add(new WeightedPair<>(currentThreshold, currentThreshold, key, valueClass));
             }
         }
     }
