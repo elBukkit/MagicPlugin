@@ -32,6 +32,7 @@ public class MountArmorStandAction extends RideEntityAction
     private boolean mountWand;
     private double armorStandPitch = 0;
     private double armorStandRoll = 0;
+    private double armorStandHealth = 0;
     private ItemStack helmetItem;
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
 
@@ -62,6 +63,7 @@ public class MountArmorStandAction extends RideEntityAction
         armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
         armorStandPitch = parameters.getDouble("armor_stand_pitch", 0.0);
         armorStandRoll = parameters.getDouble("armor_stand_roll", 0.0);
+        armorStandHealth = parameters.getDouble("armor_stand_health", 0.1);
         mountWand = parameters.getBoolean("mount_wand", false);
         mountName = parameters.getString("mount_name", null);
         if (parameters.contains("armor_stand_reason")) {
@@ -163,6 +165,8 @@ public class MountArmorStandAction extends RideEntityAction
         Entity entity = context.getEntity();
         ArmorStand armorStand = CompatibilityUtils.createArmorStand(mage.getLocation());
 
+        armorStand.setHealth(armorStandHealth);
+        CompatibilityUtils.setMaxHealth(armorStand, armorStandHealth);
         if (armorStandInvisible) {
             CompatibilityUtils.setInvisible(armorStand, true);
         }
