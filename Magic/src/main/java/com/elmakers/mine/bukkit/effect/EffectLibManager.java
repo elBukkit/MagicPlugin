@@ -60,6 +60,29 @@ public class EffectLibManager {
 
     @Nullable
     public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap) {
+        // Check visibility type
+        Player targetPlayer = null;
+        switch (player.getVisibility()) {
+            case TARGET:
+                if (target != null && target.getEntity() instanceof Player) {
+                    targetPlayer = (Player)target.getEntity();
+                }
+                if (targetPlayer == null) {
+                    return null;
+                }
+                break;
+            case ORIGIN:
+                if (origin != null && origin.getEntity() instanceof Player) {
+                    targetPlayer = (Player)origin.getEntity();
+                }
+                if (targetPlayer == null) {
+                    return null;
+                }
+                break;
+            default:
+                break;
+        }
+
         if (parameterMap == null) {
             parameterMap = new MemoryConfiguration();
         }
@@ -112,7 +135,7 @@ public class EffectLibManager {
         }
 
         try {
-            effect = effectManager.start(effectClass, parameters, origin, target, parameterMap, null);
+            effect = effectManager.start(effectClass, parameters, origin, target, parameterMap, targetPlayer);
             if (!parameters.contains("material"))
             {
                 MaterialAndData mat = player.getWorkingMaterial();

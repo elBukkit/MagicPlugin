@@ -70,6 +70,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     private Vector targetOffset;
     private Vector originRelativeOffset;
     private Vector targetRelativeOffset;
+    private Visibility visibility = Visibility.ALL;
 
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
@@ -235,6 +236,15 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 particleZOffset = (float)configuration.getDouble("particle_offset_z", particleZOffset);
                 particleCount = configuration.getInt("particle_count", particleCount);
                 particleSize = (float)configuration.getDouble("particle_size", particleSize);
+            }
+        }
+
+        String visibilityType = configuration.getString("visibility");
+        if (visibilityType != null) {
+            try {
+                visibility = Visibility.valueOf(visibilityType.toUpperCase());
+            } catch (Exception ex) {
+                warn("Invalid visibility type: " + visibilityType);
             }
         }
 
@@ -738,6 +748,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Override
     public boolean playsAtAllTargets() {
         return playAtAllTargets;
+    }
+
+    public Visibility getVisibility() {
+        return visibility;
     }
 
     @Override

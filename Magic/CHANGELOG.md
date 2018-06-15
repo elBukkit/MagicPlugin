@@ -12,6 +12,7 @@
  - Support custom items as spell/wand icons (doesn't really do much except let you define them in items.yml)
  - Fix Capture when used on pigmen
  - Nerfed Poison Arrow a bit
+ - Add "visibility" effect parameter, can be all (the default),origin or target.
 
 # 7.5.4
 
