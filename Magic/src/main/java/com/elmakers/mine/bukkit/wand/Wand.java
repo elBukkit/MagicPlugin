@@ -1283,7 +1283,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (Map.Entry<String, ? extends Object> spellEntry : levels.entrySet()) {
             Object level = spellEntry.getValue();
             if (level != null && level instanceof Integer) {
-                setSpellLevel(spellEntry.getKey(), (Integer)level);
+                SpellKey spellKey = new SpellKey(spellEntry.getKey(), (Integer)level);
+                SpellTemplate spell = controller.getSpellTemplate(spellKey.getKey());
+
+                // Downgrade spells if higher levels have gone missing
+                while (spell == null && spellKey.getLevel() > 0)
+                {
+                    spellKey = new SpellKey(spellKey.getBaseKey(), spellKey.getLevel() - 1);
+                    spell = controller.getSpellTemplate(spellKey.getKey());
+                }
+
+                setSpellLevel(spellKey.getBaseKey(), spellKey.getLevel());
             }
         }
     }
