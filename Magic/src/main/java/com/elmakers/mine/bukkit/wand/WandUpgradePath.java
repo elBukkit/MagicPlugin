@@ -529,7 +529,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             for (String command : upgradeCommands) {
                 if (command.contains("@uuid") || command.contains("@pn") || command.contains("@pd")) {
                     if (mage == null) {
-                        Bukkit.getLogger().warning("Tried to upgrade with commands but no mage");
                         continue;
                     }
                     command = command.replace("@uuid", mage.getId())
