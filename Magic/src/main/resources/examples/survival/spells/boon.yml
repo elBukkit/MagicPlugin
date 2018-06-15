@@ -38,6 +38,7 @@ boon:
         cooldown: 200
         undo: 600000
         duration: 600000
+        cooldown: 5000
     costs:
         mana: 20
     active_costs:
