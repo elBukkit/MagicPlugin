@@ -2,6 +2,7 @@
 
 # 7.6
 
+ - Fix Heroes integration
  - Use 1.13 resource packs by default, unless running on 1.12 and using default configs.
  - Fix some specific issues Multiply actions interfering with one another
  - Add extraspellshop, for selling spells not included in the normal paths. 
@@ -13,6 +14,7 @@
  - Fix Capture when used on pigmen
  - Nerfed Poison Arrow a bit
  - Add "visibility" effect parameter, can be all (the default),origin or target.
+ - Fix random lag issues when spells are running on world save
 
 # 7.5.4
 

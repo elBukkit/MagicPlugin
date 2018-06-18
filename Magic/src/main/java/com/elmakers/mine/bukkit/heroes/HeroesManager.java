@@ -59,6 +59,32 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
             return;
         }
         heroes = (Heroes)heroesPlugin;
+
+        try {
+            @SuppressWarnings("unchecked")
+            Class<Enum<?>> classAttributeType = (Class<Enum<?>>)Class.forName("com.herocraftonline.heroes.attributes.AttributeType");
+            Enum<?>[] values = classAttributeType.getEnumConstants();
+            for (Enum<?> value : values) {
+                attributes.put(value.name().toLowerCase(), value);
+            }
+            getHeroAttributeMethod = Hero.class.getMethod("getAttributeValue", classAttributeType);
+            log.info("Registered Heroes attributes for use in spell parameters: " + getAllAttributes());
+        } catch (Exception ex) {
+            attributes.clear();
+            getHeroAttributeMethod = null;
+            log.info("Could not register Heroes attributes, you may need to update Heroes");
+        }
+
+        // Delay integration because Heroes doesn't create its subsystems right away
+        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                finishIntegration();
+            }
+        }, 2);
+    }
+
+    public void finishIntegration() {
         characters = heroes.getCharacterManager();
         skills = heroes.getSkillManager();
         if (characters != null && skills != null)
@@ -76,21 +102,6 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
             if (skills == null) {
                 log.warning(" SkillManager is null");
             }
-        }
-
-        try {
-            @SuppressWarnings("unchecked")
-            Class<Enum<?>> classAttributeType = (Class<Enum<?>>)Class.forName("com.herocraftonline.heroes.attributes.AttributeType");
-            Enum<?>[] values = classAttributeType.getEnumConstants();
-            for (Enum<?> value : values) {
-                attributes.put(value.name().toLowerCase(), value);
-            }
-            getHeroAttributeMethod = Hero.class.getMethod("getAttributeValue", classAttributeType);
-            log.info("Registered Heroes attributes for use in spell parameters: " + getAllAttributes());
-        } catch (Exception ex) {
-            attributes.clear();
-            getHeroAttributeMethod = null;
-            log.info("Could not register Heroes attributes, you may need to update Heroes");
         }
     }
 
