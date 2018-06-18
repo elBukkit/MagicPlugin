@@ -2,11 +2,6 @@
 
 ## Hot Issues
           
- - So yesterday on my server, while using magic version 7.5.4, we were experiencing performance issues on the server (random lag-spikes for random people). 
-   Once we downgraded to version 7.5.3, the issue seemed to be resolved. Just thought you would like to know about this
-          
- - Right-clicking a door with a wand casts spell?
-
  - Test attributes when reloading mage class configs live
                      
  - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
@@ -25,9 +20,7 @@
  - Cars look floaty
  
  - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
- 
- - Check earthbullet
- 
+  
 ## Recent Requests
       
  - "Residence" integration (requested by Frerduro on Discord)
