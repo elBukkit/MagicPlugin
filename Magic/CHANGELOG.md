@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 7.6.1
+
+ - Fix Growth crops not being harvestable
+
 # 7.6
 
  - Fix Heroes integration

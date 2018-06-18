@@ -47,6 +47,7 @@ growth:
         cooldown: 3000
         transparent: air
         destructible: plants
+        bypass_undo: true
     costs:
         mana: 100
 
