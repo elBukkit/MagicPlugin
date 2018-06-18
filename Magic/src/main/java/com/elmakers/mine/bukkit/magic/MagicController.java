@@ -968,9 +968,7 @@ public class MagicController implements MageController {
         if (vaultPlugin == null) {
             getLogger().info("Vault not found, 'currency' cost types unavailable");
         } else {
-            if (VaultController.initialize(plugin, vaultPlugin)) {
-                getLogger().info("Vault found, 'currency' cost types and descriptive item names available");
-            } else {
+            if (!VaultController.initialize(plugin, vaultPlugin)) {
                 getLogger().warning("Vault integration failed");
             }
         }

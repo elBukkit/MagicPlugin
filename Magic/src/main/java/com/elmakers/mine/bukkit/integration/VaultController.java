@@ -29,7 +29,9 @@ public class VaultController {
             RegisteredServiceProvider<Economy> ecoProvider = vaultPlugin.getServer().getServicesManager().getRegistration(Economy.class);
             Economy economy = ecoProvider == null ? null : ecoProvider.getProvider();
             if (economy == null) {
-                callingPlugin.getLogger().info("No economy available in Vault");
+                callingPlugin.getLogger().info("Vault found, descriptive item names available, but no economy found");
+            } else {
+                callingPlugin.getLogger().info("Vault found, 'currency' cost types and descriptive item names available");
             }
             instance = new VaultController(callingPlugin, economy);
         } catch (Exception ex) {

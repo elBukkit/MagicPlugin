@@ -2,6 +2,9 @@
 
 ## Hot Issues
           
+ - So yesterday on my server, while using magic version 7.5.4, we were experiencing performance issues on the server (random lag-spikes for random people). 
+   Once we downgraded to version 7.5.3, the issue seemed to be resolved. Just thought you would like to know about this
+          
  - Right-clicking a door with a wand casts spell?
 
  - Test attributes when reloading mage class configs live
@@ -21,10 +24,12 @@
  
  - Cars look floaty
  
+ - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
+ 
+ - Check earthbullet
+ 
 ## Recent Requests
-   
- - Allow equations in wand parameters
-   
+      
  - "Residence" integration (requested by Frerduro on Discord)
    https://github.com/Zrips/Residence
    
@@ -52,9 +57,7 @@
  - It'd be really cool to support configs from remote repos....
    Github has an API for fetching a list of files, maybe can use that?
    https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
-   
- - Need a lock or something to prevent saving an UndoList as it is being modified. Got a CME.
-    
+       
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
   
  - Optional lore on wands to say which classes they work with
