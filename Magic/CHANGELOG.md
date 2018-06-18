@@ -3,6 +3,7 @@
 # 7.6.1
 
  - Fix Growth crops not being harvestable
+ - Allow multiple commands in a command NPC via the ; delimiter
 
 # 7.6
 

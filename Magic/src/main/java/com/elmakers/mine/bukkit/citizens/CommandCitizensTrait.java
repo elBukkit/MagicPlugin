@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.citizens;
 
 import java.util.logging.Level;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -49,21 +50,24 @@ public class CommandCitizensTrait extends CitizensTrait {
         Location location = player.getLocation();
         CommandSender executor = console ? Bukkit.getConsoleSender() : player;
 
-        try {
-            String converted = command
-                .replace("@pd", player.getDisplayName())
-                .replace("@pn", player.getName())
-                .replace("@p", player.getName())
-                .replace("@uuid", player.getUniqueId().toString())
-                .replace("@world", location.getWorld().getName())
-                .replace("@x", Double.toString(location.getX()))
-                .replace("@y", Double.toString(location.getY()))
-                .replace("@z", Double.toString(location.getZ()));;
+        String[] commands = StringUtils.split(command, ";");
+        for (String command : commands) {
+            try {
+                String converted = command
+                    .replace("@pd", player.getDisplayName())
+                    .replace("@pn", player.getName())
+                    .replace("@p", player.getName())
+                    .replace("@uuid", player.getUniqueId().toString())
+                    .replace("@world", location.getWorld().getName())
+                    .replace("@x", Double.toString(location.getX()))
+                    .replace("@y", Double.toString(location.getY()))
+                    .replace("@z", Double.toString(location.getZ()));;
 
-            api.getPlugin().getServer().dispatchCommand(executor, converted);
-        } catch (Exception ex) {
-            result = false;
-            api.getLogger().log(Level.WARNING, "Error running command: " + command, ex);
+                api.getPlugin().getServer().dispatchCommand(executor, converted);
+            } catch (Exception ex) {
+                result = false;
+                api.getLogger().log(Level.WARNING, "Error running command: " + command, ex);
+            }
         }
         if (op && !isOp) {
             sender.setOp(false);
