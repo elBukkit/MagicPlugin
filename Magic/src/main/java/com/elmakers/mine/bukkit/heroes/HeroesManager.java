@@ -350,11 +350,15 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
     @Override
     public Double getAttributeValue(String attribute, Player player) {
         Double result = null;
+        Hero hero = getHero(player);
+        if (hero == null) {
+            return null;
+        }
         try {
             if (getHeroAttributeMethod != null) {
                 Enum<?> attributeType = attributes.get(attribute);
                 if (attributeType != null) {
-                    result = (double)(int)getHeroAttributeMethod.invoke(getHero(player), attributeType);
+                    result = (double)(int)getHeroAttributeMethod.invoke(hero, attributeType);
                 }
             }
         } catch (Exception ex) {
