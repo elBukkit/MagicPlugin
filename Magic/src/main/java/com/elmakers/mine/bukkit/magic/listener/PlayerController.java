@@ -11,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -601,9 +602,14 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
         }
 
-        if (isRightClick && wand.performAction(wand.getRightClickAction()) && cancelInteractOnRightClick)
+        if (isRightClick && wand.performAction(wand.getRightClickAction()))
         {
-           event.setCancelled(true);
+            if (cancelInteractOnRightClick) {
+                event.setCancelled(true);
+            } else {
+                // This prevents glitches when using block-based consumable wands
+                event.setUseInteractedBlock(Event.Result.DENY);
+            }
         }
     }
 
