@@ -40,7 +40,7 @@ attachable:
 - beds
 - flowers
 - plants
-- signs
+- sign_post
 
 # 1.13
 
@@ -49,4 +49,5 @@ attachable:
 - repeater
 - comparator
 - wall_torch
+- sign
 
