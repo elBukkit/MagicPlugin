@@ -27,4 +27,5 @@ superfly:
     parameters:
         target: self
         speed: 2.5
+        bypass_undo: true
 
