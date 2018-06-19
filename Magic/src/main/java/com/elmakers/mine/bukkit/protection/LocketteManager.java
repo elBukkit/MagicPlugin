@@ -62,17 +62,19 @@ public class LocketteManager implements BlockBuildManager, BlockBreakManager {
     public boolean hasBuildPermission(Player player, Block block) {
         if (enabled && block != null && isOwnerMethod != null && isProtectedMethod != null) {
             try {
+                if (!(Boolean)isProtectedMethod.invoke(null, block)) {
+                    return true;
+                }
+
                 // Handle command blocks or console spells
-                if (player == null)
-                {
-                    return !(Boolean)isProtectedMethod.invoke(null, block);
+                if (player == null) {
+                    return false;
                 }
 
                 // Lockette doesn't check the sign itself on an isOwner check ..
                 // So we just wont' allow breaking the signs, ever.
-                if (DefaultMaterials.isSign(block.getType()))
-                {
-                    return !(Boolean)isProtectedMethod.invoke(null, block);
+                if (DefaultMaterials.isSign(block.getType())) {
+                    return false;
                 }
 
                 return (Boolean)isOwnerMethod.invoke(null, block, isPro ? player : player.getName());

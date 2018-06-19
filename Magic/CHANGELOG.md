@@ -4,6 +4,8 @@
 
  - Fix Growth crops not being harvestable
  - Allow multiple commands in a command NPC via the ; delimiter
+ - Fix internal errors when placing a Wolf House
+ - Fix Lockette integration
 
 # 7.6
 
