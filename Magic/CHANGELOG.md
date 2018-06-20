@@ -7,6 +7,7 @@
  - Fix internal errors when placing a Wolf House
  - Fix Lockette integration
  - Fix Mirror Shield
+ - Fix double-casting when targeting an entity within arm's reach
 
 # 7.6
 
