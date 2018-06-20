@@ -3,6 +3,7 @@
 ## Hot Issues
           
  - Test attributes when reloading mage class configs live
+ - Option to specify a slot for class items to auto-equip
                      
  - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
   

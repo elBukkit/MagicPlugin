@@ -754,14 +754,16 @@ public class CustomProjectileAction extends CompoundAction
             velocity.multiply(-1);
             velocity = velocity.subtract(normal.multiply(2 * velocity.dot(normal))).normalize();
             velocity.multiply(-1);
+
+            actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE
+                + " with normal vector of " + TextUtils.printVector(normal), 4);
+        } else {
+            actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected");
         }
 
         // Offset position slightly to avoid hitting again
         actionContext.setTargetLocation(actionContext.getTargetLocation().add(velocity.clone().multiply(offset)));
         // actionContext.setTargetLocation(targetLocation.add(normal.normalize().multiply(2)));
-
-        actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE
-                + " with normal vector of " + TextUtils.printVector(normal), 4);
 
         actionContext.playEffects("reflect");
         reflectCount++;
