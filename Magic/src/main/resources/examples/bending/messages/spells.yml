@@ -10,7 +10,7 @@ spells:
     description: Form a deadly weapon out of pure fire
   combustion:
     name: Combustion
-    description: Cause objects to explode
+    description: Concentrate before firing a powerful beam of exploding energy
   airblast:
     name: Air Blast
     description: Create a direct pulse of air

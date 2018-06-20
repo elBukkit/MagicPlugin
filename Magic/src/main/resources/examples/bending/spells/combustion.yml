@@ -1,12 +1,99 @@
 combustion:
-  inherit: boom
-  category: firebending
-  parameters:
-     damage_type: fire
+    icon: diamond_axe:35
+    icon_disabled: diamond_hoe:35
+    icon_url: http://textures.minecraft.net/texture/70df3afc6a6035b189f83d2cfc84ff9ffe33750273247d1e41acb5a805f54
+    category: firebending
+    pvp_restricted: true
+    worth: 200
+    earns_sp: 3
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: ChangeContext
+          target: self
+          target_self: true
+          target_caster: true
+          actions:
+          - class: PotionEffect
+            effect_slow: 2
+            duration: 1000
+        - class: Delay
+        - class: Retarget
+        - class: PlayEffects
+          effects: launch
+        - class: CustomProjectile
+          actions:
+          - class: Explosion
+    effects:
+        launch:
+        -  class: EffectSingle
+           sound: entity_enderdragon_hurt
+           location: origin
+        -  class: EffectSingle
+           sound: entity_generic_explode
+           sound_pitch: 2
+           location: origin
+        tick:
+        - location: target
+          particle: cloud
+          particle_count: 4
+          particle_offset_x: 0.05
+          particle_offset_y: 0.05
+          particle_offset_z: 0.05
+        projectile:
+        - class: EffectSingle
+          location: origin
+          effectlib:
+            class: Circle
+            whole_circle: true
+            enable_rotation: false
+            particle: smoke_normal
+            radius: 3
+            particle_count: 4
+            particle_offset_x: 0.05
+            particle_offset_y: 0.05
+            particle_offset_z: 0.05
+        hit:
+        -  class: EffectSingle
+           custom_sound: magic.shield_boom
+           sound_pitch: 2
+           location: both
+        -  class: EffectSingle
+           location: target
+           color: 8A084B
+           firework: burst
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: 8A084B
+           firework: burst
+           particle: explosion_huge
+    parameters:
+        target: block
+        velocity: 100
+        allow_max_range: false
+        range: 32
+        break_blocks: false
+        size: 2
+        cooldown: 0
+        undo: 3000
+        undo_speed: 0.5
+        miss_effects: hit
+        miss: actions
+        cancel_on_damage: 1
+        cancel_on_cast_other: true
+        warmup: 1000
+        target_self: true
+    costs:
+        mana: 50
 
 combustion|2:
-  inherit: boom|2
-  category: firebending
-  upgrade_required_path: firebending
-  upgrade_required_casts: 50
-
+    parameters:
+        size: 4
+        break_blocks: true
+        undo: 10000
+        track_speed: 0.5
+        track_range: 32
+    costs:
+        mana: 75
