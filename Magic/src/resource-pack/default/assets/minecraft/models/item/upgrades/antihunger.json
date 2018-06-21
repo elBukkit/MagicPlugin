@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/antihunger",
-        "texture": "items/upgrades/antihunger"
+        "particle": "item/upgrades/antihunger",
+        "texture": "item/upgrades/antihunger"
     }
 }

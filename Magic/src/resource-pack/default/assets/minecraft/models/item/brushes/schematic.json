@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_sparkles",
     "textures": {
-        "particle": "items/brushes/schematic",
-        "texture": "items/brushes/schematic"
+        "particle": "item/brushes/schematic",
+        "texture": "item/brushes/schematic"
     }
 }

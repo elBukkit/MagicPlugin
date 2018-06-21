@@ -1,7 +1,7 @@
 {
 	"__comment": "Designed by NathanWolf with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"atlas": "items/custom/train"
+		"atlas": "item/custom/train"
 	},
 	  "display": {
 		"thirdperson_righthand": {

@@ -1,8 +1,8 @@
 {
 	"__comment": "Designed by SOPhorrific with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"particle": "items/custom/e_particle",
-		"mesh_palette": "items/custom/mesh_sniper"
+		"particle": "item/custom/e_particle",
+		"mesh_palette": "item/custom/mesh_sniper"
 	},
 	"elements": [
 		{

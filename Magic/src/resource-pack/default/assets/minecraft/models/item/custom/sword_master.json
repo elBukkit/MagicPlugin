@@ -2,9 +2,9 @@
     "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta. Used with permission in NathanWolf's Magic plugin.",
     "ambientocclusion": false,
     "textures": {
-        "particle": "items/custom/mastersword",
-        "texture": "items/custom/mastersword",
-        "mastersword_top": "items/custom/mastersword_top"
+        "particle": "item/custom/mastersword",
+        "texture": "item/custom/mastersword",
+        "mastersword_top": "item/custom/mastersword_top"
     },
     "elements": [
         {

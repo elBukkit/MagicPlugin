@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/commit",
-        "texture": "items/spells/commit"
+        "particle": "item/spells/commit",
+        "texture": "item/spells/commit"
     }
 }

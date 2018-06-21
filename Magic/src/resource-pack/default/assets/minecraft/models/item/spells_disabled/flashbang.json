@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/flashbang",
-        "texture": "items/spells/flashbang"
+        "particle": "item/spells/flashbang",
+        "texture": "item/spells/flashbang"
     }
 }

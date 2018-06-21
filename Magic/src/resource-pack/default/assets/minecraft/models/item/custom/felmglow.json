@@ -1,12 +1,12 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik studio - https://cubik.studio",
 	"textures": {
-		"texture2": "items/spells/iceshards",
-		"texture": "items/spells/sniper",
-		"texture1": "items/custom/redpurple",
-		"texture3": "items/spells/wound",
-		"texture4": "items/spells/rocketlauncher",
-		"particle": "items/custom/lightningred"
+		"texture2": "item/spells/iceshards",
+		"texture": "item/spells/sniper",
+		"texture1": "item/custom/redpurple",
+		"texture3": "item/spells/wound",
+		"texture4": "item/spells/rocketlauncher",
+		"particle": "item/custom/lightningred"
 	},
 	"elements": [ 	 
 		{

@@ -1,12 +1,12 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik studio - https://cubik.studio",
 	"textures": {
-		"texture2": "items/spells/sharpen_sword",
-		"texture": "items/spells/sharpen_sword",
-		"texture1": "items/custom/sarimavi",
-		"texture3": "items/spells/boom",
-		"texture4": "items/spells/iceshards",
-		"aura": "items/custom/iceball"
+		"texture2": "item/spells/sharpen_sword",
+		"texture": "item/spells/sharpen_sword",
+		"texture1": "item/custom/sarimavi",
+		"texture3": "item/spells/boom",
+		"texture4": "item/spells/iceshards",
+		"aura": "item/custom/iceball"
 	},
 	"elements": [ 	 
 		{

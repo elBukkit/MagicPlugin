@@ -1,9 +1,9 @@
 {
     "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta. Used with permission in NathanWolf's Magic plugin.",
     "textures": {
-        "particle": "items/custom/hat_cloak_top",
-        "hat_deatheater_top": "items/custom/hat_cloak_top",
-        "texture": "items/custom/hat_cloak_sides"
+        "particle": "item/custom/hat_cloak_top",
+        "hat_deatheater_top": "item/custom/hat_cloak_top",
+        "texture": "item/custom/hat_cloak_sides"
     },
     "elements": [
         {

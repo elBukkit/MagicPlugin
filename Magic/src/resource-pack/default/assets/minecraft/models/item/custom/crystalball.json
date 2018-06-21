@@ -538,10 +538,10 @@
     }
   ],
   "textures": {
-    "animated1": "items/custom/animated1",
-    "texture": "items/custom/glass_white",
-    "animated2": "items/custom/animated2",
-    "particle": "items/custom/glass_white"
+    "animated1": "item/custom/animated1",
+    "texture": "item/custom/glass_white",
+    "animated2": "item/custom/animated2",
+    "particle": "item/custom/glass_white"
   },
   "ambientocclusion": false
 }

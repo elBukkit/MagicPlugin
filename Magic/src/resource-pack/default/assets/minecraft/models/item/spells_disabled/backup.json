@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/backup",
-        "texture": "items/spells/backup"
+        "particle": "item/spells/backup",
+        "texture": "item/spells/backup"
     }
 }

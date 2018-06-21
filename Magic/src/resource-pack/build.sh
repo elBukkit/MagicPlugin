@@ -24,8 +24,8 @@ cd assets
 cp -R ../../../skulls/assets/* .
 cd ..
 cp -R ../../default/* .
-rm -R assets/minecraft/textures/items/spells
-rm -R assets/minecraft/textures/items/brushes
+rm -R assets/minecraft/textures/item/spells
+rm -R assets/minecraft/textures/item/brushes
 rm -R assets/minecraft/models/item/spells
 rm -R assets/minecraft/models/item/spells_disabled
 rm -R assets/minecraft/models/item/brushes
@@ -97,7 +97,7 @@ cp -R ../../default/* .
 cp -R ../../war/assets/minecraft/sounds/* assets/minecraft/sounds/
 cp -R ../../war/assets/minecraft/models/item/* assets/minecraft/models/item/
 cp -R ../../war/assets/minecraft/textures/misc assets/minecraft/textures/
-cp -R ../../war/assets/minecraft/textures/items/custom/* assets/minecraft/textures/items/custom/
+cp -R ../../war/assets/minecraft/textures/item/custom/* assets/minecraft/textures/item/custom/
 sed -e '$ d' ../../default/assets/minecraft/sounds.json > assets/minecraft/sounds.json
 echo , >> assets/minecraft/sounds.json
 tail -n +2 ../../war/assets/minecraft/sounds.json >> assets/minecraft/sounds.json

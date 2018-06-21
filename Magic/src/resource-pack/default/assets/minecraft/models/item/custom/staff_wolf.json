@@ -2,9 +2,9 @@
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta. Used with permission in NathanWolf's Magic plugin.",
 "ambientocclusion": false,
 "textures": {
-    "texture": "items/custom/staff_wolf",
-    "staff_wolf_top": "items/custom/staff_wolf_top",
-    "staff_wolf_bottom": "items/custom/staff_wolf_bottom"
+    "texture": "item/custom/staff_wolf",
+    "staff_wolf_top": "item/custom/staff_wolf_top",
+    "staff_wolf_bottom": "item/custom/staff_wolf_bottom"
 },
 "elements": [ 
 {

@@ -1,14 +1,14 @@
 {
 	"__comment": "Designed by BlueYoshi73",
 	"textures": {
-		"particle": "items/custom/e_particle",
-		"texture": "items/custom/e_texture",
-		"Voxel-D19900": "items/custom/voxel-d19900",
-		"Voxel-FF0000": "items/custom/voxel-ff0000",
-		"Voxel-FFFFFF": "items/custom/voxel-ffffff",
-		"Voxel-1F1F1F": "items/custom/voxel-1f1f1f",
-		"Voxel-696969": "items/custom/voxel-696969",
-		"Voxel-020B14": "items/custom/voxel-020b14"
+		"particle": "item/custom/e_particle",
+		"texture": "item/custom/e_texture",
+		"Voxel-D19900": "item/custom/voxel-d19900",
+		"Voxel-FF0000": "item/custom/voxel-ff0000",
+		"Voxel-FFFFFF": "item/custom/voxel-ffffff",
+		"Voxel-1F1F1F": "item/custom/voxel-1f1f1f",
+		"Voxel-696969": "item/custom/voxel-696969",
+		"Voxel-020B14": "item/custom/voxel-020b14"
 	},
 	"display": {
 		"head": {

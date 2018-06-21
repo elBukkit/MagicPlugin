@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/magichat",
-        "texture": "items/spells/magichat"
+        "particle": "item/spells/magichat",
+        "texture": "item/spells/magichat"
     }
 }

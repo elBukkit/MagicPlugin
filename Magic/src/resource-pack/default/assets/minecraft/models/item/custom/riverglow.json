@@ -1,9 +1,9 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik studio - https://cubik.studio",
 	"textures": {
-		"texture1": "items/custom/bluegreen",
-		"texture2": "items/spells/singularity",
-		"particle": "items/custom/magical"
+		"texture1": "item/custom/bluegreen",
+		"texture2": "item/spells/singularity",
+		"particle": "item/custom/magical"
 	},
 	"elements": [ 	 
 		{

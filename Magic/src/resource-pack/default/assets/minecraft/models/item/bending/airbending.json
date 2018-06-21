@@ -1,7 +1,7 @@
 {
   "textures": {
-    "particle": "items/bending/airbending",
-    "material": "items/bending/airbending"
+    "particle": "item/bending/airbending",
+    "material": "item/bending/airbending"
   },
 
   "elements": [

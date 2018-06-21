@@ -2,7 +2,7 @@
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta. Used with permission in NathanWolf's Magic plugin.",
 "ambientocclusion": false,
 "textures": {
-    "texture": "items/custom/wand_wand2"
+    "texture": "item/custom/wand_wand2"
 },
 "elements": [ 
 {

@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/mode_drop",
-        "texture": "items/upgrades/mode_drop"
+        "particle": "item/upgrades/mode_drop",
+        "texture": "item/upgrades/mode_drop"
     }
 }

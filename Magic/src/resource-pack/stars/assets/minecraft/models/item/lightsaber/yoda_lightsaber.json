@@ -1,9 +1,9 @@
 {
 	"__comment": "Designed by JayFrost with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"particle": "items/lightsaber/e_particle",
-		"texture": "items/lightsaber/e_texture",
-		"Yoda Lightsaber_atlas": "items/lightsaber/yodalightsaber_atlas"
+		"particle": "item/lightsaber/e_particle",
+		"texture": "item/lightsaber/e_texture",
+		"Yoda Lightsaber_atlas": "item/lightsaber/yodalightsaber_atlas"
 	},
 	"elements": [
 		{

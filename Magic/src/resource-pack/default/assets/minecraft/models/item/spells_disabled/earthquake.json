@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/earthquake",
-        "texture": "items/spells/earthquake"
+        "particle": "item/spells/earthquake",
+        "texture": "item/spells/earthquake"
     }
 }

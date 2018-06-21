@@ -1,7 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "items/diamond_shovel"
+    "layer0": "item/diamond_shovel"
   },
   "overrides": [
     {"predicate": {"damaged": 0, "damage": 0.000640204865557}, "model": "item/lightsaber/yoda_lightsaber"},

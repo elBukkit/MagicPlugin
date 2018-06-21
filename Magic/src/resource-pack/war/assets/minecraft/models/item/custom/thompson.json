@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "blocks/log_jungle",
-		"1": "blocks/cobblestone_mossy",
-		"2": "items/custom/bed_feet_top",
-		"particle": "blocks/log_jungle"
+		"0": "block/log_jungle",
+		"1": "block/cobblestone_mossy",
+		"2": "item/custom/bed_feet_top",
+		"particle": "block/log_jungle"
 	},
 	"elements": [
 		{

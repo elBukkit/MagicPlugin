@@ -2,7 +2,7 @@
 "__comment": "Designed by Droobledore - with BDcraft Cubik PRO 0.96 Beta. Used with permission in NathanWolf's Magic plugin.",
 "ambientocclusion": false,
 "textures": {
-    "glow_flow": "items/custom/sparkles"
+    "glow_flow": "item/custom/sparkles"
 },
 "elements": [ 
 {

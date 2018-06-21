@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/blink",
-        "texture": "items/spells/blink"
+        "particle": "item/spells/blink",
+        "texture": "item/spells/blink"
     }
 }

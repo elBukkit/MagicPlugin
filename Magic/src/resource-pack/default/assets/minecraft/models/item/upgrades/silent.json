@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/silent",
-        "texture": "items/upgrades/silent"
+        "particle": "item/upgrades/silent",
+        "texture": "item/upgrades/silent"
     }
 }

@@ -1,11 +1,11 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik studio - https://cubik.studio",
 	"textures": {
-		"particle": "items/custom/e_particle",
-		"texture1": "blocks/hardened_clay_stained_black",
-		"texture2": "items/spells/sharpen_sword",
-		"texture": "items/custom/e_texture",
-		"texture3": "items/custom/elfaura"
+		"particle": "item/custom/e_particle",
+		"texture1": "block/hardened_clay_stained_black",
+		"texture2": "item/spells/sharpen_sword",
+		"texture": "item/custom/e_texture",
+		"texture3": "item/custom/elfaura"
 	},
 	"elements": [ 	 
 		{

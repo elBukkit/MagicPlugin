@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "blocks/cobblestone_mossy",
-		"1": "blocks/cobblestone_mossy",
-		"2": "blocks/iron_block",
-		"particle": "blocks/cobblestone_mossy"
+		"0": "block/cobblestone_mossy",
+		"1": "block/cobblestone_mossy",
+		"2": "block/iron_block",
+		"particle": "block/cobblestone_mossy"
 	},
 	"elements": [
 		{

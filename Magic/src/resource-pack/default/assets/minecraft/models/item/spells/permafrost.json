@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/spells/permafrost",
-        "texture": "items/spells/permafrost"
+        "particle": "item/spells/permafrost",
+        "texture": "item/spells/permafrost"
     }
 }

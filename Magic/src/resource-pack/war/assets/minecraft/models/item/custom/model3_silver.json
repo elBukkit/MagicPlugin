@@ -1,7 +1,7 @@
 {
 	"parent": "item/custom/model3",
 	"textures": {
-		"particle": "items/custom/model3_silver",
-		"texture": "items/custom/model3_silver"
+		"particle": "item/custom/model3_silver",
+		"texture": "item/custom/model3_silver"
 	}
 }

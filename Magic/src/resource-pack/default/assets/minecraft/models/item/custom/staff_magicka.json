@@ -2,11 +2,11 @@
     "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta. Used with permission in NathanWolf's Magic plugin.",
     "ambientocclusion": false,
     "textures": {
-        "particle": "items/custom/staff_magicka",
-        "texture": "items/custom/staff_magicka",
-        "staff_magicka_top": "items/custom/staff_magicka_top",
-        "staff_magicka_bottom": "items/custom/staff_magicka_bottom",
-        "animated1": "items/custom/animated1"
+        "particle": "item/custom/staff_magicka",
+        "texture": "item/custom/staff_magicka",
+        "staff_magicka_top": "item/custom/staff_magicka_top",
+        "staff_magicka_bottom": "item/custom/staff_magicka_bottom",
+        "animated1": "item/custom/animated1"
     },
     "elements": [
         {

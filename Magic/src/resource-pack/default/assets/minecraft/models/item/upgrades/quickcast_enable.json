@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/quickcast_enable",
-        "texture": "items/upgrades/quickcast_enable"
+        "particle": "item/upgrades/quickcast_enable",
+        "texture": "item/upgrades/quickcast_enable"
     }
 }

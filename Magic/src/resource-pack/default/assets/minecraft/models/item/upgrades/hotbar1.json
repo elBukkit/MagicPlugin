@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/hotbar1",
-        "texture": "items/upgrades/hotbar1"
+        "particle": "item/upgrades/hotbar1",
+        "texture": "item/upgrades/hotbar1"
     }
 }

@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/blind",
-        "texture": "items/spells/blind"
+        "particle": "item/spells/blind",
+        "texture": "item/spells/blind"
     }
 }

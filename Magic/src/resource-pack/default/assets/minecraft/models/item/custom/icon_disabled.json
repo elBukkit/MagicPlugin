@@ -2,7 +2,7 @@
 "__comment": "Designed by Droobledore - with BDcraft Cubik PRO 0.96 Beta. Used with permission in NathanWolf's Magic plugin.",
 "ambientocclusion": false,
 "textures": {
-    "no": "items/custom/greyed"
+    "no": "item/custom/greyed"
 },
 "elements": [ 
 {

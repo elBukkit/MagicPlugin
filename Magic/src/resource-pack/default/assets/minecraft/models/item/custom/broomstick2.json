@@ -2,7 +2,7 @@
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta, used with permission in NathanWolf's Magic plugin",
 "ambientocclusion": false,
 "textures": {
-    "texture": "items/custom/broom2"
+    "texture": "item/custom/broom2"
 },
 "elements": [ 
 {

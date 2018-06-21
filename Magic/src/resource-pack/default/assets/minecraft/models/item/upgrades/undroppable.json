@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/undroppable",
-        "texture": "items/upgrades/undroppable"
+        "particle": "item/upgrades/undroppable",
+        "texture": "item/upgrades/undroppable"
     }
 }

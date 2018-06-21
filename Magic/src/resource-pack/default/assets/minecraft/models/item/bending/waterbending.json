@@ -1,7 +1,7 @@
 {
   "textures": {
-    "particle": "items/bending/waterbending",
-    "material": "items/bending/waterbending"
+    "particle": "item/bending/waterbending",
+    "material": "item/bending/waterbending"
   },
 
   "elements": [

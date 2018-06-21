@@ -1,11 +1,11 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik studio - https://cubik.studio",
 	"textures": {
-		"texture1": "items/custom/redpurple",
-		"texture2": "items/spells/iceshards",
-		"particle": "items/spells/breach",
-		"texture": "items/custom/lightningred",
-		"texture3": "items/custom/blazepurple"
+		"texture1": "item/custom/redpurple",
+		"texture2": "item/spells/iceshards",
+		"particle": "item/spells/breach",
+		"texture": "item/custom/lightningred",
+		"texture3": "item/custom/blazepurple"
 	},
 	"elements": [ 	 
 		{

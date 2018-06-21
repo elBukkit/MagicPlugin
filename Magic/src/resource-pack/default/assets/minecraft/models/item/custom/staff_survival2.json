@@ -1,8 +1,8 @@
 {
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.95 Beta. Used with permission in NathanWolf's Magic plugin.",
 "textures": {
-    "particle": "items/custom/survivalwand4",
-    "texture": "items/custom/survivalwand4"
+    "particle": "item/custom/survivalwand4",
+    "texture": "item/custom/survivalwand4"
 },
 "elements": [ 
 {

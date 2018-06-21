@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/spells/secure",
-        "texture": "items/spells/secure"
+        "particle": "item/spells/secure",
+        "texture": "item/spells/secure"
     }
 }

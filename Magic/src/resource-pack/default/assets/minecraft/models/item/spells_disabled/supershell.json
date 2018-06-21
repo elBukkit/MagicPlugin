@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/supershell",
-        "texture": "items/spells/supershell"
+        "particle": "item/spells/supershell",
+        "texture": "item/spells/supershell"
     }
 }

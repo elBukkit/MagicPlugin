@@ -1,6 +1,6 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "items/custom/incendiary"
+        "layer0": "item/custom/incendiary"
     }
 }

@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/chestmode",
-        "texture": "items/upgrades/chestmode"
+        "particle": "item/upgrades/chestmode",
+        "texture": "item/upgrades/chestmode"
     }
 }

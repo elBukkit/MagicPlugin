@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/boomstown",
-        "texture": "items/spells/boomstown"
+        "particle": "item/spells/boomstown",
+        "texture": "item/spells/boomstown"
     }
 }

@@ -1,7 +1,7 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"FallenWarlordAnnihilator_atlas": "items/custom/demon_sword_atlas"
+		"FallenWarlordAnnihilator_atlas": "item/custom/demon_sword_atlas"
 	},
 	"elements": [ 	 
 		{

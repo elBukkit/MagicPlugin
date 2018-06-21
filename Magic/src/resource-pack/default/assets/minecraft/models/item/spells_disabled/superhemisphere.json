@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/superhemisphere",
-        "texture": "items/spells/superhemisphere"
+        "particle": "item/spells/superhemisphere",
+        "texture": "item/spells/superhemisphere"
     }
 }

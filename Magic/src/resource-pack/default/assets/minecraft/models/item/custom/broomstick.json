@@ -2,8 +2,8 @@
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta. Used with permission in NathanWolf's Magic plugin.",
 "ambientocclusion": false,
 "textures": {
-    "particle": "items/custom/broom",
-    "texture": "items/custom/broom"
+    "particle": "item/custom/broom",
+    "texture": "item/custom/broom"
 },
 "elements": [ 
 {

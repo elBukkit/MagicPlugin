@@ -1,7 +1,7 @@
 {
 	"__comment": "Designed by SOPhorrific with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"mesh_palette": "items/custom/meshrpg"
+		"mesh_palette": "item/custom/meshrpg"
 	},
 	"elements": [
 		{

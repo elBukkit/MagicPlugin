@@ -1,11 +1,11 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "blocks/cobblestone_mossy",
-		"1": "blocks/hardened_clay_stained_green",
-		"2": "items/custom/bed_feet_top",
-		"3": "blocks/hardened_clay_stained_yellow",
-		"particle": "blocks/cobblestone_mossy"
+		"0": "block/cobblestone_mossy",
+		"1": "block/hardened_clay_stained_green",
+		"2": "item/custom/bed_feet_top",
+		"3": "block/hardened_clay_stained_yellow",
+		"particle": "block/cobblestone_mossy"
 	},
 	"elements": [
 		{

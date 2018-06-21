@@ -344,11 +344,11 @@
     }
   ],
   "textures": {
-    "bookglow": "items/custom/bookglow",
-    "bookanimation2": "items/custom/bookanimation2",
-    "texture": "items/custom/bookanimation1",
-    "daylight_detector_bottom": "items/custom/book_bottom",
-    "particle": "items/custom/book_bottom"
+    "bookglow": "item/custom/bookglow",
+    "bookanimation2": "item/custom/bookanimation2",
+    "texture": "item/custom/bookanimation1",
+    "daylight_detector_bottom": "item/custom/book_bottom",
+    "particle": "item/custom/book_bottom"
   },
   "ambientocclusion": false
 }

@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/superkill",
-        "texture": "items/spells/superkill"
+        "particle": "item/spells/superkill",
+        "texture": "item/spells/superkill"
     }
 }

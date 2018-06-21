@@ -1,7 +1,7 @@
 {
 	"parent": "item/handheld",
 	"textures": {
-		"layer0": "items/custom/rpgshell"
+		"layer0": "item/custom/rpgshell"
 	},
 	"display": {
 		"head": {

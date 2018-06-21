@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/chainlightning",
-        "texture": "items/spells/chainlightning"
+        "particle": "item/spells/chainlightning",
+        "texture": "item/spells/chainlightning"
     }
 }

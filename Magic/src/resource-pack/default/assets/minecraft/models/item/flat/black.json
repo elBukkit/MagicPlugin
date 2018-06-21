@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "items/flat/black"
+    "layer0": "item/flat/black"
   }
 }

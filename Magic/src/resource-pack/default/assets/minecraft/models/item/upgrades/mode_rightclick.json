@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/mode_rightclick",
-        "texture": "items/upgrades/mode_rightclick"
+        "particle": "item/upgrades/mode_rightclick",
+        "texture": "item/upgrades/mode_rightclick"
     }
 }

@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/admission",
-        "texture": "items/spells/admission"
+        "particle": "item/spells/admission",
+        "texture": "item/spells/admission"
     }
 }

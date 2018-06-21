@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "items/spells/superregenerate",
-        "texture": "items/spells/superregenerate"
+        "particle": "item/spells/superregenerate",
+        "texture": "item/spells/superregenerate"
     }
 }

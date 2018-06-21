@@ -1,7 +1,7 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "0": "blocks/wool_colored_black"
+        "0": "block/wool_colored_black"
     },
     "elements": [
         {

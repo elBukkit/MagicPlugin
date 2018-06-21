@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon",
     "textures": {
-        "particle": "items/upgrades/inventorymode",
-        "texture": "items/upgrades/inventorymode"
+        "particle": "item/upgrades/inventorymode",
+        "texture": "item/upgrades/inventorymode"
     }
 }

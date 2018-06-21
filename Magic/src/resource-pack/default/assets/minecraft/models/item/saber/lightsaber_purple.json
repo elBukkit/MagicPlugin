@@ -2,9 +2,9 @@
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta",
 "ambientocclusion": false,
 "textures": {
-    "particle": "items/custom/lightsaber",
-    "texture": "items/custom/lightsaber",
-    "lightsaber_glow": "items/custom/glow_flow_purple"
+    "particle": "item/custom/lightsaber",
+    "texture": "item/custom/lightsaber",
+    "lightsaber_glow": "item/custom/glow_flow_purple"
 },
 "elements": [ 
 {

@@ -1,8 +1,8 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"texture": "items/custom/sarimavi",
-		"texture1": "items/spells/reflect"
+		"texture": "item/custom/sarimavi",
+		"texture1": "item/spells/reflect"
 	},
 	"elements": [
 		{
