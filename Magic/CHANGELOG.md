@@ -3,11 +3,12 @@
 # 7.6.1
 
  - Fix Growth crops not being harvestable
- - Allow multiple commands in a command NPC via the ; delimiter
  - Fix internal errors when placing a Wolf House
  - Fix Lockette integration
  - Fix Mirror Shield
  - Fix double-casting when targeting an entity within arm's reach
+ - Fix shops with inline item name/lore definitions
+ - Allow multiple commands in a command NPC via the ; delimiter
 
 # 7.6
 

@@ -52,6 +52,14 @@ public class ShopAction extends SelectorAction {
             parameters.set("cost_type", "sp");
         }
 
+        // Apply name and lore to items by default
+        if (!parameters.contains("apply_lore_to_item")) {
+            parameters.set("apply_lore_to_item", true);
+        }
+        if (!parameters.contains("apply_name_to_item")) {
+            parameters.set("apply_name_to_item", true);
+        }
+
         super.prepare(context, parameters);
 
         // Restore items list. This is kind of messy, but so is this whole action.

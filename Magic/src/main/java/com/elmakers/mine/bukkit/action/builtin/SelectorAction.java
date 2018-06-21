@@ -174,6 +174,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean switchClass = false;
         protected boolean putInHand = false;
         protected boolean free = false;
+        protected boolean applyLoreToItem = false;
+        protected boolean applyNameToItem = false;
         protected int limit = 0;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
@@ -206,6 +208,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             commands = ConfigurationUtils.getStringList(configuration, "commands");
             free = configuration.getBoolean("free", free);
             effects = configuration.getString("effects", effects);
+            applyLoreToItem = configuration.getBoolean("apply_lore_to_item", applyLoreToItem);
+            applyNameToItem = configuration.getBoolean("apply_name_to_item", applyNameToItem);
 
             if (costType.isEmpty() || costType.equalsIgnoreCase("none")) {
                 free = true;
@@ -227,6 +231,22 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 ItemStack item = parseItem(configuration.getString("item"));
                 if (item != null) {
                     items.add(item);
+
+                    if (applyNameToItem || applyLoreToItem) {
+                        ItemMeta meta = item.getItemMeta();
+                        if (applyNameToItem) {
+                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', configuration.getString("name")));
+                        }
+                        List<String> lore = configuration.getStringList("lore");
+                        if (applyLoreToItem && lore != null) {
+                            List<String> translated = new ArrayList<>();
+                            for (String line : lore) {
+                                translated.add(ChatColor.translateAlternateColorCodes('&', line));
+                            }
+                            meta.setLore(translated);
+                        }
+                        item.setItemMeta(meta);
+                    }
                 }
             }
             if (configuration.contains("items")) {
@@ -437,6 +457,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.free = defaults.free;
             this.costOverride = defaults.costOverride;
             this.effects = defaults.effects;
+            this.applyLoreToItem = defaults.applyLoreToItem;
+            this.applyNameToItem = defaults.applyNameToItem;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
@@ -495,6 +517,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     name = template.replace("$name", name).replace("$amount", Integer.toString(icon.getAmount()));
                 }
             }
+            name = ChatColor.translateAlternateColorCodes('&', name);
 
             String description = configuration.getString("description");
             if (description == null) {
@@ -618,10 +641,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             // Prepare icon
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+            meta.setDisplayName(name);
             if (!lore.isEmpty()) {
                 List<String> itemLore = meta.getLore();
-                if (itemLore == null) {
+                if (itemLore == null || applyLoreToItem) {
                     itemLore = new ArrayList<>();
                 }
                 for (String line : lore) {
