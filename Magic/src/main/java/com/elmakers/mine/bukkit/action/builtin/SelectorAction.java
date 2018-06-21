@@ -234,8 +234,9 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
                     if (applyNameToItem || applyLoreToItem) {
                         ItemMeta meta = item.getItemMeta();
-                        if (applyNameToItem) {
-                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', configuration.getString("name")));
+                        String customName = configuration.getString("name");
+                        if (applyNameToItem && customName != null  && !customName.isEmpty()) {
+                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
                         }
                         List<String> lore = configuration.getStringList("lore");
                         if (applyLoreToItem && lore != null) {
