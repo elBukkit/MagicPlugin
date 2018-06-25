@@ -8,6 +8,8 @@
  - Fix Mirror Shield
  - Fix double-casting when targeting an entity within arm's reach
  - Fix shops with inline item name/lore definitions
+ - Some fixes to the ModifyProperties action
+ - Add CheckHealth action
  - Allow multiple commands in a command NPC via the ; delimiter
 
 # 7.6
