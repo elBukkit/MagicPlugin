@@ -2,6 +2,9 @@
 
 ## Hot Issues
           
+ - Option to disguise a mob as the caster
+ - SpawnEntity action should be able to run actions on death of spawned mob
+ 
  - Test attributes when reloading mage class configs live
  - Option to specify a slot for class items to auto-equip
                      
