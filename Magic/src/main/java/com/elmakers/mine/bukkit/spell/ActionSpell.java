@@ -137,7 +137,15 @@ public class ActionSpell extends BrushSpell
         {
             currentHandler = (ActionHandler)currentHandler.clone();
             try {
-                result = result.max(currentHandler.start(currentCast, parameters));
+                SpellResult initialResult = currentHandler.start(currentCast, parameters);
+
+                // This is here to make sure the CANCELLED result is the final cast result in
+                // cases where the spell was immediately cancelled by some action.
+                if (initialResult != SpellResult.CANCELLED) {
+                    result = result.max(initialResult);
+                } else {
+                    result = initialResult;
+                }
                 currentCast.setInitialResult(result);
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Spell cast failed for " + getKey(), ex);
