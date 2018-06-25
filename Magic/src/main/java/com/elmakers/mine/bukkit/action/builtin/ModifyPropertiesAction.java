@@ -40,11 +40,11 @@ public class ModifyPropertiesAction extends BaseSpellAction
         public ModifyProperty(ConfigurationSection configuration) {
             path = configuration.getString("property", configuration.getString("path"));
             value = configuration.get("value");
-            if (configuration.isDouble("min"))
+            if (configuration.contains("min"))
                 min = configuration.getDouble("min");
-            if (configuration.isDouble("max"))
+            if (configuration.contains("max"))
                 max = configuration.getDouble("max");
-            if (configuration.isDouble("default"))
+            if (configuration.contains("default"))
                 defaultValue = configuration.getDouble("default");
         }
     }
@@ -137,10 +137,6 @@ public class ModifyPropertiesAction extends BaseSpellAction
                 if (transform.isValid()) {
                     if (originalValue == null) {
                         originalValue = defaultValue;
-                    } else if (property.max != null && (Double)originalValue >= property.max) {
-                        continue;
-                    } else if (property.min != null && (Double)originalValue <= property.min) {
-                        continue;
                     }
                     transform.setVariable("x", (Double)originalValue);
                     double transformedValue = transform.get();
