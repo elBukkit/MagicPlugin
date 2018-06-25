@@ -2571,7 +2571,8 @@ public class MagicController implements MageController {
         Wand.SpellGlow = properties.getBoolean("spell_glow", Wand.SpellGlow);
         Wand.LiveHotbarSkills = properties.getBoolean("live_hotbar_skills", Wand.LiveHotbarSkills);
         Wand.LiveHotbar = properties.getBoolean("live_hotbar", Wand.LiveHotbar);
-        Wand.LiveHotbarCooldown = properties.getBoolean("live_hotbar_cooldown", Wand.LiveHotbar);
+        Wand.LiveHotbarCooldown = properties.getBoolean("live_hotbar_cooldown", Wand.LiveHotbarCooldown);
+        Wand.LiveHotbarMana = properties.getBoolean("live_hotbar_mana", Wand.LiveHotbarMana);
         Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
         Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
         Wand.WAND_KEY = properties.getString("wand_key", "wand");

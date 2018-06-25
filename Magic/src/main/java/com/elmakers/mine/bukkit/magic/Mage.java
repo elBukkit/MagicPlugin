@@ -3654,7 +3654,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         } else if (canCastSpell) {
                             canCast = remainingCooldown == 0;
                             targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
-                            if (Wand.LiveHotbarCooldown && requiredCost != null) {
+                            if (Wand.LiveHotbarCooldown && Wand.LiveHotbarMana && requiredCost != null) {
                                 int mana = requiredCost.getMana();
                                 if (mana > 0) {
                                     if (mana <= getEffectiveManaMax() && getEffectiveManaRegeneration() > 0) {
