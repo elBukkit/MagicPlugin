@@ -52,6 +52,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
     private List<ModifyProperty> modify;
     private String modifyTarget;
     private boolean upgrade;
+    private boolean bypassUndo;
 
     private static class ModifyPropertyUndoAction implements Runnable
     {
@@ -74,6 +75,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
     {
         modifyTarget = parameters.getString("modify_target", "wand");
         upgrade = parameters.getBoolean("upgrade", false);
+        bypassUndo = parameters.getBoolean("bypass_undo", false);
 
         modify = new ArrayList<>();
         Object modifyObject = parameters.get("modify");
@@ -163,7 +165,9 @@ public class ModifyPropertiesAction extends BaseSpellAction
             properties.upgrade(changed);
         else
             properties.configure(changed);
-        context.registerForUndo(new ModifyPropertyUndoAction(original, properties));
+        if (!bypassUndo) {
+            context.registerForUndo(new ModifyPropertyUndoAction(original, properties));
+        }
         return SpellResult.CAST;
     }
 
