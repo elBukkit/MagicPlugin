@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,7 +24,8 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -36,7 +38,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
-public class SpawnEntityAction extends BaseSpellAction
+public class SpawnEntityAction extends CompoundAction
 {
     private Deque<WeightedPair<String>> entityTypeProbability;
 
@@ -52,9 +54,11 @@ public class SpawnEntityAction extends BaseSpellAction
     private double dyOffset;
 
     private EntityData entityData;
+    private WeakReference<Entity> entity;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         loot = parameters.getBoolean("loot", false);
         force = parameters.getBoolean("force", false);
         setTarget = parameters.getBoolean("set_target", false);
@@ -84,7 +88,27 @@ public class SpawnEntityAction extends BaseSpellAction
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
+    public SpellResult step(CastContext context) {
+        ActionHandler actions = getHandler("actions");
+        if (entity == null) {
+            SpellResult result = spawn(context);
+            if (!result.isSuccess() || actions == null || actions.size() == 0) {
+                return result;
+            }
+        }
+
+        Entity spawned = entity.get();
+        if (spawned == null || spawned.isDead() || !spawned.isValid()) {
+            if (setTarget && spawned != null) {
+                createActionContext(context, spawned, spawned.getLocation());
+            }
+            return startActions();
+        }
+
+        return SpellResult.PENDING;
+    }
+
+    private SpellResult spawn(CastContext context) {
         Block targetBlock = context.getTargetBlock();
 
         targetBlock = targetBlock.getRelative(BlockFace.UP);
@@ -164,8 +188,8 @@ public class SpawnEntityAction extends BaseSpellAction
             CompatibilityUtils.setEntityMotion(spawnedEntity, motion);
         }
 
-        Collection<EffectPlayer> projectileEffects = context.getEffects("spawned");
-        for (EffectPlayer effectPlayer : projectileEffects) {
+        Collection<EffectPlayer> entityEffects = context.getEffects("spawned");
+        for (EffectPlayer effectPlayer : entityEffects) {
             effectPlayer.start(spawnedEntity.getLocation(), spawnedEntity, null, null);
         }
         context.registerForUndo(spawnedEntity);
@@ -182,6 +206,7 @@ public class SpawnEntityAction extends BaseSpellAction
                 ((AreaEffectCloud)spawnedEntity).setSource(shooter);
             }
         }
+        entity = new WeakReference<>(spawnedEntity);
         return SpellResult.CAST;
 
     }
