@@ -1640,3 +1640,6 @@ spells:
       header: "&2&lBalances"
       currency_prefix: "&7&l"
       value_prefix: "&0"
+    kamikaze:
+      name: Kamikaze
+      description: Spawn a mob that explodes on death

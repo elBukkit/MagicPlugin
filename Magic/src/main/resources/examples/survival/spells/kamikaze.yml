@@ -1,0 +1,62 @@
+kamikaze:
+    icon: diamond_axe:66
+    icon_disabled: diamond_hoe:66
+    icon_url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
+    category: elemental
+    pvp_restricted: true
+    actions:
+      cast:
+      - class: SpawnEntity
+        actions:
+        - class: Explosion
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           effectlib:
+             class: DnaEffect
+             particle_helix: drip_lava
+             iterations: 24
+             particle_base1: redstone
+             radius: 0.2
+        -  location: origin
+           use_target_location: false
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             color: "FFFFFF"
+             particle: redstone
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: Sphere
+             duration: 20000
+             particle: drip_lava
+             radius: 2
+             particles: 20
+        undo_entity:
+        - location: target
+          effectlib:
+            class: Smoke
+            duration: 1000
+            particle_count: 40
+            particle_offset_x: 1.5
+            particle_offset_y: 1.5
+            particle_offset_z: 1.5
+    parameters:
+        target: other
+        type: zombie
+        allow_max_range: true
+        cooldown: 20000
+        set_target: true
+        range: 24
+        loot: false
+        undo: 30000
+    costs:
+        mana: 75
+
