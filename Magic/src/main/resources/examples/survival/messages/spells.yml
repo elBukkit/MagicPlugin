@@ -1643,3 +1643,6 @@ spells:
     kamikaze:
       name: Kamikaze
       description: Spawn a mob that explodes on death
+    decoy:
+      name: Decoy
+      description: Hide behind a clone

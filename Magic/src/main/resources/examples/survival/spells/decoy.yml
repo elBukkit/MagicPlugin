@@ -1,0 +1,23 @@
+decoy:
+  icon: diamond_axe:65
+  icon_disabled: diamond_hoe:65
+  toggle: undo
+  disable_mana_regeneration: true
+  quick_cast: true
+  actions:
+    cast:
+    - class: Vanish
+    - class: SpawnEntity
+      actions:
+      - class: Undo
+  parameters:
+    target: self
+    cooldown: 30000
+    cancel_on_damage: 1
+    cancel_on_cast_other: true
+    type: pig_zombie
+    silent: true
+    disguise_target: self
+    max_health: 20
+  costs:
+    mana: 100

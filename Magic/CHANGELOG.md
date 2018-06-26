@@ -12,6 +12,7 @@
  - Add CheckHealth action
  - Allow actions on SpawnEntity which will run when the entity dies (See: kamikaze spell)
  - Allow multiple commands in a command NPC via the ; delimiter
+ - Add SpawnEntity disguise_target parameter (See: decoy spell)
 
 # 7.6
 
