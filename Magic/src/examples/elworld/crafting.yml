@@ -27,3 +27,6 @@ elytra:
 
 mastersword:
   enabled: true
+
+magictorch:
+  enabled: true
