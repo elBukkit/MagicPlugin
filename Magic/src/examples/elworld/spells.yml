@@ -3056,7 +3056,7 @@ Image:
             transparency: true
 
 magicbowshop:
-    icon: wooden_hoe
+    icon: bow
     category: npc
     hidden: true
     actions:
