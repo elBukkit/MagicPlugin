@@ -17,6 +17,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Villager;
@@ -66,6 +67,20 @@ public class SpawnEntityAction extends CompoundAction
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
+
+        String disguiseTarget = parameters.getString("disguise_target");
+        if (disguiseTarget != null) {
+            Entity targetEntity = disguiseTarget.equals("target") ? context.getTargetEntity() : context.getEntity();
+            if (targetEntity != null) {
+                ConfigurationSection disguiseConfig = parameters.createSection("disguise");
+                disguiseConfig.set("type", targetEntity.getType().name().toLowerCase());
+                if (targetEntity instanceof Player) {
+                    Player targetPlayer = (Player)targetEntity;
+                    disguiseConfig.set("name", targetPlayer.getName());
+                    disguiseConfig.set("skin", targetPlayer.getName());
+                }
+            }
+        }
 
         if (parameters.contains("type"))
         {
