@@ -88,10 +88,6 @@ public class ThrowBlockAction extends BaseProjectileAction
         Vector direction = location.getDirection();
         double speed = context.getRandom().nextDouble() * (speedMax - speedMin) + speedMin;
         direction.normalize().multiply(speed);
-        Vector up = new Vector(0, 1, 0);
-        Vector perp = new Vector();
-        perp.copy(direction);
-        perp.crossProduct(up);
 
         FallingBlock falling = DeprecatedUtils.spawnFallingBlock(location, material, data);
         if (falling == null)
