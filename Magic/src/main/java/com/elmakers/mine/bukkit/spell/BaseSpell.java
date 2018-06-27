@@ -1152,7 +1152,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         if (this.currentCast == null)
         {
-            this.currentCast = new CastContext(this);
+            getCurrentCast();
         }
 
         this.location = defaultLocation;
@@ -2392,7 +2392,9 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean deactivate() {
-        updateCooldown();
+        if (currentCast == null || !currentCast.getResult().isFree()) {
+            updateCooldown();
+        }
         return deactivate(false, false);
     }
 
@@ -2584,6 +2586,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public com.elmakers.mine.bukkit.api.action.CastContext getCurrentCast() {
         if (currentCast == null) {
             currentCast = new CastContext(this);
+            currentCast.initialize();
         }
         return currentCast;
     }

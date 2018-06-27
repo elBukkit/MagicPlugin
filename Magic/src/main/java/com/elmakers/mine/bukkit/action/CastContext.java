@@ -164,7 +164,6 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         if (spell instanceof UndoableSpell)
         {
             this.undoSpell = (UndoableSpell)spell;
-            undoList = this.undoSpell.getUndoList();
         }
         if (spell instanceof TargetingSpell)
         {
@@ -179,6 +178,19 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             this.brushSpell = (BrushSpell)spell;
         }
         return spell;
+    }
+
+    /**
+     * This is an unfortunate necessity to deal with a circular dependency issue.
+     * UndoList keeps a reference to the current CastContext, so that it can play undo effects.
+     * CastContext keeps a reference to the UndoList for its cast
+     * Both are created on demand, so creating one causes the creation of the other, but this means
+     * UndoList tries to get a reference to CastContext before it has been assigned to its spell.
+     */
+    public void initialize() {
+        if (undoSpell != null) {
+            undoList = this.undoSpell.getUndoList();
+        }
     }
 
     @Nullable
@@ -1142,7 +1154,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
     @Override
     public void addResult(SpellResult result) {
-        if (result != SpellResult.PENDING) {
+        if (result != SpellResult.PENDING && result != SpellResult.NO_ACTION) {
             this.result = this.result.min(result);
         }
     }
