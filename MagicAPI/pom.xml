@@ -31,7 +31,7 @@
                 <version>0.8.2</version>
                 <configuration>
                     <oldArtifacts>
-                        <oldArtifact>com.elmakers.mine.bukkit:MagicAPI:6.0</oldArtifact>
+                        <oldArtifact>com.elmakers.mine.bukkit:MagicAPI:7.6</oldArtifact>
                     </oldArtifacts>
                     <checkDependencies>false</checkDependencies>
                     <resolveProvidedDependencies>false</resolveProvidedDependencies>
@@ -41,6 +41,7 @@
                             <roots>
                                 <root>base</root>
                                 <root>6.9+</root>
+                                <root>7.6+</root>
                             </roots>
                         </configurationFile>
                     </analysisConfigurationFiles>
