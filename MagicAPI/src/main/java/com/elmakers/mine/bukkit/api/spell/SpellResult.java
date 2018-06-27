@@ -10,8 +10,6 @@ public enum SpellResult {
 
     // Will stop the current spell cast completely, returning success
     STOP(true, false, false, false, true),
-    // Will stop the current spell cast, but refund casting costs
-    CANCELLED(true, false, true, false, true),
     // Will pause the spell cast until the next tick
     PENDING(true, false, false, false, true),
     // General success
@@ -66,6 +64,9 @@ public enum SpellResult {
     WORLD_REQUIRED(false, true, true),
     // The spell cast requires a world but no valid world was provided.
     INVALID_WORLD(false, true, true),
+
+    // Will stop the current spell cast, but refund casting costs
+    CANCELLED(true, false, true, false, true),
 
     // This should always be last
     NO_ACTION(false, false, false);
