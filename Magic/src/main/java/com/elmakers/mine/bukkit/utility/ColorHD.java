@@ -3,10 +3,13 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.concurrent.Immutable;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Color;
 
-public class ColorHD implements Cloneable {
+@Immutable
+public final class ColorHD {
     private static long BYTES_PER_COMPONENT = 6;
     private static long BITS_PER_COMPONENT = BYTES_PER_COMPONENT * 8;
     private static long COMPONENT_SHIFT = BITS_PER_COMPONENT - 8;
@@ -102,11 +105,6 @@ public class ColorHD implements Cloneable {
     @Override
     public String toString() {
         return Long.toHexString(red) + "," + Long.toHexString(green) + "," + Long.toHexString(blue);
-    }
-
-    @Override
-    public Object clone() {
-        return new ColorHD(red, green, blue);
     }
 
     public ColorHD mixColor(long r, long g, long b, double weight) {
