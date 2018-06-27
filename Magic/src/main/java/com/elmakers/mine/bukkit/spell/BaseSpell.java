@@ -91,7 +91,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public static String DEFAULT_DISABLED_ICON_URL = "";
     public static Material DEFAULT_SPELL_ICON = Material.STICK;
 
-    public enum ToggleType { NONE, CANCEL, UNDO }
+    public enum ToggleType { NONE, CANCEL, UNDO, UNDO_IF_ACTIVE }
 
     protected static final double LOOK_THRESHOLD = 0.98;
 
@@ -2411,7 +2411,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
             if (currentCast != null) {
                 currentCast.cancelEffects();
-                if (toggle == ToggleType.UNDO && toggleUndo != null && !toggleUndo.isUndone()) {
+                if ((toggle == ToggleType.UNDO || toggle == ToggleType.UNDO_IF_ACTIVE) && toggleUndo != null && !toggleUndo.isUndone() && isActive()) {
                     toggleUndo.undo();
                 }
                 toggleUndo = null;
