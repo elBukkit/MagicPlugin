@@ -48,7 +48,7 @@ recall:
         icon: brick
 
 wandshop:
-    icon: wooden_hoe
+    icon: wood_hoe
     category: specialty
     hidden: true
     actions:

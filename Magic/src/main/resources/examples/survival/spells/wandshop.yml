@@ -1,5 +1,5 @@
 wandshop:
-    icon: wooden_hoe
+    icon: wood_hoe
     category: npc
     hidden: true
     inherit: buyshop
