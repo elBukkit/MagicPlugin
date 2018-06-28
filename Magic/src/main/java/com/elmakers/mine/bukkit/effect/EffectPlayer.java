@@ -481,7 +481,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @Override
     public void start(Location origin, Entity originEntity, Location target, Entity targetEntity, Collection<Entity> targets) {
-        if (shouldPlayAtAllTargets()) {
+        if (playsAtAllTargets()) {
             start(origin, originEntity, targets);
         } else {
             start(origin, originEntity, target, targetEntity);
@@ -700,11 +700,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         return players;
-    }
-
-    public boolean shouldPlayAtAllTargets()
-    {
-        return playAtAllTargets;
     }
 
     @Override
