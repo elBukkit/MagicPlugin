@@ -202,6 +202,8 @@ public abstract class CompoundAction extends BaseSpellAction
         handler = new ActionHandler();
         handler.load(spell, actionConfiguration, handlerKey);
         handlers.put(handlerKey, handler);
+        // Avoid inheriting action handlers
+        actionConfiguration.set(handlerKey, null);
         return handler;
     }
 
