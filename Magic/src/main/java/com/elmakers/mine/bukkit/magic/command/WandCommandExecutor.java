@@ -1094,7 +1094,9 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         String inherit = wandSection.getString("inherit", "");
         if (!inherit.isEmpty()) {
             WandTemplate inheritConfiguration = controller.getWandTemplate(inherit);
-            ConfigurationUtils.addConfigurations(wandSection, inheritConfiguration.getConfiguration(), false);
+            if (inheritConfiguration != null) {
+                ConfigurationUtils.addConfigurations(wandSection, inheritConfiguration.getConfiguration(), false);
+            }
         }
         controller.loadWandTemplate(template, wandSection);
         String message = "Wand saved as " + template;
