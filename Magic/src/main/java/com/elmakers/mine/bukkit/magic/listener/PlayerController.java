@@ -648,8 +648,10 @@ public class PlayerController implements Listener {
     {
         Player player = event.getPlayer();
         if (controller.isNPC(player)) return;
-        Mage mage = controller.getMage(player);
-        mage.onTeleport(event);
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage != null) {
+            mage.onTeleport(event);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -657,8 +659,10 @@ public class PlayerController implements Listener {
     {
         Player player = event.getPlayer();
         if (controller.isNPC(player)) return;
-        Mage mage = controller.getMage(player);
-        mage.onChangeWorld();
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage != null) {
+            mage.onChangeWorld();
+        }
     }
 
     @EventHandler
@@ -668,10 +672,12 @@ public class PlayerController implements Listener {
             Player player = event.getPlayer();
             if (!player.isOnline()) return;
 
-            Mage mage = controller.getMage(player);
-            com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
-            if (activeWand != null) {
-                activeWand.closeInventory();
+            Mage mage = controller.getRegisteredMage(player);
+            if (mage != null) {
+                com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
+                if (activeWand != null) {
+                    activeWand.closeInventory();
+                }
             }
         }
     }
