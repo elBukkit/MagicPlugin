@@ -8,4 +8,18 @@ wands:
   statsheet:
     name: Stat Sheet
     description: View your character stats
-
+  potion_mana10:
+    name: Minor Potion of Mana
+    description: Drink to gain 10 mana
+  potion_mana50:
+    name: Potion of Mana
+    description: Drink to gain 50 mana
+  potion_mana100:
+    name: Major Potion of Mana
+    description: Drink to gain 100 mana
+  potion_fillmana:
+    name: Potion of Full Mana
+    description: Drink to completely refill your mana
+  alchemybook:
+    name: Book of Alchemy
+    description: Contains ancient alchemical lore

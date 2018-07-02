@@ -1,0 +1,9 @@
+alchemist:
+  inherit: base
+  locked: true
+  mana_max: 200
+  mana: 100
+  spells:
+   - missile
+   - blast
+

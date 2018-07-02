@@ -1,0 +1,12 @@
+alchemybook:
+    mode: skills
+    icon: wood_hoe:31
+    indestructible: true
+    right_click: toggle
+    undroppable: true
+    keep: true
+    bound: true
+    class: alchemist
+    skills:
+      quick_cast: false
+      keep: true

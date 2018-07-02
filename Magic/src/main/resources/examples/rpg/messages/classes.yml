@@ -8,4 +8,7 @@ classes:
   rogue:
     name: "Rogue"
     description: "Stealth and subversion"
+  alchemist:
+    name: "Alchemist"
+    description: "Potions and alchemy"
 

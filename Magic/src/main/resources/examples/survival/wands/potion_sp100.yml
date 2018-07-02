@@ -1,3 +1,3 @@
 potion_sp100:
-  icon: potion
+  icon: potion:FFD700
   consume_spell: addsp

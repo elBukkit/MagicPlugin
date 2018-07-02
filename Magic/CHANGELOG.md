@@ -14,6 +14,7 @@
  - Allow multiple commands in a command NPC via the ; delimiter
  - Add SpawnEntity disguise_target parameter (See: decoy spell)
  - Add support for colored potion icons (potion:AA00FF)
+ - Add mana potions to the RPG configs
 
 # 7.6
 

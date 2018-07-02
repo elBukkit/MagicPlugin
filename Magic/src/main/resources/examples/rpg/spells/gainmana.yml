@@ -1,0 +1,29 @@
+gainmana:
+  hidden: true
+  icon: potion:00AAFF
+  actions:
+    cast:
+    - class: ModifyMana
+  parameters:
+    target: self
+    mana: 1
+
+gainmana_10:
+  inherit: gainmana
+  parameters:
+    mana: 10
+
+gainmana_50:
+  inherit: gainmana
+  parameters:
+    mana: 50
+
+gainmana_100:
+  inherit: gainmana
+  parameters:
+    mana: 100
+
+gainmana_full:
+  inherit: gainmana
+  parameters:
+    fill_mana: true
