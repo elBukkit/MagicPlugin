@@ -13,6 +13,7 @@
  - Allow actions on SpawnEntity which will run when the entity dies (See: kamikaze spell)
  - Allow multiple commands in a command NPC via the ; delimiter
  - Add SpawnEntity disguise_target parameter (See: decoy spell)
+ - Add support for colored potion icons (potion:AA00FF)
 
 # 7.6
 

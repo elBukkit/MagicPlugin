@@ -7,6 +7,7 @@ import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Rotation;
@@ -44,6 +45,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
@@ -1640,5 +1642,29 @@ public class CompatibilityUtils extends NMSUtils {
 
         }
         return version;
+    }
+
+    public static Color getColor(PotionMeta meta) {
+        Color color = Color.BLACK;
+        if (class_PotionMeta_getColorMethod != null) {
+            try {
+                color = (Color)class_PotionMeta_getColorMethod.invoke(meta);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return color;
+    }
+
+    public static boolean setColor(PotionMeta meta, Color color) {
+        if (class_PotionMeta_setColorMethod != null) {
+            try {
+                class_PotionMeta_setColorMethod.invoke(meta, color);
+                return true;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
     }
 }

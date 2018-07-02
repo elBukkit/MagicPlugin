@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -233,6 +235,8 @@ public class NMSUtils {
     protected static Method class_Block_setTypeIdAndDataMethod;
     protected static Method class_Chunk_isReadyMethod;
     protected static Method class_ItemDye_bonemealMethod;
+    protected static Method class_PotionMeta_getColorMethod;
+    protected static Method class_PotionMeta_setColorMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -571,6 +575,12 @@ public class NMSUtils {
             }
 
             // 1.12 and lower
+            try {
+                class_PotionMeta_getColorMethod = PotionMeta.class.getMethod("getColor");
+                class_PotionMeta_setColorMethod = PotionMeta.class.getMethod("setColor", Color.class);
+            } catch (Throwable ex) {
+                 Bukkit.getLogger().info("Could not bind to PotionMeta color methods, Custom colored potions will not work.");
+            }
             try {
                 class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
             } catch (Throwable ex) {

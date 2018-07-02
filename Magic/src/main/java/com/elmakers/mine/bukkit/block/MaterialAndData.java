@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.elmakers.mine.bukkit.api.block.ModifyType;
@@ -112,6 +113,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof LeatherArmorMeta) {
                 extraData = new LeatherArmorData(((LeatherArmorMeta)meta).getColor());
+            }
+        } else if (this.material == Material.POTION) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null && meta instanceof PotionMeta) {
+                extraData = new PotionData(CompatibilityUtils.getColor((PotionMeta)meta));
             }
         }
     }
@@ -222,6 +228,17 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                                 data = 0;
                             }
                         }
+                    }
+                } else if (material == Material.POTION) {
+                    String color = pieces[1];
+                    if (color.startsWith("#")) {
+                        color = color.substring(1);
+                    }
+                    try {
+                        Color potionColor = Color.fromRGB(Integer.parseInt(color, 16));
+                        extraData = new PotionData(potionColor);
+                    } catch (Exception ex) {
+                        extraData = null;
                     }
                 } else {
                     try {
@@ -532,8 +549,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         materialKey += ":#" + Integer.toHexString(color.asRGB());
                     }
                 }
-            }
-            else if (data != 0) {
+            } else if (this.material == Material.POTION) {
+                if (extraData != null && extraData instanceof PotionData) {
+                    Color color = ((PotionData)extraData).getColor();
+                    materialKey += ":" + Integer.toHexString(color.asRGB());
+                }
+            } else if (data != 0) {
                 materialKey += ":" + data;
             }
         }
@@ -674,6 +695,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = stack.getItemMeta();
             if (extraData != null && extraData instanceof LeatherArmorData && meta != null && meta instanceof LeatherArmorMeta) {
                 ((LeatherArmorMeta)meta).setColor(((LeatherArmorData)extraData).getColor());
+                stack.setItemMeta(meta);
+            }
+        } else if (this.material == Material.POTION) {
+            ItemMeta meta = stack.getItemMeta();
+            if (extraData != null && extraData instanceof PotionData && meta != null && meta instanceof PotionMeta) {
+                CompatibilityUtils.setColor((PotionMeta)meta, ((PotionData)extraData).getColor());
                 stack.setItemMeta(meta);
             }
         }
