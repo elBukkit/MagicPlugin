@@ -1,7 +1,7 @@
 archer:
   type: skeleton
-  item: magicbow
-  cast_requires_item: magicbow
+  item: archer_bow
+  cast_requires_item: archer_bow
   chestplate: warlock_chestplate
   leggings: warlock_leggings
   helmet: chainmail_helmet

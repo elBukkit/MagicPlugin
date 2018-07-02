@@ -2,6 +2,8 @@
 
 # 7.6.2
 
+ - The magic bow held by the archer mob is now inert (not useable)
+
 # 7.6.1
 
  - Fix Growth crops not being harvestable

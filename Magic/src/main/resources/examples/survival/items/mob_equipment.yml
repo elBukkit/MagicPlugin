@@ -90,4 +90,18 @@ madscientist_helmet:
       enchants:
         THORNS: 3
       Unbreakable: true
+
+archer_bow:
+  worth: 3000
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: BOW
+    damage: 1
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      display-name: §aMagic Bow
+      lore:
+      - It has lost its power
       
