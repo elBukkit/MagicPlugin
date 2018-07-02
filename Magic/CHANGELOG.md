@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.2
+
 # 7.6.1
 
  - Fix Growth crops not being harvestable
