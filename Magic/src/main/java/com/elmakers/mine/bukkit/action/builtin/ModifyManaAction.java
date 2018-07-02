@@ -9,10 +9,13 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class ModifyManaAction extends BaseSpellAction
@@ -42,11 +45,20 @@ public class ModifyManaAction extends BaseSpellAction
         if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        double currentMana = mage.getMana();
+        Wand wand = mage.getActiveWand();
+        MageClass activeClass = mage.getActiveClass();
+        CasterProperties caster = (wand != null && wand.getManaMax() > 0) ? wand : activeClass;
+        if (caster == null) {
+            caster = mage.getProperties();
+        }
+        if (caster.getManaMax() <= 0) {
+            return SpellResult.NO_TARGET;
+        }
+        double currentMana = caster.getMana();
         if (mana < 0 && currentMana <= 0) {
             return SpellResult.NO_TARGET;
         }
-        int manaMax = mage.getManaMax();
+        int manaMax = caster.getManaMax();
         if (mana > 0 && currentMana >= manaMax) {
             return SpellResult.NO_TARGET;
         }
@@ -55,7 +67,7 @@ public class ModifyManaAction extends BaseSpellAction
         } else {
             currentMana = Math.min(Math.max(0, currentMana + mana), manaMax);
         }
-        mage.setMana((float)currentMana);
+        caster.setMana((float)currentMana);
         mage.updateMana();
         return SpellResult.CAST;
     }
