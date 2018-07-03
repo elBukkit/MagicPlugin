@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Villager;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -18,6 +19,7 @@ import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.ArmorStandWatcher;
+import me.libraryaddict.disguise.disguisetypes.watchers.VillagerWatcher;
 
 public class LibsDisguiseManager {
     private final Plugin disguisePlugin;
@@ -89,6 +91,18 @@ public class LibsDisguiseManager {
                     MiscDisguise miscDisguise = new MiscDisguise(disguiseType);
                     disguise = miscDisguise;
                     break;
+                case VILLAGER:
+                    disguise = new MobDisguise(DisguiseType.VILLAGER);
+                    String professionName = configuration.getString("profession");
+                    if (professionName != null && !professionName.isEmpty()) {
+                        try {
+                            Villager.Profession profession = Villager.Profession.valueOf(professionName.toUpperCase());
+                            VillagerWatcher villager = (VillagerWatcher)disguise.getWatcher();
+                            villager.setProfession(profession);
+                        } catch (Exception ex) {
+                            owningPlugin.getLogger().warning("Invalid villager profession in disguise config: " + professionName);
+                        }
+                    }
                 default:
                     boolean isBaby = configuration.getBoolean("baby", false);
                     disguise = new MobDisguise(disguiseType, !isBaby);
