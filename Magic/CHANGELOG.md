@@ -5,6 +5,7 @@
  - The magic bow held by the archer mob is now inert (not useable)
  - Add Factions support for friendly fire flags in spells
  - Add support for villager professions in a disguised mob
+ - Fix cast messages not going to action bar
 
 # 7.6.1
 
