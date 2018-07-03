@@ -3,6 +3,7 @@
 # 7.6.2
 
  - The magic bow held by the archer mob is now inert (not useable)
+ - Add Factions support for friendly fire flags in spells
 
 # 7.6.1
 

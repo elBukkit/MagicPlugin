@@ -1,6 +1,11 @@
 # TODO
 
 ## Hot Issues
+
+ - Active/inactive wand icons are broken:
+   - Open wand, select spell, use jump spell, start gliding and it will happem
+   - The active wand state will only appear when a player selects a move And not when you open the wand
+ - /m strange tab-completion behavior
           
  - Option to disguise a mob as the caster
  - SpawnEntity action should be able to run actions on death of spawned mob

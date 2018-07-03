@@ -9,10 +9,13 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class FactionsManager implements BlockBuildManager, BlockBreakManager, PVPManager {
+import com.elmakers.mine.bukkit.api.entity.TeamProvider;
+
+public class FactionsManager implements BlockBuildManager, BlockBreakManager, PVPManager, TeamProvider {
     private boolean enabled = false;
     private Class<?> factionsManager = null;
     private Method factionsCanBuildMethod = null;
@@ -26,6 +29,19 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
 
     private Constructor<?> flocationConstructor = null;
     private Method psFactoryMethod = null;
+
+    private Class<?> playerClass;
+    private Method playerGetMethod;
+    private Method playerGetFactionMethod;
+    private Method factionGetRelationMethod;
+    private Class<?> relationClass;
+    private Method relationIsFriendMethod;
+
+    private Method relationIsAllyMethod;
+    private Method relationIsMemberMethod;
+    private Method relationIsTruceMethod;
+
+    private Object fPlayers;
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -65,6 +81,19 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
                         isSafeZoneMethod =  factionClass.getMethod("isSafeZone");
                     }
 
+                    try {
+                        playerClass = Class.forName("com.massivecraft.factions.entity.MPlayer");
+                        playerGetMethod = playerClass.getMethod("get", Object.class);
+                        playerGetFactionMethod = playerClass.getMethod("getFaction");
+                        Class<?> relationParticipator = Class.forName("com.massivecraft.factions.RelationParticipator");
+                        factionGetRelationMethod = factionClass.getMethod("getRelationTo", relationParticipator);
+                        relationClass = Class.forName("com.massivecraft.factions.Rel");
+                        relationIsFriendMethod = relationClass.getMethod("isFriend");
+                    } catch (Exception ex) {
+                        playerClass = null;
+                        plugin.getLogger().log(Level.WARNING, "Error binding to Factions, team provider will not work", ex);
+                    }
+
                 } catch (Throwable ex) {
                     // Try for Factions "Limited"
                     psFactoryMethod = null;
@@ -95,6 +124,25 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
                         board = boardSingleton.invoke(null);
 
                         getFactionAtMethod = boardClass.getMethod("getFactionAt", flocationClass);
+
+                        try {
+                            Class<?> fPlayersClass = Class.forName("com.massivecraft.factions.FPlayers");
+                            Method fPlayersGetMethod = fPlayersClass.getMethod("getInstance");
+                            fPlayers = fPlayersGetMethod.invoke(null);
+
+                            playerClass = Class.forName("com.massivecraft.factions.FPlayer");
+                            playerGetMethod = fPlayersClass.getMethod("getByPlayer", Player.class);
+                            playerGetFactionMethod = playerClass.getMethod("getFaction");
+                            Class<?> relationParticipator = Class.forName("com.massivecraft.factions.iface.RelationParticipator");
+                            factionGetRelationMethod = factionClass.getMethod("getRelationTo", relationParticipator);
+                            relationClass = Class.forName("com.massivecraft.factions.struct.Relation");
+                            relationIsAllyMethod = relationClass.getMethod("isAlly");
+                            relationIsTruceMethod = relationClass.getMethod("isTruce");
+                            relationIsMemberMethod = relationClass.getMethod("isMember");
+                        } catch (Exception ex3) {
+                            playerClass = null;
+                            plugin.getLogger().log(Level.WARNING, "Error binding to Factions, team provider will not work", ex3);
+                        }
                     } catch (Throwable ex2) {
                         plugin.getLogger().log(Level.WARNING, "Failed to find mcore", ex);
                         plugin.getLogger().log(Level.WARNING, "Failed to find FactionsBlockListener", ex2);
@@ -106,7 +154,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
                 if (factionsManager == null) {
                     plugin.getLogger().info("Factions integration failed.");
                 } else {
-                    plugin.getLogger().info("Factions found, will integrate for build and safe zone checks.");
+                    plugin.getLogger().info("Factions found, will integrate for build, friendly fire and safe zone checks.");
                 }
             } else {
                 plugin.getLogger().info("Factions not found, will not integrate.");
@@ -200,5 +248,31 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
         }
 
         return true;
+    }
+
+    @Override
+    public boolean isFriendly(Entity attacker, Entity entity) {
+        if (attacker instanceof Player && entity instanceof Player && playerClass != null) {
+            try {
+                Object player1 = playerGetMethod.invoke(fPlayers, attacker);
+                Object player2 = playerGetMethod.invoke(fPlayers, entity);
+                Object faction1 = playerGetFactionMethod.invoke(player1);
+                Object faction2 = playerGetFactionMethod.invoke(player2);
+                if ((boolean)isNoneMethod.invoke(faction1) || (boolean)isNoneMethod.invoke(faction2)) {
+                    return false;
+                }
+                Object relation = factionGetRelationMethod.invoke(faction1, faction2);
+                if (relationIsFriendMethod != null) {
+                    return (boolean)relationIsFriendMethod.invoke(relation);
+                }
+
+                if ((boolean)relationIsMemberMethod.invoke(relation)) return true;
+                if ((boolean)relationIsAllyMethod.invoke(relation)) return true;
+                if ((boolean)relationIsTruceMethod.invoke(relation)) return true;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
     }
 }

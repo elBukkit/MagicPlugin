@@ -2890,6 +2890,9 @@ public class MagicController implements MageController {
         if (useScoreboardTeams) {
             teamProviders.add(new ScoreboardTeamProvider());
         }
+        if (factionsManager != null) {
+            teamProviders.add(factionsManager);
+        }
 
         // Register requirement processors
         requirementProcessors.putAll(loadEvent.getRequirementProcessors());
