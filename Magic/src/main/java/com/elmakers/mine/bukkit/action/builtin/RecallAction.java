@@ -707,7 +707,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String playerName = onlinePlayer.getDisplayName();
         String castMessage = context.getMessage("cast_friend").replace("$name", playerName);
         String failMessage = context.getMessage("no_target_friend").replace("$name", playerName);
-        String title = context.getMessage("title_friend").replace("$name", playerName);
+        String title = context.getMessage("title_friend", "$name").replace("$name", playerName);
         String iconURL = SkinUtils.getOnlineSkinURL(onlinePlayer);
 
         return new Waypoint(RecallType.WARP, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
@@ -723,7 +723,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String warpName = config.getString("name", warpKey);
         String castMessage = context.getMessage("cast_warp").replace("$name", warpName);
         String failMessage = context.getMessage("no_target_warp").replace("$name", warpName);
-        String title = context.getMessage("title_warp").replace("$name", warpName);
+        String title = context.getMessage("title_warp", "$name").replace("$name", warpName);
         String description = config.getString("description");
         String iconURL = config.getString("icon_url");
         MaterialAndData icon = getIcon(context, config, "icon");
@@ -767,26 +767,26 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         switch (type) {
         case MARKER:
             Location location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
-            return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), getIcon(context, parameters, "icon_marker"), true);
+            return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker", "Market"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), getIcon(context, parameters, "icon_marker"), true);
         case DEATH:
-            Waypoint death = new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), getIcon(context, parameters, "icon_death"), true);
+            Waypoint death = new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death", "Last Death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), getIcon(context, parameters, "icon_death"), true);
             death.safe = false;
             return death;
         case SPAWN:
-            return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), getIcon(context, parameters, "icon_spawn"), false);
+            return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn", "Spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), getIcon(context, parameters, "icon_spawn"), false);
         case TOWN:
-            return new Waypoint(type, controller.getTownLocation(player), context.getMessage("title_town"), context.getMessage("cast_town"), context.getMessage("no_target_town"), context.getMessage("description_town", ""), getIcon(context, parameters, "icon_town"), false);
+            return new Waypoint(type, controller.getTownLocation(player), context.getMessage("title_town", "Town"), context.getMessage("cast_town"), context.getMessage("no_target_town"), context.getMessage("description_town", ""), getIcon(context, parameters, "icon_town"), false);
         case HOME:
             Location bedLocation = player == null ? null : player.getBedSpawnLocation();
             if (bedLocation != null) {
                 bedLocation.setX(bedLocation.getX() + 0.5);
                 bedLocation.setZ(bedLocation.getZ() + 0.5);
             }
-            return new Waypoint(type, bedLocation, context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), getIcon(context, parameters, "icon_home"), false);
+            return new Waypoint(type, bedLocation, context.getMessage("title_home", "Home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), getIcon(context, parameters, "icon_home"), false);
         case WAND:
             List<LostWand> lostWands = mage.getLostWands();
             if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
-            return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
+            return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand", "Lost Wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
         default:
             return null;
         }
