@@ -103,6 +103,7 @@ public class LibsDisguiseManager {
                             owningPlugin.getLogger().warning("Invalid villager profession in disguise config: " + professionName);
                         }
                     }
+                    break;
                 default:
                     boolean isBaby = configuration.getBoolean("baby", false);
                     disguise = new MobDisguise(disguiseType, !isBaby);
