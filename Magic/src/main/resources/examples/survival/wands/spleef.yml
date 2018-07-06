@@ -1,4 +1,5 @@
 spleef:
+    inherit: base_wand
     locked: true
     icon: stick
     glow: true
