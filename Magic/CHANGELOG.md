@@ -6,6 +6,7 @@
  - Add Factions support for friendly fire flags in spells
  - Add support for villager professions in a disguised mob
  - Fix cast messages not going to action bar
+ - Infer types in "/mitem configure", this allows vanilla items to be tagged as undroppable, or keep on death
 
 # 7.6.1
 

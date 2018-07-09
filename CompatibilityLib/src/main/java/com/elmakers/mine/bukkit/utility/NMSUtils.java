@@ -1519,6 +1519,31 @@ public class NMSUtils {
         }
     }
 
+    public static void setMetaTyped(Object node, String tag, String value) {
+        if (value == null) {
+            removeMeta(node, tag);
+            return;
+        }
+
+        boolean isTrue = value.equals("true");
+        boolean isFalse = value.equals("false");
+        if (isTrue || isFalse) {
+            setMetaBoolean(node, tag, isTrue);
+        } else {
+            try {
+                Integer i = Integer.parseInt(value);
+                setMetaInt(node, tag, i);
+            } catch (Exception ex) {
+                try {
+                    Double d = Double.parseDouble(value);
+                    setMetaDouble(node, tag, d);
+                } catch (Exception ex2) {
+                    setMeta(node, tag, value);
+                }
+            }
+        }
+    }
+
     public static void setMetaNode(Object node, String tag, Object child) {
         if (node == null || !class_NBTTagCompound.isInstance(node)) return;
         try {

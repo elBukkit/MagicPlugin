@@ -360,7 +360,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             if (i < path.length - 1) {
                 node = InventoryUtils.getNode(node, key);
             } else {
-                InventoryUtils.setMeta(node, key, value);
+                InventoryUtils.setMetaTyped(node, key, value);
             }
         }
         item.setItemMeta(newItem.getItemMeta());

@@ -447,7 +447,7 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static void makeKeep(ItemStack itemStack) {
-        setMeta(itemStack, "keep", "true");
+        setMetaBoolean(itemStack, "keep", true);
     }
 
     public static boolean isKeep(ItemStack itemStack) {
