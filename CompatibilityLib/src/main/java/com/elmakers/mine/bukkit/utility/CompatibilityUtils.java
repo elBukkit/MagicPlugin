@@ -1409,7 +1409,7 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         try {
-            Object namespacedKey = class_NamespacedKey_constructor.newInstance(plugin, key);
+            Object namespacedKey = class_NamespacedKey_constructor.newInstance(plugin, key.toLowerCase());
             return (ShapedRecipe)class_ShapedRecipe_constructor.newInstance(namespacedKey, item);
         } catch (Exception ex) {
             ex.printStackTrace();
