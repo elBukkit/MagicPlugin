@@ -54,7 +54,10 @@
 
 ## Future
   
- - Maybe optimize chunk effects/spells with player range
+ - Take a look at this, maybe use accurate block hitboxes?
+   https://bitbucket.org/BillyGalbreath/pl3xsigns/src/c4ce6a50592aca67be0aef26117cc8b7e069c3eb/src/main/java/net/pl3x/bukkit/pl3xsigns/lineofsight/BoundingBox.java?at=master&fileviewer=file-view-default
+  
+ - Maybe optimize automata chunk effects/spells with player range
  
  - It'd be really cool to support configs from remote repos....
    Github has an API for fetching a list of files, maybe can use that?

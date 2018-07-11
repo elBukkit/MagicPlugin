@@ -364,7 +364,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             }
         }
         item.setItemMeta(newItem.getItemMeta());
-        player.sendMessage(ChatColor.GREEN + "Set: " + ChatColor.DARK_GREEN + tag + " to " + ChatColor.AQUA + " " + value);
+        player.sendMessage(ChatColor.GREEN + "Set: " + ChatColor.DARK_GREEN + tag + " to " + ChatColor.AQUA + value);
         return true;
     }
 
