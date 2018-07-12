@@ -7,6 +7,7 @@
  - Add support for villager professions in a disguised mob
  - Fix cast messages not going to action bar
  - Infer types in "/mitem configure", this allows vanilla items to be tagged as undroppable, or keep on death
+ - Fix dupe glitch involving [redacted for safety] chests
 
 # 7.6.1
 

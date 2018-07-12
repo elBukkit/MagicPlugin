@@ -2,6 +2,9 @@
 
 ## Hot Issues
 
+- Small bug! When you die, it makes your wand auto-select the first spell in your hotbar:
+  https://youtu.be/wExxOdFWCV4
+
  - Active/inactive wand icons are broken:
    - Open wand, select spell, use jump spell, start gliding and it will happem
    - The active wand state will only appear when a player selects a move And not when you open the wand
@@ -31,6 +34,8 @@
  - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
   
 ## Recent Requests
+      
+ - Earn SP for killing players (maybe other mobs as well, by type?)
       
  - "Residence" integration (requested by Frerduro on Discord)
    https://github.com/Zrips/Residence
