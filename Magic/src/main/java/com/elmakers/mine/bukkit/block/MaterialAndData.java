@@ -597,9 +597,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (!command.getCommand().equals(((BlockCommand)extraData).command)) {
                 return true;
             }
-        } else if (blockState instanceof InventoryHolder) {
-            // Just copy it over.... not going to compare inventories :P
-            return true;
         }
 
         return false;
