@@ -2760,14 +2760,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void enableFallProtection(int ms, Spell protector)
-    {
+    public void enableFallProtection(int ms) {
+        enableFallProtection(ms, null);
+    }
+
+    @Override
+    public void enableFallProtection(int ms, @Nullable Spell protector) {
         enableFallProtection(ms, 1, protector);
     }
 
     @Override
-    public void enableFallProtection(int ms, int count, Spell protector)
-    {
+    public void enableFallProtection(int ms, int count, @Nullable Spell protector) {
         if (ms <= 0 || count <= 0) return;
         if (protector != null && protector instanceof BaseSpell) {
             this.fallingSpell = (BaseSpell)protector;
@@ -2783,9 +2786,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void enableFallProtection(int ms)
-    {
-        enableFallProtection(ms, null);
+    public void clearFallProtection() {
+        fallingSpell = null;
+        fallProtection = 0;
+        fallProtectionCount = 0;
     }
 
     @Override

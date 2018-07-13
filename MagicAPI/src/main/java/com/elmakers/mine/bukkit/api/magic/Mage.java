@@ -493,8 +493,9 @@ public interface Mage extends CostReducer, CooldownReducer {
 
     Set<Spell> getActiveSpells();
     void enableFallProtection(int ms);
-    void enableFallProtection(int ms, Spell protector);
-    void enableFallProtection(int ms, int count, Spell protector);
+    void enableFallProtection(int ms, @Nullable Spell protector);
+    void enableFallProtection(int ms, int count, @Nullable Spell protector);
+    void clearFallProtection();
 
     void enableSuperProtection(int ms);
     void clearSuperProtection();
