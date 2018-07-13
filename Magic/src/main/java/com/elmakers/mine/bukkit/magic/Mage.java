@@ -73,6 +73,7 @@ import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
+import com.elmakers.mine.bukkit.api.event.WandDeactivatedEvent;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
@@ -729,6 +730,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             checkActiveSpells(activeWand);
             setOffhandWand(null);
         }
+
+        WandDeactivatedEvent event = new WandDeactivatedEvent(this, wand);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     public void onTeleport(PlayerTeleportEvent event) {

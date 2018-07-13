@@ -9,16 +9,16 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 /**
- * A custom event that the Magic plugin will fire whenever a wand has become
- * activated.
+ * A custom event that the Magic plugin will fire whenever a wand is
+ * deactivated.
  */
-public class WandActivatedEvent extends Event {
+public class WandDeactivatedEvent extends Event {
     private final @Nonnull Mage mage;
     private final @Nonnull Wand wand;
 
     private static final HandlerList handlers = new HandlerList();
 
-    public WandActivatedEvent(@Nonnull Mage mage, @Nonnull Wand wand) {
+    public WandDeactivatedEvent(@Nonnull Mage mage, @Nonnull Wand wand) {
         this.mage = mage;
         this.wand = wand;
     }
