@@ -3264,10 +3264,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return wand;
     }
 
-    @Nullable
-    public static Wand createWand(MagicController controller, ItemStack itemStack) {
-        if (controller == null) return null;
-
+    @Nonnull
+    public static Wand createWand(@Nonnull MagicController controller, @Nonnull ItemStack itemStack) {
+        Preconditions.checkNotNull(controller);
+        Preconditions.checkNotNull(itemStack);
         Wand wand = null;
         try {
             wand = controller.getWand(InventoryUtils.makeReal(itemStack.clone()));
@@ -3275,6 +3275,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             wand.updateName();
         } catch (Exception ex) {
             ex.printStackTrace();
+            wand = new Wand(controller);
         }
         return wand;
     }
