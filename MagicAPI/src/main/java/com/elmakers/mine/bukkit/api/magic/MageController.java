@@ -111,6 +111,14 @@ public interface MageController {
      * @throws IllegalArgumentException If the item is not a wand.
      */
     Wand getWand(ItemStack item);
+
+    /**
+     * Creates a copy of the given item and turns it into a Wand.
+     *
+     * @param item The item to get a wand of.
+     * @return The wand of this item.
+     */
+    Wand createWand(ItemStack item);
     Wand getWand(ConfigurationSection config);
     @Nullable
     WandTemplate getWandTemplate(String key);

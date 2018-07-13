@@ -3778,6 +3778,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public Wand createWand(ItemStack itemStack) {
+        return Wand.createWand(this, itemStack);
+    }
+
+    @Override
     public Wand getWand(ConfigurationSection config) {
         return new Wand(this, config);
     }

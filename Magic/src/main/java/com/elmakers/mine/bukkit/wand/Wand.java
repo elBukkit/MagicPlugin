@@ -3270,7 +3270,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         Wand wand = null;
         try {
-            wand = controller.getWand(InventoryUtils.makeReal(itemStack));
+            wand = controller.getWand(InventoryUtils.makeReal(itemStack.clone()));
             wand.saveState();
             wand.updateName();
         } catch (Exception ex) {
