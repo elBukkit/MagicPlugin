@@ -267,6 +267,8 @@ public class NMSUtils {
     protected static Constructor class_ShapedRecipe_constructor;
     protected static Constructor class_GameProfile_constructor;
     protected static Constructor class_GameProfileProperty_constructor;
+    protected static Constructor class_MinecraftKey_constructor;
+    protected static Constructor class_Vec3D_constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -376,7 +378,6 @@ public class NMSUtils {
             class_PacketPlayOutSpawnEntityLiving = fixBukkitClass("net.minecraft.server.PacketPlayOutSpawnEntityLiving");
             class_PacketPlayOutEntityMetadata = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityMetadata");
             class_PacketPlayOutEntityStatus = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityStatus");
-            class_PacketPlayOutCustomSoundEffect = fixBukkitClass("net.minecraft.server.PacketPlayOutCustomSoundEffect");
             class_PacketPlayOutExperience = fixBukkitClass("net.minecraft.server.PacketPlayOutExperience");
             class_PacketPlayOutAnimation = fixBukkitClass("net.minecraft.server.PacketPlayOutAnimation");
             class_PacketPlayOutBlockBreakAnimation = fixBukkitClass("net.minecraft.server.PacketPlayOutBlockBreakAnimation");
@@ -441,7 +442,6 @@ public class NMSUtils {
             class_PacketPlayOutEntityMetadata_Constructor = class_PacketPlayOutEntityMetadata.getConstructor(Integer.TYPE, class_DataWatcher, Boolean.TYPE);
             class_PacketPlayOutEntityStatus_Constructor = class_PacketPlayOutEntityStatus.getConstructor(class_Entity, Byte.TYPE);
             class_PacketPlayOutEntityDestroy_Constructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
-            class_PacketPlayOutCustomSoundEffect_Constructor = class_PacketPlayOutCustomSoundEffect.getConstructor(String.class, class_EnumSoundCategory, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             class_PacketPlayOutExperience_Constructor = class_PacketPlayOutExperience.getConstructor(Float.TYPE, Integer.TYPE, Integer.TYPE);
             class_PacketPlayOutAnimation_Constructor = class_PacketPlayOutAnimation.getConstructor(class_Entity, Integer.TYPE);
             class_PacketPlayOutBlockBreakAnimation_Constructor = class_PacketPlayOutBlockBreakAnimation.getConstructor(Integer.TYPE, class_BlockPosition, Integer.TYPE);
@@ -496,7 +496,6 @@ public class NMSUtils {
             class_NBTTagShort_dataField.setAccessible(true);
             class_NBTTagString_dataField = class_NBTTagString.getDeclaredField("data");
             class_NBTTagString_dataField.setAccessible(true);
-            class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
             class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
@@ -558,6 +557,8 @@ public class NMSUtils {
             // Particularly volatile methods that we can live without
 
             // 1.13 Support
+            Class<?> class_MinecraftKey = null;
+            Class<?> class_Vec3D = null;
             try {
                 @SuppressWarnings("deprecation")
                 Class<?> unsafe = org.bukkit.UnsafeValues.class;
@@ -566,12 +567,92 @@ public class NMSUtils {
                 class_UnsafeValues_fromLegacyMethod = unsafe.getMethod("fromLegacy", Material.class);
                 class_Material_isLegacyMethod = Material.class.getMethod("isLegacy");
                 class_Material_getLegacyMethod = Material.class.getMethod("getMaterial", String.class, Boolean.TYPE);
+
+                class_MinecraftKey = fixBukkitClass("net.minecraft.server.MinecraftKey");
+                class_MinecraftKey_constructor = class_MinecraftKey.getConstructor(String.class);
+                class_Vec3D = fixBukkitClass("net.minecraft.server.Vec3D");
+                class_Vec3D_constructor = class_Vec3D.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
+
                 Bukkit.getLogger().info("1.13 detected, compatibility layer enabled");
                 migration = true;
             } catch (Throwable ex) {
                 class_UnsafeValues_fromLegacyMethod = null;
                 class_UnsafeValues_fromLegacyDataMethod = null;
                 class_Material_isLegacyMethod = null;
+            }
+
+            // Changed in 1.13
+            try {
+                class_PacketPlayOutCustomSoundEffect = fixBukkitClass("net.minecraft.server.PacketPlayOutCustomSoundEffect");
+
+                if (class_MinecraftKey_constructor != null) {
+                    class_PacketPlayOutCustomSoundEffect_Constructor = class_PacketPlayOutCustomSoundEffect.getConstructor(class_MinecraftKey, class_EnumSoundCategory, class_Vec3D, Float.TYPE, Float.TYPE);
+                } else {
+                    class_PacketPlayOutCustomSoundEffect_Constructor = class_PacketPlayOutCustomSoundEffect.getConstructor(String.class, class_EnumSoundCategory, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+                }
+            } catch (Throwable ex) {
+                 Bukkit.getLogger().warning("Could not bind to custom effect method, custom sound effects will not work");
+            }
+
+            try {
+                Class<?> class_ItemBoneMeal = fixBukkitClass("net.minecraft.server.ItemBoneMeal");
+                class_ItemDye_bonemealMethod = class_ItemBoneMeal.getMethod("a", class_ItemStack, class_World, class_BlockPosition);
+            } catch (Throwable not13) {
+                try {
+                    Class<?> class_ItemDye = fixBukkitClass("net.minecraft.server.ItemDye");
+                    class_ItemDye_bonemealMethod = class_ItemDye.getMethod("a", class_ItemStack, class_World, class_BlockPosition);
+                } catch (Throwable ex) {
+                    class_ItemDye_bonemealMethod = null;
+                    Bukkit.getLogger().info("Couldn't bind to ItemDye bonemeal method, Bonemeal action will not work");
+                }
+            }
+
+            try {
+                try {
+                    // 1.13
+                    class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("k", Integer.TYPE);
+                    if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
+                        throw new Exception("Not 1.13");
+                    }
+                } catch (Throwable not13) {
+                    try {
+                        // 1.12
+                        class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("f", Integer.TYPE);
+                        if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
+                            throw new Exception("Not 1.12");
+                        }
+                    } catch (Throwable not12) {
+                        // 1.11 and lower
+                        current = false;
+                        class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
+                    }
+                }
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering NBTTagList.getDouble, loading entities from schematics will not work", ex);
+                class_NBTTagList_getDoubleMethod = null;
+            }
+
+            try {
+                try {
+                    class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("c", class_Entity, class_Entity);
+                } catch (Throwable not13) {
+                    class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
+                }
+                class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
+                Field damageSource_MagicField = class_DamageSource.getField("MAGIC");
+                object_magicSource = damageSource_MagicField.get(null);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred, magic damage will not work, using normal damage instead", ex);
+                class_EntityLiving_damageEntityMethod = null;
+                class_DamageSource_getMagicSourceMethod = null;
+                object_magicSource = null;
+            }
+
+            try {
+                class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("getKeys");
+            } catch (Throwable not13) {
+                // We can't actually live without this one.
+                class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
             }
 
             // 1.12 and lower
@@ -584,7 +665,14 @@ public class NMSUtils {
             try {
                 class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
             } catch (Throwable ex) {
-                 Bukkit.getLogger().info("Could not bind to setTypeIdAndData, this is OK so long as you are on 1.13 or up.");
+                 Bukkit.getLogger().info("Could not bind to setTypeIdAndData, this is OK so long as you are on 1.13 and up.");
+            }
+            try {
+                Class<?> class_IBlockData = fixBukkitClass("net.minecraft.server.IBlockData");
+                class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);
+                class_Chunk_setBlockMethod = class_Chunk.getMethod("a", class_BlockPosition, class_IBlockData);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work. This is expected in 1.13 and up.");
             }
             try {
                 class_Parrot = Class.forName("org.bukkit.entity.Parrot");
@@ -597,14 +685,6 @@ public class NMSUtils {
                 class_Parrot_getVariantMethod = null;
                 class_Parrot_setVariantMethod = null;
                 Bukkit.getLogger().info("No parrots available on your server.");
-            }
-
-            try {
-                Class<?> class_ItemDye = fixBukkitClass("net.minecraft.server.ItemDye");
-                class_ItemDye_bonemealMethod = class_ItemDye.getMethod("a", class_ItemStack, class_World, class_BlockPosition);
-            } catch (Throwable ex) {
-                class_ItemDye_bonemealMethod = null;
-                Bukkit.getLogger().info("Couldn't bind to ItemDye bonemeal method, Bonemeal action will not work");
             }
 
             try {
@@ -649,30 +729,6 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 class_CraftPlayer_getProfileMethod = null;
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Player.getProfile, player portrait maps may not work as well", ex);
-            }
-            try {
-                Class<?> class_IBlockData = fixBukkitClass("net.minecraft.server.IBlockData");
-                class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);
-                class_Chunk_setBlockMethod = class_Chunk.getMethod("a", class_BlockPosition, class_IBlockData);
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work", ex);
-            }
-
-            try {
-                try {
-                    // 1.12
-                    class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("f", Integer.TYPE);
-                    if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
-                        throw new Exception("Not 1.12");
-                    }
-                } catch (Throwable not12) {
-                    // 1.11 and lower
-                    current = false;
-                    class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
-                }
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering NBTTagList.getDouble, loading entities from schematics will not work", ex);
-                class_NBTTagList_getDoubleMethod = null;
             }
 
             try {
@@ -758,7 +814,7 @@ public class NMSUtils {
                     class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, class_Consumer, CreatureSpawnEvent.SpawnReason.class);
                     class_CraftWorld_spawnMethod_isLegacy = false;
                 } catch (Throwable ignore) {
-                    legacy = true;
+                    setLegacy();
                     class_CraftWorld_spawnMethod_isLegacy = true;
                     class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
                 }
@@ -792,18 +848,6 @@ public class NMSUtils {
             }
 
             try {
-                class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
-                class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
-                Field damageSource_MagicField = class_DamageSource.getField("MAGIC");
-                object_magicSource = damageSource_MagicField.get(null);
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred, magic damage will not work, using normal damage instead", ex);
-                class_EntityLiving_damageEntityMethod = null;
-                class_DamageSource_getMagicSourceMethod = null;
-                object_magicSource = null;
-            }
-
-            try {
                 damageSources = new HashMap<>();
                 Field[] fields = class_DamageSource.getFields();
                 for (Field field : fields) {
@@ -817,28 +861,34 @@ public class NMSUtils {
             }
 
             try {
+                // 1.13
                 try {
-                    // 1.12, same as 1.10
-                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.11, maybe");
-                } catch (Throwable not12) {
+                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bH");
+                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.12, maybe");
+                } catch (Exception not13) {
                     try {
-                        // 1.11
-                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
-                    } catch (Throwable ignore) {
-                        // 1.10 and earlier
-                        legacy = true;
+                        // 1.12, same as 1.10
+                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
+                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.11, maybe");
+                    } catch (Throwable not12) {
                         try {
-                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
-                        } catch (Throwable ignore2) {
+                            // 1.11
+                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
+                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
+                        } catch (Throwable ignore) {
+                            // 1.10 and earlier
+                            setLegacy();
                             try {
-                                // 1.9.4
-                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                            } catch (Throwable ignore3) {
-                                // 1.9.2
-                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
+                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
+                                if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
+                            } catch (Throwable ignore2) {
+                                try {
+                                    // 1.9.4
+                                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
+                                } catch (Throwable ignore3) {
+                                    // 1.9.2
+                                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
+                                }
                             }
                         }
                     }
@@ -869,7 +919,7 @@ public class NMSUtils {
                         class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     } catch (Throwable ignore) {
                         // 1.10 and earlier
-                        legacy = true;
+                        setLegacy();
                         class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                         class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
                     }
@@ -888,7 +938,7 @@ public class NMSUtils {
                     class_PlayerConnection_floatCountField.setAccessible(true);
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
-                    legacy = true;
+                    setLegacy();
                     class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("g");
                     class_PlayerConnection_floatCountField.setAccessible(true);
                 }
@@ -906,7 +956,7 @@ public class NMSUtils {
                         // 1.10
                         class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ay"); // ayyyyy lmao
                     } catch (Throwable ignore4) {
-                        legacy = true;
+                        setLegacy();
                         // 1.8.3
                         class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
                     }
@@ -939,7 +989,7 @@ public class NMSUtils {
                         class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("at");
                     } catch (Throwable ignore) {
                         // 1.9 and earlier
-                        legacy = true;
+                        setLegacy();
                         class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
                     }
                     class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
@@ -956,10 +1006,11 @@ public class NMSUtils {
             try {
                 try {
                     // 1.11
-                    class_ItemStack_consructor = class_ItemStack.getConstructor(class_NBTTagCompound);
+                    class_ItemStack_consructor = class_ItemStack.getDeclaredConstructor(class_NBTTagCompound);
+                    class_ItemStack_consructor.setAccessible(true);
                 } catch (Throwable ignore) {
                     // 1.10 and earlier
-                    legacy = true;
+                    setLegacy();
                     class_ItemStack_createStackMethod = class_ItemStack.getMethod("createStack", class_NBTTagCompound);
                 }
             } catch (Throwable ex) {
@@ -983,7 +1034,7 @@ public class NMSUtils {
                     class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("isSilent");
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
-                    legacy = true;
+                    setLegacy();
                     class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
                     class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("ad");
                 }
@@ -1001,7 +1052,7 @@ public class NMSUtils {
                     class_Entity_setNoGravity = class_Entity.getDeclaredMethod("setNoGravity", Boolean.TYPE);
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
-                    legacy = true;
+                    setLegacy();
                     class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
                 }
             } catch (Throwable ex) {
@@ -1016,7 +1067,7 @@ public class NMSUtils {
                 class_ItemStack_isEmptyMethod = class_ItemStack.getMethod("isEmpty");
             } catch (Throwable ignore) {
                 // 1.10 and earlier
-                legacy = true;
+                setLegacy();
             }
         }
         catch (Throwable ex) {
@@ -1029,6 +1080,11 @@ public class NMSUtils {
 
     public static boolean getFailed() {
         return failed;
+    }
+
+    private static void setLegacy() {
+        legacy = true;
+        // Thread.dumpStack();
     }
     
     public static boolean isLegacy() {
@@ -1947,8 +2003,16 @@ public class NMSUtils {
     
     public static void playCustomSound(Player player, Location location, String sound, float volume, float pitch)
     {
+        if (class_PacketPlayOutCustomSoundEffect_Constructor == null) return;
         try {
-            Object packet = class_PacketPlayOutCustomSoundEffect_Constructor.newInstance(sound, enum_SoundCategory_PLAYERS, location.getX(), location.getY(), location.getZ(), volume, pitch);
+            Object packet = null;
+            if (class_MinecraftKey_constructor != null) {
+                Object key = class_MinecraftKey_constructor.newInstance(sound);
+                Object vec = class_Vec3D_constructor.newInstance(location.getX(), location.getY(), location.getZ());
+                packet = class_PacketPlayOutCustomSoundEffect_Constructor.newInstance(key, enum_SoundCategory_PLAYERS, vec, volume, pitch);
+            } else {
+                packet = class_PacketPlayOutCustomSoundEffect_Constructor.newInstance(sound, enum_SoundCategory_PLAYERS, location.getX(), location.getY(), location.getZ(), volume, pitch);
+            }
             sendPacket(player, packet);
         } catch (Exception ex) {
             ex.printStackTrace();

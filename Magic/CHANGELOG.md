@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 7.6.3
+
+ - Support for 1.13-pre7 (Experimental!!)
+
 # 7.6.2
 
  - The magic bow held by the archer mob is now inert (not useable)
