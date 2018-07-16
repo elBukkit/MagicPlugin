@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
 		"0": "block/cobblestone_mossy",
-		"1": "block/hardened_clay_stained_green",
+		"1": "block/green_terracotta",
 		"2": "block/glass_black",
 		"particle": "block/cobblestone_mossy"
 	},

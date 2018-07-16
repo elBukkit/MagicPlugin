@@ -2,10 +2,10 @@
 	"__comment": "Designed by Lix3nn with Cubik studio - https://cubik.studio",
 	"textures": {
 		"particle": "item/custom/e_particle",
-		"texture": "block/wool_colored_gray",
+		"texture": "block/gray_wool",
 		"texture1": "item/spells/boom",
 		"texture2": "item/spells/singularity",
-		"texture3": "block/wool_colored_white"
+		"texture3": "block/white_wool"
 	},
 	"elements": [
 		{
