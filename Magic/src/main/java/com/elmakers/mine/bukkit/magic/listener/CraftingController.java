@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -52,8 +53,13 @@ public class CraftingController implements Listener {
             if (!parameters.getBoolean("enabled", true)) continue;
 
             MagicRecipe recipe = new MagicRecipe(key, controller);
-            if (!recipe.load(parameters)) {
-                controller.getLogger().warning("Failed to create crafting recipe: " + key);
+            try {
+                if (!recipe.load(parameters)) {
+                    controller.getLogger().warning("Failed to create crafting recipe: " + key);
+                    continue;
+                }
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "An error occurred creating crafting recipe: " + key, ex);
                 continue;
             }
             Material outputType = recipe.getOutputType();
