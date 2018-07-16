@@ -780,9 +780,9 @@
     ],
     "category": "player"
   },
-  "flute.2C#": {
+  "flute.2Csharp": {
     "sounds": [
-      "flute/2c#"
+      "flute/2csharp"
     ],
     "category": "player"
   },
@@ -792,9 +792,9 @@
     ],
     "category": "player"
   },
-  "flute.4D#": {
+  "flute.4Dsharp": {
     "sounds": [
-      "flute/4d#"
+      "flute/4dsharp"
     ],
     "category": "player"
   },
@@ -810,9 +810,9 @@
     ],
     "category": "player"
   },
-  "flute.7F#": {
+  "flute.7Fsharp": {
     "sounds": [
-      "flute/7f#"
+      "flute/7fsharp"
     ],
     "category": "player"
   },
@@ -822,9 +822,9 @@
     ],
     "category": "player"
   },
-  "flute.9G#": {
+  "flute.9Gsharp": {
     "sounds": [
-      "flute/9g#"
+      "flute/9gsharp"
     ],
     "category": "player"
   },
@@ -834,9 +834,9 @@
     ],
     "category": "player"
   },
-  "flute.11A#": {
+  "flute.11Asharp": {
     "sounds": [
-      "flute/11a#"
+      "flute/11asharp"
     ],
     "category": "player"
   },
@@ -852,9 +852,9 @@
     ],
     "category": "player"
   },
-  "flute.14C#": {
+  "flute.14Csharp": {
     "sounds": [
-      "flute/14c#"
+      "flute/14csharp"
     ],
     "category": "player"
   },
@@ -864,9 +864,9 @@
     ],
     "category": "player"
   },
-  "flute.16D#": {
+  "flute.16Dsharp": {
     "sounds": [
-      "flute/16d#"
+      "flute/16dsharp"
     ],
     "category": "player"
   },
@@ -882,9 +882,9 @@
     ],
     "category": "player"
   },
-  "flute.19F#": {
+  "flute.19Fsharp": {
     "sounds": [
-      "flute/19f#"
+      "flute/19fsharp"
     ],
     "category": "player"
   },
@@ -894,9 +894,9 @@
     ],
     "category": "player"
   },
-  "flute.21G#": {
+  "flute.21Gsharp": {
     "sounds": [
-      "flute/21g#"
+      "flute/21gsharp"
     ],
     "category": "player"
   },
@@ -906,9 +906,9 @@
     ],
     "category": "player"
   },
-  "flute.23A#": {
+  "flute.23Asharp": {
     "sounds": [
-      "flute/23a#"
+      "flute/23asharp"
     ],
     "category": "player"
   },
