@@ -45,6 +45,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -119,27 +120,17 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean setDisplayName(ItemStack itemStack, String displayName) {
-        Object handle = getHandle(itemStack);
-        if (handle == null) return false;
-        Object tag = getTag(handle);
-        if (tag == null) return false;
-
-        Object displayNode = createNode(tag, "display");
-        if (displayNode == null) return false;
-        setMeta(displayNode, "Name", displayName);
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setDisplayName(displayName);
+        itemStack.setItemMeta(meta);
         return true;
     }
 
-    public static boolean setLore(ItemStack itemStack, Collection<String> lore) {
-        Object handle = getHandle(itemStack);
-        if (handle == null) return false;
-        Object tag = getTag(handle);
-        if (tag == null) return false;
-
-        Object displayNode = createNode(tag, "display");
-        if (displayNode == null) return false;
-        final Object loreList = setStringList(displayNode, "Lore", lore);
-        return loreList != null;
+    public static boolean setLore(ItemStack itemStack, List<String> lore) {
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setLore(lore);
+        itemStack.setItemMeta(meta);
+        return true;
     }
 
     public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
