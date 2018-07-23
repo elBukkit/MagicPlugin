@@ -1,0 +1,209 @@
+soundtest:
+  icon: note_block
+  hidden: true
+  effects:
+    magicbonk:
+      - class: EffectSingle
+        sound: magic.bonk
+        location: origin
+    magicsonic:
+      - class: EffectSingle
+        sound: magic.sonic
+        location: origin
+    magiccrack:
+      - class: EffectSingle
+        sound: magic.crack
+        location: origin
+    magicelectrify:
+      - class: EffectSingle
+        sound: magic.electrify
+        location: origin
+    magichit:
+      - class: EffectSingle
+        sound: magic.hit
+        location: origin
+    magicshimmercrack:
+      - class: EffectSingle
+        sound: magic.shimmer_crack
+        location: origin
+    magicshimmer:
+      - class: EffectSingle
+        sound: magic.shimmer
+        location: origin
+    magiczapcrack:
+      - class: EffectSingle
+        sound: magic.zap_crack
+        location: origin
+    magiczap:
+      - class: EffectSingle
+        sound: magic.zap
+        location: origin
+    magiczapbig:
+      - class: EffectSingle
+        sound: magic.zap_big
+        location: origin
+    magicteleport:
+      - class: EffectSingle
+        sound: magic.teleport
+        location: origin
+    magicshield:
+      - class: EffectSingle
+        sound: magic.shield
+        location: origin
+    magicburn:
+      - class: EffectSingle
+        sound: magic.burn
+        location: origin
+    magicignite:
+      - class: EffectSingle
+        sound: magic.ignite
+        location: origin
+    magicshimmerquiet:
+      - class: EffectSingle
+        sound: magic.shimmer_quiet
+        location: origin
+    magicflying:
+      - class: EffectSingle
+        sound: magic.flying
+        location: origin
+    magicshimmerbig:
+      - class: EffectSingle
+        sound: magic.shimmer_big
+        location: origin
+    magicshieldboom:
+      - class: EffectSingle
+        sound: magic.shield_boom
+        location: origin
+    magiczapup:
+      - class: EffectSingle
+        sound: magic.zap_up
+        location: origin
+    magicvanish:
+      - class: EffectSingle
+        sound: magic.vanish
+        location: origin
+  actions:
+    cast:
+      - class: Message
+        message: "&dPlaying &5magic.bonk"
+      - class: PlayEffects
+        effect: magicbonk
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.sonic"
+      - class: PlayEffects
+        effect: magicsonic
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.crack"
+      - class: PlayEffects
+        effect: magiccrack
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.electrify"
+      - class: PlayEffects
+        effect: magicelectrify
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.hit"
+      - class: PlayEffects
+        effect: magichit
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.shimmer_crack"
+      - class: PlayEffects
+        effect: magicshimmercrack
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.shimmer"
+      - class: PlayEffects
+        effect: magicshimmer
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.zap_crack"
+      - class: PlayEffects
+        effect: magiczapcrack
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.zap"
+      - class: PlayEffects
+        effect: magiczap
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.zap_big"
+      - class: PlayEffects
+        effect: magiczapbig
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.teleport"
+      - class: PlayEffects
+        effect: magicteleport
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.shield"
+      - class: PlayEffects
+        effect: magicshield
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.burn"
+      - class: PlayEffects
+        effect: magicburn
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.ignite"
+      - class: PlayEffects
+        effect: magicignite
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.shimmer_quiet"
+      - class: PlayEffects
+        effect: magicshimmerquiet
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.flying"
+      - class: PlayEffects
+        effect: magicflying
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.shimmer_big"
+      - class: PlayEffects
+        effect: magicshimmerbig
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.shield_boom"
+      - class: PlayEffects
+        effect: magicshieldboom
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.zap_up"
+      - class: PlayEffects
+        effect: magiczapup
+      - class: Delay
+
+      - class: Message
+        message: "&dPlaying &5magic.vanish"
+      - class: PlayEffects
+        effect: magicvanish
+      - class: Delay
+  parameters:
+    message_type: title
+    target: self
+    delay: 2000

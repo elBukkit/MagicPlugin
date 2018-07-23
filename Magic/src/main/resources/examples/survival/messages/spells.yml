@@ -1495,6 +1495,9 @@ spells:
     fxdemo:
         name: FX Demo
         description: Show off various EffectLib effects
+    soundtest:
+        name: Custom Sound Demo
+        description: Listen to all of the custom sound FX built into the Magic resource pack
     fx:
         name: FX Particle
         description: Show off a specific particle, use with /cast fx particle redstone
