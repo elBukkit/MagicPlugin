@@ -34,6 +34,7 @@ public class DefaultMaterials {
     private Material groundSignBlock = null;
     private Material wallSignBlock = null;
     private Material firework = null;
+    private Material mobSpawner = null;
     private MaterialAndData wallTorch = null;
     private MaterialAndData redstoneTorchOn = null;
     private MaterialAndData redstoneTorchOff = null;
@@ -118,6 +119,15 @@ public class DefaultMaterials {
     @Nullable
     public static Material getFirework() {
         return getInstance().firework;
+    }
+
+    public void setMobSpawner(Material material) {
+        this.mobSpawner = material;
+    }
+
+    @Nullable
+    public static Material getMobSpawner() {
+        return getInstance().mobSpawner;
     }
 
     public void setPlayerSkullItem(MaterialAndData item) {
@@ -227,6 +237,10 @@ public class DefaultMaterials {
 
     public static boolean isSapling(Material material) {
         return getInstance().saplings.testMaterial(material);
+    }
+
+    public static boolean isMobSpawner(Material material) {
+        return getInstance().mobSpawner == material;
     }
 
     public static Collection<Material> getWater() {

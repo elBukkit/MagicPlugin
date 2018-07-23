@@ -2777,6 +2777,7 @@ public class MagicController implements MageController {
         defaultMaterials.setRedstoneTorchOff(getVersionedMaterialAndData(configuration, "redstone_torch_off"));
         defaultMaterials.setRedstoneWallTorchOn(getVersionedMaterialAndData(configuration, "redstone_wall_torch_on"));
         defaultMaterials.setRedstoneWallTorchOff(getVersionedMaterialAndData(configuration, "redstone_wall_torch_off"));
+        defaultMaterials.setMobSpawner(getVersionedMaterial(configuration, "mob_spawner"));
     }
 
     protected void loadSkulls(ConfigurationSection skulls) {

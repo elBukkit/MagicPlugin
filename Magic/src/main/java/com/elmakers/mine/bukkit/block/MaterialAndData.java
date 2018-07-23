@@ -175,7 +175,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 // Some special-cases
                 if (pieces[1].equals("*")) {
                     data = null;
-                } else if (material == Material.MOB_SPAWNER) {
+                } else if (DefaultMaterials.isMobSpawner(material)) {
                     extraData = new BlockMobSpawner(pieces[1]);
                 } else if (DefaultMaterials.isSkull(material)) {
                     if (pieces.length > 2) {
@@ -529,7 +529,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     }
                 }
             }
-            else if (material == Material.MOB_SPAWNER && extraData != null && extraData instanceof BlockMobSpawner) {
+            else if (DefaultMaterials.isMobSpawner(material) && extraData != null && extraData instanceof BlockMobSpawner) {
                 BlockMobSpawner spawnerData = (BlockMobSpawner)extraData;
                 if (spawnerData.mobName != null && !spawnerData.mobName.isEmpty()) {
                     materialKey += ":" + spawnerData.mobName;
