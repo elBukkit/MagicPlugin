@@ -163,7 +163,7 @@ wand_upgrade_key: "wand_upgrade"
 wand_self_destruct_key: ""
 
 # Wand appearance, used when no icon is specified in a wand template config
-wand_item: wood_hoe
+wand_item: stick
 wand_upgrade_item: stick
 
 # Wand FX locations, change to move from where spell casts appear to originate
@@ -181,7 +181,7 @@ wand_unstashable: false
 
 # Skill configuration
 default_skill_icon: stick
-default_spell_icon: eye_of_ender
+default_spell_icon: ender_pearl
 skill_inventory_max_rows: 6
 mskills_spell: skills
 
