@@ -171,7 +171,7 @@ public class PlayerController implements Listener {
         // Check for map selection if no wand is active
         activeWand = mage.getActiveWand();
         if (activeWand == null && next != null) {
-            if (next.getType() == Material.MAP) {
+            if (DefaultMaterials.isFilledMap(next.getType())) {
                 mage.setLastHeldMapId(next.getDurability());
             }
         }

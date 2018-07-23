@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import org.bukkit.Art;
 import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
@@ -19,6 +18,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class CycleEntityAction extends BaseSpellAction {
@@ -52,7 +52,7 @@ public class CycleEntityAction extends BaseSpellAction {
             case ITEM_FRAME:
                 ItemFrame itemFrame = (ItemFrame)entity;
                 ItemStack frameItem = itemFrame.getItem();
-                if (frameItem == null || frameItem.getType() != Material.MAP) {
+                if (frameItem == null || !DefaultMaterials.isFilledMap(frameItem.getType())) {
                     return SpellResult.NO_TARGET;
                 }
                 short data = frameItem.getDurability();

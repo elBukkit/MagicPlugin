@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -164,7 +165,7 @@ public class AlterSpell extends BlockSpell
             case ITEM_FRAME:
                 ItemFrame itemFrame = (ItemFrame)entity;
                 ItemStack frameItem = itemFrame.getItem();
-                if (frameItem == null || frameItem.getType() != Material.MAP) {
+                if (frameItem == null || !DefaultMaterials.isFilledMap(frameItem.getType())) {
                     return SpellResult.NO_TARGET;
                 }
                 short data = frameItem.getDurability();

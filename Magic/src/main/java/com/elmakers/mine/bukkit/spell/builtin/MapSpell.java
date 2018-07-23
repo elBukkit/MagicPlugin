@@ -2,13 +2,13 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 public class MapSpell extends TargetingSpell
@@ -35,7 +35,7 @@ public class MapSpell extends TargetingSpell
 
         newMap.setScale(scale);
 
-        ItemStack newMapItem = new ItemStack(Material.MAP, 1, newMap.getId());
+        ItemStack newMapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, newMap.getId());
         world.dropItemNaturally(getLocation(), newMapItem);
         return SpellResult.CAST;
     }

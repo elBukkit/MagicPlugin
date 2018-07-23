@@ -35,6 +35,7 @@ public class DefaultMaterials {
     private Material wallSignBlock = null;
     private Material firework = null;
     private Material mobSpawner = null;
+    private Material filledMap = null;
     private MaterialAndData wallTorch = null;
     private MaterialAndData redstoneTorchOn = null;
     private MaterialAndData redstoneTorchOff = null;
@@ -128,6 +129,15 @@ public class DefaultMaterials {
     @Nullable
     public static Material getMobSpawner() {
         return getInstance().mobSpawner;
+    }
+
+    public void setFilledMap(Material material) {
+        this.filledMap = material;
+    }
+
+    @Nullable
+    public static Material getFilledMap() {
+        return getInstance().filledMap;
     }
 
     public void setPlayerSkullItem(MaterialAndData item) {
@@ -241,6 +251,10 @@ public class DefaultMaterials {
 
     public static boolean isMobSpawner(Material material) {
         return getInstance().mobSpawner == material;
+    }
+
+    public static boolean isFilledMap(Material material) {
+        return getInstance().filledMap == material;
     }
 
     public static Collection<Material> getWater() {

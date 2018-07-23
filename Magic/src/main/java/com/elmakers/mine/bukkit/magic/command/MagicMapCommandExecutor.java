@@ -28,6 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MagicMapCommandExecutor extends MagicMapExecutor {
@@ -414,7 +415,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         List<URLMap> maps = mapController.getAll();
         for (URLMap map : maps) {
             if (map.getName() == null) {
-                ItemStack newMap = new ItemStack(Material.MAP, 1);
+                ItemStack newMap = new ItemStack(DefaultMaterials.getFilledMap(), 1);
                 newMap.setDurability(map.getId());
                 api.giveItemToPlayer(player, newMap);
                 sender.sendMessage("Found unnamed map id " + map.getId() + " with url " + ChatColor.AQUA + map.getURL());
@@ -432,7 +433,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
         Player player = (Player)sender;
         ItemStack currentMap = player.getInventory().getItemInMainHand();
-        if (currentMap == null || currentMap.getType() != Material.MAP) {
+        if (currentMap == null || !DefaultMaterials.isFilledMap(currentMap.getType())) {
             sender.sendMessage("You must be holding a map");
             return;
         }

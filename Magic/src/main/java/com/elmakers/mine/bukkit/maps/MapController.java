@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,6 +19,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
@@ -292,7 +292,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      * @return
      */
     public ItemStack getMapItem(String name, short mapId) {
-        ItemStack newMapItem = new ItemStack(Material.MAP, 1, mapId);
+        ItemStack newMapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, mapId);
         if (name != null) {
             ItemMeta meta = newMapItem.getItemMeta();
             meta.setDisplayName(name);
@@ -304,7 +304,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public ItemStack getMapItem(short id)
     {
-        ItemStack newMapItem = new ItemStack(Material.MAP, 1, id);
+        ItemStack newMapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, id);
         URLMap loadedMap = idMap.get(id);
         if (loadedMap != null)
         {

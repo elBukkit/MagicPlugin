@@ -629,7 +629,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             item.material = material;
         }
         if (CompatibilityUtils.isLegacy(material)) {
-            material = CompatibilityUtils.fromLegacy(material, (byte)(short)(data == null ? 0 : data));
+            short data = (this.data == null ? 0 : this.data);
+            material = CompatibilityUtils.fromLegacy(material, (byte)data);
             this.material = material;
         }
 

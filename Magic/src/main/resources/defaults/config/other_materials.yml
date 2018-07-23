@@ -8,3 +8,4 @@ redstone_torch_off: redstone_torch_on,redstone_torch:0
 redstone_wall_torch_on: redstone_torch_on,redstone_wall_torch:4
 redstone_wall_torch_off: redstone_torch_on,redstone_torch:0
 mob_spawner: spawner,mob_spawner
+filled_map: filled_map,map
