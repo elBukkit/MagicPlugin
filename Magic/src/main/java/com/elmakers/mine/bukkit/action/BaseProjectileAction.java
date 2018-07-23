@@ -26,6 +26,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
     private long lifetime;
     private boolean setTarget;
     private String projectileEffectsKey;
+    private String hitEffectsKey;
 
     protected boolean track = false;
 
@@ -39,6 +40,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
         setTarget = parameters.getBoolean("set_target", false);
         track = parameters.getBoolean("track_projectile", track);
         projectileEffectsKey = parameters.getString("projectile_effects", "projectile");
+        hitEffectsKey = parameters.getString("hit_effects", "hit");
     }
 
     @Override
@@ -141,7 +143,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
                 }
 
                 createActionContext(context, context.getMage().getEntity(), sourceLocation, targetEntity, targetLocation);
-                actionContext.playEffects("hit");
+                actionContext.playEffects(hitEffectsKey);
                 SpellResult result = startActions();
                 if (targetEntity != null) {
                     result = result.min(SpellResult.CAST);

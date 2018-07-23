@@ -2,7 +2,13 @@
 
 # 7.6.3
 
- - Support for 1.13-pre7 (Experimental!!)
+ - Support for 1.13
+ - Known issues:
+   - Wall torches are wrong direction
+   - Tag signs are blank and facing wrong direction
+   - Bed in Tent schematic is broken
+   - Alter is broken
+   - Flower action is broken
 
 # 7.6.2
 

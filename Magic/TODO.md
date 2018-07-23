@@ -43,20 +43,6 @@
  - Allow use of equations in book action, somehow.
  - Custom spell lore showing arbitrary parameters (or something)
 
-## 1.13
-
-### Things to verify 
-
- - Wand brush migration
- - Check schematics
- - Check book -> skull feature
- - Check torch action
- - Tag sign facing
- - Check capture spell
- - Check map brush
- - Check custom colored blob/reflect/platform/shell
- - Check secure/lockpick
-
 ## Future
   
  - Take a look at this, maybe use accurate block hitboxes?

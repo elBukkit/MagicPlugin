@@ -8,31 +8,33 @@ pollinate:
     earns_sp: 3
     actions:
         cast:
-        -  class: Repeat
-           repeat: 8
-           ignore_result: true
-           actions:
-           -  class: Brush
-              actions:
-              -  class: Spread
-                 actions:
-                 -  class: ThrowItem
-           - class: Delay
-        - class: Brush
+        - class: Parallel
           actions:
-          - class: ThrowItem
+          - class: Brush
             actions:
-            - class: Disc
+            - class: ThrowItem
+              hit_effects: splash
               actions:
-              - class: Cover
+              - class: Disc
                 actions:
-                - class: Flower
+                - class: Cover
+                  actions:
+                  - class: Flower
+          -  class: Multiply
+             multiply: 8
+             ignore_result: true
+             actions:
+             -  class: Brush
+                actions:
+                -  class: Spread
+                   actions:
+                   -  class: ThrowItem
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.shimmer
            location: source
-        despawn:
+        splash:
         -  class: EffectSingle
            sound: entity_generic_splash
            sound_volume: 0.2
@@ -64,7 +66,6 @@ pollinate:
         yaw_max: 30
         pitch_max: 4
         uses_brush: false
-        delay: 100
         brushes:
         - yellow_flower
         - red_rose

@@ -19,7 +19,7 @@ growth:
         cast:
         - sound: magic.shimmer
           location: source
-        despawn:
+        hit:
         - sound: entity_generic_splash
           sound_volume: 0.2
           location: source
