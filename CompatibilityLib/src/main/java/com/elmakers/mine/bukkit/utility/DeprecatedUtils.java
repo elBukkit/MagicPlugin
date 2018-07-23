@@ -64,11 +64,6 @@ public class DeprecatedUtils {
         return material.getId();
     }
 
-    public static byte getBlockData(FallingBlock falling) {
-        // @deprecated Magic value
-        return falling.getBlockData();
-    }
-
     public static int getTypeId(Block block) {
         // @deprecated Magic value
         return block.getType().getId();
@@ -104,11 +99,6 @@ public class DeprecatedUtils {
 
     public static Player getPlayerExact(String name) {
         return Bukkit.getPlayerExact(name);
-    }
-
-    public static void setData(Block block, byte data) {
-        // @deprecated Magic value
-        block.setData(data);
     }
 
     public static FallingBlock spawnFallingBlock(Location location,

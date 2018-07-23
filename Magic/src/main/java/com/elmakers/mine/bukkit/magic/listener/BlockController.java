@@ -337,7 +337,7 @@ public class BlockController implements Listener {
                         blockList.convert(entity, block);
                         if (!blockList.getApplyPhysics()) {
                             FallingBlock falling = (FallingBlock)entity;
-                            DeprecatedUtils.setTypeAndData(block, falling.getMaterial(), DeprecatedUtils.getBlockData(falling), false);
+                            DeprecatedUtils.setTypeAndData(block, falling.getMaterial(), NMSUtils.getBlockData(falling), false);
                             event.setCancelled(true);
                         }
                     }

@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -237,6 +238,7 @@ public class NMSUtils {
     protected static Method class_ItemDye_bonemealMethod;
     protected static Method class_PotionMeta_getColorMethod;
     protected static Method class_PotionMeta_setColorMethod;
+    protected static Method class_FallingBlock_getBlockDataMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -582,6 +584,11 @@ public class NMSUtils {
             }
 
             // Changed in 1.13
+            try {
+                class_FallingBlock_getBlockDataMethod = FallingBlock.class.getMethod("getBlockData");
+            } catch (Throwable ignore) {
+
+            }
             try {
                 class_PacketPlayOutCustomSoundEffect = fixBukkitClass("net.minecraft.server.PacketPlayOutCustomSoundEffect");
 
@@ -2112,6 +2119,19 @@ public class NMSUtils {
 
     public static String getVersionPrefix() {
         return versionPrefix;
+    }
+
+    public static byte getBlockData(FallingBlock falling) {
+        // @deprecated Magic value
+        byte data = 0;
+        try {
+            if (class_FallingBlock_getBlockDataMethod != null) {
+                data = (byte)class_FallingBlock_getBlockDataMethod.invoke(falling);
+            }
+        } catch (Exception ignore) {
+
+        }
+        return data;
     }
 }
 

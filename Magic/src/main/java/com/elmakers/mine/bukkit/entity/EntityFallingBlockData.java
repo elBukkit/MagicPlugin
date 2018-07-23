@@ -10,6 +10,7 @@ import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class EntityFallingBlockData extends EntityExtraData {
     @Nullable
@@ -23,9 +24,9 @@ public class EntityFallingBlockData extends EntityExtraData {
         material = ConfigurationUtils.getMaterialAndData(configuration, "material");
     }
 
-    @SuppressWarnings("deprecation")
     public EntityFallingBlockData(FallingBlock fallingBlock) {
-       material = new com.elmakers.mine.bukkit.block.MaterialAndData(fallingBlock.getMaterial(), fallingBlock.getBlockData());
+        byte data = NMSUtils.getBlockData(fallingBlock);
+        material = new com.elmakers.mine.bukkit.block.MaterialAndData(fallingBlock.getMaterial(), data);
     }
 
     @Override
