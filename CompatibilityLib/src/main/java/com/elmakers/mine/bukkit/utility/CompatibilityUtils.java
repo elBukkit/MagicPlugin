@@ -1430,6 +1430,19 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     @SuppressWarnings("deprecation")
+    public static Material fromLegacy(Material material, byte data) {
+        org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(material, data);
+        if (class_UnsafeValues_fromLegacyDataMethod != null) {
+            try {
+                return (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return materialData.getItemType();
+    }
+
+    @SuppressWarnings("deprecation")
     public static org.bukkit.material.MaterialData getMaterial(int id, byte data) {
         Material material = getMaterial(id);
         if (class_UnsafeValues_fromLegacyDataMethod != null) {
