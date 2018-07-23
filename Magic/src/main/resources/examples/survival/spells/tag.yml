@@ -33,9 +33,9 @@ tag:
            effectlib:
              class: TextEffect
              text: $target
-             iterations: 5
+             iterations: 1
              period: 4
-             particle_count: 20
+             particle_count: 3
              particle: fireworks_spark
     parameters:
         target_type: Player
