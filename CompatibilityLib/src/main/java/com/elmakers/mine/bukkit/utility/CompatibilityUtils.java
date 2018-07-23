@@ -1448,7 +1448,10 @@ public class CompatibilityUtils extends NMSUtils {
     public static Material getMaterial(int id) {
         if (materialIdMap == null) {
             materialIdMap = new HashMap<>();
-            for (Material material : Material.values()) {
+
+            Object[] allMaterials = Material.AIR.getDeclaringClass().getEnumConstants();
+            for (Object o : allMaterials) {
+                Material material = (Material)o;
                 materialIdMap.put(material.getId(), material);
             }
         }
