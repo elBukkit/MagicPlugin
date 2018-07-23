@@ -79,6 +79,40 @@ forest:
           mutated_mesa: tree
           mutated_mesa_rock: tree
           mutated_mesa_clear_rock: tree
+
+          # 1.13 biomes
+
+          badlands: tree,big_tree,redwood,tall_redwood
+          badlands_plateau: tree,big_tree,redwood,tall_redwood
+          modified_badlands_plateau: tree,big_tree,redwood,tall_redwood
+          modified_wooded_badlands_plateau: tree,big_tree,redwood,tall_redwood
+          eroded_badlands: tree,big_tree,redwood,tall_redwood
+          dark_forest: dark_oak
+          dark_forest_hills: dark_oak
+          giant_spruce_taiga: redwood,tall_redwood
+          giant_spruce_taiga_hills: redwood,tall_redwood
+          giant_tree_taiga: big_tree
+          giant_tree_taiga_hills: big_tree
+          flower_forest: tree,big_tree,birch,tall_birch
+          modified_jungle: jungle,jungle_bush,small_jungle,cocoa_tree
+          modified_jungle_edge: jungle,jungle_bush,small_jungle,cocoa_tree
+          mushroom_field_shore: brown_mushroom,red_mushroom
+          mushroom_fields: brown_mushroom,red_mushroom
+          savanna_plateau: acacia
+          shattered_savanna: acacia
+          shattered_savanna_plateau: acacia
+          snowy_taiga: big_tree
+          snowy_taiga_hills: big_tree
+          snowy_taiga_mountains: big_tree
+          sunflower_plains: tree,big_tree,birch,tall_birch
+          swamp: swamp
+          swamp_hills: swamp
+          taiga_mountains: redwood,tall_redwood
+          tall_birch_forest: tall_birch
+          tall_birch_hills: tall_birch
+          wooded_badlands_plateau: tree,big_tree,redwood,tall_redwood
+          wooded_hills: tree,big_tree,redwood,tall_redwood
+          wooded_mountains: tree,big_tree,redwood,tall_redwood
     costs:
         mana: 200
 
