@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.logging.Level;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -16,7 +18,7 @@ public class CreateFieldAction extends ModifyBlockAction {
     private Material fieldType;
     private String rent;
     private String rentPeriod;
-    private byte rentSignDirection;
+    private BlockFace rentSignDirection;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -25,7 +27,12 @@ public class CreateFieldAction extends ModifyBlockAction {
         fieldType = ConfigurationUtils.getMaterial(parameters, "field_type");
         rent = parameters.getString("field_rent", "");
         rentPeriod = parameters.getString("field_rent_period", "");
-        rentSignDirection = (byte)parameters.getInt("field_rent_sign_direction", 0);
+        String facingString = parameters.getString("field_rent_sign_direction", "north");
+        try {
+            rentSignDirection = BlockFace.valueOf(facingString.toUpperCase());
+        } catch (Exception ex) {
+            context.getLogger().log(Level.WARNING, "Invalid rent sign direction: " + facingString);
+        }
     }
 
     @Override

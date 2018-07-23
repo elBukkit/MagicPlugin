@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -93,7 +94,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
         return api.createField(location, player);
     }
 
-    public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, byte signDirection) {
+    public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, BlockFace signDirection) {
         if (!enabled || api == null || signLocation == null || player == null)
             return false;
 

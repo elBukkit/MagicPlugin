@@ -221,18 +221,23 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
         return !event.isCancelled();
     }
 
-    public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, byte signDirection) {
+    public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, BlockFace signDirection) {
         Block signBlock = signLocation.getBlock();
         Material signMaterial = DefaultMaterials.getGroundSignBlock();
         if (signMaterial == null) {
             return false;
         }
         signBlock.setType(signMaterial);
-        DeprecatedUtils.setData(signBlock, signDirection);
         Sign sign = (Sign)signBlock.getState();
         sign.setLine(0, ChatColor.BLACK + "" + ChatColor.BOLD + "[Rent]");
         sign.setLine(1, rent);
         sign.setLine(2, timePeriod);
+        Object data = sign.getData();
+        if (data instanceof org.bukkit.material.Sign) {
+            org.bukkit.material.Sign signData = (org.bukkit.material.Sign)data;
+            signData.setFacingDirection(signDirection);
+            sign.setData(signData);
+        }
         sign.update();
         final FieldSign s = new FieldSign(signBlock, sign.getLines(), player);
         return s.isValid();
