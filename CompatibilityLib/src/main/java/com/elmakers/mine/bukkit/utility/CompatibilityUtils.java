@@ -1478,7 +1478,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static Material getLegacyMaterial(String materialName) {
         if (class_Material_getLegacyMethod != null) {
             try {
-                return (Material)class_Material_getLegacyMethod.invoke(materialName, true);
+                return (Material)class_Material_getLegacyMethod.invoke(null, materialName, true);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
