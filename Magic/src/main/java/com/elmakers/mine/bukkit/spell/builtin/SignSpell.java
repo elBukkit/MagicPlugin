@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.DirectionUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -57,26 +59,17 @@ public class SignSpell extends BlockSpell
             }
             registerForUndo(targetBlock);
             registerForUndo();
+
+            BlockState blockState = null;
             if (targetBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR)
             {
                 targetBlock.setType(Material.WALL_SIGN);
-                switch (block.getFace(targetBlock))
-                {
-                case NORTH:
-                    targetBlock.setData((byte)2);
-                    break;
-                case SOUTH:
-                    targetBlock.setData((byte)3);
-                    break;
-                case WEST:
-                    targetBlock.setData((byte)4);
-                    break;
-                case EAST:
-                    targetBlock.setData((byte)5);
-                    break;
-                default:
-                    targetBlock.setData((byte)0);
-                    break;
+                blockState = targetBlock.getState();
+                Object data = blockState.getData();
+                if (data instanceof org.bukkit.material.Sign) {
+                    org.bukkit.material.Sign signData = (org.bukkit.material.Sign)data;
+                    signData.setFacingDirection(block.getFace(targetBlock));
+                    blockState.setData(signData);
                 }
             }
             else
@@ -86,16 +79,26 @@ public class SignSpell extends BlockSpell
                     return SpellResult.FAIL;
                 }
                 targetBlock.setType(signMaterial);
-                // This is -180 + 22.5, the number of degrees between
-                // increments, effectively rounding up.
-                float yaw = getLocation().getYaw() - 157.5f;
-                while (yaw < 0) yaw += 360;
-                while (yaw >= 360) yaw -= 360;
-                targetBlock.setData((byte)(yaw * 15 / 360));
+                blockState = targetBlock.getState();
+
+
+                blockState = targetBlock.getState();
+                Object data = blockState.getData();
+                if (data instanceof org.bukkit.material.Sign) {
+                    org.bukkit.material.Sign signData = (org.bukkit.material.Sign)data;
+
+                    // This is -180 + 22.5, the number of degrees between
+                    // increments, effectively rounding up.
+                    float yaw = getLocation().getYaw() - 157.5f;
+                    while (yaw < 0) yaw += 360;
+                    while (yaw >= 360) yaw -= 360;
+                    signData.setFacingDirection(DirectionUtils.getDirection((int)yaw));
+                    blockState.setData(signData);
+                }
             }
-            if (targetBlock.getState() instanceof Sign)
+            if (blockState instanceof Sign)
             {
-                Sign sign = (Sign)targetBlock.getState();
+                Sign sign = (Sign)blockState;
                 String playerName = displayName ? controller.getEntityDisplayName(sourceEntity) :
                         controller.getEntityName(sourceEntity);
                 playerName = prefix + playerName;

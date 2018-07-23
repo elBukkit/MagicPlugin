@@ -112,4 +112,59 @@ public class DirectionUtils {
 
         return faceSet;
     }
+
+    public static org.bukkit.block.BlockFace getDirection(int yaw) {
+        byte data = (byte)(yaw * 15 / 360);
+        switch (data) {
+            case 0x0:
+                return org.bukkit.block.BlockFace.SOUTH;
+
+            case 0x1:
+                return org.bukkit.block.BlockFace.SOUTH_SOUTH_WEST;
+
+            case 0x2:
+                return org.bukkit.block.BlockFace.SOUTH_WEST;
+
+            case 0x3:
+                return org.bukkit.block.BlockFace.WEST_SOUTH_WEST;
+
+            case 0x4:
+                return org.bukkit.block.BlockFace.WEST;
+
+            case 0x5:
+                return org.bukkit.block.BlockFace.WEST_NORTH_WEST;
+
+            case 0x6:
+                return org.bukkit.block.BlockFace.NORTH_WEST;
+
+            case 0x7:
+                return org.bukkit.block.BlockFace.NORTH_NORTH_WEST;
+
+            case 0x8:
+                return org.bukkit.block.BlockFace.NORTH;
+
+            case 0x9:
+                return org.bukkit.block.BlockFace.NORTH_NORTH_EAST;
+
+            case 0xA:
+                return org.bukkit.block.BlockFace.NORTH_EAST;
+
+            case 0xB:
+                return org.bukkit.block.BlockFace.EAST_NORTH_EAST;
+
+            case 0xC:
+                return org.bukkit.block.BlockFace.EAST;
+
+            case 0xD:
+                return org.bukkit.block.BlockFace.EAST_SOUTH_EAST;
+
+            case 0xE:
+                return org.bukkit.block.BlockFace.SOUTH_EAST;
+
+            case 0xF:
+                return org.bukkit.block.BlockFace.SOUTH_SOUTH_EAST;
+        }
+
+        return org.bukkit.block.BlockFace.SELF;
+    }
 }
