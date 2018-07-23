@@ -11,7 +11,7 @@ material_colors:
   lime: concrete:5
   pink: concrete:6
   gray: concrete:7
-  silver: concrete:8
+  light_gray: concrete:8
   cyan: concrete:9
   purple: concrete:10
   blue: concrete:11
@@ -27,7 +27,7 @@ material_colors:
   lime: concrete_powder:5
   pink: concrete_powder:6
   gray: concrete_powder:7
-  silver: concrete_powder:8
+  light_gray: concrete_powder:8
   cyan: concrete_powder:9
   purple: concrete_powder:10
   blue: concrete_powder:11
@@ -43,7 +43,7 @@ material_colors:
   lime: lime_glazed_terracotta
   pink: pink_glazed_terracotta
   gray: gray_glazed_terracotta
-  silver: silver_glazed_terracotta
+  light_gray: light_gray_glazed_terracotta
   cyan: cyan_glazed_terracotta
   purple: purple_glazed_terracotta
   blue: blue_glazed_terracotta
@@ -59,7 +59,7 @@ material_colors:
   lime: stained_clay:5
   pink: stained_clay:6
   gray: stained_clay:7
-  silver: stained_clay:8
+  light_gray: stained_clay:8
   cyan: stained_clay:9
   purple: stained_clay:10
   blue: stained_clay:11
@@ -75,7 +75,7 @@ material_colors:
   lime: wool:5
   pink: wool:6
   gray: wool:7
-  silver: wool:8
+  light_gray: wool:8
   cyan: wool:9
   purple: wool:10
   blue: wool:11
@@ -91,7 +91,7 @@ material_colors:
   lime: carpet:5
   pink: carpet:6
   gray: carpet:7
-  silver: carpet:8
+  light_gray: carpet:8
   cyan: carpet:9
   purple: carpet:10
   blue: carpet:11
@@ -107,7 +107,7 @@ material_colors:
   lime: stained_glass:5
   pink: stained_glass:6
   gray: stained_glass:7
-  silver: stained_glass:8
+  light_gray: stained_glass:8
   cyan: stained_glass:9
   purple: stained_glass:10
   blue: stained_glass:11
@@ -123,7 +123,7 @@ material_colors:
   lime: stained_glass_pane:5
   pink: stained_glass_pane:6
   gray: stained_glass_pane:7
-  silver: stained_glass_pane:8
+  light_gray: stained_glass_pane:8
   cyan: stained_glass_pane:9
   purple: stained_glass_pane:10
   blue: stained_glass_pane:11
@@ -139,7 +139,7 @@ material_colors:
   lime: lime_shulker_box
   pink: pink_shulker_box
   gray: gray_shulker_box
-  silver: silver_shulker_box
+  light_gray: light_gray_shulker_box
   cyan: cyan_shulker_box
   purple: purple_shulker_box
   blue: blue_shulker_box
@@ -158,7 +158,7 @@ material_colors:
   lime: lime_concrete
   pink: pink_concrete
   gray: gray_concrete
-  silver: light_gray_concrete
+  light_gray: light_gray_concrete
   cyan: cyan_concrete
   purple: purple_concrete
   blue: blue_concrete
@@ -174,7 +174,7 @@ material_colors:
   lime: lime_concrete_powder
   pink: pink_concrete_powder
   gray: gray_concrete_powder
-  silver: light_gray_concrete_powder
+  light_gray: light_gray_concrete_powder
   cyan: cyan_concrete_powder
   purple: purple_concrete_powder
   blue: blue_concrete_powder
@@ -190,7 +190,7 @@ material_colors:
   lime: lime_glazed_terracotta
   pink: pink_glazed_terracotta
   gray: gray_glazed_terracotta
-  silver: light_gray_glazed_terracotta
+  light_gray: light_gray_glazed_terracotta
   cyan: cyan_glazed_terracotta
   purple: purple_glazed_terracotta
   blue: blue_glazed_terracotta
@@ -206,7 +206,7 @@ material_colors:
   lime: lime_terracotta
   pink: pink_terracotta
   gray: gray_terracotta
-  silver: light_gray_terracotta
+  light_gray: light_gray_terracotta
   cyan: cyan_terracotta
   purple: purple_terracotta
   blue: blue_terracotta
@@ -222,7 +222,7 @@ material_colors:
   lime: lime_wool
   pink: pink_wool
   gray: gray_wool
-  silver: light_gray_wool
+  light_gray: light_gray_wool
   cyan: cyan_wool
   purple: purple_wool
   blue: blue_wool
@@ -238,7 +238,7 @@ material_colors:
   lime: lime_carpet
   pink: pink_carpet
   gray: gray_carpet
-  silver: light_gray_carpet
+  light_gray: light_gray_carpet
   cyan: cyan_carpet
   purple: purple_carpet
   blue: blue_carpet
@@ -254,7 +254,7 @@ material_colors:
   lime: lime_stained_glass
   pink: pink_stained_glass
   gray: gray_stained_glass
-  silver: light_gray_stained_glass
+  light_gray: light_gray_stained_glass
   cyan: cyan_stained_glass
   purple: purple_stained_glass
   blue: blue_stained_glass
@@ -270,7 +270,7 @@ material_colors:
   lime: lime_stained_glass_pane
   pink: pink_stained_glass_pane
   gray: gray_stained_glass_pane
-  silver: light_gray_stained_glass_pane
+  light_gray: light_gray_stained_glass_pane
   cyan: cyan_stained_glass_pane
   purple: purple_stained_glass_pane
   blue: blue_stained_glass_pane
@@ -286,7 +286,7 @@ material_colors:
   lime: lime_shulker_box
   pink: pink_shulker_box
   gray: gray_shulker_box
-  silver: light_gray_shulker_box
+  light_gray: light_gray_shulker_box
   cyan: cyan_shulker_box
   purple: purple_shulker_box
   blue: blue_shulker_box
@@ -302,7 +302,7 @@ material_colors:
   lime: lime_bed
   pink: pink_bed
   gray: gray_bed
-  silver: light_gray_bed
+  light_gray: light_gray_bed
   cyan: cyan_bed
   purple: purple_bed
   blue: blue_bed

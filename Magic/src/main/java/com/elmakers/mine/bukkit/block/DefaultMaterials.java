@@ -73,7 +73,11 @@ public class DefaultMaterials {
             Material keyColor = null;
             Map<DyeColor, MaterialAndData> newColors = new HashMap<>();
             for (DyeColor color : DyeColor.values()) {
-                String materialName = colorSection.getString(color.name().toLowerCase());
+                String colorName = color.name().toLowerCase();
+                if (colorName.equals("silver")) {
+                    colorName = "light_gray";
+                }
+                String materialName = colorSection.getString(colorName);
                 if (materialName == null || materialName.isEmpty()) break;
                 MaterialAndData parsed = null;
                 parsed = new MaterialAndData(materialName.toUpperCase());
