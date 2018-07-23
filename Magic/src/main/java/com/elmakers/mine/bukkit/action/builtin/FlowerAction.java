@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 public class FlowerAction extends BaseSpellAction {
     private final ArrayList<MaterialAndData> flowers = new ArrayList<>();
     private final ArrayList<MaterialAndData> tallFlowers = new ArrayList<>();
+    private MaterialAndData requireBlock;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -27,11 +28,26 @@ public class FlowerAction extends BaseSpellAction {
         tallFlowers.clear();
         Collection<String> flowerKeys = parameters.getStringList("flowers");
         for (String flowerKey : flowerKeys) {
-            flowers.add(new MaterialAndData(flowerKey));
+            MaterialAndData flower = new MaterialAndData(flowerKey);
+            if (flower.isValid()) {
+                flowers.add(flower);
+            }
         }
         Collection<String> tallFlowerKeys = parameters.getStringList("tall_flowers");
         for (String flowerKey : tallFlowerKeys) {
-            tallFlowers.add(new MaterialAndData(flowerKey));
+            MaterialAndData flower = new MaterialAndData(flowerKey);
+            if (flower.isValid()) {
+                flowers.add(flower);
+            }
+        }
+    }
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        requireBlock = new MaterialAndData(parameters.getString("grow_on", "grass_block"));
+        if (!requireBlock.isValid()) {
+            requireBlock = new MaterialAndData(Material.GRASS);
         }
     }
 
@@ -43,7 +59,7 @@ public class FlowerAction extends BaseSpellAction {
         {
             return SpellResult.NO_TARGET;
         }
-        if (block.getType() != Material.GRASS)
+        if (!requireBlock.is(block))
         {
             return SpellResult.NO_TARGET;
         }

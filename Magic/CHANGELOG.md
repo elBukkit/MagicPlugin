@@ -8,7 +8,6 @@
    - Tag signs are blank and facing wrong direction
    - Bed in Tent schematic is broken
    - Alter is broken
-   - Flower action is broken
 
 # 7.6.2
 
