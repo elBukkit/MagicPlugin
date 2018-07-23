@@ -313,6 +313,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.material = material;
         this.data = data;
         extraData = null;
+        if (material != null && CompatibilityUtils.isLegacy(material)) {
+            short convertData = (this.data == null ? 0 : this.data);
+            material = CompatibilityUtils.fromLegacy(material, (byte)convertData);
+            this.material = material;
+        }
 
         isValid = material != null;
     }
@@ -627,11 +632,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (material != this.material) {
             item = new MaterialAndData(this);
             item.material = material;
-        }
-        if (CompatibilityUtils.isLegacy(material)) {
-            short data = (this.data == null ? 0 : this.data);
-            material = CompatibilityUtils.fromLegacy(material, (byte)data);
-            this.material = material;
         }
 
         ItemStack stack = new ItemStack(material, amount, data == null ? 0 : data);
