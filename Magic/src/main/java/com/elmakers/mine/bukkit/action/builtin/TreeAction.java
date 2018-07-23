@@ -59,11 +59,11 @@ public class TreeAction extends BaseSpellAction
                             }
                             biomeTypes.add(treeType);
                         } catch (Exception treeEx) {
-                            Bukkit.getLogger().warning("Invalid tree type: " + typeKey);
+                            // Bukkit.getLogger().warning("Invalid tree type: " + typeKey);
                         }
                     }
                 } catch (Exception biomeEx) {
-                    Bukkit.getLogger().warning("Invalid biome: " + biomeKey);
+                    // Bukkit.getLogger().warning("Invalid biome: " + biomeKey);
                 }
             }
         }
