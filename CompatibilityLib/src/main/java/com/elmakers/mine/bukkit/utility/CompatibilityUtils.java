@@ -1434,7 +1434,12 @@ public class CompatibilityUtils extends NMSUtils {
         org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(material, data);
         if (class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
-                return (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
+                Material converted = (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
+                if (converted == Material.AIR) {
+                    materialData.setData((byte)0);
+                    converted = (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
+                }
+                return converted;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
