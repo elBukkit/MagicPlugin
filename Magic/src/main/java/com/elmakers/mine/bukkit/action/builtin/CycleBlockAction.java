@@ -69,6 +69,12 @@ public class CycleBlockAction extends BaseSpellAction {
         MaterialAndData targetMaterial = new MaterialAndData(block);
         MaterialAndData newMaterial = materials.get(targetMaterial);
         if (newMaterial == null) {
+            // So it seems colored blocks still set their data values even though they are using
+            // separate materials in 1.13 ?
+            targetMaterial.setData((short)0);
+            newMaterial = materials.get(targetMaterial);
+        }
+        if (newMaterial == null) {
             return SpellResult.NO_TARGET;
         }
 
