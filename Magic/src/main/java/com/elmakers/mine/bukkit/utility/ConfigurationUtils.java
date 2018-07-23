@@ -94,7 +94,7 @@ public class ConfigurationUtils extends ConfigUtils {
     @Nullable
     public static Material getMaterial(ConfigurationSection node, String path, Material def) {
         String stringData = node.getString(path);
-        if (stringData == null) {
+        if (stringData == null || stringData.isEmpty()) {
             return def;
         }
 
@@ -130,6 +130,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static String fromMaterial(Material material)
     {
+        if (material == null) return "";
         return material.name().toLowerCase();
     }
 
