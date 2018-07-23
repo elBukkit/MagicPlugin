@@ -665,14 +665,18 @@ public class NMSUtils {
             try {
                 class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
             } catch (Throwable ex) {
-                 Bukkit.getLogger().info("Could not bind to setTypeIdAndData, this is OK so long as you are on 1.13 and up.");
+                if (!migration) {
+                    Bukkit.getLogger().info("Could not bind to setTypeIdAndData, Magic will have issues modifying blocks");
+                }
             }
             try {
                 Class<?> class_IBlockData = fixBukkitClass("net.minecraft.server.IBlockData");
                 class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);
                 class_Chunk_setBlockMethod = class_Chunk.getMethod("a", class_BlockPosition, class_IBlockData);
             } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work. This is expected in 1.13 and up.");
+                if (!migration) {
+                    Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work.");
+                }
             }
             try {
                 class_Parrot = Class.forName("org.bukkit.entity.Parrot");
