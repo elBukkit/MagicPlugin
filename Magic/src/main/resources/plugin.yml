@@ -1,6 +1,7 @@
 name: Magic
 main: com.elmakers.mine.bukkit.magic.MagicPlugin
 version: ${project.version}-${buildNumber}
+api-version: 1.13
 website: http://mine.elmakers.com
 author: NathanWolf
 description : A gameplay-oriented plugin for spells and wands

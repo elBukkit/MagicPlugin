@@ -162,7 +162,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             Integer id = Integer.parseInt(materialKey);
                             material = CompatibilityUtils.getMaterial(id);
                         } catch (Exception ex) {
-                            material = Material.getMaterial(materialKey.toUpperCase());
+                            materialKey = materialKey.toUpperCase();
+                            material = Material.getMaterial(materialKey);
+                            if (material == null) {
+                                material = Material.getMaterial("LEGACY_" + materialKey);
+                            }
                         }
                     }
                 }
