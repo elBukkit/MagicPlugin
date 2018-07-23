@@ -261,6 +261,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         if (blockData != null) {
             for (String blockString : blockData) {
                 BlockData deserialized = com.elmakers.mine.bukkit.block.BlockData.fromString(blockString);
+                if (deserialized == null) continue;
                 if (worldName == null) worldName = deserialized.getWorldName();
                 add(deserialized);
             }
