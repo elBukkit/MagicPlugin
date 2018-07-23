@@ -598,6 +598,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (item == null) {
             item = InventoryUtils.makeReal(this.icon.getItemStack(1));
         }
+        if (!icon.isValid()) {
+            return;
+        }
 
         Short durability = null;
         if (!indestructible && !isUpgrade && icon.getMaterial().getMaxDurability() > 0) {

@@ -314,7 +314,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
         extraData = null;
 
-        isValid = true;
+        isValid = material != null;
     }
 
     @Override
