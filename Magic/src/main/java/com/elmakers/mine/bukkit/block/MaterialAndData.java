@@ -772,7 +772,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
         }
 
-        String materialName = material.name();
+        String materialName = material == null ? "?" : material.name();
 
         if (data == null && messages != null) {
             materialName = materialName + messages.get("material.wildcard");

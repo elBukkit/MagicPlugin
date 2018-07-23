@@ -2080,7 +2080,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private static String getBrushDisplayName(Messages messages, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
-        String materialName = brush == null ? null : brush.getName(messages);
+        String materialName = brush == null || !brush.isValid() ? null : brush.getName(messages);
         if (materialName == null) {
             materialName = "none";
         }
