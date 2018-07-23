@@ -172,7 +172,7 @@ public class PlayerController implements Listener {
         activeWand = mage.getActiveWand();
         if (activeWand == null && next != null) {
             if (DefaultMaterials.isFilledMap(next.getType())) {
-                mage.setLastHeldMapId(next.getDurability());
+                mage.setLastHeldMapId(InventoryUtils.getMapId(next));
             }
         }
     }

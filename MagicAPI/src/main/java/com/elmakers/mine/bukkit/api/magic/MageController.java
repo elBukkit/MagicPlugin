@@ -443,6 +443,8 @@ public interface MageController {
     ItemStack getSkull(String ownerName, String itemName, ItemUpdatedCallback callback);
     @Nonnull
     ItemStack getSkull(UUID uuid, String itemName, ItemUpdatedCallback callback);
+    @Nonnull
+    ItemStack getMap(int mapId);
     void setSkullOwner(Skull skull, String ownerName);
     void setSkullOwner(Skull block, UUID uuid);
     @Nonnull

@@ -9,7 +9,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -27,7 +26,7 @@ public class CameraSpell extends TargetingSpell
         // Check for special case id
         if (parameters.contains("id"))
         {
-            newMapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, (short)parameters.getInt("id", 0));
+            newMapItem = controller.getMap(parameters.getInt("id", 0));
             String mapName = parameters.getString("name", "Image");
             ItemMeta meta = newMapItem.getItemMeta();
             // TODO: How to handle names with spaces in them?

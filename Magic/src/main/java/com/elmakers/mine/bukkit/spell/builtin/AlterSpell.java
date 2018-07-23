@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
@@ -168,18 +169,18 @@ public class AlterSpell extends BlockSpell
                 if (frameItem == null || !DefaultMaterials.isFilledMap(frameItem.getType())) {
                     return SpellResult.NO_TARGET;
                 }
-                short data = frameItem.getDurability();
-                data++;
-                MapView mapView = DeprecatedUtils.getMap(data);
+                int mapId = InventoryUtils.getMapId(frameItem);
+                mapId++;
+                MapView mapView = DeprecatedUtils.getMap((short)mapId);
                 if (mapView == null) {
-                    data = 0;
-                    mapView = DeprecatedUtils.getMap(data);
+                    mapId = 0;
+                    mapView = DeprecatedUtils.getMap((short)mapId);
                     if (mapView == null) {
                         return SpellResult.NO_TARGET;
                     }
                 }
                 registerModified(entity);
-                frameItem.setDurability(data);
+                InventoryUtils.setMapId(frameItem, mapId);
                 itemFrame.setItem(frameItem);
                 break;
             case HORSE:

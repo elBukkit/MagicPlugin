@@ -180,6 +180,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
@@ -5470,6 +5471,18 @@ public class MagicController implements MageController {
             callback.updated(skull);
         }
         return skull;
+    }
+
+    @Nonnull
+    @Override
+    public ItemStack getMap(int mapId) {
+        short durability = NMSUtils.needsMigration() ? 0 : (short)mapId;
+        ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
+        if (NMSUtils.needsMigration()) {
+            mapItem = CompatibilityUtils.makeReal(mapItem);
+            InventoryUtils.setMetaInt(mapItem, "map", mapId);
+        }
+        return mapItem;
     }
 
     @Override

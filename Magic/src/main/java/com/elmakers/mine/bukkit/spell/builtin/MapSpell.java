@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 public class MapSpell extends TargetingSpell
@@ -35,7 +34,7 @@ public class MapSpell extends TargetingSpell
 
         newMap.setScale(scale);
 
-        ItemStack newMapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, newMap.getId());
+        ItemStack newMapItem = controller.getMap(newMap.getId());
         world.dropItemNaturally(getLocation(), newMapItem);
         return SpellResult.CAST;
     }

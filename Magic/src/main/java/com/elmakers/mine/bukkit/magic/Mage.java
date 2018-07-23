@@ -3254,7 +3254,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 checkWand();
             } else {
                 if (DefaultMaterials.isFilledMap(itemStack.getType())) {
-                    setLastHeldMapId(itemStack.getDurability());
+                    setLastHeldMapId(InventoryUtils.getMapId(itemStack));
                 }
             }
         } else {

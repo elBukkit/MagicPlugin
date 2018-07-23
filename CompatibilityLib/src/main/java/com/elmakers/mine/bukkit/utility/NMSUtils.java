@@ -1485,6 +1485,22 @@ public class NMSUtils {
         return meta;
     }
 
+    public static int getMetaInt(ItemStack stack, String tag, int defaultValue) {
+        if (NMSUtils.isEmpty(stack)) return defaultValue;
+        int result = defaultValue;
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return defaultValue;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return defaultValue;
+            Integer value = getMetaInt(tagObject, tag);
+            result = value == null ? defaultValue : value;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public static Double getMetaDouble(Object node, String tag) {
         if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
         Double meta = null;
@@ -1551,6 +1567,19 @@ public class NMSUtils {
         if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
         try {
             class_NBTTagCompound_setIntMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setMetaInt(ItemStack stack, String tag, int value) {
+        if (NMSUtils.isEmpty(stack)) return;
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return;
+            setMetaInt(tagObject, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }

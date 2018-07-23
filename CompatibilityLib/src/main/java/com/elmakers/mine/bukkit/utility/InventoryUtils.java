@@ -518,4 +518,20 @@ public class InventoryUtils extends NMSUtils
     public static boolean isSameInstance(ItemStack one, ItemStack two) {
         return one == two;
     }
+
+    public static int getMapId(ItemStack mapItem) {
+        if (needsMigration()) {
+            return getMetaInt(mapItem, "map", 0);
+        }
+
+        return mapItem.getDurability();
+    }
+
+    public static void setMapId(ItemStack mapItem, int id) {
+        if (needsMigration()) {
+            setMetaInt(mapItem, "map", id);
+        } else {
+            mapItem.setDurability((short)id);
+        }
+    }
 }

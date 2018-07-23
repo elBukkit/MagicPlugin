@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class MagicMapCommandExecutor extends MagicMapExecutor {
     public MagicMapCommandExecutor(MagicAPI api) {
@@ -292,11 +293,11 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("Failed to load map: " + url);
             return;
         }
-        short mapId = item.getDurability();
+        int mapId = InventoryUtils.getMapId(item);
         sender.sendMessage("Loaded map id " + mapId);
         if (sender instanceof Player)
         {
-            ItemStack mapItem = maps.getMapItem(mapId);
+            ItemStack mapItem = maps.getMapItem((short)mapId);
             api.giveItemToPlayer((Player)sender, mapItem);
         }
     }
@@ -310,11 +311,11 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("Failed to load player skin: " + playerName);
             return;
         }
-        short mapId = item.getDurability();
+        int mapId = InventoryUtils.getMapId(item);
         sender.sendMessage("Loaded map id " + mapId + " as player " + playerName);
         if (sender instanceof Player)
         {
-            ItemStack mapItem = maps.getMapItem(mapId);
+            ItemStack mapItem = maps.getMapItem((short)mapId);
             api.giveItemToPlayer((Player)sender, mapItem);
         }
     }
@@ -415,8 +416,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         List<URLMap> maps = mapController.getAll();
         for (URLMap map : maps) {
             if (map.getName() == null) {
-                ItemStack newMap = new ItemStack(DefaultMaterials.getFilledMap(), 1);
-                newMap.setDurability(map.getId());
+                ItemStack newMap = controller.getMap(map.getId());
                 api.giveItemToPlayer(player, newMap);
                 sender.sendMessage("Found unnamed map id " + map.getId() + " with url " + ChatColor.AQUA + map.getURL());
                 return;
@@ -437,10 +437,11 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("You must be holding a map");
             return;
         }
+        int mapId = InventoryUtils.getMapId(currentMap);
         MapController mapController = api.getController().getMaps();
-        URLMap map = mapController.getMap(currentMap.getDurability());
+        URLMap map = mapController.getMap((short)mapId);
         if (map == null) {
-            sender.sendMessage("Map id " + currentMap.getDurability() + " is not registered");
+            sender.sendMessage("Map id " + mapId + " is not registered");
             return;
         }
         map.setName(mapName);

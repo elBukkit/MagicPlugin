@@ -20,6 +20,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
@@ -292,7 +295,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      * @return
      */
     public ItemStack getMapItem(String name, short mapId) {
-        ItemStack newMapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, mapId);
+        ItemStack newMapItem = createMap(mapId);
         if (name != null) {
             ItemMeta meta = newMapItem.getItemMeta();
             meta.setDisplayName(name);
@@ -304,7 +307,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public ItemStack getMapItem(short id)
     {
-        ItemStack newMapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, id);
+        ItemStack newMapItem = createMap(id);
         URLMap loadedMap = idMap.get(id);
         if (loadedMap != null)
         {
@@ -327,6 +330,17 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
             id = mapView.getId();
         }
         return getMapItem(name, id);
+    }
+
+    // This is copied from MagicController, which I'm still trying to keep out of this class. Shrug?
+    public ItemStack createMap(int mapId) {
+        short durability = NMSUtils.needsMigration() ? 0 : (short)mapId;
+        ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
+        if (NMSUtils.needsMigration()) {
+            mapItem = CompatibilityUtils.makeReal(mapItem);
+            InventoryUtils.setMetaInt(mapItem, "map", mapId);
+        }
+        return mapItem;
     }
 
     /**
