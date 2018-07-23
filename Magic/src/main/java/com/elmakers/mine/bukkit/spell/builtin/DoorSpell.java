@@ -2,7 +2,9 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.Door;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
@@ -22,10 +24,20 @@ public class DoorSpell extends BlockSpell
         }
 
         Block targetBlock = target.getBlock();
-        byte data = targetBlock.getData();
-        if ((data & 0x8) != 0) {
+        BlockState blockState = targetBlock.getState();
+        Object data = blockState.getData();
+        if (!(data instanceof Door)) {
+            return SpellResult.NO_TARGET;
+        }
+        Door doorData = (Door)data;
+        if (doorData.isTopHalf()) {
             targetBlock = targetBlock.getRelative(BlockFace.DOWN);
-            data = targetBlock.getData();
+            blockState = targetBlock.getState();
+            data = blockState.getData();
+            if (!(data instanceof Door)) {
+                return SpellResult.NO_TARGET;
+            }
+            doorData = (Door)data;
         }
 
         if (!hasBuildPermission(targetBlock))
@@ -40,14 +52,16 @@ public class DoorSpell extends BlockSpell
         registerForUndo(targetBlock);
         String type = parameters.getString("type", "open");
         if (type.equalsIgnoreCase("open")) {
-            targetBlock.setData((byte)(data | 0x4));
+            doorData.setOpen(true);
         } else if (type.equalsIgnoreCase("close")) {
-            targetBlock.setData((byte)(data & ~0x4));
+            doorData.setOpen(false);
         } else if (type.equalsIgnoreCase("toggle")) {
-            targetBlock.setData((byte)(data ^ 0x4));
+            doorData.setOpen(!doorData.isOpen());
         } else {
             return SpellResult.FAIL;
         }
+        blockState.setData(doorData);
+        blockState.update();
 
         registerForUndo();
         return SpellResult.CAST;

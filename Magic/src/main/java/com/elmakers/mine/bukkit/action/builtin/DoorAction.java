@@ -4,13 +4,14 @@ import java.util.Collection;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.Door;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class DoorAction extends BaseSpellAction
 {
@@ -26,10 +27,20 @@ public class DoorAction extends BaseSpellAction
     public SpellResult perform(CastContext context)
     {
         Block targetBlock = context.getTargetBlock();
-        byte data = DeprecatedUtils.getData(targetBlock);
-        if ((data & 0x8) != 0) {
+        BlockState blockState = targetBlock.getState();
+        Object data = blockState.getData();
+        if (!(data instanceof Door)) {
+            return SpellResult.NO_TARGET;
+        }
+        Door doorData = (Door)data;
+        if (doorData.isTopHalf()) {
             targetBlock = targetBlock.getRelative(BlockFace.DOWN);
-            data = DeprecatedUtils.getData(targetBlock);
+            blockState = targetBlock.getState();
+            data = blockState.getData();
+            if (!(data instanceof Door)) {
+                return SpellResult.NO_TARGET;
+            }
+            doorData = (Door)data;
         }
 
         if (!context.hasBuildPermission(targetBlock))
@@ -45,15 +56,23 @@ public class DoorAction extends BaseSpellAction
         switch (actionType)
         {
             case OPEN:
-                DeprecatedUtils.setData(targetBlock, (byte)(data | 0x4));
+                if (doorData.isOpen()) {
+                    return SpellResult.NO_TARGET;
+                }
+                doorData.setOpen(true);
                 break;
             case CLOSE:
-                DeprecatedUtils.setData(targetBlock, (byte)(data & ~0x4));
+                if (!doorData.isOpen()) {
+                    return SpellResult.NO_TARGET;
+                }
+                doorData.setOpen(false);
                 break;
             case TOGGLE:
-                DeprecatedUtils.setData(targetBlock, (byte)(data ^ 0x4));
+                doorData.setOpen(!doorData.isOpen());
                 break;
         }
+        blockState.setData(doorData);
+        blockState.update();
 
         return SpellResult.CAST;
     }
