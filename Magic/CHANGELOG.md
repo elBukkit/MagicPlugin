@@ -2,7 +2,7 @@
 
 # 7.6.3
 
- - Support/Fixes for 1.13
+ - Support/Fixes for 1.13 (Mostly functional but maybe still risky!****)
  - Known issues:
    - Block undo doesn't properly restore certain block states (sign/torch/door direction, for instance)
    - Bed in Tent schematic is broken
