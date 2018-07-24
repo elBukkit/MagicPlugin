@@ -107,19 +107,35 @@ public class TorchAction extends BaseSpellAction
             }
             switch (direction)
             {
-                case SOUTH:
-                case NORTH:
-                case EAST:
                 case WEST:
                     targetMaterial = useRedstone
                         ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
                         : new MaterialAndData(DefaultMaterials.getWallTorch());
+                    targetMaterial.setData((short)(targetMaterial.getData() | 1));
+                    break;
+                case EAST:
+                    targetMaterial = useRedstone
+                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
+                        : new MaterialAndData(DefaultMaterials.getWallTorch());
+                    targetMaterial.setData((short)(targetMaterial.getData() | 2));
+                    break;
+                case NORTH:
+                    targetMaterial = useRedstone
+                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
+                        : new MaterialAndData(DefaultMaterials.getWallTorch());
+                    targetMaterial.setData((short)(targetMaterial.getData() | 3));
+                    break;
+                case SOUTH:
+                    targetMaterial = useRedstone
+                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
+                        : new MaterialAndData(DefaultMaterials.getWallTorch());
+                    targetMaterial.setData((short)(targetMaterial.getData() | 4));
                     break;
                 default:
                     targetMaterial = useRedstone
                         ? new MaterialAndData(DefaultMaterials.getRedstoneTorchOn())
                         : new MaterialAndData(Material.TORCH);
-                    direction = BlockFace.SELF;
+                    targetMaterial.setData((short)(targetMaterial.getData() | 5));
                     break;
             }
         }

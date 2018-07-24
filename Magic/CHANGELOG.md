@@ -2,6 +2,8 @@
 
 # 7.6.4
 
+ - Fix torch spell not always working in 1.12
+
 # 7.6.3
 
  - Support/Fixes for 1.13 (Mostly functional but maybe still risky!****)
