@@ -561,7 +561,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (this.material == Material.POTION) {
                 if (extraData != null && extraData instanceof PotionData) {
                     Color color = ((PotionData)extraData).getColor();
-                    materialKey += ":" + Integer.toHexString(color.asRGB());
+                    if (color != null) {
+                        materialKey += ":" + Integer.toHexString(color.asRGB());
+                    }
                 }
             } else if (data != 0) {
                 materialKey += ":" + data;
