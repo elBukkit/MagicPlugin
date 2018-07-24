@@ -145,6 +145,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         Short data = 0;
         Material material = null;
         BlockExtraData extraData = null;
+        String blockData = null;
         materialKey = pieces[0];
         if (materialKey.equalsIgnoreCase("skull") || materialKey.equalsIgnoreCase("skull_item")) {
             MaterialAndData skullData = DefaultMaterials.getPlayerSkullItem();
@@ -182,7 +183,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 if (blockPieces.length > 0) {
                     dataString = blockPieces[0];
                     if (blockPieces.length > 1) {
-                        this.blockData = blockPieces[1];
+                        blockData = blockPieces[1];
                     }
                 }
 
@@ -270,6 +271,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         if (isValid) {
             this.extraData = extraData;
+            this.blockData = blockData;
         }
     }
 
@@ -301,6 +303,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else {
                 extraData = null;
             }
+            blockData = o.blockData;
             isValid = o.isValid;
         }
     }
@@ -319,6 +322,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.material = material;
         this.data = data;
         extraData = null;
+        blockData = null;
         if (material != null && CompatibilityUtils.isLegacy(material)) {
             short convertData = (this.data == null ? 0 : this.data);
             material = CompatibilityUtils.migrateMaterial(material, (byte)convertData);
@@ -387,6 +391,15 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ex.printStackTrace();
         }
         blockData = CompatibilityUtils.getBlockData(block);
+        if (blockData != null) {
+            // If we have block data, the data byte is no longer relevant
+            data = 0;
+            // If the blockData is not complex we don't really need to keep it, though this is making some nasty
+            // assumptions about this string representation
+            if (!blockData.contains("[")) {
+                blockData = null;
+            }
+        }
 
         isValid = true;
     }
