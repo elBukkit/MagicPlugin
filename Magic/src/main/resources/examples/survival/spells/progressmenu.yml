@@ -23,7 +23,7 @@ progressmenu:
       - holding_wand: true
     - cast_spell: effectshop
       requirements: 
-      - wands: true,wand
+      - wands: wand
     - cast_spell: controlsmenu
       requirements: 
       - holding_wand: true
