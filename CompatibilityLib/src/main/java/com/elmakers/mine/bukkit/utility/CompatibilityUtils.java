@@ -592,12 +592,6 @@ public class CompatibilityUtils extends NMSUtils {
         isDamaging = false;
     }
 
-    @Deprecated
-    public static void setTarget(LivingEntity entity, Location target)
-    {
-        // This never seemed to work, and is not compatible with 1.8, so removing it.
-    }
-
     public static Location getEyeLocation(Entity entity)
     {
         if (entity instanceof LivingEntity)
