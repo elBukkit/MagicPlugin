@@ -6,6 +6,7 @@
  - Fix undo system not always restoring complex block states in 1.13 (sign/torch/door direction, for instance)
  - Fix headshots
  - Fix a few specific cases of the undo system failing
+ - Allow resource packs to work on hosts that don't provide a Last-Modified header (dropboxusercontent)
 
 # 7.6.3
 
