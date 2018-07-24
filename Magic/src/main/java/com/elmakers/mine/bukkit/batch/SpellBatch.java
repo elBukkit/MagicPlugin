@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.batch;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 
 public abstract class SpellBatch extends UndoableBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatch {

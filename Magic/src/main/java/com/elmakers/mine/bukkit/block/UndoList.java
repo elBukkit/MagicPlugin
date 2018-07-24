@@ -219,6 +219,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public boolean add(BlockData blockData)
     {
+        if (undone && spell != null) {
+            spell.getController().getLogger().warning("Trying to add to an undone UndoList, this may result in blocks that don't get cleaned up.");
+        }
         if (bypass) return true;
         if (!super.add(blockData)) {
             return false;

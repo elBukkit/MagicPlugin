@@ -13,14 +13,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class UndoableSpell extends TargetingSpell {
-    private UndoList         modifiedBlocks             = null;
     private boolean         undoEntityEffects        = false;
     private Set<EntityType> undoEntityTypes         = null;
     private boolean         bypassUndo                = false;
@@ -57,8 +56,6 @@ public class UndoableSpell extends TargetingSpell {
         {
             undoEntityTypes = controller.getUndoEntityTypes();
         }
-
-        configureUndoList();
     }
 
     @Override
@@ -77,19 +74,9 @@ public class UndoableSpell extends TargetingSpell {
         }
     }
 
-    @Override
-    protected void reset()
-    {
-        super.reset();
-        if (!isActive())
-        {
-            modifiedBlocks = null;
-        }
-    }
-
     public int getModifiedCount()
     {
-        return modifiedBlocks == null ? 0 : modifiedBlocks.size();
+        return getUndoList().size();
     }
 
     public void prepareForUndo()
@@ -140,30 +127,25 @@ public class UndoableSpell extends TargetingSpell {
         getUndoList().modifyVelocity(entity);
     }
 
-    public UndoList getUndoList()
-    {
-        if (modifiedBlocks == null) {
-            modifiedBlocks = new UndoList(mage, this.getName());
-            modifiedBlocks.setSpell(this);
-            configureUndoList();
-        }
-        return modifiedBlocks;
+    public UndoList getUndoList() {
+        return currentCast.getUndoList();
     }
 
-    protected void configureUndoList() {
-        if (modifiedBlocks != null) {
-            modifiedBlocks.setEntityUndo(undoEntityEffects);
-            modifiedBlocks.setEntityUndoTypes(undoEntityTypes);
-            modifiedBlocks.setBypass(bypassUndo);
-            modifiedBlocks.setScheduleUndo(autoUndo);
-            modifiedBlocks.setUndoSpeed(undoSpeed);
-            modifiedBlocks.setSorted(undoSorted);
-        }
+    public UndoList createUndoList() {
+        com.elmakers.mine.bukkit.block.UndoList modifiedBlocks = new com.elmakers.mine.bukkit.block.UndoList(mage, this.getName());
+        modifiedBlocks.setSpell(this);
+        modifiedBlocks.setEntityUndo(undoEntityEffects);
+        modifiedBlocks.setEntityUndoTypes(undoEntityTypes);
+        modifiedBlocks.setBypass(bypassUndo);
+        modifiedBlocks.setScheduleUndo(autoUndo);
+        modifiedBlocks.setUndoSpeed(undoSpeed);
+        modifiedBlocks.setSorted(undoSorted);
+        return modifiedBlocks;
     }
 
     public boolean contains(Block block)
     {
-        return modifiedBlocks.contains(block);
+        return getUndoList().contains(block);
     }
 
     public int getScheduledUndo()

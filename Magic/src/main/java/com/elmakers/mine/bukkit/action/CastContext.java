@@ -189,7 +189,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
      */
     public void initialize() {
         if (undoSpell != null) {
-            undoList = this.undoSpell.getUndoList();
+            undoList = undoSpell.createUndoList();
         }
     }
 
