@@ -28,6 +28,7 @@ public abstract class CompoundAction extends BaseSpellAction
     private boolean stopOnSuccess = false;
     protected @Nullable ConfigurationSection actionConfiguration;
     protected @Nullable CastContext actionContext;
+    private @Nullable Object baseActions;
 
     protected Map<String, ActionHandler> handlers = new HashMap<>();
     protected Set<ActionHandler> ran = new HashSet<>();
@@ -150,6 +151,7 @@ public abstract class CompoundAction extends BaseSpellAction
     {
         super.initialize(spell, parameters);
         this.actionConfiguration = parameters;
+        baseActions = parameters.get("actions");
         usesBrush = false;
         undoable = false;
         requiresBuildPermission = false;
@@ -182,8 +184,6 @@ public abstract class CompoundAction extends BaseSpellAction
         }
         if (!actionConfiguration.contains(handlerKey))
         {
-            Object baseActions = actionConfiguration.get("actions");
-
             // Create parameter-only configs automagically
             if (baseActions != null && spell.hasHandlerParameters(handlerKey))
             {
