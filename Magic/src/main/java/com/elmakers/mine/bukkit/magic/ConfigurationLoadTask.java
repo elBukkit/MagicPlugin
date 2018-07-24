@@ -25,6 +25,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.collect.ImmutableSet;
 
 public class ConfigurationLoadTask implements Runnable {
     private final MagicController controller;
@@ -34,6 +35,7 @@ public class ConfigurationLoadTask implements Runnable {
 
     private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
             "classes", "wands", "items", "crafting", "mobs", "automata"};
+    private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
 
     private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
 
@@ -180,8 +182,12 @@ public class ConfigurationLoadTask implements Runnable {
     private ConfigurationSection loadConfigFile(String fileName, ConfigurationSection mainConfiguration)
         throws IOException, InvalidConfigurationException {
 
-        boolean loadDefaults = mainConfiguration.getBoolean("load_default_" + fileName, true);
-        loadDefaults = loadDefaults && mainConfiguration.getBoolean("load_default_configs", true);
+        boolean loadAllDefaults = mainConfiguration.getBoolean("load_default_configs", true);
+        // materials and messages are hard to turn off
+        if (DEFAULT_ON.contains(fileName)) {
+            loadAllDefaults = true;
+        }
+        boolean loadDefaults = mainConfiguration.getBoolean("load_default_" + fileName, loadAllDefaults);
         boolean disableDefaults = mainConfiguration.getBoolean("disable_default_" + fileName, false);
 
         ConfigurationSection mainSection = mainConfiguration.getConfigurationSection(fileName);
