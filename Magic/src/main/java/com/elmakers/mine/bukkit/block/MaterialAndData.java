@@ -165,7 +165,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             materialKey = materialKey.toUpperCase();
                             material = Material.getMaterial(materialKey);
                             if (material == null) {
-                                material = Material.getMaterial("LEGACY_" + materialKey);
+                                material = CompatibilityUtils.getLegacyMaterial(materialKey);
                             }
                         }
                     }
@@ -315,7 +315,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         extraData = null;
         if (material != null && CompatibilityUtils.isLegacy(material)) {
             short convertData = (this.data == null ? 0 : this.data);
-            material = CompatibilityUtils.fromLegacy(material, (byte)convertData);
+            material = CompatibilityUtils.migrateMaterial(material, (byte)convertData);
             this.material = material;
         }
 

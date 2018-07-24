@@ -19,7 +19,6 @@ import org.bukkit.util.BlockVector;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 /**
@@ -123,26 +122,10 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         worldName = copy.getWorldName();
     }
 
-    public BlockData(Location location, Material material, byte data) {
-        super(material, data);
-        if (location != null && location.getWorld() != null) {
-            this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-            this.worldName = location.getWorld().getName();
-        }
-    }
-
-    public BlockData(int x, int y, int z, String world, Material material, byte data) {
-        super(material, data);
+    public BlockData(int x, int y, int z, String world, String key) {
+        super(key);
         this.location = new BlockVector(x, y, z);
         this.worldName = world;
-    }
-
-    public BlockData(ConfigurationSection node) {
-        this(
-                ConfigurationUtils.getLocation(node, "location"),
-                ConfigurationUtils.getMaterial(node, "material"),
-                (byte) node.getInt("data", 0)
-        );
     }
 
     public void save(ConfigurationSection node) {
@@ -238,12 +221,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
     @Override
     public String toString() {
-        String key = location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + worldName + "|" + getMaterial();
-        Short data = getData();
-        if (data != null && data != 0) {
-            key += ":" + data;
-        }
-        return key;
+        return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + worldName + "|" + getKey();
     }
 
     @Nullable
@@ -257,41 +235,10 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             int y = Integer.parseInt(locationPieces[1]);
             int z = Integer.parseInt(locationPieces[2]);
             String world = locationPieces[3];
-            Material material = null;
-
-            byte data = 0;
-            String[] materialPieces = StringUtils.split(pieces[1], ':');
-
-            if (materialPieces.length > 1) {
-                try {
-                    data = Byte.parseByte(materialPieces[1]);
-                } catch (Exception ignore) {
-                    data = 0;
-                }
+            result = new BlockData(x, y, z, world, pieces[1]);
+            if (!result.isValid()) {
+                result = null;
             }
-
-            try {
-                int materialId = Integer.parseInt(materialPieces[0]);
-                material = CompatibilityUtils.getMaterial(materialId);
-            } catch (Exception nonid) {
-                material = Material.getMaterial(materialPieces[0]);
-                if (material == null) {
-                    Material legacyMaterial = CompatibilityUtils.getLegacyMaterial(materialPieces[0]);
-                    material = CompatibilityUtils.migrateMaterial(legacyMaterial, data);
-                    if (material != null) {
-                        data = 0;
-                    } else {
-                        // Here we keep data, it may be a rotation or some other still-valid piece of data (?)
-                        material = CompatibilityUtils.migrateMaterial(legacyMaterial, (byte)0);
-                    }
-                }
-            }
-
-            if (material == null) {
-                return null;
-            }
-
-            return new BlockData(x, y, z, world, material, data);
         } catch (Exception ignored) {
         }
 
