@@ -6,7 +6,9 @@ import java.util.Collection;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.Torch;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -96,46 +98,29 @@ public class TorchAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
+        BlockFace direction = BlockFace.SELF;
         if (targetMaterial == null)
         {
-            BlockFace direction = face.getFace(target);
+            direction = face.getFace(target);
             if (direction == null) {
                 direction = BlockFace.SELF;
             }
             switch (direction)
             {
+                case SOUTH:
+                case NORTH:
+                case EAST:
                 case WEST:
                     targetMaterial = useRedstone
                         ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
                         : new MaterialAndData(DefaultMaterials.getWallTorch());
-                    targetMaterial.setData((short)(targetMaterial.getData() | 1));
                     break;
-                case EAST:
-                    targetMaterial = useRedstone
-                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
-                        : new MaterialAndData(DefaultMaterials.getWallTorch());
-                    targetMaterial.setData((short)(targetMaterial.getData() | 2));
-                    break;
-                case NORTH:
-                    targetMaterial = useRedstone
-                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
-                        : new MaterialAndData(DefaultMaterials.getWallTorch());
-                    targetMaterial.setData((short)(targetMaterial.getData() | 3));
-                    break;
-                case SOUTH:
-                    targetMaterial = useRedstone
-                        ? new MaterialAndData(DefaultMaterials.getRedstoneWallTorchOn())
-                        : new MaterialAndData(DefaultMaterials.getWallTorch());
-                    targetMaterial.setData((short)(targetMaterial.getData() | 4));
-                    break;
-                case DOWN:
+                default:
                     targetMaterial = useRedstone
                         ? new MaterialAndData(DefaultMaterials.getRedstoneTorchOn())
                         : new MaterialAndData(Material.TORCH);
-                    targetMaterial.setData((short)(targetMaterial.getData() | 5));
+                    direction = BlockFace.SELF;
                     break;
-                default:
-                    targetMaterial.setMaterial(Material.GLOWSTONE);
             }
         }
 
@@ -161,6 +146,17 @@ public class TorchAction extends BaseSpellAction
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        if (direction != BlockFace.SELF) {
+            BlockState state = target.getState();
+            Object data = state.getData();
+            if (data instanceof Torch) {
+                Torch torchData = (Torch)data;
+                torchData.setFacingDirection(direction.getOppositeFace());
+                state.setData(torchData);
+                state.update();
+            }
+        }
+
         context.getController().enableItemSpawn();
         if (targetMaterial.getMaterial() != target.getType())
         {
