@@ -239,6 +239,10 @@ public class NMSUtils {
     protected static Method class_PotionMeta_getColorMethod;
     protected static Method class_PotionMeta_setColorMethod;
     protected static Method class_FallingBlock_getBlockDataMethod;
+    protected static Method class_Block_getBlockDataMethod;
+    protected static Method class_Block_setBlockDataMethod;
+    protected static Method class_Server_createBlockDataMethod;
+    protected static Method class_BlockData_getAsStringMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -574,6 +578,12 @@ public class NMSUtils {
                 class_MinecraftKey_constructor = class_MinecraftKey.getConstructor(String.class);
                 class_Vec3D = fixBukkitClass("net.minecraft.server.Vec3D");
                 class_Vec3D_constructor = class_Vec3D.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
+
+                Class<?> class_BlockData = Class.forName("org.bukkit.block.data.BlockData");
+                class_Block_getBlockDataMethod = Block.class.getMethod("getBlockData");
+                class_Block_setBlockDataMethod = Block.class.getMethod("setBlockData", class_BlockData);
+                class_Server_createBlockDataMethod = Server.class.getMethod("createBlockData", String.class);
+                class_BlockData_getAsStringMethod = class_BlockData.getMethod("getAsString");
 
                 Bukkit.getLogger().info("1.13 detected, compatibility layer enabled");
                 migration = true;

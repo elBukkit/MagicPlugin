@@ -1418,20 +1418,8 @@ public class CompatibilityUtils extends NMSUtils {
         li.setMaxHealth(maxHealth);
     }
 
-    public static Material fromLegacy(org.bukkit.material.MaterialData materialData) {
-        if (class_UnsafeValues_fromLegacyDataMethod != null) {
-            try {
-                return (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        return materialData.getItemType();
-    }
-
     @SuppressWarnings("deprecation")
-    public static Material fromLegacy(Material material, byte data) {
-        org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(material, data);
+    public static Material fromLegacy(org.bukkit.material.MaterialData materialData) {
         if (class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
                 Material converted = (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
@@ -1488,11 +1476,6 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
-    public static Material migrateMaterial(Material material, byte data) {
-        return fromLegacy(new org.bukkit.material.MaterialData(material, data));
-    }
-
     public static Material getLegacyMaterial(String materialName) {
         if (class_Material_getLegacyMethod != null) {
             try {
@@ -1502,6 +1485,11 @@ public class CompatibilityUtils extends NMSUtils {
             }
         }
         return Material.getMaterial(materialName);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Material migrateMaterial(Material material, byte data) {
+        return fromLegacy(new org.bukkit.material.MaterialData(material, data));
     }
 
     @SuppressWarnings("deprecation")
@@ -1676,6 +1664,32 @@ public class CompatibilityUtils extends NMSUtils {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+        return false;
+    }
+
+    public static String getBlockData(Block block) {
+        if (class_Block_getBlockDataMethod == null) return null;
+        try {
+            Object blockData = class_Block_getBlockDataMethod.invoke(block);
+            if (blockData == null) {
+                return null;
+            }
+            return (String)class_BlockData_getAsStringMethod.invoke(blockData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean setBlockData(Server server, Block block, String data) {
+        if (class_Block_getBlockDataMethod == null) return false;
+        try {
+            Object blockData = class_Server_createBlockDataMethod.invoke(server, data);
+            class_Block_setBlockDataMethod.invoke(block, blockData);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return false;
     }

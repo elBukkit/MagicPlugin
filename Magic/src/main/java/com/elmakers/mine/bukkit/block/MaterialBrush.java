@@ -422,21 +422,25 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         } else if (pieces[0].equals(MAP_MATERIAL_KEY)) {
             int size = DEFAULT_MAP_SIZE;
             if (pieces.length > 1) {
-                try {
-                    size = Integer.parseInt(pieces[1]);
-                } catch (Exception ex) {
-                    Bukkit.getLogger().info("Error in map brush definition, first part is not an integer: " + activeMaterial);
-                }
-            }
-            if (pieces.length > 2) {
-                String mapKey = pieces[2];
-                if (controller != null && mapKey.startsWith("http")) {
-                    mapId = controller.getMaps().getURLMapId(Bukkit.getWorlds().get(0).getName(), pieces[2]);
-                } else {
+                String[] dataPieces = StringUtils.split(pieces[1], ":", 2);
+                if (dataPieces.length > 0) {
                     try {
-                        mapId = Integer.parseInt(mapKey);
+                        size = Integer.parseInt(dataPieces[0]);
                     } catch (Exception ex) {
-                        Bukkit.getLogger().info("Error in map brush definition, second part is not an integer or a URL: " + activeMaterial);
+                        Bukkit.getLogger().info("Error in map brush definition, first part is not an integer: " + activeMaterial);
+                    }
+
+                    if (dataPieces.length > 1) {
+                        String mapKey = dataPieces[1];
+                        if (controller != null && mapKey.startsWith("http")) {
+                            mapId = controller.getMaps().getURLMapId(Bukkit.getWorlds().get(0).getName(), mapKey);
+                        } else {
+                            try {
+                                mapId = Integer.parseInt(mapKey);
+                            } catch (Exception ex) {
+                                Bukkit.getLogger().info("Error in map brush definition, second part is not an integer or a URL: " + activeMaterial);
+                            }
+                        }
                     }
                 }
             }

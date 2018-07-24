@@ -74,6 +74,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected Material material;
     protected Short data;
     protected BlockExtraData extraData;
+    protected String blockData;
     protected boolean isValid = true;
 
     public static final Material DEFAULT_MATERIAL = Material.AIR;
@@ -176,18 +177,23 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         try {
             if (pieces.length > 1) {
+                String dataString = pieces[1];
+                String[] blockPieces = StringUtils.split(dataString, "?");
+                if (blockPieces.length > 0) {
+                    dataString = blockPieces[0];
+                    if (blockPieces.length > 1) {
+                        this.blockData = blockPieces[1];
+                    }
+                }
+
                 // Some special-cases
-                if (pieces[1].equals("*")) {
+                if (dataString.equals("*")) {
                     data = null;
                 } else if (DefaultMaterials.isMobSpawner(material)) {
-                    extraData = new BlockMobSpawner(pieces[1]);
+                    extraData = new BlockMobSpawner(dataString);
                 } else if (DefaultMaterials.isSkull(material)) {
-                    if (pieces.length > 2) {
+                    if (dataString.contains(":")) {
                         data = 3;
-                        String dataString = pieces[1];
-                        for (int i = 2; i < pieces.length; i++) {
-                            dataString += ":" + pieces[i];
-                        }
                         this.material = material;
                         this.data = data;
                         ItemStack item = getItemStack(1);
@@ -195,16 +201,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         extraData = new BlockSkull(InventoryUtils.getSkullProfile(item.getItemMeta()));
                     } else {
                         try {
-                            data = Short.parseShort(pieces[1]);
+                            data = Short.parseShort(dataString);
                         } catch (Exception ex) {
                             data = 3;
-                            extraData = new BlockSkull(pieces[1]);
+                            extraData = new BlockSkull(dataString);
                         }
                     }
                 } else if (DefaultMaterials.isBanner(material)) {
                     DyeColor color = null;
                     try {
-                        short colorIndex = Short.parseShort(pieces[1]);
+                        short colorIndex = Short.parseShort(dataString);
                         data = colorIndex;
                         color = DyeColor.values()[colorIndex];
                     }
@@ -216,7 +222,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     }
                 } else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE
                         || material == Material.LEATHER_HELMET || material == Material.LEATHER_LEGGINGS) {
-                    StringUtils.split(pieces[1], ',');
+                    StringUtils.split(dataString, ',');
                     for (String piece : pieces) {
                         if (piece.startsWith("#")) {
                             try {
@@ -227,14 +233,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             }
                         } else {
                             try {
-                                data = Short.parseShort(pieces[1]);
+                                data = Short.parseShort(dataString);
                             } catch (Exception ex) {
                                 data = 0;
                             }
                         }
                     }
                 } else if (material == Material.POTION) {
-                    String color = pieces[1];
+                    String color = dataString;
                     if (color.startsWith("#")) {
                         color = color.substring(1);
                     }
@@ -246,7 +252,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     }
                 } else {
                     try {
-                        data = Short.parseShort(pieces[1]);
+                        data = Short.parseShort(dataString);
                     } catch (Exception ex) {
                         data = 0;
                     }
@@ -378,6 +384,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        blockData = CompatibilityUtils.getBlockData(block);
 
         isValid = true;
     }
@@ -433,6 +440,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
 
                 DeprecatedUtils.setTypeAndData(block, material, blockData, applyPhysics);
+
+                if (this.blockData != null) {
+                    CompatibilityUtils.setBlockData(Bukkit.getServer(), block, this.blockData);
+                }
                 blockState = block.getState();
             }
 
@@ -568,6 +579,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (data != 0) {
                 materialKey += ":" + data;
             }
+        }
+        if (blockData != null) {
+            materialKey += "?" + blockData;
         }
 
         return materialKey;
@@ -720,9 +734,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public static String[] splitMaterialKey(String materialKey) {
         if (materialKey.contains("|")) {
-            return StringUtils.split(materialKey, "|", 3);
+            return StringUtils.split(materialKey, "|", 2);
         } else if (materialKey.contains(":")) {
-            return StringUtils.split(materialKey, ":", 3);
+            return StringUtils.split(materialKey, ":", 2);
         }
 
         return new String[] { materialKey };

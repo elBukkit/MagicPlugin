@@ -3,6 +3,7 @@
 # 7.6.4
 
  - Fix torch spell not always working in 1.12
+ - Fix undo system not always restoring complex block states in 1.13 (sign/torch/door direction, for instance)
 
 # 7.6.3
 
