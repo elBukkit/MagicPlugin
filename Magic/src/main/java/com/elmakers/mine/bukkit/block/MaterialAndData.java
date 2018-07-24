@@ -369,7 +369,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 extraData = new BlockCommand(command.getCommand(), command.getName());
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
-                data = (short)skull.getSkullType().ordinal();
+                if (!NMSUtils.needsMigration()) {
+                    data = (short)skull.getSkullType().ordinal();
+                }
                 extraData = new BlockSkull(InventoryUtils.getSkullProfile(skull), skull.getRotation());
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
@@ -477,10 +479,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState != null && blockState instanceof Skull && extraData != null && extraData instanceof BlockSkull) {
                 Skull skull = (Skull)blockState;
                 BlockSkull skullData = (BlockSkull)extraData;
-                if (data != null && data != 0) {
+                // Don't do this in 1.13
+                if (data != null && data != 0 && !NMSUtils.needsMigration()) {
                     skull.setSkullType(SkullType.values()[data]);
                 }
-                if (skullData.rotation != null) {
+                if (skullData.rotation != null && skullData.rotation != org.bukkit.block.BlockFace.SELF) {
                     skull.setRotation(skullData.rotation);
                 }
                 if (skullData.profile != null) {
