@@ -36,6 +36,7 @@ public class ConfigurationLoadTask implements Runnable {
     private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
             "classes", "wands", "items", "crafting", "mobs", "automata"};
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
+    private static final int firstSupportedMinorVersion = 9;
 
     private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
 
@@ -134,15 +135,7 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Apply version-specific configs
-        int[] version = CompatibilityUtils.getServerVersion();
-        String versionExample = version[0] + "." + version[1];
-        String versionFileName = "examples/" + versionExample + "/" + fileName + ".yml";
-        InputStream versionInput = plugin.getResource(versionFileName);
-        if (versionInput != null)  {
-            ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput);
-            ConfigurationUtils.addConfigurations(config, versionConfig);
-            getLogger().info(" Using backwards-compatibility configs: " + versionFileName);
-        }
+        addVersionConfigs(config, fileName);
 
         // Apply overrides after loading defaults and examples
         ConfigurationUtils.addConfigurations(config, overrides);
@@ -279,6 +272,9 @@ public class ConfigurationLoadTask implements Runnable {
             }
         }
 
+        // Apply version-specific configs
+        addVersionConfigs(config, fileName);
+
         // Apply overrides after loading defaults and examples
         ConfigurationUtils.addConfigurations(config, overrides);
 
@@ -300,6 +296,23 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         return config;
+    }
+
+    private void addVersionConfigs(ConfigurationSection config, String fileName) throws InvalidConfigurationException, IOException {
+        if (CompatibilityUtils.isCurrentVersion()) return;
+
+        int[] serverVersion = CompatibilityUtils.getServerVersion();
+        int majorVersion = serverVersion[0];
+        for (int minorVersion = firstSupportedMinorVersion; minorVersion <= serverVersion[1]; minorVersion++) {
+            String versionExample = majorVersion + "." + minorVersion;
+            String versionFileName = "examples/" + versionExample + "/" + fileName + ".yml";
+            InputStream versionInput = plugin.getResource(versionFileName);
+            if (versionInput != null)  {
+                ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput);
+                ConfigurationUtils.addConfigurations(config, versionConfig);
+                getLogger().info(" Using backwards-compatibility configs: " + versionFileName);
+            }
+        }
     }
 
     private void deleteDefaults(String defaultsFileName) {
