@@ -238,7 +238,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         if (applyNameToItem && customName != null  && !customName.isEmpty()) {
                             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
                         }
-                        List<String> lore = configuration.getStringList("lore");
+                        List<String> lore = configuration.contains("lore") ? configuration.getStringList("lore") : null;
                         if (applyLoreToItem && lore != null) {
                             List<String> translated = new ArrayList<>();
                             for (String line : lore) {
