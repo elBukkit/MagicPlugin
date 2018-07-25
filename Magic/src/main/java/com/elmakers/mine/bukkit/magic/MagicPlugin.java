@@ -174,7 +174,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             if (NMSUtils.isLegacy()) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Magic] Using backwards-compatibility layer. It is highly recommended that you update to the latest Spigot version and/or the latest Magic version.");
             }
-            if (!NMSUtils.needsMigration()) {
+            if (!NMSUtils.isCurrentVersion()) {
                 CasterProperties.setLegacyVersion();
             }
             initialize();

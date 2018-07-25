@@ -52,7 +52,7 @@ import java.util.logging.Level;
 public class NMSUtils {
     protected static boolean failed = false;
     protected static boolean legacy = false;
-    protected static boolean migration = false;
+    protected static boolean isCurrentVersion = false;
 
     protected static String versionPrefix = "";
 
@@ -584,9 +584,7 @@ public class NMSUtils {
                 class_Block_setBlockDataMethod = Block.class.getMethod("setBlockData", class_BlockData);
                 class_Server_createBlockDataMethod = Server.class.getMethod("createBlockData", String.class);
                 class_BlockData_getAsStringMethod = class_BlockData.getMethod("getAsString");
-
-                Bukkit.getLogger().info("1.13 detected, compatibility layer enabled");
-                migration = true;
+                isCurrentVersion = true;
             } catch (Throwable ex) {
                 class_UnsafeValues_fromLegacyMethod = null;
                 class_UnsafeValues_fromLegacyDataMethod = null;
@@ -682,7 +680,7 @@ public class NMSUtils {
             try {
                 class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
             } catch (Throwable ex) {
-                if (!migration) {
+                if (!isCurrentVersion) {
                     Bukkit.getLogger().info("Could not bind to setTypeIdAndData, Magic will have issues modifying blocks");
                 }
             }
@@ -691,7 +689,7 @@ public class NMSUtils {
                 class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);
                 class_Chunk_setBlockMethod = class_Chunk.getMethod("a", class_BlockPosition, class_IBlockData);
             } catch (Throwable ex) {
-                if (!migration) {
+                if (!isCurrentVersion) {
                     Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work.");
                 }
             }
@@ -755,7 +753,7 @@ public class NMSUtils {
             try {
                 // 1.13
                 try {
-                    if (!migration) {
+                    if (!isCurrentVersion) {
                         throw new Exception("Not 1.13");
                     }
                     class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bg");
@@ -1123,8 +1121,8 @@ public class NMSUtils {
         return legacy;
     }
 
-    public static boolean needsMigration() {
-        return migration;
+    public static boolean isCurrentVersion() {
+        return isCurrentVersion;
     }
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {

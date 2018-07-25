@@ -520,7 +520,7 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static int getMapId(ItemStack mapItem) {
-        if (needsMigration()) {
+        if (isCurrentVersion()) {
             return getMetaInt(mapItem, "map", 0);
         }
 
@@ -528,7 +528,7 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static void setMapId(ItemStack mapItem, int id) {
-        if (needsMigration()) {
+        if (isCurrentVersion()) {
             setMetaInt(mapItem, "map", id);
         } else {
             mapItem.setDurability((short)id);

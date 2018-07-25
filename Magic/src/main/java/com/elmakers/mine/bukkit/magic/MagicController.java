@@ -5492,9 +5492,9 @@ public class MagicController implements MageController {
     @Nonnull
     @Override
     public ItemStack getMap(int mapId) {
-        short durability = NMSUtils.needsMigration() ? 0 : (short)mapId;
+        short durability = NMSUtils.isCurrentVersion() ? 0 : (short)mapId;
         ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
-        if (NMSUtils.needsMigration()) {
+        if (NMSUtils.isCurrentVersion()) {
             mapItem = CompatibilityUtils.makeReal(mapItem);
             InventoryUtils.setMetaInt(mapItem, "map", mapId);
         }
