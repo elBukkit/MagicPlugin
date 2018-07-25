@@ -933,12 +933,15 @@ public class BaseSpell implements MageSpell, Cloneable {
         // Load basic properties
         icon = loadIcon(node.getString("icon"));
         disabledIcon = loadIcon(node.getString("icon_disabled"));
-        if (icon == null) {
-            icon = new com.elmakers.mine.bukkit.block.MaterialAndData(DEFAULT_SPELL_ICON);
-        }
 
         iconURL = node.getString("icon_url");
         iconDisabledURL = node.getString("icon_disabled_url");
+
+
+        if (icon == null && (iconURL == null || iconURL.isEmpty())) {
+            icon = new com.elmakers.mine.bukkit.block.MaterialAndData(DEFAULT_SPELL_ICON);
+        }
+
         color = ConfigurationUtils.getColor(node, "color", null);
         if (node.contains("worth_sp")) {
             double worth = node.getDouble("worth_sp", 0) * controller.getWorthSkillPoints();
