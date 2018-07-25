@@ -3,10 +3,11 @@
 # Most construction spells will use this material list for destructibility tests by
 # default.
 destructible:
-- log
-- log_2
+- logs
+- all_leaves
 - stone
 - grass
+- grass_block
 - dirt
 - soil
 - cobblestone
@@ -22,8 +23,6 @@ destructible:
 - mycel
 - soul_sand
 - snow
-- leaves
-- leaves_2
 - sandstone
 - gold_ore
 - iron_ore

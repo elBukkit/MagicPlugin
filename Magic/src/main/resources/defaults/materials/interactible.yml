@@ -9,8 +9,6 @@ interactible:
 - burning_furnace
 - dispenser
 - hopper
-- stone_button
-- wood_button
 - lever
 - daylight_detector
 - daylight_detector_inverted
@@ -21,4 +19,6 @@ interactible:
 - beds
 - signs
 - gates
+- buttons
+
 
