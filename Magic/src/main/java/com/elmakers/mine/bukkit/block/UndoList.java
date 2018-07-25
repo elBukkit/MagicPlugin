@@ -878,6 +878,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.undoEntityEffects = undoEntityEffects;
     }
 
+    @Override
     public void setSorted(boolean sorted) {
         this.sorted = sorted;
     }

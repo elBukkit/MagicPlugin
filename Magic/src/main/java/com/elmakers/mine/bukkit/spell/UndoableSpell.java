@@ -56,6 +56,7 @@ public class UndoableSpell extends TargetingSpell {
         {
             undoEntityTypes = controller.getUndoEntityTypes();
         }
+        configureUndoList(getUndoList());
     }
 
     @Override
@@ -134,13 +135,17 @@ public class UndoableSpell extends TargetingSpell {
     public UndoList createUndoList() {
         com.elmakers.mine.bukkit.block.UndoList modifiedBlocks = new com.elmakers.mine.bukkit.block.UndoList(mage, this.getName());
         modifiedBlocks.setSpell(this);
+        configureUndoList(modifiedBlocks);
+        return modifiedBlocks;
+    }
+
+    private void configureUndoList(UndoList modifiedBlocks) {
         modifiedBlocks.setEntityUndo(undoEntityEffects);
         modifiedBlocks.setEntityUndoTypes(undoEntityTypes);
         modifiedBlocks.setBypass(bypassUndo);
         modifiedBlocks.setScheduleUndo(autoUndo);
         modifiedBlocks.setUndoSpeed(undoSpeed);
         modifiedBlocks.setSorted(undoSorted);
-        return modifiedBlocks;
     }
 
     public boolean contains(Block block)
