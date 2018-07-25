@@ -5,7 +5,7 @@ warlockspawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Warlock Spawner
+        Name: "{\"text\":\"Warlock Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -15,10 +15,9 @@ warlockspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: Zombie
         SpawnData:
-          id: Zombie
-          CustomName: Warlock
+          id: "minecraft:zombie"
+          CustomName: "{\"text\":\"Warlock\"}"
           IsVillager: 1
           
 darkspiderspawner:
@@ -27,7 +26,7 @@ darkspiderspawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Dark Spider Spawner
+        Name: "{\"text\":\"Dark Spider Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -37,10 +36,9 @@ darkspiderspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: cave_spider
         SpawnData:
-          id: cave_spider
-          CustomName: Dark Spider
+          id: "minecraft:cave_spider"
+          CustomName: "{\"text\":\"Dark Spider\"}"
                        
 megaspiderspawner:
   worth: 20000.0
@@ -48,7 +46,7 @@ megaspiderspawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Mega Spider Spawner
+        Name: "{\"text\":\"Mega Spider Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -58,18 +56,17 @@ megaspiderspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: Spider
         SpawnData:
-          id: Spider
-          CustomName: Mega Spider
+          id: "minecraft:spider"
+          CustomName: "{\"text\":\"Mega Spider\"}"
                     
 cavespiderspawner:
-  worth: 20000.0
+  worth: 5000.0
   item:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Cave Spider Spawner
+        Name: "{\"text\":\"Cave Spider Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -79,17 +76,16 @@ cavespiderspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: cave_spider
         SpawnData:
-          id: cave_spider
+          id: "minecraft:cave_spider"
              
 spiderspawner:
-  worth: 20000.0
+  worth: 5000.0
   item:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Spider Spawner
+        Name: "{\"text\":\"Spider Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -99,9 +95,8 @@ spiderspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: Spider
         SpawnData:
-          id: Spider
+          id: "minecraft:spider"
                 
 zombiespawner:
   worth: 20000.0
@@ -109,7 +104,7 @@ zombiespawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Zombie Spawner
+        Name: "{\"text\":\"Zombie Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -119,9 +114,8 @@ zombiespawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: Zombie
         SpawnData:
-          id: Zombie
+          id: "minecraft:zombie"
                   
 skeletonspawner:
   worth: 20000.0
@@ -129,7 +123,7 @@ skeletonspawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Skeleton Spawner
+        Name: "{\"text\":\"Skeleton Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -139,7 +133,6 @@ skeletonspawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 12
-        EntityId: Skeleton
         SpawnData:
-          id: Skeleton
+          id: "minecraft:skeleton"
           

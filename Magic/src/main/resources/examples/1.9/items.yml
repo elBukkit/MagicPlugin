@@ -1,0 +1,74 @@
+# Mob spawners
+warlockspawner:
+  item:
+    tags:
+      display:
+        Name: Warlock Spawner
+      BlockEntityTag:
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+          CustomName: Warlock
+
+darkspiderspawner:
+  item:
+    tags:
+      display:
+        Name: Dark Spider Spawner
+      BlockEntityTag:
+        EntityId: cave_spider
+        SpawnData:
+          id: cave_spider
+          CustomName: Dark Spider
+
+megaspiderspawner:
+  item:
+    tags:
+      display:
+        Name: Mega Spider Spawner
+      BlockEntityTag:
+        EntityId: Spider
+        SpawnData:
+          id: Spider
+          CustomName: Mega Spider
+
+cavespiderspawner:
+  item:
+    tags:
+      display:
+        Name: Cave Spider Spawner
+      BlockEntityTag:
+        EntityId: cave_spider
+        SpawnData:
+          id: cave_spider
+
+spiderspawner:
+  item:
+    tags:
+      display:
+        Name: Spider Spawner
+      BlockEntityTag:
+        EntityId: Spider
+        SpawnData:
+          id: Spider
+
+zombiespawner:
+  item:
+    tags:
+      display:
+        Name: Zombie Spawner
+      BlockEntityTag:
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+
+skeletonspawner:
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Skeleton Spawner
+      BlockEntityTag:
+        EntityId: Skeleton
+        SpawnData:
+          id: Skeleton
