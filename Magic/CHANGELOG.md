@@ -9,6 +9,7 @@
  - Allow resource packs to work on hosts that don't provide a Last-Modified header (dropboxusercontent)
  - Add missing 1.13 materials to the destructible lists
  - Add configurable support for arbitrary protection plugins, preloaded for Residence
+ - Fix lore on shop items, and Philbert egg being free
 
 # 7.6.3
 
