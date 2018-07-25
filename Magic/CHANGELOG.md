@@ -10,6 +10,7 @@
  - Add missing 1.13 materials to the destructible lists
  - Add configurable support for arbitrary protection plugins, preloaded for Residence
  - Fix lore on shop items, and Philbert egg being free
+ - Fix Ocarina in 1.12 and below
 
 # 7.6.3
 
