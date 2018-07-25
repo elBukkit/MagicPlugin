@@ -12,7 +12,7 @@ public class MagicItemStackParser implements ItemStackParser {
 
     public MagicItemStackParser(MageController controller) {
         this.controller = controller;
-        org.bukkit.Bukkit.getLogger().info("Registering magic thing parser");
+        controller.getLogger().info("Registering magic thing parser");
     }
 
     @Override

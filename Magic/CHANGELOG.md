@@ -8,6 +8,7 @@
  - Fix a few specific cases of the undo system failing
  - Allow resource packs to work on hosts that don't provide a Last-Modified header (dropboxusercontent)
  - Add missing 1.13 materials to the destructible lists
+ - Add configurable support for arbitrary protection plugins, preloaded for Residence
 
 # 7.6.3
 

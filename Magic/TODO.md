@@ -5,19 +5,11 @@
 - Small bug! When you die, it makes your wand auto-select the first spell in your hotbar:
   https://youtu.be/wExxOdFWCV4
 
- - Active/inactive wand icons are broken:
-   - Open wand, select spell, use jump spell, start gliding and it will happem
-   - The active wand state will only appear when a player selects a move And not when you open the wand
  - /m strange tab-completion behavior
-          
- - Option to disguise a mob as the caster
- - SpawnEntity action should be able to run actions on death of spawned mob
- 
+           
  - Test attributes when reloading mage class configs live
  - Option to specify a slot for class items to auto-equip
-                     
- - Look at mobs that die while casting a spell, does the spell get to finish? Does it undo correctly?
-  
+                       
  - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
    catch the dropped item.
    
@@ -36,9 +28,6 @@
 ## Recent Requests
       
  - Earn SP for killing players (maybe other mobs as well, by type?)
-      
- - "Residence" integration (requested by Frerduro on Discord)
-   https://github.com/Zrips/Residence
    
  - Allow use of equations in book action, somehow.
  - Custom spell lore showing arbitrary parameters (or something)

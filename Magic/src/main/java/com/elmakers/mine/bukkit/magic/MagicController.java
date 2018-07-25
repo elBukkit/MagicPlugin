@@ -168,6 +168,7 @@ import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.NCPManager;
 import com.elmakers.mine.bukkit.protection.PVPManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
+import com.elmakers.mine.bukkit.protection.ProtectionManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
@@ -1285,6 +1286,18 @@ public class MagicController implements MageController {
         if (griefPreventionManager.isEnabled()) blockBreakManagers.add(griefPreventionManager);
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBreakManagers.add(mobArenaManager);
         if (citadelManager != null) blockBreakManagers.add(citadelManager);
+
+        // Delay loading generic integration by one tick since we can't add depends: for these plugins
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                protectionManager.check();
+                if (protectionManager.isEnabled()) {
+                    blockBreakManagers.add(protectionManager);
+                    blockBuildManagers.add(protectionManager);
+                }
+            }
+        }, 1);
 
         initialized = true;
     }
@@ -2701,6 +2714,9 @@ public class MagicController implements MageController {
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
         }
+
+        // Link to generic protection plugins
+        protectionManager.initialize(plugin, properties.getStringList("generic_protection"));
     }
 
     protected void loadMobEggs(ConfigurationSection skins) {
@@ -5948,6 +5964,7 @@ public class MagicController implements MageController {
     private TownyManager                        townyManager                = new TownyManager();
     private GriefPreventionManager              griefPreventionManager        = new GriefPreventionManager();
     private NCPManager                          ncpManager                   = new NCPManager();
+    private ProtectionManager                   protectionManager           = new ProtectionManager();
     private CitadelManager                      citadelManager              = null;
     private RequirementsController              requirementsController      = null;
     private HeroesManager                       heroesManager               = null;
