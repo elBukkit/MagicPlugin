@@ -2,3 +2,9 @@ fountain:
  - effectlib:
      class: Fountain
      duration: 86400000
+     particles_spout: 15
+     particles_strand: 20
+     particle_offset_x: 0.1
+     particle_offset_y: 0.1
+     particle_offset_z: 0.1
+     particle_count: 5
