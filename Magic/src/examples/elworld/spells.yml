@@ -1823,7 +1823,7 @@ drainlife:
   icon_disabled: diamond_axe:3
   icon_url: http://textures.minecraft.net/texture/b635f01b8b4cd9f44436154be3dd5d735e4487617089d3dadda39b4dada14
   category: necromancy
-  worth: 10000.00
+  worth: 10000
   actions:
       cast:
       - class: Repeat
@@ -1872,7 +1872,7 @@ corpseexplosion:
    icon_disabled: diamond_hoe:196
    icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
    category: combat
-   worth: 10000.00
+   worth: 10000
    actions:
      cast:
        - class: ChangeContext
