@@ -611,6 +611,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     @SuppressWarnings("deprecation")
     public boolean is(Block block) {
+        if (NMSUtils.isCurrentVersion()) {
+            return material == block.getType();
+        }
         return material == block.getType() && data == block.getData();
     }
 
@@ -618,9 +621,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @SuppressWarnings("deprecation")
     public boolean isDifferent(Block block) {
         Material blockMaterial = block.getType();
-        byte blockData = block.getData();
-        if ((material != null && blockMaterial != material) || (data != null && blockData != data)) {
+        if (material != null && blockMaterial != material) {
             return true;
+        }
+        if (NMSUtils.isCurrentVersion()) {
+            byte blockData = block.getData();
+            if (data != null && blockData != data) {
+                return true;
+            }
         }
 
         // Special cases
