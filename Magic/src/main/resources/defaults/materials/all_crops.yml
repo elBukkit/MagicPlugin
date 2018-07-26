@@ -5,10 +5,10 @@ all_crops:
 - pumpkin_stem
 - wheat
 - sugar_cane_block
-- nether_wart_block
 - nether_warts
 - cocoa
 - crops
 
 # 1.13
 - nether_warts
+- sugar_cane
