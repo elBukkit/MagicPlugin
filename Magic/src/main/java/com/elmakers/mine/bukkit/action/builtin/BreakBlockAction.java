@@ -56,24 +56,22 @@ public class BreakBlockAction extends ModifyBlockAction {
             breakAmount = context.registerBreaking(block, breakPercentage);
         }
 
-        if (breakAmount >= 1) {
-            if (context.hasBreakPermission(block)) {
-                context.playEffects("break");
-                CompatibilityUtils.clearBreaking(block);
-                BlockState blockState = block.getState();
-                if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
-                    NMSUtils.clearItems(blockState.getLocation());
-                }
-                MaterialBrush brush = context.getBrush();
-                if (brush == null) {
-                    brush = new com.elmakers.mine.bukkit.block.MaterialBrush(context.getMage(), Material.AIR, (byte)0);
-                    context.setBrush(brush);
-                } else {
-                    brush.setMaterial(Material.AIR);
-                }
-                super.perform(context);
-                context.unregisterBreaking(block);
+        if (breakAmount >= 1 && context.hasBreakPermission(block)) {
+            context.playEffects("break");
+            CompatibilityUtils.clearBreaking(block);
+            BlockState blockState = block.getState();
+            if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
+                NMSUtils.clearItems(blockState.getLocation());
             }
+            MaterialBrush brush = context.getBrush();
+            if (brush == null) {
+                brush = new com.elmakers.mine.bukkit.block.MaterialBrush(context.getMage(), Material.AIR, (byte)0);
+                context.setBrush(brush);
+            } else {
+                brush.setMaterial(Material.AIR);
+            }
+            super.perform(context);
+            context.unregisterBreaking(block);
         } else {
             CompatibilityUtils.setBreaking(block, breakAmount);
         }

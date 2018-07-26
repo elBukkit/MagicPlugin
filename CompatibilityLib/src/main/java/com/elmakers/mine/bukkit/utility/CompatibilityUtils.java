@@ -1251,7 +1251,8 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void setBreaking(Block block, double percentage) {
-        int breakState = (int)Math.floor(10 * percentage);
+        // Block break states are 0 - 9
+        int breakState = (int)Math.ceil(9 * percentage);
         setBreaking(block, breakState, BLOCK_BREAK_RANGE);
     }
 

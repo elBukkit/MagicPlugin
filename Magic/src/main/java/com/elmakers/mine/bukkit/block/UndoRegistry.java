@@ -126,6 +126,7 @@ public class UndoRegistry {
         long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
         Double currentAmount = breaking.get(blockId);
         currentAmount = currentAmount == null ? addAmount : currentAmount + addAmount;
+        currentAmount = Math.min(currentAmount, 1);
         breaking.put(blockId, currentAmount);
         return currentAmount;
     }
