@@ -12,6 +12,7 @@
  - Fix lore on shop items, and Philbert egg being free
  - Fix Ocarina in 1.12 and below
  - Fix spawnershop mob spawners in 1.13
+ - Fix mobshop mob eggs in 1.13
 
 # 7.6.3
 

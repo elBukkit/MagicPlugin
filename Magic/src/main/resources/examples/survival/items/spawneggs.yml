@@ -2,57 +2,85 @@
 philbertegg:
   worth: 500.0
   item:
-    ==: org.bukkit.inventory.ItemStack
-    type: MONSTER_EGG
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      display-name: Spawn Philbert
-      lore:
-      - Spawns a Charged Creeper
-      - BEWARE!
-      internal: H4sIAAAAAAAAAHVSO28TQRCesy/OnUUIeRWAFKUFRREFEjSI+BFsCyexnESIjrVvbK98t3vszjkJVDRUNFDQAQ0NFBFdRIWE0sMvoIafAEIKu3bOiSJx0jW733yvnTxAHvw1QZz2t1nXh3yBSPFWQqjzAJDzwN1gEcJMFwUq3l6J2F4VWUi9HLhFpnH1Joy+FHk1RfaFbPdbrN1vouaamGjjyQzAuZmFMbscYISCtmLE4AR99/s59FSKZiqS6n+ccymqI8NQ7jaZ6Kb6qzdGUB/8dRnwDkc1TOuks7MGHchoScdsVyy1pEh0FvzNGBUjLoWF5iBXiGQi6MuLjY/s2pN1F/ydnVq5jkzTweHl2qe9o4YLnj1bl5p+fn53mHlZvH5qcH4cg8i0VGYRO3WYpjnL+vz17a9LC1dKHuRLiSYZDWm8Ro+HLVQ0AbnRyxQeDaNVTYYaYTSMlgHIwmwx6fc5rSRxwAjrOMDQXnmQ4QFMlhSiSWh3wPY6HnVhOO/e4wqPjx24UBODJDTWWStEc+GXkVFvmxsv4MAk7wpOGMAEXCq0tFSxbWxU1YjIqyaKUri3KSrK3AXOma5uRaVfR8uV91Y0MU+76Bsu66msZFzq2U3SE9bZnYP5p2f/LExb8uK+pTcrF8UG9cqFiw+kCoNxkW+//X3z7PdiIQPZAlfOsgNTJSYavN3fietSko0Ry11UGDgOzDXMepgFRiPbxMcJt8e+UTL9njOUSY0YAqvUMz24MDVWt+H+SHpY6d3/4EC+jh2yLAblwPTaXhxKbcpqsoCbhcvCzFbMu5JWyDjTdT4wOIAfAP8AqyFjSbYDAAA=
+    type: CREEPER_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Philbert\"}"
+      EntityTag:
+        powered: true
+        CustomName: "{\"text\":\"Philbert\"}"
 
 mutantegg:
   worth: 400.0
   item:
-    ==: org.bukkit.inventory.ItemStack
-    type: MONSTER_EGG
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      display-name: Spawn Mutant
-      internal: H4sIAAAAAAAAAKVUTWgTQRR++TUb+mO1RawgFREvkpsXUdtNom1poiVtKHqRSfZlM2R3Zp2ZTa1e9C721IOgXhTRi0cvCp48qlcFD3r2IoIHi6IzSTcJofTiwsIu+773fd/73mwWIAvWBaao2lglbgLGCpy1UUjK2Sr18a++kmBVq4vFEhKpni+9ffH2yZucBVlbKUFroUKZBYB9GUheIj7ChIsMBa3nfHJjAYmnmmlI5onEuUXoXlHlkaiyxXi9VSP1VgUllYqwOu5gdhBggVXmDm1QrcywxaIeByqEOdyfkQFZZzM1zkI5KPf+ytdL/NWxewmwLgcoiNK2TL80pG2fh0zNPnu/thVunU5CxoDKXKrXn1+eeHo+f7YvdKpnibfRR6ZWAkRnR+Lsu+Dxl0Fbo1E1ET4XkXkYMn8wqmpwz+Pr2oYbmZ6zb/+X6c0Ze+T6h+MzQ6ZjfdMPEj/Fp5PbA6bv/jj67dt02eoLnOzZUEpHUyQ+6SucHHIzfZP7NYq5jqIKUtbgot4ZlRxKUkOyhVAq7neA6XKo81YpSHd3Jb/Q8b2gDS4q9Du+4xmIUwcmfcqwLkhDnaGCs2tynQsnDumuMu0PUgXjLgaQgAP5sNWiKhcGDlFYwjZ6/U7WMnWvdgRnNG8oVH7DsGZtE1iPNrk7bY1zJXel7dYfGqr30HUpc/eCHB6C1JsoVeBp4XuApoZATfR8VLsC4pC8SIU+yzEYWWTt0NPBkpqH+oNVRKKa5qQbwGiBsLxA0ipyLiSkYL9dk1wEZoO6q2MS1Aous3mhX51YHDJmgN0GA/uk/mxuf1wtfLd0CzPVouBBoWlOtkyZ2Z57MXlr8E7AeDcI00n/AvzAMCVhbI0Lz+mt9qMPvx/e+XXUjkPCpiJ2Kg4pWx8cEYlfpvVWNSjpiHSe42aLhojjEWEMDi6b35xUqL9V8HqoJ+ToNvsMUbPzmC1hQ5km+i0Joz0pxuA2V1fmm0vPEzCxElCXq5zS3LJE27oYoArwDwILnVZbBQAA
+    type: ZOMBIE_PIGMAN_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Mutant\"}"
+      EntityTag:
+        CustomName: "{\"text\":\"Mutant\"}"
+        HandItems:
+          - id: "minecraft:iron_sword"
+            Count: true
+            Damage: 0
+        ArmorItems:
+          - id: minecraft:iron_boots
+            Count: true
+            Damage: 0
+          - id: minecraft:iron_leggings
+            Count: true
+            Damage: 0
+          - id: minecraft:iron_chestplate
+            Count: true
+            Damage: 0
+          - id: minecraft:iron_helmet
+            Count: true
+            Damage: 0
 
 witherarcheregg:
   worth: 300.0
   item:
-    ==: org.bukkit.inventory.ItemStack
-    type: MONSTER_EGG
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      display-name: Spawn Wither Archer
-      internal: H4sIAAAAAAAAAHVST2vUQBR/2c2um8W29o8nQfsBpHgQhILYdFe3xa0t7ZbicTZ5uxmSzMTJy9bFk19BQbyoIArqQQri0epZD/VLeNFPoBbqTNNsS8FACEN+7/dvXh2gDs5NQZyGHda3wdncXG62kaX0cnxPTs5/e+FA3SVSvJsRpnUAqNbAvsNihMk+ClTcm4vZ/SVkEQVVsBdZigtXIX8K5IUCGQrphV3mheuY8pSY8PBoBuDUzPkRuxxgjII2EkT/CH3j+yn0WIFmKpbqf5zTBaono0hurzPRL/QXruRQB5wV6fMeR3WY1ipmpzTal/FsmrBtMduVIktP1rX78dO7xx/aT8rgrCaoGHEpzHgVqm4sM0GfH+03hzudSzbUzNCKTOnn618/nr5qVY4NzoxiEOmWmixmxw6LNBac3QgxQpKiM0xQO6w3spRknDexxSlANesqT38qUM2vxg0Osy3pEMuE8WG2Ug1K3IexmAv0FOvRfFdul6CayxqhSsNYtwDKMLWYhSGnuSzxGWEbBxgdU9QKQ2ZbzA2MNGzjuAT2La7w4EBbXxaDLNIhWTdC/cNpIqOgw7VzqMA5t5tKlZjy8tbyvLVV0VL66FslqC1linL8iSq//P167c1ua+hoCqPfVDJpBGa/0opxcf39zIOTbxkmDM/i0DDpRYwTrRPaML4lVeSPbvX53v6zh78vuiUou1xZly0YazCxxr1wM2lLSbrSCVPpKblSIWPB9JpeJL3qqP+t471M1+BbFpwx9AH6Oly9jT0yJPpk6+srDJhYfyTdbQW335ZhciPhfUlzpLXTNh9oMJR3AP4BjuQFRMIDAAA=
+    type: WITHER_SKELETON_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Wither Archer\"}"
+      EntityTag:
+        CustomName: "{\"text\":\"Wither Archer\"}"
+        HandItems:
+          - id: "minecraft:bow"
+            Count: true
+            Damage: 0
 
 zombiehorseegg:
   worth: 1000.0
   item:
-    ==: org.bukkit.inventory.ItemStack
-    type: MONSTER_EGG
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      display-name: Spawn Zombie Horse
-      internal: H4sIAAAAAAAAAHVTQWwTVxCd9TrGXjCYhKpCSChUcMMJJYGQShVxbIijOgXFDlWRevjendif3f1/+fs3IeqJc9UbN0RV1EsREkgckJCqcmhPlSgH7r1w6LnHICSYv+t1IyRW2sPuvHkz8+aNA+BA5ZLQXO/02MCGUg/DCBUAHK2A09Ba8X6iMXboT6kMxa9ZiHB4gAIVd2dCdquNLNDDEhSXWYxL5yB7cuSxHOkL6fp95vrrGPNYM+HiKAfgg5xPxuxyC0MUuhsheiP0xb8ePrvj/F0fo6s5mqlQqo9xTuWoTRkEcnudiUFef+lMBq1AZU16fJOjSqe18txJQnsynI4jti2m+1IksQ2VK6QS01wKAy1BqRHKROjn93ZfVWdZrwiVjY3VVgdZrJ8u/TB4+/OZ7SKUzb81GevXu/+cOv3d8v3/G5wcShXjzI0kjLpaoRiMNb3475+zP/7x22OwwW4M0tH2sv8++/y/Xz57UbWg2mbxOkZKeomLHjE7zSTWMkz5D1yXYZ/jdNuUsaHY24kMlT0BpWyDjV/pCz5dTnyf65k1dqslQ4w1d/MhPYv6UURMQrVJkVWNYSpUwSROjhKTyGMaO7iFgQmVocA92J8ZLK3tgNNlnhegyc/CtZALdBXb1F/EaagApRYLmRnWgommEdaiMsXLXOG7d8aXZtfjBopGEwsONIfUMHppGWqp1vUxQC1FT7Gox0McwVbFVhKQG1g/QGKttJDpYRanEXuklkX7vSwVqTgSfAJqjX4sVWS0yDYN6eTldqJ0nlu+IlYUxTzKL62KDtk329Z476fuvlmwT6w8saBCzB06iVTPWjpPS8moOTSXEU+YtC8fHfl+72vDIVNtecfUoxMKo4z94DdSBd7YED+9fHvv9u7xRoHswpV1ukxe3aZxDQBOzrv9uXMXGNYXPl906/PzZ+fqi3PuQv3CwvlFF+fP46I7R1ZqMnGVu/5G1JFSG9H2akkdHzIO+KDhQt6oBVNX6YjozJFi63gzob15lgX7TINDGrkI1XHTRpc3Un+7MvzqgQVOBze1ISeUDfuuMcWZEduir8PdiA+kniFT+nGHbxEEpmoWHLxEHhWDNtshVVzfAngP4wjhvdcEAAA=
+    type: ZOMBIE_HORSE_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Zombie Horse\"}"
+      EntityTag:
+        CustomName: "{\"text\":\"Zombie Horse\"}"
+        Age: 0
+        ForcedAge: 0
+        Tame: true
+        SaddleItem:
+          id: "minecraft:saddle"
+          Count: true
+          Damage: 0
 
 skelliehorseegg:
   worth: 1000.0
   item:
-    ==: org.bukkit.inventory.ItemStack
-    type: MONSTER_EGG
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      display-name: Spawn Skellie Horse
-      internal: H4sIAAAAAAAAAJ1UTWgkVRCunu70zrTObjZRRASJP3vbSVaT3UlE2czPbiY4MUtmonjw8Ka7MvPs7vfa16+TDZ48i3jx4s+K4kURFT0IgrignhT1IIKnRRD07DFLcK03PTMOC15s6EvXV/VVffVVewAelC4JzfVhl/VtcLsYJ6gA4N4SeDWtFe9lGlOPvrhFcJ5iMcLpPgpU3F+M2dUWskgPXHDqLMX185A/Y+R9Y2QopB/2mB/uYMpTzYSPoxyA23LunlSX+xij0J0EMRihL3734ReveT9WJujyGM1ULNV/1Zwfo/ZkFMmDHSb6Y/71czm0BKUtGfA9jmo4bWGcO0foQMYLacIOxEJPiiy1obRNKjHNpSCo5YJbi2Um9PU3GtXVP17ddqC0u7vZbCNL9etvfb360I3vmw4Uzbctmeq/P/r08V+O67/B/+K4dvRzeYl1pzk+X3+5f/zOuYMpjt+Pbpw5+1z93X9FmBtIleLi81mcdLRC0Z/s7eKf3y698s2Xn4ANdq0/lG+6+ldL1/9678EfyhaUWyzdwUTJIPMxoMpeI0u1jPNVdEKMIo4LLcNjg9M9TEwtZwbc3Ca194Eo7qlnYcj14ha72pQxppr74ykDixpSVJm20SJJNjXG+TZM4twoMUsCprGN+xjliyrwAO7IXTzk9sDrsCCI0OTn4dmYC/QV29OPpcNQAdwmi5mZ1oKZhlHWIhrnMld465YxvzHUpAHHiGLBnY0BNYzBkIZamjUzo5aiq1jS5TGOYJtiP4vIcqwXIVUtNZHpQR6nEbskl0ULviwVyThSfAZma71UqsRoka8ahpMXW5nS49zitthQFAso390UbbqRfF2TxZ9582bVfmDjMwtKVLlNdzfUc3Y4T1PJpDEw55fOmLQnPr7rxenXhlOGrX5o+OhO4ySvfvIZqaJg4oi3fzq+9tLR/bUC+YUr62yRzHpA4xoAPLzi95bPrzKsVB9Z8ysrK48uV9aW/WpltXphzceVC7jmL5OXGkxc4X64m7Sl1Ea0aS2p41PGAbc1XBg3asH8FbpU+pcgxXbwhYz2FlgWnDANDmhkB8qTpo0uN6V+dmPw5AcWeG3c06Y4oWw48TRTnBmxC64NpzsJ70u9SKYM0zbfJwjM/2rByUvkUdFvsUNSxQ+plX8A9Ht33TwFAAA=
+    type: SKELETON_HORSE_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Skellie Horse\"}"
+      EntityTag:
+        CustomName: "{\"text\":\"Skellie Horse\"}"
+        Age: 0
+        ForcedAge: 0
+        Tame: true
+        SaddleItem:
+          id: "minecraft:saddle"
+          Count: true
+          Damage: 0

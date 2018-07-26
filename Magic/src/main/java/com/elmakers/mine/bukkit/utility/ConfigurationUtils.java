@@ -394,7 +394,11 @@ public class ConfigurationUtils extends ConfigUtils {
         return addConfigurations(first, second, true);
     }
 
-    public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override)
+    public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override) {
+        return addConfigurations(first, second, override, false);
+    }
+
+    public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override, boolean requireExisting)
     {
         if (second == null) return first;
         Map<String, Object> map = NMSUtils.getMap(second);
@@ -404,6 +408,8 @@ public class ConfigurationUtils extends ConfigUtils {
             String key = entry.getKey();
 
             Object existingValue = first.get(key);
+            if (existingValue == null && requireExisting) continue;
+
             if (value instanceof Map)
             {
                 value = getConfigurationSection(second, key);

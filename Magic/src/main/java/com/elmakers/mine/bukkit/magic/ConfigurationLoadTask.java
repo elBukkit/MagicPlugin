@@ -37,6 +37,7 @@ public class ConfigurationLoadTask implements Runnable {
             "classes", "wands", "items", "crafting", "mobs", "automata"};
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
     private static final int firstSupportedMinorVersion = 9;
+    private static final int firstCurrentMinorVersion = 13;
 
     private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
 
@@ -299,18 +300,21 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private void addVersionConfigs(ConfigurationSection config, String fileName) throws InvalidConfigurationException, IOException {
-        if (CompatibilityUtils.isCurrentVersion()) return;
+        int firstVersion = CompatibilityUtils.isCurrentVersion() ? firstCurrentMinorVersion : firstSupportedMinorVersion;
 
         int[] serverVersion = CompatibilityUtils.getServerVersion();
         int majorVersion = serverVersion[0];
-        for (int minorVersion = firstSupportedMinorVersion; minorVersion <= serverVersion[1]; minorVersion++) {
+        for (int minorVersion = firstVersion; minorVersion <= serverVersion[1]; minorVersion++) {
             String versionExample = majorVersion + "." + minorVersion;
             String versionFileName = "examples/" + versionExample + "/" + fileName + ".yml";
             InputStream versionInput = plugin.getResource(versionFileName);
             if (versionInput != null)  {
                 ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput);
-                ConfigurationUtils.addConfigurations(config, versionConfig);
-                getLogger().info(" Using backwards-compatibility configs: " + versionFileName);
+                // Version patches will never add to configs, the top-level nodes they are modifying must exist.
+                // This allows them to tweak things from example configs but get safely ignored if not loading
+                // those examples.
+                ConfigurationUtils.addConfigurations(config, versionConfig, true, true);
+                getLogger().info(" Using compatibility configs: " + versionFileName);
             }
         }
     }

@@ -72,3 +72,55 @@ skeletonspawner:
         EntityId: Skeleton
         SpawnData:
           id: Skeleton
+
+# Spawn eggs
+philbertegg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Philbert
+      EntityTag:
+        id: "minecraft:creeper"
+        CustomName: Philbert
+
+mutantegg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Mutant
+      EntityTag:
+        id: "minecraft:zombie_pigman"
+        CustomName: Mutant
+
+witherarcheregg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Wither Archer
+      EntityTag:
+        id: "minecraft:wither_skeleton"
+        CustomName: Wither Archer
+
+zombiehorseegg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Zombie Horse
+      EntityTag:
+        id: "minecraft:zombie_horse"
+        CustomName: Zombie Horse
+
+skelliehorseegg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Skellie Horse
+      EntityTag:
+        id: "minecraft:skeleton_horse"
+        CustomName: Skellie Horse
+
