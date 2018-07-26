@@ -56,10 +56,31 @@ defender:
         min_blocks: 100
         materials:
         - quartz_block
+        - chiseled_quartz_block
+        - quartz_pillar
+        - purpur_pillar
+        - purpor_block
+        - mossy_cobblestone
+        - black_wool
+        - blue_wool
+        - brown_wool
+        - cyan_wool
+        - gray_wool
+        - green_wool
+        - light_blue_wool
+        - light_gray_wool
+        - lime_wool
+        - magenta_wool
+        - orange_wool
+        - pink_wool
+        - purple_wool
+        - red_wool
+        - white_wool
+        - yellow_wool
+
+        # Legacy
         - quartz_block:1
         - quartz_block:2
-        - mossy_cobblestone
-        - brick
         - wool
         - wool:1
         - wool:2

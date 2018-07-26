@@ -58,7 +58,19 @@ public class AnimateSpell extends SimulateSpell
 
         List<String> materials = ConfigurationUtils.getStringList(parameters, "materials");
         if (seedRadius > 0 && materials != null && !materials.isEmpty()) {
-            targetMaterial = new MaterialAndData(RandomUtils.getRandom(materials));
+            int startIndex = RandomUtils.getRandom().nextInt(materials.size());
+            int index = startIndex;
+            while (true) {
+                MaterialAndData randomMaterial = new MaterialAndData(materials.get(index));
+                if (randomMaterial.isValid()) {
+                    targetMaterial = randomMaterial;
+                    break;
+                }
+                index = (index + 1) % materials.size();
+                if (index == startIndex) {
+                    break;
+                }
+            }
         } else if (parameters.contains("material")) {
             targetMaterial = ConfigurationUtils.getMaterialAndData(parameters,
                     "material", targetMaterial);

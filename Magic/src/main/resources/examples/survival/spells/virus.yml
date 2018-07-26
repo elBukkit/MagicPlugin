@@ -72,11 +72,11 @@ virus:
         undo_speed: 20
         command_block_allowed: false
         materials:
-        - stained_clay:15
+        - black_terracotta
         - prismarine
         - coal_block
         - bone_block
-        - magma
+        - magma_block
         - soul_sand
     costs:
         xp: 400

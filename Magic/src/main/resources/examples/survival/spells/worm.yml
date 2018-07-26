@@ -74,9 +74,13 @@ worm:
         undo_speed: 10
         command_block_allowed: false
         materials:
+        - red_mushroom_block
+        - brown_mushroom_block
+        - nether_wart_block
+
+        # Legacy
         - huge_mushroom_1
         - huge_mushroom_2
-        - nether_wart_block
     costs:
         xp: 250
         sp: 200
