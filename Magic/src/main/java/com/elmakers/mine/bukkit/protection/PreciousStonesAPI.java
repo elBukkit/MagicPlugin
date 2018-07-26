@@ -7,9 +7,11 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -37,19 +39,10 @@ import net.sacredlabyrinth.Phaed.PreciousStones.managers.ForceFieldManager;
 
 public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, PVPManager {
     private PreciousStones preciousStones = null;
-    private boolean canGetFields;
 
     public PreciousStonesAPI(Plugin owner, Plugin psPlugin) {
         if (psPlugin instanceof PreciousStones) {
             preciousStones = (PreciousStones) psPlugin;
-            ForceFieldManager manager = preciousStones.getForceFieldManager();
-            try {
-                manager.getClass().getMethod("getAllPlayerFields", String.class);
-                canGetFields = true;
-            } catch (Exception ex) {
-                canGetFields = false;
-                owner.getLogger().warning("Update PreciousStones if you'd like it to work with Recall!");
-            }
         }
     }
 
@@ -67,32 +60,35 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 
     @Nullable
     public Map<String, Location> getFieldLocations(Player player) {
-        if (preciousStones == null || player == null || !canGetFields)
+        if (preciousStones == null || player == null)
             return null;
 
         ForceFieldManager manager = preciousStones.getForceFieldManager();
         if (manager == null) return null;
-        Collection<Field> fields = manager.getAllPlayerFields(player.getName());
-        if (fields == null) return null;
+
         Map<String, Location> fieldLocations = new HashMap<>();
-        for (Field field : fields) {
-            String fieldName = field.getName();
-            String fieldType = field.getSettings().getTitle();
-            String fieldOwner = field.getOwner();
-            List<String> renters = field.getRenters();
-            if (fieldName == null || fieldName.isEmpty()) {
-                fieldName = fieldType;
-            }
-            if (!fieldOwner.equalsIgnoreCase(player.getName())) {
-                if (renters.contains(player.getName().toLowerCase())) {
-                    fieldName = fieldName + ChatColor.GRAY + " (Renting)";
-                } else {
-                    fieldName = fieldName + ChatColor.LIGHT_PURPLE + " (" + fieldOwner + ")";
+        for (World world : Bukkit.getWorlds()) {
+            Collection<Field> fields = manager.getFields(player.getName(), world);
+            if (fields == null) continue;
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                String fieldType = field.getSettings().getTitle();
+                String fieldOwner = field.getOwner();
+                List<String> renters = field.getRenters();
+                if (fieldName == null || fieldName.isEmpty()) {
+                    fieldName = fieldType;
                 }
+                if (!fieldOwner.equalsIgnoreCase(player.getName())) {
+                    if (renters.contains(player.getName().toLowerCase())) {
+                        fieldName = fieldName + ChatColor.GRAY + " (Renting)";
+                    } else {
+                        fieldName = fieldName + ChatColor.LIGHT_PURPLE + " (" + fieldOwner + ")";
+                    }
+                }
+                fieldLocations.put(fieldName, field.getLocation());
             }
-            fieldLocations.put(fieldName, field.getLocation());
         }
-        return fieldLocations;
+        return fieldLocations.isEmpty() ? null : fieldLocations;
     }
 
     @Override

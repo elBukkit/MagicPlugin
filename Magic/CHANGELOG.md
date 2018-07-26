@@ -14,6 +14,7 @@
  - Fix spawnershop mob spawners in 1.13
  - Fix mobshop mob eggs in 1.13
  - Add support for WorldGuard 7
+ - Fix PreciousStones fields not showing up in Recall menu
 
 # 7.6.3
 
