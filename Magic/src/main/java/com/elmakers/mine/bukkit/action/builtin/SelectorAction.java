@@ -274,6 +274,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     optionCost.checkSupported(controller, costTypeFallback);
                     optionCost.scale(controller.getWorthBase());
                     costs.add(optionCost);
+                } else if (configuration.isString("cost")) {
+                    if (costs == null) {
+                        costs = new ArrayList<>();
+                    }
+                    costs.add(new com.elmakers.mine.bukkit.item.Cost(context.getController(), configuration.getString("cost"), 1));
                 }
 
                 if (costs == null && items != null) {
