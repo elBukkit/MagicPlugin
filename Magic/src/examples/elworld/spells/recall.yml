@@ -1,0 +1,156 @@
+recall:
+  parameters:
+    commands:
+      hub:
+        name: elMakers Hub
+        description: Return to the Hub
+        icon: nether_star
+        command: mserver hub
+        op: true
+        locked: true
+    warps:
+      bean:
+        name: Chicago Warzone
+        description: Leave this world
+        server: chicago
+        icon: iron_nugget
+        locked: true
+      walls:
+        name: The Walls
+        description: A sprawling urbal dueling arena
+        icon: wood_hoe:3
+      falcon:
+        name: Milennium Falcon
+        description: May the force be with you!
+        locked: false
+        icon: wood_hoe:14
+      greenfield:
+        name: Greenfield Car Dealership
+        description: Explore a sprawling city
+        locked: false
+        icon: diamond_pickaxe:10
+      airtemple:
+        name: Southern Air Temple
+        description: A relic of a long-lost civilization
+        locked: false
+        icon: wood_hoe:34
+      mansion:
+        name: The Mansion
+        description: Return to the training mansion
+        icon_url: http://textures.minecraft.net/texture/43e6aef534bc455c1d13d692fa193cac6efcce7c875b185375114b71c63929
+        locked: false
+      hogwarts:
+        name: Hogwarts
+        description: Home of witchcraft and wizardry!
+        icon: diamond_hoe:196
+        locked: false
+      town:
+        name: The Capitol
+        description: The capitol city
+        locked: false
+        icon: compass
+      lodge:
+        name: Old Town
+        description: The old city of yore
+        locked: true
+        icon: compass
+      battle:
+        name: Battle School
+        description: Buy your way to power
+        locked: true
+        icon: diamond_sword
+      engineer:
+        name: Engineering School
+        description: Buy your way to glory
+        locked: true
+        icon: gold_axe
+      other:
+        name: The Fallen Capital
+        description: Danger Lurks
+        locked: true
+        icon: eye_of_ender
+      bastion:
+        name: The Bastion
+        description: The last refuge
+        locked: true
+        icon: ender_pearl
+      black:
+        name: The Black Temple
+        description: The original spawn!
+        locked: true
+        icon: obsidian
+      white:
+        name: The White Temple
+        description: Spawn#2
+        locked: true
+        icon: quartz_block
+      blue:
+        name: The Blue Temple
+        description: Spawn#3
+        locked: true
+        icon: lapis_block
+      frozen:
+        name: The Frozen Temple
+        description: Spawn#4
+        locked: true
+        icon: packed_ice
+      iron:
+        name: The Iron Temple
+        description: Spawn#5
+        locked: true
+        icon: iron_block
+      redwood:
+        name: The Burning Temple
+        description: The Lost Spawn
+        locked: true
+        icon: log
+      gold:
+        name: The Gold Temple
+        description: The spawn of Heroes
+        locked: true
+        icon: gold_block
+      hall:
+        name: The Hall of Heroes
+        description: Our most (in)famous players
+        locked: true
+        icon: emerald
+      brick:
+        name: The Brick Temple
+        description: Spawn#6
+        locked: true
+        icon: brick
+      seaside:
+        name: Seaside
+        description: A quaint little town
+        locked: true
+        icon: boat
+      wolfcastle:
+        name: Wolf Castle
+        description: The castle of wolves
+        locked: true
+        icon: stone
+      dueling:
+        name: Dueling Arena
+        description: Wizard Duels!
+        locked: true
+        icon: wood_hoe
+      spleef:
+        name: Spleef Arena
+        description: Wizard Spleef!
+        locked: true
+        icon: wood_hoe
+      refugee:
+        name: Refugee Camp
+        description: OP Dueling!
+        locked: true
+        icon: wood_hoe
+      endtemple:
+        name: The End Temple
+        description: A little shortcut
+        locked: true
+        icon: ender_stone
+      atlantis:
+        name: Grim's Atlantis
+        description: Evil Underwater
+        locked: true
+        icon: skull_item
