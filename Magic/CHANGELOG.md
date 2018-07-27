@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.5
+
 # 7.6.4
 
  - Fix torch spell not always working in 1.12
