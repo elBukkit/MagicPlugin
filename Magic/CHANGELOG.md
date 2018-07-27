@@ -15,6 +15,8 @@
  - Fix mobshop mob eggs in 1.13
  - Add support for WorldGuard 7
  - Fix PreciousStones fields not showing up in Recall menu
+ - Add /mwarp command, a very simple warp system
+   This is basically just here to make Recall work stand-alone. EssentialsX hasn't updated to 1.13 yet and I'm impatient.
 
 # 7.6.3
 

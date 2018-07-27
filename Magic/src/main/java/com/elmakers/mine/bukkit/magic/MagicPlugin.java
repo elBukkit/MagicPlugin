@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.magic.command.MagicSaveCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicServerCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicSkillsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicTraitCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicWarpCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.RPCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
@@ -199,6 +200,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         new WandCommandExecutor(this).register(this);
         new SpellsCommandExecutor(this).register(this);
         new RPCommandExecutor(this).register(this);
+        new MagicWarpCommandExecutor(controller).register(this);
         CitizensController citizens = controller.getCitizens();
         if (citizens != null)
         {

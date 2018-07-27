@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.warp;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -43,5 +47,14 @@ public class CommandBookWarps {
         NamedLocation location = locationManager.get(null, warpName);
         if (location == null) return null;
         return location.getLocation();
+    }
+
+    public Map<String, Location> getWarps() {
+        Map<String, Location> warps = new HashMap<>();
+        List<NamedLocation> locations = locationManager.getLocations(null);
+        for (NamedLocation location : locations) {
+            warps.put(location.getName(), location.getLocation());
+        }
+        return warps;
     }
 }

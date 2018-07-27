@@ -1757,6 +1757,13 @@ public class MagicController implements MageController {
                     ex.printStackTrace();
                 }
 
+                getLogger().info("Loading warps");
+                ConfigurationSection warps = loadDataFile(WARPS_FILE);
+                if (warps != null) {
+                    warpController.load(warps);
+                    getLogger().info("Loaded " + warpController.getCustomWarps().size() + " warps");
+                }
+
                 getLogger().info("Finished loading data.");
             }
         }, 10);
@@ -1827,6 +1834,16 @@ public class MagicController implements MageController {
         }
 
         getLogger().info("Loaded " + automataCount + " automata");
+    }
+
+    protected void saveWarps(Collection<YamlDataFile> stores) {
+        try {
+            YamlDataFile warpData = createDataFile(WARPS_FILE);
+            warpController.save(warpData);
+            stores.add(warpData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     protected void saveAutomata(Collection<YamlDataFile> stores) {
@@ -2083,6 +2100,7 @@ public class MagicController implements MageController {
         saveSpellData(saveData);
         saveLostWands(saveData);
         saveAutomata(saveData);
+        saveWarps(saveData);
 
         if (mageDataStore != null) {
             if (asynchronous) {
@@ -3723,6 +3741,10 @@ public class MagicController implements MageController {
             }
         }
         return location;
+    }
+
+    public WarpController getWarps() {
+        return warpController;
     }
 
     @Nullable
@@ -5737,6 +5759,7 @@ public class MagicController implements MageController {
 
     private static final String RP_FILE             = "resourcepack";
     private static final String LOST_WANDS_FILE     = "lostwands";
+    private static final String WARPS_FILE          = "warps";
     private static final String SPELLS_DATA_FILE    = "spells";
     private static final String AUTOMATA_DATA_FILE  = "automata";
     private static final String URL_MAPS_FILE       = "imagemaps";

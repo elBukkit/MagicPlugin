@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.warp;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -34,8 +38,19 @@ public class EssentialsWarps {
         try {
             return warps.getWarp(warpName);
         } catch (Exception ignored) {
-
         }
         return null;
+    }
+
+    public Map<String, Location> getWarps() {
+        Map<String, Location> all = new HashMap<>();
+        Collection<String> names = warps.getList();
+        for (String name : names) {
+            try {
+                all.put(name, warps.getWarp(name));
+            } catch (Exception ignored) {
+            }
+        }
+        return all;
     }
 }

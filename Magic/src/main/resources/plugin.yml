@@ -698,6 +698,46 @@ commands:
     description: Save player data, and execute command as console
     usage: /msave <Player> [command to run]
     permission: Magic.commands.msave
+  mwarp:
+    description: Create and manage warps
+    usage: |
+        Use /help mwarp [subcommand] for more information
+        /mwarp add        Add a new warp
+        /mwarp replace    Replace an existing warp
+        /mwarp remove     Remove a warp
+        /mwarp go         Go to a warp
+        /mwarp import     Import warps from Essentials or CommandBook
+    permission: Magic.commands.mwarp
+  "mwarp add":
+    description: Add a new warp
+    permission: Magic.commands.mwarp.add
+    usage: |
+
+       /mwarp add <warpname>
+  "mwarp replace":
+    description: Replace an existing warp
+    permission: Magic.commands.mwarp.replace
+    usage: |
+
+       /mwarp replace <warpname>
+  "mwarp remove":
+    description: Remove a warp
+    permission: Magic.commands.mwarp.remove
+    usage: |
+
+       /mwarp remove <warpname>
+  "mwarp go":
+    description: Go to a warp
+    permission: Magic.commands.mwarp.go
+    usage: |
+
+       /mwarp go <warpname>
+  "mwarp import":
+    description: Import warps from Essentials or CommandBook. Will overwrite any Magic warps on collision.
+    permission: Magic.commands.mwarp.import
+    usage: |
+
+       /mwarp import
 permissions:
   Magic.commands.*:
     description: Player may use all Magic commands
@@ -730,6 +770,8 @@ permissions:
     - Magic.commands.msave
     - Magic.commands.mserver
     - Magic.commands.getrp
+    - Magic.commands.mwarp
+    - Magic.commands.mwarp.*
   Magic.commands.getrp:
     description: Player may download the resource pack
     type: boolean
@@ -1428,6 +1470,36 @@ permissions:
     default: op
   Magic.commands.msave:
     description: Player may save mage data and run commands
+    type: boolean
+    default: op
+  Magic.commands.mwarp.*:
+    description: Player may use all /mwarp sub-commands
+    default: op
+    children:
+    - Magic.commands.mwarp
+    - Magic.commands.mwarp.add
+    - Magic.commands.mwarp.replace
+    - Magic.commands.mwarp.remove
+    - Magic.commands.mwarp.go
+    - Magic.commands.mwarp.import
+  Magic.commands.mwarp.add:
+    description: Player may use the /mwarp add command
+    type: boolean
+    default: op
+  Magic.commands.mwarp.replace:
+    description: Player may use the /mwarp replace command
+    type: boolean
+    default: op
+  Magic.commands.mwarp.remove:
+    description: Player may use the /mwarp remove command
+    type: boolean
+    default: op
+  Magic.commands.mwarp.go:
+    description: Player may use the /mwarp go command
+    type: boolean
+    default: op
+  Magic.commands.mwarp.import:
+    description: Player may use the /mwarp import command
     type: boolean
     default: op
   Magic.wand.use:
