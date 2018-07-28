@@ -3,6 +3,7 @@
 ## Hot Issues
 
  - Wolf House broken in 1.13
+ - Projector spell looks broken? Doesn't animate...
 
  - Small bug! When you die, it makes your wand auto-select the first spell in your hotbar:
    https://youtu.be/wExxOdFWCV4

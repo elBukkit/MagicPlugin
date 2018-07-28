@@ -95,3 +95,7 @@ note24:
     parameters:
       sound: flute.24B
 
+sniper_scope:
+    parameters:
+        item: pumpkin
+
