@@ -206,9 +206,9 @@ public class WorldGuardAPI {
                 Object query = createQueryMethod.invoke(regionContainer);
                 if (locationAdaptMethod != null) {
                     Object location = locationAdaptMethod.invoke(null, block.getLocation());
-                    result = (boolean)regionQueryTestStateMethod.invoke(query, location, getAssociable(player), (Object)new StateFlag[]{buildFlag});
+                    result = (boolean)regionQueryTestStateMethod.invoke(query, location, getAssociable(player), new StateFlag[]{buildFlag});
                 } else {
-                    result = (boolean)regionQueryTestStateMethod.invoke(query, block.getLocation(), getAssociable(player), (Object)new StateFlag[]{buildFlag});
+                    result = (boolean)regionQueryTestStateMethod.invoke(query, block.getLocation(), getAssociable(player), new StateFlag[]{buildFlag});
                 }
                 return result;
             } catch (Exception ex) {

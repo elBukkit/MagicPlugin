@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Verify.verifyNotNull;
 
 import java.util.ArrayList;
@@ -74,7 +76,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.google.common.base.Preconditions;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
     public static final int OFFHAND_SLOT = 40;
@@ -279,7 +280,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Deprecated
     public Wand(MagicController controller, ItemStack itemStack) {
         this(controller);
-        Preconditions.checkNotNull(itemStack);
+        checkNotNull(itemStack);
 
         if (itemStack.getType() == Material.AIR) {
             itemStack.setType(DefaultWandMaterial);
@@ -3269,8 +3270,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Nonnull
     public static Wand createWand(@Nonnull MagicController controller, @Nonnull ItemStack itemStack) {
-        Preconditions.checkNotNull(controller);
-        Preconditions.checkNotNull(itemStack);
+        checkNotNull(controller);
+        checkNotNull(itemStack);
         Wand wand = null;
         try {
             wand = controller.getWand(InventoryUtils.makeReal(itemStack.clone()));
@@ -5700,9 +5701,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     @Nonnull
     public WandEffectContext getEffectContext() {
+        checkState(mage != null, "Mage is not available");
+
         if (effectContext == null || (effectContext.getMage() != mage)) {
             // Lazy load or mage has changed
-            effectContext = new WandEffectContext(mage, this);
+            effectContext = new WandEffectContext(verifyNotNull(mage), this);
         }
 
         return verifyNotNull(effectContext);

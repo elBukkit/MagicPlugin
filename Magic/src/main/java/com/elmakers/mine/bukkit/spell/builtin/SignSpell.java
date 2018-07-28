@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class SignSpell extends BlockSpell
 {
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
