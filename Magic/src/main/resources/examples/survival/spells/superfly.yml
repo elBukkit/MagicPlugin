@@ -16,6 +16,8 @@ superfly:
        - class: Delay
          delay: 100
        - class: Fly
+       - class: FallProtection
+         duration: 10000
     effects:
         cast:
         -  class: EffectSingle
