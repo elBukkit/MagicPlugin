@@ -1,9 +1,11 @@
 melee:
 - diamond_sword
 - wood_sword
+- wooden_sword
 - iron_sword
 - stone_sword
 - gold_sword
+- golden_sword
 - trident
 - shield
 
