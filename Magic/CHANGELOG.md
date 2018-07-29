@@ -4,6 +4,7 @@
 
  - Fix sniper scope in 1.13
  - Add fall protection to Levitate and Superfly
+ - Fix arrow spell throwing exceptions in 1.13
 
 # 7.6.4
 

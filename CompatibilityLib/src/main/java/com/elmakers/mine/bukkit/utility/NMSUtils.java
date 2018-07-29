@@ -979,16 +979,21 @@ public class NMSUtils {
 
             try {
                 try {
-                    // 1.11
-                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ax");
-                } catch (Throwable ignore5) {
+                    // 1.13
+                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("despawnCounter");
+                } catch (Throwable ignore6) {
                     try {
-                        // 1.10
-                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ay"); // ayyyyy lmao
-                    } catch (Throwable ignore4) {
-                        setLegacy();
-                        // 1.8.3
-                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
+                        // 1.11
+                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ax");
+                    } catch (Throwable ignore5) {
+                        try {
+                            // 1.10
+                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ay"); // ayyyyy lmao
+                        } catch (Throwable ignore4) {
+                            setLegacy();
+                            // 1.8.3
+                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
+                        }
                     }
                 }
             } catch (Throwable ex) {
