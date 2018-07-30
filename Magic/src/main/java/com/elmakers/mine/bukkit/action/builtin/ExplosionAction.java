@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -30,7 +31,12 @@ public class ExplosionAction extends BaseSpellAction {
         }
         Entity entity = context.getEntity();
         Location location = block.getLocation();
+
+        // Make sure undo info on exploding blocks gets attached to this cast.
+        UndoList currentList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
+        com.elmakers.mine.bukkit.block.UndoList.setUndoList(context.getPlugin(), entity, context.getUndoList());
         NMSUtils.createExplosion(entity, location.getWorld(), location.getX(), location.getY(), location.getZ(), size, useFire, breakBlocks);
+        com.elmakers.mine.bukkit.block.UndoList.setUndoList(context.getPlugin(), entity, currentList);
         return SpellResult.CAST;
     }
 
