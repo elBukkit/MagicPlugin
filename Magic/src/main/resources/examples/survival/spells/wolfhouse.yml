@@ -17,6 +17,7 @@ wolfhouse:
         target_type: LivingEntity
         allow_max_range: true
         check_destructible: false
+        physics: defer
         range: 16
         radius: 4
         type: sphere
