@@ -78,21 +78,21 @@ public class FillBatch extends BrushBatch {
 
     @Override
     @SuppressWarnings("deprecation")
-    public int process(int maxBlocks) {
-        int processedBlocks = 0;
+    public int process(int maxWork) {
+        int workPerformed = 0;
 
-        while (processedBlocks <= maxBlocks && ix < absx) {
+        while (workPerformed <= maxWork && ix < absx) {
             Block block = world.getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
             brush.update(mage, block.getLocation());
             if (!block.getChunk().isLoaded()) {
                 block.getChunk().load();
-                return processedBlocks;
+                return workPerformed + 20;
             }
             if (!brush.isReady()) {
                 brush.prepare();
-                return processedBlocks;
+                return workPerformed + 10;
             }
-            processedBlocks++;
+            workPerformed += 10;
 
             boolean hasPermission = brush.isErase() ? spell.hasBreakPermission(block) : spell.hasBuildPermission(block);
             if (hasPermission && !spell.isIndestructible(block)) {
@@ -106,7 +106,7 @@ public class FillBatch extends BrushBatch {
                             String requiresMessage = context.getMessage("insufficient_resources");
                             context.sendMessage(requiresMessage.replace("$cost", brush.getName()));
                             finish();
-                            return processedBlocks;
+                            return workPerformed;
                         }
                         mage.removeItem(requires, consumeVariants);
                     }
@@ -137,7 +137,7 @@ public class FillBatch extends BrushBatch {
             finish();
         }
 
-        return processedBlocks;
+        return workPerformed;
     }
 
     public int getXSize() {

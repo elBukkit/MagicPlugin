@@ -163,30 +163,29 @@ public class ConstructBatch extends BrushBatch {
     }
 
     @Override
-    public int process(int maxBlocks) {
-        int processedBlocks = 0;
+    public int process(int workAllowed) {
+        int workPerformed = 0;
         if (finishedDelayedBlocks) {
             if (deferred == null || deferred.isEmpty()) {
                 finish();
-            } else while (!deferred.isEmpty() && processedBlocks < maxBlocks && !finished) {
+            } else while (!deferred.isEmpty() && workPerformed < workAllowed && !finished) {
                 com.elmakers.mine.bukkit.api.block.BlockData delayed = deferred.pop();
                 Block block = delayed.getBlock();
                 Chunk chunk = block.getChunk();
                 if (!deferredTypes.testMaterial(block.getType())) {
-                    org.bukkit.Bukkit.getLogger().info("    skipping " + block.getType());
+                    workPerformed++;
                     continue;
                 }
                 if (!chunk.isLoaded()) {
                     chunk.load();
-                    return processedBlocks;
+                    return workPerformed + 20;
                 }
                 if (!CompatibilityUtils.isReady(chunk)) {
-                    return processedBlocks;
+                    return workPerformed + 5;
                 }
 
-                processedBlocks++;
-                boolean result = CompatibilityUtils.applyPhysics(block);
-                org.bukkit.Bukkit.getLogger().info("    deferred " + block + ": " + result);
+                workPerformed += 5;
+                CompatibilityUtils.applyPhysics(block);
             }
         } else if (finishedAttached) {
             if (delayedBlockIndex >= delayedBlocks.size()) {
@@ -196,30 +195,30 @@ public class ConstructBatch extends BrushBatch {
                 } else {
                     deferred = new ArrayDeque<>(undoList);
                 }
-            } else while (delayedBlockIndex < delayedBlocks.size() && processedBlocks < maxBlocks && !finished) {
+            } else while (delayedBlockIndex < delayedBlocks.size() && workPerformed < workAllowed && !finished) {
                 BlockData delayed = delayedBlocks.get(delayedBlockIndex);
                 Block block = delayed.getBlock();
                 Chunk chunk = block.getChunk();
                 if (!chunk.isLoaded()) {
                     chunk.load();
-                    return processedBlocks;
+                    return workPerformed  + 20;
                 }
                 if (!CompatibilityUtils.isReady(chunk)) {
-                    return processedBlocks;
+                    return workPerformed + 5;
                 }
 
-                processedBlocks++;
+                workPerformed += 10;
                 modifyWith(block, delayed);
 
                 delayedBlockIndex++;
             }
         } else if (finishedNonAttached) {
-            while (attachedBlockIndex < attachedBlockList.size() && processedBlocks < maxBlocks && !finished) {
+            while (attachedBlockIndex < attachedBlockList.size() && workPerformed < workAllowed && !finished) {
                 BlockData attach = attachedBlockList.get(attachedBlockIndex);
                 Block block = attach.getBlock();
                 if (!block.getChunk().isLoaded()) {
                     block.getChunk().load();
-                    return processedBlocks;
+                    return workPerformed + 20;
                 }
 
                 // TODO: Port all this to fill... or move to BlockSpell?
@@ -260,7 +259,7 @@ public class ConstructBatch extends BrushBatch {
 
                 if (ok) {
                     modifyWith(block, attach);
-                    processedBlocks++;
+                    workPerformed += 10;
                 }
 
                 attachedBlockIndex++;
@@ -279,9 +278,9 @@ public class ConstructBatch extends BrushBatch {
             }
             yBounds = Math.min(yBounds, center.getWorld().getMaxHeight());
 
-            while (processedBlocks <= maxBlocks && !finishedNonAttached && !finished) {
+            while (workPerformed <= workAllowed && !finishedNonAttached && !finished) {
                 if (!fillBlock(x, y, z)) {
-                    return processedBlocks;
+                    return workPerformed + 5;
                 }
 
                 int xBounds = r;
@@ -315,16 +314,16 @@ public class ConstructBatch extends BrushBatch {
                     }
                 }
 
+                workPerformed += 10;
                 if (r > radius || (bounds != null && r > bounds.getZ() && r > bounds.getX()))
                 {
                     finishedNonAttached = true;
                     break;
                 }
-                processedBlocks++;
             }
         }
 
-        return processedBlocks;
+        return workPerformed;
     }
 
     public boolean fillBlock(int x, int y, int z)

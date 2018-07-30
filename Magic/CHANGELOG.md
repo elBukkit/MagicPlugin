@@ -7,6 +7,8 @@
  - Fix arrow spell throwing exceptions in 1.13
  - Fix Magic/Master swords not doing melee damage
  - Some fixes to schematic loading in 1.13, still not perfect though.
+ - Some attempts to fix Wolf House, still not 100% there yet (+ spigot seems to have command block bugs)
+ - Mega-engineering throttled down for performance
 
 # 7.6.4
 
