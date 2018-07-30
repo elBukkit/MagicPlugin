@@ -11,12 +11,10 @@ forcechoke:
         - class: PotionEffect
     effects:
       tick:
-      - class: EffectSingle
-        location: target
+      - location: target
         particle: smoke_large
       cast:
-      - class: EffectSingle
-        sound: magic.zap_big
+      - sound: magic.zap_big
         location: origin
         effectlib:
            class: DnaEffect
@@ -26,8 +24,7 @@ forcechoke:
            particle_base1: smoke_normal
            particle_base2: smoke_normal
            iterations: 10
-      - class: EffectSingle
-        location: target
+      - location: target
         requires_entity_target: true
         effectlib:
           class: AnimatedBall
