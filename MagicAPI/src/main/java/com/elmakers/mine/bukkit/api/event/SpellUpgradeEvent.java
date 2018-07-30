@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.api.event;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -35,18 +38,22 @@ public class SpellUpgradeEvent extends Event {
         return handlers;
     }
 
+    @Nonnull
     public Mage getMage() {
         return mage;
     }
 
+    @Nonnull
     public SpellTemplate getOldSpell() {
         return oldSpell;
     }
 
+    @Nonnull
     public SpellTemplate getNewSpell() {
         return newSpell;
     }
 
+    @Nullable
     public Wand getWand() {
         return wand;
     }
