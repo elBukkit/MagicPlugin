@@ -33,10 +33,8 @@ public class SourceLocation {
         this(configuration, "source_location", true);
     }
 
-    public SourceLocation(ConfigurationSection configuration, String sourceKey, boolean isSource) {
+    public SourceLocation(String locationTypeString, boolean isSource) {
         this.isSource = isSource;
-        // The new format overrides any of the old ones
-        String locationTypeString = configuration.getString(sourceKey, "");
         if (!locationTypeString.isEmpty()) {
             try {
                 locationType = LocationType.valueOf(locationTypeString.toUpperCase());
@@ -44,6 +42,10 @@ public class SourceLocation {
                 org.bukkit.Bukkit.getLogger().warning("Invalid location type specified in source_location parameter: " + locationTypeString);
             }
         }
+    }
+
+    public SourceLocation(ConfigurationSection configuration, String sourceKey, boolean isSource) {
+        this(configuration.getString(sourceKey, ""), isSource);
 
         if (locationType == null) {
             // This is here for backwards-compatibility

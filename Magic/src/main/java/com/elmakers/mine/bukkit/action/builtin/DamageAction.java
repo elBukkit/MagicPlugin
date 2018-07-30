@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,6 +19,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
@@ -33,6 +35,7 @@ public class DamageAction extends BaseSpellAction
     private Double damageMultiplier;
     private double maxDistanceSquared;
     private String damageType;
+    private SourceLocation damageSourceLocation;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -62,6 +65,9 @@ public class DamageAction extends BaseSpellAction
         double maxDistance = parameters.getDouble("damage_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
         damageType = parameters.getString("damage_type");
+        if (maxDistanceSquared > 0) {
+            damageSourceLocation = new SourceLocation(parameters.getString("damage_source_location", "BODY"), false);
+        }
     }
 
     @Override
@@ -106,7 +112,8 @@ public class DamageAction extends BaseSpellAction
                 double mageMultiplier = mage.getDamageMultiplier(multiplierType);
                 damage *= mageMultiplier;
                 if (maxDistanceSquared > 0) {
-                    double distanceSquared = context.getLocation().distanceSquared(entity.getLocation());
+                    Location entityLocation = damageSourceLocation.getLocation(context);
+                    double distanceSquared = context.getLocation().distanceSquared(entityLocation);
                     if (distanceSquared > maxDistanceSquared) {
                         return SpellResult.NO_TARGET;
                     }
