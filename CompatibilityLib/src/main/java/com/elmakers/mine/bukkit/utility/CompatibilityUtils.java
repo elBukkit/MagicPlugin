@@ -1700,4 +1700,19 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return false;
     }
+
+    public static boolean applyPhysics(Block block) {
+        if (class_World_setTypeAndDataMethod == null || class_World_getTypeMethod == null || class_BlockPosition_Constructor == null) return false;
+        try {
+            Object worldHandle = getHandle(block.getWorld());
+            Object blockLocation = class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
+            Object blockType = class_World_getTypeMethod.invoke(worldHandle, blockLocation);
+            clearItems(block.getLocation());
+            DeprecatedUtils.setTypeAndData(block, Material.AIR, (byte)0, false);
+            return (boolean)class_World_setTypeAndDataMethod.invoke(worldHandle, blockLocation, blockType, 3);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

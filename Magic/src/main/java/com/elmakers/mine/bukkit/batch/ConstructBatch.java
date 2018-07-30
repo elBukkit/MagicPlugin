@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.batch;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,13 +58,16 @@ public class ConstructBatch extends BrushBatch {
     private final @Nonnull MaterialSet attachablesWall;
     private final @Nonnull MaterialSet attachablesDouble;
     private final @Nonnull MaterialSet delayed;
+    private final @Nonnull MaterialSet deferredTypes;
     private Set<String> replace;
     private Map<String, String> commandMap;
 
     private boolean finishedNonAttached = false;
     private boolean finishedAttached = false;
+    private boolean finishedDelayedBlocks = false;
     private int attachedBlockIndex = 0;
     private int delayedBlockIndex = 0;
+    private Deque<com.elmakers.mine.bukkit.api.block.BlockData> deferred;
     private Integer maxOrientDimension = null;
     private Integer minOrientDimension = null;
     private boolean power = false;
@@ -74,6 +79,7 @@ public class ConstructBatch extends BrushBatch {
     private boolean consume = false;
     private boolean consumeVariants = true;
     private boolean checkChunks = true;
+    private boolean deferPhysics = true;
 
     private int x = 0;
     private int y = 0;
@@ -96,6 +102,7 @@ public class ConstructBatch extends BrushBatch {
         this.attachablesWall = materials.getMaterialSetEmpty("attachable_wall");
         this.attachablesDouble = materials.getMaterialSetEmpty("attachable_double");
         this.delayed = materials.getMaterialSetEmpty("delayed");
+        this.deferredTypes = materials.getMaterialSetEmpty("deferred");
         this.orient = orientVector == null ? new Vector(0, 1, 0) : orientVector;
     }
 
@@ -158,10 +165,38 @@ public class ConstructBatch extends BrushBatch {
     @Override
     public int process(int maxBlocks) {
         int processedBlocks = 0;
-        if (finishedAttached) {
-            if (delayedBlockIndex >= delayedBlocks.size()) {
+        if (finishedDelayedBlocks) {
+            if (deferred == null || deferred.isEmpty()) {
                 finish();
-            } else while (delayedBlockIndex < delayedBlocks.size() && processedBlocks <  maxBlocks && !finished) {
+            } else while (!deferred.isEmpty() && processedBlocks < maxBlocks && !finished) {
+                com.elmakers.mine.bukkit.api.block.BlockData delayed = deferred.pop();
+                Block block = delayed.getBlock();
+                Chunk chunk = block.getChunk();
+                if (!deferredTypes.testMaterial(block.getType())) {
+                    org.bukkit.Bukkit.getLogger().info("    skipping " + block.getType());
+                    continue;
+                }
+                if (!chunk.isLoaded()) {
+                    chunk.load();
+                    return processedBlocks;
+                }
+                if (!CompatibilityUtils.isReady(chunk)) {
+                    return processedBlocks;
+                }
+
+                processedBlocks++;
+                boolean result = CompatibilityUtils.applyPhysics(block);
+                org.bukkit.Bukkit.getLogger().info("    deferred " + block + ": " + result);
+            }
+        } else if (finishedAttached) {
+            if (delayedBlockIndex >= delayedBlocks.size()) {
+                finishedDelayedBlocks = true;
+                if (!deferPhysics || undoList == null) {
+                    finish();
+                } else {
+                    deferred = new ArrayDeque<>(undoList);
+                }
+            } else while (delayedBlockIndex < delayedBlocks.size() && processedBlocks < maxBlocks && !finished) {
                 BlockData delayed = delayedBlocks.get(delayedBlockIndex);
                 Block block = delayed.getBlock();
                 Chunk chunk = block.getChunk();
@@ -173,12 +208,13 @@ public class ConstructBatch extends BrushBatch {
                     return processedBlocks;
                 }
 
+                processedBlocks++;
                 modifyWith(block, delayed);
 
                 delayedBlockIndex++;
             }
         } else if (finishedNonAttached) {
-            while (attachedBlockIndex < attachedBlockList.size() && processedBlocks <  maxBlocks && !finished) {
+            while (attachedBlockIndex < attachedBlockList.size() && processedBlocks < maxBlocks && !finished) {
                 BlockData attach = attachedBlockList.get(attachedBlockIndex);
                 Block block = attach.getBlock();
                 if (!block.getChunk().isLoaded()) {
@@ -224,6 +260,7 @@ public class ConstructBatch extends BrushBatch {
 
                 if (ok) {
                     modifyWith(block, attach);
+                    processedBlocks++;
                 }
 
                 attachedBlockIndex++;
@@ -562,6 +599,10 @@ public class ConstructBatch extends BrushBatch {
         for (MaterialAndData material : replace) {
             this.replace.add(material.getKey());
         }
+    }
+
+    public void setDeferPhysics(boolean defer) {
+        deferPhysics = defer;
     }
 
     @Override

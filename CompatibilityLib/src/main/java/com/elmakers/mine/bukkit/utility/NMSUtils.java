@@ -189,6 +189,8 @@ public class NMSUtils {
     protected static Method class_TileEntity_saveMethod;
     protected static Method class_TileEntity_updateMethod;
     protected static Method class_World_addEntityMethod;
+    protected static Method class_World_setTypeAndDataMethod;
+    protected static Method class_World_getTypeMethod;
     protected static Method class_NBTCompressedStreamTools_loadFileMethod;
     protected static Method class_CraftItemStack_asBukkitCopyMethod;
     protected static Method class_CraftItemStack_copyMethod;
@@ -645,6 +647,14 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering NBTTagList.getDouble, loading entities from schematics will not work", ex);
                 class_NBTTagList_getDoubleMethod = null;
+            }
+            try {
+                Class<?> class_IBlockData = fixBukkitClass("net.minecraft.server.IBlockData");
+                class_World_getTypeMethod = class_World.getMethod("getType", class_BlockPosition);
+                class_World_setTypeAndDataMethod = class_World.getMethod("setTypeAndData", class_BlockPosition, class_IBlockData, Integer.TYPE);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering World.setTypeAndData, Deferred physics updates will not work", ex);
+                class_World_setTypeAndDataMethod = null;
             }
 
             try {
