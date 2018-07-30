@@ -65,9 +65,7 @@ public class DamageAction extends BaseSpellAction
         double maxDistance = parameters.getDouble("damage_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
         damageType = parameters.getString("damage_type");
-        if (maxDistanceSquared > 0) {
-            damageSourceLocation = new SourceLocation(parameters.getString("damage_source_location", "BODY"), false);
-        }
+        damageSourceLocation = new SourceLocation(parameters.getString("damage_source_location", "BODY"), false);
     }
 
     @Override
