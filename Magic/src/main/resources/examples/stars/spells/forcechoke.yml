@@ -1,0 +1,46 @@
+forcechoke:
+    icon: diamond_axe:151
+    icon_disabled: diamond_hoe:151
+    icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
+    category: force
+    worth: 2000
+    actions:
+      cast:
+      - class: CustomProjectile
+        actions:
+        - class: PotionEffect
+    effects:
+      tick:
+      - class: EffectSingle
+        location: target
+        particle: smoke_large
+      cast:
+      - class: EffectSingle
+        sound: magic.zap_big
+        location: origin
+        effectlib:
+           class: DnaEffect
+           particles_base: 0
+           particles_helix: 7
+           particle_helix: smoke_large
+           particle_base1: smoke_normal
+           particle_base2: smoke_normal
+           iterations: 10
+      - class: EffectSingle
+        location: target
+        requires_entity_target: true
+        effectlib:
+          class: AnimatedBall
+          particle: smoke_normal
+          duration: $duration
+          size: 0.75
+          y_factor: 1
+          disappear_with_target_entity: true
+    parameters:
+      duration: 4000
+      range: 16
+      add_effects:
+        levitation: 1
+        wither: 2
+
+

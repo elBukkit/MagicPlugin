@@ -4,3 +4,4 @@ sith_lord:
     max_mana_regeneration: 20
     spells:
       - forcelightning
+      - forcechoke

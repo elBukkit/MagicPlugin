@@ -26,6 +26,9 @@ spells:
     forceexplode:
       name: Force Explode
       description: Use the force to cause an explosion
+    forcechoke:
+      name: Force Choke
+      description: Use the force to lift choke your target
     forcecollapse:
       name: Force Collapse
       description: Cause your target to collapse and crumble
