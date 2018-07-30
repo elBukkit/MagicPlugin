@@ -1,16 +1,7 @@
 # TODO
 
 ## Hot Issues
-
- - Make force choke spell?
- - Distance/break from center should use entity head/chest (configurable)
- - Check Arrow spell, is decreaseLifespan broken?
- - Magic/Master sword melee attacks not working
  
- - you can buy slime from the redstone shop and sell it at the mob drops shop at ... something central
-it costs 20 $ to buy and you sell each ball for 2000
-
- - Wolf House broken in 1.13
  - Projector spell looks broken? Doesn't animate...
 
  - Small bug! When you die, it makes your wand auto-select the first spell in your hotbar:

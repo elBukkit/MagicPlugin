@@ -114,11 +114,11 @@ public class ShopAction extends SelectorAction {
             spells.add(spell);
         }
 
-        mage.sendDebugMessage(ChatColor.GOLD + "Spells to buy: " + spells.size(), 2);
-
         if (spells.size() == 0) {
             return;
         }
+
+        mage.sendDebugMessage(ChatColor.GOLD + "Spells to buy: " + spells.size(), 2);
 
         Collections.sort(spells, new Comparator<SpellTemplate>() {
             @Override
