@@ -129,7 +129,7 @@ public class UndoableSpell extends TargetingSpell {
     }
 
     public UndoList getUndoList() {
-        return currentCast.getUndoList();
+        return getCurrentCast().getUndoList();
     }
 
     public UndoList createUndoList() {
