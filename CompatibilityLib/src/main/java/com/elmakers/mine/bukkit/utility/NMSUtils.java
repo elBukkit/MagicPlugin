@@ -570,7 +570,7 @@ public class NMSUtils {
                 Class<?> unsafe = org.bukkit.UnsafeValues.class;
                 Class<?> materialData = org.bukkit.material.MaterialData.class;
                 class_UnsafeValues_fromLegacyDataMethod = unsafe.getMethod("fromLegacy", materialData);
-                class_UnsafeValues_fromLegacyMethod = unsafe.getMethod("fromLegacy", Material.class);
+                class_UnsafeValues_fromLegacyMethod = unsafe.getMethod("fromLegacy", Material.class, Byte.TYPE);
                 class_Material_isLegacyMethod = Material.class.getMethod("isLegacy");
                 class_Material_getLegacyMethod = Material.class.getMethod("getMaterial", String.class, Boolean.TYPE);
 

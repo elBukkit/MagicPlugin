@@ -97,11 +97,18 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
             for (int z = 0; z < length; z++) {
                 for (int x = 0; x < width; x++) {
                     int index = x + (y * length + z) * width;
-                    org.bukkit.material.MaterialData materialData = CompatibilityUtils.getMaterial(blockTypes[index], data[index]);
-                    if (materialData != null)
+
+                    Material material = CompatibilityUtils.getMaterial(blockTypes[index], data[index]);
+                    if (material != null)
                     {
-                        Material material = materialData.getItemType();
-                        MaterialAndData block = new MaterialAndData(material, materialData.getData());
+                        MaterialAndData block = null;
+                        // For 1.13 we're going to use BlockData here.
+                        String blockData = CompatibilityUtils.getBlockData(material, data[index]);
+                        if (blockData != null) {
+                            block = new MaterialAndData(material, blockData);
+                        } else {
+                            block = new MaterialAndData(material, data[index]);
+                        }
 
                         // Check for tile entity data
                         BlockVector blockLocation = new BlockVector(x, y, z);

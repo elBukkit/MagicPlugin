@@ -6,6 +6,7 @@
  - Add fall protection to Levitate and Superfly
  - Fix arrow spell throwing exceptions in 1.13
  - Fix Magic/Master swords not doing melee damage
+ - Some fixes to schematic loading in 1.13, still not perfect though.
 
 # 7.6.4
 

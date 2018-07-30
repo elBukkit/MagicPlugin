@@ -1431,18 +1431,17 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     @SuppressWarnings("deprecation")
-    public static org.bukkit.material.MaterialData getMaterial(int id, byte data) {
+    public static Material getMaterial(int id, byte data) {
         Material material = getMaterial(id);
         if (class_UnsafeValues_fromLegacyDataMethod != null) {
             if (material != null) {
                 material = fromLegacy(new org.bukkit.material.MaterialData(material, data));
             }
-            data = 0;
         }
         if (material == null) {
             material = Material.AIR;
         }
-        return new org.bukkit.material.MaterialData(material, data);
+        return material;
     }
 
     @SuppressWarnings("deprecation")
@@ -1661,6 +1660,19 @@ public class CompatibilityUtils extends NMSUtils {
             }
         }
         return false;
+    }
+
+    public static String getBlockData(Material material, byte data) {
+        if (class_UnsafeValues_fromLegacyMethod == null) return null;
+        try {
+            Object blockData = class_UnsafeValues_fromLegacyMethod.invoke(DeprecatedUtils.getUnsafe(), material, data);
+            if (blockData != null) {
+                return (String)class_BlockData_getAsStringMethod.invoke(blockData);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public static String getBlockData(Block block) {
