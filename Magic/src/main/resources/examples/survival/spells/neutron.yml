@@ -28,7 +28,7 @@ neutron:
         radius: 5
         cooldown: 30000
         color: "00AAFF"
-        particle: redstone
+        particle: smoke_large
         duration: 10000
         potion_effects:
         - type: slow
