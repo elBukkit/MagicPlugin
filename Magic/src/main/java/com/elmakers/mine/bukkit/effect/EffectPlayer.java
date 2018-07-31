@@ -690,6 +690,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                     EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
                     player.load(plugin, effectValues);
                     players.add(player);
+                } catch (ClassNotFoundException unknown) {
+                    if (plugin != null) {
+                        plugin.getLogger().warning("Unknown effect class: " + effectClass);
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     if (plugin != null) {
