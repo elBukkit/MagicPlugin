@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.ItemStack;
 
@@ -111,8 +112,12 @@ public class FillBatch extends BrushBatch {
                         mage.removeItem(requires, consumeVariants);
                     }
 
+                    BlockState prior = block.getState();
                     registerForUndo(block);
                     brush.modify(block);
+                    if (!undoList.isScheduled()) {
+                        controller.logBlockChange(spell.getMage(), prior, block.getState());
+                    }
 
                     if (spawnFallingBlocks) {
                         FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);

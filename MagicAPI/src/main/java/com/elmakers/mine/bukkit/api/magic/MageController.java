@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -557,4 +558,6 @@ public interface MageController {
 
     @Nullable
     Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey);
+
+    void logBlockChange(@Nonnull Mage mage, @Nonnull BlockState priorState, @Nonnull BlockState newState);
 }

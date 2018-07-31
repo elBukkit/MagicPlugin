@@ -10,6 +10,7 @@
  - Some attempts to fix Wolf House, still not 100% there yet (+ spigot seems to have command block bugs)
  - Mega-engineering throttled down for performance
  - Added Force Choke to stars configs
+ - Add LogBlock integration
 
 # 7.6.4
 

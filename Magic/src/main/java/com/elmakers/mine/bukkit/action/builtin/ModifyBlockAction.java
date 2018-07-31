@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.ItemStack;
@@ -143,7 +144,11 @@ public class ModifyBlockAction extends BaseSpellAction {
         if (undoList != null) {
             undoList.setApplyPhysics(applyPhysics);
         }
+        BlockState prior = block.getState();
         brush.modify(block, applyPhysics);
+        if (undoList != null && !undoList.isScheduled()) {
+            context.getController().logBlockChange(context.getMage(), prior, block.getState());
+        }
 
         boolean spawnFalling = spawnFallingBlocks && previousMaterial != Material.AIR;
         if (spawnFalling && fallingProbability < 1) {

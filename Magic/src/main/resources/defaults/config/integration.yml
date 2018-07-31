@@ -145,6 +145,9 @@ mobarena:
 # Skript integration will add cast events and effect
 skript_enabled: true
 
+# Engineering magic will be logged via LogBlock
+logblock_enabled: true
+
 # Citadel integration
 citadel:
   # Set to false to disable Citadel integration

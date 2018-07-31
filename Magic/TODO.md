@@ -292,24 +292,9 @@
 
  - Continue work on combining wands on anvils
  
-## TESTING / TWEAKING:
- 
- - Test larger undo queue sizes, or count size in blocks?
- - Add console logging of massive construction spell casting
-
 ## STACK TRACES / EXTRA DEBUG INFO
 
 ## PLAYER REQUESTS:
 
- - Add Kingdoms support (It's a premium plugin, sooooooo) 
- - Add support for LockettePro
  - Add some sort of integration with Partec plugin (Deprecated since 2015, so probably not)
    https://www.spigotmc.org/resources/partec-custom-particles-visuals-plugin-api.15386/
-
-yoheius
-Feb 13, 2014 at 11:51 - 1 like Unlike
-Very good Please a Integration with diablodrops Thanks
-
---- Contacted diablodrops dev, never heard back. Grabbed source code from github, will check it out.
-
-	

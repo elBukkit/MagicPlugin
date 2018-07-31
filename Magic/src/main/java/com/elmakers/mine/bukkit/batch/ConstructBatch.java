@@ -456,10 +456,10 @@ public class ConstructBatch extends BrushBatch {
         }
 
         // Check for power mode.
+        BlockState blockState = block.getState();
         if (power)
         {
             Material material = block.getType();
-            BlockState blockState = block.getState();
             org.bukkit.material.MaterialData data = blockState.getData();
             boolean powerBlock = false;
             if (data instanceof Button) {
@@ -529,6 +529,9 @@ public class ConstructBatch extends BrushBatch {
         }
 
         modifyWith(block, brush);
+        if (!undoList.isScheduled()) {
+            controller.logBlockChange(spell.getMage(), blockState, block.getState());
+        }
         return true;
     }
 
@@ -560,7 +563,11 @@ public class ConstructBatch extends BrushBatch {
                 }
             }
 
+            BlockState prior = block.getState();
             brush.modify(block, applyPhysics);
+            if (!undoList.isScheduled()) {
+                controller.logBlockChange(spell.getMage(), prior, block.getState());
+            }
             if (breakable > 0) {
                 spell.getCurrentCast().registerBreakable(block, breakable);
             }

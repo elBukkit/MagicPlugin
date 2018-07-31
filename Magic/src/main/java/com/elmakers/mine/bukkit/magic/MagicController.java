@@ -51,6 +51,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -137,6 +138,7 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.GenericMetadataNPCSupplier;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
+import com.elmakers.mine.bukkit.integration.LogBlockManager;
 import com.elmakers.mine.bukkit.integration.NPCSupplierSet;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
@@ -1015,6 +1017,21 @@ public class MagicController implements MageController {
             }
         } else {
             getLogger().info("MobArena integration disabled");
+        }
+
+        // Check for LogBlock
+        Plugin logBlockPlugin = pluginManager.getPlugin("LogBlock");
+        if (mobArenaPlugin == null) {
+            getLogger().info("LogBlock not found");
+        } else if (logBlockEnabled) {
+            try {
+                logBlockManager = new LogBlockManager(plugin, logBlockPlugin);
+                getLogger().info("Integrated with LogBlock, engineering magic will be logged");
+            } catch (Throwable ex) {
+                getLogger().log(Level.WARNING, "LogBlock integration failed", ex);
+            }
+        } else {
+            getLogger().info("LogBlock integration disabled");
         }
 
         // Try to link to Essentials:
@@ -2487,6 +2504,7 @@ public class MagicController implements MageController {
         autoUndo = properties.getInt("auto_undo", autoUndo);
         spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
         essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
+        logBlockEnabled = properties.getBoolean("logblock_enabled", logBlockEnabled);
         citizensEnabled = properties.getBoolean("enable_citizens", citizensEnabled);
         dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
         dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
@@ -5745,6 +5763,16 @@ public class MagicController implements MageController {
         }
     }
 
+    @Override
+    public void logBlockChange(@Nonnull Mage mage, @Nonnull BlockState priorState, @Nonnull BlockState newState) {
+        if (logBlockManager != null) {
+            Entity entity = mage.getEntity();
+            if (entity != null) {
+                logBlockManager.logBlockChange(entity, priorState, newState);
+            }
+        }
+    }
+
     /**
      * @return The supplier set that is used.
      */
@@ -5958,6 +5986,7 @@ public class MagicController implements MageController {
     private @Nonnull MageIdentifier             mageIdentifier              = new MageIdentifier();
     private final SimpleMaterialSetManager      materialSetManager          = new SimpleMaterialSetManager();
     private boolean                             citizensEnabled                = true;
+    private boolean                             logBlockEnabled             = true;
     private boolean                             libsDisguiseEnabled            = true;
     private boolean                             skillAPIEnabled                = true;
     private boolean                             useSkillAPIMana             = false;
@@ -5996,6 +6025,7 @@ public class MagicController implements MageController {
     private PlaceholderAPIManager               placeholderAPIManager       = null;
     private LightAPIManager                     lightAPIManager             = null;
     private MobArenaManager                     mobArenaManager             = null;
+    private LogBlockManager                     logBlockManager             = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.batch;
 
+import org.bukkit.block.BlockState;
+
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -63,11 +65,24 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
             }
         }
         while (undoList.size() > 0 && workPerformed < maxWork) {
+            BlockState prior = null;
+            if (!undoList.isScheduled()) {
+                BlockData next = undoList.getBlockList().iterator().next();
+                if (next != null) {
+                    prior = next.getBlock().getState();
+                }
+            }
             BlockData undone = undoList.undoNext(applyPhysics);
             if (undone == null) {
                 // There may have been a forced chunk load here
                 workPerformed += 20;
                 break;
+            }
+            if (prior != null) {
+                Mage mage = undoList.getOwner();
+                if (mage != null) {
+                    controller.logBlockChange(mage, prior, undone.getBlock().getState());
+                }
             }
             workPerformed += 10;
             listProcessed++;
