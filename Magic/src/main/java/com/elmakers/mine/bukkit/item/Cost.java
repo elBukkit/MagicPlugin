@@ -233,7 +233,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     {
         ItemStack item = CompatibilityUtils.getCopy(this.item);
         if (item != null) {
-            item.setAmount(Math.max(1, getRoundedCost(item.getAmount(), reducer)));
+            item.setAmount(Math.max(1, getRoundedCost(amount, reducer)));
         }
         return item;
     }

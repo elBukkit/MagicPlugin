@@ -11,6 +11,7 @@
  - Mega-engineering throttled down for performance
  - Added Force Choke to stars configs
  - Add LogBlock integration
+ - Fix costs of more than 1 item
 
 # 7.6.4
 
