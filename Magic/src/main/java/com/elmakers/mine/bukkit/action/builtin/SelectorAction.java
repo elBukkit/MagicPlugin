@@ -621,6 +621,12 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             // Choose icon if none was set in config
             if (icon == null && items != null) {
                 icon = InventoryUtils.getCopy(items.get(0));
+                // This prevents getting two copies of the lore
+                if (applyLoreToItem) {
+                    ItemMeta meta = icon.getItemMeta();
+                    meta.setLore(null);
+                    icon.setItemMeta(meta);
+                }
             }
             if (icon == null && castSpell != null && !castSpell.isEmpty()) {
                 SpellTemplate spellTemplate = context.getController().getSpellTemplate(castSpell);
