@@ -22,6 +22,7 @@ public class SourceLocation {
     public enum LocationType {
         CAST,
         EYES,
+        HEAD,
         FEET,
         WAND,
         BODY,
@@ -123,6 +124,7 @@ public class SourceLocation {
                     location = mage.getCastLocation();
                 }
                 break;
+            case HEAD:
             case EYES:
                 location = eyeLocation;
                 break;
@@ -172,7 +174,7 @@ public class SourceLocation {
     }
 
     public boolean shouldUseEyeLocation() {
-        return locationType == LocationType.EYES;
+        return locationType == LocationType.EYES || locationType == LocationType.HEAD;
     }
 
     public boolean shouldUseHitLocation() {
