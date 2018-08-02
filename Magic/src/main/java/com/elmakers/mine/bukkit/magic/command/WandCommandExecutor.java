@@ -878,6 +878,8 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         if (wand == null) {
             return true;
         }
+        wand.closeInventory();
+        wand.saveState();
         boolean result = onConfigure("wand", wand, sender, player, parameters, safe);
         Mage mage = controller.getMage(player);
         wand.deactivate();
