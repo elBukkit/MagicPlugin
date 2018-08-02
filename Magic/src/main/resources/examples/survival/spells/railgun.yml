@@ -30,12 +30,21 @@ railgun:
              grow: 0.5
              updateLocations: false
              updateDirections: false
+             particle_count: 8
+             particle_offset_y: 0.02
+             particle_offset_x: 0.02
+             particle_offset_z: 0.02
         tick:
         - particle: fireworks_spark
           location: target
         - particle: redstone
           location: target
           color: FF8800
+          particle_count: 16
+          particle_offset_y: 0.05
+          particle_offset_x: 0.05
+          particle_offset_z: 0.05
+          particle_size: 1
         hit_entity:
         -  class: EffectSingle
            location: target
@@ -108,4 +117,4 @@ railgun:
         transparent: air,water,stationary_water
     costs:
         mana: 150
-                
+

@@ -24,9 +24,20 @@ alter:
              radiusGrow: 0.003
              updateLocations: false
              updateDirections: false
+             color: FFFFFF
+             particle_size: 2
+             particle_data: 2
+             particle_count: 8
+             particle_offset_y: 0.2
+             particle_offset_x: 0.2
+             particle_offset_z: 0.2
         -  class: EffectTrail
            particle: redstone
-           particle_data: 2
+           particle_size: 3
+           particle_count: 4
+           particle_offset_y: 0.1
+           particle_offset_x: 0.1
+           particle_offset_z: 0.1
     parameters:
         target_type: Entity
         allow_max_range: false

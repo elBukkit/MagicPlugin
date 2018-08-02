@@ -29,9 +29,18 @@ missile:
              radiusGrow: 0.003
              updateLocations: false
              updateDirections: false
+             particle_count: 8
+             particle_offset_y: 0.1
+             particle_offset_x: 0.1
+             particle_offset_z: 0.1
         tick:
         - particle: redstone
           location: target
+          particle_count: 4
+          particle_offset_y: 0.2
+          particle_offset_x: 0.2
+          particle_offset_z: 0.2
+          particle_size: 1
         break:
         -  class: EffectSingle
            location: target
