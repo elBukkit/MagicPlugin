@@ -658,8 +658,7 @@ public class SimulateBatch extends SpellBatch {
                     // We'll get the players from the Mages list
                     if (entity instanceof Player || !(entity instanceof LivingEntity) || entity.isDead()) continue;
                     if (!entity.getLocation().getWorld().equals(center.getWorld())) continue;
-                    LivingEntity li = (LivingEntity)entity;
-                    if (li.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
+                    if (!context.canTarget(entity)) continue;
                     Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, 1000, false);
                     int score = newScore.getScore();
                     if (bestTarget == null || score > bestTarget.getScore()) {
@@ -679,8 +678,8 @@ public class SimulateBatch extends SpellBatch {
                     if (mage.isDead() || !mage.isOnline() || !mage.hasLocation() || mage.isSuperProtected()) continue;
                     if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
 
-                    LivingEntity li = mage.getLivingEntity();
-                    if (li != null && li.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
+                    Entity entity = mage.getEntity();
+                    if (entity != null && !context.canTarget(entity)) continue;
 
                     Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 1000, false);
                     int score = newScore.getScore();

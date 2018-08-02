@@ -47,6 +47,7 @@ virus:
     death_cast:
         virus_death: 50,80,100
     parameters:
+        target_invisible: false
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false

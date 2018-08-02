@@ -48,6 +48,7 @@ worm:
         "railgun indestructible $birth": 20,40,80
         "none": 20,10,5
     parameters:
+        target_invisible: false
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false
