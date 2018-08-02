@@ -629,7 +629,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (material != null && blockMaterial != material) {
             return true;
         }
-        if (NMSUtils.isCurrentVersion()) {
+        if (!NMSUtils.isCurrentVersion()) {
             byte blockData = block.getData();
             if (data != null && blockData != data) {
                 return true;

@@ -12,6 +12,7 @@
  - Added Force Choke to stars configs
  - Add LogBlock integration
  - Fix costs of more than 1 item
+ - Fix EMP + Admission undo on 1.12 and below
 
 # 7.6.4
 
