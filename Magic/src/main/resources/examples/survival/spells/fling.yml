@@ -24,7 +24,7 @@ fling:
              particle_offset_x: 1
              particle_offset_y: 1
              particle_offset_z: 1
-             particle_count: 10
+             particle_count: 2
              speed: 2
              particle: spell
         land:
