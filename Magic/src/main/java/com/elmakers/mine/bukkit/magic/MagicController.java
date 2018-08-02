@@ -1021,7 +1021,7 @@ public class MagicController implements MageController {
 
         // Check for LogBlock
         Plugin logBlockPlugin = pluginManager.getPlugin("LogBlock");
-        if (mobArenaPlugin == null) {
+        if (logBlockPlugin == null) {
             getLogger().info("LogBlock not found");
         } else if (logBlockEnabled) {
             try {

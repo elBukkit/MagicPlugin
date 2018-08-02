@@ -79,9 +79,6 @@ public class SignSpell extends BlockSpell
                 }
                 targetBlock.setType(signMaterial);
                 blockState = targetBlock.getState();
-
-
-                blockState = targetBlock.getState();
                 Object data = blockState.getData();
                 if (data instanceof org.bukkit.material.Sign) {
                     org.bukkit.material.Sign signData = (org.bukkit.material.Sign)data;
