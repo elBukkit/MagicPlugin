@@ -13,6 +13,7 @@
  - Add LogBlock integration
  - Fix costs of more than 1 item
  - Fix EMP + Admission undo on 1.12 and below
+ - Some fixes to SpawnEntity action getting stuck
 
 # 7.6.4
 

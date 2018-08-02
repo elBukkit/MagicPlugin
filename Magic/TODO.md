@@ -1,6 +1,8 @@
 # TODO
 
 ## Hot Issues
+
+ - Using test wand, inventory didn't save when I /wand configured
  
  - Projector spell looks broken? Doesn't animate...
 

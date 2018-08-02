@@ -103,6 +103,12 @@ public class SpawnEntityAction extends CompoundAction
     }
 
     @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        entity = null;
+    }
+
+    @Override
     public SpellResult step(CastContext context) {
         ActionHandler actions = getHandler("actions");
         if (entity == null) {
@@ -112,6 +118,10 @@ public class SpawnEntityAction extends CompoundAction
             }
         }
 
+        if (actions == null || actions.size() == 0) {
+            // This shouldn't really ever happen, but just in case we don't want to get stuck here.
+            return SpellResult.NO_ACTION;
+        }
         Entity spawned = entity.get();
         if (spawned == null || spawned.isDead() || !spawned.isValid()) {
             if (setTarget && spawned != null) {
