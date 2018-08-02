@@ -4,8 +4,6 @@
 
  - Using test wand, inventory didn't save when I /wand configured
  
- - Projector spell looks broken? Doesn't animate...
-
  - Small bug! When you die, it makes your wand auto-select the first spell in your hotbar:
    https://youtu.be/wExxOdFWCV4
 
