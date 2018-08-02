@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,7 +42,7 @@ public class WearAction extends BaseSpellAction
     private int slotNumber;
     private boolean unbreakable = true;
     private boolean returnOnFinish = false;
-    private Mage targetMage = null;
+    private WearUndoAction undoAction;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -64,33 +65,42 @@ public class WearAction extends BaseSpellAction
         }
     }
 
-    private class WearUndoAction implements Runnable
+    private static class WearUndoAction implements Runnable
     {
-        public WearUndoAction() {
+        private final MageController controller;
+        private final WeakReference<Player> player;
+        private final int slotNumber;
+        private boolean returned = false;
+
+        public WearUndoAction(MageController controller, Player player, int slotNumber) {
+            this.controller = controller;
+            this.player = new WeakReference<>(player);
+            this.slotNumber = slotNumber;
+        }
+
+        private void returnItem() {
+            if (returned) return;
+            returned = true;
+            Player player = this.player.get();
+            if (player == null) return;
+
+            ItemStack[] armor = player.getInventory().getArmorContents();
+            ItemStack currentItem = armor[slotNumber];
+            if (NMSUtils.isTemporary(currentItem)) {
+                ItemStack replacement = NMSUtils.getReplacement(currentItem);
+                armor[slotNumber] = replacement;
+                player.getInventory().setArmorContents(armor);
+            }
+            Mage targetMage = controller.getRegisteredMage(player);
+            if (targetMage != null && targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)targetMage).armorUpdated();
+            }
         }
 
         @Override
         public void run() {
             returnItem();
         }
-    }
-
-    private void returnItem() {
-        if (targetMage == null) return;
-        Player player = targetMage.getPlayer();
-        if (player == null) return;
-
-        ItemStack[] armor = player.getInventory().getArmorContents();
-        ItemStack currentItem = armor[slotNumber];
-        if (NMSUtils.isTemporary(currentItem)) {
-            ItemStack replacement = NMSUtils.getReplacement(currentItem);
-            armor[slotNumber] = replacement;
-            player.getInventory().setArmorContents(armor);
-        }
-        if (targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            ((com.elmakers.mine.bukkit.magic.Mage)targetMage).armorUpdated();
-        }
-        targetMage = null;
     }
 
     @Override
@@ -246,8 +256,8 @@ public class WearAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        targetMage = mage;
-        context.registerForUndo(new WearUndoAction());
+        undoAction = new WearUndoAction(controller, player, slotNumber);
+        context.registerForUndo(undoAction);
 
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
@@ -256,10 +266,20 @@ public class WearAction extends BaseSpellAction
     }
 
     @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        // Prevent these getting lost
+        if (returnOnFinish && undoAction != null) {
+            undoAction.returnItem();
+        }
+        undoAction = null;
+    }
+
+    @Override
     public void finish(CastContext context) {
         super.finish(context);
-        if (returnOnFinish) {
-            returnItem();
+        if (returnOnFinish && undoAction != null) {
+            undoAction.returnItem();
         }
     }
 

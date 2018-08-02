@@ -121,7 +121,8 @@ public class PlayerController implements Listener {
         }
 
         if (NMSUtils.isTemporary(next)) {
-            inventory.setItem(event.getNewSlot(), null);
+            ItemStack replacement = NMSUtils.getReplacement(next);
+            inventory.setItem(event.getNewSlot(), replacement);
             mage.checkWand();
             return;
         }
@@ -640,6 +641,17 @@ public class PlayerController implements Listener {
         if (mage != null) {
             mage.onPlayerQuit(event);
             controller.playerQuit(mage);
+        }
+
+        // Make sure they don't keep any temporary items that may be waiting for undo
+        ItemStack[] armor = player.getInventory().getArmorContents();
+        for (int i = 0; i < armor.length; i++) {
+            ItemStack currentItem = armor[i];
+            if (NMSUtils.isTemporary(currentItem)) {
+                ItemStack replacement = NMSUtils.getReplacement(currentItem);
+                armor[i] = replacement;
+                player.getInventory().setArmorContents(armor);
+            }
         }
     }
 
