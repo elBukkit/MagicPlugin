@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.6
+
 # 7.6.5
 
  - Fix sniper scope in 1.13
