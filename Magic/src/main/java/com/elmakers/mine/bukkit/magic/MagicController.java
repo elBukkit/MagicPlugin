@@ -3064,6 +3064,11 @@ public class MagicController implements MageController {
         return preciousStonesManager.getCastPermission(player, spell, location);
     }
 
+    @Override
+    public boolean inTaggedRegion(Location location, Set<String> tags) {
+        return worldGuardManager.inTaggedRegion(location, tags);
+    }
+
     public boolean hasPermission(Player player, String pNode, boolean defaultValue)
     {
         // Should this return defaultValue? Can't give perms to console.

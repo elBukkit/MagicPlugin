@@ -560,4 +560,6 @@ public interface MageController {
     Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey);
 
     void logBlockChange(@Nonnull Mage mage, @Nonnull BlockState priorState, @Nonnull BlockState newState);
+
+    boolean inTaggedRegion(Location location, Set<String> tags);
 }

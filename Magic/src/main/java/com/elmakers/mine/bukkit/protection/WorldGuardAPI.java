@@ -288,4 +288,17 @@ public class WorldGuardAPI {
         }
         return null;
     }
+
+    public boolean inTaggedRegion(Location location, Set<String> tags) {
+        if (location != null && worldGuardPlugin != null && customFlags != null)
+        {
+            ApplicableRegionSet checkSet = getRegionSet(location);
+            if (checkSet == null) {
+                return false;
+            }
+
+            return customFlags.inTaggedRegion(Associables.constant(Association.NON_MEMBER), checkSet, tags);
+        }
+        return false;
+    }
 }

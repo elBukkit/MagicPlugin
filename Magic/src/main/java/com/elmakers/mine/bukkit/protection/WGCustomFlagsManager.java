@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -26,6 +27,7 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
     public static SetFlag<String> ALLOWED_WANDS = new SetFlag<>("allowed-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> BLOCKED_WANDS = new SetFlag<>("blocked-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> SPELL_OVERRIDES = new SetFlag<>("spell-overrides", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> SPAWN_TAGS = new SetFlag<String>("spawn-tags", RegionGroup.ALL, new StringFlag(null));
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
 
@@ -40,6 +42,7 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
         customFlags.addCustomFlag(SPELL_OVERRIDES);
         customFlags.addCustomFlag(DESTRUCTIBLE);
         customFlags.addCustomFlag(REFLECTIVE);
+        customFlags.addCustomFlag(SPAWN_TAGS);
     }
 
     @Nullable
@@ -94,5 +97,14 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
         if (blocked != null && blocked.contains("*")) return false;
 
         return null;
+    }
+
+    @Override
+    public boolean inTaggedRegion(RegionAssociable source, ApplicableRegionSet checkSet, Set<String> tags) {
+        Set<String> regionTags = checkSet.queryValue(source, SPAWN_TAGS);
+        if (regionTags == null) {
+            return false;
+        }
+        return regionTags.contains("*") || !Collections.disjoint(regionTags, tags);
     }
 }

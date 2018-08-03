@@ -2,6 +2,8 @@
 
 # 7.6.6
 
+ - Add spawn tag API, to support MagicWorlds 1.6
+
 # 7.6.5
 
  - Fix sniper scope in 1.13

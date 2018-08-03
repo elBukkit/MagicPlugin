@@ -118,6 +118,14 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         return null;
     }
 
+    @Nullable
+    public Boolean inTaggedRegion(Location location, Set<String> tags) {
+        if (enabled && worldGuard != null) {
+            return worldGuard.inTaggedRegion(location, tags);
+        }
+        return null;
+    }
+
     @Override
     public boolean hasBreakPermission(Player player, Block block) {
         return hasBuildPermission(player, block);

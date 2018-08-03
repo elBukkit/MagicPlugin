@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.protection;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -26,6 +27,7 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
     public static SetFlag<String> ALLOWED_WANDS = new SetFlag<>("allowed-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> BLOCKED_WANDS = new SetFlag<>("blocked-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> SPELL_OVERRIDES = new SetFlag<>("spell-overrides", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> SPAWN_TAGS = new SetFlag<String>("spawn-tags", RegionGroup.ALL, new StringFlag(null));
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
 
@@ -53,7 +55,8 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
         registry.register(SPELL_OVERRIDES);
         registry.register(DESTRUCTIBLE);
         registry.register(REFLECTIVE);
-        callingPlugin.getLogger().info("Registered custom WorldGuard flags: allowed-spells, blocked-spells, allowed-spell-categories, blocked-spell-categories, allowed-wands, blocked-wands, spell-overrides, destructible, reflective");
+        registry.register(SPAWN_TAGS);
+        callingPlugin.getLogger().info("Registered custom WorldGuard flags: allowed-spells, blocked-spells, allowed-spell-categories, blocked-spell-categories, allowed-wands, blocked-wands, spell-overrides, destructible, reflective, spawn-tags");
     }
 
     @Nullable
@@ -108,5 +111,14 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
         if (blocked != null && blocked.contains("*")) return false;
 
         return null;
+    }
+
+    @Override
+    public boolean inTaggedRegion(RegionAssociable source, ApplicableRegionSet checkSet, Set<String> tags) {
+        Set<String> regionTags = checkSet.queryValue(source, SPAWN_TAGS);
+        if (regionTags == null) {
+            return false;
+        }
+        return regionTags.contains("*") || !Collections.disjoint(regionTags, tags);
     }
 }

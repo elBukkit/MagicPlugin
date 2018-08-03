@@ -9,19 +9,21 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.association.RegionAssociable;
 
-public interface WorldGuardFlags {
+interface WorldGuardFlags {
     @Nullable
-    public String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet);
+    String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet);
 
     @Nullable
-    public String getReflective(RegionAssociable source, ApplicableRegionSet checkSet);
+    String getReflective(RegionAssociable source, ApplicableRegionSet checkSet);
 
     @Nullable
-    public Set<String> getSpellOverrides(RegionAssociable source, ApplicableRegionSet checkSet);
+    Set<String> getSpellOverrides(RegionAssociable source, ApplicableRegionSet checkSet);
 
     @Nullable
-    public Boolean getWandPermission(RegionAssociable source, ApplicableRegionSet checkSet, Wand wand);
+    Boolean getWandPermission(RegionAssociable source, ApplicableRegionSet checkSet, Wand wand);
 
     @Nullable
-    public Boolean getCastPermission(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell);
+    Boolean getCastPermission(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell);
+
+    boolean inTaggedRegion(RegionAssociable source, ApplicableRegionSet checkSet, Set<String> tags);
 }
