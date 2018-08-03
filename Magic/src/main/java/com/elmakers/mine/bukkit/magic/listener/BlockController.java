@@ -70,7 +70,7 @@ public class BlockController implements Listener {
         dropOriginalBlock = properties.getBoolean("drop_original_block", true);
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         Block block = event.getBlock();
