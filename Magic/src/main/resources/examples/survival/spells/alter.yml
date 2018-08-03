@@ -677,6 +677,28 @@ alter:
           - stripped_acacia_log
           - stripped_jungle_log
           - stripped_spruce_log
+        - - flower_pot
+          - potted_acacia_sapling
+          - potted_allium
+          - potted_azure_bluet
+          - potted_birch_sapling
+          - potted_blue_orchid
+          - potted_brown_mushroom
+          - potted_cactus
+          - potted_dandelion
+          - potted_dark_oak_sapling
+          - potted_dead_bush
+          - potted_fern
+          - potted_jungle_sapling
+          - potted_oak_sapling
+          - potted_orange_tulip
+          - potted_oxeye_daisy
+          - potted_pink_tulip
+          - potted_poppy
+          - potted_red_mushroom
+          - potted_red_tulip
+          - potted_spruce_sapling
+          - potted_white_tulip
     costs:
         mana: 10
 

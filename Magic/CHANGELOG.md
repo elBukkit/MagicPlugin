@@ -3,6 +3,7 @@
 # 7.6.6
 
  - Add spawn tag API, to support MagicWorlds 1.6
+ - Alter now works on flower pots (1.13 only)
 
 # 7.6.5
 
