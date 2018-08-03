@@ -1004,6 +1004,8 @@ recallshop:
     confirm_filler: stained_glass:3
     auto_close: true
     cost_override: currency
+    requirements:
+    - wand: wand
 
 flingshop:
   inherit: buyshop
@@ -1014,6 +1016,8 @@ flingshop:
     confirm_filler: stained_glass:3
     auto_close: true
     cost_override: currency
+    requirements:
+    - wand: wand
 
 blastshop:
   inherit: buyshop
@@ -1024,6 +1028,8 @@ blastshop:
     confirm_filler: stained_glass:3
     auto_close: true
     cost_override: currency
+    requirements:
+    - wand: wand
 
 pollinateshop:
   inherit: buyshop
@@ -1034,6 +1040,8 @@ pollinateshop:
     confirm_filler: stained_glass:3
     auto_close: true
     cost_override: currency
+    requirements:
+    - wand: wand
 
 intro_spshop:
     inherit: buyshop
