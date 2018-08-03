@@ -1235,6 +1235,12 @@ public class NMSUtils {
         return handle;
     }
 
+    // Here to support older versions of MagicWorlds
+    @Deprecated
+    public static boolean isDone(org.bukkit.Chunk chunk) {
+        return isReady(chunk);
+    }
+
     public static boolean isReady(org.bukkit.Chunk chunk) {
         if (class_Chunk_isReadyMethod == null) return true;
 
