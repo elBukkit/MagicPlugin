@@ -30,6 +30,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     protected final Mage mage;
     private MageClass parent;
     private Collection<EntityAttributeModifier> attributeModifiers;
+    private boolean checkedAttributes = false;
 
     private static class EntityAttributeModifier {
         public EntityAttributeModifier(Attribute attribute, AttributeModifier modifier) {
@@ -399,8 +400,22 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
         for (EntityAttributeModifier modifier : modifiers) {
             AttributeInstance attribute = entity.getAttribute(modifier.attribute);
+
+            // Only do this once, it's really here to clean up attributes that may have gotten stuck on server crash
+            if (!checkedAttributes) {
+                Collection<AttributeModifier> existingModifiers = attribute.getModifiers();
+                for (AttributeModifier existing : existingModifiers) {
+                    if (existing.getName().equalsIgnoreCase(modifier.modifier.getName())) {
+                        mage.getController().getLogger().warning("Removed duplicate attribute modifier " + modifier.modifier.getName() + ", was this leftover from a server crash?");
+                        attribute.removeModifier(existing);
+                        break;
+                    }
+                }
+            }
             attribute.addModifier(modifier.modifier);
         }
+
+        checkedAttributes = true;
     }
 
     public void deactivateAttributes() {

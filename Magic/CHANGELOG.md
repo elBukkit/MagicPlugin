@@ -4,6 +4,7 @@
 
  - Add spawn tag API, to support MagicWorlds 1.6
  - Alter now works on flower pots (1.13 only)
+ - Add some safety checks for class entity attributes getting stuck on server crash
 
 # 7.6.5
 
