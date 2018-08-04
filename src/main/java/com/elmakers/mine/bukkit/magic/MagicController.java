@@ -1397,8 +1397,6 @@ public class MagicController implements MageController {
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 examplesFileName = "examples/" + example + "/" + fileName + ".yml";
-                plugin.saveResource(examplesFileName, true);
-
                 InputStream input = plugin.getResource(examplesFileName);
                 if (input != null)
                 {

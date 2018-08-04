@@ -21,6 +21,7 @@
  - Nerfed Blessing
  - Added support for color codes in item names
  - Added safety checks to all velocity calls
+ - Fix using add_examples to load example configs
 
 ## 5.5.5
 
