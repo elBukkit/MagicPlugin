@@ -30,7 +30,7 @@ public abstract class CompoundEntityAction extends CompoundAction
     public SpellResult start(CastContext context) {
         entities.clear();
         addEntities(context, entities);
-        context.addWork(entities.size());
+        context.addWork(20 + entities.size());
         return SpellResult.NO_TARGET;
     }
 

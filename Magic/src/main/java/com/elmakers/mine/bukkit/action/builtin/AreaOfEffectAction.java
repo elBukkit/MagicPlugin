@@ -50,7 +50,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
     @Override
     public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
     {
-        context.addWork((int)Math.ceil(radius));
+        context.addWork((int)Math.ceil(radius) + 100);
         Mage mage = context.getMage();
         Entity sourceEntity = context.getMage().getEntity();
         Location sourceLocation = context.getTargetLocation();

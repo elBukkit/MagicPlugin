@@ -54,7 +54,7 @@ public class ConeOfEffectAction extends CompoundEntityAction
 
     @Override
     public void addEntities(CastContext context, List<WeakReference<Entity>> entities) {
-        context.addWork((int)Math.ceil(range));
+        context.addWork((int)Math.ceil(range) + 100);
         targeting.getTargetEntities(context, range, targetCount, entities);
     }
 }
