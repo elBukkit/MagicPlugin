@@ -13,6 +13,9 @@ import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
+import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 
 /**
@@ -24,6 +27,9 @@ public class PreLoadEvent extends Event {
     private List<AttributeProvider> attributeProviders = new ArrayList<>();
     private List<TeamProvider> teamProviders = new ArrayList<>();
     private List<Currency> currencies = new ArrayList<>();
+    private List<BlockBreakManager> blockBreakManagers = new ArrayList<>();
+    private List<BlockBuildManager> blockBuildManager = new ArrayList<>();
+    private List<PVPManager> pvpManagers = new ArrayList<>();
     private Map<String, RequirementsProcessor> requirementProcessors = new HashMap<>();
 
     public PreLoadEvent(MageController controller) {
@@ -98,6 +104,33 @@ public class PreLoadEvent extends Event {
         requirementProcessors.put(requirementType, processor);
     }
 
+    /**
+     * Register a BlockBreakManager, for controlling whether or not players can break blocks with magic.
+     *
+     * @param manager The manager to add.
+     */
+    public void registerBlockBlockManager(BlockBreakManager manager) {
+        blockBreakManagers.add(manager);
+    }
+
+    /**
+     * Register a PVPManager, for controlling whether or not players can harm other players with magic.
+     *
+     * @param manager The manager to add.
+     */
+    public void registerPVPManager(PVPManager manager) {
+        pvpManagers.add(manager);
+    }
+
+    /**
+     * Register a BlockBuildManager, for controlling whether or not players can place blocks with magic.
+     *
+     * @param manager The manager to add.
+     */
+    public void registerBlockBuildManager(BlockBuildManager manager) {
+        blockBuildManager.add(manager);
+    }
+
     public Map<String, RequirementsProcessor> getRequirementProcessors() {
         return requirementProcessors;
     }
@@ -112,5 +145,17 @@ public class PreLoadEvent extends Event {
 
     public Collection<Currency> getCurrencies() {
         return currencies;
+    }
+
+    public Collection<BlockBreakManager> getBlockBreakManagers() {
+        return blockBreakManagers;
+    }
+
+    public Collection<BlockBuildManager> getBlockBuildManagers() {
+        return blockBuildManager;
+    }
+
+    public Collection<PVPManager> getPVPManagers() {
+        return pvpManagers;
     }
 }

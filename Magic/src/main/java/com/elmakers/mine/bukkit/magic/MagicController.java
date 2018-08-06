@@ -103,6 +103,9 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
+import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
+import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -160,15 +163,12 @@ import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
-import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
-import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.protection.CitadelManager;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.NCPManager;
-import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.ProtectionManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
@@ -1270,11 +1270,6 @@ public class MagicController implements MageController {
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
         registerListeners();
-
-        // Set up Break/Build/PVP Managers
-        blockBreakManagers.clear();
-        blockBuildManagers.clear();
-        pvpManagers.clear();
 
         // PVP Managers
         if (worldGuardManager.isEnabled()) pvpManagers.add(worldGuardManager);
@@ -2894,14 +2889,23 @@ public class MagicController implements MageController {
     }
 
     protected void registerPreLoad() {
+        // Setup custom providers
         currencies.clear();
         attributeProviders.clear();
         teamProviders.clear();
         requirementProcessors.clear();
 
+        // Set up Break/Build/PVP Managers
+        blockBreakManagers.clear();
+        blockBuildManagers.clear();
+        pvpManagers.clear();
+
         PreLoadEvent loadEvent = new PreLoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
 
+        blockBreakManagers.addAll(loadEvent.getBlockBreakManagers());
+        blockBuildManagers.addAll(loadEvent.getBlockBuildManagers());
+        pvpManagers.addAll(loadEvent.getPVPManagers());
         attributeProviders.addAll(loadEvent.getAttributeProviders());
         teamProviders.addAll(loadEvent.getTeamProviders());
         requirementProcessors.putAll(loadEvent.getRequirementProcessors());

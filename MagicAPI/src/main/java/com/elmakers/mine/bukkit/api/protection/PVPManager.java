@@ -4,5 +4,5 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public interface PVPManager {
-    public boolean isPVPAllowed(Player player, Location location);
+    boolean isPVPAllowed(Player player, Location location);
 }
