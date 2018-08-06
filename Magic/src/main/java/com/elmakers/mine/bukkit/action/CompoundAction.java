@@ -84,6 +84,7 @@ public abstract class CompoundAction extends BaseSpellAction
     public SpellResult perform(CastContext context) {
         SpellResult result = SpellResult.NO_ACTION;
         while (!result.isStop()) {
+            context.addWork(1);
             if (state == State.NOT_STARTED) {
                 result = result.min(start(context));
 
