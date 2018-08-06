@@ -2,8 +2,6 @@
 
 ## Hot Issues
 
- - Using test wand, inventory didn't save when I /wand configured
- 
  - Small bug! When you die, it makes your wand auto-select the first spell in your hotbar:
    https://youtu.be/wExxOdFWCV4
 
@@ -28,7 +26,9 @@
  - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
   
 ## Recent Requests
-      
+
+ - Add cancel_on_death spell option
+ 
  - Earn SP for killing players (maybe other mobs as well, by type?)
    
  - Allow use of equations in book action, somehow.

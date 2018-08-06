@@ -5,7 +5,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class GriefPreventionManager implements BlockBuildManager, BlockBreakManager, PVPManager  {
+import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
+import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.PVPManager;
+
+public class GriefPreventionManager implements BlockBuildManager, BlockBreakManager, PVPManager {
     private boolean enabled = false;
     private GriefPreventionAPI api = null;
 

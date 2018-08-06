@@ -10,6 +10,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
+import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.PVPManager;
+
 public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildManager {
     private boolean enabled = false;
     private TownyAPI towny = null;

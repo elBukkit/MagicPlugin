@@ -14,8 +14,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.protection.BlockBreakManager;
-import com.elmakers.mine.bukkit.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
+import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.events.ArenaPlayerJoinEvent;
 import com.garbagemule.MobArena.events.ArenaPlayerLeaveEvent;

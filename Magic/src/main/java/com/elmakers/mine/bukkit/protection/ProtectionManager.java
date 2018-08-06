@@ -16,6 +16,9 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
+import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
+import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+
 public class ProtectionManager implements BlockBreakManager, BlockBuildManager {
     private Plugin owningPlugin;
     private final Set<Plugin> plugins = new HashSet<>();
