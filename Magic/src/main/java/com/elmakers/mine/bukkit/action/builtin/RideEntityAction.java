@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -87,6 +88,8 @@ public class RideEntityAction extends BaseSpellAction
     private double crashEntityFOV = 0;
     private int fallProtection = 0;
     private boolean isPassenger;
+    private Spell jumpSpell;
+    private String[] jumpSpellParameters;
 
     protected Vector direction;
     protected Entity mount;
@@ -186,6 +189,15 @@ public class RideEntityAction extends BaseSpellAction
         soundMaxPitch = (float)parameters.getDouble("sound_max_pitch", soundMaxPitch);
         soundMinVolume = (float)parameters.getDouble("sound_min_volume", soundMinVolume);
         soundMinPitch = (float)parameters.getDouble("sound_min_pitch", soundMinPitch);
+        String jumpCast = parameters.getString("jump_cast", "");
+        if (!jumpCast.isEmpty()) {
+            String[] pieces = StringUtils.split(jumpCast, " ");
+            jumpSpell = context.getMage().getSpell(pieces[0]);
+            jumpSpellParameters = Arrays.copyOfRange(pieces, 1, pieces.length);
+            if (jumpSpell == null) {
+                context.getLogger().warning("Unknown jump_cast spell: " + jumpCast);
+            }
+        }
     }
 
     protected void remount(CastContext context) {
@@ -289,6 +301,10 @@ public class RideEntityAction extends BaseSpellAction
 
         if (fallProtection > 0) {
             context.getMage().enableFallProtection(fallProtection, Integer.MAX_VALUE, context.getSpell());
+        }
+
+        if (jumpSpell != null && context.getMage().isVehicleJumping()) {
+            jumpSpell.cast(jumpSpellParameters);
         }
 
         return SpellResult.PENDING;
