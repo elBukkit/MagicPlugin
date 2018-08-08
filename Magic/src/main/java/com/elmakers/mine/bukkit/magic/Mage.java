@@ -366,6 +366,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void onDeath(EntityDeathEvent event) {
+        for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
+            Batch batch = iterator.next();
+            if (!(batch instanceof SpellBatch)) continue;
+            SpellBatch spellBatch = (SpellBatch)batch;
+            Spell spell = spellBatch.getSpell();
+            if (spell.cancelOnDeath()) {
+                spell.cancel();
+                batch.finish();
+                iterator.remove();
+            }
+        }
+
         Player player = getPlayer();
         if (player != null && player == event.getEntity()) {
             onPlayerDeath(event);

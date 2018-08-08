@@ -202,6 +202,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> activeCosts = null;
 
     protected double cancelOnDamage             = 0;
+    protected boolean cancelOnDeath            = false;
     protected boolean cancelOnCastOther         = false;
     protected boolean cancelOnNoPermission      = false;
     protected boolean cancelOnNoWand            = false;
@@ -1764,6 +1765,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
+        cancelOnDeath = parameters.getBoolean("cancel_on_death", false);
         cancelOnNoPermission = parameters.getBoolean("cancel_on_no_permission", false);
         cancelOnNoWand = parameters.getBoolean("cancel_on_no_wand", false);
         commandBlockAllowed = parameters.getBoolean("command_block_allowed", true);
@@ -2902,6 +2904,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public double cancelOnDamage() {
         return cancelOnDamage;
+    }
+
+    @Override
+    public boolean cancelOnDeath() {
+        return cancelOnDeath;
     }
 
     @Override

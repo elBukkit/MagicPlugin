@@ -13,7 +13,7 @@ decoy:
   parameters:
     target: self
     cooldown: 30000
-    cancel_on_damage: 1
+    cancel_on_damage: 0.5
     cancel_on_cast_other: true
     type: pig_zombie
     silent: true

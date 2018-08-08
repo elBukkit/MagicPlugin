@@ -39,6 +39,7 @@ boon:
         undo: 600000
         duration: 600000
         cooldown: 5000
+        cancel_on_death: true
     costs:
         mana: 20
     active_costs:

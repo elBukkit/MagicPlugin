@@ -75,6 +75,7 @@ public interface Spell extends SpellTemplate {
     void finish(CastContext context);
     double cancelOnDamage();
     boolean cancelOnCastOther();
+    boolean cancelOnDeath();
     String getMessage(String messageKey);
     boolean hasHandlerParameters(String handlerKey);
     @Nullable
