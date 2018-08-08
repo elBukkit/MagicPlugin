@@ -42,6 +42,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         "spawn.mobs", "spawn.probability", "spawn.player_range", "spawn.min_players",
         "spawn.limit", "spawn.limit_range", "spawn.vertical_range", "spawn.radius",
         "spawn.vertical_radius", "spawn.retries", "min_players", "player_range",
+        "min_time", "max_time", "min_moon_phase", "max_moon_phase", "moon_phase",
         "cast.spells", "cast.recast", "cast.undo_all"
     );
 
@@ -476,6 +477,28 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                     break;
                 case "effects":
                     options.addAll(magicController.getEffectKeys());
+                    break;
+                case "max_moon_phase":
+                case "min_moon_phase":
+                case "moon_phase":
+                    options.add("full");
+                    options.add("new");
+                    for (int i = 0; i < 8; i++) {
+                        options.add(Integer.toString(i));
+                    }
+                    break;
+                case "max_time":
+                case "min_time":
+                    options.add("dawn");
+                    options.add("day");
+                    options.add("noon");
+                    options.add("dusk");
+                    options.add("night");
+                    options.add("midnight");
+                    options.add("0");
+                    options.add("6000");
+                    options.add("12000");
+                    options.add("18000");
                     break;
                 case "spawn.radius":
                 case "spawn.vertical_radius":
