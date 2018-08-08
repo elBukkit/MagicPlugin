@@ -29,3 +29,12 @@ glideranimation:
   interval: 1200
   cast:
     spells: glideranimation bypass_undo true
+
+firetrap:
+    name: Fire Trap
+    interval: 1000
+    min_players: 1
+    player_range: 3
+    cast:
+      spells: fire radius 0 undo 0 quiet true
+      recast: false

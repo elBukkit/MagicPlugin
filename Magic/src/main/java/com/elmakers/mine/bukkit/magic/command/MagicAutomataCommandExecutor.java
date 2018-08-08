@@ -41,7 +41,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         "name", "interval", "effects",
         "spawn.mobs", "spawn.probability", "spawn.player_range", "spawn.min_players",
         "spawn.limit", "spawn.limit_range", "spawn.vertical_range", "spawn.radius",
-        "spawn.vertical_radius", "spawn.retries", "cast.spells"
+        "spawn.vertical_radius", "spawn.retries", "min_players", "player_range",
+        "cast.spells", "cast.recast", "cast.undo_all"
     );
 
     private static class SelectedAutomata {
@@ -466,6 +467,10 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                         options.add(spell.getKey());
                     }
                     break;
+                case "cast.undo_all":
+                case "cast.recast":
+                    options.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
+                    break;
                 case "interval":
                     options.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
                     break;
@@ -478,6 +483,9 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 case "spawn.limit_range":
                 case "spawn.player_range":
                 case "spawn.retries":
+                case "spawn.min_players":
+                case "player_range":
+                case "min_players":
                     options.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
                     break;
                 case "spawn.probability":

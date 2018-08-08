@@ -17,10 +17,14 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
 public class Caster {
     @Nonnull
     private final Deque<WeightedPair<String>> spells;
+    private final boolean recast;
+    private final boolean undoAll;
 
     public Caster(@Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
         spells = new ArrayDeque<>();
         RandomUtils.populateStringProbabilityMap(spells, configuration, "spells");
+        recast = configuration.getBoolean("recast", true);
+        undoAll = configuration.getBoolean("undo_all", true);
     }
 
     public void cast(Mage mage) {
@@ -40,5 +44,13 @@ public class Caster {
                 spell.cast(parameters);
             }
         }
+    }
+
+    public boolean isRecast() {
+        return recast;
+    }
+
+    public boolean isUndoAll() {
+        return undoAll;
     }
 }

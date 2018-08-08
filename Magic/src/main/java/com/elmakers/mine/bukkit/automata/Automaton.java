@@ -16,6 +16,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.effect.EffectContext;
@@ -40,6 +41,7 @@ public class Automaton {
     private long nextTick;
     private List<WeakReference<Entity>> spawned;
     private EffectContext effectContext;
+    private boolean isActive;
 
     private Mage mage;
 
@@ -120,6 +122,31 @@ public class Automaton {
     }
 
     public void pause() {
+        deactivate();
+    }
+
+    public void resume() {
+        if (template == null) return;
+
+        // Always tick at least once
+        tick();
+    }
+
+    public void activate() {
+        isActive = true;
+
+        Collection<EffectPlayer> effects = template.getEffects();
+        if (effects != null) {
+            for (EffectPlayer player : effects) {
+                player.start(getEffectContext());
+            }
+        }
+
+    }
+
+    public void deactivate() {
+        isActive = false;
+
         if (spawned != null) {
             for (WeakReference<Entity> mobReference : spawned) {
                 Entity mob = mobReference.get();
@@ -137,23 +164,19 @@ public class Automaton {
         if (mage != null) {
             mage.deactivate();
             mage.undoScheduled();
+            if (template != null && template.isUndoAll()) {
+                UndoList undone = mage.undo();
+                while (undone != null) {
+                    undone = mage.undo();
+                }
+            }
             controller.forgetMage(mage);
             mage = null;
         }
     }
 
-    public void resume() {
-        if (template == null) return;
-
-        Collection<EffectPlayer> effects = template.getEffects();
-        if (effects != null) {
-            for (EffectPlayer player : effects) {
-                player.start(getEffectContext());
-            }
-        }
-
-        // Always tick at least once
-        tick();
+    public boolean isActive() {
+        return isActive;
     }
 
     public Location getLocation() {

@@ -6,6 +6,7 @@
  - Alter now works on flower pots (1.13 only)
  - Add some safety checks for class entity attributes getting stuck on server crash
  - Add jump_cast option for brooms and vehicles, to cast a spell with spacebar while riding
+ - Add additional automata options, including nearby player requirements
 
 # 7.6.5
 

@@ -6,8 +6,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -30,6 +32,9 @@ public class AutomatonTemplate {
     private Caster caster;
     @Nullable
     private Collection<EffectPlayer> effects;
+
+    private final int playerRange;
+    private final int minPlayers;
 
     public AutomatonTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         this.key = Preconditions.checkNotNull(key);
@@ -56,6 +61,10 @@ public class AutomatonTemplate {
         if (configuration.contains("cast")) {
             caster = new Caster(this, configuration.getConfigurationSection("cast"));
         }
+
+        // Common parameters
+        playerRange = configuration.getInt("player_range", 64);
+        minPlayers = configuration.getInt("min_players", 0);
     }
 
     @Nonnull
@@ -74,6 +83,20 @@ public class AutomatonTemplate {
     }
 
     public void tick(Automaton instance) {
+        boolean isActive = checkActive(instance.getLocation());
+        boolean firstActivate = false;
+        if (isActive) {
+            if (!instance.isActive()) {
+                firstActivate = true;
+                instance.activate();
+            }
+        } else {
+            if (instance.isActive()) {
+                instance.deactivate();
+            }
+            return;
+        }
+
         if (spawner != null) {
             List<Entity> entities = spawner.spawn(instance.getLocation());
             if (entities != null && !entities.isEmpty()) {
@@ -82,7 +105,7 @@ public class AutomatonTemplate {
             instance.checkEntities();
         }
 
-        if (caster != null) {
+        if (caster != null && (caster.isRecast() || firstActivate)) {
             caster.cast(instance.getMage());
         }
     }
@@ -96,5 +119,26 @@ public class AutomatonTemplate {
     @Nullable
     public Collection<EffectPlayer> getEffects() {
         return effects;
+    }
+
+    public boolean checkActive(Location location) {
+        if (minPlayers <= 0 || playerRange <= 0) {
+            return true;
+        }
+
+        int playerCount = 0;
+        int rangeSquared = playerRange * playerRange;
+        List<Player> players = location.getWorld().getPlayers();
+        for (Player player : players) {
+            if (player.getLocation().distanceSquared(location) <= rangeSquared) {
+                playerCount++;
+            }
+        }
+
+        return playerCount >= minPlayers;
+    }
+
+    public boolean isUndoAll() {
+        return caster != null && caster.isUndoAll();
     }
 }
