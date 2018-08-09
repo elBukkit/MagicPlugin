@@ -7,6 +7,7 @@
  - Add some safety checks for class entity attributes getting stuck on server crash
  - Add jump_cast option for brooms and vehicles, to cast a spell with spacebar while riding
  - Add additional automata options, including nearby player, time of day and phase of moon requirements
+ - Add werewolf mob and spawner (example of only spawning at night during a full moon)
 
 # 7.6.5
 

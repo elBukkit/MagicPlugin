@@ -1,0 +1,25 @@
+werewolf:
+  type: zombie
+  helmet: skull:MHF_Wolf
+  chestplate: leather_chestplate:000000
+  leggings: leather_leggings:000000
+  name: Werewolf
+  health: 40
+  default_drops: false
+  drops:
+  - bone@3
+  - sp:5
+  entity_attributes:
+    generic_knockback_resistance: 1
+    generic_attack_speed: 3
+    generic_attack_damage: 0.3
+  triggers:
+    spawn:
+      effects:
+      - sound: entity_wolf_howl
+        sound_volume: 2
+        sound_pitch: 0.2
+      - sound: entity_wolf_growl
+        sound_volume: 1.5
+        sound_pitch: 0.5
+    
