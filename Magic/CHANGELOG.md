@@ -4,6 +4,7 @@
 
  - Fix spell descriptions not showing in the spellshop
  - EMP will only affect levers and redstone blocks
+ - Fix spellshop not always auto-levelling after buying the last spell
 
 # 7.6.6
 

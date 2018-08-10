@@ -1232,4 +1232,14 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
     protected int getNumSlots() {
         return numSlots;
     }
+
+    @Override
+    protected void addHandlers(Spell spell, ConfigurationSection parameters) {
+        // We've done something weird with the Selector action, making "actions" not an action handler
+        // nor a reference to one, but a default value for options to use for referencing an action
+        // handler.
+        // This means it's important we don't remove it from the configuration, and so should not
+        // try to process it like a default action handler.
+        // This is why addHandlers is overridden and does not call the super method.
+    }
 }
