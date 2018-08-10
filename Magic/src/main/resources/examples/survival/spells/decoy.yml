@@ -4,6 +4,7 @@ decoy:
   toggle: undo
   disable_mana_regeneration: true
   quick_cast: true
+  worth: 300
   actions:
     cast:
     - class: Vanish

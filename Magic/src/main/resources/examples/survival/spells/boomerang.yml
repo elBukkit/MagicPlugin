@@ -1,5 +1,6 @@
 boomerang:
     icon: gold_sword
+    worth: 100
     actions:
         cast:
         - class: ArmorStandProjectile
