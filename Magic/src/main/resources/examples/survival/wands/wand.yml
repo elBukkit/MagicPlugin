@@ -8,4 +8,8 @@ wand:
     migrate_icon: wood_hoe
     effect_color: random
     active_spell: missile
+    tags:
+    - buffable
+    - transformable
+    - effectable
 

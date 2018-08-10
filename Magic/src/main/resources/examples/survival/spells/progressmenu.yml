@@ -14,16 +14,16 @@ progressmenu:
     - placeholder: true
     - cast_spell: wandbuffshop
       requirements:
-      - wands: wand,magicsword,mastersword
+      - wand_tags: buffable
     - cast_spell: appearanceshop
       requirements: 
-      - wand: wand
+      - wand_tags: transformable
     - cast_spell: colorshop
       requirements: 
       - holding_wand: true
     - cast_spell: effectshop
       requirements: 
-      - wands: wand
+      - wand_tags: effectable
     - cast_spell: controlsmenu
       requirements: 
       - holding_wand: true

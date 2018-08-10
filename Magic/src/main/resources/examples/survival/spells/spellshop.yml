@@ -11,10 +11,10 @@ spellshop:
       - class: Shop
         actions: addedspell
         addedspell:
-        # This is here for path configs that upgrades mana or other properties on each spell purchase.
-        # This is not really used by the default configs anymore.
-        # This will also rank the player up after they purchase the last spell on their current path.
+        # This will rank the player up after they purchase the last spell on their current path.
         - class: UpgradePath
+          # This is here for path configs that upgrades mana or other properties on each spell purchase.
+          # This is not really used by the default configs anymore.
           upgrade_levels: 1
     effects:
       selected:

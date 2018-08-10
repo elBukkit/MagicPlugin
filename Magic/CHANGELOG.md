@@ -5,6 +5,7 @@
  - Fix spell descriptions not showing in the spellshop
  - EMP will only affect levers and redstone blocks
  - Fix spellshop not always auto-levelling after buying the last spell
+ - Add wand tagging system for use with requirements, make progressmenu easier to customize
 
 # 7.6.6
 

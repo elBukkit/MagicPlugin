@@ -55,6 +55,7 @@ public  class MagicRequirement {
     private @Nullable String requiredPath = null;
     private @Nullable String requiredTemplate = null;
     private @Nullable Set<String> requiredTemplates = null;
+    private @Nullable List<String> wandTags = null;
     private @Nullable String requiresCompletedPath = null;
     private @Nullable String exactPath = null;
     private @Nullable String mageClass = null;
@@ -76,6 +77,7 @@ public  class MagicRequirement {
         requireWand = configuration.getBoolean("holding_wand");
         mageClass = configuration.getString("class");
         activeClass = configuration.getString("active_class");
+        wandTags = ConfigurationUtils.getStringList(configuration, "wand_tags");
         if (activeClass != null && mageClass == null) {
             mageClass = activeClass;
         }
@@ -93,7 +95,7 @@ public  class MagicRequirement {
             exactPath = requiresCompletedPath;
         }
 
-        if (requiredTemplate != null || requiredTemplates != null || wandProperties != null) {
+        if (requiredTemplate != null || requiredTemplates != null || wandProperties != null || wandTags != null) {
             requireWand = true;
         }
     }
@@ -126,6 +128,12 @@ public  class MagicRequirement {
         Wand wand = context.getWand();
         if (wand == null && requireWand) {
             return false;
+        }
+
+        if (wandTags != null) {
+            if (!hasTags(wand)) {
+                return false;
+            }
         }
 
         if (requiredTemplate != null) {
@@ -267,6 +275,12 @@ public  class MagicRequirement {
             }
         }
 
+        if (wandTags != null) {
+            if (!hasTags(wand)) {
+                return getMessage(context, "no_template").replace("$wand", wand.getName());
+            }
+        }
+
         if (mageClass != null && !mageClass.isEmpty()) {
             if (mage.hasClassUnlocked(mageClass)) {
                 return getMessage(context, "no_class").replace("$class", mageClass);
@@ -399,5 +413,23 @@ public  class MagicRequirement {
         }
 
         return null;
+    }
+
+    protected boolean hasTags(Wand wand) {
+        List<String> tags = ConfigurationUtils.getStringList(wand.getProperty("tags"));
+        if (tags == null) {
+            return false;
+        }
+        boolean found = false;
+        for (String tag : tags) {
+            for (String checkTag : wandTags) {
+                if (tag.equalsIgnoreCase(checkTag)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) break;
+        }
+        return found;
     }
 }

@@ -15,4 +15,7 @@ magicsword:
       physical: 0.4
     item_attributes:
       GENERIC_ATTACK_DAMAGE: 6
+    tags:
+    - buffable
+    - sharpenable
 

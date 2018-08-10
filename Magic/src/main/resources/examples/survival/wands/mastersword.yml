@@ -12,4 +12,7 @@ mastersword:
       physical: 0.5
     item_attributes:
       GENERIC_ATTACK_DAMAGE: 10
+    tags:
+    - buffable
+    - sharpenable
 
