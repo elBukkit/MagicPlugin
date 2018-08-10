@@ -3,6 +3,7 @@
 # 7.6.7
 
  - Fix spell descriptions not showing in the spellshop
+ - EMP will only affect levers and redstone blocks
 
 # 7.6.6
 
