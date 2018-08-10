@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.7
+
 # 7.6.6
 
  - Add spawn tag API, to support MagicWorlds 1.6
