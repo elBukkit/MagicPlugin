@@ -71,7 +71,6 @@
    
 ## Suggestions
 
- - Add CheckAttribute action
  - mauto spawner option to randomize facing direction
  - Option to /wand fill to fill a specific category
  - Cast location offset override per spell.

@@ -8,6 +8,7 @@
  - Add jump_cast option for brooms and vehicles, to cast a spell with spacebar while riding
  - Add additional automata options, including nearby player, time of day and phase of moon requirements
  - Add werewolf mob and spawner (example of only spawning at night during a full moon)
+ - Add CheckRequirements action, can be used for branching spell logic based on attributes or other things
 
 # 7.6.5
 

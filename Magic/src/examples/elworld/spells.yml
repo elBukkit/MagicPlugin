@@ -3426,3 +3426,21 @@ sniper_scope:
   parameters:
       item: carved_pumpkin
 
+conditional:
+  icon: stick
+  actions:
+    cast:
+    - class: CheckRequirements
+      actions:
+      - class: Message
+        message: You have passed the test!
+      - class: Stop
+    - class: Message
+      message: YOU FAIL!
+    - class: Kill
+  parameters:
+    target: self
+    requirements:
+    - attributes:
+      - attribute: constitution
+        min: 10
