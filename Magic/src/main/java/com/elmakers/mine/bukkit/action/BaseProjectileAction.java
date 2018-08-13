@@ -26,6 +26,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
     private long lifetime;
     private boolean setTarget;
     private String projectileEffectsKey;
+    private boolean projectileEffectsUseTarget;
     private String hitEffectsKey;
 
     protected boolean track = false;
@@ -40,6 +41,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
         setTarget = parameters.getBoolean("set_target", false);
         track = parameters.getBoolean("track_projectile", track);
         projectileEffectsKey = parameters.getString("projectile_effects", "projectile");
+        projectileEffectsUseTarget = parameters.getBoolean("projectile_effects_use_target", false);
         hitEffectsKey = parameters.getString("hit_effects", "hit");
     }
 
@@ -174,7 +176,14 @@ public abstract class BaseProjectileAction extends CompoundAction {
         }
         Collection<EffectPlayer> projectileEffects = context.getEffects(projectileEffectsKey);
         for (EffectPlayer effectPlayer : projectileEffects) {
-            effectPlayer.start(entity.getLocation(), entity, null, null);
+            if (projectileEffectsUseTarget) {
+                Entity sourceEntity = context.getEntity();
+                //effectPlayer.start(sourceEntity == null ? context.getLocation() : null, sourceEntity, entity.getLocation(), entity);
+                effectPlayer.start(null, sourceEntity, entity.getLocation(), entity);
+
+            } else {
+                effectPlayer.start(entity.getLocation(), entity, null, null);
+            }
         }
         if (track) {
             Targeting.track(context.getPlugin(), entity);

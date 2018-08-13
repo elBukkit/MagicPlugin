@@ -2,6 +2,10 @@
 
 ## Hot Issues
 
+ - /mtrait invisible doesn't work on armor stands
+ 
+ - (PS - /ps allowall lags?)
+
  - Small bug! When you die, it makes your wand auto-select the first spell in your hotbar:
    https://youtu.be/wExxOdFWCV4
 
@@ -26,6 +30,8 @@
  - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
   
 ## Recent Requests
+
+ - Support mana _boost parameters in mage classes
  
  - Earn SP for killing players (maybe other mobs as well, by type?)
    
@@ -36,6 +42,9 @@
   
  - Take a look at this, maybe use accurate block hitboxes?
    https://bitbucket.org/BillyGalbreath/pl3xsigns/src/c4ce6a50592aca67be0aef26117cc8b7e069c3eb/src/main/java/net/pl3x/bukkit/pl3xsigns/lineofsight/BoundingBox.java?at=master&fileviewer=file-view-default
+   
+ - FOV change action?
+   https://wiki.vg/Protocol#Player_Abilities_.28clientbound.29
    
  - It'd be really cool to support configs from remote repos....
    Github has an API for fetching a list of files, maybe can use that?

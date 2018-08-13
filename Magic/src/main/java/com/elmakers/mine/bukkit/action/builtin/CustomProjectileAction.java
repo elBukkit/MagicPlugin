@@ -55,6 +55,7 @@ public class CustomProjectileAction extends CompoundAction
     private double maxMovementSpread;
     private int startDistance;
     private String projectileEffectKey;
+    private boolean projectileEffectsUseTarget;
     private String hitEffectKey;
     private String missEffectKey;
     private String headshotEffectKey;
@@ -231,6 +232,7 @@ public class CustomProjectileAction extends CompoundAction
         }
 
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
+        projectileEffectsUseTarget = parameters.getBoolean("projectile_effects_use_target", false);
         headshotEffectKey = parameters.getString("headshot_effects", "headshot");
         hitEffectKey = parameters.getString("hit_effects", "hit");
         missEffectKey = parameters.getString("miss_effects", "miss");
@@ -966,7 +968,13 @@ public class CustomProjectileAction extends CompoundAction
             {
                 com.elmakers.mine.bukkit.effect.EffectPlayer effectPlayer = (com.elmakers.mine.bukkit.effect.EffectPlayer)apiEffectPlayer;
                 effectPlayer.setEffectPlayList(activeProjectileEffects);
-                effectPlayer.startEffects(effectLocation, null);
+                if (projectileEffectsUseTarget) {
+                    Entity sourceEntity = actionContext.getEntity();
+                    DynamicLocation sourceLocation = sourceEntity == null ? new DynamicLocation(actionContext.getLocation()) : new DynamicLocation(sourceEntity);
+                    effectPlayer.startEffects(sourceLocation, effectLocation);
+                } else {
+                    effectPlayer.startEffects(effectLocation, null);
+                }
             }
         }
     }
