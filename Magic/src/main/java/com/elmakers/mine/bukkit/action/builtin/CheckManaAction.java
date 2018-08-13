@@ -2,13 +2,11 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
-import com.elmakers.mine.bukkit.api.action.ActionHandler;
+import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
-public class CheckManaAction extends CompoundAction {
+public class CheckManaAction extends CheckAction {
     private boolean requireNotFull = false;
     private boolean requireEmpty = false;
     private double requireAmount = 0;
@@ -21,6 +19,7 @@ public class CheckManaAction extends CompoundAction {
         requireEmpty = parameters.getBoolean("require_mana_empty", false);
     }
 
+    @Override
     protected boolean isAllowed(CastContext context) {
         Mage mage = context.getMage();
         double currentMana = mage.getMana();
@@ -35,20 +34,6 @@ public class CheckManaAction extends CompoundAction {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public SpellResult step(CastContext context) {
-        boolean allowed = isAllowed(context);
-        ActionHandler actions = getHandler("actions");
-        if (actions == null || actions.size() == 0) {
-            return allowed ? SpellResult.CAST : SpellResult.STOP;
-        }
-
-        if (!allowed) {
-            return SpellResult.NO_TARGET;
-        }
-        return startActions();
     }
 
     @Override

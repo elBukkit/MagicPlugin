@@ -8,13 +8,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class CheckEntityAction extends CompoundAction {
+public class CheckEntityAction extends CheckAction {
     private boolean allowCaster;
     private boolean onlyCaster;
     private Set<EntityType> allowedTypes;
@@ -53,6 +53,7 @@ public class CheckEntityAction extends CompoundAction {
         }
     }
 
+    @Override
     protected boolean isAllowed(CastContext context) {
         Entity targetEntity = context.getTargetEntity();
         if (targetEntity == null) return false;
@@ -70,20 +71,6 @@ public class CheckEntityAction extends CompoundAction {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public SpellResult step(CastContext context) {
-        boolean allowed = isAllowed(context);
-        ActionHandler actions = getHandler("actions");
-        if (actions == null || actions.size() == 0) {
-            return allowed ? SpellResult.CAST : SpellResult.STOP;
-        }
-
-        if (!allowed) {
-            return SpellResult.NO_TARGET;
-        }
-        return startActions();
     }
 
     @Override

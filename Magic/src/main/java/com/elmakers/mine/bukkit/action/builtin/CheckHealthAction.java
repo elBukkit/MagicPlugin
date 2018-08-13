@@ -4,13 +4,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
-import com.elmakers.mine.bukkit.api.action.ActionHandler;
+import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
-public class CheckHealthAction extends CompoundAction {
+public class CheckHealthAction extends CheckAction {
     private Double minHealth;
     private Double maxHealth;
     private boolean fullHealth;
@@ -28,6 +26,7 @@ public class CheckHealthAction extends CompoundAction {
         fullHealth = parameters.getBoolean("full_health", false);
     }
 
+    @Override
     protected boolean isAllowed(CastContext context) {
         Entity targetEntity = context.getTargetEntity();
         if (targetEntity == null || !(targetEntity instanceof Damageable)) return false;
@@ -36,20 +35,6 @@ public class CheckHealthAction extends CompoundAction {
         if (minHealth != null && damageable.getHealth() < minHealth) return false;
         if (maxHealth != null && damageable.getHealth() > maxHealth) return false;
         return true;
-    }
-
-    @Override
-    public SpellResult step(CastContext context) {
-        boolean allowed = isAllowed(context);
-        ActionHandler actions = getHandler("actions");
-        if (actions == null || actions.size() == 0) {
-            return allowed ? SpellResult.CAST : SpellResult.STOP;
-        }
-
-        if (!allowed) {
-            return SpellResult.NO_TARGET;
-        }
-        return startActions();
     }
 
     @Override

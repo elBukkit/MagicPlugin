@@ -3,15 +3,13 @@ package com.elmakers.mine.bukkit.action.builtin;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
-import com.elmakers.mine.bukkit.api.action.ActionHandler;
+import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
-public class CheckBlockAction extends CompoundAction {
+public class CheckBlockAction extends CheckAction {
     private MaterialSet allowed;
 
     @Override
@@ -23,6 +21,7 @@ public class CheckBlockAction extends CompoundAction {
                 .fromConfig(parameters.getString("allowed"));
     }
 
+    @Override
     protected boolean isAllowed(CastContext context) {
         MaterialBrush brush = context.getBrush();
         Block block = context.getTargetBlock();
@@ -46,20 +45,6 @@ public class CheckBlockAction extends CompoundAction {
             }
         }
         return true;
-    }
-
-    @Override
-    public SpellResult step(CastContext context) {
-        boolean allowed = isAllowed(context);
-        ActionHandler actions = getHandler("actions");
-        if (actions == null || actions.size() == 0) {
-            return allowed ? SpellResult.CAST : SpellResult.STOP;
-        }
-
-        if (!allowed) {
-            return SpellResult.NO_TARGET;
-        }
-        return startActions();
     }
 
     @Override
