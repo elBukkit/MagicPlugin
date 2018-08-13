@@ -9,6 +9,7 @@
  - Some specific internal FX fixes (please let me know if any effects look weird now)
  - Fix mana/regen boosts applied to classes
  - /mtrait invisible works on armor stand NPCs
+ - Add CheckInventory action
 
 # 7.6.6
 
