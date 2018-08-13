@@ -6,6 +6,8 @@
  - EMP will only affect levers and redstone blocks
  - Fix spellshop not always auto-levelling after buying the last spell
  - Add wand tagging system for use with requirements, make progressmenu easier to customize
+ - Some specific internal FX fixes (please let me know if any effects look weird now)
+ - Fix mana/regen boosts applied to classes
 
 # 7.6.6
 

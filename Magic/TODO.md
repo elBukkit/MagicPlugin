@@ -30,8 +30,6 @@
  - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
   
 ## Recent Requests
-
- - Support mana _boost parameters in mage classes
  
  - Earn SP for killing players (maybe other mobs as well, by type?)
    

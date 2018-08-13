@@ -164,6 +164,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         float effectiveRegenBoost = getManaRegenerationBoost();
         if (mage != null)
         {
+            MageClass activeClass = mage.getActiveClass();
+            if (activeClass != null) {
+                // We don't stack up through classes, on ly the active class will be used
+                // the active class overrides this class
+                effectiveBoost = activeClass.getManaMaxBoost();
+                effectiveRegenBoost = activeClass.getManaRegenerationBoost();
+            }
             Collection<Wand> activeArmor = mage.getActiveArmor();
             for (Wand armorWand : activeArmor) {
                 effectiveBoost += armorWand.getManaMaxBoost();
