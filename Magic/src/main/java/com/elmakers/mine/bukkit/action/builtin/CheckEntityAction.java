@@ -9,9 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import com.elmakers.mine.bukkit.action.CheckAction;
-import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class CheckEntityAction extends CheckAction {
