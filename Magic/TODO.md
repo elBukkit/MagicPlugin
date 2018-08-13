@@ -1,8 +1,6 @@
 # TODO
 
 ## Hot Issues
-
- - /mtrait invisible doesn't work on armor stands
  
  - (PS - /ps allowall lags?)
 

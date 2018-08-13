@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -93,9 +94,17 @@ public abstract class CitizensTrait extends Trait {
         LivingEntity li = entity instanceof LivingEntity ? (LivingEntity)entity : null;
         if (li != null) {
             if (invisible) {
-                li.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+                if (li instanceof ArmorStand) {
+                    ((ArmorStand)li).setVisible(false);
+                } else {
+                    li.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+                }
             } else {
-                li.removePotionEffect(PotionEffectType.INVISIBILITY);
+                if (li instanceof ArmorStand) {
+                    ((ArmorStand)li).setVisible(true);
+                } else {
+                    li.removePotionEffect(PotionEffectType.INVISIBILITY);
+                }
             }
             if (hatItem != null) {
                 li.getEquipment().setHelmet(hatItem);
