@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -748,6 +749,18 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             }
 
             String materialKey = parameters[1];
+            if (materialKey.equals("*")) {
+                int added = 0;
+                for (Material material : Material.values()) {
+                    if (material.isBlock() && activeClass.addBrush(material.name().toLowerCase())) {
+                        added++;
+                    }
+                }
+                if (sender != player) {
+                    sender.sendMessage("Added " + added + " brushes to " + player.getName());
+                }
+                return true;
+            }
             if (!MaterialBrush.isValidMaterial(materialKey, false)) {
                 sender.sendMessage(materialKey + " is not a valid brush");
                 return true;

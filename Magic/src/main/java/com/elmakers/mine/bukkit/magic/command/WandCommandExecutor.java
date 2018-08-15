@@ -1151,11 +1151,23 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             }
 
             String materialKey = parameters[1];
+            if (materialKey.equals("*")) {
+                int added = 0;
+                for (Material material : Material.values()) {
+                    if (material.isBlock() && wand.addBrush(material.name().toLowerCase())) {
+                        added++;
+                    }
+                }
+                if (sender != player) {
+                    sender.sendMessage("Added " + added + " brushes to " + player.getName() + "'s wand");
+                }
+                return true;
+            }
+
             if (!MaterialBrush.isValidMaterial(materialKey, false)) {
                 sender.sendMessage(materialKey + " is not a valid brush");
                 return true;
             }
-
             if (wand.addBrush(materialKey)) {
                 wand.setActiveBrush(materialKey);
                 if (sender != player) {

@@ -10,6 +10,7 @@
  - Fix mana/regen boosts applied to classes
  - /mtrait invisible works on armor stand NPCs
  - Add CheckInventory action
+ - Add /mage+/wand add brush *, for adding all brushes to a wand (won't add variants pre 1.13)
 
 # 7.6.6
 
