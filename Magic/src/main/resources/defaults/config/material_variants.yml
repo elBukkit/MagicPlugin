@@ -1,0 +1,230 @@
+# This is list of lists of related materials
+# Colored blocks don't go in here, they should go in material_colors instead.
+material_variants:
+  - - oak_log
+    - dark_oak_log
+    - birch_log
+    - acacia_log
+    - jungle_log
+    - spruce_log
+  - - oak_planks
+    - dark_oak_planks
+    - birch_planks
+    - acacia_planks
+    - jungle_planks
+    - spruce_planks
+  - - oak_slab
+    - dark_oak_slab
+    - birch_slab
+    - acacia_slab
+    - jungle_slab
+    - spruce_slab
+  - - oak_sapling
+    - dark_oak_sapling
+    - birch_sapling
+    - acacia_sapling
+    - jungle_sapling
+    - spruce_sapling
+  - - oak_stairs
+    - dark_oak_stairs
+    - birch_stairs
+    - acacia_stairs
+    - jungle_stairs
+    - spruce_stairs
+  - - oak_trapdoor
+    - dark_oak_trapdoor
+    - birch_trapdoor
+    - acacia_trapdoor
+    - jungle_trapdoor
+    - spruce_trapdoor
+  - - oak_fence
+    - dark_oak_fence
+    - birch_fence
+    - acacia_fence
+    - jungle_fence
+    - spruce_fence
+  - - oak_pressure_plate
+    - dark_oak_pressure_plate
+    - birch_pressure_plate
+    - acacia_pressure_plate
+    - jungle_pressure_plate
+    - spruce_pressure_plate
+  - - oak_bark
+    - dark_oak_bark
+    - birch_bark
+    - acacia_bark
+    - jungle_bark
+    - spruce_bark
+  - - oak_button
+    - dark_oak_button
+    - birch_button
+    - acacia_button
+    - jungle_button
+    - spruce_button
+  - - oak_fence_gate
+    - dark_oak_fence_gate
+    - birch_fence_gate
+    - acacia_fence_gate
+    - jungle_fence_gate
+    - spruce_fence_gate
+  - - oak_leaves
+    - dark_oak_leaves
+    - birch_leaves
+    - acacia_leaves
+    - jungle_leaves
+    - spruce_leaves
+  - - stripped_oak_log
+    - stripped_dark_oak_log
+    - stripped_birch_log
+    - stripped_acacia_log
+    - stripped_jungle_log
+    - stripped_spruce_log
+  - - stripped_oak_wood
+    - stripped_dark_oak_wood
+    - stripped_birch_wood
+    - stripped_acacia_wood
+    - stripped_jungle_wood
+    - stripped_spruce_wood
+  - - flower_pot
+    - potted_acacia_sapling
+    - potted_allium
+    - potted_azure_bluet
+    - potted_birch_sapling
+    - potted_blue_orchid
+    - potted_brown_mushroom
+    - potted_cactus
+    - potted_dandelion
+    - potted_oak_sapling
+    - potted_dead_bush
+    - potted_fern
+    - potted_jungle_sapling
+    - potted_dark_oak_sapling
+    - potted_orange_tulip
+    - potted_oxeye_daisy
+    - potted_pink_tulip
+    - potted_poppy
+    - potted_red_mushroom
+    - potted_red_tulip
+    - potted_spruce_sapling
+    - potted_white_tulip
+  - - oak_door
+    - spruce_door
+    - birch_door
+    - jungle_door
+    - acacia_door
+    - dark_oak_door
+  - - player_head
+    - wither_skeleton_skull
+    - dragon_head
+    - zombie_head
+    - skeleton_skull
+    - creeper_head
+    - player_wall_head
+    - wither_skeleton_wall_skull
+    - dragon_wall_head
+    - zombie_wall_head
+    - skeleton_wall_skull
+    - creeper_wall_head
+  - - infested_cobblestone
+    - infested_chiseled_stone_bricks
+    - infested_cracked_stone_bricks
+    - infested_mossy_stone_bricks
+    - infested_stone
+    - infested_stone_bricks
+  - - horn_coral
+    - horn_coral_block
+    - horn_coral_fan
+    - horn_coral_wall_fan
+  - - tube_coral
+    - tube_coral_block
+    - tube_coral_fan
+    - tube_coral_wall_fan
+  - - fire_coral
+    - fire_coral_block
+    - fire_coral_fan
+    - fire_coral_wall_fans
+  - - dead_brain_coral_block
+    - dead_brain_coral_fan
+    - dead_brain_coral_wall_fan
+  - - dead_bubble_coral_block
+    - dead_bubble_coral_fan
+    - dead_bubble_coral_wall_fan
+  - - dead_fire_coral_block
+    - dead_fire_coral_fan
+    - dead_fire_coral_wall_fan
+  - - dead_horn_coral_block
+    - dead_horn_coral_fan
+    - dead_horn_coral_wall_fan
+  - - dead_tube_coral_block
+    - dead_tube_coral_fan
+    - dead_tube_coral_wall_fan
+  - - cobblestone_stairs
+    - acacia_stairs
+    - dark_oak_stairs
+    - red_sandstone_stairs
+    - quartz_stairs
+    - sandstone_stairs
+    - wood_stairs
+    - brick_stairs
+    - smooth_stairs
+    - nether_brick_stairs
+    - spruce_wood_stairs
+    - birch_wood_stairs
+    - jungle_wood_stairs
+    - dark_prismarine_stairs
+    - prismarine_stairs
+    - prismarine_brick_stairs
+    - purpur_stairs
+    - stone_brick_stairs
+  - - cobblestone_slab
+    - stone_slab2
+    - purpur_slab
+    - step
+    - wood_step
+    - acacia_slab
+    - birch_slab
+    - brick_slab
+    - cobblestone_slab
+    - dark_oak_slab
+    - jungle_slab
+    - nether_brick_slab
+    - oak_slab
+    - petrified_oak_slab
+    - quartz_slab
+    - red_sandstone_slab
+    - sandstone_slab
+    - spruce_slab
+    - stone_brick_slab
+    - stone_slab
+    - petrified_oak_slab
+    - prismarine_slab
+    - prismarine_brick_slab
+  - - yellow_flower
+    - red_rose
+    - double_plant
+    - oxeye_daisy
+    - blue_orchid
+    - dandelion
+    - dead_bush
+    - fern
+    - orange_tulip
+    - pink_tulip
+    - poppy
+    - red_tulip
+    - white_tulip
+  - - air
+    - cave_air
+    - void_air
+  - - torch
+    - wall_torch
+  - - redstone_torch
+    - redstone_wall_torch
+  - - quartz_block
+    - quartz_pillar
+    - chiseled_quartz_block
+  - - sandstone
+    - chiseled_sandstone
+    - cut_sandstone
+  - - red_sandstone
+    - chiseled_red_sandstone
+    - cut_red_sandstone

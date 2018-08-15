@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -27,16 +28,6 @@ public class CycleBlockAction extends BaseSpellAction {
         @SuppressWarnings("unchecked")
         List<List<String>> allMaterials = (List<List<String>>)parameters.getList("materials");
         this.materials.clear();
-        if (parameters.getBoolean("cycle_colors", false)) {
-            Collection<Map<DyeColor, MaterialAndData>> colorBlocks = DefaultMaterials.getInstance().getAllColorBlocks();
-            for (Map<DyeColor, MaterialAndData> colorMap : colorBlocks) {
-                List<MaterialAndData> colorList = new ArrayList<>();
-                colorList.addAll(colorMap.values());
-                for (int i = 0; i < colorList.size(); i++) {
-                    materials.put(colorList.get(i), colorList.get((i + 1) % colorList.size()));
-                }
-            }
-        }
         if (allMaterials != null) {
             for (List<String> list : allMaterials) {
                 List<MaterialAndData> materialList = new ArrayList<>();
@@ -50,6 +41,24 @@ public class CycleBlockAction extends BaseSpellAction {
                     for (int i = 0; i < materialList.size(); i++) {
                         materials.put(materialList.get(i), materialList.get((i + 1) % materialList.size()));
                     }
+                }
+            }
+        }
+        if (parameters.getBoolean("cycle_colors", false)) {
+            Collection<Map<DyeColor, MaterialAndData>> colorBlocks = DefaultMaterials.getInstance().getAllColorBlocks();
+            for (Map<DyeColor, MaterialAndData> colorMap : colorBlocks) {
+                List<MaterialAndData> colorList = new ArrayList<>();
+                colorList.addAll(colorMap.values());
+                for (int i = 0; i < colorList.size(); i++) {
+                    materials.put(colorList.get(i), colorList.get((i + 1) % colorList.size()));
+                }
+            }
+        }
+        if (parameters.getBoolean("cycle_variants", false)) {
+            Collection<List<Material>> variantBlocks = DefaultMaterials.getInstance().getAllVariants();
+            for (List<Material> variantList : variantBlocks) {
+                for (int i = 0; i < variantList.size(); i++) {
+                    materials.put(new MaterialAndData(variantList.get(i)), new MaterialAndData(variantList.get((i + 1) % variantList.size())));
                 }
             }
         }
@@ -79,6 +88,7 @@ public class CycleBlockAction extends BaseSpellAction {
         }
 
         context.registerForUndo(block);
+        context.getMage().sendDebugMessage("Cycling " + block.getType() + " to " + newMaterial);
         newMaterial.modify(block);
         return SpellResult.CAST;
     }

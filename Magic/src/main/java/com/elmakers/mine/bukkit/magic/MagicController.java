@@ -2290,6 +2290,7 @@ public class MagicController implements MageController {
         DefaultMaterials defaultMaterials = DefaultMaterials.getInstance();
         defaultMaterials.initialize(materialSetManager);
         defaultMaterials.loadColors(materialColors);
+        defaultMaterials.loadVariants(materialVariants);
         defaultMaterials.loadBlockItems(blockItems);
         defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
         defaultMaterials.setPlayerSkullWallBlock(skullWallBlocks.get(EntityType.PLAYER));
@@ -2396,6 +2397,7 @@ public class MagicController implements MageController {
         maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
         maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
         materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
+        materialVariants = ConfigurationUtils.getList(properties, "material_variants");
         blockItems = properties.getConfigurationSection("block_items");
         currencyConfiguration = properties.getConfigurationSection("custom_currency");
         loadBlockSkins(properties.getConfigurationSection("block_skins"));
@@ -5876,6 +5878,7 @@ public class MagicController implements MageController {
     private boolean                             asynchronousSaving              = true;
     private WarpController                        warpController                    = null;
     private Collection<ConfigurationSection>    materialColors                  = null;
+    private List<Object>                        materialVariants                = null;
     private ConfigurationSection                blockItems                  = null;
     private ConfigurationSection                currencyConfiguration       = null;
     private Map<Material, String>               blockSkins                  = new HashMap<>();

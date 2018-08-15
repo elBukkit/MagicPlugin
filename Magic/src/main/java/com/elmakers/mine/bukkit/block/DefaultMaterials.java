@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,6 +47,9 @@ public class DefaultMaterials {
     private Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
     private Map<Material, Material> colorMap = new HashMap<>();
     private Map<Material, Material> blockItems = new HashMap<>();
+
+    private Map<Material, List<Material>> materialVariants = new HashMap<>();
+    private Map<Material, Material> variantMap = new HashMap<>();
 
     private DefaultMaterials() {
     }
@@ -95,6 +100,34 @@ public class DefaultMaterials {
             materialColors.put(keyColor, newColors);
             for (MaterialAndData mat : newColors.values()) {
                 colorMap.put(mat.getMaterial(), keyColor);
+            }
+        }
+    }
+
+    public void loadVariants(Collection<Object> variantLists) {
+        for (Object rawList : variantLists) {
+            if (!(rawList instanceof List)) continue;
+
+            @SuppressWarnings("unchecked")
+            List<String> variantList = (List<String>)rawList;
+
+            Material baseVariant = null;
+            List<Material> materialList = new ArrayList<>();
+            for (String materialKey : variantList) {
+                try {
+                    Material material = Material.getMaterial(materialKey.toUpperCase());
+                    if (baseVariant == null) {
+                        baseVariant = material;
+                    }
+
+                    variantMap.put(material, baseVariant);
+                    materialList.add(material);
+                } catch (Exception ignore) {
+
+                }
+            }
+            if (baseVariant != null) {
+                materialVariants.put(baseVariant, materialList);
             }
         }
     }
@@ -213,8 +246,22 @@ public class DefaultMaterials {
         return getInstance().materialColors.get(base).values();
     }
 
+    @Nullable
+    public static Material getBaseVariant(@Nullable Material material) {
+        return material == null ? null : getInstance().variantMap.get(material);
+    }
+
+    @Nullable
+    public static Collection<Material> getVariants(Material base) {
+        return getInstance().materialVariants.get(base);
+    }
+
     public Collection<Map<DyeColor, MaterialAndData>> getAllColorBlocks() {
         return materialColors.values();
+    }
+
+    public Collection<List<Material>> getAllVariants() {
+        return materialVariants.values();
     }
 
     public static boolean isCommand(Material material) {

@@ -1,6 +1,6 @@
 passthrough:
 - all_water
-- air
+- all_air
 - snow
 - torch
 - fire

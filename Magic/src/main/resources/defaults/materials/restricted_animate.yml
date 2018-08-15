@@ -32,7 +32,7 @@ restricted_animate:
 - nether_fence
 - gravel
 - water
-- air
+- all_air
 - snow
 - glass
 - thin_glass

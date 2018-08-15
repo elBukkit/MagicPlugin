@@ -1,5 +1,5 @@
 transparent_no_water:
-- air
+- all_air
 - snow
 - torch
 - wall_torch

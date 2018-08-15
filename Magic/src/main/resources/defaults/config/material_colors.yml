@@ -310,3 +310,35 @@ material_colors:
   green: green_bed
   red: red_bed
   black: black_bed
+- white: white_banner
+  orange: orange_banner
+  magenta: magenta_banner
+  light_blue: light_blue_banner
+  yellow: yellow_banner
+  lime: lime_banner
+  pink: pink_banner
+  gray: gray_banner
+  light_gray: light_gray_banner
+  cyan: cyan_banner
+  purple: purple_banner
+  blue: blue_banner
+  brown: brown_banner
+  green: green_banner
+  red: red_banner
+  black: black_banner
+- white: white_wall_banner
+  orange: orange_wall_banner
+  magenta: magenta_wall_banner
+  light_blue: light_blue_wall_banner
+  yellow: yellow_wall_banner
+  lime: lime_wall_banner
+  pink: pink_wall_banner
+  gray: gray_wall_banner
+  light_gray: light_gray_wall_banner
+  cyan: cyan_wall_banner
+  purple: purple_wall_banner
+  blue: blue_wall_banner
+  brown: brown_wall_banner
+  green: green_wall_banner
+  red: red_wall_banner
+  black: black_wall_banner

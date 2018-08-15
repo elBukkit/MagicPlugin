@@ -140,7 +140,13 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
             if (brushItem != null) {
                 MaterialAndData material = new MaterialAndData(brushKey);
-                Material baseColor = DefaultMaterials.getBaseColor(material.getMaterial());
+                Material baseVariant = DefaultMaterials.getBaseColor(material.getMaterial());
+                if (baseVariant == null) {
+                    baseVariant = DefaultMaterials.getBaseVariant(material.getMaterial());
+                }
+                if (material.getMaterial().name().contains("PLANK")) {
+                    org.bukkit.Bukkit.getLogger().info("Material " + material + " variant: " + baseVariant);
+                }
 
                 if (previous != null && material.getMaterial() == previous.getMaterial())
                 {
@@ -154,12 +160,12 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                         variants.put(material.getMaterial(), variantList);
                     }
                     variantList.add(brushItem);
-                } else if (baseColor != null) {
-                    List<ItemStack> variantList = variants.get(baseColor);
+                } else if (baseVariant != null) {
+                    List<ItemStack> variantList = variants.get(baseVariant);
                     if (variantList == null)
                     {
                         variantList = new ArrayList<>();
-                        variants.put(baseColor, variantList);
+                        variants.put(baseVariant, variantList);
                     }
                     variantList.add(brushItem);
                 } else {
@@ -196,7 +202,9 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         Collections.sort(brushes, new Comparator<ItemStack>() {
             @Override
             public int compare(ItemStack o1, ItemStack o2) {
-                return o1.getItemMeta().getDisplayName().compareToIgnoreCase(o2.getItemMeta().getDisplayName());
+                String name1 = ChatColor.stripColor(o1.getItemMeta().getDisplayName());
+                String name2 = ChatColor.stripColor(o2.getItemMeta().getDisplayName());
+                return name1.compareToIgnoreCase(name2);
             }
         });
 
@@ -256,7 +264,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         // Bit of a hack to get a base material name
         String materialName = material.getName();
         materialName = materialName.replace("White ", "");
-        materialName = materialName.replace("white ", "");
+        materialName = materialName.replace("oak ", "");
+        materialName = materialName.replace("cobblestone ", "");
         return materialName;
     }
 }

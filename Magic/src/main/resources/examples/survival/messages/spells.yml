@@ -1313,6 +1313,8 @@ spells:
         descriptions: Chooses your active brush
         usage: Brushes are used by engineering spells
         fail: You must be holding a wand!
+        variant_name: "&b$variant &3+Variants"
+        variant_description: "Choose a type of $variant"
     tracking:
         name: Tracking Sense
         description: Find nearby life
