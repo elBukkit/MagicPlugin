@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.data;
 
 import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -46,8 +47,7 @@ public class YamlDataFile extends YamlConfiguration {
             }
             tempFile.renameTo(file);
         } catch (Exception ex) {
-            logger.warning(ex.getMessage());
-            logger.warning("Error saving data file " + file.getName());
+            logger.log(Level.SEVERE, "Error saving data file " + file.getName(), ex);
         }
     }
 

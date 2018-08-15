@@ -369,7 +369,7 @@ public class MagicController implements MageController {
             boolean isPlayer = (entity instanceof Player);
             isPlayer = (isPlayer && !isNPC(entity));
             if (savePlayerData && mageDataStore != null) {
-                if (asynchronousSaving && isPlayer) {
+                if (isPlayer) {
                     mage.setLoading(true);
                     plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                         @Override
@@ -3284,7 +3284,7 @@ public class MagicController implements MageController {
             if (wandInventoryOpen) {
                 mageData.setOpenWand(true);
             }
-            if (asynchronous) {
+            if (asynchronous && asynchronousSaving) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                     @Override
                     public void run() {
