@@ -144,9 +144,6 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 if (baseVariant == null) {
                     baseVariant = DefaultMaterials.getBaseVariant(material.getMaterial());
                 }
-                if (material.getMaterial().name().contains("PLANK")) {
-                    org.bukkit.Bukkit.getLogger().info("Material " + material + " variant: " + baseVariant);
-                }
 
                 if (previous != null && material.getMaterial() == previous.getMaterial())
                 {
