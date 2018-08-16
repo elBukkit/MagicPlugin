@@ -11,6 +11,7 @@
  - /mtrait invisible works on armor stand NPCs
  - Add CheckInventory action
  - Add /mage+/wand add brush *, for adding all brushes to a wand (won't add variants pre 1.13)
+ - Make pistons indestructible to magic, to avoid issues restoring them (for now?)
 
 # 7.6.6
 
