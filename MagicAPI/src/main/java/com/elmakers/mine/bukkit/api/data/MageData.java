@@ -39,6 +39,7 @@ public class MageData {
     private boolean openWand;
     private boolean gaveWelcomeWand;
     private long created;
+    private double health;
 
     public MageData(String id) {
         this.id = id;
@@ -249,6 +250,14 @@ public class MageData {
 
     public void setCreatedTime(long created) {
         this.created = created;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(double health) {
+        this.health = health;
     }
 
     @Deprecated

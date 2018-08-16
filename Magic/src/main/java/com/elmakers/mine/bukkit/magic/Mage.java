@@ -1172,6 +1172,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // Re-activate unlocked classes
             activateClasses();
 
+            // Restore saved health, which may have gotten lowered when we deactivated classes
+            double health = data.getHealth();
+            LivingEntity li = getLivingEntity();
+            if (health > 0 && li != null) {
+                health = Math.min(health, CompatibilityUtils.getMaxHealth(li));
+                li.setHealth(health);
+            }
+
             cooldownExpiration = data.getCooldownExpiration();
             fallProtectionCount = data.getFallProtectionCount();
             fallProtection = data.getFallProtectionDuration();
@@ -1426,6 +1434,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
             String activeClassKey = activeClass == null ? null : activeClass.getTemplate().getKey();
             data.setActiveClass(activeClassKey);
+            LivingEntity li = getLivingEntity();
+            if (li != null) {
+                data.setHealth(li.getHealth());
+            }
         } catch (Exception ex) {
             controller.getPlugin().getLogger().log(Level.WARNING, "Failed to save player data for " + playerName, ex);
             return false;

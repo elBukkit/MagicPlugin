@@ -163,6 +163,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             }
         }
         saveFile.set("active_class", mage.getActiveClass());
+        saveFile.set("health", mage.getHealth());
     }
 
     @Override
@@ -354,6 +355,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         }
         data.setOpenWand(saveFile.getBoolean("open_wand", false));
         data.setGaveWelcomeWand(saveFile.getBoolean("gave_welcome_wand", false));
+        data.setHealth(saveFile.getDouble("health"));
 
         return data;
     }
