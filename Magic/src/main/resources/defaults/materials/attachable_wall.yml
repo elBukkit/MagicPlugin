@@ -19,4 +19,4 @@ attachable_wall:
 - bed_block
 - trap_door
 - iron_trap_door
-
+- pistons
