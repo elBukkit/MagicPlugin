@@ -2191,6 +2191,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
+    public void reduceRemainingCooldown(long ms) {
+        cooldownExpiration = Math.max(0, cooldownExpiration - ms);
+        HeroesManager heroes = controller.getHeroes();
+        Player player = getPlayer();
+        if (heroes != null && player != null) {
+            heroes.reduceCooldown(player, ms);
+        }
+    }
+
     @Nullable
     @Override
     public Color getEffectColor() {

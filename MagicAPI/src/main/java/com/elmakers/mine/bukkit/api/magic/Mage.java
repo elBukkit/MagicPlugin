@@ -381,6 +381,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     float getCostReduction();
     long getRemainingCooldown();
     void setRemainingCooldown(long ms);
+    void reduceRemainingCooldown(long ms);
     void clearCooldown();
 
     boolean isSuperPowered();

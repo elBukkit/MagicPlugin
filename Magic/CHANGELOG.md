@@ -13,6 +13,7 @@
  - Add /mage+/wand add brush *, for adding all brushes to a wand (won't add variants pre 1.13)
  - Make pistons indestructible to magic, to avoid issues restoring them (for now?)
  - Fix player's health not restoring on relog if max health is buffed by a class
+ - Add "reduce" option to ApplyCooldown action to reduce cooldowns instead of clearing or increasing them
 
 # 7.6.6
 

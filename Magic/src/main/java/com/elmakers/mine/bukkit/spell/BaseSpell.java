@@ -2310,6 +2310,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public void reduceRemainingCooldown(long ms) {
+        spellData.setCooldownExpiration(Math.max(0, spellData.getCooldownExpiration() - ms));
+    }
+
+    @Override
     public long getRemainingCooldown() {
         long remaining = 0;
         if (mage.isCooldownFree()) return 0;

@@ -32,6 +32,9 @@ public class ApplyCooldownAction extends BaseSpellAction
     {
         super.prepare(context, parameters);
         cooldownAmount = parameters.getInt("duration", 0);
+        if (parameters.contains("reduce")) {
+            cooldownAmount = -parameters.getInt("reduce");
+        }
         clear = parameters.getBoolean("clear", false);
         bypassReduction = parameters.getBoolean("bypass_reduction", false);
         targetCaster = parameters.getBoolean("target_caster", false);
@@ -92,6 +95,8 @@ public class ApplyCooldownAction extends BaseSpellAction
                     }
                     if (amount > 0) {
                         spell.setRemainingCooldown(amount);
+                    } else {
+                        spell.reduceRemainingCooldown(-amount);
                     }
                 }
             }
@@ -104,6 +109,8 @@ public class ApplyCooldownAction extends BaseSpellAction
                     }
                     if (amount > 0) {
                         spell.setRemainingCooldown(amount);
+                    } else {
+                        spell.reduceRemainingCooldown(-amount);
                     }
                 }
             }
@@ -113,6 +120,8 @@ public class ApplyCooldownAction extends BaseSpellAction
             }
             if (amount > 0) {
                 targetMage.setRemainingCooldown(amount);
+            } else {
+                targetMage.reduceRemainingCooldown(-amount);
             }
         }
         return SpellResult.CAST;

@@ -47,6 +47,7 @@ public interface Spell extends SpellTemplate {
     boolean hasBrushOverride();
     boolean canCast(Location location);
     void clearCooldown();
+    void reduceRemainingCooldown(long ms);
     void setRemainingCooldown(long ms);
     long getRemainingCooldown();
     @Nullable

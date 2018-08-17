@@ -222,6 +222,19 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         }
     }
 
+    public void reduceCooldown(Player player, long ms) {
+        Hero hero = getHero(player);
+        if (hero == null) return;
+
+        Set<String> skills = getSkills(player, false, false);
+        for (String skill : skills) {
+            Long currentCooldown = hero.getCooldown(skill);
+            if (currentCooldown != null) {
+                hero.setCooldown(skill, Math.max(0, currentCooldown - ms));
+            }
+        }
+    }
+
     @Nullable
     public SpellTemplate createSkillSpell(MagicController controller, String skillName) {
         if (skills == null) return null;
