@@ -3444,3 +3444,13 @@ conditional:
     - attributes:
       - attribute: constitution
         min: 10
+
+linearrow:
+  inherit: arrow
+  parameters:
+    projectile_effects_use_target: true
+  effects:
+    projectile:
+    - effectlib:
+        class: Line
+        duration: 5000

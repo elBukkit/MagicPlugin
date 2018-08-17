@@ -2,6 +2,9 @@
 
 # 7.6.8
 
+ - Fix effect bugs introduced in 7.6.7
+ - Add "track" parameter for automata spawners, to avoid despawning spawned mobs
+
 # 7.6.7
 
  - Fix spell descriptions not showing in the spellshop
