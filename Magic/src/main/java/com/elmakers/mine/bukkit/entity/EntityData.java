@@ -50,11 +50,14 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
@@ -130,6 +133,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Integer dropXp;
 
     protected boolean defaultDrops;
+    protected boolean dropsRequirePlayerKiller;
     protected List<Deque<WeightedPair<String>>> drops;
     protected Set<String> tags;
     protected String interactSpell;
@@ -280,13 +284,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         isSilent = parameters.getBoolean("silent", false);
 
-        String entityName = parameters.getString("type");
-        if (entityName != null) {
-            type = parseEntityType(entityName);
-            if (type == null) {
-                controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName);
-                return;
-            }
+        String entityName = parameters.getString("type", key);
+        type = parseEntityType(entityName);
+        if (type == null) {
+            controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName + " in mob config for " + entityName + ", did you forget the 'type' parameter?");
+            return;
         }
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
@@ -300,6 +302,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
 
         defaultDrops = parameters.getBoolean("default_drops", true);
+        dropsRequirePlayerKiller = parameters.getBoolean("drops_require_player_killer", false);
         if (parameters.contains("xp")) {
             xp = parameters.getInt("xp");
         }
@@ -889,6 +892,20 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (!defaultDrops) {
             dropList.clear();
         }
+
+        if (dropsRequirePlayerKiller) {
+            EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
+            if (!(lastDamage instanceof EntityDamageByEntityEvent)) return;
+            Entity damager = ((EntityDamageByEntityEvent)lastDamage).getDamager();
+            if (damager instanceof Projectile) {
+                ProjectileSource source = ((Projectile)damager).getShooter();
+                if (source instanceof Entity) {
+                    damager = (Entity)source;
+                }
+            }
+            if (!(damager instanceof Player) || damager == event.getEntity()) return;
+        }
+
         if (drops != null) {
             for (Deque<WeightedPair<String>> dropTable : drops) {
                 String key = RandomUtils.weightedRandom(dropTable);

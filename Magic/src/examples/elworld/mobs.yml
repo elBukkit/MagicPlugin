@@ -115,5 +115,26 @@ soldier:
   type: pig_zombie
 
 player:
+  drops_require_player_killer: true
   drops:
-  - sp:10
+  - sp:20
+
+zombie:
+  drops_require_player_killer: true
+  drops:
+  - sp:2
+
+spider:
+  drops_require_player_killer: true
+  drops:
+  - sp:2
+
+skeleton:
+  drops_require_player_killer: true
+  drops:
+  - sp:3
+
+creeper:
+  drops_require_player_killer: true
+  drops:
+  - sp:5

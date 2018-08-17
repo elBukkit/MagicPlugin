@@ -15,6 +15,7 @@
  - Fix player's health not restoring on relog if max health is buffed by a class
  - Add "reduce" option to ApplyCooldown action to reduce cooldowns instead of clearing or increasing them
  - Magic mobs configs now support adding drops or other behaviors to vanilla mobs or even players.
+ - Add mob option to avoid dropping loot if not killed by a player
 
 # 7.6.6
 
