@@ -48,6 +48,7 @@ public class Spawner {
     private final double verticalRadius;
     private final int locationRetry;
     private final MaterialSet passthrough;
+    private final boolean track;
 
     public Spawner(@Nonnull MageController controller, @Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
         this.controller = controller;
@@ -76,6 +77,7 @@ public class Spawner {
         passthrough = controller.getMaterialSetManager().getMaterialSet("passthrough");
         randomizePitch = configuration.getBoolean("randomize_pitch", false);
         randomizeYaw = configuration.getBoolean("randomize_yaw", false);
+        track = configuration.getBoolean("track", true);
     }
 
     private boolean isSafe(Location location) {
@@ -228,6 +230,6 @@ public class Spawner {
             }
         }
 
-        return spawned;
+        return track ? spawned : null;
     }
 }

@@ -38,3 +38,20 @@ firetrap:
     cast:
       spells: fire radius 0 undo 0 quiet true
       recast: false
+
+seaspawner:
+  name: Sea Spawner
+  interval: 10000
+  spawn:
+    limit_range: 16
+    limit: 20
+    probability: 1
+    radius: 4
+    vertical_radius: 2
+    track: false
+    mobs:
+      dolphin: 50
+      turtle: 50
+      cod: 100
+      salmon: 100
+      tropical_fish: 100
