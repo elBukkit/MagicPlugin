@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.8
+
 # 7.6.7
 
  - Fix spell descriptions not showing in the spellshop
