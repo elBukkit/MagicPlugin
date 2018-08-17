@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.9
+
 # 7.6.8
 
  - Fix effect bugs introduced in 7.6.7
