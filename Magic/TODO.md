@@ -28,9 +28,7 @@
  - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
   
 ## Recent Requests
- 
- - Earn SP for killing players (maybe other mobs as well, by type?)
-   
+    
  - Allow use of equations in book action, somehow.
  - Custom spell lore showing arbitrary parameters (or something)
 

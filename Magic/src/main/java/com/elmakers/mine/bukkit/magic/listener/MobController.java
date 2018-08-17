@@ -13,6 +13,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,6 +36,7 @@ public class MobController implements Listener {
     private MageController controller;
     private final Map<String, EntityData> mobs = new HashMap<>();
     private final Map<String, EntityData> mobsByName = new HashMap<>();
+    private final Map<EntityType, EntityData> defaultMobs = new HashMap<>();
 
     public MobController(MageController controller) {
         this.controller = controller;
@@ -50,6 +52,13 @@ public class MobController implements Listener {
             return;
         }
         EntityData mob = new EntityData(controller, mobKey, mobConfiguration);
+        try {
+            EntityType defaultType = EntityType.valueOf(mobKey.toUpperCase());
+            defaultMobs.put(defaultType, mob);
+            return;
+        } catch (Exception ignore) {
+        }
+
         mobs.put(mobKey, mob);
 
         String mobName = mob.getName();
@@ -79,6 +88,11 @@ public class MobController implements Listener {
                 String customName = entity.getCustomName();
                 if (customName != null) {
                     EntityData customMob = mobsByName.get(customName);
+                    if (customMob != null) {
+                        customMob.modify(controller, entity);
+                    }
+                } else if (entity.getType() != EntityType.PLAYER) {
+                    EntityData customMob = defaultMobs.get(entity.getType());
                     if (customMob != null) {
                         customMob.modify(controller, entity);
                     }
@@ -128,6 +142,10 @@ public class MobController implements Listener {
         String name = died.getCustomName();
         if (name == null || name.isEmpty())
         {
+            EntityData mob = defaultMobs.get(died.getType());
+            if (mob != null && !died.hasMetadata("nodrops")) {
+                mob.modifyDrops(controller, event);
+            }
             return;
         }
 

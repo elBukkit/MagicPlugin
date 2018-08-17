@@ -113,3 +113,7 @@ fbi:
 
 soldier:
   type: pig_zombie
+
+player:
+  drops:
+  - sp:10
