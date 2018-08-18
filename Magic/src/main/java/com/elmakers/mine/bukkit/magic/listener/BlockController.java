@@ -106,6 +106,10 @@ public class BlockController implements Listener {
         if (modifiedBlock != null) {
             UndoList undoList = modifiedBlock.getUndoList();
             if (undoList != null) {
+                if (undoList.isUnbreakable()) {
+                    event.setCancelled(true);
+                    return;
+                }
                 if (!undoList.isConsumed()) {
                     event.setCancelled(true);
                     Collection<ItemStack> items = null;

@@ -108,6 +108,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean               undoReflective = false;
     protected boolean               undoBreaking = false;
     protected boolean               sorted = true;
+    protected boolean               unbreakable = false;
 
     public UndoList(Mage mage, String name)
     {
@@ -581,6 +582,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public boolean isUndone()
     {
         return undone;
+    }
+
+    @Override
+    public boolean isUnbreakable() {
+        return unbreakable;
+    }
+
+    @Override
+    public void setUnbreakable(boolean unbreakable) {
+        this.unbreakable = unbreakable;
     }
 
     @Override
