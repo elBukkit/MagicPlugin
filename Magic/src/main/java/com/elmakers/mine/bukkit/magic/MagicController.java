@@ -939,7 +939,7 @@ public class MagicController implements MageController {
 
         // Check for SkillAPI
         Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
-        if (skillAPIPlugin != null && skillAPIEnabled) {
+        if (skillAPIPlugin != null && skillAPIEnabled && skillAPIPlugin.isEnabled()) {
             skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
                 getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
@@ -957,8 +957,8 @@ public class MagicController implements MageController {
 
         // Try to link to Heroes:
         try {
-            Plugin heroesPlugin = plugin.getServer().getPluginManager().getPlugin("Heroes");
-            if (heroesPlugin != null) {
+            Plugin heroesPlugin = pluginManager.getPlugin("Heroes");
+            if (heroesPlugin != null && heroesPlugin.isEnabled()) {
                 heroesManager = new HeroesManager(plugin, heroesPlugin);
             } else {
                 heroesManager = null;
@@ -969,7 +969,7 @@ public class MagicController implements MageController {
 
         // Vault integration
         Plugin vaultPlugin = pluginManager.getPlugin("Vault");
-        if (vaultPlugin == null) {
+        if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
             getLogger().info("Vault not found, 'currency' cost types unavailable");
         } else {
             if (!VaultController.initialize(plugin, vaultPlugin)) {
@@ -983,14 +983,14 @@ public class MagicController implements MageController {
 
         // Check for Minigames
         Plugin minigamesPlugin = pluginManager.getPlugin("Minigames");
-        if (minigamesPlugin != null) {
+        if (minigamesPlugin != null && minigamesPlugin.isEnabled()) {
             pluginManager.registerEvents(new MinigamesListener(this), plugin);
             getLogger().info("Minigames found, wands will deactivate before joining a minigame");
         }
 
         // Check for LibsDisguise
         Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
-        if (libsDisguisePlugin == null) {
+        if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
             getLogger().info("LibsDisguises not found");
         } else if (libsDisguiseEnabled) {
             libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
@@ -1006,7 +1006,7 @@ public class MagicController implements MageController {
 
         // Check for MobArena
         Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");
-        if (mobArenaPlugin == null) {
+        if (mobArenaPlugin == null || !mobArenaPlugin.isEnabled()) {
             getLogger().info("MobArena not found");
         } else if (mobArenaConfiguration.getBoolean("enabled", true)) {
             try {
@@ -1021,7 +1021,7 @@ public class MagicController implements MageController {
 
         // Check for LogBlock
         Plugin logBlockPlugin = pluginManager.getPlugin("LogBlock");
-        if (logBlockPlugin == null) {
+        if (logBlockPlugin == null || !logBlockPlugin.isEnabled()) {
             getLogger().info("LogBlock not found");
         } else if (logBlockEnabled) {
             try {
@@ -1036,7 +1036,7 @@ public class MagicController implements MageController {
 
         // Try to link to Essentials:
         Plugin essentials = pluginManager.getPlugin("Essentials");
-        hasEssentials = essentials != null;
+        hasEssentials = essentials != null && essentials.isEnabled();
         if (hasEssentials) {
             if (warpController.setEssentials(essentials)) {
                 getLogger().info("Integrating with Essentials for Recall warps");
@@ -1094,7 +1094,7 @@ public class MagicController implements MageController {
         hasCommandBook = false;
         try {
             Plugin commandBookPlugin = plugin.getServer().getPluginManager().getPlugin("CommandBook");
-            if (commandBookPlugin != null) {
+            if (commandBookPlugin != null && commandBookPlugin.isEnabled()) {
                 if (warpController.setCommandBook(commandBookPlugin)) {
                     getLogger().info("CommandBook found, integrating for Recall warps");
                     hasCommandBook = true;
@@ -1136,7 +1136,7 @@ public class MagicController implements MageController {
         // Try to link to dynmap:
         try {
             Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
-            if (dynmapPlugin != null) {
+            if (dynmapPlugin != null && dynmapPlugin.isEnabled()) {
                 dynmap = new DynmapController(plugin, dynmapPlugin);
             } else {
                 dynmap = null;
@@ -1154,7 +1154,7 @@ public class MagicController implements MageController {
         // Try to link to Elementals:
         try {
             Plugin elementalsPlugin = plugin.getServer().getPluginManager().getPlugin("Splateds_Elementals");
-            if (elementalsPlugin != null) {
+            if (elementalsPlugin != null && elementalsPlugin.isEnabled()) {
                 elementals = new ElementalsController(elementalsPlugin);
             } else {
                 elementals = null;
@@ -1169,7 +1169,7 @@ public class MagicController implements MageController {
 
         // Check for Shopkeepers, this is an optimization to avoid scanning for metadata if the plugin is not
         // present
-        hasShopkeepers = plugin.getServer().getPluginManager().isPluginEnabled("Shopkeepers");
+        hasShopkeepers = pluginManager.isPluginEnabled("Shopkeepers");
         if (hasShopkeepers) {
             npcSuppliers.register(new GenericMetadataNPCSupplier("shopkeeper"));
         }
@@ -1177,7 +1177,7 @@ public class MagicController implements MageController {
         // Try to link to Citizens
         try {
             Plugin citizensPlugin = plugin.getServer().getPluginManager().getPlugin("Citizens");
-            if (citizensPlugin != null) {
+            if (citizensPlugin != null && citizensPlugin.isEnabled()) {
                 citizens = new CitizensController(citizensPlugin, this, citizensEnabled);
             } else {
                 citizens = null;
@@ -1195,7 +1195,7 @@ public class MagicController implements MageController {
 
         // Placeholder API
         if (placeholdersEnabled) {
-            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
                try {
                    // Can only register this once
                    if (placeholderAPIManager == null) {
@@ -1211,7 +1211,7 @@ public class MagicController implements MageController {
 
         // Light API
         if (lightAPIEnabled) {
-            if (Bukkit.getPluginManager().isPluginEnabled("LightAPI")) {
+            if (pluginManager.isPluginEnabled("LightAPI")) {
                 try {
                     lightAPIManager = new LightAPIManager(plugin);
                 } catch (Throwable ex) {
@@ -1227,7 +1227,7 @@ public class MagicController implements MageController {
 
         // Skript
         if (skriptEnabled) {
-            if (Bukkit.getPluginManager().isPluginEnabled("Skript")) {
+            if (pluginManager.isPluginEnabled("Skript")) {
                 try {
                     new SkriptManager(this);
                 } catch (Throwable ex) {
@@ -1240,7 +1240,7 @@ public class MagicController implements MageController {
 
         // Citadel
         if (citadelConfiguration.getBoolean("enabled")) {
-            if (Bukkit.getPluginManager().isPluginEnabled("Citadel")) {
+            if (pluginManager.isPluginEnabled("Citadel")) {
                 try {
                     citadelManager = new CitadelManager(this, citadelConfiguration);
                 } catch (Throwable ex) {
