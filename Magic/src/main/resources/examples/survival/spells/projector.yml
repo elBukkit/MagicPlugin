@@ -31,7 +31,7 @@ projector:
     reorient: false
     orient: true
     orient_snap: 90
-    destructible: air,concrete
+    destructible: air,concretes
     allow_max_range: true
     brushmod: concrete
     brush: "map:64:https://s3-us-west-2.amazonaws.com/elmakers/mario.gif"
