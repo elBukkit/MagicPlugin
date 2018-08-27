@@ -6,10 +6,12 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 import javax.annotation.Nullable;
 
@@ -81,6 +83,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private int manaRegeneration = 0;
 
     private Map<String, Double> maxProperties = new HashMap<>();
+    private static Set<String> resolvingKeys = new LinkedHashSet<>();
 
     private int minLevel = 1;
     private int maxLevel = 1;
@@ -307,6 +310,18 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Nullable
     protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration) {
+        resolvingKeys.clear();
+        return getPath(controller, key, configuration, resolvingKeys);
+    }
+
+    @Nullable
+    protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration, Set<String> resolving) {
+        // Catch circular dependencies
+        if (resolving.contains(key)) {
+            controller.getLogger().log(Level.WARNING, "Circular dependency detected in paths: " + StringUtils.join(resolving, " -> ") + " -> " + key);
+            return null;
+        }
+        resolving.add(key);
         WandUpgradePath path = paths.get(key);
         if (path == null) {
             ConfigurationSection parameters = configuration.getConfigurationSection(key);
@@ -316,7 +331,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
             String inheritKey = parameters.getString("inherit");
             if (inheritKey != null && !inheritKey.isEmpty()) {
-                WandUpgradePath inherit = getPath(controller, inheritKey, configuration);
+                WandUpgradePath inherit = getPath(controller, inheritKey, configuration, resolving);
                 if (inherit == null) {
                     Bukkit.getLogger().warning("Failed to load inherited path '" + inheritKey + "' for path: " + key);
                     return null;
