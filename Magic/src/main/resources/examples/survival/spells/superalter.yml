@@ -12,12 +12,6 @@ superalter:
       - class: Recurse
         actions:
         - class: CycleBlock
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: block_cloth_break
-        -  class: EffectTrail
-           particle: flame
     parameters:
         range: 64
         depth: 32
