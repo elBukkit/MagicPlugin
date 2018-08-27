@@ -927,6 +927,38 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     @Nullable
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection parentConfig, String effectKey, int defaultDuration) {
+        if (parentConfig.isConfigurationSection(effectKey)) {
+            return getPotionEffects(parentConfig.getConfigurationSection(effectKey), null);
+        }
+
+        List<PotionEffect> effects = null;
+        if (parentConfig.isList(effectKey)) {
+            effects = new ArrayList<>();
+            List<String> effectList = parentConfig.getStringList(effectKey);
+            for (String value : effectList) {
+                String[] pieces = StringUtils.split(value, "@");
+                String key = pieces[0];
+                try {
+                    PotionEffectType effectType = PotionEffectType.getByName(key.toUpperCase());
+
+                    int power = 1;
+                    if (pieces.length > 1) {
+                        power = (int)Float.parseFloat(pieces[1]);
+                    }
+
+                    PotionEffect effect = new PotionEffect(effectType, defaultDuration, power, true, true);
+                    effects.add(effect);
+
+                } catch (Exception ex) {
+                    Bukkit.getLogger().warning("Error parsing potion effect for " + key + ": " + value);
+                }
+            }
+        }
+        return effects;
+    }
+
+    @Nullable
     public static Collection<PotionEffect> getPotionEffects(ConfigurationSection effectConfig) {
         return getPotionEffects(effectConfig, null);
     }
