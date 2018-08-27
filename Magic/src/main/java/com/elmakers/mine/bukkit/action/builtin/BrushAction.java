@@ -15,12 +15,14 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 public class BrushAction extends CompoundAction {
     private List<String> brushes = new ArrayList<>();
     private boolean sample = false;
+    private String brushMod;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         brushes.clear();
 
+        brushMod = parameters.getString("brushmod");
         String materialKey = parameters.getString("brush", null);
         if (materialKey != null) {
             addBrush(materialKey);
@@ -57,7 +59,13 @@ public class BrushAction extends CompoundAction {
         else
         {
             String brushKey = brushes.get(context.getRandom().nextInt(brushes.size()));
-            MaterialBrush brush = new MaterialBrush(context.getMage(), context.getLocation(), brushKey);
+            MaterialBrush brush = null;
+            if (brushMod != null) {
+                brush = new MaterialBrush(context.getMage(), context.getLocation(), brushMod);
+                brush.update(brushKey);
+            } else {
+                brush = new MaterialBrush(context.getMage(), context.getLocation(), brushKey);
+            }
             actionContext.setBrush(brush);
         }
         return startActions();

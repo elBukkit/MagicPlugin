@@ -6,6 +6,7 @@
  - Action parameters embedded in the "actions" tree no longer inherit down to child actions
    This is possibly a breaking change, though only if you've set up your actions in kind of a strange way.
  - Fix projectiles not passing through tall grass in 1.13
+ - Fix brushmod when using the Brush action (fixes the Projector spell)
 
 # 7.6.8
 
