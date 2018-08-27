@@ -2,6 +2,10 @@
 
 # 7.6.9
 
+ - Some more fixes to spellshop progression
+ - Action parameters embedded in the "actions" tree no longer inherit down to child actions
+   This is possibly a breaking change, though only if you've set up your actions in kind of a strange way.
+
 # 7.6.8
 
  - Fix effect bugs introduced in 7.6.7

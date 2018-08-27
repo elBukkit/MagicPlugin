@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 7.6.9
+
+ - Action parameters embedded in the "actions" tree no longer inherit down to child actions
+
 ## 7.6
 
  - If using an example witha  custom RP, such as skulls or war, you may need to specify the version 7 RP

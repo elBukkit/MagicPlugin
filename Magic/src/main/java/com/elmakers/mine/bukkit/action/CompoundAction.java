@@ -26,6 +26,7 @@ public abstract class CompoundAction extends BaseSpellAction
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
     private boolean stopOnSuccess = false;
+    private boolean initialized = false;
     protected @Nullable ConfigurationSection actionConfiguration;
     protected @Nullable CastContext actionContext;
     private @Nullable Object baseActions;
@@ -159,9 +160,10 @@ public abstract class CompoundAction extends BaseSpellAction
         requiresBreakPermission = false;
         addHandlers(spell, parameters);
         for (ActionHandler handler : handlers.values()) {
-            handler.initialize(spell, actionConfiguration);
+            handler.initialize(spell, spell.getWorkingParameters());
             updateFlags(handler);
         }
+        initialized = true;
     }
 
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
@@ -203,8 +205,11 @@ public abstract class CompoundAction extends BaseSpellAction
         handler = new ActionHandler();
         handler.load(spell, actionConfiguration, handlerKey);
         handlers.put(handlerKey, handler);
-        // Avoid inheriting action handlers
-        actionConfiguration.set(handlerKey, null);
+        // Need to initialize the new handler if this parent action has already been initialized
+        if (initialized) {
+            handler.initialize(spell, spell.getWorkingParameters());
+            updateFlags(handler);
+        }
         return handler;
     }
 

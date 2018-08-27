@@ -28,7 +28,9 @@
  - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
   
 ## Recent Requests
-    
+ 
+ - Add "deactivate" actions for toggle spells
+ - Add damage lore to spells   
  - Allow use of equations in book action, somehow.
  - Custom spell lore showing arbitrary parameters (or something)
 
