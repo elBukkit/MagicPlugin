@@ -3,6 +3,8 @@
 building:
 - stone
 - grass
+- grass_block
+- grass_path
 - dirt
 - cobblestone
 - wood

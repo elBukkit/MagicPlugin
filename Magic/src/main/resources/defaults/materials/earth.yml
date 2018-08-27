@@ -1,6 +1,8 @@
 earth:
 - stone
 - grass
+- grass_path
+- grass_block
 - dirt
 - cobblestone
 - mossy_cobblestone

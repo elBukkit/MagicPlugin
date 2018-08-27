@@ -4,6 +4,8 @@ destructible_mining:
 - log
 - stone
 - grass
+- grass_block
+- grass_path
 - dirt
 - cobblestone
 - sand
