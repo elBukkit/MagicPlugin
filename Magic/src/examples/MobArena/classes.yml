@@ -4,7 +4,7 @@
 classes:
   Warrior:
     items: magic:warrior
-    armor: 306,307,308,309
+    armor: iron_helmet,iron_chestplate,iron_leggings,iron_boots
     offhand: magic:hylian_shield
     unbreakable-weapons: false
   Mage:
@@ -16,16 +16,15 @@ classes:
     unbreakable-weapons: false
   Rogue:
     items: magic:rogue, arrow:1
-    armor: 298,299,300,301
+    armor: leather_helmet,leather_chestplate,leather_leggings,leather_boots
     unbreakable-weapons: false
   Demolitions:
     items: magic:demolitions,magic:c4@16
-    armor: 314,315,316,317
+    armor: golden_helmet,golden_chestplate,golden_leggings,golden_boots
     unbreakable-weapons: false
   Healer:
-    items: magic:healer, potion:16428:30, potion:16388:8, potion:16389:20, potion:8197:3,
-      potion:8226:1
-    armor: 314,315,316,317
+    items: magic:healer
+    armor: golden_helmet,golden_chestplate,golden_leggings,golden_boots
     unbreakable-weapons: false
   Soldier:
     items: magic:pistol,magic:ak47
@@ -68,11 +67,10 @@ classes:
     unbreakable-weapons: false
   Demolitions:
     items: magic:demolitions2,magic:c4@32
-    armor: 314,315,316,317
+    armor: golden_helmet,golden_chestplate,golden_leggings,golden_boots
     unbreakable-weapons: false
   Healer:
-    items: magic:healer2, potion:16428:30, potion:16388:8, potion:16389:20, potion:8197:3,
-      potion:8226:1
+    items: magic:healer2
     leggings: leather_leggings
     helmet: leather_helmet
     boots: leather_boots
