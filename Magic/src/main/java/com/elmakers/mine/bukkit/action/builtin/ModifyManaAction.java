@@ -51,14 +51,14 @@ public class ModifyManaAction extends BaseSpellAction
         if (caster == null) {
             caster = mage.getProperties();
         }
-        if (caster.getManaMax() <= 0) {
+        if (caster.getEffectiveManaMax() <= 0) {
             return SpellResult.NO_TARGET;
         }
         double currentMana = caster.getMana();
         if (mana < 0 && currentMana <= 0) {
             return SpellResult.NO_TARGET;
         }
-        int manaMax = caster.getManaMax();
+        int manaMax = caster.getEffectiveManaMax();
         if (mana > 0 && currentMana >= manaMax) {
             return SpellResult.NO_TARGET;
         }

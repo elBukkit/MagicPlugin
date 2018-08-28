@@ -130,6 +130,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getFloat("cooldown_reduction") > 1;
     }
 
+    @Override
     public int getEffectiveManaMax() {
         ManaController manaController = controller.getManaController();
         if (manaController != null && isPlayer()) {
@@ -138,6 +139,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return effectiveManaMax;
     }
 
+    @Override
     public int getEffectiveManaRegeneration() {
         ManaController manaController = controller.getManaController();
         if (manaController != null && isPlayer()) {

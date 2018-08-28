@@ -2561,10 +2561,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         getActiveProperties().updateMana();
     }
 
+    @Override
     public int getEffectiveManaMax() {
         return getActiveProperties().getEffectiveManaMax();
     }
 
+    @Override
     public int getEffectiveManaRegeneration() {
         return getActiveProperties().getEffectiveManaRegeneration();
     }

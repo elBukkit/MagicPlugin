@@ -29,7 +29,7 @@ public class CheckManaAction extends CheckAction {
         if (requireEmpty && currentMana > 0) {
             return false;
         }
-        int manaMax = mage.getManaMax();
+        int manaMax = mage.getEffectiveManaMax();
         if (requireNotFull && currentMana >= manaMax) {
             return false;
         }

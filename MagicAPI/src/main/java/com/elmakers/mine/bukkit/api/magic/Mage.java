@@ -471,8 +471,10 @@ public interface Mage extends CostReducer, CooldownReducer {
     void removeMana(float mana);
     float getMana();
     int getManaMax();
+    int getEffectiveManaMax();
     void setMana(float mana);
     int getManaRegeneration();
+    int getEffectiveManaRegeneration();
     void updateMana();
 
     int getLevel();
