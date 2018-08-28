@@ -958,7 +958,7 @@ public class MagicController implements MageController {
         // Try to link to Heroes:
         try {
             Plugin heroesPlugin = pluginManager.getPlugin("Heroes");
-            if (heroesPlugin != null && heroesPlugin.isEnabled()) {
+            if (heroesPlugin != null) {
                 heroesManager = new HeroesManager(plugin, heroesPlugin);
             } else {
                 heroesManager = null;
@@ -1006,7 +1006,7 @@ public class MagicController implements MageController {
 
         // Check for MobArena
         Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");
-        if (mobArenaPlugin == null || !mobArenaPlugin.isEnabled()) {
+        if (mobArenaPlugin == null) {
             getLogger().info("MobArena not found");
         } else if (mobArenaConfiguration.getBoolean("enabled", true)) {
             try {
