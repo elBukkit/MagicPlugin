@@ -36,7 +36,7 @@ public class BaseMagicProperties implements MagicProperties {
             "mana", "mana_regeneration", "mana_max", "mana_max_boost",
             "mana_regeneration_boost",
             "mana_per_damage",
-            "bound", "has_uses", "uses", "upgrade", "indestructible",
+            "bound", "has_uses", "uses", "upgrade", "indestructible", "preuse",
             "undroppable", "boostable",
             "consume_reduction", "cost_reduction", "cooldown_reduction",
             "effect_bubbles", "effect_color",

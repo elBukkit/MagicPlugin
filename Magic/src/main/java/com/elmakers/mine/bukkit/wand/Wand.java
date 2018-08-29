@@ -136,6 +136,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean undroppable = false;
     private boolean keep = false;
     private boolean passive = false;
+    private boolean preuse = false;
     private boolean autoOrganize = false;
     private boolean autoAlphabetize = false;
     private boolean autoFill = false;
@@ -1632,6 +1633,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Check for single-use wands
         uses = getInt("uses");
         hasUses = uses > 0;
+        if (hasUses) {
+            preuse = getBoolean("preuse", false);
+        }
 
         // Convert some legacy properties to potion effects
         float healthRegeneration = getFloat("health_regeneration", 0);
@@ -4095,6 +4099,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public boolean cast(Spell spell, String[] parameters) {
+        if (preuse) {
+            if (!use()) {
+                return false;
+            }
+        }
         if (spell != null) {
             Collection<String> castParameters = null;
             if (castOverrides != null && castOverrides.size() > 0) {
@@ -4119,7 +4128,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             if (spell.cast(castParameters == null ? null : castParameters.toArray(EMPTY_PARAMETERS))) {
                 Color spellColor = spell.getColor();
-                use();
+                if (!preuse) {
+                    use();
+                }
                 if (spellColor != null && this.effectColor != null) {
                     this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
                     setProperty("effect_color", effectColor.toString());
