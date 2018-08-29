@@ -23,7 +23,7 @@ classes:
     armor: golden_helmet,golden_chestplate,golden_leggings,golden_boots
     unbreakable-weapons: false
   Healer:
-    items: magic:healer
+    items: magic:healer,potion:instant_heal:30
     armor: golden_helmet,golden_chestplate,golden_leggings,golden_boots
     unbreakable-weapons: false
   Soldier:
@@ -70,7 +70,7 @@ classes:
     armor: golden_helmet,golden_chestplate,golden_leggings,golden_boots
     unbreakable-weapons: false
   Healer:
-    items: magic:healer2
+    items: magic:healer2,potion:instant_heal:64,splash_potion:instant_heal:64,splash_potion:regen:2
     leggings: leather_leggings
     helmet: leather_helmet
     boots: leather_boots
