@@ -4137,7 +4137,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return false;
     }
 
-    protected void use() {
+    protected boolean use() {
+        boolean usesRemaining = true;
         if (hasUses) {
             findItem();
             ItemStack item = getItem();
@@ -4154,6 +4155,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (uses <= 0 && mage != null) {
                     // If the wand is not currently active it will be destroyed on next activate
                     Player player = mage.getPlayer();
+                    Mage theMage = mage;
 
                     deactivate();
 
@@ -4166,6 +4168,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         } else {
                             playerInventory.setItemInMainHand(new ItemStack(Material.AIR, 1));
                         }
+                        usesRemaining = false;
+                        theMage.sendMessage(getMessage("used"));
                     }
                     DeprecatedUtils.updateInventory(player);
                 }
@@ -4175,6 +4179,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 updateLore();
             }
         }
+
+        return usesRemaining;
     }
 
     // Taken from NMS HumanEntity
