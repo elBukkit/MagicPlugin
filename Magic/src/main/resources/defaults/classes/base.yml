@@ -3,7 +3,6 @@ base:
     mana: class
     mana_max: class
     mana_regeneration: class
-    mana_regeneration: class
     mana_timestamp: class
     spell_levels: class
     spells: class
