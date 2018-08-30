@@ -5685,20 +5685,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             case WAND: return this;
             case SUBCLASS: return mageClass;
             case CLASS:
-                if (mageClass == null) {
-                    if (mage == null) {
-                        controller.getLogger().warning("Something is trying to modify a wand when it's not held, this may not work out");
-                    } else {
-                        controller.getLogger().warning("Something is trying to modify a wand that has no class, this may not work out");
-                    }
-                    Thread.dumpStack();
-                }
                 return mageClass == null ? null : mageClass.getRoot();
             case MAGE:
-                if (mage == null) {
-                    controller.getLogger().warning("Something is trying to modify a wand when it's not held, this may not work out");
-                    Thread.dumpStack();
-                }
                 return mage == null ? null : mage.getProperties();
         }
         return null;
