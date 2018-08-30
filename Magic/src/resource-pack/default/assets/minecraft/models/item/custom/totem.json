@@ -1,0 +1,64 @@
+{
+	"__comment": "Designed by NathanWolf with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"particle": "item/custom/totem",
+		"texture": "item/custom/totem"
+	},
+	"elements": [ 	 
+		{
+			"__comment": "Totem",
+			"from": [ 6, 2, 6 ],
+			"to": [ 10, 18, 10 ],
+			"faces": {
+				"down": { "uv": [ 5.333333, 13.33333, 7.999999, 16 ], "texture": "#texture" },
+				"up": { "uv": [ 5.333334, 0, 8, 2.666667 ], "texture": "#texture" },
+				"north": { "uv": [ 5.333333, 2.666667, 8, 13.28571 ], "texture": "#texture" },
+				"south": { "uv": [ 10.61905, 2.666667, 13.28571, 13.33333 ], "texture": "#texture" },
+				"west": { "uv": [ 8, 2.666667, 10.66667, 13.33333 ], "texture": "#texture" },
+				"east": { "uv": [ 2.666667, 2.666667, 5.333333, 13.28571 ], "texture": "#texture" }
+			}
+		}
+	],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "head": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, -20, 0 ],
+            "scale": [ 4, 4, 4 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 4, 4, 4 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "gui": {
+            "rotation": [ 20, -163, 0 ],
+            "translation": [ 0, -2, 0 ],
+            "scale": [ 0.9, 0.9, 0.9 ]
+        }
+    }
+}

@@ -1,0 +1,4 @@
+totem:
+  type: armor_stand
+  invisible: true
+  helmet: totem

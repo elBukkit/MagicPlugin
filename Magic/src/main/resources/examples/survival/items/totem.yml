@@ -1,0 +1,16 @@
+totem:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 40
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Totem
+      Unbreakable: true
+      ItemFlags: !!set
+        HIDE_UNBREAKABLE: null
+        HIDE_PLACED_ON: null
+        HIDE_DESTROYS: null
+        HIDE_ATTRIBUTES: null
+        HIDE_POTION_EFFECTS: null
