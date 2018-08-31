@@ -7,6 +7,7 @@
    This is possibly a breaking change, though only if you've set up your actions in kind of a strange way.
  - Fix projectiles not passing through tall grass in 1.13
  - Fix brushmod when using the Brush action (fixes the Projector spell)
+ - Fixes to ignore plugins that fail to start up (should fix issues with LibsDisguises in 1.13)
 
 # 7.6.8
 
