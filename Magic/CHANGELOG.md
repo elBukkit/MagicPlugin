@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.10
+
 # 7.6.9
 
  - Some more fixes to spellshop progression
