@@ -1,17 +1,23 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class CheckHealthAction extends CheckAction {
     private Double minHealth;
     private Double maxHealth;
     private boolean fullHealth;
+    private boolean percentages;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -24,6 +30,7 @@ public class CheckHealthAction extends CheckAction {
             maxHealth = parameters.getDouble("max_health");
         }
         fullHealth = parameters.getBoolean("full_health", false);
+        percentages = parameters.getBoolean("as_percentages", false);
     }
 
     @Override
@@ -31,9 +38,13 @@ public class CheckHealthAction extends CheckAction {
         Entity targetEntity = context.getTargetEntity();
         if (targetEntity == null || !(targetEntity instanceof Damageable)) return false;
         Damageable damageable = (Damageable)targetEntity;
-        if (fullHealth && damageable.getHealth() < CompatibilityUtils.getMaxHealth(damageable)) return false;
-        if (minHealth != null && damageable.getHealth() < minHealth) return false;
-        if (maxHealth != null && damageable.getHealth() > maxHealth) return false;
+        double health = damageable.getHealth();
+        if (fullHealth && health < CompatibilityUtils.getMaxHealth(damageable)) return false;
+        if (percentages) {
+            health = 100.0 * health / CompatibilityUtils.getMaxHealth(damageable);
+        }
+        if (minHealth != null && health < minHealth) return false;
+        if (maxHealth != null && health > maxHealth) return false;
         return true;
     }
 
@@ -45,5 +56,26 @@ public class CheckHealthAction extends CheckAction {
     @Override
     public boolean requiresTargetEntity() {
         return true;
+    }
+
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("min_health");
+        parameters.add("max_health");
+        parameters.add("full_health");
+        parameters.add("as_percentages");
+    }
+
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("min_health") && parameterKey.equals("max_health")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_PERCENTAGES)));
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else if (parameterKey.equals("full_health") || parameterKey.equals("as_percentages")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
     }
 }

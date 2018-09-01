@@ -2,6 +2,8 @@
 
 # 7.6.10
 
+ - Add "as_percentages" parameter to CheckHealth action, to use percentages instead of raw health values.
+
 # 7.6.9
 
  - Some more fixes to spellshop progression
