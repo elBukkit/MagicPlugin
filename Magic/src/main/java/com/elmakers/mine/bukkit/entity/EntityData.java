@@ -418,7 +418,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
-        item = itemData == null ? null : itemData.getItemStack(parameters.getInt("amount", 1));
+        item = itemData == null || !itemData.isValid() ? null : itemData.getItemStack(parameters.getInt("amount", 1));
 
         itemInHand = controller.getOrCreateItemOrWand(parameters.getString("item"));
         helmet = controller.getOrCreateItemOrWand(parameters.getString("helmet"));
