@@ -20,6 +20,7 @@ import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -49,6 +50,7 @@ public class SpawnEntityAction extends CompoundAction
     private boolean setTarget = false;
     private boolean force = false;
     private boolean repeatRandomize = true;
+    private boolean tamed = false;
 
     private Vector direction = null;
     private double speed;
@@ -62,6 +64,7 @@ public class SpawnEntityAction extends CompoundAction
         super.prepare(context, parameters);
         loot = parameters.getBoolean("loot", false);
         force = parameters.getBoolean("force", false);
+        tamed = parameters.getBoolean("tamed", false);
         setTarget = parameters.getBoolean("set_target", false);
         repeatRandomize = parameters.getBoolean("repeat_random", true);
         speed = parameters.getDouble("speed", 0);
@@ -229,6 +232,14 @@ public class SpawnEntityAction extends CompoundAction
                 ((Projectile)spawnedEntity).setShooter(shooter);
             } else if (spawnedEntity instanceof AreaEffectCloud) {
                 ((AreaEffectCloud)spawnedEntity).setSource(shooter);
+            }
+        }
+        if (tamed && spawnedEntity instanceof Tameable) {
+            Tameable tameable = (Tameable)spawnedEntity;
+            tameable.setTamed(true);
+            Player owner = context.getMage().getPlayer();
+            if (owner != null) {
+                tameable.setOwner(owner);
             }
         }
         entity = new WeakReference<>(spawnedEntity);
