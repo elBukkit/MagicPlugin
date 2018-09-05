@@ -291,6 +291,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             return;
         }
 
+        String colorString = parameters.getString("color");
+        if (colorString != null) {
+            try {
+                dyeColor = DyeColor.valueOf(colorString.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid color: " + colorString);
+            }
+        }
+
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
 
         isTamed = parameters.getBoolean("tamed", false);
