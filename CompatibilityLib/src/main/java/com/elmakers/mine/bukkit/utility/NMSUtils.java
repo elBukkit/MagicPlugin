@@ -730,16 +730,25 @@ public class NMSUtils {
                 class_NamespacedKey = Class.forName("org.bukkit.NamespacedKey");
                 class_NamespacedKey_constructor = class_NamespacedKey.getConstructor(Plugin.class, String.class);
                 class_ShapedRecipe_constructor = ShapedRecipe.class.getConstructor(class_NamespacedKey, ItemStack.class);
-
-                class_KnowledgeBookMeta = Class.forName("org.bukkit.inventory.meta.KnowledgeBookMeta");
-                Class<?> keyArray = Array.newInstance(class_NamespacedKey, 0).getClass();
-                class_KnowledgeBookMeta_addRecipeMethod = class_KnowledgeBookMeta.getMethod("addRecipe", keyArray);
             } catch (Throwable ex) {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;
                 class_ShapedRecipe_constructor = null;
-                Bukkit.getLogger().info("Couldn't find NamespacedKey for registering recipes. Magic recipes will not appear in the recipe book.");
+                Bukkit.getLogger().info("Couldn't find NamespacedKey for registering recipes. This is normal for legacy Minecraft versions.");
             }
+
+            if (class_NamespacedKey != null) {
+                try {
+                    class_KnowledgeBookMeta = Class.forName("org.bukkit.inventory.meta.KnowledgeBookMeta");
+                    Class<?> keyArray = Array.newInstance(class_NamespacedKey, 0).getClass();
+                    class_KnowledgeBookMeta_addRecipeMethod = class_KnowledgeBookMeta.getMethod("addRecipe", keyArray);
+                } catch (Throwable ex) {
+                    class_KnowledgeBookMeta = null;
+                    class_KnowledgeBookMeta_addRecipeMethod = null;
+                    Bukkit.getLogger().info("Couldn't register knowledge book methods, recipe books unavailable. This is normal for pre-1.13 Minecraft versions.");
+                }
+            }
+
             try {
                 class_Server_getEntityMethod = Server.class.getMethod("getEntity", UUID.class);
             } catch (Throwable ex) {
