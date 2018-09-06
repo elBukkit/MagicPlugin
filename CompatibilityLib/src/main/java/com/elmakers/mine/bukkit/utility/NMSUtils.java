@@ -28,6 +28,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -150,6 +151,7 @@ public class NMSUtils {
     protected static Class<?> class_NamespacedKey;
     protected static Class<?> class_Parrot;
     protected static Class<Enum> class_ParrotVariant;
+    protected static Class<?> class_KnowledgeBookMeta;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -245,6 +247,7 @@ public class NMSUtils {
     protected static Method class_Block_setBlockDataMethod;
     protected static Method class_Server_createBlockDataMethod;
     protected static Method class_BlockData_getAsStringMethod;
+    protected static Method class_KnowledgeBookMeta_addRecipeMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -727,6 +730,10 @@ public class NMSUtils {
                 class_NamespacedKey = Class.forName("org.bukkit.NamespacedKey");
                 class_NamespacedKey_constructor = class_NamespacedKey.getConstructor(Plugin.class, String.class);
                 class_ShapedRecipe_constructor = ShapedRecipe.class.getConstructor(class_NamespacedKey, ItemStack.class);
+
+                class_KnowledgeBookMeta = Class.forName("org.bukkit.inventory.meta.KnowledgeBookMeta");
+                Class<?> keyArray = Array.newInstance(class_NamespacedKey, 0).getClass();
+                class_KnowledgeBookMeta_addRecipeMethod = class_KnowledgeBookMeta.getMethod("addRecipe", keyArray);
             } catch (Throwable ex) {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;

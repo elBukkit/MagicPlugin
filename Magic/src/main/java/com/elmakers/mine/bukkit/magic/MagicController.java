@@ -4499,7 +4499,7 @@ public class MagicController implements MageController {
         // Handle : or | as delimiter
         magicItemKey = magicItemKey.replace("|", ":");
         try {
-            if (magicItemKey.contains("book:")) {
+            if (magicItemKey.startsWith("book:")) {
                 String bookCategory = magicItemKey.substring(5);
                 com.elmakers.mine.bukkit.api.spell.SpellCategory category = null;
 
@@ -4513,7 +4513,13 @@ public class MagicController implements MageController {
                     }
                 }
                 itemStack = getSpellBook(category, amount);
-            } else if (skillPointItemsEnabled && magicItemKey.contains("sp:")) {
+            } else if (magicItemKey.startsWith("recipe:")) {
+                String recipeKey = magicItemKey.substring(7);
+                itemStack = CompatibilityUtils.getKnowledgeBook();
+                if (itemStack != null) {
+                    CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipeKey);
+                }
+            } else if (skillPointItemsEnabled && magicItemKey.startsWith("sp:")) {
                 String spAmount = magicItemKey.substring(3);
                 itemStack = getURLSkull(skillPointIcon);
                 ItemMeta meta = itemStack.getItemMeta();
@@ -4527,28 +4533,28 @@ public class MagicController implements MageController {
                 }
                 itemStack.setItemMeta(meta);
                 InventoryUtils.setMeta(itemStack, "sp", spAmount);
-            } else if (magicItemKey.contains("spell:")) {
+            } else if (magicItemKey.startsWith("spell:")) {
                 // Fix delimiter replaced above, to handle spell levels
                 magicItemKey = magicItemKey.replace(":", "|");
                 String spellKey = magicItemKey.substring(6);
                 itemStack = createSpellItem(spellKey, brief);
-            } else if (magicItemKey.contains("wand:")) {
+            } else if (magicItemKey.startsWith("wand:")) {
                 String wandKey = magicItemKey.substring(5);
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
                 if (wand != null) {
                     itemStack = wand.getItem();
                 }
-            } else if (magicItemKey.contains("upgrade:")) {
+            } else if (magicItemKey.startsWith("upgrade:")) {
                 String wandKey = magicItemKey.substring(8);
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
                 if (wand != null) {
                     wand.makeUpgrade();
                     itemStack = wand.getItem();
                 }
-            } else if (magicItemKey.contains("brush:")) {
+            } else if (magicItemKey.startsWith("brush:")) {
                 String brushKey = magicItemKey.substring(6);
                 itemStack = createBrushItem(brushKey);
-            } else if (magicItemKey.contains("item:")) {
+            } else if (magicItemKey.startsWith("item:")) {
                 String itemKey = magicItemKey.substring(5);
                 itemStack = createGenericItem(itemKey);
             } else {

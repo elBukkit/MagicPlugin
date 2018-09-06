@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -1714,5 +1715,34 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static ItemStack getKnowledgeBook() {
+        ItemStack book = null;
+        try {
+            Material bookMaterial = Material.valueOf("KNOWLEDGE_BOOK");
+            book = new ItemStack(bookMaterial);
+        } catch (Exception ignore) {
+
+        }
+        return book;
+    }
+
+    public static boolean addRecipeToBook(ItemStack book, Plugin plugin, String recipeKey) {
+        if (class_NamespacedKey_constructor == null || class_KnowledgeBookMeta_addRecipeMethod == null) return false;
+        ItemMeta meta = book.getItemMeta();
+        if (!class_KnowledgeBookMeta.isAssignableFrom(meta.getClass())) return false;
+        try {
+            Object namespacedKey = class_NamespacedKey_constructor.newInstance(plugin, recipeKey.toLowerCase());
+            Object array = Array.newInstance(class_NamespacedKey, 1);
+            Array.set(array, 0, namespacedKey);
+            class_KnowledgeBookMeta_addRecipeMethod.invoke(meta, array);
+            book.setItemMeta(meta);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }
