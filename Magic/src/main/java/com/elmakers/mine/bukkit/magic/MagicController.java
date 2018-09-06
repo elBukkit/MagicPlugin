@@ -4517,7 +4517,14 @@ public class MagicController implements MageController {
                 String recipeKey = magicItemKey.substring(7);
                 itemStack = CompatibilityUtils.getKnowledgeBook();
                 if (itemStack != null) {
-                    CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipeKey);
+                    if (recipeKey.equals("*")) {
+                        Collection<String> keys = crafting.getRecipeKeys();
+                        for (String key : keys) {
+                            CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                        }
+                    } else {
+                        CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipeKey);
+                    }
                 }
             } else if (skillPointItemsEnabled && magicItemKey.startsWith("sp:")) {
                 String spAmount = magicItemKey.substring(3);

@@ -195,4 +195,14 @@ public class CraftingController implements Listener {
     public int getCount() {
         return recipeCount;
     }
+
+    public List<String> getRecipeKeys() {
+        List<String> keys = new ArrayList<>();
+        for (List<MagicRecipe> recipeList : recipes.values()) {
+            for (MagicRecipe recipe : recipeList) {
+                keys.add(recipe.getKey());
+            }
+        }
+        return keys;
+    }
 }

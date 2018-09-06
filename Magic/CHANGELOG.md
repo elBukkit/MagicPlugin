@@ -3,7 +3,7 @@
 # 7.6.10
 
  - Add "as_percentages" parameter to CheckHealth action, to use percentages instead of raw health values.
- - Add "/mgive recipe:wand" item style, for giving recipe knowledge books (1.13 only)
+ - Add "/mgive recipe:wand" (or "recipe:*") item style, for giving recipe knowledge books (1.13 only)
 
 # 7.6.9
 
