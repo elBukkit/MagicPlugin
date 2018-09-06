@@ -723,7 +723,6 @@ phaseshop:
         items:
         - item: phase
           cost: 1000
-          
               
 ajshop:
     inherit: buyshop
@@ -3454,3 +3453,11 @@ linearrow:
     - effectlib:
         class: Line
         duration: 5000
+
+recipeshop:
+    inherit: buyshop
+    parameters:
+        auto_close: true
+        items:
+        - item: recipe:*
+          cost: 10
