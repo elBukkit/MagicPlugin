@@ -1270,48 +1270,6 @@ public class MagicController implements MageController {
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
         registerListeners();
-
-        // PVP Managers
-        if (worldGuardManager.isEnabled()) pvpManagers.add(worldGuardManager);
-        if (pvpManager.isEnabled()) pvpManagers.add(pvpManager);
-        if (multiverseManager.isEnabled()) pvpManagers.add(multiverseManager);
-        if (preciousStonesManager.isEnabled()) pvpManagers.add(preciousStonesManager);
-        if (townyManager.isEnabled()) pvpManagers.add(townyManager);
-        if (griefPreventionManager.isEnabled()) pvpManagers.add(griefPreventionManager);
-        if (factionsManager.isEnabled()) pvpManagers.add(factionsManager);
-
-        // Build Managers
-        if (worldGuardManager.isEnabled()) blockBuildManagers.add(worldGuardManager);
-        if (factionsManager.isEnabled()) blockBuildManagers.add(factionsManager);
-        if (locketteManager.isEnabled()) blockBuildManagers.add(locketteManager);
-        if (preciousStonesManager.isEnabled()) blockBuildManagers.add(preciousStonesManager);
-        if (townyManager.isEnabled()) blockBuildManagers.add(townyManager);
-        if (griefPreventionManager.isEnabled()) blockBuildManagers.add(griefPreventionManager);
-        if (mobArenaManager != null && mobArenaManager.isProtected()) blockBuildManagers.add(mobArenaManager);
-
-        // Break Managers
-        if (worldGuardManager.isEnabled()) blockBreakManagers.add(worldGuardManager);
-        if (factionsManager.isEnabled()) blockBreakManagers.add(factionsManager);
-        if (locketteManager.isEnabled()) blockBreakManagers.add(locketteManager);
-        if (preciousStonesManager.isEnabled()) blockBreakManagers.add(preciousStonesManager);
-        if (townyManager.isEnabled()) blockBreakManagers.add(townyManager);
-        if (griefPreventionManager.isEnabled()) blockBreakManagers.add(griefPreventionManager);
-        if (mobArenaManager != null && mobArenaManager.isProtected()) blockBreakManagers.add(mobArenaManager);
-        if (citadelManager != null) blockBreakManagers.add(citadelManager);
-
-        // Delay loading generic integration by one tick since we can't add depends: for these plugins
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                protectionManager.check();
-                if (protectionManager.isEnabled()) {
-                    blockBreakManagers.add(protectionManager);
-                    blockBuildManagers.add(protectionManager);
-                }
-            }
-        }, 1);
-
-        initialized = true;
     }
 
     protected void processUndo()
@@ -1586,6 +1544,53 @@ public class MagicController implements MageController {
         if (!initialized) {
             finalizeIntegration();
         }
+
+        // PVP Managers
+        if (worldGuardManager.isEnabled()) pvpManagers.add(worldGuardManager);
+        if (pvpManager.isEnabled()) pvpManagers.add(pvpManager);
+        if (multiverseManager.isEnabled()) pvpManagers.add(multiverseManager);
+        if (preciousStonesManager.isEnabled()) pvpManagers.add(preciousStonesManager);
+        if (townyManager.isEnabled()) pvpManagers.add(townyManager);
+        if (griefPreventionManager.isEnabled()) pvpManagers.add(griefPreventionManager);
+        if (factionsManager.isEnabled()) pvpManagers.add(factionsManager);
+
+        // Build Managers
+        if (worldGuardManager.isEnabled()) blockBuildManagers.add(worldGuardManager);
+        if (factionsManager.isEnabled()) blockBuildManagers.add(factionsManager);
+        if (locketteManager.isEnabled()) blockBuildManagers.add(locketteManager);
+        if (preciousStonesManager.isEnabled()) blockBuildManagers.add(preciousStonesManager);
+        if (townyManager.isEnabled()) blockBuildManagers.add(townyManager);
+        if (griefPreventionManager.isEnabled()) blockBuildManagers.add(griefPreventionManager);
+        if (mobArenaManager != null && mobArenaManager.isProtected()) blockBuildManagers.add(mobArenaManager);
+
+        // Break Managers
+        if (worldGuardManager.isEnabled()) blockBreakManagers.add(worldGuardManager);
+        if (factionsManager.isEnabled()) blockBreakManagers.add(factionsManager);
+        if (locketteManager.isEnabled()) blockBreakManagers.add(locketteManager);
+        if (preciousStonesManager.isEnabled()) blockBreakManagers.add(preciousStonesManager);
+        if (townyManager.isEnabled()) blockBreakManagers.add(townyManager);
+        if (griefPreventionManager.isEnabled()) blockBreakManagers.add(griefPreventionManager);
+        if (mobArenaManager != null && mobArenaManager.isProtected()) blockBreakManagers.add(mobArenaManager);
+        if (citadelManager != null) blockBreakManagers.add(citadelManager);
+
+        Runnable genericIntegrationTask = new Runnable() {
+            @Override
+            public void run() {
+                protectionManager.check();
+                if (protectionManager.isEnabled()) {
+                    blockBreakManagers.add(protectionManager);
+                    blockBuildManagers.add(protectionManager);
+                }
+            }
+        };
+
+        // Delay loading generic integration by one tick since we can't add depends: for these plugins
+        if (!initialized) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, genericIntegrationTask, 1);
+        } else {
+            genericIntegrationTask.run();
+        }
+        initialized = true;
 
         // Register crafting recipes
         crafting.register(plugin);

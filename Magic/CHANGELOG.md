@@ -2,6 +2,8 @@
 
 # 7.6.11
 
+ - Fix WorldGuard, factions, various other integrations breaking after /magic load
+
 # 7.6.10
 
  - Add "as_percentages" parameter to CheckHealth action, to use percentages instead of raw health values.
