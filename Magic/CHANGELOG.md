@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.12
+
 # 7.6.11
 
  - Fix WorldGuard, factions, various other integrations breaking after /magic load
