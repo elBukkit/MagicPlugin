@@ -18,6 +18,7 @@ superalter:
         transparent: transparent_to_construction
         destructible: "!air"
         replace: true
+        ignore_region_overrides: true
     costs:
         mana: 40
 

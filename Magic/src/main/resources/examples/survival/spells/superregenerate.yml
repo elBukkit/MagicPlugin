@@ -19,6 +19,7 @@ superregenerate:
         max_dimension: 64
         expand: true
         transparent: transparent_to_construction
+        ignore_region_overrides: true
     costs:
         mana: 1000
 

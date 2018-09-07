@@ -17,6 +17,7 @@ toss:
       speed_min: 1.2
       speed_max: 2.2
       consume: true
+      ignore_region_overrides: true
     costs:
         mana: 20
 

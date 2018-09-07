@@ -50,6 +50,7 @@ permamelt:
         biome: desert
         weather: normal
         brush: stationary_water
+        ignore_region_overrides: true
     costs:
         mana: 200
 

@@ -14,6 +14,7 @@ wolfhouse:
         -  class: EffectTrail
            particle: block_crack
     parameters:
+        ignore_region_overrides: true
         target_type: LivingEntity
         allow_max_range: true
         check_destructible: false

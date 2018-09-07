@@ -23,6 +23,7 @@ supershell:
         destructible: destructible_replace
         transparent: transparent_to_construction
         consume: true
+        ignore_region_overrides: true
     costs:
         mana: 250
 

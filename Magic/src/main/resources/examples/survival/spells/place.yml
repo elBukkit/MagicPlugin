@@ -26,6 +26,7 @@ place:
         transparent: transparent_to_construction
         check_destructible: false
         consume: true
+        ignore_region_overrides: true
     costs:
         mana: 10
 

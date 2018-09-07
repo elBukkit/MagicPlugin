@@ -123,3 +123,4 @@ birth_worm:
   parameters:
     allow_max_range: true
     seed_radius: 2
+    ignore_region_overrides: true

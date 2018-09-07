@@ -25,6 +25,7 @@ column:
         orient: true
         consume: true
         destructible: destructible_replace
+        ignore_region_overrides: true
     costs:
         mana: 200
 

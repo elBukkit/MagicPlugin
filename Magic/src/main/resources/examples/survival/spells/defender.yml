@@ -124,7 +124,6 @@ defender_death:
     parameters:
         brush: air
         falling: true
-        radius: 3
         undo: 10000
         undo_speed: 1
         target: self
@@ -136,7 +135,6 @@ defender_attack:
     hidden: true
     icon: diamond_axe:112
     icon_disabled: diamond_hoe:112
-    category: engineering
     actions:
         cast:
         - class: Sphere
@@ -172,3 +170,4 @@ birth_defender:
   parameters:
     allow_max_range: true
     seed_radius: 2
+    ignore_region_overrides: true

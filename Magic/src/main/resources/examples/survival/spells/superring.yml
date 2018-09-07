@@ -26,6 +26,7 @@ superring:
         orient: true
         consume: true
         thickness: 1
+        ignore_region_overrides: true
     costs:
         mana: 200
 

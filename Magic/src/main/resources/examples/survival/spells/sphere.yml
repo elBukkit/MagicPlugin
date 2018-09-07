@@ -23,6 +23,7 @@ sphere:
         undo: 20000
         type: sphere
         transparent: transparent_to_construction
+        ignore_region_overrides: true
     costs:
         mana: 100
 

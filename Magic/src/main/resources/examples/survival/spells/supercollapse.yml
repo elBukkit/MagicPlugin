@@ -28,6 +28,7 @@ supercollapse:
         target: select
         type: sphere
         transparent: transparent_to_construction
+        ignore_region_overrides: true
     costs:
         mana: 250
 

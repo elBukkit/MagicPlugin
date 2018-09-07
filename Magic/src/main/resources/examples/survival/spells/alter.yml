@@ -45,6 +45,7 @@ alter:
         transparent: transparent_to_construction
         cycle_colors: true
         cycle_variants: true
+        ignore_region_overrides: true
         materials:
         - - dirt
           - dirt:1

@@ -2,7 +2,7 @@ workbench:
     icon: diamond_axe:105
     icon_disabled: diamond_hoe:105
     icon_url: http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff
-    category: engineering
+    category: utility
     tags: noduel
     quick_cast: true
     worth: 80

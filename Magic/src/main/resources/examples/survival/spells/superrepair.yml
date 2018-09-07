@@ -27,6 +27,7 @@ superrepair:
         otworld: ~-_backup
         obworld: ~_backup
         brushtarget: true
+        ignore_region_overrides: true
     costs:
         mana: 400
 

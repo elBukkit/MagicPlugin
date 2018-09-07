@@ -24,6 +24,7 @@ paint:
         check_destructible: false
         transparent: transparent_to_construction
         consume: true
+        ignore_region_overrides: true
     costs:
         mana: 5
 

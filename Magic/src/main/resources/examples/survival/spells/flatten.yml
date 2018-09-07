@@ -36,6 +36,7 @@ flatten:
     radius: 16
     vertical_range: 32
     volume_type: reverse_spiral
+    ignore_region_overrides: true
     faces:
     - down
     - north

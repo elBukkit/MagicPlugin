@@ -50,6 +50,7 @@ permafrost:
         freeze_lava: true
         biome: mutated_ice_flats
         weather: storm
+        ignore_region_overrides: true
     costs:
         mana: 200
 

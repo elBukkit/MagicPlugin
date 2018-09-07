@@ -92,6 +92,7 @@ rollback:
         loud: true
         cancel: true
         admin_permission: Magic.undo_others
+        ignore_region_overrides: true
     costs:
         mana: 100
 

@@ -17,6 +17,7 @@ tunnel:
         allow_max_range: false
         range: 32
         destructible: destructible_mining
+        ignore_region_overrides: true
     costs:
         mana: 30
 

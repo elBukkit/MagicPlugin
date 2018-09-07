@@ -17,7 +17,6 @@ superblast:
         allow_max_range: true
         range: 32
         speed: 3
-        falling: false
         brush: air
         radius: 5
         type: sphere
@@ -26,6 +25,7 @@ superblast:
         speed: 0.9
         direction: 0,0.8,0
         falling: true
+        ignore_region_overrides: true
     costs:
         mana: 100
 

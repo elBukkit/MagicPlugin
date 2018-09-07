@@ -21,5 +21,6 @@ light:
         range: 32
         cooldown: 10000
         async: false
+        ignore_region_overrides: true
     costs:
         mana: 200

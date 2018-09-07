@@ -27,6 +27,7 @@ superbackup:
         obworld: ~-_backup
         brushtarget: true
         bypass_undo: true
+        ignore_region_overrides: true
     costs:
         mana: 400
 

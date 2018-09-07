@@ -26,6 +26,7 @@ supertorch:
         allow_glowstone: false
         cooldown: 1000
         destructible: destructible_replace
+        ignore_region_overrides: true
     costs:
         mana: 50
         torch: 1

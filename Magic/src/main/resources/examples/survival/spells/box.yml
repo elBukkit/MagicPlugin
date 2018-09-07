@@ -23,6 +23,7 @@ box:
         transparent: transparent_to_construction
         y_offset: 4
         destructible: destructible_replace
+        ignore_region_overrides: true
     costs:
         mana: 60
 

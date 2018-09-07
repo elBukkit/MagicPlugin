@@ -21,6 +21,7 @@ paste:
         target: block
         type: cuboid
         transparent: transparent_to_construction
+        ignore_region_overrides: true
     casts:
         mana: 300
 

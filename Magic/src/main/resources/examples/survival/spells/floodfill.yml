@@ -27,6 +27,7 @@ floodfill:
         cooldown: 1000
         consume: true
         priority_faces: down
+        ignore_region_overrides: true
         faces:
         - down
         - north

@@ -32,6 +32,7 @@ iterate:
         increment_data: false
         destructible: destructible_replace
         consume: true
+        ignore_region_overrides: true
     costs:
         mana: 50
 

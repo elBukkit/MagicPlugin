@@ -48,6 +48,7 @@ growth:
         transparent: air
         destructible: plants
         bypass_undo: true
+        ignore_region_overrides: true
     costs:
         mana: 100
 

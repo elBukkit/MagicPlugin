@@ -37,6 +37,7 @@ recurse:
         cooldown: 500
         replace: true
         consume: true
+        ignore_region_overrides: true
     costs:
         mana: 30
 

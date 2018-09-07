@@ -4,6 +4,8 @@
 
  - Add ignore_region_overrides spell parameter, for making spells ignore worldguard flags that would allow them
    to break/build when they otherwise wouldn't be able to (yes, a super specific request)
+ - Engineering magic will now ignore allowed-spells: *, so no permanent changes can be made in regions that allow
+   spells to change blocks. (This is changeable via "override" in spells.yml if you want)
 
 # 7.6.11
 

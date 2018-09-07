@@ -66,6 +66,7 @@ pollinate:
         yaw_max: 30
         pitch_max: 4
         uses_brush: false
+        ignore_region_overrides: true
         brushes:
         - yellow_flower
         - red_rose

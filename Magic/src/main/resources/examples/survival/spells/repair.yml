@@ -28,6 +28,7 @@ repair:
         obworld: ~_backup
         brushtarget: true
         cooldown: 7000
+        ignore_region_overrides: true
     costs:
         mana: 200
 

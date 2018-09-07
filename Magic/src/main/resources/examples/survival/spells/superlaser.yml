@@ -66,6 +66,7 @@ superlaser:
         repeat: 10
         orient: true
         axis: z
+        ignore_region_overrides: true
     costs:
         mana: 200
 

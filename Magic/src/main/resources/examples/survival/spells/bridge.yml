@@ -39,6 +39,7 @@ bridge:
         consume: true
         direction: forward
         target_offset: 0,-2,0
+        ignore_region_overrides: true
     costs:
         mana: 5
     

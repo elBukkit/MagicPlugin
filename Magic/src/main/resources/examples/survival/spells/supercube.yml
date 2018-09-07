@@ -23,6 +23,7 @@ supercube:
         check_destructible: false
         orient_dimension_min: 0
         consume: true
+        ignore_region_overrides: true
     costs:
         mana: 400
 

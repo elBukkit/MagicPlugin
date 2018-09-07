@@ -29,6 +29,7 @@ backup:
         brushtarget: true
         bypass_undo: true
         cooldown: 10000
+        ignore_region_overrides: true
     costs:
         mana: 100
 
