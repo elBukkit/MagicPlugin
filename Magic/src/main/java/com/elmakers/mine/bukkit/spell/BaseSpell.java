@@ -1367,10 +1367,10 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (glideExclusive && entity != null && entity instanceof LivingEntity && !((LivingEntity)entity).isGliding()) return false;
 
         if (location == null) return true;
-        Boolean regionPermission = bypassRegionPermission || ignoreRegionOverrides ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);
-        if (regionPermission != null && regionPermission == true) return true;
-        Boolean personalPermission = bypassRegionPermission || ignoreRegionOverrides ? null : controller.getPersonalCastPermission(mage.getPlayer(), this, location);
-        if (personalPermission != null && personalPermission == true) return true;
+        Boolean regionPermission = bypassRegionPermission ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);
+        if (regionPermission != null && !ignoreRegionOverrides && regionPermission == true) return true;
+        Boolean personalPermission = bypassRegionPermission ? null : controller.getPersonalCastPermission(mage.getPlayer(), this, location);
+        if (personalPermission != null && !ignoreRegionOverrides && personalPermission == true) return true;
         if (regionPermission != null && regionPermission == false) return false;
         if (requiresBuildPermission() && !hasBuildPermission(location.getBlock())) return false;
         if (requiresBreakPermission() && !hasBreakPermission(location.getBlock())) return false;
