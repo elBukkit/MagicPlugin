@@ -222,6 +222,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassWeakness            = true;
     protected boolean bypassPermissions         = false;
     protected boolean bypassRegionPermission    = false;
+    protected boolean ignoreRegionOverrides     = false;
     protected boolean castOnNoTarget            = true;
     protected boolean bypassDeactivate          = false;
     protected boolean bypassAll                 = false;
@@ -1366,9 +1367,9 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (glideExclusive && entity != null && entity instanceof LivingEntity && !((LivingEntity)entity).isGliding()) return false;
 
         if (location == null) return true;
-        Boolean regionPermission = bypassRegionPermission ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);
+        Boolean regionPermission = bypassRegionPermission || ignoreRegionOverrides ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);
         if (regionPermission != null && regionPermission == true) return true;
-        Boolean personalPermission = bypassRegionPermission ? null : controller.getPersonalCastPermission(mage.getPlayer(), this, location);
+        Boolean personalPermission = bypassRegionPermission || ignoreRegionOverrides ? null : controller.getPersonalCastPermission(mage.getPlayer(), this, location);
         if (personalPermission != null && personalPermission == true) return true;
         if (regionPermission != null && regionPermission == false) return false;
         if (requiresBuildPermission() && !hasBuildPermission(location.getBlock())) return false;
@@ -1411,9 +1412,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     public boolean hasBreakPermission(Block block) {
         // Cast permissions bypass
         if (bypassBreakRestriction || bypassAll) return true;
-        Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
-        if (castPermission != null && castPermission == true) return true;
-        if (castPermission != null && castPermission == false) return false;
+        if (!ignoreRegionOverrides) {
+            Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
+            if (castPermission != null && castPermission == true) return true;
+            if (castPermission != null && castPermission == false) return false;
+        }
         return mage.hasBreakPermission(block);
     }
 
@@ -1425,9 +1428,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     public boolean hasBuildPermission(Block block) {
         // Cast permissions bypass
         if (bypassBuildRestriction || bypassRegionPermission || bypassAll) return true;
-        Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
-        if (castPermission != null && castPermission == true) return true;
-        if (castPermission != null && castPermission == false) return false;
+        if (!ignoreRegionOverrides) {
+            Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
+            if (castPermission != null && castPermission == true) return true;
+            if (castPermission != null && castPermission == false) return false;
+        }
         return mage.hasBuildPermission(block);
     }
 
@@ -1737,6 +1742,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassPermissions = parameters.getBoolean("bypass_permissions", false);
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
+        ignoreRegionOverrides = parameters.getBoolean("ignore_region_overrides", false);
         bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
         bypassProtection = parameters.getBoolean("bypass_protection", false);
         bypassProtection = parameters.getBoolean("bp", bypassProtection);

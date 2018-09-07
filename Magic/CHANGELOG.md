@@ -2,6 +2,9 @@
 
 # 7.6.12
 
+ - Add ignore_region_overrides spell parameter, for making spells ignore worldguard flags that would allow them
+   to break/build when they otherwise wouldn't be able to (yes, a super specific request)
+
 # 7.6.11
 
  - Fix WorldGuard, factions, various other integrations breaking after /magic load
