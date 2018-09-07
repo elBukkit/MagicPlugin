@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.11
+
 # 7.6.10
 
  - Add "as_percentages" parameter to CheckHealth action, to use percentages instead of raw health values.
