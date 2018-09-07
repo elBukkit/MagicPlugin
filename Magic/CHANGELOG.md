@@ -6,6 +6,7 @@
    to break/build when they otherwise wouldn't be able to (yes, a super specific request)
  - Engineering magic will now ignore allowed-spells: *, so no permanent changes can be made in regions that allow
    spells to change blocks. (This is changeable via "override" in spells.yml if you want)
+ - Fix the Drop action not being undoable
 
 # 7.6.11
 

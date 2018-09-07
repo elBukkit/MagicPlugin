@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.ItemStack;
@@ -63,7 +64,15 @@ public class DropAction extends BaseSpellAction {
             FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, block.getType(), block.getData());
             falling.setDropItem(false);
         }
+
+        context.registerForUndo(block);
+        context.clearAttachables(block);
+        UndoList undoList = context.getUndoList();
+        BlockState prior = block.getState();
         block.setType(Material.AIR);
+        if (undoList != null && !undoList.isScheduled()) {
+            context.getController().logBlockChange(context.getMage(), prior, block.getState());
+        }
 
         return SpellResult.CAST;
     }
@@ -75,6 +84,11 @@ public class DropAction extends BaseSpellAction {
 
     @Override
     public boolean requiresBreakPermission() {
+        return true;
+    }
+
+    @Override
+    public boolean isUndoable() {
         return true;
     }
 }
