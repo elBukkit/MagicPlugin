@@ -13,7 +13,7 @@ railgun:
         - class: CustomProjectile
           actions:
           - class: Damage
-          - class: ModifyBlock
+          - class: BreakBlock
             ignore_result: true
     effects:
         cast:
@@ -100,6 +100,8 @@ railgun:
       damage_multiplier: 2
     parameters:
         destructible: destructible,destructible2,destructible3,transparent
+        destructible_durability: 10000
+        break_durability: 1000
         allow_max_range: true
         velocity: 1000
         range: 80
@@ -113,7 +115,6 @@ railgun:
         cooldown: 10000
         reorient: false
         undo: 5000
-        brush: air
         transparent: air,water,stationary_water
     costs:
         mana: 150
