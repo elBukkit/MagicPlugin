@@ -4,10 +4,12 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.block.Block;
@@ -23,7 +25,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     protected @Nullable String          worldName;
 
     protected final Deque<BlockData>    blockList = new ArrayDeque<>();
-    protected final HashSet<Long>       blockIdMap = new HashSet<>();
+    protected final Map<Long, BlockData> blockIdMap = new HashMap<>();
 
     public BlockList()
     {
@@ -60,10 +62,17 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         }
 
         synchronized (blockList) {
-            blockIdMap.add(blockData.getId());
+            blockIdMap.put(blockData.getId(), blockData);
             blockList.addLast(blockData);
         }
         return true;
+    }
+
+    @Nonnull
+    protected BlockData get(Block block) {
+        long id = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
+        add(block);
+        return blockIdMap.get(id);
     }
 
     public boolean contain(BlockData blockData)
@@ -123,7 +132,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     {
         boolean contains;
         synchronized (blockList) {
-            contains = blockIdMap.contains(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+            contains = blockIdMap.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
         }
         return contains;
     }
@@ -132,7 +141,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     {
         boolean contains;
         synchronized (blockList) {
-            contains = blockIdMap.contains(blockData.getId());
+            contains = blockIdMap.containsKey(blockData.getId());
         }
         return contains;
     }
@@ -149,7 +158,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         // Fall back to map
         boolean contains;
         synchronized (blockList) {
-            contains = blockIdMap.contains(arg0);
+            contains = blockIdMap.containsKey(arg0);
         }
         return contains;
     }
@@ -159,7 +168,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     {
         boolean contains;
         synchronized (blockList) {
-            contains = blockIdMap.containsAll(arg0);
+            contains = blockIdMap.keySet().containsAll(arg0);
         }
         return contains;
     }

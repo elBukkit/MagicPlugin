@@ -48,6 +48,8 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     // Used for UndoList lookups
     protected WeakReference<UndoList> undoList = null;
 
+    protected double damage;
+
     public static long getBlockId(Block block) {
         return getBlockId(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
     }
@@ -354,5 +356,15 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         }
 
         return false;
+    }
+
+    @Override
+    public double getDamage() {
+        return damage;
+    }
+
+    @Override
+    public void addDamage(double damage) {
+        this.damage += damage;
     }
 }

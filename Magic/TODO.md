@@ -1,6 +1,11 @@
 # TODO
 
 ## Hot Issues
+
+ - Prevent wands having vanilla enchantments
+ - Some clean way to make magic bow arrow spells useable on a wand?
+   Mainly to avoid people always reporting them as bugs :\
+ - Issues with wand/bows migrating to new version (waiting on details)
  
  - (PS - /ps allowall lags?)
 

@@ -7,6 +7,7 @@
  - Engineering magic will now ignore allowed-spells: *, so no permanent changes can be made in regions that allow
    spells to change blocks. (This is changeable via "override" in spells.yml if you want)
  - Fix the Drop action not being undoable
+ - Partial block damage (cracks) now undo in a more consistent way
 
 # 7.6.11
 

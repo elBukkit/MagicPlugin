@@ -48,4 +48,6 @@ public interface BlockData extends MaterialAndData {
     @Deprecated
     boolean containsAny(Set<Material> materials);
     boolean containsAny(MaterialSet materials);
+    double getDamage();
+    void addDamage(double damage);
 }

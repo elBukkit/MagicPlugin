@@ -117,6 +117,28 @@ public class UndoRegistry {
         reflective.remove(block.getId());
     }
 
+    /**
+     * Subtract some amount of damage
+     * @param block The block to remove damage from.
+     * @return The amount of damage remaining, or null if no damage was removed.
+     */
+    @Nullable
+    public Double removeDamage(BlockData block) {
+        double amount = block.getDamage();
+        if (amount <= 0) return null;
+        Double currentAmount = breaking.get(block.getId());
+        if (currentAmount == null) return null;
+        currentAmount -= amount;
+        if (currentAmount <= 0) {
+            removeBreaking(block);
+            return 0.0;
+        } else {
+            breaking.put(block.getId(), currentAmount);
+        }
+        return currentAmount;
+
+    }
+
     public Double removeBreaking(BlockData block) {
         return breaking.remove(block.getId());
     }

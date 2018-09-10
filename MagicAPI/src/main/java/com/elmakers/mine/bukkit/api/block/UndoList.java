@@ -49,7 +49,6 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     void setUndoBreakable(boolean breakable);
     void setUndoReflective(boolean reflective);
-    void setUndoBreaking(boolean breaking);
 
     void prune();
 
@@ -105,4 +104,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     EntityData getEntityData(Entity entity);
     boolean isUndoType(EntityType entityType);
     boolean affectsWorld(@Nonnull World world);
+    void addDamage(Block block, double damage);
+    @Deprecated
+    void setUndoBreaking(boolean breaking);
 }

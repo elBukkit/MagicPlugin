@@ -1229,7 +1229,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public double registerBreaking(Block block, double addAmount) {
         double breakAmount = com.elmakers.mine.bukkit.block.UndoList.getRegistry().registerBreaking(block, addAmount);
-        undoList.setUndoBreaking(true);
+        undoList.addDamage(block, addAmount);
         return breakAmount;
     }
 

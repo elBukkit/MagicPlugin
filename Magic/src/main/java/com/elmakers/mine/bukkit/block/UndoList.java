@@ -106,7 +106,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     private Set<EntityType>         undoEntityTypes = null;
     protected boolean               undoBreakable = false;
     protected boolean               undoReflective = false;
-    protected boolean               undoBreaking = false;
     protected boolean               sorted = true;
     protected boolean               unbreakable = false;
 
@@ -206,7 +205,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
 
         // Don't clear it if we've already modified it
-        if (blockIdMap != null && blockIdMap.contains(blockId))
+        if (blockIdMap != null && blockIdMap.containsKey(blockId))
         {
             return false;
         }
@@ -283,7 +282,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
 
         // This gets called recursively, so don't re-process anything
-        if (blockIdMap != null && blockIdMap.contains(blockId))
+        if (blockIdMap != null && blockIdMap.containsKey(blockId))
         {
             return false;
         }
@@ -443,17 +442,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             registry.removeReflective(undoBlock);
         }
 
-        boolean isTopOfQueue = undoBlock.getNextState() == null;
         if (undoBlock.undo(applyPhysics ? ModifyType.NORMAL : modifyType)) {
             removeFromModified(undoBlock, priorState);
             // Continue watching this block until we completely finish the undo process
             registerWatched(undoBlock);
 
-            // Undo breaking state only if this was the top of the queue
-            if (undoBreaking && isTopOfQueue) {
-                // This may have been unregistered already, if the block was broken for instance.
-                if (registry.removeBreaking(undoBlock) != null) {
+            Double remainingDamage = registry.removeDamage(undoBlock);
+            if (remainingDamage != null) {
+                if (remainingDamage <= 0) {
                     CompatibilityUtils.clearBreaking(undoBlock.getBlock());
+                } else {
+                    CompatibilityUtils.setBreaking(undoBlock.getBlock(), remainingDamage);
                 }
             }
             return true;
@@ -1042,8 +1041,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    @Deprecated
     public void setUndoBreaking(boolean breaking) {
-        this.undoBreaking = breaking;
+    }
+
+    @Override
+    public void addDamage(Block block, double damage) {
+        BlockData blockData = get(block);
+        blockData.addDamage(damage);
     }
 
     @Override
