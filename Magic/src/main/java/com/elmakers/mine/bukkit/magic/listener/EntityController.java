@@ -61,7 +61,6 @@ public class EntityController implements Listener {
     private boolean    preventWandMeleeDamage = true;
     private int ageDroppedItems    = 0;
     private Map<EntityType, Double> entityDamageReduction;
-    private boolean launching = false;
 
     public void loadProperties(ConfigurationSection properties) {
         preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
@@ -474,7 +473,7 @@ public class EntityController implements Listener {
 
     @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        if (launching || event.isCancelled()) return;
+        if (event.isCancelled()) return;
 
         Projectile projectile = event.getEntity();
         ProjectileSource shooter = projectile.getShooter();
@@ -482,13 +481,12 @@ public class EntityController implements Listener {
             return;
         }
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage((Entity)shooter);
-        if (mage == null) return;
+        if (mage == null || mage.isLaunchingProjectile()) return;
 
         double pull = Math.min(1.0, projectile.getVelocity().length() / MAX_ARROW_SPEED);
         if (!(shooter instanceof Player)) {
             EntityData mobData = mage.getEntityData();
             if (mobData != null) {
-                launching = true;
                 try {
                     if (mobData.onLaunch(mage, pull)) {
                         event.setCancelled(true);
@@ -496,7 +494,6 @@ public class EntityController implements Listener {
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.SEVERE, "Error casting bow spell from mob " + mobData.getName(), ex);
                 }
-                launching = false;
             }
             return;
         }
@@ -522,12 +519,10 @@ public class EntityController implements Listener {
         String[] parameters = {"bowpull", Double.toString(pull)};
 
         // prevent recursion!
-        launching = true;
         try {
             wand.cast(parameters);
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error casting bow spell", ex);
         }
-        launching = false;
     }
 }

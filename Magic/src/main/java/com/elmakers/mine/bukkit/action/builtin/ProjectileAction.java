@@ -120,6 +120,7 @@ public class ProjectileAction  extends BaseProjectileAction
         {
             source = shootingEntity;
         }
+        mage.setLaunchingProjectile(true);
         for (int i = 0; i < count; i++) {
             try {
                 // Spawn a new projectile
@@ -160,6 +161,7 @@ public class ProjectileAction  extends BaseProjectileAction
                 ex.printStackTrace();
             }
         }
+        mage.setLaunchingProjectile(false);
 
         return checkTracking(context);
     }

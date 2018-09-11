@@ -708,4 +708,14 @@ public interface Mage extends CostReducer, CooldownReducer {
      * Used on login to restore attributes.
      */
     void activateClasses();
+
+    /**
+     * Set this when launching vanilla projectiles, if you don't want the launch intercepted
+     * by the bow/wand handler.
+     *
+     * <p>Always make sure to unset it.
+     */
+    void setLaunchingProjectile(boolean launching);
+
+    boolean isLaunchingProjectile();
 }

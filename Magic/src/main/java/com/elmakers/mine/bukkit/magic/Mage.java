@@ -244,6 +244,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private String currentDamageType;
     private String lastDamageType;
 
+    private boolean launchingProjectile;
+
     public Mage(String id, MagicController controller) {
         this.id = id;
         this.controller = controller;
@@ -4051,6 +4053,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 mageClass.activateAttributes();
             }
         }
+    }
+
+    @Override
+    public void setLaunchingProjectile(boolean launching) {
+        // I thought of making this a reference counter, but decided that was too likely to go wrong
+        // if a caller misses the unset.
+        launchingProjectile = launching;
+    }
+
+    @Override
+    public boolean isLaunchingProjectile() {
+        return launchingProjectile;
     }
 }
 

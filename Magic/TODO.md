@@ -2,7 +2,7 @@
 
 ## Hot Issues
 
- - Prevent wands having vanilla enchantments
+ - Support time of day and phase of moon requirements (do some refactoring in AutomatonTemplate to share code)
  - Some clean way to make magic bow arrow spells useable on a wand?
    Mainly to avoid people always reporting them as bugs :\
  - Issues with wand/bows migrating to new version (waiting on details)
