@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -266,7 +267,7 @@ public class InventoryController implements Listener {
                     activeWand.cycleHotbar(1);
 
                     // There doesn't seem to be any other way to allow cycling in creative
-                    if (inventoryType == InventoryType.PLAYER) {
+                    if (player.getGameMode() == GameMode.CREATIVE) {
                         activeWand.cycleInventory();
                     }
                 }
