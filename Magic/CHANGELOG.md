@@ -10,6 +10,7 @@
  - Partial block damage (cracks) now undo in a more consistent way
  - Some fixes to mob counts shown in /mmob list
  - Improved magic bow behavior, now supports arrow spells with delays
+ - Bring back hack that switches to chest mode when in creative mode, optional and off by default: wand_creative_chest_switch
 
 # 7.6.11
 

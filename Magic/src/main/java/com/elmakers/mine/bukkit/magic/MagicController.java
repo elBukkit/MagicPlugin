@@ -2393,6 +2393,7 @@ public class MagicController implements MageController {
         soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
         fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
         Wand.FILL_CREATOR = properties.getBoolean("fill_wand_creator", Wand.FILL_CREATOR);
+        Wand.CREATIVE_CHEST_MODE = properties.getBoolean("wand_creative_chest_switch", Wand.CREATIVE_CHEST_MODE);
         maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
         welcomeWand = properties.getString("welcome_wand", "");
         maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);

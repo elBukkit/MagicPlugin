@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -88,6 +89,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static boolean FILL_CREATOR = false;
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0, 0, 0.5);
     public static String DEFAULT_WAND_TEMPLATE = "default";
+    public static boolean CREATIVE_CHEST_MODE = false;
 
     private static final String[] EMPTY_PARAMETERS = new String[0];
 
@@ -4386,7 +4388,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public WandMode getMode() {
-        return mode;
+        WandMode wandMode = mode;
+        Player player = mage == null ? null : mage.getPlayer();
+        if (wandMode == WandMode.INVENTORY && player != null && player.getGameMode() == GameMode.CREATIVE) {
+            wandMode = WandMode.CHEST;
+        }
+        return wandMode;
     }
 
     public WandMode getBrushMode() {

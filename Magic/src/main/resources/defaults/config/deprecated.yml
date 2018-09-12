@@ -16,6 +16,9 @@ activate_holotext_range: 0
 # This enables the item drag event interceptor
 enable_custom_item_hacks: false
 
+# Wands will switch to chest mode when the player is in creative mode
+wand_creative_chest_switch: false
+
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
 # wand_item_enchantable: wood_sword
 wand_item_enchantable:
