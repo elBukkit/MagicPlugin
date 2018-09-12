@@ -4390,7 +4390,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public WandMode getMode() {
         WandMode wandMode = mode;
         Player player = mage == null ? null : mage.getPlayer();
-        if (wandMode == WandMode.INVENTORY && player != null && player.getGameMode() == GameMode.CREATIVE) {
+        if (CREATIVE_CHEST_MODE && wandMode == WandMode.INVENTORY && player != null && player.getGameMode() == GameMode.CREATIVE) {
             wandMode = WandMode.CHEST;
         }
         return wandMode;
