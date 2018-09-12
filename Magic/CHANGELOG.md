@@ -8,6 +8,8 @@
    spells to change blocks. (This is changeable via "override" in spells.yml if you want)
  - Fix the Drop action not being undoable
  - Partial block damage (cracks) now undo in a more consistent way
+ - Some fixes to mob counts shown in /mmob list
+ - Improved magic bow behavior, now supports arrow spells with delays
 
 # 7.6.11
 

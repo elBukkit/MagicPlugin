@@ -3262,6 +3262,13 @@ public class MagicController implements MageController {
     @Override
     public void removeMage(String id) {
         mages.remove(id);
+        mageRemoved(id);
+    }
+
+    /**
+     * This is a little hacky, should be used when removing a mage via getMutableMages.
+     */
+    public void mageRemoved(String id) {
         mobMages.remove(id);
         vanished.remove(id);
     }
