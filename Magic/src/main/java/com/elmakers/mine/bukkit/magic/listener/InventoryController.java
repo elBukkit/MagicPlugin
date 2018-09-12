@@ -260,7 +260,7 @@ public class InventoryController implements Listener {
             if (clickedWand)
             {
                 event.setCancelled(true);
-                if (dropChangesPages || isRightClick) {
+                if ((dropChangesPages && isDrop) || isRightClick) {
                     activeWand.cycleInventory();
                 } else {
                     activeWand.cycleHotbar(1);
