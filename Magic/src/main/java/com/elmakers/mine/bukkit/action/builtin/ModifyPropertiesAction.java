@@ -138,17 +138,20 @@ public class ModifyPropertiesAction extends BaseSpellAction
                     if (originalValue == null) {
                         originalValue = defaultValue;
                     }
-                    transform.setVariable("x", (Double)originalValue);
+                    Double currentValue = (Double)originalValue;
+                    transform.setVariable("x", currentValue);
                     double transformedValue = transform.get();
-                    if (!Double.isNaN(transformedValue)) {
-                        if (property.max != null) {
-                            transformedValue = Math.min(transformedValue, property.max);
-                        }
-                        if (property.min != null) {
-                            transformedValue = Math.max(transformedValue, property.min);
-                        }
-                        newValue = transformedValue;
+                    if (Double.isNaN(transformedValue)) continue;
+
+                    if (property.max != null) {
+                        if (currentValue >= property.max && transformedValue >= property.max) continue;
+                        transformedValue = Math.min(transformedValue, property.max);
                     }
+                    if (property.min != null) {
+                        if (currentValue <= property.min && transformedValue <= property.min) continue;
+                        transformedValue = Math.max(transformedValue, property.min);
+                    }
+                    newValue = transformedValue;
                 }
             }
 
