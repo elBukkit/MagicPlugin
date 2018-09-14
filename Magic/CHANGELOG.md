@@ -12,6 +12,7 @@
  - Improved magic bow behavior, now supports arrow spells with delays
  - Bring back hack that switches to chest mode when in creative mode, optional and off by default: wand_creative_chest_switch
  - Fix certain issues switching a wand from chest to inventory mode
+ - Add ModifyLore action, for making changes to vanilla item lore
 
 # 7.6.11
 
