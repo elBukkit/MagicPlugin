@@ -86,6 +86,41 @@ wand:
       explosion: "&2Blast Weakness $roman"
       magic: "&2Magical Weakness $roman"
       unknown: "&2$type Weakness $roman"
+    enchantments:
+        ARROW_DAMAGE: "Arrow Damage"
+        ARROW_FIRE: "Arrow Fire"
+        ARROW_INFINITE: "Infinity"
+        ARROW_KNOCKBACK: "Arrow Knockback"
+        BINDING_CURSE: "Binding Curse"
+        CHANNELING: "Channeling"
+        DAMAGE_ALL: Sharpness
+        DAMAGE_ARTHROPODS: Damage Arthropods
+        DAMAGE_UNDEAD: Damage Undead
+        DEPTH_STRIDER: Depth Strider
+        DIG_SPEED: Dig Speed
+        DURABILITY: Durability
+        FIRE_ASPECT: Fire Aspect
+        FROST_WALKER: Frost Walker
+        IMPALING: Impaling
+        KNOCKBACK: Knockback
+        LOOT_BONUS_BLOCKS: Fortune
+        LOOT_BONUS_MOBS: Looting
+        LOYALTY: Loyalty
+        LUCK: Luck
+        LURE: Lure
+        MENDING: Mending
+        OXYGEN: Oxygen
+        PROTECTION_ENVIRONMENTAL: Environment Protection
+        PROTECTION_EXPLOSIONS: Blast Protection
+        PROTECTION_FALL: Fall Protection
+        PROTECTION_FIRE: Fire Protection
+        PROTECTION_PROJECTILE: Projectile Protection
+        RIPTIDE: Riptide
+        SILK_TOUCH: Silk Touch
+        SWEEPING_EDGE: Sweeping Edge
+        THORNS: Thorns
+        VANISHING_CURSE: Vanishing Curse
+        WATER_WORKER: Water Worker
     potion_effect: "&b$effect $roman"
     super_powered: "&3Superpowered"
     super_protected: "&3Invulnerability"
