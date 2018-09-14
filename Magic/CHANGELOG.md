@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.13
+
 # 7.6.12
 
  - Add ignore_region_overrides spell parameter, for making spells ignore worldguard flags that would allow them
