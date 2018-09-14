@@ -75,3 +75,15 @@ quaffleitem:
         HIDE_DESTROYS: null
         HIDE_ATTRIBUTES: null
         HIDE_POTION_EFFECTS: null
+
+testlore:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: IRON_SWORD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Lore Sword
+      lore:
+      - "Something random"
+      - "§o§3+2 §4Damage"
