@@ -594,8 +594,8 @@ public class PlayerController implements Listener {
             {
                 spell.cast();
                 event.setCancelled(true);
-                return;
             }
+            return;
         }
 
         if (isLeftClick && !wand.isUpgrade() && wand.getLeftClickAction() != WandAction.NONE && cancelInteractOnLeftClick)
