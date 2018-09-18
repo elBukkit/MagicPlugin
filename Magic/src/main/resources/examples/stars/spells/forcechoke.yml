@@ -39,5 +39,7 @@ forcechoke:
       add_effects:
         levitation: 1
         wither: 2
+    costs:
+      mana: 100
 
 
