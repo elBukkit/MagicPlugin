@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - Look at lightsaber crafting, seems broken? Maybe only in 1.13? Starshop also always gives white stained glass...
+
  - Support time of day and phase of moon requirements (do some refactoring in AutomatonTemplate to share code)
  - Some clean way to make magic bow arrow spells useable on a wand?
    Mainly to avoid people always reporting them as bugs :\
@@ -34,12 +36,16 @@
   
 ## Recent Requests
  
+ - Selector support for scaling costs based on lore values
  - Add "deactivate" actions for toggle spells
  - Add damage lore to spells   
  - Allow use of equations in book action, somehow.
  - Custom spell lore showing arbitrary parameters (or something)
 
 ## Future
+  
+ - Ability to earn SP (Or whatever) from various actions, sword use, bow use, mining, etc.
+   Generalized XP system?
   
  - Take a look at this, maybe use accurate block hitboxes?
    https://bitbucket.org/BillyGalbreath/pl3xsigns/src/c4ce6a50592aca67be0aef26117cc8b7e069c3eb/src/main/java/net/pl3x/bukkit/pl3xsigns/lineofsight/BoundingBox.java?at=master&fileviewer=file-view-default

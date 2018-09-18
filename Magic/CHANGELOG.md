@@ -2,6 +2,8 @@
 
 # 7.6.13
 
+ - Add "permission" parameter to Recall options, to allow locking warps/commands with permissions
+
 # 7.6.12
 
  - Add ignore_region_overrides spell parameter, for making spells ignore worldguard flags that would allow them

@@ -453,7 +453,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     {
                         ConfigurationSection config = warpConfig.getConfigurationSection(warpKey);
                         boolean isLocked = config.getBoolean("locked", false);
-                        if (!isLocked || unlockedWarps.contains(warpKey))
+                        isLocked = isLocked && !unlockedWarps.contains(warpKey);
+                        String permission = config.getString("permission");
+                        boolean hasPermission = permission == null || player.hasPermission(permission);
+                        if (!isLocked && hasPermission)
                         {
                             warps.put(warpKey, config);
                         }
@@ -470,7 +473,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     {
                         ConfigurationSection config = commandConfig.getConfigurationSection(commandKey);
                         boolean isLocked = config.getBoolean("locked", false);
-                        if (!isLocked || unlockedWarps.contains(commandKey))
+                        isLocked = isLocked && !unlockedWarps.contains(commandKey);
+                        String permission = config.getString("permission");
+                        boolean hasPermission = permission == null || player.hasPermission(permission);
+                        if (!isLocked && hasPermission)
                         {
                             commands.put(commandKey, config);
                         }
