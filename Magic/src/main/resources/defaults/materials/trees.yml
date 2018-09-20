@@ -1,8 +1,6 @@
 trees:
-- log
-- log_2
-- leaves_2
-- leaves
+- logs
+- all_leaves
 - vine
 - cocoa
 
