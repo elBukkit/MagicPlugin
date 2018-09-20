@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - Make negative strength values work
+
  - Look at lightsaber crafting, seems broken? Maybe only in 1.13? Starshop also always gives white stained glass...
 
  - Support time of day and phase of moon requirements (do some refactoring in AutomatonTemplate to share code)
@@ -36,6 +38,7 @@
   
 ## Recent Requests
  
+ - Special blocks that act as automata when placed, remove automata when used
  - Selector support for scaling costs based on lore values
  - Add "deactivate" actions for toggle spells
  - Add damage lore to spells   

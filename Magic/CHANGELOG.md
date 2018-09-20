@@ -3,6 +3,7 @@
 # 7.6.13
 
  - Add "permission" parameter to Recall options, to allow locking warps/commands with permissions
+ - Add "rotation" and "orient" parameters to image effects
 
 # 7.6.12
 
