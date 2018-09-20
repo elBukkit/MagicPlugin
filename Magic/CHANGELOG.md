@@ -5,6 +5,7 @@
  - Add "permission" parameter to Recall options, to allow locking warps/commands with permissions
  - Add "rotation" and "orient" parameters to image effects
  - Fix Chop spell in 1.13
+ - Fix engineering spells (maybe only broken in 1.13 ... ?)
 
 # 7.6.12
 
