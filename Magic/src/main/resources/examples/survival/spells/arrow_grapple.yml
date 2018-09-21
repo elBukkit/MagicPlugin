@@ -1,0 +1,61 @@
+arrow_grapple:
+    icon: diamond_axe:57
+    icon_disabled: diamond_hoe:57
+    category: combat
+    worth: 300
+    toggle: cancel
+    earns_sp: 2
+    actions:
+        cast:
+        - class: Projectile
+          speed: "bowpull * 3"
+          actions:
+          - class: ChangeContext
+            target_caster: true
+            actions:
+            - class: Asynchronous
+              actions:
+              - class: FallProtection
+                duration: 550000
+            - class: Repeat
+              actions:
+              - class: Velocity
+              - class: Sphere
+                radius: 2
+                actions:
+                - class: CheckBlock
+                  allowed: -*
+                  actions:
+                  - class: ChangeContext
+                    target_caster: true
+                    actions:
+                    - class: Velocity
+                      max_speed: 1
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           sound_pitch: 0.2
+           sound_volume: 0.3
+           location: origin
+        projectile:
+        - effectlib:
+             class: Line
+             duration: 45000
+             period: 2
+             particles: 100
+             particle: crit
+    parameters:
+      target: none
+      projectile: TippedArrow
+      spread: "1 - bowpull"
+      damage: "2 * bowpull"
+      tick_increase: 0
+      push: -2
+      max_speed: 0.75
+      repeat: infinite
+      duration: 45000
+      total_duration: 45000
+      projectile_effects_use_target: true
+    costs:
+      mana: 25
