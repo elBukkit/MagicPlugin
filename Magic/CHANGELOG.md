@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.14
+
 # 7.6.13
 
  - Add "permission" parameter to Recall options, to allow locking warps/commands with permissions
