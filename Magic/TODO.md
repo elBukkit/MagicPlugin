@@ -2,7 +2,7 @@
 
 ## Hot Issues
 
- - Make negative strength values work
+ - Using alter on stained glass pane makes it go funky in 1.13
 
  - Look at lightsaber crafting, seems broken? Maybe only in 1.13? Starshop also always gives white stained glass...
 

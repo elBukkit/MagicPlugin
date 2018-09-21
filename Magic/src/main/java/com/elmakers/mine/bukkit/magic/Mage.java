@@ -2473,28 +2473,29 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             multiplier = 1 + (maxPowerMultiplier * getPower());
         }
         Double overallMultiplier = strength.get("overall");
-        if (overallMultiplier != null && overallMultiplier > 0) {
+        if (overallMultiplier != null && overallMultiplier != 0) {
             double attackMultiplier = controller.getMaxAttackMultiplier("overall");
             if (attackMultiplier > 1) {
                 attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
                 multiplier = (float)(multiplier * attackMultiplier);
             }
         }
-        return multiplier;
+        return Math.max(0, multiplier);
     }
 
     @Override
     public double getDamageMultiplier(String damageType) {
-        double multiplier = getDamageMultiplier();
-        Double overallMultiplier = damageType == null || damageType.isEmpty() ? null : strength.get(damageType);
-        if (overallMultiplier != null && overallMultiplier > 0) {
-            double attackMultiplier = controller.getMaxAttackMultiplier("overall");
+        double overallMultiplier = getDamageMultiplier();
+        Double typeMultiplier = damageType == null || damageType.isEmpty() ? null : strength.get(damageType);
+
+        if (typeMultiplier != null && typeMultiplier > 0) {
+            double attackMultiplier = controller.getMaxAttackMultiplier(damageType);
             if (attackMultiplier > 1) {
                 attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
-                multiplier *= attackMultiplier;
+                overallMultiplier *= attackMultiplier;
             }
         }
-        return multiplier;
+        return Math.max(0, overallMultiplier);
     }
 
     @Override

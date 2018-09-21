@@ -7,6 +7,7 @@
  - Fix Chop spell in 1.13
  - Fix engineering spells (maybe only broken in 1.13 ... ?)
  - Add Grapple Arrow (WIP, not available yet- thanks to NeoFalcon)
+ - Allow negative values for strength/weakness/protection (if stack is set to true)
 
 # 7.6.12
 

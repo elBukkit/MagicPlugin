@@ -138,3 +138,24 @@ creeper:
   drops_require_player_killer: true
   drops:
   - sp:5
+
+nerflock:
+  type: zombie
+  item: warlock_wand
+  cast_requires_item: warlock_wand
+  name: Nerflock
+  health: 50
+  default_drops: false
+  mage:
+    stack: true
+    strength:
+      # Note that this is 10% of the overall max multiplier, which is 5x
+      # So really this will be a 50% damage reduction, or thereabouts.
+      overall: -0.1
+  interval: 1000
+  triggers:
+    interval:
+      cast:
+        missile: 20
+  drops:
+  - sp:10
