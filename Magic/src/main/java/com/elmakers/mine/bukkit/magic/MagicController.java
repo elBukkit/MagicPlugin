@@ -375,13 +375,13 @@ public class MagicController implements MageController {
                         @Override
                         public void run() {
                             synchronized (saveLock) {
-                                info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ")");
+                                info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
                                 try {
                                     mageDataStore.load(mage.getId(), new MageDataCallback() {
                                         @Override
                                         public void run(MageData data) {
                                         mage.load(data);
-                                        info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ")");
+                                        info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
                                         }
                                     });
                                 } catch (Exception ex) {
@@ -3291,13 +3291,14 @@ public class MagicController implements MageController {
             }
             return;
         }
-        info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + (asynchronous ? "" : " synchronously"));
+        asynchronous = asynchronous && asynchronousSaving;
+        info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + (asynchronous ? "" : " synchronously at " + System.currentTimeMillis()));
         final MageData mageData = new MageData(mage.getId());
         if (mageDataStore != null && mage.save(mageData)) {
             if (wandInventoryOpen) {
                 mageData.setOpenWand(true);
             }
-            if (asynchronous && asynchronousSaving) {
+            if (asynchronous) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                     @Override
                     public void run() {
