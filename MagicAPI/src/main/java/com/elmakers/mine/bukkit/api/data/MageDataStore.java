@@ -23,7 +23,15 @@ public interface MageDataStore {
      *
      * <p>If the provided callback is non-null, it should be called on completion.
      */
+    @Deprecated
     void save(MageData mage, MageDataCallback callback);
+
+    /**
+     * Save a single Mage.
+     *
+     * <p>If the provided callback is non-null, it should be called on completion.
+     */
+    void save(MageData mage, MageDataCallback callback, boolean releaseLock);
 
     /**
      * Save several Mages in a batch.

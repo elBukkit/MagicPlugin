@@ -60,6 +60,13 @@ public interface MageController {
     Logger getLogger();
 
     /**
+     * Log a message, but only if debug messages are enabled
+     *
+     * @param debug The message to log
+     */
+    void info(String debug);
+
+    /**
      * Retrieve the Plugin that owns this controller.
      *
      * <p>This will generally be the MagicPlugin, but.. maybe not always?
@@ -562,4 +569,6 @@ public interface MageController {
     void logBlockChange(@Nonnull Mage mage, @Nonnull BlockState priorState, @Nonnull BlockState newState);
 
     boolean inTaggedRegion(Location location, Set<String> tags);
+
+    boolean isFileLockingEnabled();
 }

@@ -169,7 +169,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
     @Override
     public void save(Collection<MageData> mages) {
         for (MageData data : mages) {
-            save(data, (MageDataCallback)null);
+            save(data, (MageDataCallback)null, false);
         }
     }
 

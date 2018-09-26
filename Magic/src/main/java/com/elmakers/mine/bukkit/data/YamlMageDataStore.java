@@ -1,9 +1,16 @@
 package com.elmakers.mine.bukkit.data;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +23,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 public class YamlMageDataStore extends ConfigurationMageDataStore {
     private File playerDataFolder;
     private File migratedDataFolder;
+    private Map<String, FileLock> locks = new HashMap<>();
 
     @Override
     public void initialize(MageController controller, ConfigurationSection configuration) {
@@ -30,17 +38,50 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
 
     @Override
     public void save(MageData mage, MageDataCallback callback) {
+        save(mage, callback, false);
+    }
+
+    @Override
+    public void save(MageData mage, MageDataCallback callback, boolean releaseLock) {
         File playerData = new File(playerDataFolder, mage.getId() + ".dat");
         YamlDataFile saveFile = new YamlDataFile(controller.getLogger(), playerData);
         save(mage, saveFile);
         saveFile.save();
+        FileLock lock = locks.remove(mage.getId());
+        if (releaseLock && lock != null) {
+            try {
+                lock.release();
+                controller.info("Released file lock for " + mage.getId() + " at " + System.currentTimeMillis());
+            } catch (IOException ex) {
+                controller.getLogger().log(Level.WARNING, "Unable to release file lock for " + mage.getId(), ex);
+            }
+        }
+
         if (callback != null) {
             callback.run(mage);
         }
     }
 
+    protected void obtainLock(String id) {
+        if (controller.isFileLockingEnabled() && !locks.containsKey(id)) {
+            try {
+                final File lockFile = new File(playerDataFolder, id + ".lock");
+                RandomAccessFile file = new RandomAccessFile(lockFile, "rw");
+                FileChannel channel = file.getChannel();
+                controller.info("Obtaining lock for " + lockFile.getName() + " at " + System.currentTimeMillis());
+                FileLock lock = channel.lock();
+                controller.info("  Obtained lock for " + lockFile.getName() + " at " + System.currentTimeMillis());
+                locks.put(id, lock);
+            } catch (IOException ex) {
+                controller.getLogger().log(Level.WARNING, "Unable to obtain file lock for " + id, ex);
+            }
+        }
+    }
+
     @Override
     public void load(String id, MageDataCallback callback) {
+        obtainLock(id);
+
         final File playerFile = new File(playerDataFolder, id + ".dat");
         if (!playerFile.exists()) {
             callback.run(null);

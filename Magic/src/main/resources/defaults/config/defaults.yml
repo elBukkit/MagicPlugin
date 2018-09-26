@@ -590,3 +590,10 @@ restricted_spell_actions: []
 
 # Set this to false to not drop any blocks if breaking a block that was magically modified
 drop_original_block: true
+
+# If using a local Bungee setup with symlinked player data folders, setting this to true
+# will ensure that data is finished saving on one server before being loaded on the next.
+use_file_locking: false
+# You *may* also need to save data synchronously to ensure it is written out before releasing the file lock
+# This is probably not necessary, but if you're still having issues try turning this to false
+save_player_data_asynchronously: true

@@ -438,6 +438,7 @@ public class MagicController implements MageController {
         return apiMage;
     }
 
+    @Override
     public void info(String message)
     {
         info(message, 1);
@@ -2126,7 +2127,7 @@ public class MagicController implements MageController {
                     public void run() {
                         synchronized (saveLock) {
                             for (MageData mageData : saveMages) {
-                                mageDataStore.save(mageData, null);
+                                mageDataStore.save(mageData, null, false);
                             }
                             for (YamlDataFile config : saveData) {
                                 config.save();
@@ -2138,7 +2139,7 @@ public class MagicController implements MageController {
             } else {
                 synchronized (saveLock) {
                     for (MageData mageData : saveMages) {
-                        mageDataStore.save(mageData, null);
+                        mageDataStore.save(mageData, null, false);
                     }
                     for (YamlDataFile config : saveData) {
                         config.save();
@@ -2696,6 +2697,7 @@ public class MagicController implements MageController {
             getLogger().info("Magic player data saving is disabled");
         }
         asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
+        isFileLockingEnabled = properties.getBoolean("use_file_locking", false);
 
         ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
         if (mageDataStore != null) {
@@ -3229,7 +3231,7 @@ public class MagicController implements MageController {
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
             // Save synchronously on shutdown
-            saveMage(mage, initialized, callback, isOpen);
+            saveMage(mage, initialized, callback, isOpen, true);
         }
         else if (callback != null)
         {
@@ -3280,10 +3282,10 @@ public class MagicController implements MageController {
     }
 
     public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback) {
-        saveMage(mage, asynchronous, null, false);
+        saveMage(mage, asynchronous, null, false, false);
     }
 
-    public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback, boolean wandInventoryOpen)
+    public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback, boolean wandInventoryOpen, boolean releaseLock)
     {
         if (!savePlayerData) {
             if (callback != null) {
@@ -3292,7 +3294,7 @@ public class MagicController implements MageController {
             return;
         }
         asynchronous = asynchronous && asynchronousSaving;
-        info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + (asynchronous ? "" : " synchronously at " + System.currentTimeMillis()));
+        info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + ((asynchronous ? "" : " synchronously ") + "at " + System.currentTimeMillis()));
         final MageData mageData = new MageData(mage.getId());
         if (mageDataStore != null && mage.save(mageData)) {
             if (wandInventoryOpen) {
@@ -3304,7 +3306,7 @@ public class MagicController implements MageController {
                     public void run() {
                         synchronized (saveLock) {
                             try {
-                                mageDataStore.save(mageData, callback);
+                                mageDataStore.save(mageData, callback, releaseLock);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
@@ -3314,7 +3316,7 @@ public class MagicController implements MageController {
             } else {
                 synchronized (saveLock) {
                     try {
-                        mageDataStore.save(mageData, callback);
+                        mageDataStore.save(mageData, callback, releaseLock);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -5811,6 +5813,11 @@ public class MagicController implements MageController {
         }
     }
 
+    @Override
+    public boolean isFileLockingEnabled() {
+        return isFileLockingEnabled;
+    }
+
     /**
      * @return The supplier set that is used.
      */
@@ -5999,6 +6006,7 @@ public class MagicController implements MageController {
     private boolean                             skillsUsePermissions        = false;
     private String                              heroesSkillPrefix           = "";
     private String                              skillsSpell                 = "";
+    private boolean                             isFileLockingEnabled        = false;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();

@@ -2,6 +2,8 @@
 
 # 7.6.14
 
+ - Add some new config options to help synchronize Bungee servers that are using a linked filesystem to share Magic player data
+
 # 7.6.13
 
  - Add "permission" parameter to Recall options, to allow locking warps/commands with permissions
