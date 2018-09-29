@@ -35,6 +35,7 @@ public class ModifyLoreAction extends BaseSpellAction
     private static class ModifyLoreLine {
         public Pattern pattern;
         public Object value;
+        public boolean numeric;
         public Double min;
         public Double max;
         public String defaultValue;
@@ -53,6 +54,7 @@ public class ModifyLoreAction extends BaseSpellAction
                 min = configuration.getDouble("min");
             if (configuration.contains("max"))
                 max = configuration.getDouble("max");
+            numeric = configuration.getBoolean("numeric", true);
         }
 
         @Nullable
@@ -68,7 +70,8 @@ public class ModifyLoreAction extends BaseSpellAction
         public String replace(String line, String value) {
             Matcher matcher = pattern.matcher(line);
             matcher.find();
-            return new StringBuilder(line).replace(matcher.start(1), matcher.end(1), value).toString();        }
+            return new StringBuilder(line).replace(matcher.start(1), matcher.end(1), value).toString();
+        }
     }
 
     private List<ModifyLoreLine> modify;
@@ -122,31 +125,35 @@ public class ModifyLoreAction extends BaseSpellAction
                 String originalValue = property.match(line);
                 if (originalValue != null) {
                     if (property.value == null) continue;
-                    double value = 0;
+                    String value = "";
                     if (property.value instanceof String) {
-                        EquationTransform transform = EquationStore.getInstance().getTransform((String)property.value);
-                        double currentValue = NumberConversions.toDouble(originalValue);
-                        if (transform.isValid()) {
-                            transform.setVariable("x", currentValue);
-                            double transformedValue = transform.get();
-                            if (Double.isNaN(transformedValue)) continue;
+                        if (property.numeric) {
+                            EquationTransform transform = EquationStore.getInstance().getTransform((String)property.value);
+                            double currentValue = NumberConversions.toDouble(originalValue);
+                            if (transform.isValid()) {
+                                transform.setVariable("x", currentValue);
+                                double transformedValue = transform.get();
+                                if (Double.isNaN(transformedValue)) continue;
 
-                            if (property.max != null) {
-                                if (currentValue >= property.max && transformedValue >= property.max) continue;
-                                transformedValue = Math.min(transformedValue, property.max);
+                                if (property.max != null) {
+                                    if (currentValue >= property.max && transformedValue >= property.max) continue;
+                                    transformedValue = Math.min(transformedValue, property.max);
+                                }
+                                if (property.min != null) {
+                                    if (currentValue <= property.min && transformedValue <= property.min) continue;
+                                    transformedValue = Math.max(transformedValue, property.min);
+                                }
+                                value = TextUtils.printNumber(transformedValue, digits);
                             }
-                            if (property.min != null) {
-                                if (currentValue <= property.min && transformedValue <= property.min) continue;
-                                transformedValue = Math.max(transformedValue, property.min);
-                            }
-                            value = transformedValue;
+                        } else {
+                            value = (String)property.value;
                         }
                     } else if (property.value instanceof Number) {
-                        value = NumberConversions.toDouble(originalValue);
+                        value = TextUtils.printNumber(NumberConversions.toDouble(originalValue), digits);
                     }
 
                     modified++;
-                    lore.set(i, property.replace(line, TextUtils.printNumber(value, digits)));
+                    lore.set(i, property.replace(line, value));
                     break;
                 }
             }
