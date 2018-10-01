@@ -23,7 +23,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 public class YamlMageDataStore extends ConfigurationMageDataStore {
     private File playerDataFolder;
     private File migratedDataFolder;
-    private Map<String, FileLock> locks = new HashMap<>();
+    private final Map<String, FileLock> locks = new HashMap<>();
 
     @Override
     public void initialize(MageController controller, ConfigurationSection configuration) {
@@ -63,17 +63,20 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
     }
 
     protected void obtainLock(String id) {
-        if (controller.isFileLockingEnabled() && !locks.containsKey(id)) {
-            try {
-                final File lockFile = new File(playerDataFolder, id + ".lock");
-                RandomAccessFile file = new RandomAccessFile(lockFile, "rw");
-                FileChannel channel = file.getChannel();
-                controller.info("Obtaining lock for " + lockFile.getName() + " at " + System.currentTimeMillis());
-                FileLock lock = channel.lock();
-                controller.info("  Obtained lock for " + lockFile.getName() + " at " + System.currentTimeMillis());
-                locks.put(id, lock);
-            } catch (IOException ex) {
-                controller.getLogger().log(Level.WARNING, "Unable to obtain file lock for " + id, ex);
+        if (controller.isFileLockingEnabled()) {
+            synchronized (locks) {
+                if (locks.containsKey(id)) return;
+                try {
+                    final File lockFile = new File(playerDataFolder, id + ".lock");
+                    RandomAccessFile file = new RandomAccessFile(lockFile, "rw");
+                    FileChannel channel = file.getChannel();
+                    controller.info("Obtaining lock for " + lockFile.getName() + " at " + System.currentTimeMillis());
+                    FileLock lock = channel.lock();
+                    controller.info("  Obtained lock for " + lockFile.getName() + " at " + System.currentTimeMillis());
+                    locks.put(id, lock);
+                } catch (IOException ex) {
+                    controller.getLogger().log(Level.WARNING, "Unable to obtain file lock for " + id, ex);
+                }
             }
         }
     }

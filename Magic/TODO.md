@@ -2,8 +2,11 @@
 
 ## Hot Issues
 
+ - Freezing water changes it to a source block when undone... ?? https://forge.avatarmc.com/T1993
  - Using alter on stained glass pane makes it go funky in 1.13
 
+ - Broom crafting, wheat isn't needed in 1.13.1 - something weird definitely going on there, maybe just need to 
+   convert legacy ingredients before registering?
  - Look at lightsaber crafting, seems broken? Maybe only in 1.13? Starshop also always gives white stained glass...
 
  - Support time of day and phase of moon requirements (do some refactoring in AutomatonTemplate to share code)
