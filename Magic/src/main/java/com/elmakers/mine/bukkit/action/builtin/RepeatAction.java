@@ -36,6 +36,8 @@ public class RepeatAction extends CompoundAction
 
     @Override
     public SpellResult step(CastContext context) {
+        // special case for variable repeat counts
+        if (count == 0) return SpellResult.NO_ACTION;
         return startActions();
     }
 
