@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class AbsorbAction extends BaseSpellAction
@@ -32,7 +33,7 @@ public class AbsorbAction extends BaseSpellAction
 
         MaterialSet buildingMaterials = controller.getBuildingMaterialSet();
         MaterialSet restrictedMaterials = mage.getRestrictedMaterialSet();
-        if (material == null || material == Material.AIR)
+        if (material == null || DefaultMaterials.isAir(material))
         {
             return SpellResult.NO_TARGET;
         }

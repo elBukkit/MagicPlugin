@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -150,7 +151,7 @@ public class ModifyBlockAction extends BaseSpellAction {
             context.getController().logBlockChange(context.getMage(), prior, block.getState());
         }
 
-        boolean spawnFalling = spawnFallingBlocks && previousMaterial != Material.AIR;
+        boolean spawnFalling = spawnFallingBlocks && !DefaultMaterials.isAir(previousMaterial);
         if (spawnFalling && fallingProbability < 1) {
             spawnFalling = context.getRandom().nextDouble() < fallingProbability;
         }

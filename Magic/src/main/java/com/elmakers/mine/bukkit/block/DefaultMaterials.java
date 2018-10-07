@@ -30,6 +30,7 @@ public class DefaultMaterials {
     private MaterialSet banners = MaterialSets.empty();
     private MaterialSet signs = MaterialSets.empty();
     private MaterialSet saplings = MaterialSets.empty();
+    private MaterialSet air = MaterialSets.empty();
 
     private MaterialAndData playerSkullItem = null;
     private MaterialAndData playerSkullWallBlock = null;
@@ -65,6 +66,7 @@ public class DefaultMaterials {
         commandBlocks = manager.getMaterialSet("commands");
         water = manager.getMaterialSet("all_water");
         lava = manager.getMaterialSet("all_lava");
+        air = manager.getMaterialSet("all_air");
         halfBlocks = manager.getMaterialSet("half");
         skulls = manager.getMaterialSet("skulls");
         playerSkulls = manager.getMaterialSet("player_skulls");
@@ -363,5 +365,9 @@ public class DefaultMaterials {
 
     public void setRedstoneWallTorchOff(MaterialAndData redstoneWallTorchOff) {
         this.redstoneWallTorchOff = redstoneWallTorchOff;
+    }
+
+    public static boolean isAir(Material material) {
+        return getInstance().air.testMaterial(material);
     }
 }

@@ -9,6 +9,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -44,7 +45,7 @@ public class MoveBlockAction extends BaseSpellAction
         Vector moveBlock = offset.clone().normalize();
         while (distance * distance < distanceSquared) {
             moveToBlock = moveToBlock.getLocation().add(moveBlock).getBlock();
-            if (moveToBlock.getType() != Material.AIR) {
+            if (!DefaultMaterials.isAir(moveToBlock.getType())) {
                 return SpellResult.NO_TARGET;
             }
             distance++;

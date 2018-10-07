@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -33,7 +34,7 @@ public class BreakBlockAction extends ModifyBlockAction {
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
-        if (block.getType() == Material.AIR || !context.isDestructible(block)) {
+        if (DefaultMaterials.isAir(block.getType()) || !context.isDestructible(block)) {
             return SpellResult.NO_TARGET;
         }
         context.registerForUndo(block);

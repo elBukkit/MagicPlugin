@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -11,6 +10,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class ModifyBreakable extends BaseSpellAction {
@@ -30,7 +30,7 @@ public class ModifyBreakable extends BaseSpellAction {
         if (breakable <= 0) {
             return SpellResult.FAIL;
         }
-        if (!targetAir && block.getType() == Material.AIR) {
+        if (!targetAir && DefaultMaterials.isAir(block.getType())) {
             return SpellResult.NO_TARGET;
         }
         if (!context.hasBreakPermission(block)) {

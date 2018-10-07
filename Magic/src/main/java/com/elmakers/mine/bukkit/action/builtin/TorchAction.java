@@ -64,7 +64,7 @@ public class TorchAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        boolean isAir = face.getType() == Material.AIR;
+        boolean isAir = DefaultMaterials.isAir(face.getType());
         boolean replaceAttachment = target.getType() == Material.SNOW || target.getType() == Material.SNOW_BLOCK;
         boolean isWater = DefaultMaterials.isWater(face.getType());
         boolean isNether = target.getType() == Material.NETHERRACK || target.getType() == Material.SOUL_SAND;

@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,6 +19,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
@@ -88,7 +88,7 @@ public class VelocityAction extends BaseSpellAction
         {
             int height = 0;
             Block playerBlock = context.getLocation().getBlock();
-            while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
+            while (height < maxSpeedAtElevation && DefaultMaterials.isAir(playerBlock.getType()))
             {
                 playerBlock = playerBlock.getRelative(BlockFace.DOWN);
                 height++;

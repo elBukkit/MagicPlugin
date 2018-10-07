@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class FlowerAction extends BaseSpellAction {
@@ -64,7 +65,7 @@ public class FlowerAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
         block = block.getRelative(BlockFace.UP);
-        if (block.getType() != Material.AIR) {
+        if (!DefaultMaterials.isAir(block.getType())) {
             return SpellResult.NO_TARGET;
         }
 

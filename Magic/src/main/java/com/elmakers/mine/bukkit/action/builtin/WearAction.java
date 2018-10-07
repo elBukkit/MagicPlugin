@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -189,7 +190,7 @@ public class WearAction extends BaseSpellAction
                 }
             }
 
-            if (material == null || material.getMaterial() == Material.AIR) {
+            if (material == null || DefaultMaterials.isAir(material.getMaterial())) {
                 return SpellResult.NO_TARGET;
             }
 

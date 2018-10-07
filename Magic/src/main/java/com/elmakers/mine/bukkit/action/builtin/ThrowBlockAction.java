@@ -17,6 +17,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -62,7 +63,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         MaterialBrush buildWith = context.getBrush();
         buildWith.setTarget(location);
 
-        if (buildWith.isErase() || buildWith.getMaterial() == Material.AIR) {
+        if (buildWith.isErase() || DefaultMaterials.isAir(buildWith.getMaterial())) {
             return SpellResult.NO_TARGET;
         }
 
