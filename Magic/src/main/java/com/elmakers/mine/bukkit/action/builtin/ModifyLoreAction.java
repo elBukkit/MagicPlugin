@@ -146,7 +146,7 @@ public class ModifyLoreAction extends BaseSpellAction
                                 value = TextUtils.printNumber(transformedValue, digits);
                             }
                         } else {
-                            value = (String)property.value;
+                            value = ChatColor.translateAlternateColorCodes('&', (String)property.value);
                         }
                     } else if (property.value instanceof Number) {
                         value = TextUtils.printNumber(NumberConversions.toDouble(originalValue), digits);
