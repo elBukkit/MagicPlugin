@@ -4,6 +4,8 @@
 
  - Add some new config options to help synchronize Bungee servers that are using a linked filesystem to share Magic player data
  - Add "numeric" option to ModifyLore action
+ - Fix some spells, like Torch, not working in natural caves in 1.13
+ - Fix the appearance shop and other wand customizations
  
 # 7.6.13
 

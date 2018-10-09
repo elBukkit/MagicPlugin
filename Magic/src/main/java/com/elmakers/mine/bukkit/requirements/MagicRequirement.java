@@ -416,20 +416,12 @@ public  class MagicRequirement {
     }
 
     protected boolean hasTags(Wand wand) {
-        List<String> tags = ConfigurationUtils.getStringList(wand.getProperty("tags"));
-        if (tags == null) {
-            return false;
-        }
-        boolean found = false;
-        for (String tag : tags) {
-            for (String checkTag : wandTags) {
-                if (tag.equalsIgnoreCase(checkTag)) {
-                    found = true;
-                    break;
-                }
+        for (String checkTag : wandTags) {
+            if (wand.hasTag(checkTag)) {
+                return true;
             }
-            if (found) break;
         }
-        return found;
+
+        return false;
     }
 }
