@@ -4620,6 +4620,7 @@ public class MagicController implements MageController {
                     }
                     itemStack.setItemMeta(meta);
                     itemStack = CompatibilityUtils.makeReal(itemStack);
+                    InventoryUtils.makeUnbreakable(itemStack);
                     Object currencyNode = InventoryUtils.createNode(itemStack, "currency");
                     InventoryUtils.setMetaInt(currencyNode, "amount", intAmount);
                     InventoryUtils.setMeta(currencyNode, "type", costKey);

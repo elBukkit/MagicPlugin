@@ -2,6 +2,8 @@
 
 # 7.6.15
 
+ - Currency items are now unbreakable so custom item icons can be used
+
 # 7.6.14
 
  - Add some new config options to help synchronize Bungee servers that are using a linked filesystem to share Magic player data
