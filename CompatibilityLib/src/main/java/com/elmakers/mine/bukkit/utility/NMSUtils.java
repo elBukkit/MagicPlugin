@@ -471,12 +471,6 @@ public class NMSUtils {
             class_ItemStack_tagField.setAccessible(true);
             class_EntityTNTPrimed_source = class_EntityTNTPrimed.getDeclaredField("source");
             class_EntityTNTPrimed_source.setAccessible(true);
-            class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("a");
-            class_AxisAlignedBB_minYField = class_AxisAlignedBB.getField("b");
-            class_AxisAlignedBB_minZField = class_AxisAlignedBB.getField("c");
-            class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("d");
-            class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("e");
-            class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("f");
             class_EntityPlayer_playerConnectionField = class_EntityPlayer.getDeclaredField("playerConnection");
 
             class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
@@ -594,6 +588,28 @@ public class NMSUtils {
                 class_UnsafeValues_fromLegacyMethod = null;
                 class_UnsafeValues_fromLegacyDataMethod = null;
                 class_Material_isLegacyMethod = null;
+            }
+
+            // Changed in 1.13.2
+            try {
+                class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("a");
+                class_AxisAlignedBB_minYField = class_AxisAlignedBB.getField("b");
+                class_AxisAlignedBB_minZField = class_AxisAlignedBB.getField("c");
+                class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("d");
+                class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("e");
+                class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("f");
+            } catch (Throwable ignore) {
+                try {
+                    class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("minX");
+                    class_AxisAlignedBB_minYField = class_AxisAlignedBB.getField("minY");
+                    class_AxisAlignedBB_minZField = class_AxisAlignedBB.getField("minZ");
+                    class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("maxX");
+                    class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("maxY");
+                    class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("maxZ");
+                } catch (Throwable ex) {
+                     Bukkit.getLogger().warning("Could not bind to AABB methods, vanilla hitboxes aren't readable");
+                     class_Entity_getBoundingBox = null;
+                }
             }
 
             // Changed in 1.13

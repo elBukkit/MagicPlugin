@@ -3,6 +3,7 @@
 # 7.6.15
 
  - Currency items are now unbreakable so custom item icons can be used
+ - Add support for 1.13.2
 
 # 7.6.14
 

@@ -45,28 +45,30 @@ public class HitboxUtils extends CompatibilityUtils {
             return hitbox.center(entity.getLocation().toVector());
         }
 
-        try {
-            Object entityHandle = getHandle(entity);
-            Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
-            if (aabb == null) {
-                return defaultHitbox.center(entity.getLocation().toVector());
-            }
+        if (class_Entity_getBoundingBox != null) {
+            try {
+                Object entityHandle = getHandle(entity);
+                Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
+                if (aabb == null) {
+                    return defaultHitbox.center(entity.getLocation().toVector());
+                }
 
-            double scaleY = hitboxScaleY;
-            if (entity instanceof Player && ((Player)entity).isSneaking()) {
-                scaleY = hitboxSneakScaleY;
-            }
-            return new BoundingBox(
-                    class_AxisAlignedBB_minXField.getDouble(aabb),
-                    class_AxisAlignedBB_maxXField.getDouble(aabb),
-                    class_AxisAlignedBB_minYField.getDouble(aabb),
-                    class_AxisAlignedBB_maxYField.getDouble(aabb),
-                    class_AxisAlignedBB_minZField.getDouble(aabb),
-                    class_AxisAlignedBB_maxZField.getDouble(aabb)
-            ).scaleFromBase(hitboxScale, scaleY);
+                double scaleY = hitboxScaleY;
+                if (entity instanceof Player && ((Player)entity).isSneaking()) {
+                    scaleY = hitboxSneakScaleY;
+                }
+                return new BoundingBox(
+                        class_AxisAlignedBB_minXField.getDouble(aabb),
+                        class_AxisAlignedBB_maxXField.getDouble(aabb),
+                        class_AxisAlignedBB_minYField.getDouble(aabb),
+                        class_AxisAlignedBB_maxYField.getDouble(aabb),
+                        class_AxisAlignedBB_minZField.getDouble(aabb),
+                        class_AxisAlignedBB_maxZField.getDouble(aabb)
+                ).scaleFromBase(hitboxScale, scaleY);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return defaultHitbox.center(entity.getLocation().toVector());
     }
