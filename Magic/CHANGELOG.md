@@ -4,6 +4,7 @@
 
  - Fix some hangs that could happen when using an infinite Repeat action
  - Fix using `repeat: infinite`
+ - Add `offhand` parameter for mobs holding offhand items
 
 # 7.6.15
 

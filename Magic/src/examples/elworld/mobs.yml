@@ -146,6 +146,7 @@ nerflock:
   name: Nerflock
   health: 50
   default_drops: false
+  offhand: golden_sword
   mage:
     stack: true
     strength:

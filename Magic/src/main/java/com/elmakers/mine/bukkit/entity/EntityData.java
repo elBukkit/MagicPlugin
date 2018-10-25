@@ -124,6 +124,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean canPickupItems = false;
 
     protected ItemData itemInHand;
+    protected ItemData itemInOffhand;
     protected ItemData helmet;
     protected ItemData chestplate;
     protected ItemData leggings;
@@ -185,6 +186,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.hasAI = li.hasAI();
 
             itemInHand = getItem(li.getEquipment().getItemInMainHand());
+            itemInOffhand = getItem(li.getEquipment().getItemInOffHand());
             helmet = getItem(li.getEquipment().getHelmet());
             chestplate = getItem(li.getEquipment().getChestplate());
             leggings = getItem(li.getEquipment().getLeggings());
@@ -430,6 +432,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         item = itemData == null || !itemData.isValid() ? null : itemData.getItemStack(parameters.getInt("amount", 1));
 
         itemInHand = controller.getOrCreateItemOrWand(parameters.getString("item"));
+        itemInOffhand = controller.getOrCreateItemOrWand(parameters.getString("offhand"));
         helmet = controller.getOrCreateItemOrWand(parameters.getString("helmet"));
         chestplate = controller.getOrCreateItemOrWand(parameters.getString("chestplate"));
         leggings = controller.getOrCreateItemOrWand(parameters.getString("leggings"));
@@ -817,6 +820,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public void copyEquipmentTo(LivingEntity entity) {
         if (itemInHand != null) {
             entity.getEquipment().setItemInMainHand(itemInHand.getItemStack(1));
+        }
+        if (itemInOffhand != null) {
+            entity.getEquipment().setItemInOffHand(itemInOffhand.getItemStack(1));
         }
         if (helmet != null) {
             entity.getEquipment().setHelmet(helmet.getItemStack(1));
