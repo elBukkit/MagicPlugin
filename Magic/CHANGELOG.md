@@ -2,6 +2,8 @@
 
 # 7.6.16
 
+ - Fix some hangs that could happen when using an infinite Repeat action
+
 # 7.6.15
 
  - Currency items are now unbreakable so custom item icons can be used

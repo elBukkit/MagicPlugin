@@ -2,6 +2,7 @@
 
 ## Hot Issues
 
+ - Rocket boots + rocket spell underwater = profit? https://www.youtube.com/watch?v=mAOrgu8P4r8
  - Tweak controllable air scooter, why is initial acceleration so slow?
  - Freezing water changes it to a source block when undone... ?? https://forge.avatarmc.com/T1993
  - Using alter on stained glass pane makes it go funky in 1.13
