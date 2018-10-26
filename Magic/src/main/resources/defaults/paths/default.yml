@@ -24,11 +24,7 @@ default:
       -  class: EffectSingle
          sound: entity_player_levelup
       -  class: EffectRing
-         firework: star
-         radius: 4
-         size: 2
-      -  class: EffectRing
-         firework: ball_large
-         radius: 6
+         firework_power: 1
+         radius: 5
          size: 3
 
