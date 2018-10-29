@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.data;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -48,7 +47,7 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         save(mage, saveFile);
         saveFile.save();
         if (releaseLock) {
-            synchronized(locks) {
+            synchronized (locks) {
                 FileLock lock = locks.remove(mage.getId());
                 if (lock != null) {
                     try {
