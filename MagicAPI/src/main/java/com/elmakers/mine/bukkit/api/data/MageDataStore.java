@@ -34,11 +34,6 @@ public interface MageDataStore {
     void save(MageData mage, MageDataCallback callback, boolean releaseLock);
 
     /**
-     * Force-release a lock for a mage
-     */
-    void releaseLock(MageData mage);
-
-    /**
      * Save several Mages in a batch.
      */
     void save(Collection<MageData> mages);
@@ -51,6 +46,11 @@ public interface MageDataStore {
      * <p>If the provided callback is non-null, it should be called on completion.
      */
     void load(String id, MageDataCallback callback);
+
+    /**
+     * Force-release a lock for a mage
+     */
+    void releaseLock(MageData mage);
 
     /**
      * Remove all data for a single mage
