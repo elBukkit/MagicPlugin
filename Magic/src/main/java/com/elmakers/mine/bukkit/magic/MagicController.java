@@ -3322,6 +3322,9 @@ public class MagicController implements MageController {
                     }
                 }
             }
+        } else if (releaseLock && mageDataStore != null) {
+            getLogger().warning("Player logging out, but data never loaded. Force-releasing lock");
+            mageDataStore.releaseLock(mageData);
         }
     }
 

@@ -47,21 +47,26 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         save(mage, saveFile);
         saveFile.save();
         if (releaseLock) {
-            synchronized (locks) {
-                FileLock lock = locks.remove(mage.getId());
-                if (lock != null) {
-                    try {
-                        lock.release();
-                        controller.info("Released file lock for " + mage.getId() + " at " + System.currentTimeMillis());
-                    } catch (Exception ex) {
-                        controller.getLogger().log(Level.WARNING, "Unable to release file lock for " + mage.getId(), ex);
-                    }
-                }
-            }
+            releaseLock(mage);
         }
 
         if (callback != null) {
             callback.run(mage);
+        }
+    }
+
+    @Override
+    public void releaseLock(MageData mage) {
+        synchronized (locks) {
+            FileLock lock = locks.remove(mage.getId());
+            if (lock != null) {
+                try {
+                    lock.release();
+                    controller.info("Released file lock for " + mage.getId() + " at " + System.currentTimeMillis());
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Unable to release file lock for " + mage.getId(), ex);
+                }
+            }
         }
     }
 

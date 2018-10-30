@@ -34,6 +34,11 @@ public interface MageDataStore {
     void save(MageData mage, MageDataCallback callback, boolean releaseLock);
 
     /**
+     * Force-release a lock for a mage
+     */
+    void releaseLock(MageData mage);
+
+    /**
      * Save several Mages in a batch.
      */
     void save(Collection<MageData> mages);
