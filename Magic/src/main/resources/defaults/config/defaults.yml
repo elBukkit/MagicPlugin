@@ -594,6 +594,13 @@ drop_original_block: true
 # If using a local Bungee setup with symlinked player data folders, setting this to true
 # will ensure that data is finished saving on one server before being loaded on the next.
 use_file_locking: false
+
+# If all else fails for whatever reason with file sharing and locking, you can simply delay data loading for some
+# time. The longer you can delay it, the safer it'll be (this gives the source server time to finish saving)
+# but there will be some time after a player logs in where their wands and magic will not work.
+# This value is in milliseconds, so I would recommend setting it to 5000 (5 seconds)
+file_load_delay: 0
+
 # You *may* also need to save data synchronously to ensure it is written out before releasing the file lock
 # This is probably not necessary, but if you're still having issues try turning this to false
 save_player_data_asynchronously: true

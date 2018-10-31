@@ -376,7 +376,7 @@ public class MagicController implements MageController {
             if (savePlayerData && mageDataStore != null) {
                 if (isPlayer) {
                     mage.setLoading(true);
-                    plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                    plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
                         @Override
                         public void run() {
                             synchronized (saveLock) {
@@ -395,7 +395,7 @@ public class MagicController implements MageController {
                                 }
                             }
                         }
-                    });
+                    }, fileLoadDelay * 20 / 1000);
                 } else if (saveNonPlayerMages) {
                     info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") synchronously");
                     synchronized (saveLock) {
@@ -2703,6 +2703,7 @@ public class MagicController implements MageController {
         }
         asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
         isFileLockingEnabled = properties.getBoolean("use_file_locking", false);
+        fileLoadDelay = properties.getInt("file_load_delay", 0);
 
         ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
         if (mageDataStore != null) {
@@ -6016,6 +6017,7 @@ public class MagicController implements MageController {
     private String                              heroesSkillPrefix           = "";
     private String                              skillsSpell                 = "";
     private boolean                             isFileLockingEnabled        = false;
+    private int                                 fileLoadDelay               = 0;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();
