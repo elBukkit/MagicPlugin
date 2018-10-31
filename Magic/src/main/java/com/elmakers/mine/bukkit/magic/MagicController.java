@@ -352,6 +352,11 @@ public class MagicController implements MageController {
             {
                 getLogger().warning("Player data for " + mageId + " (" + entity.getName() + ") loaded while offline!");
                 Thread.dumpStack();
+                // This will cause some really bad things to happen if using file locking, so we're going to just skip it.
+                if (isFileLockingEnabled) {
+                    getLogger().warning("Returning dummy Mage to avoid locking issues");
+                    return new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
+                }
             }
 
             final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
