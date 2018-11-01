@@ -36,6 +36,7 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
     }
 
     @Override
+    @Deprecated
     public void save(MageData mage, MageDataCallback callback) {
         save(mage, callback, false);
     }
