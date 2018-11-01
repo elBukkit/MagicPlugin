@@ -260,6 +260,8 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
             try {
                 Object player1 = playerGetMethod.invoke(fPlayers, attacker);
                 Object player2 = playerGetMethod.invoke(fPlayers, entity);
+                if (player1 == null || player2 == null) return false;
+
                 Object faction1 = playerGetFactionMethod.invoke(player1);
                 Object faction2 = playerGetFactionMethod.invoke(player2);
                 if ((boolean)isNoneMethod.invoke(faction1) || (boolean)isNoneMethod.invoke(faction2)) {
