@@ -5,6 +5,7 @@
  - Fix some hangs that could happen when using an infinite Repeat action
  - Fix using `repeat: infinite`
  - Add `offhand` parameter for mobs holding offhand items
+ - Allow RP links to include redirects. This may fix some issues using Dropbox to host RPs.
 
 # 7.6.15
 

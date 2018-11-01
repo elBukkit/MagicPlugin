@@ -5311,7 +5311,7 @@ public class MagicController implements MageController {
                 try {
                     URL rpURL = new URL(finalResourcePack);
                     HttpURLConnection connection = (HttpURLConnection)rpURL.openConnection();
-                    connection.setInstanceFollowRedirects(false);
+                    connection.setInstanceFollowRedirects(true);
                     connection.setRequestMethod("HEAD");
                     if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
                     {
