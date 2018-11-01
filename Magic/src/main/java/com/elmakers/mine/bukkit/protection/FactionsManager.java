@@ -255,6 +255,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
 
     @Override
     public boolean isFriendly(Entity attacker, Entity entity) {
+        if (playerGetFactionMethod == null || playerGetMethod == null || factionGetRelationMethod == null) return false;
         if (attacker instanceof Player && entity instanceof Player && playerClass != null) {
             try {
                 Object player1 = playerGetMethod.invoke(fPlayers, attacker);
@@ -268,6 +269,8 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
                 if (relationIsFriendMethod != null) {
                     return (boolean)relationIsFriendMethod.invoke(relation);
                 }
+
+                if (relationIsMemberMethod == null || relationIsAllyMethod == null || relationIsTruceMethod == null) return false;
 
                 if ((boolean)relationIsMemberMethod.invoke(relation)) return true;
                 if ((boolean)relationIsAllyMethod.invoke(relation)) return true;
