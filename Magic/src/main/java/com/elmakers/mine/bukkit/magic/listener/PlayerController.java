@@ -98,6 +98,10 @@ public class PlayerController implements Listener {
         Mage mage = controller.getRegisteredMage(entity);
         if (mage != null && mage.isGlidingAllowed() && !event.isGliding() && !entity.isOnGround()) {
             event.setCancelled(true);
+            Player player = mage.getPlayer();
+            if (player != null) {
+                controller.addFlightExemption(player, 5000);
+            }
         }
     }
 

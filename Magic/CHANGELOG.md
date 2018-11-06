@@ -6,6 +6,7 @@
  - Fix using `repeat: infinite`
  - Add `offhand` parameter for mobs holding offhand items
  - Allow RP links to include redirects. This may fix some issues using Dropbox to host RPs.
+ - Glide will register a flight exemption with NCP
 
 # 7.6.15
 

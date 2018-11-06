@@ -3863,6 +3863,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void setGlidingAllowed(boolean allow) {
         glidingAllowed = allow;
+        Player player = getPlayer();
+        if (player != null) {
+            controller.addFlightExemption(player, 5000);
+        }
     }
 
     @Override

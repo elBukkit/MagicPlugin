@@ -43,6 +43,7 @@
   
 ## Recent Requests
  
+ - Support for "FationsOne" (sic, sp?) - I guess? Good lord, Factions, get your act together.
  - Special blocks that act as automata when placed, remove automata when used
  - Selector support for scaling costs based on lore values
  - Add "deactivate" actions for toggle spells
