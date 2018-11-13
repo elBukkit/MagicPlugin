@@ -2,6 +2,7 @@
 
 ## Hot Issues
 
+ - if you break a block with the wand ability and place another block and quickly break it, it’ll spawn another of that same block naturally. 
  - Rocket boots + rocket spell underwater = profit? https://www.youtube.com/watch?v=mAOrgu8P4r8
  - Tweak controllable air scooter, why is initial acceleration so slow?
  - Freezing water changes it to a source block when undone... ?? https://forge.avatarmc.com/T1993

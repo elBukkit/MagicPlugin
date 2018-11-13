@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.17
+
 # 7.6.16
 
  - Fix some hangs that could happen when using an infinite Repeat action
