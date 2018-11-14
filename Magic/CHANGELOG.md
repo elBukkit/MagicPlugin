@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.18
+
 # 7.6.17
 
  - Some fixes to work with latest WorldGuard/WorldEdit
