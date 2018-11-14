@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.logging.Level;
@@ -14,7 +15,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.Association;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
@@ -34,6 +34,9 @@ public class WorldGuardAPI {
     private Method regionQueryTestStateMethod = null;
     private Method locationAdaptMethod = null;
     private Method worldAdaptMethod = null;
+    private Method regionManagerGetMethod = null;
+    private Constructor vectorConstructor = null;
+    private Method vectorConstructorAsAMethodBecauseWhyNot = null;
     private StateFlag buildFlag;
     private StateFlag pvpFlag;
     private StateFlag exitFlag;
@@ -147,6 +150,23 @@ public class WorldGuardAPI {
                 }
             }
 
+            // Ugh guys, API much?
+            try {
+                Class<?> vectorClass = Class.forName("com.sk89q.worldedit.Vector");
+                vectorConstructor = vectorClass.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
+                regionManagerGetMethod = RegionManager.class.getMethod("getApplicableRegions", vectorClass);
+            } catch (Exception ex) {
+                try {
+                    Class<?> vectorClass = Class.forName("com.sk89q.worldedit.math.BlockVector3");
+                    vectorConstructorAsAMethodBecauseWhyNot = vectorClass.getMethod("at", Double.TYPE, Double.TYPE, Double.TYPE);
+                    regionManagerGetMethod = RegionManager.class.getMethod("getApplicableRegions", vectorClass);
+                } catch (Exception sodonewiththis) {
+                    owningPlugin.getLogger().log(Level.WARNING, "Failed to bind to WorldGuard (no Vector class?), integration will not work!", ex);
+                    regionContainer = null;
+                    return;
+                }
+            }
+
             if (regionContainer == null) {
                 owningPlugin.getLogger().warning("Failed to find RegionContainer, WorldGuard integration will not function!");
             }
@@ -176,8 +196,17 @@ public class WorldGuardAPI {
         RegionManager regionManager = getRegionManager(location.getWorld());
         if (regionManager == null) return null;
         // The Location version of this method is gone in 7.0
-        Vector vector = new Vector(location.getX(), location.getY(), location.getZ());
-        return regionManager.getApplicableRegions(vector);
+        // Oh and then they also randomly changed the Vector class at some point without even a version bump.
+        // So awesome!
+        try {
+            Object vector = vectorConstructorAsAMethodBecauseWhyNot == null
+                    ? vectorConstructor.newInstance(location.getX(), location.getY(), location.getZ())
+                    : vectorConstructorAsAMethodBecauseWhyNot.invoke(null, location.getX(), location.getY(), location.getZ());
+            return (ApplicableRegionSet)regionManagerGetMethod.invoke(regionManager, vector);
+        } catch (Exception ex) {
+            owningPlugin.getLogger().log(Level.WARNING, "An error occurred looking up a WorldGuard ApplicableRegionSet", ex);
+        }
+        return null;
     }
 
     public boolean isPVPAllowed(Player player, Location location) {
