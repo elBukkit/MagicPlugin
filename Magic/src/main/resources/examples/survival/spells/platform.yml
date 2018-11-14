@@ -28,7 +28,7 @@ platform:
         build:
         -  location: target
            particle: block_crack
-           particle_count: 20
+           particle_count: 10
            particle_offset_x: 0.2
            particle_offset_y: 0.2
            particle_offset_z: 0.2

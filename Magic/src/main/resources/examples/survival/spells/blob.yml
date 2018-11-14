@@ -21,7 +21,7 @@ blob:
         tick:
         -  location: target
            particle: block_crack
-           particle_count: 20
+           particle_count: 10
            particle_offset_x: 0.2
            particle_offset_y: 0.2
            particle_offset_z: 0.2
@@ -30,8 +30,8 @@ blob:
            effectlib:
              class: SphereEffect
              particle: block_crack
-             particle_count: 20
-             particles: 20
+             particle_count: 10
+             particles: 5
              particle_offset_x: 0.3
              particle_offset_y: 0.3
              particle_offset_z: 0.3
