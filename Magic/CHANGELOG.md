@@ -5,6 +5,7 @@
  - Some fixes to work with latest WorldGuard/WorldEdit
  - Fix bug from 7.1.16 that makes construction spells take longer to build
  - Tone down particles on shell and blob because apparently Mojang doesn't like fixing things they broke. But hey, pandas, amirite?
+ - Fix some issues with strength (damage multipliers)
 
 # 7.6.16
 

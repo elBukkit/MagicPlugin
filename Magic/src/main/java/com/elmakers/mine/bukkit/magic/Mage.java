@@ -2470,13 +2470,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         float multiplier = 1.0f;
         float maxPowerMultiplier = controller.getMaxDamagePowerMultiplier() - 1;
         if (maxPowerMultiplier > 0) {
-            multiplier = 1 + (maxPowerMultiplier * getPower());
+            multiplier = 1.0f + (maxPowerMultiplier * getPower());
         }
         Double overallMultiplier = strength.get("overall");
         if (overallMultiplier != null && overallMultiplier != 0) {
             double attackMultiplier = controller.getMaxAttackMultiplier("overall");
             if (attackMultiplier > 1) {
-                attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
+                attackMultiplier = 1.0 + (attackMultiplier - 1.0) * overallMultiplier;
                 multiplier = (float)(multiplier * attackMultiplier);
             }
         }
@@ -2491,7 +2491,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (typeMultiplier != null && typeMultiplier > 0) {
             double attackMultiplier = controller.getMaxAttackMultiplier(damageType);
             if (attackMultiplier > 1) {
-                attackMultiplier = 1 + (attackMultiplier - 1) * overallMultiplier;
+                attackMultiplier = 1.0 + (attackMultiplier - 1.0) * typeMultiplier;
                 overallMultiplier *= attackMultiplier;
             }
         }
@@ -2504,14 +2504,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         float maxPowerMultiplier = controller.getMaxRangePowerMultiplier() - 1;
         float maxPowerMultiplierMax = controller.getMaxRangePowerMultiplierMax();
-        float multiplier = 1 + (maxPowerMultiplier * getPower());
+        float multiplier = 1.0f + (maxPowerMultiplier * getPower());
         return Math.min(multiplier, maxPowerMultiplierMax);
     }
 
     @Override
     public float getConstructionMultiplier() {
         float maxPowerMultiplier = controller.getMaxConstructionPowerMultiplier() - 1;
-        return 1 + (maxPowerMultiplier * getPower());
+        return 1.0f + (maxPowerMultiplier * getPower());
     }
 
     @Override
@@ -2520,7 +2520,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         float maxPowerMultiplier = controller.getMaxRadiusPowerMultiplier() - 1;
         float maxPowerMultiplierMax = controller.getMaxRadiusPowerMultiplierMax();
-        float multiplier = 1 + (maxPowerMultiplier * getPower());
+        float multiplier = 1.0f + (maxPowerMultiplier * getPower());
         return Math.min(multiplier, maxPowerMultiplierMax);
     }
 
