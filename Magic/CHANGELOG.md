@@ -2,6 +2,9 @@
 
 # 7.6.17
 
+ - Some fixes to work with latest WorldGuard/WorldEdit
+ - Fix bug from 7.1.16 that makes construction spells take longer to build
+
 # 7.6.16
 
  - Fix some hangs that could happen when using an infinite Repeat action

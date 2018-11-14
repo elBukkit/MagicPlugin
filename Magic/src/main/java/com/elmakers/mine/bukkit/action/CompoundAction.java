@@ -117,7 +117,7 @@ public abstract class CompoundAction extends BaseSpellAction
             result = result.min(step(context));
 
             // Prevent infinite loops of no actions
-            if (context.getWorkAllowed() > 0 && !result.isStop()) {
+            if (context.getWorkAllowed() <= 0 && !result.isStop()) {
                 result = SpellResult.PENDING;
             }
         }
