@@ -33,6 +33,7 @@ public class NCPAPI implements Runnable {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
                     NCPExemptionManager.unexempt(player, CheckType.MOVING_SURVIVALFLY);
+                    NCPExemptionManager.unexempt(player, CheckType.MOVING_CREATIVEFLY);
                 }
                 flyExemptions.remove(uuid);
             }
@@ -45,15 +46,18 @@ public class NCPAPI implements Runnable {
         Long timeout = flyExemptions.get(id);
         if (timeout == null || timeout < newTimeout) {
             NCPExemptionManager.exemptPermanently(player, CheckType.MOVING_SURVIVALFLY);
+            NCPExemptionManager.exemptPermanently(player, CheckType.MOVING_CREATIVEFLY);
             flyExemptions.put(id, newTimeout);
         }
     }
 
     public void addFlightExemption(Player player) {
         NCPExemptionManager.exemptPermanently(player, CheckType.MOVING_SURVIVALFLY);
+        NCPExemptionManager.exemptPermanently(player, CheckType.MOVING_CREATIVEFLY);
     }
 
     public void removeFlightExemption(Player player) {
         NCPExemptionManager.unexempt(player, CheckType.MOVING_SURVIVALFLY);
+        NCPExemptionManager.unexempt(player, CheckType.MOVING_CREATIVEFLY);
     }
 }
