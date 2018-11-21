@@ -1,23 +1,11 @@
 # CHANGELOG
 
-## 7.0
-
-### Player Data and Classes! 
-
- - Add /mage configure, upgrade and describe commands for dealing with Mage data
- - Add /mage reset (class) option, for resetting a class progress on a player
- - Add /mage activate and unlock commands, for manipulating mage classes
- - Add classes config file, defaults have a basic setup in each example config. Generally:
-   - Spells are held by a base class that may be shared (like by the Master Sword, Wand and Spellbook)
-   - Mana is stored in a sub-class that may be separate, as in Master Sword and Wand, or shared as in Wand and Spellbook
-   - Progression path is stored on sub-classes
-   - All other properties are still tied to the wand items
-
 ## 6.9.22
 
  - Check for lore as well when comparing crafting ingredients
  - Color and word wrap support for recall icon descriptions
  - Fix right-click behaviors with skull wands
+ - Fix a block dupe exploit when using spells that destroy blocks
 
 ## 6.9.21
 

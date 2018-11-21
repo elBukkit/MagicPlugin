@@ -223,6 +223,10 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             priorState.commit();
             priorState = null;
         }
+        UndoList list = undoList.get();
+        if (list != null) {
+            list.remove(this);
+        }
     }
 
     @Override
