@@ -3,6 +3,7 @@
 # 7.6.18
 
  - Add NCP exemptions for creative flight as well as survival flight
+ - Fix a block dupe exploit when using spells that destroy blocks
 
 # 7.6.17
 
