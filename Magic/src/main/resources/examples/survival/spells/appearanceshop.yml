@@ -11,7 +11,7 @@ appearanceshop:
         confirm_filler: stained_glass:3
         show_unavailable: true
         requirements:
-        - wand: wand
+        - wand_tags: transformable
         unlock_section: wand_appearances
         apply_to_wand: true
         cost_type: sp

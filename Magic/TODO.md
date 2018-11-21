@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - while moving or flying (it happens more often while doing this) around and right clicking to cast, it throws this error: https://hastebin.com/ixilazasig.makefile  it doesn't seem to happen with left click. Not an expert but by reading a bit I think it's because minecraft thinks the player item is being replaced by air and acts like we want to place such air as a block, which is imposible. Hope it helps!
+
  - if you break a block with the wand ability and place another block and quickly break it, it’ll spawn another of that same block naturally. 
  - Rocket boots + rocket spell underwater = profit? https://www.youtube.com/watch?v=mAOrgu8P4r8
  - Tweak controllable air scooter, why is initial acceleration so slow?
