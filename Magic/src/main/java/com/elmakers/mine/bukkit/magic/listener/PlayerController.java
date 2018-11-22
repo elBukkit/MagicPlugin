@@ -66,12 +66,14 @@ public class PlayerController implements Listener {
     private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
     private long lastDropWarn = 0;
+    private int logoutDelay = 0;
 
     public PlayerController(MagicController controller) {
         this.controller = controller;
     }
 
     public void loadProperties(ConfigurationSection properties) {
+        logoutDelay = properties.getInt("logout_delay", 0);
         clickCooldown = properties.getInt("click_cooldown", 0);
         enchantBlockMaterial = new MaterialAndData(properties.getString("enchant_block", "enchantment_table"));
         enchantClickSpell = properties.getString("enchant_click");
@@ -644,7 +646,17 @@ public class PlayerController implements Listener {
         Mage mage = controller.getRegisteredMage(player);
         if (mage != null) {
             mage.onPlayerQuit(event);
-            controller.playerQuit(mage);
+
+            if (logoutDelay > 0) {
+                Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+                    @Override
+                    public void run() {
+                        controller.playerQuit(mage);
+                    }
+                }, (int)Math.ceil((double)logoutDelay * 20 / 1000));
+            } else {
+                controller.playerQuit(mage);
+            }
         }
 
         // Make sure they don't keep any temporary items that may be waiting for undo

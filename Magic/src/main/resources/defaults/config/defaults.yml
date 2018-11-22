@@ -601,6 +601,12 @@ use_file_locking: false
 # This value is in milliseconds, so I would recommend setting it to 5000 (5 seconds)
 file_load_delay: 0
 
+# This delays logout by some amount of time. This can be useful when seeing issues with plugins that kill
+# players on logout, which can happen after Magic has already processed player logout. In particular
+# this might break Magic's "keep items on death" feature.
+# Set this to 1 to fix this problem
+logout_delay: 0
+
 # You *may* also need to save data synchronously to ensure it is written out before releasing the file lock
 # This is probably not necessary, but if you're still having issues try turning this to false
 save_player_data_asynchronously: true
