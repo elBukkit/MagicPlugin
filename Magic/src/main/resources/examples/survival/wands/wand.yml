@@ -12,4 +12,5 @@ wand:
     - buffable
     - transformable
     - effectable
+    - tweakable
 

@@ -10,7 +10,7 @@ controlsmenu:
     parameters:
         apply_to_wand: true
         requirements:
-        - wand: wand
+        - wand_tags: tweakable
         options:
           - item: inventorymode
           - item: chestmode
