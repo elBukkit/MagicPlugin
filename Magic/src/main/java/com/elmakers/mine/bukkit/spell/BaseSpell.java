@@ -479,14 +479,13 @@ public class BaseSpell implements MageSpell, Cloneable {
         while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY && yDelta < maxDelta)
         {
             Block block = targetLocation.getBlock();
+            if (!isPassthrough(block)) {
+                return null;
+            }
             if (isSafeLocation(block))
             {
                 // spot found - return location
                 return checkForHalfBlock(targetLocation);
-            }
-
-            if (!allowPassThrough(block.getType())) {
-                return null;
             }
 
             yDelta++;

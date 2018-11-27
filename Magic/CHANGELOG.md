@@ -5,7 +5,9 @@
  - Add NCP exemptions for creative flight as well as survival flight
  - Fix a block dupe exploit when using spells that destroy blocks
  - Fix appearanceshop not being usable with other wands having the transformable tag
+ - Add tweakable wand tag for use in controlsmenu
  - Add option to delay logout, for compatibility with plugins that kill players on logout
+ - Fix Blink ability to pass through ceilings unintentionally in certain cases
 
 # 7.6.17
 
