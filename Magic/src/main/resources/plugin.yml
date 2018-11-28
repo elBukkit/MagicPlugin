@@ -421,6 +421,7 @@ commands:
         /mage clear       Clear magic items from a player's inventory
         /mage unbind      Delete specific bound wands for a mage
         /mage levelspells Level up all spells for a mage
+        /mage deactivate  Close the player's wand inventory
   "mage configure":
     description: Configure mage properties, configures the active class
     usage: |
@@ -494,6 +495,13 @@ commands:
         /mage activate <Player> <Class>
         /mage activate NathanWolf mage
         /mage activate NathanWolf battle_mage
+  "mage deactivate":
+      description: Close a player's wand inventory and deactivate any active spells
+      permission: Magic.commands.mage.deactivate
+      usage: |
+
+        /mage deactivate <Player>
+        /mage deactivate NathanWolf
   "mage unlock":
     description: Unlock a class for a player
     permission: Magic.commands.mage.unlock
@@ -1318,6 +1326,7 @@ permissions:
     - Magic.commands.mage.lock
     - Magic.commands.mage.switch
     - Magic.commands.mage.activate
+    - Magic.commands.mage.deactivate
     - Magic.commands.mage.check
     - Magic.commands.mage.debug
     - Magic.commands.mage.reset
@@ -1367,6 +1376,10 @@ permissions:
     default: op
   Magic.commands.mage.activate:
     description: Player may activate mage classes
+    type: boolean
+    default: op
+  Magic.commands.mage.deactivate:
+    description: Player may deactivate mages
     type: boolean
     default: op
   Magic.commands.mage.setdata:

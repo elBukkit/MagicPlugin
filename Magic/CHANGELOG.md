@@ -8,6 +8,7 @@
  - Add tweakable wand tag for use in controlsmenu
  - Add option to delay logout, for compatibility with plugins that kill players on logout
  - Fix Blink ability to pass through ceilings unintentionally in certain cases
+ - Add "/mage deactivate" command, to force-close a player's wand inventory and cancel any active spells
 
 # 7.6.17
 

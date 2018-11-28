@@ -137,6 +137,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageActivate(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("deactivate"))
+        {
+            return onMageDeactivate(sender, player, args2);
+        }
         if (subCommand.equalsIgnoreCase("unlock"))
         {
             return onMageUnlock(sender, player, args2);
@@ -187,6 +191,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "clear");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
             addIfPermissible(sender, options, "Magic.commands.mage.", "activate");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "deactivate");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
             addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
             addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
@@ -675,6 +680,14 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         } else {
             sender.sendMessage(ChatColor.RED + player.getName() + " does not have class: " + ChatColor.WHITE + classKey + ChatColor.RED + " unlocked");
         }
+        return true;
+    }
+
+    public boolean onMageDeactivate(CommandSender sender, Player player, String[] parameters)
+    {
+        Mage mage = controller.getMage(player);
+        mage.deactivate();
+        sender.sendMessage("Deactivated " + player.getName());
         return true;
     }
 
