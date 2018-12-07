@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.19
+
 # 7.6.18
 
  - Add NCP exemptions for creative flight as well as survival flight
