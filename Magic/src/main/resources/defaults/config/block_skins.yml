@@ -1,8 +1,8 @@
 # These are player skins that represent blocks. Some are provided here
 # as official Mojang skins, but more can be added.
 block_skins:
-  cactus: MHF_Cactus;
-  chest: MHF_Chest;
+  cactus: MHF_Cactus
+  chest: MHF_Chest
   melon_block: MHF_Melon
   tnt: MHF_TNT # There is also MHF_TNT2 but we aren't using it now.
   log: MHF_OakLog
@@ -10,6 +10,7 @@ block_skins:
 
   # 1.13
   oak_log: MHF_OakLog
+  melon: MHF_Melon
 
   # Other MHF blocks we don't use:
   # MHF_ArrowUp
