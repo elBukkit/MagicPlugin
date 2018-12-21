@@ -33,3 +33,7 @@ mob_skins:
   wither: MHF_Wither
   wither_skeleton: MHF_WSkeleton
   wolf: MHF_Wolf
+
+  # For pre-1.13 versions
+  mushroom_cow: MHF_MushroomCow
+  pig_zombie: MHF_PigZombie
