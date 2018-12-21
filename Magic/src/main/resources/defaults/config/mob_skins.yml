@@ -5,22 +5,22 @@ mob_skins:
   cave_spider: MHF_CaveSpider
   chicken: MHF_Chicken
   cow: MHF_Cow
+  creeper: MHF_Creeper
   enderman: MHF_Enderman
+  guardian: MHF_Guardian
   ghast: MHF_Ghast
   iron_golem: MHF_Golem
   magma_cube: MHF_LavaSlime
-  mushroom_cow: MHF_MushroomCow
+  mooshroom: MHF_MushroomCow
   ocelot: MHF_Ocelot
   pig: MHF_Pig
-  pig_zombie: MHF_PigZombie
   sheep: MHF_Sheep
+  skeleton: MHF_Skeleton
   slime: MHF_Slime
   spider: MHF_Spider
   squid: MHF_Squid
-  villager: MHF_Villager
-  wolf: MHF_Wolf
-  creeper: MHF_Creeper
   zombie: MHF_Zombie
-  skeleton: MHF_Skeleton
-  guardian: MHF_Guardian
+  zombie_pigman: MHF_PigZombie
+  villager: MHF_Villager
   witch: MHF_Witch
+  wolf: MHF_Wolf
