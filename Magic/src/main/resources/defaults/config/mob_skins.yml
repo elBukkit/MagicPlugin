@@ -6,7 +6,10 @@ mob_skins:
   chicken: MHF_Chicken
   cow: MHF_Cow
   creeper: MHF_Creeper
+  drowned: MHF_Drowned
+  elder_guardian: MHF_EGuardian
   enderman: MHF_Enderman
+  endermite: MHF_Endermite
   guardian: MHF_Guardian
   ghast: MHF_Ghast
   iron_golem: MHF_Golem
@@ -14,13 +17,19 @@ mob_skins:
   mooshroom: MHF_MushroomCow
   ocelot: MHF_Ocelot
   pig: MHF_Pig
+  pufferfish: MHF_Pufferfish
   sheep: MHF_Sheep
   skeleton: MHF_Skeleton
   slime: MHF_Slime
   spider: MHF_Spider
   squid: MHF_Squid
+  stray: MHF_Stray
+  turtle: MHF_Turtle
   zombie: MHF_Zombie
   zombie_pigman: MHF_PigZombie
+  vex: MHF_Vex
   villager: MHF_Villager
   witch: MHF_Witch
+  wither: MHF_Wither
+  wither_skeleton: MHF_WSkeleton
   wolf: MHF_Wolf
