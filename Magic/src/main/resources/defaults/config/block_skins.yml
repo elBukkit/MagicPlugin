@@ -3,14 +3,14 @@
 block_skins:
   cactus: MHF_Cactus
   chest: MHF_Chest
-  melon_block: MHF_Melon
-  tnt: MHF_TNT # There is also MHF_TNT2 but we aren't using it now.
-  log: MHF_OakLog
-  pumpkin: MHF_Pumpkin
-
-  # 1.13
-  oak_log: MHF_OakLog
   melon: MHF_Melon
+  oak_log: MHF_OakLog
+  pumpkin: MHF_Pumpkin
+  tnt: MHF_TNT # There is also MHF_TNT2 but we aren't using it now.
+
+  # For pre-1.13 versions
+  log: MHF_OakLog
+  melon_block: MHF_Melon
 
   # Other MHF blocks we don't use:
   # MHF_ArrowUp
