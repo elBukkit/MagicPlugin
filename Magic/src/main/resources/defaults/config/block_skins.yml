@@ -1,15 +1,23 @@
 # These are player skins that represent blocks. Some are provided here
 # as official Mojang skins, but more can be added.
 block_skins:
+  bookshelf: MHF_Bookshelf
   cactus: MHF_Cactus
+  cake: MHF_Cake
   chest: MHF_Chest
+  command_block: MHF_Command
+  magma_block: MHF_Magma
   melon: MHF_Melon
   oak_log: MHF_OakLog
   pumpkin: MHF_Pumpkin
+  purpur_block: MHF_Purpur
+  redstone_block: MHF_Redstone
+  stone: MHF_Stone
   tnt: MHF_TNT # There is also MHF_TNT2 but we aren't using it now.
 
   # For pre-1.13 versions
   log: MHF_OakLog
+  magma: MHF_Magma
   melon_block: MHF_Melon
 
   # Other MHF blocks we don't use:
