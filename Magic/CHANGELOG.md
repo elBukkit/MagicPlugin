@@ -2,6 +2,8 @@
 
 # 7.6.19
 
+ - Fix for some internal CraftBukkit changes somewhere in 1.13.2
+
 # 7.6.18
 
  - Add NCP exemptions for creative flight as well as survival flight
