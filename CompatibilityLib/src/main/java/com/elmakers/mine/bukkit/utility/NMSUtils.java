@@ -248,6 +248,7 @@ public class NMSUtils {
     protected static Method class_Server_createBlockDataMethod;
     protected static Method class_BlockData_getAsStringMethod;
     protected static Method class_KnowledgeBookMeta_addRecipeMethod;
+    protected static Method class_World_getTileEntityMethod;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -903,7 +904,14 @@ public class NMSUtils {
                 } catch (Throwable ignore) {
                     class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
                 }
-                class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
+                try {
+                    class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
+                } catch (Throwable ignore) {
+                    // This should actually work in 1.10 and up at least, and is the preferred method to use.
+                    // For now we're going to keep old versions doing it the old way, though.
+
+                    class_World_getTileEntityMethod = class_World.getMethod("getTileEntity", class_BlockPosition);
+                }
                 class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
                 class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
             } catch (Throwable ex) {
@@ -2015,15 +2023,13 @@ public class NMSUtils {
     }
 
     public static Object getTileEntityData(Location location) {
-        if (class_CraftWorld_getTileEntityAtMethod == null || class_TileEntity_saveMethod == null) return null;
+       if (class_TileEntity_saveMethod == null) return null;
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return null;
         Object data = null;
         try {
-            World world = location.getWorld();
-            Object tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
-            if (tileEntity != null) {
-                data = class_NBTTagCompound.newInstance();
-                class_TileEntity_saveMethod.invoke(tileEntity, data);
-            }
+            data = class_NBTTagCompound.newInstance();
+            class_TileEntity_saveMethod.invoke(tileEntity, data);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -2031,6 +2037,18 @@ public class NMSUtils {
     }
 
     public static Object getTileEntity(Location location) {
+        if (class_World_getTileEntityMethod != null) {
+            Object tileEntity = null;
+            try {
+                World world = location.getWorld();
+                Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
+                tileEntity = class_World_getTileEntityMethod.invoke(getHandle(world), blockLocation);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return tileEntity;
+        }
+
         if (class_CraftWorld_getTileEntityAtMethod == null) return null;
         Object tileEntity = null;
         try {
@@ -2043,41 +2061,32 @@ public class NMSUtils {
     }
 
     public static void clearItems(Location location) {
-        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null || class_CraftWorld_getTileEntityAtMethod == null || class_TileEntity_saveMethod == null) return;
+        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null || class_TileEntity_saveMethod == null) return;
         if (location == null) return;
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return;
         try {
-            World world = location.getWorld();
-            if (world == null) return;
-
-            Object tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
-            if (tileEntity != null) {
-                Object entityData = class_NBTTagCompound.newInstance();
-                class_TileEntity_saveMethod.invoke(tileEntity, entityData);
-                Object itemList = class_NBTTagCompound_getListMethod.invoke(entityData, "Items", NBT_TYPE_COMPOUND);
-                if (itemList != null) {
-                    List items = (List)class_NBTTagList_list.get(itemList);
-                    items.clear();
-                }
-                class_NBTTagCompound_removeMethod.invoke(entityData,"Item");
-                class_TileEntity_loadMethod.invoke(tileEntity, entityData);
-                class_TileEntity_updateMethod.invoke(tileEntity);
+            Object entityData = class_NBTTagCompound.newInstance();
+            class_TileEntity_saveMethod.invoke(tileEntity, entityData);
+            Object itemList = class_NBTTagCompound_getListMethod.invoke(entityData, "Items", NBT_TYPE_COMPOUND);
+            if (itemList != null) {
+                List items = (List)class_NBTTagList_list.get(itemList);
+                items.clear();
             }
+            class_NBTTagCompound_removeMethod.invoke(entityData,"Item");
+            class_TileEntity_loadMethod.invoke(tileEntity, entityData);
+            class_TileEntity_updateMethod.invoke(tileEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     public static void setTileEntityData(Location location, Object data) {
-        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null || class_CraftWorld_getTileEntityAtMethod == null) return;
-
+        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null) return;
         if (location == null || data == null) return;
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return;
         try {
-            World world = location.getWorld();
-            if (world == null) return;
-
-            Object tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
-            if (tileEntity == null) return;
-
             class_NBTTagCompound_setIntMethod.invoke(data, "x", location.getBlockX());
             class_NBTTagCompound_setIntMethod.invoke(data, "y", location.getBlockY());
             class_NBTTagCompound_setIntMethod.invoke(data, "z", location.getBlockZ());
