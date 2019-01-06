@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.20
+
 # 7.6.19
 
  - Fix for some internal CraftBukkit changes somewhere in 1.13.2
