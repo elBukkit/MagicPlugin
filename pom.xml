@@ -77,8 +77,6 @@
                     <compilerId>javac-with-errorprone</compilerId>
                     <forceJavacCompilerUse>true</forceJavacCompilerUse>
 
-                    <source>${version.java}</source>
-                    <target>${version.java}</target>
                     <release>${version.java}</release>
 
                     <compilerArgs>
