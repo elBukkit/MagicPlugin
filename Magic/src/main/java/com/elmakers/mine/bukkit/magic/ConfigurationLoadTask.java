@@ -80,16 +80,20 @@ public class ConfigurationLoadTask implements Runnable {
         addExamples = properties.getStringList("add_examples");
     }
 
+    private void info(String message) {
+        controller.info(message);
+    }
+
     private ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
         ConfigurationSection configuration = loadMainConfiguration("config");
         loadInitialProperties(configuration);
         boolean reloadConfig = false;
         if (addExamples != null && addExamples.size() > 0) {
-            getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
+            info("Adding examples: " + StringUtils.join(addExamples, ","));
             reloadConfig = true;
         }
         if (exampleDefaults != null && exampleDefaults.length() > 0) {
-            getLogger().info("Overriding configuration with example: " + exampleDefaults);
+            info("Overriding configuration with example: " + exampleDefaults);
             reloadConfig = true;
         }
 
@@ -110,7 +114,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Start with default configs
         YamlConfiguration config = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
-        getLogger().info(" Based on defaults " + defaultsFileName);
+        info(" Based on defaults " + defaultsFileName);
 
         // Load an example if one is specified
         if (usingExample) {
@@ -118,7 +122,7 @@ public class ConfigurationLoadTask implements Runnable {
             if (input != null)  {
                 ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                 ConfigurationUtils.addConfigurations(config, exampleConfig);
-                getLogger().info(" Using " + examplesFileName);
+                info(" Using " + examplesFileName);
             }
         }
         // Add in examples
@@ -130,7 +134,7 @@ public class ConfigurationLoadTask implements Runnable {
                 {
                     ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                     ConfigurationUtils.addConfigurations(config, exampleConfig, false);
-                    getLogger().info(" Added " + examplesFileName);
+                    info(" Added " + examplesFileName);
                 }
             }
         }
@@ -165,11 +169,11 @@ public class ConfigurationLoadTask implements Runnable {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
         if (!configFile.exists()) {
-            getLogger().info("Saving template " + configFileName + ", edit to customize configuration.");
+            info("Saving template " + configFileName + ", edit to customize configuration.");
             plugin.saveResource(configFileName, false);
         }
 
-        getLogger().info("Loading " + configFile.getName());
+        info("Loading " + configFile.getName());
         return CompatibilityUtils.loadConfiguration(configFile);
     }
 
@@ -199,7 +203,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load defaults
         if (loadDefaults) {
-            getLogger().info(" Based on defaults " + defaultsFileName);
+            info(" Based on defaults " + defaultsFileName);
             if (disableDefaults) {
                 disableAll(defaultConfig);
             }
@@ -227,7 +231,7 @@ public class ConfigurationLoadTask implements Runnable {
                             }
 
                             ConfigurationUtils.addConfigurations(config, inheritedConfig);
-                            getLogger().info(" Inheriting from " + inheritFrom);
+                            info(" Inheriting from " + inheritFrom);
                         }
                     }
                 }
@@ -242,7 +246,7 @@ public class ConfigurationLoadTask implements Runnable {
                     enableAll(exampleConfig);
                 }
                 ConfigurationUtils.addConfigurations(config, exampleConfig);
-                getLogger().info(" Using " + examplesFileName);
+                info(" Using " + examplesFileName);
             }
         }
 
@@ -268,7 +272,7 @@ public class ConfigurationLoadTask implements Runnable {
                         enableAll(exampleConfig);
                     }
                     ConfigurationUtils.addConfigurations(config, exampleConfig, false);
-                    getLogger().info(" Added " + examplesFileName);
+                    info(" Added " + examplesFileName);
                 }
             }
         }
@@ -360,7 +364,7 @@ public class ConfigurationLoadTask implements Runnable {
                     config = loadConfigFolder(config, file, setEnabled);
                 } else {
                     ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
-                    getLogger().info("  Loading " + file.getName());
+                    info("  Loading " + file.getName());
                     if (setEnabled) {
                         enableAll(fileOverrides);
                     }

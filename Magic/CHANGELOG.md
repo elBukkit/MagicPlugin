@@ -4,6 +4,7 @@
 
  - Fix for some internal CraftBukkit changes somewhere in 1.13.2
  - Block and mob photo improvements (Thanks to Yanis48!)
+ - Reduce log spam by default (use log_verbosity in config.yml to get all those logs back, if you want)
 
 # 7.6.18
 

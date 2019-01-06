@@ -128,7 +128,7 @@ public class MagicRecipe {
         return outputType != null;
     }
 
-    public void register(Plugin plugin)
+    public void register(MagicController controller, Plugin plugin)
     {
         // I think we can only do this once..
         if (FIRST_REGISTER) {
@@ -156,7 +156,7 @@ public class MagicRecipe {
                 }
             }
 
-            plugin.getLogger().info("Adding crafting recipe for " + outputKey);
+            controller.info("Adding crafting recipe for " + outputKey);
             try {
                 plugin.getServer().addRecipe(recipe);
             } catch (Exception ex) {

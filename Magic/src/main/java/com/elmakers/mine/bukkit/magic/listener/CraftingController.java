@@ -86,13 +86,13 @@ public class CraftingController implements Listener {
         return controller.hasPermission(player, "Magic.craft." + recipe.getKey(), true);
     }
 
-    public void register(Plugin plugin) {
+    public void register(MagicController controller, Plugin plugin) {
         if (!craftingEnabled) {
             return;
         }
         for (List<MagicRecipe> list : recipes.values()) {
             for (MagicRecipe recipe : list) {
-                recipe.register(plugin);
+                recipe.register(controller, plugin);
             }
         }
     }

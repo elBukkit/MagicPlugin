@@ -997,7 +997,7 @@ public class MagicController implements MageController {
         // Check for LibsDisguise
         Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
         if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
-            getLogger().info("LibsDisguises not found");
+            getLogger().info("LibsDisguises not found, magic mob disguises will not be available");
         } else if (libsDisguiseEnabled) {
             libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
             if (libsDisguiseManager.initialize()) {
@@ -1599,7 +1599,7 @@ public class MagicController implements MageController {
         initialized = true;
 
         // Register crafting recipes
-        crafting.register(plugin);
+        crafting.register(this, plugin);
         MagicRecipe.FIRST_REGISTER = false;
 
         // Notify plugins that we've finished loading.
@@ -1765,11 +1765,11 @@ public class MagicController implements MageController {
             @Override
             public void run() {
                 // Load lost wands
-                getLogger().info("Loading lost wand data");
+                info("Loading lost wand data");
                 loadLostWands();
 
                 // Load toggle-on-load blocks
-                getLogger().info("Loading automata data");
+                info("Loading automata data");
                 loadAutomata();
 
                 // Load URL Map Data
@@ -1780,11 +1780,11 @@ public class MagicController implements MageController {
                     ex.printStackTrace();
                 }
 
-                getLogger().info("Loading warps");
+                info("Loading warps");
                 ConfigurationSection warps = loadDataFile(WARPS_FILE);
                 if (warps != null) {
                     warpController.load(warps);
-                    getLogger().info("Loaded " + warpController.getCustomWarps().size() + " warps");
+                    info("Loaded " + warpController.getCustomWarps().size() + " warps");
                 }
 
                 getLogger().info("Finished loading data.");
@@ -1811,7 +1811,7 @@ public class MagicController implements MageController {
             ex.printStackTrace();
         }
 
-        getLogger().info("Loaded " + lostWands.size() + " lost wands");
+        info("Loaded " + lostWands.size() + " lost wands");
     }
 
     protected void loadAutomata() {
@@ -1856,7 +1856,7 @@ public class MagicController implements MageController {
             }
         }
 
-        getLogger().info("Loaded " + automataCount + " automata");
+        info("Loaded " + automataCount + " automata");
     }
 
     protected void saveWarps(Collection<YamlDataFile> stores) {
@@ -5381,7 +5381,9 @@ public class MagicController implements MageController {
                 catch (Exception e) {
                     cancelResourcePackChecks();
                     responses.add("An unexpected error occurred while checking your resource pack, cancelling checks until restart (see logs): " + ChatColor.DARK_RED + finalResourcePack);
-                    e.printStackTrace();
+                    if (logVerbosity > 2) {
+                        e.printStackTrace();
+                    }
                 }
 
                 if (!quiet) {
