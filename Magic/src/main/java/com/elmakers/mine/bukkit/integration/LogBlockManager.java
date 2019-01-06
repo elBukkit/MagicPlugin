@@ -12,10 +12,8 @@ import de.diddiz.LogBlock.LogBlock;
 
 public class LogBlockManager {
     private final Consumer consumer;
-    private final Plugin owner;
 
     public LogBlockManager(Plugin owningPlugin, Plugin logBlockPlugin) {
-        this.owner = owningPlugin;
         consumer = ((LogBlock)logBlockPlugin).getConsumer();
     }
 
