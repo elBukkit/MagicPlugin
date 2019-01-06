@@ -32,7 +32,6 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
 
     }
 
-    @SuppressWarnings("deprecation")
     public void load(short width, short height, short length, short[] blockTypes, byte[] data, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin, Vector offset) {
         size = new Vector(width, height, length);
         center = new Vector(Math.floor(size.getBlockX() / 2), 0, Math.floor(size.getBlockZ() / 2));
