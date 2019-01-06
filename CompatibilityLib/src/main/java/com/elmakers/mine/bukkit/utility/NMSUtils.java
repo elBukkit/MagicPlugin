@@ -267,6 +267,8 @@ public class NMSUtils {
     protected static Constructor class_ChestLock_Constructor;
     protected static Constructor class_AxisAlignedBB_Constructor;
     protected static Constructor class_ItemStack_consructor;
+    protected static Constructor class_NBTTagCompound_constructor;
+    protected static Constructor class_NBTTagList_constructor;
     protected static Constructor class_NBTTagString_consructor;
     protected static Constructor class_NBTTagByte_constructor;
     protected static Constructor class_NBTTagDouble_constructor;
@@ -479,6 +481,8 @@ public class NMSUtils {
             class_Firework_expectedLifespanField = class_EntityFirework.getDeclaredField("expectedLifespan");
             class_Firework_expectedLifespanField.setAccessible(true);
 
+            class_NBTTagCompound_constructor = class_NBTTagCompound.getConstructor();
+            class_NBTTagList_constructor = class_NBTTagList.getConstructor();
             class_NBTTagString_consructor = class_NBTTagString.getConstructor(String.class);
             class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
             class_NBTTagDouble_constructor = class_NBTTagDouble.getConstructor(Double.TYPE);
@@ -1421,7 +1425,7 @@ public class NMSUtils {
         try {
             Object tag = class_ItemStack_tagField.get(nmsStack);
             if (tag == null) {
-                class_ItemStack_tagField.set(nmsStack, class_NBTTagCompound.newInstance());
+                class_ItemStack_tagField.set(nmsStack, class_NBTTagCompound_constructor.newInstance());
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -1511,10 +1515,10 @@ public class NMSUtils {
                 if (craft == null) return null;
                 Object tagObject = getTag(craft);
                 if (tagObject == null) {
-                    tagObject = class_NBTTagCompound.newInstance();
+                    tagObject = class_NBTTagCompound_constructor.newInstance();
                     class_ItemStack_tagField.set(craft, tagObject);
                 }
-                outputObject = class_NBTTagCompound.newInstance();
+                outputObject = class_NBTTagCompound_constructor.newInstance();
                 class_NBTTagCompound_setMethod.invoke(tagObject, tag, outputObject);
             } catch (Throwable ex) {
                 ex.printStackTrace();
@@ -1968,7 +1972,7 @@ public class NMSUtils {
         if (nbtBase == null) return null;
         Object listMeta = null;
         try {
-            listMeta = class_NBTTagList.newInstance();
+            listMeta = class_NBTTagList_constructor.newInstance();
 
             for (String value : values) {
                 Object nbtString = getTagString(value);
@@ -2028,7 +2032,7 @@ public class NMSUtils {
         if (tileEntity == null) return null;
         Object data = null;
         try {
-            data = class_NBTTagCompound.newInstance();
+            data = class_NBTTagCompound_constructor.newInstance();
             class_TileEntity_saveMethod.invoke(tileEntity, data);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2066,7 +2070,7 @@ public class NMSUtils {
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return;
         try {
-            Object entityData = class_NBTTagCompound.newInstance();
+            Object entityData = class_NBTTagCompound_constructor.newInstance();
             class_TileEntity_saveMethod.invoke(tileEntity, entityData);
             Object itemList = class_NBTTagCompound_getListMethod.invoke(entityData, "Items", NBT_TYPE_COMPOUND);
             if (itemList != null) {

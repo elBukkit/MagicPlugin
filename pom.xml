@@ -14,7 +14,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.java>1.8</version.java>
+        <version.java>8</version.java>
         <findbugs.version>1.3.9</findbugs.version>
         <bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
     </properties>
@@ -72,13 +72,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.8.0</version>
                 <configuration>
                     <compilerId>javac-with-errorprone</compilerId>
                     <forceJavacCompilerUse>true</forceJavacCompilerUse>
 
                     <source>${version.java}</source>
                     <target>${version.java}</target>
+                    <release>${version.java}</release>
 
                     <compilerArgs>
                         <arg>-Xlint:all,-serial,-fallthrough</arg>

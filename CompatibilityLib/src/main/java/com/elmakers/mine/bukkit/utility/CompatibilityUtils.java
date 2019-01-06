@@ -1088,7 +1088,7 @@ public class CompatibilityUtils extends NMSUtils {
 
             String attributeName = toMinecraftAttribute(attribute);
             if (attributesNode == null) {
-                attributesNode = class_NBTTagList.newInstance();
+                attributesNode = class_NBTTagList_constructor.newInstance();
                 class_NBTTagCompound_setMethod.invoke(tag, "AttributeModifiers", attributesNode);
             } else {
                 int size = (Integer)class_NBTTagList_sizeMethod.invoke(attributesNode);
@@ -1102,7 +1102,7 @@ public class CompatibilityUtils extends NMSUtils {
                 }
             }
             if (attributeNode == null) {
-                attributeNode = class_NBTTagCompound.newInstance();
+                attributeNode = class_NBTTagCompound_constructor.newInstance();
                 setMeta(attributeNode, "AttributeName", attributeName);
                 setMeta(attributeNode, "Name", "Equipment Modifier");
                 setMetaInt(attributeNode, "Operation", attributeOperation);
@@ -1138,7 +1138,7 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             Object nmsEntity = getHandle(entity);
             if (nmsEntity != null) {
-                data = class_NBTTagCompound.newInstance();
+                data = class_NBTTagCompound_constructor.newInstance();
                 class_Entity_saveMethod.invoke(nmsEntity, data);
             }
         } catch (Exception ex) {

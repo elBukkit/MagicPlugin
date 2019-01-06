@@ -149,17 +149,17 @@ public class InventoryUtils extends NMSUtils
         } else if (value instanceof Long) {
             wrappedValue = class_NBTTagLong_constructor.newInstance((Long)value);
         } else if (value instanceof ConfigurationSection) {
-            wrappedValue = class_NBTTagCompound.newInstance();
+            wrappedValue = class_NBTTagCompound_constructor.newInstance();
             saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);
         } else if (value instanceof Map) {
-            wrappedValue = class_NBTTagCompound.newInstance();
+            wrappedValue = class_NBTTagCompound_constructor.newInstance();
             @SuppressWarnings("unchecked")
             Map<String, Object> valueMap = (Map<String, Object>)value;
             saveTagsToNBT(valueMap, wrappedValue, null);
         } else if (value instanceof Collection) {
             @SuppressWarnings("unchecked")
             Collection<Object> list = (Collection<Object>)value;
-            Object listMeta = class_NBTTagList.newInstance();
+            Object listMeta = class_NBTTagList_constructor.newInstance();
             for (Object item : list) {
                 if (item != null) {
                     class_NBTTagList_addMethod.invoke(listMeta, wrapInTag(item));
@@ -307,8 +307,8 @@ public class InventoryUtils extends NMSUtils
 
             Object properties = createNode(skullOwner, "Properties");
 
-            Object listMeta = class_NBTTagList.newInstance();
-            Object textureNode = class_NBTTagCompound.newInstance();
+            Object listMeta = class_NBTTagList_constructor.newInstance();
+            Object textureNode = class_NBTTagCompound_constructor.newInstance();
 
             String textureJSON = "{textures:{SKIN:{url:\"" + url + "\"}}}";
             String encoded = Base64Coder.encodeString(textureJSON);
