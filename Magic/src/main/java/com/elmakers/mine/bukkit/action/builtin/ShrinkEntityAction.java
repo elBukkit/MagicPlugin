@@ -6,7 +6,6 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -27,15 +26,6 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class ShrinkEntityAction extends DamageAction
 {
-    private boolean skeletons;
-
-    @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
-    {
-        super.prepare(context, parameters);
-        skeletons = parameters.getBoolean("skeletons", true);
-    }
-
     @Override
     public SpellResult perform(CastContext context)
     {
