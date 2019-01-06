@@ -35,7 +35,7 @@ public class WorldGuardAPI {
     private Method locationAdaptMethod = null;
     private Method worldAdaptMethod = null;
     private Method regionManagerGetMethod = null;
-    private Constructor vectorConstructor = null;
+    private Constructor<?> vectorConstructor = null;
     private Method vectorConstructorAsAMethodBecauseWhyNot = null;
     private StateFlag buildFlag;
     private StateFlag pvpFlag;
