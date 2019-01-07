@@ -2,6 +2,8 @@
 
 # 7.6.20
 
+ - Fix icons on selector options using cast_spell with skull-based icons
+
 # 7.6.19
 
  - Fix for some internal CraftBukkit changes somewhere in 1.13.2

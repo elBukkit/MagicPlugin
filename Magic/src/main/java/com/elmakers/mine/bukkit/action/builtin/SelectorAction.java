@@ -638,6 +638,12 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     if (icon == null && spellTemplate.getIcon() != null) {
                         icon = spellTemplate.getIcon().getItemStack(1);
                     }
+                    if (icon == null && unavailable && spellTemplate.getDisabledIconURL() != null) {
+                        icon = controller.getURLSkull(spellTemplate.getDisabledIconURL());
+                    }
+                    if (icon == null && spellTemplate.getIconURL() != null) {
+                        icon = controller.getURLSkull(spellTemplate.getIconURL());
+                    }
                 }
             }
 
