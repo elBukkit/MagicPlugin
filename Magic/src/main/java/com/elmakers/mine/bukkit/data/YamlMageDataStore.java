@@ -83,6 +83,7 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
                     FileLock lock = channel.lock();
                     controller.info("  Obtained lock for " + lockFile.getName() + " at " + System.currentTimeMillis());
                     locks.put(id, lock);
+                    file.close();
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.WARNING, "Unable to obtain file lock for " + id, ex);
                 }
