@@ -12,6 +12,7 @@ apprentice:
       - disarm
       - ghast
       - glide
+      - horse
     spells:
       - breach
       - disintegrate

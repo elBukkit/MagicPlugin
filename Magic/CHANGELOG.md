@@ -5,6 +5,7 @@
  - Fix icons on selector options using cast_spell with skull-based icons
  - Boon changed to only work on caster, avoid strange behavior when turned off
  - The Horse spell requires empty space, to avoid exploits
+ - Add Horse spell to Apprentice path
 
 # 7.6.19
 
