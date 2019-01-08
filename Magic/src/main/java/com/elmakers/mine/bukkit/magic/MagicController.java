@@ -970,7 +970,7 @@ public class MagicController implements MageController {
                 heroesManager = null;
             }
         } catch (Throwable ex) {
-            plugin.getLogger().warning(ex.getMessage());
+            getLogger().warning(ex.getMessage());
         }
 
         // Vault integration
@@ -1148,7 +1148,7 @@ public class MagicController implements MageController {
                 dynmap = null;
             }
         } catch (Throwable ex) {
-            plugin.getLogger().warning(ex.getMessage());
+            getLogger().warning(ex.getMessage());
         }
 
         if (dynmap == null) {
@@ -1166,7 +1166,7 @@ public class MagicController implements MageController {
                 elementals = null;
             }
         } catch (Throwable ex) {
-            plugin.getLogger().warning(ex.getMessage());
+            getLogger().warning(ex.getMessage());
         }
 
         if (elementals != null) {
@@ -1192,7 +1192,7 @@ public class MagicController implements MageController {
         } catch (Throwable ex) {
             citizens = null;
             getLogger().warning("Error integrating with Citizens");
-            plugin.getLogger().warning(ex.getMessage());
+            getLogger().warning(ex.getMessage());
         }
 
         if (citizens != null) {
@@ -1383,9 +1383,9 @@ public class MagicController implements MageController {
                     });
                 }
 
-                plugin.getLogger().info("Activated BStats");
+                getLogger().info("Activated BStats");
             } catch (Exception ex) {
-                plugin.getLogger().warning("Failed to load BStats: " + ex.getMessage());
+                getLogger().warning("Failed to load BStats: " + ex.getMessage());
             }
         }
     }

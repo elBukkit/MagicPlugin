@@ -1128,7 +1128,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             {
                 ItemStack itemStack = createBrushIcon(brushKey);
                 if (itemStack == null) {
-                    controller.getPlugin().getLogger().warning("Unable to create brush icon for key " + brushKey);
+                    controller.getLogger().warning("Unable to create brush icon for key " + brushKey);
                     continue;
                 }
                 Integer slot = brushInventory.get(brushKey);
@@ -1345,7 +1345,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             ItemStack originalItemStack = null;
             com.elmakers.mine.bukkit.api.block.MaterialAndData icon = spell.getIcon();
             if (icon == null) {
-                controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");
+                controller.getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");
                 return null;
             }
             try {
@@ -1358,7 +1358,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (itemStack == null) {
                 if (icon.getMaterial() != Material.AIR) {
                     String iconName = icon.getName();
-                    controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + iconName);
+                    controller.getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + iconName);
                 }
                 return originalItemStack;
             }

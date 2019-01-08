@@ -1441,7 +1441,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 data.setHealth(li.getHealth());
             }
         } catch (Exception ex) {
-            controller.getPlugin().getLogger().log(Level.WARNING, "Failed to save player data for " + playerName, ex);
+            controller.getLogger().log(Level.WARNING, "Failed to save player data for " + playerName, ex);
             return false;
         }
         return true;
