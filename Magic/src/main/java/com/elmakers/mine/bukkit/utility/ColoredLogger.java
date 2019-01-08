@@ -1,0 +1,31 @@
+package com.elmakers.mine.bukkit.utility;
+
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
+public class ColoredLogger extends Logger {
+    private final Logger log;
+    private boolean colorize;
+
+    public ColoredLogger(Logger wrap) {
+        super(wrap.getName(), wrap.getResourceBundleName());
+        this.log = wrap;
+        this.colorize = true;
+    }
+
+    public void log(LogRecord record) {
+        if (colorize) {
+            if (record.getLevel() == Level.SEVERE) {
+                record.setMessage("\u001b[31m " + record.getMessage() + "\u001b[0m");
+            } else if (record.getLevel() == Level.WARNING) {
+                record.setMessage("\u001b[33m " + record.getMessage() + "\u001b[0m");
+            }
+        }
+        log.log(record);
+    }
+
+    public void setColorize(boolean colorize) {
+        this.colorize = colorize;
+    }
+}

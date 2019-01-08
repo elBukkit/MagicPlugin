@@ -177,6 +177,7 @@ import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.requirements.RequirementsController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
+import com.elmakers.mine.bukkit.utility.ColoredLogger;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -212,7 +213,7 @@ public class MagicController implements MageController {
 
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
-        this.logger = plugin.getLogger();
+        this.logger = new ColoredLogger(plugin.getLogger());
 
         SkinUtils.initialize(plugin);
 
@@ -2332,6 +2333,9 @@ public class MagicController implements MageController {
         if (properties == null) return;
 
         logVerbosity = properties.getInt("log_verbosity", 0);
+        if (logger instanceof ColoredLogger) {
+            ((ColoredLogger)logger).setColorize(properties.getBoolean("colored_logs", true));
+        }
 
         // Cancel any pending save tasks
         if (autoSaveTaskId > 0) {

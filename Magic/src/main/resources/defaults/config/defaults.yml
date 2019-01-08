@@ -63,6 +63,9 @@ show_cast_messages: true
 # with Magic, the extra log info may help me find problems.
 log_verbosity: 0
 
+# Use this to turn off colored error and warning messages
+colored_logs: true
+
 # Prevent rapid sending of chat messages from the plugin (in milliseconds)
 message_throttle: 500
 

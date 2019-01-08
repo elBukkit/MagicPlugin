@@ -9,7 +9,6 @@ import java.util.logging.Level;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -98,7 +97,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
                 }
                 loadAction(action, actionConfiguration);
             } catch (Exception ex) {
-                Bukkit.getLogger().log(Level.WARNING, "Error loading class " + actionClassName + " for spell " + spell.getName(), ex);
+                spell.getController().getLogger().log(Level.WARNING, "Error loading class " + actionClassName + " for spell " + spell.getName(), ex);
             }
         }
     }
