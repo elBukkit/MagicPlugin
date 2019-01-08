@@ -6,20 +6,39 @@ anvil:
     actions:
       cast:
       - class: ChangeContext
-        target_attachment: true
         target_offset: 0,8,0
         actions:
-        - class: ModifyBlock
+        - class: SpawnEntity
+          set_target: true
+          actions:
+          - class: PlayEffects
+            effects: land
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
     worth: 100
     effects:
+        land:
+        - sound: block_stone_step
+          sound_pitch: 0.7
+        - class: EffectRing
+          particle: block_crack
+          period: 4
+          particle_count: 30
+          radius: 2
+          particle_offset_x: 0.9
+          particle_offset_z: 0.9
+          particle_offset_y: 0.1
+          material: anvil
         cast:
         -  class: EffectSingle
            particle: block_crack
            location: target
            particle_count: 30
-           particle_offset_x: 2
+           particle_offset_x: 0.1
            particle_offset_y: 0.1
-           particle_offset_z: 2
+           particle_offset_z: 0.1
+           material: anvil
     parameters:
         target: other
         target_type: LivingEntity
@@ -27,8 +46,10 @@ anvil:
         range: 16
         undo: 30000
         cooldown: 20000
-        brush: anvil
-        destructible: air
+        type: falling_block
+        material: anvil
+        radius: 2
+        damage: 5
     costs:
         mana: 100
 
