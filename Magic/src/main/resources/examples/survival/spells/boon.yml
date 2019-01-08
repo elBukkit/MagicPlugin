@@ -9,37 +9,37 @@ boon:
     upgrade_required_path: beginner
     upgrade_required_casts: 40
     quick_cast: true
-    toggle: undo
+    toggle: cancel
     disable_mana_regeneration: true
     actions:
         cast:
-        - class: PotionEffect
+        - class: Repeat
+          actions:
+          - class: PotionEffect
+            duration: 5000
+          - class: Delay
+            delay: 1000
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_experience_orb_pickup
-        -  class: EffectTrail
-           particle: redstone
-           particle_data: 2
-           particle_count: 3
-        -  class: EffectSingle
-           location: target
-           effectLib:
-             class: TraceEffect
-             particle: redstone
+        - sound: entity_experience_orb_pickup
+        - location: origin
+          source_location: body
+          color_override: color
+          effectlib:
+              class: EquationEffect
+              x_equation: 0
+              y_equation: "0.4 * (cos(t/57.2958)  * (2.71828^(cos(t/57.2958)) - 2 * cos(4t/57.2958) - (sin(t/(12 * 57.2958)))^5))"
+              z_equation: "0.4 * (sin(t/57.2958)  * (2.71828^(cos(t/57.2958)) - 2 * cos(4t/57.2958) - (sin(t/(12 * 57.2958)))^5))"
+              particles: 50
+              duration: 3600000
+              relative_offset: -0.5,0,0
+              disappear_with_origin_entity: true
     parameters:
-        target: any_entity
-        range: 32
-        target_type: Player
+        target: self
         effect_speed: 1
-        bypass_friendly_fire: true
-        only_friendly: true
-        bypass_pvp: true
-        cooldown: 200
-        undo: 600000
-        duration: 600000
-        cooldown: 5000
+        cooldown: 6000
         cancel_on_death: true
+        repeat: infinite
     costs:
         mana: 20
     active_costs:

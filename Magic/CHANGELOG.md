@@ -3,6 +3,7 @@
 # 7.6.20
 
  - Fix icons on selector options using cast_spell with skull-based icons
+ - Boon changed to only work on caster, avoid strange behavior when turned off
 
 # 7.6.19
 
