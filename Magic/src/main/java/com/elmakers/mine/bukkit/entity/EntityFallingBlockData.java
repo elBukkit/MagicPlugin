@@ -15,6 +15,8 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 public class EntityFallingBlockData extends EntityExtraData {
     @Nullable
     private MaterialAndData material;
+    private boolean dropItems;
+    private boolean hurtEntities;
 
     private EntityFallingBlockData(MaterialAndData material) {
         this.material = material;
@@ -22,11 +24,15 @@ public class EntityFallingBlockData extends EntityExtraData {
 
     public EntityFallingBlockData(ConfigurationSection configuration) {
         material = ConfigurationUtils.getMaterialAndData(configuration, "material");
+        dropItems = configuration.getBoolean("drop_items", false);
+        hurtEntities = configuration.getBoolean("hurt_entities", true);
     }
 
     public EntityFallingBlockData(FallingBlock fallingBlock) {
         byte data = NMSUtils.getBlockData(fallingBlock);
         material = new com.elmakers.mine.bukkit.block.MaterialAndData(fallingBlock.getMaterial(), data);
+        fallingBlock.setDropItem(dropItems);
+        fallingBlock.setHurtEntities(hurtEntities);
     }
 
     @Override
