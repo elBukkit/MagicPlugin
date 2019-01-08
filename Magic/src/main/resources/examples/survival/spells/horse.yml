@@ -3,6 +3,7 @@ horse:
     icon_disabled: diamond_hoe:49
     icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
     category: elemental
+    cast_on_no_target: false
     actions:
       cast:
       - class: ChangeContext
