@@ -83,6 +83,7 @@ spells:
         name: Horse
         description: Summon and mount a horse
         cast: Giddyup!
+        nospace: "&cFind a clear space for your horse"
     tame:
         name: Tame
         description: Tame your target

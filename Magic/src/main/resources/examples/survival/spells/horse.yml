@@ -5,13 +5,33 @@ horse:
     category: elemental
     actions:
       cast:
+      - class: ChangeContext
+        target_offset: 0,1,0
+        actions:
+        - class: Plane
+          radius: 1
+          actions:
+          - class: CheckBlock
+            allowed: passthrough
+            fail:
+            - class: Message
+              message_type: action_bar
+              message_key: nospace
+              ignore_result: true
+            - class: Stop
       - class: SpawnEntity
       - class: Mount
+      - class: PlayEffects
+        effects: spawned
     worth: 200
     effects:
-        cast:
+        failed:
+        - sound: block_note_bass
+          sound_volume: 1.5
+          sound_pitch: 1.5
+        spawned:
         -  class: EffectSingle
-           sound: entity_villager_yes
+           sound: entity_horse_angry
            effectlib:
              class: DnaEffect
              particle_helix: drip_lava
