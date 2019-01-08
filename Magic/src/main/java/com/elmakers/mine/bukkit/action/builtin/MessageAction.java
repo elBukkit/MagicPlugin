@@ -31,8 +31,18 @@ public class MessageAction extends BaseSpellAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        message = ChatColor.translateAlternateColorCodes('&', parameters.getString("message", ""));
-        subMessage = ChatColor.translateAlternateColorCodes('&', parameters.getString("sub_message", ""));
+        String messageKey = parameters.getString("message_key");
+        if (messageKey != null) {
+            message = context.getMessage(messageKey);
+        } else {
+            message = ChatColor.translateAlternateColorCodes('&', parameters.getString("message", ""));
+        }
+        String subMessageKey = parameters.getString("sub_message_key");
+        if (subMessageKey != null) {
+            subMessage = context.getMessage(subMessageKey);
+        } else {
+            subMessage = ChatColor.translateAlternateColorCodes('&', parameters.getString("sub_message", ""));
+        }
         fadeIn = parameters.getInt("fade_in", -1);
         stay = parameters.getInt("stay", -1);
         fadeOut = parameters.getInt("fade_out", -1);
@@ -93,9 +103,11 @@ public class MessageAction extends BaseSpellAction
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
+        parameters.add("message_key");
         parameters.add("message");
         parameters.add("equation");
         parameters.add("sub_message");
+        parameters.add("sub_message_key");
         parameters.add("message_type");
         parameters.add("message_target");
         parameters.add("stay");
