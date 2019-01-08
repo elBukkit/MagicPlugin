@@ -128,7 +128,7 @@ public class SpawnEntityAction extends CompoundAction
         Entity spawned = entity.get();
         if (spawned == null || spawned.isDead() || !spawned.isValid()) {
             if (setTarget && spawned != null) {
-                createActionContext(context, spawned, spawned.getLocation());
+                createActionContext(context, spawned, spawned.getLocation(), spawned, spawned.getLocation());
             }
             return startActions();
         }
