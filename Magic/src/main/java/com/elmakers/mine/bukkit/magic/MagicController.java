@@ -33,6 +33,7 @@ import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -84,8 +85,6 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.MageData;
-import com.elmakers.mine.bukkit.api.data.MageDataCallback;
-import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
@@ -122,6 +121,7 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
+import com.elmakers.mine.bukkit.data.MageRepository;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.economy.CustomCurrency;
@@ -198,10 +198,15 @@ import com.elmakers.mine.bukkit.warp.WarpController;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.SettableFuture;
 
 import de.slikey.effectlib.math.EquationStore;
 
 public class MagicController implements MageController {
+    private final MageRepository mageRepository = new MageRepository(this);
 
     // Special constructor used for interrogation
     public MagicController() {
@@ -226,6 +231,8 @@ public class MagicController implements MageController {
         defaultsFolder = new File(configFolder, "defaults");
         defaultsFolder.mkdirs();
     }
+
+    // Mage tracking
 
     @Nullable
     @Override
@@ -349,78 +356,10 @@ public class MagicController implements MageController {
 
         com.elmakers.mine.bukkit.magic.Mage apiMage = null;
         if (!mages.containsKey(mageId)) {
-            if (entity instanceof Player && !((Player)entity).isOnline() && !isNPC(entity))
-            {
-                getLogger().warning("Player data for " + mageId + " (" + entity.getName() + ") loaded while offline!");
-                Thread.dumpStack();
-                // This will cause some really bad things to happen if using file locking, so we're going to just skip it.
-                if (isFileLockingEnabled) {
-                    getLogger().warning("Returning dummy Mage to avoid locking issues");
-                    return new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
-                }
-            }
-
-            final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
-
+            com.elmakers.mine.bukkit.magic.Mage mage = mageRepository.loadOrCreateMage(
+                    mageId, mageName,
+                    commandSender, entity);
             mages.put(mageId, mage);
-            mage.setName(mageName);
-            mage.setCommandSender(commandSender);
-            mage.setEntity(entity);
-            if (entity instanceof Player) {
-                mage.setPlayer((Player) entity);
-            }
-
-            // Check for existing data file
-            // For now we only do async loads for Players
-            boolean isPlayer = (entity instanceof Player);
-            isPlayer = (isPlayer && !isNPC(entity));
-            if (savePlayerData && mageDataStore != null) {
-                if (isPlayer) {
-                    mage.setLoading(true);
-                    plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            synchronized (saveLock) {
-                                info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
-                                try {
-                                    mageDataStore.load(mage.getId(), new MageDataCallback() {
-                                        @Override
-                                        public void run(MageData data) {
-                                        mage.load(data);
-                                        info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
-                                        }
-                                    });
-                                } catch (Exception ex) {
-                                    getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
-                                    ex.printStackTrace();
-                                }
-                            }
-                        }
-                    }, fileLoadDelay * 20 / 1000);
-                } else if (saveNonPlayerMages) {
-                    info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") synchronously");
-                    synchronized (saveLock) {
-                        try {
-                            mageDataStore.load(mage.getId(), new MageDataCallback() {
-                                @Override
-                                public void run(MageData data) {
-                                mage.load(data);
-                                }
-                            });
-                        } catch (Exception ex) {
-                            getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
-                            ex.printStackTrace();
-                        }
-                    }
-                } else {
-                    mage.load(null);
-                }
-            } else if (externalPlayerData && (isPlayer || saveNonPlayerMages)) {
-                mage.setLoading(true);
-            } else {
-                mage.load(null);
-            }
-
             apiMage = mage;
         } else {
             apiMage = mages.get(mageId);
@@ -443,6 +382,32 @@ public class MagicController implements MageController {
         }
         return apiMage;
     }
+
+    public ListenableFuture<MageData> saveMage(Mage mage) {
+        return mageRepository.saveMage(mage);
+    }
+
+    @Override
+    public void deleteMage(String id) {
+        Mage mage = getRegisteredMage(id);
+        if (mage == null) {
+            return;
+        }
+
+        ListenableFuture<MageData> future = playerQuit(mage);
+        future.addListener(() -> {
+            mageRepository.delete(id);
+
+            // If this was a player and that player is online, reload them so they function
+            // normally.
+            Player player = mage.getPlayer();
+            if (player != null && player.isOnline()) {
+                getMage(player);
+            }
+        }, t -> Bukkit.getScheduler().runTask(plugin, t));
+    }
+
+    // End mage tracking
 
     @Override
     public void info(String message)
@@ -2082,20 +2047,19 @@ public class MagicController implements MageController {
         return defaultWandPath;
     }
 
-    protected void savePlayerData(Collection<MageData> stores) {
+    protected void savePlayerData(boolean asynchronous) {
+        info("Saving " + mages.size() + " players");
+
         try {
             for (Entry<String, ? extends Mage> mageEntry : mages.entrySet()) {
                 Mage mage = mageEntry.getValue();
-                if (!mage.isPlayer() && !saveNonPlayerMages)
-                {
+                if (!mage.isPlayer()
+                        && !mageRepository.isSaveNonPlayerMages()) {
                     continue;
                 }
 
                 if (!mage.isLoading()) {
-                    MageData mageData = new MageData(mage.getId());
-                    if (mage.save(mageData)) {
-                        stores.add(mageData);
-                    }
+                    mageRepository.saveMage(mage, asynchronous);
                 } else {
                     getLogger().info("Skipping save of mage, already loading: " + mage.getName());
                 }
@@ -2115,48 +2079,43 @@ public class MagicController implements MageController {
         if (!initialized) return;
         maps.save(asynchronous);
 
-        final List<YamlDataFile> saveData = new ArrayList<>();
-        final List<MageData> saveMages = new ArrayList<>();
-        if (savePlayerData && mageDataStore != null) {
-            savePlayerData(saveMages);
+        if (mageRepository.shouldSavePlayerData()
+                && mageRepository.hasDataStore()) {
+            savePlayerData(asynchronous);
         }
-        info("Saving " + saveMages.size() + " players");
+
+        List<YamlDataFile> saveData = new ArrayList<>();
         saveSpellData(saveData);
         saveLostWands(saveData);
         saveAutomata(saveData);
         saveWarps(saveData);
 
-        if (mageDataStore != null) {
-            if (asynchronous) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (saveLock) {
-                            for (MageData mageData : saveMages) {
-                                mageDataStore.save(mageData, null, false);
-                            }
-                            for (YamlDataFile config : saveData) {
-                                config.save();
-                            }
-                            info("Finished saving");
-                        }
-                    }
-                });
-            } else {
-                synchronized (saveLock) {
-                    for (MageData mageData : saveMages) {
-                        mageDataStore.save(mageData, null, false);
-                    }
-                    for (YamlDataFile config : saveData) {
-                        config.save();
-                    }
-                    info("Finished saving");
-                }
-            }
-        }
+        save(asynchronous, saveData);
 
         SaveEvent saveEvent = new SaveEvent(asynchronous);
         Bukkit.getPluginManager().callEvent(saveEvent);
+    }
+
+    public void save(
+            boolean asynchronous,
+            List<YamlDataFile> saveData) {
+        if (asynchronous) {
+            Bukkit.getScheduler().runTaskAsynchronously(
+                    plugin,
+                    () -> {
+                        doSave(saveData);
+                    });
+        } else {
+            doSave(saveData);
+        }
+    }
+
+    private void doSave(List<YamlDataFile> saveData) {
+        for (YamlDataFile config : saveData) {
+            config.save();
+        }
+
+        info("Finished saving");
     }
 
     protected void loadSpells(ConfigurationSection spellConfigs)
@@ -2390,7 +2349,6 @@ public class MagicController implements MageController {
         pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
         undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
         commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
-        saveNonPlayerMages = properties.getBoolean("save_non_player_mages", saveNonPlayerMages);
         defaultWandPath = properties.getString("default_wand_path", "");
         Wand.DEFAULT_WAND_TEMPLATE = properties.getString("default_wand", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
@@ -2697,42 +2655,7 @@ public class MagicController implements MageController {
             autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoSave,
                     autoSaveIntervalTicks, autoSaveIntervalTicks);
         }
-
-        savePlayerData = properties.getBoolean("save_player_data", true);
-        externalPlayerData = properties.getBoolean("external_player_data", false);
-        if (externalPlayerData) {
-            getLogger().info("Magic is expecting player data to be loaded from an external source");
-        } else if (!savePlayerData) {
-            getLogger().info("Magic player data saving is disabled");
-        }
-        asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
-        isFileLockingEnabled = properties.getBoolean("use_file_locking", false);
-        fileLoadDelay = properties.getInt("file_load_delay", 0);
-
-        ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
-        if (mageDataStore != null) {
-            String dataStoreClassName = mageDataStore.getString("class");
-            try {
-                Class<?> dataStoreClass = Class.forName(dataStoreClassName);
-                Object dataStore = dataStoreClass.getDeclaredConstructor().newInstance();
-                if (dataStore == null || !(dataStore instanceof MageDataStore))
-                {
-                    getLogger().log(Level.WARNING, "Invalid player_data_store class " + dataStoreClassName + ", does it implement MageDataStore? Player data saving is disabled!");
-                    this.mageDataStore = null;
-                }
-                else
-                {
-                    this.mageDataStore = (MageDataStore)dataStore;
-                    this.mageDataStore.initialize(this, mageDataStore);
-                }
-            } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Failed to create player_data_store class from " + dataStoreClassName + " player data saving is disabled!", ex);
-                this.mageDataStore = null;
-            }
-        } else {
-            getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
-            this.mageDataStore = null;
-        }
+        mageRepository.loadProperties(properties);
 
         // Semi-deprecated Wand defaults
         Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
@@ -3206,7 +3129,7 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void mageQuit(final Mage mage, final MageDataCallback callback) {
+    protected ListenableFuture<MageData> mageQuit(Mage mage) {
         com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
         final boolean isOpen = wand != null && wand.isInventoryOpen();
         mage.deactivate();
@@ -3217,47 +3140,58 @@ public class MagicController implements MageController {
         // players on logout (CombatTagPlus, etc)
         // Don't delay on shutdown, though.
         if (initialized && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            final com.elmakers.mine.bukkit.magic.Mage quitMage = (com.elmakers.mine.bukkit.magic.Mage)mage;
+            final com.elmakers.mine.bukkit.magic.Mage quitMage = (com.elmakers.mine.bukkit.magic.Mage) mage;
             quitMage.setUnloading(true);
-            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    // Just in case the player relogged in that one tick..
-                    if (quitMage.isUnloading()) {
-                        finalizeMageQuit(quitMage, callback, isOpen);
-                    }
-                }
-            }, 1);
+
+            SettableFuture<MageData> future = SettableFuture.create();
+
+            plugin.getServer().getScheduler().runTaskLater(plugin,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            // Just in case the player relogged in that one tick..
+                            if (quitMage.isUnloading()) {
+                                ListenableFuture<MageData> v = finalizeMageQuit(
+                                        quitMage, isOpen);
+
+                                try {
+                                    future.set(v.get());
+                                } catch (ExecutionException e) {
+                                    future.setException(e.getCause());
+                                } catch (InterruptedException e) {
+                                    future.setException(e);
+                                }
+                            }
+                        }
+                    }, 1);
+
+            return future;
         } else {
-            finalizeMageQuit(mage, callback, isOpen);
+            return finalizeMageQuit(mage, isOpen);
         }
     }
 
-    protected void finalizeMageQuit(final Mage mage, final MageDataCallback callback, final boolean isOpen) {
+    private ListenableFuture<MageData> finalizeMageQuit(
+            Mage mage, boolean isOpen) {
         // Unregister
-        if (!externalPlayerData || !mage.isPlayer()) {
+        if (!mageRepository.isExternalPlayerData() || !mage.isPlayer()) {
             removeMage(mage);
         }
-        if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
-        {
+
+        if ((mage.isPlayer() || mageRepository.isSaveNonPlayerMages())
+                && loaded) {
             // Save synchronously on shutdown
-            saveMage(mage, initialized, callback, isOpen, true);
-        }
-        else if (callback != null)
-        {
-            callback.run(null);
+            return mageRepository.saveMage(mage, initialized, isOpen, true);
+        } else {
+            return Futures.immediateCancelledFuture();
         }
     }
 
-    protected void playerQuit(Mage mage, MageDataCallback callback) {
+    public ListenableFuture<MageData> playerQuit(Mage mage) {
         // Make sure they get their portraits re-rendered on relogin.
         maps.resend(mage.getName());
 
-        mageQuit(mage, callback);
-    }
-
-    public void playerQuit(Mage mage) {
-        playerQuit(mage, null);
+        return mageQuit(mage);
     }
 
     @Override
@@ -3284,58 +3218,6 @@ public class MagicController implements MageController {
     public void mageRemoved(String id) {
         mobMages.remove(id);
         vanished.remove(id);
-    }
-
-    public void saveMage(Mage mage, boolean asynchronous)
-    {
-        saveMage(mage, asynchronous, null);
-    }
-
-    public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback) {
-        saveMage(mage, asynchronous, null, false, false);
-    }
-
-    public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback, boolean wandInventoryOpen, boolean releaseLock)
-    {
-        if (!savePlayerData) {
-            if (callback != null) {
-                callback.run(null);
-            }
-            return;
-        }
-        asynchronous = asynchronous && asynchronousSaving;
-        info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + ((asynchronous ? "" : " synchronously ") + "at " + System.currentTimeMillis()));
-        final MageData mageData = new MageData(mage.getId());
-        if (mageDataStore != null && mage.save(mageData)) {
-            if (wandInventoryOpen) {
-                mageData.setOpenWand(true);
-            }
-            if (asynchronous) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (saveLock) {
-                            try {
-                                mageDataStore.save(mageData, callback, releaseLock);
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    }
-                });
-            } else {
-                synchronized (saveLock) {
-                    try {
-                        mageDataStore.save(mageData, callback, releaseLock);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        } else if (releaseLock && mageDataStore != null) {
-            getLogger().warning("Player logging out, but data never loaded. Force-releasing lock");
-            mageDataStore.releaseLock(mageData);
-        }
     }
 
     @Nullable
@@ -4931,18 +4813,18 @@ public class MagicController implements MageController {
 
     @Override
     public void sendPlayerToServer(final Player player, final String server) {
-        MageDataCallback callback = new MageDataCallback() {
-            @Override
-            public void run(MageData data) {
-                Bukkit.getScheduler().runTaskLater(plugin, new ChangeServerTask(plugin, player, server), 1);
-            }
+        Runnable callback = () -> {
+            Bukkit.getScheduler().runTaskLater(
+                    plugin,
+                    new ChangeServerTask(plugin, player, server), 1);
         };
         info("Moving " + player.getName() + " to server " + server, 1);
         Mage mage = getRegisteredMage(player);
         if (mage != null) {
-            playerQuit(mage, callback);
+            ListenableFuture<MageData> future = playerQuit(mage);
+            future.addListener(callback, MoreExecutors.sameThreadExecutor());
         } else {
-            callback.run(null);
+            callback.run();
         }
     }
 
@@ -5029,26 +4911,6 @@ public class MagicController implements MageController {
     @Override
     public boolean isVaultCurrencyEnabled() {
         return VaultController.hasEconomy();
-    }
-
-    @Override
-    public void deleteMage(final String id) {
-        final Mage mage = getRegisteredMage(id);
-        if (mage != null) {
-            playerQuit(mage, new MageDataCallback() {
-                @Override
-                public void run(MageData data) {
-                    info("Deleted mage id " + id);
-                    mageDataStore.delete(id);
-
-                    // If this was a player and that player is online, reload them so they function normally.
-                    Player player = mage.getPlayer();
-                    if (player != null && player.isOnline()) {
-                        getMage(player);
-                    }
-                }
-            });
-        }
     }
 
     public long getPhysicsTimeout() {
@@ -5599,8 +5461,7 @@ public class MagicController implements MageController {
 
     @Override
     public void managePlayerData(boolean external, boolean backupInventories) {
-        savePlayerData = !external;
-        externalPlayerData = external;
+        mageRepository.managePlayerData(external, backupInventories);
         this.backupInventories = backupInventories;
     }
 
@@ -5829,11 +5690,6 @@ public class MagicController implements MageController {
         }
     }
 
-    @Override
-    public boolean isFileLockingEnabled() {
-        return isFileLockingEnabled;
-    }
-
     /**
      * @return The supplier set that is used.
      */
@@ -5869,7 +5725,6 @@ public class MagicController implements MageController {
     private int                                    pendingQueueDepth                = 16;
     private int                                 undoMaxPersistSize              = 0;
     private boolean                             commitOnQuit                     = false;
-    private boolean                             saveNonPlayerMages              = false;
     private String                              defaultWandPath                 = "";
     private WandMode                            defaultWandMode                    = WandMode.NONE;
     private WandMode                            defaultBrushMode                = WandMode.CHEST;
@@ -5923,9 +5778,6 @@ public class MagicController implements MageController {
     private int                                    autoUndo                        = 0;
     private int                                    autoSaveTaskId                    = 0;
     private BukkitTask                          configCheckTask                 = null;
-    private boolean                             savePlayerData                  = true;
-    private boolean                             externalPlayerData              = false;
-    private boolean                             asynchronousSaving              = true;
     private WarpController                        warpController                    = null;
     private Collection<ConfigurationSection>    materialColors                  = null;
     private List<Object>                        materialVariants                = null;
@@ -5954,8 +5806,6 @@ public class MagicController implements MageController {
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
     private final Map<String, WeakReference<Schematic>> schematics          = new HashMap<>();
     private final Map<String, Collection<EffectPlayer>> effects             = new HashMap<>();
-
-    private MageDataStore                       mageDataStore               = null;
 
     private Logger                              logger                      = null;
     private MagicPlugin                         plugin                      = null;
@@ -6022,11 +5872,6 @@ public class MagicController implements MageController {
     private boolean                             skillsUsePermissions        = false;
     private String                              heroesSkillPrefix           = "";
     private String                              skillsSpell                 = "";
-    private boolean                             isFileLockingEnabled        = false;
-    private int                                 fileLoadDelay               = 0;
-
-    // Synchronization
-    private final Object                        saveLock                    = new Object();
 
     protected static Random                     random                      = new Random();
 

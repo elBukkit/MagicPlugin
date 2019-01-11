@@ -395,7 +395,7 @@ public class BlockController implements Listener {
         for (Player player : players) {
             Mage mage = controller.getRegisteredMage(player);
             if (mage != null) {
-                controller.saveMage(mage, true);
+                controller.saveMage(mage);
             }
         }
     }

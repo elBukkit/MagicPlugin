@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.BrushData;
 import com.elmakers.mine.bukkit.api.data.MageData;
-import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
@@ -164,13 +163,6 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         }
         saveFile.set("active_class", mage.getActiveClass());
         saveFile.set("health", mage.getHealth());
-    }
-
-    @Override
-    public void save(Collection<MageData> mages) {
-        for (MageData data : mages) {
-            save(data, (MageDataCallback)null, false);
-        }
     }
 
     public MageData load(String id, ConfigurationSection saveFile) {

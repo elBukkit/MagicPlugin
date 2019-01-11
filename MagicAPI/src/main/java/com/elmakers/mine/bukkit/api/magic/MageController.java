@@ -215,6 +215,7 @@ public interface MageController {
     Mage getMage(@Nonnull Entity entity);
     @Nonnull
     Mage getMage(@Nonnull String id, @Nonnull String name);
+
     @Nullable
     Mage getRegisteredMage(@Nonnull String mageId);
     @Nullable
@@ -414,7 +415,14 @@ public interface MageController {
     boolean isSPEarnEnabled();
     boolean isVaultCurrencyEnabled();
     int getSPMaximum();
-    void deleteMage(final String id);
+
+    /**
+     * Deletes the mage with the specified mage id.
+     *
+     * <p>NOTE: The mage should be online for this to have any effect.
+     */
+    void deleteMage(String id);
+
     void disableItemSpawn();
     void enableItemSpawn();
     void setForceSpawn(boolean force);
@@ -569,6 +577,4 @@ public interface MageController {
     void logBlockChange(@Nonnull Mage mage, @Nonnull BlockState priorState, @Nonnull BlockState newState);
 
     boolean inTaggedRegion(Location location, Set<String> tags);
-
-    boolean isFileLockingEnabled();
 }

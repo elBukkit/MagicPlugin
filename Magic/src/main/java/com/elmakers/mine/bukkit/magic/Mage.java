@@ -992,7 +992,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         controller.addPending(this);
     }
 
-    protected void setPlayer(Player player) {
+    public void setPlayer(Player player) {
         if (player != null) {
             playerName = player.getName();
             this.playerRef = new WeakReference<>(player);
@@ -1007,7 +1007,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    protected void setEntity(Entity entity) {
+    public void setEntity(Entity entity) {
         if (entity != null) {
             playerName = entity.getType().name().toLowerCase().replace("_", " ");
             if (entity instanceof LivingEntity) {
@@ -1027,7 +1027,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    protected void setCommandSender(CommandSender sender) {
+    public void setCommandSender(CommandSender sender) {
         if (sender != null) {
             this.commandSenderRef = new WeakReference<>(sender);
 

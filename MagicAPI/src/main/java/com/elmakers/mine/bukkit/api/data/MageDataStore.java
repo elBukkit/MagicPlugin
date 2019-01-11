@@ -6,69 +6,33 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
+// NOTE: All methods should be called from the main thread, data stores should
+// handle async themselves
 public interface MageDataStore {
     /**
      * Implementing classes must have a default constructor.
      */
 
     /**
-     * Initialize the data store. This will be called on load.
-     * Any configuration parameters set in config.yml for this store
-     * will be passed in to the ConfigurationSection here.
+     * Initialize the data store. This will be called on load. Any configuration
+     * parameters set in config.yml for this store will be passed in to the
+     * ConfigurationSection here.
      */
-    void initialize(MageController controller, ConfigurationSection configuration);
+    void initialize(MageController controller,
+            ConfigurationSection configuration);
 
     /**
-     * Save a single Mage.
+     * Opens a mage data session.
      *
-     * <p>If the provided callback is non-null, it should be called on completion.
-     */
-    @Deprecated
-    void save(MageData mage, MageDataCallback callback);
-
-    /**
-     * Save a single Mage.
+     * <p>Implementations should handle locking, blocking and timeouts themselves.
      *
-     * <p>If the provided callback is non-null, it should be called on completion.
+     * @param id
+     *            The mage identifier.
+     * @return The data session. Errors that occur while opening the sessions
+     *         are returned via {@link MageDataSession#getData()}.
      */
-    void save(MageData mage, MageDataCallback callback, boolean releaseLock);
+    MageDataSession openSession(String id);
 
-    /**
-     * Save several Mages in a batch.
-     */
-    void save(Collection<MageData> mages);
-
-    /**
-     * Load a single mage by id.
-     *
-     * <p>If there is no data for this mage, a new empty record should be returned.
-     *
-     * <p>If the provided callback is non-null, it should be called on completion.
-     */
-    void load(String id, MageDataCallback callback);
-
-    /**
-     * Force-release a lock for a mage
-     */
-    void releaseLock(MageData mage);
-
-    /**
-     * Remove all data for a single mage
-     */
-    void delete(String id);
-
-    /**
-     * Retrieve a list of all known Mage ids
-     * This may be used in the future for auto-migration between
-     * DataStores.
-     */
-    Collection<String> getAllIds();
-
-    /**
-     * Mark a Mage as having been migrated.
-     *
-     * <p>This may be a deletion, backup or flagging,
-     * however the implementation prefers.
-     */
-    void migrate(String id);
+    // NOTE: May block
+    Collection<String> getAllIds() throws UnsupportedOperationException;
 }
