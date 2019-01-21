@@ -1798,6 +1798,10 @@ public class BaseSpell implements MageSpell, Cloneable {
         messageTargets = parameters.getBoolean("message_targets", true);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
         passive = parameters.getBoolean("passive", false);
+        String nameOverride = parameters.getString("name", "");
+        if (!nameOverride.isEmpty()) {
+            name = ChatColor.translateAlternateColorCodes('&', nameOverride).replace('_', ' ');
+        }
 
         friendlyEntityTypes = null;
         if (parameters.contains("friendly_types")) {
