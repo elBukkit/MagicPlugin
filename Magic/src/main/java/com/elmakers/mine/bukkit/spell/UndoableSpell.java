@@ -26,6 +26,7 @@ public class UndoableSpell extends TargetingSpell {
     private int                 autoUndo                = 0;
     private double          undoSpeed               = 0;
     private boolean         undoSorted              = true;
+    private boolean         undoReversed              = true;
     private boolean         unbreakable             = false;
 
     @Override
@@ -40,6 +41,7 @@ public class UndoableSpell extends TargetingSpell {
         bypassUndo = parameters.getBoolean("bypass_undo", false);
         undoSpeed = parameters.getDouble("undo_speed", 0);
         undoSorted = parameters.getBoolean("undo_sorted", true);
+        undoReversed = parameters.getBoolean("undo_reversed", true);
         unbreakable = parameters.getBoolean("unbreakable", false);
         if (parameters.contains("entity_undo_types"))
         {
@@ -148,6 +150,7 @@ public class UndoableSpell extends TargetingSpell {
         modifiedBlocks.setScheduleUndo(autoUndo);
         modifiedBlocks.setUndoSpeed(undoSpeed);
         modifiedBlocks.setSorted(undoSorted);
+        modifiedBlocks.setReversed(undoReversed);
         modifiedBlocks.setUnbreakable(unbreakable);
     }
 

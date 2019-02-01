@@ -107,6 +107,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean               undoBreakable = false;
     protected boolean               undoReflective = false;
     protected boolean               sorted = true;
+    protected boolean               reverse = true;
     protected boolean               unbreakable = false;
 
     public UndoList(Mage mage, String name)
@@ -903,6 +904,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    public void setReversed(boolean reverse) {
+        this.reverse = reverse;
+    }
+
+    @Override
     public void setEntityUndoTypes(Set<EntityType> undoTypes) {
         this.undoEntityTypes = undoTypes;
     }
@@ -1083,7 +1089,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         List<BlockData> sortedList = new ArrayList<>(blockList);
         blockList.clear();
-        Collections.reverse(sortedList);
+        if (reverse) {
+            Collections.reverse(sortedList);
+        }
         if (attachables != null && sorted) {
             blockComparator.setAttachables(attachables);
             Collections.sort(sortedList, blockComparator);
