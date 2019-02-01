@@ -13,13 +13,13 @@ public class MageParameters extends ParameterizedConfiguration {
     private final @Nonnull
     Mage mage;
 
-    public MageParameters(Mage mage) {
-        super();
+    public MageParameters(Mage mage, String context) {
+        super(context);
         this.mage = mage;
     }
 
     public MageParameters(MageParameters copy) {
-        super();
+        super(copy);
         this.mage = copy.mage;
     }
 

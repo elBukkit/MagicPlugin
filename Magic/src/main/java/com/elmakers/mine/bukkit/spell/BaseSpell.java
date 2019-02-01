@@ -245,7 +245,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
-    protected SpellParameters parameters = new SpellParameters(this);
+    protected SpellParameters parameters;
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
     protected Collection<Requirement> requirements = null;
@@ -845,6 +845,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void loadTemplate(String key, ConfigurationSection node) {
         spellKey = new SpellKey(key);
+        this.parameters = new SpellParameters(this);
         this.configuration = node;
         this.loadTemplate(node);
     }

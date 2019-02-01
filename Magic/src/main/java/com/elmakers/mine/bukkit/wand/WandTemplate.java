@@ -159,7 +159,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
 
     public WandTemplate getMageTemplate(Mage mage) {
-        MageParameters parameters = new MageParameters(mage);
+        MageParameters parameters = new MageParameters(mage, "Wand " + key);
         ConfigurationUtils.addConfigurations(parameters, configuration);
         return new WandTemplate(this, parameters);
     }

@@ -20,6 +20,15 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
     }
 
     private Options options;
+    private String context;
+
+    protected ParameterizedConfiguration(String context) {
+        this.context = context;
+    }
+
+    protected ParameterizedConfiguration(ParameterizedConfiguration copy) {
+        this(copy.context);
+    }
 
     @Nullable
     @Override
@@ -71,7 +80,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
         double value = transform.get();
         Exception ex = transform.getException();
         if (ex != null) {
-            warn("Error evaluating transform '" + expression + "': " + ex.getMessage());
+            warn("Error evaluating transform in '" + context + "': '" + expression + "': " + ex.getMessage());
         }
         return Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
     }

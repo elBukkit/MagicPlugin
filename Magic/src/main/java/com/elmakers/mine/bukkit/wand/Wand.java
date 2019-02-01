@@ -4570,7 +4570,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
-        MageParameters wrapped = new MageParameters(mage);
+        MageParameters wrapped = new MageParameters(mage, "Wand " + getTemplateKey());
         wrapped.wrap(configuration);
         load(wrapped);
 

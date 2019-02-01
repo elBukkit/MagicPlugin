@@ -52,7 +52,7 @@ public class MageClassTemplate extends BaseMagicProperties implements com.elmake
     }
 
     public MageClassTemplate getMageTemplate(Mage mage) {
-        MageParameters parameters = new MageParameters(mage);
+        MageParameters parameters = new MageParameters(mage, "Mage class " + getKey());
         ConfigurationUtils.addConfigurations(parameters, configuration);
         return new MageClassTemplate(this, parameters);
     }

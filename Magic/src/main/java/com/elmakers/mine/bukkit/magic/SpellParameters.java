@@ -11,13 +11,12 @@ public class SpellParameters extends MageParameters {
     MageSpell spell;
 
     public SpellParameters(MageSpell spell) {
-        super(spell.getMage());
+        super(spell.getMage(), "Spell: " + spell.getKey());
         this.spell = spell;
     }
 
     public SpellParameters(MageSpell spell, ConfigurationSection config) {
-        super(spell.getMage());
-        this.spell = spell;
+        this(spell);
         wrap(config);
     }
 

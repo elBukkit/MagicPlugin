@@ -493,7 +493,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     @Override
     public void load(@Nullable ConfigurationSection configuration) {
-        this.configuration = new MageParameters(getMage());
+        this.configuration = new MageParameters(getMage(), "Mage class " + getKey());
         if (configuration != null) {
             ConfigurationUtils.addConfigurations(this.configuration, configuration);
         }
