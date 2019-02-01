@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class UndoAction extends BaseSpellAction
@@ -25,6 +26,7 @@ public class UndoAction extends BaseSpellAction
     private boolean targetBlocks;
     private boolean targetOtherBlocks;
     private boolean cancel;
+    private boolean sort;
     private String adminPermission;
     private int undoOldest;
     private int undoToSize;
@@ -50,6 +52,7 @@ public class UndoAction extends BaseSpellAction
 
         undoOldest = parameters.getInt("undo_oldest", 0);
         undoToSize = parameters.getInt("undo_to", 0);
+        sort = parameters.getBoolean("sort", false);
     }
     @Override
     public void reset(CastContext context) {
@@ -91,6 +94,15 @@ public class UndoAction extends BaseSpellAction
     @Override
     public SpellResult perform(CastContext context)
     {
+        if (sort)
+        {
+            UndoList undoList = context.getUndoList();
+            if (undoList instanceof com.elmakers.mine.bukkit.block.UndoList) {
+                MaterialSetManager materialSets = context.getController().getMaterialSetManager();
+                ((com.elmakers.mine.bukkit.block.UndoList)undoList).sort(materialSets.getMaterialSet("all_attachable"));
+            }
+            return SpellResult.CAST;
+        }
         // Start of new functionality
         if (undoOldest > 0 || undoToSize > 0)
         {
