@@ -1,12 +1,40 @@
+# Ignore IDEA files
+/.idea
+*.iml
+/bin/
+
+# Eclipse files
+/.settings/
+*.project
+*.classpath
+*.recommenders
+
+# NetBeans files
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Maven files
+target
+
+# Gradle files
+.gradle
+**/gradle/wrapper
+
+# Java files
+*.class
+*.log
+*.ctxt
+hs_err_pid*
+
+# Other
 *~
 .DS_Store
-target
-.idea
 *.iml
 src/main/resources/spells.defaults.yml
 src/main/resources/wands.defaults.yml
 **/original_skin.png
 **/mc_creds.php
-.gradle
-build
-**/gradle/wrapper
