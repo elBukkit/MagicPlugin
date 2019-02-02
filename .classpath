@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+  		<attributes>
+    			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+  		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="CompatibilityLib/src/main/java"/>
+	<classpathentry kind="src" path="Magic/src/main/java"/>
+	<classpathentry kind="src" path="Magic/src/test/java"/>
+	<classpathentry kind="src" path="MagicAPI/src/main/java"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
