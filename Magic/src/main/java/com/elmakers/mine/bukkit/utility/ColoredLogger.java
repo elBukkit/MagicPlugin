@@ -5,15 +5,15 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 public class ColoredLogger extends Logger {
-    private final Logger log;
-    private boolean colorize;
+    private final Logger delegate;
+    private boolean colorize = true;
 
-    public ColoredLogger(Logger wrap) {
-        super(wrap.getName(), wrap.getResourceBundleName());
-        this.log = wrap;
-        this.colorize = true;
+    public ColoredLogger(Logger delegate) {
+        super(delegate.getName(), delegate.getResourceBundleName());
+        this.delegate = delegate;
     }
 
+    @Override
     public void log(LogRecord record) {
         if (colorize) {
             if (record.getLevel() == Level.SEVERE) {
@@ -22,7 +22,7 @@ public class ColoredLogger extends Logger {
                 record.setMessage("\u001b[33m " + record.getMessage() + "\u001b[0m");
             }
         }
-        log.log(record);
+        delegate.log(record);
     }
 
     public void setColorize(boolean colorize) {
