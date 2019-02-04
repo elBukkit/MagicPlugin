@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
@@ -33,21 +34,23 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 
 public class Targeting {
-    private TargetingResult                     result                  = TargetingResult.NONE;
+    private static final Set<UUID> EMPTY_IGNORE_SET = Collections.emptySet();
+
+    private @Nonnull TargetingResult            result                  = TargetingResult.NONE;
     private Location                            source                  = null;
 
-    private Target                                target                    = null;
+    private Target                              target                  = null;
     private List<Target>                        targets                 = null;
 
-    private TargetType                            targetType                = TargetType.NONE;
+    private @Nonnull TargetType                 targetType              = TargetType.NONE;
     private BlockIterator                       blockIterator           = null;
     private Block                               currentBlock            = null;
-    private    Block                                previousBlock           = null;
-    private    Block                                previousPreviousBlock   = null;
+    private Block                               previousBlock           = null;
+    private Block                               previousPreviousBlock   = null;
 
     private Vector                              targetLocationOffset;
-    private Vector                                targetDirectionOverride;
-    private String                                targetLocationWorldName;
+    private Vector                              targetDirectionOverride;
+    private String                              targetLocationWorldName;
 
     protected float                             distanceWeight          = 1;
     protected float                             fovWeight               = 4;
@@ -69,7 +72,7 @@ public class Targeting {
     private double                              yOffset                 = 0;
     private boolean                             targetSpaceRequired     = false;
     private int                                 targetMinOffset         = 0;
-    private Set<UUID>                           ignoreEntities          = null;
+    private @Nonnull Set<UUID>                  ignoreEntities          = EMPTY_IGNORE_SET;
 
     public enum TargetingResult {
         NONE,
@@ -80,7 +83,7 @@ public class Targeting {
 
     public void reset() {
         iterate();
-        ignoreEntities = null;
+        ignoreEntities = EMPTY_IGNORE_SET;
     }
 
     public void iterate() {
@@ -502,7 +505,7 @@ public class Targeting {
         if (entities == null) return targets;
         for (Entity entity : entities)
         {
-            if (ignoreEntities != null && ignoreEntities.contains(entity.getUniqueId())) continue;
+            if (ignoreEntities.contains(entity.getUniqueId())) continue;
             if (sourceEntity != null && entity.equals(sourceEntity) && !context.getTargetsCaster()) continue;
             Location entityLocation = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
             if (!entityLocation.getWorld().equals(source.getWorld())) continue;
@@ -675,7 +678,7 @@ public class Targeting {
     }
 
     public void ignoreEntity(Entity entity) {
-        if (ignoreEntities == null) {
+        if (ignoreEntities == EMPTY_IGNORE_SET) {
             ignoreEntities = new HashSet<>();
         }
         ignoreEntities.add(entity.getUniqueId());
