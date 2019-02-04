@@ -721,7 +721,7 @@ public class CustomProjectileAction extends CompoundAction
             return miss();
         }
 
-        if (distanceTravelled < minRange && targetingResult != null) {
+        if (distanceTravelled < minRange) {
             // TODO : Should this be < ?
             if (distanceTravelled >= minBlockRange && targetingResult == Targeting.TargetingResult.BLOCK) {
                 return miss();
