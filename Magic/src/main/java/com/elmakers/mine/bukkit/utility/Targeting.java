@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -162,6 +164,7 @@ public class Targeting {
      *
      * @return The block at the new location
      */
+    @Nullable
     protected Block getNextBlock()
     {
         previousPreviousBlock = previousBlock;
