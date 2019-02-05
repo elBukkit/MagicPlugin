@@ -32,7 +32,7 @@ public abstract class MagicMapExecutor extends MagicTabExecutor {
         List<URLMap> maps = api.getController().getMaps().getAll();
         Collections.reverse(maps);
         for (URLMap map : maps) {
-            short mapId = map.getId();
+            int mapId = map.getId();
             String source = map.getName() + " " + map.getURL() + " " + map.getId();
             Matcher matcher = pattern == null ? null : pattern.matcher(source);
             if (matcher == null || matcher.find() == positive) {

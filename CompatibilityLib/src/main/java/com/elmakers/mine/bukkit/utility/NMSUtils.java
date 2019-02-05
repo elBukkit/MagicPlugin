@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -249,6 +250,8 @@ public class NMSUtils {
     protected static Method class_BlockData_getAsStringMethod;
     protected static Method class_KnowledgeBookMeta_addRecipeMethod;
     protected static Method class_World_getTileEntityMethod;
+    protected static Method class_Bukkit_getMapMethod;
+    protected static boolean legacyMaps;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_EntityFireworkConstructor;
@@ -593,6 +596,18 @@ public class NMSUtils {
                 class_UnsafeValues_fromLegacyMethod = null;
                 class_UnsafeValues_fromLegacyDataMethod = null;
                 class_Material_isLegacyMethod = null;
+            }
+            try {
+                class_Bukkit_getMapMethod = org.bukkit.Bukkit.class.getMethod("getMap", Integer.TYPE);
+                legacyMaps = false;
+            } catch (Throwable not13) {
+                try {
+                    class_Bukkit_getMapMethod = org.bukkit.Bukkit.class.getMethod("getMap", Short.TYPE);
+                    legacyMaps = true;
+                } catch (Exception ex) {
+                    Bukkit.getLogger().warning("Could not bind to getMap method, magic maps will not work");
+                    class_Bukkit_getMapMethod = null;
+                }
             }
 
             // Changed in 1.13.2
@@ -2217,6 +2232,19 @@ public class NMSUtils {
 
         }
         return data;
+    }
+
+    public static MapView getMapById(int id) {
+        if (class_Bukkit_getMapMethod == null) return null;
+        try {
+            if (legacyMaps) {
+                return (MapView)class_Bukkit_getMapMethod.invoke(null, (short)id);
+            }
+            return (MapView)class_Bukkit_getMapMethod.invoke(null, (short)id);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
 

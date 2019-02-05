@@ -69,9 +69,10 @@ public class DeprecatedUtils {
         return block.getType().getId();
     }
 
-    public static MapView getMap(short id) {
+    public static MapView getMap(int id) {
         // @deprecated Magic value
-        return Bukkit.getMap(id);
+        // TODO: Replace this with an API call in future versions.
+        return NMSUtils.getMapById(id);
     }
 
     public static String getName(EntityType entityType) {

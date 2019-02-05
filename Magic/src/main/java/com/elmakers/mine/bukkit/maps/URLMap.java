@@ -36,6 +36,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 
 public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.maps.URLMap {
@@ -49,7 +50,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     private long lastFrameChange = 0;
 
     protected String world;
-    protected Short id;
+    protected Integer id;
 
     protected String url;
     protected String playerName;
@@ -66,7 +67,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     protected Set<String> sentToPlayers = new HashSet<>();
     protected Integer priority;
 
-    protected URLMap(MapController controller, String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
+    protected URLMap(MapController controller, String world, int mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
         this.controller = controller;
         this.world = world;
         this.url = url;
@@ -148,16 +149,15 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
-    public short getId() {
+    public int getId() {
         return id;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean fix(World world, int maxIds) {
         if (enabled) return true;
 
-        MapView mapView = Bukkit.getMap(id);
+        MapView mapView = DeprecatedUtils.getMap(id);
         if (mapView != null) {
             enabled = true;
             return true;
@@ -183,12 +183,11 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     protected MapView getMapView() {
         if (!enabled) {
             return null;
         }
-        MapView mapView = Bukkit.getMap(id);
+        MapView mapView = DeprecatedUtils.getMap(id);
         if (mapView == null) {
             enabled = false;
             controller.warning("Failed to get map id " + id + " for key " + getKey() + ", disabled, use 'mmap fix' to re-enable");

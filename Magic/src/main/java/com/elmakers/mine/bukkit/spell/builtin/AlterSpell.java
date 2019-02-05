@@ -171,10 +171,10 @@ public class AlterSpell extends BlockSpell
                 }
                 int mapId = InventoryUtils.getMapId(frameItem);
                 mapId++;
-                MapView mapView = DeprecatedUtils.getMap((short)mapId);
+                MapView mapView = DeprecatedUtils.getMap(mapId);
                 if (mapView == null) {
                     mapId = 0;
-                    mapView = DeprecatedUtils.getMap((short)mapId);
+                    mapView = DeprecatedUtils.getMap(mapId);
                     if (mapView == null) {
                         return SpellResult.NO_TARGET;
                     }

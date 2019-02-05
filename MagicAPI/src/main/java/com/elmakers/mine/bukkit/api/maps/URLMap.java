@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.api.maps;
 import org.bukkit.World;
 
 public interface URLMap {
-    short getId();
+    int getId();
     String getName();
     void setName(String name);
     String getURL();

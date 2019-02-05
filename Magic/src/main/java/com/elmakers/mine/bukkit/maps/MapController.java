@@ -37,7 +37,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     private HashMap<String, URLMap> keyMap = new HashMap<>();
     private HashMap<String, URLMap> playerMap = new HashMap<>();
-    private HashMap<Short, URLMap> idMap = new HashMap<>();
+    private HashMap<Integer, URLMap> idMap = new HashMap<>();
 
     public MapController(Plugin plugin, File configFile, File cache) {
         this.plugin = plugin;
@@ -64,7 +64,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                 for (String mapIdString : maps) {
                     ConfigurationSection mapConfig = configuration.getConfigurationSection(mapIdString);
                     try {
-                        Short mapId = null;
+                        Integer mapId = null;
                         URLMap map = null;
                         Integer priority = null;
                         if (mapConfig.contains("priority")) {
@@ -87,7 +87,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                             playerName = mapConfig.getString("player");
                         }
                         try {
-                            mapId = Short.parseShort(mapIdString);
+                            mapId = Integer.parseInt(mapIdString);
                         } catch (Exception ex) {
                             map = get(world, mapConfig.getString("url"), mapConfig.getString("name"),
                                     mapConfig.getInt("x"), mapConfig.getInt("y"), xOverlay, yOverlay,
@@ -147,7 +147,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
             try {
                 YamlConfiguration configuration = new YamlConfiguration();
                 for (URLMap map : saveMaps) {
-                    ConfigurationSection mapConfig = configuration.createSection(Short.toString(map.id));
+                    ConfigurationSection mapConfig = configuration.createSection(Integer.toString(map.id));
                     mapConfig.set("world", map.world);
                     mapConfig.set("url", map.url);
                     mapConfig.set("x", map.x);
@@ -294,7 +294,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      * @param name The display name to give the new item. Optional.
      * @return
      */
-    public ItemStack getMapItem(String name, short mapId) {
+    public ItemStack getMapItem(String name, int mapId) {
         ItemStack newMapItem = createMap(mapId);
         if (name != null) {
             ItemMeta meta = newMapItem.getItemMeta();
@@ -305,7 +305,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     @Override
-    public ItemStack getMapItem(short id)
+    public ItemStack getMapItem(int id)
     {
         ItemStack newMapItem = createMap(id);
         URLMap loadedMap = idMap.get(id);
@@ -325,7 +325,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     @SuppressWarnings("deprecation")
     protected ItemStack getMapItem(String name, MapView mapView) {
-        short id = 0;
+        int id = 0;
         if (mapView != null) {
             id = mapView.getId();
         }
@@ -355,13 +355,13 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     @Override
     @SuppressWarnings("deprecation")
-    public short getURLMapId(String world, String url, String name, int x, int y, int width, int height, Integer priority) {
+    public int getURLMapId(String world, String url, String name, int x, int y, int width, int height, Integer priority) {
         MapView mapView = getURL(world, url, name, x, y, null, null, width, height, priority);
         return mapView == null ? 0 : mapView.getId();
     }
 
     @Override
-    public short getURLMapId(String world, String url) {
+    public int getURLMapId(String world, String url) {
         return getURLMapId(world, url, null, 0, 0, 0, 0, null);
     }
 
@@ -390,28 +390,28 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     @Override
-    public void loadMap(String world, short id, String url, String name, int x, int y, int width, int height, Integer priority)
+    public void loadMap(String world, int id, String url, String name, int x, int y, int width, int height, Integer priority)
     {
         URLMap map = get(world, id, url, name, x, y, null, null, width, height, priority, null);
         map.getMapView();
     }
 
     @Override
-    public boolean hasMap(short id)
+    public boolean hasMap(int id)
     {
         return idMap.containsKey(id);
     }
 
     @Override
-    public URLMap getMap(short id) {
+    public URLMap getMap(int id) {
         return idMap.get(id);
     }
 
-    public URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
+    public URLMap get(String world, int mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
         return get(world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority, null);
     }
 
-    public URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
+    public URLMap get(String world, int mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
         String key = URLMap.getKey(world, url, playerName, x, y, width, height);
         URLMap map = idMap.get(mapId);
         if (map != null) {
@@ -493,7 +493,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     @Override
-    public boolean remove(short id) {
+    public boolean remove(int id) {
         URLMap map = idMap.get(id);
         if (map != null) {
             map.enabled = false;

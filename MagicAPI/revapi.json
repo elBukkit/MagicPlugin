@@ -232,6 +232,18 @@
                     "justification": "Removing Automata API due to changes in how automata function"
                 },
                 {
+                    "code": "java.method.returnTypeTypeParametersChanged",
+                    "old": "method short com.elmakers.mine.bukkit.api.maps.URLMap::getId()",
+                    "new": "method int com.elmakers.mine.bukkit.api.maps.URLMap::getId()",
+                    "oldType": "short",
+                    "newType": "int",
+                    "package": "com.elmakers.mine.bukkit.api.maps",
+                    "classSimpleName": "URLMap",
+                    "methodName": "getId",
+                    "elementKind": "method",
+                    "justification": "Spigot broke this so I think I can too. Map ids updated to ints."
+                },
+                {
                     "code": "java.class.removed",
                     "old": "interface com.elmakers.mine.bukkit.api.magic.Automaton",
                     "package": "com.elmakers.mine.bukkit.api.magic",

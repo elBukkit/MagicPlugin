@@ -8,6 +8,7 @@
  - Add Horse spell to Apprentice path
  - Fix the anvil spell
  - Errors in warnings in logs will be colored to stand out. This can be turned off with `colored_logs: false" in config.yml
+ - Fix support for map items in 1.13.2
 
 # 7.6.19
 

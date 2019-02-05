@@ -1,0 +1,58 @@
+icespear:
+    icon: diamond_pickaxe:36
+    icon_disabled: diamond_pickaxe:336
+    category: waterbending
+    pvp_restricted: true
+    worth: 2000
+    upgrade_required_path: waterapprentice
+    actions:
+        cast:
+        - class: ChangeContext
+          target_caster: true
+          ignore_result: true
+          actions:
+          - class: ApplyCooldown
+            spells: watergun,snowblast,waterjet2,iceshell,waterwhip,breathofice
+            duration: 1500
+        - class: Retarget
+          actions:
+          - class: Parallel
+            actions:
+            - class: Multiply
+              actions:
+              - class: ArmorStandProjectile
+                actions:
+                - class: Damage
+                - class: Velocity
+                  ignore_result: true
+    parameters:
+        target_type: LivingEntity
+        velocity: 13
+        spread: 0.2
+        spread_movement_max: 0
+        spread_movement: 0.75
+        range: 13
+        multiply: 17
+        hitbox: true
+        hitbox_size: 0.50
+        player_damage: 3
+        entity_damage: 3
+        target_breakables: 1
+        destructible: solid
+        unbreakable_items: true
+        helmet_item: diamond_hoe
+        orient_head: true
+        armor_stand_small: true
+        armor_stand_gravity: false
+        target_armor_stand: true
+        destructible_durability: 40
+        break_durability: 5
+        undo: 1000
+        cooldown: 18000
+        undo_speed: 0.4
+        target_self_timeout: 2000
+        y_offset: 0
+        magic_damage: false
+        target_armor_stand: true
+    costs:
+      mana: 175
