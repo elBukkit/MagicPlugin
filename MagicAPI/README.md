@@ -23,4 +23,4 @@ In either case, you will likely be making a hard dependency to make, in which ca
 
 Issues, feature requests, or suggestions for this API should be made at our issue tracker:
 
-http://jira.elmakers.com/browse/API/
+https://github.com/elBukkit/MagicPlugin/issues
