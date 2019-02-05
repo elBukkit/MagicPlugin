@@ -69,7 +69,7 @@ public class ActionSpell extends BrushSpell
         }
         else if (isLookingUp())
         {
-            alternateParameters = getHandlerParameters("alternate_down");
+            alternateParameters = getHandlerParameters("alternate_up");
         }
         else if (mage.isSneaking())
         {
