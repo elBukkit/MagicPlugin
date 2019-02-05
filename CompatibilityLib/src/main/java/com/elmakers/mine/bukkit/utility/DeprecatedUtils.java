@@ -75,6 +75,10 @@ public class DeprecatedUtils {
         return NMSUtils.getMapById(id);
     }
 
+    public static short getMapId(MapView mapView) {
+        return mapView.getId();
+    }
+
     public static String getName(EntityType entityType) {
         // @deprecated Magic value
         String name = entityType.getName();

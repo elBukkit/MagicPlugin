@@ -166,7 +166,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         boolean matched = false;
         while (!matched && retry < maxIds) {
             MapView newView = Bukkit.createMap(world);
-            short newId = newView.getId();
+            short newId = DeprecatedUtils.getMapId(newView);
             matched = newId == id;
             if (newId < 0 || newId > id) break;
             retry++;
