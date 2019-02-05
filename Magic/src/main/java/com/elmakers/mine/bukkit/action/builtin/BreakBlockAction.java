@@ -89,7 +89,7 @@ public class BreakBlockAction extends ModifyBlockAction {
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("durability") || parameterKey.equals("durability_max_distance")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

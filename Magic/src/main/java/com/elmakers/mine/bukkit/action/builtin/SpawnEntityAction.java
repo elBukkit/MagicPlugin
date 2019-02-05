@@ -324,11 +324,11 @@ public class SpawnEntityAction extends CompoundAction
                 examples.add(type.name().toLowerCase());
             }
         } else if (parameterKey.equals("loot") || parameterKey.equals("baby") || parameterKey.equals("repeat_random")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else if (parameterKey.equals("name")) {
             examples.add("Philbert");
         } else if (parameterKey.equals("speed")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

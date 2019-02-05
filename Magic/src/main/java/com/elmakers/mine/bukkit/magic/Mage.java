@@ -2603,7 +2603,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 xp -= Wand.getExpToLevel(expLevel - 1);
                 expLevel--;
                 if (xp < 0) {
-                    expProgress = (float) (-xp) / Wand.getExpToLevel(expLevel);
+                    expProgress = (float)-xp / Wand.getExpToLevel(expLevel);
                     xp = 0;
                 }
             }

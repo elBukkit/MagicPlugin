@@ -667,7 +667,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (maxMountBoost > 0 && mountBoostTicks > 0) {
             int previousBoost = mountBoostTicksRemaining;
             if (mountBoostFromJump) {
-                mountBoostTicksRemaining = (int)(Math.floor(mountBoostTicks * amount));
+                mountBoostTicksRemaining = (int)Math.floor(mountBoostTicks * amount);
             } else {
                 mountBoostTicksRemaining = (int)Math.min(mountBoostTicksRemaining + mountBoostPerJump * mountBoostTicks * amount, mountBoostTicks);
             }

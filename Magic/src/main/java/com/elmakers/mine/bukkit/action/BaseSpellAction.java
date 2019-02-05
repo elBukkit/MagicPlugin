@@ -93,7 +93,7 @@ public abstract class BaseSpellAction implements SpellAction
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("requires_target") || parameterKey.equals("requires_entity_target"))
         {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         }
     }
 

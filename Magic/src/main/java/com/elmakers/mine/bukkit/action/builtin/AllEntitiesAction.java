@@ -103,7 +103,7 @@ public class AllEntitiesAction extends CompoundEntityAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("target_all_worlds")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

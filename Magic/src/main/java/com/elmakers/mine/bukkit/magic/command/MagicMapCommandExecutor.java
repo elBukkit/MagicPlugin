@@ -475,7 +475,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                 sender.sendMessage("Added name to " + map.getName());
             }
             urls.add(map.getURL());
-            ids.add((int)map.getId());
+            ids.add(map.getId());
         }
         if (!backwards) {
             mapId = maxId;

@@ -46,7 +46,7 @@ public class ModifyReflectiveAction extends BaseSpellAction {
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("reflect_chance")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_PERCENTAGES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

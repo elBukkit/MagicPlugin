@@ -58,7 +58,7 @@ public class EffSpawn extends Effect {
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        amount = matchedPattern == 0 ? null : (Expression<Number>) (exprs[0]);
+        amount = matchedPattern == 0 ? null : (Expression<Number>)exprs[0];
         mobKeys = (Expression<String>) exprs[matchedPattern];
         locations = Direction.combine((Expression<? extends Direction>) exprs[1 + matchedPattern], (Expression<? extends Location>) exprs[2 + matchedPattern]);
         return true;

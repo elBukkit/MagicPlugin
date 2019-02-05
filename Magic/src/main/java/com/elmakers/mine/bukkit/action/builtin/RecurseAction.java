@@ -296,11 +296,11 @@ public class RecurseAction extends CompoundAction {
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("faces")) {
-            examples.addAll(Arrays.asList((DirectionUtils.EXAMPLE_DIRECTIONS)));
+            examples.addAll(Arrays.asList(DirectionUtils.EXAMPLE_DIRECTIONS));
         } else if (parameterKey.equals("depth") || parameterKey.equals("size")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("depth_first")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

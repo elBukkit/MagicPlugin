@@ -802,7 +802,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (parameterKey.equals("path") || parameterKey.equals("path_exact") || parameterKey.equals("path_end")) {
             examples.addAll(controller.getWandPathKeys());
         } else if (parameterKey.equals("require_wand") || parameterKey.equals("confirm") || parameterKey.equals("auto_upgrade")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

@@ -168,7 +168,7 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("radius") || parameterKey.equals("limit")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

@@ -193,11 +193,11 @@ public class VelocityAction extends BaseSpellAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("push")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else if (parameterKey.equals("speed") || parameterKey.equals("living_entity_speed")
             || parameterKey.equals("item_speed") || parameterKey.equals("min_speed")
             || parameterKey.equals("max_speed") || parameterKey.equals("max_altitude")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

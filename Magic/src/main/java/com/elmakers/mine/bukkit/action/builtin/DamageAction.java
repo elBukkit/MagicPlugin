@@ -189,11 +189,11 @@ public class DamageAction extends BaseSpellAction
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("damage") || parameterKey.equals("player_damage")
             || parameterKey.equals("entity_damage") || parameterKey.equals("elemental_damage")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("magic_damage")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else if (parameterKey.equals("percentage")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_PERCENTAGES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

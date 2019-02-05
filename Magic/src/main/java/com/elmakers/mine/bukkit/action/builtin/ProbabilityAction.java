@@ -41,7 +41,7 @@ public class ProbabilityAction extends CompoundAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("probability")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_PERCENTAGES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

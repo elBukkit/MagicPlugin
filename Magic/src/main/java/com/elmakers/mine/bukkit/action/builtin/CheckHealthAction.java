@@ -70,10 +70,10 @@ public class CheckHealthAction extends CheckAction {
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("min_health") && parameterKey.equals("max_health")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_PERCENTAGES)));
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("full_health") || parameterKey.equals("as_percentages")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

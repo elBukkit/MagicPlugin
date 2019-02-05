@@ -104,9 +104,9 @@ public class TNTAction extends BaseProjectileAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("fire") || parameterKey.equals("break_blocks")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else if (parameterKey.equals("size") || parameterKey.equals("count") || parameterKey.equals("fuse")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

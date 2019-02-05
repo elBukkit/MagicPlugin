@@ -434,7 +434,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         List<String> options = new ArrayList<>();
         String subCommand = args[0];
         String property = "";
-        boolean isConfigure = args.length >= 3 && (subCommand.equalsIgnoreCase("add"));
+        boolean isConfigure = args.length >= 3 && subCommand.equalsIgnoreCase("add");
         if (subCommand.equalsIgnoreCase("configure") && args.length >= 2) {
             isConfigure = true;
         }

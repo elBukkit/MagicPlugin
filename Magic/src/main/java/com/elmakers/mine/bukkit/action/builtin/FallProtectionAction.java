@@ -51,9 +51,9 @@ public class FallProtectionAction extends BaseSpellAction {
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("duration")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
         } else if (parameterKey.equals("protection_count")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

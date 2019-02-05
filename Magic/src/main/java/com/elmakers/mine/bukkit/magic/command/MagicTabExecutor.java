@@ -139,7 +139,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 
     protected void showWorth(CommandSender sender, ItemStack item)
     {
-       if (api.isWand(item) || (api.isUpgrade(item))) {
+       if (api.isWand(item) || api.isUpgrade(item)) {
             Wand wand = api.getWand(item);
            if (wand == null) {
                sender.sendMessage("I'm not sure what that's worth, sorry!");

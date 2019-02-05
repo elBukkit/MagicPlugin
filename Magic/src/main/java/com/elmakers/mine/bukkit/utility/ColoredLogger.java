@@ -16,9 +16,9 @@ public class ColoredLogger extends Logger {
     @Override
     public void log(LogRecord record) {
         if (colorize) {
-            if (record.getLevel() == Level.SEVERE) {
+            if (record.getLevel().equals(Level.SEVERE)) {
                 record.setMessage("\u001b[31m " + record.getMessage() + "\u001b[0m");
-            } else if (record.getLevel() == Level.WARNING) {
+            } else if (record.getLevel().equals(Level.WARNING)) {
                 record.setMessage("\u001b[33m " + record.getMessage() + "\u001b[0m");
             }
         }

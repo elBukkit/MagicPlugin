@@ -182,7 +182,7 @@ public class PotionEffectAction extends BaseSpellAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("duration")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

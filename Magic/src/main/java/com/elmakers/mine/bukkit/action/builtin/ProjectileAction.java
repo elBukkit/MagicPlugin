@@ -188,13 +188,13 @@ public class ProjectileAction  extends BaseProjectileAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("undo_interval")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
         } else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
                 || parameterKey.equals("spread") || parameterKey.equals("tick_increase")
                 || parameterKey.equals("damage") || parameterKey.equals("start")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("fire")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else if (parameterKey.equals("projectile")) {
             examples.add("LargeFireball");
             examples.add("SmallFireball");

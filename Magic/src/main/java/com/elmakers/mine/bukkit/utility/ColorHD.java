@@ -86,7 +86,7 @@ public final class ColorHD {
 
                 red = ((effectColor >> 16) & 0xFF) << COMPONENT_SHIFT;
                 green = ((effectColor >> 8) & 0xFF) << COMPONENT_SHIFT;
-                blue = ((effectColor) & 0xFF) << COMPONENT_SHIFT;
+                blue = (effectColor & 0xFF) << COMPONENT_SHIFT;
             }
         }
         Color testCreate = null;

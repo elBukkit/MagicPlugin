@@ -204,7 +204,7 @@ public class TreeAction extends BaseSpellAction
                 examples.add(type.name().toLowerCase());
             }
         } else if (parameterKey.equals("requires_sapling")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

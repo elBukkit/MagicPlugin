@@ -110,7 +110,7 @@ public class TimeAction extends BaseSpellAction
             examples.add("0");
             examples.add("130000");
         } else if (parameterKey.equals("cycle_moon_phase")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

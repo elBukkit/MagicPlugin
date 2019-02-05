@@ -224,13 +224,13 @@ public class ModifyBlockAction extends BaseSpellAction {
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("falling") || parameterKey.equals("physics") || parameterKey.equals("commit") || parameterKey.equals("falling_hurts")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else if (parameterKey.equals("speed") || parameterKey.equals("breakable")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("direction")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_VECTOR_COMPONENTS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_VECTOR_COMPONENTS));
         } else if (parameterKey.equals("reflect_chance")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_PERCENTAGES)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

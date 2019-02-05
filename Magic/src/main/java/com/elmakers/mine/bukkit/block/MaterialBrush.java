@@ -711,7 +711,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
                 if (schematic != null && schematic.isLoaded()) {
                     Vector diff = target.toVector().subtract(cloneTarget.toVector());
-                    recenter = (!schematic.contains(diff));
+                    recenter = !schematic.contains(diff);
                 }
 
                 if (recenter) {

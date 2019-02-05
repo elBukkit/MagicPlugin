@@ -138,7 +138,7 @@ public class FreezeAction extends BaseSpellAction
             examples.add("ice");
             examples.add("packed_ice");
         } else if (parameterKey.equals("freeze_water") || parameterKey.equals("freeze_lava") || parameterKey.equals("freeze_fire")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

@@ -75,10 +75,10 @@ public class ChangeContextAction extends CompoundAction {
         targetDirection = ConfigurationUtils.getVector(parameters, "target_direction");
         sourceDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
         targetDirectionOffset = ConfigurationUtils.getVector(parameters, "target_direction_offset");
-        relativeSourceDirectionYawOffset = (float)(parameters.getDouble("source_relative_direction_yaw_offset", 0));
-        relativeSourceDirectionPitchOffset = (float)(parameters.getDouble("source_relative_direction_pitch_offset", 0));
-        relativeTargetDirectionYawOffset = (float)(parameters.getDouble("target_relative_direction_yaw_offset", 0));
-        relativeTargetDirectionPitchOffset = (float)(parameters.getDouble("target_relative_direction_pitch_offset", 0));
+        relativeSourceDirectionYawOffset = (float)parameters.getDouble("source_relative_direction_yaw_offset", 0);
+        relativeSourceDirectionPitchOffset = (float)parameters.getDouble("source_relative_direction_pitch_offset", 0);
+        relativeTargetDirectionYawOffset = (float)parameters.getDouble("target_relative_direction_yaw_offset", 0);
+        relativeTargetDirectionPitchOffset = (float)parameters.getDouble("target_relative_direction_pitch_offset", 0);
         persistTarget = parameters.getBoolean("persist_target", false);
         attachBlock = parameters.getBoolean("target_attachment", false);
         persistCaster = parameters.getBoolean("persist_caster", false);
@@ -88,10 +88,10 @@ public class ChangeContextAction extends CompoundAction {
         sourcePitchMin = parameters.getInt("source_pitch_min", 90);
         sourcePitchMax = parameters.getInt("source_pitch_max", -90);
         orientPitch = parameters.getBoolean("orient_pitch", true);
-        sourceYawOffset = (float)(parameters.getDouble("source_yaw_offset", 0));
-        sourcePitchOffset = (float)(parameters.getDouble("source_pitch_offset", 0));
-        targetYawOffset = (float)(parameters.getDouble("target_yaw_offset", 0));
-        targetPitchOffset = (float)(parameters.getDouble("target_pitch_offset", 0));
+        sourceYawOffset = (float)parameters.getDouble("source_yaw_offset", 0);
+        sourcePitchOffset = (float)parameters.getDouble("source_pitch_offset", 0);
+        targetYawOffset = (float)parameters.getDouble("target_yaw_offset", 0);
+        targetPitchOffset = (float)parameters.getDouble("target_pitch_offset", 0);
 
         if (parameters.contains("target_direction_speed"))
         {
