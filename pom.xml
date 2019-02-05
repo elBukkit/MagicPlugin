@@ -83,7 +83,8 @@
                     <compilerArgs>
                         <arg>-Xlint:all,-serial,-fallthrough</arg>
                         <!-- <arg>-Xep:FieldMissingNullable:ERROR</arg>  -->
-                        <arg>-Xep:ReturnMissingNullable:ERROR</arg>
+                        <arg>-Xep:BadImport:OFF</arg>
+                        <arg>-Xep:ReturnMissingNullable:OFF</arg>
                         <arg>-Xep:RemoveUnusedImports:ERROR</arg>
                         <arg>-Xep:CatchAndPrintStackTrace:OFF</arg>
                     </compilerArgs>
