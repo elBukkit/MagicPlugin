@@ -1,268 +1,369 @@
 {
-    "base": {
-        "revapi" : {
-            "java": {
-                "missing-classes": {
-                    "behavior": "ignore",
-                    "ignoreMissingAnnotations": true
-                }
-            },
-            "ignore" : [
-                {
-                    "code" : "java.method.addedToInterface",
-                    "justification" : "Do allow new methods"
-                },
-                {
-                    "code" : "java.annotation.added",
-                    "justification" : "Do allow new annotations"
-                },
-                {
-                    "code": "java.field.enumConstantOrderChanged",
-                    "justification" : "Enums are not ordered"
-                }
-            ]
+  "base": {
+    "revapi": {
+      "java": {
+        "missing-classes": {
+          "behavior": "ignore",
+          "ignoreMissingAnnotations": true
         }
-    },
-    "6.9+" : {
-        "revapi" : {
-            "ignore" : [
-                {
-                    "code": "java.method.parameterTypeChanged",
-                    "old": "parameter void com.elmakers.mine.bukkit.api.action.CastContext::retarget(===int===, double, double, double, boolean)",
-                    "new": "parameter void com.elmakers.mine.bukkit.api.action.CastContext::retarget(===double===, double, double, double, boolean)",
-                    "oldType": "int",
-                    "newType": "double",
-                    "package": "com.elmakers.mine.bukkit.api.action",
-                    "classSimpleName": "CastContext",
-                    "methodName": "retarget",
-                    "parameterIndex": "0",
-                    "elementKind": "parameter",
-                    "justification": "More fine-grained control over range, changed from int to double"
-                },
-                {
-                    "code": "java.method.parameterTypeChanged",
-                    "old": "parameter void com.elmakers.mine.bukkit.api.action.CastContext::retarget(===int===, double, double, double, boolean, int, boolean, int)",
-                    "new": "parameter void com.elmakers.mine.bukkit.api.action.CastContext::retarget(===double===, double, double, double, boolean, int, boolean, int)",
-                    "oldType": "int",
-                    "newType": "double",
-                    "package": "com.elmakers.mine.bukkit.api.action",
-                    "classSimpleName": "CastContext",
-                    "methodName": "retarget",
-                    "parameterIndex": "0",
-                    "elementKind": "parameter",
-                    "justification": "More fine-grained control over range, changed from int to double"
-                },
-                {
-                    "code": "java.method.returnTypeChanged",
-                    "old": "method java.lang.String com.elmakers.mine.bukkit.api.data.SpellData::getKey()",
-                    "new": "method com.elmakers.mine.bukkit.api.spell.SpellKey com.elmakers.mine.bukkit.api.data.SpellData::getKey()",
-                    "oldType": "java.lang.String",
-                    "newType": "com.elmakers.mine.bukkit.api.spell.SpellKey",
-                    "package": "com.elmakers.mine.bukkit.api.data",
-                    "classSimpleName": "SpellData",
-                    "methodName": "getKey",
-                    "elementKind": "method",
-                    "justification": "Use SpellKey instead of String keys for convenience"
-                },
-                {
-                    "code": "java.method.numberOfParametersChanged",
-                    "old": "method void com.elmakers.mine.bukkit.api.event.LoadEvent::<init>()",
-                    "new": "method void com.elmakers.mine.bukkit.api.event.LoadEvent::<init>(com.elmakers.mine.bukkit.api.magic.MageController)",
-                    "package": "com.elmakers.mine.bukkit.api.event",
-                    "classSimpleName": "LoadEvent",
-                    "methodName": "<init>",
-                    "elementKind": "constructor",
-                    "justification": "LoadEvent needs a MageController, should only be instantiated by plugin"
-                },
-                {
-                    "code": "java.method.removed",
-                    "old": "method int com.elmakers.mine.bukkit.api.spell.CastingCost::getAmount()",
-                    "package": "com.elmakers.mine.bukkit.api.spell",
-                    "classSimpleName": "CastingCost",
-                    "methodName": "getAmount",
-                    "elementKind": "method",
-                    "justification": "Removed amount in favor of separate mana, xp methods"
-                },
-                {
-                    "code": "java.method.removed",
-                    "old": "method int com.elmakers.mine.bukkit.api.spell.CastingCost::getAmount(com.elmakers.mine.bukkit.api.spell.CostReducer)",
-                    "package": "com.elmakers.mine.bukkit.api.spell",
-                    "classSimpleName": "CastingCost",
-                    "methodName": "getAmount",
-                    "elementKind": "method",
-                    "justification": "Removed amount in favor of separate mana, xp methods"
-                },
-                {
-                    "code": "java.method.returnTypeChanged",
-                    "old": "method float com.elmakers.mine.bukkit.api.spell.CastingCost::getMana(com.elmakers.mine.bukkit.api.spell.CostReducer)",
-                    "new": "method int com.elmakers.mine.bukkit.api.spell.CastingCost::getMana(com.elmakers.mine.bukkit.api.spell.CostReducer)",
-                    "oldType": "float",
-                    "newType": "int",
-                    "package": "com.elmakers.mine.bukkit.api.spell",
-                    "classSimpleName": "CastingCost",
-                    "methodName": "getMana",
-                    "elementKind": "method",
-                    "justification": "Mana is an integer, the float was carried over from the cover-all getAmount method"
-                },
-                {
-                    "code": "java.method.removed",
-                    "old": "method com.elmakers.mine.bukkit.api.block.MaterialAndData com.elmakers.mine.bukkit.api.spell.CastingCost::getMaterial()",
-                    "package": "com.elmakers.mine.bukkit.api.spell",
-                    "classSimpleName": "CastingCost",
-                    "methodName": "getMaterial",
-                    "elementKind": "method",
-                    "justification": "Encapsulate item costs"
-                },
-                {
-                    "code": "java.method.removed",
-                    "old": "method boolean com.elmakers.mine.bukkit.api.spell.CastingCost::hasCosts(com.elmakers.mine.bukkit.api.spell.CostReducer)",
-                    "package": "com.elmakers.mine.bukkit.api.spell",
-                    "classSimpleName": "CastingCost",
-                    "methodName": "hasCosts",
-                    "elementKind": "method",
-                    "justification": "Simplify CostReducer interface"
-                },
-                {
-                    "code": "java.method.returnTypeChanged",
-                    "old": "method int com.elmakers.mine.bukkit.api.spell.SpellTemplate::getRange()",
-                    "new": "method double com.elmakers.mine.bukkit.api.spell.SpellTemplate::getRange()",
-                    "oldType": "int",
-                    "newType": "double",
-                    "package": "com.elmakers.mine.bukkit.api.spell",
-                    "classSimpleName": "SpellTemplate",
-                    "methodName": "getRange",
-                    "elementKind": "method",
-                    "justification": "More fine-grained control over range, changed from int to double"
-                },
-                {
-                    "code": "java.method.returnTypeChanged",
-                    "old": "method void com.elmakers.mine.bukkit.api.wand.Wand::alphabetizeInventory()",
-                    "new": "method boolean com.elmakers.mine.bukkit.api.wand.Wand::alphabetizeInventory()",
-                    "oldType": "void",
-                    "newType": "boolean",
-                    "package": "com.elmakers.mine.bukkit.api.wand",
-                    "classSimpleName": "Wand",
-                    "methodName": "alphabetizeInventory",
-                    "elementKind": "method",
-                    "justification": "Organizing and alphabetizing may fail"
-                },
-                {
-                    "code": "java.method.returnTypeChanged",
-                    "old": "method void com.elmakers.mine.bukkit.api.wand.Wand::organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage)",
-                    "new": "method boolean com.elmakers.mine.bukkit.api.wand.Wand::organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage)",
-                    "oldType": "void",
-                    "newType": "boolean",
-                    "package": "com.elmakers.mine.bukkit.api.wand",
-                    "classSimpleName": "Wand",
-                    "methodName": "organizeInventory",
-                    "elementKind": "method",
-                    "justification": "Organizing and alphabetizing may fail"
-                },
-                {
-                    "code": "java.method.returnTypeChanged",
-                    "old": "method void com.elmakers.mine.bukkit.api.wand.Wand::playEffects(java.lang.String)",
-                    "new": "method boolean com.elmakers.mine.bukkit.api.wand.Wand::playEffects(java.lang.String)",
-                    "oldType": "void",
-                    "newType": "boolean",
-                    "package": "com.elmakers.mine.bukkit.api.wand",
-                    "classSimpleName": "Wand",
-                    "methodName": "playEffects",
-                    "elementKind": "method",
-                    "justification": "Playing wand FX may fail if no effects are assigned to the given type"
-                },
-                {
-                    "code": "java.method.numberOfParametersChanged",
-                    "old": "method com.elmakers.mine.bukkit.api.magic.Automaton com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(org.bukkit.block.Block)",
-                    "new": "method com.elmakers.mine.bukkit.api.magic.Mage com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(java.lang.String, java.lang.String)",
-                    "package": "com.elmakers.mine.bukkit.api.magic",
-                    "classSimpleName": "MageController",
-                    "methodName": "getAutomaton",
-                    "elementKind": "method",
-                    "justification": "Removing Automata API due to changes in how automata function"
-                },
-                {
-                    "code": "java.method.returnTypeChanged",
-                    "old": "method com.elmakers.mine.bukkit.api.magic.Automaton com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(org.bukkit.block.Block)",
-                    "new": "method com.elmakers.mine.bukkit.api.magic.Mage com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(java.lang.String, java.lang.String)",
-                    "oldType": "com.elmakers.mine.bukkit.api.magic.Automaton",
-                    "newType": "com.elmakers.mine.bukkit.api.magic.Mage",
-                    "package": "com.elmakers.mine.bukkit.api.magic",
-                    "classSimpleName": "MageController",
-                    "methodName": "getAutomaton",
-                    "elementKind": "method",
-                    "justification": "Removing Automata API due to changes in how automata function"
-                },
-                {
-                    "code": "java.method.removed",
-                    "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::isAutomata(org.bukkit.block.Block)",
-                    "package": "com.elmakers.mine.bukkit.api.magic",
-                    "classSimpleName": "MageController",
-                    "methodName": "isAutomata",
-                    "elementKind": "method",
-                    "justification": "Removing Automata API due to changes in how automata function"
-                },
-                {
-                    "code": "java.method.removed",
-                    "old": "method void com.elmakers.mine.bukkit.api.magic.MageController::registerAutomata(org.bukkit.block.Block, java.lang.String, java.lang.String)",
-                    "package": "com.elmakers.mine.bukkit.api.magic",
-                    "classSimpleName": "MageController",
-                    "methodName": "registerAutomata",
-                    "elementKind": "method",
-                    "justification": "Removing Automata API due to changes in how automata function"
-                },
-                {
-                    "code": "java.method.removed",
-                    "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::unregisterAutomata(org.bukkit.block.Block)",
-                    "package": "com.elmakers.mine.bukkit.api.magic",
-                    "classSimpleName": "MageController",
-                    "methodName": "unregisterAutomata",
-                    "elementKind": "method",
-                    "justification": "Removing Automata API due to changes in how automata function"
-                },
-                {
-                    "code": "java.method.returnTypeTypeParametersChanged",
-                    "old": "method java.util.Collection<com.elmakers.mine.bukkit.api.magic.Automaton> com.elmakers.mine.bukkit.api.magic.MagicAPI::getAutomata()",
-                    "new": "method java.util.Collection<com.elmakers.mine.bukkit.api.magic.Mage> com.elmakers.mine.bukkit.api.magic.MagicAPI::getAutomata()",
-                    "oldType": "java.util.Collection<com.elmakers.mine.bukkit.api.magic.Automaton>",
-                    "newType": "java.util.Collection<com.elmakers.mine.bukkit.api.magic.Mage>",
-                    "package": "com.elmakers.mine.bukkit.api.magic",
-                    "classSimpleName": "MagicAPI",
-                    "methodName": "getAutomata",
-                    "elementKind": "method",
-                    "justification": "Removing Automata API due to changes in how automata function"
-                },
-                {
-                    "code": "java.method.returnTypeTypeParametersChanged",
-                    "old": "method short com.elmakers.mine.bukkit.api.maps.URLMap::getId()",
-                    "new": "method int com.elmakers.mine.bukkit.api.maps.URLMap::getId()",
-                    "oldType": "short",
-                    "newType": "int",
-                    "package": "com.elmakers.mine.bukkit.api.maps",
-                    "classSimpleName": "URLMap",
-                    "methodName": "getId",
-                    "elementKind": "method",
-                    "justification": "Spigot broke this so I think I can too. Map ids updated to ints."
-                },
-                {
-                    "code": "java.class.removed",
-                    "old": "interface com.elmakers.mine.bukkit.api.magic.Automaton",
-                    "package": "com.elmakers.mine.bukkit.api.magic",
-                    "classSimpleName": "Automaton",
-                    "elementKind": "interface",
-                    "justification": "Removing Automata API due to changes in how automata function"
-                },
-                {
-                     "code": "java.method.removed",
-                     "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::spawnPhysicsBlock(org.bukkit.Location, org.bukkit.Material, short, org.bukkit.util.Vector)",
-                     "package": "com.elmakers.mine.bukkit.api.magic",
-                     "classSimpleName": "MageController",
-                     "methodName": "spawnPhysicsBlock",
-                     "elementKind": "method",
-                     "justification": "Integration with a dead plugin"
-                 }
-            ]
+      },
+      "ignore": [
+        {
+          "code": "java.method.addedToInterface",
+          "justification": "Do allow new methods"
+        },
+        {
+          "code": "java.annotation.added",
+          "justification": "Do allow new annotations"
+        },
+        {
+          "code": "java.field.enumConstantOrderChanged",
+          "justification": "Enums are not ordered"
         }
-    },
-    "7.6+" : {
+      ]
     }
+  },
+  "6.9+": {
+    "revapi": {
+      "ignore": [
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.elmakers.mine.bukkit.api.action.CastContext::retarget(===int===, double, double, double, boolean)",
+          "new": "parameter void com.elmakers.mine.bukkit.api.action.CastContext::retarget(===double===, double, double, double, boolean)",
+          "oldType": "int",
+          "newType": "double",
+          "package": "com.elmakers.mine.bukkit.api.action",
+          "classSimpleName": "CastContext",
+          "methodName": "retarget",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "More fine-grained control over range, changed from int to double"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.elmakers.mine.bukkit.api.action.CastContext::retarget(===int===, double, double, double, boolean, int, boolean, int)",
+          "new": "parameter void com.elmakers.mine.bukkit.api.action.CastContext::retarget(===double===, double, double, double, boolean, int, boolean, int)",
+          "oldType": "int",
+          "newType": "double",
+          "package": "com.elmakers.mine.bukkit.api.action",
+          "classSimpleName": "CastContext",
+          "methodName": "retarget",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "More fine-grained control over range, changed from int to double"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.String com.elmakers.mine.bukkit.api.data.SpellData::getKey()",
+          "new": "method com.elmakers.mine.bukkit.api.spell.SpellKey com.elmakers.mine.bukkit.api.data.SpellData::getKey()",
+          "oldType": "java.lang.String",
+          "newType": "com.elmakers.mine.bukkit.api.spell.SpellKey",
+          "package": "com.elmakers.mine.bukkit.api.data",
+          "classSimpleName": "SpellData",
+          "methodName": "getKey",
+          "elementKind": "method",
+          "justification": "Use SpellKey instead of String keys for convenience"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.elmakers.mine.bukkit.api.event.LoadEvent::<init>()",
+          "new": "method void com.elmakers.mine.bukkit.api.event.LoadEvent::<init>(com.elmakers.mine.bukkit.api.magic.MageController)",
+          "package": "com.elmakers.mine.bukkit.api.event",
+          "classSimpleName": "LoadEvent",
+          "methodName": "<init>",
+          "elementKind": "constructor",
+          "justification": "LoadEvent needs a MageController, should only be instantiated by plugin"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method int com.elmakers.mine.bukkit.api.spell.CastingCost::getAmount()",
+          "package": "com.elmakers.mine.bukkit.api.spell",
+          "classSimpleName": "CastingCost",
+          "methodName": "getAmount",
+          "elementKind": "method",
+          "justification": "Removed amount in favor of separate mana, xp methods"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method int com.elmakers.mine.bukkit.api.spell.CastingCost::getAmount(com.elmakers.mine.bukkit.api.spell.CostReducer)",
+          "package": "com.elmakers.mine.bukkit.api.spell",
+          "classSimpleName": "CastingCost",
+          "methodName": "getAmount",
+          "elementKind": "method",
+          "justification": "Removed amount in favor of separate mana, xp methods"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method float com.elmakers.mine.bukkit.api.spell.CastingCost::getMana(com.elmakers.mine.bukkit.api.spell.CostReducer)",
+          "new": "method int com.elmakers.mine.bukkit.api.spell.CastingCost::getMana(com.elmakers.mine.bukkit.api.spell.CostReducer)",
+          "oldType": "float",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.spell",
+          "classSimpleName": "CastingCost",
+          "methodName": "getMana",
+          "elementKind": "method",
+          "justification": "Mana is an integer, the float was carried over from the cover-all getAmount method"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.elmakers.mine.bukkit.api.block.MaterialAndData com.elmakers.mine.bukkit.api.spell.CastingCost::getMaterial()",
+          "package": "com.elmakers.mine.bukkit.api.spell",
+          "classSimpleName": "CastingCost",
+          "methodName": "getMaterial",
+          "elementKind": "method",
+          "justification": "Encapsulate item costs"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method boolean com.elmakers.mine.bukkit.api.spell.CastingCost::hasCosts(com.elmakers.mine.bukkit.api.spell.CostReducer)",
+          "package": "com.elmakers.mine.bukkit.api.spell",
+          "classSimpleName": "CastingCost",
+          "methodName": "hasCosts",
+          "elementKind": "method",
+          "justification": "Simplify CostReducer interface"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method int com.elmakers.mine.bukkit.api.spell.SpellTemplate::getRange()",
+          "new": "method double com.elmakers.mine.bukkit.api.spell.SpellTemplate::getRange()",
+          "oldType": "int",
+          "newType": "double",
+          "package": "com.elmakers.mine.bukkit.api.spell",
+          "classSimpleName": "SpellTemplate",
+          "methodName": "getRange",
+          "elementKind": "method",
+          "justification": "More fine-grained control over range, changed from int to double"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method void com.elmakers.mine.bukkit.api.wand.Wand::alphabetizeInventory()",
+          "new": "method boolean com.elmakers.mine.bukkit.api.wand.Wand::alphabetizeInventory()",
+          "oldType": "void",
+          "newType": "boolean",
+          "package": "com.elmakers.mine.bukkit.api.wand",
+          "classSimpleName": "Wand",
+          "methodName": "alphabetizeInventory",
+          "elementKind": "method",
+          "justification": "Organizing and alphabetizing may fail"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method void com.elmakers.mine.bukkit.api.wand.Wand::organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage)",
+          "new": "method boolean com.elmakers.mine.bukkit.api.wand.Wand::organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage)",
+          "oldType": "void",
+          "newType": "boolean",
+          "package": "com.elmakers.mine.bukkit.api.wand",
+          "classSimpleName": "Wand",
+          "methodName": "organizeInventory",
+          "elementKind": "method",
+          "justification": "Organizing and alphabetizing may fail"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method void com.elmakers.mine.bukkit.api.wand.Wand::playEffects(java.lang.String)",
+          "new": "method boolean com.elmakers.mine.bukkit.api.wand.Wand::playEffects(java.lang.String)",
+          "oldType": "void",
+          "newType": "boolean",
+          "package": "com.elmakers.mine.bukkit.api.wand",
+          "classSimpleName": "Wand",
+          "methodName": "playEffects",
+          "elementKind": "method",
+          "justification": "Playing wand FX may fail if no effects are assigned to the given type"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.elmakers.mine.bukkit.api.magic.Automaton com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(org.bukkit.block.Block)",
+          "new": "method com.elmakers.mine.bukkit.api.magic.Mage com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(java.lang.String, java.lang.String)",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MageController",
+          "methodName": "getAutomaton",
+          "elementKind": "method",
+          "justification": "Removing Automata API due to changes in how automata function"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.elmakers.mine.bukkit.api.magic.Automaton com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(org.bukkit.block.Block)",
+          "new": "method com.elmakers.mine.bukkit.api.magic.Mage com.elmakers.mine.bukkit.api.magic.MageController::getAutomaton(java.lang.String, java.lang.String)",
+          "oldType": "com.elmakers.mine.bukkit.api.magic.Automaton",
+          "newType": "com.elmakers.mine.bukkit.api.magic.Mage",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MageController",
+          "methodName": "getAutomaton",
+          "elementKind": "method",
+          "justification": "Removing Automata API due to changes in how automata function"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::isAutomata(org.bukkit.block.Block)",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MageController",
+          "methodName": "isAutomata",
+          "elementKind": "method",
+          "justification": "Removing Automata API due to changes in how automata function"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.elmakers.mine.bukkit.api.magic.MageController::registerAutomata(org.bukkit.block.Block, java.lang.String, java.lang.String)",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MageController",
+          "methodName": "registerAutomata",
+          "elementKind": "method",
+          "justification": "Removing Automata API due to changes in how automata function"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::unregisterAutomata(org.bukkit.block.Block)",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MageController",
+          "methodName": "unregisterAutomata",
+          "elementKind": "method",
+          "justification": "Removing Automata API due to changes in how automata function"
+        },
+        {
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old": "method java.util.Collection<com.elmakers.mine.bukkit.api.magic.Automaton> com.elmakers.mine.bukkit.api.magic.MagicAPI::getAutomata()",
+          "new": "method java.util.Collection<com.elmakers.mine.bukkit.api.magic.Mage> com.elmakers.mine.bukkit.api.magic.MagicAPI::getAutomata()",
+          "oldType": "java.util.Collection<com.elmakers.mine.bukkit.api.magic.Automaton>",
+          "newType": "java.util.Collection<com.elmakers.mine.bukkit.api.magic.Mage>",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MagicAPI",
+          "methodName": "getAutomata",
+          "elementKind": "method",
+          "justification": "Removing Automata API due to changes in how automata function"
+        },
+        {
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old": "method short com.elmakers.mine.bukkit.api.maps.URLMap::getId()",
+          "new": "method int com.elmakers.mine.bukkit.api.maps.URLMap::getId()",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "URLMap",
+          "methodName": "getId",
+          "elementKind": "method",
+          "justification": "Spigot broke this so I think I can too. Map ids updated to ints."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "interface com.elmakers.mine.bukkit.api.magic.Automaton",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "Automaton",
+          "elementKind": "interface",
+          "justification": "Removing Automata API due to changes in how automata function"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method boolean com.elmakers.mine.bukkit.api.magic.MageController::spawnPhysicsBlock(org.bukkit.Location, org.bukkit.Material, short, org.bukkit.util.Vector)",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MageController",
+          "methodName": "spawnPhysicsBlock",
+          "elementKind": "method",
+          "justification": "Integration with a dead plugin"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.elmakers.mine.bukkit.api.maps.URLMap com.elmakers.mine.bukkit.api.maps.MapController::getMap(===short===)",
+          "new": "parameter com.elmakers.mine.bukkit.api.maps.URLMap com.elmakers.mine.bukkit.api.maps.MapController::getMap(===int===)",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "MapController",
+          "methodName": "getMap",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "Map ids changed to ints"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter org.bukkit.inventory.ItemStack com.elmakers.mine.bukkit.api.maps.MapController::getMapItem(===short===)",
+          "new": "parameter org.bukkit.inventory.ItemStack com.elmakers.mine.bukkit.api.maps.MapController::getMapItem(===int===)",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "MapController",
+          "methodName": "getMapItem",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "Map ids changed to ints"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method short com.elmakers.mine.bukkit.api.maps.MapController::getURLMapId(java.lang.String, java.lang.String)",
+          "new": "method int com.elmakers.mine.bukkit.api.maps.MapController::getURLMapId(java.lang.String, java.lang.String)",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "MapController",
+          "methodName": "getURLMapId",
+          "elementKind": "method",
+          "justification": "Map ids changed to ints"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method short com.elmakers.mine.bukkit.api.maps.MapController::getURLMapId(java.lang.String, java.lang.String, java.lang.String, int, int, int, int, java.lang.Integer)",
+          "new": "method int com.elmakers.mine.bukkit.api.maps.MapController::getURLMapId(java.lang.String, java.lang.String, java.lang.String, int, int, int, int, java.lang.Integer)",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "MapController",
+          "methodName": "getURLMapId",
+          "elementKind": "method",
+          "justification": "Map ids changed to ints"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter boolean com.elmakers.mine.bukkit.api.maps.MapController::hasMap(===short===)",
+          "new": "parameter boolean com.elmakers.mine.bukkit.api.maps.MapController::hasMap(===int===)",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "MapController",
+          "methodName": "hasMap",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "Map ids changed to ints"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.elmakers.mine.bukkit.api.maps.MapController::loadMap(java.lang.String, ===short===, java.lang.String, java.lang.String, int, int, int, int, java.lang.Integer)",
+          "new": "parameter void com.elmakers.mine.bukkit.api.maps.MapController::loadMap(java.lang.String, ===int===, java.lang.String, java.lang.String, int, int, int, int, java.lang.Integer)",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "MapController",
+          "methodName": "loadMap",
+          "parameterIndex": "1",
+          "elementKind": "parameter",
+          "justification": "Map ids changed to ints"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter boolean com.elmakers.mine.bukkit.api.maps.MapController::remove(===short===)",
+          "new": "parameter boolean com.elmakers.mine.bukkit.api.maps.MapController::remove(===int===)",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "MapController",
+          "methodName": "remove",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "Map ids changed to ints"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method short com.elmakers.mine.bukkit.api.maps.URLMap::getId()",
+          "new": "method int com.elmakers.mine.bukkit.api.maps.URLMap::getId()",
+          "oldType": "short",
+          "newType": "int",
+          "package": "com.elmakers.mine.bukkit.api.maps",
+          "classSimpleName": "URLMap",
+          "methodName": "getId",
+          "elementKind": "method",
+          "justification": "Map ids changed to ints"
+        }
+      ]
+    }
+  },
+  "7.6+": {
+  }
 }
