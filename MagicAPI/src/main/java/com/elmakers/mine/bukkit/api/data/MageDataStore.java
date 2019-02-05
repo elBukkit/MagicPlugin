@@ -19,12 +19,13 @@ public interface MageDataStore {
     void initialize(MageController controller, ConfigurationSection configuration);
 
     /**
-     * Save a single Mage.
-     *
-     * <p>If the provided callback is non-null, it should be called on completion.
+     * @deprecated Replaced by
+     *             {@link #save(MageData, MageDataCallback, boolean)}.
      */
     @Deprecated
-    void save(MageData mage, MageDataCallback callback);
+    default void save(MageData mage, MageDataCallback callback) {
+        save(mage, callback, false);
+    }
 
     /**
      * Save a single Mage.
