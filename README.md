@@ -20,4 +20,4 @@ Config info: http://magic.elmakers.com/
 
 ## Compile
 
-Requires Java 8. Import directly as Maven Project. Build against parent with `clean install`
+Requires recent Java 8 JDK. Import directly as Maven Project. Build against parent with `clean install`
