@@ -85,6 +85,7 @@
                         <!-- <arg>-Xep:FieldMissingNullable:ERROR</arg>  -->
                         <arg>-Xep:ReturnMissingNullable:ERROR</arg>
                         <arg>-Xep:RemoveUnusedImports:ERROR</arg>
+                        <arg>-Xep:CatchAndPrintStackTrace:OFF</arg>
                     </compilerArgs>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
