@@ -332,10 +332,6 @@
             <url>http://repo.md-5.net/content/groups/public</url>
         </repository>
         <repository>
-            <id>Heroes</id>
-            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-        </repository>
-        <repository>
             <id>bstats-repo</id>
             <url>http://repo.bstats.org/content/repositories/releases/</url>
         </repository>
@@ -352,6 +348,10 @@
             If the elmakers repo ever goes down, you could try re-enabling these, but you may be out of luck.
         -->
 <!-- -#->
+        <repository>
+            <id>Heroes</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
         <repository>
             <id>Heroes-Snapshots</id>
             <url>http://nexus.theyeticave.net/content/repositories/pub_snapshots/</url>
