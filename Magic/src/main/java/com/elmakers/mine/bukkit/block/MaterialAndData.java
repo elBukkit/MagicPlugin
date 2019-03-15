@@ -28,7 +28,6 @@ import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -804,18 +803,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public String getName(Messages messages) {
         if (!isValid()) return "";
-        VaultController controller = VaultController.getInstance();
-        if (controller != null && data != null) {
-            try {
-                String vaultName = controller.getItemName(material, data);
-                if (vaultName != null && !vaultName.isEmpty()) {
-                    return vaultName;
-                }
-            } catch (Throwable ex) {
-                // Vault apparently throws exceptions on invalid item types
-                // So we're just going to ignore it.
-            }
-        }
 
         String materialName = material == null ? "?" : material.name();
 

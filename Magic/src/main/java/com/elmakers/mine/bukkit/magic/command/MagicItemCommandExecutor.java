@@ -432,8 +432,6 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
                 mat = new MaterialAndData(material, data);
                 if (mat.getName().equals(baseName)) break;
-                String testVaultName = vault == null ? null : vault.getItemName(material, data);
-                if (testVaultName == null || testVaultName.isEmpty()) break;
                 items.put(mat.getKey(), mat);
             }
         }
