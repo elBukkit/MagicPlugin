@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkState;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -158,7 +159,6 @@ import com.elmakers.mine.bukkit.magic.listener.ExplosionController;
 import com.elmakers.mine.bukkit.magic.listener.HangingController;
 import com.elmakers.mine.bukkit.magic.listener.InventoryController;
 import com.elmakers.mine.bukkit.magic.listener.ItemController;
-import com.elmakers.mine.bukkit.magic.listener.LoadSchematicTask;
 import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
@@ -186,6 +186,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -768,7 +769,7 @@ public class MagicController implements MageController {
             }
         }
 
-        InputStream inputSchematic = null;
+        InputStream inputSchematic;
         try {
             // Check extra path first
             File extraSchematicFile = null;
@@ -796,19 +797,26 @@ public class MagicController implements MageController {
                 inputSchematic = plugin.getResource("schematics/" + fileName);
                 info("Loading builtin schematic: " + fileName);
             }
+
+            if (inputSchematic == null) {
+                throw new FileNotFoundException();
+            }
         } catch (Exception ignored) {
-
-        }
-
-        if (inputSchematic == null) {
             getLogger().warning("Could not load schematic: " + schematicName);
             return null;
         }
 
+        // TODO: This should really just return a ListenableFuture
         com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic();
         schematics.put(schematicName, new WeakReference<Schematic>(schematic));
-        Thread loadThread = new Thread(new LoadSchematicTask(this, inputSchematic, schematic));
-        loadThread.start();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                SchematicUtils.loadSchematic(inputSchematic, schematic);
+                info("Finished loading schematic");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
         return schematic;
     }
