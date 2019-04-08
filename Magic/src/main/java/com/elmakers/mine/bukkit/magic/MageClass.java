@@ -42,6 +42,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         public final Attribute attribute;
     }
 
+    @SuppressWarnings("null") // template initialised via setter
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
         super(template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, mage.getController());
         this.mageProperties = mage.getProperties();

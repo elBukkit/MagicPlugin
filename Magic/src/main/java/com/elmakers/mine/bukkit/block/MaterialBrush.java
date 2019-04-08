@@ -457,7 +457,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean update(final Mage fromMage, final Location target) {
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
             if (cloneSource == null) {
