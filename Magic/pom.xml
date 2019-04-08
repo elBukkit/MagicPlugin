@@ -781,25 +781,27 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>1.5</version>
+                <version>3.0.0</version>
+                <configuration>
+                    <minimizeJar>false</minimizeJar>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.elmakers.mine.bukkit.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>de.slikey</pattern>
+                            <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.bstats</pattern>
-                                    <shadedPattern>com.elmakers.mine.bukkit.bstats</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>de.slikey</pattern>
-                                    <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
