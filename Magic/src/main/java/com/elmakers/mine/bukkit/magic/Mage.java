@@ -1283,6 +1283,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (!setActiveClass(skillClass)) {
                 canUse = false;
                 sendMessage(controller.getMessages().get("mage.no_class").replace("$name", spell.getName()));
+            } else {
+                if (!activeClass.hasSpell(spell.getKey())) {
+                    canUse = false;
+                    sendMessage(controller.getMessages().get("mage.no_spell").replace("$name", spell.getName()));
+                }
             }
         }
         if (canUse) {

@@ -11,6 +11,7 @@ mage:
     not_reconfigured: Mage not reconfigured
     earned_sp: "a:&6+&e$amount &6SP"
     no_class: "You are not trained to use $name"
+    no_spell: "You are not trained to use $name"
     player_spell_upgraded: "$players's &r&6$name &d&ohas been upgraded to &3$level"
     spell_upgraded: "Your &r&6$name &d&ospell has been upgraded to &3$level"
     spell_added: "You have learned the &r&6$name &d&ospell"
