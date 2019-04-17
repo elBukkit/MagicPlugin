@@ -9,6 +9,7 @@
  - Fix the anvil spell
  - Errors in warnings in logs will be colored to stand out. This can be turned off with `colored_logs: false" in config.yml
  - Fix support for map items in 1.13.2
+ - Fix boon not levelling up
 
 # 7.6.19
 

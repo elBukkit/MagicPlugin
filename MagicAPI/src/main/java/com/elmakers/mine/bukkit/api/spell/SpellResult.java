@@ -33,7 +33,7 @@ public enum SpellResult {
     BLOCKED(false, true, false),
 
     // The spell cast was deactivated. Actions generally should not return this.
-    DEACTIVATE(false, false, true),
+    DEACTIVATE(true, false, true),
     // A target was selected, which will be used in a subsequent cast. Actions generally should not return this.
     TARGET_SELECTED(false, false, true),
 

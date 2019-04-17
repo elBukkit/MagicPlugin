@@ -2432,6 +2432,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 sendMessage(getMessage("deactivate"));
             }
             if (currentCast != null) {
+                currentCast.addResult(SpellResult.DEACTIVATE);
                 currentCast.cancelEffects();
                 if ((toggle == ToggleType.UNDO || toggle == ToggleType.UNDO_IF_ACTIVE) && toggleUndo != null && !toggleUndo.isUndone() && isActive()) {
                     toggleUndo.undo();
