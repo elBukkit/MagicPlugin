@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.6.21
+
 # 7.6.20
 
  - Update Essentials ItemDb to latest EssentialsX
