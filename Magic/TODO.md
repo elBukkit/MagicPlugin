@@ -3,8 +3,6 @@
 ## Hot Issues
 
  - Add denied_item parameter to CheckInventory action
- - EssentialsX ItemDb changes...
- - CheckInventoryAction add denied_item
  - Look at bug with equations from Reuben
  - Some way to specify order of icons in Recall
 
