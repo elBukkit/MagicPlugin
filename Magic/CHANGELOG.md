@@ -2,14 +2,17 @@
 
 # 7.6.20
 
+ - Update Essentials ItemDb to latest EssentialsX
+   - You MUST update Essentials if you want Magic item integration to continue to work
+   - There was no easy way to keep compatibility with both versions. Sorry!
  - Fix icons on selector options using cast_spell with skull-based icons
  - Boon changed to only work on caster, avoid strange behavior when turned off
+ - Fix boon not levelling up
  - The Horse spell requires empty space, to avoid exploits
  - Add Horse spell to Apprentice path
  - Fix the anvil spell
  - Errors in warnings in logs will be colored to stand out. This can be turned off with `colored_logs: false" in config.yml
  - Fix support for map items in 1.13.2
- - Fix boon not levelling up
 
 # 7.6.19
 

@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -1073,33 +1072,15 @@ public class MagicController implements MageController {
                         Object essentials = me.plugin.getServer().getPluginManager().getPlugin("Essentials");
                         if (essentials != null) {
                             Class<?> essentialsClass = essentials.getClass();
-                            Field itemDbField = essentialsClass.getDeclaredField("itemDb");
-                            itemDbField.setAccessible(true);
-                            Object oldEntry = itemDbField.get(essentials);
-                            if (oldEntry == null) {
-                                getLogger().info("Essentials integration failure");
-                                return;
+                            essentialsClass.getMethod("getItemDb");
+                            if (MagicItemDb.register(me, (Plugin)essentials)) {
+                                getLogger().info("Essentials found, hooked up custom item handler");
+                            } else {
+                                getLogger().warning("Essentials found, but something went wrong hooking up the custom item handler");
                             }
-                            if (oldEntry instanceof MagicItemDb) {
-                                getLogger().info("Essentials integration already set up, skipping");
-                                return;
-                            }
-                            if (!oldEntry.getClass().getName().equals("com.earth2me.essentials.ItemDb")) {
-                                getLogger().info("Essentials Item DB class unexepcted: " + oldEntry.getClass().getName() + ", skipping integration");
-                                return;
-                            }
-                            Object newEntry = new MagicItemDb(me, essentials);
-                            itemDbField.set(essentials, newEntry);
-                            Field confListField = essentialsClass.getDeclaredField("confList");
-                            confListField.setAccessible(true);
-                            @SuppressWarnings("unchecked")
-                            List<Object> confList = (List<Object>) confListField.get(essentials);
-                            confList.remove(oldEntry);
-                            confList.add(newEntry);
-                            getLogger().info("Essentials found, hooked up custom item handler");
                         }
                     } catch (Throwable ex) {
-                        ex.printStackTrace();
+                        getLogger().warning("Essentials found, but is not up to date. Magic item integration will not work with this version of Magic. Please upgrade EssentialsX or downgrade Magic to 7.6.19");
                     }
                 }
             }, 5);

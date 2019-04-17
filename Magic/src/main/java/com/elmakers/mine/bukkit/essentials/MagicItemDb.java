@@ -1,30 +1,67 @@
 package com.elmakers.mine.bukkit.essentials;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
-import com.earth2me.essentials.ItemDb;
+import com.earth2me.essentials.api.IItemDb;
+import com.earth2me.essentials.items.AbstractItemDb;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 import net.ess3.api.IEssentials;
 
-public class MagicItemDb extends ItemDb {
+public class MagicItemDb implements net.ess3.api.IItemDb.ItemResolver {
 
     private final MagicController controller;
+    private final List<String> names = new ArrayList();
 
-    public MagicItemDb(final MagicController controller, final Object ess) {
-        super((IEssentials)ess);
+    public static boolean register(final MagicController controller, final Plugin essentialsPlugin) throws Exception {
+        IEssentials essentials = (IEssentials)essentialsPlugin;
+        IItemDb itemDb = essentials.getItemDb();
+        if (itemDb instanceof AbstractItemDb) {
+            ((AbstractItemDb)itemDb).registerResolver(controller.getPlugin(), "Magic", new MagicItemDb(controller));
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private MagicItemDb(final MagicController controller) {
         this.controller = controller;
-        this.reloadConfig();
+        Collection<SpellTemplate> spellList = controller.getSpellTemplates(false);
+        for (SpellTemplate spell : spellList) {
+            names.add("spell:" + spell.getKey());
+        }
+        Collection<String> allWands = controller.getWandTemplateKeys();
+        for (String wandKey : allWands) {
+            names.add("wand:" + wandKey);
+        }
+        Collection<String> allItems = controller.getItemKeys();
+        for (String itemKey : allItems) {
+            names.add("magic:" + itemKey);
+        }
+        Collection<String> currencies = controller.getCurrencyKeys();
+        for (String currency : currencies) {
+            names.add("magic:" + currency);
+        }
+    }
+
+    @Override
+    public Collection<String> getNames() {
+        return names;
     }
 
     @Nullable
     @Override
-    public ItemStack get(final String id) throws Exception
-    {
+    public ItemStack apply(final String id) {
         if (id.startsWith("m:")) {
             String itemId = id.replace("m:", "");
             return controller.createItem(itemId);
@@ -90,6 +127,6 @@ public class MagicItemDb extends ItemDb {
             return controller.createItem(wandId);
         }
 
-        return super.get(id);
+        return null;
     }
 }
