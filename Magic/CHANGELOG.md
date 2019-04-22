@@ -2,6 +2,8 @@
 
 # 7.6.21
 
+ - Removed Vault-based "fancy" item name feature, since the feature it relied on has been removed from Vault
+
 # 7.6.20
 
  - Update Essentials ItemDb to latest EssentialsX
