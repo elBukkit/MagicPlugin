@@ -3,17 +3,12 @@ package com.elmakers.mine.bukkit.integration;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import javax.annotation.Nullable;
-
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.item.ItemInfo;
-import net.milkbowl.vault.item.Items;
 
 public class VaultController {
     private static VaultController instance;
@@ -29,9 +24,9 @@ public class VaultController {
             RegisteredServiceProvider<Economy> ecoProvider = vaultPlugin.getServer().getServicesManager().getRegistration(Economy.class);
             Economy economy = ecoProvider == null ? null : ecoProvider.getProvider();
             if (economy == null) {
-                callingPlugin.getLogger().info("Vault found, descriptive item names available, but no economy found");
+                callingPlugin.getLogger().info("Vault found, but no economy found");
             } else {
-                callingPlugin.getLogger().info("Vault found, 'currency' cost types and descriptive item names available");
+                callingPlugin.getLogger().info("Vault found, 'currency' cost types available");
             }
             instance = new VaultController(callingPlugin, economy);
         } catch (Exception ex) {
@@ -101,11 +96,5 @@ public class VaultController {
         }
         EconomyResponse response  = economy.depositPlayer(player, amount);
         return response.transactionSuccess();
-    }
-
-    @Nullable
-    public String getItemName(Material material, short data) {
-        ItemInfo info = Items.itemByType(material, data);
-        return info == null ? null : info.getName();
     }
 }
