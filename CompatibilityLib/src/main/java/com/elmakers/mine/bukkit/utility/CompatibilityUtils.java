@@ -134,7 +134,10 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
+    public static Inventory createInventory(InventoryHolder holder, int size, final String name) {
+        size = (int)(Math.ceil((double)size / 9) * 9);
+        size = Math.min(size, 54);
+
         String shorterName = name;
         if (shorterName.length() > 32) {
             shorterName = shorterName.substring(0, 31);
@@ -650,9 +653,14 @@ public class CompatibilityUtils extends NMSUtils {
     public static void setEntityMotion(Entity entity, Vector motion) {
         try {
             Object handle = getHandle(entity);
-            class_Entity_motXField.set(handle, motion.getX());
-            class_Entity_motYField.set(handle, motion.getY());
-            class_Entity_motZField.set(handle, motion.getZ());
+            if (class_Entity_motField != null) {
+                Object vec = class_Vec3D_constructor.newInstance(motion.getX(), motion.getY(), motion.getZ());
+                class_Entity_motField.set(handle, vec);
+            } else if (class_Entity_motXField != null) {
+                class_Entity_motXField.set(handle, motion.getX());
+                class_Entity_motYField.set(handle, motion.getY());
+                class_Entity_motZField.set(handle, motion.getZ());
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -677,13 +685,18 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean setLock(Block block, String lockName)
     {
-        if (class_TileEntityContainer_setLock == null || class_ChestLock_Constructor == null) return false;
+        if (class_ChestLock_Constructor == null) return false;
+        if (class_TileEntityContainer_setLock == null && class_TileEntityContainer_lock == null) return false;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
             Object lock = class_ChestLock_Constructor.newInstance(lockName);
-            class_TileEntityContainer_setLock.invoke(tileEntity, lock);
+            if (class_TileEntityContainer_lock != null) {
+                class_TileEntityContainer_lock.set(tileEntity, lock);
+            } else {
+                class_TileEntityContainer_setLock.invoke(tileEntity, lock);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -694,12 +707,16 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean clearLock(Block block)
     {
-        if (class_TileEntityContainer_setLock == null) return false;
+        if (class_TileEntityContainer_setLock == null && class_TileEntityContainer_lock == null) return false;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
-            class_TileEntityContainer_setLock.invoke(tileEntity, new Object[] {null});
+            if (class_TileEntityContainer_lock != null) {
+                class_TileEntityContainer_lock.set(tileEntity, null);
+            } else {
+                class_TileEntityContainer_setLock.invoke(tileEntity, new Object[] {null});
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -710,14 +727,17 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean isLocked(Block block)
     {
-        if (class_TileEntityContainer_getLock == null || class_ChestLock_isEmpty == null) return false;
+        if (class_TileEntityContainer_getLock == null && class_TileEntityContainer_lock == null) return false;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
-            Object lock = class_TileEntityContainer_getLock.invoke(tileEntity);
+            Object lock = class_TileEntityContainer_lock != null ? class_TileEntityContainer_lock.get(tileEntity) :
+                class_TileEntityContainer_getLock.invoke(tileEntity);
             if (lock == null) return false;
-            return !(Boolean)class_ChestLock_isEmpty.invoke(lock);
+            String key = class_ChestLock_key != null ? (String)class_ChestLock_key.get(lock) :
+                (String)class_ChestLock_getString.invoke(lock);
+            return key != null && !key.isEmpty();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -726,14 +746,17 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static String getLock(Block block)
     {
-        if (class_TileEntityContainer_getLock == null || class_ChestLock_getString == null) return null;
+        if (class_ChestLock_getString == null && class_ChestLock_key == null) return null;
+        if (class_TileEntityContainer_getLock == null && class_TileEntityContainer_lock == null) return null;
         Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return null;
         if (!class_TileEntityContainer.isInstance(tileEntity)) return null;
         try {
-            Object lock = class_TileEntityContainer_getLock.invoke(tileEntity);
+            Object lock = class_TileEntityContainer_lock != null ? class_TileEntityContainer_lock.get(tileEntity) :
+                class_TileEntityContainer_getLock.invoke(tileEntity);
             if (lock == null) return null;
-            return (String)class_ChestLock_getString.invoke(lock);
+            return class_ChestLock_key != null ? (String)class_ChestLock_key.get(lock) :
+                (String)class_ChestLock_getString.invoke(lock);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1112,7 +1135,7 @@ public class CompatibilityUtils extends NMSUtils {
                     setMeta(attributeNode, "Slot", slot);
                 }
 
-                class_NBTTagList_addMethod.invoke(attributesNode, attributeNode);
+                addToList(attributesNode, attributeNode);
             }
             setMetaDouble(attributeNode, "Amount", value);
         } catch (Exception ex) {

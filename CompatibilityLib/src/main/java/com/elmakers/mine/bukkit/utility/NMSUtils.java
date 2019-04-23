@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,6 +55,7 @@ import java.util.logging.Level;
 public class NMSUtils {
     protected static boolean failed = false;
     protected static boolean legacy = false;
+    protected static boolean isModernVersion = false;
     protected static boolean isCurrentVersion = false;
 
     protected static String versionPrefix = "";
@@ -115,6 +117,9 @@ public class NMSUtils {
     protected static Class<?> class_TileEntityContainer;
     protected static Class<?> class_ChestLock;
     protected static Class<Enum> class_EnumDirection;
+    protected static Class<Enum> class_EnumExplosionEffect;
+    protected static Enum<?> enum_ExplosionEffect_BREAK;
+    protected static Enum<?> enum_ExplosionEffect_NONE;
     protected static Class<?> class_EntityHorse;
     protected static Class<?> class_EntityWitherSkull;
     protected static Class<?> class_PacketPlayOutAttachEntity;
@@ -209,7 +214,6 @@ public class NMSUtils {
     protected static Method class_Entity_getBoundingBox;
     protected static Method class_TileEntityContainer_setLock;
     protected static Method class_TileEntityContainer_getLock;
-    protected static Method class_ChestLock_isEmpty;
     protected static Method class_ChestLock_getString;
     protected static Method class_ArmorStand_setInvisible;
     protected static Method class_ArmorStand_setGravity;
@@ -291,6 +295,7 @@ public class NMSUtils {
     protected static Field class_Entity_motXField;
     protected static Field class_Entity_motYField;
     protected static Field class_Entity_motZField;
+    protected static Field class_Entity_motField;
     protected static Field class_WorldServer_entitiesByUUIDField;
     protected static Field class_ItemStack_tagField;
     protected static Field class_Firework_ticksFlownField;
@@ -331,6 +336,8 @@ public class NMSUtils {
     protected static Field class_Entity_jumpingField;
     protected static Field class_Entity_moveStrafingField;
     protected static Field class_Entity_moveForwardField;
+    protected static Field class_TileEntityContainer_lock;
+    protected static Field class_ChestLock_key;
 
     protected static Object object_magicSource;
     protected static Map<String, Object> damageSources;
@@ -419,7 +426,6 @@ public class NMSUtils {
             class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
             class_Entity_setYawPitchMethod = class_Entity.getDeclaredMethod("setYawPitch", Float.TYPE, Float.TYPE);
             class_Entity_setYawPitchMethod.setAccessible(true);
-            class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
             class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
             class_NBTTagCompound_setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
             class_NBTTagCompound_setDoubleMethod = class_NBTTagCompound.getMethod("setDouble", String.class, Double.TYPE);
@@ -467,12 +473,6 @@ public class NMSUtils {
             class_CraftWorld_environmentField.setAccessible(true);
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
             class_Entity_invulnerableField.setAccessible(true);
-            class_Entity_motXField = class_Entity.getDeclaredField("motX");
-            class_Entity_motXField.setAccessible(true);
-            class_Entity_motYField = class_Entity.getDeclaredField("motY");
-            class_Entity_motYField.setAccessible(true);
-            class_Entity_motZField = class_Entity.getDeclaredField("motZ");
-            class_Entity_motZField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
             class_ItemStack_tagField.setAccessible(true);
             class_EntityTNTPrimed_source = class_EntityTNTPrimed.getDeclaredField("source");
@@ -509,7 +509,6 @@ public class NMSUtils {
             class_NBTTagShort_dataField.setAccessible(true);
             class_NBTTagString_dataField = class_NBTTagString.getDeclaredField("data");
             class_NBTTagString_dataField.setAccessible(true);
-            class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
             class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
             class_NBTTagList_removeMethod = class_NBTTagList.getMethod("remove", Integer.TYPE);
@@ -591,7 +590,7 @@ public class NMSUtils {
                 class_Block_setBlockDataMethod = Block.class.getMethod("setBlockData", class_BlockData);
                 class_Server_createBlockDataMethod = Server.class.getMethod("createBlockData", String.class);
                 class_BlockData_getAsStringMethod = class_BlockData.getMethod("getAsString");
-                isCurrentVersion = true;
+                isModernVersion = true;
             } catch (Throwable ex) {
                 class_UnsafeValues_fromLegacyMethod = null;
                 class_UnsafeValues_fromLegacyDataMethod = null;
@@ -608,6 +607,44 @@ public class NMSUtils {
                     Bukkit.getLogger().warning("Could not bind to getMap method, magic maps will not work");
                     class_Bukkit_getMapMethod = null;
                 }
+            }
+
+            // 1.14 Support
+            try {
+                class_EnumExplosionEffect = (Class<Enum>)fixBukkitClass("net.minecraft.server.Explosion$Effect");
+                enum_ExplosionEffect_BREAK = Enum.valueOf(class_EnumExplosionEffect, "BREAK");
+                enum_ExplosionEffect_NONE = Enum.valueOf(class_EnumExplosionEffect, "NONE");
+                class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, class_EnumExplosionEffect);
+
+                isCurrentVersion = true;
+                isModernVersion = true;
+            } catch (Throwable not14) {
+                try {
+                    class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
+                } catch (Throwable ex) {
+                    Bukkit.getLogger().warning("Could not bind to createExplosion method, magic explosions will not be attributed to the caster");
+                    class_World_explodeMethod = null;
+                }
+            }
+            try {
+                class_Entity_motField = class_Entity.getDeclaredField("mot");
+                class_Entity_motField.setAccessible(true);
+            } catch (Throwable not14) {
+                try {
+                    class_Entity_motXField = class_Entity.getDeclaredField("motX");
+                    class_Entity_motXField.setAccessible(true);
+                    class_Entity_motYField = class_Entity.getDeclaredField("motY");
+                    class_Entity_motYField.setAccessible(true);
+                    class_Entity_motZField = class_Entity.getDeclaredField("motZ");
+                    class_Entity_motZField.setAccessible(true);
+                } catch (Throwable ex) {
+                    Bukkit.getLogger().warning("Could not bind to motion setters, some things may be broken");
+                }
+            }
+            try {
+                class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", Integer.TYPE, class_NBTBase);
+            } catch (Throwable not14) {
+                class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             }
 
             // Changed in 1.13.2
@@ -729,7 +766,7 @@ public class NMSUtils {
             try {
                 class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
             } catch (Throwable ex) {
-                if (!isCurrentVersion) {
+                if (!isModernVersion) {
                     Bukkit.getLogger().info("Could not bind to setTypeIdAndData, Magic will have issues modifying blocks");
                 }
             }
@@ -738,7 +775,7 @@ public class NMSUtils {
                 class_Block_fromLegacyData = class_Block.getMethod("fromLegacyData", Integer.TYPE);
                 class_Chunk_setBlockMethod = class_Chunk.getMethod("a", class_BlockPosition, class_IBlockData);
             } catch (Throwable ex) {
-                if (!isCurrentVersion) {
+                if (!isModernVersion) {
                     Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work.");
                 }
             }
@@ -759,7 +796,9 @@ public class NMSUtils {
                 class_Chunk_isReadyMethod = class_Chunk.getMethod("isReady");
             } catch (Throwable ex) {
                 class_Chunk_isReadyMethod = null;
-                Bukkit.getLogger().info("Couldn't bind to Chunk.isReady, building in ungenerated chunks may be glitchy.");
+                if (!isCurrentVersion) {
+                    Bukkit.getLogger().info("Couldn't bind to Chunk.isReady, building in ungenerated chunks may be glitchy.");
+                }
             }
 
             try {
@@ -815,7 +854,7 @@ public class NMSUtils {
             try {
                 // 1.13
                 try {
-                    if (!isCurrentVersion) {
+                    if (!isModernVersion) {
                         throw new Exception("Not 1.13");
                     }
                     class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bg");
@@ -958,8 +997,10 @@ public class NMSUtils {
                 damageSources = null;
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, using specific damage types will not work, will use normal damage instead", ex);
             }
-
             try {
+                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bE");
+                if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.13, maybe");
+            } catch (Exception not14) {
                 // 1.13
                 try {
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bH");
@@ -1005,22 +1046,29 @@ public class NMSUtils {
                 try {
                     // Common
                     class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
-                    class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
-                    class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
 
-                    // 1.12 only
-                    class_ChestLock_getString = class_ChestLock.getMethod("getKey");
-                    class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("setLock", class_ChestLock);
-                } catch (Throwable not12) {
+                    // 1.14 only
+                    class_TileEntityContainer_lock = class_TileEntityContainer.getField("chestLock");
+                    class_ChestLock_key = class_ChestLock.getField("key");
+                } catch (Throwable not14) {
                     try {
-                        // 1.11
-                        class_ChestLock_getString = class_ChestLock.getMethod("b");
-                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                    } catch (Throwable ignore) {
-                        // 1.10 and earlier
-                        setLegacy();
-                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                        class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
+                        // 1.12 and below
+                        class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("getLock");
+
+                        // 1.12 only
+                        class_ChestLock_getString = class_ChestLock.getMethod("getKey");
+                        class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("setLock", class_ChestLock);
+                    } catch (Throwable not12) {
+                        try {
+                            // 1.11
+                            class_ChestLock_getString = class_ChestLock.getMethod("b");
+                            class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                        } catch (Throwable ignore) {
+                            // 1.10 and earlier
+                            setLegacy();
+                            class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                            class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
+                        }
                     }
                 }
             } catch (Throwable ex) {
@@ -1196,7 +1244,7 @@ public class NMSUtils {
     }
 
     public static boolean isCurrentVersion() {
-        return isCurrentVersion;
+        return isModernVersion;
     }
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
@@ -1912,12 +1960,17 @@ public class NMSUtils {
     public static boolean createExplosion(Entity entity, World world, double x, double y, double z, float power, boolean setFire, boolean breakBlocks) {
         boolean result = false;
         if (world == null) return false;
+        if (class_World_explodeMethod == null) {
+            return world.createExplosion(x, y, z, power, setFire, breakBlocks);
+        }
         try {
             Object worldHandle = getHandle(world);
             if (worldHandle == null) return false;
             Object entityHandle = entity == null ? null : getHandle(entity);
 
-            Object explosion = class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
+            Object explosion = class_EnumExplosionEffect != null ?
+                    class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks ? enum_ExplosionEffect_BREAK : enum_ExplosionEffect_NONE) :
+                    class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
             Field cancelledField = explosion.getClass().getDeclaredField("wasCanceled");
             result = (Boolean)cancelledField.get(explosion);
         } catch (Throwable ex) {
@@ -1991,7 +2044,7 @@ public class NMSUtils {
 
             for (String value : values) {
                 Object nbtString = getTagString(value);
-                class_NBTTagList_addMethod.invoke(listMeta, nbtString);
+                addToList(listMeta, nbtString);
             }
 
             class_NBTTagCompound_setMethod.invoke(nbtBase, tag, listMeta);
@@ -2245,6 +2298,15 @@ public class NMSUtils {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    protected static void addToList(Object listObject, Object node) throws InvocationTargetException, IllegalAccessException {
+        if (isCurrentVersion) {
+            int size = (Integer)class_NBTTagList_sizeMethod.invoke(listObject);
+            class_NBTTagList_addMethod.invoke(listObject, size, node);
+        } else {
+            class_NBTTagList_addMethod.invoke(listObject, node);
+        }
     }
 }
 

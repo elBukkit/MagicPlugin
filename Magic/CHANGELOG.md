@@ -3,6 +3,7 @@
 # 7.6.21
 
  - Removed Vault-based "fancy" item name feature, since the feature it relied on has been removed from Vault
+ - Fix NMS bindings for 1.14
 
 # 7.6.20
 

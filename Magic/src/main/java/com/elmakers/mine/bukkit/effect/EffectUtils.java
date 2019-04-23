@@ -58,9 +58,14 @@ public class EffectUtils extends NMSUtils {
             CompatibilityUtils.setSilent(fireworkHandle, silent);
 
             if (direction != null) {
-                class_Entity_motXField.set(fireworkHandle, direction.getX());
-                class_Entity_motYField.set(fireworkHandle, direction.getY());
-                class_Entity_motZField.set(fireworkHandle, direction.getZ());
+                if (class_Entity_motField != null) {
+                    Object vec = class_Vec3D_constructor.newInstance(direction.getX(), direction.getY(), direction.getZ());
+                    class_Entity_motField.set(fireworkHandle, vec);
+                } else if (class_Entity_motXField != null) {
+                    class_Entity_motXField.set(fireworkHandle, direction.getX());
+                    class_Entity_motYField.set(fireworkHandle, direction.getY());
+                    class_Entity_motZField.set(fireworkHandle, direction.getZ());
+                }
             }
 
             if (ticksFlown != null) {

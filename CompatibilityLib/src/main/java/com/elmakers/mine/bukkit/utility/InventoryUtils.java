@@ -162,7 +162,7 @@ public class InventoryUtils extends NMSUtils
             Object listMeta = class_NBTTagList_constructor.newInstance();
             for (Object item : list) {
                 if (item != null) {
-                    class_NBTTagList_addMethod.invoke(listMeta, wrapInTag(item));
+                    addToList(listMeta, wrapInTag(item));
                 }
             }
             wrappedValue = listMeta;
@@ -314,7 +314,7 @@ public class InventoryUtils extends NMSUtils
             String encoded = Base64Coder.encodeString(textureJSON);
 
             setMeta(textureNode, "Value", encoded);
-            class_NBTTagList_addMethod.invoke(listMeta, textureNode);
+            addToList(listMeta, textureNode);
             class_NBTTagCompound_setMethod.invoke(properties, "textures", listMeta);
         } catch (Exception ex) {
             ex.printStackTrace();
