@@ -21,7 +21,7 @@ import net.ess3.api.IEssentials;
 public class MagicItemDb implements net.ess3.api.IItemDb.ItemResolver {
 
     private final MagicController controller;
-    private final List<String> names = new ArrayList();
+    private final List<String> names = new ArrayList<>();
 
     public static boolean register(final MagicController controller, final Plugin essentialsPlugin) throws Exception {
         IEssentials essentials = (IEssentials)essentialsPlugin;
