@@ -3,6 +3,7 @@
 # 7.7
 
  - Fix NMS bindings for 1.14
+ - Add CheckVelocity action
  - Removed Vault-based "fancy" item name feature, since the feature it relied on has been removed from Vault
 
 # 7.6.20
