@@ -1,0 +1,11 @@
+# "grass" annoyingly means long grass in 1.13 and above, but grass blocks in 1.12 and below.
+# So we can't have it in the plants list for 1.12 and below.
+
+plants:
+- brown_mushroom
+- red_mushroom
+- flowers
+- long_grass
+- dead_bush
+- all_crops
+- saplings

@@ -1,0 +1,126 @@
+# Mob spawners
+warlockspawner:
+  item:
+    tags:
+      display:
+        Name: Warlock Spawner
+      BlockEntityTag:
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+          CustomName: Warlock
+
+darkspiderspawner:
+  item:
+    tags:
+      display:
+        Name: Dark Spider Spawner
+      BlockEntityTag:
+        EntityId: cave_spider
+        SpawnData:
+          id: cave_spider
+          CustomName: Dark Spider
+
+megaspiderspawner:
+  item:
+    tags:
+      display:
+        Name: Mega Spider Spawner
+      BlockEntityTag:
+        EntityId: Spider
+        SpawnData:
+          id: Spider
+          CustomName: Mega Spider
+
+cavespiderspawner:
+  item:
+    tags:
+      display:
+        Name: Cave Spider Spawner
+      BlockEntityTag:
+        EntityId: cave_spider
+        SpawnData:
+          id: cave_spider
+
+spiderspawner:
+  item:
+    tags:
+      display:
+        Name: Spider Spawner
+      BlockEntityTag:
+        EntityId: Spider
+        SpawnData:
+          id: Spider
+
+zombiespawner:
+  item:
+    tags:
+      display:
+        Name: Zombie Spawner
+      BlockEntityTag:
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+
+skeletonspawner:
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Skeleton Spawner
+      BlockEntityTag:
+        EntityId: Skeleton
+        SpawnData:
+          id: Skeleton
+
+# Spawn eggs
+philbertegg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Philbert
+      EntityTag:
+        id: "minecraft:creeper"
+        CustomName: Philbert
+
+mutantegg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Mutant
+      EntityTag:
+        id: "minecraft:zombie_pigman"
+        CustomName: Mutant
+
+witherarcheregg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Wither Archer
+      EntityTag:
+        id: "minecraft:wither_skeleton"
+        CustomName: Wither Archer
+
+zombiehorseegg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Zombie Horse
+      EntityTag:
+        id: "minecraft:zombie_horse"
+        CustomName: Zombie Horse
+
+skelliehorseegg:
+  item:
+    type: MONSTER_EGG
+    tags:
+      display:
+        Name: Spawn Skellie Horse
+      EntityTag:
+        id: "minecraft:skeleton_horse"
+        CustomName: Skellie Horse
+

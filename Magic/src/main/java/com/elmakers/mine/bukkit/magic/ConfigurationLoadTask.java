@@ -36,8 +36,6 @@ public class ConfigurationLoadTask implements Runnable {
     private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
             "classes", "wands", "items", "crafting", "mobs", "automata"};
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
-    private static final int firstSupportedMinorVersion = 9;
-    private static final int firstCurrentMinorVersion = 13;
 
     private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
 
@@ -304,22 +302,19 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private void addVersionConfigs(ConfigurationSection config, String fileName) throws InvalidConfigurationException, IOException {
-        int firstVersion = CompatibilityUtils.isCurrentVersion() ? firstCurrentMinorVersion : firstSupportedMinorVersion;
-
         int[] serverVersion = CompatibilityUtils.getServerVersion();
         int majorVersion = serverVersion[0];
-        for (int minorVersion = firstVersion; minorVersion <= serverVersion[1]; minorVersion++) {
-            String versionExample = majorVersion + "." + minorVersion;
-            String versionFileName = "examples/" + versionExample + "/" + fileName + ".yml";
-            InputStream versionInput = plugin.getResource(versionFileName);
-            if (versionInput != null)  {
-                ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput);
-                // Version patches will never add to configs, the top-level nodes they are modifying must exist.
-                // This allows them to tweak things from example configs but get safely ignored if not loading
-                // those examples.
-                ConfigurationUtils.addConfigurations(config, versionConfig, true, true);
-                getLogger().info(" Using compatibility configs: " + versionFileName);
-            }
+        int minorVersion = serverVersion[1];
+        String versionExample = majorVersion + "." + minorVersion;
+        String versionFileName = "examples/" + versionExample + "/" + fileName + ".yml";
+        InputStream versionInput = plugin.getResource(versionFileName);
+        if (versionInput != null)  {
+            ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput);
+            // Version patches will never add to configs, the top-level nodes they are modifying must exist.
+            // This allows them to tweak things from example configs but get safely ignored if not loading
+            // those examples.
+            ConfigurationUtils.addConfigurations(config, versionConfig, true, true);
+            getLogger().info(" Using compatibility configs: " + versionFileName);
         }
     }
 
