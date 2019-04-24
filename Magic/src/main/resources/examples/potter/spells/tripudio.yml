@@ -15,7 +15,7 @@ tripudio:
            particle_data: 2
            particle_count: 3
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_ender_dragon_flap
            sound_volume: 1.1
            effectlib:
              class: TraceEffect

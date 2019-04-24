@@ -10,7 +10,7 @@ enhancedspeed:
     effects:
         cast:
            - class: EffectSingle
-             sound: enderdragon_wings
+             sound: entity_ender_dragon_flap
              location: origin
              source_location: eyes
              effectlib:

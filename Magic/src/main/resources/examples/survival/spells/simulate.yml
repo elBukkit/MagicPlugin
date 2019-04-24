@@ -8,7 +8,7 @@ simulate:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_enderdragon_flap
+           sound: entity_ender_dragon_flap
            sound_pitch: 0.5
            sound_volume: 0.7
     costs:

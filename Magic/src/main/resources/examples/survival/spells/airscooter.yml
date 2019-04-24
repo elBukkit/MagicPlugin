@@ -15,7 +15,7 @@ airscooter:
     effects:
         cast:
            - class: EffectSingle
-             sound: enderdragon_wings
+             sound: entity_ender_dragon_flap
              location: origin
              source_location: eyes
              effectlib:
@@ -40,7 +40,7 @@ airscooter:
                  offset: 0,-2.5,0
         deactivate:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_ender_dragon_flap
            sound_pitch: 0.2
     parameters:
         target: self

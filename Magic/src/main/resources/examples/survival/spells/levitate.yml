@@ -26,7 +26,7 @@ levitate:
     effects:
         cast:
            - class: EffectSingle
-             sound: entity_enderdragon_flap
+             sound: entity_ender_dragon_flap
              location: origin
              color_override: color
              source_location: feet
@@ -59,7 +59,7 @@ levitate:
                  disappear_with_origin_entity: true
         deactivate:
         -  class: EffectSingle
-           sound: entity_enderdragon_flap
+           sound: entity_ender_dragon_flap
            sound_pitch: 0.2
         land:
         -  sound: block_stone_step

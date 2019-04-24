@@ -9,13 +9,13 @@ virus:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_enderdragon_growl
+           sound: entity_ender_dragon_growl
         -  class: EffectTrail
            particle: block_crack
         tick:
-        - sound: entity_enderdragon_growl
+        - sound: entity_ender_dragon_growl
         hurt:
-        - sound: entity_enderdragon_hurt,0.3,2
+        - sound: entity_ender_dragon_hurt,0.3,2
     levels:
         1: 100
         3: 40

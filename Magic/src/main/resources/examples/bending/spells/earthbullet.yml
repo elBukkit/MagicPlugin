@@ -33,7 +33,7 @@ earthbullet:
     effects:
       cast:
       - class: EffectSingle
-        sound: enderdragon_wings
+        sound: entity_ender_dragon_flap
         sound_pitch: 1.2
         location: origin
       projectile:

@@ -13,10 +13,10 @@ drive:
     effects:
         cast:
            - class: EffectSingle
-             sound: enderdragon_wings
+             sound: entity_ender_dragon_flap
         deactivate:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_ender_dragon_flap
         crash_entity_armor_stand:
         -  class: EffectSingle
            location: target

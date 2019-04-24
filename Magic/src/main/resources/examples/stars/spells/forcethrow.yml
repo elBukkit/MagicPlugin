@@ -25,7 +25,7 @@ forcethrow:
         cast:
         -  class: EffectSingle
            location: origin
-           sound: enderdragon_wings
+           sound: entity_ender_dragon_flap
            sound_pitch: 2
         -  class: EffectSingle
            target_offset: 0.5,2.5,0.5
@@ -57,7 +57,7 @@ forcethrow:
         no_target:
         -  class: EffectSingle
            location: origin
-           sound: enderdragon_wings
+           sound: entity_ender_dragon_flap
            sound_pitch: 2
     parameters:
         brush: erase

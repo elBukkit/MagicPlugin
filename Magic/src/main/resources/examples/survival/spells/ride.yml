@@ -13,10 +13,10 @@ ride:
     effects:
         cast:
            - class: EffectSingle
-             sound: enderdragon_wings
+             sound: entity_ender_dragon_flap
         deactivate:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_ender_dragon_flap
     parameters:
         range: 8
         target_type: LivingEntity

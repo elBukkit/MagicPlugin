@@ -8,7 +8,7 @@ animate:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_enderdragon_growl
+           sound: entity_ender_dragon_growl
         -  class: EffectTrail
            particle: block_crack
     cast:

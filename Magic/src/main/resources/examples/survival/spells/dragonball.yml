@@ -17,11 +17,11 @@ dragonball:
              iterations: 15
              particle: dragon_breath
              lengthGrow: 0.1
-           sound: entity_enderdragon_shoot 
+           sound: entity_ender_dragon_shoot
            sound_volume: 1
            sound_pitch: 0.25
         -  class: EffectSingle
-           sound: entity_enderdragon_growl
+           sound: entity_ender_dragon_growl
            sound_volume: 0.9
            sound_pitch: 0.5
         projectile:

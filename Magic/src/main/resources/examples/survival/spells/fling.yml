@@ -16,7 +16,7 @@ fling:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_enderdragon_flap
+           sound: entity_ender_dragon_flap
            sound_volume: 1
            effectlib:
              class: Trace

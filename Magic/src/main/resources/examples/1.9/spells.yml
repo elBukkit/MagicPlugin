@@ -99,3 +99,99 @@ sniper_scope:
     parameters:
         item: pumpkin
 
+fling:
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           sound_volume: 1
+           effectlib:
+             class: Trace
+             iterations: 30
+             particle_offset_x: 1
+             particle_offset_y: 1
+             particle_offset_z: 1
+             particle_count: 2
+             speed: 2
+             particle: spell
+
+levitate:
+    effects:
+        cast:
+           - class: EffectSingle
+             sound: entity_enderdragon_flap
+             location: origin
+             color_override: color
+             source_location: feet
+             effectlib:
+                 class: CylinderEffect
+                 particle: redstone
+                 radius: 1.2
+                 height: 0
+                 enable_rotation: false
+                 particles: 20
+                 offset: 0,-0.1,0
+                 duration: 1200000
+                 disappear_with_origin_entity: true
+           - class: EffectSingle
+             location: origin
+             source_location: feet
+             effectlib:
+                 class: CylinderEffect
+                 particle: cloud
+                 radius: 0.6
+                 height: 0
+                 enable_rotation: false
+                 particles: 20
+                 particle_count: 4
+                 particle_offset_x: 0.2
+                 particle_offset_y: 0
+                 particle_offset_z: 0.2
+                 offset: 0,-0.1,0
+                 duration: 1200000
+                 disappear_with_origin_entity: true
+        deactivate:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           sound_pitch: 0.2
+
+broom:
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           sound_volume: 1.1
+        -  class: EffectSingle
+           effectlib:
+             class: TraceEffect
+             iterations: 30
+             particle: spell
+
+glide:
+  effects:
+    cast:
+      - class: EffectSingle
+        sound: entity_enderdragon_flap
+        sound_pitch: 1.5
+        sound_volume: 0.7
+        location: origin
+        source_location: eyes
+        effectlib:
+          class: IconEffect
+          duration: 30000
+          particle: end_rod
+          particle_offset_x: 1
+          particle_offset_y: 1
+          particle_offset_z: 1
+          particle_count: 40
+          y_offset: 0
+
+superfly:
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+        deactivate:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           sound_pitch: 0.2

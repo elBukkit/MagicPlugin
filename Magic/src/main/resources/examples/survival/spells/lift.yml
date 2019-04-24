@@ -74,7 +74,7 @@ lift:
         no_target:
         -  class: EffectSingle
            location: origin
-           sound: entity_enderdragon_flap
+           sound: entity_ender_dragon_flap
            sound_pitch: 2
            effectlib:
              class: ConeEffect

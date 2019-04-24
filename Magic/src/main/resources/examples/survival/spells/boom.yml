@@ -17,7 +17,7 @@ boom:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_enderdragon_hurt
+           sound: entity_ender_dragon_hurt
            location: origin
         -  class: EffectSingle
            sound: entity_generic_explode

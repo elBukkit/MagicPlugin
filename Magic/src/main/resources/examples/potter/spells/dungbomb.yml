@@ -19,7 +19,7 @@ dungbomb:
            sound: lava_pop
         hit:
          - class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_ender_dragon_flap
            location: origin
            effectlib:
                class: SphereEffect

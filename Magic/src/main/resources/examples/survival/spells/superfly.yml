@@ -21,10 +21,10 @@ superfly:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_enderdragon_flap
+           sound: entity_ender_dragon_flap
         deactivate:
         -  class: EffectSingle
-           sound: entity_enderdragon_flap
+           sound: entity_ender_dragon_flap
            sound_pitch: 0.2
     parameters:
         target: self

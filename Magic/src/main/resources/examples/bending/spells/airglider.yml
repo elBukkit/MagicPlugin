@@ -17,7 +17,7 @@ airglider:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_enderdragon_flap
+           sound: entity_ender_dragon_flap
            sound_pitch: 1.5
            sound_volume: 0.7
            location: origin
