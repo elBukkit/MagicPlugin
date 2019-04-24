@@ -5250,6 +5250,7 @@ public class MagicController implements MageController {
 
     public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force) {
         final Server server = plugin.getServer();
+        if (!plugin.isEnabled()) return false;
         resourcePack = null;
         resourcePackHash = null;
         final boolean initialLoad = !checkedResourcePack;
@@ -5379,7 +5380,7 @@ public class MagicController implements MageController {
                     }
                 }
 
-                if (!quiet) {
+                if (!quiet && plugin.isEnabled()) {
                     server.getScheduler().runTask(plugin, new Runnable() {
                         @Override
                         public void run() {
