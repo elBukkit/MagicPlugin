@@ -898,7 +898,16 @@ public class CompatibilityUtils extends NMSUtils {
         Object nmsWorld = getHandle(location.getWorld());
         Projectile projectile = null;
         try {
-            constructor = projectileType.getConstructor(class_World);
+            Object entityType = null;
+            if (entityTypes != null) {
+                constructor = projectileType.getConstructor(class_entityTypes, class_World);
+                entityType = entityTypes.get(projectileType.getSimpleName());
+                if (entityType == null) {
+                    throw new Exception("Failed to find entity type for projectile class " + projectileType.getName());
+                }
+            } else {
+                constructor = projectileType.getConstructor(class_World);
+            }
 
             if (class_EntityFireball.isAssignableFrom(projectileType)) {
                 dirXField = projectileType.getField("dirX");
@@ -915,7 +924,7 @@ public class CompatibilityUtils extends NMSUtils {
 
             Object nmsProjectile = null;
             try {
-                nmsProjectile = constructor.newInstance(nmsWorld);
+                nmsProjectile = entityType == null ? constructor.newInstance(nmsWorld) : constructor.newInstance(entityType, nmsWorld);
             } catch (Exception ex) {
                 nmsProjectile = null;
                 Bukkit.getLogger().log(Level.WARNING, "Error spawning projectile of class " + projectileType.getName(), ex);

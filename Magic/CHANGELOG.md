@@ -1,9 +1,9 @@
 # CHANGELOG
 
-# 7.6.21
+# 7.7
 
- - Removed Vault-based "fancy" item name feature, since the feature it relied on has been removed from Vault
  - Fix NMS bindings for 1.14
+ - Removed Vault-based "fancy" item name feature, since the feature it relied on has been removed from Vault
 
 # 7.6.20
 

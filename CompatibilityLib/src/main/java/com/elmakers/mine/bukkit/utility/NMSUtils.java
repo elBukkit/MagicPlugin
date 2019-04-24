@@ -42,6 +42,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.google.common.base.CaseFormat;
+
 /**
  * Contains some raw methods for doing some simple NMS utilities.
  * 
@@ -158,6 +160,7 @@ public class NMSUtils {
     protected static Class<?> class_Parrot;
     protected static Class<Enum> class_ParrotVariant;
     protected static Class<?> class_KnowledgeBookMeta;
+    protected static Class<?> class_entityTypes;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -341,6 +344,7 @@ public class NMSUtils {
 
     protected static Object object_magicSource;
     protected static Map<String, Object> damageSources;
+    protected static Map<String, Object> entityTypes;
 
     public static boolean initialize() {
         // Find classes Bukkit hides from us. :-D
@@ -626,6 +630,32 @@ public class NMSUtils {
                     class_World_explodeMethod = null;
                 }
             }
+            if (isModernVersion) {
+                try {
+                    entityTypes = new HashMap<>();
+                    class_entityTypes = fixBukkitClass("net.minecraft.server.EntityTypes");
+                    for (Field field : class_entityTypes.getFields()) {
+                        if (field.getType().equals(class_entityTypes)) {
+                            Object entityType = field.get(null);
+                            // This won't really work for all entity types, but it should work for most projectiles
+                            // which is all this map is used for.
+                            String name = field.getName();
+                            name = "Entity" + CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name);
+                            entityTypes.put(name, entityType);
+
+                            // We may need to do some manual fixups here.
+                            if (name.equals("EntityArrow")) {
+                                entityTypes.put("EntityTippedArrow", entityType);
+                            } else if (name.equals("Fireball")) {
+                                entityTypes.put("LargeFireball", entityType);
+                            }
+                        }
+                    }
+                } catch (Throwable not14) {
+                    Bukkit.getLogger().warning("Could not bind to entity types, projectile launches will not work");
+                }
+            }
+
             try {
                 class_Entity_motField = class_Entity.getDeclaredField("mot");
                 class_Entity_motField.setAccessible(true);
