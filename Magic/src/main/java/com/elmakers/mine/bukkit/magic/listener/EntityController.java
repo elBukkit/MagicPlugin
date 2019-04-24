@@ -501,7 +501,8 @@ public class EntityController implements Listener {
         Wand wand = mage.getActiveWand();
         if (wand == null) return;
 
-        if (wand.getIcon().getMaterial() != Material.BOW) return;
+        Material wandIcon = wand.getIcon().getMaterial();
+        if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) return;
         double minPull = wand.getDouble("cast_min_bowpull");
 
         if (minPull > 0 && pull < minPull) {
