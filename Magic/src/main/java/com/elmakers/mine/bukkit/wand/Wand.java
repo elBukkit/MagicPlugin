@@ -111,8 +111,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     // Cached state
     private String id = "";
-    private List<Inventory> hotbars;
-    private List<Inventory> inventories;
+    private List<WandInventory> hotbars;
+    private List<WandInventory> inventories;
     private Map<String, Integer> spellInventory = new HashMap<>();
     private Set<String> spells = new LinkedHashSet<>();
     private Map<String, Integer> spellLevels = new HashMap<>();
@@ -525,7 +525,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             hotbars.clear();
             while (hotbars.size() < hotbarCount) {
-                hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, getInventoryTitle()));
+                hotbars.add(new WandInventory(HOTBAR_INVENTORY_SIZE));
             }
             while (hotbars.size() > hotbarCount) {
                 hotbars.remove(0);
@@ -940,9 +940,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return inactiveIcon;
     }
 
-    protected List<Inventory> getAllInventories() {
+    protected List<WandInventory> getAllInventories() {
         int hotbarCount = getHotbarCount();
-        List<Inventory> allInventories = new ArrayList<>(inventories.size() + hotbarCount);
+        List<WandInventory> allInventories = new ArrayList<>(inventories.size() + hotbarCount);
         if (hotbarCount > 0) {
             allInventories.addAll(hotbars);
         }
@@ -1001,7 +1001,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             addToInventory(itemStack);
             return;
         }
-        Inventory inventory = getInventory(slot);
+        WandInventory inventory = getInventory(slot);
         slot = getInventorySlot(slot);
 
         ItemStack existing = inventory.getItem(slot);
@@ -1023,12 +1023,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return;
             }
         }
-        List<Inventory> checkInventories = getAllInventories();
+        List<WandInventory> checkInventories = getAllInventories();
         boolean added = false;
 
         WandMode mode = getMode();
         int fullSlot = 0;
-        for (Inventory inventory : checkInventories) {
+        for (WandInventory inventory : checkInventories) {
             int inventorySize = inventory.getSize();
             Integer slot = null;
             int freeSpace = 0;
@@ -1053,17 +1053,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         if (!added) {
             fullSlot = getHotbarSize() + getInventorySize() * inventories.size();
-            Inventory newInventory = CompatibilityUtils.createInventory(null, getInventorySize(), getInventoryTitle());
+            WandInventory newInventory = new WandInventory(getInventorySize());
             newInventory.addItem(itemStack);
             inventories.add(newInventory);
         }
         updateSlot(fullSlot, itemStack);
     }
 
-    protected @Nonnull Inventory getInventoryByIndex(int inventoryIndex) {
+    protected @Nonnull WandInventory getInventoryByIndex(int inventoryIndex) {
         // Auto create
         while (inventoryIndex >= inventories.size()) {
-            inventories.add(CompatibilityUtils.createInventory(null, getInventorySize(), getInventoryTitle()));
+            inventories.add(new WandInventory(getInventorySize()));
         }
 
         return inventories.get(inventoryIndex);
@@ -1074,7 +1074,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return hotbars.size() * HOTBAR_INVENTORY_SIZE;
     }
 
-    protected @Nonnull Inventory getInventory(int slot) {
+    protected @Nonnull WandInventory getInventory(int slot) {
         int hotbarSize = getHotbarSize();
 
         if (slot < hotbarSize) {
@@ -1100,7 +1100,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         displayInventory = null;
 
         updateHotbarCount();
-        for (Inventory hotbar : hotbars) {
+        for (WandInventory hotbar : hotbars) {
             hotbar.clear();
         }
         inventories.clear();
@@ -2921,7 +2921,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private boolean updateHotbar(PlayerInventory playerInventory) {
         if (getMode() != WandMode.INVENTORY) return false;
-        Inventory hotbar = getHotbar();
+        WandInventory hotbar = getHotbar();
         if (hotbar == null) return false;
 
         // Make sure the wand is still in the held slot
@@ -2976,9 +2976,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private void updateInventory(Inventory targetInventory) {
         // Set inventory from current page, taking into account hotbar offset
         int currentOffset = getHotbarSize() > 0 ? HOTBAR_SIZE : 0;
-        List<Inventory> inventories = this.inventories;
+        List<WandInventory> inventories = this.inventories;
         if (openInventoryPage < inventories.size()) {
-            Inventory inventory = inventories.get(openInventoryPage);
+            WandInventory inventory = inventories.get(openInventoryPage);
             ItemStack[] contents = inventory.getContents();
             for (int i = 0; i < contents.length; i++) {
                 ItemStack inventoryItem = contents[i];
@@ -3000,9 +3000,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return getMessage("chest_inventory_title", "Wand");
     }
 
-    protected Inventory getOpenInventory() {
+    protected WandInventory getOpenInventory() {
         while (openInventoryPage >= inventories.size()) {
-            inventories.add(CompatibilityUtils.createInventory(null, getInventorySize(), getInventoryTitle()));
+            inventories.add(new WandInventory(getInventorySize()));
         }
         return inventories.get(openInventoryPage);
     }
@@ -3018,7 +3018,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public void saveChestInventory() {
         if (displayInventory == null) return;
 
-        Inventory openInventory = getOpenInventory();
+        WandInventory openInventory = getOpenInventory();
         Map<String, Integer> previousSlots = new HashMap<>();
         Set<String> addedBack = new HashSet<>();
         for (int i = 0; i < displayInventory.getSize(); i++) {
@@ -3071,7 +3071,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Fill in the hotbar
         Player player = mage.getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        Inventory hotbar = getHotbar();
+        WandInventory hotbar = getHotbar();
         if (hotbar != null)
         {
             int saveOffset = 0;
@@ -3096,7 +3096,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Fill in the active inventory page
         int hotbarOffset = getHotbarSize();
-        Inventory openInventory = getOpenInventory();
+        WandInventory openInventory = getOpenInventory();
         for (int i = 0; i < openInventory.getSize(); i++) {
             ItemStack playerItem = playerInventory.getItem(i + HOTBAR_SIZE);
             if (!updateSlot(i + hotbarOffset + openInventoryPage * getInventorySize(), playerItem)) {
@@ -4354,7 +4354,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
-    public Inventory getHotbar() {
+    public WandInventory getHotbar() {
         if (this.hotbars.size() == 0) return null;
 
         if (currentHotbar < 0 || currentHotbar >= this.hotbars.size())
@@ -4369,7 +4369,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return hotbars.size();
     }
 
-    public List<Inventory> getHotbars() {
+    public List<WandInventory> getHotbars() {
         return hotbars;
     }
 
@@ -4976,7 +4976,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private void clearSlot(Integer slot) {
         if (slot != null) {
-            Inventory inventory = getInventory(slot);
+            WandInventory inventory = getInventory(slot);
             slot = getInventorySlot(slot);
             inventory.setItem(slot, null);
         }

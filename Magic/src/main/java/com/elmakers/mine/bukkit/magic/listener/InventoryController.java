@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.wand.WandInventory;
 import com.elmakers.mine.bukkit.wand.WandMode;
 
 public class InventoryController implements Listener {
@@ -380,7 +381,7 @@ public class InventoryController implements Listener {
                 // Since the event handler doesn't match the zero-count itemstacks
                 Integer slot = event.getSlot();
                 int heldSlot = player.getInventory().getHeldItemSlot();
-                Inventory hotbar = activeWand.getHotbar();
+                WandInventory hotbar = activeWand.getHotbar();
                 if (hotbar != null && slot >= 0 && slot <= hotbar.getSize() && slot != heldSlot && activeWand.getMode() == WandMode.INVENTORY)
                 {
                     if (slot > heldSlot) slot--;

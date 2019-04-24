@@ -10,7 +10,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -45,8 +44,8 @@ public class WandOrganizer {
 
     protected void removeHotbar(Map<String, Integer> spells, Map<String, Integer> brushes) {
         if (wand.getHotbarCount() == 0) return;
-        List<Inventory> hotbars = wand.getHotbars();
-        for (Inventory hotbar : hotbars) {
+        List<WandInventory> hotbars = wand.getHotbars();
+        for (WandInventory hotbar : hotbars) {
             int hotbarSize = hotbar.getSize();
             for (int i = 0; i < hotbarSize; i++) {
                 ItemStack hotbarItem = hotbar.getItem(i);
