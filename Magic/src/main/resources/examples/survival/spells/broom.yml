@@ -77,6 +77,7 @@ broom:
         strafe_controllable: 1
         jump_controllable: 1
         exemption_duration: 5000
+        armor_stand_marker: false
 
 broom|2:
   upgrade_required_casts: 30

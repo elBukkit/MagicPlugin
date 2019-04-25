@@ -436,7 +436,7 @@
     },
     "head": {
         "rotation": [ 0, 90, 0 ],
-        "translation": [ 0, -37, 0 ],
+        "translation": [ 0, 0, 0 ],
         "scale": [ 4, 4, 4 ]
     },
     "ground": {
