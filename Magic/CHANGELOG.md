@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.7.1
+
 # 7.7
 
  - Fix NMS bindings for 1.14
