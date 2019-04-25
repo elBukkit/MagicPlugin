@@ -5,6 +5,7 @@
  - Fix NMS bindings for 1.14
  - Add CheckVelocity action
  - Removed Vault-based "fancy" item name feature, since the feature it relied on has been removed from Vault
+ - The broom item was changed in the resource pack to not have an offset
 
 # 7.6.20
 
