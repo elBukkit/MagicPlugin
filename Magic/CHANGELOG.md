@@ -2,6 +2,9 @@
 
 # 7.7.1
 
+ - Fix errors in 1.14 when trying to copy villagers (trade API is gone)
+ - Fix /wand destroy not clearing keep, undroppable and other flags
+
 # 7.7
 
  - Fix NMS bindings for 1.14

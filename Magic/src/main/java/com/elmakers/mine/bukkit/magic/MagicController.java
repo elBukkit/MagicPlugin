@@ -3597,6 +3597,12 @@ public class MagicController implements MageController {
         InventoryUtils.removeMeta(item, "skill");
         InventoryUtils.removeMeta(item, "brush");
         InventoryUtils.removeMeta(item, "sp");
+        InventoryUtils.removeMeta(item, "keep");
+        InventoryUtils.removeMeta(item, "temporary");
+        InventoryUtils.removeMeta(item, "undroppable");
+        InventoryUtils.removeMeta(item, "unplaceable");
+        InventoryUtils.removeMeta(item, "unstashable");
+        InventoryUtils.removeMeta(item, "unmoveable");
     }
 
     @Override
