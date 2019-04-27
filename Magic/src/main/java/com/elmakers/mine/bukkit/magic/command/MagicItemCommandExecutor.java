@@ -409,7 +409,6 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         PlayerInventory inventory = player.getInventory();
         int itemSlot = inventory.getHeldItemSlot();
         Map<String, MaterialAndData> items = new TreeMap<>();
-        VaultController vault = VaultController.getInstance();
 
         for (Material material : Material.values()) {
             ItemStack testItem = new ItemStack(material, 1);
