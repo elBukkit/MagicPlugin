@@ -279,7 +279,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public int hashCode() {
         // Note that this does not incorporate any metadata!
