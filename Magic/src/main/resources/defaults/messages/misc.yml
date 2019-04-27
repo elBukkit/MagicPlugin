@@ -4,23 +4,23 @@ general:
     spell_list_page: You know $count spells [page $page of $pages]
     spell_list: You know $count spells
     locked_chest: That chest is locked, you cannot break it.
-    
+
 books:
     default:
         author: NathanWolf
         title: $category Spell Book
     all:
         title: The Master Spell Book
-        
+
 material:
     wildcard: " (Any Type)"
-    
+
 economy:
     missing: "&cMy shop is closed, sorry!"
     insufficient: "Costs: &6$cost"
     deducted: "Deducted: &6$cost"
     requires: "You must have a $cost"
-    
+
 worlds:
     world:
         name: The Overworld
@@ -28,7 +28,7 @@ worlds:
         name: The Nether
     world_the_end:
         name: The End
-    
+
 cooldown:
     wait_seconds: another $seconds seconds
     wait_minutes: another $minutes minutes
@@ -81,7 +81,7 @@ controls:
   right_click: Right-Click
   left_click: Left-Click
   swap: Swap (F)
-  
+
 skillapi:
   required_skill: "&cRequired Skill: &4$skill"
   required_class: "&cRequired Class: &4$class"

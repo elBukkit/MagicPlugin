@@ -8,7 +8,7 @@
 
     <property name="severity" value="warning"/>
 
-    <property name="fileExtensions" value="java, properties, xml"/>
+    <property name="fileExtensions" value="java, properties, xml, yml"/>
 
     <!-- Avoid tab characters -->
     <module name="FileTabCharacter">

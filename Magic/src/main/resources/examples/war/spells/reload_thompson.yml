@@ -8,4 +8,3 @@ reload_thompson:
     delay: 700
     repeat: 5
     cooldown: 3000
-    

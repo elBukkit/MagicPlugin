@@ -82,7 +82,7 @@ alphabetizer:
     upgrade: true
     indestructible: false
     alphabetize: true
-    
+
 loud:
     icon: diamond_axe:218
     upgrade: true

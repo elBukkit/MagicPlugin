@@ -7,7 +7,7 @@
 # To see the current default builtin configs, look in this folder:
 # https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/spells
 #
-# For customization help see: 
+# For customization help see:
 # https://github.com/elBukkit/MagicPlugin/wiki/Customization
 #
 
@@ -15,7 +15,7 @@
 # This is the Spell configuration file for the Magic plugin.
 #
 # Here you may alter default spell behavior, or add and remove spells.
-# 
+#
 # The name, description, and usage of a spell should be defined in messages.yml as
 #  messages.spells.<spellkey>.name
 #  messages.spells.<spellkey>.description
@@ -31,7 +31,7 @@
 #       class: <Must be a class from the spells package.>
 #       costs:
 #           xp: <xp/mana amount>
-#           <material_name>: <reagent amount>#      
+#           <material_name>: <reagent amount>#
 #       parameters:
 #           <specific spell parameters- TODO: list common ones>
 #
@@ -41,7 +41,7 @@
 # Note that a "#" character means the line is commented out and has no effect.
 # Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
 # Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
-# 
+#
 
 # Disable the kill spell completely
 # kill:
@@ -60,4 +60,4 @@
 # Require kill spell to consume health
 # kill:
 #    costs:
-#       health: 10 
+#       health: 10

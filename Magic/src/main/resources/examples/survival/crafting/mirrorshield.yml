@@ -5,9 +5,7 @@ mirrorshield:
   materials:
     o: nether_star
     i: shield
-    
+
   row_1: o
   row_2: i
   row_3:
-
-

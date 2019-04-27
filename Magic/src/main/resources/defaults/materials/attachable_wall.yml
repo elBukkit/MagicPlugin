@@ -1,5 +1,5 @@
 # Copied from attachable_double
-# Things that can specifically be attached to walls. 
+# Things that can specifically be attached to walls.
 # this will be a more complex check in construction, otherwise
 # for an attachable, only the floor block is checked.
 attachable_wall:

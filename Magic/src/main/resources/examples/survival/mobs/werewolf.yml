@@ -22,4 +22,3 @@ werewolf:
       - sound: entity_wolf_growl
         sound_volume: 1.5
         sound_pitch: 0.5
-    

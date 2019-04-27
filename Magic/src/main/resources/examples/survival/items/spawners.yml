@@ -1,4 +1,4 @@
-# Mob spawners     
+# Mob spawners
 warlockspawner:
   worth: 50000.0
   item:
@@ -19,7 +19,7 @@ warlockspawner:
           id: "minecraft:zombie"
           CustomName: "{\"text\":\"Warlock\"}"
           IsVillager: 1
-          
+
 darkspiderspawner:
   worth: 20000.0
   item:
@@ -39,7 +39,7 @@ darkspiderspawner:
         SpawnData:
           id: "minecraft:cave_spider"
           CustomName: "{\"text\":\"Dark Spider\"}"
-                       
+
 megaspiderspawner:
   worth: 20000.0
   item:
@@ -59,7 +59,7 @@ megaspiderspawner:
         SpawnData:
           id: "minecraft:spider"
           CustomName: "{\"text\":\"Mega Spider\"}"
-                    
+
 cavespiderspawner:
   worth: 5000.0
   item:
@@ -78,7 +78,7 @@ cavespiderspawner:
         RequiredPlayerRange: 12
         SpawnData:
           id: "minecraft:cave_spider"
-             
+
 spiderspawner:
   worth: 5000.0
   item:
@@ -97,7 +97,7 @@ spiderspawner:
         RequiredPlayerRange: 12
         SpawnData:
           id: "minecraft:spider"
-                
+
 zombiespawner:
   worth: 20000.0
   item:
@@ -116,7 +116,7 @@ zombiespawner:
         RequiredPlayerRange: 12
         SpawnData:
           id: "minecraft:zombie"
-                  
+
 skeletonspawner:
   worth: 20000.0
   item:
@@ -135,4 +135,3 @@ skeletonspawner:
         RequiredPlayerRange: 12
         SpawnData:
           id: "minecraft:skeleton"
-          

@@ -40,7 +40,7 @@ currency:
     worth: 1
     name: Galleon
     name_plural: Galleons
-    
+
 # Use the potter RP
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-potter-RP-8-1.zip"
 

@@ -7,10 +7,10 @@
 # To see all available options, look in this folder:
 # https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/config
 #
-# Options for sub-components (spells, wand templates, chest populator, etc) are 
+# Options for sub-components (spells, wand templates, chest populator, etc) are
 # found in separate files.
 #
-# For customization help see: 
+# For customization help see:
 # https://github.com/elBukkit/MagicPlugin/wiki/Customization
 #
 
@@ -19,7 +19,7 @@
 # Note that a "#" character means the line is commented out and has no effect.
 # Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
 # Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
-# 
+#
 
 # Load one of the included example configurations instead of the defaults.
 # Current options: potter, safe, survival
@@ -37,7 +37,7 @@
 # Give new players a wand when they first join
 # welcome_wand: beginner
 
-# Whether or not to show any messages (in chat) 
+# Whether or not to show any messages (in chat)
 # show_messages: true
 
 # Whether or not to show messages on every spell cast (in chat)
@@ -83,4 +83,3 @@
 
 # Turn on skull-based spell icons (may be needed if you're not using the RP)
 # url_icons_enabled: true
-

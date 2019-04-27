@@ -7,7 +7,7 @@
 # To see the current default builtin configs, look in this folder:
 # https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/wands
 #
-# For customization help see: 
+# For customization help see:
 # https://github.com/elBukkit/MagicPlugin/wiki/Customization
 #
 
@@ -19,7 +19,7 @@
 #
 # Once a wand is created, it is its own unique item. It may be modified after that,
 # and may bear no direct relationship back to the template that created it.
-# 
+#
 # The name and description, of a wand should be defined in messages.yml as
 #  messages.wands.<wandkey>.name
 #  messages.wands.<wandkey>.description
@@ -88,7 +88,7 @@
 # Note that a "#" character means the line is commented out and has no effect.
 # Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
 # Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
-# 
+#
 
 # Change starting mana of default wand
 # Note that wand progression (when upgraded/enchanted) is defined in enchanting.yml

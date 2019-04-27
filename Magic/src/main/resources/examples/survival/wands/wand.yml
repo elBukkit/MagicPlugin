@@ -1,6 +1,6 @@
 #
 # This creates a basic starter wand, and is the default wand given with the "/wand" command.
-# 
+#
 wand:
     inherit: base_wand
     class: mage
@@ -13,4 +13,3 @@ wand:
     - transformable
     - effectable
     - tweakable
-

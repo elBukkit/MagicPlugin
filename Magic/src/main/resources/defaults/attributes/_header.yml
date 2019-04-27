@@ -1,16 +1,16 @@
-# 
+#
 # !! IMPORTANT !!
-# 
+#
 # If you wish to customize this plugin, edit the "attributes.yml" file instead.
-# 
+#
 # DO NOT JUST COPY THIS WHOLE FILE INTO YOUR attributes.yml !!!!
 # If you do this, updating the plugin in the future may not work as expected.
-# 
+#
 # This file is merged from the files in the following folder:
-# 
+#
 # https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/attributes
-# 
+#
 # See RPG configs for an example:
-# 
+#
 # https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/examples/rpg/attributes.yml
-# 
+#

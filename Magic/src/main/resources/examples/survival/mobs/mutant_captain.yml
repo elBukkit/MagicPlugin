@@ -17,4 +17,3 @@ mutant_captain:
   entity_attributes:
     generic_knockback_resistance: 1
     generic_attack_speed: 5
-    

@@ -231,7 +231,7 @@ saplingshop:
         - sapling|3
         - sapling|4
         - sapling|5
-          
+
 naturesellshop:
     inherit: sellshop
     parameters:
@@ -267,7 +267,7 @@ miningsellshop:
         - coal@64
         - iron_ore@64
         - gold_ore@64
-          
+
 clayshop:
     inherit: buyshop
     parameters:
@@ -387,7 +387,7 @@ redstoneshop:
         - wood_button
         - stone_plate
         - wood_plate
-      
+
 redstonesellshop:
     inherit: sellshop
     parameters:
@@ -447,7 +447,7 @@ armorshop:
         items:
         - diamond_helmet
         - helmet_of_blinding
-                 
+
 toolshop:
     icon: diamond_helmet
     inherit: buyshop
@@ -460,7 +460,7 @@ toolshop:
         - diamond_axe
         - dwarven_spade
         - dwarven_axe
-                 
+
 pickaxeshop:
     icon: diamond_pickaxe
     inherit: buyshop
@@ -474,7 +474,7 @@ pickaxeshop:
         - dwarven_pickaxe_luck
         - felicis_pickaxe
         - dwarven_felicis_pickaxe
-          
+
 potionshop:
     icon: potion
     category: shop
@@ -545,7 +545,7 @@ brushshop:
           brush:quartz_block: 600
           brush:quartz_block|1: 600
           brush:quartz_block|2: 700
-          
+
 appraiser:
     inherit: sellshop
     icon: emerald

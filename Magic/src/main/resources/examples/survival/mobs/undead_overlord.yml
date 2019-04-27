@@ -7,4 +7,3 @@ undead_overlord:
   potion_effects:
   - type: increase_damage
     amplifier: 1
-    

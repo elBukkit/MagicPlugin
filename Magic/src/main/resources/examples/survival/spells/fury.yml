@@ -95,14 +95,13 @@ fury:
           track_speed: 0.1
     costs:
         mana: 100
-        
+
 fury|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
       target_count: 6
-      
+
 fury|3:
     parameters:
       target_count: 8
-

@@ -8,7 +8,7 @@ workbench:
     worth: 80
     actions:
         cast:
-        - class: Inventory  
+        - class: Inventory
     effects:
         cast:
         -  class: EffectSingle
@@ -28,4 +28,3 @@ workbench:
         type: workbench
     costs:
         mana: 30
-

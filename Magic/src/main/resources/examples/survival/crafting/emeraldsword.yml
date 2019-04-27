@@ -5,9 +5,7 @@ emeraldsword:
   materials:
     o: stick
     i: emerald
-    
+
   row_1: i
   row_2: i
   row_3: o
-
-

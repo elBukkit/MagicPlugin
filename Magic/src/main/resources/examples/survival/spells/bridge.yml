@@ -42,4 +42,3 @@ bridge:
         ignore_region_overrides: true
     costs:
         mana: 5
-    

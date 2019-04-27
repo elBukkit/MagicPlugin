@@ -18,4 +18,3 @@ vanish:
     parameters:
         target: self
         cooldown: 1000
-    

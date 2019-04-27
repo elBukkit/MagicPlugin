@@ -7,4 +7,3 @@ reload_rifle:
     repeat: 10
     delay: 800
     cooldown: 5000
-    

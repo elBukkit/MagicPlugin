@@ -116,6 +116,7 @@
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
+                    <resourceIncludes>**/*.yml</resourceIncludes>
                 </configuration>
                 <executions>
                     <execution>

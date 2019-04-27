@@ -7,7 +7,7 @@
 # See the following folder for the current builtin items:
 # https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/items
 #
-# For customization help see: 
+# For customization help see:
 # https://github.com/elBukkit/MagicPlugin/wiki/Customization
 #
 # You can also specify the worth of items in this file, so that all shops
@@ -28,7 +28,7 @@
 # Note that a "#" character means the line is commented out and has no effect.
 # Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
 # Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
-# 
+#
 
 # Change value of emeralds
 # emerald:

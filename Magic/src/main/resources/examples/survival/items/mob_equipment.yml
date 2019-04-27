@@ -1,5 +1,5 @@
 # Gear for mobs to wear
-          
+
 warlock_boots:
   worth: 5000
   item:
@@ -10,7 +10,7 @@ warlock_boots:
       meta-type: UNSPECIFIC
       enchants:
         PROTECTION_FALL: 10
-        
+
 warlock_chestplate:
   worth: 4000
   item:
@@ -21,7 +21,7 @@ warlock_chestplate:
       meta-type: UNSPECIFIC
       enchants:
         THORNS: 3
-        
+
 warlock_leggings:
   worth: 4000
   item:
@@ -63,7 +63,7 @@ wizard_wand:
       display-name: §aWizard wand
       lore:
       - It has lost its power
-      
+
 madscientist_wand:
   worth: 2000
   item:
@@ -104,4 +104,3 @@ archer_bow:
       display-name: §aMagic Bow
       lore:
       - It has lost its power
-      

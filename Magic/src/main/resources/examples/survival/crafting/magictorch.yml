@@ -6,9 +6,7 @@ magictorch:
   materials:
     o: nether_star
     i: torch
-    
+
   row_1: o
   row_2: i
   row_3:
-
-

@@ -16,4 +16,3 @@ mega_spider:
   potion_effects:
   - type: increase_damage
     amplifier: 0
-    

@@ -25,4 +25,3 @@ cloak:
         duration: 8000
         cooldown: 30000
         effect_invisibility: 5
-    

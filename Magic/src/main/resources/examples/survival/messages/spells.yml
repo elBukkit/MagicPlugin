@@ -1510,7 +1510,7 @@ spells:
         description: Show off a specific particle, use with /cast fx particle redstone
     randomtp:
       name: Random Teleport
-      description: Teleports you to a random location    
+      description: Teleports you to a random location
     note01:
       name: 1 Note C Middle
     note02:

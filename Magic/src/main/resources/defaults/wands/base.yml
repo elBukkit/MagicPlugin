@@ -29,7 +29,7 @@ base_wand:
     item_attributes:
       GENERIC_ATTACK_SPEED: 10
     item_attribute_slot: mainhand
-  
+
 base_sword:
     hidden: true
     inherit: base_bound
@@ -50,4 +50,3 @@ base_bow:
     right_click: none
     swap: cycle_hotbar
     quiet: 1
-

@@ -10,4 +10,3 @@ mutant:
   default_drops: false
   drops:
   - gold_nugget@5
-  

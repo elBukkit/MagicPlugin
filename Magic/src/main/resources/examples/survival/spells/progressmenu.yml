@@ -16,14 +16,14 @@ progressmenu:
       requirements:
       - wand_tags: buffable
     - cast_spell: appearanceshop
-      requirements: 
+      requirements:
       - wand_tags: transformable
     - cast_spell: colorshop
-      requirements: 
+      requirements:
       - holding_wand: true
     - cast_spell: effectshop
-      requirements: 
+      requirements:
       - wand_tags: effectable
     - cast_spell: controlsmenu
-      requirements: 
+      requirements:
       - holding_wand: true

@@ -16,4 +16,3 @@ tpshop:
         - item: none
         - cast_spell: randomtp
           cost: 1
-          
