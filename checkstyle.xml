@@ -22,6 +22,11 @@
         <property name="severity" value="error"/>
     </module>
 
+    <!-- Require newline at end of file -->
+    <module name="NewlineAtEndOfFile">
+        <property name="severity" value="error"/>
+    </module>
+
     <module name="TreeWalker">
         <module name="OuterTypeFilename">
             <property name="severity" value="error"/>
