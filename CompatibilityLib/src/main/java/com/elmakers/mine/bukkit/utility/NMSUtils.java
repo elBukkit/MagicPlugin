@@ -630,7 +630,7 @@ public class NMSUtils {
                     class_World_explodeMethod = null;
                 }
             }
-            if (isModernVersion) {
+            if (isCurrentVersion) {
                 try {
                     entityTypes = new HashMap<>();
                     class_entityTypes = fixBukkitClass("net.minecraft.server.EntityTypes");
