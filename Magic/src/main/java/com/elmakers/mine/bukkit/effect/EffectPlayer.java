@@ -391,9 +391,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 if (!material.isSolid()) {
                     return;
                 }
-                data = material.getId();
+                sourceLocation.getWorld().playEffect(sourceLocation, effect, material);
+            } else {
+                sourceLocation.getWorld().playEffect(sourceLocation, effect, data);
             }
-            sourceLocation.getWorld().playEffect(sourceLocation, effect, data);
         }
         if (entityEffect != null && sourceEntity != null) {
             sourceEntity.playEffect(entityEffect);

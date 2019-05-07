@@ -5,6 +5,7 @@
  - Fix errors in 1.14 when trying to copy villagers (trade API is gone)
  - Fix /wand destroy not clearing keep, undroppable and other flags
  - Fix projectile spells in 1.13 and below
+ - Fix using block-material-based particle effects in 1.14
 
 # 7.7
 
