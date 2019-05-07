@@ -160,7 +160,7 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
                     plugin.getLogger().info("Factions found, will integrate for build, friendly fire and safe zone checks.");
                 }
             } else {
-                plugin.getLogger().info("Factions not found, will not integrate.");
+                plugin.getLogger().info("Factions not found");
             }
         } else {
             plugin.getLogger().info("Factions integration disabled");
