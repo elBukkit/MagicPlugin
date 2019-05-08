@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.7.2
+
 # 7.7.1
 
  - Fix errors in 1.14 when trying to copy villagers (trade API is gone)
