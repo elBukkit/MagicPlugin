@@ -646,8 +646,8 @@ public class NMSUtils {
                             // We may need to do some manual fixups here.
                             if (name.equals("EntityArrow")) {
                                 entityTypes.put("EntityTippedArrow", entityType);
-                            } else if (name.equals("Fireball")) {
-                                entityTypes.put("LargeFireball", entityType);
+                            } else if (name.equals("EntityFireball")) {
+                                entityTypes.put("EntityLargeFireball", entityType);
                             }
                         }
                     }
