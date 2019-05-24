@@ -208,6 +208,7 @@ public interface CastContext extends WandEffectContext {
     Set<Material> getMaterialSet(String key);
     void setSpellParameters(ConfigurationSection parameters);
     SpellResult getResult();
+    void setInitialResult(SpellResult result);
     void setResult(SpellResult result);
     void addResult(SpellResult result);
     boolean getTargetsCaster();

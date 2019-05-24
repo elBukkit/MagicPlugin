@@ -1159,8 +1159,13 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         }
     }
 
+    @Override
     public void setInitialResult(SpellResult result) {
         initialResult = result;
+    }
+
+    public SpellResult getInitialResult() {
+        return initialResult;
     }
 
     @Override

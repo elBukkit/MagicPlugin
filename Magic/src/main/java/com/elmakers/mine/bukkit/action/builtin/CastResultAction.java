@@ -8,9 +8,11 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class CastResultAction extends BaseSpellAction {
     private SpellResult result = SpellResult.CANCELLED;
+    private boolean endResult = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection configuration) {
+        endResult = configuration.getBoolean("end_result", false);
         String spellResultString = configuration.getString("result");
         if (spellResultString != null && !spellResultString.isEmpty()) {
             try {
@@ -23,6 +25,12 @@ public class CastResultAction extends BaseSpellAction {
 
     @Override
     public SpellResult perform(CastContext context) {
+        while (endResult && context != null) {
+            context.setResult(result);
+            context.setInitialResult(result);
+            if (context == context.getBaseContext()) break;
+            context = context.getBaseContext();
+        }
         return result;
     }
 }

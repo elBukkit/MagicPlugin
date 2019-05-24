@@ -137,7 +137,9 @@ public class ActionSpell extends BrushSpell
         {
             currentHandler = (ActionHandler)currentHandler.clone();
             try {
-                result = result.max(currentHandler.start(currentCast, parameters));
+                currentCast.setInitialResult(result);
+                result = currentHandler.start(currentCast, parameters);
+                result = currentCast.getInitialResult().max(result);
                 currentCast.setInitialResult(result);
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Spell cast failed for " + getKey(), ex);

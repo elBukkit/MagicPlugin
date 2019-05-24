@@ -129,7 +129,7 @@ public enum SpellResult {
      * @return True if this cast was a success.
      */
     public boolean isSuccess(boolean castOnNoTarget) {
-        if (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION) {
+        if (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION || this == SpellResult.STOP) {
             return castOnNoTarget;
         }
         return isSuccess();
