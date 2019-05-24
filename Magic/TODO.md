@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - Add option to reset mana on wand activation
+
  - Add denied_item parameter to CheckInventory action
  - Look at bug with equations from Reuben
  - Some way to specify order of icons in Recall

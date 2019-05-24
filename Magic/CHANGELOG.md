@@ -3,6 +3,7 @@
 # 7.7.2
 
  - Fix the Fireball spell
+ - Fix the Admission spell
 
 # 7.7.1
 

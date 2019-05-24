@@ -33,14 +33,16 @@ public class DoorAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
         Door doorData = (Door)data;
-        if (doorData.isTopHalf()) {
-            targetBlock = targetBlock.getRelative(BlockFace.DOWN);
-            blockState = targetBlock.getState();
-            data = blockState.getData();
-            if (!(data instanceof Door)) {
-                return SpellResult.NO_TARGET;
-            }
-            doorData = (Door)data;
+
+        // isTopHalf got broken, I guess.
+        Block blockUnder = targetBlock.getRelative(BlockFace.DOWN);
+        BlockState underState = blockUnder.getState();
+        Object underData = underState.getData();
+
+        if (underData instanceof Door) {
+            targetBlock = blockUnder;
+            blockState = underState;
+            doorData = (Door)underData;
         }
 
         if (!context.hasBuildPermission(targetBlock))
