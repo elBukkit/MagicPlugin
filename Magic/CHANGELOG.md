@@ -6,6 +6,7 @@
  - Fix the Admission spell
  - Fix setting arrows to allow pickup in 1.14.1
  - Fix the Horse spell going on cooldown even if there wasn't enough room for the horse to spawn
+ - Add "reset_mana_on_activate" wand property, can be used to make items you must hold to charge up
 
 # 7.7.1
 

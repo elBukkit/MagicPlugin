@@ -192,6 +192,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean isSingleUse = false;
     private boolean limitSpellsToPath = false;
     private boolean limitBrushesToPath = false;
+    private boolean resetManaOnActivate = false;
     private Currency currencyDisplay = null;
 
     private float manaPerDamage = 0;
@@ -1685,6 +1686,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         enchantCount = getInt("enchant_count");
         maxEnchantCount = getInt("max_enchant_count");
         inventoryRows = getInt("inventory_rows", 5);
+        resetManaOnActivate = getBoolean("reset_mana_on_activate", false);
         if (inventoryRows <= 0) inventoryRows = 1;
 
         if (hasProperty("effect_particle")) {
@@ -4633,6 +4635,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 this.mage = mage;
             }
+        }
+
+        // Check for mana reset
+        if (resetManaOnActivate) {
+            setMana(0.0f);
+            setProperty("mana_timestamp", System.currentTimeMillis());
         }
 
         // Check for auto-organize
