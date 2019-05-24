@@ -8,6 +8,7 @@ horse:
       cast:
       - class: ChangeContext
         target_offset: 0,1,0
+        ignore_result: true
         actions:
         - class: Plane
           radius: 1
@@ -16,9 +17,12 @@ horse:
             allowed: passthrough
             fail:
             - class: Message
+              ignore_result: true
               message_type: action_bar
               message_key: nospace
-              ignore_result: true
+            - class: CastResult
+              result: no_target
+              end_result: true
             - class: Stop
       - class: SpawnEntity
       - class: Mount

@@ -5,6 +5,7 @@
  - Fix the Fireball spell
  - Fix the Admission spell
  - Fix setting arrows to allow pickup in 1.14.1
+ - Fix the Horse spell going on cooldown even if there wasn't enough room for the horse to spawn
 
 # 7.7.1
 
