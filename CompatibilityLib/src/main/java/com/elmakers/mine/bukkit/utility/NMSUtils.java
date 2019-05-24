@@ -867,12 +867,18 @@ public class NMSUtils {
                 Bukkit.getLogger().info("Could not register ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy");
             }
             try {
-                class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.Arrow$PickupStatus");
-                class_Arrow_setPickupStatusMethod = Arrow.class.getMethod("setPickupStatus", class_PickupStatus);
-            } catch (Throwable ex) {
-                class_PickupStatus = null;
-                class_Arrow_setPickupStatusMethod = null;
-                Bukkit.getLogger().info("Could not register Arrow.PickupStatus, arrows can not be made to be picked up");
+                class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.AbstractArrow$PickupStatus");
+                Class<?> arrowClass = Class.forName("org.bukkit.entity.AbstractArrow");
+                class_Arrow_setPickupStatusMethod = arrowClass.getMethod("setPickupStatus", class_PickupStatus);
+            } catch (Throwable not141) {
+                try {
+                    class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.Arrow$PickupStatus");
+                    class_Arrow_setPickupStatusMethod = Arrow.class.getMethod("setPickupStatus", class_PickupStatus);
+                } catch (Throwable ex) {
+                    class_PickupStatus = null;
+                    class_Arrow_setPickupStatusMethod = null;
+                    Bukkit.getLogger().info("Could not register Arrow.PickupStatus, arrows can not be made to be picked up");
+                }
             }
             try {
                 class_CraftPlayer_getProfileMethod = class_CraftPlayer.getMethod("getProfile");

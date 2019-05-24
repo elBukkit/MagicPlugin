@@ -4,6 +4,7 @@
 
  - Fix the Fireball spell
  - Fix the Admission spell
+ - Fix setting arrows to allow pickup in 1.14.1
 
 # 7.7.1
 
