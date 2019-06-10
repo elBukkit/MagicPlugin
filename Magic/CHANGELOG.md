@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.7.5
+
 # 7.7.4
 
  - Hotfix for error in 7.7.3 loading examples that don't inherit (think this only effects sandbox?)
