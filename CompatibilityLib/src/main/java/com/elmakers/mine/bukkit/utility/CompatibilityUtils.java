@@ -1536,7 +1536,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static String migrateMaterial(String materialKey) {
         if (materialKey == null || materialKey.isEmpty()) return materialKey;
         byte data = 0;
-        String[] pieces = StringUtils.split(materialKey, ',');
+        String[] pieces = StringUtils.split(materialKey, ':');
         String textData = "";
         if (pieces.length > 1) {
             textData = pieces[1];

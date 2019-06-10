@@ -8,6 +8,7 @@
  - Fix schematic loading in 1.14 (signs still don't work, not sure that's going to be fixable)
  - Fix cat spell in 1.14 (changed to use SpawnEntity action, may work slightly differently)
  - Fix progression when using legacy configs (example: 6)
+ - Fix colored wool, carpet etc in 1.14 using legacy keys (e.g. "carpet:2")
 
 # 7.7.2
 
