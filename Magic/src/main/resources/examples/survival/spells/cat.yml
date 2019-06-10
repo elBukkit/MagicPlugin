@@ -3,9 +3,11 @@ cat:
     icon_disabled: diamond_hoe:70
     icon_url: http://textures.minecraft.net/texture/c87fd886605b6aaf6af2b2ea5b205bcdcb60b453b0353ceece0861cfc67ada4
     category: elemental
-    class: OcelotSpell
     worth: 150
     earns: 2
+    actions:
+      cast:
+        - class: SpawnEntity
     effects:
         cast:
         -  class: EffectSingle
@@ -23,10 +25,10 @@ cat:
              particle_nucleus: drip_water
     parameters:
         target_type: LivingEntity
-        max_ocelots: 5
         allow_max_range: false
         range: 32
-        cooldown: 5000
+        cooldown: 60000
+        type: cat
     costs:
         mana: 30
 

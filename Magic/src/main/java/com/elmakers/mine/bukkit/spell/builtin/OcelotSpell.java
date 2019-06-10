@@ -13,6 +13,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
@@ -93,10 +94,12 @@ public class OcelotSpell extends TargetingSpell
 
     protected void tameOcelot(Ocelot ocelot) {
         ocelot.setHealth(8);
-        ocelot.setTamed(true);
-        Player player = mage.getPlayer();
-        if (player != null) {
-            ocelot.setOwner(player);
+        if (ocelot instanceof Tameable) {
+            ocelot.setTamed(true);
+            Player player = mage.getPlayer();
+            if (player != null) {
+                ocelot.setOwner(player);
+            }
         }
     }
 }

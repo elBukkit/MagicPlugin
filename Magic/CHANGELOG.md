@@ -6,6 +6,7 @@
  - Fix the Air Scooter spell in 1.14
  - Fix poison arrows not dealing any poison damage
  - Fix schematic loading in 1.14 (signs still don't work, not sure that's going to be fixable)
+ - Fix cat spell in 1.14 (changed to use SpawnEntity action, may work slightly differently)
 
 # 7.7.2
 

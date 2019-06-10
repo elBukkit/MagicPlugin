@@ -195,3 +195,8 @@ superfly:
         -  class: EffectSingle
            sound: entity_enderdragon_flap
            sound_pitch: 0.2
+
+cat:
+ class: OcelotSpell
+ parameters:
+   max_ocelots: 5
