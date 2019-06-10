@@ -121,6 +121,16 @@ public class ConfigurationLoadTask implements Runnable {
                 ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                 ConfigurationUtils.addConfigurations(config, exampleConfig);
                 info(" Using " + examplesFileName);
+                List<String> inherits = ConfigurationUtils.getStringList(exampleConfig, "inherit");
+                for (String inheritFrom : inherits) {
+                    String inheritFileName = "examples/" + inheritFrom + "/" + fileName + ".yml";
+                    InputStream inheritInput = plugin.getResource(inheritFileName);
+                    if (inheritInput != null) {
+                        ConfigurationSection inheritedConfig = CompatibilityUtils.loadConfiguration(inheritInput);
+                        ConfigurationUtils.addConfigurations(config, inheritedConfig);
+                        info("  Inheriting from " + inheritFrom);
+                    }
+                }
             }
         }
         // Add in examples
