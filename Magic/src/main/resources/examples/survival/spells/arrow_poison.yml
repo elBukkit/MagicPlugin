@@ -43,6 +43,7 @@ arrow_poison:
       potion_effects:
       - type: poison
         duration: 1000
+        amplifier: 2
       speed: "bowpull * 3"
       spread: "1 - bowpull"
       radius: "2 + 4 * bowpull"
