@@ -732,22 +732,30 @@ public class NMSUtils {
 
             try {
                 try {
-                    // 1.13
-                    class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("k", Integer.TYPE);
+                    // 1.14
+                    class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("h", Integer.TYPE);
                     if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
-                        throw new Exception("Not 1.13");
+                        throw new Exception("Not 1.14");
                     }
-                } catch (Throwable not13) {
+                } catch (Throwable not14) {
                     try {
-                        // 1.12
-                        class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("f", Integer.TYPE);
+                        // 1.13
+                        class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("k", Integer.TYPE);
                         if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
-                            throw new Exception("Not 1.12");
+                            throw new Exception("Not 1.13");
                         }
-                    } catch (Throwable not12) {
-                        // 1.11 and lower
-                        current = false;
-                        class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
+                    } catch (Throwable not13) {
+                        try {
+                            // 1.12
+                            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("f", Integer.TYPE);
+                            if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
+                                throw new Exception("Not 1.12");
+                            }
+                        } catch (Throwable not12) {
+                            // 1.11 and lower
+                            current = false;
+                            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
+                        }
                     }
                 }
             } catch (Throwable ex) {

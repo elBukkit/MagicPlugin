@@ -1455,6 +1455,17 @@ public class CompatibilityUtils extends NMSUtils {
                     materialData.setData((byte)0);
                     converted = (Material)class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
                 }
+                // Converting legacy signs doesn't seem to work
+                // This fixes them, but the direction is wrong, and restoring text causes internal errors
+                // So I guess it's best to just let signs be broken for now.
+                /*
+                if (converted == Material.AIR) {
+                    String typeKey = materialData.getItemType().name();
+                    if (typeKey.equals("LEGACY_WALL_SIGN")) return Material.WALL_SIGN;
+                    if (typeKey.equals("LEGACY_SIGN_POST")) return Material.SIGN_POST;
+                    if (typeKey.equals("LEGACY_SIGN")) return Material.SIGN;
+                }
+                */
                 return converted;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -1485,7 +1496,9 @@ public class CompatibilityUtils extends NMSUtils {
             Object[] allMaterials = Material.AIR.getDeclaringClass().getEnumConstants();
             for (Object o : allMaterials) {
                 Material material = (Material)o;
-                materialIdMap.put(material.getId(), material);
+                if (isLegacy(material)) {
+                    materialIdMap.put(material.getId(), material);
+                }
             }
         }
         return materialIdMap.get(id);
