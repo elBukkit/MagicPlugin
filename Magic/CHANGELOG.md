@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.7.4
+
 # 7.7.3
 
  - Fix the Wear action in 1.14 (Hat spell, etc)
