@@ -51,6 +51,7 @@ airscooter:
         liftoff_thrust: 0.6
         direction_y: 0.5
         duration: 120000
+        armor_stand_marker: false
     costs:
         mana: 20
     active_costs:

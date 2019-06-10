@@ -1,5 +1,11 @@
 # CHANGELOG
 
+# 7.7.3
+
+ - Fix the Wear action in 1.14 (Hat spell, etc)
+ - Fix the Air Scooter spell in 1.14
+ - Fix poison arrows not dealing any poison damage
+
 # 7.7.2
 
  - Fix the Fireball spell
