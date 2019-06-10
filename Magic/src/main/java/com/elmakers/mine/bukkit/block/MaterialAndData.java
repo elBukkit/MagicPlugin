@@ -865,6 +865,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     @Override
     public String toString() {
-        return (isValid() ? material + (data != 0 ? "@" + data : "") : "invalid");
+        return (isValid() ? material + (data != null && data != 0 ? "@" + data : "") : "invalid");
     }
 }
