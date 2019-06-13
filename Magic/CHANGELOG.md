@@ -2,6 +2,8 @@
 
 # 7.7.5
 
+ - Fix wands limited to path spells not being able to learn extra spells from their path
+
 # 7.7.4
 
  - Hotfix for error in 7.7.3 loading examples that don't inherit (think this only effects sandbox?)

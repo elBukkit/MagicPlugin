@@ -463,7 +463,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public boolean containsSpell(String spellKey) {
-        return allSpells.contains(spellKey);
+        return allSpells.contains(spellKey) || allExtraSpells.contains(spellKey);
     }
 
     @Override
