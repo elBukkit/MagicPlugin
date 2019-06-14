@@ -53,6 +53,7 @@ public class ChangeContextAction extends CompoundAction {
     private int sourcePitchMin;
     private int sourcePitchMax;
     private boolean orientPitch;
+    private boolean swapSourceAndTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -92,6 +93,7 @@ public class ChangeContextAction extends CompoundAction {
         sourcePitchOffset = (float)parameters.getDouble("source_pitch_offset", 0);
         targetYawOffset = (float)parameters.getDouble("target_yaw_offset", 0);
         targetPitchOffset = (float)parameters.getDouble("target_pitch_offset", 0);
+        swapSourceAndTarget = parameters.getBoolean("swap_source_and_target", false);
 
         if (parameters.contains("target_direction_speed"))
         {
@@ -136,6 +138,16 @@ public class ChangeContextAction extends CompoundAction {
                 }
             }
         }
+        if (swapSourceAndTarget)
+        {
+            Entity swapEntity = targetEntity;
+            targetEntity = sourceEntity;
+            sourceEntity = swapEntity;
+            Location swapLocation = targetLocation;
+            targetLocation = sourceLocation;
+            sourceLocation = swapLocation;
+        }
+
         Vector direction = context.getDirection().normalize();
         if (targetCaster)
         {
