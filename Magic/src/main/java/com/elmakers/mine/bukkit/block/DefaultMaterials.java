@@ -39,6 +39,7 @@ public class DefaultMaterials {
     private Material firework = null;
     private Material mobSpawner = null;
     private Material filledMap = null;
+    private Material netherPortal = null;
     private MaterialAndData wallTorch = null;
     private MaterialAndData redstoneTorchOn = null;
     private MaterialAndData redstoneTorchOff = null;
@@ -163,6 +164,15 @@ public class DefaultMaterials {
 
     public void setMobSpawner(Material material) {
         this.mobSpawner = material;
+    }
+
+    @Nullable
+    public static Material getNetherPortal() {
+        return getInstance().netherPortal;
+    }
+
+    public void setNetherPortal(Material material) {
+        this.netherPortal = material;
     }
 
     @Nullable

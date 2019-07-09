@@ -3,6 +3,7 @@
 # 7.7.5
 
  - Fix wands limited to path spells not being able to learn extra spells from their path
+ - Fix Portal spell in 1.13+
 
 # 7.7.4
 

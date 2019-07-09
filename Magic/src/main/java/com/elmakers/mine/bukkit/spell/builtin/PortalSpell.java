@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BoundingBox;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
 public class PortalSpell extends BlockSpell
@@ -57,6 +58,6 @@ public class PortalSpell extends BlockSpell
     protected void buildPortalBlocks(Location centerBlock, BlockFace facing)
     {
         BoundingBox container = new BoundingBox(centerBlock.getBlockX(), centerBlock.getBlockY(), centerBlock.getBlockZ(), centerBlock.getBlockX() + 2, centerBlock.getBlockY() + 3, centerBlock.getBlockZ() + 1);
-        container.fill(centerBlock.getWorld(), Material.PORTAL, getDestructible(), getUndoList());
+        container.fill(centerBlock.getWorld(), DefaultMaterials.getNetherPortal(), getDestructible(), getUndoList());
     }
 }
