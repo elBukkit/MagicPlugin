@@ -48,6 +48,7 @@ import de.slikey.effectlib.math.EquationTransform;
 
 public class SelectorAction extends CompoundAction implements GUIAction, CostReducer
 {
+    private static final int MAX_INVENTORY_SLOTS = 6 * 9;
     protected double costScale = 1;
     protected double earnScale = 1;
     protected boolean autoClose = true;
@@ -1060,6 +1061,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
             Integer targetSlot = option.getSlot();
             int slot = targetSlot == null ? numSlots : targetSlot;
+            if (slot >= MAX_INVENTORY_SLOTS) continue;
             if (!option.isPlaceholder()) itemCount++;
             showingItems.put(slot, option);
             numSlots = Math.max(slot + 1, numSlots);
@@ -1127,6 +1129,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             pathName = "";
         }
         inventoryTitle = inventoryTitle.replace("$path", pathName);
+
 
         int invSize = (int)Math.ceil(numSlots / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
