@@ -78,6 +78,8 @@ public class ProtectionManager implements BlockBreakManager, BlockBuildManager {
 
     @Override
     public boolean hasBuildPermission(Player player, Block block) {
+        if (player == null || block == null) return true;
+
         checkListeners();
         BlockPlaceEvent placeEvent = new BlockPlaceEvent(block, block.getState(), block.getRelative(BlockFace.DOWN), player.getInventory().getItemInMainHand(), player, true, EquipmentSlot.HAND);
         for (RegisteredListener listener : buildListeners) {
@@ -95,6 +97,8 @@ public class ProtectionManager implements BlockBreakManager, BlockBuildManager {
 
     @Override
     public boolean hasBreakPermission(Player player, Block block) {
+        if (player == null || block == null) return true;
+
         checkListeners();
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, player);
         for (RegisteredListener listener : breakListeners) {
