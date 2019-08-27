@@ -196,6 +196,10 @@ public class WearAction extends BaseSpellAction
             materialName = context.getController().describeItem(wearItem);
         }
 
+        if (DefaultMaterials.isAir(wearItem.getType())) {
+            return SpellResult.NO_TARGET;
+        }
+
         ItemMeta meta = wearItem.getItemMeta();
 
         // Legacy support
