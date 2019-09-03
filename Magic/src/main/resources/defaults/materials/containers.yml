@@ -2,7 +2,7 @@ containers:
 - chest
 - furnace
 - brewing_stand
-- dispensers
+- dispenser
 - hopper
 - dropper
 - trapped_chest
