@@ -61,10 +61,8 @@ public class ModifyManaAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
         int manaMax = caster.getEffectiveManaMax();
-        if (!bypassManaMax) {
-            if (mana > 0 && currentMana >= manaMax) {
-                return SpellResult.NO_TARGET;
-            }
+        if (!bypassManaMax && mana > 0 && currentMana >= manaMax) {
+            return SpellResult.NO_TARGET;
         }
         if (fillMana) {
             currentMana = manaMax;
