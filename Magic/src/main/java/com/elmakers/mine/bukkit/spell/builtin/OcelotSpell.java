@@ -94,7 +94,11 @@ public class OcelotSpell extends TargetingSpell
 
     protected void tameOcelot(Ocelot ocelot) {
         ocelot.setHealth(8);
-        if (ocelot instanceof Tameable) {
+
+        // Forward compatibility: Ocelots may no longer be tameable
+        @SuppressWarnings("cast")
+        boolean isTamableInThisVersion = ocelot instanceof Tameable;
+        if (isTamableInThisVersion) {
             ocelot.setTamed(true);
             Player player = mage.getPlayer();
             if (player != null) {
