@@ -48,7 +48,9 @@ public class SpawnEntityAction extends CompoundAction
 
     private boolean loot = false;
     private boolean setTarget = false;
+    private boolean setSource = false;
     private boolean force = false;
+    private boolean waitForDeath = true;
     private boolean repeatRandomize = true;
     private boolean tamed = false;
 
@@ -66,6 +68,8 @@ public class SpawnEntityAction extends CompoundAction
         force = parameters.getBoolean("force", false);
         tamed = parameters.getBoolean("tamed", false);
         setTarget = parameters.getBoolean("set_target", false);
+        setSource = parameters.getBoolean("set_source", false);
+        waitForDeath = parameters.getBoolean("wait_for_death", true);
         repeatRandomize = parameters.getBoolean("repeat_random", true);
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
@@ -126,9 +130,14 @@ public class SpawnEntityAction extends CompoundAction
             return SpellResult.NO_ACTION;
         }
         Entity spawned = entity.get();
-        if (spawned == null || spawned.isDead() || !spawned.isValid()) {
-            if (setTarget && spawned != null) {
-                createActionContext(context, spawned, spawned.getLocation(), spawned, spawned.getLocation());
+        if (spawned == null || spawned.isDead() || !spawned.isValid() || !waitForDeath) {
+            if ((setTarget || setSource) && spawned != null) {
+                Entity sourceEntity = setSource ? spawned : context.getEntity();
+                if (setTarget) {
+                    createActionContext(context, sourceEntity, sourceEntity.getLocation(), spawned, spawned.getLocation());
+                } else {
+                    createActionContext(context, sourceEntity, sourceEntity.getLocation());
+                }
             }
             return startActions();
         }
