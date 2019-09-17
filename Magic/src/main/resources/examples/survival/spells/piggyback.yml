@@ -1,36 +1,25 @@
-anvil:
+# Demonstrate how to spawn one mob riding another
+piggyback:
     icon: diamond_axe:90
     icon_disabled: diamond_hoe:90
     icon_url: http://textures.minecraft.net/texture/505b8ba793c372d9fb45db20df80c1606b19b7421a9bbcc258ae2a65d65ea7
     category: utility
     actions:
       cast:
-      - class: ChangeContext
-        target_offset: 0,8,0
+      - class: SpawnEntity
+        # This sets the spawned mob as the source for following actions
+        set_source: true
+        # This allows us to run actions immediately on spawn, in this case spawning a mount
+        wait_for_death: false
+        type: skeleton
         actions:
         - class: SpawnEntity
+          # This sets the spawned entity as the target of the following mount action
           set_target: true
-          set_source: true
-          actions:
-          - class: PlayEffects
-            effects: land
-          - class: AreaOfEffect
-            actions:
-            - class: Damage
+          type: pig
+        - class: Mount
     worth: 100
     effects:
-        land:
-        - sound: block_stone_step
-          sound_pitch: 0.7
-        - class: EffectRing
-          particle: block_crack
-          period: 4
-          particle_count: 30
-          radius: 2
-          particle_offset_x: 0.9
-          particle_offset_z: 0.9
-          particle_offset_y: 0.1
-          material: anvil
         cast:
         -  class: EffectSingle
            particle: block_crack
@@ -42,15 +31,10 @@ anvil:
            material: anvil
     parameters:
         target: other
-        target_type: LivingEntity
         allow_max_range: true
         range: 16
         undo: 30000
         cooldown: 20000
-        type: falling_block
-        material: anvil
-        radius: 2
-        damage: 5
     costs:
         mana: 100
 

@@ -1656,3 +1656,6 @@ spells:
     decoy:
       name: Decoy
       description: Hide behind a clone
+    piggyback:
+      name: Piggyback
+      description: Who's riding what, now?
