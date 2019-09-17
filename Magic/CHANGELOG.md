@@ -6,6 +6,7 @@
  - Fix Portal spell in 1.13+
  - Put a max size on the spellshop to prevent it from failing in 1.14.4+
  - Add set_source option to SpawnEntity, see piggyback example spell
+ - Fix unstashable wands being stashable in barrels
 
 # 7.7.4
 

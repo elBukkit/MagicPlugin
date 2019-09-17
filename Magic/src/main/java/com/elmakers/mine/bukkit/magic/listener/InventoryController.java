@@ -236,6 +236,7 @@ public class InventoryController implements Listener {
 
         // TODO: use enum when dropping backwards compat
         if (!isChest) isChest = inventoryType.name().equals("SHULKER_BOX");
+        if (!isChest) isChest = inventoryType.name().equals("BARREL");
         boolean clickedWand = Wand.isWand(clickedItem);
         boolean isContainerSlot = event.getSlot() == event.getRawSlot();
 
