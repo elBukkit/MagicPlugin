@@ -33,6 +33,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
 
     public ItemData(String materialKey) throws Exception {
         MaterialAndData material = new MaterialAndData(materialKey);
+        if (material.isValid() && CompatibilityUtils.isLegacy(material.getMaterial())) {
+            short convertData = (material.getData() == null ? 0 : material.getData());
+            material = new MaterialAndData(CompatibilityUtils.migrateMaterial(material.getMaterial(), (byte)convertData));
+        }
         if (material.isValid()) {
             item = material.getItemStack(1);
         }
