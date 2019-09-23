@@ -9,6 +9,7 @@
  - Fix unstashable wands being stashable in barrels
  - Fix some issues with custom crafting
  - Fix the Music spell (PlayRecord action fix)
+ - Add one new wand and two new bow appearances (Thank you, Mutim_Endymion!)
 
 # 7.7.4
 
