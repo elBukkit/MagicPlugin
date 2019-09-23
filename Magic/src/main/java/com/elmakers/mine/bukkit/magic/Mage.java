@@ -1529,14 +1529,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (Wand.isWand(itemInOffhand)) {
             if (offhandWand != null && (offhandWand.getLeftClickAction() == WandAction.CAST || offhandWand.getRightClickAction() == WandAction.CAST)) {
                 offhandCast = true;
+                Wand castingWand = offhandWand;
                 boolean castResult = false;
                 try {
-                    offhandWand.tickMana();
-                    offhandWand.setActiveMage(this);
-                    castResult = offhandWand.cast();
+                    castingWand.tickMana();
+                    castingWand.setActiveMage(this);
+                    castResult = castingWand.cast();
 
                     // Don't swing arm is cast is from right-click
-                    if (offhandWand.getRightClickAction() != WandAction.CAST) {
+                    if (castingWand.getRightClickAction() != WandAction.CAST) {
                         CompatibilityUtils.swingOffhand(player, OFFHAND_CAST_RANGE);
                     }
                 } catch (Exception ex) {
