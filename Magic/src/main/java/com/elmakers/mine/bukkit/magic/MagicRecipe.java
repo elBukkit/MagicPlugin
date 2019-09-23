@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 /**
  * Represents a crafting recipe which will make a wand item.
@@ -111,14 +112,18 @@ public class MagicRecipe {
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
                     ItemData ingredient = controller.getOrCreateItemOrWand(materialKey);
-                    @SuppressWarnings("deprecation")
-                    org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getMaterialData();
-                    if (material == null) {
-                        outputType = null;
-                        controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
-                        return false;
+                    if (NMSUtils.isLegacy()) {
+                        @SuppressWarnings("deprecation")
+                        org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getMaterialData();
+                        if (material == null) {
+                            outputType = null;
+                            controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
+                            return false;
+                        }
+                        shaped.setIngredient(key.charAt(0), material);
+                    } else {
+                        shaped.setIngredient(key.charAt(0), ingredient.getType());
                     }
-                    shaped.setIngredient(key.charAt(0), material);
                     ingredients.put(key.charAt(0), ingredient);
                 }
 
