@@ -8,6 +8,7 @@
  - Add set_source option to SpawnEntity, see piggyback example spell
  - Fix unstashable wands being stashable in barrels
  - Fix some issues with custom crafting
+ - Fix the Music spell (PlayRecord action fix)
 
 # 7.7.4
 
