@@ -12,5 +12,4 @@ lightsaber_hilt:
         HIDE_ATTRIBUTES: null
         HIDE_UNBREAKABLE: null
       display-name: §aLightsaber Hilt
-      lore:
-      - Used to construct a Lightsaber
+
