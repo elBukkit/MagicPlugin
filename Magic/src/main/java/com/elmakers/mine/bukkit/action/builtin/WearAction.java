@@ -199,31 +199,29 @@ public class WearAction extends BaseSpellAction
         ItemMeta meta = wearItem.getItemMeta();
 
         // Legacy support
-        if (meta != null) {
-            String displayName = context.getMessage("hat_name", "");
-            displayName = context.getMessage("wear_name", displayName);
-            if (materialName == null || materialName.isEmpty())
-            {
-                materialName = "?";
-            }
-            if (displayName != null && !displayName.isEmpty())
-            {
-                meta.setDisplayName(displayName.replace("$hat", materialName).replace("$item", materialName));
-            }
-            List<String> lore = new ArrayList<>();
-            String loreLine = context.getMessage("hat_lore");
-            loreLine = context.getMessage("wear_lore", loreLine);
-            lore.add(loreLine);
-            meta.setLore(lore);
-            wearItem.setItemMeta(meta);
-            wearItem = InventoryUtils.makeReal(wearItem);
-            NMSUtils.makeTemporary(wearItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
-            if (enchantments != null) {
-                wearItem.addUnsafeEnchantments(enchantments);
-            }
-            if (unbreakable) {
-                CompatibilityUtils.makeUnbreakable(wearItem);
-            }
+        String displayName = context.getMessage("hat_name", "");
+        displayName = context.getMessage("wear_name", displayName);
+        if (materialName == null || materialName.isEmpty())
+        {
+            materialName = "?";
+        }
+        if (displayName != null && !displayName.isEmpty())
+        {
+            meta.setDisplayName(displayName.replace("$hat", materialName).replace("$item", materialName));
+        }
+        List<String> lore = new ArrayList<>();
+        String loreLine = context.getMessage("hat_lore");
+        loreLine = context.getMessage("wear_lore", loreLine);
+        lore.add(loreLine);
+        meta.setLore(lore);
+        wearItem.setItemMeta(meta);
+        wearItem = InventoryUtils.makeReal(wearItem);
+        NMSUtils.makeTemporary(wearItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
+        if (enchantments != null) {
+            wearItem.addUnsafeEnchantments(enchantments);
+        }
+        if (unbreakable) {
+            CompatibilityUtils.makeUnbreakable(wearItem);
         }
 
         ItemStack[] armor = player.getInventory().getArmorContents();
