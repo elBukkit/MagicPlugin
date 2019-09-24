@@ -45,6 +45,10 @@ appearanceshop:
           unlock: moon
           confirm: true
           cost: 2500
+        - item: appearance_green
+          unlock: green
+          confirm: true
+          cost: 3500
         - item: appearance_magicka
           unlock: magicka
           confirm: true

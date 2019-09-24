@@ -18,6 +18,8 @@ progressmenu:
     - cast_spell: appearanceshop
       requirements:
       - wand_tags: transformable
+      cast_for_tags:
+        transformablebow: bowappearanceshop
     - cast_spell: colorshop
       requirements:
       - holding_wand: true

@@ -370,6 +370,15 @@ wands:
     appearance_moon:
         name: Moon Wand Appearance
         description: A wand that may have been used by an ancient sailor
+    appearance_green:
+        name: Green Wand Appearance
+        description: A dangerous looking poison wand
+    appearance_bow1:
+        name: Egyptian Bow Appearance
+    appearance_bow2:
+        name: Skinny Bow Appearance
+    appearance_longbow:
+        name: Longbow Appearance
     appearance_spire:
         name: Spire Wand Appearance
         description: A wizard tower you can hold in your hand

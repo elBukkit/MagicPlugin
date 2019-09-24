@@ -9,4 +9,5 @@ magicbow:
   # cast_min_bowpull: 0.5
   protection:
     projectile: 0.5
-
+  tags:
+    - transformablebow

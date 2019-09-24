@@ -1,0 +1,28 @@
+bowappearanceshop:
+    icon: bow:2
+    icon_disabled: bow:2
+    icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
+    hidden: true
+    actions:
+        cast:
+        -  class: Selector
+    parameters:
+        auto_close: true
+        confirm_filler: stained_glass:3
+        show_unavailable: true
+        requirements:
+        - wand_tags: transformablebow
+        unlock_section: wand_appearances
+        apply_to_wand: true
+        cost_type: sp
+        options:
+        - item: none
+        - item: appearance_bow1
+        - item: appearance_bow2
+          unlock: bow2
+          confirm: true
+          cost: 5000
+        - item: appearance_longbow
+          unlock: longbow
+          confirm: true
+          cost: 9000

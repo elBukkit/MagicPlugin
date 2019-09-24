@@ -43,6 +43,11 @@ appearance_moon:
     icon: wood_hoe:10
     upgrade_icon: wood_hoe:10
 
+appearance_green:
+    upgrade: true
+    icon: wood_hoe:41
+    upgrade_icon: wood_hoe:41
+
 appearance_spire:
     upgrade: true
     icon: wood_hoe:35
@@ -57,3 +62,18 @@ appearance_orb:
     upgrade: true
     icon: wood_hoe:37
     upgrade_icon: wood_hoe:37
+
+appearance_bow1:
+    upgrade: true
+    icon: bow:1
+    upgrade_icon: bow:1
+
+appearance_bow2:
+    upgrade: true
+    icon: bow:2
+    upgrade_icon: bow:2
+
+appearance_longbow:
+    upgrade: true
+    icon: bow:3
+    upgrade_icon: bow:3
