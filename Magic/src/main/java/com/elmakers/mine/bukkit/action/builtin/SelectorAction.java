@@ -167,6 +167,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable List<String> commands;
         protected @Nullable List<CostModifier> costModifiers;
         protected @Nullable List<Cost> earns = null;
+        protected @Nullable Map<String,String> alternateSpellTags;
         protected @Nonnull String effects = "selected";
         protected boolean applyToWand = false;
         protected boolean applyToCaster = false;
@@ -241,6 +242,14 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     for (String itemKey : itemList) {
                         items.add(parseItem(itemKey));
                     }
+                }
+            }
+
+            ConfigurationSection altTags = ConfigurationUtils.getConfigurationSection(configuration, "cast_for_tags");
+            if (altTags != null) {
+                alternateSpellTags = new HashMap<>();
+                for (String key : altTags.getKeys(false)) {
+                    alternateSpellTags.put(key, altTags.getString(key));
                 }
             }
 
@@ -509,6 +518,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     name = template.replace("$name", name).replace("$amount", Integer.toString(item.getAmount()));
                 }
             }
+            String castSpell = getCastSpell(context.getWand());
             if (name.isEmpty() && castSpell != null && !castSpell.isEmpty()) {
                 SpellTemplate spell = controller.getSpellTemplate(castSpell);
                 name = getMessage("cast_spell");
@@ -563,7 +573,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             // Unlocked options skip requirements and costs
             if (!unlocked) {
                 RequirementsResult check = checkRequirements(context);
-                if (!check.result.isSuccess()) {
+                if (!check.result.isSuccess() && !hasAltTags(context.getWand())) {
                     unavailable = true;
                     unavailableMessage = check.message;
                     if (unavailableMessage != null && !unavailableMessage.isEmpty()) {
@@ -630,6 +640,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     icon.setItemMeta(meta);
                 }
             }
+
             if (icon == null && castSpell != null && !castSpell.isEmpty()) {
                 SpellTemplate spellTemplate = context.getController().getSpellTemplate(castSpell);
                 if (spellTemplate != null) {
@@ -692,6 +703,26 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             if (showConfirmation) {
                 InventoryUtils.setMeta(icon, "confirm", "true");
             }
+        }
+
+        @Nullable
+        protected String getCastSpell(Wand wand) {
+            if (alternateSpellTags != null && wand != null) {
+                for (String key : alternateSpellTags.keySet()) {
+                    if (wand.hasTag(key)) {
+                        return alternateSpellTags.get(key);
+                    }
+                }
+            }
+            return castSpell;
+        }
+
+        protected boolean hasAltTags(Wand wand) {
+            if (alternateSpellTags == null || wand == null) return false;
+            for (String key : alternateSpellTags.keySet()) {
+                if (wand.hasTag(key)) return true;
+            }
+            return false;
         }
 
         @Nullable
@@ -774,6 +805,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             MageController controller = context.getController();
+            String castSpell = getCastSpell(context.getWand());
             if (castSpell != null && !castSpell.isEmpty()) {
                 Spell spell = null;
                 spell = mage.getSpell(castSpell);
