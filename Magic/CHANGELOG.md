@@ -10,6 +10,7 @@
  - Fix some issues with custom crafting
  - Fix the Music spell (PlayRecord action fix)
  - Add one new wand and two new bow appearances (Thank you, Mutim_Endymion!)
+ - The Cloak spell now toggles on and off, and hides armor while active (Thanks, NeoFalcon!)
 
 # 7.7.4
 

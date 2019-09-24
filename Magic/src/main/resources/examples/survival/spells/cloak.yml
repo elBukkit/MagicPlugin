@@ -6,22 +6,46 @@ cloak:
     tags: noduel
     worth: 100
     earns_sp: 5
+    toggle: undo
+    disable_mana_regeneration: true
     actions:
         cast:
-        -  class: PotionEffect
+        - class: PotionEffect
+        - class: Wear
+          item: nothing
+          armor_slot: 0
+        - class: Wear
+          item: nothing
+          armor_slot: 1
+        - class: Wear
+          item: nothing
+          armor_slot: 2
+        - class: Wear
+          item: nothing
+          armor_slot: 3
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.vanish
-        -  class: EffectTrail
-           particle: smoke_normal
-        -  class: EffectRing
-           particle: smoke_normal
-           location: target
-    costs:
-        mana: 50
+        - class: EffectSingle
+          sound: magic.vanish
+        - class: EffectTrail
+          particle: smoke_normal
+        - class: EffectRing
+          particle: smoke_normal
+          location: target
+        undo:
+        - class: EffectSingle
+          sound: magic.vanish
+        - class: EffectTrail
+          particle: smoke_normal
+        - class: EffectRing
+          particle: smoke_normal
+          location: target
     parameters:
-        target: any_entity
-        duration: 8000
-        cooldown: 30000
-        effect_invisibility: 5
+      target: self
+      duration: 3600000
+      cooldown: 30000
+      effect_invisibility: 5
+    costs:
+      mana: 50
+    active_costs:
+      mana: 5
