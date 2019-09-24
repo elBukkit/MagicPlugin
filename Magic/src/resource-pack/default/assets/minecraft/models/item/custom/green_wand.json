@@ -2843,8 +2843,8 @@
 		},
 		"gui": {
 			"rotation": [0, -20, 43],
-			"translation": [-11, 14, 0],
-			"scale": [3, 3, 3]
+			"translation": [-8, 8, 0],
+			"scale": [2.5, 2.5, 2.5]
 		},
 		"head": {
 			"rotation": [-55, 17, -57],
