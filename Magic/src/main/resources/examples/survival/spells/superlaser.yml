@@ -31,19 +31,23 @@ superlaser:
            sound: magic.zap
            location: origin
            sound_volume: 0.1
-           color_override: colorHelix
+           color_override: color
+           relative_offset: 8,0,0
            effectlib:
-             class: DnaEffect
-             particles_base: 5
-             particles_helix: 7
-             particle_helix: redstone
-             particle_base1: drip_lava
-             particle_base2: smoke_normal
-             iterations: 10
-             radius: 1.5
-             grow: 0.2
-             base_interval: 5
-             length: 16
+             update_locations: false
+             update_directions: false
+             class: CylinderEffect
+             particle: redstone
+             radius: 0.5
+             height: 16
+             enable_rotation: false
+             particles: 100
+             duration: 100
+             period: 1
+             offset: 0,-0.1,0
+             orient: true
+             rotation_x: 0
+             rotation_y: 0
         cast:
         -  class: EffectSingle
            sound: magic.zap_crack
