@@ -667,6 +667,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 return true;
             }
         }
+        if (blockData != null) {
+            String currentData = CompatibilityUtils.getBlockData(block);
+            if (currentData == null || !blockData.equals(currentData)) {
+                return true;
+            }
+        }
 
         return false;
     }
