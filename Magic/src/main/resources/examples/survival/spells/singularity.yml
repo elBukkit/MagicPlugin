@@ -70,21 +70,20 @@ singularity:
         tick:
         - location: target
           particle: smoke_normal
-          particle_count: 15
+          particle_count: 8
           particle_offset_x: 0.4
           particle_offset_y: 0.4
           particle_offset_z: 0.4
         - location: target
           particle: block_crack
           material: obsidian
-          particle_count: 30
+          particle_count: 10
           particle_offset_x: 0.6
           particle_offset_y: 0.6
           particle_offset_z: 0.6
         hit:
         -  class: EffectSingle
            location: target
-           sound: entity_generic_explode
            sound: magic.hit
            effectlib:
              class: SphereEffect
@@ -104,8 +103,8 @@ singularity:
                class: Sphere
                particle: block_crack
                color: 010101
-               particles: 100
-               particle_count: 20
+               particles: 20
+               particle_count: 4
                particle_offset_x: 1
                particle_offset_y: 1
                particle_offset_z: 1
@@ -115,7 +114,6 @@ singularity:
       gravity: 0.02
       hitbox_size: 2
       undo: 15000
-      radius: 5
       repeat: 10
       delay: 250
       damage: 3

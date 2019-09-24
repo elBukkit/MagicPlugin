@@ -37,15 +37,15 @@ wave:
            material: stone
            effectlib:
              class: EquationEffect
-             xEquation: "t/16"
-             yEquation: "sin(t/16)"
+             xEquation: "t/8"
+             yEquation: "sin(t/8)"
              zEquation: "0"
              x2Equation: "0"
              y2Equation: "0"
-             z2Equation: "t2/16 * 4 - 4"
+             z2Equation: "t2/8 * 4 - 4"
              iterations: 8
-             particles: 24
-             particles2: 32
+             particles: 10
+             particles2: 16
              particle: block_crack
              orient: true
              orientPitch: false
@@ -54,21 +54,11 @@ wave:
         -  class: EffectSingle
            location: target
            sound: magic.shimmer_quiet
-           orient: true
-           effectlib:
-             class: EquationEffect
-             xEquation: "0"
-             yEquation: "floor(t/16)*0.2-1"
-             zEquation: "t/16*4-4"
-             iterations: 2
-             particles: 16
-             particle_count: 4
-             particle_offset_x: 1
-             particle_offset_y: 0.2
-             particle_offset_z: 1
-             particle: smoke_large
-             orient: true
-             orientPitch: false
+           particle_count: 4
+           particle_offset_x: 1
+           particle_offset_y: 0.2
+           particle_offset_z: 1
+           particle: smoke_large
     parameters:
         target: block
         target_type: Entity

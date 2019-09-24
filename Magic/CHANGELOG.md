@@ -11,6 +11,7 @@
  - Fix the Music spell (PlayRecord action fix)
  - Add one new wand and two new bow appearances (Thank you, Mutim_Endymion!)
  - The Cloak spell now toggles on and off, and hides armor while active (Thanks, NeoFalcon!)
+ - Reduce particle use on a number of spells since Mojang apparently has no desire to fix their horrible performance issues :(
 
 # 7.7.4
 

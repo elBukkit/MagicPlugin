@@ -38,13 +38,16 @@ wither:
           source_location: body
           effectlib:
            class: Modified
+           disappear_with_origin_entity: true
            duration: $duration
            parameters:
             size: "(1 - (t / i)) * 1.5 + 0.5"
            effect:
              class: AnimatedBall
              particle: smoke_normal
-             particle_count: 20
+             particle_count: 5
+             particles: 20
+             particles_per_iteration: 5
              particle_offset_x: 0.05
              particle_offset_y: 0.05
              particle_offset_z: 0.05

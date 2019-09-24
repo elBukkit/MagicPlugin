@@ -48,21 +48,20 @@ blast:
           use_block_location: true
           effectlib:
             class: Modified
-            period: 2
-            iterations: 4
+            period: 4
+            iterations: 3
             parameters:
               radius: "(1 - (t / i)) * 5 + 0.2"
-              particles: "(t / i) * 40"
+              particles: "(t / i) * 10"
             effect:
               class: Sphere
               particle: block_crack
               y_offset: 0
               offset: 0,0.7,0
-              particle_count: 4
+              particle_count: 3
               particle_offset_x: 0.1
               particle_offset_y: 0.1
               particle_offset_z: 0.1
-              particles: 10
     parameters:
         velocity: 2000
         allow_max_range: false

@@ -45,7 +45,7 @@ kill:
         tick:
         - location: target
           particle: smoke_large
-          particle_count: 20
+          particle_count: 10
           particle_offset_x: 0.2
           particle_offset_y: 0.2
           particle_offset_z: 0.2
@@ -57,6 +57,8 @@ kill:
              color: "00FF00"
              iterations: 100
              radius: 0.3
+             particles: 30
+             period: 2
         hit:
         - class: EffectSingle
           location: target

@@ -31,6 +31,8 @@ harden:
              particle_offset_z: 0.2
              iterations: 1
              radius: $size
+             strands: 4
+             particles: 20
     parameters:
         allow_max_range: false
         range: 16

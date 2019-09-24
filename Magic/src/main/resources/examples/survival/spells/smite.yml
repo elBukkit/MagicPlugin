@@ -31,12 +31,12 @@ smite:
            effectlib:
              class: HelixEffect
              particle: smoke_large
-             particle_count: 10
+             particle_count: 5
              particle_offset_x: 0.2
              particle_offset_y: 4
              particle_offset_z: 0.2
              iterations: 1
-             particles: 30
+             particles: 10
              radius: 4
              offset: 0,2,0
     parameters:

@@ -26,7 +26,7 @@ sandblast:
         tick:
         -  location: target
            particle: block_crack
-           particle_count: 20
+           particle_count: 8
            particle_offset_x: 0.3
            particle_offset_y: 0.3
            particle_offset_z: 0.3
@@ -40,6 +40,9 @@ sandblast:
              effect:
                  class: Helix
                  particle: block_crack
+                 particles: 8
+                 strands: 4
+                 particle_count: 2
     parameters:
         physics: true
         velocity: 20

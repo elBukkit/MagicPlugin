@@ -34,8 +34,8 @@ arrowrain:
                 particle_offset_y: "(t / i) * 2"
             effect:
                 class: Shield
-                particles: 20
-                particle_count: 10
+                particles: 4
+                particle_count: 5
                 particle_offset_x: 0.5
                 particle_offset_z: 0.5
                 particle: water_drop
@@ -44,8 +44,8 @@ arrowrain:
           effectlib:
              class: Sphere
              iterations: 10
-             period: 2
-             particles: 5
+             period: 3
+             particles: 4
              particle_count: 5
              particle_offset_x: 0.2
              particle_offset_y: 0.2

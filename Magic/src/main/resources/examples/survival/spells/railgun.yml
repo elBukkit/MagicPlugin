@@ -40,7 +40,7 @@ railgun:
         - particle: redstone
           location: target
           color: FF8800
-          particle_count: 16
+          particle_count: 8
           particle_offset_y: 0.05
           particle_offset_x: 0.05
           particle_offset_z: 0.05

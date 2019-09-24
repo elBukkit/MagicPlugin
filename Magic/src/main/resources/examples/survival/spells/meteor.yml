@@ -58,7 +58,12 @@ meteor:
              class: SphereEffect
              particle: lava
              iterations: 100
-             particles: 15
+             period: 3
+             particles: 4
+             particle_count: 2
+             particle_offset_x: 0.1
+             particle_offset_y: 0.1
+             particle_offset_z: 0.1
              radius: 0.5
         hit:
         - class: EffectSingle

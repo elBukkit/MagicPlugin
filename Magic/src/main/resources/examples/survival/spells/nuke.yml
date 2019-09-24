@@ -62,7 +62,7 @@ nuke:
         explode:
         - location: target
           sound: entity_generic_explode
-          sound_volume: 10
+          sound_volume: 2
         cast:
         -  class: EffectSingle
            sound: entity_firework_launch
@@ -70,7 +70,7 @@ nuke:
         tick:
         -  location: target
            particle: smoke_large
-           particle_count: 6
+           particle_count: 4
            particle_offset_x: 0.3
            particle_offset_y: 0.3
            particle_offset_z: 0.3
@@ -98,8 +98,8 @@ nuke:
                radius: "min(8, (t/i) * 15)"
              effect:
                class: Helix
-               particles: 20
-               strands: 4
+               particles: 4
+               strands: 3
                particle: explosion_large
                particle_count: 2
                particle_offset_x: 1
@@ -114,10 +114,10 @@ nuke:
                y_factor: "min(20, (t/i) * 30)"
              effect:
                class: AnimatedBall
-               particles: 20
+               particles: 4
                particle: explosion_huge
                size: 1
-               period: 4
+               period: 8
         -  location: target
            effectlib:
              class: Modified
@@ -127,10 +127,10 @@ nuke:
                size: "min(10, (t/i) * 20)"
              effect:
                class: AnimatedBall
-               particles: 20
+               particles: 2
                particle: explosion_huge
                size: 1
-               period: 4
+               period: 6
                y_factor: 0.3
     parameters:
         velocity: 20
