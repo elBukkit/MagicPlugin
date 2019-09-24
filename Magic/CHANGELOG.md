@@ -1,5 +1,7 @@
 # CHANGELOG
 
+ # 7.7.6
+
 # 7.7.5
 
  - Fix wands limited to path spells not being able to learn extra spells from their path
