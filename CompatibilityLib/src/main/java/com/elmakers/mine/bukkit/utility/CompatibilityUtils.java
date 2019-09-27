@@ -591,6 +591,7 @@ public class CompatibilityUtils extends NMSUtils {
                 }
             } else {
                 try {
+                    isDamaging = true;
                     class_EntityLiving_damageEntityMethod.invoke(
                             targetHandle,
                             object_magicSource,
