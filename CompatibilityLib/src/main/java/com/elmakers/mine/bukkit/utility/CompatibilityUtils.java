@@ -89,11 +89,16 @@ import java.util.logging.Level;
 public class CompatibilityUtils extends NMSUtils {
     public static boolean USE_MAGIC_DAMAGE = true;
     public static int BLOCK_BREAK_RANGE = 64;
-    public static boolean isDamaging = false;
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<>();
     public static Map<Integer, Material> materialIdMap;
     private static ItemStack dummyItem;
+
+    private static final EnteredStateTracker DAMAGING = new EnteredStateTracker();
+
+    public static boolean isDamaging() {
+        return DAMAGING.isInside();
+    }
 
     public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
         for (PotionEffect effect: effects) {
@@ -496,8 +501,8 @@ public class CompatibilityUtils extends NMSUtils {
             magicDamage(target, amount, source);
             return;
         }
-        isDamaging = true;
-        try {
+
+        try (AutoCloseable b = DAMAGING.enter()) {
             if (target instanceof ArmorStand) {
                 double newHealth = Math.max(0, target.getHealth() - amount);
                 if (newHealth <= 0) {
@@ -513,7 +518,6 @@ public class CompatibilityUtils extends NMSUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        isDamaging = false;
     }
 
     public static void damage(Damageable target, double amount, Entity source, String damageType) {
@@ -528,16 +532,14 @@ public class CompatibilityUtils extends NMSUtils {
             return;
         }
 
-        try {
+        try (AutoCloseable d = DAMAGING.enter()) {
             Object targetHandle = getHandle(target);
             if (targetHandle == null) return;
 
-            isDamaging = true;
             class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float) amount);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        isDamaging = false;
     }
 
     public static void magicDamage(Damageable target, double amount, Entity source) {
@@ -580,24 +582,18 @@ public class CompatibilityUtils extends NMSUtils {
                     class_EntityDamageSource_setThornsMethod.invoke(damageSource);
                 }
 
-                try {
-                    isDamaging = true;
+                try (AutoCloseable b = DAMAGING.enter()) {
                     class_EntityLiving_damageEntityMethod.invoke(
                             targetHandle,
                             damageSource,
                             (float) amount);
-                } finally {
-                    isDamaging = false;
                 }
             } else {
-                try {
-                    isDamaging = true;
+                try (AutoCloseable b = DAMAGING.enter()) {
                     class_EntityLiving_damageEntityMethod.invoke(
                             targetHandle,
                             object_magicSource,
                             (float) amount);
-                } finally {
-                    isDamaging = false;
                 }
             }
         } catch (Exception ex) {
