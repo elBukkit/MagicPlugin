@@ -71,6 +71,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 
 /**
@@ -486,8 +487,6 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    private static WeakReference<ThrownPotion> potionReference = null;
-
     public static void damage(Damageable target, double amount, Entity source) {
         if (target == null || target.isDead()) return;
         while (target instanceof ComplexEntityPart) {
@@ -563,20 +562,15 @@ public class CompatibilityUtils extends NMSUtils {
             Object targetHandle = getHandle(target);
             if (targetHandle == null) return;
 
-            isDamaging = true;
             Object sourceHandle = getHandle(source);
 
             // Bukkit won't allow magic damage from anything but a potion..
             if (sourceHandle != null && source instanceof LivingEntity) {
-                ThrownPotion potion = potionReference == null ? null : potionReference.get();
                 Location location = target.getLocation();
-                if (potion == null) {
-                    potion = (ThrownPotion) location.getWorld().spawnEntity(location, EntityType.SPLASH_POTION);
-                    potion.remove();
-                    potionReference = new WeakReference<>(potion);
-                }
-                potion.teleport(location);
+
+                ThrownPotion potion = getOrCreatePotionEntity(location);
                 potion.setShooter((LivingEntity)source);
+
                 Object potionHandle = getHandle(potion);
                 Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, potionHandle, sourceHandle);
 
@@ -586,14 +580,60 @@ public class CompatibilityUtils extends NMSUtils {
                     class_EntityDamageSource_setThornsMethod.invoke(damageSource);
                 }
 
-                class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
+                try {
+                    isDamaging = true;
+                    class_EntityLiving_damageEntityMethod.invoke(
+                            targetHandle,
+                            damageSource,
+                            (float) amount);
+                } finally {
+                    isDamaging = false;
+                }
             } else {
-                class_EntityLiving_damageEntityMethod.invoke(targetHandle, object_magicSource, (float) amount);
+                try {
+                    class_EntityLiving_damageEntityMethod.invoke(
+                            targetHandle,
+                            object_magicSource,
+                            (float) amount);
+                } finally {
+                    isDamaging = false;
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        isDamaging = false;
+    }
+
+    private static final Map<World, WeakReference<ThrownPotion>> POTION_PER_WORLD = new WeakHashMap<>();
+
+    /**
+     * Lazily creates potion entities that can be used when damaging players.
+     *
+     * @param location The location the potion should be placed at.
+     * @return A potion entity placed ad the given location.
+     */
+    private static ThrownPotion getOrCreatePotionEntity(Location location) {
+        World world = location.getWorld();
+
+        // Maintain a separate potion entity for every world so that
+        // potion.getWorld() reports the correct result.
+        WeakReference<ThrownPotion> ref = POTION_PER_WORLD.get(world);
+        ThrownPotion potion = ref == null ? null : ref.get();
+
+        if (potion == null) {
+            potion = (ThrownPotion) world.spawnEntity(
+                    location,
+                    EntityType.SPLASH_POTION);
+            potion.remove();
+
+            ref = new WeakReference<>(potion);
+            POTION_PER_WORLD.put(world, ref);
+        } else {
+            // TODO: Make sure this actually works?
+            potion.teleport(location);
+        }
+
+        return potion;
     }
 
     public static Location getEyeLocation(Entity entity)
