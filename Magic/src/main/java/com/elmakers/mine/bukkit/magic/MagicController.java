@@ -3080,7 +3080,8 @@ public class MagicController implements MageController {
 
     @Override
     public boolean inTaggedRegion(Location location, Set<String> tags) {
-        return worldGuardManager.inTaggedRegion(location, tags);
+        Boolean inRegion = worldGuardManager.inTaggedRegion(location, tags);
+        return inRegion == null ? false : inRegion;
     }
 
     public boolean hasPermission(Player player, String pNode, boolean defaultValue)
