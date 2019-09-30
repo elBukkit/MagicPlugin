@@ -2,7 +2,9 @@
 
 # 7.7.6
  
- - Fix undoing block data changes, fixes Admission not closing the door \
+ - Fix undoing block data changes, fixes Admission not closing the door.
+ - Add CheckPotionEffects action, for seeing if a target has some specific effects
+ - Add light and time requirements, can be used in CheckRequirements or Selector for time of day or light level checks
 
 # 7.7.5
 
