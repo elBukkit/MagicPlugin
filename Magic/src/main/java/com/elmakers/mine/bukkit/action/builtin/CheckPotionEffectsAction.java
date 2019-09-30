@@ -60,7 +60,7 @@ public class CheckPotionEffectsAction extends CheckAction {
         }
 
         if (required != null) {
-            for (PotionEffectType check : blocked) {
+            for (PotionEffectType check : required) {
                 if (living.hasPotionEffect(check)) {
                     return true;
                 }
