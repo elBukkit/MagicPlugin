@@ -25,30 +25,6 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public  class MagicRequirement {
-    private static class PropertyRequirement {
-        public final String key;
-        public Double max;
-        public Double min;
-        public Double value;
-
-        public PropertyRequirement(String type, ConfigurationSection configuration) {
-            key = configuration.getString(type);
-            if (configuration.contains("min")) {
-                min = configuration.getDouble("min");
-            }
-            if (configuration.contains("max")) {
-                max = configuration.getDouble("max");
-            }
-            if (configuration.contains("value")) {
-                value = configuration.getDouble("value");
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "[Require " + key + "=" + value + " from (" + min + " to " + max + ")]";
-        }
-    }
 
     private @Nonnull final MageController controller;
     private @Nullable String permissionNode = null;
