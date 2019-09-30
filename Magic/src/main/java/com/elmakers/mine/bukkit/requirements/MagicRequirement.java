@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -39,6 +40,8 @@ public  class MagicRequirement {
     private @Nullable List<PropertyRequirement> wandProperties = null;
     private @Nullable List<PropertyRequirement> classProperties = null;
     private @Nullable List<PropertyRequirement> attributes = null;
+    private @Nullable RangedRequirement lightLevel = null;
+    private @Nullable RangedRequirement timeOfDay = null;
     private boolean requireWand = false;
 
     public MagicRequirement(@Nonnull MageController controller, @Nonnull Requirement requirement) {
@@ -66,6 +69,9 @@ public  class MagicRequirement {
         classProperties = parsePropertyRequirements(configuration, "class_properties", "property");
         attributes = parsePropertyRequirements(configuration, "attributes", "attribute");
 
+        lightLevel = parseRangedRequirement(configuration, "light");
+        timeOfDay = parseRangedRequirement(configuration, "time");
+
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
             exactPath = requiresCompletedPath;
@@ -74,6 +80,14 @@ public  class MagicRequirement {
         if (requiredTemplate != null || requiredTemplates != null || wandProperties != null || wandTags != null) {
             requireWand = true;
         }
+    }
+
+    @Nullable
+    private RangedRequirement parseRangedRequirement(ConfigurationSection configuration, String key) {
+        if (configuration.contains(key)) {
+            return new RangedRequirement(configuration.getConfigurationSection(key));
+        }
+        return null;
     }
 
     @Nullable
@@ -104,6 +118,15 @@ public  class MagicRequirement {
         Wand wand = context.getWand();
         if (wand == null && requireWand) {
             return false;
+        }
+
+        Location location = mage.getLocation();
+
+        if (timeOfDay != null) {
+            return location != null && timeOfDay.check((double)location.getWorld().getTime());
+        }
+        if (lightLevel != null) {
+            return location != null && lightLevel.check((double)location.getBlock().getLightLevel());
         }
 
         if (wandTags != null) {
@@ -188,7 +211,7 @@ public  class MagicRequirement {
             for (PropertyRequirement requirement : attributes) {
                 String key = requirement.key;
                 Double value = mage.getAttribute(key);
-                if (!checkProperty(requirement, value)) {
+                if (!requirement.check(value)) {
                     return false;
                 }
             }
@@ -201,17 +224,10 @@ public  class MagicRequirement {
         for (PropertyRequirement requirement : requirements) {
             String key = requirement.key;
             Double value = properties.hasProperty(key) ? properties.getProperty(key, 0.0) : null;
-            if (!checkProperty(requirement, value)) {
+            if (!requirement.check(value)) {
                 return false;
             }
         }
-        return true;
-    }
-
-    protected boolean checkProperty(PropertyRequirement requirement, Double value) {
-        if (requirement.value != null && (value == null || !value.equals(requirement.value))) return false;
-        if (requirement.min != null && (value == null || value <= requirement.min)) return false;
-        if (requirement.max != null && (value != null && value >= requirement.max)) return false;
         return true;
     }
 
@@ -235,6 +251,20 @@ public  class MagicRequirement {
         Wand wand = context.getWand();
         if (wand == null && requireWand) {
             return getMessage(context, "no_wand");
+        }
+
+        Location location = mage.getLocation();
+        if (timeOfDay != null) {
+            String message = checkRequiredProperty(context, timeOfDay, controller.getMessages().get("requirement.time"), location == null ? null : (double)location.getWorld().getTime());
+            if (message != null) {
+                return message;
+            }
+        }
+        if (lightLevel != null) {
+            String message = checkRequiredProperty(context, lightLevel, controller.getMessages().get("requirement.light"), location == null ? null : (double)location.getBlock().getLightLevel());
+            if (message != null) {
+                return message;
+            }
         }
 
         if (requiredTemplate != null) {
@@ -374,7 +404,7 @@ public  class MagicRequirement {
     }
 
     @Nullable
-    protected String checkRequiredProperty(CastContext context, PropertyRequirement requirement, String name, Double value) {
+    protected String checkRequiredProperty(CastContext context, RangedRequirement requirement, String name, Double value) {
         if (requirement.value != null && (value == null || !value.equals(requirement.value))) {
             return getMessage(context, "property_requirement")
                 .replace("$property", name).replace("$value", Double.toString(requirement.value));

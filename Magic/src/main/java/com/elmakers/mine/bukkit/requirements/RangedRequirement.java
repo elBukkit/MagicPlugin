@@ -19,6 +19,13 @@ class RangedRequirement {
         }
     }
 
+    public boolean check(Double value) {
+        if (this.value != null && (value == null || !value.equals(this.value))) return false;
+        if (this.min != null && (value == null || value <= this.min)) return false;
+        if (this.max != null && (value != null && value >= this.max)) return false;
+        return true;
+    }
+
     @Override
     public String toString() {
         return "[Require =" + value + " from (" + min + " to " + max + ")]";

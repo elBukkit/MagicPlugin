@@ -92,3 +92,7 @@ damage_types:
   fire: "Fire"
   physical: "Physical"
   projectile: "Projectile"
+
+requirements:
+  light: "Light Level"
+  time: "Time of Day"
