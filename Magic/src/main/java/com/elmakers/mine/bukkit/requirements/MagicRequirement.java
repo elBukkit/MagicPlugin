@@ -25,7 +25,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public  class MagicRequirement {
+public class MagicRequirement {
 
     private @Nonnull final MageController controller;
     private @Nullable String permissionNode = null;
@@ -85,7 +85,7 @@ public  class MagicRequirement {
     @Nullable
     private RangedRequirement parseRangedRequirement(ConfigurationSection configuration, String key) {
         if (configuration.contains(key)) {
-            return new RangedRequirement(configuration.getConfigurationSection(key));
+            return new RangedRequirement(ConfigurationUtils.getConfigurationSection(configuration, key));
         }
         return null;
     }
