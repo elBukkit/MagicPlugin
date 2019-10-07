@@ -1,6 +1,6 @@
 repair:
-    icon: diamond_axe:103
-    icon_disabled: diamond_hoe:103
+    icon: spell_icon:103
+    icon_disabled: spell_icon_disabled:103
     icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
     category: engineering
     tags: noduel

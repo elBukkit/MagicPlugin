@@ -1,6 +1,6 @@
 tendril:
-    icon: diamond_axe:129
-    icon_disabled: diamond_hoe:129
+    icon: spell_icon:129
+    icon_disabled: spell_icon_disabled:129
     icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
     category: combat
     worth: 400

@@ -1,6 +1,6 @@
 effectshop:
-    icon: diamond_axe:126
-    icon_disabled: diamond_hoe:126
+    icon: spell_icon:126
+    icon_disabled: spell_icon_disabled:126
     category: npc
     hidden: true
     actions:

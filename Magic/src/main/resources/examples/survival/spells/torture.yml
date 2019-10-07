@@ -1,6 +1,6 @@
 torture:
-    icon: diamond_axe:172
-    icon_disabled: diamond_hoe:172
+    icon: spell_icon:172
+    icon_disabled: spell_icon_disabled:172
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627

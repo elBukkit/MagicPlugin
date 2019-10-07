@@ -1,6 +1,6 @@
 goggles:
     mode: cast
-    icon: wood_hoe:16
+    icon: wand_icon:16
     migrate_icon: monster_eggs:1
     indestructible: true
     locked: true

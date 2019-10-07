@@ -1,7 +1,7 @@
 ferula:
     icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
-    icon: diamond_axe:46
-    icon_disabled: diamond_hoe:46
+    icon: spell_icon:46
+    icon_disabled: spell_icon_disabled:46
     category: charms
     cast_on_no_target: true
     worth: 50

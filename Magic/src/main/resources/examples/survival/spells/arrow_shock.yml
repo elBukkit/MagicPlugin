@@ -1,6 +1,6 @@
 arrow_shock:
-    icon: diamond_axe:250
-    icon_disabled: diamond_hoe:250
+    icon: spell_icon:250
+    icon_disabled: spell_icon_disabled:250
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
     category: combat
     worth: 1200

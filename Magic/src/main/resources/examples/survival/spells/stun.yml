@@ -1,6 +1,6 @@
 stun:
-    icon: diamond_axe:179
-    icon_disabled: diamond_hoe:179
+    icon: spell_icon:179
+    icon_disabled: spell_icon_disabled:179
     upgrade_required_path: student
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/a4b47e6847d71c60d0a6453313435d61f15b1523abd9741de36366deec1f38d6

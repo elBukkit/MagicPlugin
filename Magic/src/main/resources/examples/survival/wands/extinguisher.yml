@@ -1,6 +1,6 @@
 extinguisher:
     mode: cast
-    icon: wood_hoe:32
+    icon: wand_icon:32
     indestructible: true
     undroppable: true
     spells: extinguish

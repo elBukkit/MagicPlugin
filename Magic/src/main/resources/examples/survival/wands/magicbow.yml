@@ -4,7 +4,7 @@
 magicbow:
   inherit: base_bow
   class: archer_mage
-  icon: bow:1
+  icon: bow_icon:1
   # This can be used to force the bow to always cast a normal arrow under some amount of pull
   # cast_min_bowpull: 0.5
   protection:

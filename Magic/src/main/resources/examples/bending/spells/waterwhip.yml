@@ -1,7 +1,7 @@
 waterwhip:
   category: waterbending
-  icon: diamond_axe:140
-  icon_disabled: diamond_hoe:140
+  icon: spell_icon:140
+  icon_disabled: spell_icon_disabled:140
   icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
   worth: 150
   actions:

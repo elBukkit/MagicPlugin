@@ -1,6 +1,6 @@
 superring:
-    icon: diamond_axe:26
-    icon_disabled: diamond_hoe:26
+    icon: spell_icon:26
+    icon_disabled: spell_icon_disabled:26
     icon_url: http://textures.minecraft.net/texture/94d8a4b21f84bb65fb9f3a656d4518f0662fcabc44d01c1e435787ca542a9dd
     category: engineering
     tags: noduel

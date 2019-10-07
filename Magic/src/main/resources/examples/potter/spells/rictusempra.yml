@@ -1,7 +1,7 @@
 rictusempra:
     icon_url: http://textures.minecraft.net/texture/5374b64589d779ac4bf7293ba44dba5630a649a02877a39f4c05e94911ff96a
-    icon: diamond_axe:226
-    icon_disabled: diamond_hoe:226
+    icon: spell_icon:226
+    icon_disabled: spell_icon_disabled:226
     category: dada
     pvp_restricted: true
     cast_on_no_target: true

@@ -1,6 +1,6 @@
 extinguish:
-    icon: diamond_axe:232
-    icon_disabled: diamond_hoe:232
+    icon: spell_icon:232
+    icon_disabled: spell_icon_disabled:232
     icon_url: http://textures.minecraft.net/texture/c28bdd34810f866527daaf283da71826a8378286b2a43a626615fa1b3639e
     category: utility
     worth: 100

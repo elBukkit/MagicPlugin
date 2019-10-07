@@ -1,6 +1,6 @@
 disintegrate:
-    icon: diamond_axe:133
-    icon_disabled: diamond_hoe:133
+    icon: spell_icon:133
+    icon_disabled: spell_icon_disabled:133
     icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
     category: combat
     worth: 300

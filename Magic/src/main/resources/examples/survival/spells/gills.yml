@@ -1,6 +1,6 @@
 gills:
-    icon: diamond_axe:83
-    icon_disabled: diamond_hoe:83
+    icon: spell_icon:83
+    icon_disabled: spell_icon_disabled:83
     icon_url: http://textures.minecraft.net/texture/b47a2ebba3629cd387581f7b4b2bd471bc793f9d3b353862da8e9198e18c3193
     category: light
     worth: 100

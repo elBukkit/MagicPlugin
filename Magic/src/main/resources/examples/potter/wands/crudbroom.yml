@@ -3,7 +3,7 @@ crudbroom:
     path: broom
     active_spell: broom
     migrate_icon: gold_spade
-    icon: wood_hoe:11
+    icon: wand_icon:11
     indestructible: false
     locked: true
     uses: 10

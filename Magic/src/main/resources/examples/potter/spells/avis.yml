@@ -1,7 +1,7 @@
 avis:
     icon_url: http://textures.minecraft.net/texture/8dd5ea25877fc4f2973e9ae746e77326b9b9dd735ca811cba3bdfb4e47108970
-    icon: diamond_axe:226
-    icon_disabled: diamond_hoe:226
+    icon: spell_icon:226
+    icon_disabled: spell_icon_disabled:226
     category: creatures
     class: FamiliarSpell
     worth: 20

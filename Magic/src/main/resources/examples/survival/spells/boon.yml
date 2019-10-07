@@ -1,6 +1,6 @@
 boon:
-    icon: diamond_axe:11
-    icon_disabled: diamond_hoe:11
+    icon: spell_icon:11
+    icon_disabled: spell_icon_disabled:11
     icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
     alias: perk
     category: utility

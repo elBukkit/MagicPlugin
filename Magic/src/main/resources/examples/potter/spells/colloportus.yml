@@ -1,7 +1,7 @@
 colloportus:
     icon_url: http://textures.minecraft.net/texture/dea4155d3f45e95c71b441d1a233586dd2efd99e0d85a286e41dea2a5231ab7
-    icon: diamond_axe:183
-    icon_disabled: diamond_hoe:183
+    icon: spell_icon:183
+    icon_disabled: spell_icon_disabled:183
     category: staff
     class: ConstructSpell
     worth: 50

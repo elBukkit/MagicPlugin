@@ -1,7 +1,7 @@
 deluminate:
     hidden: true
-    icon: diamond_axe:85
-    icon_disabled: diamond_hoe:85
+    icon: spell_icon:85
+    icon_disabled: spell_icon_disabled:85
     category: specialty
     class: ConstructSpell
     worth: 100

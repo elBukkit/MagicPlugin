@@ -1,7 +1,7 @@
 virus:
     hidden: true
-    icon: diamond_axe:15
-    icon_disabled: diamond_hoe:15
+    icon: spell_icon:15
+    icon_disabled: spell_icon_disabled:15
     icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
@@ -85,8 +85,8 @@ virus:
 
 virus_death:
     hidden: true
-    icon: diamond_axe:162
-    icon_disabled: diamond_hoe:162
+    icon: spell_icon:162
+    icon_disabled: spell_icon_disabled:162
     icon_url: http://textures.minecraft.net/texture/c64f6eeb78485e49b219f40a9d6a8131c539fef932f1cbb5f379adfebdd8c31
     category: combat
     actions:

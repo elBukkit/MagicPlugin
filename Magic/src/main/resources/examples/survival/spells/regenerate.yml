@@ -1,6 +1,6 @@
 regenerate:
-    icon: diamond_axe:77
-    icon_disabled: diamond_hoe:77
+    icon: spell_icon:77
+    icon_disabled: spell_icon_disabled:77
     icon_url: http://textures.minecraft.net/texture/43e6aef534bc455c1d13d692fa193cac6efcce7c875b185375114b71c63929
     category: engineering
     tags: noduel

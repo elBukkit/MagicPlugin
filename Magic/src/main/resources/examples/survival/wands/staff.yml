@@ -6,7 +6,7 @@ staff:
   cost_reduction: 2
   effect_color: 00FFAA
   protected: true
-  icon: wood_hoe:6
+  icon: wand_icon:6
   migrate_icon: gold_pickaxe
   sp_multiplier: 0
   spells:

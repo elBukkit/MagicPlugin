@@ -2,7 +2,7 @@ crudfirebolt:
     mode: cast
     active_spell: broom
     migrate_icon: gold_spade
-    icon: wood_hoe:29
+    icon: wand_icon:29
     indestructible: false
     locked: true
     effect_color: 'FF00FF'

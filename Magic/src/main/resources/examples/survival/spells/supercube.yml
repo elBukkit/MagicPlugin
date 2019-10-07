@@ -1,6 +1,6 @@
 supercube:
-    icon: diamond_axe:100
-    icon_disabled: diamond_hoe:100
+    icon: spell_icon:100
+    icon_disabled: spell_icon_disabled:100
     icon_url: http://textures.minecraft.net/texture/b02fa9c938deafc7777eefefc6b614a68423e1c4a899a993f78ef7817517f9
     category: engineering
     tags: noduel

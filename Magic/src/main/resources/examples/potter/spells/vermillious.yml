@@ -1,7 +1,7 @@
 vermillious:
     icon_url: http://textures.minecraft.net/texture/73b6fd4699e7c8c4ce3024b7882b38ff47f1a249fb8be67992707ec2b8d59c
-    icon: diamond_axe:159
-    icon_disabled: diamond_hoe:159
+    icon: spell_icon:159
+    icon_disabled: spell_icon_disabled:159
     category: charms
     pvp_restricted: true
     worth: 40

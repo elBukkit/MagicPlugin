@@ -1,79 +1,79 @@
 appearance_beginner:
     upgrade: true
-    icon: wood_hoe:1
-    upgrade_icon: wood_hoe:1
+    icon: wand_icon:1
+    upgrade_icon: wand_icon:1
 
 appearance_student:
     upgrade: true
-    icon: wood_hoe:2
-    upgrade_icon: wood_hoe:2
+    icon: wand_icon:2
+    upgrade_icon: wand_icon:2
 
 appearance_apprentice:
     upgrade: true
-    icon: wood_hoe:3
-    upgrade_icon: wood_hoe:3
+    icon: wand_icon:3
+    upgrade_icon: wand_icon:3
 
 appearance_master:
     upgrade: true
-    icon: wood_hoe:4
-    upgrade_icon: wood_hoe:4
+    icon: wand_icon:4
+    upgrade_icon: wand_icon:4
 
 appearance_engineer:
     upgrade: true
-    icon: wood_hoe:5
-    upgrade_icon: wood_hoe:5
+    icon: wand_icon:5
+    upgrade_icon: wand_icon:5
 
 appearance_architect:
     upgrade: true
-    icon: wood_hoe:39
-    upgrade_icon: wood_hoe:39
+    icon: wand_icon:39
+    upgrade_icon: wand_icon:39
 
 appearance_conduit:
     upgrade: true
-    icon: wood_hoe:6
-    upgrade_icon: wood_hoe:6
+    icon: wand_icon:6
+    upgrade_icon: wand_icon:6
 
 appearance_magicka:
     upgrade: true
-    icon: wood_hoe:9
-    upgrade_icon: wood_hoe:9
+    icon: wand_icon:9
+    upgrade_icon: wand_icon:9
 
 appearance_moon:
     upgrade: true
-    icon: wood_hoe:10
-    upgrade_icon: wood_hoe:10
+    icon: wand_icon:10
+    upgrade_icon: wand_icon:10
 
 appearance_green:
     upgrade: true
-    icon: wood_hoe:41
-    upgrade_icon: wood_hoe:41
+    icon: wand_icon:41
+    upgrade_icon: wand_icon:41
 
 appearance_spire:
     upgrade: true
-    icon: wood_hoe:35
-    upgrade_icon: wood_hoe:35
+    icon: wand_icon:35
+    upgrade_icon: wand_icon:35
 
 appearance_claw:
     upgrade: true
-    icon: wood_hoe:36
-    upgrade_icon: wood_hoe:36
+    icon: wand_icon:36
+    upgrade_icon: wand_icon:36
 
 appearance_orb:
     upgrade: true
-    icon: wood_hoe:37
-    upgrade_icon: wood_hoe:37
+    icon: wand_icon:37
+    upgrade_icon: wand_icon:37
 
 appearance_bow1:
     upgrade: true
-    icon: bow:1
-    upgrade_icon: bow:1
+    icon: bow_icon:1
+    upgrade_icon: bow_icon:1
 
 appearance_bow2:
     upgrade: true
-    icon: bow:2
-    upgrade_icon: bow:2
+    icon: bow_icon:2
+    upgrade_icon: bow_icon:2
 
 appearance_longbow:
     upgrade: true
-    icon: bow:3
-    upgrade_icon: bow:3
+    icon: bow_icon:3
+    upgrade_icon: bow_icon:3

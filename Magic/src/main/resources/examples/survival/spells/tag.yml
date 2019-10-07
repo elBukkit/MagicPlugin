@@ -1,6 +1,6 @@
 tag:
-    icon: diamond_axe:29
-    icon_disabled: diamond_hoe:29
+    icon: spell_icon:29
+    icon_disabled: spell_icon_disabled:29
     icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
     category: dark
     class: SignSpell

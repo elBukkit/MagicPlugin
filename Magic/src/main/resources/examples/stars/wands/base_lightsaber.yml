@@ -2,7 +2,7 @@ base_lightsaber:
     hidden: true
     inherit: base_bound
     mode: inventory
-    icon_inactive: wood_hoe:14
+    icon_inactive: wand_icon:14
     icon_inactive_delay: 500
     drop: toggle
     left_click: none

@@ -1,6 +1,6 @@
 supershell:
-    icon: diamond_axe:27
-    icon_disabled: diamond_hoe:27
+    icon: spell_icon:27
+    icon_disabled: spell_icon_disabled:27
     icon_url: http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
     category: engineering
     tags: noduel

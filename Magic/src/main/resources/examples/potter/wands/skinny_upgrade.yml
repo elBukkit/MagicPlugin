@@ -1,6 +1,6 @@
 skinny_upgrade:
     name: Skinny Wand Appearance
     upgrade: true
-    icon: wood_hoe:24
-    upgrade_icon: wood_hoe:24
+    icon: wand_icon:24
+    upgrade_icon: wand_icon:24
 

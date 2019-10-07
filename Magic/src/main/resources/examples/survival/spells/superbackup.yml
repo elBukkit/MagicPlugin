@@ -1,6 +1,6 @@
 superbackup:
-    icon: diamond_axe:102
-    icon_disabled: diamond_hoe:102
+    icon: spell_icon:102
+    icon_disabled: spell_icon_disabled:102
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     category: engineering
     tags: noduel

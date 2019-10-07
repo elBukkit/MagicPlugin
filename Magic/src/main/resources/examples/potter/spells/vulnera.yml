@@ -1,7 +1,7 @@
 vulnera:
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
-    icon: diamond_axe:44
-    icon_disabled: diamond_hoe:44
+    icon: spell_icon:44
+    icon_disabled: spell_icon_disabled:44
     category: charms
     cast_on_no_target: true
     worth: 50

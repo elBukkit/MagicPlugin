@@ -8,7 +8,7 @@ broomstick:
     indestructible: true
     active_spell: broom
     migrate_icon: gold_spade
-    icon: wood_hoe:11
+    icon: wand_icon:11
     effect_color: '880088'
     spells:
         - broom

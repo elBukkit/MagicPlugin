@@ -1,6 +1,6 @@
 dragonball:
-    icon: diamond_axe:152
-    icon_disabled: diamond_hoe:152
+    icon: spell_icon:152
+    icon_disabled: spell_icon_disabled:152
     icon_url: http://textures.minecraft.net/texture/c52264ac4e5621668c43e87aed7918ed6b883abc5018769c9536d27b77f
     category: combat
     pvp_restricted: true

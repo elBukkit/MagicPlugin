@@ -1,6 +1,6 @@
 snoop:
-    icon: diamond_axe:107
-    icon_disabled: diamond_hoe:107
+    icon: spell_icon:107
+    icon_disabled: spell_icon_disabled:107
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     hidden: true
     category: staff

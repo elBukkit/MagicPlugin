@@ -1,7 +1,7 @@
 piertotum:
     icon_url: http://textures.minecraft.net/texture/b47685bb689895deea831ce92bc339d1b1d63b7782f98f252abc09447fbcf8f
-    icon: diamond_axe:53
-    icon_disabled: diamond_hoe:53
+    icon: spell_icon:53
+    icon_disabled: spell_icon_disabled:53
     category: master
     class: FamiliarSpell
     worth: 250

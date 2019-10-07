@@ -1,5 +1,5 @@
 ocarina:
-    icon: wood_hoe:18
+    icon: wand_icon:18
     locked: true
     keep: false
     quick_cast: true

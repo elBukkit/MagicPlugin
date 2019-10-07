@@ -1,6 +1,6 @@
 column:
-    icon: diamond_axe:143
-    icon_disabled: diamond_hoe:143
+    icon: spell_icon:143
+    icon_disabled: spell_icon_disabled:143
     alias: superiterate
     icon_url: http://textures.minecraft.net/texture/58c328c062df8bb125e7bb2cca6dce38c24236733a9f95ca75b04c162c64cb8
     category: engineering

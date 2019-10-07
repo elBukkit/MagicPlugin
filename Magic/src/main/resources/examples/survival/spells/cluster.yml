@@ -1,7 +1,7 @@
 cluster:
     inherit: false
-    icon: diamond_axe:92
-    icon_disabled: diamond_hoe:92
+    icon: spell_icon:92
+    icon_disabled: spell_icon_disabled:92
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     category: demolition
     pvp_restricted: true

@@ -1,6 +1,6 @@
 volley:
-    icon: diamond_axe:31
-    icon_disabled: diamond_hoe:31
+    icon: spell_icon:31
+    icon_disabled: spell_icon_disabled:31
     icon_url: http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab
     category: engineering
     tags: noduel

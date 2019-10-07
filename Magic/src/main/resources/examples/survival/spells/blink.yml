@@ -1,6 +1,6 @@
 blink:
-    icon: diamond_axe:134
-    icon_disabled: diamond_hoe:134
+    icon: spell_icon:134
+    icon_disabled: spell_icon_disabled:134
     icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
     alias: tesseract
     category: utility

@@ -1,6 +1,6 @@
 arrow_fire:
-    icon: diamond_axe:246
-    icon_disabled: diamond_hoe:246
+    icon: spell_icon:246
+    icon_disabled: spell_icon_disabled:246
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
     category: combat
     worth: 800

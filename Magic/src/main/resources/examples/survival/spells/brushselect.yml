@@ -1,6 +1,6 @@
 brushselect:
-    icon: diamond_axe:188
-    icon_disabled: diamond_hoe:188
+    icon: spell_icon:188
+    icon_disabled: spell_icon_disabled:188
     icon_url: http://textures.minecraft.net/texture/a653c2daf990459d641e5b8f6e62ef8af24b1a2da49c9ce8d9f68ab682905112
     category: specialty
     hidden: true

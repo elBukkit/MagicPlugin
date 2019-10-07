@@ -1,5 +1,5 @@
 shotgun:
-  icon: diamond_pickaxe:4
+  icon: war_icon:4
   inherit: base_gun
   active_spell: shotgun
   alternate_spell: reload_shotgun

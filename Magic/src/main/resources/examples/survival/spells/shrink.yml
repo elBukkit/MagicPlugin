@@ -1,6 +1,6 @@
 shrink:
-    icon: diamond_axe:146
-    icon_disabled: diamond_hoe:146
+    icon: spell_icon:146
+    icon_disabled: spell_icon_disabled:146
     icon_url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
     category: combat
     worth: 750

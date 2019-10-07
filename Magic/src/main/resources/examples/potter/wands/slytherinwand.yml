@@ -1,7 +1,7 @@
 slytherinwand:
     inherit: base_wand
     migrate_icon: gold_axe
-    icon: wood_hoe:25
+    icon: wand_icon:25
     path: graduate
     fill: true
     organize: true

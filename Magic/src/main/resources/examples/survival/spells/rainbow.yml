@@ -1,6 +1,6 @@
 rainbow:
-    icon: diamond_axe:193
-    icon_disabled: diamond_hoe:193
+    icon: spell_icon:193
+    icon_disabled: spell_icon_disabled:193
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
     category: staff
     hidden: true

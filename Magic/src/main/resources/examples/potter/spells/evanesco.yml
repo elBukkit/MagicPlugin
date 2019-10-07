@@ -1,7 +1,7 @@
 evanesco:
     icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
-    icon: diamond_axe:230
-    icon_disabled: diamond_hoe:230
+    icon: spell_icon:230
+    icon_disabled: spell_icon_disabled:230
     category: transfiguration
     worth: 30
     actions:

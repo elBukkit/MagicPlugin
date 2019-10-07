@@ -1,6 +1,6 @@
 dash:
-    icon: diamond_axe:178
-    icon_disabled: diamond_hoe:178
+    icon: spell_icon:178
+    icon_disabled: spell_icon_disabled:178
     icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
     category: combat
     worth: 100

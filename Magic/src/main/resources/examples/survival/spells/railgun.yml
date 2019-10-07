@@ -1,6 +1,6 @@
 railgun:
-    icon: diamond_axe:161
-    icon_disabled: diamond_hoe:161
+    icon: spell_icon:161
+    icon_disabled: spell_icon_disabled:161
     icon_url: http://textures.minecraft.net/texture/436cb244bd2a9c1734f2db6517a973a91b1773f02ca4b481af5f24d17bb1496
     category: combat
     worth: 1000

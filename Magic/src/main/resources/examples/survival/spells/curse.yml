@@ -1,6 +1,6 @@
 curse:
-    icon: diamond_axe:9
-    icon_disabled: diamond_hoe:9
+    icon: spell_icon:9
+    icon_disabled: spell_icon_disabled:9
     icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
     category: dark
     worth: 80

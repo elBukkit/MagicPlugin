@@ -4,8 +4,8 @@
 wand:
     inherit: base_wand
     class: mage
-    icon: wood_hoe:1
-    migrate_icon: wood_hoe
+    icon: wand_icon:1
+    migrate_icon: wand_icon
     effect_color: random
     active_spell: missile
     tags:

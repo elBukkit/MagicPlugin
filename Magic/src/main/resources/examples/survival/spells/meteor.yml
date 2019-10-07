@@ -1,6 +1,6 @@
 meteor:
-    icon: diamond_axe:56
-    icon_disabled: diamond_hoe:56
+    icon: spell_icon:56
+    icon_disabled: spell_icon_disabled:56
     icon_url: http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21
     category: combat
     worth: 1500

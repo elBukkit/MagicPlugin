@@ -1,6 +1,6 @@
 glide:
-    icon: diamond_axe:202
-    icon_disabled: diamond_hoe:202
+    icon: spell_icon:202
+    icon_disabled: spell_icon_disabled:202
     icon_url: http://textures.minecraft.net/texture/0da6cb9e9cd875794b8b9f3a4b77227a18adb963b42af21d52d58d2ef24e47
     category: utility
     worth: 750

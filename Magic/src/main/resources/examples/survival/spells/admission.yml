@@ -1,6 +1,6 @@
 admission:
-    icon: diamond_axe:182
-    icon_disabled: diamond_hoe:182
+    icon: spell_icon:182
+    icon_disabled: spell_icon_disabled:182
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
     category: utility
     worth: 20

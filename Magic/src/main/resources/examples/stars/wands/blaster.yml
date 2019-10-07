@@ -1,6 +1,6 @@
 blaster:
     migrate_icon: monster_eggs:3
-    icon: wood_hoe:12
+    icon: wand_icon:12
     path: blaster
     mode: cast
     locked: true

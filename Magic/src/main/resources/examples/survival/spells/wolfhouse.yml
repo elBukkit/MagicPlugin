@@ -1,6 +1,6 @@
 wolfhouse:
-    icon: diamond_axe:158
-    icon_disabled: diamond_hoe:158
+    icon: spell_icon:158
+    icon_disabled: spell_icon_disabled:158
     hidden: true
     icon_url: http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
     category: engineering

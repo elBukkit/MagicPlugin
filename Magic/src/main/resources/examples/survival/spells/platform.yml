@@ -1,6 +1,6 @@
 platform:
-    icon: diamond_axe:24
-    icon_disabled: diamond_hoe:24
+    icon: spell_icon:24
+    icon_disabled: spell_icon_disabled:24
     icon_url: http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a
     alias: disc
     upgrade_required_path: apprentice

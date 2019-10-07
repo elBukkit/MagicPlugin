@@ -1,6 +1,6 @@
 magictorch:
-    icon: diamond_axe:62
-    icon_disabled: diamond_hoe:62
+    icon: spell_icon:62
+    icon_disabled: spell_icon_disabled:62
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
     category: specialty
     actions:

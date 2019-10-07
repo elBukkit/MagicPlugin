@@ -1,6 +1,6 @@
 collapse:
-    icon: diamond_axe:114
-    icon_disabled: diamond_hoe:114
+    icon: spell_icon:114
+    icon_disabled: spell_icon_disabled:114
     icon_url: http://textures.minecraft.net/texture/1789289cba5bdef5f92dee5165a99d063f8785db78bdc6b41e3c4b099c04ca4
     category: combat
     worth: 150

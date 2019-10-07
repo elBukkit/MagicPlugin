@@ -1,8 +1,8 @@
 confundusmaxima:
     name: Confundus Maxima
     description: Silences a target for a Long Period!
-    icon: diamond_axe:8
-    icon_disabled: diamond_hoe:8
+    icon: spell_icon:8
+    icon_disabled: spell_icon_disabled:8
     hidden: true
     category: dada
     pvp_restricted: true

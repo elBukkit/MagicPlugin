@@ -1,5 +1,5 @@
 ak47:
-  icon: diamond_pickaxe:1
+  icon: war_icon:1
   inherit: base_gun
   active_spell: ak47
   alternate_spell: reload_ak47

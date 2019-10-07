@@ -1,6 +1,6 @@
 purger:
   inherit: base_wand
-  icon: wood_hoe:3
+  icon: wand_icon:3
   path: apprentice
   spell_levels:
     missile: 3

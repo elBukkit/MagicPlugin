@@ -1,6 +1,6 @@
 superconvert:
-    icon: diamond_axe:113
-    icon_disabled: diamond_hoe:113
+    icon: spell_icon:113
+    icon_disabled: spell_icon_disabled:113
     icon_url: http://textures.minecraft.net/texture/2734f67095a837ec19069f23cae3e82516fab4e29afc157bd99d370179ca0c3
     category: engineering
     tags: noduel

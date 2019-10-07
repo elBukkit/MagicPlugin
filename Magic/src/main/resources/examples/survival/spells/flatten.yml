@@ -1,6 +1,6 @@
 flatten:
-  icon: diamond_axe:88
-  icon_disabled: diamond_hoe:88
+  icon: spell_icon:88
+  icon_disabled: spell_icon_disabled:88
   icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
   category: engineering
   tags: noduel

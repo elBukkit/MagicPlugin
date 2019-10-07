@@ -1,6 +1,6 @@
 paint:
-    icon: diamond_axe:79
-    icon_disabled: diamond_hoe:79
+    icon: spell_icon:79
+    icon_disabled: spell_icon_disabled:79
     icon_url: http://textures.minecraft.net/texture/719e9875ffb35adfbd135c416e51dcf80dec38bf3d0dca2f94eb6595b90c0b5
     category: engineering
     tags: noduel

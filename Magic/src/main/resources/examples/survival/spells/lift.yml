@@ -1,6 +1,6 @@
 lift:
-    icon: diamond_axe:181
-    icon_disabled: diamond_hoe:181
+    icon: spell_icon:181
+    icon_disabled: spell_icon_disabled:181
     icon_url: http://textures.minecraft.net/texture/111de372969a39e34c3af5e6d2392e7876a1f13cf7a37d7513ad60c168bfd7b9
     category: utility
     worth: 150

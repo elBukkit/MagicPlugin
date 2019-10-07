@@ -1,6 +1,6 @@
 invincible:
-    icon: diamond_axe:74
-    icon_disabled: diamond_hoe:74
+    icon: spell_icon:74
+    icon_disabled: spell_icon_disabled:74
     icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
     category: master
     tags: noduel

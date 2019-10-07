@@ -1,6 +1,6 @@
 deletrius:
-    icon: diamond_axe:118
-    icon_disabled: diamond_hoe:118
+    icon: spell_icon:118
+    icon_disabled: spell_icon_disabled:118
     category: staff
     class: CommitSpell
     worth: 150

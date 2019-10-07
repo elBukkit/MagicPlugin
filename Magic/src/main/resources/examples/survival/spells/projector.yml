@@ -1,6 +1,6 @@
 projector:
-  icon: diamond_axe:169
-  icon_disabled: diamond_hoe:169
+  icon: spell_icon:169
+  icon_disabled: spell_icon_disabled:169
   icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
   category: engineering
   effects:

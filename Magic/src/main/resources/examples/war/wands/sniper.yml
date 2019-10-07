@@ -1,5 +1,5 @@
 sniper:
-  icon: diamond_pickaxe:2
+  icon: war_icon:2
   inherit: base_gun
   active_spell: sniper
   swap: alt_cast2

@@ -1,7 +1,7 @@
 video:
     inherit: base_wand
     active_spell: superfly
-    icon: wood_hoe:25
+    icon: wand_icon:25
     migrate_icon: gold_axe
     locked: true
     mana: 50

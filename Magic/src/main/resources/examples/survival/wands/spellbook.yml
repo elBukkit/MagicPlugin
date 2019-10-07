@@ -1,6 +1,6 @@
 spellbook:
     mode: skills
-    icon: wood_hoe:31
+    icon: wand_icon:31
     indestructible: true
     right_click: toggle
     undroppable: true

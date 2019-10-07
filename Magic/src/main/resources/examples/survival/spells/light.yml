@@ -1,6 +1,6 @@
 light:
-    icon: diamond_axe:228
-    icon_disabled: diamond_hoe:228
+    icon: spell_icon:228
+    icon_disabled: spell_icon_disabled:228
     icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
     category: engineering
     worth: 500

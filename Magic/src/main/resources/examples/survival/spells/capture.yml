@@ -1,6 +1,6 @@
 capture:
-  icon: diamond_axe:251
-  icon_disabled: diamond_hoe:251
+  icon: spell_icon:251
+  icon_disabled: spell_icon_disabled:251
   worth: 750
   earns_sp: 8
   actions:

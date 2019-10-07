@@ -1,6 +1,6 @@
 fling:
-    icon: diamond_axe:60
-    icon_disabled: diamond_hoe:60
+    icon: spell_icon:60
+    icon_disabled: spell_icon_disabled:60
     icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
     alias: leap
     category: utility

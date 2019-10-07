@@ -1,5 +1,5 @@
 rocketlauncher:
-  icon: diamond_pickaxe:5
+  icon: war_icon:5
   inherit: base_gun
   active_spell: rocketlauncher
   alternate_spell: reload_rocketlauncher

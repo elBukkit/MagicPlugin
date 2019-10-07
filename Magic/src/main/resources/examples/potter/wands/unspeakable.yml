@@ -1,7 +1,7 @@
 unspeakable:
     inherit: base_wand
-    icon: wood_hoe:24
-    migrate_icon: wood_hoe
+    icon: wand_icon:24
+    migrate_icon: wand_icon
     path: graduate
     fill: true
     organize: true

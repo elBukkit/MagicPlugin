@@ -1,6 +1,6 @@
 hat:
-    icon: diamond_axe:136
-    icon_disabled: diamond_hoe:136
+    icon: spell_icon:136
+    icon_disabled: spell_icon_disabled:136
     icon_url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
     category: utility
     worth: 80

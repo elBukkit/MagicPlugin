@@ -1,6 +1,6 @@
 master:
     inherit: apprentice
-    icon: wood_hoe:4
+    icon: wand_icon:4
     migrate_icon: gold_axe
     mana_regeneration: 50
     mana_max: 250

@@ -1,6 +1,6 @@
 laser:
-    icon: diamond_axe:145
-    icon_disabled: diamond_hoe:145
+    icon: spell_icon:145
+    icon_disabled: spell_icon_disabled:145
     icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
     example_thumbnail: https://thumbs.gfycat.com/SnivelingDependentHuman-size_restricted.gif
     example_link: https://thumbs.gfycat.com/SnivelingDependentHuman

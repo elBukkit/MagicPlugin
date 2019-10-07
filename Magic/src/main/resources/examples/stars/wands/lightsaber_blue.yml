@@ -1,6 +1,6 @@
 lightsaber_blue:
     inherit: base_lightsaber
     class: jedi
-    icon: shield:3
+    icon: shield_icon:3
     effect_color: '0000FF'
 

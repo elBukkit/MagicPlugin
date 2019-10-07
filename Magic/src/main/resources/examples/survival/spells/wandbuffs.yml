@@ -1,6 +1,6 @@
 wandbuffshop:
-  icon: diamond_axe:234
-  icon_disabled: diamond_hoe:234
+  icon: spell_icon:234
+  icon_disabled: spell_icon_disabled:234
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   category: npc
   hidden: true
@@ -70,8 +70,8 @@ wandbuffshop:
             max: 5
 
 add_protection:
-  icon: diamond_axe:234
-  icon_disabled: diamond_hoe:234
+  icon: spell_icon:234
+  icon_disabled: spell_icon_disabled:234
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
@@ -87,8 +87,8 @@ add_protection:
       max: 1
 
 add_explosion_protection:
-  icon: diamond_axe:235
-  icon_disabled: diamond_hoe:235
+  icon: spell_icon:235
+  icon_disabled: spell_icon_disabled:235
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
@@ -104,8 +104,8 @@ add_explosion_protection:
       max: 1
 
 add_fall_protection:
-  icon: diamond_axe:236
-  icon_disabled: diamond_hoe:236
+  icon: spell_icon:236
+  icon_disabled: spell_icon_disabled:236
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
@@ -121,8 +121,8 @@ add_fall_protection:
       max: 1
 
 add_fire_protection:
-  icon: diamond_axe:237
-  icon_disabled: diamond_hoe:237
+  icon: spell_icon:237
+  icon_disabled: spell_icon_disabled:237
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
@@ -138,8 +138,8 @@ add_fire_protection:
       max: 1
 
 add_physical_protection:
-  icon: diamond_axe:238
-  icon_disabled: diamond_hoe:238
+  icon: spell_icon:238
+  icon_disabled: spell_icon_disabled:238
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
@@ -155,8 +155,8 @@ add_physical_protection:
       max: 1
 
 add_projectile_protection:
-  icon: diamond_axe:239
-  icon_disabled: diamond_hoe:239
+  icon: spell_icon:239
+  icon_disabled: spell_icon_disabled:239
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   hidden: true
   actions:
@@ -172,8 +172,8 @@ add_projectile_protection:
       max: 1
 
 add_damage:
-  icon: diamond_axe:178
-  icon_disabled: diamond_hoe:178
+  icon: spell_icon:178
+  icon_disabled: spell_icon_disabled:178
   icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
   hidden: true
   actions:
@@ -189,8 +189,8 @@ add_damage:
       max: 10
 
 add_sharpness:
-  icon: diamond_axe:240
-  icon_disabled: diamond_hoe:240
+  icon: spell_icon:240
+  icon_disabled: spell_icon_disabled:240
   icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
   hidden: true
   actions:

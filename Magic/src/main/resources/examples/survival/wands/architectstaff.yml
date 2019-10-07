@@ -7,7 +7,7 @@ architectstaff:
   powered: true
   cost_reduction: 2
   effect_color: 8af553b2025f,0,8af553b2025f
-  icon: wood_hoe:6
+  icon: wand_icon:6
   migrate_icon: gold_pickaxe
   sp_multiplier: 0
   spells:

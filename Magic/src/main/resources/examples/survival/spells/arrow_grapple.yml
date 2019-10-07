@@ -1,6 +1,6 @@
 arrow_grapple:
-    icon: diamond_axe:57
-    icon_disabled: diamond_hoe:57
+    icon: spell_icon:57
+    icon_disabled: spell_icon_disabled:57
     category: combat
     worth: 300
     toggle: cancel

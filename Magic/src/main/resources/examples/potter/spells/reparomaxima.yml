@@ -1,6 +1,6 @@
 reparomaxima:
-    icon: diamond_axe:103
-    icon_disabled: diamond_hoe:103
+    icon: spell_icon:103
+    icon_disabled: spell_icon_disabled:103
     category: staff
     class: ConstructSpell
     hidden: true

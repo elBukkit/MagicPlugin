@@ -1,6 +1,6 @@
 wither:
-    icon: diamond_axe:53
-    icon_disabled: diamond_hoe:53
+    icon: spell_icon:53
+    icon_disabled: spell_icon_disabled:53
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/ac90eba543a9b9609c4815542e88274e50c152c837a22d3f5f64847b95e2

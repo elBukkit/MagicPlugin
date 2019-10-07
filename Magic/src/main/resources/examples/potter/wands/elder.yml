@@ -1,7 +1,7 @@
 elder:
     inherit: base_wand
     migrate_icon: iron_hoe
-    icon: wood_hoe:27
+    icon: wand_icon:27
     path: graduate
     organize: true
     cost_reduction: 2

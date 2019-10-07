@@ -1,6 +1,6 @@
 brown_upgrade:
     name: Brown Wand Appearance
     upgrade: true
-    icon: wood_hoe:26
-    upgrade_icon: wood_hoe:26
+    icon: wand_icon:26
+    upgrade_icon: wand_icon:26
 

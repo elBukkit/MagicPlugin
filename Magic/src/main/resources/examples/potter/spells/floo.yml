@@ -1,7 +1,7 @@
 floo:
     hidden: true
-    icon: diamond_axe:22
-    icon_disabled: diamond_hoe:22
+    icon: spell_icon:22
+    icon_disabled: spell_icon_disabled:22
     category: specialty
     worth: 30
     actions:

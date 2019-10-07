@@ -1,6 +1,6 @@
 tracking:
-    icon: diamond_axe:189
-    icon_disabled: diamond_hoe:189
+    icon: spell_icon:189
+    icon_disabled: spell_icon_disabled:189
     upgrade_required_path: student
     upgrade_required_casts: 30
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1

@@ -1,5 +1,5 @@
 pkp:
-  icon: diamond_pickaxe:19
+  icon: war_icon:19
   inherit: base_gun
   active_spell: pkp
   alternate_spell: reload_pkp

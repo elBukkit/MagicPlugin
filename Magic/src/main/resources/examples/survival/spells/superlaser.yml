@@ -1,6 +1,6 @@
 superlaser:
-    icon: diamond_axe:142
-    icon_disabled: diamond_hoe:142
+    icon: spell_icon:142
+    icon_disabled: spell_icon_disabled:142
     icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
     category: engineering
     tags: noduel

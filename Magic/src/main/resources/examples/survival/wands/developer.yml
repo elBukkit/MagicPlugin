@@ -1,6 +1,6 @@
 developer:
     inherit: conduit
-    icon: wood_hoe:10
+    icon: wand_icon:10
     migrate_icon: monster_eggs:4
     cost_reduction: 2
     cooldown_reduction: 2

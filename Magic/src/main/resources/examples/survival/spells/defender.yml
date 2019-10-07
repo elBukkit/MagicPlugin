@@ -1,7 +1,7 @@
 defender:
     hidden: true
-    icon: diamond_axe:18
-    icon_disabled: diamond_hoe:18
+    icon: spell_icon:18
+    icon_disabled: spell_icon_disabled:18
     icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
@@ -133,8 +133,8 @@ defender_death:
 defender_attack:
     name: Defender Attack
     hidden: true
-    icon: diamond_axe:112
-    icon_disabled: diamond_hoe:112
+    icon: spell_icon:112
+    icon_disabled: spell_icon_disabled:112
     actions:
         cast:
         - class: Sphere

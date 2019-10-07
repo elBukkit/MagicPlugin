@@ -1,7 +1,7 @@
 tripudio:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
-    icon: diamond_axe:11
-    icon_disabled: diamond_hoe:11
+    icon: spell_icon:11
+    icon_disabled: spell_icon_disabled:11
     worth: 10
     actions:
         cast:

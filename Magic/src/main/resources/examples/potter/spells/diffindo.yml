@@ -1,7 +1,7 @@
 diffindo:
     icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
-    icon: diamond_axe:133
-    icon_disabled: diamond_hoe:133
+    icon: spell_icon:133
+    icon_disabled: spell_icon_disabled:133
     category: transfiguration
     class: ConstructSpell
     cast_on_no_target: true

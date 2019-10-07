@@ -1,6 +1,6 @@
 flashbang:
-    icon: diamond_axe:58
-    icon_disabled: diamond_hoe:58
+    icon: spell_icon:58
+    icon_disabled: spell_icon_disabled:58
     icon_url: http://textures.minecraft.net/texture/964590674dbaf76126bd87694bfe97575be8de19aac4a8d9aa5579f8f01ed1
     example_thumbnail: https://thumbs.gfycat.com/FearlessSeriousBorer-size_restricted.gif
     example_link: https://thumbs.gfycat.com/FearlessSeriousBorer

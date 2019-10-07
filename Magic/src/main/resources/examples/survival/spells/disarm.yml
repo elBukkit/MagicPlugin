@@ -1,6 +1,6 @@
 disarm:
-    icon: diamond_axe:43
-    icon_disabled: diamond_hoe:43
+    icon: spell_icon:43
+    icon_disabled: spell_icon_disabled:43
     icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
     category: light
     worth: 200

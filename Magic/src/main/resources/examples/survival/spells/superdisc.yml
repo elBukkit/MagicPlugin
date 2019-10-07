@@ -1,6 +1,6 @@
 superdisc:
-    icon: diamond_axe:25
-    icon_disabled: diamond_hoe:25
+    icon: spell_icon:25
+    icon_disabled: spell_icon_disabled:25
     icon_url: http://textures.minecraft.net/texture/89791581eeeb253cd59a2bda0615d78da15f218e475b192bbffc8bb16bd8f
     category: engineering
     tags: noduel

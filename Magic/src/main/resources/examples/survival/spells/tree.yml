@@ -1,6 +1,6 @@
 tree:
-    icon: diamond_axe:41
-    icon_disabled: diamond_hoe:41
+    icon: spell_icon:41
+    icon_disabled: spell_icon_disabled:41
     icon_url: http://textures.minecraft.net/texture/789e28cfb955a3bf9eafee3eabeca3e8bec87fc7e7489abb6281860289cec43
     category: elemental
     worth: 5000

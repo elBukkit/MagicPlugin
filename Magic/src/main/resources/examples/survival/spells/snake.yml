@@ -1,7 +1,7 @@
 snake:
     hidden: true
-    icon: diamond_axe:16
-    icon_disabled: diamond_hoe:16
+    icon: spell_icon:16
+    icon_disabled: spell_icon_disabled:16
     icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell

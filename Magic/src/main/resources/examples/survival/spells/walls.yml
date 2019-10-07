@@ -1,6 +1,6 @@
 walls:
-    icon: diamond_axe:130
-    icon_disabled: diamond_hoe:130
+    icon: spell_icon:130
+    icon_disabled: spell_icon_disabled:130
     icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
     category: combat
     worth: 250

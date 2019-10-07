@@ -427,7 +427,7 @@ coffeeshop:
         - coffee3
 
 axeshop:
-    icon: diamond_axe
+    icon: spell_icon
     inherit: buyshop
     parameters:
         confirm: true

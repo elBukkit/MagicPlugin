@@ -1,6 +1,6 @@
 singularity:
-    icon: diamond_axe:190
-    icon_disabled: diamond_hoe:190
+    icon: spell_icon:190
+    icon_disabled: spell_icon_disabled:190
     icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
     category: master
     pvp_restricted: true

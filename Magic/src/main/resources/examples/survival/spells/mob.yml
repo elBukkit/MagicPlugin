@@ -1,6 +1,6 @@
 mob:
-    icon: diamond_axe:67
-    icon_disabled: diamond_hoe:67
+    icon: spell_icon:67
+    icon_disabled: spell_icon_disabled:67
     icon_url: http://textures.minecraft.net/texture/74e9c6e98582ffd8ff8feb3322cd1849c43fb16b158abb11ca7b42eda7743eb
     category: dark
     pvp_restricted: true

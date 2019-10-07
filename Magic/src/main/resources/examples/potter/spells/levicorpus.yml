@@ -1,7 +1,7 @@
 levicorpus:
     icon_url: http://textures.minecraft.net/texture/3f6c497d587c1398ae29cb648a9707fbe974a651cf88c6a2296442db4f6fa5c
-    icon: diamond_axe:227
-    icon_disabled: diamond_hoe:227
+    icon: spell_icon:227
+    icon_disabled: spell_icon_disabled:227
     category: charms
     cast_on_no_target: true
     pvp_restricted: true

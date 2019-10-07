@@ -1,5 +1,5 @@
 mp5:
-  icon: diamond_pickaxe:21
+  icon: war_icon:21
   inherit: base_gun
   active_spell: mp5
   alternate_spell: reload_mp5

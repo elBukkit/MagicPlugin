@@ -1,6 +1,6 @@
 salviohexia:
-    icon: diamond_axe:101
-    icon_disabled: diamond_hoe:101
+    icon: spell_icon:101
+    icon_disabled: spell_icon_disabled:101
     category: staff
     hidden: true
     class: ConstructSpell

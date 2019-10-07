@@ -1,6 +1,6 @@
 earth:
-    icon: diamond_axe:141
-    icon_disabled: diamond_hoe:141
+    icon: spell_icon:141
+    icon_disabled: spell_icon_disabled:141
     icon_url: http://textures.minecraft.net/texture/5d9ddb39f5cd587f63bb175dfaf55baaa917c1a2a3ca987a18d90c9e1a578d
     category: combat
     pvp_restricted: true

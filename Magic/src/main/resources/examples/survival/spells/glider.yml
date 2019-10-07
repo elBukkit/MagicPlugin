@@ -1,7 +1,7 @@
 glider:
     hidden: true
-    icon: diamond_axe:14
-    icon_disabled: diamond_hoe:14
+    icon: spell_icon:14
+    icon_disabled: spell_icon_disabled:14
     icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
     category: automata
     class: ConstructSpell

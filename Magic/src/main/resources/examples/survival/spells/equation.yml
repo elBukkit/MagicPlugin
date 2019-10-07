@@ -1,5 +1,5 @@
 equation:
-    icon: diamond_axe:9
+    icon: spell_icon:9
     icon_disabled: diamond_axe:9
     hidden: true
     category: staff

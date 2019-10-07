@@ -5,7 +5,7 @@ conduit:
     inherit: architect
     path: conduit
     consume_reduction: 1
-    icon: wood_hoe:6
+    icon: wand_icon:6
     migrate_icon: gold_pickaxe
     effect_color: '8B008B'
     mana_max: 600

@@ -1,6 +1,6 @@
 lava:
-    icon: diamond_axe:139
-    icon_disabled: diamond_hoe:139
+    icon: spell_icon:139
+    icon_disabled: spell_icon_disabled:139
     icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
     category: combat
     pvp_restricted: true

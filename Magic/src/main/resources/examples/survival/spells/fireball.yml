@@ -1,6 +1,6 @@
 fireball:
-    icon: diamond_axe:153
-    icon_disabled: diamond_hoe:153
+    icon: spell_icon:153
+    icon_disabled: spell_icon_disabled:153
     upgrade_required_path: beginner
     upgrade_required_casts: 15
     icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928

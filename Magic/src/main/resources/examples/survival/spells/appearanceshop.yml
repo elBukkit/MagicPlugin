@@ -1,6 +1,6 @@
 appearanceshop:
-    icon: diamond_axe:233
-    icon_disabled: diamond_hoe:233
+    icon: spell_icon:233
+    icon_disabled: spell_icon_disabled:233
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     hidden: true
     actions:

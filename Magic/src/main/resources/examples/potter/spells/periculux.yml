@@ -1,7 +1,7 @@
 periculux:
     icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
-    icon: diamond_axe:191
-    icon_disabled: diamond_hoe:191
+    icon: spell_icon:191
+    icon_disabled: spell_icon_disabled:191
     category: charms
     show_undoable: false
     actions:

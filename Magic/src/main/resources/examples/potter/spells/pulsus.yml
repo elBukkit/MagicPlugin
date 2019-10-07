@@ -1,7 +1,7 @@
 pulsus:
     icon_url: http://textures.minecraft.net/texture/2418aee9b8d2702b5d75cfeabf19edf4b4bb83832fda7324c27781beb1e212f
-    icon: diamond_axe:192
-    icon_disabled: diamond_hoe:192
+    icon: spell_icon:192
+    icon_disabled: spell_icon_disabled:192
     category: dada
     pvp_restricted: true
     cast_on_no_target: true

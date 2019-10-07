@@ -1,6 +1,6 @@
 lockpick:
-    icon: diamond_axe:184
-    icon_disabled: diamond_hoe:184
+    icon: spell_icon:184
+    icon_disabled: spell_icon_disabled:184
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
     category: staff
     worth: 500

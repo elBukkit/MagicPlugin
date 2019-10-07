@@ -1,6 +1,6 @@
 earthbullet:
-    icon: diamond_axe:30
-    icon_disabled: diamond_hoe:30
+    icon: spell_icon:30
+    icon_disabled: spell_icon_disabled:30
     upgrade_required_casts: 30
     category: earthbending
     pvp_restricted: true

@@ -1,6 +1,6 @@
 decoy:
-  icon: diamond_axe:65
-  icon_disabled: diamond_hoe:65
+  icon: spell_icon:65
+  icon_disabled: spell_icon_disabled:65
   toggle: undo
   disable_mana_regeneration: true
   quick_cast: true

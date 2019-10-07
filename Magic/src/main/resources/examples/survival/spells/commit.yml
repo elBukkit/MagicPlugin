@@ -1,6 +1,6 @@
 commit:
-    icon: diamond_axe:118
-    icon_disabled: diamond_hoe:118
+    icon: spell_icon:118
+    icon_disabled: spell_icon_disabled:118
     icon_url: http://textures.minecraft.net/texture/8767f81fd66cc826827de81f3d12a3fee1fd6cfee11a43bb438404cd3391f
     category: engineering
     tags: noduel

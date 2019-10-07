@@ -1,6 +1,6 @@
 cure:
-    icon: diamond_axe:44
-    icon_disabled: diamond_hoe:44
+    icon: spell_icon:44
+    icon_disabled: spell_icon_disabled:44
     icon_url: http://textures.minecraft.net/texture/1364e3f9597a295108d202d20c2f02539d5ad8377fef53ef622603a7f45b52f
     upgrade_required_path: student
     upgrade_required_casts: 20

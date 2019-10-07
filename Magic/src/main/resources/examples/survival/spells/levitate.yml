@@ -1,6 +1,6 @@
 levitate:
-    icon: diamond_axe:150
-    icon_disabled: diamond_hoe:150
+    icon: spell_icon:150
+    icon_disabled: spell_icon_disabled:150
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0

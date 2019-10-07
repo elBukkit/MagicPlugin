@@ -1,7 +1,7 @@
 bombtastic:
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
-    icon: diamond_axe:93
-    icon_disabled: diamond_hoe:93
+    icon: spell_icon:93
+    icon_disabled: spell_icon_disabled:93
     category: specialty
     pvp_restricted: true
     hidden: true

@@ -1,6 +1,6 @@
 phase:
-    icon: diamond_axe:72
-    icon_disabled: diamond_hoe:72
+    icon: spell_icon:72
+    icon_disabled: spell_icon_disabled:72
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     category: master
     tags: noduel,nojail

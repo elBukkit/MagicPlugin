@@ -1,6 +1,6 @@
 cat:
-    icon: diamond_axe:70
-    icon_disabled: diamond_hoe:70
+    icon: spell_icon:70
+    icon_disabled: spell_icon_disabled:70
     icon_url: http://textures.minecraft.net/texture/c87fd886605b6aaf6af2b2ea5b205bcdcb60b453b0353ceece0861cfc67ada4
     category: elemental
     worth: 150

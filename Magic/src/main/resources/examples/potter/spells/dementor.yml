@@ -1,7 +1,7 @@
 dementor:
     icon_url: http://textures.minecraft.net/texture/c8471a90c7b0d6ba70ddf0ea8daf2f8ee999a1efe95f2198d8352e42bd43d1
-    icon: diamond_axe:175
-    icon_disabled: diamond_hoe:175
+    icon: spell_icon:175
+    icon_disabled: spell_icon_disabled:175
     category: specialty
     hidden: true
     pvp_restricted: true

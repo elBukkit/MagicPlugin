@@ -1,6 +1,6 @@
 bridge:
-    icon: diamond_axe:87
-    icon_disabled: diamond_hoe:87
+    icon: spell_icon:87
+    icon_disabled: spell_icon_disabled:87
     icon_url: http://textures.minecraft.net/texture/328d3a15afbc7f95d64179bb6154aa2e9ce7212462145c3344fda754b12c61e7
     category: engineering
     tags: noduel

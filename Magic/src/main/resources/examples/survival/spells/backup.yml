@@ -1,6 +1,6 @@
 backup:
-    icon: diamond_axe:101
-    icon_disabled: diamond_hoe:101
+    icon: spell_icon:101
+    icon_disabled: spell_icon_disabled:101
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     category: engineering
     tags: noduel

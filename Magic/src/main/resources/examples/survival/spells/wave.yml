@@ -1,6 +1,6 @@
 wave:
-    icon: diamond_axe:195
-    icon_disabled: diamond_hoe:195
+    icon: spell_icon:195
+    icon_disabled: spell_icon_disabled:195
     icon_url: http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac
     category: elemental
     pvp_restricted: true

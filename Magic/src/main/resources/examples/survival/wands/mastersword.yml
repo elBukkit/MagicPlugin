@@ -3,7 +3,7 @@
 #
 mastersword:
     inherit: base_bound
-    icon: gold_sword:1
+    icon: sword_icon:1
     effect_color: '11FF88'
     hide_flags: 62
     alternate_spell: masterattack

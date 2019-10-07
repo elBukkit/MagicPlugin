@@ -1,6 +1,6 @@
 tame:
-    icon: diamond_axe:50
-    icon_disabled: diamond_hoe:50
+    icon: spell_icon:50
+    icon_disabled: spell_icon_disabled:50
     icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
     category: utility
     worth: 500

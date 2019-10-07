@@ -1,6 +1,6 @@
 grenade:
-    icon: diamond_axe:91
-    icon_disabled: diamond_hoe:91
+    icon: spell_icon:91
+    icon_disabled: spell_icon_disabled:91
     icon_url: http://textures.minecraft.net/texture/c6a7fcfee0ffebae25b69bd16f55c993898ba72791d3a89e58736e7bad0faa3
     alias: frag
     category: demolition

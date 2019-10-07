@@ -1,6 +1,6 @@
 arrowrain:
-    icon: diamond_axe:54
-    icon_disabled: diamond_hoe:54
+    icon: spell_icon:54
+    icon_disabled: spell_icon_disabled:54
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/7d89462020cc12f63d5117d37b52e642536de7fa774d2d96e80c72e1d4ff6

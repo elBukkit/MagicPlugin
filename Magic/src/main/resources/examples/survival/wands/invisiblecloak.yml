@@ -1,7 +1,7 @@
 invisiblecloak:
     mode: cast
     active_spell: invisiblecloak
-    icon: wood_hoe:15
+    icon: wand_icon:15
     migrate_icon: ender_pearl
     indestructible: true
     locked: true

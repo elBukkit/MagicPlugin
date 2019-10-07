@@ -1,6 +1,6 @@
 absorb:
-    icon: diamond_axe:135
-    icon_disabled: diamond_hoe:135
+    icon: spell_icon:135
+    icon_disabled: spell_icon_disabled:135
     icon_url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
     category: engineering
     tags: noduel
@@ -17,8 +17,8 @@ absorb:
            reverse: true
            particle_count: 10
            particle_offset_x: 0.2
-           particle_offset_x: 0.2
-           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
         -  location: target
            use_block_location: true
            effectlib:

@@ -1,6 +1,6 @@
 counterspell:
-    icon: diamond_axe:119
-    icon_disabled: diamond_hoe:119
+    icon: spell_icon:119
+    icon_disabled: spell_icon_disabled:119
     icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
     category: combat
     worth: 600

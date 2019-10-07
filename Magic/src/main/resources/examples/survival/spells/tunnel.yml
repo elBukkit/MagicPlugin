@@ -1,6 +1,6 @@
 tunnel:
-    icon: diamond_axe:110
-    icon_disabled: diamond_hoe:110
+    icon: spell_icon:110
+    icon_disabled: spell_icon_disabled:110
     icon_url: http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e
     category: engineering
     tags: noduel

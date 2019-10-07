@@ -1,5 +1,5 @@
 controlsmenu:
-    icon: diamond_axe:214
+    icon: spell_icon:214
     disabled_icon: diamond_hoe:214
     icon_url: http://textures.minecraft.net/texture/f6d6ac2ee323f6497c6e2663a7e56ed9523567b68d18a17f8f39736b06ac3cd
     category: npc

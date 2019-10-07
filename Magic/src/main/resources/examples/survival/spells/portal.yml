@@ -1,6 +1,6 @@
 portal:
-    icon: diamond_axe:71
-    icon_disabled: diamond_hoe:71
+    icon: spell_icon:71
+    icon_disabled: spell_icon_disabled:71
     icon_url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
     category: master
     tags: noduel

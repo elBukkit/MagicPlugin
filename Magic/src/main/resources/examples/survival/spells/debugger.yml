@@ -1,5 +1,5 @@
 debugger:
-    icon: diamond_axe:7
+    icon: spell_icon:7
     disabled_icon: diamond_hoe:7
     hidden: true
     category: staff

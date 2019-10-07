@@ -1,6 +1,6 @@
 magichat:
-    icon: diamond_axe:138
-    icon_disabled: diamond_hoe:138
+    icon: spell_icon:138
+    icon_disabled: spell_icon_disabled:138
     hidden: true
     icon_url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
     category: utility

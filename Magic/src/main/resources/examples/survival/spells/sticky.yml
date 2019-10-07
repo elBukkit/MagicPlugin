@@ -1,6 +1,6 @@
 sticky:
-    icon: diamond_axe:165
-    icon_disabled: diamond_hoe:165
+    icon: spell_icon:165
+    icon_disabled: spell_icon_disabled:165
     icon_url: http://textures.minecraft.net/texture/f873525428823bffa57b74bdb1251de6e7c49660b35c995d2bf5d04a1ff34b8f
     upgrade_required_path: apprentice
     upgrade_required_casts: 50

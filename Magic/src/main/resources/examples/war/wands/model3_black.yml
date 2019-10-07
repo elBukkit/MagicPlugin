@@ -1,6 +1,6 @@
 model3_black:
   name: Model 3
-  icon: diamond_pickaxe:15
+  icon: war_icon:15
   active_spell: spawn_car
   right_click: cast
   indestructible: true

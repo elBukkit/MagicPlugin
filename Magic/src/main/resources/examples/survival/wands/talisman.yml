@@ -1,5 +1,5 @@
 talisman:
-  icon: wood_hoe:30
+  icon: wand_icon:30
   indestructible: true
   mana_max_boost: 0.3
   mana_regeneration_boost: 0.2

@@ -1,6 +1,6 @@
 tent:
-    icon: diamond_axe:156
-    icon_disabled: diamond_hoe:156
+    icon: spell_icon:156
+    icon_disabled: spell_icon_disabled:156
     icon_url: http://textures.minecraft.net/texture/443e10a710998d47d238e291a8ba8f6abf42bc7e419d1d8dcc8c55707ebb19
     category: master
     class: ConstructSpell

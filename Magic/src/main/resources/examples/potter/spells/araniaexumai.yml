@@ -1,7 +1,7 @@
 araniaexumai:
     icon_url: http://textures.minecraft.net/texture/67764b015a5e734dda05422c497d29b3f8edfbfe94472e665b277cda648
-    icon: diamond_axe:229
-    icon_disabled: diamond_hoe:229
+    icon: spell_icon:229
+    icon_disabled: spell_icon_disabled:229
     category: creatures
     pvp_restricted: true
     cast_on_no_target: true

@@ -1,6 +1,6 @@
 icbm:
-    icon: diamond_axe:51
-    icon_disabled: diamond_hoe:51
+    icon: spell_icon:51
+    icon_disabled: spell_icon_disabled:51
     icon_url: http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11
     example_thumbnail: https://thumbs.gfycat.com/RipeUnluckyFruitbat-size_restricted.gif
     example_link: https://thumbs.gfycat.com/RipeUnluckyFruitbat

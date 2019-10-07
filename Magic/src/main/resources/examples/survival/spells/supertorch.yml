@@ -1,6 +1,6 @@
 supertorch:
-    icon: diamond_axe:61
-    icon_disabled: diamond_hoe:61
+    icon: spell_icon:61
+    icon_disabled: spell_icon_disabled:61
     icon_url: http://textures.minecraft.net/texture/15f098d4bc88ca9b11ddb6b3acb08dad7a3fc62929ec27adcedb667c61faa3
     category: engineering
     tags: noduel

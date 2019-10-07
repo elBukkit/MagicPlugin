@@ -1,6 +1,6 @@
 box:
-    icon: diamond_axe:98
-    icon_disabled: diamond_hoe:98
+    icon: spell_icon:98
+    icon_disabled: spell_icon_disabled:98
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     category: engineering
     tags: noduel

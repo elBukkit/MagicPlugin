@@ -1,6 +1,6 @@
 miniwolf:
     inherit: master
-    icon: wood_hoe:8
+    icon: wand_icon:8
     migrate_icon: gold_axe
     hotbar_count: 2
     effect_color: '00AACC'

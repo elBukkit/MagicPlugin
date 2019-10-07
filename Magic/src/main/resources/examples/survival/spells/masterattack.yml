@@ -1,6 +1,6 @@
 masterattack:
-    icon: diamond_axe:160
-    icon_disabled: diamond_hoe:160
+    icon: spell_icon:160
+    icon_disabled: spell_icon_disabled:160
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: combat
     require_health_percentage: 100

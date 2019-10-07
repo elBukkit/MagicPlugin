@@ -5,6 +5,7 @@
  - Fix undoing block data changes, fixes Admission not closing the door.
  - Add CheckPotionEffects action, for seeing if a target has some specific effects
  - Add light and time requirements, can be used in CheckRequirements or Selector for time of day or light level checks
+ - Make it easier to change the items used for spell and wand icons (see items/wands.yml)
 
 # 7.7.5
 

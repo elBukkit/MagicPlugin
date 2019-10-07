@@ -1,6 +1,6 @@
 cage:
-    icon: diamond_axe:157
-    icon_disabled: diamond_hoe:157
+    icon: spell_icon:157
+    icon_disabled: spell_icon_disabled:157
     icon_url: http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943
     category: master
     class: ConstructSpell

@@ -1,6 +1,6 @@
 breach:
-    icon: diamond_axe:120
-    icon_disabled: diamond_hoe:120
+    icon: spell_icon:120
+    icon_disabled: spell_icon_disabled:120
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     category: mining
     worth: 400

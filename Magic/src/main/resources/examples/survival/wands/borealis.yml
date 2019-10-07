@@ -1,6 +1,6 @@
 borealis:
     inherit: master
-    icon: wood_hoe:10
+    icon: wand_icon:10
     migrate_icon: gold_axe
     quiet: 2
     effect_color: '00AACC'

@@ -1,7 +1,7 @@
 fiantoduri:
     icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
-    icon: diamond_axe:11
-    icon_disabled: diamond_hoe:11
+    icon: spell_icon:11
+    icon_disabled: spell_icon_disabled:11
     category: light
     worth: 10
     actions:

@@ -1,6 +1,6 @@
 superemp:
-    icon: diamond_axe:132
-    icon_disabled: diamond_hoe:132
+    icon: spell_icon:132
+    icon_disabled: spell_icon_disabled:132
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
     category: electrical
     class: ConstructSpell

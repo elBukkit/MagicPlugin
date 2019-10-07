@@ -1,8 +1,8 @@
 locomotomortus:
     icon_url: http://textures.minecraft.net/texture/2e67b7afcdb3bfe70cb33d1e384f11f8dc81f3dc9677cc64cb51ba0eb8f3f
     alias: locomoto
-    icon: diamond_axe:175
-    icon_disabled: diamond_hoe:175
+    icon: spell_icon:175
+    icon_disabled: spell_icon_disabled:175
     category: dada
     pvp_restricted: true
     cast_on_no_target: true

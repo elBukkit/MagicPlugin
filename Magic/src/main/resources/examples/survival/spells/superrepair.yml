@@ -1,6 +1,6 @@
 superrepair:
-    icon: diamond_axe:104
-    icon_disabled: diamond_hoe:104
+    icon: spell_icon:104
+    icon_disabled: spell_icon_disabled:104
     icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
     category: engineering
     tags: noduel

@@ -1,6 +1,6 @@
 rocket:
-    icon: diamond_axe:191
-    icon_disabled: diamond_hoe:191
+    icon: spell_icon:191
+    icon_disabled: spell_icon_disabled:191
     icon_url: http://textures.minecraft.net/texture/5a532e9d2221b1a2ffdbc701578331c8da41c36d1487696fefa584373572
     category: utility
     worth: 100

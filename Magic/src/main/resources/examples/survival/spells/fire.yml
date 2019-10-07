@@ -1,6 +1,6 @@
 fire:
-    icon: diamond_axe:75
-    icon_disabled: diamond_hoe:75
+    icon: spell_icon:75
+    icon_disabled: spell_icon_disabled:75
     icon_url: http://textures.minecraft.net/texture/7dbb7f75e74ad4218d2af7191752b5952144436ce8aa2bb6fb27168e6f28af
     alias: inferno
     category: demolition

@@ -1,7 +1,7 @@
 reductomaxima:
     icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9
-    icon: diamond_axe:108
-    icon_disabled: diamond_hoe:108
+    icon: spell_icon:108
+    icon_disabled: spell_icon_disabled:108
     category: staff
     class: ConstructSpell
     hidden: true

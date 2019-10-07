@@ -1,6 +1,6 @@
 supercollapse:
-    icon: diamond_axe:115
-    icon_disabled: diamond_hoe:115
+    icon: spell_icon:115
+    icon_disabled: spell_icon_disabled:115
     icon_url: http://textures.minecraft.net/texture/a4cdbaa4de8eecc6363d760442688762daf588238f83a9da624eaa51e82bbb
     category: engineering
     tags: noduel

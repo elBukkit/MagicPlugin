@@ -1,6 +1,6 @@
 testdummy:
-    icon: diamond_axe:65
-    icon_disabled: diamond_hoe:65
+    icon: spell_icon:65
+    icon_disabled: spell_icon_disabled:65
     icon_url: http://textures.minecraft.net/texture/f6f3e3c8aeff6128b1194ccf7e3eaddcf438e1938471a66ef76a09d4a3a1932
     category: staff
     quick_cast: true

@@ -1,6 +1,6 @@
 superblob:
-    icon: diamond_axe:94
-    icon_disabled: diamond_hoe:94
+    icon: spell_icon:94
+    icon_disabled: spell_icon_disabled:94
     icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
     category: engineering
     tags: noduel

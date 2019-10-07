@@ -1,6 +1,6 @@
 pollinate:
-    icon: diamond_axe:167
-    icon_disabled: diamond_hoe:167
+    icon: spell_icon:167
+    icon_disabled: spell_icon_disabled:167
     icon_url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
     category: engineering
     tags: noduel

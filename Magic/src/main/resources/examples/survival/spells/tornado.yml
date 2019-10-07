@@ -1,6 +1,6 @@
 tornado:
-    icon: diamond_axe:192
-    icon_disabled: diamond_hoe:192
+    icon: spell_icon:192
+    icon_disabled: spell_icon_disabled:192
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27

@@ -1,7 +1,7 @@
 immobulus:
     icon_url: http://textures.minecraft.net/texture/6120acda66c3d37a2952a7622a4a7c7b5a4f5626ecc90179976c1915f30b39f
-    icon: diamond_axe:175
-    icon_disabled: diamond_hoe:175
+    icon: spell_icon:175
+    icon_disabled: spell_icon_disabled:175
     category: dada
     pvp_restricted: true
     cast_on_no_target: true

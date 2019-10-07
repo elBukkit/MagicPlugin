@@ -1,6 +1,6 @@
 disposal:
-    icon: diamond_axe:231
-    icon_disabled: diamond_hoe:231
+    icon: spell_icon:231
+    icon_disabled: spell_icon_disabled:231
     icon_url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067
     category: utility
     worth: 2000

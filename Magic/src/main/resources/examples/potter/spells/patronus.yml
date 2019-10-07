@@ -1,7 +1,7 @@
 patronus:
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
-    icon: diamond_axe:131
-    icon_disabled: diamond_hoe:131
+    icon: spell_icon:131
+    icon_disabled: spell_icon_disabled:131
     category: charms
     worth: 200
     actions:

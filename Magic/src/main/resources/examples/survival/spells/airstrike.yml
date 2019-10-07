@@ -1,6 +1,6 @@
 airstrike:
-    icon: diamond_axe:48
-    icon_disabled: diamond_hoe:48
+    icon: spell_icon:48
+    icon_disabled: spell_icon_disabled:48
     icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
     category: master
     tags: noduel,nojail

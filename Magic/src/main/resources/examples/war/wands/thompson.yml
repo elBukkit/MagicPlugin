@@ -1,5 +1,5 @@
 thompson:
-  icon: diamond_pickaxe:20
+  icon: war_icon:20
   inherit: base_gun
   active_spell: thompson
   alternate_spell: reload_thompson

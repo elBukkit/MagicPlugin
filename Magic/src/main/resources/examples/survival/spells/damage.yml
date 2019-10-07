@@ -20,8 +20,8 @@
 # DRAGON_BREATH
 
 damage:
-    icon: diamond_axe:172
-    icon_disabled: diamond_hoe:172
+    icon: spell_icon:172
+    icon_disabled: spell_icon_disabled:172
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: staff
     worth: 50000

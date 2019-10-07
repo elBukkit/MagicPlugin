@@ -1,7 +1,7 @@
 magichat:
     mode: cast
     active_spell: magichat
-    icon: wood_hoe:17
+    icon: wand_icon:17
     migrate_icon: ender_portal_frame
     indestructible: true
     locked: true

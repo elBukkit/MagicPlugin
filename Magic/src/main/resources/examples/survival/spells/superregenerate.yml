@@ -1,6 +1,6 @@
 superregenerate:
-    icon: diamond_axe:78
-    icon_disabled: diamond_hoe:78
+    icon: spell_icon:78
+    icon_disabled: spell_icon_disabled:78
     icon_url: http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b
     category: engineering
     tags: noduel

@@ -4,8 +4,8 @@
 magicsword:
     inherit: base_sword
     class: battle_mage
-    icon: gold_sword:8
-    migrate_icon: gold_sword
+    icon: sword_icon:8
+    migrate_icon: sword_icon
     effect_color: '11FF11'
     hide_flags: 62
     active_spell: missile

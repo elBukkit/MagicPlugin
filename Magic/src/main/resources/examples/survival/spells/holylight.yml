@@ -1,6 +1,6 @@
 holylight:
-    icon: diamond_axe:10
-    icon_disabled: diamond_hoe:10
+    icon: spell_icon:10
+    icon_disabled: spell_icon_disabled:10
     icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
     category: master
     worth: 700

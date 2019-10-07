@@ -1,6 +1,6 @@
 ferrari:
   name: Ferrari California
-  icon: diamond_pickaxe:11
+  icon: war_icon:11
   active_spell: spawn_car
   right_click: cast
   indestructible: true

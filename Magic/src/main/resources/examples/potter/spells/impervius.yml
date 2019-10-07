@@ -1,7 +1,7 @@
 impervius:
     icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
-    icon: diamond_axe:186
-    icon_disabled: diamond_hoe:186
+    icon: spell_icon:186
+    icon_disabled: spell_icon_disabled:186
     category: transfiguration
     class: ConstructSpell
     worth: 30

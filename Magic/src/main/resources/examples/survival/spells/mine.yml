@@ -1,6 +1,6 @@
 mine:
-    icon: diamond_axe:123
-    icon_disabled: diamond_hoe:123
+    icon: spell_icon:123
+    icon_disabled: spell_icon_disabled:123
     icon_url: http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63
     category: mining
     tags: noduel,nojail

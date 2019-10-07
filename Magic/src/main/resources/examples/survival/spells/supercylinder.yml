@@ -1,6 +1,6 @@
 supercylinder:
-    icon: diamond_axe:97
-    icon_disabled: diamond_hoe:97
+    icon: spell_icon:97
+    icon_disabled: spell_icon_disabled:97
     icon_url: http://textures.minecraft.net/texture/86b54c2be72abec1bb595f3acea2e1ef3dffb94f7d316212ced492b72a164cb2
     category: engineering
     tags: noduel

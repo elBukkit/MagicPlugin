@@ -1,6 +1,6 @@
 flare:
-    icon: diamond_axe:148
-    icon_disabled: diamond_hoe:148
+    icon: spell_icon:148
+    icon_disabled: spell_icon_disabled:148
     icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
     category: light
     worth: 20

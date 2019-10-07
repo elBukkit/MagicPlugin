@@ -1,6 +1,6 @@
 healing:
-    icon: diamond_axe:46
-    icon_disabled: diamond_hoe:46
+    icon: spell_icon:46
+    icon_disabled: spell_icon_disabled:46
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     category: light
     hidden: true

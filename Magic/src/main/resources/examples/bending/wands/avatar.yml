@@ -3,8 +3,8 @@ avatar:
     inherit: base_bending
     limit_spells_to_path: false
     migrate_icon: gold_pickaxe
-    icon: wood_hoe:23
-    migrate_icon: wood_hoe
+    icon: wand_icon:23
+    migrate_icon: wand_icon
     power: 0.5
     effect_color: 'FFFFFF'
     effect_bubbles: true

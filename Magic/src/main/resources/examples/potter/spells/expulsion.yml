@@ -1,6 +1,6 @@
 expulsion:
-    icon: diamond_axe:170
-    icon_disabled: diamond_hoe:170
+    icon: spell_icon:170
+    icon_disabled: spell_icon_disabled:170
     category: staff
     hidden: true
     worth: 500

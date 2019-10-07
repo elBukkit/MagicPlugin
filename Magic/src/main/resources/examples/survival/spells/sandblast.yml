@@ -1,6 +1,6 @@
 sandblast:
-    icon: diamond_axe:122
-    icon_disabled: diamond_hoe:122
+    icon: spell_icon:122
+    icon_disabled: spell_icon_disabled:122
     icon_url: http://textures.minecraft.net/texture/c1dc6e8c5e3da4aed0ca478e195b8fe3a438fd8cb775b9d10fa1ff7d2dcf714
     category: combat
     pvp_restricted: true

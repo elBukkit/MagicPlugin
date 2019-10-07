@@ -1,7 +1,7 @@
 architect:
     inherit: engineer
     path: architect
-    icon: wood_hoe:5
+    icon: wand_icon:5
     migrate_icon: gold_pickaxe
     effect_color: '8B008B'
     mana_max: 500

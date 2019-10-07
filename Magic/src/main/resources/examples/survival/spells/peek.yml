@@ -1,6 +1,6 @@
 peek:
-    icon: diamond_axe:121
-    icon_disabled: diamond_hoe:121
+    icon: spell_icon:121
+    icon_disabled: spell_icon_disabled:121
     icon_url: http://textures.minecraft.net/texture/42fe4273a62118f32881159ab3d6eded9fac90748deedbdb16204d107f843
     category: mining
     worth: 300

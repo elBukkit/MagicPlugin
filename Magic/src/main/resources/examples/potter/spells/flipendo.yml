@@ -1,6 +1,6 @@
 flipendo:
-    icon: diamond_axe:32
-    icon_disabled: diamond_hoe:32
+    icon: spell_icon:32
+    icon_disabled: spell_icon_disabled:32
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     category: dada
     pvp_restricted: true

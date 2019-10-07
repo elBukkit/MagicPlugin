@@ -1,7 +1,7 @@
 wolf:
   inherit: base_wand
   path: staff
-  icon: wood_hoe:7
+  icon: wand_icon:7
   migrate_icon: gold_hoe
   hotbar_count: 3
   protected: true

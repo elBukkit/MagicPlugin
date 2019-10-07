@@ -1,6 +1,6 @@
 sphere:
-    icon: diamond_axe:127
-    icon_disabled: diamond_hoe:127
+    icon: spell_icon:127
+    icon_disabled: spell_icon_disabled:127
     icon_url: http://textures.minecraft.net/texture/c4c932901eaf61a741a8fa8a786fa9e509b13ba518f384c6c731086ffdc829e
     category: engineering
     tags: noduel
