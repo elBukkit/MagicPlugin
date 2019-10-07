@@ -5111,11 +5111,13 @@ public class MagicController implements MageController {
     }
 
     @Override
+    @Nullable
     public ItemData getItem(String key) {
         return items.get(key);
     }
 
     @Override
+    @Nullable
     public ItemData getItem(ItemStack match) {
         return items.get(match);
     }

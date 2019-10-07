@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,8 +30,23 @@ public class ItemController {
             if (itemConfig != null) {
                 loadItem(itemKey, itemConfig);
             } else {
-                controller.getLogger().warning("Improperly formatted item: " + itemKey);
+                String itemString = configuration.getString(itemKey);
+                if (!itemString.isEmpty()) {
+                    loadItem(itemKey, itemString);
+                } else {
+                    controller.getLogger().warning("Improperly formatted item: " + itemKey);
+                }
             }
+        }
+    }
+
+    public void loadItem(String itemKey, String material) {
+        try {
+            ItemData magicItem = new ItemData(itemKey, material);
+            items.put(itemKey, magicItem);
+            itemsByStack.put(magicItem.getItemStack(1), magicItem);
+        } catch (Throwable ex) {
+            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
     }
 
@@ -50,14 +68,33 @@ public class ItemController {
         return items.keySet();
     }
 
+    @Nullable
     public ItemData get(String key) {
-        return items.get(key);
+        ItemData item = items.get(key);
+        if (item == null) {
+            String[] pieces = StringUtils.split(key, ':');
+            if (pieces.length > 1) {
+                item = items.get(pieces[0]);
+                if (item != null) {
+                    try {
+                        short damage = Short.parseShort(pieces[1]);
+                        item = item.createVariant(key, damage);
+                    } catch (Exception ex) {
+                        return null;
+                    }
+                }
+                items.put(key, item);
+            }
+        }
+        return item;
     }
 
+    @Nullable
     public ItemData get(ItemStack item) {
         return itemsByStack.get(item);
     }
 
+    @Nullable
     public ItemData getOrCreate(String key) {
         ItemData data = get(key);
         if (data == null) {

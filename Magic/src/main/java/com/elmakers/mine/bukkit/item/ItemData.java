@@ -46,6 +46,17 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         key = materialKey;
     }
 
+    public ItemData(String key, String materialKey) throws Exception {
+        this.key = key;
+        MaterialAndData material = new MaterialAndData(materialKey);
+        if (material.isValid()) {
+            item = material.getItemStack(1);
+        }
+        if (item == null) {
+            throw new Exception("Invalid item key: " + materialKey);
+        }
+    }
+
     public ItemData(String key, ConfigurationSection configuration) throws Exception {
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");
@@ -104,6 +115,13 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         this.key = key;
         this.item = item;
         this.worth = worth;
+    }
+
+    public ItemData createVariant(String key, short damage) throws Exception {
+        ItemData copy = new ItemData(key, this.item.clone(), worth);
+        copy.categories = categories;
+        copy.item.setDurability(damage);
+        return copy;
     }
 
     @Override
