@@ -4301,7 +4301,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
-        spellIndex = (spellIndex + direction) % spells.size();
+        spellIndex = (spellIndex + direction + spells.size()) % spells.size();
         setActiveSpell(spells.get(spellIndex));
     }
 
