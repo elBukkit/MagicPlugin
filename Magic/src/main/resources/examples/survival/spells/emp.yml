@@ -42,7 +42,7 @@ emp:
         radius: 8
         cooldown: 5000
         check_destructible: true
-        destructible: lever,redstone_block
+        destructible: lever,buttons
         physics: true
         undo: 200
         entity_undo_types: ""
