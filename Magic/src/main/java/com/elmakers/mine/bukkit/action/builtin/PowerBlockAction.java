@@ -9,10 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
-import org.bukkit.material.Button;
-import org.bukkit.material.Lever;
-import org.bukkit.material.PistonBaseMaterial;
-import org.bukkit.material.PoweredRail;
 import org.bukkit.material.RedstoneWire;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -23,6 +19,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class PowerBlockAction extends BaseSpellAction {
@@ -50,32 +47,15 @@ public class PowerBlockAction extends BaseSpellAction {
         BlockState blockState = block.getState();
         org.bukkit.material.MaterialData data = blockState.getData();
         MageController controller = context.getController();
-        boolean powerBlock = false;
-        if (data instanceof Button) {
-            Button powerData = (Button)data;
+        boolean updateBlockState = false;
+        if (CompatibilityUtils.isPowerable(block)) {
             context.registerForUndo(block);
-            powerData.setPowered(!powerData.isPowered());
-            powerBlock = true;
-        } else if (data instanceof Lever) {
-            Lever powerData = (Lever)data;
-            context.registerForUndo(block);
-            powerData.setPowered(!powerData.isPowered());
-            powerBlock = true;
-        } else if (data instanceof PistonBaseMaterial) {
-            PistonBaseMaterial powerData = (PistonBaseMaterial)data;
-            context.registerForUndo(block);
-            powerData.setPowered(!powerData.isPowered());
-            powerBlock = true;
-        } else if (data instanceof PoweredRail) {
-            PoweredRail powerData = (PoweredRail)data;
-            context.registerForUndo(block);
-            powerData.setPowered(!powerData.isPowered());
-            powerBlock = true;
+            CompatibilityUtils.setPowered(block, !CompatibilityUtils.isPowered(block));
         } else if (data instanceof RedstoneWire) {
             RedstoneWire wireData = (RedstoneWire)data;
             context.registerForUndo(block);
             wireData.setData((byte)(15 - wireData.getData()));
-            powerBlock = true;
+            updateBlockState = true;
         } else if (material == Material.REDSTONE_BLOCK) {
             context.registerForUndo(block);
             block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
@@ -115,7 +95,7 @@ public class PowerBlockAction extends BaseSpellAction {
                 DeprecatedUtils.setTypeAndData(block, modifyWith.getMaterial(), dataValue, true);
             }
         }
-        if (powerBlock) {
+        if (updateBlockState) {
             blockState.update();
         }
         return SpellResult.CAST;

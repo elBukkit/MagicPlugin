@@ -9,6 +9,7 @@
  - Fix cycle_reverse wand action causing errors
  - Cycle mode wands show spell lore by default (use show_cycle_lore: false in wand properties to turn this off)
  - Wand overrides now apply to consume_spell casts
+ - Fix PowerBlock action (EMP/Aparecium) in 1.13+
 
 # 7.7.5
 
