@@ -214,3 +214,10 @@ attributewand:
   mana: 0
   mana_max: intelligence*10
   mana_regeneration: wisdom*2
+
+cyclewand:
+  inherit: wand
+  name: Cycle Wand
+  mode: cycle
+  right_click: cycle
+  drop: cycle_reverse
