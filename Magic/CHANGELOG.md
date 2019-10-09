@@ -11,6 +11,7 @@
  - Wand overrides now apply to consume_spell casts
  - Fix PowerBlock action (EMP/Aparecium) in 1.13+
  - EMP now works on buttons, but not on redstone blocks
+ - Fix FlowerAction/Pollinate not properly creating double-high plants
 
 # 7.7.5
 

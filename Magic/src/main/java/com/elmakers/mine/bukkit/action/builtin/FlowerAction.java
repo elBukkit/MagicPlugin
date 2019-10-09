@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class FlowerAction extends BaseSpellAction {
     private final ArrayList<MaterialAndData> flowers = new ArrayList<>();
@@ -29,6 +30,7 @@ public class FlowerAction extends BaseSpellAction {
         tallFlowers.clear();
         Collection<String> flowerKeys = parameters.getStringList("flowers");
         for (String flowerKey : flowerKeys) {
+            flowerKey = CompatibilityUtils.migrateMaterial(flowerKey);
             MaterialAndData flower = new MaterialAndData(flowerKey);
             if (flower.isValid()) {
                 flowers.add(flower);
@@ -36,9 +38,10 @@ public class FlowerAction extends BaseSpellAction {
         }
         Collection<String> tallFlowerKeys = parameters.getStringList("tall_flowers");
         for (String flowerKey : tallFlowerKeys) {
+            flowerKey = CompatibilityUtils.migrateMaterial(flowerKey);
             MaterialAndData flower = new MaterialAndData(flowerKey);
             if (flower.isValid()) {
-                flowers.add(flower);
+                tallFlowers.add(flower);
             }
         }
     }
@@ -90,8 +93,8 @@ public class FlowerAction extends BaseSpellAction {
         if (tall) {
             block = block.getRelative(BlockFace.UP);
             context.registerForUndo(block);
-            material = new MaterialAndData(material.getMaterial(), (short)(material.getData() | 8));
             material.modify(block);
+            CompatibilityUtils.setTopHalf(block);
         }
         return SpellResult.CAST;
     }
