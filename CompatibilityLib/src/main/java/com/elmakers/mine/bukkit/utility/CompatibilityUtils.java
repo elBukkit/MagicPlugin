@@ -1933,4 +1933,26 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return powerBlock;
     }
+
+    public static boolean setTopHalf(Block block) {
+        if (class_Bisected == null) {
+            return setTopHalfLegacy(block);
+        }
+        try {
+            Object blockData = class_Block_getBlockDataMethod.invoke(block);
+            if (blockData == null || !class_Bisected.isAssignableFrom(blockData.getClass())) return false;
+            class_Bisected_setHalfMethod.invoke(blockData, enum_BisectedHalf_TOP);
+            class_Block_setBlockDataMethod.invoke(block, blockData);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    protected static boolean setTopHalfLegacy(Block block) {
+        byte data = DeprecatedUtils.getData(block);
+        DeprecatedUtils.setTypeAndData(block, block.getType(), (byte)(data | 8), false);
+        return true;
+    }
 }

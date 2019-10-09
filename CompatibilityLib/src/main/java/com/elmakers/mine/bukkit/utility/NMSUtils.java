@@ -162,6 +162,9 @@ public class NMSUtils {
     protected static Class<?> class_KnowledgeBookMeta;
     protected static Class<?> class_entityTypes;
     protected static Class<?> class_Powerable;
+    protected static Class<?> class_Bisected;
+    protected static Class<Enum> class_BisectedHalf;
+    protected static Enum<?> enum_BisectedHalf_TOP;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -261,6 +264,8 @@ public class NMSUtils {
     protected static Method class_Bukkit_getMapMethod;
     protected static Method class_Powerable_setPoweredMethod;
     protected static Method class_Powerable_isPoweredMethod;
+    protected static Method class_Bisected_setHalfMethod;
+
     protected static boolean legacyMaps;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
@@ -621,6 +626,14 @@ public class NMSUtils {
                 class_Powerable_isPoweredMethod = class_Powerable.getMethod("isPowered");
             } catch (Exception ignore) {
                 class_Powerable = null;
+            }
+            try {
+                class_Bisected = Class.forName("org.bukkit.block.data.Bisected");
+                class_BisectedHalf = (Class<Enum>)Class.forName("org.bukkit.block.data.Bisected$Half");
+                enum_BisectedHalf_TOP =  Enum.valueOf(class_BisectedHalf, "TOP");
+                class_Bisected_setHalfMethod = class_Bisected.getMethod("setHalf", class_BisectedHalf);
+            } catch (Exception ignore) {
+                class_Bisected = null;
             }
 
             // 1.14 Support
