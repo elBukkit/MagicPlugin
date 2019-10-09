@@ -237,6 +237,26 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         tickMana();
     }
 
+    public boolean setSpelLLevel(String spellKey, int level) {
+        BaseMagicConfigurable storage = getStorage("spell_levels");
+        if (storage != this && storage != null && storage instanceof com.elmakers.mine.bukkit.api.magic.CasterProperties) {
+            return ((com.elmakers.mine.bukkit.api.magic.CasterProperties)storage).setSpelLLevel(spellKey, level);
+        }
+        if (!hasSpell(spellKey)) {
+            return false;
+        }
+        Map<String, Integer> spellLevels = getSpellLevels();
+        Integer existingLevel = spellLevels.get(spellKey);
+        boolean modified = false;
+        if (existingLevel == null || level != existingLevel) {
+            modified = true;
+            spellLevels.put(spellKey, level);
+            setProperty("spell_levels", spellLevels);
+        }
+
+        return modified;
+    }
+
     @Override
     public boolean addSpell(String spellKey) {
         BaseMagicConfigurable storage = getStorage("spells");

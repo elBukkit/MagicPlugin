@@ -13,6 +13,7 @@ public interface CasterProperties extends MagicConfigurable {
     boolean hasSpell(String spellKey);
     Collection<String> getSpells();
     boolean addSpell(String spellKey);
+    boolean setSpelLLevel(String spellKey, int level);
     Mage getMage();
     void removeMana(float mana);
     float getMana();
