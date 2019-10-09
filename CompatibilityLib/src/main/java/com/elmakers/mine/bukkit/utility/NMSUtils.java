@@ -161,6 +161,7 @@ public class NMSUtils {
     protected static Class<Enum> class_ParrotVariant;
     protected static Class<?> class_KnowledgeBookMeta;
     protected static Class<?> class_entityTypes;
+    protected static Class<?> class_Powerable;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -258,6 +259,8 @@ public class NMSUtils {
     protected static Method class_KnowledgeBookMeta_addRecipeMethod;
     protected static Method class_World_getTileEntityMethod;
     protected static Method class_Bukkit_getMapMethod;
+    protected static Method class_Powerable_setPoweredMethod;
+    protected static Method class_Powerable_isPoweredMethod;
     protected static boolean legacyMaps;
 
     protected static Constructor class_CraftInventoryCustom_constructor;
@@ -611,6 +614,13 @@ public class NMSUtils {
                     Bukkit.getLogger().warning("Could not bind to getMap method, magic maps will not work");
                     class_Bukkit_getMapMethod = null;
                 }
+            }
+            try {
+                class_Powerable = Class.forName("org.bukkit.block.data.Powerable");
+                class_Powerable_setPoweredMethod = class_Powerable.getMethod("setPowered", Boolean.TYPE);
+                class_Powerable_isPoweredMethod = class_Powerable.getMethod("isPowered");
+            } catch (Exception ignore) {
+                class_Powerable = null;
             }
 
             // 1.14 Support

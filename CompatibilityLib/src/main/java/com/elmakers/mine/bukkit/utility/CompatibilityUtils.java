@@ -16,6 +16,7 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,6 +48,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.material.Button;
+import org.bukkit.material.Lever;
+import org.bukkit.material.PistonBaseMaterial;
+import org.bukkit.material.PoweredRail;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
@@ -1826,5 +1831,106 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return true;
+    }
+
+    public static boolean isPowerable(Block block) {
+        if (class_Powerable == null || class_Powerable_setPoweredMethod == null || class_Block_getBlockDataMethod == null) {
+            return isPowerableLegacy(block);
+        }
+        try {
+            Object blockData = class_Block_getBlockDataMethod.invoke(block);
+            return blockData != null && class_Powerable.isAssignableFrom(blockData.getClass());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    protected static boolean isPowerableLegacy(Block block) {
+        BlockState blockState = block.getState();
+        org.bukkit.material.MaterialData data = blockState.getData();
+        return data instanceof Button ||
+                data instanceof Lever ||
+                data instanceof PistonBaseMaterial ||
+                data instanceof PoweredRail;
+    }
+
+    public static boolean isPowered(Block block) {
+        if (class_Powerable == null || class_Powerable_setPoweredMethod == null || class_Block_getBlockDataMethod == null) {
+            return isPoweredLegacy(block);
+        }
+        try {
+            Object blockData = class_Block_getBlockDataMethod.invoke(block);
+            if (blockData == null) return false;
+            if (!class_Powerable.isAssignableFrom(blockData.getClass())) return false;
+            return (boolean)class_Powerable_isPoweredMethod.invoke(blockData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    protected static boolean isPoweredLegacy(Block block) {
+        BlockState blockState = block.getState();
+        org.bukkit.material.MaterialData data = blockState.getData();
+        if (data instanceof Button) {
+            Button powerData = (Button)data;
+            return powerData.isPowered();
+        } else if (data instanceof Lever) {
+            Lever powerData = (Lever)data;
+            return powerData.isPowered();
+        } else if (data instanceof PistonBaseMaterial) {
+            PistonBaseMaterial powerData = (PistonBaseMaterial)data;
+            return powerData.isPowered();
+        } else if (data instanceof PoweredRail) {
+            PoweredRail powerData = (PoweredRail)data;
+            return powerData.isPowered();
+        }
+        return false;
+    }
+
+    public static boolean setPowered(Block block, boolean powered) {
+        if (class_Powerable == null || class_Powerable_setPoweredMethod == null || class_Block_getBlockDataMethod == null) {
+            return setPoweredLegacy(block, powered);
+        }
+
+        try {
+            Object blockData = class_Block_getBlockDataMethod.invoke(block);
+            if (blockData == null) return false;
+            if (!class_Powerable.isAssignableFrom(blockData.getClass())) return false;
+            class_Powerable_setPoweredMethod.invoke(blockData, powered);
+            class_Block_setBlockDataMethod.invoke(block, blockData);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    protected static boolean setPoweredLegacy(Block block, boolean powered) {
+        BlockState blockState = block.getState();
+        org.bukkit.material.MaterialData data = blockState.getData();
+        boolean powerBlock = false;
+        if (data instanceof Button) {
+            Button powerData = (Button)data;
+            powerData.setPowered(!powerData.isPowered());
+            powerBlock = true;
+        } else if (data instanceof Lever) {
+            Lever powerData = (Lever)data;
+            powerData.setPowered(!powerData.isPowered());
+            powerBlock = true;
+        } else if (data instanceof PistonBaseMaterial) {
+            PistonBaseMaterial powerData = (PistonBaseMaterial)data;
+            powerData.setPowered(!powerData.isPowered());
+            powerBlock = true;
+        } else if (data instanceof PoweredRail) {
+            PoweredRail powerData = (PoweredRail)data;
+            powerData.setPowered(!powerData.isPowered());
+            powerBlock = true;
+        }
+        if (powerBlock) {
+            blockState.update();
+        }
+        return powerBlock;
     }
 }
