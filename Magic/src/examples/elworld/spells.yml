@@ -3508,3 +3508,32 @@ scooter:
        strafe_controllable: 1
        max_acceleration: 0.02
        max_deceleration: 0.05
+
+finisher:
+  name: Finisher
+  description: Finish off a poisoned foe
+  actions:
+    cast:
+      - class: CheckPotionEffects
+        required: poison
+      - class: Damage
+  parameters:
+    damage: 20
+    range: 30
+
+sunbeam:
+  name: Sunbeam
+  description: Harness the power of the sum
+  actions:
+    cast:
+      - class: CheckRequirements
+        requirements:
+        - light:
+            min: 5
+      - class: AreaOfEffect
+        actions:
+        - class: Damage
+  parameters:
+    target: self
+    damage: 10
+    radius: 32
