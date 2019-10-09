@@ -1595,7 +1595,7 @@ public class CompatibilityUtils extends NMSUtils {
             return material.name().toLowerCase();
         }
 
-        Material legacyMaterial = getLegacyMaterial(materialName);
+        Material legacyMaterial = data == 0 ? getLegacyMaterial(materialName) : Material.getMaterial("LEGACY_" + materialName);
         if (legacyMaterial != null) {
             org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
             legacyMaterial = fromLegacy(materialData);
