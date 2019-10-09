@@ -152,6 +152,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean isInOffhand = false;
     private boolean hasId = false;
     private boolean suspendUpdate = false;
+    private boolean showCycleModeLore = true;
     private int inventoryRows = 1;
     private Vector castLocation;
 
@@ -1687,6 +1688,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         maxEnchantCount = getInt("max_enchant_count");
         inventoryRows = getInt("inventory_rows", 5);
         resetManaOnActivate = getBoolean("reset_mana_on_activate", false);
+        showCycleModeLore = getBoolean("show_cycle_lore", true);
         if (inventoryRows <= 0) inventoryRows = 1;
 
         if (hasProperty("effect_particle")) {
@@ -2597,6 +2599,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // can't open the inventory in this state, you can not
         // otherwise see the spell lore.
         boolean isSingleSpell = spell != null && spellCount == 1 && !hasInventory && !isUpgrade;
+        if (showCycleModeLore && getMode() == WandMode.CYCLE) {
+            isSingleSpell = true;
+        }
         if (isSingleSpell)
         {
             addSpellLore(messages, spell, lore, getActiveMage(), this);
@@ -4303,6 +4308,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         spellIndex = (spellIndex + direction + spells.size()) % spells.size();
         setActiveSpell(spells.get(spellIndex));
+        if (showCycleModeLore) {
+            updateLore();
+        }
     }
 
     public void cycleMaterials(int direction) {
