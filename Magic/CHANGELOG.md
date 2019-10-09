@@ -8,6 +8,7 @@
  - Make it easier to change the items used for spell and wand icons (see items/wands.yml)
  - Fix cycle_reverse wand action causing errors
  - Cycle mode wands show spell lore by default (use show_cycle_lore: false in wand properties to turn this off)
+ - Wand overrides now apply to consume_spell casts
 
 # 7.7.5
 

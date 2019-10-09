@@ -795,7 +795,12 @@ public class PlayerController implements Listener {
             Mage mage = controller.getMage(event.getPlayer());
             Spell spell = mage.getSpell(consumeSpell);
             if (spell != null) {
-                spell.cast();
+                if (Wand.isWand(item)) {
+                    Wand wand = Wand.createWand(controller, item);
+                    wand.cast(spell);
+                } else {
+                    spell.cast();
+                }
             }
         }
     }
