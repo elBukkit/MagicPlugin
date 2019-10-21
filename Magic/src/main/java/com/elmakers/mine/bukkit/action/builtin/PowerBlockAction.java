@@ -58,7 +58,7 @@ public class PowerBlockAction extends BaseSpellAction {
             updateBlockState = true;
         } else if (material == Material.REDSTONE_BLOCK) {
             context.registerForUndo(block);
-            block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
+            block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material);
             controller.getRedstoneReplacement().modify(block, applyPhysics);
         } else if (material == Material.TNT) {
             context.registerForUndo(block);
