@@ -34,3 +34,13 @@
 #   missile:
 #     name: Zap
 #     description: Zap somebody!
+
+spells:
+  find:
+    name: Find
+    description: Teleport to other players
+
+wands:
+    finder:
+      name: Finder
+      description: Teleport to other players

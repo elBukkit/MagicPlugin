@@ -109,3 +109,10 @@ recall:
 override:  
   pvp_restricted: false
 
+find:
+  icon: compass
+  actions:
+    cast:
+      - class: PlayerSelect
+        actions:
+        - class: Teleport

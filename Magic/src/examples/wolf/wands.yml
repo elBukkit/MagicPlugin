@@ -116,4 +116,11 @@ divinghelmet:
     spells:
         - wear
 
+finder:
+    mode: cast
+    active_spell: find
+    icon: compass
+    keep: true
+    undroppable: true
+    unstashable: true
 
