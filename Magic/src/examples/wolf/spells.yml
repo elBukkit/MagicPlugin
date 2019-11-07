@@ -116,3 +116,5 @@ find:
       - class: PlayerSelect
         actions:
         - class: Teleport
+  parameters:
+    safe: false
