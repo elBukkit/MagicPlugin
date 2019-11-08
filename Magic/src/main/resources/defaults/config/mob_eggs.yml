@@ -2,9 +2,11 @@
 mob_eggs:
   bat: monster_egg,bat_spawn_egg
   blaze: monster_egg,blaze_spawn_egg
+  cat: cat_spawn_egg
   cave_spider: monster_egg,cave_spider_spawn_egg
   chicken: monster_egg,chicken_spawn_egg
   cod_mob: monster_egg,cod_mob_spawn_egg
+  cod: cod_spawn_egg
   cow: monster_egg,cow_spawn_egg
   creeper: monster_egg,creeper_spawn_egg
   dolphin: monster_egg,dolphin_spawn_egg
@@ -14,6 +16,7 @@ mob_eggs:
   enderman: monster_egg,enderman_spawn_egg
   endermite: monster_egg,endermite_spawn_egg
   evoker: monster_egg,evocation_illager_spawn_egg
+  fox: fox_spawn_egg
   ghast: monster_egg,ghast_spawn_egg
   guardian: monster_egg,guardian_spawn_egg
   horse: monster_egg,horse_spawn_egg
@@ -24,12 +27,16 @@ mob_eggs:
   mooshroom: monster_egg,mooshroom_spawn_egg
   mule: monster_egg,mule_spawn_egg
   ocelot: monster_egg,ocelot_spawn_egg
+  panda: panda_spawn_egg
   parrot: monster_egg,parrot_spawn_egg
   phantom: monster_egg,phantom_spawn_egg
+  pillager: pillager_spawn_egg
   pig: monster_egg,pig_spawn_egg
   polar_bear: monster_egg,polar_bear_spawn_egg
   puffer_fish: monster_egg,puffer_fish_spawn_egg
+  pufferfish: pufferfish_spawn_egg
   rabbit: monster_egg,rabbit_spawn_egg
+  ravager: ravager_spawn_egg
   salmon: monster_egg,salmon_mob_spawn_egg
   sheep: monster_egg,sheep_spawn_egg
   shulker: monster_egg,shulker_spawn_egg
@@ -40,11 +47,13 @@ mob_eggs:
   spider: monster_egg,spider_spawn_egg
   squid: monster_egg,squid_spawn_egg
   stray: monster_egg,stray_spawn_egg
+  trader_llama: trader_llama_spawn_egg
   tropical_fish: monster_egg,tropical_fish_spawn_egg
   turtle: monster_egg,turtle_spawn_egg
   vex: monster_egg,vex_spawn_egg
   villager: monster_egg,villager_spawn_egg
   vindicator: monster_egg,vindication_illager_spawn_egg
+  wandering_trader: wandering_trader_spawn_egg
   witch: monster_egg,witch_spawn_egg
   wither_skeleton: monster_egg,wither_skeleton_spawn_egg
   wolf: monster_egg,wolf_spawn_egg

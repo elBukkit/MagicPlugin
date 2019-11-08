@@ -12,6 +12,7 @@
  - Fix PowerBlock action (EMP/Aparecium) in 1.13+
  - EMP now works on buttons, but not on redstone blocks
  - Fix FlowerAction/Pollinate not properly creating double-high plants
+ - Fix Capture not working on newer mobs
 
 # 7.7.5
 
