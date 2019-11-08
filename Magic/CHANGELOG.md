@@ -2,7 +2,7 @@
 
 # 7.7.7
 
-
+ - Add worth_type and earns_type spell options, to make it easier to switch the economy
 
 # 7.7.6
  

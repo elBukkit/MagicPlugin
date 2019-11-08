@@ -949,13 +949,15 @@ public class BaseSpell implements MageSpell, Cloneable {
             double worth = node.getDouble("worth_sp", 0) * controller.getWorthSkillPoints();
             cost = new Cost(controller, "sp", worth);
         } else {
-            cost = Cost.parseCost(controller, node.getString("worth"), "sp");
+            String costType = node.getString("worth_type", "sp");
+            cost = Cost.parseCost(controller, node.getString("worth"), costType);
         }
         int spEarns = node.getInt("earns_sp", 0);
         if (spEarns > 0) {
             earns = new Cost(controller, "sp", spEarns);
         } else {
-            earns = Cost.parseCost(controller, node.getString("earns"), "sp");
+            String earnsType = node.getString("earns_type", "sp");
+            earns = Cost.parseCost(controller, node.getString("earns"), earnsType);
         }
         earnCooldown = node.getInt("earns_cooldown", 0);
         category = controller.getCategory(node.getString("category"));
