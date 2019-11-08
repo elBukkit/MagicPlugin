@@ -1201,8 +1201,19 @@ public class NMSUtils {
             }
 
             try {
-                // 1.9 and up
-                class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
+                // 1.13 and up
+                try {
+                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("x");
+                    if (!class_EntityDamageSource_setThornsMethod.getReturnType().isAssignableFrom(class_EntityDamageSource)) {
+                        throw new Exception ("Wrong return type");
+                    }
+                } catch (Throwable not13) {
+                    // 1.9 and up
+                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
+                    if (!class_EntityDamageSource_setThornsMethod.getReturnType().isAssignableFrom(class_EntityDamageSource)) {
+                        throw new Exception ("Wrong return type");
+                    }
+                }
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, thorn damage override to hurt ender dragon will not work", ex);
                 class_EntityDamageSource_setThornsMethod = null;

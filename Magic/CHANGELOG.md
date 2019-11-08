@@ -13,6 +13,7 @@
  - EMP now works on buttons, but not on redstone blocks
  - Fix FlowerAction/Pollinate not properly creating double-high plants
  - Fix Capture not working on newer mobs
+ - Fix spells not damaging the ender dragon in 1.13+
 
 # 7.7.5
 
