@@ -118,3 +118,99 @@ find:
         - class: Teleport
   parameters:
     safe: false
+
+dragonize:
+  icon: spell_icon:152
+  icon_disabled: spell_icon_disabled:152
+  icon_url: http://textures.minecraft.net/texture/c52264ac4e5621668c43e87aed7918ed6b883abc5018769c9536d27b77f
+  actions:
+    cast:
+    - class: Disguise
+    - class: Velocity
+      direction: 0,1,0
+      additive: true
+      speed: 2
+    - class: Delay
+      delay: 100
+    - class: Fly
+    - class: FallProtection
+      duration: 10000
+  effects:
+      cast:
+      -  class: EffectSingle
+         sound: magic.zap_big
+      -  class: EffectSingle
+         sound: magic.zap
+      tick:
+      - location: target
+        particle: fireworks_spark
+        particle_count: 3
+        particle_offset_x: 0.01
+        particle_offset_y: 0.01
+        particle_offset_z: 0.01
+      hit:
+      - class: EffectSingle
+        location: target
+        color: F5EFFB
+        firework: ball
+      - class: EffectSingle
+        sound: entity_experience_orb_pickup
+        location: target
+        requires_entity_target: true
+        particle_override: particle_orbital
+        effectlib:
+           class: AtomEffect
+           particle_nucleus: fireworks_spark
+           particle_orbital: fireworks_spark
+           iterations: 40
+  parameters:
+      target: self
+      disguise:
+        type: ender_dragon
+      cooldown: 10000
+      speed: 2
+
+dragonbreath:
+    icon: spell_icon:152
+    icon_disabled: spell_icon_disabled:152
+    icon_url: http://textures.minecraft.net/texture/c52264ac4e5621668c43e87aed7918ed6b883abc5018769c9536d27b77f
+    category: combat
+    pvp_restricted: true
+    worth: 800
+    earns_sp: 12
+    actions:
+        cast:
+        -  class: Projectile
+    effects:
+        cast:
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: dragon_breath
+             lengthGrow: 0.1
+           sound: entity_ender_dragon_shoot
+           sound_volume: 1
+           sound_pitch: 0.25
+        -  class: EffectSingle
+           sound: entity_ender_dragon_growl
+           sound_volume: 0.9
+           sound_pitch: 0.5
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 4
+             period: 5
+             particle: dragon_breath
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FF00FF
+           firework: ball
+    parameters:
+        projectile: DragonFireball
+        cooldown: 2000
+        start: 1
+        break_blocks: false
