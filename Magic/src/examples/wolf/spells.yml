@@ -123,6 +123,7 @@ dragonize:
   icon: spell_icon:152
   icon_disabled: spell_icon_disabled:152
   icon_url: http://textures.minecraft.net/texture/c52264ac4e5621668c43e87aed7918ed6b883abc5018769c9536d27b77f
+  quick_cast: true
   actions:
     cast:
     - class: Disguise
@@ -133,8 +134,8 @@ dragonize:
     - class: Delay
       delay: 100
     - class: Fly
-    - class: FallProtection
-      duration: 10000
+    - class: SuperProtection
+      duration: 360000
   effects:
       cast:
       -  class: EffectSingle
@@ -171,9 +172,9 @@ dragonize:
       speed: 2
 
 dragonbreath:
-    icon: spell_icon:152
-    icon_disabled: spell_icon_disabled:152
-    icon_url: http://textures.minecraft.net/texture/c52264ac4e5621668c43e87aed7918ed6b883abc5018769c9536d27b77f
+    icon: spell_icon:153
+    icon_disabled: spell_icon_disabled:153
+    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
     category: combat
     pvp_restricted: true
     worth: 800
@@ -214,3 +215,44 @@ dragonbreath:
         cooldown: 2000
         start: 1
         break_blocks: false
+
+creeperize:
+  icon: creeper_skull
+  icon_disabled: creeper_head
+  quick_cast: true
+  actions:
+    cast:
+      - class: Disguise
+  effects:
+    cast:
+      - class: EffectSingle
+        sound: magic.zap_big
+      - class: EffectSingle
+        sound: magic.zap
+    tick:
+      - location: target
+        particle: fireworks_spark
+        particle_count: 3
+        particle_offset_x: 0.01
+        particle_offset_y: 0.01
+        particle_offset_z: 0.01
+    hit:
+      - class: EffectSingle
+        location: target
+        color: F5EFFB
+        firework: ball
+      - class: EffectSingle
+        sound: entity_experience_orb_pickup
+        location: target
+        requires_entity_target: true
+        particle_override: particle_orbital
+        effectlib:
+          class: AtomEffect
+          particle_nucleus: fireworks_spark
+          particle_orbital: fireworks_spark
+          iterations: 40
+  parameters:
+    target: self
+    disguise:
+      type: creeper
+    cooldown: 10000
