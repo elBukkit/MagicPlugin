@@ -3,6 +3,7 @@
 # 7.7.7
 
  - Add worth_type and earns_type spell options, to make it easier to switch the economy
+ - Fix parsing wand overrides with spaces in them
 
 # 7.7.6
  

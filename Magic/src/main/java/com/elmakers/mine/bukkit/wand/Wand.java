@@ -2054,7 +2054,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private void parseOverride(String override) {
         // Unescape commas
         override = override.replace("\\|", ",");
-        String[] keyValue = StringUtils.split(override, ' ');
+        String[] keyValue = StringUtils.split(override, " ", 2);
         if (keyValue.length > 0) {
             String value = keyValue.length > 1 ? keyValue[1] : "";
             castOverrides.put(keyValue[0], value);
