@@ -70,6 +70,7 @@ public class CommandAction extends BaseSpellAction {
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        parseCommands(parameters);
         asConsole = parameters.getBoolean("console", false);
         opPlayer = parameters.getBoolean("op", false);
         localEcho = parameters.getBoolean("local_echo", true);
@@ -85,9 +86,7 @@ public class CommandAction extends BaseSpellAction {
         }
     }
 
-    @Override
-    public void initialize(Spell spell, ConfigurationSection parameters) {
-        super.initialize(spell, parameters);
+    private void parseCommands(ConfigurationSection parameters) {
         commands.clear();
 
         if (parameters.contains("command"))

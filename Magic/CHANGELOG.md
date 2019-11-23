@@ -4,6 +4,7 @@
 
  - Add worth_type and earns_type spell options, to make it easier to switch the economy
  - Fix parsing wand overrides with spaces in them
+ - Allow commands in Command actions to be overridden by wand or /cast parameters
 
 # 7.7.6
  
