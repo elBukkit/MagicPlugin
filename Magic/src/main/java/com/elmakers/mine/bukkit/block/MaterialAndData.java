@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.io.StringReader;
+import java.util.Map;
+
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,6 +38,8 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.google.common.base.Objects;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 /**
  * A utility class for presenting a Material in its entirety, including Material variants.
@@ -42,7 +47,7 @@ import com.google.common.base.Objects;
  * <p>This will probably need an overhaul for 1.8, but I'm hoping that using this class everywhere as an intermediate for
  * the concept of "material type" will allow for a relatively easy transition. We'll see.
  *
- * <p>In the meantime, this class primary uses String-based "keys" to identify a material. This is not
+ * <p>In the meantime, this class primarily uses String-based "keys" to identify a material. This is not
  * necessarily meant to be a friendly or printable name, though the class is capable of generating a semi-friendly
  * name, which will be the key lowercased and with underscores replaced with spaces. It will also attempt to create
  * a nice name for the variant, such as "blue wool". There is no DB for this, it is all based on the internal Bukkit
@@ -52,7 +57,8 @@ import com.google.common.base.Objects;
  * wool
  * diamond_block
  * monster_egg
- * wool:15 (for black wool)
+ * wooden_hoe:15 (for a damaged tool)
+ * wooden_hoe{CustomModelData:32}
  *
  * <p>This class may also handle special "brushes", and is extended in the MagicPlugin as MaterialBrush. In this case
  * there may be other non-material keys such as clone, copy, schematic:lantern, map, etc.
@@ -70,8 +76,11 @@ import com.google.common.base.Objects;
  * be saved.
  */
 public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialAndData {
+    protected static Gson gson;
+
     protected Material material;
     protected Short data;
+    protected Map<String, Object> tags;
     protected BlockExtraData extraData;
     protected String blockData;
     protected boolean isValid = true;
@@ -140,10 +149,32 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         update(materialKey);
     }
 
+    private static Gson getGson() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        return gson;
+    }
+
     public void update(String materialKey) {
         if (materialKey == null || materialKey.length() == 0) {
             isValid = false;
             return;
+        }
+
+        int jsonStart = materialKey.indexOf('{');
+        if (jsonStart > 0) {
+            String fullKey = materialKey;
+            materialKey = fullKey.substring(0, jsonStart);
+            String json = fullKey.substring(jsonStart);
+            try {
+                JsonReader reader = new JsonReader(new StringReader(json));
+                reader.setLenient(true);
+                tags = getGson().fromJson(reader, Map.class);
+                InventoryUtils.convertIntegers(tags);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().warning("[Magic] Error parsing item json: " + json + " : " + ex.getMessage());
+            }
         }
         String[] pieces = splitMaterialKey(materialKey);
         Short data = 0;
@@ -619,6 +650,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (blockData != null) {
             materialKey += "?" + blockData;
         }
+        if (tags != null) {
+            materialKey += getGson().toJson(tags);
+        }
 
         return materialKey;
     }
@@ -721,6 +755,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         stack.setType(material);
         if (data != null) {
             stack.setDurability(data);
+        }
+        if (tags != null) {
+            stack = InventoryUtils.makeReal(stack);
+            InventoryUtils.saveTagsToItem(tags, stack);
         }
         if (DefaultMaterials.isPlayerSkull(this))
         {

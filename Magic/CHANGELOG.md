@@ -5,6 +5,9 @@
  - Add worth_type and earns_type spell options, to make it easier to switch the economy
  - Fix parsing wand overrides with spaces in them
  - Allow commands in Command actions to be overridden by wand or /cast parameters
+ - Add support for using custom model data for RP icons, rather than damage
+   - Icons can be specified like wooden_hoe{CustomModelData:1}
+   - A future version of Magic (v8, probably) will switch to this method rather than using damage
 
 # 7.7.6
  
