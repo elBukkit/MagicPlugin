@@ -42,6 +42,16 @@ public class InventoryUtils extends NMSUtils
         return saveTagsToNBT(tags, tag, null);
     }
 
+    public static boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
+    {
+        Object handle = getHandle(item);
+        if (handle == null) return false;
+        Object tag = getTag(handle);
+        if (tag == null) return false;
+
+        return saveTagsToNBT(tags, tag, null);
+    }
+
     public static boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
         if (skillItem == null) return false;
         Object handle = getHandle(skillItem);
@@ -532,6 +542,25 @@ public class InventoryUtils extends NMSUtils
             setMetaInt(mapItem, "map", id);
         } else {
             mapItem.setDurability((short)id);
+        }
+    }
+
+    public static void convertIntegers(Map<String, Object> m) {
+        for (Map.Entry<String, Object> entry : m.entrySet()) {
+            Object value = entry.getValue();
+            if (value != null && value instanceof Double) {
+                double d = (Double) value;
+                if (d == (int)d) {
+                    entry.setValue((int)d);
+                }
+            } else if (value != null && value instanceof Float) {
+                float f = (Float) value;
+                if (f == (int)f) {
+                    entry.setValue((int)f);
+                }
+            } else if (value != null && value instanceof Map) {
+                convertIntegers((Map<String, Object>)value);
+            }
         }
     }
 }
