@@ -5,6 +5,8 @@
     "layer0": "item/wooden_hoe"
   },
   "overrides": [
+    {"predicate": { "custom_model_data": 1}, "model": "item/custom/old_survival_wand1"},
+
     {"predicate": {"damaged": 0, "damage": 0.01666666666667}, "model": "item/custom/old_survival_wand1"},
     {"predicate": {"damaged": 0, "damage": 0.03333333333333}, "model": "item/custom/old_survival_wand2"},
     {"predicate": {"damaged": 0, "damage": 0.05}, "model": "item/custom/survival_wand1"},
