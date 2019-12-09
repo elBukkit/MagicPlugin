@@ -559,7 +559,9 @@ public class InventoryUtils extends NMSUtils
                     entry.setValue((int)f);
                 }
             } else if (value != null && value instanceof Map) {
-                convertIntegers((Map<String, Object>)value);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> map = (Map<String, Object>)value;
+                convertIntegers(map);
             }
         }
     }
