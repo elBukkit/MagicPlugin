@@ -237,6 +237,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         tickMana();
     }
 
+    @Override
     public boolean setSpelLLevel(String spellKey, int level) {
         BaseMagicConfigurable storage = getStorage("spell_levels");
         if (storage != this && storage != null && storage instanceof com.elmakers.mine.bukkit.api.magic.CasterProperties) {
