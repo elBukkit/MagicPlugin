@@ -287,12 +287,12 @@ public class NMSUtils {
     protected static Constructor class_ItemStack_consructor;
     protected static Constructor class_NBTTagCompound_constructor;
     protected static Constructor class_NBTTagList_constructor;
-    protected static Constructor class_NBTTagString_consructor;
-    protected static Constructor class_NBTTagByte_constructor;
-    protected static Constructor class_NBTTagDouble_constructor;
-    protected static Constructor class_NBTTagInt_constructor;
-    protected static Constructor class_NBTTagFloat_constructor;
-    protected static Constructor class_NBTTagLong_constructor;
+    protected static NBTConstructor class_NBTTagString_consructor;
+    protected static NBTConstructor class_NBTTagByte_constructor;
+    protected static NBTConstructor class_NBTTagDouble_constructor;
+    protected static NBTConstructor class_NBTTagInt_constructor;
+    protected static NBTConstructor class_NBTTagFloat_constructor;
+    protected static NBTConstructor class_NBTTagLong_constructor;
     protected static Constructor class_PacketPlayOutChat_constructor;
     protected static Constructor class_ChatComponentText_constructor;
     protected static Constructor class_NamespacedKey_constructor;
@@ -498,12 +498,12 @@ public class NMSUtils {
 
             class_NBTTagCompound_constructor = class_NBTTagCompound.getConstructor();
             class_NBTTagList_constructor = class_NBTTagList.getConstructor();
-            class_NBTTagString_consructor = class_NBTTagString.getConstructor(String.class);
-            class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
-            class_NBTTagDouble_constructor = class_NBTTagDouble.getConstructor(Double.TYPE);
-            class_NBTTagInt_constructor = class_NBTTagInt.getConstructor(Integer.TYPE);
-            class_NBTTagFloat_constructor = class_NBTTagFloat.getConstructor(Float.TYPE);
-            class_NBTTagLong_constructor = class_NBTTagLong.getConstructor(Long.TYPE);
+            class_NBTTagString_consructor = new NBTConstructor(class_NBTTagString, String.class);
+            class_NBTTagByte_constructor = new NBTConstructor(class_NBTTagByte, Byte.TYPE);
+            class_NBTTagDouble_constructor = new NBTConstructor(class_NBTTagDouble, Double.TYPE);
+            class_NBTTagInt_constructor = new NBTConstructor(class_NBTTagInt, Integer.TYPE);
+            class_NBTTagFloat_constructor = new NBTConstructor(class_NBTTagFloat, Float.TYPE);
+            class_NBTTagLong_constructor = new NBTConstructor(class_NBTTagLong, Long.TYPE);
 
             class_NBTTagList_list = class_NBTTagList.getDeclaredField("list");
             class_NBTTagList_list.setAccessible(true);
