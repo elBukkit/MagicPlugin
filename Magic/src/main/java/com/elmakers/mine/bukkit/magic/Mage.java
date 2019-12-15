@@ -1163,9 +1163,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
 
-            // Link up parents
-            for (MageClass mageClass : classes.values()) {
-                assignParent(mageClass);
+            // Link up parents. This may cause additional classes to be added or created, if the player did not
+            // have that class loaded.
+            // So we need to continue to assign parents until no new classes are added.
+            Set<String> assignedClasses = new HashSet<>();
+            boolean allAssigned = false;
+            while (!allAssigned) {
+                List<MageClass> mageClasses = new ArrayList<>(classes.values());
+                for (MageClass mageClass : mageClasses) {
+                    if (!assignedClasses.contains(mageClass.getKey())) {
+                        assignedClasses.add(mageClass.getKey());
+                        assignParent(mageClass);
+                    }
+                }
+                allAssigned = assignedClasses.containsAll(classes.keySet());
             }
 
             // Load activeClass

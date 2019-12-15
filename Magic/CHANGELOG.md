@@ -9,6 +9,7 @@
  - Add support for using custom model data for RP icons, rather than damage
    - Icons can be specified like wooden_hoe{CustomModelData:1}
    - A future version of Magic (v8, probably) will switch to this method rather than using damage
+ - Potential fix for a mage data loading issue with a complex class hierarchy
 
 # 7.7.6
  
