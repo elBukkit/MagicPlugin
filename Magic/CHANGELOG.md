@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# 7.7.7
+# 7.8
 
  - Update for 1.15 support
  - Add worth_type and earns_type spell options, to make it easier to switch the economy
