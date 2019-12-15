@@ -32,7 +32,7 @@ blink:
              iterations: 16
              offset: 0,-1,0
              particlesNucleus: 8
-             particlesRadius: 5
+             particlesOrbital: 5
         - class: EffectSingle
           location: target
           source_location: body
@@ -43,7 +43,7 @@ blink:
              particle_orbital: fireworks_spark
              iterations: 8
              particlesNucleus: 8
-             particlesRadius: 5
+             particlesOrbital: 5
         precast:
          - class: EffectSingle
            sound: magic.teleport
