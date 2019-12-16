@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.8.1
+
 # 7.8
 
  - Update for 1.15 support
