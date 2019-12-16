@@ -2,6 +2,8 @@
 
 # 7.8.1
 
+ - Add invert_distance parameter to Damage action, to allow spells to do less damage up close.
+
 # 7.8
 
  - Update for 1.15 support

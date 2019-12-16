@@ -30,6 +30,7 @@ public class DamageAction extends BaseSpellAction
     protected double elementalDamage;
     private boolean magicDamage;
     private boolean magicEntityDamage;
+    private boolean invertDistance;
     private Double percentage;
     private Double knockbackResistance;
     private Double damageMultiplier;
@@ -45,6 +46,7 @@ public class DamageAction extends BaseSpellAction
         entityDamage = parameters.getDouble("entity_damage", damage);
         playerDamage = parameters.getDouble("player_damage", damage);
         elementalDamage = parameters.getDouble("elemental_damage", damage);
+        invertDistance = parameters.getBoolean("invert_distance", false);
         if (parameters.contains("damage_multiplier")) {
             damageMultiplier = parameters.getDouble("damage_multiplier");
         } else {
@@ -116,7 +118,11 @@ public class DamageAction extends BaseSpellAction
                         return SpellResult.NO_TARGET;
                     }
                     if (distanceSquared > 0) {
-                        damage = damage * (1 - distanceSquared / maxDistanceSquared);
+                        double distanceScale = Math.min(1, distanceSquared / maxDistanceSquared);
+                        if (!invertDistance) {
+                            distanceScale = 1 - distanceScale;
+                        }
+                        damage = damage * distanceScale;
                     }
                 }
                 if (damageMultiplier != null) {
