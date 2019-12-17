@@ -224,6 +224,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassRegionPermission    = false;
     protected boolean ignoreRegionOverrides     = false;
     protected boolean castOnNoTarget            = true;
+    protected boolean refundOnNoTarget          = false;
     protected boolean bypassDeactivate          = false;
     protected boolean bypassAll                 = false;
     protected boolean quiet                     = false;
@@ -979,6 +980,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         worldBorderRestricted = node.getBoolean("world_border_restricted", false);
         usesBrushSelection = node.getBoolean("brush_selection", false);
         castOnNoTarget = node.getBoolean("cast_on_no_target", true);
+        refundOnNoTarget = node.getBoolean("refund_on_no_target", false);
         hidden = node.getBoolean("hidden", false);
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
@@ -2797,6 +2799,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         // Clear cooldown on miss
         if (result.shouldRefundCooldown(castOnNoTarget)) {
             clearCooldown();
+        }
+
+        // Refund costs if appropriate
+        if (result.shouldRefundCosts(castOnNoTarget, refundOnNoTarget) && costs != null && !mage.isCostFree()) {
+            for (CastingCost cost : costs)
+            {
+                cost.refund(this);
+            }
         }
 
         if (cancelEffects) {

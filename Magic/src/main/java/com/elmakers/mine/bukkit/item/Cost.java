@@ -100,18 +100,22 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         deduct(mage, mage.getActiveWand(), null);
     }
 
-    @Override
-    public boolean give(Mage mage, CasterProperties caster) {
+    public boolean give(Mage mage, CasterProperties caster, CostReducer reducer) {
         boolean result = false;
         if (item != null) {
-            ItemStack itemStack = getItemStack();
+            ItemStack itemStack = getItemStack(reducer);
             mage.giveItem(itemStack);
             result = true;
         }
         if (currency != null) {
-            result = currency.give(mage, caster, getAmount()) || result;
+            result = currency.give(mage, caster, getAmount(reducer)) || result;
         }
         return result;
+    }
+
+    @Override
+    public boolean give(Mage mage, CasterProperties caster) {
+        return give(mage, caster, null);
     }
 
     @Override

@@ -33,6 +33,15 @@ public class CastingCost extends Cost implements com.elmakers.mine.bukkit.api.sp
     }
 
     @Override
+    public void refund(Spell spell)
+    {
+        CastContext context = spell.getCurrentCast();
+        Mage mage = context.getMage();
+        Wand wand = context.getWand();
+        give(mage, wand, spell);
+    }
+
+    @Override
     @Deprecated
     public int getXP() {
         return getXP(null);
