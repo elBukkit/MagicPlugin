@@ -166,6 +166,10 @@ public enum SpellResult {
         return  (!castOnNoTarget && (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION));
     }
 
+    public boolean shouldRefundCosts(boolean castOnNoTarget, boolean refund) {
+        return refund && !isFree(castOnNoTarget) && this != SpellResult.INSUFFICIENT_RESOURCES && (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION);
+    }
+
     /**
      * Determine if this result is an alternate-mode cast.
      *

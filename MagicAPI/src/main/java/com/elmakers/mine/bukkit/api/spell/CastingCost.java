@@ -59,4 +59,11 @@ public interface CastingCost extends Cost {
      * @param spell the spell being cast
      */
     void use(Spell spell);
+
+    /**
+     * Refund this cost, giving it back to the caster of the target spell.
+     *
+     * @param spell the spell refunding the cost
+     */
+    void refund(Spell spell);
 }
