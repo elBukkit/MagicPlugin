@@ -248,7 +248,7 @@ public class RideEntityAction extends BaseSpellAction
         }
 
         // Check for crashing
-        if (crashDistance > 0 && Math.abs(speed) >= crashSpeed)
+        if (crashDistance > 0 && Math.abs(speed) >= crashSpeed && System.currentTimeMillis() > liftoffTime + liftoffDuration)
         {
             Vector threshold = direction.clone().multiply(speed * crashDistance);
             if (checkForCrash(context, mounted.getLocation(), threshold)) {

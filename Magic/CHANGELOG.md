@@ -5,6 +5,7 @@
  - Add invert_distance parameter to Damage action, to allow spells to do less damage up close.
  - Add refund_on_no_target spell property, to refund costs on miss
  - Fix broomsticks in 1.15
+ - Fix broomsticks insta-crashing if you're not looking up when mounting
 
 # 7.8
 
