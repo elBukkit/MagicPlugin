@@ -48,6 +48,7 @@ spells:
         deactivate: Your broom quiets down.
         crash: CRASH!
         fail: Not enough room to take off!
+        creative_fail: You can't use broomsticks in creative mode!
         cursed: You are too stunned to fly!
         upgrade_description: "Increased duration, speed and handling"
     superbroom:

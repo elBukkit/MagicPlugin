@@ -206,6 +206,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean cancelOnCastOther         = false;
     protected boolean cancelOnNoPermission      = false;
     protected boolean cancelOnNoWand            = false;
+    protected boolean creativeRestricted               = false;
     protected boolean pvpRestricted               = false;
     protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
@@ -975,6 +976,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         pvpRestricted = node.getBoolean("pvp_restricted", false);
         quickCast = node.getBoolean("quick_cast", false);
         disguiseRestricted = node.getBoolean("disguise_restricted", false);
+        creativeRestricted = node.getBoolean("creative_restricted", false);
         glideRestricted = node.getBoolean("glide_restricted", false);
         glideExclusive = node.getBoolean("glide_exclusive", false);
         worldBorderRestricted = node.getBoolean("world_border_restricted", false);
@@ -1216,6 +1218,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (!canCast(getLocation())) {
             processResult(SpellResult.INSUFFICIENT_PERMISSION, workingParameters);
             sendCastMessage(SpellResult.INSUFFICIENT_PERMISSION, " (no cast)");
+            String creativeMessage = getMessage("creative_fail");
+            mage.sendMessage(creativeMessage);
             if (mage.getDebugLevel() > 1) {
                 CommandSender messageTarget = mage.getDebugger();
                 if (messageTarget == null) {
@@ -1369,6 +1373,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (disguiseRestricted && entity != null && entity instanceof Player && controller.isDisguised(entity)) return false;
         if (glideRestricted && entity != null && entity instanceof LivingEntity && ((LivingEntity)entity).isGliding()) return false;
         if (glideExclusive && entity != null && entity instanceof LivingEntity && !((LivingEntity)entity).isGliding()) return false;
+        if (creativeRestricted && entity != null && entity instanceof Player && ((Player)entity).getGameMode() == GameMode.CREATIVE) return false;
 
         if (location == null) return true;
         Boolean regionPermission = bypassRegionPermission ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);

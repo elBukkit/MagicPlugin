@@ -6,6 +6,7 @@
  - Add refund_on_no_target spell property, to refund costs on miss
  - Fix broomsticks in 1.15
  - Fix broomsticks insta-crashing if you're not looking up when mounting
+ - Disallow using broomsticks in creative mode (PLEASE STOP REPORTING THIS, THE PLUGIN DOES NOT SUPPORT CREATIVE MODE!)
 
 # 7.8
 
