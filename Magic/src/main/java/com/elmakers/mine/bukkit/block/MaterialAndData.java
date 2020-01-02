@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -132,6 +133,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof PotionMeta) {
                 extraData = new PotionData(CompatibilityUtils.getColor((PotionMeta)meta));
+            }
+        }
+
+        // TODO: Could/should this store ALL custom tag data?
+        if (item.hasItemMeta()) {
+            item = InventoryUtils.makeReal(item);
+            int customModelData = InventoryUtils.getMetaInt(item, "CustomModelData", 0);
+            if (customModelData > 0) {
+                tags = new HashMap<>();
+                tags.put("CustomModelData", customModelData);
             }
         }
     }
