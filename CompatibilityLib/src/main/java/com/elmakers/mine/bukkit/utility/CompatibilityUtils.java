@@ -755,7 +755,10 @@ public class CompatibilityUtils extends NMSUtils {
         if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
             if (class_TileEntityContainer_lock != null) {
-                class_TileEntityContainer_lock.set(tileEntity, null);
+                if (object_emptyChestLock == null) {
+                    return false;
+                }
+                class_TileEntityContainer_lock.set(tileEntity, object_emptyChestLock);
             } else {
                 class_TileEntityContainer_setLock.invoke(tileEntity, new Object[] {null});
             }

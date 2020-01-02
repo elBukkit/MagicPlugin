@@ -352,6 +352,7 @@ public class NMSUtils {
     protected static Field class_ChestLock_key;
 
     protected static Object object_magicSource;
+    protected static Object object_emptyChestLock;
     protected static Map<String, Object> damageSources;
     protected static Map<String, Object> entityTypes;
 
@@ -1146,6 +1147,12 @@ public class NMSUtils {
                     // 1.14 only
                     class_TileEntityContainer_lock = class_TileEntityContainer.getField("chestLock");
                     class_ChestLock_key = class_ChestLock.getField("key");
+                    Field class_ChestLock_defaultField = class_ChestLock.getField("a");
+                    if (class_ChestLock.isAssignableFrom(class_ChestLock_defaultField.getType())) {
+                        object_emptyChestLock = class_ChestLock_defaultField.get(null);
+                    } else {
+                        Bukkit.getLogger().log(Level.WARNING, "An error occurred, chest unlocking will not work");
+                    }
                 } catch (Throwable not14) {
                     try {
                         // 1.12 and below
