@@ -2599,7 +2599,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // can't open the inventory in this state, you can not
         // otherwise see the spell lore.
         boolean isSingleSpell = spell != null && spellCount == 1 && !hasInventory && !isUpgrade;
-        if (showCycleModeLore && getMode() == WandMode.CYCLE) {
+        if (showCycleModeLore && getMode() == WandMode.CYCLE && spell != null) {
             isSingleSpell = true;
         }
         if (isSingleSpell)
