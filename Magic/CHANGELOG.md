@@ -3,6 +3,7 @@
 # 7.8.1
 
  - Fix Lockpick spell
+ - Update Towny integration to latest Towny. You may need to update Towny if you use it.
  - Add invert_distance parameter to Damage action, to allow spells to do less damage up close.
  - Add refund_on_no_target spell property, to refund costs on miss
  - Fix broomsticks in 1.15

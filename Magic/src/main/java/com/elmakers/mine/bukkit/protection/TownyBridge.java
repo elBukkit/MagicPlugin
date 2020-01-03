@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.protection;
 
-import java.lang.reflect.Method;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import javax.annotation.Nullable;
@@ -13,9 +11,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.db.TownyDataSource;
+import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Coord;
@@ -24,42 +21,36 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownyPermission;
-import com.palmergames.bukkit.towny.object.TownyUniverse;
 import com.palmergames.bukkit.towny.object.TownyWorld;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.CombatUtil;
 import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 
-public class TownyAPI
+public class TownyBridge
 {
     private final Towny towny;
+    private final TownyAPI api;
     private final TownyManager controller;
-    private Method getPlayerByNameMethod;
-    private Method getPlayerByUUIDMethod;
 
-    public TownyAPI(TownyManager manager, Plugin plugin) throws IllegalArgumentException, NoSuchMethodException {
-        this.controller = manager;
+    public TownyBridge(TownyManager manager, Plugin plugin) throws IllegalArgumentException, NoSuchMethodException {
         if (!(plugin instanceof Towny)) {
             throw new IllegalArgumentException("Towny plugin not an instance of Towny class");
         }
-        towny = (Towny) plugin;
-        try {
-            getPlayerByNameMethod = TownyDataSource.class.getMethod("getResident", String.class);
-        } catch (Exception ex) {
-            getPlayerByUUIDMethod = TownyDataSource.class.getMethod("getResident", UUID.class);
-        }
+        towny = (Towny)plugin;
+        controller = manager;
+        api = TownyAPI.getInstance();
     }
 
     public boolean isPVPAllowed(Location location) {
-        if (towny == null || location == null) {
+        if (location == null) {
             return true;
         }
 
-        if (controller.wildernessBypass && TownyUniverse.isWilderness(location.getBlock())) {
+        if (controller.wildernessBypass && api.isWilderness(location)) {
             return true;
         }
 
-        TownBlock townBlock = TownyUniverse.getTownBlock(location);
+        TownBlock townBlock = api.getTownBlock(location);
         if (townBlock == null) return true;
 
         TownyWorld world = townBlock.getWorld();
@@ -90,27 +81,27 @@ public class TownyAPI
     }
 
     public boolean hasBuildPermission(Player player, Block block) {
-        if (block != null && towny != null && player != null) {
-            if (controller.wildernessBypass && TownyUniverse.isWilderness(block)) {
+        if (block != null && player != null) {
+            if (controller.wildernessBypass && api.isWilderness(block.getLocation())) {
                 return true;
             }
-            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), DeprecatedUtils.getTypeId(block), DeprecatedUtils.getData(block), TownyPermission.ActionType.BUILD);
+            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), block.getType(), TownyPermission.ActionType.BUILD);
         }
         return true;
     }
 
     public boolean hasBreakPermission(Player player, Block block) {
-        if (block != null && towny != null && player != null) {
-            if (controller.wildernessBypass && TownyUniverse.isWilderness(block)) {
+        if (block != null && player != null) {
+            if (controller.wildernessBypass && api.isWilderness(block)) {
                 return true;
             }
-            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), DeprecatedUtils.getTypeId(block), DeprecatedUtils.getData(block), TownyPermission.ActionType.DESTROY);
+            return PlayerCacheUtil.getCachePermission(player, block.getLocation(), block.getType(), TownyPermission.ActionType.DESTROY);
         }
         return true;
     }
 
     public boolean canTarget(Entity entity, Entity target) {
-        if (towny != null && target != null && entity != null) {
+        if (target != null && entity != null) {
             // TODO: Handle non-entity casts (automata...)?
             return !CombatUtil.preventDamageCall(towny, entity, target);
         }
@@ -121,12 +112,8 @@ public class TownyAPI
     @Nullable
     protected Resident getResident(Player player) {
         try {
-            if (getPlayerByNameMethod != null) {
-                return (Resident) getPlayerByNameMethod.invoke(TownyUniverse.getDataSource(), player.getName());
-            }
-            if (getPlayerByUUIDMethod != null) {
-                return (Resident) getPlayerByUUIDMethod.invoke(TownyUniverse.getDataSource(), player.getUniqueId());
-            }
+            // We can only look up players by name now? Why? Whatever.
+            return api.getDataSource().getResident(player.getName());
         } catch (Exception ex) {
             if (!(ex instanceof TownyException)) {
                 Bukkit.getLogger().log(Level.WARNING, "Error getting Towny Resident", ex);

@@ -149,10 +149,10 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.palmergames</groupId>
-            <artifactId>Towny</artifactId>
-            <version>0.89.2.0</version>
-            <scope>provided</scope>
+          <groupId>com.palmergames.bukkit.towny</groupId>
+          <artifactId>Towny</artifactId>
+          <version>0.95.2.0</version>
+          <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>info.nothingspecial</groupId>
@@ -387,6 +387,16 @@
           <url>http://build.devotedmc.com/plugin/repository/everything/</url>
         </repository>
 <!-#- -->
+
+        <!--
+        This requires authentication which doesn't work very well for build servers or other users.
+        What a terrible idea.
+        I've installed it manually into the elMakers repo, hopefully we never have to update it.
+        <repository>
+          <id>github-towny</id>
+          <url>https://maven.pkg.github.com/TownyAdvanced/Towny</url>
+        </repository>
+        -->
 
     </repositories>
     <build>

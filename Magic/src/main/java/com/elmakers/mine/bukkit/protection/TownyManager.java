@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.api.protection.PVPManager;
 
 public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildManager {
     private boolean enabled = false;
-    private TownyAPI towny = null;
+    private TownyBridge towny = null;
     protected boolean wildernessBypass;
 
     public void setEnabled(boolean enabled) {
@@ -33,7 +33,7 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
                 Plugin townyPlugin = plugin.getServer().getPluginManager()
                         .getPlugin("Towny");
                 if (townyPlugin != null) {
-                    towny = new TownyAPI(this, townyPlugin);
+                    towny = new TownyBridge(this, townyPlugin);
                 }
             } catch (Throwable ex) {
                 plugin.getLogger().log(Level.WARNING, "Error initializing Towny integration", ex);
