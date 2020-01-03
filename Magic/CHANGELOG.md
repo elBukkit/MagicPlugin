@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.8.2
+
 # 7.8.1
 
  - Fix Lockpick spell
