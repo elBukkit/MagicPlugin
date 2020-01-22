@@ -1,4 +1,5 @@
 {
+	"parent" : "item/custom/lit",
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
 		"0": "block/mossy_cobblestone",

@@ -1,5 +1,6 @@
 {
   "__comment": "Created by Droobledore of Potterworld. Used with permission in NathanWolf's Magic plugin.",
+  "parent" : "item/custom/lit",
   "display": {
     "gui": {
       "scale": [1.5, 1.5, 1.5],

@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by NathanWolf with Cubik Studio - https://cubik.studio",
+	"parent" : "item/custom/lit",
 	"textures": {
 		"atlas": "item/custom/train"
 	},

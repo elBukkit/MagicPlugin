@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik studio - https://cubik.studio",
+	"parent" : "item/custom/lit",
 	"textures": {
 		"particle": "item/custom/e_particle",
 		"texture1": "block/black_terracotta",

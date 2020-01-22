@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by Mutim_Endymion with Cubik Studio - https://cubik.studio",
+	"parent" : "item/custom/lit",
 	"textures": {
 		"particle": "item/custom/bow2/bow_pulling_2",
 		"texture": "items/custom/bow2/bow_pulling_2"

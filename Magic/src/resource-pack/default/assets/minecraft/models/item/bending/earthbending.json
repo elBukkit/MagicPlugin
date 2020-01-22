@@ -1,4 +1,5 @@
 {
+  "parent" : "item/custom/lit",
   "textures": {
     "particle": "item/bending/earthbending",
     "material": "item/bending/earthbending"

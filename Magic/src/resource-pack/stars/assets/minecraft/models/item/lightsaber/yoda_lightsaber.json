@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by JayFrost with Cubik Studio - https://cubik.studio",
+	"parent" : "item/custom/lit",
 	"textures": {
 		"particle": "item/lightsaber/e_particle",
 		"texture": "item/lightsaber/e_texture",

@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by Lix3nn with Cubik Studio - https://cubik.studio",
+	"parent" : "item/custom/lit",
 	"textures": {
 		"lavad_palette": "item/custom/lavad_palette"
 	},

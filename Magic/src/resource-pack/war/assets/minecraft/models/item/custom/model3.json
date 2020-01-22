@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by NathanWolf with Cubik Studio - https://cubik.studio",
+	"parent" : "item/custom/lit",
 	"textures": {
 		"particle": "item/custom/model3",
 		"texture": "item/custom/model3"

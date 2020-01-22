@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by Mutim_Endymion with Cubik Studio - https://cubik.studio",
+	"parent" : "item/custom/lit",
 	"textures": {
 		"particle": "item/custom/longbow/longbow_pulling_1",
 		"texture": "item/custom/longbow/longbow_pulling_1"

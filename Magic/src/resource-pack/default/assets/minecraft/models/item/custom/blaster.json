@@ -1,5 +1,6 @@
 {
     "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.95 Beta. Used with permission in NathanWolf's Magic plugin.",
+    "parent" : "item/custom/lit",
     "ambientocclusion": false,
     "textures": {
         "particle": "item/custom/blaster",

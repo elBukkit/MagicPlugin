@@ -1,5 +1,6 @@
 {
 	"__comment": "Designed by BlueYoshi73",
+	"parent" : "item/custom/lit",
 	"textures": {
 		"particle": "item/custom/e_particle",
 		"texture": "item/custom/e_texture",
