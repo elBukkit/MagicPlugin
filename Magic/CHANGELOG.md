@@ -3,6 +3,7 @@
 # 7.8.2
 
  - Fix Recall, will now place you on top of your bed instead of failing.
+ - Fix using the drop button on a wand also casting a spell in 1.15
 
 # 7.8.1
 

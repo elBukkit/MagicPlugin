@@ -213,6 +213,10 @@ public class PlayerController implements Listener {
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
 
+        // As of 1.15 we will get an animation event right after the drop event.
+        // We want to ignore this.
+        mage.checkLastClick(50);
+
         // Catch lag-related glitches dropping items from GUIs
         if (mage.getActiveGUI() != null) {
             event.setCancelled(true);
