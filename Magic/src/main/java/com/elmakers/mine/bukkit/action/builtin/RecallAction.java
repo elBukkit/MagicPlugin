@@ -787,6 +787,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             if (bedLocation != null) {
                 bedLocation.setX(bedLocation.getX() + 0.5);
                 bedLocation.setZ(bedLocation.getZ() + 0.5);
+                bedLocation.setY(bedLocation.getY() + 1);
             }
             return new Waypoint(type, bedLocation, context.getMessage("title_home", "Home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), getIcon(context, parameters, "icon_home"), false);
         case WAND:
