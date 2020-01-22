@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.8.3
+
 # 7.8.2
 
  - Fix Recall, will now place you on top of your bed instead of failing.
