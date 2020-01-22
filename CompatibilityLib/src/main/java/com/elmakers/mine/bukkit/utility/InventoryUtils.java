@@ -61,6 +61,10 @@ public class InventoryUtils extends NMSUtils
 
         setMetaBoolean(tag, "skill", true);
 
+        Object spellNode = InventoryUtils.getNode(skillItem, "spell");
+        if (skillClass != null && spellNode != null) {
+            InventoryUtils.setMeta(spellNode, "class", skillClass);
+        }
         if (skillConfig == null) {
             return true;
         }
@@ -72,16 +76,8 @@ public class InventoryUtils extends NMSUtils
             setMetaBoolean(tag, "keep", true);
         }
         boolean quickCast = skillConfig.getBoolean("quick_cast", true);
-        if (skillClass != null || !quickCast) {
-            Object spellNode = InventoryUtils.getNode(skillItem, "spell");
-            if (spellNode != null) {
-                if (skillClass != null) {
-                    InventoryUtils.setMeta(spellNode, "class", skillClass);
-                }
-                if (!quickCast) {
-                    InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
-                }
-            }
+        if (!quickCast && spellNode != null) {
+            InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
         }
 
         return true;

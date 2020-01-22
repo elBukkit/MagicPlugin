@@ -5,6 +5,7 @@
  - Fix Recall, will now place you on top of your bed instead of failing.
  - Fix Recall not teleporting to half-blocks
  - Fix using the drop button on a wand also casting a spell in 1.15
+ - Fix skill items being useable if the player switches classes to one that does not have that spell
 
 # 7.8.1
 
