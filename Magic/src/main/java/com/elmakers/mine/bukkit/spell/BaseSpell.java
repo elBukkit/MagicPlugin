@@ -81,7 +81,6 @@ import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 import de.slikey.effectlib.math.EquationStore;
@@ -425,6 +424,12 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (!targetLoc.getBlock().getChunk().isLoaded()) return null;
         int minY = MIN_Y;
         int maxY = CompatibilityUtils.getMaxHeight(targetLoc.getWorld());
+
+        // Teleport above half blocks, we will get bumped down by checkForHalfBlock
+        // if the location is safe
+        if (isHalfBlock(targetLoc.getBlock().getType())) {
+            targetLoc.setY(Math.floor(targetLoc.getY() + 1));
+        }
         int targetY = targetLoc.getBlockY();
         if (targetY >= minY && targetY <= maxY && isSafeLocation(targetLoc)) {
             return checkForHalfBlock(targetLoc);
@@ -499,17 +504,12 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected Location checkForHalfBlock(Location location) {
-        // This is a hack, but data-driving would be a pain.
-        boolean isHalfBlock = false;
+        // If the block below us is a half block, move the location down
+        // to be on top of the half-block.
         Block downBlock = location.getBlock().getRelative(BlockFace.DOWN);
         Material material = downBlock.getType();
         if (isHalfBlock(material)) {
             // Drop down to half-steps
-            isHalfBlock = (DeprecatedUtils.getData(downBlock) < 8);
-        } else {
-            isHalfBlock = isHalfBlock(material);
-        }
-        if (isHalfBlock) {
             location.setY(location.getY() - 0.5);
         }
 
