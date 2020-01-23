@@ -1,4 +1,4 @@
 {
-    "__comment": "Screw you, Mojang.",
+    "__comment": "This is here to fix lighting issues with GUI items in 1.15",
     "gui_light": "front"
 }
