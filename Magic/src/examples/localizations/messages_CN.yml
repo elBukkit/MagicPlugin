@@ -1,0 +1,2778 @@
+# Translator:qsefthuopq
+# Laste updated:2020-01-24
+costs:
+  sp_amount: $amount SP
+  xp_amount: $amount XP
+  levels_amount: $amount级经验
+  mana_amount: $amount 法力
+  mana: 法力
+  xp: XP
+  levels: 级
+  sp: 魔法点
+  hunger: 能量
+  health: 血量
+  health_amount: $amount 血量
+  hunger_amount: $amount 能量
+  heroes_mana: $amount 法力
+  currency_singular: 金钱
+  currency: 金钱
+  currency_amount: "$$amount"
+  
+currency:
+  item_name: "&e$amount &6$type"
+  description: 右击捐款
+  limit: "a:&e &6$type 的上限&e为 &c$amount"
+  deposited: "a:&a已捐赠 &2$amount &6$type&a, 剩余: &2$balance"
+  earned: "a:&6+&e$earned"
+sp:
+  name: '&e$amount &6魔法点'
+  description: 将被你的法杖吸收
+  limit: a:&6魔法点&e上限为 &c$amount
+  deposited: 'a:&a已捐赠 &2$amount &6魔法点&a, 剩余: &2$balance'
+item:
+  duplicated: 已复制你的物品
+  destroyed: 已摧毁你的物品
+  cleaned: 你的所有魔法相关的物品都已被摧毁
+  no_item: 你必须手持物品!
+  renamed: 已重命名你的物品
+  rename_clear: 已删除你的物品的自定义名称
+  flag_added: 已将 $flag 标志添加到你的物品上
+  flag_removed: 已删除你的物品上的 $flag 标志
+  no_flags: 那件物品没有标志
+  no_flag: 那件物品没有 $flag 标志
+  lore_added: '已添加lore: $lore'
+  lore_removed: '已删除lore: $lore'
+  no_lore: 那件物品没有lore
+  not_unbreakable: 那件物品不再无法破坏
+  already_unbreakable: 那件物品已经无法破坏
+  add_unbreakable: 那件物品现在无法破坏
+  remove_unbreakable: 那件物品不再无法破坏
+  not_unplaceable: 那件物品不再无法放置
+  already_unplaceable: 那件物品已经无法放置
+  add_unplaceable: 那件物品现在无法放置
+  remove_unplaceable: 那件物品不再无法放置
+  no_enchants: 这件物品没有附魔
+  no_enchant: 那件物品没有附魔 $enchant 
+  enchant_removed: 已删除物品上的 $enchant 附魔
+  enchant_added: 已添加附魔 $enchant 到你的物品上
+  enchant_not_added: 未添加 $enchant 附魔到你的物品上
+  enchant_unsafe: 你没有权限添加高级的附魔
+  no_attribute: 物品没有$attribute属性
+  attribute_removed: 已删除物品上的$attribute属性
+  attribute_added: 在$slot处给你的物品加上$attribute属性，数值：$value ($operation)
+  attribute_not_added: 无法为你的物品设置$attribute属性
+  skull: 你的书已变为头颅
+  skull_no_book: 你必须手持一本写有头颅数据的成书
+  skull_invalid_book: 那本书没有头颅数据! 请在
+    'Textures.Value'处粘帖数据, 数据一般是以 == 结尾的随机字符
+mage:
+  removed_property: 已删除属性 $name
+  no_property: 法师没有属性 $name
+  player_reconfigured: 已重新配置$name的法师数据
+  player_not_reconfigured: 未重新配置 $name 的法师数据
+  player_spells_levelled: $name的$count法术升级
+  player_spells_not_levelled: $name的所有法术都未升级
+  spells_levelled: 你的法术已提升$count级
+  spells_not_levelled: 法术未升级
+  reconfigured: 已重新配置法师
+  not_reconfigured: 未重新配置法师
+  earned_sp: a:&6+&e$amount &6SP
+  no_class: 你的知识不足以学会使用$name
+  no_spell: 你的知识不足以学会使用$name
+  player_spell_upgraded: $players的&r&6$name&d&o升到了&3$level级
+  spell_upgraded: 你的&r&6$name&d&o升到了&3$level级
+  spell_added: 你学会了&r&6$name&d&o法术
+  brush_added: 你已获得&r&7$name&d&o笔刷
+general:
+  no_spells: 你不会任何法术
+  no_spells_in_category: 你不会任何 $category 类法术
+  spell_list_page: 你学会了 $count 种法术 [ $page / $pages]
+  spell_list: 你学会了 $count 种法术
+  locked_chest: 箱子已上锁,你无法破坏这个箱子.
+books:
+  default:
+    author: NathanWolf
+    title: $category魔法书
+  all:
+    title: 大师魔法书
+material:
+  wildcard: ' (任何类型)'
+economy:
+  missing: '&c商店打烊了,抱歉!'
+  insufficient: '消耗: &6$cost'
+  deducted: '折扣: &6$cost'
+  requires: 你必须要有$cost
+worlds:
+  world:
+      name: 主世界
+  world_nether:
+      name: 地狱
+  world_the_end:
+      name: 末地
+cooldown:
+  wait_seconds: 冷却剩余$seconds秒
+  wait_minutes: 冷却剩余$minutes分钟
+  wait_hours: 冷却剩余$hours小时
+  wait_moment: 一会儿
+  wait_second: 1秒
+  wait_minute: 1分钟
+  wait_hour: 1小时
+  description_seconds: $seconds秒
+  description_minutes: $minutes分钟
+  description_hours: $hours 小时
+  description_minute: 1分钟
+  description_hour: 1小时
+  description_second: 1秒
+  description_moment: 一会儿
+  description: "&e冷却: &6$time"
+  mage_description: "&c疲惫: &6$time"
+warmup:
+  description: '&7施法时间: &6$time'
+duration:
+  lasts_seconds: 持续$seconds秒
+  lasts_minutes: 持续$minutes分钟
+  lasts_hours: 持续$hours小时
+  lasts_second: 持续$seconds秒
+  lasts_minute: 持续$minutes分钟
+  lasts_hour: 持续$hours小时
+skills:
+  inventory_title: 技能
+  inventory_title_heroes: $class 技能 ($page/$pages)
+  inventory_title_heroes_secondary: $class-$class2 技能 ($page/$pages)
+  item_name: $skill
+  item_name_unavailable: '&c$skill'
+  item_description: $description
+  passive_description: '&1被动'
+  none: 你没有技能!
+  none_on_page: "$page 这一页没有技能!"
+resource_pack:
+  prompt: 使用 /getrp 来下载资源包.
+  sending: ''
+controls:
+  drop: 丢弃 (Q)
+  right_click: 右击
+  left_click: 左击
+  swap: 切换 (F)
+skillapi:
+  required_skill: '&c前置技能: &4$skill'
+  required_class: '&c前置职业: &4$class'
+damage_types:
+  explosion: 爆炸
+  fall: 摔落
+  fire: 火焰
+  physical: 物理
+  projectile: 弹射物
+requirements:
+  unknown: '&c禁止使用'
+  property_requirement: '&r&c前置: &4$value&o个&6$property'
+  property_max: '&r&c你的 &6$property &c已溢出'
+  property_min: '&r&c你的 &6$property &c必须大于 &4$value'
+  no_wand: '&c你必须手持一根法杖!'
+  no_template: '&c你不能用$wand&c学习法术.'
+  no_path: '&c你不能在这里学习法术.'
+  no_class: '&c你必须成为一名 $class'
+  no_required_path: '&c你必须先成为 $path&r!'
+  no_path_exact: '&c你必须成为 $path&r!'
+  no_path_end: '&c你必须准备好成为 $path&r!'
+shops:
+  no_wand: '&c你必须手持法杖'
+  no_template: '&c你不能用$wand&c学习法术.'
+  no_path: '&c你不能在这里学习法术.'
+  no_class: '&c你必须成为一名 $class'
+  no_required_path: '&c你必须先成为一名 $path&r!'
+  no_path_exact: '&c你必须成为一名 $path&r!'
+  no_path_end: '&c你必须准备好成为 $path&r!'
+  insufficient: '&c消耗$cost'
+  confirm_title: 购买$item
+  unlock_confirm_title: 解锁$item
+  deducted: '&d&o你购买了&r&6$item&r&d&o并获得&r&a$cost'
+  selected: '&d&o你购买了&r&6$item&r&d&o并获得&r&a$cost'
+  sold: '&d&o你售出了&r&6$item&r&d&o并获得&r&a$earn'
+  unlocked: '&d&o你用&r&a$cost解锁了&r&6$item'
+  selected_free: '&d&o你选择了&r&6$item'
+  not_applicable: 你已拥有$item
+  cast_fail: '&c抱歉, 请重试!'
+  no_items: 你没有可以购买的东西了
+  title: 商店 ($balance&0)
+  extra_spell: '&a无必须前置'
+  no_upgrade: 这里已经没有你可以学习的了.
+  upgrade_name_change: '&r&4可升级次数: &r$name'
+  level_requirement: '&r&c前置: &6$path'
+  tags_requirement: '&r&c前置: &6$tags'
+  cast_requirement: '&r&c耗费: &6$current&f/&e$required'
+  prerequisite_spell_level: '&6$name'
+  prerequisite_spell_progress_level: ' (进度 $level/$max_level)'
+  required_spells: '&r&c前置法术: $spells'
+  cast_spell: $spell
+  unlock_class: $class
+  nothing: 无
+  cost_lore: '&6消耗: &e$cost'
+  earn_lore: '&6赚取: &e$earn'
+  earn_heading: ''
+  cost_heading: ''
+  unlock_cost_lore: '&6解锁价格: &e$cost'
+  locked: '&c未解锁, &e请在卷轴商店解锁'
+  required_cost_lore: '&c价格: &4$cost'
+  required_unlock_cost_lore: '&c解锁价格: &4$cost'
+  has_class: 你已解锁职业 $class
+  at_limit: 你已达到上限 $limit
+  unlocked_lore: '&a已解锁'
+  property_requirement: '&r&c前置: $4$value个&6$property&c'
+  property_max: '&r&c你的&6$property &c已满'
+  property_min: '&r&c你的&6$property &c必须大于$4$value'
+  item_amount: $name x$amount
+spell:
+  category: ''
+  brush: 使用材料笔刷
+  undoable: ''
+  not_undoable: '&4无法撤销'
+  available_path: 成为$path&r才可用
+  required_path: 需要成为$path&r
+  levels_available: '最高等级: &r&5$levels'
+  required_spell: 你必须学会&r&4$spell&d&o才能成为&b$path
+  prerequisite_spell_level: '&c你必须学会&6$level级的$name'
+  prerequisite_spell_progress_level: ' &6(进度 $level/$max_level)'
+  level_description: $level级
+  progress_description: '&6进度: &b$level&6/&3$max_level'
+  quick_cast: '&2快捷施法'
+  earns: '&2获得&6$earns'
+  description_lore: '&b$description'
+  level_lore: '&6$level'
+  toggle: '&a开启或关闭'
+  upgrade_description_prefix: '&r&b&bull; &6'
+spells:
+  default:
+    fizzle: 施法失败!
+    backfire: 施法适得其反!
+    fail: 施法失败!
+    insufficient_permission: 权限不足.
+    cast_player_message: a:&d&o$player &r&5对你施放了&3&o$spell&r&5!
+    indirect_player_message: a:&d&o$player &r&5对你施放了&3&o$spell&r&5!
+    insufficient_resources: $cost不足
+    cooldown: 你必须等待$time.
+    cancelled: 施法取消!
+    entity_required: 需要一个实体.
+    living_entity_required: 需要一个生物.
+    player_required: 需要一名玩家.
+    location_required: 需要一个地点.
+    world_required: 需要一个世界.
+    invalid_world: 指定的世界无效.
+    cast_finish: ''
+  admission:
+    name: 开门
+    description: 开门
+    cast: 芝麻开门!
+  admission|2:
+    upgrade_description: 现在可以打开铁门了
+  secure:
+    name: 保险
+    description: 给容器上锁
+    usage: 往上瞄准获得备用钥匙, 潜行施法以解锁
+    cast: 容器已上锁,请用钥匙开锁!
+    acquire: 已换锁!
+    already: 已上锁
+    alternate_up: 你召唤了一把备用钥匙
+    alternate_sneak: 已解锁
+    key_name: '&6&k$uuid'
+    key_name_alternate: '&6$name的&e钥匙'
+    key_description: |-
+      &6$name的&e钥匙
+      用于打开上锁的容器
+    fail: 你不能给那个东西上锁!
+    upgrade_description: 现在可以锁住熔炉和其他容器
+  lockpick:
+    name: 撬锁工具
+    description: 解锁上锁的容器
+    cast: 芝麻开门!
+    fail: 撬锁失败!
+  snoop:
+    name: 窥探
+    description: 偷窥箱子里有什么宝贝
+    cast: 让我康康这里面有什么宝贝
+    no_target: 你必须看着一个箱子
+  anvil:
+    name: 牛顿之力
+    description: 召唤铁砧
+    cast: 好重啊!
+  silence:
+    name: 沉默
+    description: 禁止目标施法
+    cast: 你沉默了$target
+  curse:
+    name: 诅咒
+    description: 减缓并虚弱目标
+    cast: 你诅咒了$target
+    upgrade_description: 现在会使目标反胃
+  broom:
+    name: 飞天扫帚
+    cast: 你的扫帚焕发出气息!
+    deactivate: 你的扫帚平静下来了.
+    crash: 扫帚坏了!
+    fail: 起飞空间不足!
+    creative_fail: 你不能在创造模式使用!
+    cursed: 你吓得不敢飞了!
+    upgrade_description: 增加持续时间、速度和掌控力
+  superbroom:
+    name: 超级扫帚
+    cast: 你的扫帚焕发出了神秘的气息!
+    deactivate: 你的扫帚平静下来了.
+    crash: 扫帚坏了!
+    fail: 空间太小了,起飞失败!
+  boon:
+    name: 坚不可摧
+    description: 使你暂时无敌
+    cast_self: 你感觉你无敌了
+    cast: 你使$target坚不可摧
+  boon|2:
+    upgrade_description: 获得跳跃提升效果
+  boon|3:
+    upgrade_description: 增加速度效果
+  boon|4:
+    upgrade_description: 获得夜视效果
+  blessing:
+    name: 祝福
+    description: 治愈区域里的追随者
+    cast: 你祝福了这片区域
+  holylight:
+    name: 圣光
+    description: 治愈区域内的玩家,对有害生物造成伤害
+    cast: 你让圣光照耀了大地
+  mount:
+    name: 骑乘
+    description: 骑乘你的目标
+    cast: 你骑上了$target
+  horse:
+    name: 马
+    description: 召唤一匹马并骑马
+    cast: 斗气化马!
+    nospace: '&c空间不足'
+  tame:
+    name: 驯服
+    description: 驯服目标
+    cast: 你驯服了$target
+  platform:
+    name: 平台
+    description: 创造一片平台
+    cast_finish: 已填充$count块$material
+  platform|2:
+    upgrade_description: 增加大小
+  platform|4:
+    upgrade_description: 现在使用笔刷建造
+  reflect:
+    name: 法术反弹
+    description: 反弹魔法
+    upgrade_description: 增加大小和反弹力
+  shell:
+    name: 法术盾牌
+    description: 创造可以反射魔法的法术盾牌
+    upgrade_description: 增加耐久度和反射力
+  tag:
+    name: 立牌
+    description: 留下一块写有你的名字的告示牌
+    usage: 需要消耗一块告示牌!
+    fail: 放置告示牌失败!
+    cast: 你放置了一块牌子
+    cast_player: 你给$target发送了一条消息
+    cast_give: 来些告示牌吧!
+    cast_player_message: '&5你听到了&c&o$player&r&5的声音...
+      他说：“你好！”'
+    sign_message: was here
+  flashbang:
+    name: 闪光弹
+    description: 发射闪光弹
+    cast_player_message: a:你被$player的闪光弹眩晕了
+  singularity:
+    name: 奇点
+    description: 创造黑洞
+    cast_player_message: a:你被吸入了黑洞
+  arrow:
+    name: 魔法弓箭
+    description: 发射魔法弓箭
+    upgrade_description: 增加伤害和精准度
+  arrow_light:
+    name: 光箭
+    description: 发射光箭
+    cast_player_message: a:$player对你发射了$spell
+  arrow_bomb:
+    name: 爆破箭
+    description: 发射爆破箭
+    cast_player_message: a:$player对你发射了$spell
+  arrow_poison:
+    name: 毒箭
+    description: 发射能够形成毒雾的弓箭
+    cast_player_message: a:$player对你发射了$spell
+  arrow_regular:
+    name: 普通弓箭
+    description: 发射普通弓箭
+    cast_player_message: a:$player对你发射了$spell
+  arrow_blink:
+    name: 闪烁弓箭
+    description: 传送到箭落地处
+    cast_player_message: a:$player对你发射了$spell
+  arrow_fire:
+    name: 火焰弓箭
+    description: 发射火焰弓箭
+    cast_player_message: a:$player对你发射了$spell
+  arrow_ice:
+    name: 寒冰箭
+    description: 冻结目标区域
+    cast_player_message: a:$player对你发射了$spell
+  arrow_shock:
+    name: 颤栗箭
+    description: 使目标颤栗
+    cast_player_message: a:$player对你发射了$spell
+  arrow_grapple:
+    name: 抓钩箭
+    description: 将你拉到目标处
+    cast_player_message: a:$player对你发射了$spell
+  toss:
+    name: 投掷
+    description: 投掷方块
+    fail: 施法失败
+    cast: 你投掷出了一块方块
+  volley:
+    name: 方块齐掷
+    description: 投掷一些方块
+    fail: 施法失败
+    cast: 你扔出了一些方块
+  sniper:
+    name: 狙击
+    description: 发射超越光速的弓箭
+  pull:
+    name: 万象天引
+    description: 将万物吸到你身边
+    alternate: 过来吧!
+    cast: 
+  grab:
+    name: 攫取
+    description: 将物品吸到你身边
+    cast: 
+  permafrost:
+    name: 极寒
+    description: 下雪吧!
+    cast_finish: 冻结$count块方块
+  permamelt:
+    name: 永焰
+    description: 升温
+    cast_finish: 永久融化$count块方块
+  frost:
+    name: 霜寒
+    description: 化水为雪
+    cast_finish: 已冻结$count块方块
+    upgrade_description: 更大的范围,增加减速的持续时间
+  harden:
+    name: 铜墙
+    description: 使目标方块更加坚硬
+    cast: 加固$count块方块
+  harden|2:
+    upgrade_description: 现在转换为黑曜石
+  tree:
+    name: 植树
+    description: 瞬间种出一棵树
+    fail: 你的树苗因为没用金坷拉而枯萎了
+    cast: 你种出了$tree!
+  forest:
+    name: 森林
+    description: 瞬间种出一片森林
+    fail: 植树失败
+    cast: 你造出了一片森林!
+  disarm:
+    name: 缴械
+    description: 缴械目标
+    cast: 你缴械了目标
+    cast_self: 你缴械了自己
+    upgrade_description: 降低失败率
+  disarm|3:
+    upgrade_description: 百分百成功
+  heal:
+    name: 治疗
+    description: 治疗你自己或其他人
+    usage: 会被伤害打断!
+    cast: 你治疗了$target
+    cast_self: 你治疗了自己
+    upgrade_description: 降低冷却
+  healing:
+    name: 甘霖
+    description: 治疗附近的任何人
+    cast: 你治疗了$target
+  cure:
+    name: 治愈
+    description: 移除负面效果
+    cast: 你治愈了$target
+    cast_self: 你治愈了自己
+    upgrade_description: 现在治愈饥饿效果
+  cure|2:
+    upgrade_description: 现在治愈凋零和虚弱效果
+  cure|3:
+    upgrade_description: 现在可治愈沉默效果
+  cure|4:
+    upgrade_description: 现在治愈饥饿效果
+  cure|5:
+    upgrade_description: 现在可以治愈僵尸村民
+  music:
+    name: 音乐
+    description: 播放音乐
+    cast_player: 你给$name播放了音乐
+    cast_self: 你播放了一些音乐
+  airstrike:
+    name: 空中支援
+    description: 干掉附近的实体
+    cast_player_message: a:&d&o$player &r&5召唤了空中支援
+  gather:
+    name: 团聚
+    description: 传送到其他玩家处
+    cast_to_player: 传送你到$target
+    cast_entity: 已传送$target
+    cast_player_message: a:&d&o$player&r&5折叠了空间
+    target_selected: 你选择了$target
+    cancel: 已释放目标
+    upgrade_description: 往下瞄准并施法来传送玩家
+  supergather:
+    name: 大召唤术
+    description: 传送到所有玩家到你身边
+    usage: 往下瞄准循环玩家,往上传送玩家
+    cast_to_player: 已将您传送到$target
+    cast_entity: 已传送$target
+    cast_player_message: a:&d&o$player&r&5折叠了空间
+    target_selected: 你选择了$target
+    cancel: 已释放目标
+  icbm:
+    name: ICBM
+    description: 发射洲际导弹
+    cast: 小心!
+  neutron:
+    name: 中子弹
+    description: 伤害并眩晕附近的所有实体
+    cast: 毁天灭地!
+    upgrade_description: 增加范围
+  shuriken:
+    name: 手里剑
+    description: 扔出手里剑
+    upgrade_description: 增加伤害
+  wave:
+    name: 震荡波
+    description: 发出震荡波
+    upgrade_description: 增加大小和强度
+  weather:
+    name: 天气之子
+    description: 改变天气
+    cast: 你召唤了风暴
+    alternate: 你平息了风暴
+  fling:
+    name: 腾跃
+    description: 使你飞向目标
+    upgrade_description: 增加速度, 减少冷却
+  leap:
+    name: 飞跃
+    description: 飞跃
+    cast: Whee!
+  simulate:
+    name: 模拟
+    description: 康威的生命游戏!
+    cast: 
+  animate:
+    name: 动态
+    description: 使目标方块动起来
+    cast: 你召唤了魔法傀儡
+    no_target: 你必须以两块相邻的方块为目标
+    fail: 你不能召唤$material傀儡
+    cast_broadcast: '&c&o$name &r&5出现了'
+    death_broadcast: '&c&o$name&r&5战败了'
+  simulate3:
+    name: 3D模拟
+    description: 3D版的康威的生命游戏!
+    cast: 你给世界带来了生命!
+  glider:
+    name: 滑翔机
+    description: 创造一个强大的自动机械
+    cast: 它苏醒了!
+  virus:
+    name: 病毒
+    description: 你应该不会想用这个魔法
+    cast: 你做了什么?
+    cast_broadcast: '&c&o$name&r&5出现了'
+    death_broadcast: '&c&o$name&r&5被击败了'
+    fail: 你不能用$material制作病毒
+  worm:
+    name: 蠕虫
+    description: 释放出危险的巨型蠕虫
+    cast: 这不是病毒,是蠕虫!
+    cast_broadcast: '&c&o$name&r&5出现了'
+    death_broadcast: '&c&o$name&r&5被击败了'
+    fail: 你不能用$material来制作这个
+  snake:
+    name: 毒蛇
+    description: 创造致命的毒蛇
+    cast: 嘶嘶嘶嘶嘶嘶!
+    cast_broadcast: '&c&o$name&r&5出现了'
+    death_broadcast: '&c&o$name&r&5被击败了'
+    fail: 你不能用$material来制作这个
+  hunter:
+    no_target: 你必须以两块相邻的方块为目标
+    name: 猎人
+    description: 创造致命的自动机械
+    fail: 你不能用$material制造猎人
+    cast: 摧毁全人类!
+    cast_broadcast: '&c&o$name&r&5出现了'
+    death_broadcast: '&c&o$name&r&5被击败了'
+  defender:
+    name: 守卫者
+    description: 创造自动机械：狩猎者
+    cast: 人类,我将为你而狩猎
+    fail: 你不能用$material制造守卫者
+    cast_broadcast: '&c&o$name&r&5出现了'
+    death_broadcast: '&c&o$name&r&5被击败了'
+  life:
+    name: 生命
+    description: 创造一块大型的生命板
+    cast: 是时候做实验了!
+  life3:
+    name: 3D生命
+    description: 创造一块大型的3D生命板
+    cast: 疯狂的科学!
+  torch:
+    name: 火把
+    description: 创造火把或荧石
+    no_target: 无法在那里放置火把
+    cast: 驱散黑暗吧!
+    upgrade_description: 减少冷却
+  supertorch:
+    name: 超级火把
+    description: 创造永久存在的火把
+    no_target: 无法在那里放置火把
+    cast: 驱散黑暗吧!
+  tunnel:
+    name: 开凿
+    description: 在你面前挖出一条隧道
+    no_target: 你必须站在方块上!
+    cast: 已穿过$count块方块
+  monster:
+    name: 怪物
+    description: 召唤为你而战的怪物
+    deactivate: 你释放了怪物
+    cast: 你召唤了怪物
+  mob:
+    name: 唤灵
+    description: 召唤怪物
+    deactivate: 你释放了怪物
+    cast: 你召唤了$count只怪物
+  portal:
+    name: 传送门
+    description: 创造暂时存在的传送门
+    no_target: 不能在这里创建传送门
+    cast: 你创造了一个传送门
+  phase:
+    name: 相位
+    description: 传送到另一个维度
+    cancel: 相位终止!
+    cast: ''
+    teleport: 你传送到了$world_name
+    teleport_failed: 无法传送到$world_name
+  superphase:
+    name: 超级相位
+    description: 传送到另一个维度
+    cast: ''
+    teleport: 你传送$target到了$world_name
+    teleport_failed: 无法传送$target到$world_name
+  phasebackup:
+    name: 相位备份
+    description: 检查备份的世界
+    cast: ''
+    teleport: 你传送到了$world_name
+    teleport_failed: 无法传送到$world_name
+  invincible:
+    name: 无懈可击
+    description: 使你暂时无敌
+    cast: 你感觉势不可挡!
+    deactivate: 你回归了平庸
+  inferno:
+    name: 炼狱
+    description: 点燃大片区域
+    cast: 你点燃了$count块方块
+  bubble:
+    name: 泡泡
+    description: 创造安全的泡泡
+    usage: 在你摔落时施法可以在你脚下创造泡泡
+    cast: (洒水的声音)
+    upgrade_description: 更大的水泡
+  paint:
+    name: 绘画
+    description: 填充单个方块
+  gills:
+    name: 潜水头盔
+    description: 在水下自由移动
+    cast: 你戴上了潜水头盔
+    hat_name: 潜水头盔
+    hat_lore: 点击删除
+  gasp:
+    name: 喘息
+    description: 在水下深呼吸
+    cast: 呼!
+  glide:
+    name: 滑翔
+    description: 从异次元口袋里掏出一个鞘翅!
+    cast: 自由飞翔
+    wear_name: 自由之翼
+    war_lore: 点击删除
+  arrowrain:
+    name: 箭雨
+    description: 发射大量弓箭
+  arrowrain|2:
+    upgrade_description: 发射更多的箭
+  gatling:
+    name: 加特林
+    description: 发射大量弓箭
+    upgrade_description: 发射时间更长,冷却更快
+  meteor:
+    name: 星陨
+    description: 死亡天降
+    cast: 你降下了天火
+  bomb:
+    name: 地毯式轰炸
+    description: 天降正义！
+    cast: 你召唤了空中支援
+    upgrade_description: 更多炸弹!
+  poison:
+    name: 赐毒
+    description: 使目标中毒
+    cast: 你使$target中毒了
+    upgrade_description: 增加中毒持续时间
+  light:
+    name: 光明
+    description: 驱逐黑暗
+  lightning:
+    name: 雷击
+    description: 雷击目标
+    cast: 雷公助我!
+  lightning|2:
+    upgrade_description: 增加精准度
+  lightning|3:
+    upgrade_description: 更多闪电
+    cast: 轰!
+  smite:
+    name: 重击
+    description: 重击你的目标
+    cast: 你重击了$target
+  nuke:
+    name: 核弹
+    description: 制造大爆炸
+    cast: 哇!
+    upgrade_description: 更大的范围和更强的毁灭性
+  day:
+    name: 晴空万里
+    description: 制造好天气
+    cast: 多么美好的一天啊!
+  night:
+    name: 风暴降临的漆黑之夜
+    description: 黑暗降临！
+    cast: 让风暴来得更猛烈些吧!
+  time:
+    name: 时间操控
+    description: 更改时间
+    cast: 时间更改为$newtime
+  bridge:
+    name: 桥梁
+    description: 拓展你脚下的道路
+    usage: 可在空中使用
+    no_target: 不能在这里造桥
+    cast: 已用$material造桥
+  grenade:
+    name: 手雷
+    description: 小心手雷
+  grenade|2:
+    upgrade_description: 增加伤害和火力
+  cluster:
+    name: 集束炸弹
+    description: 扔出集束炸弹
+    cast: 你扔出了集束炸弹
+    upgrade_description: 集束炸弹会分裂成更多炸弹
+  convert:
+    name: 转换
+    description: 转换球形区域内的方块
+    usage: 不会填充空气
+    cast_finish: 已转换$count块方块为$material
+  collapse:
+    name: 崩塌
+    description: 使圆形范围内的方块崩塌
+    cast_finish: $count块方块坍塌了
+    upgrade_description: 增加范围,可破坏更多类型的方块
+  superconvert:
+    name: 超级转换
+    description: 转换球形区域内的方块
+    usage: 施法两次来转换
+    cancel: 已取消超级转换
+    target_selected: 再次施法来转换为$target
+    fail: 太大了!
+    cast_finish: 已将$count块方块转换为$material
+  supercollapse:
+    name: 天崩地裂
+    description: 使球形区域内的方块崩塌
+    usage: 施法两次来崩塌方块
+    cancel: 已取消施法
+    target_selected: 再次施法来崩塌方块
+    fail: 太大了!
+    cast_finish: 已崩塌$count块方块
+  superblob:
+    name: 超级气泡
+    description: 创造一个大型球体
+    usage: 是否两次以建造
+    cancel: 已取消施法
+    target_selected: 再次施法来建造球体
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  superhemisphere:
+    name: 大半球
+    description: 创造大型的半球
+    usage: 是否两次以建造
+    cancel: 已取消施法
+    target_selected: 再次施法以建造
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  supercylinder:
+    name: 大圆柱
+    description: 创造一个大圆柱
+    usage: 施法两次以建造
+    cancel: 已取消施法
+    target_selected: 请再次施法
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  superrepair:
+    name: 超级修复
+    description: 修复使用备份魔法保存的大片区域
+    usage: 施法两次来修复
+    cancel: 超级修复已取消
+    target_selected: 再次施法以repair
+    fail: 太大了!
+    cast_finish: 已修复$count块方块
+  repairitem:
+    name: 修复物品
+    description: 完全修复丢弃的物品
+    no_target: 你不能修复那件物品
+    cast: 已修复物品!
+  repairequipment:
+    name: 修复装备
+    description: 彻底修复目标玩家的装备
+    no_target: 没有可以修复的装备
+    cast: 已修复装备!
+  backup:
+    name: 备份
+    description: 保存目标区域
+    cast_finish: 备份区域
+    target_selected: 请再次施法以备份
+  superbackup:
+    name: 超级备份
+    description: 保存大片区域
+    usage: 再次施法以保存
+    cancel: 超级备份已取消
+    fail: 太大了!
+    cast_finish: 备份选区
+    target_selected: 请再次施法以备份
+  superemp:
+    name: 超级EMP
+    description: 使一大片区域感电
+    usage: 请再次施法
+    cancel: 超级EMP已取消
+    fail: 太大了!
+    cast_finish: 已感电$count块方块
+    target_selected: 再次施法以感到球形选区
+  supershell:
+    name: 超级护盾
+    description: 创造大型的空心球体
+    usage: 是否两次以建造
+    cancel: SuperShell已取消
+    target_selected: 再次施法以建造
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块 
+  superdisc:
+    name: 大圆盘
+    description: 创造大圆盘
+    usage: 是否两次以建造
+    cancel: 已取消施法
+    target_selected: 再次施法以建造
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  superring:
+    name: 大圆环
+    description: 创造大圆环
+    usage: 是否两次以建造
+    cancel: 已取消施法
+    target_selected: 再次施法以建造
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  superdome:
+    name: 大穹顶
+    description: 创造大穹顶
+    usage: 是否两次以建造
+    cancel: 已取消施法
+    target_selected: 再次施法以建造
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  superpyramid:
+    name: 大锥体
+    description: 创造空心的大锥体(金字塔)
+    usage: 是否两次以建造
+    cancel: 已取消施法
+    target_selected: 再次施法以建造
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  superbox:
+    name: 大空盒
+    description: 创造大空盒
+    usage: 是否两次以建造
+    cancel: 已取消施法
+    target_selected: 再次施法以建造
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  supercube:
+    name: 超级立方体
+    description: 创造大型立方体
+    usage: 是否两次以建造
+    cancel: 施法已取消
+    target_selected: 再次施法已建造
+    fail: 太大了!
+    cast_finish: 已填充$count块$material方块
+  superblast:
+    name: 超级爆破
+    description: 炸出一个坑
+    cast_finish: 已炸毁$count块方块
+  blast:
+    name: 爆破
+    description: 炸掉脆弱的方块
+    cast_finish: 已炸毁$count块方块
+    upgrade_description: 增加范围,可炸掉更多类型的方块
+  earthquake:
+    name: 撼地
+    description: 创造一场地震
+    cast_finish: 已震裂$count块方块
+  cloak:
+    name: 隐形斗篷
+    description: 使你隐身
+    cast: 你已使目标隐身
+    cast_self: 你隐身了
+  rollback:
+    name: 回溯
+    description: 撤销目标法术
+    cast: '&5你撤销了&d&o$target的&r&6$spell&5'
+    cast_player: '&5你撤销了&d&o$target的&r&6$spell&5'
+    alternate_up: '&5你撤销了你之前使用的&r&6$spell&5'
+    alternate_down: '&5你撤销了&d&o$target的&r&6$spell&5'
+    deactivate: '&5你取消了&6$spell&5'
+    fail: 没有可以撤销的操作
+    no_target: 没有可以撤销的操作
+  commit:
+    name: 确认
+    description: 使你的法术永存
+    usage: 清除你的回溯队列
+    cast_player: 你确认$target的法术
+    cast: 你的回溯队列已清除
+    fail: 没有可以
+  counterspell:
+    name: 反制魔法
+    description: 反制目标玩家的法术
+    usage: 只对最近的法术有效
+    cast: '&5你反制了&d&o$target的&r&6$spell&5'
+    cast_player_message: a:&d&o$player&r&5反制了你的&3&o$spellr&5!
+    fail: 反制失败
+  counterspell|2:
+    upgrade_description: 施法不会出错
+  push:
+    name: 推移
+    description: 推走目标
+    alternate: 你不要过来啊!
+    upgrade_description: 推得更远
+  push|4:
+    upgrade_description: 往下瞄准可作用于一片区域
+  farm:
+    name: 牧群
+    description: 创造牧群
+    deactivate: 你释放了牧群
+    cast: 你召唤了$count只动物
+  breach:
+    name: 裂痕
+    description: 暂时摧毁目标表面
+    cast_finish: 已裂开$count块方块
+    upgrade_description: Size increased
+  tesseract:
+    name: 宇宙魔方
+    description: 闪现一段距离
+    no_target: 无法到达那里
+  mine:
+    name: 挖矿
+    description: 挖掘目标矿物
+    cast_finish: 已挖到一些矿物
+    upgrade_description: 可挖掘更多方块
+  mine|4:
+    upgrade_description: 可挖掘所有方块
+  chop:
+    name: 伐木
+    description: 用魔法砍树
+    cast_finish: 要致富,先砍树!
+    upgrade_description: 一次砍伐更多木头
+  peek:
+    name: 窥视
+    description: 用玻璃窥视目标
+    cast_finish: 已透视$count块方块
+    upgrade_description: 增加大小
+  sandblast:
+    name: 落沙
+    description: 掉下一盘散沙
+    cast_finish: 已创建$count块落沙
+    upgrade_description: 掉落更多沙子
+  fill:
+    name: 填充
+    description: 填充矩形选区
+    usage: 施法两次以填充
+    cancel: 已取消填充
+    target_selected: 再次施法以填充$material
+    fail: 无法填充那么多方块!
+    cast_finish: 已填充$count块$material方块
+  superregenerate:
+    name: 超级回溯
+    description: 回溯整个区块
+    usage: 再次施法以回溯
+    fail: 不能再回溯更多了!
+    cast: 正在回溯区块
+    target_selected: 再次施法以回溯区块
+    cast_finish: 已回溯$count块方块
+    cancel: 已取消施法
+  regenerate:
+    name: 回溯
+    description: 回溯选区
+    fail: 无法回溯那么多方块!
+    usage: 施法两次以回溯
+    cast: 正在回溯区域
+    target_selected: 再次施法以回溯区域
+    cast_finish: 已回溯$count块方块
+    cancel: 已取消回溯
+  recurse:
+    name: 递归
+    description: 递归填充方块
+    cast_finish: 已填充$count块$material方块
+  floodfill:
+    name: 填坑
+    description: 填充不平整的地方
+    cast_finish: 已用$material填平$count块方块
+  fire:
+    name: 点燃
+    description: 远距离点火
+    cast: 你在玩火
+    upgrade_description: 增加范围, 燃烧时间更长
+  growth:
+    name: 生长
+    description: 使植物、农作物和树苗瞬间生长
+    upgrade_description: 增加范围
+  alter:
+    name: 转换
+    description: 转换特定目标
+    usage: 用于羊毛、楼梯等方块
+    cast_entity: 你转换了$target
+    cast: 你转换了该方块
+    fail: 无法转换那个方块
+  superalter:
+    name: 超级转换
+    description: 转换多个方块
+    usage: 用于羊毛、楼梯等方块
+    cast: 已转换$count块方块
+    fail: 无法转换那个方块
+  sphere:
+    name: 球体
+    description: 创造球体
+    cast_finish: 已创建$material构成的球
+  rainbow:
+    name: 彩虹
+    description: 发射爱之彩虹!
+  blob:
+    name: 气泡
+    description: 创造球体困住目标
+    cast_finish: 已用$count块$material方块困住目标
+  blob|2:
+    upgrade_description: 材质可变为粘土
+  blob|3:
+    upgrade_description: 材质可变为黑曜石
+  blob|4:
+    upgrade_description: 材质可变为你的笔刷所应用的方块
+  walls:
+    name: 高墙
+    description: 创造阻挡目标的高墙
+    cast_finish: 已填充$count块$material方块
+  tendril:
+    name: 黑暗卷须
+    description: 召唤黑暗卷须
+  repair:
+    name: 修复
+    description: 修复一片用备份魔法保存的区域
+    cast_finish: 已修复$count块方块
+  emp:
+    name: EMP
+    description: 使区域感电
+    cast_finish: 已感电$count块方块
+  ghast:
+    name: 恶魂
+    description: 召唤恶魂
+  familiar:
+    name: 使魔
+    description: 创造一个动物使魔
+    cast: 你召唤了使魔
+    deactivate: 你释放了使魔
+  disintegrate:
+    name: 分解
+    description: 伤害你的目标
+    usage: 会摧毁方块或实体
+    cast_entity: ZOT!
+    cast: ZAP!
+  blink:
+    name: 闪现
+    description: 传送到目标处
+    no_target: 无法传送到那里
+    teleport_failed: 无法传送到那里
+    teleport: 闪现!
+    cast: ''
+  blink|2:
+    upgrade_description: 增加范围
+  blink|3:
+    upgrade_description: 增加范围, 可穿过地表
+  blink|4:
+    upgrade_description: 增加范围, 可穿过地下
+  blink|5:
+    upgrade_description: 增加范围, 可穿过方块
+  blink|6:
+    upgrade_description: 你现在可以闪现到空中
+  absorb:
+    name: 吸收
+    description: 吸收目标方块
+    usage: 将材料加到法杖上
+    fail: 法术需要一根法杖
+    cast: 正在吸收一些$material
+  hat:
+    name: 戴帽
+    description: 给目标戴上帽子
+    cast: 你戴上了$material
+    removed: 你取下了魔法帽
+    hat_name: $hat帽
+    hat_lore: 点击会消失
+    upgrade_description: 增加持续时间
+  wear:
+    name: 穿戴
+    description: 右击穿戴
+    cast: 你将物品戴在了头上
+  magichat:
+    name: 魔法帽
+    cast: ''
+    cast_nightvision: 你的帽子照亮了道路
+    cast_absorption: 你的帽子强化了你
+    cast_bunny: 一只兔子跳了处理!
+    cast_killer_bunny: 快跑!!!!!!
+    alternate: 你的魔法帽跳到了你头上
+  invisiblecloak:
+    name: 隐形斗篷
+    cast: 你消失在一缕烟雾中!
+  stalactite:
+    name: 钟乳石
+    description: 创造向下的柱子
+    cast: 你造出了$material柱子
+    no_target: 不能再往下造柱子了
+  lava:
+    name: 熔岩
+    description: 发射岩浆
+    cast: 你发射了岩浆
+    upgrade_description: 更多岩浆
+  earth:
+    name: 大地
+    description: 造出方块
+    cast: 你召唤出了一些泥土
+  iterate:
+    name: Iterate
+    description: 建造一行方块
+    usage: 必须瞄准目标方块
+    cast: 已填充$count块方块
+  column:
+    name: 建造
+    description: 建造一列方块
+    cast: 已填充$count块方块
+  flamethrower:
+    name: 喷火
+    description: 燃烧吧!
+    cast: 你点燃了一股火焰
+    upgrade_description: 更长的火焰
+  stash:
+    name: 藏匿
+    description: 藏东西的好地方
+    cast: 你打开了末影箱
+    cast_player: 你偷窥了$target的末影箱
+  pickpocket:
+    name: 扒窃
+    description: 偷走附近玩家身上的东西
+    cast_player: 你偷走了$target的东西
+    cast_player_message: ''
+  workbench:
+    name: 工作台
+    description: 合成物品吧
+    cast: 工作吧!
+  superlaser:
+    name: 超级激光
+    description: 永久摧毁一行方块
+    cast_finish: 已摧毁$count块方块
+    upgrade_description: 更长的持续时间, 可破坏方块类型的方块
+  laser:
+    name: 激光
+    description: 摧毁一行方块
+    cast_finish: 摧毁$count块方块
+    upgrade_description: 更大的范围,增加伤害
+  stream:
+    name: 喷水
+    description: 噗
+    cast: 你使用了高压水枪
+    upgrade_description: 增加伤害和范围
+  wolf:
+    name: 狼群
+    description: 创造狼群
+    cast: 你召唤了狼群!
+    fail: 你的狼群快递已被摧毁!
+  wolfhouse:
+    name: 狼屋
+    description: 创造会自动恢复的基地
+  tent:
+    name: 帐篷
+    description: 创造一顶帐篷
+    cast: 你创造了一顶帐篷
+  cage:
+    name: 牢笼
+    description: 暂时困住目标
+    cast: 你困住了目标
+  cat:
+    name: 猫奴
+    description: 召唤一些猫
+    cast: 你召唤了猫!
+    fail: 你的生死未卜.
+  shrink:
+    name: 收缩
+    description: 缩小不同的东西
+    usage: 必须杀死目标才能获得头颅
+    cast: 缩小吧!
+    cast_entity: 你缩小了$target
+  capture:
+    name: 捕捉
+    description: 捕捉目标并封印到刷怪蛋内
+    cast: 我抓到你了!
+    cast_entity: 你捉住了$target
+  grow:
+    name: 成长
+    description: 使特定实体长大
+    cast: 成长吧!
+    cast_entity: 你使 $target 成长了
+    no_target: 你不能使那个东西成长!
+  flare:
+    name: 烟花
+    description: 发射绚丽的烟花
+    cast: 你发射了一些魔法烟花
+  respawn:
+    name: 重生
+    description: 回到重生点
+    cast: 你传送到了重生点
+  recall:
+    name: 传送
+    cancel: 传送终止!
+    description: 传送到不同的地点.
+    usage: 传送时给予5秒的保护.
+    teleport: ''
+    teleport_failed: 传送失败
+    no_target: 无法在这里放置标记
+    cast_marker_place: 你放置了一个传送标记
+    cast_marker_move: 你移动了传送标记
+    cast_marker: 返回到你的标记处
+    cast_death: 返回到你上次死亡的地点
+    cast_spawn: 回到重生点
+    cast_home: 回家
+    cast_wand: 回到你丢弃的法杖处
+    cast_warp: 传送到 $name
+    cast_town: 传送回你的家
+    cast_field: 传送到安全的区域
+    cast_friend: 传送到$name
+    no_target_death: 未记录到死亡地点
+    no_target_wand: 未记录到丢失的法杖
+    no_target_home: 未设置家
+    no_target_warp: 无效的地标 $name
+    no_target_marker: 未设置标记
+    no_target_spawn: 无法传送回重生点
+    no_target_town: 你不在城镇内
+    no_target_fields: 你没有领域
+    no_target_friend: 无效名称$name
+    title_move_marker: 将标记移到这里
+    description_move_marker: 替换你当前的标记
+    title_marker: 标记
+    description_marker: 向下瞄准移动你的标记
+    title_death: 最后死亡
+    description_death: 你的最后死亡地点
+    title_friend: $name
+    title_warp: $name
+    title_spawn: 重生点
+    description_spawn: 当前世界的重生点
+    title_home: 家
+    description_home: 你上次睡觉的地方
+    title_wand: 失落法杖
+    description_wand: 你曾丢弃的法杖
+    title_town: 城镇中心
+    description_town: 你的城镇的中心
+    description_field: 受保护的区域
+    cross_world_disallowed: 你不能传送到其他世界
+    title: 选择目的地
+    move_marker_title: 移动标记
+    unlock_warp: '&b你已解锁&5$name&b作为一个&6传送&b点!'
+    add_friend: '&b你已添加&5$name&b&传送&b点!'
+    remove_friend: '&c你已删除&5$name&b&传送&b点!'
+  recall|2:
+    upgrade_description: 解锁最后一次死亡的地点
+  recall|3:
+    upgrade_description: 解锁标记, 往下瞄准设置地点.
+    usage: 需要5秒的施法时间. 往下瞄准设置标记.
+  warpunlock:
+    name: 解锁地标
+    description: 可用在命令方块或区域指令内来让玩家在发现新区域时解锁传送点
+    cooldown: ''
+  warpmenu:
+    name: 地标菜单
+    description: 玩家可以使用地标进行传送
+  levitate:
+    name: 飘浮
+    description: 使你飘浮到空中
+    cast: 你感觉你变轻了
+    cancel: 你感觉你变重了
+    upgrade_description: 飞得更高更快, 减少冷却
+  boom:
+    name: 爆炸
+    description: 制造一场爆炸
+    cast: Boom!
+  boom|2:
+    upgrade_description: 造成更大的伤害, 破坏方块
+  box:
+    name: 火柴盒
+    description: 创造一个大空盒
+    cast_finish: 已填充$count个$material
+  pillar:
+    name: 柱子
+    description: 升起一根柱子
+    cast: 你创造了一根$material柱子
+    no_target: 不能再高了
+  raise:
+    name: 抬升
+    description: 抬升地面
+    cast: 你抬升了地面
+  flatten:
+    name: 平坦化
+    description: 平坦一片区域
+    cast: 你平坦了一片区域
+  place:
+    name: 放置
+    description: 在你的目标处放置方块
+    cast: 你放置了一块$material
+  force:
+    name: 心灵致动
+    description: 使用念力
+    usage: 选择并扔出实体
+    cancel: 释放目标
+    target_selected: 你捕获了$target
+  dragonball:
+    name: 龙息弹
+    description: 发射龙息弹.
+    usage: 小心别掉到龙息里!
+  fireball:
+    name: 火球术
+    description: 召唤火焰弹
+  fireball|2:
+    upgrade_description: 增加精准度
+  fireball|3:
+    upgrade_description: 增加精准度和速度
+  fireball|4:
+    upgrade_description: 现在开火吧
+  wither:
+    name: 凋零
+    description: 发射凋灵骷髅头
+    upgrade_description: 发射更多的头颅
+  map:
+    name: 绘图
+    description: 生成一张地图
+    cast: 这是张地图!
+  camera:
+    name: 摄影
+    description: 拍照
+    cast_target: 你给$target拍了一张照片
+    fail: 加载照片失败
+    cast: 咔嚓!
+    cast_self: 自拍!
+    cooldown: 相机冷却中
+  tornado:
+    name: 龙卷风
+    description: 召唤毁灭性的龙卷风
+    cast: 卧倒并掩护!
+    upgrade_description: 现在会摧毁建筑了
+  transmute:
+    name: 嬗变
+    description: 转化你的建筑
+    no_target: 没有可以嬗变的东西
+    cast: 你将建筑变为了$material
+  masterattack:
+    name: 爆裂大师
+    description: 只在你满血时可使用的远距离攻击
+    insufficient_resources: ''
+    cooldown: ''
+  missile:
+    name: 魔法飞弹
+    description: 发射魔法飞弹
+    cast_target: 你的飞弹对 $target 造成了 $damage 点伤害
+    cast_player_message: $caster 使用 $spell 对你造成了 $damage 点伤害 
+    cast: 你发射了一枚魔法飞弹
+    no_target: 你发射了一枚魔法飞弹
+    upgrade_description: 增加伤害和范围
+  railgun:
+    name: 磁轨炮
+    description: 能够穿透方块和多个目标
+    cast: 你对$target发射了磁轨炮
+    no_target: 你发射了磁轨炮
+  testdummy:
+    name: 测试玩偶
+    description: 生成一只可怜的测试玩偶
+  projectile:
+    name: Project I.L.E.
+    description: 测试弹射物的魔法
+    cast: 发射弹射物
+    cast_finish: 击中目标
+    no_target_finish: miss
+  whip:
+    name: 鞭笞
+    description: 由纯净能量构成的魔法鞭
+    cast: 啪!
+  sticky:
+    name: 粘弹
+    description: 扔出5秒后爆炸的粘弹
+    cast: 你扔出了一枚粘弹
+    upgrade_description: 扔得越准，爆炸范围越大
+  homing:
+    name: 追踪导弹
+    description: 发射自动追踪目标的导弹
+    cast: 你对$target发射了追踪导弹
+    lock_on: '&d&o$player&r&5瞄准了你!'
+    cast_player_message: a:&d&o$player&r&5的$spell击中了你
+    upgrade_description: 造成更多的伤害，导弹速度更快
+  fury:
+    name: 天降正义
+    description: 发射多枚追踪导弹
+    cast: 你发射了多枚追踪导弹
+    cast_player_message: a:&d&o$player&r&5的$spell击中了你
+    upgrade_description: 更多导弹
+  chainlightning:
+    name: 连锁闪电
+    description: 驱雷掣电
+    cast: 你制造了连锁闪电
+    cast_player_message: a:&d&o$player&r&5的$spell击中了你
+    upgrade_description: 连锁更多目标
+  blind:
+    name: 致盲
+    description: 致盲目标
+    cast: 你致盲了$target
+  pollinate:
+    name: 种花
+    description: 种些花吧!
+    cast: 开花吧!
+  paste:
+    name: 粘帖
+    description: 粘帖schematic
+    usage: 和schematic笔刷一起使用
+    cast_finish: 已粘帖$count块方块
+    no_action: Schematic加载中, 请重试!
+  kill:
+    name: 致命一击
+    description: 对你的目标造成致命一击
+    cast_player_message: ''
+    cast: 去死吧!
+    upgrade_description: 更快、更大的弹射物,更短的施法时间
+  superkill:
+    name: 秒杀
+    description: 秒杀你的目标
+    cast: 西内!
+  damage:
+    name: 伤害
+    description: |-
+      用于测试伤害类型的法术.
+      请注意施法者使用其他插件造成的伤害不会获得掉落，因为伤害来源已丢失
+  torture:
+    name: 严刑
+    description: 无情地折磨你的敌人
+    cast: 感受我的愤怒吧!
+    upgrade_description: 增加伤害和持续时间
+  boomstown:
+    name: 死亡单程票
+    description: 送你的目标上天
+  rubberize:
+    name: 粘液
+    description: 使你的目标弹弹弹
+    cast: 弹弹弹!
+  count:
+    name: 实体检测器
+    description: 检测附近实体的管理员工具
+  debugger:
+    name: 调试器
+    description: 管理员用于调试魔法的工具
+    cast: 调试$target中
+    deactivate: 关闭调试$target
+    alternate_up: 关闭调试所有实体
+    alternate_down: 正在调试你
+  superfly:
+    name: 腾飞
+    description: 给摄影师用的法术
+    cast: 你感觉你变轻了
+    cost_free: 你感觉你变重了
+  petrify:
+    name: 石化
+    description: 使你的目标无法动弹
+    cast: 你石化了$target.
+    upgrade_description: 增加持续时间
+  polymorph:
+    name: 变形妖术
+    description: 将你的目标变成羊
+    cast: $target变成了羊.
+    upgrade_description: 增加持续时间
+  entangle:
+    name: 缠绕
+    description: 用拴绳困住你的目标
+    cast: 你困住了$target.
+  wound:
+    name: 重创
+    description: 对你的目标造成物理伤害
+    cast: 你砍伤了$target.
+    upgrade_description: 增加伤害
+  stun:
+    name: 击晕
+    description: 击晕目标
+    cast: 你扔出了眩晕球
+    upgrade_description: 增加伤害和眩晕时间
+  webbing:
+    name: 困兽之网
+    description: 令人讨厌的蜘蛛的攻击方式
+    cast_player_message: a:&r&5你困入了&d&o$player&r&5的网
+  lift:
+    name: 抬升
+    description: 抬升所有的目标
+    cast: 你抬起了$target.
+  rocket:
+    name: 火箭
+    description: 来一场狂野之旅吧
+    cast: 发射!
+  sponge:
+    name: 海绵
+    description: 吸收一片区域内的水
+    cast: Slurp!
+  extinguish:
+    name: 熄灭
+    description: 熄灭一片区域内的火焰
+    cast: 熄火吧!
+  skills:
+    name: 技能
+    descriptions: 显示可用的技能, 拖拽技能到快捷栏内来使用
+  upgrades:
+    name: 查看魔法进度
+    description: 显示魔法升级进度
+    fail: 你必须手持法杖!
+    upgrade_name_change: '&r&4升级: &r$name'
+    level_requirement: '&r&c所需等级: &6$path'
+    cast_requirement: '&r&c施法次数: &6$current&f/&e$required'
+    tags_requirement: '&r&c需要: &6$tags'
+    confirm_title: 更改为$item
+    title: 魔法进度
+  brushselect:
+    name: 笔刷选择器
+    descriptions: 选择激活的笔刷
+    usage: 笔刷用于工程魔法
+    fail: 你必须手持法杖!
+    variant_name: '&b$variant &3+Variants'
+    variant_description: 选择一种$variant
+  tracking:
+    name: 生物感知
+    description: 寻找附近的生物
+    cast: 你感知到了附近的$target
+    no_target: 总感觉很安静呢!
+    upgrade_description: 更大的搜索范围
+  tracking|4:
+    upgrade_description: 可以悄悄地搜索附近的玩家
+  enchantwand:
+    name: 升级法杖
+    description: 升级你的法杖
+    no_wand: 你必须手持法杖!
+    fail: ''
+  addspell:
+    name: 添加魔法
+    description: 给你的法杖添加魔法
+    no_upgrade: 你不能用 $wand 学习这个魔法.
+    no_path: 你必须成为 $path&r!
+    no_path_end: 你必须先成为 $path&r!
+    no_wand: 你必须手持法杖!
+    no_target: 你已经掌握了那个法术
+    fail: ''
+  giveitem:
+    name: 给予物品
+    description: 基于玩家物品
+    cast: 你获得了 $item
+    cast_player_message: a:你获得了$player赠送的$item  
+    fail: ''
+  fillwand:
+    name: 通晓万物
+    description: 给你的法杖塞满所有魔法
+    no_wand: 你必须手持法杖!
+    fail: ''
+  spellshop:
+    name: 学习法术
+    title: $path &r法术 ($balance&0)
+    description: |-
+      消耗魔法点来学习新的法术.
+      当你学完了职业路径的所有法术后,你就可以升级职业了!
+    no_items: 你没有可以购买的法术
+    no_path: 你不能在这里学习.
+    no_upgrade: 这里已经没有东西了.
+    no_required_path: 你必须至少成为 $path&r!
+    no_path_end: 你必须成为 $path&r!
+    no_wand: 你必须手持法杖!
+    confirm_title: 学习 $item
+    selected: "t:&d&o你学会了 \n&r&6$item\na:&r&d&o-&r&a$cost"
+    fail: ''
+  engineershop:
+    name: 工程师商店
+    title: 回溯 ($balance&0)
+    description: 解锁工程
+    confirm_title: 升级为工程师
+    fail: ''
+  architectshop:
+    name: 建筑师商店
+    title: 吸收 ($balance&0)
+    description: 解锁建筑师
+    confirm_title: 升级为建筑师
+    fail: ''
+  conduitshop:
+    name: 转变者商店
+    title: 备份 ($balance&0)
+    description: 解锁转变者
+    confirm_title: 升级为转变者
+    fail: ''
+  bookshop:
+    name: 魔法书店
+    title: 魔法书
+    description: 获取魔法书
+    cost_lore: 免费!
+    confirm_title: 获得 $item
+    deducted: '&d&o你获得了 &r&6$item'
+  tweakshop:
+    name: 法杖修理店
+    title: 法杖修复
+    description: 修复你的法杖
+    cost_lore: 免费!
+    not_applicable: 你的法杖已有 $item
+    confirm_title: 获得 $item
+    deducted: '&d&o你获得了 &r&6$item'
+  progressmenu:
+    name: 魔法进度
+    title: 魔法进度
+    selected: ''
+    cast_fail: ''
+    no_template: '&c你无法自定义$wand&c.'
+  appearanceshop:
+    name: 法杖外观
+    description: 更改法杖外观
+    title: 法杖外观 ($balance&0)
+    selected: 更改为 $item
+    not_applicable: 你的法杖外观更改为 $item
+    no_template: '&c你无法修改$wand的外观&c.'
+  bowappearanceshop:
+    name: 弓外观
+    description: 更改弓的外观
+    title: 弓外观 ($balance&0)
+    selected: 更改为 $item
+    not_applicable: 你的弓外观更改为 $item
+    no_template: '&c你无法修改$wand的外观&c.'
+  controlsmenu:
+    name: 控制法杖
+    description: 更改你的法杖控制方式
+    title: 控制法杖
+    confirm_title: 更改为 $item
+    selected: '&d&o已更改为 &r&6$item'
+    no_template: '&c你无法修改 $wand &c的控制方式.'
+  colorshop:
+    name: 特效颜色
+    description: 给你的法术特效上色
+    title: 特效颜色 ($balance&0)
+    selected: 你更改为了 $item
+  effectshop:
+    name: 法杖特效
+    description: 给你的法杖添加粒子特效
+    title: 法杖特效 ($balance&0)
+    selected: 你更改为了 $item
+    confirm_title: $item
+  upgradeshop:
+    name: 法杖升级商店
+    title: 升级法杖 ($balance&0)
+    description: 升级你的法杖
+    not_applicable: 你的法杖已有 $item
+  emeraldshop:
+    name: 绿宝石商店
+    title: 绿宝石 ($balance&0)
+    description: 用XP换绿宝石
+  withdrawals:
+    name: 取款
+    description: 用钱换取珍贵的材料和宝石
+    cost_lore: 获得 $cost
+    deducted: '&d&o你获得了&r&a$cost &r&d&oof &r&6$item'
+  deposits:
+    name: 捐赠
+    description: 用珍贵的材料和宝石来赚钱
+    cost_lore: 捐赠 $cost
+    deducted: '&d&o你捐赠了&r&a$cost&r&d&o个&r&6$item'
+  spshop:
+    name: SP商店
+    description: 用钱换取魔法点
+  lootshop:
+    name: 战利品商店
+    description: 出售怪物掉落物
+    title: 出售掉落物 ($balance&0)
+  wandshop:
+    name: 法杖商店
+    title: 法杖 ($balance&0)
+    description: 购买法杖
+  mobshop:
+    name: 怪物商店
+    title: 怪物 ($balance&0)
+    description: 购买刷怪蛋
+  spawnershop:
+    name: 刷怪笼商店
+    title: 刷怪笼 ($balance&0)
+    description: 购买怪物刷怪笼
+  broomshop:
+    name: 扫帚商店
+    title: 扫帚 ($balance&0)
+    description: 购买扫帚
+  magicitemshop:
+    name: 魔法物品商店
+    title: 魔法物品 ($balance&0)
+    description: 购买魔法物品
+  itemshop:
+    name: 物品商店
+    title: 商店 ($balance&0)
+    description: 买买买!
+  buyshop:
+    name: 购买商店
+    title: 商店 ($balance&0)
+    description: 买买买!
+  sellshop:
+    name: 收购商店
+    title: 出售 ($balance&0)
+    description: 买买买!
+    insufficient: '&c需要&4$cost'
+    confirm_title: Sell $item
+    deducted: '&d&o你售出了&r&6$item&r&d&o并获得了&r&a$earn'
+  automatashop:
+    name: 机械商店
+    title: 出售机械之心
+    description: 出售机械之心
+    no_items: 没有可以出售的物品!
+    insufficient: 需要 $cost
+    confirm_title: 出售 $item
+    deducted: '&d&o你售出了&r&6$item&r&d&o并获得了&r&a$cost'
+  fxdemo:
+    name: FX Demo
+    description: 显示不同的 EffectLib 特效
+  soundtest:
+    name: 自定义音效 Demo
+    description: 倾听在插件资源包里的所有自定义FX音效
+  fx:
+    name: FX 粒子
+    description: 显示特殊的粒子, 可输入指令 /cast fx particle redstone
+  randomtp:
+    name: 随机传送
+    description: 传送你到随机地点
+  note01:
+    name: 1 Note C Middle
+  note02:
+    name: 2 Note C#
+  note03:
+    name: 3 Note D
+  note04:
+    name: 4 Note D#
+  note05:
+    name: 5 Note E
+  note06:
+    name: 6 Note F
+  note07:
+    name: 7 Note F#
+  note08:
+    name: 8 Note G
+  note09:
+    name: 9 Note G#
+  note10:
+    name: 10 Note A
+  note11:
+    name: 11 Note A#
+  note12:
+    name: 12 Note B
+  note13:
+    name: 13 Note C Octave
+  note14:
+    name: 14 Note C#
+  note15:
+    name: 15 Note D
+  note16:
+    name: 16 Note D#
+  note17:
+    name: 17 Note E
+  note18:
+    name: 18 Note F
+  note19:
+    name: 19 Note F#
+  note20:
+    name: 20 Note G
+  note21:
+    name: 21 Note G#
+  note22:
+    name: 22 Note A
+  note23:
+    name: 23 Note A#
+  note24:
+    name: 24 Note B
+  trinketshop:
+    title: 装饰品 ($balance&0)
+  airscooter:
+    name: 云霄飞车
+    description: 自由飞翔
+  disposal:
+    name: 废物处理
+    description: 永久删除你不需要的物品
+  projector:
+    name: 投影
+    description: 这是我!
+  sweep:
+    name: 横扫
+    description: 360度全方位无死角的强力攻击
+  dash:
+    name: 冲刺
+    description: 往前冲刺一段距离，对路径上的所有生物造成伤害
+  throwsword:
+    name: 飞剑
+    description: 扔出你的剑来攻击敌人
+  boomerang:
+    name: 回力魔法
+    description: 扔出回力剑!
+  evade:
+    name: 躲避
+    description: 随机传送到附近
+  backflip:
+    name: 后空翻
+    description: 快速后退以躲避你的敌人
+    fail: a:你无路可逃了!
+  birth_hunter:
+    name: 创造猎人
+  birth_defender:
+    name: 创造守卫者
+  birth_worm:
+    name: 创造蠕虫
+  birth_virus:
+    name: 创造病毒
+  birth_snake:
+    name: 创造毒蛇
+  equation:
+    name: 等式测试
+    description: |-
+      编辑spells.yml来测试你的等式,请加上:
+      equation:
+        parameters:
+          equation: "attribute * 5"
+  add_protection:
+    name: 保护
+    description: |-
+      给你的法杖加上保护.
+      在你手持法杖时激活保护效果.
+  add_fall_protection:
+    name: 摔落保护
+    description: |-
+      给你的法杖加上摔落保护.
+      在你手持法杖时激活保护效果.
+  add_fire_protection:
+    name: 火焰保护
+    description: |-
+      给你的法杖加上火焰保护.
+      在你手持法杖时激活保护效果.
+  add_physical_protection:
+    name: 物理保护
+    description: |-
+      给你的法杖加上物理保护.
+      在你手持法杖时激活保护效果.
+  add_projectile_protection:
+    name: 弹射物保护
+    description: |-
+      给你的法杖加上弹射物保护.
+      在你手持法杖时激活保护效果.
+  add_explosion_protection:
+    name: 爆炸保护
+    description: |-
+      给你的法杖加上爆炸保护.
+      在你手持法杖时激活保护效果.
+  add_damage:
+    name: 增加伤害
+    description: 增加你造成的伤害(不包括法术造成的伤害).
+  add_sharpness:
+    name: 利刃
+    description: 给你的魔法剑添加锋利附魔.
+  magictorch:
+    name: 魔法火把
+    description: 召唤跟随你的光芒
+  wandbuffshop:
+    name: 法杖buff
+    description: |-
+      给你的法杖添加buff.
+      这些buff只在你手持法杖时激活.
+    cast_fail: '&c该buff已满级!'
+    selected: '&d&o你&d&o用&r&a$cost购买了&r&6$item &r'
+    no_template: '&c你不能将buff加到$wand&c上.'
+  mute:
+    name: 沉默
+    description: 沉默目标玩家
+  nobabies:
+    name: 成人
+    description: 使所有的幼体生物长大
+  vanish:
+    name: 隐身
+    description: 使其他玩家看不见你.
+  ledger:
+    name: 账簿
+    title: 账簿
+    header: '&2&l余额'
+    currency_prefix: '&7&l'
+    value_prefix: '&0'
+  kamikaze:
+    name: 神风
+    description: 召唤会自爆的怪物
+  decoy:
+    name: 诱饵
+    description: 躲在诱饵背后吧
+  piggyback:
+    name: 骑乘
+    description: 现在是谁在骑着谁?
+wand:
+  default_name: 法杖
+  upgrade_default_description: 将升级你的法杖.
+  upgrade_item_description: '&e将被你的法杖吸收'
+  spell_item_description: ''
+  brush_item_description: ''
+  copy_material_name: 拷贝
+  copy_material_description: 用目标材料填充
+  erase_material_name: 擦除
+  erase_material_description: 用空气填充
+  clone_material_name: 克隆
+  clone_material_description: 复制目标方块
+  replicate_material_name: 复制
+  replicate_material_description: 复制克隆的目标
+  clone_material_activated: 已选择克隆源
+  replicate_material_activated: 已选择复制源
+  erase_modifier_activated: 已激活擦除调节器
+  map_material_name: 地图 $id
+  map_material_name_scaled: 地图 $id ($sizex$size)
+  map_material_description: 使用上个手持的地图来创造像素画
+  schematic_material_description: 使用$schematic来建造.
+  building_material_description: 使用$material建造
+  upgrade_uses: '&a增加 $count 使用次数'
+  upgrade_uses_singular: '&a增加 $count 使用次数'
+  uses_remaining_brief: '&c$count次'
+  uses_remaining_singular: '&c$count次'
+  uses_remaining: 剩余$count次
+  enchantment_level_1: I
+  enchantment_level_2: II
+  enchantment_level_3: III
+  enchantment_level_4: IV
+  enchantment_level_5: V
+  enchantment_level_max: X
+  spell_count: 学会了$count种魔法
+  material_count: 拥有$count材料
+  upgrade_spell_count: 添加$count法术
+  upgrade_material_count: 添加$count材料
+  mana_max: '&e法力： $amount'
+  mana_amount: '&e法力： $amount'
+  mana_amount_boosted: '&e法力： $amount &f(&b$mana&f)'
+  mana_regeneration: '&e魔法恢复: $amount/s'
+  mana_per_damage: '&e法力狂暴: $amount/HP'
+  mana_regeneration_boosted: '&eMana Regeneration: $amount &f(&b$mana&f)&d/s'
+  mana_boost: '&e法力加成: $percent%'
+  mana_regeneration_boost: '&e法力回复加成: $percent%'
+  earn_multiplier: '&6$type 加成: $percent%'
+  block_chance: '&b格挡 $roman'
+  reflect_chance: '&b反射 $roman'
+  cost_reduction: '&6减价 $roman'
+  consume_reduction: '&6Manifestation'
+  cooldown_reduction: '&6冷却减少 $roman'
+  power: '&6力量 $roman'
+  attributes: '&d$attribute $value'
+  property_stack: +$property
+  property_stack_negative: '&c$property'
+  property_value: $property
+  property_value_negative: '&c$property'
+  item_attributes:
+    GENERIC_ATTACK_DAMAGE: 攻击伤害
+  protection:
+    overall: '&2保护 $roman'
+    physical: '&2物理保护 $roman'
+    projectile: '&2弹射物保护 $roman'
+    fall: '&2摔落保护 $roman'
+    fire: '&2火焰保护 $roman'
+    explosion: '&2爆炸保护 $roman'
+    magic: '&2魔法保护 $roman'
+    unknown: '&2$type保护 $roman'
+  strength:
+    overall: '&2伤害 $roman'
+    physical: '&2物理伤害 $roman'
+    projectile: '&2弹射物伤害 $roman'
+    fall: '&2摔落伤害 $roman'
+    fire: '&2火焰伤害 $roman'
+    explosion: '&2爆炸伤害 $roman'
+    magic: '&2魔法伤害 $roman'
+    unknown: '&2$type 伤害 $roman'
+  weakness:
+    overall: '&2虚弱 $roman'
+    physical: '&2物理虚弱 $roman'
+    projectile: '&2弹射物虚弱 $roman'
+    fall: '&2摔落虚弱 $roman'
+    fire: '&2火焰虚弱 $roman'
+    explosion: '&2爆炸虚弱 $roman'
+    magic: '&2魔法虚弱 $roman'
+    unknown: '&2$type虚弱 $roman'
+  enchantments:
+    ARROW_DAMAGE: 力量
+    ARROW_FIRE: 火矢
+    ARROW_INFINITE: 无限
+    ARROW_KNOCKBACK: 冲击
+    BINDING_CURSE: 绑定诅咒
+    CHANNELING: 穿刺
+    DAMAGE_ALL: 锋利
+    DAMAGE_ARTHROPODS: 节肢杀手
+    DAMAGE_UNDEAD: 亡灵杀手
+    DEPTH_STRIDER: 深海探索者
+    DIG_SPEED: 效率
+    DURABILITY: 耐久
+    FIRE_ASPECT: 火焰附加
+    FROST_WALKER: 冰霜行者
+    IMPALING: 引雷
+    KNOCKBACK: 击退
+    LOOT_BONUS_BLOCKS: 时运
+    LOOT_BONUS_MOBS: 抢夺
+    LOYALTY: 忠诚
+    LUCK: 幸运
+    LURE: 饵钓
+    MENDING: 经验修补
+    OXYGEN: 水下呼吸
+    PROTECTION_ENVIRONMENTAL: 保护
+    PROTECTION_EXPLOSIONS: 爆炸保护
+    PROTECTION_FALL: 摔落保护
+    PROTECTION_FIRE: 火焰保护
+    PROTECTION_PROJECTILE: 弹射物保护
+    RIPTIDE: 激流
+    SILK_TOUCH: 精准采集
+    SWEEPING_EDGE: 横扫之刃
+    THORNS: 荆棘
+    VANISHING_CURSE: 消失诅咒
+    WATER_WORKER: 水下速掘
+  potion_effect: '&b$effect $roman'
+  super_powered: '&3势不可挡'
+  super_protected: '&3无懈可击'
+  spell_aura: '&b光环: &6$spell'
+  costs_description: 需消耗$description
+  active_costs_description: 每秒消耗$description 
+  range_description: '&9范围: &6$range &9米'
+  owner_description: '&2&o$name的法杖'
+  bound_description: '&3&o绑定者：$name'
+  unmodifiable: 无法修改这根法杖
+  player_unmodifiable: 无法修改$name的法杖
+  bound_to_other: 那根法杖不属于你
+  bound: 那根法杖已经绑定了 $name
+  spell_added: 你学会了 &r&6$name &d&o法术
+  brush_added: 你学会了 &r&7$name &d&o笔刷
+  player_spell_upgraded: $players的&r&6$name&d&o升到了&3$level级
+  spell_upgraded: '&r&6$name &d&o升级为 &3$level'
+  spell_override_upgraded: '&r&6$name &d&o已升级'
+  upgraded_property: '&r&d你已升级为 &r&b$name'
+  spell_progression: '&r&6$name&d&o的魔法进度为&3$level&d&o/&3$max_level'
+  mana_added: '&r&d你现在的法力为$value'
+  hotbar_count: $amount个快捷栏
+  player_upgraded: $name的法杖升级了
+  player_not_upgraded: $name的法杖未升级
+  player_spells_levelled: $name的法术提升了$count级
+  player_spells_not_levelled: $name未升级任何法术
+  spells_levelled: 已升级你的$count种法术
+  spells_not_levelled: 没有升级任何法术
+  no_wand: 你必须手持法杖
+  player_no_wand: $name 未手持法杖
+  no_item: 你必须手持物品
+  player_no_item: $name未手持物品
+  reorganized: $wand &b重组
+  player_reorganized: $name的法杖已重组
+  alphabetized: $wand &b已排序
+  player_alphabetized: 已排序$name的法杖
+  already_enchanted: $item已经是一根法杖了
+  enchanted: 你的$item已转换为一根法杖
+  player_enchanted: $name的$item已转换为一根法杖
+  unenchanted: 你的法杖已变回普通物品
+  player_unenchanted: $name的法杖变回了普通物品
+  no_path: '&r&4你无法附魔你的$wand&4'
+  max_enchanted: '&r&4你的$wand&4不能再附魔了'
+  level_up: '&r&b你成为了一名&r&5$path'
+  duplicated: 已复制你的法杖
+  player_duplicated: 已复制$name的法杖
+  restored: 已恢复你的法杖
+  player_restored: 已恢复$name的法杖
+  not_restored: 你没有丢失的法杖
+  player_not_restored: $name没有丢失的法杖
+  setbound: 你已绑定法杖
+  player_setbound: $name已绑定法杖
+  unbound: 你已解绑法杖
+  player_unbound: $name已解绑法杖
+  unboundall: 你已解绑所有法杖
+  player_unboundall: $name已解绑所有法杖.法杖背包已被清空!
+  notunbound: 你没有绑定的$wand法杖
+  player_notunbound: 玩家$name没有绑定的$wand法杖
+  unlocked: 已解锁你的法杖
+  player_unlocked: 已解锁$name的法
+  unknown_template: 未知法杖名 $name
+  reconfigured: 已重新配置法杖
+  not_reconfigured: 未重新配置法杖
+  removed_property: 已删除属性$name
+  no_property: 法杖没有属性 $name
+  player_reconfigured: 已重新配置$name的法杖
+  player_not_reconfigured: $未重新配置name的法杖
+  filled: '&b你的$wand&b现在吸收了所有的法术'
+  player_filled: 已填充$name的法杖
+  renamed: 已重命名法杖
+  player_renamed: 已重命名$name的法杖
+  self_destruct: 你手里的远古遗物破碎了
+  no_permission: '&r&4你不能在这里使用 $wand &r&4.'
+  single_spell: $spell法杖
+  fully_enchanted: '&c你暂时不能再强化你的法杖了'
+  need_more_levels: 你至少需要 &r&4$levels &d&o级才能附魔
+  require_more_levels: 你必须达到更高级才能附魔
+  randomized_lore: 你会获得什么样的法杖呢?
+  randomized_name: 法杖盒
+  upgrade_name: 升级$name 
+  randomized_description: '&o&2$description'
+  description_lore: '&o&a$description'
+  path_lore: ''
+  hotbar_count_usage: '&e在激活 $wand &e法杖时按 $cycle_hotbar 来切换快捷栏'
+  inventory_instructions: '&r&e你的$wand&e现在拥有多个魔法.$toggle
+    来打开或关闭魔法背包.使用快捷栏来选择魔法.'
+  chest_instructions: '&r&e你的$wand&e现在拥有多个魔法.$toggle
+    来打开或关闭魔法背包, 点击一个法术来施法.'
+  skills_instructions: '&r&e你的$wand&e现在拥有多个魔法.$toggle
+    来打开或关闭魔法背包,拖拽法术到快捷栏来施法.'
+  cycle_instructions: '&r&e你的$wand&e现在拥有多个魔法.$cycle
+    来切换法术.'
+  page_instructions: '&r&e你的$wand&现在拥有多页魔法.
+    点击魔法背包外的地方来翻页.'
+  bound_instructions: '&r&3你的$wand&3绑定在了你身上,你无法丢弃它.'
+  spell_instructions: '&r&b使用你的$wand&b来施放 &r&6$spell&d&o. 施法需要
+    魔法, 法力显示在你的经验条处.'
+  enchant_instructions: '&r&b使用附魔台来升级你的$wand&b.'
+  brush_instructions: '&r&e材料笔刷已添加到你的$wand内&e. Shift+$toggle
+    来选择一个笔刷.'
+  sp_instructions: '&r&6你获得了一些魔法点(SP)! SP显示在
+    你的魔法条上方, 你可以手持法杖右击附魔台来学习新的魔法. 
+    重复施法可以获得少许SP.'
+  earn_instructions: '&r&6你获得了一些$currency! 这显示在你的魔法条上方
+    你的魔法条上方, 你可以手持法杖右击附魔台来学习新的魔法. 
+    重复施法可以获得少许SP.'
+  hotbar_changed: ''
+  spell_activated: $spell
+  upgrade_prefix: '&6'
+  single_use_prefix: '&4'
+  bound_prefix: '&3'
+  unbound_prefix: '&b'
+  has_path_prefix: '&d'
+  unmodifiable_prefix: '&6'
+  spell_prefix: '&6'
+  brush_prefix: '&7'
+  chest_inventory_title: 法杖
+wands:
+  testwand:
+    name: 测试法杖
+    description: 用于测试的法杖.
+  default:
+    name: 法杖
+    description: $path &r魔杖
+  wand:
+    name: 法杖
+    description: $path &r魔杖
+  starter:
+    name: 初学者法杖
+    description: 潜力有限的法杖
+  beginner:
+    name: (已过期) 初学者法杖
+    description: 别再用这根法杖了... 你该换根法杖了.
+  master:
+    name: 大师法杖
+    description: 用于演示
+  student:
+    name: 学者法杖
+    description: 用于演示
+  apprentice:
+    name: 学徒法杖
+    description: 用于演示
+  rage:
+    name: 狂暴之剑
+    description: 攻击敌人获取能量
+    spell_instructions: '&r&b使用快捷栏来施法. 施法需要
+      魔法, 法力显示在经验条处.'
+    inventory_instructions: '&r&b使用丢弃键 (Q) button 来打开或关闭魔法背包.'
+  magicsword:
+    name: 魔法剑
+    description: $path &r魔法剑
+    spell_instructions: '&r&b使用快捷栏来施法. 施法需要
+      魔法, 法力显示在经验条处.'
+    inventory_instructions: '&r&b使用丢弃键 (Q) 来打开或关闭魔法背包.'
+  magicbow:
+    name: 魔法弓
+    description: $path &r魔法弓
+    spell_instructions: ''
+    inventory_instructions: '&r&b使用丢弃键 (Q) 来打开或关闭魔法背包.'
+  mastersword:
+    name: 大师剑
+    description: 封印了黑暗的传说之剑
+  engineer:
+    name: 工程法杖
+    description: $path &r魔杖
+  architect:
+    name: 建筑师法杖
+    description: $path &r魔杖
+  conduit:
+    name: 转变者法杖
+    description: $path &r魔杖
+  architectstaff:
+    name: 建筑师
+    description: 能力越大，责任越大
+  staff:
+    name: 真理之杖
+    description: 请明智地使用!
+  admin:
+    name: 静默
+    description: 管理员特供
+  developer:
+    name: 编码器
+    description: 查看矩阵
+  camera:
+    name: 摄影
+    description: 给你或其他人拍张照片
+  magichat:
+    name: 魔法帽
+    description: 货真价实的魔法帽! 往上看并右击穿戴.
+  wizardhelmet:
+    name: 男巫围巾
+    description: 无法摧毁!
+  wizardchestplate:
+    name: 男巫长袍
+    description: 无法摧毁!
+  wizardleggings:
+    name: 男巫裤子
+    description: 无法摧毁!
+  wizardboots:
+    name: 男巫鞋子
+    description: 无法摧毁!
+  apprenticehelmet:
+    name: 学徒围巾
+    description: 赠送给新法师的装备
+  apprenticechestplate:
+    name: 学徒长袍
+    description: 赠送给新法师的装备
+  apprenticeleggings:
+    name: 学徒裤子
+    description: 赠送给新法师的装备
+  apprenticeboots:
+    name: 学徒鞋子
+    description: 赠送给新法师的装备
+  clericchestplate:
+    name: 圣职者的长袍
+    description: 治疗附近的玩家
+  magneticleggings:
+    name: 磁性护腿
+    description: 吸引附近的物品和经验
+  rabbitboots:
+    name: 兔子鞋
+    description: 动如脱兔
+  flashboots:
+    name: Flash 鞋子
+    description: Zoooooooom
+  rocketboots:
+    name: 火箭鞋
+    description: In a single bound!
+  hulkboots:
+    name: 浩克鞋
+    description: 浩克跳跃!
+  goggles:
+    name: 夜视仪
+    description: 看见未知
+  invisiblecloak:
+    name: 隐形斗篷
+    description: 传说中的圣器之一
+  wolf:
+    name: 狼群
+    description: NathanWolf的东西/扫帚
+  minister:
+    name: The Minister
+    description: 为了魔法!
+  miniwolf:
+    name: 小狼
+    description: NathanWolf的正经法杖
+  borealis:
+    name: 极光法杖
+    description: 来自北欧的法杖
+  conway:
+    name: 康威的法杖
+    description: 生命游戏
+  redeffects:
+    name: 红色法杖特效
+    description: 给你的法术上色!
+  greeneffects:
+    name: 绿色法杖特效
+    description: 给你的法术上色!
+  blueeffects:
+    name: 蓝色法杖特效
+    description: 给你的法术上色!
+  whiteeffects:
+    name: 白色法杖特效
+    description: 给你的法术上色!
+  blackeffects:
+    name: 黑色法杖特效
+    description: 给你的法术上色!
+  purpleeffects:
+    name: 紫色法杖特效
+    description: 给你的法术上色!
+  yelloweffects:
+    name: 黄色法杖特效
+    description: 给你的法术上色!
+  aquaeffects:
+    name: 浅绿色法杖特效
+    description: 给你的法术上色!
+  orangeeffects:
+    name: 橙色法杖特效
+    description: 给你的法术上色!
+  magentaeffects:
+    name: 品红色法杖特效
+    description: 给你的法术上色!
+  grayeffects:
+    name: 灰色法杖特效
+    description: 给你的法术上色!
+  lightgrayeffects:
+    name: 淡灰色法杖特效
+    description: 给你的法术上色!
+  lightblueeffects:
+    name: 淡蓝色法杖特效
+    description: 给你的法术上色!
+  pinkeffects:
+    name: 粉色法杖特效
+    description: 给你的法术上色!
+  browneffects:
+    name: 棕色法杖特效
+    description: 给你的法术上色!
+  darkgreeneffects:
+    name: 青绿色法杖特效
+    description: 给你的法术上色!
+  randomeffects:
+    name: 随机法杖特效
+    description: 你感觉今天鸿运当头? 给你的法术上随机颜色吧!
+  bubbleeffects:
+    name: 气泡法杖特效
+    description: 添加嗑药时显示的气泡效果
+  rainboweffects:
+    name: 彩虹法杖特效
+    description: 七彩斑斓
+  cleareffects:
+    name: 清空法杖特效
+    description: 删除粒子特效
+  haloeffects:
+    name: 光环特效
+    description: 一个个性化的光环
+  student_upgrade:
+    name: 升级为学者
+    description: 升级为学者
+  apprentice_upgrade:
+    name: 升级为学徒
+    description: 升级为学徒
+  master_upgrade:
+    name: 升级为大师
+    description: 成为大师
+  engineer_upgrade:
+    name: 升级为工程师
+    description: 成为工程师
+  architect_upgrade:
+    name: 升级建筑师
+    description: 成为建筑师
+  hotbar1:
+    name: 重置快捷栏
+    description: 重置你的法杖到单个快捷栏
+  hotbar2:
+    name: 2级快捷栏
+    description: 你的法杖有两行快捷栏了!
+  hotbar3:
+    name: 3级快捷栏
+    description: 三行好过两行
+  antihunger:
+    name: 升级抗饿
+    description: 横扫饥饿!
+  undroppable:
+    name: 升级无法丢弃
+    description: 使你的法杖无法丢弃
+  chestmode:
+    name: 箱子模式
+    description: 一种简单的法杖模式
+  cyclemode:
+    name: 循环模式
+    description: 最简单的法杖模式
+  inventorymode:
+    name: 背包模式
+    description: 专业法师才会使用这个模式
+  quickcast_enable:
+    name: 快捷施法 (全部)
+    description: 对所有魔法启用快捷施法
+  quickcast_disable:
+    name: 快捷施法 (无)
+    description: 关闭所有快捷施法
+  quickcast_normal:
+    name: 快捷施法 (部分)
+    description: 对一些预选的法术启用快捷施法
+  quickcast_manual:
+    name: 快捷施法 (手动)
+    description: 在背包内按Q时快捷施法
+  mode_drop:
+    name: 丢弃模式
+    description: 使用丢弃键 (Q) 来打开魔法背包, 用切换键 (F)
+      来切换快捷栏，左击施法
+  mode_rightclick:
+    name: 右击模式
+    description: 右击打开魔法背包, 用丢弃键 (Q) 切换快捷栏,
+      左击施法
+  mode_sword:
+    name: 剑模式
+    description: 用丢弃键 (Q) 来打开法术背包, 
+      用快捷栏施法,用切换键 (F) 切换快捷栏
+  mode_swap:
+    name: 交换模式
+    description: 用切换键 (F) 打开法术背包,丢弃键 (Q)
+      切换快捷栏, 左击施法
+  loud:
+    name: 喧嚣法杖
+    description: 开启所有法杖的消息
+  quiet:
+    name: 静谧法杖
+    description: 关闭所有法杖的消息
+  silent:
+    name: 沉默法杖
+    description: 关闭所有法杖的消息
+  organizer:
+    name: 重组
+    description: 重组你的法杖背包
+  alphabetizer:
+    name: 排序
+    description: 给你的法杖背包排序
+  recalltoken:
+    name: 传送币
+    description: 传送到传送点
+  respawntoken:
+    name: 重生币
+    description: 返回重生点
+  wolfhouse:
+    name: 狼屋
+    description: 会自动恢复的盒中基地
+  defenderheart:
+    name: 守卫者之心
+    description: 律动之心
+  virusheart:
+    name: 病毒之心
+    description: 你应该摧毁它
+  hunterheart:
+    name: 猎人之心
+    description: 他想要重生
+  snakeheart:
+    name: 毒蛇之心
+    description: 救救我
+  golemheart:
+    name: 傀儡之心
+    description: 你的挚友
+  wormheart:
+    name: 蠕虫之心
+    description: 它会吞噬整个世界
+  cursedmeat:
+    name: 诅咒之肉
+    description: 请不要碰这件物品!
+  broomstick:
+    name: 飞天扫帚
+    description: |-
+      &r&b用这把扫帚来飞向天空.
+      &b俯冲即可加速, 别飞太远了!
+    enchant_instructions: ''
+    spell_instructions: '&r&b用这把扫帚来飞向天空.
+      俯冲即可加速, 别飞太远了!'
+  crackedbroomstick:
+    name: 破裂的飞天扫帚
+    description: 在它还没烂的时候好好享受吧!
+  spleef:
+    name: 掘一死战
+    description: 来玩法师掘战吧
+  divinghelmet:
+    name: 潜水头盔
+    description: 在深海里自由地探索
+  heroes:
+    name: 法杖
+    description: 按Q打开技能背包
+  ledger:
+    name: 账本
+    description: 查看你的钱包里还有多少钱
+  questscompass:
+    name: 任务罗盘
+    description: 告诉你下一步该做什么
+  ocarina:
+    name: 陶笛之歌
+    description: 右击并使用快捷栏来播放音乐
+    spell_count: 拥有 $count 种音符
+  mirrorshield:
+    name: 镜之盾
+    description: 可以阻挡和反弹魔法
+  empty:
+    name: 空
+    description: 用于从零开始创建游戏内项目
+  talisman:
+    name: 魔法护符
+    description: 手持护符时获得额外的魔法
+  skillbook:
+    name: 技能树
+    description: 右击查看技能, 拖拽技能到快捷栏来使用
+  spellbook:
+    name: 魔法书
+    description: $path &r魔法书
+    spell_instructions: '&r&b使用快捷栏来施法.'
+    inventory_instructions: '&r&b右击打开魔法背包并拖拽法术到你的快捷栏内来施法.'
+  appearance_beginner:
+    name: 初学者法杖外观
+    description: 适用于初学者的法杖
+  appearance_student:
+    name: 学者法杖外观
+    description: 它闪耀着魔法的光辉
+  appearance_apprentice:
+    name: 学徒法杖外观
+    description: 它变形了!
+  appearance_master:
+    name: 男巫法杖外观
+    description: 强大的法杖
+  appearance_engineer:
+    name: 工程师法杖外观
+    description: 注入了远古魔法的法杖
+  appearance_architect:
+    name: 建筑师法杖外观
+    description: 用于建造奇观的法杖
+  appearance_conduit:
+    name: 转变者法杖外观
+    description: 古代巫师用过的法杖
+  appearance_magicka:
+    name: 魔力法杖外观
+    description: 拥有强大的魔法能量的新月形法杖
+  appearance_moon:
+    name: 月之法杖外观
+    description: 古代水手可能用过的法杖
+  appearance_green:
+    name: 绿色法杖外观
+    description: 看起来这根法杖有毒
+  appearance_bow1:
+    name: 埃及弓外观
+  appearance_bow2:
+    name: Skinny Bow外观
+  appearance_longbow:
+    name: 长弓外观
+  appearance_spire:
+    name: 尖顶法杖外观
+    description: 手持巫师之塔
+  appearance_claw:
+    name: 利爪法杖外观
+    description: 残忍的黑爪握着强大的魔法球
+  appearance_orb:
+    name: 球形法杖外观
+    description: 嵌入了强大的魔法球的法杖
+  uberwand:
+    name: 终极法杖
+    description: 终极法杖
+  extinguisher:
+    name: 熄焰
+    description: 灭火
+  science:
+    name: 为了科学!
+    description: 测试自动机械
+  potion_sp100:
+    name: SP药剂
+    description: 喝下它即可获得 100 SP
+  purger:
+    name: 人类清除计划
+    description: 自动战斗的法杖
+  magictorch:
+    name: 魔法火把
+    description: 手持火把照亮附近
+automata:
+  awaken: '&c&o$name &r&5苏醒了'
+  default_name: 自动机械
+  level: $roman 级
+  good:
+    prefixes:
+    - 神圣的
+    - 闪耀的
+    - 坚定的
+    - 救世主之
+    - 祝福之
+    - 魔法的
+    - 附魔的
+    - 启蒙之
+    - 宽宏的
+    - 勇敢的
+    - 忠诚的
+    - 荣耀的
+    - 魔法之
+    - 太阳的
+    - 希望之
+    - 希冀之
+    suffixes:
+    -
+  evil:
+    prefixes:
+    - 邪恶的
+    - 黑暗的
+    - 恐怖的
+    - 死亡之
+    - 被诅咒的
+    - 魔法的
+    - 荒芜之
+    - 地狱的
+    - 臭名昭著的
+    - 罪恶之
+    - 黑暗之
+    - 破裂的
+    - 灾厄之
+    - 荒野之
+    - 异界的
+    - 天启的
+    - 卑鄙的
+    - 毁灭之
+    - 恐怖分子的
+    - 憎恶之
+    - 可怕的
+    - 恐惧之
+    suffixes:
+    -
+tags:
+  noduel:
+    name: 禁止决斗
+    description: 禁止在决斗场内使用的魔法
+  nojail:
+    name: 禁止越狱
+    description: 禁止在监狱内使用的魔法
+categories:
+  combat:
+    name: 战法
+    description: 基础的攻击魔法
+  automata:
+    name: 机械魔法
+    description: 创造生命!
+    color: FFA500
+  electrical:
+    name: 电力魔法
+    description: 疯狂的科学
+    color: '888800'
+  master:
+    name: 大师魔法
+    description: 真正强大的魔法
+    color: 00AACC
+  utility:
+    name: 效用魔法
+    description: 效用和移动魔法
+  demolition:
+    name: 爆裂魔法
+    description: 极具破坏力的魔法
+    color: FF0000
+  dark:
+    name: 黑魔法
+    description: 邪恶魔法!
+    color: '010101'
+  light:
+    name: 光明魔法
+    description: 善良魔法
+    color: DDDDDD
+  engineering:
+    name: 工程魔法
+    description: 造出建筑的神奇魔法
+    color: 00FFFF
+  elemental:
+    name: 元素
+    description: 控制自然
+  mining:
+    name: 挖矿
+    description: 帮助你挖矿的魔法
+  skills:
+    name: 英雄技能
+    descriptions: 使用Heroes的技能
+  staff:
+    name: 禁忌魔法
+    description: 只有管理员可以使用的魔法
+  specialty:
+    name: 特殊魔法
+    description: 对物品或NPC使用的魔法
+  music:
+    name: 音乐
+    description: 用于播放音乐
+classes:
+  battle_mage:
+    name: 战斗法师
+    description: 使用魔法剑的战士
+  mage:
+    name: 法师
+    description: 最强的法师
+  archer_mage:
+    name: 弓法师
+    description: 精通魔法弓
+paths:
+  beginner:
+    name: '&7初学者'
+    description: 从零开始学习魔法
+  student:
+    name: '&2学者'
+    description: 开始学习基础魔法
+  apprentice:
+    name: '&a学徒'
+    description: 学会了大量魔法
+  master:
+    name: '&6男巫'
+    description: 最强法师
+    required_spell: '&c你没有新的魔法可以学习了! &4未来还有什么奥秘等着你探索呢?'
+  engineer:
+    name: '&5工程师'
+    description: 可使用工程魔法
+  architect:
+    name: '&d建筑师'
+    description: 会使用强大的工程魔法
+  conduit:
+    name: '&3转变者'
+    description: 可以从纯净能量中提取出方块
+  battle:
+    name: '&7战士'
+    description: 低级战斗魔法
+  squire:
+    name: '&2侍卫'
+    description: 中级战斗魔法
+  soldier:
+    name: '&a士兵'
+    description: 高级战斗魔法
+  knight:
+    name: '&6骑士'
+    description: 大师级战斗魔法
+  broom:
+    name: 扫帚
+    description: 升级飞天扫帚
+  blaster:
+    name: 爆裂魔法
+    description: 升级爆裂魔法
+  staff:
+    name: '&b管理员'
+    description: 管理员特供魔法
+  archer:
+    name: '&6弓箭手'
+    description: 弓箭手魔法
