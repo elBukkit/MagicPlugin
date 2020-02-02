@@ -1,0 +1,20 @@
+name: Build with Maven
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java_version: [8] # TODO: Add 11 once we fix our error-prone config
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java_version }}
+    - run: java -version && mvn --version
+    - name: Run Maven
+      run: mvn -ntp package # TODO: Add javadoc:jar once docs are fixed
