@@ -1,5 +1,5 @@
 # Translator:qsefthuopq
-# Laste updated:2020-01-24
+# Laste updated:2020-02-25
 costs:
   sp_amount: $amount SP
   xp_amount: $amount XP
@@ -539,7 +539,7 @@ spells:
   icbm:
     name: ICBM
     description: 发射洲际导弹
-    cast: 小心!
+    cast: 小心导弹!
   neutron:
     name: 中子弹
     description: 伤害并眩晕附近的所有实体
@@ -756,7 +756,7 @@ spells:
   nuke:
     name: 核弹
     description: 制造大爆炸
-    cast: 哇!
+    cast: 世界核平!
     upgrade_description: 更大的范围和更强的毁灭性
   day:
     name: 晴空万里
@@ -1474,10 +1474,10 @@ spells:
     description: 种些花吧!
     cast: 开花吧!
   paste:
-    name: 粘帖
-    description: 粘帖schematic
+    name: 粘贴
+    description: 粘贴schematic
     usage: 和schematic笔刷一起使用
-    cast_finish: 已粘帖$count块方块
+    cast_finish: 已粘贴$count块方块
     no_action: Schematic加载中, 请重试!
   kill:
     name: 致命一击
@@ -1562,7 +1562,7 @@ spells:
     description: 吸收一片区域内的水
     cast: Slurp!
   extinguish:
-    name: 熄灭
+    name: 熄焰
     description: 熄灭一片区域内的火焰
     cast: 熄火吧!
   skills:
@@ -1931,7 +1931,7 @@ spells:
     name: 沉默
     description: 沉默目标玩家
   nobabies:
-    name: 成人
+    name: 成长
     description: 使所有的幼体生物长大
   vanish:
     name: 隐身
@@ -1993,7 +1993,7 @@ wand:
   mana_amount_boosted: '&e法力： $amount &f(&b$mana&f)'
   mana_regeneration: '&e魔法恢复: $amount/s'
   mana_per_damage: '&e法力狂暴: $amount/HP'
-  mana_regeneration_boosted: '&eMana Regeneration: $amount &f(&b$mana&f)&d/s'
+  mana_regeneration_boosted: '&e法力恢复: $amount &f(&b$mana&f)&d/s'
   mana_boost: '&e法力加成: $percent%'
   mana_regeneration_boost: '&e法力回复加成: $percent%'
   earn_multiplier: '&6$type 加成: $percent%'
