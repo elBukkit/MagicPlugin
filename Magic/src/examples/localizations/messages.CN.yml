@@ -1,5 +1,5 @@
 # Translator:qsefthuopq
-# Laste updated:2020-01-24
+# Laste updated:2020-02-25
 costs:
   sp_amount: $amount SP
   xp_amount: $amount XP
@@ -17,7 +17,7 @@ costs:
   currency_singular: 金钱
   currency: 金钱
   currency_amount: "$$amount"
-  
+
 currency:
   item_name: "&e$amount &6$type"
   description: 右击捐款
@@ -52,7 +52,7 @@ item:
   add_unplaceable: 那件物品现在无法放置
   remove_unplaceable: 那件物品不再无法放置
   no_enchants: 这件物品没有附魔
-  no_enchant: 那件物品没有附魔 $enchant 
+  no_enchant: 那件物品没有附魔 $enchant
   enchant_removed: 已删除物品上的 $enchant 附魔
   enchant_added: 已添加附魔 $enchant 到你的物品上
   enchant_not_added: 未添加 $enchant 附魔到你的物品上
@@ -442,11 +442,11 @@ spells:
     name: 万象天引
     description: 将万物吸到你身边
     alternate: 过来吧!
-    cast: 
+    cast:
   grab:
     name: 攫取
     description: 将物品吸到你身边
-    cast: 
+    cast:
   permafrost:
     name: 极寒
     description: 下雪吧!
@@ -539,7 +539,7 @@ spells:
   icbm:
     name: ICBM
     description: 发射洲际导弹
-    cast: 小心!
+    cast: 小心导弹!
   neutron:
     name: 中子弹
     description: 伤害并眩晕附近的所有实体
@@ -569,7 +569,7 @@ spells:
   simulate:
     name: 模拟
     description: 康威的生命游戏!
-    cast: 
+    cast:
   animate:
     name: 动态
     description: 使目标方块动起来
@@ -756,7 +756,7 @@ spells:
   nuke:
     name: 核弹
     description: 制造大爆炸
-    cast: 哇!
+    cast: 世界核平!
     upgrade_description: 更大的范围和更强的毁灭性
   day:
     name: 晴空万里
@@ -882,7 +882,7 @@ spells:
     cancel: SuperShell已取消
     target_selected: 再次施法以建造
     fail: 太大了!
-    cast_finish: 已填充$count块$material方块 
+    cast_finish: 已填充$count块$material方块
   superdisc:
     name: 大圆盘
     description: 创造大圆盘
@@ -1419,7 +1419,7 @@ spells:
     name: 魔法飞弹
     description: 发射魔法飞弹
     cast_target: 你的飞弹对 $target 造成了 $damage 点伤害
-    cast_player_message: $caster 使用 $spell 对你造成了 $damage 点伤害 
+    cast_player_message: $caster 使用 $spell 对你造成了 $damage 点伤害
     cast: 你发射了一枚魔法飞弹
     no_target: 你发射了一枚魔法飞弹
     upgrade_description: 增加伤害和范围
@@ -1474,10 +1474,10 @@ spells:
     description: 种些花吧!
     cast: 开花吧!
   paste:
-    name: 粘帖
-    description: 粘帖schematic
+    name: 粘贴
+    description: 粘贴schematic
     usage: 和schematic笔刷一起使用
-    cast_finish: 已粘帖$count块方块
+    cast_finish: 已粘贴$count块方块
     no_action: Schematic加载中, 请重试!
   kill:
     name: 致命一击
@@ -1562,7 +1562,7 @@ spells:
     description: 吸收一片区域内的水
     cast: Slurp!
   extinguish:
-    name: 熄灭
+    name: 熄焰
     description: 熄灭一片区域内的火焰
     cast: 熄火吧!
   skills:
@@ -1611,7 +1611,7 @@ spells:
     name: 给予物品
     description: 基于玩家物品
     cast: 你获得了 $item
-    cast_player_message: a:你获得了$player赠送的$item  
+    cast_player_message: a:你获得了$player赠送的$item
     fail: ''
   fillwand:
     name: 通晓万物
@@ -1931,7 +1931,7 @@ spells:
     name: 沉默
     description: 沉默目标玩家
   nobabies:
-    name: 成人
+    name: 成长
     description: 使所有的幼体生物长大
   vanish:
     name: 隐身
@@ -1993,7 +1993,7 @@ wand:
   mana_amount_boosted: '&e法力： $amount &f(&b$mana&f)'
   mana_regeneration: '&e魔法恢复: $amount/s'
   mana_per_damage: '&e法力狂暴: $amount/HP'
-  mana_regeneration_boosted: '&eMana Regeneration: $amount &f(&b$mana&f)&d/s'
+  mana_regeneration_boosted: '&e法力恢复: $amount &f(&b$mana&f)&d/s'
   mana_boost: '&e法力加成: $percent%'
   mana_regeneration_boost: '&e法力回复加成: $percent%'
   earn_multiplier: '&6$type 加成: $percent%'
@@ -2077,7 +2077,7 @@ wand:
   super_protected: '&3无懈可击'
   spell_aura: '&b光环: &6$spell'
   costs_description: 需消耗$description
-  active_costs_description: 每秒消耗$description 
+  active_costs_description: 每秒消耗$description
   range_description: '&9范围: &6$range &9米'
   owner_description: '&2&o$name的法杖'
   bound_description: '&3&o绑定者：$name'
@@ -2151,7 +2151,7 @@ wand:
   require_more_levels: 你必须达到更高级才能附魔
   randomized_lore: 你会获得什么样的法杖呢?
   randomized_name: 法杖盒
-  upgrade_name: 升级$name 
+  upgrade_name: 升级$name
   randomized_description: '&o&2$description'
   description_lore: '&o&a$description'
   path_lore: ''
@@ -2173,10 +2173,10 @@ wand:
   brush_instructions: '&r&e材料笔刷已添加到你的$wand内&e. Shift+$toggle
     来选择一个笔刷.'
   sp_instructions: '&r&6你获得了一些魔法点(SP)! SP显示在
-    你的魔法条上方, 你可以手持法杖右击附魔台来学习新的魔法. 
+    你的魔法条上方, 你可以手持法杖右击附魔台来学习新的魔法.
     重复施法可以获得少许SP.'
   earn_instructions: '&r&6你获得了一些$currency! 这显示在你的魔法条上方
-    你的魔法条上方, 你可以手持法杖右击附魔台来学习新的魔法. 
+    你的魔法条上方, 你可以手持法杖右击附魔台来学习新的魔法.
     重复施法可以获得少许SP.'
   hotbar_changed: ''
   spell_activated: $spell
@@ -2448,7 +2448,7 @@ wands:
       左击施法
   mode_sword:
     name: 剑模式
-    description: 用丢弃键 (Q) 来打开法术背包, 
+    description: 用丢弃键 (Q) 来打开法术背包,
       用快捷栏施法,用切换键 (F) 切换快捷栏
   mode_swap:
     name: 交换模式
