@@ -2,6 +2,8 @@
 
 # 7.8.3
 
+ - Fix some issues using CustomModelData icons in wands and spells
+
 # 7.8.2
 
  - Fix Recall, will now place you on top of your bed instead of failing.

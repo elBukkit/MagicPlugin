@@ -3523,7 +3523,8 @@ finisher:
 
 sunbeam:
   name: Sunbeam
-  description: Harness the power of the sum
+  description: Harness the power of the sun
+  icon: wooden_hoe{CustomModelData:1}
   actions:
     cast:
       - class: CheckRequirements

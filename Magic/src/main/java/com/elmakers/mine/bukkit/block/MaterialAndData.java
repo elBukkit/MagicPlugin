@@ -367,6 +367,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
             blockData = o.blockData;
             isValid = o.isValid;
+            if (o.tags != null) {
+                tags = new HashMap<>(o.tags);
+            }
         }
     }
 
