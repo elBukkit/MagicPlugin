@@ -49,7 +49,7 @@ public class InventoryUtils extends NMSUtils
         Object tag = getTag(handle);
         if (tag == null) return false;
 
-        return saveTagsToNBT(tags, tag, null);
+        return addTagsToNBT(tags, tag);
     }
 
     public static boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
@@ -91,6 +91,31 @@ public class InventoryUtils extends NMSUtils
     public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames)
     {
         return saveTagsToNBT(getMap(tags), node, tagNames);
+    }
+
+    public static boolean addTagsToNBT(Map<String, Object> tags, Object node)
+    {
+        if (node == null) {
+            Bukkit.getLogger().warning("Trying to save tags to a null node");
+            return false;
+        }
+        if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
+            Bukkit.getLogger().warning("Trying to save tags to a non-CompoundTag");
+            return false;
+        }
+
+        for (Map.Entry<String, Object> tag : tags.entrySet()) {
+            Object value = tag.getValue();
+            try {
+                Object wrappedTag = wrapInTag(value);
+                if (wrappedTag == null) continue;
+                class_NBTTagCompound_setMethod.invoke(node, tag.getKey(), wrappedTag);
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error saving item data tag " + tag.getKey(), ex);
+            }
+        }
+
+        return true;
     }
     
     public static boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
