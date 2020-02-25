@@ -166,6 +166,7 @@ public class NMSUtils {
     protected static Class<?> class_Bisected;
     protected static Class<Enum> class_BisectedHalf;
     protected static Enum<?> enum_BisectedHalf_TOP;
+    protected static Class<?> class_Sittable;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -175,6 +176,8 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getKeysMethod;
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_World_getEntitiesMethod;
+    protected static Method class_Sitting_setSittingMethod;
+    protected static Method class_Sitting_isSittingMethod;
     protected static Method class_Entity_setSilentMethod;
     protected static Method class_Entity_isSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
@@ -581,6 +584,15 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+
+            try {
+                class_Sittable = Class.forName("org.bukkit.entity.Sittable");
+                class_Sitting_isSittingMethod = class_Sittable.getMethod("isSitting");
+                class_Sitting_setSittingMethod = class_Sittable.getMethod("setSitting", Boolean.TYPE);
+            } catch (Throwable ex) {
+                class_Sittable = null;
+                Bukkit.getLogger().warning("Could not bind to Sittable interface, can't make mobs sit/stand");
+            }
 
             // 1.13 Support
             Class<?> class_MinecraftKey = null;

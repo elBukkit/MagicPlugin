@@ -202,6 +202,27 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
+    public static void setSitting(Entity entity, boolean flag) {
+        if (class_Sittable == null) return;
+        if (!class_Sittable.isAssignableFrom(entity.getClass())) return;
+        try {
+            class_Sitting_setSittingMethod.invoke(entity, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static boolean isSitting(Entity entity) {
+        if (class_Sittable == null) return false;
+        if (!class_Sittable.isAssignableFrom(entity.getClass())) return false;
+        try {
+            return (boolean)class_Sitting_isSittingMethod.invoke(entity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     public static void setSilent(Object nmsEntity, boolean flag) {
         if (class_Entity_setSilentMethod == null) return;
         try {
