@@ -142,8 +142,12 @@ public class AnimateSpell extends SimulateSpell
         List<String> prefixes = messages.getAll("automata." + automataType + ".prefixes");
         List<String> suffixes = messages.getAll("automata." + automataType + ".suffixes");
 
-        automataName = prefixes.get(random.nextInt(prefixes.size()))
-                + " " + automataName + " " + suffixes.get(random.nextInt(suffixes.size()));
+        if (!prefixes.isEmpty()) {
+            automataName = prefixes.get(random.nextInt(prefixes.size())) + " " + automataName;
+        }
+        if (!suffixes.isEmpty()) {
+            automataName = automataName + " " + suffixes.get(random.nextInt(suffixes.size()));
+        }
 
         if (level > 1)
         {
