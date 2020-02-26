@@ -698,6 +698,9 @@ public class CompatibilityUtils extends NMSUtils {
             configuration.load(file);
         } catch (FileNotFoundException fileNotFound) {
 
+        } catch (Throwable ex) {
+            Bukkit.getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
+            throw ex;
         }
         return configuration;
     }
