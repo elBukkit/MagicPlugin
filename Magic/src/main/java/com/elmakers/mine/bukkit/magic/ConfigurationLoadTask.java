@@ -370,8 +370,8 @@ public class ConfigurationLoadTask implements Runnable {
                 if (file.isDirectory()) {
                     config = loadConfigFolder(config, file, setEnabled);
                 } else {
-                    ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
                     info("  Loading " + file.getName());
+                    ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
                     if (setEnabled) {
                         enableAll(fileOverrides);
                     }
