@@ -27,16 +27,12 @@ cloak:
         cast:
         - class: EffectSingle
           sound: magic.vanish
-        - class: EffectTrail
-          particle: smoke_normal
         - class: EffectRing
           particle: smoke_normal
           location: target
         undo:
         - class: EffectSingle
           sound: magic.vanish
-        - class: EffectTrail
-          particle: smoke_normal
         - class: EffectRing
           particle: smoke_normal
           location: target
