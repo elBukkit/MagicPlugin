@@ -55,8 +55,6 @@ mine|2:
         depth: 3
 
 mine|3:
-    upgrade_required_path: engineer
-    upgrade_required_casts: 50
     parameters:
         limit: 32
         depth: 5
@@ -65,5 +63,13 @@ mine|4:
     parameters:
         limit: 48
         depth: 8
-        drop: mining
+        destructible: mining
+
+mine|5:
+  parameters:
+    tool: loot3_pickaxe
+
+mine|6:
+  parameters:
+    tool: loot3_pickaxe
 

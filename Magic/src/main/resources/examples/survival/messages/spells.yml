@@ -741,6 +741,10 @@ spells:
         upgrade_description: "Mines more blocks"
     mine|4:
         upgrade_description: "Now mines full blocks"
+    mine|5:
+        upgrade_description: "Drops bonus items"
+    mine|6:
+        upgrade_description: "Drops bonus items"
     chop:
         name: Chop
         description: Fell a tree in one cast
