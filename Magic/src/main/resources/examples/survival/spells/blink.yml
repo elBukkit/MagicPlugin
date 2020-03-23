@@ -57,8 +57,8 @@ blink:
                particle_nucleus: fireworks_spark
                particle_orbital: redstone
                iterations: 16
-               particlesNucleus: 8
-               particlesRadius: 5
+               particles_nucleus: 8
+               particles_orbital: 5
          - class: EffectSingle
            location: origin
            source_location: body
@@ -69,8 +69,8 @@ blink:
                particle_nucleus: redstone
                particle_orbital: fireworks_spark
                iterations: 8
-               particlesNucleus: 8
-               particlesRadius: 5
+               particles_nucleus: 8
+               particles_radius: 5
          - class: EffectSingle
            color_override: color
            effectlib:
