@@ -46,6 +46,7 @@ chop:
         depth: 8
         destructible: trees
         cooldown: 5000
+        tool: diamond_axe
         right_arm_transform:
             x: 0
             y: "6.28*sin(2*t)"

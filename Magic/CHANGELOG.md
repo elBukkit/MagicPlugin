@@ -4,6 +4,7 @@
 
  - Fix some issues using CustomModelData icons in wands and spells
  - All containers are now indestructible to magic (an effort to prevent dupe exploits and bad interactions with other plugins)
+ - Fix Mine spell by adding a "tool" parameter to the Drop action, which defaults to diamond pickaxe
 
 # 7.8.2
 

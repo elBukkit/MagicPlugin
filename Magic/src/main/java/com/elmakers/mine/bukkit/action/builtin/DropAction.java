@@ -17,9 +17,11 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class DropAction extends BaseSpellAction {
+    private static Material defaultTool = Material.DIAMOND_PICKAXE;
     private int dropCount;
     private boolean falling = true;
     private Collection<ItemStack> drops;
+    private ItemStack toolItem;
 
     @Override
     public void finish(CastContext context) {
@@ -38,6 +40,14 @@ public class DropAction extends BaseSpellAction {
         super.prepare(context, parameters);
         dropCount = parameters.getInt("drop_count", -1);
         falling = parameters.getBoolean("falling", true);
+        String toolMaterialName = parameters.getString("tool", defaultTool.name());
+        Material toolMaterial = defaultTool;
+        try {
+            toolMaterial = Material.valueOf(toolMaterialName.toUpperCase());
+        } catch (Throwable ex) {
+            context.getLogger().warning("Invalid tool in drop action: " + toolMaterialName);
+        }
+        toolItem = new ItemStack(toolMaterial);
         drops = new ArrayList<>();
     }
 
@@ -58,7 +68,7 @@ public class DropAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
         if (dropCount < 0 || drops.size() < dropCount) {
-            drops.addAll(block.getDrops());
+            drops.addAll(block.getDrops(toolItem));
         } else if (falling) {
             Location blockLocation = block.getLocation();
             FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, block.getType(), block.getData());
