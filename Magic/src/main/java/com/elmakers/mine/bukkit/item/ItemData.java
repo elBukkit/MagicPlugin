@@ -150,6 +150,12 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         return newItem;
     }
 
+    @Nullable
+    @Override
+    public ItemStack getItemStack() {
+        return getItemStack(1);
+    }
+
     @Override
     public String getCreator() {
         return creator;

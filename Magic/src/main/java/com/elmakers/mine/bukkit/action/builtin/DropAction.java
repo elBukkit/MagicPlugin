@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class DropAction extends BaseSpellAction {
@@ -41,13 +42,22 @@ public class DropAction extends BaseSpellAction {
         dropCount = parameters.getInt("drop_count", -1);
         falling = parameters.getBoolean("falling", true);
         String toolMaterialName = parameters.getString("tool", defaultTool.name());
-        Material toolMaterial = defaultTool;
+        toolItem = null;
         try {
-            toolMaterial = Material.valueOf(toolMaterialName.toUpperCase());
+            ItemData toolData = context.getController().getOrCreateItem(toolMaterialName);
+            if (toolData == null) {
+                if (!toolMaterialName.isEmpty()) {
+                    context.getLogger().warning("Invalid tool in drop action: " + toolMaterialName);
+                }
+            } else {
+                toolItem = toolData.getItemStack();
+            }
         } catch (Throwable ex) {
             context.getLogger().warning("Invalid tool in drop action: " + toolMaterialName);
         }
-        toolItem = new ItemStack(toolMaterial);
+        if (toolItem == null) {
+            toolItem = new ItemStack(defaultTool);
+        }
         drops = new ArrayList<>();
     }
 

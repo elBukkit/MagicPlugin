@@ -15,6 +15,8 @@ public interface ItemData {
     double getWorth();
     @Nullable
     ItemStack getItemStack(int amount);
+    @Nullable
+    ItemStack getItemStack();
     String getCreator();
     String getCreatorId();
     Set<String> getCategories();
