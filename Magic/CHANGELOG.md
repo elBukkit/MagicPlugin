@@ -3,6 +3,7 @@
 # 7.8.3
 
  - Fix some issues using CustomModelData icons in wands and spells
+ - All containers are now indestructible to magic (an effort to prevent dupe exploits and bad interactions with other plugins)
 
 # 7.8.2
 
