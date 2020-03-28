@@ -16,7 +16,7 @@ mount:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_irongolem_hurt
+           sound: entity_iron_golem_hurt
         -  class: EffectSingle
            effectlib:
              class: ConeEffect
