@@ -29,28 +29,28 @@ default:
        fail:
        - class: EffectSingle
          location: origin
-         sound: block_note_basedrum
+         sound: block_note_block_basedrum
          sound_broadcast: false
          sound_volume: 0.8
          sound_pitch: 1.2
        insufficient_resources:
        - class: EffectSingle
          location: origin
-         sound: block_note_bass
+         sound: block_note_block_bass
          sound_broadcast: false
          sound_volume: 0.7
          sound_pitch: 1.2
        insufficient_permission:
        - class: EffectSingle
          location: origin
-         sound: block_note_bass
+         sound: block_note_block_bass
          sound_broadcast: false
          sound_volume: 0.9
          sound_pitch: 1.5
        cooldown:
        - class: EffectSingle
          location: origin
-         sound: block_note_basedrum
+         sound: block_note_block_basedrum
          sound_broadcast: false
          sound_volume: 0.6
          sound_pitch: 0.8
