@@ -406,3 +406,6 @@ wands:
     magictorch:
       name: Magic Torch
       description: Creates light as you hold it
+    gauntlet:
+      name: Infinity Gauntlet
+      description: Harness all of the powers of the Universe

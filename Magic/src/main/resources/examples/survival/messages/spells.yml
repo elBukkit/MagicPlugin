@@ -1671,3 +1671,9 @@ spells:
     piggyback:
       name: Piggyback
       description: Who's riding what, now?
+    snap:
+      name: THE SNAP
+      descrition: Snap away half the life on this world
+    powerstone:
+      name: Power Stone
+      description: Unleash a devastating shockwave of power

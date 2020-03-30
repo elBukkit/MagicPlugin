@@ -1,0 +1,64 @@
+snap:
+  name: SNAP
+  actions:
+    cast:
+      - class: Delay
+      - class: AllEntities
+        actions:
+          - class: Probability
+            actions:
+              - class: Damage
+                percentage: 0.9
+              - class: PotionEffect
+  effects:
+      dust:
+        - location: target
+          effectlib:
+            class: Modified
+            duration: 2000
+            updateLocations: false
+            orient: false
+            parameters:
+              radius: "((t/i)-0.9) * 300 + 3"
+            effect:
+              class: Sphere
+              radius: 3
+              particle: smoke_large
+              particle_count: 10
+              particles: 815
+              particle_offset_x: 0.2
+              particle_offset_y: 0.2
+              particle_offset_z: 0.2
+              updateLocations: false
+              updateDirections: false
+      cast:
+      -  class: EffectSingle
+         sound: block_bamboo_break
+         sound_pitch: 0.3
+         location: source
+         effectlib:
+           class: Modified
+           duration: 5000
+           updateLocations: false
+           relativeOffset: "5,1,0"
+           orient: false
+           parameters:
+            radius: "(t/i) * 300"
+           effect:
+            class: Sphere
+            radius: 3
+            particle: end_rod
+            particles: 20
+            particle_count: 20
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
+            updateLocations: false
+            updateDirections: false
+  parameters:
+    add_effects:
+      wither: 5
+    duration: 2000
+    target: none
+    cooldown: 10000
+    delay: 1000

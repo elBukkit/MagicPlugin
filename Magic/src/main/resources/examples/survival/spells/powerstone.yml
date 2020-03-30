@@ -1,0 +1,105 @@
+powerstone:
+    icon: ghast_tear
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: combat
+    worth: 9999
+    actions:
+        cast:
+        - class: ArmorStandProjectile
+          actions:
+          - class: Damage
+            damage_max_distance: 0
+            player_damage: 8
+            entity_damage: 10
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: Velocity
+              speed: 1.5
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
+              ignore_result: true
+    effects:
+        cooldown: []
+        cast:
+        -  class: EffectSingle
+           sound: war.rocketlauncher
+           sound_pitch: 1.2
+           location: origin
+        tick:
+        - location: target
+          particle: smoke_large
+          particle_count: 4
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+        hit_entity_armor_stand:
+        -  class: EffectSingle
+           location: target
+           sound: war.ricochet
+           particle: block_crack
+           material: iron_block
+           particle_count: 20
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        hit_entity:
+        -  class: EffectSingle
+           sound: entity_slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particle_count: 30
+            material: redstone_block
+            size: 1
+            y_offset: 0
+        hit:
+        -  class: EffectSingle
+           location: target
+           sound: entity_generic_explode
+           sound_volume: 3
+           particle: explosion_huge
+           particle_count: 4
+           particle_offset_x: 2
+           particle_offset_y: 2
+           particle_offset_z: 2
+           particle_data: 0.2
+    parameters:
+        velocity: 10
+        range: 60
+        hitbox: true
+        radius: 12
+        target_type: LivingEntity
+        damage_max_distance: 5
+        player_damage: 15
+        entity_damage: 15
+        target_breakables: 1
+        bypass_backfire: true
+        destructible: solid
+        destructible_durability: 40
+        undo: 30000
+        brush: erase
+        cooldown: 20000
+        speed: 1.1
+        direction: 0,0.8,0
+        falling: true
+        undo_speed: 6
+        target_self_timeout: 2000
+        y_offset: 0.75
+        push: 1
+        velocity_max_distance: 5
+        magic_damage: false
+        unbreakable_items: true
+        helmet_item: ender_eye
+        orient_head: true
+        armor_stand_small: true
+        armor_stand_gravity: false
+        target_armor_stand: true
+        spread_movement_max: 0.1
+        spread_movement: 5
