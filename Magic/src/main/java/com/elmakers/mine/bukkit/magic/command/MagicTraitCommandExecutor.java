@@ -48,8 +48,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
                 npc = CitizensAPI.getNPCRegistry().getById(npcId);
                 args = Arrays.copyOfRange(args, 1, args.length);
             }
-            catch (Exception e) {
-                sender.sendMessage("Invalid NPC id: " + args[0]);
+            catch (Exception ignore) {
             }
         }
 
@@ -117,7 +116,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         {
             options.addAll(Arrays.asList(BaseSpell.COMMON_PARAMETERS));
         }
-        else if (lastParameter.equalsIgnoreCase("hat"))
+        else if (lastParameter.equalsIgnoreCase("hat") || lastParameter.equalsIgnoreCase("requires"))
         {
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
@@ -142,7 +141,8 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         else if (lastParameter.equalsIgnoreCase("cost"))
         {
             options.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
-        } else if (
+        }
+        else if (
                 lastParameter.equalsIgnoreCase("caster")
                 || lastParameter.equalsIgnoreCase("invisible")
                 || lastParameter.equalsIgnoreCase("target_player")
@@ -162,6 +162,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("hat");
             options.add("command");
             options.add("mob");
+            options.add("requires");
 
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
