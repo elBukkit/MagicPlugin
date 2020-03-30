@@ -2,6 +2,8 @@
 
 # 7.8.4
 
+ - Fix "requires" items in Citizens traits getting removed on restart
+
 # 7.8.3
 
  - Fix some issues using CustomModelData icons in wands and spells

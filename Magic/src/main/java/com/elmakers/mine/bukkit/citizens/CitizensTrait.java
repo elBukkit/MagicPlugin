@@ -61,7 +61,7 @@ public abstract class CitizensTrait extends Trait {
         data.setBoolean("invisible", invisible);
         data.setDouble("cost", cost);
         if (requireItem != null) {
-            data.setString("require", api.getItemKey(requireItem));
+            data.setString("requires", api.getItemKey(requireItem));
         }
         if (hatItem != null) {
             data.setString("hat", api.getItemKey(hatItem));
