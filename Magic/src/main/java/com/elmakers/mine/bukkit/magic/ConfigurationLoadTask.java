@@ -50,6 +50,7 @@ public class ConfigurationLoadTask implements Runnable {
     private boolean spellUpgradesEnabled = true;
 
     private String exampleDefaults = null;
+    private String languageOverride = null;
     private Collection<String> addExamples = null;
 
     private ConfigurationSection mainConfiguration;
@@ -76,6 +77,7 @@ public class ConfigurationLoadTask implements Runnable {
         saveDefaultConfigs = properties.getBoolean("save_default_configs", true);
         exampleDefaults = properties.getString("example", exampleDefaults);
         addExamples = properties.getStringList("add_examples");
+        languageOverride = properties.getString("language");
     }
 
     private void info(String message) {
@@ -289,6 +291,17 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Apply version-specific configs
         addVersionConfigs(config, fileName);
+
+        // Apply language overrides, but only to the messages config
+        if (fileName.equals("messages") && languageOverride != null) {
+            String languageFileName = "examples/localizations/messages." + languageOverride + ".yml";
+            InputStream input = plugin.getResource(languageFileName);
+            if (input != null) {
+                ConfigurationSection languageConfig = CompatibilityUtils.loadConfiguration(input);
+                ConfigurationUtils.addConfigurations(config, languageConfig);
+                info(" Using " + languageFileName);
+            }
+        }
 
         // Apply overrides after loading defaults and examples
         ConfigurationUtils.addConfigurations(config, overrides);

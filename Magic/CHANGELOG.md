@@ -3,6 +3,9 @@
 # 7.8.4
 
  - Fix "requires" items in Citizens traits getting removed on restart
+ - Add "language" config option, to easily change the language of in-game text.
+   Thanks to the generous help of translators, the following built-in languages are available:
+   CN, ES, ES2, ES3, KO, ZH
 
 # 7.8.3
 

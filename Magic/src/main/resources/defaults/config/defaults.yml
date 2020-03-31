@@ -613,3 +613,6 @@ logout_delay: 0
 # You *may* also need to save data synchronously to ensure it is written out before releasing the file lock
 # This is probably not necessary, but if you're still having issues try turning this to false
 save_player_data_asynchronously: true
+
+# This can be used to load one of the built-in localizations found in examples/localizations
+# language: ES
