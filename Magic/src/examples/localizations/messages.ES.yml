@@ -1,466 +1,2837 @@
-
-general:
-    no_spells: No Has Aprendido Ningun Hechizo
-    no_spells_in_category: "No Has Aprendido Ningun Hechizo De La Categoria: $category"
-    spell_list_page: $count Hechizos Aprendidos [Pagina $page De $pages]
-    spell_list: $count Hechizos Aprendidos
-books:
-    default:
-        author: Dumbledore
-        title: $category Libro De Hechizos
-    all:
-        title: Libro De Hechizos Maestro
-paths:
-    beginner:
-        name: Beginner
-        description: Just starting out with magic
-    student:
-        name: Student
-        description: Starting to learn the basics
-    apprentice:
-        name: Apprentice
-        description: A good variety of spells
-    master:
-        name: Master
-        description: The penultimate wizard
-    engineer:
-        name: Engineer
-        description: Has engineering spells
-    architect:
-        name: Architect
-        description: Has super-powerful engineering spells
-    battle:
-        name: Battle
-        description: Combat spells only
-    broom:
-        name: Escoba
-        description: El Poder De Volar
-wand:
-    default_name: Varita
-    upgrade_default_description: Es Absorbido Por tu Varita
-    upgrade_item_description: Es Absorbido Por Tu Varita
-    spell_item_description: Es Absorbido Por Tu Varita
-    brush_item_description: Es Absorbido Por Tu Varita
-    copy_material_name: Copy
-    copy_material_description: Fills with the target material
-    erase_material_name: Erase
-    erase_material_description: Fills with Air
-    clone_material_name: Clone
-    clone_material_description: Copies blocks from a target
-    replicate_material_name: Replicate
-    replicate_material_description: Replicates the clone target
-    clone_material_activated: Clone source selected
-    replicate_material_activated: Replicate source selected
-    erase_modifier_activated: Erase modifier active
-    map_material_name: Mapa
-    map_material_name_scaled: Mapa $sizex$size
-    map_material_description: Creates pixel art from last held map
-    schematic_material_description: Uses $schematic to build.
-    building_material_description: Build with $material
-    upgrade_uses: Añadidos $count Usos
-    upgrade_uses_singular: Añadido $count Uso
-    uses_remaining_brief: $count Usos
-    uses_remaining_singular: $count Uso
-    uses_remaining: $count Usos Restantes
-    enchantment_level_1: I
-    enchantment_level_2: II
-    enchantment_level_3: III
-    enchantment_level_4: IV
-    enchantment_level_5: V
-    enchantment_level_max: X
-    spell_count: $count Hechizos Aprendidos
-    material_count: Tiene $count Materiales
-    upgrade_spell_count: $count Hechizos Mejorados
-    upgrade_material_count: Añadidos $count Materiales
-    mana_amount: "Energia: $amount"
-    mana_amount_boosted: "Energia Extra: $amount &f(&b$mana&f)"
-    mana_regeneration: "Regeneracion De Energia: $amount/s"
-    mana_regeneration_boosted: "Regeneracion De Energia Extra: $amount &f(&b$mana&f)&d/s"
-    mana_boost: "Energia Extra: $amount%"
-    mana_regeneration_boost: "Regeneracion De Energia Extra: $amount%"
-    cost_reduction: Cost Reduction $roman
-    cooldown_reduction: Cooldown Reduction $roman
-    power: Power $roman
-    protection: Protection $roman
-    protection_physical: Physical Protection $roman
-    protection_projectile: Projectile Protection $roman
-    protection_fall: Fall Protection $roman
-    protection_fire: Fire Protection $roman
-    protection_blast: Blast Protection $roman
-    potion_effect: $effect $roman
-    super_powered: Superpowered
-    super_protected: Invulnerability
-    spell_aura: "Aura: &6$spell"
-    costs_description: Coste $description
-    active_costs_description: Coste $description Por Segundo
-    range_description: "&9Rango: &6$range &9Bloques"
-    owner_description: Varita De $name
-    bound_description: Obdece A $name
-    unmodifiable: That wand can not be modified
-    player_unmodifiable: $name's wand can not be modified
-    bound_to_other: Esta Varita No Te Pertenece
-    bound: Esta Varita Obedece A $name
-    spell_added: "Has Aprendido El Hechizo: &r&6$name"
-    brush_added: "The &r&7$name &d&obrush has been added to your $wand"
-    player_spell_upgraded: "$players's &r&6$name &d&oHa Sido Mejorado Al Nivel &3$level"
-    spell_upgraded: "&r&6$name &d&oHa Sido Mejorado Al Nivel &3$level"
-    spell_override_upgraded: "&r&6$name &d&oHa Sido Mejorado"
-    upgraded_property: "&r&dTu Varita Ha Sido Mejorada: &r&b$name"
-    mana_added: "&r&dTu Varita Tiene Ahora $value mana"
-    hotbar_added: "&r&aYour $wand's hotbar has been upgraded! &r&bPress Q while your $wand is active"
-    player_upgraded: $name's wand upgraded
-    player_not_upgraded: $name's wand not upgraded
-    no_item: No Tienes Ningun Objeto Magico En La Mano
-    player_no_item: $name No Tiene Ningun Objeto Magico En La Mano
-    no_wand: Necesitas Tener La Varita En La Mano
-    player_no_wand: $name No Tiene La Varita En La Mano
-    no_item: Necesitas Tener Un Objeto Magico En La Mano
-    player_no_magic_item: $name No Tiene Un Objeto Magico En La Mano
-    no_magic_item: Esto No Es Un Objeto Magico
-    player_no_item: $name No Tiene Ningun Objeto Magico En La Mano
-    reorganized: $wand reorganized
-    player_reorganized: $name's wand reorganized
-    alphabetized: $wand alphabetized
-    player_alphabetized: $name's wand alphabetized
-    already_enchanted: That $item is already enchanted
-    enchanted: Your $item has been enchanted
-    player_enchanted: $name's $item has been enchanted
-    unenchanted: Your wand has been unenchanted
-    no_path: That item can not be enchanted
-    player_unenchanted: $name's wand has been unenchanted
-    level_up: "&r&bYour $wand has been upgraded to &r&5$path"
-    duplicated: Your wand has been duplicated
-    player_duplicated: $name's wand has been duplicated
-    restored: Your wand has been restored
-    player_restored: $name's wand has been restored
-    not_restored: You have no recorded bound wand
-    player_not_restored: $name's wand has no recorded bound wand
-    unlocked: Your wand has been unlocked
-    player_unlocked: $name's wand has been unlocked
-    unknown_template: Unknown wand name $name
-    reconfigured: Wand reconfigured
-    player_reconfigured: $name's wand reconfigured
-    filled: Your $wand now contains all of your spells
-    player_filled: $name's wand filled
-    renamed: Your wand has been renamed
-    player_renamed: $name's wand renamed
-    self_destruct: Your wands did not survive the dimensional shift!
-    no_permission: "&r&4You may not use that $wand &r&4here."
-    single_spell: Varita Con $spell
-    fully_enchanted: "&cThis $wand is fully enchanted &4(for now)"
-    need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"
-    require_more_levels: "You must enchant at a higher level"
-    randomized_lore: What kind of wand will you get?
-    randomized_name: Caja De Varita
-    upgrade_name: $name Upgrade
-    inventory_instructions: "&r&bTu Varita Tiene Mas DE Un Hechizo. Clic Derecho Para Abrir/Cerrar El Inventario De Hechizos. Usa La Ruleta Del Raton O Los Numeros Para Cambiar De Hechizo."
-    page_instructions: "&r&bTu Varita Tiene Mas DE Una Pagina De Hechizos. Clickea Fuera Del Inventario Para Cambiar De Pagina."
-    bound_instructions: "&r&3Esta Varita Te Obedece A Ti Y No Se Puede Tirar."
-    spell_instructions: "&r&bTu Varita Necesita Energia Para Lanzar Hechizos.Puedes Mirar La Energia En La Barra De XP."
-    enchant_instructions: "&r&bEncanta Tu Varita Para Mejorar Sus Habilidades."
-    brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
-material:
-    wildcard: " (All Types)"
-economy:
-    missing: "&cMy shop is closed, sorry!"
-    insufficient: "Coste: &6$cost"
-    deducted: "Deducted: &6$cost"
-spell:
-    brush: Uses Material Brushes
-    undoable: ""
-    not_undoable: "&4Not Undoable"
-    reactivate: $name Activado
-    available_path: Available at the $path level
-    required_path: Required to complete the $path level
-    levels_available: "Maximo Nivel: &r&5$levels"
-    required_spell: "Necesitas Aprender &r&4$spell &d&oPara Avanzar &b$path"
-    level_description: Nivel $level
-worlds:
-    world:
-        name: The Overworld
-    world_nether:
-        name: The Nether
-    world_the_end:
-        name: The End
+##############################################
+# Traducción Completa al español por ChrisTVH#
+#   https://discordapp.com/invite/h2kJ8Ws    #
+##############################################
 costs:
-    xp_amount: $amount XP
-    mana_amount: $amount Energia
-    mana: Energia
-    xp: XP
-    heroes_mana: $amount Energia
+  sp_amount: $amount SP
+  xp_amount: $amount XP
+  levels_amount: $amount Niveles de XP
+  mana_amount: $amount Energia
+  mana: Energia
+  xp: XP
+  levels: Niveles
+  sp: Puntos De Conjuro
+  hunger: La energía
+  health: Salud
+  health_amount: $amount Salud
+  hunger_amount: $amount La energía
+  heroes_mana: $amount Energia
+  currency_singular: Dólar
+  currency: Dólares
+  currency_amount: $$amount
+currency:
+  item_name: '&e$amount &6$type'
+  description: Haga clic para depósito
+  limit: a:&eEl límite para &6$type &ees &c$amount
+  deposited: 'a:&aDepositado &2$amount &6$type&a, balance: &2$balance'
+  earned: a:&6+&e$earned
+sp:
+  name: '&e$amount &6Puntos De Conjuro'
+  description: Será absorbida por su varita
+  limit: a:&eEl límite para &6Puntos De Conjuro &ees &c$amount
+  deposited: 'a:&aDepositado &2$amount &6Puntos De Conjuro&a, balance: &2$balance'
+item:
+  duplicated: El artículo ha sido duplicada
+  destroyed: Su artículo ha sido destruido
+  cleaned: El artículo ha sido limpiada de toda la Magia de datos
+  no_item: Debe ser la celebración de un elemento!
+  renamed: Su artículo ha sido renombrado
+  rename_clear: Eliminado el nombre personalizado de su elemento
+  flag_added: Añadido el $flag bandera a su elemento
+  flag_removed: Eliminado el $flag bandera de tu artículo
+  no_flags: Ese elemento no tiene banderas
+  no_flag: Que el artículo no tiene la $flag bandera
+  lore_added: 'Añadido lore: $lore'
+  lore_removed: 'Eliminado lore: $lore'
+  no_lore: Ese elemento no tiene lore
+  not_unbreakable: Ese elemento no es irrompible
+  already_unbreakable: Ese elemento ya es irrompible
+  add_unbreakable: Ese elemento es ahora irrompible
+  remove_unbreakable: Que el artículo ya no está irrompible
+  not_unplaceable: Ese elemento no es unplaceable
+  already_unplaceable: Ese elemento es ya unplaceable
+  add_unplaceable: Ese elemento es ahora unplaceable
+  remove_unplaceable: Que el artículo ya no está unplaceable
+  no_enchants: Este elemento no tiene ninguna encantamientos
+  no_enchant: Que el artículo no tiene la $enchant encantamiento
+  enchant_removed: Eliminado el $enchant encantamiento de su elemento
+  enchant_added: Añadido el $enchant encantamiento para su artículo
+  enchant_not_added: No añadir el $enchant encantamiento para su artículo
+  enchant_unsafe: Usted no tiene permiso para agregar inseguro encantamientos
+  no_attribute: El elemento no tiene los $attribute atributo
+  attribute_removed: Eliminado el $attribute atributo de su elemento
+  attribute_added: Establecer el $attribute atributo en su elemento $value por $slot ($operation)
+  attribute_not_added: No se pudo establecer la $attribute atributo en su artículo
+  skull: Su libro se ha convertido en un cráneo
+  skull_no_book: Usted debe mantener un libro escrito con el cráneo de los datos en ella
+  skull_invalid_book: Ese libro no tiene el cráneo de los datos en él! Pegar sólo en el
+    text in 'Textures.Value', es una larga cadena de caracteres aleatorios normalmente terminan
+    in ==
+mage:
+  removed_property: Eliminado de la propiedad $name
+  no_property: Mago tiene ninguna propiedad $name
+  player_reconfigured: $name mago de datos de reconfigurado
+  player_not_reconfigured: $name mago de datos no reconfigurado
+  player_spells_levelled: Nivelar para arriba $count de $name hechizos
+  player_spells_not_levelled: No a nivel de cualquiera de $name hechizos
+  spells_levelled: Nivelar para arriba $count de tus hechizos
+  spells_not_levelled: No a nivel de cualquiera de tus hechizos
+  reconfigured: Mago reconfigurado
+  not_reconfigured: Mago no reconfigurado
+  earned_sp: a:&6+&e$amount &6SP
+  no_class: Usted no está entrenado para usar $name
+  no_spell: Usted no está entrenado para usar $name
+  player_spell_upgraded: $players's &r&6$name &d&oha sido actualizado a la &3$level
+  spell_upgraded: Su &r&6$name &d&ohechizo ha sido actualizado a la &3$level
+  spell_added: Usted ha aprendido la &r&6$name &d&ohechizo
+  brush_added: Usted ha adquirido el &r&7$name &d&ocepillo
+general:
+  no_spells: No Has Aprendido Ningun Hechizo
+  no_spells_in_category: 'No Has Aprendido Ningun Hechizo De La Categoria: $category'
+  spell_list_page: $count Hechizos Aprendidos [Pagina $page De $pages]
+  spell_list: $count Hechizos Aprendidos
+  locked_chest: Que el pecho está bloqueado, no se puede romper.
+books:
+  default:
+    author: Dumbledore
+    title: $category Libro De Hechizos
+  all:
+    title: Libro De Hechizos Maestro
+material:
+  wildcard: ' (Todos Los Tipos)'
+economy:
+  missing: '&cMi tienda está cerrada, lo siento!'
+  insufficient: 'Coste: &6$cost'
+  deducted: 'Deducido: &6$cost'
+  requires: Usted debe tener un $cost
+worlds:
+  world:
+    name: El Overworld
+  world_nether:
+    name: El Nether
+  world_the_end:
+    name: El Final
 cooldown:
-    wait_seconds: $seconds Segundos
-    wait_minutes: $minutes Minutos
-    wait_hours: $hours Horas
-    wait_moment: Al Momento
-    wait_minute: Un Minuto
-    wait_hour: Una Hora
-    description_seconds: $seconds Segundos
-    description_minutes: $minutes Minutos
-    description_hours: $hours Horas
-    description_minute: Un Minuto
-    description_hour: Una Hora
-    description_moment: Al Momento
-    description: "&eEnfriamiento: &6$time"
+  wait_seconds: $seconds Segundos
+  wait_minutes: $minutes Minutos
+  wait_hours: $hours Horas
+  wait_moment: Al Momento
+  wait_second: un segundo
+  wait_minute: Un Minuto
+  wait_hour: Una Hora
+  description_seconds: $seconds Segundos
+  description_minutes: $minutes Minutos
+  description_hours: $hours Horas
+  description_minute: Un Minuto
+  description_hour: Una Hora
+  description_second: Un segundo
+  description_moment: Al Momento
+  description: '&eEnfriamiento: &6$time'
+  mage_description: '&cAgotamiento: &6$time'
+warmup:
+  description: '&7Calentamiento: &6$time'
 duration:
-    lasts_seconds: Dura Por $seconds Segundos
-    lasts_minutes: Dura Por $minutes Minutos
-    lasts_hours: Dura Por $hours Horas
-categories:
-    combat:
-        name: Combat Magic
-        description: Basic Attack Spells
-    automata:
-        name: Automata
-        description: Create Life!
-        color: 'FFA500'
-    electrical:
-        name: Electrical
-        description: Mad Science
-        color: '888800'
-    master:
-        name: Master
-        description: All the Really Powerful Stuff
-        color: '00AACC'
-    utility:
-        name: Utility
-        description: Utility and movement spells
-    utility:
-        name: Utility
-        description: Utility and movement spells
-    demolition:
-        name: Demolitions
-        description: Highly destructive magic
-        color: 'FF0000'
-    dark:
-        name: Dark Magic
-        description: Evil Stuff!
-        color: '010101'
-    light:
-        name: Light Magic
-        description: Good Stuff
-        color: 'DDDDDD'
-    engineering:
-        name: Engineering
-        description: Spells for magical building
-        color: '00FFFF'
-    elemental:
-        name: Elemental
-        description: Control Nature
-    mining:
-        name: Mining
-        description: Spells to help you mine
-    skills:
-        name: Heroes Skills
-        descriptions: Skills being used from Heroes
-    staff:
-        name: Staff
-        description: Staff-only spells
-    specialty:
-        name: Specialty
-        description: Spells meant for item or npc use
+  lasts_seconds: Dura Por $seconds Segundos
+  lasts_minutes: Dura Por $minutes Minutos
+  lasts_hours: Dura Por $hours Horas
+  lasts_second: Dura por $seconds segundo
+  lasts_minute: Dura por $minutes minutos
+  lasts_hour: Dura por $hours hora
 skills:
-    inventory_title: "$class Skills ($page/$pages)"
-    inventory_title_secondary: "$class-$class2 Skills ($page/$pages)"
-    item_name: "$skill"
-    item_name_unavailable: "&c$skill"
-    item_description: "$description"
-    passive_description: "&1PASSIVE"
+  inventory_title: Hechizos ($page/$pages)
+  inventory_title_heroes: $class Habilidades ($page/$pages)
+  inventory_title_heroes_secondary: $class-$class2 Habilidades ($page/$pages)
+  item_name: $skill
+  item_name_unavailable: '&c$skill'
+  item_description: $description
+  passive_description: '&1PASIVO'
+  none: Usted no tiene las habilidades!
+  none_on_page: No hay habilidades en la página $page
+  inventory_title_secondary: $class-$class2 Habilidades ($page/$pages)
+resource_pack:
+  prompt: Usa /getrp para descargar el paquete de recursos.
+  sending: ''
+controls:
+  drop: Drop (Q)
+  right_click: Click-Derecho
+  left_click: Click-Izquierdo
+  swap: Swap (F)
+skillapi:
+  required_skill: '&cLas habilidades Requieren: &4$skill'
+  required_class: '&cLas Clases Requieren: &4$class'
+damage_types:
+  explosion: Explosión
+  fall: Caída
+  fire: Fuego
+  physical: Físico
+  projectile: Proyectil
+requirements:
+  unknown: '&cNo Se Permite'
+  property_requirement: '&r&cRequiere: &6$property &cde &4$value'
+  property_max: '&r&cSu &6$property &cestá al máximo'
+  property_min: '&r&cSu &6$property &cdebe ser mayor que &4$value'
+  no_wand: '&cDebe ser la celebración de una varita mágica!'
+  no_template: '&cUsted no puede aprender con que $wand&c.'
+  no_path: '&cUsted no puede aprender aquí.'
+  no_class: '&cUsted debe ser un $class'
+  no_required_path: '&cUsted debe ser al menos de $path&r!'
+  no_path_exact: '&cUsted debe ser al $path&r!'
+  no_path_end: '&cUsted debe estar listo para el avance de $path&r!'
+shops:
+  no_wand: '&cDebe ser la celebración de una varita mágica!'
+  no_template: '&cUsted no puede aprender con que $wand&c.'
+  no_path: '&cUsted no puede aprender aquí.'
+  no_class: '&cUsted debe ser un $class'
+  no_required_path: '&cUsted debe ser al menos de $path&r!'
+  no_path_exact: '&cUsted debe ser al $path&r!'
+  no_path_end: '&cUsted debe estar listo para el avance de $path&r!'
+  insufficient: '&cCostos $cost'
+  confirm_title: Buy $item
+  unlock_confirm_title: Unlock $item
+  deducted: '&d&oUsted compró &r&6$item &r&d&opor &r&a$cost'
+  selected: '&d&oUsted compró &r&6$item &r&d&opor &r&a$cost'
+  sold: '&d&oUsted Vendio &r&6$item &r&d&opor &r&a$earn'
+  unlocked: '&d&oHas desbloqueado &r&6$item &r&d&opor &r&a$cost'
+  selected_free: '&d&oUsted eligió &r&6$item'
+  not_applicable: Ya tienes $item
+  cast_fail: '&cLo siento, por favor, vuelve a intentarlo!'
+  no_items: No hay nada para comprar aquí
+  title: Shop ($balance&0)
+  extra_spell: '&aNo Se Requiere'
+  no_upgrade: No hay nada más para que usted pueda aprender aquí.
+  upgrade_name_change: '&r&4Actualizaciones: &r$name'
+  level_requirement: '&r&cRequiere: &6$path'
+  tags_requirement: '&r&cRequiere: &6$tags'
+  cast_requirement: '&r&cMoldes: &6$current&f/&e$required'
+  prerequisite_spell_level: '&6$name'
+  prerequisite_spell_progress_level: ' (El progreso $level/$max_level)'
+  required_spells: '&r&cRequiere: $spells'
+  cast_spell: $spell
+  unlock_class: $class
+  nothing: Nothing
+  cost_lore: '&6Costos: &e$cost'
+  earn_lore: '&6Gana: &e$earn'
+  earn_heading: ''
+  cost_heading: ''
+  unlock_cost_lore: '&6Desbloquear Costo: &e$cost'
+  locked: '&cBloqueado, &eDesbloquear en la Tienda de Donación'
+  required_cost_lore: '&cCostos: &4$cost'
+  required_unlock_cost_lore: '&cDesbloquear Costo: &4$cost'
+  has_class: Ya tiene clase $class
+  at_limit: Usted está en su límite de $limit
+  unlocked_lore: '&aDesbloqueado'
+  property_requirement: '&r&cRequires: &6$property &cde $4$value'
+  property_max: '&r&cYour &6$property &cestá al máximo'
+  property_min: '&r&cYour &6$property &cdebe ser mayor que $4$value'
+  item_amount: $name x$amount
+spell:
+  category: ''
+  brush: Utiliza Material De Cepillos
+  undoable: ''
+  not_undoable: '&4No Se Puede Deshacer'
+  available_path: Disponible en el nivel $path
+  required_path: Necesario para completar el nivel $path
+  levels_available: 'Maximo Nivel: &r&5$levels'
+  required_spell: Necesitas Aprender &r&4$spell &d&oPara Avanzar &b$path
+  prerequisite_spell_level: '&cUsted debe saber &6Level $level $name'
+  prerequisite_spell_progress_level: ' &6(El progreso $level/$max_level)'
+  level_description: Nivel $level
+  progress_description: '&6El progreso: &b$level&6/&3$max_level'
+  quick_cast: '&2Reparto Rápido'
+  earns: '&2Gana hasta &6$earns'
+  description_lore: '&b$description'
+  level_lore: '&6$level'
+  toggle: '&aCast para activar y desactivar'
+  upgrade_description_prefix: '&r&b&bull; &6'
+  reactivate: $name Activado
 spells:
-    default:
-        fizzle: Tu Hechizo Se Ha Congelado
-        backfire: Tu Hechizo Ha Rebotado
-        fail: Tu Hechizo Ha Fallado
-        insufficient_permission: No Puedes Lanzar Hechizos Aqui
-        cast_player_message: "&d&o$player &r&5Te Ha Lanzado&3&o$spell &r&5!"
-        indirect_player_message: "&d&o$player &r&5Te Ha Lanzado &3&o$spell &r&5!"
-        insufficient_resources: No Tienes Suficiente $cost
-        cooldown: Tienes Que Esperar $time.
-        cancelled: Your spell was cancelled!
-        entity_required: An entity is required for this spell.
-        living_entity_required: A living entity is required for this spell.
-        player_required: A player is required for this spell.
-        location_required: A location is required for this spell.
-        world_required: A world is required for this spell.
-        invalid_world: The specified world is not valid.
-        cast_finish: ""
-    admission:
-        name: Alohomora
-        description: Abre Puertas A Distancia
-        cast: Alohomora
-    admission|2:
-        upgrade_description: "&r&b• &6Ahora Abre Puertas De Hierro"
-    curse:
-        name: Tragacaracoles
-        description: Marea A Tu Oponente
-        cast: Has Mareado A $target
-        upgrade_description: "&r&b• &6Ahora Relentiza"
-    broom:
-        name: Escoba
-        description: El Poder De Volar
-        cast: Tu Escoba Se Ha Elevado!
-        deactivate: Tu Escoba Se Ha Quedado Parada.
-        crash: CRASH!
-        fail: No Tienes Suficiente Espacio Para Volar!
-        cursed: No Puedes Volar Ahora!
-    reflect:
-        name: Protego
-        description: Crea Un Escudo Delante Tuya
-        upgrade_description: "&r&b• &6Incrementa Tamaño Y Durabilidad"
-    shell:
-        name: Jaulio
-        description: Encierra A Tu Oponente
-        upgrade_description: "&r&b• &6Incrementa Durabilidad"
-    arrow:
-        name: Arrow
-        description: Lanza Una Flecha Magica
-        upgrade_description: "&r&b• &6Aumenta Daño"
-    frost:
-        name: Frost Requo
-        description: Congela El Agua
-        cast_finish: &count Bloques Congelados
-        upgrade_description: "&r&b• &6Aumenta El Radio"
-    tree:
-        name: Orchideous
-        description: Planta Un Arbol
-        fail: No Puedes Plantar Un Arbol Alli
-        cast: Orchideous
-    disarm:
-        name: Expelliarmous
-        description: Disarma A Tu Oponente
-        cast: Expelliarmous
-        cast_self: Te Has Desarmado A Ti Mismo
-        upgrade_description: "&r&b• &6Disminuye Las Posibilidades De Que Rebote O Se Congele"
-    disarm|3:
-        upgrade_description: "&r&b• &6No Rebota Ni Se Congela"
-    heal:
-        name: Branquia-Emendo
-        description: Te Cura A Ti Y A Otro
-        cast: Has Curado A $target
-        cast_self: Te Has Curado
-        upgrade_description: "&r&b• &6Aumenta La Cantidad De Vida"
-    torch:
-        name: Lumos
-        description: Ilumina Una Zona
-        no_target: No Puedes Iluminar Ahi
-        cast: Lumos
-    torch|2:
-        upgrade_description: "&r&b• &6Ahora Dura Permanente"
-    monster:
-        name: Immortui
-        description: Hace Aparecer Un Monstruo
-        deactivate: Has Quitado A Tu Monstruo
-        cast: Immortui
-    bubble:
-        name: Aguamenti
-        description: Crea Un Cubo De Agua
-        usage: Crea Un Cubo De Agua
-        cast: Aguamenti
-        upgrade_description: "&r&b• &6Aumenta El Radio"
-    collapse:
-        name: Bombarda
-        description: Rompe Una Zona
-        cast_finish: $count Bloques Rotos
-        upgrade_description: "&r&b• &6Aumenta Radio Y Rompe Mas Tipos De Bloques"
-    blast:
-        name: Reducto
-        description: Explota Una Zona Pequeña
-        cast_finish: $count Bloques Rotos
-        upgrade_description: "&r&b• &6Aumenta Radio Y Rompe Mas Tipos De Bloques"
-    cloak:
-        name: Evanesco
-        description: Te Hace Invisible
-        cast: Evanesco
-        cast_self: Te Has Vuelto Invisible
-    push:
-        name: Flipendo
-        description: Empuja A Tu Oponente
-        alternate: Flipendo
-        upgrade_description: "&r&b• &6Aumenta La Fuerza"
-    fire:
-        name: Incendio
-        description: Quema A Tu Oponente
-        cast: Incendio
-        upgrade_description: "&r&b• &6Aumenta El Radio"
-    blink:
-        name: Aparicion
-        description: Te Teletransporta
-        usage: Te Teletransporta A Donde Quieras
-        no_target: No Puedes Teletransportarte Alli
-        cast: Aparicion
-    blink|2:
-        upgrade_description: "&r&b• &6Aumenta El Rango"
-    blink|3:
-        upgrade_description: "&r&b• &6Aumenta El Rango Y La Subida/Bajada"
-    stash:
-        name: Bauleo
-        description: Abre Tu Cofre De Ender
-        cast: Bauleo
-        cast_player: Bauleo
-    stream:
-        name: Aquaeructo
-        description: Lanza Un Chorro De Agua
-        cast: Aquaeructo
-    flare:
-        name: Periculum
-        description: Lanza Petardos Magicos
-        cast: Periculum
-    fireball:
-        name: Confringo
-        description: Lanza Una Bola De Fuego
-    fireball|2:
-        upgrade_description: "&r&b• &6Aumenta El Daño"
-    fireball|3:
-        upgrade_description: "&r&b• &6Aumenta La Velocidad"
-    fireball|4:
-        upgrade_description: "&r&b• &6Ahora Quema"
-    tornado:
-        name: Maxima Tornadus
-        description: Crea Un Tornado
-        cast: Maxima Tornadus
-        upgrade_description: "&r&b• &6Ahora Destruye Estructuras"
-    missile:
-        name: Stupefy
-        description: Lanza Un Misil Magico
-        cast: Stupefy
-        upgrade_description: "&r&b• &6Aumenta Rango Y Daño"
-    blind:
-        name: Obscuro
-        description: Ciega A Tu Oponente
-        cast: Has Cegado A $target
-    torture:
-        name: Crucio
-        description: Tortura A Tu Oponente
-        cast: Crucio
-    petrify:
-        name: Immobilus
-        description: Immobiliza A Tu Oponente
-        cast: Immobilus
-    wound:
-        name: Sectucsempra
-        description: Daña A Tu Oponente
-        cast: Sectucsempra
-    stun:
-        name: Desmaius
-        description: Desmaya Y Daña A Tu Oponente
-        cast: Desmaius
-        upgrade_description: "&r&b• &6Aumenta Daño Y Tiempo"
-    pull:
-        name: Accio
-        description: Atrae Todo A Ti
-        alternate: Accio
-        cast: Accio
-    gills:
-        name: Casco Burbuja
-        description: Te Permite Respirar Bajo El Agua
-        cast: Casco Burbuja
-        hat_name: Casco Burbuja
-        hat_lore: Clic Para Quitar
-    lift:
-        name: Wingardium-Leviosa
-        description: Eleva El Bloque Que Quieras
-        cast: Wingardium-Leviosa
-    fling:
-        name: Spongify
-        description: Te Impulsa Hacia Donde Tu Quieras
-        upgrade_description: "&r&b• &6Aumenta La Potencia"
+  default:
+    fizzle: Tu Hechizo Se Ha Congelado
+    backfire: Tu Hechizo Ha Rebotado
+    fail: Tu Hechizo Ha Fallado
+    insufficient_permission: No Puedes Lanzar Hechizos Aqui
+    cast_player_message: '&d&o$player &r&5Te Ha Lanzado&3&o$spell &r&5!'
+    indirect_player_message: '&d&o$player &r&5Te Ha Lanzado &3&o$spell &r&5!'
+    insufficient_resources: No Tienes Suficiente $cost
+    cooldown: Tienes Que Esperar $time.
+    cancelled: El hechizo fue cancelado!
+    entity_required: Una entidad que se requiere para este hechizo.
+    living_entity_required: Una entidad viviente que se requiere para este hechizo.
+    player_required: Se requiere que un jugador de este hechizo.
+    location_required: Una ubicación es necesaria para este hechizo.
+    world_required: Un mundo que se requiere para este hechizo.
+    invalid_world: La especificados mundo no es válido.
+    cast_finish: ''
+  admission:
+    name: Alohomora
+    description: Abre Puertas A Distancia
+    cast: Alohomora
+  admission|2:
+    upgrade_description: '&r&b• &6Ahora Abre Puertas De Hierro'
+  secure:
+    name: Seguro
+    description: Asegura contenedores
+    usage: Objetivo y échate para un reemplazo de la llave, a hurtadillas de la fundición para desbloquear
+    cast: El contenedor está ahora bloqueado - usted debe tener su clave para desbloquearlo!
+    acquire: Bloqueo cambiado!
+    already: Que ya está bloqueado
+    alternate_up: Invocas una llave de repuesto
+    alternate_sneak: Contenedor desbloqueado
+    key_name: '&6&k$uuid'
+    key_name_alternate: '&6$name''s &eClave'
+    key_description: |-
+      &6$name's &eClave
+      Necesario para abrir tu contenedores cerrados
+    fail: no Se puede bloquear esa!
+    upgrade_description: Ahora cerraduras de las calderas y otros recipientes
+  lockpick:
+    name: Lockpick
+    description: Desbloquea contenedores cerrados
+    cast: Ábrete Sésamo!
+    fail: No se puede desbloquear!
+  snoop:
+    name: Snoop
+    description: Mirar en el interior de un cofre
+    cast: Vamos a ver lo que hay adentro
+    no_target: Usted debe apuntar a un pecho
+  anvil:
+    name: Yunque
+    description: Spawn un yunque
+    cast: Tan pesado!
+  silence:
+    name: El_silencio
+    description: Evitar que su objetivo de hechizos
+    cast: Que el silencio $target
+  curse:
+    name: Tragacaracoles
+    description: Marea A Tu Oponente
+    cast: Has Mareado A $target
+    upgrade_description: '&r&b• &6Ahora Relentiza'
+  broom:
+    name: Escoba
+    cast: Tu Escoba Se Ha Elevado!
+    deactivate: Tu Escoba Se Ha Quedado Parada.
+    crash: CRASH!
+    fail: No Tienes Suficiente Espacio Para Volar!
+    creative_fail: Usted no puede utilizar los palos de escoba en el modo creativo!
+    cursed: No Puedes Volar Ahora!
+    upgrade_description: El aumento de la duración, la velocidad y el manejo de
+    description: El Poder De Volar
+  superbroom:
+    name: SuperBroom
+    cast: Su varita viene a la vida!
+    deactivate: Su varita se calma.
+    crash: CRASH!
+    fail: No hay suficiente espacio para despegar!
+  boon:
+    name: Boon
+    description: Hace temporalmente superpoderosas
+    cast_self: A que te dé una bendición
+    cast: Dar $target una bendición
+  boon|2:
+    upgrade_description: Da un salto de boost
+  boon|3:
+    upgrade_description: Aumenta el efecto de velocidad
+  boon|4:
+    upgrade_description: Añade la visión nocturna
+  blessing:
+    name: Bendición
+    description: Bendice a un área grande de seguidores
+    cast: Bendice el área de
+  holylight:
+    name: Luz Sagrada
+    description: Sanar a los jugadores en el área, el daño de las turbas
+    cast: Que brille la Luz Sagrada
+  mount:
+    name: Monte
+    description: Monte su destino
+    cast: Montar $target
+  horse:
+    name: Caballo
+    description: Convocar y montar a caballo
+    cast: Giddyup!
+    nospace: '&cEncontrar un espacio claro para su caballo'
+  tame:
+    name: Domesticar
+    description: Domesticar a tu destino
+    cast: Usted domo $target
+  platform:
+    name: Plataforma
+    description: Crear una plataforma en frente de usted
+    cast_finish: Lleno de $count los bloques con $material
+  platform|2:
+    upgrade_description: El aumento de tamaño
+  platform|4:
+    upgrade_description: Ahora construye con su pincel
+  reflect:
+    name: Protego
+    description: Crea Un Escudo Delante Tuya
+    upgrade_description: '&r&b• &6Incrementa Tamaño Y Durabilidad'
+  shell:
+    name: Jaulio
+    description: Encierra A Tu Oponente
+    upgrade_description: '&r&b• &6Incrementa Durabilidad'
+  tag:
+    name: Etiqueta
+    description: Dejar un cartel con su nombre
+    usage: Requiere y consume un signo de elemento!
+    fail: Signo de la colocación no!
+    cast: De salir de una etiqueta
+    cast_player: Enviar $target un mensaje
+    cast_give: Tienen algunos de los signos!
+    cast_player_message: '&5Se escucha una voz misteriosa de &c&o$player &r&5... es
+      dice ... Hola!'
+    sign_message: fue aquí
+  flashbang:
+    name: Flash Bang
+    description: Lanza una bola de luz y la furia
+    cast_player_message: a:Usted fue golpeado por $player flash bang
+  singularity:
+    name: Singularidad
+    description: Crear un agujero negro
+    cast_player_message: a:Tienes succionada por un agujero negro
+  arrow:
+    name: Flecha
+    description: Lanza Una Flecha Magica
+    upgrade_description: '&r&b• &6Aumenta Daño'
+  arrow_light:
+    name: Flecha De Luz
+    description: Disparar una flecha de luz pura
+    cast_player_message: a:$player disparó a un $spell a usted
+  arrow_bomb:
+    name: Bomba De Flecha
+    description: El fuego de la explosión de una flecha
+    cast_player_message: a:$player disparó a un $spell a usted
+  arrow_poison:
+    name: Veneno De Flecha
+    description: Dispara una flecha que estalla en una nube de veneno
+    cast_player_message: a:$player disparó a un $spell a usted
+  arrow_regular:
+    name: Flecha Normal
+    description: Disparar una flecha normal
+    cast_player_message: a:$player disparó a un $spell a usted
+  arrow_blink:
+    name: Parpadeo De Flecha
+    description: Teletransportarse a la ubicación en la flecha de tierras
+    cast_player_message: a:$player disparó a un $spell a usted
+  arrow_fire:
+    name: Flecha De Fuego
+    description: Enciende un fuego donde aterriza
+    cast_player_message: a:$player disparó a un $spell a usted
+  arrow_ice:
+    name: Flecha De Hielo
+    description: Inmovilizar la zona donde aterriza
+    cast_player_message: a:$player tiro de un $spell a usted
+  arrow_shock:
+    name: Choque De Flecha
+    description: Electrificar el destino
+    cast_player_message: a:$player disparó a un $spell a usted
+  arrow_grapple:
+    name: Lidiar Flecha
+    description: Disparar una flecha que te atrae hacia ella
+    cast_player_message: a:$player disparó a un $spell a usted
+  toss:
+    name: Lanzar
+    description: Lanzar un bloque de
+    fail: Uno de los bloques pasó a mayores
+    cast: Lanzas un bloque
+  volley:
+    name: Volea
+    description: Tirar un montón de bloques de
+    fail: Uno de los bloques pasó a mayores
+    cast: Tirar algunos bloques
+  sniper:
+    name: Sniper
+    description: Fuego una super rápido flecha
+  pull:
+    name: Accio
+    description: Atrae Todo A Ti
+    alternate: Accio
+    cast: Accio
+  grab:
+    name: Agarrar
+    description: Tire de los elementos hacia usted
+    cast: Yoink!
+  permafrost:
+    name: El PermaFrost
+    description: Realizar permanentemente cubierto de nieve!
+    cast_finish: Permafrosted $count bloques
+  permamelt:
+    name: PermaMelt
+    description: Elevar la temperatura
+    cast_finish: Permamelted $count bloques
+  frost:
+    name: Las Heladas Requo
+    description: Congela El Agua
+    cast_finish: Bloques Congelados
+    upgrade_description: '&r&b• &6Aumenta El Radio'
+  harden:
+    name: Harden
+    description: Que el objetivo de los bloques más fuertes
+    cast: Hardened $count bloques
+  harden|2:
+    upgrade_description: Ahora se convierte en obsidiana
+  tree:
+    name: Orchideous
+    description: Planta Un Arbol
+    fail: No Puedes Plantar Un Arbol Alli
+    cast: Orchideous
+  forest:
+    name: Bosque
+    description: Al instante crecer un bosque
+    fail: No crecían los árboles
+    cast: Crecer un bosque!
+  disarm:
+    name: Expelliarmous
+    description: Desarma A Tu Oponente
+    cast: Expelliarmous
+    cast_self: Te Has Desarmado A Ti Mismo
+    upgrade_description: '&r&b• &6Disminuye Las Posibilidades De Que Rebote O Se Congele'
+  disarm|3:
+    upgrade_description: '&r&b• &6No Rebota Ni Se Congela'
+  heal:
+    name: Branquia-Emendo
+    description: Te Cura A Ti Y A Otro
+    usage: Puede ser interrumpido por los daños!
+    cast: Has Curado A $target
+    cast_self: Te Has Curado
+    upgrade_description: '&r&b• &6Aumenta La Cantidad De Vida'
+  healing:
+    name: La curación
+    description: Sanar a todos los que te rodean
+    cast: Sanar $target
+  cure:
+    name: Cura
+    description: Eliminar efectos negativos
+    cast: Se puede curar $target
+    cast_self: Se puede curar a sí mismo
+    upgrade_description: Ahora cura de hambre
+  cure|2:
+    upgrade_description: Ahora quita marchitan y debilidad
+  cure|3:
+    upgrade_description: Ahora niega Silencio
+  cure|4:
+    upgrade_description: Ahora cura de hambre
+  cure|5:
+    upgrade_description: Ahora cura zombie aldeanos
+  music:
+    name: La música
+    description: iniciar algunas canciones
+    cast_player: Iniciar un poco de música llamada $name
+    cast_self: iniciar un poco de música
+  airstrike:
+    name: Ataque Aéreo
+    description: Tomar una cercanos entidad
+    cast_player_message: a:&d&o$player &r&5llamado en un ataque aéreo en usted
+  gather:
+    name: Se reúnen
+    description: Teletransportarse a otros jugadores
+    cast_to_player: Teletransportarse a $target
+    cast_entity: De teletransportarse $target a su destino
+    cast_player_message: a:&d&o$player &r&5espacio plegado
+    target_selected: Captura $target
+    cancel: Publicado destino
+    upgrade_description: Objetivo y echados para reunir a los jugadores que
+  supergather:
+    name: SuperGather
+    description: La captura de los jugadores y teletransportarse
+    usage: Apuntar hacia abajo para el ciclo de los objetivos, hasta para teletransportarse a ellos
+    cast_to_player: Teletransportarse a $target
+    cast_entity: De teletransportarse $target a su destino
+    cast_player_message: a:&d&o$player &r&5espacio plegado
+    target_selected: Captura $target
+    cancel: Publicado destino
+  icbm:
+    name: ICBM
+    description: Elenco de la explosión de una bola de fuego
+    cast: Mirar afuera!
+  neutron:
+    name: Bombas De Neutrones
+    description: Daño y aturde a todas las entidades en un amplio radio
+    cast: Matar a todas las cosas!
+    upgrade_description: Se ha aumentado el radio
+  shuriken:
+    name: Shuriken
+    description: Lanzar un proyectil de rebote
+    upgrade_description: Aumento de los daños
+  wave:
+    name: Ola
+    description: Rienda suelta a una conmoción de onda
+    upgrade_description: El aumento de tamaño y fuerza
+  weather:
+    name: El clima
+    description: Cambiar el clima
+    cast: Se mezclan de una tormenta
+    alternate: La calma de la tormenta
+  fling:
+    name: Spongify
+    description: Te Impulsa Hacia Donde Tu Quieras
+    upgrade_description: '&r&b• &6Aumenta La Potencia'
+  leap:
+    name: Salto
+    description: Dar un gran salto
+    cast: Wii!
+  simulate:
+    name: Simular
+    description: Conway Juego de la Vida!
+    cast: Usted puede traer el mundo a la vida
+  animate:
+    name: Animate
+    description: Animar el destino del material
+    cast: Crear una Magia Golem
+    no_target: Usted debe apuntar a dos cuadras uno al lado del otro
+    fail: Usted no puede hacer un Golem de $material
+    cast_broadcast: '&c&o$name &r&5nació'
+    death_broadcast: '&c&o$name &r&5ha sido derrotado'
+  simulate3:
+    name: Simular en 3D
+    description: Conway Juego de la Vida ... en 3D!
+    cast: Usted puede traer el mundo a la vida
+  glider:
+    name: Planeador
+    description: Crear un poderoso Autómata
+    cast: Está vivo!
+  virus:
+    name: Virus
+    description: Usted probablemente no quiere lanzar este
+    cast: ¿Qué has hecho?
+    cast_broadcast: '&c&o$name &r&5nació'
+    death_broadcast: '&c&o$name &r&5ha sido derrotado'
+    fail: Usted no puede hacer un Virus de $material
+  worm:
+    name: Gusano
+    description: La liberación de un peligroso gusano gigante
+    cast: No es un virus, un gusano!
+    cast_broadcast: '&c&o$name &r&5was nacido'
+    death_broadcast: '&c&o$name &r&5ha sido derrotado'
+    fail: Usted no puede hacer un Gusano de $material
+  snake:
+    name: La serpiente
+    description: Crear a un mortal de la serpiente-como la criatura
+    cast: Sssssssssnake tiempo!
+    cast_broadcast: '&c&o$name &r&5nació'
+    death_broadcast: '&c&o$name &r&5ha sido derrotado'
+    fail: Usted no puede hacer un Gusano de $material
+  hunter:
+    no_target: Usted debe apuntar a dos cuadras uno al lado del otro
+    name: Cazador
+    description: Crear a un mortal de los Autómatas
+    fail: Usted no puede hacer un Cazador de $material
+    cast: Destruir a todos los seres humanos!
+    cast_broadcast: '&c&o$name &r&5nació'
+    death_broadcast: '&c&o$name &r&5ha sido derrotado'
+  defender:
+    name: Defensor
+    description: Crear un Autómata cazador
+    cast: Voy a cazar para usted, humanos
+    fail: No se puede hacer un Defensor de $material
+    cast_broadcast: '&c&o$name &r&5nació'
+    death_broadcast: '&c&o$name &r&5ha sido derrotado'
+  life:
+    name: Vida
+    description: Crear una GRAN Vida junta
+    cast: Tiempo para experimentar!
+  life3:
+    name: La vida en 3D
+    description: Crear un gran 3D Vida junta
+    cast: Ciencia loca!
+  torch:
+    name: Lumos
+    description: Ilumina Una Zona
+    no_target: No Puedes Iluminar Ahi
+    cast: Lumos
+    upgrade_description: Reduced cooldown
+  supertorch:
+    name: SuperTorch
+    description: Crea un permanente antorcha
+    no_target: No se puede poner una antorcha que hay
+    cast: Llama en!
+  tunnel:
+    name: Túnel
+    description: La mina de un túnel en frente de usted
+    no_target: Usted necesita estar de pie en algo!
+    cast: Perforan a través de $count bloques
+  monster:
+    name: Zombies
+    description: Hace Aparecer Un Monstruo
+    deactivate: Has Quitado A Tu Monstruo
+    cast: Zombies
+  mob:
+    name: Los mobs
+    description: Convocar a una multitud de monstruos
+    deactivate: Suelte su mobs
+    cast: Convocar a $count monstruo(s)
+  portal:
+    name: Portal
+    description: Crear un portal temporal
+    no_target: No se puede crear un portal de allí
+    cast: Crear un portal temporal
+  phase:
+    name: Fase
+    description: Fase a otra dimensión
+    cancel: Fase interrumpido.
+    cast: ''
+    teleport: Usted fase a $world_name
+    teleport_failed: No pueden fase a $world_name desde aquí
+  superphase:
+    name: Super Fase
+    description: Fase de sí mismo o a otros a otra dimensión
+    cast: ''
+    teleport: Usted fase $target a $world_name
+    teleport_failed: No pueden fase $target a $world_name desde aquí
+  phasebackup:
+    name: Fase de Copia de seguridad
+    description: Comprobar en la copia de seguridad de los mundos
+    cast: ''
+    teleport: Usted fase a $world_name
+    teleport_failed: No pueden fase a $world_name desde aquí
+  invincible:
+    name: Invencible
+    description: Hazte impermeable a los daños
+    cast: Te sientes invencible!
+    deactivate: Usted se siente normal
+  inferno:
+    name: Inferno
+    description: Quemar una amplia área de
+    cast: Usted se quema $count bloques
+  bubble:
+    name: Aguamenti
+    description: Crea Un Cubo De Agua
+    usage: Crea Un Cubo De Agua
+    cast: Aguamenti
+    upgrade_description: '&r&b• &6Aumenta El Radio'
+  paint:
+    name: Pintura
+    description: Llenar un solo bloque
+  gills:
+    name: Casco Burbuja
+    description: Te Permite Respirar Bajo El Agua
+    cast: Casco Burbuja
+    hat_name: Casco Burbuja
+    hat_lore: Clic Para Quitar
+  gasp:
+    name: Gasp
+    description: Tome una respiración profunda mientras bajo el agua
+    cast: GASP!
+  glide:
+    name: Planeador
+    description: Una Elytra en su bolsillo!
+    cast: Tiempo para deslizarse
+    wear_name: Plegable Planeador
+    war_lore: Haga clic en Quitar
+  arrowrain:
+    name: Flecha Lluvia
+    description: Disparar una salva de flechas
+  arrowrain|2:
+    upgrade_description: Más, flechas incendiarias
+  gatling:
+    name: Ametralladora Gatling
+    description: Fuego una secuencia de flechas
+    upgrade_description: Más fuego el tiempo, más corto de calentamiento
+  meteor:
+    name: Lluvia De Meteoros
+    description: La muerte de fuego desde arriba
+    cast: Que la lluvia de fuego desde los cielos
+  bomb:
+    name: La Bomba De Alfombra
+    description: La lluvia de la muerte de más arriba
+    cast: Usted llame en un ataque aéreo
+    upgrade_description: Más bombas!
+  poison:
+    name: Veneno
+    description: Envenenar a su destino
+    cast: Usted enveneno $target
+    upgrade_description: Aumento de la duración veneno
+  light:
+    name: La luz
+    description: La luz de la oscuridad
+  lightning:
+    name: Rayo
+    description: La huelga de la iluminación a su destino
+    cast: Ka-Zap!
+  lightning|2:
+    upgrade_description: Aumento de la precisión
+  lightning|3:
+    upgrade_description: Más de rayo
+    cast: Ka-POW!
+  smite:
+    name: Hiere
+    description: La huelga de abajo de su destino
+    cast: Tu hieres $target
+  nuke:
+    name: Nuke
+    description: Crear una gran explosión
+    cast: HUY!
+    upgrade_description: Radio más grande, más destrucción
+  day:
+    name: Día Soleado
+    description: Hacer un hermoso día
+    cast: Qué bonito día!
+  night:
+    name: Una Oscura y Tormentosa Noche
+    description: Hacer es oscura y tormentosa
+    cast: Spoooooky
+  time:
+    name: Tiempo
+    description: Cambiar la hora del día
+    cast: Hora de cambiar a $newtime
+  bridge:
+    name: Puente
+    description: Extender el suelo debajo de usted
+    usage: Puede ser utilizado en el aire
+    no_target: No pueden puentes aquí
+    cast: Un puente de $material se extiende
+  grenade:
+    name: Granada
+    description: Mezcle una imprimación granada
+  grenade|2:
+    upgrade_description: Aumento de los daños y fuego
+  cluster:
+    name: De Bombas De Racimo
+    description: Mezcle una división de granada
+    cast: Lanzas una bomba en racimo
+    upgrade_description: De bombas de racimo se divide en más bombas
+  convert:
+    name: Convertir
+    description: Convertir un área esférica de bloques
+    usage: No se llene de aire
+    cast_finish: Convierte $count de los bloques de $material
+  collapse:
+    name: Bombarda
+    description: Rompe Una Zona
+    cast_finish: $count Bloques Rotos
+    upgrade_description: '&r&b• &6Aumenta Radio Y Rompe Mas Tipos De Bloques'
+  superconvert:
+    name: Super Convertir
+    description: Convertir una gran esfera de bloques
+    usage: Lanzo dos veces para convertir
+    cancel: Super Convertir cancelado
+    target_selected: Lanzó de nuevo a convertir $target
+    fail: Demasiado grande!
+    cast_finish: Convertidos $count los bloques de $material
+  supercollapse:
+    name: SuperColapso
+    description: El colapso de una gran esfera de bloques
+    usage: Lanzo dos veces al colapso
+    cancel: Super Colapso cancelado
+    target_selected: Lanzó de nuevo al colapso
+    fail: Demasiado grande!
+    cast_finish: Se derrumbó $count bloques
+  superblob:
+    name: SuperBlob
+    description: Crear una gran esfera sólida
+    usage: Cast dos veces para construir
+    cancel: SuperBlob cancelado
+    target_selected: Lanzó de nuevo a construir la esfera
+    fail: Demasiado grande!
+    cast_finish: Llena $count bloques con $material
+  superhemisphere:
+    name: Super Hemisferio
+    description: Crear un sólido grande medida esfera
+    usage: Lanzo dos veces para construir
+    cancel: Super Hemisferio cancelado
+    target_selected: Lanzó de nuevo a construir hemisferio
+    fail: Demasiado grande!
+    cast_finish: Llena $count bloques con $material
+  supercylinder:
+    name: Super Cilindro
+    description: Crear un cilindro grande
+    usage: Lanzo dos veces para construir
+    cancel: Super Cilindro cancelado
+    target_selected: Lanzó de nuevo a construir cilindro
+    fail: Demasiado grande!
+    cast_finish: Llena $count bloques con $material
+  superrepair:
+    name: Super Reparación
+    description: Reparaciones de una gran área de guardado con Copia de seguridad
+    usage: Fundición de dos veces a la reparación
+    cancel: Super Reparación cancelado
+    target_selected: Lanzó de nuevo a la reparación
+    fail: Demasiado grande!
+    cast_finish: Reparado $count bloques
+  repairitem:
+    name: Elemento De Reparación
+    description: Repara el destino cayó artículo completo durabilidad
+    no_target: No se puede reparar
+    cast: Artículo reparado!
+  repairequipment:
+    name: Reparación De Equipos De
+    description: Repara el jugador objetivo del equipo completo durabilidad
+    no_target: Nada para reparar
+    cast: El equipo reparado!
+  backup:
+    name: Copia de seguridad
+    description: Guardar el área de orientación para la Reparación
+    cast_finish: Copia de seguridad de la zona
+    target_selected: Lanzó de nuevo a la copia de seguridad
+  superbackup:
+    name: Super Copia de seguridad
+    description: Guardar una gran área de destino para la Reparación
+    usage: Lanzo dos veces para guardar
+    cancel: Super Copia de seguridad cancelado
+    fail: Demasiado grande!
+    cast_finish: Copia el área seleccionada
+    target_selected: Lanzó de nuevo a la copia de seguridad
+  superemp:
+    name: Super EMP
+    description: Dotar de electricidad a una gran área de
+    usage: Lanzo dos veces para electrificar
+    cancel: SuperEMP cancelado
+    fail: Demasiado grande!
+    cast_finish: Electrificado $count bloques
+    target_selected: Lanzó de nuevo a la electrificación de la esfera
+  supershell:
+    name: Super De Shell
+    description: Crear una gran esfera hueca
+    usage: Lanzo dos veces para construir
+    cancel: Super De Shell cancelado
+    target_selected: Lanzó de nuevo a construir shell
+    fail: Demasiado grande!
+    cast_finish: LLena $count bloques con $material
+  superdisc:
+    name: Super Disco
+    description: Crear un gran disco circular
+    usage: Lanzo dos veces para construir
+    cancel: Super Disco cancelado
+    target_selected: Lanzó de nuevo a construir disco
+    fail: Demasiado grande!
+    cast_finish: LLena $count bloques con $material
+  superring:
+    name: Super Anillo
+    description: Crear un gran anillo circular
+    usage: Cast dos veces para construir
+    cancel: Super Anillo cancelado
+    target_selected: Lanzó de nuevo a construir anillo
+    fail: Demasiado grande!
+    cast_finish: LLena $count bloques con $material
+  superdome:
+    name: Super Domo
+    description: Crear una gran cúpula
+    usage: Cast dos veces para construir
+    cancel: Super Domo cancelado
+    target_selected: Lanzó de nuevo a construir la cúpula
+    fail: Demasiado grande!
+    cast_finish: LLena $count bloques con $material
+  superpyramid:
+    name: Super Pirámide
+    description: Crear un gran hueco de la pirámide
+    usage: Cast dos veces para construir
+    cancel: SuperPyramid cancelado
+    target_selected: Lanzó de nuevo a construir la pirámide
+    fail: Demasiado grande!
+    cast_finish: LLena $count bloques con $material
+  superbox:
+    name: Super Caja
+    description: Crear un gran hueco de la caja
+    usage: Cast dos veces para construir
+    cancel: Super Caja cancelado
+    target_selected: Lanzó de nuevo a construir el cuadro de
+    fail: Demasiado grande!
+    cast_finish: LLena $count bloques con $material
+  supercube:
+    name: Super Cubo
+    description: La creación de un gran cubo sólido
+    usage: Lanzo dos veces para construir
+    cancel: Super Cubo cancelado
+    target_selected: Lanzó de nuevo a construir un cubo
+    fail: Too large!
+    cast_finish: Llena $count bloques con $material
+  superblast:
+    name: Super Blast
+    description: Mina de un área muy grande
+    cast_finish: Criticó $count bloques
+  blast:
+    name: Reducto
+    description: Explota Una Zona Pequeña
+    cast_finish: $count Bloques Rotos
+    upgrade_description: '&r&b• &6Aumenta Radio Y Rompe Mas Tipos De Bloques'
+  earthquake:
+    name: Terremoto
+    description: Crear un terremoto
+    cast_finish: Tembló $count bloques
+  cloak:
+    name: Evanesco
+    description: Te Hace Invisible
+    cast: Evanesco
+    cast_self: Te Has Vuelto Invisible
+  rollback:
+    name: Rollback
+    description: Deshacer el objetivo de hechizos
+    cast: '&5Deshacer &d&o$target''s &r&6$spell &5Lanzo'
+    cast_player: '&5Deshacer &d&o$target''s&r&6 $spell &5Lanzo'
+    alternate_up: '&5Deshacer su anterior&r&6 $spell &5Lanzo'
+    alternate_down: '&5Deshacer &d&o$target''s &r&6$spell &5Lanzo'
+    deactivate: '&5Deshacer su &6$spell &5Lanzo'
+    fail: Nada que deshacer
+    no_target: Nada que deshacer hay
+  commit:
+    name: Cometer
+    description: Hacer tus hechizos permanentes
+    usage: Borra la Reversión de la cola
+    cast_player: Cometer $target hechizos
+    cast: Su Reversión de la cola ha sido desactivada
+    fail: Nada para cometer
+  counterspell:
+    name: Contrahechizo
+    description: Contador jugador objetivo del hechizo
+    usage: Sólo funciona en la recientemente lanzar hechizos
+    cast: '&5Que la lucha contra el &d&o$target''s&r&6 $spell &5lanzo'
+    cast_player_message: a:&d&o$player &r&5contrarrestado su &3&o$spell &r&5lanzo!
+    fail: Nada para contrarrestar
+  counterspell|2:
+    upgrade_description: No hay posibilidad de esfumarse
+  push:
+    name: Flipendo
+    description: Empuja A Tu Oponente
+    alternate: Flipendo
+    upgrade_description: '&r&b• &6Aumenta La Fuerza'
+  push|4:
+    upgrade_description: Objetivo y echados para el área de efecto alternativo
+  farm:
+    name: Manada
+    description: Crear una manada
+    deactivate: Suelte su manada
+    cast: Convocar a $count de los animales de la granja
+  breach:
+    name: Incumplimiento
+    description: Temporalmente destruir el objetivo de la superficie
+    cast_finish: Violado $count bloques
+    upgrade_description: Aumentar el tamaño del hechizo
+  tesseract:
+    name: Tesseract
+    description: Parpadeo una corta distancia
+    no_target: No puedo ir allí
+  mine:
+    name: Mina
+    description: Las minas y las gotas de la selectiva de los minerales
+    cast_finish: Extraído algunos de mineral de
+    upgrade_description: Las minas más bloques
+  mine|4:
+    upgrade_description: Ahora las minas de bloques completos
+  chop:
+    name: Chop
+    description: Cayó un árbol en un solo lanzamiento
+    cast_finish: La MADERA!
+    upgrade_description: Chuletas de más bloques
+  peek:
+    name: Peek
+    description: Temporalmente de vidrio de la superficie de destino
+    cast_finish: Acristalado $count bloques
+    upgrade_description: El aumento de tamaño de la ventana
+  sandblast:
+    name: Chorro de arena
+    description: Caída de un gran bloque de arena
+    cast_finish: Creado $count la caída de bloques de arena
+    upgrade_description: Las gotas más de arena
+  fill:
+    name: Llenar
+    description: Relleno seleccionado de un rectángulo de área
+    usage: Lanzo dos veces para llenar
+    cancel: Llenar cancelado
+    target_selected: Lanzó de nuevo a llenar con $material
+    fail: No puedo llenar mucho!
+    cast_finish: LLena $count bloques con $material
+  superregenerate:
+    name: Super Regenerar
+    description: Regenerar lleno de trozos de
+    usage: Cast dos veces para regenerar
+    fail: No se puede regenerar que mucho!
+    cast: La regeneración de trozos
+    target_selected: Lanzó de nuevo a regenerar trozos
+    cast_finish: Regenerado $count bloques
+    cancel: Super Regenerar cancelado
+  regenerate:
+    name: Regenerar
+    description: Regenerar un área seleccionada
+    fail: No se puede regenerar que mucho!
+    usage: Cast dos veces para regenerar
+    cast: La regeneración de la zona
+    target_selected: Lanzó de nuevo a regenerar la zona
+    cast_finish: Regenerado $count bloques
+    cancel: Regenerar cancelado
+  recurse:
+    name: Recurse
+    description: De forma recursiva relleno de bloques de
+    cast_finish: Llena $count bloques con $material
+  floodfill:
+    name: Llenar
+    description: Llenar un agujero
+    cast_finish: Inundado $count bloques con $material
+  fire:
+    name: Incendio
+    description: Quema A Tu Oponente
+    cast: Incendio
+    upgrade_description: '&r&b• &6Aumenta El Radio'
+  growth:
+    name: El crecimiento
+    description: Hacer que las plantas, los cultivos y los árboles crecen al instante
+    upgrade_description: Se ha aumentado el radio
+  alter:
+    name: Alterar
+    description: Altera ciertos objetos
+    usage: Uso en la lana, escaleras, etc
+    cast_entity: Se alteró el destino $target
+    cast: Usted alterado su destino
+    fail: No se puede ajustar que
+  superalter:
+    name: Super Alterar
+    description: Alter objects recursively
+    usage: Uso en la lana, escaleras, etc
+    cast: Alteración de $count bloques
+    fail: No se puede ajustar que
+  sphere:
+    name: Esfera
+    description: Crear una verdadera esfera
+    cast_finish: Creó una esfera de $material
+  rainbow:
+    name: Arco iris
+    description: Enviar un arco iris de amor!
+  blob:
+    name: Blob
+    description: Crear una nota
+    cast_finish: Blobbed $count bloques con $material
+  blob|2:
+    upgrade_description: Ahora se construye con la arcilla
+  blob|3:
+    upgrade_description: Ahora se construye con la obsidiana
+  blob|4:
+    upgrade_description: Ahora construye con su pincel
+  walls:
+    name: Muros
+    description: Crear algunas de las paredes alrededor de su objetivo
+    cast_finish: Lleno de $count los bloques with $material
+  tendril:
+    name: Zarcillo
+    description: Convocar a un mechón de la oscuridad
+  repair:
+    name: Repair
+    description: Reparación de un área de guardado con Copia de seguridad
+    cast_finish: Reparado $count de los bloques
+  emp:
+    name: EMP
+    description: La electrificación de la zona
+    cast_finish: Electrificado $count bloques
+  ghast:
+    name: Ghast
+    description: Convocar a un amenazante Ghast
+  familiar:
+    name: Familiar
+    description: Crear un animal familiar
+    cast: Convocar a un familiar
+    deactivate: Usted liberación de su familiar
+  disintegrate:
+    name: Desintegrar
+    description: Daña a tu objetivo
+    usage: Va a destruir bloque de destino o entidad
+    cast_entity: ZOT!
+    cast: ZAP!
+  blink:
+    name: Aparicion
+    description: Te Teletransporta
+    no_target: No Puedes Teletransportarte Alli
+    teleport_failed: No puede parpadear hay
+    teleport: Blink!
+    cast: Aparicion
+    usage: Te Teletransporta A Donde Quieras
+  blink|2:
+    upgrade_description: '&r&b• &6Aumenta El Rango'
+  blink|3:
+    upgrade_description: '&r&b• &6Aumenta El Rango Y La Subida/Bajada'
+  blink|4:
+    upgrade_description: Aumento de la gama, puede descender a través de la tierra
+  blink|5:
+    upgrade_description: Aumento de la gama, va a pasar a través de objetos sólidos
+  blink|6:
+    upgrade_description: Ahora puede Parpadear en el aire
+  absorb:
+    name: Absorber
+    description: Absorber algunas de las
+    usage: Agrega los materiales para su varita
+    fail: Este hechizo requiere una varita
+    cast: La absorción de algunos $material
+  hat:
+    name: sombrero
+    description: El desgaste de su destino
+    cast: Poner $material en su cabeza
+    removed: Quita su sombrero mágico
+    hat_name: Sombrero de $hat
+    hat_lore: Desaparecerá si hace clic
+    upgrade_description: Aumento de la duración
+  wear:
+    name: Desgaste
+    description: Haga clic derecho
+    cast: Usted ponga su artículo en su cabeza
+  magichat:
+    name: Sombrero Mágico
+    cast: ''
+    cast_nightvision: Su sombrero, ilumina el camino
+    cast_absorption: El sombrero le da un empujón
+    cast_bunny: Un conejo se sale!
+    cast_killer_bunny: Huy, CORRE!!!!!!
+    alternate: Su sombrero mágico salta sobre su cabeza
+  invisiblecloak:
+    name: Manto Invisible
+    cast: Desaparece en una nube de humo!
+  stalactite:
+    name: Estalactita
+    description: Crear un pilar hacia abajo
+    cast: Se baja un pilar de $material
+    no_target: No se puede pillar cualquier más
+  lava:
+    name: Lava
+    description: El fuego de un flujo de lava
+    cast: El fuego de un flujo de lava
+    upgrade_description: Más de lava
+  earth:
+    name: La tierra
+    description: Construir una línea temporal de los bloques
+    cast: Convocar a una línea de tierra
+  iterate:
+    name: Iterar
+    description: Construir una línea de bloques
+    usage: Debe ser el objetivo de un bloque de destino
+    cast: LLena $count bloques
+  column:
+    name: Columna
+    description: Construir una gran columna de bloques
+    cast: LLena $count bloques
+  flamethrower:
+    name: Lanzallamas
+    description: Quemar, bebe, quemar!
+    cast: El fuego de una corriente de llama
+    upgrade_description: Más fuego stream
+  stash:
+    name: Bauleo
+    description: Abre Tu Cofre De Ender
+    cast: Bauleo
+    cast_player: Bauleo
+  pickpocket:
+    name: Tomar del Bolsillo
+    description: Robar a los jugadores cercanos
+    cast_player: De mirar en $target inventario
+    cast_player_message: ''
+  workbench:
+    name: Banco de trabajo
+    description: Mesa de trabajo
+    cast: Empecemos a trabajar!
+  superlaser:
+    name: Super Laser
+    description: Destruye de forma permanente una línea de bloques
+    cast_finish: Lanza rayo láser a $count bloques
+    upgrade_description: No haz de duración, se rompe más tipos de bloques
+  laser:
+    name: Laser
+    description: Destruir una línea de bloques
+    cast_finish: Lanza rayo láser a $count bloques
+    upgrade_description: Radio mayor, el aumento de daño
+  stream:
+    name: Aquaeructo
+    description: Lanza Un Chorro De Agua
+    cast: Aquaeructo
+    upgrade_description: El aumenta de daño y alcance
+  wolf:
+    name: Wolf
+    description: Crear algunos lobo familiares
+    cast: Invocas un lobo!
+    fail: Su lobo es DOA
+  wolfhouse:
+    name: Lobo De La Casa
+    description: Crear una auto-regeneración de la base
+  tent:
+    name: Tienda de campaña
+    description: Crea una tienda de campaña
+    cast: Crear una tienda de campaña
+  cage:
+    name: Jaula
+    description: Temporalmente Enjauña su objetivo
+    cast: Atrapar a su objetivo
+  cat:
+    name: Gato
+    description: Crear un gato familiar
+    cast: Convocar a un gato!
+    fail: Su gato es DOA.
+  shrink:
+    name: Shrink
+    description: Duele y encoge varias cosas
+    usage: Hay que matar a los que el objetivo reciba el cráneo
+    cast: Shrink!
+    cast_entity: La reducción de $target
+  capture:
+    name: Captura
+    description: Captura la entidad objetivo en un spawn de huevo
+    cast: Catch A todas!
+    cast_entity: Tu capturaste $target
+  grow:
+    name: Crecer
+    description: Crece ciertas entidades
+    cast: Crecer!!
+    cast_entity: Crece $target
+    no_target: Usted no puede crecer!
+  flare:
+    name: Periculum
+    description: Lanza Petardos Magicos
+    cast: Periculum
+  respawn:
+    name: Respawn
+    description: Volver al spawn
+    cast: Se teletransporta de vuelta a la seguridad
+  recall:
+    name: Recordar
+    cancel: Recordar interrumpido.
+    description: Teletransportarse a lugares diferentes.
+    usage: Otorga unos 5 segundos de protección en la teletransportación.
+    teleport: ''
+    teleport_failed: Recordar fallo
+    no_target: No se puede colocar un marcador de allí
+    cast_marker_place: Coloca un recuerdo del marcador
+    cast_marker_move: Mueve tu recuerdo del marcador
+    cast_marker: De regreso a su marcador
+    cast_death: Volviendo a la última muerte en su ubicación
+    cast_spawn: Regresan al spawn
+    cast_home: De regreso a casa
+    cast_wand: De regreso a su varita perdida
+    cast_warp: Ir a $name
+    cast_town: Ir a su casa de la ciudad
+    cast_field: Ir a un área protegida
+    cast_friend: Ir a tu $name
+    no_target_death: No se registró donde moriste
+    no_target_wand: No se registraron varitas perdidas
+    no_target_home: Sin hogar
+    no_target_warp: Warp $name No válido
+    no_target_marker: Ningún marcador de
+    no_target_spawn: No puede recordar un spawn
+    no_target_town: No estás en una ciudad
+    no_target_fields: Usted no tiene campos
+    no_target_friend: No amigo $name No valido
+    title_move_marker: Mover Marcador de Aquí
+    description_move_marker: Sustituye a su marcador actual
+    title_marker: Marcador
+    description_marker: Apuntar hacia abajo para mover el marcador
+    title_death: Última Muerte
+    description_death: Su última muerte ubicación
+    title_friend: $name
+    title_warp: $name
+    title_spawn: Spawn
+    description_spawn: El mundo actual de la zona de reaparición de la ubicación
+    title_home: Hogar
+    description_home: Su última ubicación
+    title_wand: Su Ultima varita perdida
+    description_wand: Una varita que se ha caído en el suelo
+    title_town: La Plaza De La Ciudad
+    description_town: El centro de su ciudad natal
+    description_field: Un área protegida
+    cross_world_disallowed: No se permite Recordar a otro mundo
+    title: Elija Su Destino
+    move_marker_title: Mover El Marcador
+    unlock_warp: '&bHas desbloqueado &5$name &bcomo a &6Recordar &bdestino!'
+    add_friend: '&bSe han añadido &5$name &bcomo &6Recordar &bdestino!'
+    remove_friend: '&cSe han eliminado &5$name &ccomo &6Recordar &cdestino!'
+  recall|2:
+    upgrade_description: Desbloquear última muerte ubicación
+  recall|3:
+    upgrade_description: Desbloquear el marcador, apuntar hacia abajo para establecer la ubicación.
+    usage: Tiene 5 segundos de calentamiento. El elenco para establecer un marcador
+  warpunlock:
+    name: Desbloquear Warp
+    description: Útil en bloques de comandos o región de comandos para desbloquear Recordar waypoints
+      cuando un jugador descubre un área
+    cooldown: ''
+  warpmenu:
+    name: Warp Menu
+    description: Esencialmente idéntica a Recordar, puede ser utilizado en los NPCs o bloques de comandos
+      por lo que los jugadores no reciben elenco de crédito para Recordar cuando se utiliza un menú deformar
+  levitate:
+    name: Levitar
+    description: Levitar a sí mismo en el aire
+    cast: Usted se siente más ligero
+    cancel: Usted se siente más pesado
+    upgrade_description: Volar más rápido y más alto, la reducción de tiempo de reutilización
+  boom:
+    name: Boom
+    description: Crear una explosión
+    cast: Boom!
+  boom|2:
+    upgrade_description: Mayor daño, rompe los bloques
+  box:
+    name: Caja
+    description: Crear un gran hueco de la caja
+    cast_finish: LLena $count bloques con $material
+  pillar:
+    name: Pilar
+    description: Pilar Alto
+    cast: Crear un pilar de $material
+    no_target: No se puede pillar cualquier otra
+  raise:
+    name: Elevar
+    description: Plantea el suelo hasta formar un agradable pendiente
+    cast: Usted puede subir hasta el suelo
+  flatten:
+    name: Aplanar
+    description: Baja al suelo para aplastarla hasta el punto más bajo en el área de
+    cast: Aplanar las colinas
+  place:
+    name: Place
+    description: Coloque un bloque a su destino
+    cast: Coloca un bloque de $material
+  force:
+    name: Forzar
+    description: El uso de la telequinesis
+    usage: Lanzar para seleccionar y lanzar una entidad
+    cancel: Publicando destino
+    target_selected: Captura $target
+  dragonball:
+    name: Dragon Ball
+    description: El lanzamiento de un ender dragon bola de fuego.
+    usage: Ten cuidado, no caigas en el aliento de dragón!
+  fireball:
+    name: Confringo
+    description: Lanza Una Bola De Fuego
+  fireball|2:
+    upgrade_description: '&r&b• &6Aumenta El Daño'
+  fireball|3:
+    upgrade_description: '&r&b• &6Aumenta La Velocidad'
+  fireball|4:
+    upgrade_description: '&r&b• &6Ahora Quema'
+  wither:
+    name: Wither
+    description: Disparar cráneos de wither
+    upgrade_description: Más cráneos de wither
+  map:
+    name: Mapa
+    description: Generar un mapa
+    cast: Aquí un mapa!
+  camera:
+    name: Camara
+    description: Tomar un retrato de sí mismo o a otros
+    cast_target: Usted tomó una foto de $target
+    fail: No se pudo cargar la foto
+    cast: CLICK!
+    cast_self: Selfi!
+    cooldown: La cámara está cargando
+  tornado:
+    name: Maxima Tornadus
+    description: Crea Un Tornado
+    cast: Maxima Tornadus
+    upgrade_description: '&r&b• &6Ahora Destruye Estructuras'
+  transmute:
+    name: Transmutar
+    description: Convertir su última construcción
+    no_target: Nada que transmutar
+    cast: Transmutan su estructura a $material
+  masterattack:
+    name: Maestro De La Explosión
+    description: Un ataque de largo alcance que sólo puede ser realizado cuando su salud
+      esta LLena
+    insufficient_resources: ''
+    cooldown: ''
+  missile:
+    name: Estupefacto
+    description: Lanza Un Misil Magico
+    cast_target: Su misil Magico $damage Daño a $target
+    cast_player_message: $caster Lanzo $damage daño a usted con $spell
+    cast: Estupefacto
+    no_target: Usted dispara un misil
+    upgrade_description: '&r&b• &6Aumenta Rango Y Daño'
+  railgun:
+    name: Rail gun
+    description: Explosión a través de los bloques y los objetivos múltiples
+    cast: El fuego de un tren $target
+    no_target: Que el fuego fuera un riel
+  testdummy:
+    name: Maniquí De Prueba
+    description: Generar un pobre maniquí de prueba
+  projectile:
+    name: Proyecto I.L.E.
+    description: Un hechizo para pruebas de proyectiles
+    cast: El lanzamiento de proyectiles
+    cast_finish: Proyectil golpeó
+    no_target_finish: Proyectil fallo
+  whip:
+    name: Látigo
+    description: Un mágico látigo de energía pura
+    cast: Crack!
+  sticky:
+    name: Las Bombas Lapa
+    description: Mezcle una de las bombas lapa que explota después de 5 segundos
+    cast: Lanzas una bomba pegajosa
+    upgrade_description: Más preciso, más grande explosión
+  homing:
+    name: Misil
+    description: Disparar un rayo de energía que hará un seguimiento de su destino
+    cast: El fuego de un misil en $target
+    lock_on: '&d&o$player&r&5 ha bloqueado a usted!'
+    cast_player_message: a:&d&o$player&r&5 $spell golpear
+    upgrade_description: Más rápido de misiles, más de daño
+  fury:
+    name: La furia
+    description: Lanzamiento de varios misiles en el aire
+    cast: Usted lanzamiento de una furia de los misiles
+    cast_player_message: a:&d&o$player&r&5 $spell te golpeo a ti
+    upgrade_description: Más misiles
+  chainlightning:
+    name: Cadena De Relámpagos
+    description: Disparar un rayo de electricidad que se divide para golpear a varios objetivos
+    cast: Puede crear algunos cadena de relámpagos
+    cast_player_message: a:&d&o$player&r&5 $spell te golpeo a ti
+    upgrade_description: Cadenas para más objetivos
+  blind:
+    name: Obscuro
+    description: Ciega A Tu Oponente
+    cast: Has Cegado A $target
+  pollinate:
+    name: La polinización
+    description: Planta flores!
+    cast: La polinización!
+  paste:
+    name: Pegar
+    description: Pega un esquema completo
+    usage: Para el uso con esquemático pinceles
+    cast_finish: Pegado $count bloques
+    no_action: Esquemático de la carga, por favor, vuelve a intentarlo!
+  kill:
+    name: Matar!!
+    description: Daño magico letal a su objetivo!!!
+    cast_player_message: ''
+    cast: DIE!
+    upgrade_description: Más rápido, más grande proyectil y más corto de calentamiento
+  superkill:
+    name: Super Matar!!
+    description: Mata a sus objetivos, sin preguntar
+    cast: SUPER MUERTE!
+  damage:
+    name: Daño
+    description: |-
+      Un hechizo para probar diferentes tipos de daños.
+      Tenga en cuenta que la rueda no recibirá crédito por muertes con alternativas de vainilla daño tipos de otros plugins, ya que el daño de la fuente se pierde.
+  torture:
+    name: Crucio
+    description: Tortura A Tu Oponente
+    cast: Crucio
+    upgrade_description: Aumenta el daño y la duración
+  boomstown:
+    name: El Billete de ida a un Boomstown
+    description: Enviar su objetivo de embalaje para un explosivo destino
+  rubberize:
+    name: Engomar
+    description: Hacer que el área de destino hinchable
+    cast: Tiempo de rebote!
+  count:
+    name: Entidad de Contador
+    description: Una herramienta de administración para comprobar cercanías de las entidades
+  debugger:
+    name: Depurador
+    description: Una herramienta de administración para depurar los hechizos
+    cast: La depuración $target
+    deactivate: Movilidad de depuración en $target
+    alternate_up: Movilidad de depuración en todos los entities
+    alternate_down: La depuración de ti mismo
+  superfly:
+    name: Súper Vuelo
+    description: Para los videógrafos
+    cast: Usted se siente más ligero
+    cost_free: Usted se siente más pesado
+  petrify:
+    name: Immobilus
+    description: Immobiliza A Tu Oponente
+    cast: Immobilus
+    upgrade_description: Aumento de la duración
+  polymorph:
+    name: El polimorfo
+    description: Convierte tu objetivo en una oveja
+    cast: Usted polimorfo $target.
+    upgrade_description: Aumento de la duración
+  entangle:
+    name: Enredan
+    description: La trampa de su destino con cuerdas
+    cast: Que trampa $target.
+  wound:
+    name: Sectucsempra
+    description: Daña A Tu Oponente
+    cast: Sectucsempra
+    upgrade_description: Aumento de los daños
+  stun:
+    name: Desmaius
+    description: Desmaya Y Daña A Tu Oponente
+    cast: Desmaius
+    upgrade_description: '&r&b• &6Aumenta Daño Y Tiempo'
+  webbing:
+    name: Web De Ataque
+    description: Un molesto ataque de arañas
+    cast_player_message: a:&r&5Usted tiene atrapados en &d&o$player&r&5 web
+  lift:
+    name: Wingardium-Leviosa
+    description: Eleva El Bloque Que Quieras
+    cast: Wingardium-Leviosa
+  rocket:
+    name: Cohete
+    description: Ir en un paseo salvaje
+    cast: El despegue!
+  sponge:
+    name: Esponja
+    description: La succión de agua, en una zona
+    cast: Slurp!
+  extinguish:
+    name: Extinguir
+    description: Apagar incendios en un área
+    cast: La llama fue apagada!
+  skills:
+    name: Habilidades
+    descriptions: Muestra las habilidades disponibles, arrastre una habilidad a la barra de acceso rápido para utilizar
+  upgrades:
+    name: Compruebe Hechizo Progreso
+    description: Muestra el progreso en la mejora de su actual hechizos
+    fail: Debe ser la celebración de una varita mágica!
+    upgrade_name_change: '&r&4Actualizaciones: &r$name'
+    level_requirement: '&r&cRequiere: &6$path'
+    cast_requirement: '&r&cMoldes: &6$current&f/&e$required'
+    tags_requirement: '&r&cRequiere: &6$tags'
+    confirm_title: Cambio $item
+    title: Progreso de hechizo
+  brushselect:
+    name: Selector De Pincel
+    descriptions: Elige tu activo pincel
+    usage: Los pinceles son utilizados por la ingeniería de hechizos
+    fail: Debe ser la celebración de una varita mágica!
+    variant_name: '&b$variante &3+Variantes'
+    variant_description: Elija un tipo de $variant
+  tracking:
+    name: Seguimiento De Sentido
+    description: Encuentra vida
+    cast: Tu sientes cerca un $target
+    no_target: Es tranquilo ... demasiado tranquilo!
+    upgrade_description: Mayor radio de búsqueda
+  tracking|4:
+    upgrade_description: Sneak-fundición de mirar sólo por los jugadores
+  enchantwand:
+    name: Actualización De La Varita
+    description: subir niveles de su varita
+    no_wand: Debe ser la celebración de una varita mágica!
+    fail: ''
+  addspell:
+    name: Agregar Hechizos
+    description: Añadir un hechizo a su varita
+    no_upgrade: Usted no puede aprender $wand.
+    no_path: Usted debe ser al menos de $path&r!
+    no_path_end: Usted debe estar listo para el avance de $path&r!
+    no_wand: Debe ser la celebración de una varita mágica!
+    no_target: Usted ya sabe el hechizo
+    fail: ''
+  giveitem:
+    name: Obtener Item
+    description: Dar un item para el jugador
+    cast: Usted recibió $item
+    cast_player_message: a:Usted recibió $item de $player
+    fail: ''
+  fillwand:
+    name: Llenar La Varita
+    description: Llenar su varita con todos los hechizos
+    no_wand: Debe ser la celebración de una varita mágica!
+    fail: ''
+  spellshop:
+    name: Aprender Hechizos
+    title: $path &rHechizos ($balance&0)
+    description: |-
+      Gastar Puntos de Conjuro (SP) para aprender nuevos hechizos.
+      Cuando usted haya aprendido todos los hechizos en su ruta actual, se le sube a la siguiente ruta!
+    no_items: No hay hechizos para que usted compre aquí
+    no_path: Usted no puede aprender aquí.
+    no_upgrade: No hay nada más para ti aquí.
+    no_required_path: Usted debe ser al menos de $path&r!
+    no_path_end: Usted debe estar listo para el avance de $path&r!
+    no_wand: Debe ser la celebración de una varita mágica!
+    confirm_title: Aprender $item
+    selected: "t:&d&oHas aprendido \n&r&6$item\na:&r&d&o-&r&a$cost"
+    fail: ''
+  engineershop:
+    name: Ingeniero Tienda
+    title: Rollback ($balance&0)
+    description: Desbloquear el nivel de Ingeniería
+    confirm_title: Actualizar a Ingeniero
+    fail: ''
+  architectshop:
+    name: Arquitecto De La Tienda
+    title: Absorber ($balance&0)
+    description: Desbloquear el Arquitecto nivel
+    confirm_title: Actualización de Arquitecto
+    fail: ''
+  conduitshop:
+    name: Conducto De La Tienda
+    title: Copia de seguridad ($balance&0)
+    description: Desbloquear el Conducto nivel
+    confirm_title: Actualización para Conducto
+    fail: ''
+  bookshop:
+    name: Libro De Hechizos De La Tienda
+    title: Hechizo De Los Libros
+    description: Consigue algunos libros de encantamientos
+    cost_lore: Gratis!
+    confirm_title: Obtener $item
+    deducted: '&d&oUsted recibió &r&6$item'
+  tweakshop:
+    name: Varita de Ajustes de la Tienda
+    title: Varita Ajustes
+    description: Ajustar Su Varita
+    cost_lore: Gratis!
+    not_applicable: Su varita ya ha $item
+    confirm_title: Obtener $item
+    deducted: '&d&oUsted recibió &r&6$item'
+  progressmenu:
+    name: Progreso de la Magia
+    title: Progreso de Magia
+    selected: ''
+    cast_fail: ''
+    no_template: '&cUsted no puede personalizar $wand&c.'
+  appearanceshop:
+    name: Apariencias de Varita
+    description: Cambiar el aspecto de su varita
+    title: Apariencia de Varita ($balance&0)
+    selected: Ha cambiado a $item
+    not_applicable: Su varita ya se ve como $item
+    no_template: '&cUsted no puede modificar la apariencia de $wand&c.'
+  bowappearanceshop:
+    name: Apariencias del Arco
+    description: Cambiar el aspecto de tu arco
+    title: Apariencia del Arco ($balance&0)
+    selected: Ha cambiado a $item
+    not_applicable: Su arco ya se ve como $item
+    no_template: '&cUsted no puede modificar la apariencia de $wand&c.'
+  controlsmenu:
+    name: Controles de Varita
+    description: Cambiar la forma de su varita obras
+    title: Controles de Varita
+    confirm_title: Cambio $item
+    selected: '&d&oHa cambiado a &r&6$item'
+    no_template: '&cUsted no puede modificar los controles en $wand&c.'
+  colorshop:
+    name: Efecto De Los Colores
+    description: Colorear sus efectos de hechizo
+    title: Efecto De Color ($balance&0)
+    selected: Ha cambiado a $item
+  effectshop:
+    name: Varita Efectos
+    description: Agregar efectos de partículas para su varita
+    title: Varita Efectos ($balance&0)
+    selected: Ha cambiado a $item
+    confirm_title: $item
+  upgradeshop:
+    name: Tienda de Mejoras de Varita
+    title: Mejorar Varita ($balance&0)
+    description: Mejora Tu Varita
+    not_applicable: Su varita ya ha $item
+  emeraldshop:
+    name: Esmeralda Ex cambio
+    title: Emeraldas ($balance&0)
+    description: Comercio de XP para Esmeraldas
+  withdrawals:
+    name: Los retiros
+    description: El intercambio de dinero por los metales preciosos y gemas
+    cost_lore: Retirar $cost
+    deducted: '&d&oSe retiró &r&a$cost &r&d&ode &r&6$item'
+  deposits:
+    name: Los depósitos
+    description: Ganar dinero en busca de metales preciosos y gemas
+    cost_lore: Deposito $cost
+    deducted: '&d&oUsted depositó &r&a$cost &r&d&ode &r&6$item'
+  spshop:
+    name: Tienda de SP
+    description: El intercambio de dinero por Puntos de Conjuro
+  lootshop:
+    name: El Botín De La Tienda
+    description: Ganar dinero por drops de mobs
+    title: Vender drops ($balance&0)
+  wandshop:
+    name: Tienda de Varitas
+    title: Varitas ($balance&0)
+    description: Comprar Varitas
+  mobshop:
+    name: Tienda de Mobs
+    title: Mobs ($balance&0)
+    description: Comprar Huevos de mobs
+  spawnershop:
+    name: Tienda de Spawners
+    title: Spawners ($balance&0)
+    description: Compra Mobs spawners
+  broomshop:
+    name: Tienda de Escobas
+    title: Escobas ($balance&0)
+    description: Comprar Escobas
+  magicitemshop:
+    name: Tienda de Items Magicos
+    title: Items Magicos ($balance&0)
+    description: Buy Magic Items
+  itemshop:
+    name: Tienda de Items
+    title: Tienda ($balance&0)
+    description: Comprar comprar comprar!
+  buyshop:
+    name: Tienda de Comprar
+    title: Shop ($balance&0)
+    description: Comprar Comprar Comprar!
+  sellshop:
+    name: Tienda de vender
+    title: Vender ($balance&0)
+    description: Vender Vender Vender!
+    insufficient: '&cRequiere &4$cost'
+    confirm_title: Vender $item
+    deducted: '&d&oSe vende &r&6$item &r&d&opor &r&a$earn'
+  automatashop:
+    name: Tienda de Autómatas
+    title: Vende corazones de automatas
+    description: Vender corazon de automatas
+    no_items: No hay nada que vender aquí!
+    insufficient: Requiere $cost
+    confirm_title: Vender $item
+    deducted: '&d&oSe vende &r&6$item &r&d&opor &r&a$cost'
+  fxdemo:
+    name: FX Demo
+    description: Mostrar diferentes efectos EffectLib
+  soundtest:
+    name: Sonido Personalizado Demo
+    description: Escuchar todo el sonido personalizado FX integrados en la Magia del pack de recursos
+  fx:
+    name: FX de Partículas
+    description: Mostrar un objeto determinado, con el uso de /cast fx particle redstone
+  randomtp:
+    name: Teletransporte Al Azar
+    description: Te teletransporta a un lugar aleatorio
+  note01:
+    name: 1 Nota C Medio
+  note02:
+    name: 2 Nota C#
+  note03:
+    name: 3 Nota D
+  note04:
+    name: 4 Nota D#
+  note05:
+    name: 5 Nota E
+  note06:
+    name: 6 Nota F
+  note07:
+    name: 7 Nota F#
+  note08:
+    name: 8 Nota G
+  note09:
+    name: 9 Nota G#
+  note10:
+    name: 10 Nota A
+  note11:
+    name: 11 Nota A#
+  note12:
+    name: 12 Nota B
+  note13:
+    name: 13 Nota C Octava
+  note14:
+    name: 14 Nota C#
+  note15:
+    name: 15 Nota D
+  note16:
+    name: 16 Nota D#
+  note17:
+    name: 17 Nota E
+  note18:
+    name: 18 Nota F
+  note19:
+    name: 19 Nota F#
+  note20:
+    name: 20 Nota G
+  note21:
+    name: 21 Nota G#
+  note22:
+    name: 22 Nota A
+  note23:
+    name: 23 Nota A#
+  note24:
+    name: 24 Nota B
+  trinketshop:
+    title: Abalorios ($balance&0)
+  airscooter:
+    name: Aire Scooter
+    description: Viaja con estilo en un cojín de aire
+  disposal:
+    name: Disposición
+    description: Destruir permanentemente los elementos no deseados
+  projector:
+    name: Proyector
+    description: Es-Me!
+  sweep:
+    name: Barrido
+    description: Un poderoso 360 grados de ataque
+  dash:
+    name: Dash
+    description: Correr hacia adelante, dañando a todos en su camino
+  throwsword:
+    name: Tirar De La Espada
+    description: Tirar su espada en su enemigo
+  boomerang:
+    name: Boomerang
+    description: Lanzar una boomerange - siempre vuelve!
+  evade:
+    name: Evadir
+    description: Al azar teletransportarse a un lugar cercano
+  backflip:
+    name: Backflip
+    description: Moverse rápidamente hacia atrás para evadir a sus enemigos
+    fail: a:No hay ningún lugar para ir!
+  birth_hunter:
+    name: Crear Cazador
+  birth_defender:
+    name: Crear Defensor
+  birth_worm:
+    name: Crear Gusano
+  birth_virus:
+    name: Crear Virus
+  birth_snake:
+    name: Crear Serpiente
+  equation:
+    name: Ecuación Tester
+    description: |-
+      Editar spells.yml para poner a prueba sus ecuaciones, mediante la adición de
+      equation:
+        parameters:
+          equation: "atributo * 5"
+  add_protection:
+    name: Añadir Protección
+    description: |-
+      Agrega la protección de todos los tipos de daños a su varita.
+      Esta protección sólo está activo, mientras que usted está sosteniendo su varita.
+  add_fall_protection:
+    name: Agregar Protección Contra Caídas
+    description: |-
+      Añade protección contra caída en su varita.
+      Esta protección sólo está activa, mientras que usted está sosteniendo su varita.
+  add_fire_protection:
+    name: Agregar Protección Contra Incendios
+    description: |-
+      Añade protección contra el fuego a su varita.
+      Esta protección sólo está activa, mientras que usted está sosteniendo su varita.
+  add_physical_protection:
+    name: Agregar Protección Física
+    description: |-
+      Añade protección de ataques físicos a su varita.
+      Esta protección sólo está activa, mientras que usted está sosteniendo su varita.
+  add_projectile_protection:
+    name: Agregar Protección de Proyectil
+    description: |-
+      Añade protección de física proyectiles para su varita.
+      Esta protección sólo está activo, mientras que usted está sosteniendo su varita.
+  add_explosion_protection:
+    name: Agregar Protección Contra Explosiónes
+    description: |-
+      Añade protección contra explosiones para su varita.
+      Esta protección sólo está activo, mientras que usted está sosteniendo su varita.
+  add_damage:
+    name: Aumentar El Daño
+    description: Aumenta la cantidad de daño hecho al golpear algo con su
+      arma (no de lanzamiento de hechizos).
+  add_sharpness:
+    name: Afilar La Espada
+    description: Agregar la nitidez de encantamiento de su espada mágica.
+  magictorch:
+    name: La Magia De La Antorcha
+    description: Una luz que sigue alrededor
+  wandbuffshop:
+    name: Beneficios de Varitas
+    description: |-
+      Agregar beneficios a su varita.
+      Estos sólo están activas mientras que usted está sosteniendo su varita.
+    cast_fail: '&cEstá agotado en ese beneficio!'
+    selected: '&d&oUsted compró &r&6$item &r&d&opor &r&a$cost'
+    no_template: '&cUsted no puede agregar este beneficio a su $wand&c.'
+  mute:
+    name: Silenciar
+    description: Silenciar el jugador objetivo
+  nobabies:
+    name: Ningún Bebé
+    description: Hacer que todos los bebés de las turbas crecen hasta convertirse en adultos
+  vanish:
+    name: Ocultación Magica
+    description: Hacerse completamente invisible para los demás jugadores.
+  ledger:
+    name: Contabilidad
+    title: Contabilidad
+    header: '&2&lBalances'
+    currency_prefix: '&7&l'
+    value_prefix: '&0'
+  kamikaze:
+    name: Kamikaze
+    description: Generar un mob que explota en para matar
+  decoy:
+    name: Señuelo
+    description: Se esconden detrás de un clon
+  piggyback:
+    name: Piggyback
+    description: Que está montando qué, ahora?
+  torch|2:
+    upgrade_description: '&r&b• &6Ahora Dura Permanente'
+wand:
+  default_name: Varita
+  upgrade_default_description: Es Absorbido Por tu Varita
+  upgrade_item_description: Es Absorbido Por Tu Varita
+  spell_item_description: Es Absorbido Por Tu Varita
+  brush_item_description: Es Absorbido Por Tu Varita
+  copy_material_name: Copiar
+  copy_material_description: Se llena con el material objetivo
+  erase_material_name: Borrar
+  erase_material_description: Se llena de aire
+  clone_material_name: Clonar
+  clone_material_description: Copia bloques de un objetivo
+  replicate_material_name: Replicar
+  replicate_material_description: Replica el objetivo clon
+  clone_material_activated: Fuente de clonación seleccionada
+  replicate_material_activated: Replicar fuente seleccionada
+  erase_modifier_activated: Modificador de borrado activo
+  map_material_name: Mapa
+  map_material_name_scaled: Mapa $sizex$size
+  map_material_description: Crea arte de píxeles desde el último mapa retenido
+  schematic_material_description: Usos $schematic para construir.
+  building_material_description: Construir con $material
+  upgrade_uses: Añadidos $count Usos
+  upgrade_uses_singular: Añadido $count Uso
+  uses_remaining_brief: $count Usos
+  uses_remaining_singular: $count Uso
+  uses_remaining: $count Usos Restantes
+  enchantment_level_1: I
+  enchantment_level_2: II
+  enchantment_level_3: III
+  enchantment_level_4: IV
+  enchantment_level_5: V
+  enchantment_level_max: X
+  spell_count: $count Hechizos Aprendidos
+  material_count: Tiene $count Materiales
+  upgrade_spell_count: $count Hechizos Mejorados
+  upgrade_material_count: Añadidos $count Materiales
+  mana_max: '&eMana: $amount'
+  mana_amount: 'Energia: $amount'
+  mana_amount_boosted: 'Energia Extra: $amount &f(&b$mana&f)'
+  mana_regeneration: 'Regeneracion De Energia: $amount/s'
+  mana_per_damage: '&eMana Rage: $amount/HP'
+  mana_regeneration_boosted: 'Regeneracion De Energia Extra: $amount &f(&b$mana&f)&d/s'
+  mana_boost: 'Energia Extra: $amount%'
+  mana_regeneration_boost: 'Regeneracion De Energia Extra: $amount%'
+  earn_multiplier: '&6$type Ganar Impulso: $percent%'
+  block_chance: '&bEl bloqueo de $roman'
+  reflect_chance: '&bReflectante $roman'
+  cost_reduction: La Reducción De Costes $roman
+  consume_reduction: '&6Manifestación'
+  cooldown_reduction: Reducción De Tiempo De Reutilización $roman
+  power: Poder $roman
+  attributes: '&d$attribute $value'
+  property_stack: +$property
+  property_stack_negative: '&c$property'
+  property_value: $property
+  property_value_negative: '&c$property'
+  item_attributes:
+    GENERIC_ATTACK_DAMAGE: El Daño De Ataque
+  protection: Protection $roman
+  strength:
+    overall: '&2Daño $roman'
+    physical: '&2Daño fisico $roman'
+    projectile: '&2Daño de Proyectil $roman'
+    fall: '&2Daño de Caída $roman'
+    fire: '&2Daño de Fuego $roman'
+    explosion: '&2El Daño De Explosión $roman'
+    magic: '&2Daño Mágico $roman'
+    unknown: '&2$type Daño $roman'
+  weakness:
+    overall: '&2Debilidad $roman'
+    physical: '&2Físico Weakness $roman'
+    projectile: '&2Projectil Weakness $roman'
+    fall: '&2Otoño Debilidad $roman'
+    fire: '&2Fuego Debilidad $roman'
+    explosion: '&2La Explosión De Debilidad $roman'
+    magic: '&2Mágico Debilidad $roman'
+    unknown: '&2$type Debilidad $roman'
+  enchantments:
+    ARROW_DAMAGE: El Daño De Flecha
+    ARROW_FIRE: Flecha De Fuego
+    ARROW_INFINITE: El infinito
+    ARROW_KNOCKBACK: Flecha De Derribo
+    BINDING_CURSE: Unión Maldición
+    CHANNELING: Canalización
+    DAMAGE_ALL: La nitidez de la
+    DAMAGE_ARTHROPODS: El Daño De Los Artrópodos
+    DAMAGE_UNDEAD: Daño A Muertos Vivientes
+    DEPTH_STRIDER: La Profundidad De Strider
+    DIG_SPEED: Cavar Velocidad
+    DURABILITY: Durabilidad
+    FIRE_ASPECT: Fuego Aspecto
+    FROST_WALKER: Las Heladas Walker
+    IMPALING: Empalar
+    KNOCKBACK: Derribo
+    LOOT_BONUS_BLOCKS: Fortuna
+    LOOT_BONUS_MOBS: El saqueo
+    LOYALTY: La lealtad
+    LUCK: Suerte
+    LURE: Señuelo
+    MENDING: Reparación
+    OXYGEN: Oxígeno
+    PROTECTION_ENVIRONMENTAL: La Protección Del Medio Ambiente
+    PROTECTION_EXPLOSIONS: De Protección Contra Explosiones
+    PROTECTION_FALL: La Protección Contra Caídas
+    PROTECTION_FIRE: De Protección Contra Incendios
+    PROTECTION_PROJECTILE: Proyectil De Protección
+    RIPTIDE: Riptide
+    SILK_TOUCH: Toque sedoso
+    SWEEPING_EDGE: El Barrido De Borde
+    THORNS: Espinas
+    VANISHING_CURSE: Fuga Maldición
+    WATER_WORKER: Agua Trabajador
+  potion_effect: $effect $roman
+  super_powered: Superpoderosas
+  super_protected: Invulnerabilidad
+  spell_aura: 'Aura: &6$spell'
+  costs_description: Coste $description
+  active_costs_description: Coste $description Por Segundo
+  range_description: '&9Rango: &6$range &9Bloques'
+  owner_description: Varita De $name
+  bound_description: Obdece A $name
+  unmodifiable: Que la varita no puede ser modificado
+  player_unmodifiable: $name la varita no puede ser modificado
+  bound_to_other: Esta Varita No Te Pertenece
+  bound: Esta Varita Obedece A $name
+  spell_added: 'Has Aprendido El Hechizo: &r&6$name'
+  brush_added: El &r&7$name &d&obrush ha sido añadido a su $wand
+  player_spell_upgraded: $players &r&6$name &d&oHa Sido Mejorado Al Nivel &3$level
+  spell_upgraded: '&r&6$name &d&oHa Sido Mejorado Al Nivel &3$level'
+  spell_override_upgraded: '&r&6$name &d&oHa Sido Mejorado'
+  upgraded_property: '&r&dTu Varita Ha Sido Mejorada: &r&b$name'
+  spell_progression: '&r&6$name &d&ohas progressed to &3$level&d&o/&3$max_level'
+  mana_added: '&r&dTu Varita Tiene Ahora $value mana'
+  hotbar_count: $amount Barras Calientes
+  player_upgraded: $name Varita Mejorada
+  player_not_upgraded: $name Varita no Mejorada
+  player_spells_levelled: Subir de nivel a $count de $name Hechizos
+  player_spells_not_levelled: No a nivel de cualquiera de $name hechizos
+  spells_levelled: Subir de nivel a $count de tus hechizos
+  spells_not_levelled: No a nivel de cualquiera de tus hechizos
+  no_wand: Necesitas Tener La Varita En La Mano
+  player_no_wand: $name No Tiene La Varita En La Mano
+  no_item: Necesitas Tener Un Objeto Magico En La Mano
+  player_no_item: $name No Tiene Ningun Objeto Magico En La Mano
+  reorganized: $wand reorganizado
+  player_reorganized: $name varita reorganizado
+  alphabetized: $wand en orden alfabético
+  player_alphabetized: $name varita en orden alfabético
+  already_enchanted: Este $item ya esta encantado
+  enchanted: Su $item ha sido encantado
+  player_enchanted: $name $item ha sido encantado
+  unenchanted: Su varita magica ha sido desencantada
+  player_unenchanted: $name Varita ya esta desencantada
+  no_path: Ese item no puede ser encantado
+  max_enchanted: '&r&4Su $wand &4no puede ser encantado cualquier otra'
+  level_up: '&r&bSu $wand ha sido actualizado a &r&5$path'
+  duplicated: Su varita se ha duplicado
+  player_duplicated: $name la varita se ha duplicado
+  restored: Su varita se ha restaurado
+  player_restored: La varita $name ha sido restaurada
+  not_restored: Usted no tiene varita que restaurar
+  player_not_restored: $name vara ha registrado obligado varita
+  setbound: Su varita se ha obligado
+  player_setbound: La Varita $name ha sido vinculada
+  unbound: Su varita ha sido independiente
+  player_unbound: La varita $name ha sido independiente
+  unboundall: Todos los de su obligación varitas han sido olvidados
+  player_unboundall: Todo de $name obligado varitas han sido olvidados. Su inventario
+    no se borra!
+  notunbound: No tiene un límite de varita $wand
+  player_notunbound: Jugador(a) $name no tiene un límite de varita $wand
+  unlocked: Su varita se ha desbloqueado
+  player_unlocked: $name varita ha sido desbloqueada
+  unknown_template: Varita de nombre desconocido $name
+  reconfigured: Varita re configurada
+  not_reconfigured: Varita no re configurada
+  removed_property: Eliminado de la propiedad de $name
+  no_property: La varita no tiene ninguna propiedad $name
+  player_reconfigured: $name varita reconfigurada
+  player_not_reconfigured: $name varita no reconfigurada
+  filled: Your $wand ahora contiene todos tus hechizos
+  player_filled: $name varita llena
+  renamed: Su varita se ha cambiado el nombre
+  player_renamed: $name varita cambiado de nombre
+  self_destruct: Sus varitas no sobrevivio a el cambio dimensional!
+  no_permission: '&r&4Usted no puede utilizar aquí $wand &r&4.'
+  single_spell: Varita Con $spell
+  fully_enchanted: '&cEsta $wand es totalmente encantado &4(por ahora)'
+  need_more_levels: Usted necesita por lo menos &r&4$levels &d&o para encantar
+  require_more_levels: Debe de encantar a un nivel superior
+  randomized_lore: ¿Qué tipo de varita se obtiene?
+  randomized_name: Caja De Varita
+  upgrade_name: $name Mejorar
+  randomized_description: '&o&2$description'
+  description_lore: '&o&a$description'
+  path_lore: ''
+  hotbar_count_usage: '&ePulse $cycle_hotbar mientras que su $wand &ese activa el ciclo de
+    barras calientes'
+  inventory_instructions: '&r&bTu Varita Tiene Mas DE Un Hechizo. Clic Derecho Para
+    Abrir/Cerrar El Inventario De Hechizos. Usa La Ruleta Del Raton O Los Numeros
+    Para Cambiar De Hechizo.'
+  chest_instructions: '&r&eTu $wand &eahora tiene más de un hechizo. Pulse $toggle
+    para abrir/cerrar el hechizo de inventario, haga clic en un hechizo para lanzar.'
+  skills_instructions: '&r&eTu $wand &eahora tiene más de un hechizo. Pulse $toggle
+    para abrir/cerrar el hechizo de inventario, arrastre un hechizo a la barra de acceso rápido para lanzar.'
+  cycle_instructions: '&r&eTu $wand &eahora tiene más de un hechizo. Pulse $cycle
+    para alternar entre los hechizos.'
+  page_instructions: '&r&bTu Varita Tiene Mas DE Una Pagina De Hechizos. Clickea Fuera
+    Del Inventario Para Cambiar De Pagina.'
+  bound_instructions: '&r&3Esta Varita Te Obedece A Ti Y No Se Puede Tirar.'
+  spell_instructions: '&r&bTu Varita Necesita Energia Para Lanzar Hechizos.Puedes
+    Mirar La Energia En La Barra De XP.'
+  enchant_instructions: '&r&bEncanta Tu Varita Para Mejorar Sus Habilidades.'
+  brush_instructions: '&r&bMaterial escobillas ha sido añadido a su $wand. Shift+Click
+    Derecho para seleccionar un pincel.'
+  sp_instructions: '&r&6Ha ganado algunos Puntos de Conjuro! SP'' se muestran arriba
+    su barra de maná, y puede ser gastado en una encantadora mesa para aprender nuevos hechizos. Repita
+    moldes de ganar menos SP''s, trate de mezclar una vez que usted tiene más hechizos!'
+  earn_instructions: '&r&6Ha ganado algunos $currency! Esto se muestra por encima de
+    su barra de maná, y puede ser gastado en una encantadora mesa para aprender nuevos hechizos. Repita
+    moldes de ganar menos, trate de mezclar una vez que usted tiene más hechizos!'
+  hotbar_changed: ''
+  spell_activated: $spell
+  upgrade_prefix: '&6'
+  single_use_prefix: '&4'
+  bound_prefix: '&3'
+  unbound_prefix: '&b'
+  has_path_prefix: '&d'
+  unmodifiable_prefix: '&6'
+  spell_prefix: '&6'
+  brush_prefix: '&7'
+  chest_inventory_title: Varita
+  protection_physical: Protección Física $roman
+  protection_projectile: Protección contra proyectiles $roman
+  protection_fall: Protección Contra Caídas $roman
+  protection_fire: Protección Contra Incendios $roman
+  protection_blast: Protección Contra Explosiones $roman
+  hotbar_added: '&r&aTu $wand''s barra caliente ha sido actualizado! &r&bPulse Q, mientras que su
+    $wand es activa'
+  player_no_magic_item: $name No Tiene Un Objeto Magico En La Mano
+  no_magic_item: Esto No Es Un Objeto Magico
+wands:
+  testwand:
+    name: Prueba De Varita
+    description: Varita vacia a utilizar para la comprobación de los hechizos.
+  default:
+    name: Varita
+    description: $path &rVarita Magica
+  wand:
+    name: Varita
+    description: $path &rVarita Magica
+  starter:
+    name: Varita inicial
+    description: Una Varita con un Potencial Limitado
+  beginner:
+    name: (Anticuado) Principiante Varita
+    description: No lo uso este ya... Uso 'varita' en su lugar.
+  master:
+    name: Maestro De La Varita
+    description: Para fines de demostración
+  student:
+    name: Estudiante De La Varita
+    description: Para fines de demostración
+  apprentice:
+    name: Aprendiz De Varita
+    description: Para fines de demostración
+  rage:
+    name: La Rabia Espada
+    description: Reúne la energía al golpear a un enemigo
+    spell_instructions: '&r&bUtilice los botones de la barra de acceso rápido para lanzar hechizos. Hechizos requieren
+      maná, que se muestra en la barra de XP.'
+    inventory_instructions: '&r&bUtilice la lista (Q) botón para abrir/cerrar el hechizo de inventario.'
+  magicsword:
+    name: Espada Magica
+    description: $path &rLa Espada Mágica
+    spell_instructions: '&r&bUtilice los botones de la barra de acceso rápido para lanzar hechizos. Hechizos requieren
+      maná, que se muestra en la barra de XP.'
+    inventory_instructions: '&r&bUtilice la lista (Q) botón para abrir/cerrar el hechizo de inventario.'
+  magicbow:
+    name: Arco Magico
+    description: $path &rArco Magico
+    spell_instructions: ''
+    inventory_instructions: '&r&bUtilice la lista (Q) botón para abrir/cerrar el hechizo de inventario.'
+  mastersword:
+    name: Espada Maestra
+    description: La legendaria espada que sella la oscuridad
+  engineer:
+    name: Varita de Ingeniería
+    description: $path &rVarita Magica
+  architect:
+    name: Varita de Arquitecto
+    description: $path &rVarita Magica
+  conduit:
+    name: Varita de Conducto
+    description: $path &rVarita Magica
+  architectstaff:
+    name: El Arquitecto
+    description: Con Un Gran Poder Viene Una Gran Responsabilidad
+  staff:
+    name: El Personal
+    description: Utilizar Sabiamente!
+  admin:
+    name: El Shusher
+    description: Para los administradores solo
+  developer:
+    name: El Coder
+    description: Consulte la Matriz
+  camera:
+    name: Camara
+    description: Tomar un retrato de sí mismo o a otros
+  magichat:
+    name: Sombrero Mágico
+    description: Un verdadero mago del sombrero! Miran hacia arriba y a la derecha-haga clic en uso.
+  wizardhelmet:
+    name: Casco de Mago
+    description: Indestructible!
+  wizardchestplate:
+    name: Túnica de Mago
+    description: Indestructible!
+  wizardleggings:
+    name: Pantalones de Mago
+    description: Indestructible!
+  wizardboots:
+    name: Botas de Mago
+    description: Indestructible!
+  apprenticehelmet:
+    name: Casco de Aprendiz
+    description: Para los nuevos magos
+  apprenticechestplate:
+    name: Túnica de Aprendiz
+    description: Para nuevos Magos
+  apprenticeleggings:
+    name: Pantalones de Aprendiz
+    description: Para nuevos magos
+  apprenticeboots:
+    name: Botas de Aprendiz
+    description: Para nuevos magos
+  clericchestplate:
+    name: Túnica de Clerigo
+    description: Sana a los jugadores cercanos
+  magneticleggings:
+    name: Pantalones Magneticos
+    description: Atrae Items y EXP
+  rabbitboots:
+    name: Botas de Conejo
+    description: El espíritu de la liebre
+  flashboots:
+    name: Botas Flash
+    description: Zoooooooom
+  rocketboots:
+    name: Botas Cohete
+    description: En un solo salto!
+  hulkboots:
+    name: Botas de Hulk
+    description: Hulk LEAP!
+  goggles:
+    name: Lentes de Vision Nocturna
+    description: Ve lo invisible
+  invisiblecloak:
+    name: Capa de Invisibilidad
+    description: Uno de los legendarios hallows
+  wolf:
+    name: El Lobo
+    description: NathanWolf Personal del/la Escoba
+  minister:
+    name: El ministro
+    description: Por Magia!
+  miniwolf:
+    name: Mini-Lobo
+    description: NathanWolf la Varita de Fiar
+  borealis:
+    name: Borealis
+    description: La Aurora De La Varita
+  conway:
+    name: Conway Varita
+    description: El Juego de la Vida
+  redeffects:
+    name: Varita de efectos rojos
+    description: El matiz de su varita de efectos!
+  greeneffects:
+    name: Varita de Efectos Verdes
+    description: El matiz de su varita de efectos!
+  blueeffects:
+    name: Varita de efectos azules
+    description: El matiz de su varita de efectos!
+  whiteeffects:
+    name: Varita de efectos blancos
+    description: El matiz de su varita efectos!
+  blackeffects:
+    name: Varita de efectos negros
+    description: El matiz de su varita de efectos!
+  purpleeffects:
+    name: Varitas de efectos purpura
+    description: El matiz de su varita efectos!
+  yelloweffects:
+    name: Efectos de varita amarilla
+    description: El matiz de su varita efectos!
+  aquaeffects:
+    name: Varita de efectos Aqua
+    description: El matiz de su varita de efectos!
+  orangeeffects:
+    name: Varita de efectos anaranjados
+    description: El matiz de su varita efectos!
+  magentaeffects:
+    name: Varita de efectos Magenta
+    description: El matiz de su varita efectos!
+  grayeffects:
+    name: Varita gris de efectos
+    description: El matiz de su varita efectos!
+  lightgrayeffects:
+    name: Varitas de efectos de Luz grises
+    description: El matiz de su varita efectos!
+  lightblueeffects:
+    name: Varita de Luz de efectos azules
+    description: El matiz de su varita efectos!
+  pinkeffects:
+    name: Varita de efectos rosados
+    description: El matiz de su varita efectos!
+  browneffects:
+    name: Varita de efectos marrones
+    description: El matiz de su varita efectos!
+  darkgreeneffects:
+    name: Varita de efectos verdes oscuros
+    description: El matiz de su varita efectos!
+  randomeffects:
+    name: Efectos de la Varita al azar
+    description: ¿Te sientes afortunado? El matiz de su varita efectos de un color al azar!
+  bubbleeffects:
+    name: Bubble Efectos de Varita
+    description: Agregar la poción-como la burbuja de los efectos de su varita
+  rainboweffects:
+    name: Arco Iris Varita de Efectos
+    description: Cambia de Color partículas
+  cleareffects:
+    name: Limpiar efectos de varita
+    description: Elimina las partículas y burbujas
+  haloeffects:
+    name: Efectos de Halo
+    description: Un servicio personalizado de halo
+  student_upgrade:
+    name: Mejorar a Estudiante
+    description: Mejorar a nivel de estudiante
+  apprentice_upgrade:
+    name: Mejorar a Aprendiz
+    description: Mejor a nivel de Aprendiz
+  master_upgrade:
+    name: Mejorar a maestro
+    description: Mejorar a nivel de maestro
+  engineer_upgrade:
+    name: Mejorar a Ingeniero
+    description: Mejorar a nivel de ingeniero
+  architect_upgrade:
+    name: Mejorar a Arquitecto
+    description: Mejorar a nivel de Arquitecto
+  hotbar1:
+    name: Restablecer Barra De Acceso Rápido
+    description: Restablecer barra de acceso rápido de la varita
+  hotbar2:
+    name: Barra De Acceso Rápido De Nivel 2
+    description: Añadir una extra de barra de acceso rápido para su varita!
+  hotbar3:
+    name: Barra De Acceso Rápido De Nivel 3
+    description: Tres barras de acceso son mejor que dos
+  antihunger:
+    name: Mejorar Anti-Hambre
+    description: Nunca tener hambre de nuevo!
+  undroppable:
+    name: Mejorar Undroppable
+    description: Hace su varita undroppable
+  chestmode:
+    name: Modo de Cofre
+    description: Una simple mecanica de varita
+  cyclemode:
+    name: Modo De Ciclo
+    description: La mecanica más simple de la varita
+  inventorymode:
+    name: Inventario De Modo
+    description: Para Magos Expertos
+  quickcast_enable:
+    name: Reparto Rápido (Todos)
+    description: Permitir una rápida fundido en todos los hechizos
+  quickcast_disable:
+    name: Reparto Rápido (Ninguno)
+    description: Deshabilitar quick-cast en todos los hechizos
+  quickcast_normal:
+    name: Reparto Rápido (Algunos)
+    description: Permitir una rápida fundido en algunos pre-seleccionados hechizos
+  quickcast_manual:
+    name: Reparto Rápido (Manual)
+    description: Quick-cast solo pulsando Q en el inventario
+  mode_drop:
+    name: Modo de Drop
+    description: Utilice la lista (Q) Botón para abrir el hechizo de inventario, de Intercambio (F)
+      botón de ciclo hotbars y haga clic izquierdo para lanzar
+  mode_rightclick:
+    name: Modo de Click Derecho
+    description: Haga Clic derecho para abrir el hechizo de inventario, la Caída (Q) botón de ciclo
+      hotbars y haga clic izquierdo para lanzar
+  mode_sword:
+    name: Modo Espada
+    description: Utilice la lista (Q) Botón para abrir el hechizo de inventario, los botones de la barra de acceso rápido
+      para la fundición y el intercanbio (F) botón para pasar de la barra de acceso rápido
+  mode_swap:
+    name: Modo De Intercambio
+    description: El uso del intercanbio (F) Botón para abrir el hechizo de inventario, la Caída de (Q)
+      botón de ciclo hotbars, haga clic izquierdo para lanzar
+  loud:
+    name: Loud Varita
+    description: Encienda todos los varita mensajes de chat
+  quiet:
+    name: Quiet Varita
+    description: Apague hechizo mensajes
+  silent:
+    name: Silenciar Varita
+    description: Apague todos los varita mensajes de chat
+  organizer:
+    name: El Organizador
+    description: Re-organiza su varita inventario
+  alphabetizer:
+    name: El Alphabetizer
+    description: Alphabetizes su varita inventario
+  recalltoken:
+    name: Recordar Token
+    description: Teleport a los puntos de referencia
+  respawntoken:
+    name: Respawn Token
+    description: Cast para volver a desovar
+  wolfhouse:
+    name: Lobo de Casa
+    description: Una auto-regeneración de base-en-una-caja de
+  defenderheart:
+    name: Corazón de Defensor
+    description: Pulsa con el poder
+  virusheart:
+    name: Corazon de Virus
+    description: Este debe ser destruido
+  hunterheart:
+    name: Corazón de Cazador
+    description: Se quiere renacer
+  snakeheart:
+    name: Corazón de Serpiente
+    description: Sssssssssave me
+  golemheart:
+    name: Corazón de Gólem
+    description: Su nuevo mejor amigo
+  wormheart:
+    name: Corazón de Gusano
+    description: Se consumen en el mundo
+  cursedmeat:
+    name: Maldito Carne
+    description: Ni siquiera la toque!
+  broomstick:
+    name: Palo de escoba
+    description: |-
+      &r&bUtilice su escoba para volar por el aire.
+      &bBuceo para acelerar, y no volar demasiado largo!
+    enchant_instructions: ''
+    spell_instructions: '&r&bUtilice su escoba para volar por el aire. La inmersión a la velocidad de
+      arriba, y don"t volar demasiado tiempo!'
+  crackedbroomstick:
+    name: Agrietado Palo De Escoba
+    description: Bueno mientras dura!
+  spleef:
+    name: Spleef
+    description: Para jugar Asistente de Spleef
+  divinghelmet:
+    name: Casco De Buceo
+    description: Trabajar libremente submarina
+  heroes:
+    name: Varita
+    description: Utilice el Botón Q para Abrir el Inventario de Habilidades
+  ledger:
+    name: Contabilidad
+    description: Comprobar el saldo de su cuenta
+  questscompass:
+    name: Brújula de Búsqueda
+    description: Le dice qué hacer a continuación
+  ocarina:
+    name: Ocarina
+    description: Haga clic derecho y utilice los botones de la barra de acceso rápido para reproducir música
+    spell_count: Ha $count Notas
+  mirrorshield:
+    name: Escudo Espejo
+    description: Puede bloquear y reflejar los hechizos
+  empty:
+    name: Vacío
+    description: Para la creación de objetos de juego desde cero
+  talisman:
+    name: Maná Talismán
+    description: Da un maná de bonificación cuando se mantiene
+  skillbook:
+    name: Libro De Habilidad
+    description: Haga clic para ver las habilidades, la habilidad de arrastrar a la barra de acceso rápido para utilizar
+  spellbook:
+    name: Libro De Hechizos
+    description: $path &rLibro de hechizos
+    spell_instructions: '&r&bUso de la barra de acceso rápido botón para lanzar hechizos que has puesto
+      en la barra de acceso rápido.'
+    inventory_instructions: '&r&bHaga clic derecho para abrir el hechizo de inventario y arrastre
+      hechizos para la barra de acceso rápido para que los echasen.'
+  appearance_beginner:
+    name: Aspecto Principiante de Varita
+    description: Un buen arranque de la varita
+  appearance_student:
+    name: Aspecto de Estudiante Varita
+    description: Su magia está comenzando a crecer
+  appearance_apprentice:
+    name: Aspecto Aprendiz Varrita
+    description: Se ha transformado!
+  appearance_master:
+    name: Aspecto Mago Varita
+    description: Un poderoso instrumento mágico
+  appearance_engineer:
+    name: Aspecto Ingeniero Varita
+    description: Un personal de gran alcance impregnada de magia antigua
+  appearance_architect:
+    name: Aspecto Arquitecto Varita
+    description: Un personal de gran alcance usada para grandes construcciones
+  appearance_conduit:
+    name: Aspecto Conducto Varita
+    description: Un personal utilizado por los asistentes de las eras pasadas
+  appearance_magicka:
+    name: Aspecto Magicka Varita
+    description: Un gran equipo con una media luna celebración mágica poderosa energía
+  appearance_moon:
+    name: Aspecto Luna Varita
+    description: Una varita que podría haber sido utilizado por un antiguo marinero
+  appearance_green:
+    name: Aspecto Verdoso Varita
+    description: Un peligroso mirar veneno varita
+  appearance_bow1:
+    name: Aspecto Egipto Arco
+  appearance_bow2:
+    name: Aspecto Flaco Arco
+  appearance_longbow:
+    name: Aspecto Arco Largo
+  appearance_spire:
+    name: Aspecto Aguja Varita
+    description: Un Mago de la torre se puede sostener en su mano
+  appearance_claw:
+    name: Aspecto Garra Varita
+    description: Una fría garra oscura celebración potente orbes mágicos
+  appearance_orb:
+    name: Aspecto Orbe Varita
+    description: Una varita amorosamente imbuidos de un poderoso orbe
+  uberwand:
+    name: Superó
+    description: La Última Varita
+  extinguisher:
+    name: Extintor
+    description: Apaga incendios
+  science:
+    name: Por La Ciencia!
+    description: Para las pruebas de autómatas
+  potion_sp100:
+    name: SP Poción
+    description: Beber y ganar unos 100 SP
+  purger:
+    name: La Purga
+    description: Un Autómata De Lucha Contra La Varita
+  magictorch:
+    name: La Magia De La Antorcha
+    description: Crea la luz como mantenga
+automata:
+  awaken: '&c&o$name &r&5ha despertado'
+  default_name: Automata
+  level: Nivel $roman
+  good:
+    prefixes:
+    - Santo
+    - La luz
+    - Brillante
+    - Ilustre
+    - Incondicional
+    - Iluminado
+    - Salvador
+    - Bendito
+    - Magico
+    - Encantado
+    - Ilusurio
+    - Magnífico
+    - Magnamous
+    - Valiente
+    - Leal
+    - Glorioso
+    suffixes:
+    - de la Santidad
+    - de Honor
+    - de Luz
+    - de Ligereza
+    - de Protección
+    - del Sol
+    - de la Magia
+    - de La Santísima
+    - de Perdón
+    - de la Lealtad
+    - de la Retribución
+    - de la Resiliencia
+    - de la Esperanza
+    - de la Gloria
+    - de la Absolución
+  evil:
+    prefixes:
+    - Evil
+    - Dark
+    - Slimy
+    - Dreadful
+    - Dread
+    - Cursed
+    - Magic
+    - Enchanted
+    - Harbringer
+    - Nether
+    - Infamous
+    - Nefarious
+    - Distastrous
+    - Eldritch
+    - Disgusting
+    - Retched
+    - Abominable
+    - Horrifying
+    - Calamity
+    - Calamitous
+    - Otherworldly
+    - Deplorable
+    - Apocalyptic
+    - Despicable
+    - Vile
+    - Wretched
+    - Loathsome
+    - Monstrous
+    - Dread
+    suffixes:
+    - de la Oscuridad
+    - de la Maldad
+    - de la Noche
+    - de la Muerte
+    - de Doom
+    - de el Nether
+    - de la Magia
+    - de la Destrucción
+    - de la Desolación
+    - de la Infamia
+    - de Horror
+    - de la penumbras
+    - el el fin
+    - de la Dominación
+    - del Apocalipsis
+    - de la Devastación
+    - de la Selva
+    - de Terror
+    - de Tizón
+    - de la Plaga
+tags:
+  noduel:
+    name: No Hay Duelo
+    description: Los hechizos que no son permitidos en un duelo de arena
+  nojail:
+    name: No Hay Cárcel
+    description: Los hechizos que no son permitidos en una cárcel
+categories:
+  combat:
+    name: Magia De Combate
+    description: Básicos De Hechizos De Ataque
+  automata:
+    name: Automata
+    description: Crear Vida!
+    color: FFA500
+  electrical:
+    name: Eléctrica
+    description: Mad Science
+    color: '888800'
+  master:
+    name: Maestro
+    description: Todas las cosas Realmente poderosas
+    color: 00AACC
+  utility:
+    name: Utilidad
+    description: La utilidad y el movimiento de los hechizos
+  demolition:
+    name: Demoliciones
+    description: Altamente destructivo magia
+    color: FF0000
+  dark:
+    name: La Magia Oscura
+    description: Mal Las Cosas!
+    color: '010101'
+  light:
+    name: La Magia De La Luz
+    description: Cosas Buenas
+    color: DDDDDD
+  engineering:
+    name: Ingeniería
+    description: Hechizos para el edificio mágico
+    color: 00FFFF
+  elemental:
+    name: Elemental
+    description: Control De La Naturaleza
+  mining:
+    name: La minería
+    description: Hechizos para ayudar a los míos
+  skills:
+    name: Habilidades De Héroes
+    descriptions: Las habilidades de los Héroes
+  staff:
+    name: Personal
+    description: Personal-sólo hechizos
+  specialty:
+    name: Especialidad
+    description: Hechizos significaba para el elemento o npc uso
+  music:
+    name: Musica
+    description: Se utiliza para reproducir música
+classes:
+  battle_mage:
+    name: Mago De Batalla
+    description: Un guerrero que lleva una espada mágica
+  mage:
+    name: Mage
+    description: El último lanzador de conjuros
+  archer_mage:
+    name: Arquero, Mago
+    description: Hábil con la magia de los arcos
+paths:
+  beginner:
+    name: principiante
+    description: Solo comenzando con magia
+  student:
+    name: Estudiante
+    description: Empezando a aprender lo básico
+  apprentice:
+    name: Aprendiz
+    description: Una buena variedad de hechizos.
+  master:
+    name: Maestro
+    description: El penúltimo mago
+    required_spell: '&cNada nuevo que aprender, por ahora! &4¿Qué misterio se encuentra por delante?'
+  engineer:
+    name: Ingeniero
+    description: Tiene hechizos de ingeniería.
+  architect:
+    name: Arquitecto
+    description: Tiene hechizos de ingeniería súper poderosos
+  conduit:
+    name: '&3Conducto'
+    description: Se puede manifestar bloques de energía pura
+  battle:
+    name: Batalla
+    description: Solo hechizos de combate
+  squire:
+    name: '&2Escudero'
+    description: De nivel medio de hechizos de combate
+  soldier:
+    name: '&aSoldado'
+    description: De alto nivel hechizos de combate
+  knight:
+    name: '&6Caballero'
+    description: Nivel de maestría hechizos de combate
+  broom:
+    name: Escoba
+    description: El Poder De Volar
+  blaster:
+    name: Blaster
+    description: Blaster Mejoras
+  staff:
+    name: '&bPersonal'
+    description: Personal-sólo hechizos
+  archer:
+    name: '&6Arquero'
+    description: Archer hechizos
+
