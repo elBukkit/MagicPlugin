@@ -1,8 +1,8 @@
 automata:
   awaken: "&c&o$name &r&5ha sido revelado"
   default_name: Automaton
-  evil: 
-    prefixes: 
+  evil:
+    prefixes:
       - Maligno
       - Oscuro
       - Resbaladizo
@@ -16,7 +16,7 @@ automata:
       - Infame
       - Putrefacto
       - Desagradecido
-    suffixes: 
+    suffixes:
       - "de la oscuridad"
       - malvado
       - "de la noche"
@@ -27,8 +27,8 @@ automata:
       - "de la destruccion"
       - "de la desolacion"
       - "del vacio"
-  good: 
-    prefixes: 
+  good:
+    prefixes:
       - Sagrado
       - Angel
       - Perfecto
@@ -44,7 +44,7 @@ automata:
       - Manso
       - Bravo
       - Leal
-    suffixes: 
+    suffixes:
       - "de la grandeza"
       - "del honor"
       - "de la luz"
@@ -58,63 +58,63 @@ automata:
       - "de la cordialidad"
       - "de la resistencia"
   level: "Level $roman"
-books: 
-  all: 
+books:
+  all:
     title: "El Libro Maestro"
-  default: 
+  default:
     author: Sergiosanta
     title: "$category Spell Book"
-categories: 
-  automata: 
+categories:
+  automata:
     color: FFA500
     description: "Â¡Crea vida!"
     name: Automata
-  combat: 
+  combat:
     description: "Hechizos daÃ±inos basicos"
     name: "Magia de combate"
-  dark: 
+  dark:
     color: "010101"
     description: "Â¡Hechizos olvidados y prohibidos...!"
     name: "Mago Oscuro"
-  demolition: 
+  demolition:
     color: FF0000
     description: "Magia incontrolable que dejara un rastro de destruccion increible"
     name: "Mago Rojo"
-  electrical: 
+  electrical:
     color: "888800"
     description: "Cientifico loco"
     name: Electrico
-  elemental: 
+  elemental:
     description: "Muestra el poder de la madre naturaleza"
     name: Elemental
-  engineering: 
+  engineering:
     color: 00FFFF
     description: "Hechizos para construcciones magicas"
     name: Ingeniero
-  light: 
+  light:
     color: DDDDDD
     description: "Â¡El bien les destruira!"
     name: "Angel Celestial"
-  master: 
+  master:
     color: 00AACC
     description: "Poderosos hechizos para una poderosa mente"
     name: Maestro
-  mining: 
+  mining:
     description: "Busca y consigue esos minerales tan preciados"
     name: Enanito
-  skills: 
+  skills:
     descriptions: "Habilidades de Heroes"
     name: "Mago heroico"
-  specialty: 
+  specialty:
     description: "Hechizos centrados en items y npcs"
     name: Especiales
-  staff: 
+  staff:
     description: "Hechizos para los Staffs"
     name: Admin
-  utility: 
+  utility:
     description: "Magia para aliados y de movimiento"
     name: Utilidad
-cooldown: 
+cooldown:
   description: "&eCooldown: &6$time"
   description_hour: "1 hora"
   description_hours: "$hours horas"
@@ -128,60 +128,60 @@ cooldown:
   wait_minutes: "Espera $minutes minutos"
   wait_moment: "Espera un ultimo segundo"
   wait_seconds: "Espera $seconds segundos"
-costs: 
+costs:
   heroes_mana: "$amount Mana"
   mana: Mana
   mana_amount: "$amount Mana"
   xp: XP
   xp_amount: "$amount XP"
-duration: 
+duration:
   lasts_hours: "Persistirar por $hours horas"
   lasts_minutes: "Persistira por $minutes minutos"
   lasts_seconds: "Persistira por $seconds segundos"
-economy: 
+economy:
   deducted: "Reducido: &6$cost"
   insufficient: "Cuesta: &6$cost"
   missing: "&cLa tienda esta cerrada ahora, Â¡Sorry!"
-general: 
+general:
   no_spells: "No sabes ningun hechizo"
   no_spells_in_category: "No sabes ningun hechizo en la categoria $category"
   spell_list: "En total sabes $count hechizos"
   spell_list_page: "Sabes $count hechizos [Pagina $page de $pages]"
-material: 
+material:
   wildcard: " (All Types)"
-paths: 
-  apprentice: 
+paths:
+  apprentice:
     description: "Â¡Una buena variedad de hechizos!"
     name: Aprendiz
-  architect: 
+  architect:
     description: "Hechizos poderosos para la construccion"
     name: Arquitecto
-  battle: 
+  battle:
     description: "Â¡Hechizos para la guerra!"
     name: "Maestro Arcano"
-  beginner: 
+  beginner:
     description: "Â¿Empezando con la magia?"
     name: Principiante
-  broom: 
+  broom:
     description: "Mejoras para poder volar"
     name: Aguila
-  engineer: 
+  engineer:
     description: "Hechizos de ingeniero"
     name: Ingeniero
-  master: 
+  master:
     description: "Todo para un poderoso hechizero"
     name: Maestro
-  student: 
+  student:
     description: "Aprende las cosas basicas"
     name: Estudiante
-skills: 
+skills:
   inventory_title: "$class Skills ($page/$pages)"
   inventory_title_secondary: "$class-$class2 Skills ($page/$pages)"
   item_description: $description
   item_name: $skill
   item_name_unavailable: "&c$skill"
   passive_description: "&1PASSIVE"
-spell: 
+spell:
   available_path: "Disponible en el nivel $path."
   brush: "Usa el material."
   level_description: "Level $level"
@@ -191,14 +191,14 @@ spell:
   required_path: "Se necesitan $path niveles para completar esto."
   required_spell: "Tienes que aprender el hechizo&r&4$spell &d&opara avancar por &b$path"
   undoable: ""
-spells: 
-  absorb: 
+spells:
+  absorb:
     cast: "Absorbistes $material"
     description: "Absorbe algo que tu objetivo tenga en su inventario"
     fail: "Este hechizo requiere una varita"
     name: Absorb
     usage: "AÃ±ade nuevos items robados a tu inventario"
-  addspell: 
+  addspell:
     cast: ""
     cast_player_message: ""
     description: "AÃ±ade un hechizo a tu varita."
@@ -209,20 +209,20 @@ spells:
     no_target: "Ya has aprendido ese hechizo"
     no_upgrade: "No puedes aprender esto con $wand."
     no_wand: "Â¡Debes estar sujetando una varita!"
-  admission: 
+  admission:
     cast: "Â¡SI.. PUEDO.. PASAR!"
     description: "Abre la puerta objetivo"
     name: Admission
-  admission|2: 
+  admission|2:
     upgrade_description: "&r&b• &6ahora la puerta se abre"
-  alter: 
+  alter:
     cast: "Altarastes el bloque objetivo."
     cast_entity: "Alterastes $target."
     description: "Altera ciertas cosas como lana, escaleras..."
     fail: "No puedes reajustar eso."
     name: Alter
     usage: "Usalo en lana, escaleras, cuadros, etc"
-  animate: 
+  animate:
     cast: "Creastes un golem magico"
     cast_broadcast: "&c&o$name &r&5fue creado"
     death_broadcast: "&c&o$name &r&5fue destruido"
@@ -230,11 +230,11 @@ spells:
     fail: "No puedes crear un golem sin el material $material"
     name: Animate
     no_target: "Tienes que seleccionar al menos 2 bloques uno al lado del otro"
-  anvil: 
+  anvil:
     cast: "Jo... Â¡Que fuerte!"
     description: "Crea un yunque"
     name: Anvil
-  architectshop: 
+  architectshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Mejorar a arquitecto"
@@ -251,16 +251,16 @@ spells:
     no_upgrade: "No hay nada mas para ti aqui."
     no_wand: "Â¡Debes estar sujetando una varita!"
     title: "Arquitecto ($balance)"
-  arrow: 
+  arrow:
     description: "Lanza una flecha MAGICA"
     name: Arrow
     upgrade_description: "&r&b• &6Incrementa el daÃ±o y la precision"
-  arrowrain: 
+  arrowrain:
     description: "Lanza una rafaga de flechas"
     name: "Arrow Rain"
-  arrowrain|2: 
+  arrowrain|2:
     upgrade_description: "&r&b• &6Ademas de mas flechas ahora estan en llamas"
-  automatashop: 
+  automatashop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Vender  $item"
@@ -272,7 +272,7 @@ spells:
     name: "Automata Shop"
     no_items: "Â¡No hay nada a la venta!"
     title: "Corazones de automata"
-  backup: 
+  backup:
     cancel: "Backup cancedlado"
     cast_finish: "Se guardaron $count bloques"
     description: "Guarda un area para repararla en un futuro con SuperRepair"
@@ -280,44 +280,44 @@ spells:
     name: Backup
     target_selected: "Usalo otra vez para aceptar"
     usage: "Usa el hechizo 2 veces para guardar"
-  blast: 
+  blast:
     cast_finish: "Destrozastes $count bloques."
     description: "Explota bloques debiles"
     name: Blast
     upgrade_description: "&r&b• &6Incremento de radio y ahora rompes mas tipos de bloques"
-  blessing: 
+  blessing:
     cast: "Bendecistes esta zona"
     description: "Bendice y cura a todos tus seguidores en un area"
     name: Blessing
-  blind: 
+  blind:
     cast: "Â¡AY, $target se quedoo siegoooo!"
     description: "Ciega a tu objetivo"
     name: Blind
-  blink: 
+  blink:
     cast: Blink!
     description: "Teleportate a tu objetivo"
     name: Blink
     no_target: "No puedes pasar por aqui"
     usage: "Puedes atravesar bloques solidos"
-  blink|2: 
+  blink|2:
     upgrade_description: "&r&b• &6Incrementado el rango y la capacidad de pasar"
-  blink|3: 
+  blink|3:
     upgrade_description: "&r&b• &6Incremento de rango y posibilidad de ascender o descender"
-  blob: 
+  blob:
     cast_finish: "Blobbed $count bloques con $material"
     description: "Crea una burbuja solida"
     name: Blob
-  blob|2: 
+  blob|2:
     upgrade_description: "&r&b• &6Ahora se construye con arcilla"
-  blob|3: 
+  blob|3:
     upgrade_description: "&r&b• &6Ahora se construye con obsidiana"
-  blob|4: 
+  blob|4:
     upgrade_description: "&r&b• &6Ahora podras construir con tu pincel"
-  bomb: 
+  bomb:
     cast: "Llamaste a un bombardero"
     description: "Pide una ayudita a tu amigo del ejercito para que mande un bombardero"
     name: "Carpet Bomb"
-  bookshop: 
+  bookshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Conseguir $item"
@@ -329,33 +329,33 @@ spells:
     name: "Spellbook Shop"
     no_items: "Â¡No hay nada para comprar!"
     title: "Spell Books"
-  boom: 
+  boom:
     cast: Â¡Boom!
     description: "Crea una explosion"
     name: Boom
-  boom|2: 
+  boom|2:
     upgrade_description: "&r&b• &6Greater damage, breaks blocks"
-  boon: 
+  boon:
     cast: "Dopastes a $target un poco"
     cast_self: "Te dopastes un poco"
     description: "Tan fuerte como 2, tan resistente como 4, Â¡TAN PODEROSO COMO 1O PERSONAS!"
     name: Boon
     upgrade_description: "&r&b• &6AÃ±ade resistencia y regeneracion"
-  box: 
+  box:
     cast_finish: "Rellenastes $count bloques de $material"
     description: "Crea una caja en el suelo"
     name: Box
-  breach: 
+  breach:
     cast_finish: "Removistes $count bloques temporalmente"
     description: "Haz una brecha temporal en el muro objetivo"
     name: Breach
-  bridge: 
+  bridge:
     cast: "Un puente de $material se extiende"
     description: "Extiende un puente delante tuyo"
     name: Bridge
     no_target: "No puedes crear un puente aqui"
     usage: "No puede ser usado en el aire"
-  broom: 
+  broom:
     cast: "Â¡Tu escoba cobra vida!"
     crash: Â¡CRASH!
     cursed: "Que mareo.. Mejor esperar a que se me pase."
@@ -363,7 +363,7 @@ spells:
     description: "Â¡WOW, Como en las pelis!"
     fail: "Â¡No puedes hacer eso!"
     name: Broom
-  broomshop: 
+  broomshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Comprar $item"
@@ -375,52 +375,52 @@ spells:
     name: "Broom Shop"
     no_items: "Â¡No hay nada que comprar aqui!"
     title: "Escobas magicas ($balance)"
-  brushselect: 
+  brushselect:
     descriptions: "Selecciona un pincel"
     fail: "Â¡Debes estar sujetando tu varita!"
     name: "Brush Selector"
-  bubble: 
+  bubble:
     cast: Sploosh
     description: "Crea una burbuja segura para protegerte de alguna caida o algo"
     name: Bubble
     upgrade_description: "&r&b• &6Haz una burbuja mas grande"
     usage: "Usalo mientras estes cayendo o cuando la necesites."
-  cage: 
+  cage:
     cast: "Â¡ITÂ´S A TRAP MADAFAKA!"
     description: "Encarcela temporalmente a un enemigo"
     name: Cage
-  camera: 
+  camera:
     cast: CLICK!
     cast_entity: "Hicistes una foto a $target"
     cast_self: Selfie!
     description: "Hazte una selfie tuya o de otra persona"
     fail: "Fallo al cargar la foto"
     name: Camera
-  cat: 
+  cat:
     cast: "Â¡Creastes un gatete!"
     description: "Crea tu propio gatooo :3"
     fail: "Tu gato resulto ser puto y se fue de marcha a bares de alterne."
     name: Cat
-  chop: 
+  chop:
     cast: "Cortastes $count bloques."
     description: "Tala un arbol de un golpe"
     name: Chop
     upgrade_description: "&r&b• &6Cortas mas bloques"
-  cloak: 
+  cloak:
     cast: "Volvistes invisible a tu objetivo."
     cast_self: "Â¿Piel de camaleon? Â¡Eso es para noobs!"
     description: "Una magia pura recorera tu cuerpo o el de tu amigo volviendos invisibles durante un tiempo"
     name: Cloak
-  cluster: 
+  cluster:
     cast: "Lanzaste una granada racimo"
     description: "Lanza una granada racimo"
     name: "Cluster Bomb"
-  collapse: 
+  collapse:
     cast_finish: "Colapsastes $count bloques"
     description: "Colapsa una zona con esferas de bloques"
     name: Collapse
     upgrade_description: "&r&b• &6Mas radio y ahora puede romper mas tipos de bloques"
-  colorshop: 
+  colorshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Comprar $item"
@@ -433,50 +433,50 @@ spells:
     no_items: "Â¡No hay nada que comprar aqui!"
     no_wand: "Â¡Debes estar sujetando una varita!"
     title: "Colores ($balance)"
-  column: 
+  column:
     cast: "Se crearon $count nuevos bloques."
     description: "Construye una gran columna de bloques"
     name: Column
-  commit: 
+  commit:
     cast: "Your Rollback queue has been cleared"
     cast_player: "You commit $target's spells"
     description: "Make your spells permanent"
     fail: "Nothing to commit"
     name: Commit
     usage: "Clears your Rollback queue"
-  convert: 
+  convert:
     cast_finish: "Convertistes $count bloques en $material"
     description: "Convierte una zona con esferas"
     name: Convert
     usage: "No se puede llenar con aire"
-  count: 
+  count:
     description: "Una herramienta de admin para encontrar entidades cercanas"
     name: "Entity Counter"
-  counterspell: 
+  counterspell:
     cast: "&5Contrarrestastes el hechizo&r&6 $spell de &d&o$target"
     cast_player_message: "&d&o$player &r&5contrarresto tu hechizo &3&o$spell!"
     description: "Contrarresta el hechizo de tu objetivo si lo ha lanzado recientemente"
     fail: "Nada que contrarrestar."
     name: Counterspell
     usage: "Solo funciona en hechizos recientes."
-  counterspell|2: 
+  counterspell|2:
     upgrade_description: "&r&b• &6No chance of fizzle"
-  cure: 
+  cure:
     cast: "Removistes los efectos negativos de $target"
     cast_self: "Â¡QUE NADA TE PARE!"
     description: "Quitate cualquier efecto o estado negativo"
     name: Cure
     upgrade_description: "&r&b• &6Ahora puedes calmar tu hambre"
-  curse: 
+  curse:
     cast: "Has maldecido a $target"
     description: "Realentiza y daÃ±a a tu enemigo"
     name: Curse
     upgrade_description: "&r&b• &6Ahora ademas de realentizar aplica confusion"
-  day: 
+  day:
     cast: "Â¡Que dia mas luminoso!"
     description: "Transforma la hora en un precioso dia"
     name: "Sunny Day"
-  default: 
+  default:
     backfire: "Â¡Tu hechizo reboto!"
     cancelled: "Â¡Tu hechizo fue cancelado!"
     cast_finish: ""
@@ -493,7 +493,7 @@ spells:
     location_required: "Necesitas una localizacion para este hechizo."
     player_required: "Se necesita un jugador para usar este hechizo."
     world_required: "Se necesita un mundo para este hechizo."
-  defender: 
+  defender:
     cast: "Yo defendere por ti humano."
     cast_broadcast: "&c&o$name &r&5fue encendido"
     death_broadcast: "&c&o$name &r&5fue apagado"
@@ -501,37 +501,37 @@ spells:
     fail: "No puedes hacer un defensor sin $material"
     name: Defender
     no_target: "Tienes que seleccionar 2 bloques uno al lado del otro"
-  disarm: 
+  disarm:
     cast: "Desarmaste a tu objetivo"
     cast_self: "Te desarmaste a ti mismo... Deberias mejorar tus poderes."
     description: "Desarma a tu oponente"
     name: Disarm
     upgrade_description: "&r&b• &6Disminuye la posibilidad de autodesarmarse y de fallar"
-  disarm|3: 
+  disarm|3:
     upgrade_description: "&r&b• &6Es imposible fallar autodesarmarse o fallar este hechizo"
-  disc: 
+  disc:
     cast_finish: "Rellenastes $count bloques con $material"
     description: "Crea una plataforma delante tuyo."
     name: Disc
-  disc|2: 
+  disc|2:
     upgrade_description: "&r&b• &6Incrementa la zona"
-  disc|3: 
+  disc|3:
     upgrade_description: "&r&b• &6Ahora puedes usar tu pincel"
-  disintegrate: 
+  disintegrate:
     cast: ZAP!
     cast_entity: ZOT!
     description: "DaÃ±a/destruye a un objetivo/bloque"
     name: Disintegrate
     usage: "Destruiras a tu bloque objetivo o haras daÃ±o a una entidad"
-  earth: 
+  earth:
     cast: "Creastes una linea saliente de la tierra."
     description: "Contruye temporalmente una linea de bloques provenientes de la tierra"
     name: Earth
-  earthquake: 
+  earthquake:
     cast_finish: "Movistes $count bloques"
     description: "Â¡Mueve la tierra bajo tus pies!"
     name: Earthquake
-  emeraldshop: 
+  emeraldshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Comprar $item"
@@ -543,18 +543,18 @@ spells:
     name: "Emerald Exchange"
     no_items: "Â¡No hay nada que comprar aqui!"
     title: "Esmeraldas ($balance)"
-  emp: 
+  emp:
     cast_finish: "Electrificastes $count bloques"
     description: "Electrifica un area"
     name: EMP
-  enchantwand: 
+  enchantwand:
     cast: ""
     cast_player_message: ""
     description: "AÃ±ade niveles a tu varita"
     fail: ""
     name: "Upgrade Wand"
     no_wand: "Â¡Debes estar sujetando una varita!"
-  engineershop: 
+  engineershop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Mejorar a ingeniero"
@@ -571,21 +571,21 @@ spells:
     no_upgrade: "No hay nada mas para ti aqui."
     no_wand: "Â¡Debes estar sujetando una varita!"
     title: "Rollback ($balance)"
-  entangle: 
+  entangle:
     cast: "Atrapastes a $target. Â¡JA!"
     description: "Atrapa a tu objetivo entre vallas"
     name: Entangle
-  familiar: 
+  familiar:
     cast: "Invocastes un animal familiar"
     deactivate: "Dejastes libre a tu animal"
     description: "Crea un animal amistoso"
     name: Familiar
-  farm: 
+  farm:
     cast: "Has invocado $count animales de granja"
     deactivate: "Liberastes a tus animales"
     description: "Crea una granja :3"
     name: Herd
-  fill: 
+  fill:
     cancel: "Relleno cancelado"
     cast_finish: "Se rellenaron $count bloques con $material"
     description: "Rellena un area con materiales"
@@ -593,65 +593,65 @@ spells:
     name: Fill
     target_selected: "Usalo otra vez para rellenar con $material"
     usage: "Usalo 2 veces para rellenar"
-  fillwand: 
+  fillwand:
     cast: ""
     cast_player_message: ""
     description: "Llena tu varita con todos los hechizos"
     fail: ""
     name: "Fill Wand"
     no_wand: "Â¡Debes estar sujetando una varita!"
-  fire: 
+  fire:
     cast: "Empezastes una hogera"
     description: "Enciende hogeras desde la distancia"
     name: Fire
     upgrade_description: "&r&b• &6Incrementa el radio"
-  fireball: 
+  fireball:
     description: "Invoca una bola de fuego explisova."
     name: Fireball
-  fireball|2: 
+  fireball|2:
     upgrade_description: "&r&b• &6DaÃ±o y eficiencia incrementada"
-  fireball|3: 
+  fireball|3:
     upgrade_description: "&r&b• &6Velocidad y maxima preccision"
-  fireball|4: 
+  fireball|4:
     upgrade_description: "&r&b• &6Ahora los objetivos arden"
-  flamethrower: 
+  flamethrower:
     cast: "Lanzastes una linea de fuego"
     description: "Â¡Burn, baby, burn!"
     name: Flamethrower
-  flare: 
+  flare:
     cast: "Lanzastes unas bengalas magicas."
     description: "Dispara unas bengalas"
     name: Flare
-  flashbang: 
+  flashbang:
     cast_player_message: "$player te dejo ciego"
     description: "Una granada de luz y ceguera"
     name: "Flash Bang"
-  fling: 
+  fling:
     description: "Â¡Lanzate volando hacia la posicion objetivo!"
     name: Fling
     upgrade_description: "&r&b• &6Incrementa la velocidad"
-  fly: 
+  fly:
     cancel: "Â¡Hora de luchar!"
     cast: "Â¡Pio Pio!"
     description: "Vuela, vuela como un pajaro"
     name: Fly
-  force: 
+  force:
     cancel: "Objetivo liberado"
     description: "Usa la telekinesis con tu objetivo."
     name: Force
     target_selected: "Capturastes a $target"
     usage: "Usalo para seleccionar una entidad para tirar"
-  forest: 
+  forest:
     cast: "Â¡Creaste un bosque! Ahora solo faltan los animales."
     description: "Crea un bosque instantaniamente"
     fail: "No crecio ningun arbol."
     name: Forest
-  frost: 
+  frost:
     cast_finish: "Conjelastes $count bloques"
     description: "Congela cosas delante tuyo, Â¡incluso el agua!"
     name: Frost
     upgrade_description: "&r&b• &6Amplia tu radio"
-  gather: 
+  gather:
     cancel: "El objetivo se libero"
     cast_entity: "Teleportando a $target a tu objetivo"
     cast_player_message: "&d&o$player &r&5rompio el tiempo y el espacio solo por ti"
@@ -659,60 +659,60 @@ spells:
     description: "Teleportate a otros jugadores"
     name: Gather
     target_selected: "Has capturado a $target"
-  gatling: 
+  gatling:
     description: "Lanza flechas automaticamente"
     name: "Gatling Gun"
-  gatling|2: 
+  gatling|2:
     upgrade_description: "&r&b• &6Las flechas haran mas daÃ±o"
-  gills: 
+  gills:
     cast: "Te has colocado el casco de sirena"
     description: "Trabaja libremente debajo del agua"
     hat_lore: "Click para quitar"
     hat_name: "Casco de Sirena"
     name: "Diving Helmet"
-  glider: 
+  glider:
     cast: "Â¡Esta vivo!"
     description: "Crea un poderoso Automata"
     name: Glider
-  grab: 
+  grab:
     cast: Yoink!
     description: "Agarra cosas delante tuyo"
     name: Grab
-  grenade: 
+  grenade:
     description: "Lanza una granada. Perfecta para regalo."
     name: Grenade
-  grenade|2: 
+  grenade|2:
     upgrade_description: "&r&b• &6Incrementa el daÃ±o y crea fuego"
-  grow: 
+  grow:
     cast: "Â¡Mi huerta ideal esta de camino!"
     cast_entity: "Â¡Tu $target crecio!"
     description: "Haz crecer a tus cultivos instantaniamente"
     name: Grow
     no_target: "Â¡No puedes usar tu hechizo en esta planta!"
-  harden: 
+  harden:
     cast: "Endurecistes $count bloques"
     description: "Convierte los bloques objetivos en bloques mas resistentes temporalmente, Â¡perfecto para defender ataques!"
     name: Harden
-  harden|2: 
+  harden|2:
     upgrade_description: "&r&b• &6Ahora los bloques se convierten en obsidiana"
-  hat: 
+  hat:
     cast: "Te pusistes $material en la cabeza"
     description: "Ponte en la cabeza el bloque objetivo"
     hat_lore: "Desaparecera si lo clickas"
     hat_name: "Sombrero de $hat"
     name: Hat
     removed: "Tu sombrero magico desaparecio"
-  heal: 
+  heal:
     cast: "Curastes a $target"
     cast_self: "Tu heridas desaparecieron"
     description: "Curate a ti mismo o a algun aliado"
     name: Heal
     upgrade_description: "&r&b• &6Aumenta la curacion"
-  healing: 
+  healing:
     cast: "Curastes a $target"
     description: "Cura y bendice a todos lo que esten a tu alrededor"
     name: Healing
-  hunter: 
+  hunter:
     cast: "Â¡Destruye a todos los humanos!"
     cast_broadcast: "&c&o$name &r&5fue encendido"
     death_broadcast: "&c&o$name &r&5fue apagado"
@@ -720,83 +720,83 @@ spells:
     fail: "No puedes hacer un cazador sin $material"
     name: Hunter
     no_target: "Tienes que seleccionar 2 bloques uno al lado del otro"
-  icbm: 
+  icbm:
     cast: "Â¡Apartaos insensatos!"
     description: "Crea una bola de fuego magica"
     name: ICBM
-  inferno: 
+  inferno:
     cast: "Quemastes $count bloques."
     description: "Quema un pequeÃ±o area"
     name: Inferno
-  invincible: 
+  invincible:
     cast: "Â¡Ni una espada de diamante podria atravesar tu piel!"
     deactivate: "Te sientes normal."
     description: "Hazte a ti mismo invencible por un tiempo"
     name: Invincible
-  invisiblecloak: 
+  invisiblecloak:
     cast: "Â¡Puff! Â¡Desaparecistes en una nube de humo!"
     name: "Invisible Cloak"
-  iterate: 
+  iterate:
     cast: "Creastes $count bloques."
     description: "Construye una linea de bloques"
     name: Iterate
-  kill: 
+  kill:
     cast: "Â¡YO TE INVOCO REAPER!"
     description: "[Reaper] Los antiguos escondieron este poder prohibido pero parece que algun reaper lo trajo de vuelta..."
     name: Kill
     upgrade_description: "&r&b• &6Reduce el enfriamiento y.. Â¡Â¿Aumenta el daÃ±o?!"
-  laser: 
+  laser:
     cast_finish: "Tu laser destruyo $count bloques"
     description: "Destruye una linea de bloques"
     name: Laser
     upgrade_description: "&r&b• &6Aumenta el radio, rompe mas tipos de bloques y incrementa el daÃ±o"
-  lava: 
+  lava:
     cast: "Lanzaste un chorro de lava."
     description: "Lanza un chorro de lava a tu enemigo"
     name: Lava
-  leap: 
+  leap:
     cast: Whee!
     description: "Â¡Toma un buen golpe!"
     name: Leap
-  levitate: 
+  levitate:
     cancel: "Vuelves a ser mas pesado."
     cast: "Oooommmm... Te sientes mas ligero..."
     description: "Â¡Tantos aÃ±os meditando dieron su fruto, ahora puedes levitar casi sin esfuerzo!"
     name: Levitate
-  life: 
+  life:
     cast: "Â¡HORA DE EXPERIMENTAR!"
     description: "Crea una ENORME tabla de vida"
     name: Life
-  life3: 
+  life3:
     cast: "Â¡Asi es como nacen los cientificos locos!"
     description: "Crea una ENORME tabla de vida... EN 3D"
     name: "Life 3D"
-  lift: 
+  lift:
     cast: "Levantastes $target."
     description: "Levanta el bloque objetivo como un ascensor"
     name: Lift
-  lightning: 
+  lightning:
     cast: Ka-Zap!
     description: Â¡IMPACTRUENO!
     name: Lightning
-  lightning|2: 
+  lightning|2:
     upgrade_description: "&r&b• &6Incrementa la efectividad"
-  lightning|3: 
+  lightning|3:
     cast: Ka-POW!
     upgrade_description: "&r&b• &6MAS RAYOSSS"
-  lockpick: 
+  lockpick:
     cast: "Â¡Abrete sesamo!"
     description: "Abre contenedores cerrados"
     fail: "Â¡No puedes abrir eso!"
     name: Lockpick
-  magichat: 
+  magichat:
     alternate: "Tu sombrero magico salto"
     cast: ""
     cast_absorption: "Tu sombrero magico te dio fuerzas"
     cast_bunny: "Â¡WTF, Salio un conejo de tu chistera!"
     cast_nightvision: "Tu sombrero iluminara el camino"
     name: "Magic Hat"
-  magicitemshop: 
+  magicitemshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Comprar $item"
@@ -808,116 +808,116 @@ spells:
     name: "Magic Item Shop"
     no_items: "Â¡No hay nada que comprar aqui!"
     title: "Items magicos ($balance)"
-  map: 
+  map:
     cast: "Â¡EL MAPAAAA!"
     description: "Crea un mapa de la zona"
     name: Map
-  meteor: 
+  meteor:
     cast: "Los cielos se abren para dejar caer una lluvia roja"
     description: "Lanza una lluvia de muerte delante tuyo"
     name: "Meteor Shower"
-  mine: 
+  mine:
     cast: "Picastes $count bloques"
     description: "Pica y deja caer al suelo los minerales seleccionados"
     name: Mine
     upgrade_description: "&r&b• &6Ahora picaras mas bloques"
-  mine|4: 
+  mine|4:
     upgrade_description: "&r&b• &6Ahora puedes picar la piedra"
-  missile: 
+  missile:
     cast: "Lanzastes un rayo de magia pura a $target"
     description: "Lanza un misil de magia pura"
     name: "Magic Missile"
     upgrade_description: "&r&b• &6Incrementa el radio y el daÃ±o"
-  mob: 
+  mob:
     cast: "Invocaste una mob squad de $count monstruo(s)"
     deactivate: "Has liberado a tu mob squad"
     description: "Crea una pequeÃ±a mob squad que te ayudara"
     name: Mob
-  monster: 
+  monster:
     cast: "Has invocado un monstruo. Â¡Grrr!"
     deactivate: "Has liberado a tu monstruo."
     description: "Invoca a un monstruo que estara de tu lado"
     name: Monster
-  mount: 
+  mount:
     cast: "Montastes a $target"
     description: "Ponte en la cabeza a tu objetivo"
     name: Mount
-  music: 
+  music:
     cast_player: "Pusistes algo de musica a $name"
     cast_self: "Estas reproduciendo algo de musica"
     description: "Agudiza tu oido y escucha la musica de la naturaleza"
     name: Music
-  neutron: 
+  neutron:
     cast: "Insectos, magia, aldeanos... Mira como sus almas se van a un lugar mejor..."
     description: "Mata a todas las entidades en un area"
     name: "Neutron Bomb"
-  night: 
+  night:
     cast: "Â¡Aqui llega el mundo de las tinieblas!"
     description: "La oscuridad se comera a los debiles.."
     name: Night
-  nuke: 
+  nuke:
     cast: "Â¡A CUBIERTO CAMARADAS!"
     description: "Crea una gran explosion"
     name: Nuke
-  paint: 
+  paint:
     description: "Pinta algun bloque"
     name: Paint
-  paste: 
+  paste:
     cast_finish: "Pegastes $count bloques"
     description: "Copa y pega una estructura"
     name: Paste
     usage: "Usar con pinceles poderosos"
-  peek: 
+  peek:
     cast_finish: "Ahora la luz pasara por $count bloques."
     description: "Convierte en cristal una zona temporalmente"
     name: Peek
-  petrify: 
+  petrify:
     cast: "NO ME MIRES $target."
     description: "[Reaper] Petrifica a tu objetivo..."
     name: Petrify
-  phase: 
+  phase:
     cast: "Has pasado a $world_name"
     description: "Pasaste a otra dimension, Â¿Sabras volver no?"
     name: Phase
-  pickpocket: 
+  pickpocket:
     cast_player: "Cojistes algo del inventario de $target."
     cast_player_message: "!"
     description: "Roba a jugadores cercanos... Â¡Como un carterista!"
     name: Pickpocket
-  pillar: 
+  pillar:
     cast: "Creastes un pilar de $material."
     description: "Alza un pilar desde el suelo"
     name: Pillar
     no_target: "No hay objetivo para el pilar."
-  place: 
+  place:
     cast: "Colocastes un bloque de $material."
     description: "Pon un bloque en tu posicion"
     name: Place
-  poison: 
+  poison:
     cast: "Envenenastes a $target"
     description: "Envenena a tu objetivo"
     name: Poison
     upgrade_description: "&r&b• &6Incrementa la duracion del veneno"
-  pollinate: 
+  pollinate:
     cast: Â¡Polinizacion!
     description: "Â¡Planta alguna flor!"
     name: Pollinate
-  portal: 
+  portal:
     cast: "Has creado un portal temporal."
     description: "Crea un portal temporal"
     name: Portal
     no_target: "No puedes crear un portal aqui."
-  pull: 
+  pull:
     alternate: Â¡Damelo!
     cast: Yoink!
     description: "Empuja cosas delante tuyo"
     name: Pull
-  push: 
+  push:
     alternate: "Â¡Que te pires!"
     description: "Empuja las cojas que esten delante tuyo"
     name: Push
     upgrade_description: "&r&b• &6Empujas con mas fuerza"
-  recall: 
+  recall:
     cast_death: "Â¡Ahora corregire mis fallos!"
     cast_home: "Â¡Hogar dulce Hogar!"
     cast_marker: "Teletransportandote a tu marca..."
@@ -950,15 +950,15 @@ spells:
     title_warp: $name
     unlock_warp: "&bHas desbloqueado &5$name &bcomo &6un lugar de &bdestino!"
     usage: "Usa el hechizo mirando al suelo para marcar el lugar."
-  recurse: 
+  recurse:
     cast: "Filled $count blocks with $material"
     description: "Recursively fill blocks"
     name: Recurse
-  reflect: 
+  reflect:
     description: "Refleja hechizos que se te fueran a hacer"
     name: Reflect
     upgrade_description: "&r&b• &6Incrementa el tamaÃ±o y la efectividad"
-  regenerate: 
+  regenerate:
     cast: "Regenerando el area..."
     cast_finish: "Se regeneraron $count bloques"
     description: "Regenera un area seleccionada"
@@ -966,19 +966,19 @@ spells:
     name: Regenerate
     target_selected: "Usalo otra vez para regenerar el area."
     usage: "Usalo 2 veces para regenerar."
-  repair: 
+  repair:
     cast_finish: "Reparastes $count bloques"
     description: "Repara un area que estubiera guardada con Backup"
     name: Repair
-  respawn: 
+  respawn:
     cast: "Te teleportastes a un lugar seguro."
     description: "Vuelve al spawn sin interrupciones"
     name: Respawn
-  rocket: 
+  rocket:
     cast: Liftoff!
     description: "Go for a wild ride"
     name: Rocket
-  rollback: 
+  rollback:
     alternate_down: "&5Deshicistes el &r&6$spell de &d&o$target"
     alternate_up: "&5Deshicistes tu anterior&r&6 $spell"
     cast: "&5Deshicistes el &r&6$spell de &d&o$target"
@@ -988,15 +988,15 @@ spells:
     fail: "No se enconstro nada que deshacer"
     name: Rollback
     no_target: "No se encontro nada interesante por aqui"
-  rubberize: 
+  rubberize:
     cast: "Â¡Hora de saltar!"
     description: "Convierte un pequeÃ±o area en una cama elastica"
     name: Rubberize
-  sandblast: 
+  sandblast:
     cast_finish: "Creastes $count bloques de arena."
     description: "Deja caer una tormenta de arena"
     name: Sandblast
-  secure: 
+  secure:
     cast: Â¡Cierrate!
     description: "Protege con llave tus cofres"
     fail: "Â¡No puedes cerrar eso!"
@@ -1004,32 +1004,32 @@ spells:
     key_name: "&6$name's &eKey"
     name: Secure
     upgrade_description: "&r&b• &6Ahora puedes cerrar hornos y demas"
-  shell: 
+  shell:
     description: "Crea una concha que refleja hechizos"
     name: Shell
     upgrade_description: "&r&b• &6Incrementa la durabilidad y la reflectividad"
-  shrink: 
+  shrink:
     cast: Shrink!
     cast_entity: "Marcastes a $target"
     description: "Ejecuta y decapita a enemigos ya daÃ±ados."
     name: Shrink
     usage: "Debes matar a tu objetivo para obtener su cabeza"
-  simulate: 
+  simulate:
     cast: "Has devuelto la vida al mundo"
     description: "Â¡Conway's Game of Life!"
     name: Simulate
-  simulate3: 
+  simulate3:
     cast: "Has traido la vida al mundo"
     description: "Conway's Game of Life... en 3D!"
     name: "Simulate 3D"
-  singularity: 
+  singularity:
     cast_player_message: "Has sido absorbido por un agujero negro"
     description: "Crea un agujero negro"
     name: Singularity
-  sniper: 
+  sniper:
     description: "Lanza una flecha super rapida y destructiva Â¡Â¿Problem camperos?!"
     name: Sniper
-  spellshop: 
+  spellshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Comprar $item"
@@ -1046,45 +1046,45 @@ spells:
     no_upgrade: "No hay nada mas para ti aqui."
     no_wand: "Â¡Debes estar sujetando tu varita!"
     title: "Hechizos ($balance)"
-  sphere: 
+  sphere:
     cast_finish: "Creastes una esfera de $material."
     description: "Crea una esfera real"
     name: Sphere
-  sponge: 
+  sponge:
     cast: Â¡Slurp!
     description: "Absrobe todo el agua alrededor tuyo"
     name: Sponge
-  stalactite: 
+  stalactite:
     cast: "Creastes un estalactita de $material"
     description: "Crea una estalactita en el techo"
     name: Stalactite
     no_target: "No puedes usar este hechizo ahi."
-  stash: 
+  stash:
     cast: "Abristes tu cofre de ender."
     cast_player: "Mirastes dentro de el cofre de ender de $target."
     description: "Un lugar deguro donde dejar tus cosas"
     name: Stash
-  stream: 
+  stream:
     cast: "Â¡AGUA, AGUITA, AGUA!"
     description: "Lanza un torrente de agua"
     name: Stream
     upgrade_description: "&r&b• &6Incrementa el radio y el daÃ±o"
-  stun: 
+  stun:
     cast: "Tirastes una bola aturdidora"
     description: "Stunea y daÃ±a a los cercanos."
     name: Stun
     upgrade_description: "&r&b• &6Incrementa el daÃ±o y el tiempo de stun"
-  superalter: 
+  superalter:
     cast: "Altered $count blocks"
     description: "Alter objects recursively"
     fail: "Can't adjust that"
     name: SuperAlter
     usage: "Use on wool, stairs, etc"
-  superblast: 
+  superblast:
     cast_finish: "Picastes $count bloques."
     description: "Pica un gran area"
     name: SuperBlast
-  superblob: 
+  superblob:
     cancel: "Burbuja cancelada."
     cast_finish: "Se rellenaron $count bloques con $material."
     description: "Crea una gran esfera solida"
@@ -1092,7 +1092,7 @@ spells:
     name: SuperBlob
     target_selected: "Usalo otra vez para confirmar."
     usage: "Usa el hechizo 2 veces para convertir."
-  superbox: 
+  superbox:
     cancel: "Caja cancelada."
     cast_finish: "Se rellenaron $count bloques con $material."
     description: "Crea una gran caja"
@@ -1100,7 +1100,7 @@ spells:
     name: SuperBox
     target_selected: "Usalo otra vez para construir la caja."
     usage: "Usa el hechizo 2 veces para construir"
-  supercollapse: 
+  supercollapse:
     cancel: "Colapsamiento cancelado"
     cast_finish: "Colapsastes $count bloques"
     description: "Colapsa una gran zona con esferas de bloques"
@@ -1108,7 +1108,7 @@ spells:
     name: SuperCollapse
     target_selected: "Ussa el hechizo otrza vez para colapsar"
     usage: "Usa el hechizo 2 veces para colapsar"
-  superconvert: 
+  superconvert:
     cancel: "Conversion cancelada"
     cast_finish: "Se convirtieron $count bloques en $material"
     description: "Convierte una gran zona con esferas"
@@ -1116,7 +1116,7 @@ spells:
     name: SuperConvert
     target_selected: "Usa el hechizo otra vez para convertir"
     usage: "Usa el hechizo 2 veces para convertir"
-  supercube: 
+  supercube:
     cancel: "Cubo cancelado."
     cast_finish: "Se rellenaron $count bloques con $material."
     description: "Crea un enorme cubo solido"
@@ -1124,7 +1124,7 @@ spells:
     name: SuperCube
     target_selected: "Usalo otra vez para construir el cubo."
     usage: "Usalo 2 veces para construir"
-  supercylinder: 
+  supercylinder:
     cancel: "Cilindro cancelado."
     cast_finish: "Se llenaron $count bloques con $material"
     description: "Crea un gran cilindro"
@@ -1132,7 +1132,7 @@ spells:
     name: SuperCylinder
     target_selected: "Usa el hechizo otra vez para aceptar."
     usage: "Usa el hechizo 2 veces para construir."
-  superdisc: 
+  superdisc:
     cancel: "Disco cancelado"
     cast_finish: "Se llenaron $count bloques con $material"
     description: "Crea un gran disco circular"
@@ -1140,7 +1140,7 @@ spells:
     name: SuperDisc
     target_selected: "Usalo otra vez para aceptar"
     usage: "Usalo 2 veces para construir"
-  superdome: 
+  superdome:
     cancel: "Cupula cancelada"
     cast_finish: "Se llenaron $count bloques con $material"
     description: "Crea una enorme cupula"
@@ -1148,7 +1148,7 @@ spells:
     name: SuperDome
     target_selected: "Usalo otra vez para construir la cupula"
     usage: "Usalo 2 veces para construir"
-  superemp: 
+  superemp:
     cancel: "EMP cancelado"
     cast_finish: "Se electrificaron $count bloques"
     description: "Electrifica un area"
@@ -1156,12 +1156,12 @@ spells:
     name: SuperEMP
     target_selected: "Usalo otra vez para electrificar"
     usage: "Usalo 2 veces para electrificar un area"
-  superfly: 
+  superfly:
     cast: "Te sientes mas ligero"
     cost_free: "Te sientes mas pesado"
     description: "Para documentales"
     name: SuperFly
-  superpyramid: 
+  superpyramid:
     cancel: "Piramide cancelada."
     cast_finish: "Se rellenaron $count bloques con $material."
     description: "Crea una piramide"
@@ -1169,7 +1169,7 @@ spells:
     name: SuperPyramid
     target_selected: "Usalo otra vez para usar la piramide."
     usage: "Usalo 2 veces para convertir"
-  superregenerate: 
+  superregenerate:
     cast: "Regenerando chunks..."
     cast_finish: "Se regeneraron $count bloques."
     description: "Regenera chunks enteros."
@@ -1177,7 +1177,7 @@ spells:
     name: SuperRegenerate
     target_selected: "Usalo otra vez para regenerar los chunks."
     usage: "Usalo 2 veces para regenerar."
-  superrepair: 
+  superrepair:
     cancel: "Reconstruccion cancelada."
     cast_finish: "Se repararon $count bloques"
     description: "Repara un area que estubiera guardada con Backup"
@@ -1185,7 +1185,7 @@ spells:
     name: SuperRepair
     target_selected: "Usalo otra vez para reparar."
     usage: "Usalo 2 veces para aceptar."
-  superring: 
+  superring:
     cancel: "Anillo cancelado"
     cast_finish: "Se llenaron $count bloques con $material"
     description: "Crea un gran anillo circular"
@@ -1193,7 +1193,7 @@ spells:
     name: SuperRing
     target_selected: "Usalo otra vez para construir el anillo"
     usage: "Usalo 2 veces para construir"
-  supershell: 
+  supershell:
     cancel: "Escudo cancelado"
     cast_finish: "Se llenaron $count bloques con $material"
     description: "Crea un gran escudo alrededor tuyo"
@@ -1201,7 +1201,7 @@ spells:
     name: SuperShell
     target_selected: "Usa el hechizo otra vez para construir el escudo"
     usage: "Usalo 2 veces para construir"
-  tag: 
+  tag:
     cast: "Perfecto, ahora todos sabran que tu estubistes aqui antes."
     cast_give: "Â¡Toma algunos carteles!"
     cast_player: "Has enviado un mensaje a $target"
@@ -1210,62 +1210,62 @@ spells:
     fail: "Â¡No se pudo colocar el cartel!"
     name: Tag
     sign_message: "was here"
-  tent: 
+  tent:
     cast: "Creastes una tienda de campaÃ±a"
     description: "Una perfecta tienda para pasar un Viernes 13"
     name: Tent
-  tesseract: 
+  tesseract:
     description: "Salta una corta distancia"
     name: Tesseract
     no_target: "Â¡No puedes ir ahi!"
-  time: 
+  time:
     cast: "Â¡Ajustad los relojes! La nueva hora es $newtime"
     description: "Cambia la hora. Â¡Ajustad los relojes chicos!"
     name: Time
-  torch: 
+  torch:
     cast: Â¡Abra-candelabra!
     description: "Crea una antorcha de glowstone"
     name: Torch
     no_target: "No puedes crear una antorcha aqui"
-  torch|2: 
+  torch|2:
     upgrade_description: "&r&b• &6Las antorchas ahora son permanentes"
-  tornado: 
+  tornado:
     cast: Â¡FUUUUUUUUUUU!
     description: "Crea un destructivo tifon que destruira todo a su paso."
     name: Tornado
     upgrade_description: "&r&b• &6Ahora destruye estructuras"
-  torture: 
+  torture:
     cast: "Â¡SIENTE NUESTRA IRA!"
     description: "[Reaper] Tortura a tu enemigo con ayuda de los reapers..."
     name: Torture
     upgrade_description: "&r&b• &6Incrementa el daÃ±o y la duracion"
-  toss: 
+  toss:
     cast: "Moviste un bloque"
     description: "Sacude un bloque"
     fail: "Tu hechizo fallo."
     name: Toss
-  tracking: 
+  tracking:
     cast: "Has sentido algo.. Parece ser $target"
     description: "Encuentra vida o jugadores cercanos"
     name: "Tracking Sense"
     no_target: "Mucho silencio ... demasiado silencio!"
     upgrade_description: "&r&b• &6Aumenta el radio de busqueda"
-  transmute: 
+  transmute:
     cast: "Has convertido tu estructura a $material"
     description: "Convierte tu construccion a otro material"
     name: Transmute
     no_target: "Nada que convertir"
-  tree: 
+  tree:
     cast: "Â¡Creaste un arbol $tree! La madre naturaleza te lo agradece."
     description: "Crea un arbol instantaniamente"
     fail: "Tu abrol no crecio"
     name: Tree
-  tunnel: 
+  tunnel:
     cast: "Has picado un tunel a traves de $count bloques."
     description: "Pica un tunel delante tuyo"
     name: Tunnel
     no_target: "Â¡Tienes que estar encima de algo!"
-  tweakshop: 
+  tweakshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Consigue $item"
@@ -1279,13 +1279,13 @@ spells:
     no_wand: "Â¡Debes estar sujetando una varita!"
     not_applicable: "Tu varita ya tiene $item"
     title: Personalizacion
-  upgrades: 
+  upgrades:
     cast_requirement: "Hechizos: &6$current&f/&e$required"
     descriptions: "Muestra las mejoras disponibles"
     fail: "Â¡Debes estar sujetando la varita!"
     level_requirement: "&r&cSe necesita: &6$path"
     name: "Spell Progress"
-  upgradeshop: 
+  upgradeshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Comprar $item"
@@ -1298,7 +1298,7 @@ spells:
     no_items: "Â¡No hay nada que comprar aqui!"
     no_wand: "Â¡Debes estas sujetando una varita!"
     title: "Mejoras ($balance)"
-  virus: 
+  virus:
     cast: "Â¿Que has hecho...?"
     cast_broadcast: "&c&o$name &r&5fue creado (Virus)"
     death_broadcast: "&c&o$name &r&5fue destruido, ahora la humanidad estara a salvo... unas horas mas..."
@@ -1306,16 +1306,16 @@ spells:
     fail: "No puedes crear un virus sin el material $material."
     name: Virus
     no_target: "Tienes que seleccionar al menos 2 bloques uno al lado del otro."
-  volley: 
+  volley:
     cast: "Moviste unos cuantos bloques."
     description: "Sacude unos cuentos bloques"
     fail: "Tu hechizo fallo."
     name: Volley
-  walls: 
+  walls:
     cast_finish: "Usastes $count bloques de $material para crear el muro"
     description: "Crea unos muros alrededor de tu objetivo"
     name: Walls
-  wandshop: 
+  wandshop:
     cast: ""
     cast_player_message: ""
     confirm_title: "Comprar $item"
@@ -1327,32 +1327,32 @@ spells:
     name: "Wand Shop"
     no_items: "Â¡No hay nada que comprar aqui!"
     title: "Varitas ($balance)"
-  wear: 
+  wear:
     cast: "Te pusistes tu item en la cabeza"
     description: "Ponte el item que tengas en la mano"
     name: Wear
-  weather: 
+  weather:
     alternate: "Calmaste el clima. Â¡Que buen dia hace!"
     cast: "Â¡Invocaste una tormenta!"
     description: "Cambia el clima"
     name: Weather
-  wither: 
+  wither:
     description: "Lanza cabezas de whiter"
     name: Wither
     upgrade_description: "&r&b• &6MAS CABEZAS DE WITHER"
-  wolf: 
+  wolf:
     cast: "Â¡Invocastes un lobo!"
     description: "Â¿Hombre-lobo?Â¿Lobo-Hombre? Â¡Da igual, estos lobos te ayudaran igualmente!"
     fail: "Tu lobo huyo de la manada."
     name: Wolf
-  wolfhouse: 
+  wolfhouse:
     description: "Crea una casa auto-regenerable"
     name: "Wolf House"
-  workbench: 
+  workbench:
     cast: "Creastes una mesa de crafteo temporal."
     description: "Craftea sobre la marcha"
     name: Workbench
-  worm: 
+  worm:
     cast: "Esto no es un virus, Â¡Â¡ES UN GUSANO!!"
     cast_broadcast: "&c&o$name &r&5nacio entre la arena"
     death_broadcast: "&c&o$name &r&5ha sido masacrado"
@@ -1360,12 +1360,12 @@ spells:
     fail: "No puedes crear un gusano sin el material $material."
     name: Worm
     no_target: "Tienes que seleccionar al menos 2 bloques uno al lado del otro."
-  wound: 
+  wound:
     cast: "Atravesastes a $target."
     description: "Un hechizo de muy corta distancia pero mucho poder"
     name: Wound
     upgrade_description: "&r&b• &6Incrementa el daÃ±o"
-wand: 
+wand:
   active_costs_description: "Cuesta $description por segundo"
   alphabetized: "Has alfabetizado $wand."
   already_enchanted: "Este $item ya esta encantado."
@@ -1487,236 +1487,236 @@ wand:
   uses_remaining: "Quedan $count usos"
   uses_remaining_brief: "$count Usos"
   uses_remaining_singular: "$count Uso"
-wands: 
-  admin: 
+wands:
+  admin:
     description: "For admins only"
     name: "Admin Wand"
-  alphabetizer: 
+  alphabetizer:
     description: "Ordena alfabeticamente el inventario de tu varita"
     name: "El alfabetizador"
-  antihunger: 
+  antihunger:
     description: "Â¡Nunca vuelvas a estar hambriento!"
     name: "Mejora Anti-Hambre"
-  apprentice: 
+  apprentice:
     description: "$path Magic Wand"
     name: "Varita del aprendiz"
-  apprentice_upgrade: 
+  apprentice_upgrade:
     description: "Sube al nivel aprendiz"
     name: "Mejora a aprendiz"
-  apprenticeboots: 
+  apprenticeboots:
     description: "Â¡Ahora ignifugas!"
     name: "Botas de aprendiz"
-  apprenticechestplate: 
+  apprenticechestplate:
     description: "Para nuevos magos"
     name: "Traje de aprendiz"
-  apprenticehelmet: 
+  apprenticehelmet:
     description: "Para nuevos magos"
     name: "Bufanda de aprendiz"
-  apprenticeleggings: 
+  apprenticeleggings:
     description: "Â¡Haz la coleccion!"
     name: "Pantalones de aprendiz"
-  aquaeffects: 
+  aquaeffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos Aqua"
-  architect: 
+  architect:
     description: "$path Magic Wand"
     name: "El Arquitecto"
-  architect_upgrade: 
+  architect_upgrade:
     description: "Sube al nivel arquitecto"
     name: "Mejora a arquitecto"
-  battle: 
+  battle:
     description: "Una espada con poderes magicos"
     name: "Magic Sword"
-  beginner: 
+  beginner:
     description: "$path Magic Wand"
     name: Varita
-  blackeffects: 
+  blackeffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos oscuros"
-  blueeffects: 
+  blueeffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos azules"
-  borealis: 
+  borealis:
     description: "La varita de la aurora"
     name: Borealis
-  broomstick: 
+  broomstick:
     description: "Â¡Ahora puede volar!"
     name: "Escoba voladora"
-  camera: 
+  camera:
     description: "Hazte una selfie a ti mismo o una foto a un amigo"
     name: Camara
-  chestmode: 
+  chestmode:
     description: "Una practica mejora para tu varita"
     name: "Modo cofre"
-  clericchestplate: 
+  clericchestplate:
     description: "Cura a jugadores cercanos"
     name: "El curandero"
-  conway: 
+  conway:
     description: "El juego de la vida"
     name: "Varita Conway"
-  crackedbroomstick: 
+  crackedbroomstick:
     description: "Â¡Buena mientras dure!"
     name: "Escoba voladora rota"
-  cyclemode: 
+  cyclemode:
     description: "La funcion mas simple de la varita"
     name: "Modo repeticion"
-  default: 
+  default:
     description: "$path Magic Wand"
     name: Varita
-  defenderheart: 
+  defenderheart:
     description: "Se mueve con energia"
     name: "Corazon del defensor"
-  divinghelmet: 
+  divinghelmet:
     description: "Trabaja libremente bajo el agua"
     name: "Casco de sirena"
-  elder: 
+  elder:
     description: "The Uber Wand"
     name: "Elder Wand"
-  engineer: 
+  engineer:
     description: "$path Magic Wand"
     name: "Varita de ingeniero"
-  engineer_upgrade: 
+  engineer_upgrade:
     description: "Sube al nivel ingeniero"
     name: "Mejora de ingeniero"
-  flashboots: 
+  flashboots:
     description: Zoooooooom
     name: "Botas flash"
-  goggles: 
+  goggles:
     description: "Ve lo que nadie puede"
     name: "Gafas de vision nocturna"
-  golemheart: 
+  golemheart:
     description: "Tu nuevo mejor amigo"
     name: "Corazon de golem"
-  greeneffects: 
+  greeneffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos verdes"
-  haloeffects: 
+  haloeffects:
     description: "Un halo personalizado"
     name: "Efectos de Halo"
-  heroes: 
+  heroes:
     description: "Click derecho para usar Skills"
     name: Skills
-  hotbar2: 
+  hotbar2:
     description: "Â¡AÃ±ade una barra extra a tu varita!"
     name: "Hotbar Nivel 2"
-  hotbar3: 
+  hotbar3:
     description: "3 barras son mejores que 2"
     name: "Hotbar Nivel 3"
-  hulkboots: 
+  hulkboots:
     description: Â¡Â¡Â¡Â¡GRRRRRR!!!!
     name: "Botas de Hulk"
-  hunterheart: 
+  hunterheart:
     description: "Quiere volver a la vida"
     name: "Corazon de cazador"
-  inventorymode: 
+  inventorymode:
     description: "Para brujos expertos"
     name: "Modo inventario"
-  invisiblecloak: 
+  invisiblecloak:
     description: "Una de las pocas que se hicieron"
     name: "Capa de invisibilidad"
-  loud: 
+  loud:
     description: "Enciende los comentarios de la varita en el chat"
     name: "Varita gritona"
-  magichat: 
+  magichat:
     description: "El gorro de un verdadero hechizero"
     name: "Gorro magico"
-  magneticleggings: 
+  magneticleggings:
     description: "Atrae items del suelo y XP"
     name: "Pantalones magneticos"
-  manaboost: 
+  manaboost:
     description: "Rellena instantaniamente tu barra de mana"
     name: "Mana boost"
-  master: 
+  master:
     description: "$path Magic Wand"
     name: "Varita maestra"
-  master_upgrade: 
+  master_upgrade:
     description: "Sube al nivel maestro"
     name: "Mejora a maestro"
-  minister: 
+  minister:
     description: "Â¡Por la magiaaa!"
     name: "El ministro"
-  miniwolf: 
+  miniwolf:
     description: "Menos hace un bloque de tierra.."
     name: Mini-Wolf
-  orangeeffects: 
+  orangeeffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos naranjas"
-  organizer: 
+  organizer:
     description: "Reorganiza toda tu varita"
     name: "El organizador"
-  purpleeffects: 
+  purpleeffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos morados"
-  quiet: 
+  quiet:
     description: "La varita ya no dira nada por el chat"
     name: "Varita silenciosa"
-  rabbitboots: 
+  rabbitboots:
     description: "El espiritu de un conejo en cada salto"
     name: "Patas de conejo"
-  rainboweffects: 
+  rainboweffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos arcoiris"
-  recalltoken: 
+  recalltoken:
     description: "Teleportate a otros puntos"
     name: "Moneda de llamada"
-  redeffects: 
+  redeffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos rojos"
-  respawntoken: 
+  respawntoken:
     description: "Usala para volver al spawn"
     name: "La moneda del Spawn"
-  rocketboots: 
+  rocketboots:
     description: "No se hirio a ningun gato para hacerlas"
     name: Zapatos-misil
-  silent: 
+  silent:
     description: "Apaga todos los mensajes de todas las varitas para ti solo"
     name: "Silenciador de varitas"
-  spleef: 
+  spleef:
     description: "Para jugar el Spleef de magos"
     name: Spleef
-  student: 
+  student:
     description: "$path Magic Wand"
     name: "Varita del estudiante"
-  student_upgrade: 
+  student_upgrade:
     description: "Sube al nivel estudiante"
     name: "Mejora a estudiante"
-  undroppable: 
+  undroppable:
     description: "Vuelve tu varita indropeable"
     name: "Mejora antidropeos"
-  virusheart: 
+  virusheart:
     description: "Esto deberia ser destruido"
     name: "Corazon de un virus"
-  whiteeffects: 
+  whiteeffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos luminosos"
-  wizardboots: 
+  wizardboots:
     description: "Ideales para correr"
     name: "Las botas de brujo"
-  wizardchestplate: 
+  wizardchestplate:
     description: "Esconde magia en cada costura"
     name: "Traje de brujo"
-  wizardhelmet: 
+  wizardhelmet:
     description: "Una bufanda magica"
     name: "La bufanda de brujo"
-  wizardleggings: 
+  wizardleggings:
     description: "Pantalones magicos"
     name: "Pantalones de brujo"
-  wolf: 
+  wolf:
     description: "El gran lobo salido de la varita"
     name: "The Wolf"
-  wolfhouse: 
+  wolfhouse:
     description: "Una base autoregenerable en una caja"
     name: "Wolf House"
-  wormheart: 
+  wormheart:
     description: "Podria destruir el mundo"
     name: "Corazon de gusano"
-  yelloweffects: 
+  yelloweffects:
     description: "Â¡Tinta tus hechizos!"
     name: "Varita de efectos amarillos"
-worlds: 
-  world: 
+worlds:
+  world:
     name: Factions
-  world_nether: 
+  world_nether:
     name: Factions_nether
-  world_the_end: 
+  world_the_end:
     name: Factions_the_end

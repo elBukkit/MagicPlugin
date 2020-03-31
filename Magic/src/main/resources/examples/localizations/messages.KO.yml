@@ -2,8 +2,8 @@
 # Edited by Chan / Minecraft nickname dboy510
 #
 # Launguage : "Korean/ko_KR/KR"
-# 
-# 안내 - 
+#
+# 안내 -
 # 모든 게임 내 메세지는 이곳에 있습니다!
 # 메세지만 바꾸실 것이라면 다른 콘피그는 만지실 필요가 없습니다
 # - 제작자 NathanWolf
@@ -150,7 +150,7 @@ wand:
     page_instructions: "&r&b당신의$wand 은(는) 이제 인벤을 꽉 채웠네요! 인벤토리 바깥을 클릭해 페이지를 넘기실 수 있습니다"
     bound_instructions: "&r&3당신의$wand 은(는) 당신에게 귀속되었고, 드랍이 불가능합니다"
     spell_instructions: "&r&b당신의$wand 을(를) 휘둘러 $spell 를 사용해 보세요. 마법은 마나를 사용하며, 마나는 XP바에 표시됩니다"
-    brush_instructions: "&r&b재료를 사용하는 툴이 $wand 에 추가되었습니다. 이것들을 사용해 
+    brush_instructions: "&r&b재료를 사용하는 툴이 $wand 에 추가되었습니다. 이것들을 사용해
 spell:
     brush: "재료 툴을 사용합니다"
     undoable: "롤백으로 무효처리 가능합니다"
@@ -509,7 +509,7 @@ spells:
         cast: "신비로운 힘이 호흡을 편한하게 해주고 눈을 밝혀줍니다"
     arrowrain:
         name: "Arrow Rain"
-        description: "화살을 비처럼 쏟아 붇습니다" 
+        description: "화살을 비처럼 쏟아 붇습니다"
     meteor:
         name: "Meteor"
         description: "메테오!"
