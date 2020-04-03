@@ -150,7 +150,7 @@ wand:
     page_instructions: "&r&b당신의$wand 은(는) 이제 인벤을 꽉 채웠네요! 인벤토리 바깥을 클릭해 페이지를 넘기실 수 있습니다"
     bound_instructions: "&r&3당신의$wand 은(는) 당신에게 귀속되었고, 드랍이 불가능합니다"
     spell_instructions: "&r&b당신의$wand 을(를) 휘둘러 $spell 를 사용해 보세요. 마법은 마나를 사용하며, 마나는 XP바에 표시됩니다"
-    brush_instructions: "&r&b재료를 사용하는 툴이 $wand 에 추가되었습니다. 이것들을 사용해
+    brush_instructions: "&r&b재료를 사용하는 툴이 $wand 에 추가되었습니다. 이것들을 사용해 주십시오"
 spell:
     brush: "재료 툴을 사용합니다"
     undoable: "롤백으로 무효처리 가능합니다"
@@ -244,7 +244,7 @@ spells:
         cast_player_message: "&d&o$player &r&5님이&3&o$spell &r&5을(를) 당신에게 시전!"
         indirect_player_message: "&d&o$player &r&5님이&3&o$spell &r&5을(를) 당신에게 시전!"
         insufficient_resources: "$cost 이(가) 부족합니다"
-        cooldown: "$time 만큼 기다리셔야 합니다".
+        cooldown: "$time 만큼 기다리셔야 합니다"
         cancelled: "당신의 마법이 취소되었습니다!"
         entity_required: "이 마법을 사용하기 위해선 엔티티가 필요합니다"
         living_entity_required: "이 마법을 사용하기 위해선 살아있는 엔티티가 필요합니다"
@@ -400,6 +400,10 @@ spells:
         name: "Leap"
         description: "높이 뛰어오릅니다"
         cast: "예~~이!"
+    simulate:
+        name: "Simulate"
+        description: "생명을 불어넣습니다"
+        cast: "생명을 불어넣었습니다"
     animate:
         name: "Animate"
         description: "골렘을 소환하세요!"
@@ -409,7 +413,7 @@ spells:
         cast_broadcast: "&c&o$name &r&5(이)가 소환되었습니다"
         death_broadcast: "&c&o$name &r&5(이)가 퇴치되었습니다"
     simulate3:
-        name: "Simulate 3D'
+        name: "Simulate 3D"
         description: "생명을 불어넣습니다"
         cast: "생명을 불어넣었습니다"
     glider:
