@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.api.requirements;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;

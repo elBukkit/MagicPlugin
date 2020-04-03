@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.essentials;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.inventory.ItemStack;

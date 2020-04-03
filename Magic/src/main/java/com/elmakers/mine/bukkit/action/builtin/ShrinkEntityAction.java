@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.Arrays;
 import java.util.Collection;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;

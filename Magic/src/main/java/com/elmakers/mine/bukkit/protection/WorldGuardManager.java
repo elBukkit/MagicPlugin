@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.util.Set;
 import java.util.logging.Level;
-
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;

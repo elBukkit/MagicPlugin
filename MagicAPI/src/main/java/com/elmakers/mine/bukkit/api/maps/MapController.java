@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.api.maps;
 
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.inventory.ItemStack;

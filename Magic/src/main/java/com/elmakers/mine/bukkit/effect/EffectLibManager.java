@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.effect;
 
 import java.io.File;
 import java.util.Collection;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;

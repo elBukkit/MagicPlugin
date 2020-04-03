@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.Configuration;

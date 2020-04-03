@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
-
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;

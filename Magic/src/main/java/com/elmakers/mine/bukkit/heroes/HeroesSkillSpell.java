@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.heroes;
 
 import java.util.List;
 import java.util.logging.Level;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;

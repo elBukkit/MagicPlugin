@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.effect;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

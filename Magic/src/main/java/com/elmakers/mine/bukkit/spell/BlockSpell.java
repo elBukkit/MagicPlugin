@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.Arrays;
 import java.util.Collection;
-
 import javax.annotation.Nonnull;
 
 import org.bukkit.block.Block;

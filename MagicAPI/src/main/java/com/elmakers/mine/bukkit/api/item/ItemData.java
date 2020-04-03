@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.api.item;
 
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;

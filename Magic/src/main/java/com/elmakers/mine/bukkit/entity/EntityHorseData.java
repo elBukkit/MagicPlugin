@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.entity;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;

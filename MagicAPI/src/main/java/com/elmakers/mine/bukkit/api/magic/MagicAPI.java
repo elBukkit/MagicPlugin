@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
 import java.util.logging.Logger;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;

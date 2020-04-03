@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;

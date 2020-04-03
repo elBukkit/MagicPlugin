@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.api.block;
 
 import java.util.Collection;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.block.Block;

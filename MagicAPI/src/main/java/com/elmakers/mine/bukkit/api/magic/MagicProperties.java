@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.entity.Entity;

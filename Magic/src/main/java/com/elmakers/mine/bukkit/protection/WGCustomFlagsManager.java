@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.util.Collections;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.plugin.Plugin;

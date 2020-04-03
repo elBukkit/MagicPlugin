@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.api.wand;
 
 import java.util.Collection;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;

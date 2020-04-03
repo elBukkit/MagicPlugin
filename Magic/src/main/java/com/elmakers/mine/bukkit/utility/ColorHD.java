@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.concurrent.Immutable;
 
 import org.apache.commons.lang.StringUtils;

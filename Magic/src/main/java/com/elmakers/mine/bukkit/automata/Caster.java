@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.automata;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
-
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;

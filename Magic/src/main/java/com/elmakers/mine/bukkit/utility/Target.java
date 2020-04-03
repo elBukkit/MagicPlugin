@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.lang.ref.WeakReference;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;

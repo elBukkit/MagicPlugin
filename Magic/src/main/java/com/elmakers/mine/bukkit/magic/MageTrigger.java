@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;

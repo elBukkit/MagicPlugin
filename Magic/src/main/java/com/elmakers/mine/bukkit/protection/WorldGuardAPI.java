@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.logging.Level;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;

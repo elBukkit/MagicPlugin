@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;

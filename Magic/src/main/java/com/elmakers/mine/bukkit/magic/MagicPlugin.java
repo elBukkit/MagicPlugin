@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;

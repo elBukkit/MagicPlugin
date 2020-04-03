@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.protection;
 
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;

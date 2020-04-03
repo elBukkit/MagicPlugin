@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.entity;
 
 import java.util.Collection;
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;

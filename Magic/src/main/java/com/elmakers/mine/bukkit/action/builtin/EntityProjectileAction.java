@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.Collection;
-
 import javax.annotation.Nonnull;
 
 import org.bukkit.DyeColor;

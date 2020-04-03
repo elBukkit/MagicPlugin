@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.effect;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;

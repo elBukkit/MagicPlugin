@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.block;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;

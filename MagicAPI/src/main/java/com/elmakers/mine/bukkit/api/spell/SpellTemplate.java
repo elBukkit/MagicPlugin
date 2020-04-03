@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.api.spell;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;

@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.inventory.ItemStack;

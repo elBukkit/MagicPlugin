@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.automata;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

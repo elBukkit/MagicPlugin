@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.effect;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;

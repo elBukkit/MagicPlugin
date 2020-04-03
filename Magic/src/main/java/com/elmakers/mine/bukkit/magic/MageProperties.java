@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;

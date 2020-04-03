@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import javax.annotation.Nonnull;
 
 import org.bukkit.ChatColor;

@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.item;
 
 import java.util.Collection;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;

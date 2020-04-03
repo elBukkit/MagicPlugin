@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.magic.command;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;

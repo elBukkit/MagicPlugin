@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.integration;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 import org.bukkit.entity.Entity;

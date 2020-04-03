@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.economy;
 
 import java.text.DecimalFormat;
-
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
