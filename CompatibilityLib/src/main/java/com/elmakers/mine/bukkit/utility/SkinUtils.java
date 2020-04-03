@@ -251,7 +251,7 @@ public class SkinUtils extends NMSUtils {
         holdoff = 10 * 60000;
     }
 
-    private static void synchronizeCallback(final UUIDCallback callback, final UUID uuid) {
+    private static void synchronizeCallbackUUID(final UUIDCallback callback, final UUID uuid) {
         Bukkit.getScheduler().runTask(plugin, new Runnable() {
             @Override
             public void run() {
@@ -260,7 +260,7 @@ public class SkinUtils extends NMSUtils {
         });
     }
 
-    private static void synchronizeCallback(final ProfileCallback callback, final ProfileResponse response) {
+    private static void synchronizeCallbackProfile(final ProfileCallback callback, final ProfileResponse response) {
         Bukkit.getScheduler().runTask(plugin, new Runnable() {
             @Override
             public void run() {
@@ -348,7 +348,7 @@ public class SkinUtils extends NMSUtils {
                             if (uuidJSON.isEmpty()) {
                                 engageHoldoff();
                                 if (DEBUG) plugin.getLogger().warning("Got empty UUID JSON for " + playerName);
-                                synchronizeCallback(callback, null);
+                                synchronizeCallbackUUID(callback, null);
                                 return;
                             }
 
@@ -360,7 +360,7 @@ public class SkinUtils extends NMSUtils {
                             if (uuidString == null) {
                                 engageHoldoff();
                                 if (DEBUG) plugin.getLogger().warning("Failed to parse UUID JSON for " + playerName);
-                                synchronizeCallback(callback, null);
+                                synchronizeCallbackUUID(callback, null);
                                 return;
                             }
                             if (DEBUG) plugin.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
@@ -384,7 +384,7 @@ public class SkinUtils extends NMSUtils {
                         uuid = null;
                     }
 
-                    synchronizeCallback(callback, uuid);
+                    synchronizeCallbackUUID(callback, uuid);
                 }
             }
          }, holdoff);
@@ -484,7 +484,7 @@ public class SkinUtils extends NMSUtils {
                         synchronized (responseCache) {
                             responseCache.put(uuid, fromCache);
                         }
-                        synchronizeCallback(callback, fromCache);
+                        synchronizeCallbackProfile(callback, fromCache);
                         return;
                     }
 
@@ -494,7 +494,7 @@ public class SkinUtils extends NMSUtils {
                     try {
                         String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
                         if (profileJSON.isEmpty()) {
-                            synchronizeCallback(callback, null);
+                            synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
                             if (DEBUG) plugin.getLogger().warning("Failed to fetch profile JSON for " + uuid);
                             return;
@@ -502,7 +502,7 @@ public class SkinUtils extends NMSUtils {
                         if (DEBUG) plugin.getLogger().info("Got profile: " + profileJSON);
                         JsonElement element = new JsonParser().parse(profileJSON);
                         if (element == null || !element.isJsonObject()) {
-                            synchronizeCallback(callback, null);
+                            synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
                             if (DEBUG) plugin.getLogger().warning("Failed to parse profile JSON for " + uuid);
                             return;
@@ -525,7 +525,7 @@ public class SkinUtils extends NMSUtils {
                         }
 
                         if (encodedTextures == null) {
-                            synchronizeCallback(callback, null);
+                            synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
                             if (DEBUG) plugin.getLogger().warning("Failed to find textures in profile JSON");
                             return;
@@ -543,7 +543,7 @@ public class SkinUtils extends NMSUtils {
                         YamlConfiguration saveToCache = new YamlConfiguration();
                         response.save(saveToCache);
                         saveToCache.save(playerCache);
-                        synchronizeCallback(callback, response);
+                        synchronizeCallbackProfile(callback, response);
                         holdoff = 0;
                     } catch (Exception ex) {
                         if (DEBUG) {
@@ -552,7 +552,7 @@ public class SkinUtils extends NMSUtils {
                             plugin.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid);
                         }
                         engageHoldoff();
-                        synchronizeCallback(callback, null);
+                        synchronizeCallbackProfile(callback, null);
                     }
                 }
             }
