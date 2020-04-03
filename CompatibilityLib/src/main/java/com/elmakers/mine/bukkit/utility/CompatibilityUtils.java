@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
+import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
+
 import com.google.common.io.BaseEncoding;
 
 import org.apache.commons.lang.StringUtils;
@@ -528,7 +530,8 @@ public class CompatibilityUtils extends NMSUtils {
             return;
         }
 
-        try (AutoCloseable b = DAMAGING.enter()) {
+        try (Touchable damaging = DAMAGING.enter()) {
+            damaging.touch();
             if (target instanceof ArmorStand) {
                 double newHealth = Math.max(0, target.getHealth() - amount);
                 if (newHealth <= 0) {
@@ -558,7 +561,8 @@ public class CompatibilityUtils extends NMSUtils {
             return;
         }
 
-        try (AutoCloseable d = DAMAGING.enter()) {
+        try (Touchable damaging = DAMAGING.enter()) {
+            damaging.touch();
             Object targetHandle = getHandle(target);
             if (targetHandle == null) return;
 
@@ -608,14 +612,16 @@ public class CompatibilityUtils extends NMSUtils {
                     class_EntityDamageSource_setThornsMethod.invoke(damageSource);
                 }
 
-                try (AutoCloseable b = DAMAGING.enter()) {
+                try (Touchable damaging = DAMAGING.enter()) {
+                    damaging.touch();
                     class_EntityLiving_damageEntityMethod.invoke(
                             targetHandle,
                             damageSource,
                             (float) amount);
                 }
             } else {
-                try (AutoCloseable b = DAMAGING.enter()) {
+                try (Touchable damaging = DAMAGING.enter()) {
+                    damaging.touch();
                     class_EntityLiving_damageEntityMethod.invoke(
                             targetHandle,
                             object_magicSource,
