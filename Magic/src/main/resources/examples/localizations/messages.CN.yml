@@ -1,5 +1,5 @@
 # Translator:qsefthuopq
-# Laste updated:2020-02-25
+# Laste updated:2020-04-06
 costs:
   sp_amount: $amount SP
   xp_amount: $amount XP
@@ -2579,7 +2579,7 @@ wands:
   appearance_bow1:
     name: 埃及弓外观
   appearance_bow2:
-    name: Skinny Bow外观
+    name: 骨弓外观
   appearance_longbow:
     name: 长弓外观
   appearance_spire:
