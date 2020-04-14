@@ -11,6 +11,43 @@ If you wish to integrate with magic, you can use MagicAPI. You may either build 
 
 Alternately, you can use the API in a soft-depend, provided manner if you are sure to use wrapper classes that don't load unless you know Magic is present.
 
+## Using Maven
+
+You can easily import Magic's API into your project like this:
+
+```
+<dependencies>
+  <dependency>
+      <groupId>com.elmakers.mine.bukkit</groupId>
+      <artifactId>MagicAPI</artifactId>
+      <version>7.8</version>
+      <scope>provided</scope>
+  </dependency>
+</dependencies>
+<repositories>
+  <repository>
+      <id>elmakers-repo</id>
+      <url>http://maven.elmakers.com/repository/ </url>
+  </repository>
+</repositories>
+```
+
+## Getting a Reference to the API
+
+```
+      MagicAPI getMagicAPI() {
+          Plugin magicPlugin = Bukkit.getPluginManager().getPlugin("Magic");
+            if (magicPlugin == null || !(magicPlugin instanceof MagicAPI)) {
+                return null;
+            }
+          return (MagicAPI)magicPlugin;
+      }
+```
+
+## Custom Events
+
+There are a few custom events in the API, but possibly most important is the `PreLoadEvent`. You may want to listent to this even to register custom currencies, protection, team or other providers with Magic.
+
 ## Extending Magic
 
 Other plugins may deeply extend Magic, such as by adding new spell or effect classes. 
