@@ -956,6 +956,9 @@ public class MagicController implements MageController {
             skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
                 getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
+                if (useSkillAPIAllies) {
+                    getLogger().info("SKillAPI allies will be respected in friendly fire checks");
+                }
                 if (useSkillAPIMana) {
                     getLogger().info("SkillAPI mana will be used by spells and wands");
                 }
@@ -2546,6 +2549,7 @@ public class MagicController implements MageController {
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
+        useSkillAPIAllies = properties.getBoolean("use_skillapi_allies", useSkillAPIAllies);
         useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
         heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
@@ -2954,6 +2958,9 @@ public class MagicController implements MageController {
         teamProviders.addAll(loadEvent.getTeamProviders());
         if (heroesManager != null && useHeroesParties) {
             teamProviders.add(heroesManager);
+        }
+        if (skillAPIManager != null && useSkillAPIAllies) {
+            teamProviders.add(skillAPIManager);
         }
         if (useScoreboardTeams) {
             teamProviders.add(new ScoreboardTeamProvider());
@@ -6018,6 +6025,7 @@ public class MagicController implements MageController {
     private boolean                             skillsUseHeroes             = true;
     private boolean                             useHeroesMana               = true;
     private boolean                             useHeroesParties            = true;
+    private boolean                             useSkillAPIAllies           = true;
     private boolean                             skillsUsePermissions        = false;
     private String                              heroesSkillPrefix           = "";
     private String                              skillsSpell                 = "";

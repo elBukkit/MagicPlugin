@@ -111,6 +111,9 @@ use_heroes_mana: true
 # Spells that don't bypass friendly fire will check Heroes' parties
 use_heroes_parties: true
 
+# Spells that don't bypass friendly fire will check SkillAPI allies
+use_skillapi_allies: true
+
 # Use this to prefix skills added via the Magic skill pack
 # This can be used to avoid conflicts with public or other skills
 heroes_skill_prefix: ""

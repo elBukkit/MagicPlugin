@@ -7,11 +7,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
+import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
@@ -22,7 +25,7 @@ import com.sucy.skill.api.player.PlayerClass;
 import com.sucy.skill.api.player.PlayerData;
 import com.sucy.skill.manager.AttributeManager;
 
-public class SkillAPIManager implements ManaController, AttributeProvider, RequirementsProcessor {
+public class SkillAPIManager implements ManaController, AttributeProvider, RequirementsProcessor, TeamProvider {
     private final Plugin skillAPIPlugin;
     private final MageController controller;
     private Set<String> attributes = new HashSet<>();
@@ -144,5 +147,11 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
             return getMessage(context, "required_class").replace("$class", configuration.getString("class"));
         }
         return null;
+    }
+
+    @Override
+    public boolean isFriendly(Entity attacker, Entity entity) {
+        if (!(attacker instanceof LivingEntity) || !(entity instanceof LivingEntity)) return false;
+        return SkillAPI.getSettings().isAlly((LivingEntity)attacker, (LivingEntity)entity);
     }
 }
