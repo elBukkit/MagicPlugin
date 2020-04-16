@@ -232,6 +232,7 @@ public class PlayerController implements Listener {
         // We will be satisfied to only compare the metadata.
         ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
         ItemMeta droppedMeta = droppedItem.getItemMeta();
+        boolean droppedSpell = Wand.isSpell(droppedItem);
         boolean droppedWand = droppedMeta != null && activeMeta != null && activeItem.getItemMeta().equals(droppedItem.getItemMeta());
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
@@ -257,7 +258,7 @@ public class PlayerController implements Listener {
                         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
                     }
                 }
-            } else if (activeWand.isInventoryOpen()) {
+            } else if (activeWand.isInventoryOpen() && droppedSpell) {
                 if (!controller.isSpellDroppingEnabled()) {
                     cancelEvent = true;
                     // This will happen if you graph an item, change pages, and then drop the item- it would disappear
