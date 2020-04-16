@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.8.5
+
 # 7.8.4
 
  - Use SkillAPI allies for friendly fire checks
