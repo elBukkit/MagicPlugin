@@ -62,7 +62,9 @@ public class CaptureAction extends BaseSpellAction {
         String entityName = targetEntity.getCustomName();
         if (entityName != null && !entityName.isEmpty()) {
             ItemMeta meta = spawnEgg.getItemMeta();
-            meta.setDisplayName("Spawn " + entityName);
+            String title = context.getController().getMessages().get("general.spawn_egg_title");
+            title = title.replace("$entity", entityName);
+            meta.setDisplayName(title);
             spawnEgg.setItemMeta(meta);
         }
         spawnEgg = InventoryUtils.makeReal(spawnEgg);

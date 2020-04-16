@@ -244,7 +244,9 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         ItemStack spawnEgg = new ItemStack(eggMaterial);
         if (customName != null && !customName.isEmpty()) {
             ItemMeta meta = spawnEgg.getItemMeta();
-            meta.setDisplayName("Spawn " + customName);
+            String title = controller.getMessages().get("general.spawn_egg_title");
+            title = title.replace("$entity", customName);
+            meta.setDisplayName(title);
             spawnEgg.setItemMeta(meta);
 
             spawnEgg = InventoryUtils.makeReal(spawnEgg);
