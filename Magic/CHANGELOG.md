@@ -8,6 +8,7 @@
    Thanks to the generous help of translators, the following built-in languages are available:
    CN, ES, ES2, ES3, KO, ZH
  - Fix an issue where the vanilla /give command could duplicate items when a wand inventory is open
+ - Add /mmob egg command, for getting a spawn egg of a mob or magic mob
 
 # 7.8.3
 

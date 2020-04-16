@@ -22,6 +22,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockIterator;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -29,6 +31,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class MagicMobCommandExecutor extends MagicTabExecutor {
     public MagicMobCommandExecutor(MagicAPI api) {
@@ -45,7 +48,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 0)
         {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list|clear] <type> [count]");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list|clear|egg] <type> [count]");
             return true;
         }
 
@@ -58,6 +61,15 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         if (args[0].equalsIgnoreCase("clear"))
         {
             onClearMobs(sender, args);
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("egg"))
+        {
+            if (args.length < 2) {
+                return false;
+            }
+            onGetEgg(sender, args[1]);
             return true;
         }
 
@@ -202,6 +214,46 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
     }
 
+    protected void onGetEgg(CommandSender sender, String mobType) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
+            return;
+        }
+
+        MageController controller = api.getController();
+        EntityData entityData = controller.getMob(mobType);
+        String customName = null;
+        EntityType entityType = null;
+        if (entityData == null) {
+            entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(mobType);
+        } else {
+            entityType = entityData.getType();
+            customName = entityData.getName();
+        }
+
+        if (entityType == null) {
+            sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobType);
+        }
+
+        Material eggMaterial = controller.getMobEgg(entityType);
+        if (eggMaterial == null) {
+            sender.sendMessage(ChatColor.YELLOW + "Could not get a mob egg for entity of type " + entityType);
+            return;
+        }
+
+        ItemStack spawnEgg = new ItemStack(eggMaterial);
+        if (customName != null && !customName.isEmpty()) {
+            ItemMeta meta = spawnEgg.getItemMeta();
+            meta.setDisplayName("Spawn " + customName);
+            spawnEgg.setItemMeta(meta);
+
+            spawnEgg = InventoryUtils.makeReal(spawnEgg);
+            Object entityTag = InventoryUtils.createNode(spawnEgg, "EntityTag");
+            InventoryUtils.setMeta(entityTag, "CustomName", "{\"text\":\"" + customName + "\"}");
+        }
+        controller.giveItemToPlayer((Player)sender, spawnEgg);
+    }
+
     protected void onClearMobs(CommandSender sender, String[] args) {
         String mobType = args.length > 1 ? args[1] : null;
         if (mobType != null && mobType.equalsIgnoreCase("all")) {
@@ -343,9 +395,10 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 1) {
             options.add("spawn");
+            options.add("egg");
             options.add("list");
             options.add("clear");
-        } else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("clear"))) {
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("egg"))) {
             options.addAll(api.getController().getMobKeys());
             for (EntityType entityType : EntityType.values()) {
                 if (entityType.isAlive() && entityType.isSpawnable()) {
