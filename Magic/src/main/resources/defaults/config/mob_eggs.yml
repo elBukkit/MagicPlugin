@@ -1,6 +1,7 @@
 # This maps entity_type values to mob egg materials.
 mob_eggs:
   bat: monster_egg,bat_spawn_egg
+  bee: bee_spawn_egg
   blaze: monster_egg,blaze_spawn_egg
   cat: cat_spawn_egg
   cave_spider: monster_egg,cave_spider_spawn_egg
