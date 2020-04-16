@@ -38,6 +38,22 @@ You can easily import Magic's API into your project like this:
 </repositories>
 ```
 
+## Using Gradle
+
+Alternatively, you can import Magic's API with Gradle like this:
+
+```
+repositories {
+    maven {
+            url 'http://maven.elmakers.com/repository/'
+    }
+}
+
+dependencies {
+    compileOnly 'com.elmakers.mine.bukkit:MagicAPI:7.8'
+}
+```
+
 ## Getting a Reference to the API
 
 ```
