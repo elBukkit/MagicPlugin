@@ -2,6 +2,7 @@
 
 # 7.8.5
 
+ - Add BattleArena integration, friendly fire flags will respect teams
  - Add magic_sp, magic_spell_count, magic_mana and magic_mana_max Placeholders
 
 # 7.8.4

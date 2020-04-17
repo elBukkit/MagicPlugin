@@ -304,6 +304,12 @@
             <version>3.8.00</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>mc.alk</groupId>
+            <artifactId>BattleArena</artifactId>
+            <version>3.9.16.4</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>

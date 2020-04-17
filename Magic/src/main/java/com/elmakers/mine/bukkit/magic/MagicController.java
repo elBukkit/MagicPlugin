@@ -137,6 +137,7 @@ import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.integration.BattleArenaManager;
 import com.elmakers.mine.bukkit.integration.GenericMetadataNPCSupplier;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
@@ -969,6 +970,22 @@ public class MagicController implements MageController {
         } else if (!skillAPIEnabled) {
             skillAPIManager = null;
             getLogger().info("SkillAPI integration disabled");
+        }
+
+        // Check for BattleArenas
+        Plugin battleArenaPlugin = pluginManager.getPlugin("BattleArena");
+        if (battleArenaPlugin != null) {
+            if (useBattleArenaTeams) {
+                try {
+                    battleArenaManager = new BattleArenaManager();
+                } catch (Throwable ex) {
+                    getLogger().log(Level.SEVERE, "Error integrating with BattleArena", ex);
+                }
+                getLogger().info("BattleArena found, teams will be respected in friendly fire checks");
+            } else {
+                battleArenaManager = null;
+                getLogger().info("BattleArena integration disabled");
+            }
         }
 
         // Try to link to Heroes:
@@ -2550,6 +2567,7 @@ public class MagicController implements MageController {
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
         useSkillAPIAllies = properties.getBoolean("use_skillapi_allies", useSkillAPIAllies);
+        useBattleArenaTeams = properties.getBoolean("use_battlearena_teams", useBattleArenaTeams);
         useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
         heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
@@ -2967,6 +2985,9 @@ public class MagicController implements MageController {
         }
         if (factionsManager != null) {
             teamProviders.add(factionsManager);
+        }
+        if (battleArenaManager != null && useBattleArenaTeams) {
+            teamProviders.add(battleArenaManager);
         }
 
         // Register requirement processors
@@ -6026,6 +6047,7 @@ public class MagicController implements MageController {
     private boolean                             useHeroesMana               = true;
     private boolean                             useHeroesParties            = true;
     private boolean                             useSkillAPIAllies           = true;
+    private boolean                             useBattleArenaTeams         = true;
     private boolean                             skillsUsePermissions        = false;
     private String                              heroesSkillPrefix           = "";
     private String                              skillsSpell                 = "";
@@ -6093,6 +6115,7 @@ public class MagicController implements MageController {
     private HeroesManager                       heroesManager               = null;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
     private SkillAPIManager                     skillAPIManager             = null;
+    private BattleArenaManager                  battleArenaManager          = null;
     private PlaceholderAPIManager               placeholderAPIManager       = null;
     private LightAPIManager                     lightAPIManager             = null;
     private MobArenaManager                     mobArenaManager             = null;
