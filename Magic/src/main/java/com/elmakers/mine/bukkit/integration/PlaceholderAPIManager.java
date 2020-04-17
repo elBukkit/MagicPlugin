@@ -24,7 +24,7 @@ public class PlaceholderAPIManager extends PlaceholderHook {
             controller.getLogger().warning("PlaceholderAPI integration failed");
         } else {
             controller.getLogger().info("PlaceholderAPI integration enabled. Available placeholders:");
-            controller.getLogger().info("magic_path, magic_class, magic_wand, magic_spell");
+            controller.getLogger().info("magic_path, magic_class, magic_wand, magic_spell, magic_mana, magic_mana_max, magic_sp, magic_spell_count");
         }
     }
 
@@ -59,6 +59,14 @@ public class PlaceholderAPIManager extends PlaceholderHook {
                 return wand == null ? "" : wand.getName();
             case "spell":
                 return spell == null ? "" : spell.getName();
+            case "mana":
+                return Integer.toString((int)casterProperties.getMana());
+            case "mana_max":
+                return Integer.toString(casterProperties.getManaMax());
+            case "sp":
+                return Integer.toString(mage.getSkillPoints());
+            case "spell_count":
+                return Integer.toString(casterProperties.getSpells().size());
         }
         return "";
     }

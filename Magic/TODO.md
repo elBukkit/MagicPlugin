@@ -2,6 +2,9 @@
 
 ## Hot Issues
 
+ - Add support for Sponge schematics
+ - Add Battle Arena integration
+
  - Add support for Bukkit projectiles, when there is an entity shooter
  
  - Add option to reset mana on wand activation

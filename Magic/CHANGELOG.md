@@ -2,6 +2,8 @@
 
 # 7.8.5
 
+ - Add magic_sp, magic_spell_count, magic_mana and magic_mana_max Placeholders
+
 # 7.8.4
 
  - Use SkillAPI allies for friendly fire checks
