@@ -1862,6 +1862,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setIcon(loadIcon(randomizeIcon));
             if (item == null) {
                 controller.getLogger().warning("Invalid randomize_icon in wand '" + template + "' config: " + randomizeIcon);
+                setIcon(new MaterialAndData(DefaultWandMaterial));
             }
         } else if (hasProperty("icon")) {
             String iconKey = getString("icon");
@@ -1880,6 +1881,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setIcon(loadIcon(iconKey));
             if (item == null) {
                 controller.getLogger().warning("Invalid icon in wand '" + template + "' config: " + iconKey);
+                setIcon(new MaterialAndData(DefaultWandMaterial));
             }
             updateIcon();
         } else if (isUpgrade) {

@@ -222,3 +222,7 @@ cyclewand:
   right_click: cycle
   drop: cycle_reverse
 
+badicon:
+  inherit: wand
+  icon: bad_icon:2
+
