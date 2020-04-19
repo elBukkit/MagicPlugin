@@ -4810,6 +4810,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
+    public void preUpdate() {
+        updateSpellInventory();
+        updateBrushInventory();
+    }
+
+    @Override
     public void updated() {
         if (suspendUpdate) return;
         loadProperties();

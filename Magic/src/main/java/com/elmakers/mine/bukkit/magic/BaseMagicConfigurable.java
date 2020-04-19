@@ -408,14 +408,20 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         setProperty(key, value);
     }
 
+    protected void preUpdate() {
+
+    }
+
     @Override
     public void configure(@Nonnull String key, @Nonnull Object value) {
+        preUpdate();
         configureInternal(key, value);
         updated();
     }
 
     @Override
     public void configure(@Nonnull ConfigurationSection configuration) {
+        preUpdate();
         Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
             Object value = configuration.get(key);
@@ -492,6 +498,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
 
     @Override
     public boolean upgrade(@Nonnull ConfigurationSection configuration) {
+        preUpdate();
         boolean modified = false;
         Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
@@ -510,6 +517,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
 
     @Override
     public boolean upgrade(@Nonnull String key, @Nonnull Object value) {
+        preUpdate();
         // Only configure leaf nodes
         if (value instanceof ConfigurationSection) return false;
 
@@ -527,6 +535,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     @Override
     public boolean removeProperty(String key) {
         if (!hasOwnProperty(key)) return false;
+        preUpdate();
         setProperty(key, null);
         updated();
         return true;

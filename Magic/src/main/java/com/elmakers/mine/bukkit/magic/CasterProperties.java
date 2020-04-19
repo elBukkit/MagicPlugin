@@ -273,6 +273,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         // Convert to spell if aliased
         spellKey = template.getKey();
 
+        // Make sure to apply any pending changes
+        preUpdate();
         Collection<String> spells = getBaseSpells();
         SpellKey key = new SpellKey(spellKey);
         SpellTemplate currentSpell = getSpellTemplate(spellKey);
@@ -333,6 +335,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             return storage.addBrush(brushKey);
         }
 
+        // Make sure to apply any pending changes
+        preUpdate();
         Collection<String> brushes = getBrushes();
         boolean modified = brushes.add(brushKey);
         if (modified) {
@@ -360,6 +364,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public boolean removeSpell(String spellKey) {
+        // Make sure to apply any pending changes
+        preUpdate();
         Collection<String> spells = getBaseSpells();
         SpellKey key = new SpellKey(spellKey);
         boolean modified = spells.remove(key.getBaseKey());
@@ -376,6 +382,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public boolean removeBrush(String brushKey) {
+        // Make sure to apply any pending changes
+        preUpdate();
         Collection<String> brushes = getBrushes();
         boolean modified = brushes.remove(brushKey);
         if (modified) {
@@ -531,6 +539,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public void setAttribute(String attributeKey, Double attributeValue) {
+        // Make sure to apply any pending changes
+        preUpdate();
         ConfigurationSection attributes = getConfigurationSection("attributes");
         if (attributes == null) {
             if (attributeValue == null) return;
