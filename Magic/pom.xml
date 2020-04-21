@@ -259,7 +259,7 @@
         <dependency>
             <groupId>LibsDisguises</groupId>
             <artifactId>LibsDisguises</artifactId>
-            <version>9.0.3</version>
+            <version>9.9.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
