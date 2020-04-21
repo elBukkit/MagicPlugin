@@ -28,11 +28,14 @@
     </module>
 
     <!-- Max line length -->
+    <!-- Sorry, but we have game profiles in builtin configs now. Can't really multi-line them easily. -->
+    <!--
     <module name="LineLength">
-        <property name="max" value="800"/> <!-- TODO: Make 80 -->
+        <property name="max" value="800"/>
         <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
         <property name="severity" value="error"/>
     </module>
+    -->
 
     <module name="TreeWalker">
         <module name="OuterTypeFilename">

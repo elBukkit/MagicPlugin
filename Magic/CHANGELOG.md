@@ -6,6 +6,7 @@
  - Add magic_sp, magic_spell_count, magic_mana and magic_mana_max Placeholders
  - More graceful handling of invalid wand icons
  - Add "/mage skin" command, which dumps a block of text you can put in a "skin" property of a player disguise
+ - Add "ironman" mob to survival configs (as an example of using a stored skin)
 
 # 7.8.4
 
