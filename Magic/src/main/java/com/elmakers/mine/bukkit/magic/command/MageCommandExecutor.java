@@ -169,6 +169,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageClear(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("skin"))
+        {
+            return onMageSkin(sender, player);
+        }
 
         sender.sendMessage("Unknown mage command: " + subCommand);
         return true;
@@ -286,6 +290,18 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         Mage mage = controller.getMage(player);
         MageClass activeClass = mage.getActiveClass();
         return onLevelSpells("mage", sender, player, activeClass == null ? mage.getProperties() : activeClass, maxLevel);
+    }
+
+    public boolean onMageSkin(CommandSender sender, Player player)
+    {
+        String skinBlock = controller.getPlayerSkin(player);
+        if (skinBlock == null) {
+            sender.sendMessage("Could not get skin for player " + player.getName());
+            sender.sendMessage("(This command requires LibsDisguise to be installed!)");
+            return true;
+        }
+        sender.sendMessage(skinBlock);
+        return true;
     }
 
     public boolean onMageClear(CommandSender sender, Player player, String[] parameters)

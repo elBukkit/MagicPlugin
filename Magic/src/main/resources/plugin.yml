@@ -405,8 +405,8 @@ commands:
         Use /help mage [subcommand] for more information
         /mage configure   Set mage properties
         /mage describe    Show mage properties
-        /wand add         Add spells and brushes to a player
-        /wand remove      Remove spells or brushes from a player
+        /mage add         Add spells and brushes to a player
+        /mage remove      Remove spells or brushes from a player
         /mage activate    Set or clear a player's active class
         /mage unlock      Unlock a class for a player
         /mage lock        Lock a class for a player
@@ -422,6 +422,7 @@ commands:
         /mage unbind      Delete specific bound wands for a mage
         /mage levelspells Level up all spells for a mage
         /mage deactivate  Close the player's wand inventory
+        /mage skin        Dump to chat a player's skin for use in a disguise
   "mage configure":
     description: Configure mage properties, configures the active class
     usage: |
@@ -569,11 +570,16 @@ commands:
     description: Level up all spells on a player
     permission: Magic.commands.mage.levelspells
     usage: |
-
        To level up all spells on a player's current class to max level
        /mage levelspells
        Or to a specific level
        /mage levelspells 3
+    "mage skin":
+      description: Get a player's skin for putting in a disguise
+      permission: Magic.commands.mage.skin
+      usage: |
+         /mage skin
+         /mage skin <player>
   mgive:
     description: Give players items
     permission: Magic.commands.mgive
@@ -1335,6 +1341,7 @@ permissions:
     - Magic.commands.mage.unbind
     - Magic.commands.mage.levelspells
     - Magic.commands.mage.others
+    - Magic.commands.mage.skin
   Magic.commands.mage.configure:
     description: Player may configure Mage properties
     type: boolean

@@ -435,6 +435,8 @@ public interface MageController {
     @Nullable
     String getMobSkin(EntityType mobType);
     @Nullable
+    String getPlayerSkin(Player player);
+    @Nullable
     Material getMobEgg(EntityType mobType);
     @Nonnull
     @Deprecated

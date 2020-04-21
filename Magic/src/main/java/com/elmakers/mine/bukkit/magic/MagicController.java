@@ -5444,6 +5444,12 @@ public class MagicController implements MageController {
         return mobSkins.get(mobType);
     }
 
+    @Nullable
+    @Override
+    public String getPlayerSkin(Player player) {
+        return libsDisguiseManager == null ? null : libsDisguiseManager.getSkin(player);
+    }
+
     @Override
     @Nonnull
     public ItemStack getURLSkull(String url) {
