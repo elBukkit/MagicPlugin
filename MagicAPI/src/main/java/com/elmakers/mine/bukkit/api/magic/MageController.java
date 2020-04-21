@@ -75,6 +75,7 @@ public interface MageController {
     Plugin getPlugin();
     MagicAPI getAPI();
     File getConfigFolder();
+    File getDataFolder();
 
     /**
      * Return a list of all known LostWand records.

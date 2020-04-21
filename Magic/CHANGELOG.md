@@ -2,6 +2,7 @@
 
 # 7.8.5
 
+ - Add support for storing player data in MySQL, Postgres or SQLite
  - Add BattleArena integration, friendly fire flags will respect teams
  - Add magic_sp, magic_spell_count, magic_mana and magic_mana_max Placeholders
  - More graceful handling of invalid wand icons
