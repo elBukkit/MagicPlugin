@@ -202,6 +202,7 @@ import com.google.common.io.BaseEncoding;
 import de.slikey.effectlib.math.EquationStore;
 
 public class MagicController implements MageController {
+    private static String DEFAULT_DATASTORE_PACKAGE = "com.elmakers.mine.bukkit.data";
 
     // Special constructor used for interrogation
     public MagicController() {
@@ -2727,6 +2728,9 @@ public class MagicController implements MageController {
         ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
         if (mageDataStore != null) {
             String dataStoreClassName = mageDataStore.getString("class");
+            if (!dataStoreClassName.contains(".")); {
+                dataStoreClassName = DEFAULT_DATASTORE_PACKAGE + "." + dataStoreClassName + "MageDataStore";
+            }
             try {
                 Class<?> dataStoreClass = Class.forName(dataStoreClassName);
                 Object dataStore = dataStoreClass.getDeclaredConstructor().newInstance();

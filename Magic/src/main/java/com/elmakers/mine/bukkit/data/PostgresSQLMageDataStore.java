@@ -16,9 +16,9 @@ public class PostgresSQLMageDataStore extends SQLMageDataStore {
     @Override
     public void initialize(MageController controller, ConfigurationSection configuration) {
         super.initialize(controller, configuration);
-        String host = configuration.getString("host");
-        String port = configuration.getString("port");
-        String database = configuration.getString("database");
+        String host = configuration.getString("host", "localhost");
+        int port = configuration.getInt("port", 5432);
+        String database = configuration.getString("database", "magic");
         user = configuration.getString("user");
         password = configuration.getString("password");
         connectionString = "jdbc:postgresql://" + host + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=utf-8&autoReconnect=true";

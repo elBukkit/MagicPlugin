@@ -16,9 +16,9 @@ public class MySQLMageDataStore extends SQLMageDataStore {
     @Override
     public void initialize(MageController controller, ConfigurationSection configuration) {
         super.initialize(controller, configuration);
-        String host = configuration.getString("host");
-        String port = configuration.getString("port");
-        String database = configuration.getString("database");
+        String host = configuration.getString("host", "localhost");
+        int port = configuration.getInt("port", 3306);
+        String database = configuration.getString("database", "magic");
         user = configuration.getString("user");
         password = configuration.getString("password");
         connectionString = "jdbc:mysql://" + host + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=utf-8&autoReconnect=true";

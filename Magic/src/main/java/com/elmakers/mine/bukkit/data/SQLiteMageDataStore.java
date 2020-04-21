@@ -15,7 +15,7 @@ public class SQLiteMageDataStore extends SQLMageDataStore {
     @Override
     public void initialize(MageController controller, ConfigurationSection configuration) {
         super.initialize(controller, configuration);
-        String database = configuration.getString("database");
+        String database = configuration.getString("database", "players");
 
         if (database.contains("/") || database.contains("\\") || database.endsWith(".db")) {
             controller.getLogger().severe("The database name can not contain: /, \\, or .db");
