@@ -11,8 +11,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
@@ -42,7 +40,6 @@ public class OcelotSpell extends TargetingSpell
         {
             return null;
         }
-        tameOcelot(entity);
         return entity;
     }
 
@@ -89,20 +86,5 @@ public class OcelotSpell extends TargetingSpell
         }
 
         return SpellResult.CAST;
-    }
-
-    protected void tameOcelot(Ocelot ocelot) {
-        ocelot.setHealth(8);
-
-        // Forward compatibility: Ocelots may no longer be tameable
-        @SuppressWarnings("cast")
-        boolean isTamableInThisVersion = ocelot instanceof Tameable;
-        if (isTamableInThisVersion) {
-            ocelot.setTamed(true);
-            Player player = mage.getPlayer();
-            if (player != null) {
-                ocelot.setOwner(player);
-            }
-        }
     }
 }

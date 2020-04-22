@@ -91,7 +91,7 @@ public class TownyBridge
 
     public boolean hasBreakPermission(Player player, Block block) {
         if (block != null && player != null) {
-            if (controller.wildernessBypass && api.isWilderness(block)) {
+            if (controller.wildernessBypass && api.isWilderness(block.getLocation())) {
                 return true;
             }
             return PlayerCacheUtil.getCachePermission(player, block.getLocation(), block.getType(), TownyPermission.ActionType.DESTROY);

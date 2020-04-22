@@ -11,7 +11,6 @@ import org.bukkit.entity.Villager;
 import org.bukkit.plugin.Plugin;
 
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
@@ -75,8 +74,7 @@ public class LibsDisguiseManager {
                 case FALLING_BLOCK:
                 case DROPPED_ITEM:
                     Material material = Material.valueOf(configuration.getString("material").toUpperCase());
-                    int id = DeprecatedUtils.getId(material);
-                    MiscDisguise itemDisguise = new MiscDisguise(disguiseType, id, configuration.getInt("data"));
+                    MiscDisguise itemDisguise = new MiscDisguise(disguiseType, material, configuration.getInt("data"));
                     disguise = itemDisguise;
                     break;
                 case SPLASH_POTION:
