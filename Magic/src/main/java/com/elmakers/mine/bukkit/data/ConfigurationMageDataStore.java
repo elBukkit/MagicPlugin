@@ -10,6 +10,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -79,17 +80,24 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             }
         }
 
+        Map<String, List<Map<String, Object>>> allUndoLists = new HashMap<>();
         UndoData undoData = mage.getUndoData();
         if (undoData != null) {
-            List<Map<String, Object>> nodeList = new ArrayList<>();
-            List<UndoList> undoList = undoData.getBlockList();
-            for (UndoList list : undoList) {
-                MemoryConfiguration listNode = new MemoryConfiguration();
-                list.save(listNode);
-                nodeList.add(listNode.getValues(true));
-            }
-            saveFile.set("undo", nodeList);
+            List<World> worlds = controller.getPlugin().getServer().getWorlds();
+            String serverId = worlds == null || worlds.isEmpty() ? "common" : worlds.get(0).getUID().toString();
+            allUndoLists.put(serverId, saveUndoData(undoData));
         }
+        Map<String, UndoData> externalUndo = mage.getExternalUndoData();
+        if (externalUndo != null && !externalUndo.isEmpty()) {
+            for (Map.Entry<String, UndoData> entry : externalUndo.entrySet()) {
+                allUndoLists.put(entry.getKey(), saveUndoData(entry.getValue()));
+            }
+        }
+
+        if (!allUndoLists.isEmpty()) {
+            saveFile.set("undo", allUndoLists);
+        }
+
         ConfigurationSection spellNode = saveFile.createSection("spells");
         Collection<SpellData> spellData = mage.getSpellData();
         if (spellData != null) {
@@ -173,6 +181,17 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         }
     }
 
+    private static List<Map<String, Object>> saveUndoData(UndoData undoData) {
+        List<Map<String, Object>> nodeList = new ArrayList<>();
+        List<UndoList> undoList = undoData.getBlockList();
+        for (UndoList list : undoList) {
+            MemoryConfiguration listNode = new MemoryConfiguration();
+            list.save(listNode);
+            nodeList.add(listNode.getValues(true));
+        }
+        return nodeList;
+    }
+
     public MageData load(String id, ConfigurationSection saveFile) {
         return load(controller, id, saveFile);
     }
@@ -249,16 +268,32 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         data.setDestinationWarp(saveFile.getString("destination_warp"));
 
         // Load undo queue
+        Map<String, UndoData> externalUndoData = null;
         UndoData undoData = new UndoData();
-        Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(saveFile, "undo");
-        if (nodeList != null) {
-            for (ConfigurationSection listNode : nodeList) {
-                // The owner will get set by UndoQueue.load
-                UndoList list = new com.elmakers.mine.bukkit.block.UndoList(controller);
-                list.load(listNode);
-                undoData.getBlockList().add(list);
+        ConfigurationSection undoMap = ConfigurationUtils.getConfigurationSection(saveFile, "undo");
+        if (undoMap == null) {
+            // Try legacy list format
+            Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(saveFile, "undo");
+            loadUndoData(controller, undoData, nodeList);
+        } else {
+            List<World> worlds = controller.getPlugin().getServer().getWorlds();
+            String serverId = worlds == null || worlds.isEmpty() ? "common" : worlds.get(0).getUID().toString();
+            for (String key : undoMap.getKeys(false)) {
+                Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(undoMap, key);
+                if (key.equals(serverId)) {
+                    loadUndoData(controller, undoData, nodeList);
+                } else {
+                    if (externalUndoData == null) {
+                        externalUndoData = new HashMap<>();
+                    }
+                    UndoData external = new UndoData();
+                    loadUndoData(controller, external, nodeList);
+                    externalUndoData.put(key, external);
+                }
             }
+
         }
+        data.setExternalUndoData(externalUndoData);
         data.setUndoData(undoData);
 
         // Load spell data
@@ -358,5 +393,15 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         data.setHealth(saveFile.getDouble("health"));
 
         return data;
+    }
+
+    private static void loadUndoData(MageController controller, UndoData undoData, Collection<ConfigurationSection> nodeList) {
+        if (nodeList == null) return;
+        for (ConfigurationSection listNode : nodeList) {
+            // The owner will get set by UndoQueue.load
+            UndoList list = new com.elmakers.mine.bukkit.block.UndoList(controller);
+            list.load(listNode);
+            undoData.getBlockList().add(list);
+        }
     }
 }

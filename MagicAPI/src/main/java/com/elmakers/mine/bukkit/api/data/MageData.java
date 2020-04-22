@@ -33,6 +33,7 @@ public class MageData {
     private Collection<SpellData> spellData;
     private BrushData brushData;
     private UndoData undoData;
+    private Map<String, UndoData> externalUndoData;
     private Float storedExperience;
     private Integer storedLevel;
     private boolean openWand;
@@ -173,6 +174,14 @@ public class MageData {
 
     public void setUndoData(UndoData undoData) {
         this.undoData = undoData;
+    }
+
+    public Map<String, UndoData> getExternalUndoData() {
+        return externalUndoData;
+    }
+
+    public void setExternalUndoData(Map<String, UndoData> undoData) {
+        externalUndoData = undoData;
     }
 
     public long getCooldownExpiration() {

@@ -166,6 +166,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Collection<Listener> damageListeners = new HashSet<>();
     private final Set<MageSpell> activeSpells = new HashSet<>();
     private UndoQueue undoQueue = null;
+    private Map<String, UndoData> externalUndoData = null;
     private Deque<Batch> pendingBatches = new ArrayDeque<>();
     private boolean loading = false;
     private boolean unloading = false;
@@ -1221,6 +1222,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             getUndoQueue().load(data.getUndoData());
+            externalUndoData = data.getExternalUndoData();
 
             respawnInventory = data.getRespawnInventory();
             respawnArmor = data.getRespawnArmor();
@@ -1418,6 +1420,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             UndoData undoData = new UndoData();
             getUndoQueue().save(undoData);
             data.setUndoData(undoData);
+            data.setExternalUndoData(externalUndoData);
 
             data.setSpellData(this.spellData.values());
 
