@@ -30,6 +30,7 @@ public class MySQLMageDataStore extends SQLMageDataStore {
         }
     }
 
+    @Override
     public String getTextFieldType() {
         return "LONGTEXT";
     }

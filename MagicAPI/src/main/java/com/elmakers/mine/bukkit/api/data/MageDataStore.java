@@ -72,4 +72,11 @@ public interface MageDataStore {
      * however the implementation prefers.
      */
     void migrate(String id);
+
+    /**
+     * Close this data store. This should close any open connections and free up any resources that would be
+     * contentious if this data store was immediately re-created.
+     */
+    default void close()  {
+    }
 }

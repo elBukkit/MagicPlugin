@@ -140,4 +140,20 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
             playerData.renameTo(migratedData);
         }
     }
+
+    @Override
+    public void close() {
+        synchronized (locks) {
+            for (FileLock lock : locks.values()) {
+                if (lock != null) {
+                    try {
+                        lock.release();
+                    } catch (Exception ex) {
+                        controller.getLogger().log(Level.WARNING, "Error releasing lock file", ex);
+                    }
+                }
+            }
+            locks.clear();
+        }
+    }
 }

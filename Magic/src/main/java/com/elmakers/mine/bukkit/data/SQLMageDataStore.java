@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
     private Connection connection;
-    private Object locks = new Object();
+    private final Object lockingLock = new Object();
     private int lockTimeout = 0;
     private int lockRetry = 0;
 
@@ -111,7 +111,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
 
     @Override
     public void releaseLock(MageData mage) {
-        synchronized (locks) {
+        synchronized (lockingLock) {
             try {
                 PreparedStatement release = getConnection().prepareStatement("UPDATE mage SET locked = 0 WHERE id = ?");
                 release.setString(1, mage.getId());
@@ -124,7 +124,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
     }
 
     protected void obtainLock(String id) {
-        synchronized (locks) {
+        synchronized (lockingLock) {
             boolean hasLock = false;
             long start = System.currentTimeMillis();
 
@@ -135,14 +135,17 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                     ResultSet results = lockLookup.executeQuery();
                     if (results.next()) {
                         hasLock = !results.getBoolean(1);
+                    } else {
+                        hasLock = true;
                     }
-
-                    // I am hoping this is only called on separate load threads!
-                    if (System.currentTimeMillis() > start + lockTimeout) {
-                        controller.getLogger().log(Level.WARNING, "Lock timeout while waiting for mage " + id + ", claiming lock");
-                        break;
+                    if (!hasLock) {
+                        // I am hoping this is only called on separate load threads!
+                        if (System.currentTimeMillis() > start + lockTimeout) {
+                            controller.getLogger().log(Level.WARNING, "Lock timeout while waiting for mage " + id + ", claiming lock");
+                            break;
+                        }
+                        Thread.sleep(lockRetry);
                     }
-                    Thread.sleep(lockRetry);
                 }
 
                 PreparedStatement lock = getConnection().prepareStatement("UPDATE mage SET locked = 1 WHERE id = ?");
@@ -211,6 +214,18 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             migrate.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Could not set mage " + id + " as migrated", ex);
+        }
+    }
+
+    @Override
+    public void close() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error closing player data connection", ex);
+            }
+            connection = null;
         }
     }
 }
