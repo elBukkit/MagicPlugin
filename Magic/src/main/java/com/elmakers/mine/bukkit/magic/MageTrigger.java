@@ -139,14 +139,15 @@ public class MageTrigger {
                     if (killer == null) continue;
                     command = command.replace("@killer", killer.getName());
                 }
-                if (command.contains("@damager")) {
-                    if (topDamager == null) continue;
-                    command = command.replace("@damager", topDamager.getName());
-                }
 
                 boolean allDamagers = command.contains("@damagers");
                 if (allDamagers && damagers == null) {
                     continue;
+                }
+
+                if (!allDamagers && command.contains("@damager")) {
+                    if (topDamager == null) continue;
+                    command = command.replace("@damager", topDamager.getName());
                 }
 
                 command = command
