@@ -1645,7 +1645,7 @@ public class MagicController implements MageController {
             public void run() {
                 checkForMigration(plugin.getServer().getConsoleSender());
             }
-        }, 10);
+        }, 20 * 5);
     }
 
     private int getPathCount() {

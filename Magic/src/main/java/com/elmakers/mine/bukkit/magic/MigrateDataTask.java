@@ -41,7 +41,7 @@ public class MigrateDataTask implements Runnable {
     public void run() {
         final int count = ids.size();
         int index = 0;
-        int interval = (int)Math.ceil((double)count / 100.0);
+        int interval = (int)Math.ceil((double)count / 20.0);
         MageDataCallback loadCallback = new MageDataCallback() {
             @Override
             public void run(MageData data) {
@@ -60,5 +60,6 @@ public class MigrateDataTask implements Runnable {
             }
         }
         messageSender(ChatColor.GREEN + "Migration complete. Please remove `migrate_data_store` from config.yml");
+        controller.finishMigratingPlayerData();
     }
 }
