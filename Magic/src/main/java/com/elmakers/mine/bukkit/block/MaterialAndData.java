@@ -172,6 +172,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             return;
         }
 
+        // Check for block data
+        String[] blockPieces = StringUtils.split(materialKey, "?");
+        if (blockPieces.length > 1) {
+            materialKey = blockPieces[0];
+            blockData = blockPieces[1];
+        }
+
         int jsonStart = materialKey.indexOf('{');
         if (jsonStart > 0) {
             String fullKey = materialKey;
@@ -241,13 +248,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         try {
             if (pieces.length > 1) {
                 String dataString = pieces[1];
-                String[] blockPieces = StringUtils.split(dataString, "?");
-                if (blockPieces.length > 0) {
-                    dataString = blockPieces[0];
-                    if (blockPieces.length > 1) {
-                        blockData = blockPieces[1];
-                    }
-                }
 
                 // Some special-cases
                 if (dataString.equals("*")) {

@@ -4,6 +4,7 @@
 
  - Add support for storing player data in MySQL, Postgres or SQLite
    - For more info: https://github.com/elBukkit/MagicPlugin/wiki/Player-Data-Storage
+ - Fix broken undo for some blocks with extended data
  - Add BattleArena integration, friendly fire flags will respect teams
  - Add magic_sp, magic_spell_count, magic_mana and magic_mana_max Placeholders
  - More graceful handling of invalid wand icons
