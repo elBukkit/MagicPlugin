@@ -215,6 +215,11 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             }
             return onMagicRegister((Player)sender, args[1]);
         }
+        if (subCommand.equalsIgnoreCase("migrate") && controller instanceof MagicController)
+        {
+            ((MagicController)controller).migratePlayerData(sender);
+            return true;
+        }
         if (subCommand.equalsIgnoreCase("cancel"))
         {
             checkRunningTask();

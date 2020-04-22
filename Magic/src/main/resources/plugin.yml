@@ -339,6 +339,7 @@ commands:
         /magic rpcheck     Check your resource pack for updates
         /magic rpsend      Send the current RP to all connected players
         /magic register    Register to use a web editor
+        /magic migrate     Migrate player data from one storage to another
         /magic help        Print some basic help usage
   "magic help":
     description: Prints basic help usage, which relies on the Bukkit /help command
@@ -348,6 +349,10 @@ commands:
     description: Register via a web editor using a provided code
     permission: Magic.commands.magic.register
     usage: /magic register <code>
+  "magic migrate":
+    description: If set up to do so in configs, migrate player data from a previous storage mechanism
+    permission: Magic.commands.magic.migrate
+    usage: /magic migrate
   "magic load":
       description: Reload configuration files. Useful for testing spell or wand changes.
       permission: Magic.commands.magic.load
@@ -1207,8 +1212,13 @@ permissions:
     - Magic.commands.magic.give
     - Magic.commands.magic.sell
     - Magic.commands.magic.worth
+    - Magic.commands.magic.migrate
   Magic.commands.magic.help:
     description: Player may show command help
+    type: boolean
+    default: op
+  Magic.commands.magic.migrate:
+    description: Player may migrate player data
     type: boolean
     default: op
   Magic.commands.magic.register:
@@ -1647,6 +1657,10 @@ permissions:
     type: boolean
   Magic.spawners:
     description: A player may place custom mob spawners without being op'd
+    default: op
+    type: boolean
+  Magic.migrate:
+    description: A player will be notified of data migration status
     default: op
     type: boolean
   Magic.notify:

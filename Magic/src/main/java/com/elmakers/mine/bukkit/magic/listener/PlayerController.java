@@ -632,6 +632,9 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         controller.getMage(player);
         controller.checkVanished(player);
+        if (player.hasPermission("Magic.migrate")) {
+           controller.checkForMigration(player);
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

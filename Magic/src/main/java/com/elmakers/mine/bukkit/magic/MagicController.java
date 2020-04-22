@@ -383,36 +383,13 @@ public class MagicController implements MageController {
                         public void run() {
                             synchronized (saveLock) {
                                 info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
-                                try {
-                                    mageDataStore.load(mage.getId(), new MageDataCallback() {
-                                        @Override
-                                        public void run(MageData data) {
-                                        mage.load(data);
-                                        info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
-                                        }
-                                    });
-                                } catch (Exception ex) {
-                                    getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
-                                    ex.printStackTrace();
-                                }
+                                doLoadData(mage);
                             }
                         }
                     }, fileLoadDelay * 20 / 1000);
                 } else if (saveNonPlayerMages) {
                     info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") synchronously");
-                    synchronized (saveLock) {
-                        try {
-                            mageDataStore.load(mage.getId(), new MageDataCallback() {
-                                @Override
-                                public void run(MageData data) {
-                                mage.load(data);
-                                }
-                            });
-                        } catch (Exception ex) {
-                            getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
-                            ex.printStackTrace();
-                        }
-                    }
+                    doLoadData(mage);
                 } else {
                     mage.load(null);
                 }
@@ -443,6 +420,38 @@ public class MagicController implements MageController {
             throw new NoSuchMageException(mageId);
         }
         return apiMage;
+    }
+
+    private void doLoadData(Mage mage) {
+        synchronized (saveLock) {
+            try {
+                mageDataStore.load(mage.getId(), new MageDataCallback() {
+                    @Override
+                    public void run(MageData data) {
+                        if (data == null && migrateDataStore != null) {
+                            info(" Checking migration data store for mage data for " + mage.getName() + " (" + mage.getId() + ")");
+                            migrateDataStore.load(mage.getId(), new MageDataCallback() {
+                                @Override
+                                public void run(MageData data) {
+                                    if (data != null) {
+                                        migrateDataStore.migrate(mage.getId());
+                                        info(" Auto-migrated mage data for " + mage.getId() + " on load");
+                                    }
+                                    mage.load(data);
+                                    info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ") from migration store at " + System.currentTimeMillis());
+                                }
+                            });
+                        } else {
+                            mage.load(data);
+                            info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
+                        }
+                    }
+                });
+            } catch (Exception ex) {
+                getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -1630,6 +1639,13 @@ public class MagicController implements MageController {
         }
 
         notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
+
+        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                checkForMigration(plugin.getServer().getConsoleSender());
+            }
+        }, 10);
     }
 
     private int getPathCount() {
@@ -1805,6 +1821,34 @@ public class MagicController implements MageController {
                 getLogger().info("Finished loading data.");
             }
         }, 10);
+    }
+
+    public void migratePlayerData(CommandSender sender) {
+        if (migrateDataTask == null) {
+            if (migrateDataStore != null) {
+                migrateDataTask = new MigrateDataTask(this, mageDataStore, migrateDataStore, sender);
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, migrateDataTask);
+            } else {
+                sender.sendMessage(ChatColor.RED + "You must first configure 'migrate_data_store' in config.yml");
+            }
+        } else {
+            sender.sendMessage(ChatColor.YELLOW + "Data migration is already in progress");
+        }
+    }
+
+    public void finishMigratingPlayerData() {
+        migrateDataTask = null;
+    }
+
+    public void checkForMigration(CommandSender sender) {
+        if (migrateDataStore != null) {
+            Collection<String> ids = migrateDataStore.getAllIds();
+            if (ids.isEmpty()) {
+                sender.sendMessage(ChatColor.RED + "Migration is complete, please remove migrate_data_store from config.yml");
+            } else {
+                sender.sendMessage(ChatColor.YELLOW + "Please use the command 'magic migrate' to migrate player data");
+            }
+        }
     }
 
     protected void loadLostWands() {
@@ -2725,32 +2769,33 @@ public class MagicController implements MageController {
         isFileLockingEnabled = properties.getBoolean("use_file_locking", false);
         fileLoadDelay = properties.getInt("file_load_delay", 0);
 
-        ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
         if (mageDataStore != null) {
-            String dataStoreClassName = mageDataStore.getString("class");
-            if (!dataStoreClassName.contains(".")); {
-                dataStoreClassName = DEFAULT_DATASTORE_PACKAGE + "." + dataStoreClassName + "MageDataStore";
-            }
-            try {
-                Class<?> dataStoreClass = Class.forName(dataStoreClassName);
-                Object dataStore = dataStoreClass.getDeclaredConstructor().newInstance();
-                if (dataStore == null || !(dataStore instanceof MageDataStore))
-                {
-                    getLogger().log(Level.WARNING, "Invalid player_data_store class " + dataStoreClassName + ", does it implement MageDataStore? Player data saving is disabled!");
-                    this.mageDataStore = null;
-                }
-                else
-                {
-                    this.mageDataStore = (MageDataStore)dataStore;
-                    this.mageDataStore.initialize(this, mageDataStore);
-                }
-            } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Failed to create player_data_store class from " + dataStoreClassName + " player data saving is disabled!", ex);
-                this.mageDataStore = null;
+            mageDataStore.close();
+        }
+
+        ConfigurationSection mageDataStoreConfiguration = properties.getConfigurationSection("player_data_store");
+        if (mageDataStoreConfiguration != null) {
+            mageDataStore = loadMageDataStore(mageDataStoreConfiguration);
+            if (mageDataStore == null) {
+                getLogger().log(Level.WARNING, "Failed to load player_data_store configuration, player data saving disabled!");
             }
         } else {
             getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
-            this.mageDataStore = null;
+            mageDataStore = null;
+        }
+
+        ConfigurationSection migrateDataStoreConfiguration = properties.getConfigurationSection("migrate_data_store");
+        if (migrateDataStoreConfiguration != null) {
+            migrateDataStore = loadMageDataStore(migrateDataStoreConfiguration);
+            if (migrateDataStore == null) {
+                getLogger().log(Level.WARNING, "Failed to load migrate_data_store configuration, migration will not work");
+            }
+        } else {
+            migrateDataStore = null;
+        }
+
+        if (migrateDataStore != null) {
+            migrateDataStore.close();
         }
 
         // Semi-deprecated Wand defaults
@@ -2787,6 +2832,31 @@ public class MagicController implements MageController {
 
         // Link to generic protection plugins
         protectionManager.initialize(plugin, properties.getStringList("generic_protection"));
+    }
+
+    @Nullable
+    private MageDataStore loadMageDataStore(ConfigurationSection configuration) {
+        MageDataStore mageDataStore = null;
+        String dataStoreClassName = configuration.getString("class");
+        if (!dataStoreClassName.contains(".")) {
+            dataStoreClassName = DEFAULT_DATASTORE_PACKAGE + "." + dataStoreClassName + "MageDataStore";
+        }
+        try {
+            Class<?> dataStoreClass = Class.forName(dataStoreClassName);
+            Object dataStore = dataStoreClass.getDeclaredConstructor().newInstance();
+            if (dataStore == null || !(dataStore instanceof MageDataStore)) {
+                getLogger().log(Level.WARNING, "Invalid player_data_store class " + dataStoreClassName + ", does it implement MageDataStore? Player data saving is disabled!");
+                mageDataStore = null;
+            } else {
+                mageDataStore = (MageDataStore)dataStore;
+                mageDataStore.initialize(this, configuration);
+            }
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Failed to create player_data_store class from " + dataStoreClassName, ex);
+            mageDataStore = null;
+        }
+
+        return mageDataStore;
     }
 
     protected void loadMobEggs(ConfigurationSection skins) {
@@ -3220,6 +3290,12 @@ public class MagicController implements MageController {
             }
         }
         mobMages.clear();
+        if (mageDataStore != null) {
+            mageDataStore.close();
+        }
+        if (migrateDataStore != null) {
+            migrateDataStore.close();
+        }
     }
 
     public void undoScheduled() {
@@ -5998,6 +6074,8 @@ public class MagicController implements MageController {
     private final Map<String, Collection<EffectPlayer>> effects             = new HashMap<>();
 
     private MageDataStore                       mageDataStore               = null;
+    private MageDataStore                       migrateDataStore            = null;
+    private MigrateDataTask                     migrateDataTask             = null;
 
     private Logger                              logger                      = null;
     private MagicPlugin                         plugin                      = null;

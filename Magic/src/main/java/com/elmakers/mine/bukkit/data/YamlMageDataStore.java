@@ -28,8 +28,8 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
     public void initialize(MageController controller, ConfigurationSection configuration) {
         super.initialize(controller, configuration);
         Plugin plugin = controller.getPlugin();
-        String playerFolder = configuration.getString("folder", "players");
-        String migrateFolder = configuration.getString("migration_folder", "migrated");
+        String playerFolder = configuration.getString("folder", "data/players");
+        String migrateFolder = configuration.getString("migration_folder", "data/migrated");
         playerDataFolder = new File(plugin.getDataFolder(), playerFolder);
         playerDataFolder.mkdirs();
         migratedDataFolder = new File(plugin.getDataFolder(), migrateFolder);
@@ -122,10 +122,11 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         for (File file : files) {
             String filename = file.getName();
             int extensionIndex = filename.lastIndexOf('.');
-            if (extensionIndex > 0) {
-                filename = filename.substring(0, filename.lastIndexOf('.'));
-            }
+            if (extensionIndex <= 0 || extensionIndex == filename.length() - 1) continue;
+            String extension = filename.substring(extensionIndex + 1);
+            if (!extension.equals("dat")) continue;
 
+            filename = filename.substring(0, extensionIndex);
             ids.add(filename);
         }
         return ids;
@@ -135,7 +136,7 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
     public void migrate(String id) {
         File playerData = new File(playerDataFolder, id + ".dat");
         if (playerData.exists()) {
-            migratedDataFolder.mkdir();
+            migratedDataFolder.mkdirs();
             File migratedData = new File(migratedDataFolder, id + ".dat.migrated");
             playerData.renameTo(migratedData);
         }

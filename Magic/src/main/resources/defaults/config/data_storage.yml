@@ -2,11 +2,23 @@
 
 # Use this to provide your own mechanism for saving player data, or select a builtin mechanism.
 # The default data store uses yaml files stored in the plugin's data folder
+# This migration_folder is where data files are moved to when migrating to a new data store.
 player_data_store:
   class: Yaml
   folder: data/players
+  migration_folder: data/migrated
 
-# Switch to SQLite data storage (make sure to comment out the above defaults!)
+# Use this to migrate your Yaml data to your new storage mechanism.
+# When this is set, server operators will be prompted to use "/magic migrate" in-game
+# to perform player data migration.
+# It is best to not have any players on the server while migration is happening!
+# Once migration is complete, you can remove this config.
+#
+# migrate_data_store:
+#   class: Yaml
+#   folder: data/players
+
+# Switch to SQLite data storage (make sure to comment out or migrate from the above defaults!)
 # The database name is optional, and will default to players
 # This file gets saved in plugins/Magic/data/<database>.sqlite
 #
@@ -14,7 +26,7 @@ player_data_store:
 #   class: SQLite
 #   database: players
 
-# Switch to MySQL data storage (make sure to comment out the above defaults!)
+# Switch to MySQL data storage (make sure to comment out or migrate from the above defaults!)
 # All parameters are optional, though you will hopefully need to at least specify
 # the user and password.
 #
@@ -26,7 +38,7 @@ player_data_store:
 #   user: minecraft
 #   password: somethingsecure
 
-# Switch to Postgres data storage (make sure to comment out the above defaults!)
+# Switch to Postgres data storage (make sure to comment out or migrate from the above defaults!)
 # All parameters are optional, though you will hopefully need to at least specify
 # the user and password.
 #
