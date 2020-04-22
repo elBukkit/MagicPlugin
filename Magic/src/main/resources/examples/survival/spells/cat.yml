@@ -29,6 +29,7 @@ cat:
         range: 32
         cooldown: 60000
         type: cat
+        tamed: true
     costs:
         mana: 30
 
