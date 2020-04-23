@@ -156,6 +156,8 @@ levitate:
            sound_pitch: 0.2
 
 broom:
+    parameters:
+      armor_stand_marker: true
     effects:
         cast:
         -  class: EffectSingle
