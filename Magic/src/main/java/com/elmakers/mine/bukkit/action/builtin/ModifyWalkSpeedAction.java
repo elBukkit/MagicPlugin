@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.google.common.collect.Iterators;
 
-public class ModifyWalkSpeed extends BaseSpellAction implements Listener {
+public class ModifyWalkSpeedAction extends BaseSpellAction implements Listener {
     private static final String INITIAL_MOVEMENT_SPEED_META = "InitialMovementSpeed";
 
     private static final class SpeedDataStack {
@@ -29,7 +29,7 @@ public class ModifyWalkSpeed extends BaseSpellAction implements Listener {
          * Stack of speed modifications. Note that this is linked map so it can
          * be used as a stack.
          */
-        private Map<ModifyWalkSpeed, Float> map = new LinkedHashMap<>();
+        private Map<ModifyWalkSpeedAction, Float> map = new LinkedHashMap<>();
     }
 
     /**

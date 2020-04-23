@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
-public class ModifyBreakable extends BaseSpellAction {
+public class ModifyBreakableAction extends BaseSpellAction {
     private double breakable = 1;
     private boolean targetAir = false;
 
