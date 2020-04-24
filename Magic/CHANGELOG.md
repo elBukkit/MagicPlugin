@@ -1,10 +1,13 @@
 # CHANGELOG
 
+# 7.9.1
+
 # 7.9
 
  - Add in-game customization commands (/mconfig enable|disable|configure)
+   - See: https://github.com/elBukkit/MagicPlugin/wiki/In-Game-Customization
  - Add support for storing player data in MySQL, Postgres or SQLite
-   - For more info: https://github.com/elBukkit/MagicPlugin/wiki/Player-Data-Storage
+   - See: https://github.com/elBukkit/MagicPlugin/wiki/Player-Data-Storage
  - Fix broken undo for some blocks with extended data
  - Fix broom offset problem in MC version 1.12 and below
  - Fix sword-based wands having broken icons in 1.12 and below
