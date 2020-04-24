@@ -28,7 +28,7 @@ lumos:
              radius: 1
              particles: 20
     costs:
-        mana: 55
+        mana: 50
     parameters:
         target: self
         target_self: true
