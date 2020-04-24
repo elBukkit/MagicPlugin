@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -376,12 +377,17 @@ public class ConfigurationLoadTask implements Runnable {
     private ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean setEnabled)
         throws IOException, InvalidConfigurationException {
         if (configSubFolder.exists()) {
+            List<File> priorityFiles = new ArrayList();
             File[] files = configSubFolder.listFiles();
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
                 if (file.isDirectory()) {
                     config = loadConfigFolder(config, file, setEnabled);
                 } else {
+                    if (file.getName().startsWith("_")) {
+                        priorityFiles.add(file);
+                        continue;
+                    }
                     info("  Loading " + file.getName());
                     ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
                     if (setEnabled) {
@@ -389,6 +395,14 @@ public class ConfigurationLoadTask implements Runnable {
                     }
                     config = ConfigurationUtils.addConfigurations(config, fileOverrides);
                 }
+            }
+            for (File file : priorityFiles) {
+                info("  Loading " + file.getName());
+                ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
+                if (setEnabled) {
+                    enableAll(fileOverrides);
+                }
+                config = ConfigurationUtils.addConfigurations(config, fileOverrides);
             }
         } else {
             configSubFolder.mkdir();
