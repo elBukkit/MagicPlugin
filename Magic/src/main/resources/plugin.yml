@@ -316,6 +316,9 @@ commands:
     permission: Magic.commands.mconfig
     usage: |
         Use /help mconfig [subcommand] for more information
+        /mconfig disable   Disable a specific wand, spell, item, mob or recipe
+        /mconfig enable    Enable a specific wand, spell, item, mob or recipe
+        /mconfig configure Change parameters for a spell, wand or other config
         /mconfig clean     Clean your custom configs, removing default values
   "mconfig clean":
     description: This will override your configs in plugins/Magic with collapsed versions.
@@ -323,6 +326,24 @@ commands:
     usage: |
         /mconfig clean
         /mconfig clean spells
+  "mconfig disable":
+    description: This will set the enabled flag of a config file to false.
+    permission: Magic.commands.mconfig.disable
+    usage: |
+       /mconfig disable spell blink
+       /mconfig disable wand wolf
+  "mconfig enable":
+    description: This will set the enabled flag of a config file to true.
+    permission: Magic.commands.mconfig.enable
+    usage: |
+       /mconfig enable crafting zombie_leather
+       /mconfig enable wand wolf
+  "mconfig configure":
+     description: This will change one property ina config file.
+     permission: Magic.commands.mconfig.configure
+     usage: |
+        /mconfig configure spell missile parameters.damage_multiplier 2
+        /mconfig configure wand wolf icon coal
   magic:
     description: Administer the Magic plugin
     permission: Magic.commands.magic
@@ -1184,8 +1205,23 @@ permissions:
     children:
     - Magic.commands.mconfig
     - Magic.commands.mconfig.clean
+    - Magic.commands.mconfig.disable
+    - Magic.commands.mconfig.enable
+    - Magic.commands.mconfig.configure
   Magic.commands.mconfig.clean:
     description: Player may auto-clean configs
+    type: boolean
+    default: op
+  Magic.commands.mconfig.disable:
+    description: Player may disable spells, wands or other configs
+    type: boolean
+    default: op
+  Magic.commands.mconfig.enable:
+    description: Player may enable spells, wands or other configs
+    type: boolean
+    default: op
+  Magic.commands.mconfig.configure:
+    description: Player may configure spells, wands or other configs
     type: boolean
     default: op
   Magic.commands.magic:

@@ -147,6 +147,8 @@ public interface MageController {
     Collection<SpellCategory> getCategories();
     Collection<SpellTemplate> getSpellTemplates();
     Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
+    Collection<String> getAutomatonTemplateKeys();
+    Collection<String> getRecipeKeys();
     @Nullable
     SpellTemplate getSpellTemplate(String key);
     Set<String> getWandPathKeys();
@@ -561,6 +563,8 @@ public interface MageController {
      */
     @Nonnull
     Collection<EffectPlayer> getEffects(@Nonnull String effectKey);
+    @Nonnull
+    Collection<String> getEffectKeys();
 
     void playEffects(@Nonnull String effectKey, @Nonnull Location sourceLocation, @Nonnull Location targetLocation);
     void playEffects(@Nonnull String effectKey, @Nonnull EffectContext context);

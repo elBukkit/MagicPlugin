@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class CraftingController implements Listener {
     private final MagicController controller;
     private boolean craftingEnabled = false;
     private Map<Material, List<MagicRecipe>> recipes = new HashMap<>();
-    private int recipeCount = 0;
+    private Set<String> recipeKeys = new HashSet<>();
 
     public CraftingController(MagicController controller) {
         this.controller = controller;
@@ -42,7 +43,7 @@ public class CraftingController implements Listener {
 
     public void load(ConfigurationSection configuration) {
         recipes.clear();
-        recipeCount = 0;
+        recipeKeys.clear();
         if (!craftingEnabled) {
             return;
         }
@@ -69,7 +70,7 @@ public class CraftingController implements Listener {
                 recipes.put(outputType, similar);
             }
             similar.add(recipe);
-            recipeCount++;
+            this.recipeKeys.add(recipe.getKey());
         }
     }
 
@@ -193,7 +194,7 @@ public class CraftingController implements Listener {
     }
 
     public int getCount() {
-        return recipeCount;
+        return recipeKeys.size();
     }
 
     public List<String> getRecipeKeys() {

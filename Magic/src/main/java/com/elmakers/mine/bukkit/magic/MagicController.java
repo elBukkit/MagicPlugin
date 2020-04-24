@@ -1696,6 +1696,7 @@ public class MagicController implements MageController {
     }
 
     @Nonnull
+    @Override
     public Collection<String> getAutomatonTemplateKeys() {
         return automatonTemplates.keySet();
     }
@@ -5919,8 +5920,15 @@ public class MagicController implements MageController {
         }
     }
 
+    @Override
+    @Nonnull
     public Collection<String> getEffectKeys() {
         return effects.keySet();
+    }
+
+    @Override
+    public Collection<String> getRecipeKeys() {
+        return crafting.getRecipeKeys();
     }
 
     public void setVanished(Mage mage, boolean isVanished) {

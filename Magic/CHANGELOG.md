@@ -2,6 +2,7 @@
 
 # 7.9
 
+ - Add in-game customization commands (/mconfig enable|disable|configure)
  - Add support for storing player data in MySQL, Postgres or SQLite
    - For more info: https://github.com/elBukkit/MagicPlugin/wiki/Player-Data-Storage
  - Fix broken undo for some blocks with extended data

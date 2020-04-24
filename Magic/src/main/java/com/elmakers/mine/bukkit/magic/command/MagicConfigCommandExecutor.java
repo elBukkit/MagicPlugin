@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -19,13 +22,34 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Files;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
+    private static final String CUSTOM_FILE_NAME = "_customizations.yml";
+    private static Set<String> availableFiles = ImmutableSet.of(
+            "spells", "wands", "automata", "classes", "config", "crafting", "effects",
+            "items", "materials", "mobs", "paths", "attributes");
+    private static final Map<String, String> availableFileMap = ImmutableMap.<String, String>builder()
+        .put("spell", "spells")
+        .put("wand", "wands")
+        .put("automaton", "automata")
+        .put("class", "classes")
+        .put("recipe", "crafting")
+        .put("effect", "effects")
+        .put("item", "items")
+        .put("material", "materials")
+        .put("mob", "mobs")
+        .put("path", "paths")
+        .put("attribute", "attributes")
+        .build();
 
     public MagicConfigCommandExecutor(MagicAPI api, MagicController controller) {
         super(api, "mconfig");
@@ -38,22 +62,91 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 1) {
             addIfPermissible(sender, options, "Magic.commands.mconfig.clean", "clean");
+            addIfPermissible(sender, options, "Magic.commands.mconfig.disable", "disable");
+            addIfPermissible(sender, options, "Magic.commands.mconfig.enable", "enable");
+            addIfPermissible(sender, options, "Magic.commands.mconfig.configure", "configure");
+        }
+        String subCommand = args[0];
+        if (args.length == 2 && (subCommand.equals("disable") || subCommand.equals("enable") || subCommand.equals("configure"))) {
+            options.addAll(availableFileMap.keySet());
+        }
+        if (args.length == 3 && (subCommand.equals("disable") ||  subCommand.equals("configure"))) {
+            String fileType = getFileParameter(args[1]);
+            if (fileType != null) {
+                if (fileType.equals("spells")) {
+                    Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
+                    for (SpellTemplate spell : spellList) {
+                        options.add(spell.getKey());
+                    }
+                }
+                if (fileType.equals("wands")) {
+                    Collection<WandTemplate> wandList = api.getController().getWandTemplates();
+                    for (WandTemplate wand : wandList) {
+                        options.add(wand.getKey());
+                    }
+                }
+                if (fileType.equals("paths")) {
+                    Collection<String> pathList = api.getController().getWandPathKeys();
+                    for (String path : pathList) {
+                        options.add(path);
+                    }
+                }
+                if (fileType.equals("crafting")) {
+                    Collection<String> recipeList = api.getController().getRecipeKeys();
+                    for (String recipe : recipeList) {
+                        options.add(recipe);
+                    }
+                }
+                if (fileType.equals("mobs")) {
+                    Collection<String> mobList = api.getController().getMobKeys();
+                    for (String mob : mobList) {
+                        options.add(mob);
+                    }
+                }
+                if (fileType.equals("items")) {
+                    Collection<String> itemList = api.getController().getItemKeys();
+                    for (String item : itemList) {
+                        options.add(item);
+                    }
+                }
+                if (fileType.equals("automata")) {
+                    Collection<String> list = api.getController().getAutomatonTemplateKeys();
+                    for (String key : list) {
+                        options.add(key);
+                    }
+                }
+                if (fileType.equals("classes")) {
+                    Collection<String> list = api.getController().getMageClassKeys();
+                    for (String key : list) {
+                        options.add(key);
+                    }
+                }
+                if (fileType.equals("attributes")) {
+                    Collection<String> list = api.getController().getAttributes();
+                    for (String key : list) {
+                        options.add(key);
+                    }
+                }
+                if (fileType.equals("effects")) {
+                    Collection<String> list = api.getController().getEffectKeys();
+                    for (String key : list) {
+                        options.add(key);
+                    }
+                }
+            }
         }
         return options;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
-        if (!api.hasPermission(sender, getPermissionNode()))
-        {
+        if (!api.hasPermission(sender, getPermissionNode())) {
             sendNoPermission(sender);
             return true;
         }
 
-        if (args.length == 0)
-        {
-            sender.sendMessage("Usage: mconfig [clean]");
-            return true;
+        if (args.length == 0) {
+            return false;
         }
 
         String subCommand = args[0];
@@ -64,10 +157,113 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equals("clean")) {
             onMagicClean(sender, args.length > 1 ? args[1] : "");
-        } else {
-            sender.sendMessage("Usage: mconfig [clean]");
+            return true;
         }
-        return true;
+        String[] parameters = Arrays.copyOfRange(args, 1, args.length);
+        if (subCommand.equals("enable")) {
+            onMagicEnable(sender, parameters);
+            return true;
+        }
+        if (subCommand.equals("disable")) {
+            onMagicDisable(sender, parameters);
+            return true;
+        }
+        if (subCommand.equals("configure")) {
+            onMagicConfigure(sender, parameters);
+            return true;
+        }
+        return false;
+    }
+
+    protected String getFileParameter(String fileKey) {
+        if (availableFiles.contains(fileKey)) {
+            return fileKey;
+        }
+        return availableFileMap.get(fileKey);
+    }
+
+    protected String escapeMessage(String message, String type, String key) {
+        return escapeMessage(message, type, key, ' ');
+    }
+
+    protected String escapeMessage(String message, String type, String key, char delimiter) {
+        return message.replace("$type", type)
+                .replace("$key", key)
+                .replace("$options", StringUtils.join(availableFileMap.keySet(), delimiter));
+    }
+
+    @Nullable
+    protected File getConfigFile(CommandSender sender, String command, String[] parameters) {
+        if (parameters.length < 2) {
+            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig." + command + ".usage"), "", "", '|'));
+            return null;
+        }
+        String fileKey = getFileParameter(parameters[0]);
+        if (fileKey == null) {
+            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig." + command + ".nokey"), fileKey, "", ','));
+            return null;
+        }
+        return new File(controller.getPlugin().getDataFolder() + File.separator + fileKey, CUSTOM_FILE_NAME);
+    }
+
+    protected void trySave(String command, CommandSender sender, File configFile, YamlConfiguration configuration, String fileKey, String key) {
+        try {
+            configuration.save(configFile);
+            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig." + command + ".success"), fileKey, key));
+        } catch (Exception ex) {
+            sender.sendMessage(controller.getMessages().get("commands.mconfig.write_failed").replace("$file", configFile.getName()));
+            controller.getLogger().log(Level.SEVERE, "Could not write to file " + configFile.getAbsoluteFile(), ex);
+        }
+    }
+
+    protected void setPath(ConfigurationSection config, String path, Object value) {
+        String[] pieces = StringUtils.split(path);
+        for (int i = 0; i < pieces.length - 1; i++) {
+            config = config.createSection(pieces[i]);
+        }
+        config.set(pieces[pieces.length - 1], value);
+    }
+
+    protected void onMagicDisable(CommandSender sender, String[] parameters) {
+        File configFile = getConfigFile(sender, "disable", parameters);
+        if (configFile == null) {
+            return;
+        }
+        String key = parameters[1];
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+        setPath(configuration, key + ".enabled", false);
+        trySave("disable", sender, configFile, configuration, parameters[0], key);
+    }
+
+    protected void onMagicEnable(CommandSender sender, String[] parameters) {
+        File configFile = getConfigFile(sender, "enable", parameters);
+        if (configFile == null) {
+            return;
+        }
+        String key = parameters[1];
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+        setPath(configuration, key + ".enabled", true);
+        trySave("enable", sender, configFile, configuration, parameters[0], key);
+    }
+
+    protected void onMagicConfigure(CommandSender sender, String[] parameters) {
+        File configFile = getConfigFile(sender, "configure", parameters);
+        if (configFile == null) {
+            return;
+        }
+        if (parameters.length < 3) {
+            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig.configure.usage"), "", "", '|'));
+            return;
+        }
+        String key = parameters[1];
+        String path = key + "." + parameters[2];
+        String value = "";
+        if (parameters.length > 3) {
+            value = StringUtils.join(Arrays.copyOfRange(parameters, 3, parameters.length), ' ');
+        }
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+        setPath(configuration, path, value);
+        trySave("configure", sender, configFile, configuration, parameters[0], key);
     }
 
     protected void onMagicClean(CommandSender sender, String configName) {
