@@ -56,6 +56,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
+import com.elmakers.mine.bukkit.api.wand.WandUseMode;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -137,7 +138,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean undroppable = false;
     private boolean keep = false;
     private boolean passive = false;
-    private boolean preuse = false;
+    private WandUseMode useMode = WandUseMode.SUCCESS;
     private boolean autoOrganize = false;
     private boolean autoAlphabetize = false;
     private boolean autoFill = false;
@@ -1637,7 +1638,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         uses = getInt("uses");
         hasUses = uses > 0;
         if (hasUses) {
-            preuse = getBoolean("preuse", false);
+            // Backwards-compatibility
+            boolean preuse = getBoolean("preuse", false);
+            useMode = parseUseMode("use_mode", preuse ? WandUseMode.PRECAST : WandUseMode.SUCCESS);
         }
 
         // Convert some legacy properties to potion effects
@@ -3421,6 +3424,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return defaultValue;
     }
 
+    public WandUseMode parseUseMode(String useString, WandUseMode defaultValue) {
+        if (useString != null && !useString.isEmpty()) {
+            try {
+                return WandUseMode.valueOf(useString.toUpperCase());
+            } catch (Exception ex) {
+                if (controller != null) {
+                    controller.getLogger().warning("Invalid use mode: " + useString);
+                }
+            }
+        }
+
+        return defaultValue;
+    }
+
     private void updateActiveMaterial() {
         if (mage == null) return;
 
@@ -4109,7 +4126,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public boolean cast(Spell spell, String[] parameters) {
-        if (preuse) {
+        if (useMode == WandUseMode.PRECAST) {
             if (!use()) {
                 return false;
             }
@@ -4138,7 +4155,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             if (spell.cast(castParameters == null ? null : castParameters.toArray(EMPTY_PARAMETERS))) {
                 Color spellColor = spell.getColor();
-                if (!preuse) {
+                if (useMode != WandUseMode.PRECAST) {
                     use();
                 }
                 if (spellColor != null && this.effectColor != null) {
@@ -4152,6 +4169,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 updateHotbarStatus();
                 return true;
+            }
+
+            if (useMode == WandUseMode.ALWAYS) {
+                use();
             }
         }
 

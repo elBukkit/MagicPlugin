@@ -3,6 +3,7 @@
 # 7.9.1
 
  - Fix missing IMPORTANT headers in defaults files
+ - Add "use_mode" wand property, which can be one of: success, precast, always. This replaces "preuse".
 
 # 7.9
 
