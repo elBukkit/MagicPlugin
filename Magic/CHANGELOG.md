@@ -2,6 +2,8 @@
 
 # 7.9.1
 
+ - Fix missing IMPORTANT headers in defaults files
+
 # 7.9
 
  - Add in-game customization commands (/mconfig enable|disable|configure)

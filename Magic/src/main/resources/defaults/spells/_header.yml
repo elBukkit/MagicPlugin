@@ -1,12 +1,12 @@
-#
+# .
 # !! IMPORTANT !!
-#
+# .
 # If you wish to customize this plugin, edit the "spells.yml" file instead.
-#
+# .
 # DO NOT JUST COPY THIS WHOLE FILE INTO YOUR spells.yml !!!!
 # If you do this, updating the plugin in the future may not work as expected.
-#
+# .
 # This file is merged from the files in the following folder:
-#
+# .
 # https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/spells
-#
+# .
