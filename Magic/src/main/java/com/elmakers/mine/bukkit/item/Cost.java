@@ -1,8 +1,12 @@
 package com.elmakers.mine.bukkit.item;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -337,5 +341,19 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         if (newWorth > 0 && currentWorth > 0) {
             scale(currentWorth / newWorth);
         }
+    }
+
+    @Nullable
+    public static List<Cost> parseCosts(ConfigurationSection node, MageController controller) {
+        if (node == null) {
+            return null;
+        }
+        List<Cost> costs = new ArrayList<>();
+        Collection<String> costKeys = node.getKeys(false);
+        for (String key : costKeys) {
+            costs.add(new Cost(controller, key, node.getInt(key, 1)));
+        }
+
+        return costs;
     }
 }

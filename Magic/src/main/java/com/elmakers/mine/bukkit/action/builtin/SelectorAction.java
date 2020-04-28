@@ -23,7 +23,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
-import com.elmakers.mine.bukkit.api.item.Cost;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -37,6 +36,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -302,7 +302,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                             }
                         } else {
                             SpellTemplate spell = controller.getSpellTemplate(spellKey);
-                            itemCost = spell.getCost();
+                            itemCost = (Cost)spell.getCost();
                         }
                         if (itemCost != null) {
                             if (costOverride != null) {
@@ -354,16 +354,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
         @Nullable
         protected List<Cost> parseCosts(ConfigurationSection node) {
-            if (node == null) {
-                return null;
-            }
-            List<Cost> costs = new ArrayList<>();
-            Collection<String> costKeys = node.getKeys(false);
-            for (String key : costKeys) {
-                costs.add(new com.elmakers.mine.bukkit.item.Cost(context.getController(), key, node.getInt(key, 1)));
-            }
-
-            return costs;
+            return Cost.parseCosts(node, context.getController());
         }
 
         @Nullable
