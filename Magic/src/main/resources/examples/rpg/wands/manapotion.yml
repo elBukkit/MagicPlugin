@@ -2,10 +2,6 @@ potion_mana10:
   icon: potion:004488
   consume_spell: gainmana_10
 
-potion_mana10:
-  icon: potion:0066AA
-  consume_spell: gainmana_10
-
 potion_mana50:
   icon: potion:0088DD
   consume_spell: gainmana_50
