@@ -4,7 +4,6 @@ import static com.google.common.base.Verify.verifyNotNull;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -167,7 +167,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Set<MageSpell> activeSpells = new HashSet<>();
     private UndoQueue undoQueue = null;
     private Map<String, UndoData> externalUndoData = null;
-    private Deque<Batch> pendingBatches = new ArrayDeque<>();
+    private Deque<Batch> pendingBatches = new ConcurrentLinkedDeque<>();
     private boolean loading = false;
     private boolean unloading = false;
     private int debugLevel = 0;
@@ -1706,22 +1706,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public int processPendingBatches(int maxWorldAllowed) {
         int updated = 0;
-        if (pendingBatches.size() > 0) {
-            List<Batch> processBatches = new ArrayList<>(pendingBatches);
-            pendingBatches.clear();
-            for (Batch batch : processBatches) {
-                int batchUpdated = batch.process(Math.max(1, maxWorldAllowed - updated));
-                updated += batchUpdated;
-                if (!batch.isFinished()) {
-                    pendingBatches.addLast(batch);
-                }
+        for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
+            Batch batch = iterator.next();
+            int batchUpdated = batch.process(Math.max(1, maxWorldAllowed - updated));
+            updated += batchUpdated;
+            if (batch.isFinished()) {
+                iterator.remove();
             }
         }
         return updated;
     }
 
     public boolean hasPendingBatches() {
-        return pendingBatches.size() > 0;
+        return !pendingBatches.isEmpty();
     }
 
     public void setLastHeldMapId(int mapId) {
@@ -1949,7 +1946,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public Batch cancelPending(String spellKey, boolean force) {
         Batch stoppedPending = null;
-        if (pendingBatches.size() > 0) {
+        if (!pendingBatches.isEmpty()) {
             List<Batch> batches = new ArrayList<>();
             batches.addAll(pendingBatches);
             for (Batch batch : batches) {
@@ -1993,7 +1990,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int finishPendingUndo() {
         int finished = 0;
-        if (pendingBatches.size() > 0) {
+        if (!pendingBatches.isEmpty()) {
             List<Batch> batches = new ArrayList<>();
             batches.addAll(pendingBatches);
             for (Batch batch : batches) {
@@ -2895,7 +2892,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean hasPending() {
         if (undoQueue != null && undoQueue.hasScheduled()) return true;
-        if (pendingBatches.size() > 0) return true;
+        if (hasPendingBatches()) return true;
 
         return false;
     }
