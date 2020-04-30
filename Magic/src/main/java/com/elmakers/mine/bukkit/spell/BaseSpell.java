@@ -1216,9 +1216,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         // Don't perform permission check until after processing parameters, in case of overrides
         if (!canCast(getLocation())) {
             processResult(SpellResult.INSUFFICIENT_PERMISSION, workingParameters);
-            sendCastMessage(SpellResult.INSUFFICIENT_PERMISSION, " (no cast)");
-            String creativeMessage = getMessage("creative_fail");
-            mage.sendMessage(creativeMessage);
+
+            if (creativeRestricted && mage.isPlayer() && mage.getPlayer().getGameMode() == GameMode.CREATIVE) {
+                String creativeMessage = getMessage("creative_fail");
+                mage.sendMessage(creativeMessage);
+            } else {
+                sendCastMessage(SpellResult.INSUFFICIENT_PERMISSION, " (no cast)");
+            }
+
             if (mage.getDebugLevel() > 1) {
                 CommandSender messageTarget = mage.getDebugger();
                 if (messageTarget == null) {
