@@ -80,6 +80,7 @@ boomstown:
        delay: 1500
        set_target: true
        duration: 20000
+       undo: 10000
    costs:
        mana: 100
 
