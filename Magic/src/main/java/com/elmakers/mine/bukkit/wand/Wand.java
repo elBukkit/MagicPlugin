@@ -1640,7 +1640,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (hasUses) {
             // Backwards-compatibility
             boolean preuse = getBoolean("preuse", false);
-            useMode = parseUseMode("use_mode", preuse ? WandUseMode.PRECAST : WandUseMode.SUCCESS);
+            useMode = parseUseMode(getString("use_mode"), preuse ? WandUseMode.PRECAST : WandUseMode.SUCCESS);
         }
 
         // Convert some legacy properties to potion effects
