@@ -1,5 +1,5 @@
 # Translator:qsefthuopq
-# Laste updated:2020-04-06
+# Laste updated:2020-05-01
 costs:
   sp_amount: $amount SP
   xp_amount: $amount XP
@@ -113,13 +113,13 @@ cooldown:
   wait_seconds: 冷却剩余$seconds秒
   wait_minutes: 冷却剩余$minutes分钟
   wait_hours: 冷却剩余$hours小时
-  wait_moment: 一会儿
+  wait_moment: 片刻
   wait_second: 1秒
   wait_minute: 1分钟
   wait_hour: 1小时
   description_seconds: $seconds秒
   description_minutes: $minutes分钟
-  description_hours: $hours 小时
+  description_hours: $hours小时
   description_minute: 1分钟
   description_hour: 1小时
   description_second: 1秒
@@ -616,10 +616,10 @@ spells:
     cast_broadcast: '&c&o$name&r&5出现了'
     death_broadcast: '&c&o$name&r&5被击败了'
   defender:
-    name: 守卫者
-    description: 创造自动机械：狩猎者
+    name: 护卫
+    description: 创造自动机械：护卫
     cast: 人类,我将为你而狩猎
-    fail: 你不能用$material制造守卫者
+    fail: 你不能用$material制造护卫
     cast_broadcast: '&c&o$name&r&5出现了'
     death_broadcast: '&c&o$name&r&5被击败了'
   life:
@@ -2295,11 +2295,11 @@ wands:
     name: 兔子鞋
     description: 动如脱兔
   flashboots:
-    name: Flash 鞋子
-    description: Zoooooooom
+    name: 闪电鞋
+    description: 成为闪电侠
   rocketboots:
     name: 火箭鞋
-    description: In a single bound!
+    description: 飞跃巅峰!
   hulkboots:
     name: 浩克鞋
     description: 浩克跳跃!
@@ -2313,10 +2313,10 @@ wands:
     name: 狼群
     description: NathanWolf的东西/扫帚
   minister:
-    name: The Minister
+    name: 
     description: 为了魔法!
   miniwolf:
-    name: 小狼
+    name: 幼狼
     description: NathanWolf的正经法杖
   borealis:
     name: 极光法杖
@@ -2479,7 +2479,7 @@ wands:
     name: 狼屋
     description: 会自动恢复的盒中基地
   defenderheart:
-    name: 守卫者之心
+    name: 护卫之心
     description: 律动之心
   virusheart:
     name: 病毒之心
