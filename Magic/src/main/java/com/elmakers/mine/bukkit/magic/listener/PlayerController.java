@@ -202,6 +202,14 @@ public class PlayerController implements Listener {
             activeWand.closeInventory();
             event.setCancelled(true);
         } else if (activeWand != null || offhandWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem())) {
+            if (activeWand != null) {
+                activeWand.saveState();
+                event.setOffHandItem(activeWand.getItem());
+            }
+            if (offhandWand != null) {
+                offhandWand.saveState();
+                event.setMainHandItem(offhandWand.getItem());
+            }
             mage.checkWandNextTick();
         }
     }
