@@ -72,16 +72,26 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
     }
 
     public boolean tableExists(String table) throws SQLException {
-        ResultSet tableData = getConnection().getMetaData().getTables(null, null, table, null);
-        boolean exists = tableData.next();
-        close(tableData);
+        ResultSet tableData = null;
+        boolean exists = false;
+        try {
+            tableData = getConnection().getMetaData().getTables(null, null, table, null);
+            exists = tableData.next();
+        } finally {
+            close(tableData);
+        }
         return exists;
     }
 
     public boolean columnExists(String table, String column) throws SQLException {
-        ResultSet columnData = getConnection().getMetaData().getColumns(null, null, table, column);
-        boolean exists = columnData.next();
-        close(columnData);
+        ResultSet columnData = null;
+        boolean exists = false;
+        try {
+            columnData = getConnection().getMetaData().getColumns(null, null, table, column);
+            exists = columnData.next();
+        } finally {
+            close(columnData);
+        }
         return exists;
     }
 
