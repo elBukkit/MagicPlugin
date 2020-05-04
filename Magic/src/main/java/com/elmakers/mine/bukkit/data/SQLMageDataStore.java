@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -72,12 +73,16 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
 
     public boolean tableExists(String table) throws SQLException {
         ResultSet tableData = getConnection().getMetaData().getTables(null, null, table, null);
-        return tableData.next();
+        boolean exists = tableData.next();
+        close(tableData);
+        return exists;
     }
 
     public boolean columnExists(String table, String column) throws SQLException {
         ResultSet columnData = getConnection().getMetaData().getColumns(null, null, table, column);
-        return columnData.next();
+        boolean exists = columnData.next();
+        close(columnData);
+        return exists;
     }
 
     @Override
@@ -91,13 +96,16 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
         YamlConfiguration serialized = new YamlConfiguration();
         save(mage, serialized);
 
+        PreparedStatement insert = null;
         try {
-            PreparedStatement insert = getConnection().prepareStatement("REPLACE INTO mage (id, data) VALUES (?, ?)");
+            insert = getConnection().prepareStatement("REPLACE INTO mage (id, data) VALUES (?, ?)");
             insert.setString(1, mage.getId());
             insert.setString(2, serialized.saveToString());
             insert.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error saving player " + mage.getId(), ex);
+        } finally {
+            close(insert);
         }
 
         if (releaseLock) {
@@ -112,13 +120,16 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
     @Override
     public void releaseLock(MageData mage) {
         synchronized (lockingLock) {
+            PreparedStatement release = null;
             try {
-                PreparedStatement release = getConnection().prepareStatement("UPDATE mage SET locked = 0 WHERE id = ?");
+                release = getConnection().prepareStatement("UPDATE mage SET locked = 0 WHERE id = ?");
                 release.setString(1, mage.getId());
                 release.execute();
                 controller.info("Released lock for " + mage.getId() + " at " + System.currentTimeMillis());
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Unable to release lock for " + mage.getId(), ex);
+            } finally {
+                close(release);
             }
         }
     }
@@ -128,11 +139,14 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             boolean hasLock = false;
             long start = System.currentTimeMillis();
 
+            PreparedStatement lockLookup = null;
+            PreparedStatement lock = null;
+            ResultSet results = null;
             try {
-                PreparedStatement lockLookup = getConnection().prepareStatement("SELECT locked FROM mage WHERE id = ?");
+                lockLookup = getConnection().prepareStatement("SELECT locked FROM mage WHERE id = ?");
                 while (!hasLock) {
                     lockLookup.setString(1, id);
-                    ResultSet results = lockLookup.executeQuery();
+                    results = lockLookup.executeQuery();
                     if (results.next()) {
                         hasLock = !results.getBoolean(1);
                     } else {
@@ -146,13 +160,19 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                         }
                         Thread.sleep(lockRetry);
                     }
+                    close(results);
+                    results = null;
                 }
 
-                PreparedStatement lock = getConnection().prepareStatement("UPDATE mage SET locked = 1 WHERE id = ?");
+                lock = getConnection().prepareStatement("UPDATE mage SET locked = 1 WHERE id = ?");
                 lock.setString(1, id);
                 lock.execute();
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Could not obtain lock for mage " + id, ex);
+            } finally {
+                close(lockLookup);
+                close(results);
+                close(lock);
             }
         }
     }
@@ -162,10 +182,12 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
         obtainLock(id);
         MageData data = null;
 
+        PreparedStatement loadQuery = null;
+        ResultSet results = null;
         try {
-            PreparedStatement loadQuery = getConnection().prepareStatement("SELECT data FROM mage WHERE id = ?");
+            loadQuery = getConnection().prepareStatement("SELECT data FROM mage WHERE id = ?");
             loadQuery.setString(1, id);
-            ResultSet results = loadQuery.executeQuery();
+            results = loadQuery.executeQuery();
             if (results.next()) {
                 YamlConfiguration saveFile = new YamlConfiguration();
                 saveFile.loadFromString(results.getString(1));
@@ -173,6 +195,9 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error loading player " + id, ex);
+        } finally {
+            close(results);
+            close(loadQuery);
         }
 
         if (callback != null) {
@@ -182,38 +207,49 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
 
     @Override
     public void delete(String id) {
+        PreparedStatement delete = null;
         try {
-            PreparedStatement delete = getConnection().prepareStatement("DELETE FROM mage WHERE id = ?");
+            delete = getConnection().prepareStatement("DELETE FROM mage WHERE id = ?");
             delete.setString(1, id);
             delete.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Unable to delete mage " + id, ex);
+        } finally {
+            close(delete);
         }
     }
 
     @Override
     public Collection<String> getAllIds() {
+        PreparedStatement idsQuery = null;
+        ResultSet idResults = null;
         List<String> ids = new ArrayList<>();
         try {
-            PreparedStatement idsQuery = getConnection().prepareStatement("SELECT id FROM mage WHERE migrated = 0");
-            ResultSet idResults = idsQuery.executeQuery();
+            idsQuery = getConnection().prepareStatement("SELECT id FROM mage WHERE migrated = 0");
+            idResults = idsQuery.executeQuery();
             while (idResults.next()) {
                 ids.add(idResults.getString(1));
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Unable to lookup all mage ids", ex);
+        } finally {
+            close(idsQuery);
+            close(idResults);
         }
         return ids;
     }
 
     @Override
     public void migrate(String id) {
+        PreparedStatement migrate = null;
         try {
-            PreparedStatement migrate = getConnection().prepareStatement("UPDATE mage SET migrated = 1 WHERE id = ?");
+            migrate = getConnection().prepareStatement("UPDATE mage SET migrated = 1 WHERE id = ?");
             migrate.setString(1, id);
             migrate.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Could not set mage " + id + " as migrated", ex);
+        } finally {
+            close(migrate);
         }
     }
 
@@ -226,6 +262,26 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                 controller.getLogger().log(Level.WARNING, "Error closing player data connection", ex);
             }
             connection = null;
+        }
+    }
+
+    private void close(@Nullable Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException ex) {
+                controller.getLogger().log(Level.WARNING, "Error closing statement", ex);
+            }
+        }
+    }
+
+    private void close(@Nullable ResultSet results) {
+        if (results != null) {
+            try {
+                results.close();
+            } catch (SQLException ex) {
+                controller.getLogger().log(Level.WARNING, "Error closing result set", ex);
+            }
         }
     }
 }
