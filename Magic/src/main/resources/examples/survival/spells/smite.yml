@@ -4,6 +4,8 @@ smite:
     icon_url: http://textures.minecraft.net/texture/a31cc0ffb1e814e1c82301067ea318356befa65dc1a027afbfd498709cad58
     category: elemental
     worth: 500
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: Lightning
@@ -43,11 +45,11 @@ smite:
         target_type: Damageable
         allow_max_range: true
         range: 32
-        radius: 3
+        radius: 1.5
         damage_max_distance: 4
         cooldown: 15000
         effect_only: true
-        damage: 4
+        damage: 3
         duration: 5000
         speed: 0.9
         falling: true
@@ -58,3 +60,13 @@ smite:
     costs:
         mana: 100
 
+smite|2:
+  upgrade_required_path: master
+  parameters:
+    radius: 2.5
+    damage: 4
+
+smite|3:
+  parameters:
+    radius: 3.5
+    damage: 5

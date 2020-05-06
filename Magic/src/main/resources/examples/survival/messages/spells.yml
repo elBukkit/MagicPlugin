@@ -491,6 +491,7 @@ spells:
         name: Smite
         description: Strike down your target
         cast: You smite $target
+        upgrade_description: "Increased damage and blast radius"
     nuke:
         name: Nuke
         description: Create a huge explosion

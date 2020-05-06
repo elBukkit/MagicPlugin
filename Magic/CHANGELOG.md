@@ -7,6 +7,7 @@
  - Add "use_mode" wand property, which can be one of: success, precast, always. This replaces "preuse".
  - Fix spells being unable to cancel themselves (e.g. cancel_on_death)
  - Fix swapping a wand or gun into the offhand restoring its ammo or mana
+ - Add upgrade levels to Smite
 
 # 7.9
 
