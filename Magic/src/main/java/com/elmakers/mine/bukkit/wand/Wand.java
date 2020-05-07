@@ -4617,6 +4617,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (!replacementTemplate.isEmpty() && !replacementTemplate.equals(template)) {
             playEffects("replace");
             setTemplate(replacementTemplate);
+            clearProperty("icon");
             loadProperties();
             saveState();
             return activate(mage, offhand);

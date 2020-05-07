@@ -2,6 +2,7 @@
 
 # 7.9.1
 
+ - Fix potter wand boxes not properly turning into a wand (icon wasn't working)
  - Fix missing IMPORTANT headers in defaults files
  - Add TakeCosts action
  - Add "use_mode" wand property, which can be one of: success, precast, always. This replaces "preuse".
