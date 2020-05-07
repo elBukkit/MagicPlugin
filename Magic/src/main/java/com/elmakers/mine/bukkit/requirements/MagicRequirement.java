@@ -41,6 +41,7 @@ public class MagicRequirement {
     private @Nullable List<PropertyRequirement> attributes = null;
     private @Nullable RangedRequirement lightLevel = null;
     private @Nullable RangedRequirement timeOfDay = null;
+    private @Nullable RangedRequirement height = null;
     private boolean requireWand = false;
 
     public MagicRequirement(@Nonnull MageController controller, @Nonnull Requirement requirement) {
@@ -70,6 +71,7 @@ public class MagicRequirement {
 
         lightLevel = parseRangedRequirement(configuration, "light");
         timeOfDay = parseRangedRequirement(configuration, "time");
+        height = parseRangedRequirement(configuration, "height");
 
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
@@ -126,6 +128,9 @@ public class MagicRequirement {
         }
         if (lightLevel != null) {
             return location != null && lightLevel.check((double)location.getBlock().getLightLevel());
+        }
+        if (height != null) {
+            return location != null && height.check(location.getY());
         }
 
         if (wandTags != null) {
@@ -261,6 +266,12 @@ public class MagicRequirement {
         }
         if (lightLevel != null) {
             String message = checkRequiredProperty(context, lightLevel, controller.getMessages().get("requirement.light"), location == null ? null : (double)location.getBlock().getLightLevel());
+            if (message != null) {
+                return message;
+            }
+        }
+        if (height != null) {
+            String message = checkRequiredProperty(context, height, controller.getMessages().get("requirement.height"), location == null ? null : location.getY());
             if (message != null) {
                 return message;
             }

@@ -8,6 +8,7 @@
  - Fix spells being unable to cancel themselves (e.g. cancel_on_death)
  - Fix swapping a wand or gun into the offhand restoring its ammo or mana
  - Add upgrade levels to Smite
+ - Add "height" requirement
 
 # 7.9
 

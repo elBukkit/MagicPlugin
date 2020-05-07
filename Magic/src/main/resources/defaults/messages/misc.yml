@@ -97,3 +97,4 @@ damage_types:
 requirements:
   light: "Light Level"
   time: "Time of Day"
+  height: "Height"
