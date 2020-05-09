@@ -3539,7 +3539,27 @@ sunbeam:
     damage: 10
     radius: 32
 
-
-
-
+masterful:
+  icon: diamond_axe:160
+  icon_disabled: diamond_hoe:160
+  effects:
+    projectile:
+        - class: EffectSingle
+          effectlib:
+            class: SphereEffect
+            particle: flame
+            particles: 4
+            radius: 0.2
+            duration: 30000
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Damage
+  parameters:
+    damage: "level * 2"
+    target_type: LivingEntity
+    range: 40
+    allow_max_range: false
+    cooldown: 2000
 
