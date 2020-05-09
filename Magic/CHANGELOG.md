@@ -12,6 +12,7 @@
  - Add "height" requirement
  - Add several builtin attributes: health, health_max, time, moon, location_x, location_y, location_z, level, xp, mana, mana_max
  - Add source_use_movement_direction and target_use_movement_direction options to ChangeContext action
+ - Add use_wand parameter to ArmorStandProjectile action
 
 # 7.9
 

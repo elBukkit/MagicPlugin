@@ -1,17 +1,21 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -40,6 +44,10 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private VectorTransform bodyTransform;
     private VectorTransform headTransform;
     private int visibleDelayTicks = 1;
+
+    private boolean useWand;
+    private ItemStack wandItem;
+    private int slotNumber;
 
     private int stepCount = 0;
 
@@ -82,6 +90,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
         unbreakableItems = parameters.getBoolean("unbreakable_items", false);
         visibleDelayTicks = parameters.getInt("visible_delay_ticks", 1);
+        useWand = parameters.getBoolean("mount_wand", false);
 
         MageController controller = context.getController();
         ItemData itemType = controller.getOrCreateItemOrWand(parameters.getString("right_arm_item"));
@@ -186,18 +195,58 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         if (entity == null) {
             return SpellResult.FAIL;
         }
+        Player player = context.getMage().getPlayer();
+        if (player == null && useWand) {
+            return SpellResult.PLAYER_REQUIRED;
+        }
         ArmorStand armorStand = (ArmorStand)entity;
         update(armorStand);
+        if (useWand && wandItem == null) {
+            Wand wand = context.getWand();
+            if (wand == null) {
+                return SpellResult.NO_TARGET;
+            }
+            wand.deactivate();
 
+            wandItem = wand.getItem();
+            if (wandItem == null || wandItem.getType() == Material.AIR) {
+                return SpellResult.FAIL;
+            }
+            slotNumber = wand.getHeldSlot();
+            player.getInventory().setItem(slotNumber, new ItemStack(Material.AIR));
+        }
         if (stepCount == visibleDelayTicks) {
+            if (wandItem != null) {
+                armorStand.setHelmet(wandItem);
+            } else {
+                armorStand.setHelmet(helmetItem);
+            }
             armorStand.setItemInHand(rightArmItem);
-            armorStand.setHelmet(helmetItem);
             armorStand.setChestplate(chestplateItem);
             armorStand.setLeggings(leggingsItem);
             armorStand.setBoots(bootsItem);
         }
         stepCount++;
         return result;
+    }
+
+    @Override
+    public void finish(CastContext context) {
+        super.finish(context);
+
+        Mage mage = context.getMage();
+        Player player = mage.getPlayer();
+        if (player == null || wandItem == null) return;
+
+        ItemStack currentItem = player.getInventory().getItem(slotNumber);
+        if (currentItem != null || mage.hasStoredInventory()) {
+            mage.giveItem(wandItem);
+        } else {
+            player.getInventory().setItem(slotNumber, wandItem);
+        }
+        mage.checkWand();
+
+        wandItem = null;
     }
 
     @Override
