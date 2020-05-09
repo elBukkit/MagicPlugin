@@ -3979,7 +3979,60 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
+        if (attribute == null) {
+            attribute = getBuiltinAttribute(attributeKey);
+        }
+
         return attribute;
+    }
+
+    @Nullable
+    private Double getBuiltinAttribute(String attributeKey) {
+        switch (attributeKey) {
+            case "health": {
+                LivingEntity living = getLivingEntity();
+                return living == null ? null : living.getHealth();
+            }
+            case "health_max": {
+                LivingEntity living = getLivingEntity();
+                return living == null ? null : CompatibilityUtils.getMaxHealth(living);
+            }
+            case "mana": {
+                return (double)getMana();
+            }
+            case "mana_max": {
+                return (double)getEffectiveManaMax();
+            }
+            case "xp": {
+                return (double)getExperience();
+            }
+            case "level": {
+                return (double)getLevel();
+            }
+            case "time": {
+                Location location = getLocation();
+                return location == null ? null : (double)location.getWorld().getTime();
+            }
+            case "moon": {
+                Location location = getLocation();
+                return location == null ? null : (double)(int)((location.getWorld().getFullTime() / 24000) % 8);
+            }
+            case "location_x": {
+                Location location = getLocation();
+                return location == null ? null : location.getX();
+            }
+            case "location_y": {
+                Location location = getLocation();
+                return location == null ? null : location.getY();
+            }
+            case "location_z": {
+                Location location = getLocation();
+                return location == null ? null : location.getZ();
+            }
+
+            default:
+                return null;
+        }
     }
 
     @Override

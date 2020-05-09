@@ -196,6 +196,7 @@ import com.elmakers.mine.bukkit.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
 
@@ -3082,7 +3083,7 @@ public class MagicController implements MageController {
 
         // Register attributes
         registeredAttributes.clear();
-        registeredAttributes.add("bowpull");
+        registeredAttributes.addAll(builtinAttributes);
         registeredAttributes.addAll(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {
             Set<String> providerAttributes = provider.getAllAttributes();
@@ -3094,9 +3095,6 @@ public class MagicController implements MageController {
         MageParameters.initializeAttributes(registeredAttributes);
         MageParameters.setLogger(getLogger());
         getLogger().info("Registered attributes: " + registeredAttributes);
-
-        // Remove bowpull so we can present this list in getAttributes
-        registeredAttributes.remove("bowpull");
     }
 
     protected void clear()
@@ -6073,6 +6071,10 @@ public class MagicController implements MageController {
     private final Map<String, SpellCategory>    categories                  = new HashMap<>();
     private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();
     private final Set<String>                   registeredAttributes        = new HashSet<>();
+    private final Set<String>                   builtinAttributes           = ImmutableSet.of(
+            "health", "health_max", "time", "moon", "location_x", "location_y", "location_z",
+            "mana", "mana_max", "xp", "level", "bowpull"
+    );
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();
     private final Map<String, Mage> vanished                                = new HashMap<>();

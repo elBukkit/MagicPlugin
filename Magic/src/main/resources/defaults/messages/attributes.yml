@@ -1,0 +1,37 @@
+attributes:
+  bowpull:
+    name: Bow Pull
+    description: How far back a player has pulled their bow, only applies to bow spells
+  health:
+    name: Health
+    description: A player or mob's health (hearts x 2)
+  health_max:
+    name: Maximum Health
+    description: A player or mob's health limit
+  time:
+    name: Time of Day
+    description: The Minecraft world time of day, in ticks from 0 to 23999
+  moon:
+    name: Phase of the Moon
+    description: 0 = Full Moon, 1 = Waning Gibbous, 4 = New Moon, 7 = Waxing Gibbous
+  location_x:
+    name: X-Location
+    description: The x-coordinate of the player or mob in the world
+  location_y:
+    name: Y-Location
+    description: The height of the player or mob in the world
+  location_z:
+    name: Z-Location
+    description: The z-coordinate of the player or mob in the world
+  level:
+    name: Experience Level
+    description: The player's experience level
+  xp:
+    name: Experience
+    description: The player's total experience
+  mana:
+    name: Mana
+    description: The player's current mana amount
+  mana_max:
+    name: Maximum Mana
+    description: The player's mana limit

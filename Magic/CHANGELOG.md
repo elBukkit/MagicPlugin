@@ -10,6 +10,7 @@
  - Fix swapping a wand or gun into the offhand restoring its ammo or mana
  - Add upgrade levels to Smite
  - Add "height" requirement
+ - Add several builtin attributes: health, health_max, time, moon, location_x, location_y, location_z, level, xp, mana, mana_max
 
 # 7.9
 
