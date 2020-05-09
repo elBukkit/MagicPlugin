@@ -9,6 +9,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
@@ -54,6 +55,8 @@ public class ChangeContextAction extends CompoundAction {
     private int sourcePitchMax;
     private boolean orientPitch;
     private boolean swapSourceAndTarget;
+    private boolean sourceUseMovementDirection;
+    private boolean targetUseMovementDirection;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -64,6 +67,8 @@ public class ChangeContextAction extends CompoundAction {
         targetSelf = parameters.contains("target_self") ? parameters.getBoolean("target_self") : null;
         sourceAtTarget = parameters.getBoolean("source_at_target", false);
         sourceIsTarget = parameters.getBoolean("source_is_target", false);
+        sourceUseMovementDirection = parameters.getBoolean("source_use_movement_direction", false);
+        targetUseMovementDirection = parameters.getBoolean("target_use_movement_direction", false);
         sourceDirectionIsTarget = parameters.getBoolean("source_direction_is_target", false);
         sourcePitch = ConfigurationUtils.getDouble(parameters, "source_pitch", null);
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
@@ -245,6 +250,19 @@ public class ChangeContextAction extends CompoundAction {
         {
             targetLocation = RandomUtils.randomizeLocation(targetLocation, randomTargetOffset);
         }
+        // Apply movement direction
+        if (sourceUseMovementDirection) {
+            sourceLocation.setDirection(context.getMage().getVelocity());
+        }
+        if (targetUseMovementDirection && targetLocation != null) {
+            Mage targetMage = context.getController().getRegisteredMage(targetEntity);
+            if (targetMage != null) {
+                targetLocation.setDirection(targetMage.getVelocity());
+            } else if (targetEntity != null) {
+                targetLocation.setDirection(targetEntity.getVelocity());
+            }
+        }
+
         // Given a yaw and pitch, this adjusts the source direction after rotating it.
         if (relativeSourceDirectionYawOffset != 0  || relativeSourceDirectionPitchOffset != 0)
         {
