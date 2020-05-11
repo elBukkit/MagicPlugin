@@ -14,11 +14,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class TakeItemAction extends BaseSpellAction
 {
     private String displayName;
+    private MaterialAndData itemType;
+    private boolean giveToCaster;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -28,6 +31,30 @@ public class TakeItemAction extends BaseSpellAction
         if (displayName != null) {
             displayName = ChatColor.translateAlternateColorCodes('&', displayName);
         }
+        giveToCaster = true;
+        String itemKey = parameters.getString("item", "");
+        if (!itemKey.isEmpty()) {
+            giveToCaster = false;
+            itemType = new MaterialAndData(itemKey);
+        }
+        giveToCaster = parameters.getBoolean("give_to_caster", giveToCaster);
+    }
+
+    private boolean checkItem(ItemStack item) {
+        if (displayName != null) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta == null || !meta.hasDisplayName() || !meta.getDisplayName().equals(displayName)) {
+                return false;
+            }
+        }
+        if (itemType != null) {
+            MaterialAndData check = new MaterialAndData(item);
+            if (!itemType.equals(check)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -39,41 +66,51 @@ public class TakeItemAction extends BaseSpellAction
         }
 
         ItemStack item = null;
-        if (target instanceof LivingEntity) {
-            LivingEntity livingEntity = (LivingEntity)target;
-            if (displayName == null) {
-                EntityEquipment equipment = livingEntity.getEquipment();
-                item = equipment.getItemInMainHand();;
-                equipment.setItemInMainHand(null);
-            } else {
-                if (!(target instanceof Player)) {
-                    return SpellResult.PLAYER_REQUIRED;
+        if (target instanceof Player) {
+            Player targetPlayer = (Player)target;
+            PlayerInventory playerInventory = targetPlayer.getInventory();
+            for (int i = 0; i < playerInventory.getSize(); i++) {
+                ItemStack inventoryItem = playerInventory.getItem(i);
+                if (InventoryUtils.isEmpty(inventoryItem)) continue;
+                if (checkItem(inventoryItem)) {
+                    item = inventoryItem;
+                    playerInventory.setItem(i, null);
+                    break;
                 }
-                Player targetPlayer = (Player)target;
-                PlayerInventory playerInventory = targetPlayer.getInventory();
-                for (int i = 0; i < playerInventory.getSize(); i++) {
-                    ItemStack inventoryItem = playerInventory.getItem(i);
-                    if (InventoryUtils.isEmpty(inventoryItem)) continue;
-
-                    ItemMeta meta = inventoryItem.getItemMeta();
-                    if (meta == null || !meta.hasDisplayName()) continue;
-                    if (meta.getDisplayName().equals(displayName)) {
-                        item = inventoryItem;
-                        playerInventory.setItem(i, null);
-                        break;
+            }
+        } else if (target instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity)target;
+            EntityEquipment equipment = livingEntity.getEquipment();
+            ItemStack equipmentItem = equipment.getItemInMainHand();
+            if (checkItem(equipmentItem)) {
+                context.registerModified(livingEntity);
+                equipment.setItemInMainHand(null);
+                item = equipmentItem;
+            }
+            equipmentItem = equipment.getItemInOffHand();
+            if (item == null && checkItem(equipmentItem)) {
+                context.registerModified(livingEntity);
+                equipment.setItemInOffHand(null);
+                item = equipmentItem;
+            }
+            if (item == null) {
+                ItemStack[] armor = equipment.getArmorContents();
+                for (int i = 0; i < armor.length; i++) {
+                    if (checkItem(armor[i])) {
+                       context.registerModified(livingEntity);
+                       item = armor[i];
+                       armor[i] = null;
+                       equipment.setArmorContents(armor);
+                       break;
                     }
                 }
             }
         } else if (target instanceof Item) {
             Item itemEntity = (Item)target;
-            item = itemEntity.getItemStack();
-            if (displayName != null) {
-                ItemMeta itemMeta = item.getItemMeta();
-                if (itemMeta == null || !itemMeta.hasDisplayName() || !itemMeta.getDisplayName().equals(displayName)) {
-                    item = null;
-                }
-            }
-            if (item != null) {
+            ItemStack itemStack = itemEntity.getItemStack();
+            if (checkItem(itemStack)) {
+                item = itemStack;
+                context.registerModified(itemEntity);
                 itemEntity.remove();
             }
         }
@@ -82,7 +119,9 @@ public class TakeItemAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        context.getMage().giveItem(item);
+        if (giveToCaster) {
+            context.getMage().giveItem(item);
+        }
 
         return SpellResult.CAST;
     }
@@ -90,7 +129,7 @@ public class TakeItemAction extends BaseSpellAction
     @Override
     public boolean isUndoable()
     {
-        return false;
+        return true;
     }
 
     @Override

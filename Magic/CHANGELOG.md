@@ -13,6 +13,7 @@
  - Add several builtin attributes: health, health_max, time, moon, location_x, location_y, location_z, level, xp, mana, mana_max
  - Add source_use_movement_direction and target_use_movement_direction options to ChangeContext action
  - Add use_wand and wand_slot parameters to ArmorStandProjectile action
+ - Improvements to TakeItem action, can now look for a specific item and also return it on undo
 
 # 7.9
 
