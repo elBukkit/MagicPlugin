@@ -4893,7 +4893,13 @@ public class MagicController implements MageController {
 
         String firstName = first.hasItemMeta() ? first.getItemMeta().getDisplayName() : null;
         String secondName = second.hasItemMeta() ? second.getItemMeta().getDisplayName() : null;
-        return Objects.equals(firstName, secondName);
+        if (!Objects.equals(firstName, secondName)) {
+            return false;
+        }
+
+        MaterialAndData firstData = new MaterialAndData(first);
+        MaterialAndData secondData = new MaterialAndData(second);
+        return firstData.equals(secondData);
     }
 
     @Override

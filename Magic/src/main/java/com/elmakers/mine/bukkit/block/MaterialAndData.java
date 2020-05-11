@@ -350,7 +350,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         com.elmakers.mine.bukkit.api.block.MaterialAndData other = (com.elmakers.mine.bukkit.api.block.MaterialAndData)obj;
-        return Objects.equal(other.getData(), data) && other.getMaterial() == material;
+        return Objects.equal(other.getData(), data) && other.getMaterial() == material && Objects.equal(tags, other.getTags());
     }
 
     @Override
@@ -935,6 +935,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public boolean matches(Material material, short data) {
         return (this.material == null || this.material == material)
                 && (this.data == null || this.data == data);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, Object> getTags() {
+        return tags;
     }
 
     @Override
