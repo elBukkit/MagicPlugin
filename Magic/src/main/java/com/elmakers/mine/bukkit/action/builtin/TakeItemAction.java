@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
+
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -13,8 +15,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class TakeItemAction extends BaseSpellAction
@@ -22,6 +27,44 @@ public class TakeItemAction extends BaseSpellAction
     private String displayName;
     private MaterialAndData itemType;
     private boolean giveToCaster;
+
+    private static class TakeUndoAction implements Runnable {
+        private final MageController controller;
+        private final WeakReference<Player> player;
+        private final int slotNumber;
+        private ItemStack item;
+
+        public TakeUndoAction(MageController controller, Player player, ItemStack item, int slotNumber) {
+            this.controller = controller;
+            this.player = new WeakReference<>(player);
+            this.slotNumber = slotNumber;
+            this.item = item;
+        }
+
+        private void returnItem() {
+            if (item == null) return;
+            Player player = this.player.get();
+            if (player == null) return;
+
+            PlayerInventory playerInventory = player.getInventory();
+            ItemStack currentItem = playerInventory.getItem(slotNumber);
+            if (CompatibilityUtils.isEmpty(currentItem)) {
+                playerInventory.setItem(slotNumber, item);
+            } else {
+                controller.giveItemToPlayer(player, item);
+            }
+            item = null;
+            Mage targetMage = controller.getRegisteredMage(player);
+            if (targetMage != null && targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)targetMage).armorUpdated();
+            }
+        }
+
+        @Override
+        public void run() {
+            returnItem();
+        }
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -69,12 +112,19 @@ public class TakeItemAction extends BaseSpellAction
         if (target instanceof Player) {
             Player targetPlayer = (Player)target;
             PlayerInventory playerInventory = targetPlayer.getInventory();
-            for (int i = 0; i < playerInventory.getSize(); i++) {
-                ItemStack inventoryItem = playerInventory.getItem(i);
+            int slotNumber = 0;
+            for (; slotNumber < playerInventory.getSize(); slotNumber++) {
+                ItemStack inventoryItem = playerInventory.getItem(slotNumber);
                 if (InventoryUtils.isEmpty(inventoryItem)) continue;
                 if (checkItem(inventoryItem)) {
+                    TakeUndoAction undoAction = new TakeUndoAction(context.getController(), targetPlayer, inventoryItem, slotNumber);
+                    context.registerForUndo(undoAction);
                     item = inventoryItem;
-                    playerInventory.setItem(i, null);
+                    playerInventory.setItem(slotNumber, null);
+                    Mage mage = context.getController().getRegisteredMage(targetPlayer);
+                    if (mage != null && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                        ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
+                    }
                     break;
                 }
             }
