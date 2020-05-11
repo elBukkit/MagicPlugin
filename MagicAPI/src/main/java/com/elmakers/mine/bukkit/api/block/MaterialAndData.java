@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.block;
 
+import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;
@@ -76,4 +77,6 @@ public interface MaterialAndData {
     void setRawData(Object data);
     ItemStack applyToItem(ItemStack stack);
     ItemStack applyToItem(ItemStack stack, ItemUpdatedCallback callback);
+    @Nullable
+    Map<String, Object> getTags();
 }
