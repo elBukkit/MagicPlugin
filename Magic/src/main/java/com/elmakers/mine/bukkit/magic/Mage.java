@@ -1771,7 +1771,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 // Check for spells that have changed class
                 // TODO: Still unsure if this is right.
                 if (!spell.getClass().getName().contains(className)) {
-                    spell.save(null);
                     spells.remove(key);
                     this.spellData.put(key, spell.getSpellData());
                 } else {
@@ -2036,7 +2035,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     spellData = new SpellData(key);
                     this.spellData.put(key, spellData);
                 }
-                playerSpell.load(spellData);
+                playerSpell.setSpellData(spellData);
             }
         } else {
             playerSpell.setMage(this);

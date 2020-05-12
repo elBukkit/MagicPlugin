@@ -8,7 +8,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
@@ -17,18 +16,6 @@ public abstract class BaseSpellAction implements SpellAction
     private boolean requiresTarget;
     private boolean requiresTargetEntity;
     private boolean ignoreResult;
-
-    @Override
-    public void load(Mage mage, ConfigurationSection data)
-    {
-
-    }
-
-    @Override
-    public void save(Mage mage, ConfigurationSection data)
-    {
-
-    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {

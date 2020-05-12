@@ -13,7 +13,6 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.google.common.base.Preconditions;
@@ -238,24 +237,6 @@ public abstract class CompoundAction extends BaseSpellAction
         }
 
         actions.loadAction(action, parameters);
-    }
-
-    @Override
-    public void load(Mage mage, ConfigurationSection data)
-    {
-        for (ActionHandler handler : handlers.values())
-        {
-            handler.loadData(mage, data);
-        }
-    }
-
-    @Override
-    public void save(Mage mage, ConfigurationSection data)
-    {
-        for (ActionHandler handler : handlers.values())
-        {
-            handler.saveData(mage, data);
-        }
     }
 
     @Override

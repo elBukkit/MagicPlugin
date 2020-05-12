@@ -1906,24 +1906,6 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     }
 
-    /**
-     * Called on player data load.
-     */
-    public void onLoad(ConfigurationSection node)
-    {
-
-    }
-
-    /**
-     * Called on player data save.
-     *
-     * @param node The configuration node to load data from.
-     */
-    public void onSave(ConfigurationSection node)
-    {
-
-    }
-
     //
     // Cloneable implementation
     //
@@ -2463,29 +2445,6 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public Mage getMage() {
         return mage;
-    }
-
-    @Override
-    public void load(SpellData spellData) {
-        if (spellData == null) {
-            throw new IllegalArgumentException("SpellData may not be null");
-        }
-        try {
-            this.spellData = spellData;
-            onLoad(spellData.getExtraData());
-        } catch (Exception ex) {
-            controller.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
-        }
-    }
-
-    @Override
-    public void save(SpellData spellData) {
-        try {
-            onSave(this.spellData.getExtraData());
-        } catch (Exception ex) {
-            controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
-            ex.printStackTrace();
-        }
     }
 
     @Override

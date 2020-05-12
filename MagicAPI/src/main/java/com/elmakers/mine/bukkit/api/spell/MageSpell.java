@@ -38,8 +38,6 @@ public interface MageSpell extends Spell, CostReducer {
     void setMage(Mage mage);
     Mage getMage();
 
-    void load(SpellData spellData);
-    void save(SpellData spellData);
     SpellData getSpellData();
     void setSpellData(SpellData data);
 
@@ -56,4 +54,18 @@ public interface MageSpell extends Spell, CostReducer {
      * in parameters such as cooldown, duration or cost_reduction.
      */
     void updateTemplateParameters();
+
+    /**
+     * This method is no longer used, and was never called correctly.
+     * Spells should use setData instead if they need to store custom data.
+     */
+    @Deprecated
+    default void save(SpellData spellData) { }
+
+    /**
+     * This method is no longer used, and was never called correctly.
+     * Spells should use getData instead if they need to store custom data.
+     */
+    @Deprecated
+    default void load(SpellData spellData) { }
 }

@@ -2,6 +2,11 @@
 
 # 7.9.1
 
+ - RecallSpell was removed, use RecallAction instead.
+   - Take note of all the deprecated spells you're using (basically any "class: something" in your main spell properties)
+   - These are all old, before the action system, and have been deprecated for years
+   - They will show in logs in startup
+   - They WILL be removed in future versions!
  - Fix potter wand boxes not properly turning into a wand (icon wasn't working)
  - Fix missing IMPORTANT headers in defaults files
  - Add TakeCosts action

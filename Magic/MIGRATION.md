@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 7.9.1
+
+ - RecallSpell was removed, use RecallAction instead.
+ - Take note of all the deprecated spells you're using, they will show in logs in startup and will be removed in future versions!
+
 ## 7.6.9
 
  - Action parameters embedded in the "actions" tree no longer inherit down to child actions

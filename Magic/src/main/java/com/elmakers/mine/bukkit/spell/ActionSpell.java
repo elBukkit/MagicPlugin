@@ -161,26 +161,6 @@ public class ActionSpell extends BrushSpell
     }
 
     @Override
-    public void onLoad(ConfigurationSection data)
-    {
-        super.onLoad(data);
-        for (ActionHandler handler : actions.values())
-        {
-            handler.loadData(getMage(), data);
-        }
-    }
-
-    @Override
-    public void onSave(ConfigurationSection data)
-    {
-        super.onSave(data);
-        for (ActionHandler handler : actions.values())
-        {
-            handler.saveData(getMage(), data);
-        }
-    }
-
-    @Override
     protected void loadTemplate(ConfigurationSection template)
     {
         castOnNoTarget = true;

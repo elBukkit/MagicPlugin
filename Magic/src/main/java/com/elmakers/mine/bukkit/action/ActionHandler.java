@@ -124,22 +124,6 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         actions.add(actionContext);
     }
 
-    public void loadData(Mage mage, ConfigurationSection data)
-    {
-        for (ActionContext action : actions)
-        {
-            action.getAction().load(mage, data);
-        }
-    }
-
-    public void saveData(Mage mage, ConfigurationSection data)
-    {
-        for (ActionContext action : actions)
-        {
-            action.getAction().save(mage, data);
-        }
-    }
-
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         for (ActionContext action : actions)
