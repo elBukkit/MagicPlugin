@@ -377,7 +377,7 @@ public class ConfigurationLoadTask implements Runnable {
     private ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean setEnabled)
         throws IOException, InvalidConfigurationException {
         if (configSubFolder.exists()) {
-            List<File> priorityFiles = new ArrayList();
+            List<File> priorityFiles = new ArrayList<>();
             File[] files = configSubFolder.listFiles();
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
