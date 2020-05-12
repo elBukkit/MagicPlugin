@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.lang.ref.WeakReference;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -31,12 +32,14 @@ public class TakeItemAction extends BaseSpellAction
     private static class TakeUndoAction implements Runnable {
         private final MageController controller;
         private final WeakReference<Player> player;
+        private final Location location;
         private final int slotNumber;
         private ItemStack item;
 
         public TakeUndoAction(MageController controller, Player player, ItemStack item, int slotNumber) {
             this.controller = controller;
             this.player = new WeakReference<>(player);
+            this.location = player.getLocation();
             this.slotNumber = slotNumber;
             this.item = item;
         }
@@ -44,7 +47,10 @@ public class TakeItemAction extends BaseSpellAction
         private void returnItem() {
             if (item == null) return;
             Player player = this.player.get();
-            if (player == null) return;
+            if (player == null || !player.isOnline()) {
+                location.getWorld().dropItem(location, item);
+                return;
+            }
 
             PlayerInventory playerInventory = player.getInventory();
             ItemStack currentItem = playerInventory.getItem(slotNumber);
