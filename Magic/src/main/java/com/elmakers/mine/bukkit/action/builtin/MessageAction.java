@@ -84,6 +84,10 @@ public class MessageAction extends BaseSpellAction
     private void sendMessage(CastContext context, Player player) {
         String message = context.parameterize(context.getMessage(this.message, this.message));
         message = message.replace("$spell", context.getSpell().getName());
+        ConfigurationSection variables = context.getVariables();
+        for (String key : variables.getKeys(false)) {
+            message = message.replace("$" + key, variables.getString(key));
+        }
         switch (messageType) {
             case CHAT:
                 player.sendMessage(message);

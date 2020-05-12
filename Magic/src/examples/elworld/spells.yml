@@ -3628,3 +3628,10 @@ throwshield:
           - class: Command
             console: true
             command: /minecraft:give @p shield{CustomModelData:1006}
+
+checkvariable:
+  icon: feather
+  actions:
+    cast:
+      - class: Message
+        message: "Variable count = $c"
