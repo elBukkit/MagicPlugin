@@ -25,6 +25,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -80,6 +81,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private MaterialBrush brush;
     private CastContext base;
     private MageClass mageClass;
+    private ConfigurationSection variables;
 
     private List<ActionHandlerContext> handlers = null;
     private List<ActionHandlerContext> finishedHandlers = null;
@@ -1336,5 +1338,16 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public void addMessageParameter(String key, String value) {
         messageParameters.put(key, value);
+    }
+
+    @Override
+    public ConfigurationSection getVariables() {
+        if (baseSpell == null) {
+            if (variables == null) {
+                variables = new MemoryConfiguration();
+            }
+            return variables;
+        }
+        return baseSpell.getVariables();
     }
 }

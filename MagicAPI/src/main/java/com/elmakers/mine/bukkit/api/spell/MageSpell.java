@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.api.spell;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -47,6 +50,9 @@ public interface MageSpell extends Spell, CostReducer {
     @Nullable
     Double getAttribute(String attributeKey);
 
+    @Nonnull
+    ConfigurationSection getVariables();
+
     /**
      * Force a reload of a subset of special parameters that may appear in spell lore.
      *
@@ -57,14 +63,14 @@ public interface MageSpell extends Spell, CostReducer {
 
     /**
      * This method is no longer used, and was never called correctly.
-     * Spells should use setData instead if they need to store custom data.
+     * Spells should use getVariables instead if they need to store custom data.
      */
     @Deprecated
     default void save(SpellData spellData) { }
 
     /**
      * This method is no longer used, and was never called correctly.
-     * Spells should use getData instead if they need to store custom data.
+     * Spells should use getVariables instead if they need to store custom data.
      */
     @Deprecated
     default void load(SpellData spellData) { }

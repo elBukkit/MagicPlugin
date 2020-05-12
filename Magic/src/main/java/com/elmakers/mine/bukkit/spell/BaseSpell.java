@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -249,6 +250,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
     protected Collection<Requirement> requirements = null;
+    protected ConfigurationSection variables = null;
 
     protected static Random random            = new Random();
 
@@ -3021,5 +3023,17 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Nullable
     public String getCreatorId() {
         return creatorId;
+    }
+
+    @Override
+    @Nonnull
+    public ConfigurationSection getVariables() {
+        if (variables == null) {
+            variables = spellData.getVariables();
+            if (variables == null) {
+                variables = new MemoryConfiguration();
+            }
+        }
+        return variables;
     }
 }

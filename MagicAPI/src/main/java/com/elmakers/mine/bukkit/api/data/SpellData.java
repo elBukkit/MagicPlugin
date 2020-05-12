@@ -12,7 +12,7 @@ public class SpellData {
     private long lastEarn;
     private long castCount;
     private long cooldownExpiration;
-    private ConfigurationSection data;
+    private ConfigurationSection variables;
 
     public SpellData(SpellKey spellKey) {
         this.spellKey = spellKey;
@@ -22,15 +22,25 @@ public class SpellData {
         this(new SpellKey(spellKey));
     }
 
+    @Deprecated
     public void setExtraData(ConfigurationSection data) {
-        this.data = data;
+       this.setVariables(data);
     }
 
+    @Deprecated
     public ConfigurationSection getExtraData() {
-        if (data == null) {
-            data = new MemoryConfiguration();
+        return getVariables();
+    }
+
+    public void setVariables(ConfigurationSection data) {
+        this.variables = data;
+    }
+
+    public ConfigurationSection getVariables() {
+        if (variables == null) {
+            variables = new MemoryConfiguration();
         }
-        return data;
+        return variables;
     }
 
     public SpellKey getKey() {

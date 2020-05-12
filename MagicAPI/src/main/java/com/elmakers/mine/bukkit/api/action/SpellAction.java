@@ -30,14 +30,14 @@ public interface SpellAction extends Cloneable
 
     /**
      * This mechanism never worked properly and is no longer called.
-     * Actions that need to store data should interact with CastContext.getData instead.
+     * Actions that need to store data should interact with CastContext.getVariables instead.
      */
     @Deprecated
     default void load(Mage mage, ConfigurationSection data) { }
 
     /**
      * This mechanism never worked properly and is no longer called.
-     * Actions that need to store data should interact with CastContext.setData instead.
+     * Actions that need to store data should interact with CastContext.getVariables instead.
      */
     @Deprecated
     default void save(Mage mage, ConfigurationSection data) { }

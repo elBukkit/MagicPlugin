@@ -103,15 +103,15 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         if (spellData != null) {
             for (SpellData spell : spellData) {
                 ConfigurationSection node = spellNode.createSection(spell.getKey().getKey());
+                ConfigurationSection variables = spell.getVariables();
+                if (variables != null) {
+                    ConfigurationUtils.addConfigurations(node, variables);
+                }
                 node.set("cast_count", spell.getCastCount());
                 node.set("last_cast", spell.getLastCast());
                 node.set("last_earn", spell.getLastEarn());
                 node.set("cooldown_expiration", spell.getCooldownExpiration());
                 node.set("active", spell.isActive() ? true : null);
-                ConfigurationSection extra = spell.getExtraData();
-                if (extra != null) {
-                    ConfigurationUtils.addConfigurations(node, extra);
-                }
             }
         }
 
@@ -316,7 +316,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 node.set("last_cast", null);
                 node.set("last_earn", null);
                 node.set("cooldown_expiration", null);
-                spellData.setExtraData(node);
+                spellData.setVariables(node);
             }
             data.setSpellData(spellDataMap.values());
         }
