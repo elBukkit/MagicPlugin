@@ -250,7 +250,6 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
     protected Collection<Requirement> requirements = null;
-    protected ConfigurationSection variables = null;
 
     protected static Random random            = new Random();
 
@@ -2457,6 +2456,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void setSpellData(SpellData data) {
         this.spellData = data;
+        this.parameters = new SpellParameters(this);
     }
 
     @Override
@@ -3028,12 +3028,9 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     @Nonnull
     public ConfigurationSection getVariables() {
-        if (variables == null) {
-            variables = spellData.getVariables();
-            if (variables == null) {
-                variables = new MemoryConfiguration();
-            }
+        if (spellData == null) {
+            spellData = new SpellData(getKey());
         }
-        return variables;
+        return spellData.getVariables();
     }
 }
