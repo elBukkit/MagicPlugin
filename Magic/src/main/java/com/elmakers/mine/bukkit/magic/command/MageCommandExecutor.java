@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -213,6 +214,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     Mage mage = controller.getMage(target);
                     ConfigurationSection data = mage.getData();
                     options.addAll(data.getKeys(false));
+                    Collection<Spell> spells = mage.getSpells();
+                    for (Spell spell : spells) {
+                        options.add(spell.getKey());
+                    }
                 }
             }
 
@@ -418,7 +423,15 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             if (spell != null)
             {
                 sender.sendMessage(ChatColor.GOLD + "Mage data for " + ChatColor.AQUA + player.getDisplayName() + ChatColor.GOLD + ": " + ChatColor.LIGHT_PURPLE + spell.getName());
-                sender.sendMessage(ChatColor.AQUA + " Cast Count: " + ChatColor.GOLD + spell.getCastCount());
+                sender.sendMessage(ChatColor.DARK_AQUA + " Cast Count: " + ChatColor.GOLD + spell.getCastCount());
+                if (spell instanceof MageSpell) {
+                    MageSpell mageSpell = (MageSpell)spell;
+                    ConfigurationSection variables = mageSpell.getVariables();
+                    for (String key : variables.getKeys(false)) {
+                        String value = variables.getString(key);
+                        sender.sendMessage(ChatColor.AQUA + " " + key + ChatColor.DARK_AQUA + ": " + ChatColor.GOLD + value);
+                    }
+                }
                 return true;
             }
             ConfigurationSection subSection = data.getConfigurationSection(args[0]);
@@ -461,7 +474,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.GOLD + "Removed data for key " + ChatColor.AQUA + key + ChatColor.GOLD  + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
             return true;
         }
-        if (args.length != 2)
+        if (args.length > 3)
         {
             return false;
         }
@@ -485,11 +498,29 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         Spell spell = mage.getSpell(args[0]);
         if (spell != null)
         {
+            if (args.length > 2 && spell instanceof MageSpell) {
+                MageSpell mageSpell = (MageSpell)spell;
+                String key = args[1];
+                String value = args[2];
+                mageSpell.getVariables().set(key, value);
+                sender.sendMessage(ChatColor.GOLD + "Set " + ChatColor.AQUA + spell.getName() + " " + ChatColor.DARK_AQUA + key + ChatColor.GOLD + " variable to " + ChatColor.AQUA + value + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
+                return true;
+            }
             long value = 0;
             try {
                 value = Long.parseLong(args[1]);
             } catch (Exception ex) {
-                sender.sendMessage(ChatColor.RED + "Cast count must be a number");
+                String key = args[1];
+                if (spell instanceof MageSpell) {
+                    MageSpell mageSpell = (MageSpell)spell;
+                    if (mageSpell.getVariables().contains(key)) {
+                        mageSpell.getVariables().set(key, null);
+                        sender.sendMessage(ChatColor.GOLD + "Cleared " + ChatColor.AQUA + spell.getName() + " " + ChatColor.DARK_AQUA + key + ChatColor.GOLD + " variable for " + ChatColor.DARK_AQUA + player.getDisplayName());
+                        return true;
+                    }
+                }
+
+                sender.sendMessage(ChatColor.RED + "Cast count must be a number, and no variable found with name " + key);
                 return true;
             }
             spell.setCastCount(value);
