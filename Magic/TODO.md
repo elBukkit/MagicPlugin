@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - Add replace_on_use (like replace_on_activate, but for right-click)
+
  - Add support for Sponge schematics
  - Add Battle Arena integration
 

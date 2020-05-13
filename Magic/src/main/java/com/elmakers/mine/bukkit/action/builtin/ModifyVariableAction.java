@@ -47,6 +47,7 @@ public class ModifyVariableAction extends BaseSpellAction {
             }
             variables.set(key, value);
         }
+        context.getSpell().reloadParameters();
         return SpellResult.CAST;
     }
 }

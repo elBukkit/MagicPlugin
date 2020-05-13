@@ -161,6 +161,13 @@ public class ActionSpell extends BrushSpell
     }
 
     @Override
+    public void reloadParameters() {
+        if (currentHandler != null) {
+            currentHandler.prepare(currentCast, workingParameters);
+        }
+    }
+
+    @Override
     protected void loadTemplate(ConfigurationSection template)
     {
         castOnNoTarget = true;
