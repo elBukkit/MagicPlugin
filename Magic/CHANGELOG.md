@@ -8,6 +8,7 @@
    - They will show in logs in startup
    - They WILL be removed in future versions!
  - Add ModifyVariable action, adding concept of user-defined variables that can be used in spell parameters
+ - Add "variables" requirement
  - Fix potter wand boxes not properly turning into a wand (icon wasn't working)
  - Potter wand boxes now open on right-click
  - Fix missing IMPORTANT headers in defaults files

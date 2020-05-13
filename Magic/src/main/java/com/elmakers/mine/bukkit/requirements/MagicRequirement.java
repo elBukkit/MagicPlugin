@@ -39,6 +39,7 @@ public class MagicRequirement {
     private @Nullable List<PropertyRequirement> wandProperties = null;
     private @Nullable List<PropertyRequirement> classProperties = null;
     private @Nullable List<PropertyRequirement> attributes = null;
+    private @Nullable List<PropertyRequirement> variables = null;
     private @Nullable RangedRequirement lightLevel = null;
     private @Nullable RangedRequirement timeOfDay = null;
     private @Nullable RangedRequirement height = null;
@@ -68,6 +69,7 @@ public class MagicRequirement {
         wandProperties = parsePropertyRequirements(configuration, "wand_properties", "property");
         classProperties = parsePropertyRequirements(configuration, "class_properties", "property");
         attributes = parsePropertyRequirements(configuration, "attributes", "attribute");
+        variables = parsePropertyRequirements(configuration, "variables", "variable");
 
         lightLevel = parseRangedRequirement(configuration, "light");
         timeOfDay = parseRangedRequirement(configuration, "time");
@@ -215,6 +217,20 @@ public class MagicRequirement {
             for (PropertyRequirement requirement : attributes) {
                 String key = requirement.key;
                 Double value = mage.getAttribute(key);
+                if (!requirement.check(value)) {
+                    return false;
+                }
+            }
+        }
+
+        if (variables != null) {
+            for (PropertyRequirement requirement : variables) {
+                String key = requirement.key;
+                Double value = null;
+                ConfigurationSection variables = context.getVariables();
+                if (variables.contains(key)) {
+                    value = variables.getDouble(key);
+                }
                 if (!requirement.check(value)) {
                     return false;
                 }
@@ -385,6 +401,21 @@ public class MagicRequirement {
             for (PropertyRequirement requirement : attributes) {
                 String key = requirement.key;
                 Double value = mage.getAttribute(key);
+                String message = checkRequiredProperty(context, requirement, key, value);
+                if (message != null) {
+                    return message;
+                }
+            }
+        }
+
+        if (variables != null) {
+            for (PropertyRequirement requirement : variables) {
+                String key = requirement.key;
+                Double value = null;
+                ConfigurationSection variables = context.getVariables();
+                if (variables.contains(key)) {
+                    value = variables.getDouble(key);
+                }
                 String message = checkRequiredProperty(context, requirement, key, value);
                 if (message != null) {
                     return message;

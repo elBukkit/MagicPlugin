@@ -3631,6 +3631,8 @@ throwshield:
 
 testvariable:
   icon: feather
+  parameters:
+    target: self
   actions:
     cast:
       - class: Repeat
@@ -3642,3 +3644,13 @@ testvariable:
           value: "count + 1"
         - class: Message
           message: "Variable count = $count"
+      - class: CheckRequirements
+        requirements:
+          - variables:
+            - variable: count
+              min: 10
+        actions:
+          - class: Message
+            message: "STAHP IT'S TOO MUCH"
+          - class: Damage
+            damage: "count / 4"
