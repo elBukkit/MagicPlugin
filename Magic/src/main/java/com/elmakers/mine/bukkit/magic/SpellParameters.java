@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 
 public class SpellParameters extends MageParameters {
-    private final @Nonnull ConfigurationSection variables;
+    private @Nonnull ConfigurationSection variables;
     private final @Nonnull Set<String> allParameters = new HashSet<>();
     private final @Nonnull MageSpell spell;
 
@@ -45,5 +45,9 @@ public class SpellParameters extends MageParameters {
     protected Set<String> getParameters() {
         this.allParameters.addAll(variables.getKeys(false));
         return allParameters;
+    }
+
+    public void setVariables(@Nonnull ConfigurationSection variables) {
+        this.variables = variables;
     }
 }

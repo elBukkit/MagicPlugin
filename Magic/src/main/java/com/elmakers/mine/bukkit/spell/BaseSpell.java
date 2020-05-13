@@ -2456,7 +2456,9 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void setSpellData(SpellData data) {
         this.spellData = data;
-        this.parameters = new SpellParameters(this);
+        if (this.parameters != null) {
+            this.parameters.setVariables(getVariables());
+        }
     }
 
     @Override
