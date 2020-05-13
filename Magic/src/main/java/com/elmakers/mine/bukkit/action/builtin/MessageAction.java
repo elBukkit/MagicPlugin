@@ -1,9 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -73,35 +77,44 @@ public class MessageAction extends BaseSpellAction
             return SpellResult.CAST;
         }
         Mage mage = context.getMage();
-        Player player = mage.getPlayer();
-        if (player == null) {
-            return SpellResult.PLAYER_REQUIRED;
+        CommandSender commandSender = mage.getCommandSender();
+        if (commandSender == null) {
+            return SpellResult.FAIL;
         }
-        sendMessage(context, player);
-        return SpellResult.CAST;
+        return sendMessage(context, commandSender);
     }
 
-    private void sendMessage(CastContext context, Player player) {
+    private SpellResult sendMessage(CastContext context, CommandSender commandSender) {
         String message = context.parameterize(context.getMessage(this.message, this.message));
         message = message.replace("$spell", context.getSpell().getName());
         ConfigurationSection variables = context.getVariables();
-        for (String key : variables.getKeys(false)) {
+        List<String> keys = new ArrayList<>(variables.getKeys(false));
+        Collections.sort(keys, (o1, o2) -> o2.length() - o1.length());
+        for (String key : keys) {
             message = message.replace("$" + key, variables.getString(key));
         }
+        Player player = (commandSender instanceof Player) ? (Player)commandSender : null;
         switch (messageType) {
             case CHAT:
-                player.sendMessage(message);
+                commandSender.sendMessage(message);
                 break;
             case TITLE:
+                if (player == null) {
+                    return SpellResult.PLAYER_REQUIRED;
+                }
                 String subMessage = context.parameterize(context.getMessage(this.subMessage, this.subMessage));
                 CompatibilityUtils.sendTitle(player, message, subMessage, fadeIn, stay, fadeOut);
                 break;
             case ACTION_BAR:
+                if (player == null) {
+                    return SpellResult.PLAYER_REQUIRED;
+                }
                 if (!CompatibilityUtils.sendActionBar(player, message)) {
                     player.sendMessage(message);
                 }
                 break;
         }
+        return SpellResult.CAST;
     }
 
     @Override
