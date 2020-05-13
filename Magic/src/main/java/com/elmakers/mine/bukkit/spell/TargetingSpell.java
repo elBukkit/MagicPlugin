@@ -90,29 +90,31 @@ public class TargetingSpell extends BaseSpell {
     public String getMessage(String messageKey, String def) {
         String message = super.getMessage(messageKey, def);
 
-        // Escape targeting parameters
-        String useTargetName = null;
-        if (currentCast != null) {
-            useTargetName = currentCast.getTargetName();
-        }
-        if (useTargetName == null) {
-            Target target = targeting.getTarget();
-            if (target != null) {
-                if (target.hasEntity() && getTargetType() != TargetType.BLOCK) {
-                    useTargetName = controller.getEntityDisplayName(target.getEntity());
-                } else if (target.isValid() && getTargetType() != TargetType.OTHER_ENTITY && getTargetType() != TargetType.ANY_ENTITY) {
-                    MaterialAndData material = target.getTargetedMaterial();
-                    if (material != null)
-                    {
-                        useTargetName = material.getName();
+        // Escape targeting parameters, but don't stomp on variables
+        if (!getVariables().contains("target")) {
+            String useTargetName = null;
+            if (currentCast != null) {
+                useTargetName = currentCast.getTargetName();
+            }
+            if (useTargetName == null) {
+                Target target = targeting.getTarget();
+                if (target != null) {
+                    if (target.hasEntity() && getTargetType() != TargetType.BLOCK) {
+                        useTargetName = controller.getEntityDisplayName(target.getEntity());
+                    } else if (target.isValid() && getTargetType() != TargetType.OTHER_ENTITY && getTargetType() != TargetType.ANY_ENTITY) {
+                        MaterialAndData material = target.getTargetedMaterial();
+                        if (material != null)
+                        {
+                            useTargetName = material.getName();
+                        }
                     }
                 }
             }
-        }
-        if (useTargetName == null) {
-            message = message.replace("$target", "Nothing");
-        } else {
-            message = message.replace("$target", useTargetName);
+            if (useTargetName == null) {
+                message = message.replace("$target", "Nothing");
+            } else {
+                message = message.replace("$target", useTargetName);
+            }
         }
 
         return message;

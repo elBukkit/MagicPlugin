@@ -118,7 +118,11 @@ public class BlockSpell extends UndoableSpell {
     @Override
     public String getMessage(String messageKey, String def) {
         String message = super.getMessage(messageKey, def);
-        return message.replace("$count", Integer.toString(getModifiedCount()));
+        // Don't stomp on variables here
+        if (!getVariables().contains("count")) {
+            return message.replace("$count", Integer.toString(getModifiedCount()));
+        }
+        return message;
     }
 
     @Override
