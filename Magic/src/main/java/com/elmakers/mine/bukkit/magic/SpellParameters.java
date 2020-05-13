@@ -17,7 +17,10 @@ public class SpellParameters extends MageParameters {
         super(spell.getMage(), "Spell: " + spell.getKey());
         this.spell = spell;
         this.variables = spell.getVariables();
-        this.allParameters.addAll(super.getParameters());
+        Set<String> superParameters = super.getParameters();
+        if (superParameters != null) {
+            this.allParameters.addAll(superParameters);
+        }
     }
 
     public SpellParameters(MageSpell spell, ConfigurationSection config) {
