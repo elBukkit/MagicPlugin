@@ -3629,9 +3629,16 @@ throwshield:
             console: true
             command: /minecraft:give @p shield{CustomModelData:1006}
 
-checkvariable:
+testvariable:
   icon: feather
   actions:
     cast:
-      - class: Message
-        message: "Variable count = $c"
+      - class: Repeat
+        repeat: 3
+        actions:
+        - class: ModifyVariable
+          variable: count
+          default: 10
+          value: "count + 1"
+        - class: Message
+          message: "Variable count = $count"
