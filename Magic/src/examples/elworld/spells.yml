@@ -3638,7 +3638,8 @@ testvariable:
       - class: ModifyVariable
         variable: armor
         value: "%armor_durability_max_helmet%"
-        overwrite: true
+        # This will make it so the variable is only set once
+        # overwrite: false
       - class: Message
         message: "Your slot 1 armor is @armor"
       - class: Repeat
