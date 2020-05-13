@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class ModifyVariableAction extends BaseSpellAction {
     private String key;
+    private boolean hasValue;
     private double value;
     private boolean clear;
 
@@ -30,11 +31,18 @@ public class ModifyVariableAction extends BaseSpellAction {
         key = parameters.getString("variable", "");
         checkDefaults(context.getVariables(), parameters);
         clear = parameters.getBoolean("clear");
-        value = parameters.getDouble("value", 0);
+        String testValue = parameters.getString("value");
+        hasValue = testValue != null && !testValue.isEmpty();
+        if (hasValue) {
+            value = parameters.getDouble("value", 0);
+        }
     }
 
     @Override
     public SpellResult perform(CastContext context) {
+        if (!hasValue) {
+            return SpellResult.NO_ACTION;
+        }
         ConfigurationSection variables = context.getVariables();
         if (clear) {
             if (!variables.contains(key)) {
