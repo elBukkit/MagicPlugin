@@ -1,9 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
