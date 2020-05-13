@@ -1,10 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -86,13 +83,8 @@ public class MessageAction extends BaseSpellAction
 
     private SpellResult sendMessage(CastContext context, CommandSender commandSender) {
         String message = context.parameterize(context.getMessage(this.message, this.message));
+        // This is leftover but really shouldn't be here, use @spell instead!
         message = message.replace("$spell", context.getSpell().getName());
-        ConfigurationSection variables = context.getVariables();
-        List<String> keys = new ArrayList<>(variables.getKeys(false));
-        Collections.sort(keys, (o1, o2) -> o2.length() - o1.length());
-        for (String key : keys) {
-            message = message.replace("$" + key, variables.getString(key));
-        }
         Player player = (commandSender instanceof Player) ? (Player)commandSender : null;
         switch (messageType) {
             case CHAT:

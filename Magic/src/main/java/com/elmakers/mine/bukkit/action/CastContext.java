@@ -4,6 +4,7 @@ import static com.google.common.base.Verify.verifyNotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1241,6 +1242,13 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         Location location = getLocation();
         Mage mage = getMage();
         MageController controller = getController();
+
+        ConfigurationSection variables = getVariables();
+        List<String> keys = new ArrayList<>(variables.getKeys(false));
+        Collections.sort(keys, (o1, o2) -> o2.length() - o1.length());
+        for (String key : keys) {
+            command = command.replace("$" + key, variables.getString(key));
+        }
 
         command = command
                 .replace("@_", " ")
