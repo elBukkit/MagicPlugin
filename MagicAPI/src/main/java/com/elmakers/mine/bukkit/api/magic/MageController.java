@@ -577,4 +577,10 @@ public interface MageController {
     boolean inTaggedRegion(Location location, Set<String> tags);
 
     boolean isFileLockingEnabled();
+
+    @Nullable
+    String getPlaceholder(Player player, String namespace, String placeholder);
+
+    @Nonnull
+    String setPlaceholders(Player player, String message);
 }

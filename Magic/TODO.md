@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - Global variables? Or is that just attributes.
+
  - Add replace_on_use (like replace_on_activate, but for right-click)
 
  - Add support for Sponge schematics

@@ -7,6 +7,7 @@
    - These are all old, before the action system, and have been deprecated for years
    - They will show in logs in startup
    - They WILL be removed in future versions!
+ - Add support for %placeholders% in spell, wand and class parameters
  - Add ModifyVariable action, adding concept of user-defined variables that can be used in spell parameters
    - Use $variable in a spell parameter, command, or message
    - You can also use @variable in commands for an integer version (rounding down)

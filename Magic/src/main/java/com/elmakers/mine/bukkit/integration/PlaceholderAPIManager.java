@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.integration;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,6 +29,17 @@ public class PlaceholderAPIManager extends PlaceholderHook {
             controller.getLogger().info("PlaceholderAPI integration enabled. Available placeholders:");
             controller.getLogger().info("magic_path, magic_class, magic_wand, magic_spell, magic_mana, magic_mana_max, magic_sp, magic_spell_count");
         }
+    }
+
+    @Nullable
+    public String getPlaceholder(Player player, String namespace, String variable) {
+        PlaceholderHook hook = PlaceholderAPI.getPlaceholders().get(namespace);
+        return hook == null ? null : hook.onPlaceholderRequest(player, variable);
+    }
+
+    @Nonnull
+    public String setPlaceholders(Player player, String message) {
+        return PlaceholderAPI.setPlaceholders(player, message);
     }
 
     @Override

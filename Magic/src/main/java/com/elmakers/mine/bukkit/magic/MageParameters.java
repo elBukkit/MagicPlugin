@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -32,6 +33,14 @@ public class MageParameters extends ParameterizedConfiguration {
 
     public static void initializeAttributes(Set<String> attrs) {
         attributes = new HashSet<>(attrs);
+    }
+
+    @Nullable
+    protected Double evaluate(String expression) {
+        if (mage.isPlayer()) {
+            expression = getController().setPlaceholders(mage.getPlayer(), expression);
+        }
+        return super.evaluate(expression);
     }
 
     @Override

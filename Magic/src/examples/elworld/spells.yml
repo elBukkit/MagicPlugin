@@ -3635,6 +3635,12 @@ testvariable:
     target: self
   actions:
     cast:
+      - class: ModifyVariable
+        variable: armor
+        value: "%armor_durability_max_helmet%"
+        overwrite: true
+      - class: Message
+        message: "Your slot 1 armor is @armor"
       - class: Repeat
         repeat: 3
         actions:

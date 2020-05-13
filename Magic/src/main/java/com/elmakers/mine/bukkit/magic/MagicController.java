@@ -5971,6 +5971,18 @@ public class MagicController implements MageController {
         return npcSuppliers;
     }
 
+    @Override
+    @Nullable
+    public String getPlaceholder(Player player, String namespace, String placeholder) {
+        return placeholderAPIManager == null ? null : placeholderAPIManager.getPlaceholder(player, namespace, placeholder);
+    }
+
+    @Override
+    @Nonnull
+    public String setPlaceholders(Player player, String message) {
+        return placeholderAPIManager == null ? message : placeholderAPIManager.setPlaceholders(player, message);
+    }
+
     /*
      * Private data
      */
