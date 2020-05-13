@@ -8,8 +8,8 @@
    - They will show in logs in startup
    - They WILL be removed in future versions!
  - Add ModifyVariable action, adding concept of user-defined variables that can be used in spell parameters
-   - TODO: actions need to be re-prepared after variables change
  - Fix potter wand boxes not properly turning into a wand (icon wasn't working)
+ - Potter wand boxes now open on right-click
  - Fix missing IMPORTANT headers in defaults files
  - Add TakeCosts action
  - Add "use_mode" wand property, which can be one of: success, precast, always. This replaces "preuse".

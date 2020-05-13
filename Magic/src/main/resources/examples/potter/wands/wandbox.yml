@@ -1,7 +1,8 @@
-# This will turn into a potterwand when held
+# This will turn into a potterwand when right-clicked
 wandbox:
   icon: wood_step:2
-  replace_on_activate: potterwand
+  replacement: potterwand
+  right_click: replace
   effects:
     replace:
     -  class: EffectSingle

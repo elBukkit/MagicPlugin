@@ -4615,11 +4615,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Check for replacement template
         String replacementTemplate = getString("replace_on_activate", "");
         if (!replacementTemplate.isEmpty() && !replacementTemplate.equals(template)) {
-            playEffects("replace");
-            setTemplate(replacementTemplate);
-            clearProperty("icon");
-            loadProperties();
-            saveState();
+            replaceTemplate(replacementTemplate);
             return activate(mage, offhand);
         }
 
@@ -4747,6 +4743,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         return true;
+    }
+
+    private void replaceTemplate(String newTemplate) {
+        playEffects("replace");
+        setTemplate(newTemplate);
+        clearProperty("icon");
+        loadProperties();
+        saveState();
     }
 
     public boolean checkInventoryForUpgrades() {
@@ -5585,6 +5589,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     closeInventory();
                 } else {
                     return false;
+                }
+                break;
+            case REPLACE:
+                // Check for replacement template
+                String replacementTemplate = getString("replacement", "");
+                if (replacementTemplate.isEmpty() || replacementTemplate.equals(template)) {
+                    return false;
+                }
+                replaceTemplate(replacementTemplate);
+                if (mage != null) {
+                    mage.checkWandNextTick();
                 }
                 break;
             default:
