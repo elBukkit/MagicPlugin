@@ -50,9 +50,6 @@ public interface MageSpell extends Spell, CostReducer {
     @Nullable
     Double getAttribute(String attributeKey);
 
-    @Nonnull
-    ConfigurationSection getVariables();
-
     /**
      * Force a reload of a subset of special parameters that may appear in spell lore.
      *

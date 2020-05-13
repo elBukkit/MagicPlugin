@@ -424,13 +424,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             {
                 sender.sendMessage(ChatColor.GOLD + "Mage data for " + ChatColor.AQUA + player.getDisplayName() + ChatColor.GOLD + ": " + ChatColor.LIGHT_PURPLE + spell.getName());
                 sender.sendMessage(ChatColor.DARK_AQUA + " Cast Count: " + ChatColor.GOLD + spell.getCastCount());
-                if (spell instanceof MageSpell) {
-                    MageSpell mageSpell = (MageSpell)spell;
-                    ConfigurationSection variables = mageSpell.getVariables();
-                    for (String key : variables.getKeys(false)) {
-                        String value = variables.getString(key);
-                        sender.sendMessage(ChatColor.AQUA + " " + key + ChatColor.DARK_AQUA + ": " + ChatColor.GOLD + value);
-                    }
+                ConfigurationSection variables = spell.getVariables();
+                for (String key : variables.getKeys(false)) {
+                    String value = variables.getString(key);
+                    sender.sendMessage(ChatColor.AQUA + " " + key + ChatColor.DARK_AQUA + ": " + ChatColor.GOLD + value);
                 }
                 return true;
             }
@@ -498,11 +495,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         Spell spell = mage.getSpell(args[0]);
         if (spell != null)
         {
-            if (args.length > 2 && spell instanceof MageSpell) {
-                MageSpell mageSpell = (MageSpell)spell;
+            if (args.length > 2) {
                 String key = args[1];
                 String value = args[2];
-                mageSpell.getVariables().set(key, value);
+                spell.getVariables().set(key, value);
                 sender.sendMessage(ChatColor.GOLD + "Set " + ChatColor.AQUA + spell.getName() + " " + ChatColor.DARK_AQUA + key + ChatColor.GOLD + " variable to " + ChatColor.AQUA + value + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
                 return true;
             }
@@ -511,13 +507,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 value = Long.parseLong(args[1]);
             } catch (Exception ex) {
                 String key = args[1];
-                if (spell instanceof MageSpell) {
-                    MageSpell mageSpell = (MageSpell)spell;
-                    if (mageSpell.getVariables().contains(key)) {
-                        mageSpell.getVariables().set(key, null);
-                        sender.sendMessage(ChatColor.GOLD + "Cleared " + ChatColor.AQUA + spell.getName() + " " + ChatColor.DARK_AQUA + key + ChatColor.GOLD + " variable for " + ChatColor.DARK_AQUA + player.getDisplayName());
-                        return true;
-                    }
+                if (spell.getVariables().contains(key)) {
+                    spell.getVariables().set(key, null);
+                    sender.sendMessage(ChatColor.GOLD + "Cleared " + ChatColor.AQUA + spell.getName() + " " + ChatColor.DARK_AQUA + key + ChatColor.GOLD + " variable for " + ChatColor.DARK_AQUA + player.getDisplayName());
+                    return true;
                 }
 
                 sender.sendMessage(ChatColor.RED + "Cast count must be a number, and no variable found with name " + key);

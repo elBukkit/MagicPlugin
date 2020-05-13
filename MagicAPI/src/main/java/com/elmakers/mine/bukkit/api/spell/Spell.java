@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;
@@ -84,6 +85,8 @@ public interface Spell extends SpellTemplate {
     long getProgressLevel();
     boolean cancelOnNoPermission();
     boolean cancelOnNoWand();
+    @Nonnull
+    ConfigurationSection getVariables();
 
     /**
      * Signal that this spell was cancelled. Will send cancel messages
