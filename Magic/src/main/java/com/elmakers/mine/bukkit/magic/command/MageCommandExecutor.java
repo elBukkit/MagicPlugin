@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -204,78 +205,97 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             options.addAll(api.getPlayerNames());
         }
 
-        if (args.length == 3 || args.length == 2) {
-            CommandSender target = args.length == 2 ? sender : DeprecatedUtils.getPlayer(args[1]);
+        if (args.length >= 2) {
+            CommandSender target = sender;
             String subCommand = args[0];
+            args = Arrays.copyOfRange(args, 1, args.length);
+            if (args.length > 1) {
+                Player targetPlayer = DeprecatedUtils.getPlayer(args[0]);
+                if (targetPlayer != null) {
+                    sender = targetPlayer;
+                    args = Arrays.copyOfRange(args, 1, args.length);
+                }
+            }
+
             String subCommandPNode = "Magic.commands.mage." + subCommand;
             if (subCommand.equalsIgnoreCase("setdata") || subCommand.equalsIgnoreCase("getdata")) {
                 if (target != null) {
                     Mage mage = controller.getMage(target);
-                    ConfigurationSection data = mage.getData();
-                    options.addAll(data.getKeys(false));
-                    Collection<Spell> spells = mage.getSpells();
-                    for (Spell spell : spells) {
-                        options.add(spell.getKey());
+                    if (args.length == 2) {
+                        MageSpell mageSpell = mage.getSpell(args[0]);
+                        if (mageSpell != null) {
+                            options.addAll(mageSpell.getVariables().getKeys(false));
+                        }
+                    } else if (args.length == 1) {
+                        ConfigurationSection data = mage.getData();
+                        options.addAll(data.getKeys(false));
+                        Collection<Spell> spells = mage.getSpells();
+                        for (Spell spell : spells) {
+                            options.add(spell.getKey());
+                        }
                     }
                 }
             }
 
-            if (subCommand.equalsIgnoreCase("add")) {
-                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
-                for (SpellTemplate spell : spellList) {
-                    addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+            if (args.length < 4) {
+                if (subCommand.equalsIgnoreCase("add")) {
+                    Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                    for (SpellTemplate spell : spellList) {
+                        addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+                    }
+                    addIfPermissible(sender, options, subCommandPNode, "brush", true);
                 }
-                addIfPermissible(sender, options, subCommandPNode, "brush", true);
-            }
 
-            if (subCommand.equalsIgnoreCase("remove")) {
-                if (target != null) {
-                    Mage mage = controller.getMage(target);
-                    MageClass mageClass = mage.getActiveClass();
-                    if (mageClass != null) {
-                        options.addAll(mageClass.getSpells());
+                if (subCommand.equalsIgnoreCase("remove")) {
+                    if (target != null) {
+                        Mage mage = controller.getMage(target);
+                        MageClass mageClass = mage.getActiveClass();
+                        if (mageClass != null) {
+                            options.addAll(mageClass.getSpells());
+                        }
+                    }
+                    options.add("brush");
+                }
+
+                if (subCommand.equalsIgnoreCase("clear")) {
+                    options.add("all");
+                    options.add("magic");
+                    options.add("skills");
+                    options.add("wands");
+                }
+
+                if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
+                    for (String key : BaseMagicProperties.PROPERTY_KEYS) {
+                        options.add(key);
+                    }
+
+                    for (String protection : api.getController().getDamageTypes()) {
+                        options.add("protection." + protection);
                     }
                 }
-                options.add("brush");
-            }
 
-            if (subCommand.equalsIgnoreCase("clear")) {
-                options.add("all");
-                options.add("magic");
-                options.add("skills");
-                options.add("wands");
-            }
-
-            if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
-                for (String key : BaseMagicProperties.PROPERTY_KEYS) {
-                    options.add(key);
+                if (subCommand.equalsIgnoreCase("attribute")) {
+                    for (String attribute : api.getController().getAttributes()) {
+                        options.add(attribute);
+                    }
                 }
 
-                for (String protection : api.getController().getDamageTypes()) {
-                    options.add("protection." + protection);
+                if (subCommand.equalsIgnoreCase("add")) {
+                    Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                    for (SpellTemplate spell : spellList) {
+                        addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+                    }
+                    addIfPermissible(sender, options, subCommandPNode, "brush", true);
                 }
-            }
 
-            if (subCommand.equalsIgnoreCase("attribute")) {
-                for (String attribute : api.getController().getAttributes()) {
-                    options.add(attribute);
+                if (args[0].equalsIgnoreCase("lock")
+                        || args[0].equalsIgnoreCase("unlock")
+                        || args[0].equalsIgnoreCase("activate")) {
+                    options.addAll(api.getController().getMageClassKeys());
                 }
-            }
-
-            if (subCommand.equalsIgnoreCase("add")) {
-                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
-                for (SpellTemplate spell : spellList) {
-                    addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
-                }
-                addIfPermissible(sender, options, subCommandPNode, "brush", true);
-            }
-
-            if (args[0].equalsIgnoreCase("lock")
-                    || args[0].equalsIgnoreCase("unlock")
-                    || args[0].equalsIgnoreCase("activate")) {
-                options.addAll(api.getController().getMageClassKeys());
             }
         }
+
         return options;
     }
 
