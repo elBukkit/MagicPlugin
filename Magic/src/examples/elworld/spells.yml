@@ -3654,3 +3654,13 @@ testvariable:
             message: "STAHP IT'S TOO MUCH"
           - class: Damage
             damage: "count / 4"
+      - class: CheckRequirements
+        requirements:
+          - variables:
+              - variable: count
+                min: 20
+        actions:
+          - class: Message
+            message: "OK FOR REAL THOUGH"
+          - class: Command
+            command: give @p rotten_flesh @count

@@ -1249,6 +1249,9 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         for (String key : keys) {
             command = command.replace("$" + key, variables.getString(key));
         }
+        for (String key : keys) {
+            command = command.replace("@" + key, Integer.toString(variables.getInt(key)));
+        }
 
         command = command
                 .replace("@_", " ")
