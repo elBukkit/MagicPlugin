@@ -25,6 +25,7 @@
  - Add source_use_movement_direction and target_use_movement_direction options to ChangeContext action
  - Add use_wand and wand_slot parameters to ArmorStandProjectile action
  - Improvements to TakeItem action, can now look for a specific item and also return it on undo
+ - Improvements to Damage action scaling by distance
 
 # 7.9
 
