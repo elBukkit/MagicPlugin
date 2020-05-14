@@ -3671,3 +3671,115 @@ testvariable:
             message: "OK FOR REAL THOUGH"
           - class: Command
             command: give @p rotten_flesh @count
+
+piper:
+    name: Piper the Sniper
+    description: Does more damage at longer range
+    icon: spell_icon:160
+    icon_disabled: spell_icon_disabled:160
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    category: combat
+    worth: 150
+    earns_sp: 7
+    earns_cooldown: 10000
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           color_override: color
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: redstone
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+             particle_count: 8
+             particle_offset_y: 0.1
+             particle_offset_x: 0.1
+             particle_offset_z: 0.1
+        tick:
+        - particle: redstone
+          location: target
+          particle_count: 4
+          particle_offset_y: 0.2
+          particle_offset_x: 0.2
+          particle_offset_z: 0.2
+          particle_size: 1
+        hit_block:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 30
+           particle_offset_x: 0.2
+           particle_offset_y: 1
+           particle_offset_z: 0.2
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: redstone
+           particle_count: 30
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 10
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+           sound: magic.zap
+           sound_volume: .3
+           particle_data: 0.1
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_y: 0.2
+           particle_offset_x: 0.2
+           particle_offset_z: 0.2
+           particle_data: 0.1
+           sound: magic.zap
+           sound_volume: .3
+        -  sound: entity_player_attack_crit
+           sound_pitch: 0.8
+           location: target
+           particle: crit_magic
+           particle_count: 30
+           particle_offset_y: 1
+           particle_offset_x: 1
+           particle_offset_z: 1
+           particle_data: 0.5
+    headshot_parameters:
+      damage_multiplier: 1.5
+    parameters:
+        allow_max_range: true
+        velocity: 200
+        range: 24
+        hitbox: true
+        target_type: Damageable
+        player_damage: 8
+        entity_damage: 10
+        damage_max_distance: 20
+        damage_min_distance: 2
+        invert_distance: true
+        min_damage: 1
+        target_breakables: 1
+        cooldown: 1000
+        reorient: false
+        destructible: solid
+        destructible_durability: 50
+        break_durability: 2
+        undo: 10000
+    costs:
+        mana: 15

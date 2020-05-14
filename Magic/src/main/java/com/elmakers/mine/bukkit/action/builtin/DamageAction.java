@@ -35,6 +35,8 @@ public class DamageAction extends BaseSpellAction
     private Double knockbackResistance;
     private Double damageMultiplier;
     private double maxDistanceSquared;
+    private double minDistanceSquared;
+    private double minDamage;
     private String damageType;
     private SourceLocation damageSourceLocation;
 
@@ -66,6 +68,9 @@ public class DamageAction extends BaseSpellAction
         }
         double maxDistance = parameters.getDouble("damage_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
+        double minDistance = parameters.getDouble("damage_min_distance", 0);
+        minDistanceSquared = minDistance * minDistance;
+        minDamage = parameters.getDouble("min_damage", 0);
         damageType = parameters.getString("damage_type");
         damageSourceLocation = new SourceLocation(parameters.getString("damage_source_location", "BODY"), false);
     }
@@ -115,20 +120,24 @@ public class DamageAction extends BaseSpellAction
                     Location entityLocation = damageSourceLocation.getLocation(context);
                     double distanceSquared = context.getLocation().distanceSquared(entityLocation);
                     if (distanceSquared > maxDistanceSquared) {
-                        return SpellResult.NO_TARGET;
-                    }
-                    if (distanceSquared > 0) {
-                        double distanceScale = Math.min(1, distanceSquared / maxDistanceSquared);
-                        if (!invertDistance) {
-                            distanceScale = 1 - distanceScale;
+                        if (invertDistance) {
+                            distanceSquared = maxDistanceSquared;
+                        } else {
+                            return SpellResult.NO_TARGET;
                         }
-                        damage = damage * distanceScale;
                     }
+                    double distanceRange = maxDistanceSquared - minDistanceSquared;
+                    double distanceScale = Math.min(1, Math.max(0, (distanceSquared - minDistanceSquared)) / distanceRange);
+                    if (!invertDistance) {
+                        distanceScale = 1 - distanceScale;
+                    }
+                    damage = damage * distanceScale;
                 }
                 if (damageMultiplier != null) {
                     damage *= damageMultiplier;
                     mageMultiplier *= damageMultiplier;
                 }
+                damage = Math.max(minDamage, damage);
                 if (damageType != null) {
                     Mage targetMage = controller.getRegisteredMage(targetEntity);
                     String targetAnnotation = "";
