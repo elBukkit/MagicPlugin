@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.9.2
+
 # 7.9.1
 
  - RecallSpell was removed, use RecallAction instead.
@@ -7,6 +9,7 @@
    - These are all old, before the action system, and have been deprecated for years
    - They will show in logs in startup
    - They WILL be removed in future versions!
+   - The exception being engineering magic. Look for "is using a deprecated spell class" in your startup logs.
  - Add support for %placeholders% in spell, wand and class parameters
  - Add ModifyVariable action, adding concept of user-defined variables that can be used in spell parameters
    - Use $variable in a spell parameter, command, or message
