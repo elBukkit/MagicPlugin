@@ -108,4 +108,7 @@ public interface Spell extends SpellTemplate {
      * @return true if the spell was in the middle of selection and was cancelled.
      */
     boolean cancelSelection();
+    boolean isPassive();
+    boolean isEnabled();
+    void setEnabled(boolean enabled);
 }

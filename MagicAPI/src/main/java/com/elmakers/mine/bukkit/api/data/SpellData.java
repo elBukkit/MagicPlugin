@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellKey;
 public class SpellData {
     private SpellKey spellKey;
     private boolean isActive;
+    private boolean isEnabled;
     private long lastCast;
     private long lastEarn;
     private long castCount;
@@ -57,6 +58,14 @@ public class SpellData {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 
     public long getLastCast() {

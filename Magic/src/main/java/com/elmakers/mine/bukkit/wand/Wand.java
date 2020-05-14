@@ -2856,6 +2856,42 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    private boolean updateIfMatch(ItemStack itemStack, Spell spell) {
+        String spellKey = getSpell(itemStack);
+        if (spellKey != null && spellKey.equals(spell.getKey())) {
+            updateSpellItem(controller.getMessages(), itemStack, spell, "", this, activeBrush, false);
+            return true;
+        }
+        return false;
+    }
+
+    public void updateSpellItem(Spell spell) {
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player != null) {
+            for (ItemStack itemStack : player.getInventory()) {
+                if (updateIfMatch(itemStack, spell)) {
+                    break;
+                }
+            }
+        }
+        if (inventories.size() > openInventoryPage) {
+            WandInventory inventory = inventories.get(openInventoryPage);
+            for (ItemStack itemStack : inventory.getContents()) {
+                if (updateIfMatch(itemStack, spell)) {
+                    return;
+                }
+            }
+        }
+        if (hotbars.size() > currentHotbar) {
+            WandInventory inventory = hotbars.get(currentHotbar);
+            for (ItemStack itemStack : inventory.getContents()) {
+                if (updateIfMatch(itemStack, spell)) {
+                    return;
+                }
+            }
+        }
+    }
+
     public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, Wand wand, String activeMaterial, boolean isItem) {
         updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActiveMage(), wand, activeMaterial, isItem);
     }
@@ -4126,6 +4162,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public boolean cast(Spell spell, String[] parameters) {
+        if (spell.isPassive()) {
+            spell.setEnabled(!spell.isEnabled());
+            updateSpellItem(spell);
+            return true;
+        }
         if (useMode == WandUseMode.PRECAST) {
             if (!use()) {
                 return false;
@@ -5186,6 +5227,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public void setActiveSpell(String activeSpell) {
         if (activeSpell != null) {
+            Spell spell = getSpell(activeSpell);
+            if (spell != null && spell.isPassive()) {
+                spell.setEnabled(!spell.isEnabled());
+                updateSpellItem(spell);
+                return;
+            }
+
             SpellKey spellKey = new SpellKey(activeSpell);
             this.activeSpell = spellKey.getBaseKey();
         } else {

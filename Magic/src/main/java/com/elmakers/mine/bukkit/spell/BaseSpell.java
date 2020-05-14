@@ -941,7 +941,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         iconURL = node.getString("icon_url");
         iconDisabledURL = node.getString("icon_disabled_url");
 
-
         if (icon == null && (iconURL == null || iconURL.isEmpty())) {
             icon = new com.elmakers.mine.bukkit.block.MaterialAndData(DEFAULT_SPELL_ICON);
         }
@@ -2651,6 +2650,12 @@ public class BaseSpell implements MageSpell, Cloneable {
                 lore.add(passiveText);
             }
         }
+        if (!isEnabled()) {
+            String disabledText = messages.get("spell.disabled", "");
+            if (!disabledText.isEmpty()) {
+                lore.add(disabledText);
+            }
+        }
         if (quickCast && wand != null && !wand.isQuickCastDisabled() && wand.hasInventory()) {
             String quickCastText = messages.get("spell.quick_cast", "");
             if (!quickCastText.isEmpty()) {
@@ -3045,5 +3050,15 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean isPassive() {
         return passive;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return spellData.isEnabled();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        spellData.setIsEnabled(enabled);
     }
 }

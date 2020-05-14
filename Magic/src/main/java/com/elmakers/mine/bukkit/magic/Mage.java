@@ -1289,6 +1289,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public boolean useSkill(ItemStack skillItem) {
         Spell spell = getSpell(Wand.getSpell(skillItem));
         if (spell == null) return false;
+        if (spell.isPassive()) {
+            spell.setEnabled(!spell.isEnabled());
+            Wand.updateSpellItem(controller.getMessages(), skillItem, spell, "", null, null, false);
+            return true;
+        }
         boolean canUse = true;
         String skillClass = Wand.getSpellClass(skillItem);
         if (skillClass != null && !skillClass.isEmpty()) {
@@ -3742,7 +3747,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         String disabledUrlIcon = spell.getDisabledIconURL();
                         boolean usingURLIcon = (controller.isUrlIconsEnabled() || spellIcon == null || spellIcon.getMaterial() == Material.AIR) && urlIcon != null && !urlIcon.isEmpty();
                         if (disabledIcon != null && spellIcon != null && !usingURLIcon) {
-                            if (!canCast) {
+                            if (!canCast || !spell.isEnabled()) {
                                 if (disabledIcon.isValid() && (disabledIcon.getMaterial() != spellItem.getType() || disabledIcon.getData() != spellItem.getDurability())) {
                                     disabledIcon.applyToItem(spellItem);
                                 }
