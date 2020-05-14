@@ -18,3 +18,4 @@ spell:
     level_lore: "&6$level"
     toggle: "&aCast to toggle on and off"
     upgrade_description_prefix: "&r&b&bull; &6"
+    passive: "&1Passive"

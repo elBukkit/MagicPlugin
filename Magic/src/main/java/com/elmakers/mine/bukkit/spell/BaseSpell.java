@@ -975,6 +975,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", false);
         quickCast = node.getBoolean("quick_cast", false);
+        passive = node.getBoolean("passive", false);
         disguiseRestricted = node.getBoolean("disguise_restricted", false);
         creativeRestricted = node.getBoolean("creative_restricted", false);
         glideRestricted = node.getBoolean("glide_restricted", false);
@@ -1812,7 +1813,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         targetSelf = parameters.getBoolean("target_self", false);
         messageTargets = parameters.getBoolean("message_targets", true);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
-        passive = parameters.getBoolean("passive", false);
         String nameOverride = parameters.getString("name", "");
         if (!nameOverride.isEmpty()) {
             name = ChatColor.translateAlternateColorCodes('&', nameOverride).replace('_', ' ');
@@ -2645,6 +2645,12 @@ public class BaseSpell implements MageSpell, Cloneable {
                 lore.add(categoryLore.replace("$category", categoryName));
             }
         }
+        if (passive) {
+            String passiveText = messages.get("spell.passive", "");
+            if (!passiveText.isEmpty()) {
+                lore.add(passiveText);
+            }
+        }
         if (quickCast && wand != null && !wand.isQuickCastDisabled() && wand.hasInventory()) {
             String quickCastText = messages.get("spell.quick_cast", "");
             if (!quickCastText.isEmpty()) {
@@ -2786,7 +2792,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Track cast counts
-        if (result.isSuccess() && !passive) {
+        if (result.isSuccess()) {
             spellData.addCast();
             if (template != null && template.spellData != null) {
                 template.spellData.addCast();
@@ -3034,5 +3040,10 @@ public class BaseSpell implements MageSpell, Cloneable {
             spellData = new SpellData(getKey());
         }
         return spellData.getVariables();
+    }
+
+    @Override
+    public boolean isPassive() {
+        return passive;
     }
 }

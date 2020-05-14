@@ -2,6 +2,8 @@
 
 # 7.9.2
 
+ - Add "passive" flag for spells that can not be directly cast but still show up in the spell inventory
+
 # 7.9.1
 
  - RecallSpell was removed, use RecallAction instead.
