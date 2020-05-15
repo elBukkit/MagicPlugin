@@ -7,6 +7,7 @@
    - Add "passive" flag for spells that can not be directly cast but still show up in the spell inventory
    - Add CheckTrigger action to make a spell see if a trigger has been activated since the spell started
    - See here for examples: https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/examples/elworld/spells/passives
+ - Add RemoveSpell action
 
 # 7.9.1
 
