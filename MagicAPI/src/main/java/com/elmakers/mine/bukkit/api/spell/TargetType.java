@@ -18,5 +18,10 @@ public enum TargetType {
     SELECT_ENTITY,
     LAST_DAMAGER,
     TOP_DAMAGER,
-    DAMAGE_TARGET
+    DAMAGE_TARGET;
+
+    @Deprecated
+    public boolean targetsEntities() {
+        return false;
+    }
 }
