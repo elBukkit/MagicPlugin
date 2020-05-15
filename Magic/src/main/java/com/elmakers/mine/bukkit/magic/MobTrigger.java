@@ -76,6 +76,7 @@ public class MobTrigger extends Trigger {
         if (!isValid(mage)) {
             return false;
         }
+        triggered();
 
         if (effects != null) {
             for (EffectPlayer player : effects) {
