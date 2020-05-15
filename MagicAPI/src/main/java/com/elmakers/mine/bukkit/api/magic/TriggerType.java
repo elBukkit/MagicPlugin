@@ -8,8 +8,5 @@ public enum TriggerType {
     JOIN,
 
     // COMMON
-    INTERVAL, DEATH, DAMAGE, LAUNCH,
-
-    // TODO, not working yet
-    DEAL_DAMAGE
+    INTERVAL, DEATH, DAMAGE, LAUNCH, DEAL_DAMAGE, TARGET_DEATH
 }

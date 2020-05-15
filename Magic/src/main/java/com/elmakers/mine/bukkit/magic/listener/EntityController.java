@@ -252,6 +252,18 @@ public class EntityController implements Listener {
                 event.getDrops().clear();
             }
         }
+        EntityDamageEvent damageEvent = event.getEntity().getLastDamageCause();
+        if (damageEvent instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent dbe = (EntityDamageByEntityEvent)damageEvent;
+            Entity damager = dbe.getDamager();
+            if (damager != null) {
+                Mage damagerMage = controller.getRegisteredMage(damager);
+                if (damagerMage != null) {
+                    damagerMage.trigger("target_death");
+                }
+            }
+        }
+
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
         if (mage == null) return;
 

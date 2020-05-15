@@ -2,12 +2,13 @@
 
 ## Hot Issues
 
+ - Passives:
+   - Need passive classes, which always have their passive spells active
+   - Some way to tag/group passives, where only N spells from a group can be active at a time
+
  - Global variables? Or is that just attributes.
 
- - Add replace_on_use (like replace_on_activate, but for right-click)
-
  - Add support for Sponge schematics
- - Add Battle Arena integration
 
  - Add support for Bukkit projectiles, when there is an entity shooter
  
