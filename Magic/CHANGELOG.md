@@ -9,6 +9,7 @@
    - See here for examples: https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/examples/elworld/spells/passives
  - Add RemoveSpell action
  - Add CastPermissionManager hook to API
+ - Fix crafting permissions in the 2x2 inventory crafting slots
 
 # 7.9.1
 

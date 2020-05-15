@@ -212,12 +212,14 @@ public class MagicRecipe {
 
     @SuppressWarnings("deprecation")
     public MatchType getMatchType(ItemStack[] matrix) {
-        if (recipe == null || matrix.length < 9) return MatchType.NONE;
-        boolean[] rows = new boolean[3];
-        boolean[] columns = new boolean[3];
-        for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
-            for (int matrixColumn = 0; matrixColumn < 3; matrixColumn++) {
-                int i = matrixRow * 3 + matrixColumn;
+        if (recipe == null || matrix.length < 4) return MatchType.NONE;
+        int height = (int)Math.sqrt(matrix.length);
+        int width = height;
+        boolean[] rows = new boolean[width];
+        boolean[] columns = new boolean[height];
+        for (int matrixRow = 0; matrixRow < height; matrixRow++) {
+            for (int matrixColumn = 0; matrixColumn < width; matrixColumn++) {
+                int i = matrixRow * height + matrixColumn;
                 ItemStack ingredient = matrix[i];
                 if (ingredient != null && ingredient.getType() != Material.AIR) {
                     rows[matrixRow] = true;
@@ -225,9 +227,9 @@ public class MagicRecipe {
                 }
             }
         }
-        for (int matrixColumn = 0; matrixColumn < 3; matrixColumn++) {
-            for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
-                int i = matrixRow * 3 + matrixColumn;
+        for (int matrixColumn = 0; matrixColumn < width; matrixColumn++) {
+            for (int matrixRow = 0; matrixRow < height; matrixRow++) {
+                int i = matrixRow * width + matrixColumn;
                 ItemStack ingredient = matrix[i];
                 if (ingredient != null && ingredient.getType() != Material.AIR) {
                     columns[matrixColumn] = true;
@@ -240,10 +242,10 @@ public class MagicRecipe {
         if (shape == null || shape.length < 1) return MatchType.NONE;
 
         int shapeRow = 0;
-        for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
+        for (int matrixRow = 0; matrixRow < height; matrixRow++) {
             if (!rows[matrixRow]) continue;
             int shapeColumn = 0;
-            for (int matrixColumn = 0; matrixColumn < 3; matrixColumn++) {
+            for (int matrixColumn = 0; matrixColumn < width; matrixColumn++) {
                 if (!columns[matrixColumn]) continue;
                 if (shapeRow >= shape.length) return MatchType.NONE;
 
@@ -254,7 +256,7 @@ public class MagicRecipe {
                 }
                 charAt = row.charAt(shapeColumn);
                 ItemData item = ingredients.get(charAt);
-                int i = matrixRow * 3 + matrixColumn;
+                int i = matrixRow * width + matrixColumn;
                 ItemStack ingredient = matrix[i];
                 if (ingredient != null && ingredient.getType() == Material.AIR) {
                     ingredient = null;
