@@ -574,6 +574,8 @@ public interface Mage extends CostReducer, CooldownReducer {
     Entity getLastDamager();
     @Nullable
     Entity getTopDamager();
+    @Nullable
+    Entity getLastDamageTarget();
 
     /**
      * This will return properties for the mage's active wand, if holding one, or if not then the active class.
@@ -683,7 +685,13 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     String getLastDamageType();
 
+    void setLastDamageDealtType(String damageType);
+
+    @Nullable
+    String getLastDamageDealtType();
+
     double getLastDamage();
+    double getLastDamageDealt();
     double getLastBowPull();
 
     @Nonnull

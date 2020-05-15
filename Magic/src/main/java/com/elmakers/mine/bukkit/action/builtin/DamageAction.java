@@ -139,6 +139,7 @@ public class DamageAction extends BaseSpellAction
                 }
                 damage = Math.max(minDamage, damage);
                 if (damageType != null) {
+                    mage.setLastDamageDealtType(damageType);
                     Mage targetMage = controller.getRegisteredMage(targetEntity);
                     String targetAnnotation = "";
                     if (targetMage != null) {

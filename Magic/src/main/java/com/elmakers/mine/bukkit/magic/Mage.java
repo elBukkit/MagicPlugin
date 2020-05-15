@@ -189,6 +189,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private DamagedBy topDamager;
     private DamagedBy lastDamager;
     private Map<UUID, DamagedBy> damagedBy;
+    private WeakReference<Entity> lastDamageTarget;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     private Map<String, Double> protection = new HashMap<>();
@@ -246,9 +247,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Integer lastActivatedSlot;
     private String currentDamageType;
     private String lastDamageType;
+    private String currentDamageDealtType;
+    private String lastDamageDealtType;
 
     private boolean launchingProjectile;
     private double lastDamage;
+    private double lastDamageDealt;
     private double lastBowPull;
     private boolean cancelLaunch = false;
 
@@ -458,6 +462,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public @Nullable Entity getLastDamageTarget() {
+        return lastDamageTarget == null ? null : lastDamageTarget.get();
+    }
+
+    @Override
     public @Nullable Entity getTopDamager() {
         if (topDamager == null) return null;
         Entity topEntity = topDamager.getEntity();
@@ -526,6 +535,39 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    public void onDamageDealt(EntityDamageEvent event) {
+        String damageType = currentDamageDealtType;
+        lastDamageTarget = new WeakReference<>(event.getEntity());
+        lastDamageDealt = event.getDamage();
+        currentDamageDealtType = null;
+        lastDamageDealtType = getDamageType(damageType, event.getCause());
+        trigger("damage_dealt");
+    }
+
+    private String getDamageType(String damageType, EntityDamageEvent.DamageCause cause) {
+        if (damageType == null) {
+            switch (cause) {
+                case CONTACT:
+                case ENTITY_ATTACK:
+                    damageType = "physical";
+                    break;
+                case FIRE:
+                case FIRE_TICK:
+                case LAVA:
+                    damageType = "fire";
+                    break;
+                case BLOCK_EXPLOSION:
+                case ENTITY_EXPLOSION:
+                    damageType = "explosion";
+                    break;
+                default:
+                    damageType = cause.name().toLowerCase();
+                    break;
+            }
+        }
+        return damageType;
+    }
+
     public void onDamage(EntityDamageEvent event) {
         String damageType = currentDamageType;
         currentDamageType = null;
@@ -540,9 +582,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             callEvent(listener, event);
             if (event.isCancelled()) break;
         }
-
-        // Process triggers
-        trigger("damage");
 
         EntityDamageEvent.DamageCause cause = event.getCause();
         if (cause == EntityDamageEvent.DamageCause.FALL) {
@@ -604,28 +643,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 entity.setFireTicks(0);
             }
         }
+        lastDamageType = getDamageType(damageType, cause);
 
-        if (damageType == null) {
-            switch (cause) {
-                case CONTACT:
-                case ENTITY_ATTACK:
-                    damageType = "physical";
-                    break;
-                case FIRE:
-                case FIRE_TICK:
-                case LAVA:
-                    damageType = "fire";
-                    break;
-                case BLOCK_EXPLOSION:
-                case ENTITY_EXPLOSION:
-                    damageType = "explosion";
-                    break;
-                default:
-                    damageType = cause.name().toLowerCase();
-                    break;
-            }
-        }
-        lastDamageType = damageType;
+        // Process triggers
+        trigger("damage");
 
         double protection = getProtection(damageType);
         double maxReduction = controller.getMaxDamageReduction(damageType);
@@ -4081,6 +4102,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return lastDamageType;
     }
 
+    @Override
+    public void setLastDamageDealtType(String damageType) {
+        currentDamageDealtType = damageType;
+        lastDamageDealtType = damageType;
+    }
+
+    @Override
+    public String getLastDamageDealtType() {
+        return lastDamageDealtType;
+    }
+
     public boolean isManaRegenerationDisabled() {
         for (MageSpell spell : activeSpells) {
             if (spell.disableManaRegenerationWhenActive()) {
@@ -4202,6 +4234,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setLastDamage(double lastDamage) {
         this.lastDamage = lastDamage;
+    }
+
+    @Override
+    public double getLastDamageDealt() {
+        return lastDamageDealt;
     }
 
     @Override

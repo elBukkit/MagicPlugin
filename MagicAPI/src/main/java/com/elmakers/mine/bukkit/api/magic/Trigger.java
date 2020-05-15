@@ -17,6 +17,7 @@ public class Trigger {
     private final double maxBowPull;
     private final double minBowPull;
     private final boolean isCancelLaunch;
+    private final String damageType;
 
     private long lastTrigger;
 
@@ -36,6 +37,7 @@ public class Trigger {
         isCancelLaunch = configuration.getBoolean("cancel_launch", true);
         maxBowPull = configuration.getDouble("max_bow_pull");
         minBowPull = configuration.getDouble("min_bow_pull");
+        damageType = configuration.getString("damage_type");
     }
 
     public int getInterval() {
@@ -48,7 +50,15 @@ public class Trigger {
     }
 
     public boolean isValid(Mage mage) {
-        double damage = mage.getLastDamage();
+        String lastDamageType = null;
+        double damage = 0;
+        if (trigger.equalsIgnoreCase("damage_dealt")) {
+            lastDamageType = mage.getLastDamageDealtType();
+            damage = mage.getLastDamage();
+        } else {
+            lastDamageType = mage.getLastDamageType();
+            damage = mage.getLastDamageDealt();
+        }
 
         if (minDamage > 0 && damage < minDamage) return false;
         if (maxDamage > 0 && damage > maxDamage) return false;
@@ -62,6 +72,10 @@ public class Trigger {
         if (maxBowPull > 0 && (mage.getLastBowPull() > maxBowPull)) return false;
 
         if (interval > 0 && System.currentTimeMillis() < lastTrigger + interval) return false;
+
+        if (damageType != null && !damageType.isEmpty()) {
+            if (lastDamageType == null || !lastDamageType.equalsIgnoreCase(damageType)) return false;
+        }
 
         return true;
     }
