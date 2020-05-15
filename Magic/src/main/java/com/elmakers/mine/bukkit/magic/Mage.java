@@ -3470,7 +3470,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         for (MageClass mageClass : classes.values()) {
             if (mageClass != activeClass && mageClass.getBoolean("passive")) {
-                addPassiveEffects(mageClass , true);
+                addPassiveEffects(mageClass, true);
             }
         }
 
