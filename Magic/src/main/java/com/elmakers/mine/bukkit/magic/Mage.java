@@ -4137,9 +4137,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         cancelLaunch = false;
         for (TriggeredSpell triggered : spells) {
             if (triggered.getTrigger().isValid(this)) {
-                cancelLaunch = cancelLaunch || triggered.getTrigger().isCancelLaunch();
                 Spell spell = getSpell(triggered.getSpellKey());
-                activated = spell.cast() || activated;
+                if (spell.isEnabled()) {
+                    cancelLaunch = cancelLaunch || triggered.getTrigger().isCancelLaunch();
+                    activated = spell.cast() || activated;
+                }
             }
         }
 
