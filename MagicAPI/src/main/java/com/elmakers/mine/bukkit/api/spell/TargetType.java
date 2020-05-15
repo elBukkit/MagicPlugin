@@ -7,23 +7,13 @@ package com.elmakers.mine.bukkit.api.spell;
  * command-line parameters.
  */
 public enum TargetType {
-    NONE(false),
-    BLOCK(false),
-    ANY(true),
-    OTHER(true),
-    ANY_ENTITY(true),
-    OTHER_ENTITY(true),
-    SELF(false),
-    SELECT(false),
-    SELECT_ENTITY(true);
-
-    private final boolean targetEntities;
-
-    TargetType(boolean targetEntities) {
-        this.targetEntities = true;
-    }
-
-    public boolean targetsEntities() {
-        return this.targetEntities;
-    }
+    NONE,
+    BLOCK,
+    ANY,
+    OTHER,
+    ANY_ENTITY,
+    OTHER_ENTITY,
+    SELF,
+    SELECT,
+    SELECT_ENTITY;
 }
