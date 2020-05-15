@@ -1,0 +1,21 @@
+killbonus:
+  name: Kill Bonus
+  description: Activate to receive full health on a kill within 10 seconds
+  icon: spell_icon:160
+  icon_disabled: spell_icon_disabled:160
+  show_undoable: false
+  actions:
+    cast:
+    - class: Repeat
+      actions:
+        - class: CheckTrigger
+          trigger: kill
+          actions:
+            - class: Heal
+            - class: Stop
+        - class: Delay
+          delay: 100
+  parameters:
+    target: self
+    repeat: 100
+    cooldown: 60000

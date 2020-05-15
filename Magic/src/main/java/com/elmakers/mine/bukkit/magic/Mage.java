@@ -149,6 +149,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Map<String, MageClass> classes = new HashMap<>();
     private final Map<String, Double> attributes = new HashMap<>();
     private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
+    private final Map<String, Long> lastTriggers = new HashMap<>();
     protected ConfigurationSection data = new MemoryConfiguration();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> playerRef;
@@ -3469,7 +3470,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addPassiveEffects(activeClass, true);
         }
         for (MageClass mageClass : classes.values()) {
-            if (mageClass != activeClass && mageClass.getBoolean("passive")) {
+            if (mageClass != activeClass && !mageClass.isLocked() && mageClass.getBoolean("passive")) {
                 addPassiveEffects(mageClass, true);
             }
         }
@@ -4161,6 +4162,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean trigger(String trigger) {
+        lastTriggers.put(trigger, System.currentTimeMillis());
         if (entityData != null) {
             cancelLaunch = true;
             return entityData.trigger(this, trigger);
@@ -4275,8 +4277,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return cancelLaunch;
     }
 
-    public void setCancelLaunch(boolean cancelLaunch) {
-        this.cancelLaunch = cancelLaunch;
+    @Override
+    @Nullable
+    public Long getLastTrigger(String trigger) {
+        return lastTriggers.get(trigger);
     }
 }
 

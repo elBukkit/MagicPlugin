@@ -224,4 +224,5 @@ public interface CastContext extends WandEffectContext {
     void addMessageParameter(String key, String value);
     @Nonnull
     ConfigurationSection getVariables();
+    long getStartTime();
 }

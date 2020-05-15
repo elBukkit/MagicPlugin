@@ -70,6 +70,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private SpellResult initialResult = SpellResult.CAST;
     private Vector direction = null;
     private Boolean targetCaster = null;
+    private final long startTime;
 
     private Set<UUID> targetMessagesSent = null;
 
@@ -100,6 +101,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         this.entity = null;
         this.base = this;
         this.result = SpellResult.NO_ACTION;
+        this.startTime = System.currentTimeMillis();
         targetMessagesSent = new HashSet<>();
         messageParameters = new HashMap<>();
     }
@@ -124,6 +126,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         this.currentEffects = copy.getCurrentEffects();
         this.result = copy.getResult();
         this.mageClass = copy.getMageClass();
+        this.startTime = copy.getStartTime();
 
         Location centerLocation = copy.getTargetCenterLocation();
         if (centerLocation != null) {
@@ -1360,5 +1363,10 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             return variables;
         }
         return baseSpell.getVariables();
+    }
+
+    @Override
+    public long getStartTime() {
+        return startTime;
     }
 }
