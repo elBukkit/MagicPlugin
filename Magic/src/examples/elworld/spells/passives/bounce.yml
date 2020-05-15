@@ -1,0 +1,19 @@
+bounce:
+  name: Bounce
+  icon: spell_icon:160
+  icon_disabled: spell_icon_disabled:160
+  passive: true
+  triggers:
+    # This triggers when the player takes fall damage
+    - trigger: damage
+      damage_type: fall
+  actions:
+    cast:
+      - class: Velocity
+      - class: FallProtection
+  parameters:
+    target: self
+    cooldown: 2000
+    min_speed: 2.0
+    max_speed: 2.0
+    y_offset: 100

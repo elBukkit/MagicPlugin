@@ -3784,46 +3784,5 @@ piper:
     costs:
         mana: 15
 
-bounce:
-  name: Bounce
-  icon: spell_icon:160
-  icon_disabled: spell_icon_disabled:160
-  passive: true
-  triggers:
-    # This triggers when the player takes fall damage
-    - trigger: damage
-      damage_type: fall
-  actions:
-    cast:
-      - class: Velocity
-      - class: FallProtection
-  parameters:
-    target: self
-    cooldown: 2000
-    min_speed: 2.0
-    max_speed: 2.0
-    y_offset: 100
 
-onepunch:
-  name: One Punnnnnchhhhhhhhhh
-  icon: spell_icon:160
-  icon_disabled: spell_icon_disabled:160
-  passive: true
-  triggers:
-    # This triggers when the player deals physical damage
-    - trigger: damage_dealt
-      damage_type: physical
-  actions:
-    cast:
-      - class: Velocity
-      - class: Delay
-        delay: 500
-      - class: Damage
-  parameters:
-    target: damage_target
-    y_offset: 0.5
-    push: 1
-    radius: 3
-    speed: 5
-    cooldown: 2000
-    damage: 100
+

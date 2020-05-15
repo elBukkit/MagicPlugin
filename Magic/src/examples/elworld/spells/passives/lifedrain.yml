@@ -1,0 +1,14 @@
+lifedrain:
+  name: Life Drain
+  description: Restore full health on kill
+  icon: spell_icon:160
+  icon_disabled: spell_icon_disabled:160
+  passive: true
+  triggers:
+    - trigger: killed
+  actions:
+    cast:
+      - class: Heal
+  parameters:
+    target: self
+    cooldown: 30000
