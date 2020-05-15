@@ -4163,8 +4163,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean cast(Spell spell, String[] parameters) {
         if (spell.isPassive()) {
-            spell.setEnabled(!spell.isEnabled());
-            updateSpellItem(spell);
+            if (spell.isToggleable()) {
+                spell.setEnabled(!spell.isEnabled());
+                updateSpellItem(spell);
+            }
             return true;
         }
         if (useMode == WandUseMode.PRECAST) {
@@ -5229,8 +5231,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (activeSpell != null) {
             Spell spell = getSpell(activeSpell);
             if (spell != null && spell.isPassive()) {
-                spell.setEnabled(!spell.isEnabled());
-                updateSpellItem(spell);
+                if (spell.isToggleable()) {
+                    spell.setEnabled(!spell.isEnabled());
+                    updateSpellItem(spell);
+                }
                 return;
             }
 

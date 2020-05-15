@@ -111,4 +111,5 @@ public interface Spell extends SpellTemplate {
     boolean isPassive();
     boolean isEnabled();
     void setEnabled(boolean enabled);
+    boolean isToggleable();
 }

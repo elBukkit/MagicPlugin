@@ -243,6 +243,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private boolean backfired                   = false;
     private boolean hidden                      = false;
     private boolean passive                     = false;
+    private boolean toggleable                  = true;
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
@@ -975,6 +976,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         pvpRestricted = node.getBoolean("pvp_restricted", false);
         quickCast = node.getBoolean("quick_cast", false);
         passive = node.getBoolean("passive", false);
+        toggleable = node.getBoolean("toggleable", true);
         disguiseRestricted = node.getBoolean("disguise_restricted", false);
         creativeRestricted = node.getBoolean("creative_restricted", false);
         glideRestricted = node.getBoolean("glide_restricted", false);
@@ -3060,5 +3062,10 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void setEnabled(boolean enabled) {
         spellData.setIsEnabled(enabled);
+    }
+
+    @Override
+    public boolean isToggleable() {
+        return toggleable;
     }
 }
