@@ -3784,15 +3784,3 @@ piper:
     costs:
         mana: 15
 
-savior:
-  icon: spell_icon:160
-  icon_disabled: spell_icon_disabled:160
-  passive: true
-  actions:
-    cast:
-      - class: AreaOfEffect
-        actions:
-          - class: Velocity
-  parameters:
-    push: 1
-    radius: 8

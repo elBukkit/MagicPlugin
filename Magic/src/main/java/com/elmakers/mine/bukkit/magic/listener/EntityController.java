@@ -41,7 +41,6 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -484,18 +483,11 @@ public class EntityController implements Listener {
         if (mage == null || mage.isLaunchingProjectile()) return;
 
         double pull = Math.min(1.0, projectile.getVelocity().length() / MAX_ARROW_SPEED);
-        if (!(shooter instanceof Player)) {
-            EntityData mobData = mage.getEntityData();
-            if (mobData != null) {
-                try {
-                    if (mobData.onLaunch(mage, pull)) {
-                        event.setCancelled(true);
-                    }
-                } catch (Exception ex) {
-                    controller.getLogger().log(Level.SEVERE, "Error casting bow spell from mob " + mobData.getName(), ex);
-                }
+        mage.setLastBowPull(pull);
+        if (mage.trigger("launch")) {
+            if (mage.isCancelLaunch()) {
+                event.setCancelled(true);
             }
-            return;
         }
 
         Wand wand = mage.getActiveWand();

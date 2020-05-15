@@ -15,8 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.magic.MageTrigger;
-import com.elmakers.mine.bukkit.magic.MageTrigger.MageTriggerType;
+import com.elmakers.mine.bukkit.api.magic.TriggerType;
+import com.elmakers.mine.bukkit.magic.MobTrigger;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -26,12 +26,13 @@ public class EntityMageData {
 
     protected long tickInterval;
     protected long lifetime;
-    protected @Nullable Multimap<String, MageTrigger> triggers;
+    protected @Nullable Multimap<String, MobTrigger> triggers;
     protected ConfigurationSection mageProperties;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
     protected boolean aggro;
     protected double trackRadiusSquared;
+    protected boolean isCancelLaunch = true;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItemOrWand(parameters.getString("cast_requires_item"));
@@ -69,13 +70,13 @@ public class EntityMageData {
         if (triggerKeys != null) {
             triggers = ArrayListMultimap.create();
             for (String triggerKey : triggerKeys) {
-                MageTrigger trigger = new MageTrigger(controller, triggerKey, triggerConfig.getConfigurationSection(triggerKey));
-                triggers.put(trigger.getType(), trigger);
+                MobTrigger trigger = new MobTrigger(controller, triggerKey, triggerConfig.getConfigurationSection(triggerKey));
+                triggers.put(trigger.getTrigger(), trigger);
             }
         }
 
         // Default to 1-second interval if any interval triggers are set but no interval was specified
-        if (triggers != null && tickInterval <= 0 && triggers.containsKey(MageTriggerType.INTERVAL.name())) {
+        if (triggers != null && tickInterval <= 0 && triggers.containsKey(TriggerType.INTERVAL.name())) {
             tickInterval = 1000;
         }
         if (tickInterval < lifetime / 2) {
@@ -93,68 +94,37 @@ public class EntityMageData {
     }
 
     @Nullable
-    private Collection<MageTrigger> getTriggers(MageTriggerType type) {
+    private Collection<MobTrigger> getTriggers(TriggerType type) {
         return getTriggers(type.name());
     }
 
     @Nullable
-    private Collection<MageTrigger> getTriggers(String type) {
-        return triggers == null ? null : triggers.get(type);
+    private Collection<MobTrigger> getTriggers(String type) {
+        return triggers == null ? null : triggers.get(type.toLowerCase());
     }
 
     public boolean trigger(Mage mage, String triggerKey) {
-        Collection<MageTrigger> triggers = getTriggers(triggerKey);
+        Collection<MobTrigger> triggers = getTriggers(triggerKey);
         if (triggers == null || triggers.isEmpty()) return false;
-        for (MageTrigger trigger : triggers) {
-            trigger.execute(mage);
-        }
-        return true;
-    }
-
-    public void onDeath(Mage mage) {
-        Collection<MageTrigger> deathTriggers = getTriggers(MageTriggerType.DEATH);
-        if (deathTriggers == null) return;
-        for (MageTrigger trigger : deathTriggers) {
-            trigger.execute(mage);
-        }
-    }
-
-    public boolean onLaunch(Mage mage, double bowpull) {
-        Collection<MageTrigger> launchTriggers = getTriggers(MageTriggerType.LAUNCH);
-        if (launchTriggers == null || launchTriggers.isEmpty()) return false;
-
-        for (MageTrigger trigger : launchTriggers) {
-            trigger.execute(mage, 0, bowpull);
-        }
-
-        return true;
-    }
-
-    public void onDamage(Mage mage, double damage) {
-        Collection<MageTrigger> damageTriggers = getTriggers(MageTriggerType.DAMAGE);
-        if (damageTriggers == null) return;
-        for (MageTrigger trigger : damageTriggers) {
-            trigger.execute(mage, damage);
-        }
-    }
-
-    public void onSpawn(Mage mage) {
-        Collection<MageTrigger> spawnTriggers = getTriggers(MageTriggerType.SPAWN);
-        if (spawnTriggers != null) {
-            for (MageTrigger trigger : spawnTriggers) {
-                trigger.execute(mage);
+        boolean activated = false;
+        isCancelLaunch = false;
+        for (MobTrigger trigger : triggers) {
+            if (trigger.execute(mage)) {
+                isCancelLaunch = isCancelLaunch || trigger.isCancelLaunch();
             }
+            activated = true;
         }
+        return activated;
     }
 
     public void tick(Mage mage) {
         if (lifetime > 0 && System.currentTimeMillis() > mage.getCreatedTime() + lifetime) {
-            onDeath(mage);
+            trigger(mage, "death");
             mage.getEntity().remove();
             return;
         }
 
-        Collection<MageTrigger> intervalTriggers = getTriggers(MageTriggerType.INTERVAL);
+        Collection<MobTrigger> intervalTriggers = getTriggers(TriggerType.INTERVAL);
         if (intervalTriggers == null) return;
 
         Entity entity = mage.getLivingEntity();
@@ -166,7 +136,7 @@ public class EntityMageData {
             if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) return;
         }
 
-        for (MageTrigger trigger : intervalTriggers) {
+        for (MobTrigger trigger : intervalTriggers) {
             trigger.execute(mage);
         }
     }

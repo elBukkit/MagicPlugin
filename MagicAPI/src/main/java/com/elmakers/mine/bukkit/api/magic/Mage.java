@@ -683,6 +683,9 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     String getLastDamageType();
 
+    double getLastDamage();
+    double getLastBowPull();
+
     @Nonnull
     MageEffectContext getEffectContext();
 
@@ -717,4 +720,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     void setLaunchingProjectile(boolean launching);
 
     boolean isLaunchingProjectile();
+
+    double getHealth();
+    double getMaxHealth();
 }

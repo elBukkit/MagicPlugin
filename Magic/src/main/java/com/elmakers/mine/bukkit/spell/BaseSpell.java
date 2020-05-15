@@ -61,6 +61,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
@@ -199,6 +200,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private double requiredHealth;
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
+    private List<Trigger> triggers = null;
 
     protected double cancelOnDamage             = 0;
     protected boolean cancelOnDeath            = false;
@@ -996,6 +998,15 @@ public class BaseSpell implements MageSpell, Cloneable {
             toggle = ToggleType.valueOf(toggleString.toUpperCase());
         } catch (Exception ex) {
             controller.getLogger().warning("Invalid toggle type: " + toggleString);
+        }
+
+
+        Collection<ConfigurationSection> triggersConfiguration = ConfigurationUtils.getNodeList(node, "triggers");
+        if (triggersConfiguration != null) {
+            triggers = new ArrayList<>();
+            for (ConfigurationSection triggerConfiguration : triggersConfiguration) {
+                triggers.add(new Trigger(triggerConfiguration));
+            }
         }
 
         Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(node, "requirements");
@@ -3067,5 +3078,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean isToggleable() {
         return toggleable;
+    }
+
+    @Override
+    @Nullable
+    public Collection<Trigger> getTriggers() {
+        return triggers;
     }
 }

@@ -786,7 +786,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
             }
 
-            mageData.onSpawn(apiMage);
+            mageData.trigger(apiMage, "spawn");
         }
     }
 
@@ -965,25 +965,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return mageData == null ? 0 : mageData.tickInterval;
     }
 
-    public void onDeath(Mage mage) {
-        if (mageData != null) {
-            mageData.onDeath(mage);
-        }
-    }
-
-    public void onDamage(Mage mage, double damage) {
-        if (mageData != null) {
-            mageData.onDamage(mage, damage);
-        }
-    }
-
-    public boolean onLaunch(Mage mage, double pull) {
-        if (mageData != null) {
-            return mageData.onLaunch(mage, pull);
-        }
-        return false;
-    }
-
     public void tick(Mage mage) {
         if (mageData != null) {
             mageData.tick(mage);
@@ -1032,5 +1013,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         return null;
+    }
+
+    public boolean isCancelLaunch() {
+        return mageData != null ? mageData.isCancelLaunch : true;
     }
 }

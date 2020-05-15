@@ -12,67 +12,36 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
-public class MageTrigger {
-    public enum MageTriggerType {
-        INTERVAL, DEATH, DAMAGE, SPAWN, LAUNCH
-    }
+public class MobTrigger extends Trigger {
 
-    protected String type;
     protected Deque<WeightedPair<String>> spells;
     protected Collection<EffectPlayer> effects;
     protected List<String> commands;
 
-    protected double maxHealth;
-    protected double minHealth;
-    protected double maxHealthPercentage;
-    protected double minHealthPercentage;
-    protected double maxDamage;
-    protected double minDamage;
-
-    public MageTrigger(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
-        String typeString = configuration.getString("type", key);
-        try {
-            String upperType = typeString.toUpperCase();
-            MageTriggerType.valueOf(upperType);
-            type = upperType;
-        } catch (Exception ex) {
-            type = typeString;
-        }
+    public MobTrigger(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
+        super(configuration, key);
 
         if (configuration.contains("cast")) {
             spells = new ArrayDeque<>();
             RandomUtils.populateStringProbabilityMap(spells, configuration, "cast");
         }
         commands = ConfigurationUtils.getStringList(configuration, "commands");
-
-        maxHealth = configuration.getDouble("max_health");
-        minHealth = configuration.getDouble("min_health");
-        maxHealthPercentage = configuration.getDouble("max_health_percentage");
-        minHealthPercentage = configuration.getDouble("min_health_percentage");
-        maxDamage = configuration.getDouble("max_damage");
-        minDamage = configuration.getDouble("min_damage");
-
         if (configuration.contains("effects")) {
             effects = controller.loadEffects(configuration, "effects");
         }
     }
 
-    public String getType() {
-        return type;
-    }
-
-    private void cast(Mage mage, String castSpell, double bowpull) {
+    private void cast(Mage mage, String castSpell) {
         if (castSpell.length() > 0) {
             String[] parameters = null;
             Spell spell = null;
@@ -85,6 +54,7 @@ public class MageTrigger {
                 }
                 spell = mage.getSpell(castSpell);
             }
+            double bowpull = mage.getLastBowPull();
             if (bowpull > 0) {
                 if (parameters == null) {
                     parameters = new String[]{"bowpull", Double.toString(bowpull)};
@@ -102,23 +72,10 @@ public class MageTrigger {
         }
     }
 
-    public void execute(Mage mage) {
-        execute(mage, 0, 0);
-    }
-
-    public void execute(Mage mage, double damage) {
-        execute(mage, damage, 0);
-    }
-
-    public void execute(Mage mage, double damage, double bowpull) {
-        if (minDamage > 0 && damage < minDamage) return;
-        if (maxDamage > 0 && damage > maxDamage) return;
-
-        LivingEntity li = mage.getLivingEntity();
-        if (minHealth > 0 && (li == null || li.getHealth() < minHealth)) return;
-        if (maxHealth > 0 && (li == null || li.getHealth() > maxHealth)) return;
-        if (minHealthPercentage > 0 && (li == null || li.getHealth() * 100 / CompatibilityUtils.getMaxHealth(li) < minHealthPercentage)) return;
-        if (maxHealthPercentage > 0 && (li == null || li.getHealth() * 100 / CompatibilityUtils.getMaxHealth(li) > maxHealthPercentage)) return;
+    public boolean execute(Mage mage) {
+        if (!isValid(mage)) {
+            return false;
+        }
 
         if (effects != null) {
             for (EffectPlayer player : effects) {
@@ -127,7 +84,7 @@ public class MageTrigger {
         }
         if (spells != null && !spells.isEmpty()) {
             String spell = RandomUtils.weightedRandom(spells);
-            cast(mage, spell, bowpull);
+            cast(mage, spell);
         }
         if (commands != null) {
             Entity topDamager = mage.getTopDamager();
@@ -167,5 +124,7 @@ public class MageTrigger {
                 }
             }
         }
+
+        return true;
     }
 }

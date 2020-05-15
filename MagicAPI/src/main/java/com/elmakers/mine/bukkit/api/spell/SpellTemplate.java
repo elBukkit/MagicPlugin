@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.item.Cost;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
@@ -154,4 +155,10 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     String getCreatorId();
     @Nullable
     String getCreator();
+
+    boolean isToggleable();
+    boolean isPassive();
+
+    @Nullable
+    Collection<Trigger> getTriggers();
 }

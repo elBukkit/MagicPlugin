@@ -77,6 +77,7 @@ import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -100,6 +101,7 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -146,6 +148,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final @Nonnull MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
     private final Map<String, Double> attributes = new HashMap<>();
+    private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
     protected ConfigurationSection data = new MemoryConfiguration();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> playerRef;
@@ -245,6 +248,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private String lastDamageType;
 
     private boolean launchingProjectile;
+    private double lastDamage;
+    private double lastBowPull;
+    private boolean cancelLaunch = false;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -380,14 +386,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
+        if (getEntity() == event.getEntity()) {
+            trigger("death");
+        }
+
         Player player = getPlayer();
         if (player != null && player == event.getEntity()) {
             onPlayerDeath(event);
             return;
-        }
-
-        if (entityData != null && getEntity() == event.getEntity()) {
-            entityData.onDeath(this);
         }
 
         // TODO: This is mainly here for mobs, but if this is ever used for players we need a better place to reset.
@@ -488,6 +494,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void damagedBy(@Nonnull Entity damager, double damage) {
+        lastDamage = damage;
         if (damagedBy == null) return;
 
         if (damager instanceof Projectile) {
@@ -517,10 +524,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             topDamager = lastDamager;
             setTarget(damagingPlayer);
         }
-
-        if (entityData != null) {
-            entityData.onDamage(this, damage);
-        }
     }
 
     public void onDamage(EntityDamageEvent event) {
@@ -537,6 +540,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             callEvent(listener, event);
             if (event.isCancelled()) break;
         }
+
+        // Process triggers
+        trigger("damage");
 
         EntityDamageEvent.DamageCause cause = event.getCause();
         if (cause == EntityDamageEvent.DamageCause.FALL) {
@@ -1116,6 +1122,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
             armorUpdated();
             loading = false;
+            trigger("join");
         } catch (Exception ex) {
             controller.getLogger().warning("Error finalizing player data for " + playerName + ": " + ex.getMessage());
         }
@@ -1290,8 +1297,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Spell spell = getSpell(Wand.getSpell(skillItem));
         if (spell == null) return false;
         if (spell.isPassive()) {
-            spell.setEnabled(!spell.isEnabled());
-            Wand.updateSpellItem(controller.getMessages(), skillItem, spell, "", null, null, false);
+            if (spell.isToggleable()) {
+                spell.setEnabled(!spell.isEnabled());
+                Wand.updateSpellItem(controller.getMessages(), skillItem, spell, "", null, null, false);
+            }
             return true;
         }
         boolean canUse = true;
@@ -1657,6 +1666,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 lastTick = now;
             }
         } else {
+            trigger("interval");
             updateVelocity();
             lastTick = now;
         }
@@ -3390,6 +3400,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 consumeReduction = Math.max(consumeReduction, properties.getFloat("consume_reduction", 0));
             }
         }
+
+        // Iterate over all spells and compile triggers
+        for (String spellKey : properties.getSpells()) {
+            Spell spell = getSpell(spellKey);
+            if (spell == null) continue;
+            Collection<Trigger> spellTriggers = spell.getTriggers();
+            for (Trigger trigger : spellTriggers) {
+                String triggerType = trigger.getTrigger();
+                List<TriggeredSpell> typeTriggers = triggers.get(triggerType);
+                if (typeTriggers == null) {
+                    typeTriggers = new ArrayList<>();
+                    triggers.put(triggerType, typeTriggers);
+                }
+                typeTriggers.add(new TriggeredSpell(spellKey, trigger));
+            }
+        }
     }
 
     protected float stackValue(float currentValue, float stackValue) {
@@ -3401,6 +3427,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         strength.clear();
         weakness.clear();
         attributes.clear();
+
+        // Try to avoid constantly re-creating these lists, don't clear the whole map
+        for (List<TriggeredSpell> triggerList : triggers.values()) {
+            triggerList.clear();
+        }
 
         earnMultiplier = 1;
         cooldownReduction = 0;
@@ -4092,11 +4123,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean trigger(String trigger) {
-        if (entityData == null) {
+        if (entityData != null) {
+            cancelLaunch = true;
+            return entityData.trigger(this, trigger);
+        }
+
+        List<TriggeredSpell> spells = triggers.get(trigger.toLowerCase());
+        if (spells == null || spells.isEmpty()) {
             return false;
         }
 
-        return entityData.trigger(this, trigger);
+        boolean activated = false;
+        cancelLaunch = false;
+        for (TriggeredSpell triggered : spells) {
+            if (triggered.getTrigger().isValid(this)) {
+                cancelLaunch = cancelLaunch || triggered.getTrigger().isCancelLaunch();
+                Spell spell = getSpell(triggered.getSpellKey());
+                activated = spell.cast() || activated;
+            }
+        }
+
+        return activated;
     }
 
     @Override
@@ -4143,6 +4190,47 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isLaunchingProjectile() {
         return launchingProjectile;
+    }
+
+    @Override
+    public double getLastDamage() {
+        return lastDamage;
+    }
+
+    public void setLastDamage(double lastDamage) {
+        this.lastDamage = lastDamage;
+    }
+
+    @Override
+    public double getLastBowPull() {
+        return lastBowPull;
+    }
+
+    public void setLastBowPull(double lastBowPull) {
+        this.lastBowPull = lastBowPull;
+    }
+
+    @Override
+    public double getHealth() {
+        LivingEntity li = getLivingEntity();
+        return li == null ? 0 : li.getHealth();
+    }
+
+    @Override
+    public double getMaxHealth() {
+        LivingEntity li = getLivingEntity();
+        return li == null ? 0 : CompatibilityUtils.getMaxHealth(li);
+    }
+
+    public boolean isCancelLaunch() {
+        if (entityData != null) {
+            return entityData.isCancelLaunch();
+        }
+        return cancelLaunch;
+    }
+
+    public void setCancelLaunch(boolean cancelLaunch) {
+        this.cancelLaunch = cancelLaunch;
     }
 }
 
