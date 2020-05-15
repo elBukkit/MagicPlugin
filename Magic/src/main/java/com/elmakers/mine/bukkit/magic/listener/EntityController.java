@@ -259,7 +259,7 @@ public class EntityController implements Listener {
             if (damager != null) {
                 Mage damagerMage = controller.getRegisteredMage(damager);
                 if (damagerMage != null) {
-                    damagerMage.trigger("target_death");
+                    damagerMage.trigger("kill");
                 }
             }
         }
