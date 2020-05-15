@@ -1141,8 +1141,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 restoreOpenWand = false;
             }
 
-            armorUpdated();
             loading = false;
+            armorUpdated();
             trigger("join");
         } catch (Exception ex) {
             controller.getLogger().warning("Error finalizing player data for " + playerName + ": " + ex.getMessage());
