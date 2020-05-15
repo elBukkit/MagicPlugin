@@ -5,7 +5,7 @@
  - Passive spell system!
    - Add "triggers" option to a spell, it can be auto-cast under various circumstances
    - Add "passive" flag for spells that can not be directly cast but still show up in the spell inventory
-   - See the "savior" spell in the survival configs for an example of use
+   - See here for examples: https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/examples/elworld/spells/passives
 
 # 7.9.1
 

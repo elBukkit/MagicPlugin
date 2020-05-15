@@ -1,5 +1,7 @@
 # This is an example of a passive spell, that is automatically triggered on damage
 savior:
+  name: Savior
+  description: Push everyone away when you get hurt
   icon: spell_icon:160
   icon_disabled: spell_icon_disabled:160
   # This spell won't be directly selectable or castable, but will show up in the spell inventory

@@ -1678,6 +1678,3 @@ spells:
     powerstone:
       name: Power Stone
       description: Unleash a devastating shockwave of power
-    savior:
-      name: Savior
-      description: Push everyone away when you get hurt
