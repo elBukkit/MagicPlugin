@@ -68,3 +68,8 @@ constituted:
   inherit: base
   entity_attributes:
     generic_max_health: "constitution * 2"
+
+vampire:
+  passive: true
+  spells:
+    - lifedrain

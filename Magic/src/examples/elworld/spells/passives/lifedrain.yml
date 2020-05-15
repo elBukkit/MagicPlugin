@@ -5,7 +5,7 @@ lifedrain:
   icon_disabled: spell_icon_disabled:160
   passive: true
   triggers:
-    - trigger: killed
+    - trigger: target_death
   actions:
     cast:
       - class: Heal
