@@ -8,7 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellKey;
 public class SpellData {
     private SpellKey spellKey;
     private boolean isActive;
-    private boolean isEnabled;
+    private boolean isEnabled = true;
     private long lastCast;
     private long lastEarn;
     private long castCount;
