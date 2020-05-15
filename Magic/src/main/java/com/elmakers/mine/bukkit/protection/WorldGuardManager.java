@@ -12,11 +12,12 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
-public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager {
+public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager, CastPermissionManager {
     private boolean enabled = false;
     private WorldGuardAPI worldGuard = null;
 
@@ -81,7 +82,8 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
     }
 
     @Nullable
-    public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
+    @Override
+    public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location) {
         if (enabled && worldGuard != null) {
             return worldGuard.getCastPermission(player, spell, location);
         }

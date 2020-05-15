@@ -104,6 +104,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
@@ -1575,6 +1576,9 @@ public class MagicController implements MageController {
         if (!initialized) {
             finalizeIntegration();
         }
+        // Cast Managers
+        if (worldGuardManager.isEnabled()) castManagers.add(worldGuardManager);
+        if (preciousStonesManager.isEnabled()) castManagers.add(preciousStonesManager);
 
         // PVP Managers
         if (worldGuardManager.isEnabled()) pvpManagers.add(worldGuardManager);
@@ -3011,6 +3015,7 @@ public class MagicController implements MageController {
         blockBreakManagers.clear();
         blockBuildManagers.clear();
         pvpManagers.clear();
+        castManagers.clear();
 
         PreLoadEvent loadEvent = new PreLoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
@@ -3021,6 +3026,7 @@ public class MagicController implements MageController {
         attributeProviders.addAll(loadEvent.getAttributeProviders());
         teamProviders.addAll(loadEvent.getTeamProviders());
         requirementProcessors.putAll(loadEvent.getRequirementProcessors());
+        castManagers.addAll(loadEvent.getCastManagers());
 
         // Load builtin default currencies
         addCurrency(new ItemCurrency(this, getWorthItem(), getWorthItemAmount(), currencyItem.getName(), currencyItem.getPluralName()));
@@ -3173,14 +3179,37 @@ public class MagicController implements MageController {
     @Override
     public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location) {
         if (player != null && player.hasPermission("Magic.bypass")) return true;
-        return worldGuardManager.getCastPermission(player, spell, location);
+        Boolean result = null;
+        for (CastPermissionManager manager : castManagers) {
+            Boolean managerResult = manager.getRegionCastPermission(player, spell, location);
+            if (result != null) {
+                result = managerResult;
+                if (!result) {
+                    break;
+                }
+                break;
+            }
+        }
+        return result;
     }
 
     @Nullable
     @Override
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location) {
         if (player != null && player.hasPermission("Magic.bypass")) return true;
-        return preciousStonesManager.getCastPermission(player, spell, location);
+
+        Boolean result = null;
+        for (CastPermissionManager manager : castManagers) {
+            Boolean managerResult = manager.getPersonalCastPermission(player, spell, location);
+            if (result != null) {
+                result = managerResult;
+                if (!result) {
+                    break;
+                }
+                break;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -6245,6 +6274,7 @@ public class MagicController implements MageController {
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
     private List<PVPManager>                    pvpManagers                 = new ArrayList<>();
+    private List<CastPermissionManager>         castManagers                = new ArrayList<>();
     private List<AttributeProvider>             attributeProviders          = new ArrayList<>();
     private List<TeamProvider>                  teamProviders               = new ArrayList<>();
     private NPCSupplierSet                      npcSuppliers                = new NPCSupplierSet();

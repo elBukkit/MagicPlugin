@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 
@@ -30,6 +31,7 @@ public class PreLoadEvent extends Event {
     private List<BlockBreakManager> blockBreakManagers = new ArrayList<>();
     private List<BlockBuildManager> blockBuildManager = new ArrayList<>();
     private List<PVPManager> pvpManagers = new ArrayList<>();
+    private List<CastPermissionManager> castmanagers = new ArrayList<>();
     private Map<String, RequirementsProcessor> requirementProcessors = new HashMap<>();
 
     public PreLoadEvent(MageController controller) {
@@ -131,6 +133,16 @@ public class PreLoadEvent extends Event {
         blockBuildManager.add(manager);
     }
 
+    /**
+     * Register a CastPermissionManager, for controlling whether or not players can cast spells in
+     * specific regions.
+     *
+     * @param manager The manager to add.
+     */
+    public void registerCastPermissionManager(CastPermissionManager manager) {
+        castmanagers.add(manager);
+    }
+
     public Map<String, RequirementsProcessor> getRequirementProcessors() {
         return requirementProcessors;
     }
@@ -157,5 +169,9 @@ public class PreLoadEvent extends Event {
 
     public Collection<PVPManager> getPVPManagers() {
         return pvpManagers;
+    }
+
+    public Collection<CastPermissionManager> getCastManagers() {
+        return castmanagers;
     }
 }

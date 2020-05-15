@@ -8,6 +8,7 @@
    - Add CheckTrigger action to make a spell see if a trigger has been activated since the spell started
    - See here for examples: https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/examples/elworld/spells/passives
  - Add RemoveSpell action
+ - Add CastPermissionManager hook to API
 
 # 7.9.1
 

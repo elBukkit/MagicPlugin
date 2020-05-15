@@ -1399,6 +1399,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         Boolean personalPermission = bypassRegionPermission ? null : controller.getPersonalCastPermission(mage.getPlayer(), this, location);
         if (personalPermission != null && !ignoreRegionOverrides && personalPermission == true) return true;
         if (regionPermission != null && regionPermission == false) return false;
+
         if (requiresBuildPermission() && !hasBuildPermission(location.getBlock())) return false;
         if (requiresBreakPermission() && !hasBreakPermission(location.getBlock())) return false;
         if (worldBorderRestricted)

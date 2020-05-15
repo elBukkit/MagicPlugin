@@ -12,10 +12,11 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
-public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager {
+public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager, CastPermissionManager {
     private boolean enabled = false;
     private boolean override = true;
     private PreciousStonesAPI api;
@@ -67,7 +68,8 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
     }
 
     @Nullable
-    public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
+    @Override
+    public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location) {
         if (!override || !enabled || api == null || location == null)
         {
             return null;
