@@ -266,9 +266,19 @@ public class TargetingSpell extends BaseSpell {
     {
         Location source = getEyeLocation();
         TargetType targetType = targeting.getTargetType();
+
         boolean isBlock = targetType == TargetType.BLOCK || targetType == TargetType.SELECT;
         if (!isBlock && targetEntity != null) {
             return targeting.overrideTarget(context, new Target(source, targetEntity));
+        }
+        if (targetType == TargetType.LAST_DAMAGER) {
+            return targeting.overrideTarget(context, new Target(source, mage.getLastDamager()));
+        }
+        if (targetType == TargetType.TOP_DAMAGER) {
+            return targeting.overrideTarget(context, new Target(source, mage.getTopDamager()));
+        }
+        if (targetType == TargetType.DAMAGE_TARGET) {
+            return targeting.overrideTarget(context, new Target(source, mage.getLastDamageTarget()));
         }
 
         if (targetType != TargetType.SELF && targetLocation != null) {

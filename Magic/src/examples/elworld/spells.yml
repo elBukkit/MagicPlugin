@@ -3815,14 +3815,13 @@ onepunch:
       damage_type: physical
   actions:
     cast:
-      - class: AreaOfEffect
-        actions:
-        - class: Velocity
-        - class: Delay
-          delay: 1
-        - class: Damage
+      - class: Velocity
+      - class: Delay
+        delay: 500
+      - class: Damage
   parameters:
-    target: self
+    target: damage_target
+    y_offset: 0.5
     push: 1
     radius: 3
     speed: 5

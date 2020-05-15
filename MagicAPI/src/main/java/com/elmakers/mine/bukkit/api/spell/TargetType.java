@@ -15,5 +15,8 @@ public enum TargetType {
     OTHER_ENTITY,
     SELF,
     SELECT,
-    SELECT_ENTITY;
+    SELECT_ENTITY,
+    LAST_DAMAGER,
+    TOP_DAMAGER,
+    DAMAGE_TARGET
 }
