@@ -3691,10 +3691,12 @@ public class MagicController implements MageController {
     @Override
     public boolean isVanished(Entity entity) {
         if (entity == null) return false;
-        if (essentialsController != null) {
-             if (essentialsController.isVanished(entity)) {
-                 return true;
-             }
+        Mage mage = getRegisteredMage(entity);
+        if (mage != null && mage.isVanished()) {
+            return true;
+        }
+        if (essentialsController != null && essentialsController.isVanished(entity)) {
+            return true;
         }
         for (MetadataValue meta : entity.getMetadata("vanished")) {
             return meta.asBoolean();
