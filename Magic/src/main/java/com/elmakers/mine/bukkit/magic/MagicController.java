@@ -135,6 +135,7 @@ import com.elmakers.mine.bukkit.economy.SpellPointCurrency;
 import com.elmakers.mine.bukkit.economy.VaultCurrency;
 import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
+import com.elmakers.mine.bukkit.essentials.EssentialsController;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
@@ -1081,8 +1082,15 @@ public class MagicController implements MageController {
 
         // Try to link to Essentials:
         Plugin essentials = pluginManager.getPlugin("Essentials");
+        essentialsController = null;
         hasEssentials = essentials != null && essentials.isEnabled();
         if (hasEssentials) {
+            essentialsController = EssentialsController.initialize(essentials);
+            if (essentialsController == null) {
+                getLogger().warning("Error integrating with Essentials");
+            } else {
+                getLogger().info("Integrating with Essentials for vanish detection");
+            }
             if (warpController.setEssentials(essentials)) {
                 getLogger().info("Integrating with Essentials for Recall warps");
             }
@@ -3683,6 +3691,11 @@ public class MagicController implements MageController {
     @Override
     public boolean isVanished(Entity entity) {
         if (entity == null) return false;
+        if (essentialsController != null) {
+             if (essentialsController.isVanished(entity)) {
+                 return true;
+             }
+        }
         for (MetadataValue meta : entity.getMetadata("vanished")) {
             return meta.asBoolean();
         }
@@ -6270,6 +6283,7 @@ public class MagicController implements MageController {
     private LightAPIManager                     lightAPIManager             = null;
     private MobArenaManager                     mobArenaManager             = null;
     private LogBlockManager                     logBlockManager             = null;
+    private EssentialsController                essentialsController        = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();

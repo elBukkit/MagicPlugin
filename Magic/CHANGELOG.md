@@ -10,6 +10,7 @@
  - Add RemoveSpell action
  - Add CastPermissionManager hook to API
  - Fix crafting permissions in the 2x2 inventory crafting slots
+ - Add Essentials integration for vanish detection
 
 # 7.9.1
 
