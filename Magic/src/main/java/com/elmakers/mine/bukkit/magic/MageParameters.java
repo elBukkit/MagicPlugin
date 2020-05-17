@@ -35,6 +35,7 @@ public class MageParameters extends ParameterizedConfiguration {
         attributes = new HashSet<>(attrs);
     }
 
+    @Override
     @Nullable
     protected Double evaluate(String expression) {
         if (mage.isPlayer()) {
