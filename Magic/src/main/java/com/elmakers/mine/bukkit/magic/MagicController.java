@@ -6135,7 +6135,7 @@ public class MagicController implements MageController {
     private final Set<String>                   registeredAttributes        = new HashSet<>();
     private final Set<String>                   builtinAttributes           = ImmutableSet.of(
             "health", "health_max", "time", "moon", "location_x", "location_y", "location_z",
-            "mana", "mana_max", "xp", "level", "bowpull"
+            "mana", "mana_max", "xp", "level", "bowpull", "damage", "damage_dealt"
     );
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();

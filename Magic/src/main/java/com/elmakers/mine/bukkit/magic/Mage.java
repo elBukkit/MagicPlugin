@@ -4093,6 +4093,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 Location location = getLocation();
                 return location == null ? null : location.getZ();
             }
+            case "damage": {
+                return getLastDamage();
+            }
+            case "damage_dealt": {
+                return getLastDamageDealt();
+            }
+            case "bowpull": {
+                return getLastBowPull();
+            }
 
             default:
                 return null;

@@ -21,7 +21,7 @@ savior:
       # interval: 5000 (for the interval trigger, 5 seconds)
       # min_health: 5 (only activate if player has more than 5 health)
       # min/max_damage: (for the damage trigger, must have dealt X damage)
-      # min/max_bow_pull: (for the launch trigger, how far back the player or mob pulled the bow from 0 to 1)
+      # min/max_bowpull: (for the launch trigger, how far back the player or mob pulled the bow from 0 to 1)
   actions:
     cast:
       - class: AreaOfEffect
