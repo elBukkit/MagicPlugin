@@ -148,13 +148,9 @@ public class EntityController implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
-        Entity damager = event.getDamager();
-        Mage mage = controller.getRegisteredMage(damager);
-        if (mage != null && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            ((com.elmakers.mine.bukkit.magic.Mage)mage).onDamageDealt(event);
-        }
         if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
 
+        Entity damager = event.getDamager();
         UndoList undoList = controller.getEntityUndo(damager);
         if (undoList != null) {
             // Prevent dropping items from frames,
@@ -166,6 +162,14 @@ public class EntityController implements Listener {
             } else {
                 undoList.modify(entity);
             }
+        }
+
+        // Make sure to resolve the source after getting the undo list, since the undo
+        // list is attached to the projectile.
+        damager = CompatibilityUtils.getSource(damager);
+        Mage mage = controller.getRegisteredMage(damager);
+        if (mage != null && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+            ((com.elmakers.mine.bukkit.magic.Mage)mage).onDamageDealt(event);
         }
     }
 

@@ -12,6 +12,7 @@
  - Fix crafting permissions in the 2x2 inventory crafting slots
  - Add Essentials integration for vanish detection
  - Andesite, diorite and granite are now in the same destructible lists as stone
+ - Added "damage" and "damage_dealt" attributes
 
 # 7.9.1
 
