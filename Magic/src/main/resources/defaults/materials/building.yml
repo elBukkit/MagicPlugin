@@ -1,7 +1,7 @@
 # Which materials are acceptable as building materials. This
 # affects what can be absorbed and added to a wand.
 building:
-- stone
+- all_stone
 - grass
 - grass_block
 - grass_path

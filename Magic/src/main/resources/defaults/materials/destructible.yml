@@ -5,7 +5,7 @@
 destructible:
 - logs
 - all_leaves
-- stone
+- all_stone
 - grass
 - grass_block
 - dirt

@@ -11,6 +11,7 @@
  - Add CastPermissionManager hook to API
  - Fix crafting permissions in the 2x2 inventory crafting slots
  - Add Essentials integration for vanish detection
+ - Andesite, diorite and granite are now in the same destructible lists as stone
 
 # 7.9.1
 

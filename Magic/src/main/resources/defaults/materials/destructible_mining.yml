@@ -2,7 +2,7 @@
 #
 destructible_mining:
 - log
-- stone
+- all_stone
 - grass
 - grass_block
 - grass_path

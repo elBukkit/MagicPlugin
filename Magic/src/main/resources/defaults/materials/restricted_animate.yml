@@ -9,7 +9,7 @@ restricted_animate:
 - all_lava
 - wood
 - sandstone
-- stone
+- all_stone
 - bedrock
 - command
 - ender_portal
