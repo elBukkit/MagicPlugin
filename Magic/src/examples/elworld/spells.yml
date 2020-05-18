@@ -3741,3 +3741,19 @@ piper:
     costs:
         mana: 15
 
+swap:
+  name: Swap
+  description: Swap places with your target
+  actions:
+    cast:
+      - class: ChangeContext
+        swap_source_and_target: true
+        actions:
+        - class: Delay
+        - class: Teleport
+          use_target_location: true
+      - class: Teleport
+        use_target_location: true
+  parameters:
+    target: other_entity
+    range: 32

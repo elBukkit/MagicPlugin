@@ -145,6 +145,10 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (swapSourceAndTarget)
         {
+            // We can't have a null source or target location
+            if (targetLocation == null || targetEntity == null) {
+                return SpellResult.NO_TARGET;
+            }
             Entity swapEntity = targetEntity;
             targetEntity = sourceEntity;
             sourceEntity = swapEntity;
