@@ -56,7 +56,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
@@ -914,12 +913,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
             if (!(lastDamage instanceof EntityDamageByEntityEvent)) return;
             Entity damager = ((EntityDamageByEntityEvent)lastDamage).getDamager();
-            if (damager instanceof Projectile) {
-                ProjectileSource source = ((Projectile)damager).getShooter();
-                if (source instanceof Entity) {
-                    damager = (Entity)source;
-                }
-            }
+            damager = CompatibilityUtils.getSource(damager);
             if (!(damager instanceof Player) || damager == event.getEntity()) return;
         }
 

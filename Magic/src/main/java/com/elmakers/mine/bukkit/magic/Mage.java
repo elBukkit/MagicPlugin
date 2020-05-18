@@ -38,7 +38,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -54,7 +53,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
@@ -507,12 +505,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void damagedBy(@Nonnull Entity damager, double damage) {
         lastDamage = damage;
         if (damagedBy == null) return;
-
-        if (damager instanceof Projectile) {
-            ProjectileSource source = ((Projectile) damager).getShooter();
-            if (!(source instanceof Entity)) return;
-            damager = (Entity)source;
-        }
+        damager = CompatibilityUtils.getSource(damager);
 
         // Only tracking players for now.
         if (!(damager instanceof Player)) return;

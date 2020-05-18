@@ -1988,4 +1988,15 @@ public class CompatibilityUtils extends NMSUtils {
         DeprecatedUtils.setTypeAndData(block, block.getType(), (byte)(data | 8), false);
         return true;
     }
+
+    public static Entity getSource(Entity entity) {
+        if (entity instanceof Projectile) {
+            ProjectileSource source = ((Projectile)entity).getShooter();
+            if (source instanceof Entity) {
+                entity = (Entity)source;
+            }
+        }
+
+        return entity;
+    }
 }
