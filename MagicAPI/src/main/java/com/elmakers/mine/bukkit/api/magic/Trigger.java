@@ -35,8 +35,8 @@ public class Trigger {
         maxDamage = configuration.getDouble("max_damage");
         minDamage = configuration.getDouble("min_damage");
         isCancelLaunch = configuration.getBoolean("cancel_launch", true);
-        maxBowPull = configuration.getDouble("max_bow_pull");
-        minBowPull = configuration.getDouble("min_bow_pull");
+        maxBowPull = configuration.getDouble("max_bowpull");
+        minBowPull = configuration.getDouble("min_bowpull");
         damageType = configuration.getString("damage_type");
     }
 
