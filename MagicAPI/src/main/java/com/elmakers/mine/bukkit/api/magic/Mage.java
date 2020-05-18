@@ -733,4 +733,5 @@ public interface Mage extends CostReducer, CooldownReducer {
 
     double getHealth();
     double getMaxHealth();
+    boolean toggleSpellEnabled(String spellKey);
 }

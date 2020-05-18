@@ -808,7 +808,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (spell != null) {
                 boolean isQuickCast = spell.isQuickCast() && !activeWand.isQuickCastDisabled();
                 isQuickCast = isQuickCast || (activeWand.getMode() == WandMode.CHEST && activeWand.isQuickCast());
-                if (isQuickCast) {
+                if (spell.isPassive()) {
+                    toggleSpellEnabled(spell);
+                } else if (isQuickCast) {
                     activeWand.cast(spell);
                 } else {
                     activeWand.setActiveSpell(spell.getKey());
@@ -4296,5 +4298,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Long getLastTrigger(String trigger) {
         return lastTriggers.get(trigger);
     }
-}
 
+    @Override
+    public boolean toggleSpellEnabled(String spellKey) {
+        return toggleSpellEnabled(getSpell(spellKey));
+    }
+
+    public boolean toggleSpellEnabled(Spell spell) {
+        if (spell != null && spell.isToggleable()) {
+            spell.setEnabled(!spell.isEnabled());
+            if (activeWand != null) {
+                activeWand.updateSpellItem(spell);
+            }
+            return true;
+        }
+        return false;
+    }
+}

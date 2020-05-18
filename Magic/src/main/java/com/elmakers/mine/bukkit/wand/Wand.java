@@ -5229,15 +5229,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public void setActiveSpell(String activeSpell) {
         if (activeSpell != null) {
-            Spell spell = getSpell(activeSpell);
-            if (spell != null && spell.isPassive()) {
-                if (spell.isToggleable()) {
-                    spell.setEnabled(!spell.isEnabled());
-                    updateSpellItem(spell);
-                }
-                return;
-            }
-
             SpellKey spellKey = new SpellKey(activeSpell);
             this.activeSpell = spellKey.getBaseKey();
         } else {
