@@ -1258,6 +1258,17 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             command = command.replace("@" + key, Integer.toString(variables.getInt(key)));
         }
 
+        List<String> attributes = new ArrayList<>(controller.getAttributes());
+        Collections.sort(attributes, (o1, o2) -> o2.length() - o1.length());
+        for (String attribute : attributes) {
+            Double value = mage.getAttribute(attribute);
+            command = command.replace("$" + attribute, value == null ? "?" : Double.toString(value));
+        }
+        for (String attribute : attributes) {
+            Double value = mage.getAttribute(attribute);
+            command = command.replace("@" + attribute, value == null ? "?" : Integer.toString((int)(double)value));
+        }
+
         command = command
                 .replace("@_", " ")
                 .replace("@spell", getSpell().getName())

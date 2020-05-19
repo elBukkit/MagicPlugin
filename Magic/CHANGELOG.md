@@ -14,6 +14,7 @@
  - Andesite, diorite and granite are now in the same destructible lists as stone
  - Added "damage" and "damage_dealt" attributes
  - Add "scope" to ModifyVariable, can be cast (the default), spell or mage
+ - Attributes can now be used in Message and Command actions
 
 # 7.9.1
 
