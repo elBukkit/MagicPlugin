@@ -6,6 +6,8 @@ testvariable:
     cast:
       - class: ModifyVariable
         variable: armor
+        # This makes the variable survive past the spell cast
+        scope: spell
         value: "%armor_durability_max_helmet%"
         # This will make it so the variable is only set once
         # overwrite: false
@@ -16,6 +18,7 @@ testvariable:
         actions:
         - class: ModifyVariable
           variable: count
+          scope: spell
           default: 10
           value: "count + 1"
         - class: Message

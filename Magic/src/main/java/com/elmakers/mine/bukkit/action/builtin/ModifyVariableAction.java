@@ -17,7 +17,7 @@ public class ModifyVariableAction extends BaseSpellAction {
     private boolean hasValue;
     private double value;
     private boolean clear;
-    private VariableScope scope = VariableScope.SPELL;
+    private VariableScope scope = VariableScope.CAST;
 
     private void checkDefaults(ConfigurationSection variables, ConfigurationSection parameters) {
         if (!clear && !variables.contains(key)) {
