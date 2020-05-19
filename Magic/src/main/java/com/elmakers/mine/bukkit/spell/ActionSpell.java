@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -161,9 +162,9 @@ public class ActionSpell extends BrushSpell
     }
 
     @Override
-    public void reloadParameters() {
+    public void reloadParameters(CastContext context) {
         if (currentHandler != null) {
-            currentHandler.prepare(currentCast, workingParameters);
+            currentHandler.prepare(context, workingParameters);
         }
     }
 

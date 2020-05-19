@@ -87,7 +87,7 @@ public interface Spell extends SpellTemplate {
     boolean cancelOnNoWand();
     @Nonnull
     ConfigurationSection getVariables();
-    default void reloadParameters() { };
+    default void reloadParameters(CastContext context) { };
 
     /**
      * Signal that this spell was cancelled. Will send cancel messages

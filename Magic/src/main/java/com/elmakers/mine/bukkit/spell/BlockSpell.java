@@ -119,7 +119,7 @@ public class BlockSpell extends UndoableSpell {
     public String getMessage(String messageKey, String def) {
         String message = super.getMessage(messageKey, def);
         // Don't stomp on variables here
-        if (!getVariables().contains("count")) {
+        if (!getVariables().contains("count") && !mage.getVariables().contains("count")) {
             return message.replace("$count", Integer.toString(getModifiedCount()));
         }
         return message;

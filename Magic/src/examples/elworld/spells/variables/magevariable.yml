@@ -1,0 +1,30 @@
+magevariable1:
+  icon: feather
+  parameters:
+    target: self
+  actions:
+    cast:
+      # This part may not be necessary, but if there was at some point a "count"
+      # variable on this spell it would override the mage version.
+      - class: ModifyVariable
+        variable: count
+        scope: spell
+        clear: true
+      - class: ModifyVariable
+        variable: count
+        scope: mage
+        default: 0
+      - class: Message
+        message: "Your current count is @count"
+      - class: Repeat
+        repeat: 3
+        actions:
+        - class: ModifyVariable
+          variable: count
+          scope: mage
+          value: "count + 1"
+        - class: Message
+          message: "Variable count = @count"
+
+magevariable2:
+  inherit: magevariable1

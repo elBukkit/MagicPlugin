@@ -1,0 +1,22 @@
+castvariable:
+  icon: feather
+  parameters:
+    target: self
+  actions:
+    cast:
+      - class: ModifyVariable
+        variable: count
+        scope: cast
+        default: 0
+        value: 0
+      - class: Message
+        message: "Your current count is @count"
+      - class: Repeat
+        repeat: 3
+        actions:
+        - class: ModifyVariable
+          variable: count
+          scope: cast
+          value: "count + 1"
+        - class: Message
+          message: "Variable count = @count"

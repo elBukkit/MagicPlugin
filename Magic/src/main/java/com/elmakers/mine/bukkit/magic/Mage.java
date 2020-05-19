@@ -146,6 +146,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final @Nonnull MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
     private final Map<String, Double> attributes = new HashMap<>();
+    private ConfigurationSection variables;
     private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
     private final List<TriggeredSpell> processingTriggers = new ArrayList<>();
     private final Map<String, Long> lastTriggers = new HashMap<>();
@@ -1159,6 +1160,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return true;
             }
 
+            this.data = data.getExtraData();
+            this.properties.load(data.getProperties());
+            this.properties.loadProperties();
+            this.variables = data.getVariables();
+
             boundWands.clear();
             Map<String, ItemStack> boundWandItems = data.getBoundWands();
             if (boundWandItems != null) {
@@ -1171,9 +1177,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     }
                 }
             }
-            this.data = data.getExtraData();
-            this.properties.load(data.getProperties());
-            this.properties.loadProperties();
 
             this.classes.clear();
             Map<String, ConfigurationSection> classProperties = data.getClassProperties();
@@ -1477,6 +1480,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setGaveWelcomeWand(gaveWelcomeWand);
             data.setExtraData(this.data);
             data.setProperties(properties.getConfiguration());
+            data.setVariables(variables);
 
             Map<String, ConfigurationSection> classProperties = new HashMap<>();
             for (Map.Entry<String, MageClass> entry : classes.entrySet()) {
@@ -4306,5 +4310,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return true;
         }
         return false;
+    }
+
+    @Override
+    @Nonnull
+    public ConfigurationSection getVariables() {
+        if (variables == null) {
+            variables = new MemoryConfiguration();
+        }
+        return variables;
     }
 }

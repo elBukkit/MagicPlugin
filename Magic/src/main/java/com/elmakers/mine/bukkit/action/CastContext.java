@@ -40,6 +40,7 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -127,6 +128,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         this.result = copy.getResult();
         this.mageClass = copy.getMageClass();
         this.startTime = copy.getStartTime();
+        this.variables = copy.getVariables();
 
         Location centerLocation = copy.getTargetCenterLocation();
         if (centerLocation != null) {
@@ -1246,7 +1248,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         Mage mage = getMage();
         MageController controller = getController();
 
-        ConfigurationSection variables = getVariables();
+        ConfigurationSection variables = getAllVariables();
         List<String> keys = new ArrayList<>(variables.getKeys(false));
         Collections.sort(keys, (o1, o2) -> o2.length() - o1.length());
         for (String key : keys) {
@@ -1355,14 +1357,61 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     }
 
     @Override
-    public ConfigurationSection getVariables() {
-        if (baseSpell == null) {
-            if (variables == null) {
-                variables = new MemoryConfiguration();
-            }
-            return variables;
+    public ConfigurationSection getAllVariables() {
+        ConfigurationSection combinedVariables = new MemoryConfiguration();
+        if (variables != null) {
+            ConfigurationUtils.addConfigurations(combinedVariables, variables, false);
         }
-        return baseSpell.getVariables();
+        if (baseSpell != null) {
+            ConfigurationUtils.addConfigurations(combinedVariables, baseSpell.getVariables(), false);
+        }
+        if (mage != null) {
+            ConfigurationUtils.addConfigurations(combinedVariables, mage.getVariables(), false);
+        }
+        return combinedVariables;
+    }
+
+    @Override
+    public ConfigurationSection getVariables() {
+        if (variables == null) {
+            variables = new MemoryConfiguration();
+        }
+        return variables;
+    }
+
+    @Override
+    @Nonnull
+    public ConfigurationSection getVariables(VariableScope scope) {
+        switch (scope) {
+            case SPELL:
+                return baseSpell == null ? getVariables() : baseSpell.getVariables();
+            case MAGE:
+                return mage == null ? getVariables() : mage.getVariables();
+            case CAST:
+            default:
+                return getVariables();
+        }
+    }
+
+    @Override
+    @Nullable
+    public Double getVariable(String variable) {
+        if (variables != null && variables.contains(variable)) {
+            return variables.getDouble(variable);
+        }
+        if (baseSpell != null) {
+            ConfigurationSection spellVariables = baseSpell.getVariables();
+            if (spellVariables != null && spellVariables.contains(variable)) {
+                return spellVariables.getDouble(variable);
+            }
+        }
+        if (mage != null) {
+            ConfigurationSection mageVariables = mage.getVariables();
+            if (mageVariables != null && mageVariables.contains(variable)) {
+                return mageVariables.getDouble(variable);
+            }
+        }
+        return null;
     }
 
     @Override

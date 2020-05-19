@@ -1181,7 +1181,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         this.location = defaultLocation;
 
-        workingParameters = new SpellParameters(this);
+        workingParameters = new SpellParameters(this, currentCast);
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
         processParameters(workingParameters);
@@ -2470,7 +2470,10 @@ public class BaseSpell implements MageSpell, Cloneable {
     public void setSpellData(SpellData data) {
         this.spellData = data;
         if (this.parameters != null) {
-            this.parameters.setVariables(getVariables());
+            this.parameters.setSpellVariables(getVariables());
+            if (mage != null) {
+                this.parameters.setMageVariables(mage.getVariables());
+            }
         }
     }
 

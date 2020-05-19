@@ -17,6 +17,7 @@ public class MageData {
     private String name;
     private ConfigurationSection data;
     private ConfigurationSection properties;
+    private ConfigurationSection variables;
     private Map<String, ConfigurationSection> classProperties;
     private String activeClass;
     private long lastCast;
@@ -277,5 +278,13 @@ public class MageData {
     @Deprecated
     public void setSoulWand(Wand soulWand) {
 
+    }
+
+    public ConfigurationSection getVariables() {
+        return variables;
+    }
+
+    public void setVariables(ConfigurationSection variables) {
+        this.variables = variables;
     }
 }

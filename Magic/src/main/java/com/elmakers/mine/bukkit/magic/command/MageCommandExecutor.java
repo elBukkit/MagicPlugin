@@ -771,6 +771,17 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                  sender.sendMessage(ChatColor.AQUA + "Mage properties:");
                  mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
             }
+            ConfigurationSection variables = mage.getVariables();
+            Set<String> keys = variables.getKeys(false);
+            if (!keys.isEmpty()) {
+                sender.sendMessage(ChatColor.AQUA + "Mage variables:");
+                for (String key : keys) {
+                    Object value = variables.get(key);
+                    if (value != null) {
+                        sender.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
+                    }
+                }
+            }
             if (activeClass != null) {
                 sender.sendMessage(ChatColor.AQUA + "Active class: " + ChatColor.GREEN + activeClass.getKey());
             } else {

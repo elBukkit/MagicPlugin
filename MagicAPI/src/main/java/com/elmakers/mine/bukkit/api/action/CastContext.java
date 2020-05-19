@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
@@ -222,7 +223,23 @@ public interface CastContext extends WandEffectContext {
     @Nonnull
     CasterProperties getActiveProperties();
     void addMessageParameter(String key, String value);
+    long getStartTime();
+
+    @Nullable
+    Double getVariable(String variable);
+    @Nonnull
+    ConfigurationSection getVariables(VariableScope scope);
+
+    /**
+     * Returns cast-local variables
+     */
     @Nonnull
     ConfigurationSection getVariables();
-    long getStartTime();
+
+    /**
+     * Returns all variables, this can be an expensive call so avoid using it if possible.
+     * This is also not modifiable, the configuration section returned is a copy.
+     */
+    @Nonnull
+    ConfigurationSection getAllVariables();
 }

@@ -226,11 +226,7 @@ public class MagicRequirement {
         if (variables != null) {
             for (PropertyRequirement requirement : variables) {
                 String key = requirement.key;
-                Double value = null;
-                ConfigurationSection variables = context.getVariables();
-                if (variables.contains(key)) {
-                    value = variables.getDouble(key);
-                }
+                Double value = context.getVariable(key);
                 if (!requirement.check(value)) {
                     return false;
                 }
@@ -411,11 +407,7 @@ public class MagicRequirement {
         if (variables != null) {
             for (PropertyRequirement requirement : variables) {
                 String key = requirement.key;
-                Double value = null;
-                ConfigurationSection variables = context.getVariables();
-                if (variables.contains(key)) {
-                    value = variables.getDouble(key);
-                }
+                Double value = context.getVariable(key);
                 String message = checkRequiredProperty(context, requirement, key, value);
                 if (message != null) {
                     return message;

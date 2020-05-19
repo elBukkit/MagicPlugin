@@ -91,7 +91,7 @@ public class TargetingSpell extends BaseSpell {
         String message = super.getMessage(messageKey, def);
 
         // Escape targeting parameters, but don't stomp on variables
-        if (!getVariables().contains("target")) {
+        if (!getVariables().contains("target") && !mage.getVariables().contains("target")) {
             String useTargetName = null;
             if (currentCast != null) {
                 useTargetName = currentCast.getTargetName();
