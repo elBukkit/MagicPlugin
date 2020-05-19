@@ -147,20 +147,20 @@ public class EntityController implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
-        if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
-        if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
-
         Entity damager = event.getDamager();
-        UndoList undoList = controller.getEntityUndo(damager);
-        if (undoList != null) {
-            // Prevent dropping items from frames,
-            if (undoList.isScheduled()) {
-                undoList.damage(entity);
-                if (!entity.isValid()) {
-                    event.setCancelled(true);
+        if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            UndoList undoList = controller.getEntityUndo(damager);
+            if (undoList != null) {
+                // Prevent dropping items from frames,
+                if (undoList.isScheduled()) {
+                    undoList.damage(entity);
+                    if (!entity.isValid()) {
+                        event.setCancelled(true);
+                    }
+                } else {
+                    undoList.modify(entity);
                 }
-            } else {
-                undoList.modify(entity);
             }
         }
 

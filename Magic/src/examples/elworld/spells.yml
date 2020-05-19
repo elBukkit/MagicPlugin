@@ -3757,3 +3757,16 @@ swap:
   parameters:
     target: other_entity
     range: 32
+
+getdamagedone:
+  icon: spell_icon:160
+  icon_disabled: spell_icon_disabled:160
+  passive: true
+  triggers:
+    - trigger: damage_dealt
+  actions:
+    cast:
+      - class: Message
+  parameters:
+    target: self
+    message: "damage $damage_dealt"
