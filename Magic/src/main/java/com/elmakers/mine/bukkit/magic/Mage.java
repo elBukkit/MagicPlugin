@@ -147,7 +147,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Map<String, MageClass> classes = new HashMap<>();
     private final Map<String, Double> attributes = new HashMap<>();
     private ConfigurationSection variables;
-    private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
+    private final Map<String, Map<String, TriggeredSpell>> triggers = new HashMap<>();
     private final List<TriggeredSpell> processingTriggers = new ArrayList<>();
     private final Map<String, Long> lastTriggers = new HashMap<>();
     protected ConfigurationSection data = new MemoryConfiguration();
@@ -3430,12 +3430,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Collection<Trigger> spellTriggers = spell.getTriggers();
             for (Trigger trigger : spellTriggers) {
                 String triggerType = trigger.getTrigger();
-                List<TriggeredSpell> typeTriggers = triggers.get(triggerType);
+                Map<String, TriggeredSpell> typeTriggers = triggers.get(triggerType);
                 if (typeTriggers == null) {
-                    typeTriggers = new ArrayList<>();
+                    typeTriggers = new HashMap<>();
                     triggers.put(triggerType, typeTriggers);
                 }
-                typeTriggers.add(new TriggeredSpell(spellKey, trigger));
+                typeTriggers.put(spellKey, new TriggeredSpell(spellKey, trigger));
             }
         }
     }
@@ -3450,8 +3450,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         weakness.clear();
         attributes.clear();
 
-        // Try to avoid constantly re-creating these lists, don't clear the whole map
-        for (List<TriggeredSpell> triggerList : triggers.values()) {
+        // Try to avoid constantly re-creating these, don't clear the whole map
+        for (Map<String, TriggeredSpell> triggerList : triggers.values()) {
             triggerList.clear();
         }
 
@@ -4177,14 +4177,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return entityData.trigger(this, trigger);
         }
 
-        List<TriggeredSpell> spells = triggers.get(trigger.toLowerCase());
+        Map<String, TriggeredSpell> spells = triggers.get(trigger.toLowerCase());
         if (spells == null || spells.isEmpty()) {
             return false;
         }
 
         // Copy the trigger list since spells can modify it
         processingTriggers.clear();
-        processingTriggers.addAll(spells);
+        processingTriggers.addAll(spells.values());
 
         boolean activated = false;
         cancelLaunch = false;
