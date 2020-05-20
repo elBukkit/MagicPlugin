@@ -505,7 +505,6 @@ public class Targeting {
         for (Entity entity : entities)
         {
             if (ignoreEntities.contains(entity.getUniqueId())) continue;
-            if (sourceEntity != null && entity.equals(sourceEntity) && !context.getTargetsCaster()) continue;
             Location entityLocation = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
             if (!entityLocation.getWorld().equals(source.getWorld())) continue;
             if (entityLocation.distanceSquared(source) > rangeSquaredPadded) continue;

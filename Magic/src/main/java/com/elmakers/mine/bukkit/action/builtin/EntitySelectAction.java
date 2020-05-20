@@ -126,7 +126,6 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
 
         int index = 0;
         for (Entity targetEntity : allEntities) {
-            if (!context.getTargetsCaster() && targetEntity == player) continue;
             if (targetEntity instanceof LivingEntity && ((LivingEntity)targetEntity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
             if (!context.canTarget(targetEntity)) continue;
             entities.put(index++, new WeakReference<>(targetEntity));

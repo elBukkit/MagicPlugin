@@ -124,7 +124,6 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
 
         int index = 0;
         for (Player targetPlayer : allPlayers) {
-            if (!context.getTargetsCaster() && targetPlayer == player) continue;
             if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
             if (!context.canTarget(targetPlayer)) continue;
             players.put(index++, new WeakReference<>(targetPlayer));

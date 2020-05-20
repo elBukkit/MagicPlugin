@@ -863,11 +863,12 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
     @Override
     public boolean canTarget(Entity entity) {
-        return targetingSpell == null ? true : targetingSpell.canTarget(entity);
+        return canTarget(entity, null);
     }
 
     @Override
     public boolean canTarget(Entity entity, Class<?> targetType) {
+        if (!getTargetsCaster() && entity != null && getEntity() != null && getEntity().equals(entity)) return false;
         return targetingSpell == null ? true : targetingSpell.canTarget(entity, targetType);
     }
 

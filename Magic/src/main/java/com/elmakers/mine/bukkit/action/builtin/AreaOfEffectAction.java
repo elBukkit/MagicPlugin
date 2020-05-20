@@ -71,7 +71,6 @@ public class AreaOfEffectAction extends CompoundEntityAction
             for (Entity entity : candidates)
             {
                 boolean canTarget = true;
-                if (entity == sourceEntity && !context.getTargetsCaster()) canTarget = false;
                 if (entity == targetEntity && !targetSource) canTarget = false;
                 if (canTarget && context.canTarget(entity))
                 {
@@ -95,7 +94,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
         {
             for (Entity entity : candidates)
             {
-                if ((context.getTargetsCaster() || !entity.equals(sourceEntity)) && context.canTarget(entity))
+                if (context.canTarget(entity))
                 {
                     entities.add(new WeakReference<>(entity));
                     mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType(), 12);
