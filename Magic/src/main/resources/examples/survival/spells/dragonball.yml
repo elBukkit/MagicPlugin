@@ -8,7 +8,11 @@ dragonball:
     earns_sp: 12
     actions:
         cast:
-        -  class: Projectile
+        - class: Projectile
+          actions:
+            - class: AreaOfEffect
+              actions:
+                - class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -42,5 +46,7 @@ dragonball:
         cooldown: 140000
         start: 1
         break_blocks: false
+        damage: 1
+        radius: 3
     costs:
         mana: 100

@@ -18,6 +18,7 @@
  - Add "direction" and "use_target" parameters to CheckBlock action, for easily checking the block under your feet
  - Fix some consistency issues with the "target_self" parameter
  - Add "target_mount" parameter (false by default) so spells won't kill your horse
+ - Fix Dragonball not earning SP on h
 
 # 7.9.1
 
