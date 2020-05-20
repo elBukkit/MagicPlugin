@@ -58,6 +58,7 @@ public class TargetingSpell extends BaseSpell {
     private boolean                                targetVanished            = false;
     private boolean                                targetUnknown            = true;
     private boolean                             targetTamed             = true;
+    private boolean                             targetMount             = false;
     private String                              targetDisplayName       = null;
     protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
@@ -349,6 +350,11 @@ public class TargetingSpell extends BaseSpell {
         if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) {
             return false;
         }
+        if (!targetMount) {
+            Entity mounted = DeprecatedUtils.getPassenger(entity);
+            Entity mageEntity = mage.getEntity();
+            if (mounted != null && mageEntity != null && mounted.equals(mageEntity)) return false;
+        }
         if (!targetTamed && entity instanceof Tameable && ((Tameable)entity).isTamed()) return false;
         if (entity.hasMetadata("notarget")) return false;
         if (!targetNPCs && controller.isStaticNPC(entity)) return false;
@@ -552,6 +558,7 @@ public class TargetingSpell extends BaseSpell {
         targetVanished = parameters.getBoolean("target_vanished", false);
         targetUnknown = parameters.getBoolean("target_unknown", true);
         targetTamed = parameters.getBoolean("target_tamed", true);
+        targetMount = parameters.getBoolean("target_mount", false);
 
         if (parameters.contains("target_type")) {
             String entityTypeName = parameters.getString("target_type");
