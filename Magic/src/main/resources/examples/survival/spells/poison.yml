@@ -54,7 +54,9 @@ poison:
         target: other
         target_breakables: 1
         duration: 2500
-        effect_poison: 1.5
+        add_effects:
+          - type: poison
+            amplifier: 1
         cooldown: 7000
 
 poison|2:
@@ -63,11 +65,15 @@ poison|2:
     parameters:
         range: 16
         duration: 3000
-        effect_poison: 2
+        add_effects:
+          - type: poison
+            amplifier: 2
 
 poison|3:
     parameters:
         range: 24
         duration: 3500
-        effect_poison: 3
+        add_effects:
+            - type: poison
+              amplifier: 3
 

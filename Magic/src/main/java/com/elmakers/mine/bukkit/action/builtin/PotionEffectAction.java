@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class PotionEffectAction extends BaseSpellAction
 {
@@ -90,7 +91,7 @@ public class PotionEffectAction extends BaseSpellAction
         if (addEffects == null) {
             addEffects = Collections.emptyList();
         }
-        Collection<PotionEffect> mappedEffects = getMappedPotionEffects(parameters);
+        Collection<PotionEffect> mappedEffects = getMappedPotionEffects(parameters, context);
         if (!mappedEffects.isEmpty()) {
             Collection<PotionEffect> newEffects = new ArrayList<>(addEffects.size() + mappedEffects.size());
             newEffects.addAll(addEffects);
@@ -99,25 +100,27 @@ public class PotionEffectAction extends BaseSpellAction
         }
     }
 
-    private Collection<PotionEffect> getMappedPotionEffects(ConfigurationSection parameters) {
-        ConfigurationSection section = parameters.getConfigurationSection("potion_effects");
-        if (section == null) {
-            section = parameters.getConfigurationSection("add_effects");
-        }
+    private Collection<PotionEffect> getMappedPotionEffects(ConfigurationSection parameters, CastContext context) {
+        String sectionKey = parameters.contains("potion_effects") ? "potion_effects" : "add_effects";
+        ConfigurationSection section = parameters.getConfigurationSection(sectionKey);
+        int duration = parameters.getInt("duration", 500);
         if (section != null) {
             Collection<String> keys = section.getKeys(false);
             Collection<PotionEffect> effects = new ArrayList<>(keys.size());
-            int ticks = parameters.getInt("duration", 500) / 50;
+            int ticks = duration / 50;
             for (String key : keys) {
                 int strength = section.getInt(key, 0);
                 PotionEffectType type = PotionEffectType.getByName(key);
                 if (type != null) {
                     effects.add(new PotionEffect(type, type.isInstant() ? 1 : ticks, strength, ambient, particles));
+                } else {
+                    context.getLogger().warning("Invalid potion effect type: " + key);
                 }
             }
             return effects;
         } else {
-            return Collections.emptyList();
+            Collection<PotionEffect> effects = ConfigurationUtils.getPotionEffectObjects(parameters, sectionKey, context.getLogger(), duration, ambient, particles);
+            return effects == null ? Collections.emptyList() : effects;
         }
     }
 

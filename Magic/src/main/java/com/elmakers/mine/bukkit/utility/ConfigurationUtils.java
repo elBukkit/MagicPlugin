@@ -1002,8 +1002,14 @@ public class ConfigurationUtils extends ConfigUtils {
         return effects;
     }
 
+
     @Nullable
     public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log) {
+         return getPotionEffectObjects(baseConfig, key, log, 3600000, true, true);
+    }
+
+    @Nullable
+    public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log, int defaultDuration, boolean defaultAmbient, boolean defaultParticles) {
         List<PotionEffect> potionEffects = null;
         Collection<ConfigurationSection> potionEffectList = getNodeList(baseConfig, key);
         if (potionEffectList != null) {
@@ -1015,13 +1021,13 @@ public class ConfigurationUtils extends ConfigUtils {
                         log.log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"));
                         continue;
                     }
-                    int ticks = (int) (potionEffectSection.getLong("duration", 3600000) / 50);
+                    int ticks = (int) (potionEffectSection.getLong("duration", defaultDuration) / 50);
                     ticks = potionEffectSection.getInt("ticks", ticks);
                     int amplifier = potionEffectSection.getInt("amplifier", 0);
-                    boolean ambient = potionEffectSection.getBoolean("ambient", true);
-                    boolean particles = potionEffectSection.getBoolean("particles", true);
+                    boolean ambient = potionEffectSection.getBoolean("ambient", defaultAmbient);
+                    boolean particles = potionEffectSection.getBoolean("particles", defaultParticles);
 
-                    potionEffects.add(new PotionEffect(effectType, ticks, amplifier, ambient, particles));
+                    potionEffects.add(new PotionEffect(effectType, effectType.isInstant() ? 1 : ticks, amplifier, ambient, particles));
                 } catch (Exception ex) {
                     log.log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"), ex);
                 }
