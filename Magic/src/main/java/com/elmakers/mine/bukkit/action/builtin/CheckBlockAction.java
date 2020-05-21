@@ -14,6 +14,7 @@ public class CheckBlockAction extends CheckAction {
     private MaterialSet allowed;
     private boolean useTarget;
     private BlockFace direction;
+    private boolean setTarget;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -24,12 +25,11 @@ public class CheckBlockAction extends CheckAction {
                 .fromConfig(parameters.getString("allowed"));
     }
 
-
-
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         useTarget = parameters.getBoolean("use_target", true);
+        setTarget = parameters.getBoolean("set_target", false);
         String directionString = parameters.getString("direction");
         if (directionString != null && !directionString.isEmpty()) {
             try {
@@ -66,6 +66,11 @@ public class CheckBlockAction extends CheckAction {
                 return false;
             }
         }
+
+        if (setTarget) {
+            createActionContext(context, context.getEntity(), null, context.getTargetEntity(), block.getLocation());
+        }
+
         return true;
     }
 
