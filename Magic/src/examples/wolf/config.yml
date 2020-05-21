@@ -89,7 +89,7 @@ auto_rollback_speed: 0.5
 auto_rollback_explosions:
 - creeper
 
-add_examples:
+examples:
 - stars
 
 # resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-aj.zip"

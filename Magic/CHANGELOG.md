@@ -22,6 +22,7 @@
  - Add more detailed support for potion effect lists in PotionEffect action
  - Add "invert" flag to all CheckXXX actions
  - Add magma wand appearance (thanks, Toffy!)
+ - Allow using "examples" instead of "add_examples" in config.yml
 
 # 7.9.1
 

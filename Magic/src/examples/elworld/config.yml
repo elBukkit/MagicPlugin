@@ -16,7 +16,7 @@ auto_rollback_explosions:
 - primed_tnt
 
 # We are mixing in all of the configs here to show them off.
-add_examples:
+examples:
 - stars
 - potter
 - bending
