@@ -21,5 +21,5 @@ spells:
     name: Player Stats
   attributeselector:
     name: Player Attributes
-    title: Attributes
+    title: Attributes ($balance AP&0)
 
