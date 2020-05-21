@@ -8,8 +8,14 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public abstract class CheckAction extends CompoundAction {
-
+    private boolean invert;
     protected abstract boolean isAllowed(CastContext context);
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        invert = parameters.getBoolean("invert", false);
+    }
 
     @Override
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
@@ -20,6 +26,9 @@ public abstract class CheckAction extends CompoundAction {
     @Override
     public SpellResult step(CastContext context) {
         boolean allowed = isAllowed(context);
+        if (invert) {
+            allowed = !allowed;
+        }
         if (!allowed) {
             ActionHandler fail = getHandler("fail");
             if (fail != null && fail.size() != 0) {

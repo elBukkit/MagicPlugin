@@ -20,6 +20,7 @@
  - Add "target_mount" parameter (false by default) so spells won't kill your horse
  - Fix Dragonball not earning SP on hit
  - Add more detailed support for potion effect lists in PotionEffect action
+ - Add "invert" flag to all CheckXXX actions
 
 # 7.9.1
 
