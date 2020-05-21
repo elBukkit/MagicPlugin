@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.MessageDigest;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -2639,6 +2640,8 @@ public class MagicController implements MageController {
 
         messagePrefix = properties.getString("message_prefix", messagePrefix);
         castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
+        BaseSpell.SECONDS_FORMATTER = new DecimalFormat(properties.getString("seconds_formatter"));
+        BaseSpell.RANGE_FORMATTER = new DecimalFormat(properties.getString("range_formatter"));
 
         redstoneReplacement = ConfigurationUtils.getMaterialAndData(properties, "redstone_replacement", redstoneReplacement);
 

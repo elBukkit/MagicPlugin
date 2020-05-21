@@ -78,6 +78,12 @@ message_prefix: "&d&o"
 # t: send as a title (with default fade in/out timing)
 cast_message_prefix: "a:&5&o"
 
+# How to format the range display in spell lore
+range_formatter: 0.#
+
+# How to format partial seconds in spell lore
+seconds_formatter: 0.##
+
 # Enable/Disable Sound Effects
 sounds: true
 

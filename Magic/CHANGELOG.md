@@ -24,6 +24,7 @@
  - Add magma wand appearance (thanks, Toffy!)
  - Allow using "examples" instead of "add_examples" in config.yml
  - Add "air: max" option to AirSupply action
+ - Additional customization options for time and range displays in spell lore
 
 # 7.9.1
 

@@ -151,8 +151,8 @@ public class BaseSpell implements MageSpell, Cloneable {
             PERCENTAGE_PARAMETERS
         );
 
-    private static final DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
-    private static final DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0.##");
+    public static DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
+    public static DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0.##");
 
     /*
      * protected members that are helpful to use
