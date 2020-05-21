@@ -13,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -695,6 +696,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     double getLastDamage();
     double getLastDamageDealt();
     double getLastBowPull();
+    EntityType getLastProjectileType();
 
     @Nonnull
     MageEffectContext getEffectContext();

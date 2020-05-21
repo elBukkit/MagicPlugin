@@ -29,7 +29,7 @@ public class MobTrigger extends Trigger {
     protected List<String> commands;
 
     public MobTrigger(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
-        super(configuration, key);
+        super(controller, configuration, key);
 
         if (configuration.contains("cast")) {
             spells = new ArrayDeque<>();

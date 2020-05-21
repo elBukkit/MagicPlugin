@@ -35,6 +35,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -257,6 +258,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private double lastDamageDealt;
     private double lastBowPull;
     private boolean cancelLaunch = false;
+    private EntityType lastProjectileType;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -4182,6 +4184,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (spells == null || spells.isEmpty()) {
             return false;
         }
+        if (!trigger.equals("interval")) {
+            sendDebugMessage("Processing trigger: " + trigger, 5);
+        }
 
         // Copy the trigger list since spells can modify it
         processingTriggers.clear();
@@ -4192,7 +4197,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (TriggeredSpell triggered : processingTriggers) {
             if (triggered.getTrigger().isValid(this)) {
                 Spell spell = getSpell(triggered.getSpellKey());
-                if (spell.isEnabled()) {
+                if (spell != null && spell.isEnabled()) {
                     cancelLaunch = cancelLaunch || triggered.getTrigger().isCancelLaunch();
                     activated = spell.cast() || activated;
                     triggered.getTrigger().triggered();
@@ -4270,6 +4275,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setLastBowPull(double lastBowPull) {
         this.lastBowPull = lastBowPull;
+    }
+
+    public void setLastProjectileType(EntityType t) {
+        lastProjectileType = t;
+    }
+
+    @Override
+    public EntityType getLastProjectileType() {
+        return lastProjectileType;
     }
 
     @Override

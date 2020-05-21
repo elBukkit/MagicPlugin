@@ -1,0 +1,19 @@
+archerspeed:
+  name: Archer Speed
+  description: Grant a speed boost when firing arrow
+  icon: spell_icon:57
+  icon_disabled: spell_icon_disabled:57
+  passive: true
+  triggers:
+    # This triggers when the player launches any projectile
+    - trigger: launch
+      cancel_launch: false
+      projectile_type: arrow
+  actions:
+    cast:
+      - class: PotionEffect
+  parameters:
+    target: self
+    add_effects:
+      speed: 2
+    duration: 5000

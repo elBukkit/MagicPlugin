@@ -504,6 +504,7 @@ public class EntityController implements Listener {
 
         double pull = Math.min(1.0, projectile.getVelocity().length() / MAX_ARROW_SPEED);
         mage.setLastBowPull(pull);
+        mage.setLastProjectileType(projectile.getType());
         if (mage.trigger("launch")) {
             if (mage.isCancelLaunch()) {
                 event.setCancelled(true);

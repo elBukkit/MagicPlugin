@@ -3770,3 +3770,13 @@ getdamagedone:
   parameters:
     target: self
     message: "damage $damage_dealt"
+
+damagetest:
+  icon: stick
+  actions:
+    cast:
+    - class: Damage
+  parameters:
+    target: self
+    damage: 1
+    damage_type: anvil

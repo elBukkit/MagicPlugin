@@ -1005,7 +1005,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (triggersConfiguration != null) {
             triggers = new ArrayList<>();
             for (ConfigurationSection triggerConfiguration : triggersConfiguration) {
-                triggers.add(new Trigger(triggerConfiguration));
+                triggers.add(new Trigger(controller, triggerConfiguration));
             }
         }
 

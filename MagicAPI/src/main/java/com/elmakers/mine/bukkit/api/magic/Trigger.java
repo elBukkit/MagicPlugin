@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 
 public class Trigger {
     @Nonnull
@@ -22,14 +23,15 @@ public class Trigger {
     private final boolean isCancelLaunch;
     private final String damageType;
     private final Set<String> damageTypes;
+    private final Set<EntityType> projectileTypes;
 
     private long lastTrigger;
 
-    public Trigger(ConfigurationSection configuration) {
-        this(configuration, "");
+    public Trigger(MageController controller, ConfigurationSection configuration) {
+        this(controller, configuration, "");
     }
 
-    public Trigger(ConfigurationSection configuration, String defaultType) {
+    public Trigger(MageController controller, ConfigurationSection configuration, String defaultType) {
         trigger = configuration.getString("trigger", configuration.getString("type", defaultType)).toLowerCase();
         interval = configuration.getInt("interval");
         maxHealth = configuration.getDouble("max_health");
@@ -45,6 +47,24 @@ public class Trigger {
         List<String> damageTypeList = configuration.getStringList("damage_types");
         damageTypeList.replaceAll(String::toLowerCase);
         damageTypes = damageTypeList.isEmpty() ? null : new HashSet<>(damageTypeList);
+        List<String> projectileTypeList = configuration.getStringList("projectile_types");
+        String projectileType = configuration.getString("projectile_type");
+        if (projectileType != null && !projectileType.isEmpty()) {
+            projectileTypeList.add(projectileType);
+        }
+        if (projectileTypeList.isEmpty()) {
+            projectileTypes = null;
+        } else {
+            projectileTypes = new HashSet<>();
+            for (String t : projectileTypeList) {
+                try {
+                    EntityType entityType = EntityType.valueOf(t.toUpperCase());
+                    projectileTypes.add(entityType);
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid projectile type: " + t);
+                }
+            }
+        }
     }
 
     public int getInterval() {
@@ -83,8 +103,9 @@ public class Trigger {
         if (damageType != null && !damageType.isEmpty()) {
             if (lastDamageType == null || !lastDamageType.equalsIgnoreCase(damageType)) return false;
         }
+        EntityType lastProjectileType = mage.getLastProjectileType();
         if (damageTypes != null && (lastDamageType == null || !damageTypes.contains(lastDamageType.toLowerCase()))) return false;
-
+        if (projectileTypes != null && (lastProjectileType == null || !projectileTypes.contains(lastProjectileType))) return false;
         return true;
     }
 
