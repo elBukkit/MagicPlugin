@@ -156,6 +156,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable ItemStack icon;
         protected @Nullable String iconKey;
         protected @Nullable String iconDisabledKey;
+        protected @Nullable String iconPlaceholderKey;
         protected @Nullable List<ItemStack> items;
         protected @Nullable List<Cost> costs = null;
         protected @Nonnull String costType = "currency";
@@ -289,6 +290,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             MageController controller = context.getController();
+            iconPlaceholderKey = configuration.getString("placeholder_icon");
             iconKey = configuration.getString("icon");
             iconDisabledKey = configuration.getString("icon_disabled");
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
@@ -500,12 +502,23 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.applyLoreToItem = defaults.applyLoreToItem;
             this.applyNameToItem = defaults.applyNameToItem;
             this.iconKey = defaults.iconKey;
+            this.iconPlaceholderKey = defaults.iconPlaceholderKey;
             this.iconDisabledKey = defaults.iconDisabledKey;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
             if (placeholder) {
-                this.icon = new ItemStack(Material.AIR);
+                this.icon = parseItem(iconPlaceholderKey);
+                if (icon == null) {
+                    this.icon = new ItemStack(Material.AIR);
+                } else {
+                    icon = InventoryUtils.makeReal(icon);
+                    InventoryUtils.makeUnbreakable(icon);
+                    InventoryUtils.hideFlags(icon, (byte)63);
+                    ItemMeta meta = icon.getItemMeta();
+                    meta.setDisplayName("");
+                    icon.setItemMeta(meta);
+                }
                 return;
             }
 
