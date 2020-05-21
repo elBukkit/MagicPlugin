@@ -126,6 +126,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     @Nullable
+    @Override
     public BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         return null;
     }
