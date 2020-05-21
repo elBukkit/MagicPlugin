@@ -69,6 +69,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
     // State
     private boolean isActive = false;
     private SpellResult finalResult = null;
+    private Inventory displayInventory = null;
 
     protected class RequirementsResult {
         public final SpellResult result;
@@ -153,6 +154,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
     protected class SelectorConfiguration {
         protected @Nullable ItemStack icon;
+        protected @Nullable String iconKey;
+        protected @Nullable String iconDisabledKey;
         protected @Nullable List<ItemStack> items;
         protected @Nullable List<Cost> costs = null;
         protected @Nonnull String costType = "currency";
@@ -284,12 +287,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             MageController controller = context.getController();
-            icon = parseItem(configuration.getString("icon"));
-            if (icon != null && icon.hasItemMeta()) {
-                ItemMeta meta = icon.getItemMeta();
-                meta.setLore(null);
-                icon.setItemMeta(meta);
-            }
+            iconKey = configuration.getString("icon");
+            iconDisabledKey = configuration.getString("icon_disabled");
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
             if (!free) {
                 costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
@@ -456,14 +455,17 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
     protected class SelectorOption extends SelectorConfiguration {
         protected Integer slot = null;
         protected String name = null;
+        protected String description = null;
         protected List<String> lore = null;
         protected String unavailableMessage;
         protected boolean placeholder;
         protected boolean unavailable;
+        protected SelectorConfiguration defaults;
 
         public SelectorOption(SelectorConfiguration defaults, ConfigurationSection configuration, CastContext context, CostReducer reducer) {
             super();
 
+            this.defaults = defaults;
             this.selectedMessage = defaults.selectedMessage;
             this.selectedFreeMessage = defaults.selectedFreeMessage;
             this.items = defaults.items;
@@ -514,9 +516,9 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             if (configuration.contains("slot")) {
                 slot = configuration.getInt("slot");
             }
+            name = configuration.getString("name", "");
 
             MageController controller = context.getController();
-            name = configuration.getString("name", "");
             if (name.isEmpty() && unlockClass != null && !unlockClass.isEmpty()) {
                 MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
                 name = getMessage("unlock_class");
@@ -556,7 +558,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
-            if (name.isEmpty() && icon != null) {
+            if (name.isEmpty() && iconKey != null) {
+                ItemStack icon = parseItem(iconKey);
                 name = controller.describeItem(icon);
                 if (icon.getAmount() > 1) {
                     String template = getMessage("item_amount");
@@ -565,8 +568,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             name = ChatColor.translateAlternateColorCodes('&', name);
-
-            String description = configuration.getString("description");
+            description = configuration.getString("description");
             if (description == null) {
                 if (unlockClass != null && !unlockClass.isEmpty()) {
                     MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
@@ -581,6 +583,24 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 } else if (attribute != null && attributeAmount == 0) {
                     description = attribute.getDescription(controller.getMessages());
                 }
+            }
+
+            updateIcon(context, reducer);
+        }
+
+        public void updateIcon(CastContext context, CostReducer reducer) {
+            MageController controller = context.getController();
+
+            icon = parseItem(iconKey);
+            if (icon != null && icon.hasItemMeta()) {
+                ItemMeta meta = icon.getItemMeta();
+                meta.setLore(null);
+                icon.setItemMeta(meta);
+            }
+
+            List<String> lore = new ArrayList<>();
+            if (this.lore != null) {
+                lore.addAll(this.lore);
             }
 
             if (description != null && !description.isEmpty()) {
@@ -664,7 +684,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 icon = InventoryUtils.getCopy(items.get(0));
                 // This prevents getting two copies of the lore
                 // Only do this if lore was actually provided, since this setting is on by default for the Shop action
-                if (applyLoreToItem && configuration.contains("lore")) {
+                if (applyLoreToItem && this.lore != null) {
                     ItemMeta meta = icon.getItemMeta();
                     meta.setLore(null);
                     icon.setItemMeta(meta);
@@ -689,6 +709,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
+            MagicAttribute attribute = attributeKey == null ? null : controller.getAttribute(attributeKey);
             if (icon == null && attribute != null) {
                 String iconKey = attribute.getIconKey();
                 if (iconKey != null && !iconKey.isEmpty()) {
@@ -707,9 +728,17 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
+            if (unavailable && iconDisabledKey != null) {
+                ItemData iconDisabled = controller.getItem(iconDisabledKey);
+                if (iconDisabled != null) {
+                    icon = iconDisabled.getItemStack();
+                }
+            }
+
             if (icon == null && defaults.icon != null) {
                 this.icon = InventoryUtils.getCopy(defaults.icon);
             }
+
             ItemMeta meta = icon == null ? null : icon.getItemMeta();
             if (icon == null || meta == null) {
                 // Show a question mark if nothing else worked
@@ -856,6 +885,17 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         return SpellResult.NO_TARGET;
                     }
                     caster.setAttribute(attributeKey, newValue);
+                    if (!autoClose && displayInventory != null) {
+                        for (Map.Entry<Integer, SelectorOption> entry : showingItems.entrySet()) {
+                            SelectorOption option = entry.getValue();
+                            if (option.isPlaceholder()) continue;
+
+                            option.updateIcon(context, reducer);
+                            ItemStack icon = option.getIcon();
+                            InventoryUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
+                            displayInventory.setItem(entry.getKey(), icon);
+                        }
+                    }
                 } else {
                     context.getLogger().warning("Invalid attribute: " + attributeKey);
                 }
@@ -1239,9 +1279,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         }
         inventoryTitle = inventoryTitle.replace("$path", pathName);
 
-
         int invSize = (int)Math.ceil(numSlots / 9.0f) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         for (Map.Entry<Integer, SelectorOption> entry : showingItems.entrySet()) {
             ItemStack icon = entry.getValue().getIcon();
             InventoryUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
