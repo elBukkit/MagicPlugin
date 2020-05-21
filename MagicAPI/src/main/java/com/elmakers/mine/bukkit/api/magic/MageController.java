@@ -583,4 +583,7 @@ public interface MageController {
 
     @Nonnull
     String setPlaceholders(Player player, String message);
+
+    @Nullable
+    MagicAttribute getAttribute(String attributeKey);
 }

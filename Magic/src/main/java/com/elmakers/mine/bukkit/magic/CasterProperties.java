@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
+import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -534,7 +536,14 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     public Double getAttribute(String attributeKey) {
         ConfigurationSection attributes = getConfigurationSection("attributes");
-        return attributes == null ? null : attributes.getDouble(attributeKey);
+        Double value = attributes == null ? null : attributes.getDouble(attributeKey);
+        if (value == null) {
+            MagicAttribute defaultSetting = controller.getAttribute(attributeKey);
+            if (defaultSetting != null) {
+                value = defaultSetting.getDefault();
+            }
+        }
+        return value;
     }
 
     @Override

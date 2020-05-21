@@ -100,6 +100,7 @@ import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
@@ -5866,6 +5867,8 @@ public class MagicController implements MageController {
         return attributeProviders;
     }
 
+    @Override
+    @Nullable
     public MagicAttribute getAttribute(String attributeKey) {
         return attributes.get(attributeKey);
     }

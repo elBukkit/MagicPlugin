@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.api.magic;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,5 +32,11 @@ public class MagicAttribute {
 
     public @Nullable Double getMax() {
         return max;
+    }
+
+    public boolean inRange(double value) {
+        if (min != null && value < min) return false;
+        if (max != null && value > max) return false;
+        return true;
     }
 }
