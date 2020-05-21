@@ -9,6 +9,7 @@ attributeselector:
     cost_type: "ap"
     earn_type: "ap"
     show_unavailable: true
+    allow_attribute_reduction: false
     options:
     - placeholder: true
     - attribute: strength

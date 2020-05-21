@@ -176,6 +176,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable Map<String,String> alternateSpellTags;
         protected @Nonnull String effects = "selected";
         protected @Nullable String attributeKey = null;
+        protected boolean allowAttributeReduction = false;
         protected int attributeAmount = 0;
         protected boolean applyToWand = false;
         protected boolean applyToCaster = false;
@@ -205,6 +206,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             putInHand = configuration.getBoolean("put_in_hand", putInHand);
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
+            allowAttributeReduction = configuration.getBoolean("allow_attribute_reduction", allowAttributeReduction);
             if (configuration.contains("switch_class")) {
                 switchClass = true;
                 unlockClass = configuration.getString("switch_class");
@@ -461,6 +463,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean placeholder;
         protected boolean unavailable;
         protected SelectorConfiguration defaults;
+        protected Double startingAttributeValue;
 
         public SelectorOption(SelectorConfiguration defaults, ConfigurationSection configuration, CastContext context, CostReducer reducer) {
             super();
@@ -477,6 +480,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.applyToClass = defaults.applyToClass;
             this.attributeKey = defaults.attributeKey;
             this.attributeAmount = defaults.attributeAmount;
+            this.allowAttributeReduction = defaults.allowAttributeReduction;
             this.unlockClass = defaults.unlockClass;
             this.switchClass = defaults.switchClass;
             this.putInHand = defaults.putInHand;
@@ -495,6 +499,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.effects = defaults.effects;
             this.applyLoreToItem = defaults.applyLoreToItem;
             this.applyNameToItem = defaults.applyNameToItem;
+            this.iconKey = defaults.iconKey;
+            this.iconDisabledKey = defaults.iconDisabledKey;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
@@ -547,6 +553,9 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     name = template.replace("$attribute", name)
                         .replace("$amount", Integer.toString(Math.abs(attributeAmount)));
                 }
+            }
+            if (attributeKey != null) {
+                startingAttributeValue = context.getMage().getAttribute(attributeKey);
             }
 
             if (name.isEmpty() && items != null) {
@@ -730,7 +739,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         amount = (int)Math.floor(currentAmount);
                     } else {
                         double newValue = attributeAmount + currentAmount;
-                        if (attribute != null && !attribute.inRange(newValue)) {
+                        boolean allowed = attribute == null || attribute.inRange(newValue);
+                        if (!allowAttributeReduction && startingAttributeValue != null && newValue < startingAttributeValue) {
+                            allowed = false;
+                        }
+                        if (!allowed) {
                             unavailable = true;
                             String template = attributeAmount < 0 ? getMessage("attribute_min") : getMessage("attribute_max");
                             unavailableMessage = template.replace("$attribute", attribute.getName(context.getController().getMessages()));
