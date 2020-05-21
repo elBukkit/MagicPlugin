@@ -1,0 +1,4 @@
+alchemist:
+  inherit: base
+  locked: false
+

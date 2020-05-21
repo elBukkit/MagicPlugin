@@ -8,7 +8,13 @@ classes:
   rogue:
     name: "Rogue"
     description: "Stealth and subversion"
+  archer:
+    name: "Archer"
+    description: "Master of the bow"
   alchemist:
     name: "Alchemist"
     description: "Potions and alchemy"
+  peasant:
+    name: "Peasant"
+    description: "Just a regular Joe"
 

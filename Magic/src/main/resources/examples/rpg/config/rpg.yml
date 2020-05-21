@@ -2,6 +2,23 @@
 # Set up for an RPG-style server, with different classes for players to choose from.
 #
 
+
+# This is a modifier on the default survival configs
+inherit: survival
+
+# Turn off the survival spells, but allow them to be inherited from
+disable_inherited:
+ - spells
+
+skip_inherited:
+ - wands
+ - paths
+ - crafting
+ - classes
+ -
+# Default class
+default_mage_class: peasant
+
 custom_currency:
  ap:
   max: 100
