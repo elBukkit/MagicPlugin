@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.api.magic;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,6 +21,7 @@ public class Trigger {
     private final double minBowPull;
     private final boolean isCancelLaunch;
     private final String damageType;
+    private final Set<String> damageTypes;
 
     private long lastTrigger;
 
@@ -38,6 +42,9 @@ public class Trigger {
         maxBowPull = configuration.getDouble("max_bowpull");
         minBowPull = configuration.getDouble("min_bowpull");
         damageType = configuration.getString("damage_type");
+        List<String> damageTypeList = configuration.getStringList("damage_types");
+        damageTypeList.replaceAll(String::toLowerCase);
+        damageTypes = damageTypeList.isEmpty() ? null : new HashSet<>(damageTypeList);
     }
 
     public int getInterval() {
@@ -76,6 +83,7 @@ public class Trigger {
         if (damageType != null && !damageType.isEmpty()) {
             if (lastDamageType == null || !lastDamageType.equalsIgnoreCase(damageType)) return false;
         }
+        if (damageTypes != null && (lastDamageType == null || !damageTypes.contains(lastDamageType.toLowerCase()))) return false;
 
         return true;
     }
