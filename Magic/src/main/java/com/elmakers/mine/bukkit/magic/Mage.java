@@ -571,6 +571,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void onDamage(EntityDamageEvent event) {
         String damageType = currentDamageType;
         currentDamageType = null;
+        lastDamage = event.getDamage();
         LivingEntity entity = getLivingEntity();
         if (entity == null) {
             return;
