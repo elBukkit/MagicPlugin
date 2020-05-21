@@ -1,6 +1,6 @@
 luck:
-  icon: spell_icon:119
-  icon_disabled: spell_icon_disabled:119
+  icon: spell_icon:258
+  icon_disabled: spell_icon_disabled:258
   default: 3
   min: 3
   max: 20

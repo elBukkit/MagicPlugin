@@ -1,5 +1,5 @@
 {
-    "parent" : "item/custom/icon",
+    "parent" : "item/custom/icon_full_disabled",
     "textures": {
         "particle": "item/spells/down_arrow",
         "texture": "item/spells/down_arrow"

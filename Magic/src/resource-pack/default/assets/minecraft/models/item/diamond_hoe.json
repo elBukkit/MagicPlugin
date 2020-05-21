@@ -256,8 +256,15 @@
     { "predicate": {"damaged": 0, "damage": 0.15941101152368758}, "model": "item/spells_disabled/arrow9"},
     { "predicate": {"damaged": 0, "damage": 0.16005121638924455}, "model": "item/spells_disabled/arrow10"},
     { "predicate": {"damaged": 0, "damage": 0.160691421254802}, "model": "item/spells_disabled/capture"},
-    { "predicate": {"damaged": 0, "damage": 0.161331626120359}, "model": "item/spells_disabled/up_arrow"},
-    { "predicate": {"damaged": 0, "damage": 0.161971830985915}, "model": "item/spells_disabled/down_arrow"},
+    { "predicate": {"damaged": 0, "damage": 0.161331626120359}, "model": "item/attributes_disabled/up_arrow"},
+    { "predicate": {"damaged": 0, "damage": 0.161971830985915}, "model": "item/attributes_disabled/down_arrow"},
+    { "predicate": {"damaged": 0, "damage": 0.162612035851472}, "model": "item/attributes_disabled/black"},
+    { "predicate": {"damaged": 0, "damage": 0.163252240717029}, "model": "item/attributes_disabled/constitution"},
+    { "predicate": {"damaged": 0, "damage": 0.163892445582586}, "model": "item/attributes_disabled/dexterity"},
+    { "predicate": {"damaged": 0, "damage": 0.164532650448143}, "model": "item/attributes_disabled/intelligence"},
+    { "predicate": {"damaged": 0, "damage": 0.1651728553137}, "model": "item/attributes_disabled/luck"},
+    { "predicate": {"damaged": 0, "damage": 0.165813060179257}, "model": "item/attributes_disabled/strength"},
+    { "predicate": {"damaged": 0, "damage": 0.166453265044814}, "model": "item/attributes_disabled/wisdom"},
 
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_hoe"}
   ]
