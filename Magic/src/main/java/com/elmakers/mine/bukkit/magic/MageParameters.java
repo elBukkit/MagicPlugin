@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -10,7 +9,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class MageParameters extends ParameterizedConfiguration {
     private static Set<String> attributes;
-    private final @Nonnull
+    private final @Nullable
     Mage mage;
 
     public MageParameters(Mage mage, String context) {
@@ -23,10 +22,12 @@ public class MageParameters extends ParameterizedConfiguration {
         this.mage = copy.mage;
     }
 
+    @Nullable
     protected MageController getController() {
-        return mage.getController();
+        return mage == null ? null : mage.getController();
     }
 
+    @Nullable
     protected Mage getMage() {
         return mage;
     }
@@ -38,15 +39,15 @@ public class MageParameters extends ParameterizedConfiguration {
     @Override
     @Nullable
     protected Double evaluate(String expression) {
-        if (mage.isPlayer()) {
-            expression = getController().setPlaceholders(mage.getPlayer(), expression);
+        if (mage != null && mage.isPlayer()) {
+            expression = mage.getController().setPlaceholders(mage.getPlayer(), expression);
         }
         return super.evaluate(expression);
     }
 
     @Override
     protected double getParameter(String parameter) {
-        Double value = mage.getAttribute(parameter);
+        Double value = mage == null ? null : mage.getAttribute(parameter);
         return value == null || Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
     }
 
