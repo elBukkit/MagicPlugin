@@ -1,5 +1,6 @@
 wisdom:
   icon: spell_icon:228
+  icon_disabled: spell_icon_disabled:228
   default: 3
   min: 3
   max: 20

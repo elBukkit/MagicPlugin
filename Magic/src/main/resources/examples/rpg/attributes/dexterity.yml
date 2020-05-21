@@ -1,5 +1,6 @@
 dexterity:
   icon: spell_icon:181
+  icon_disabled: spell_icon_disabled:181
   default: 3
   min: 3
   max: 20

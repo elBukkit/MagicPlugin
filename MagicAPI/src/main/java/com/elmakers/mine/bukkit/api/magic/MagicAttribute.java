@@ -11,6 +11,7 @@ public class MagicAttribute {
     private final @Nullable Double min;
     private final @Nullable Double max;
     private final @Nullable String iconKey;
+    private final @Nullable String iconDisabledKey;
 
     public MagicAttribute(@Nonnull String key, @Nonnull ConfigurationSection configuration) {
         this.key = key;
@@ -18,6 +19,7 @@ public class MagicAttribute {
         this.max = configuration.contains("max") ? configuration.getDouble("max") : null;
         this.defaultValue = configuration.contains("default") ? configuration.getDouble("default") : null;
         this.iconKey = configuration.getString("icon");
+        this.iconDisabledKey = configuration.getString("icon_disabled");
     }
 
     public @Nonnull  String getKey() {
@@ -44,6 +46,10 @@ public class MagicAttribute {
 
     public @Nullable String getIconKey() {
         return iconKey;
+    }
+
+    public @Nullable String getIconDisabledKey() {
+        return iconDisabledKey;
     }
 
     public String getName(Messages messages) {

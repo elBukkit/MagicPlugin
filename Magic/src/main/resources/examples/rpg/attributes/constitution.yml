@@ -1,5 +1,6 @@
 constitution:
   icon: spell_icon:234
+  icon_disabled: spell_icon_disabled:234
   default: 3
   min: 3
   max: 20
