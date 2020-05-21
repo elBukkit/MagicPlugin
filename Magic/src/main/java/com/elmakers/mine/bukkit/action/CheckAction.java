@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public abstract class CheckAction extends CompoundAction {
     private boolean invert;
+
     protected abstract boolean isAllowed(CastContext context);
 
     @Override
