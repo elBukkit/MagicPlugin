@@ -1,4 +1,5 @@
 luck:
+  icon: spell_icon:119
   default: 3
   min: 3
   max: 20

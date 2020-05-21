@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -172,7 +173,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable Map<String,String> alternateSpellTags;
         protected @Nonnull String effects = "selected";
         protected @Nullable String attributeKey = null;
-        protected int attributeAmount = 1;
+        protected int attributeAmount = 0;
         protected boolean applyToWand = false;
         protected boolean applyToCaster = false;
         protected MagicPropertyType applyTo = null;
@@ -525,14 +526,6 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     controller.getLogger().warning("Unknown class in selector config: " + unlockClass);
                 }
             }
-            if (name.isEmpty() && items != null) {
-                ItemStack item = items.get(0);
-                name = controller.describeItem(item);
-                if (item.getAmount() > 1) {
-                    String template = getMessage("item_amount");
-                    name = template.replace("$name", name).replace("$amount", Integer.toString(item.getAmount()));
-                }
-            }
             String castSpell = getCastSpell(context.getWand());
             if (name.isEmpty() && castSpell != null && !castSpell.isEmpty()) {
                 SpellTemplate spell = controller.getSpellTemplate(castSpell);
@@ -544,6 +537,25 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
+            MagicAttribute attribute = attributeKey == null ? null : controller.getAttribute(attributeKey);
+            if (name.isEmpty() && attribute != null) {
+                name = attribute.getName(controller.getMessages());
+                if (attributeAmount != 0) {
+                    String template = attributeAmount < 0 ? getMessage("decrease_attribute") : getMessage("increase_attribute");
+                    name = template.replace("$attribute", name)
+                        .replace("$amount", Integer.toString(Math.abs(attributeAmount)));
+                }
+            }
+
+            if (name.isEmpty() && items != null) {
+                ItemStack item = items.get(0);
+                name = controller.describeItem(item);
+                if (item.getAmount() > 1) {
+                    String template = getMessage("item_amount");
+                    name = template.replace("$name", name).replace("$amount", Integer.toString(item.getAmount()));
+                }
+            }
+
             if (name.isEmpty() && icon != null) {
                 name = controller.describeItem(icon);
                 if (icon.getAmount() > 1) {
@@ -551,6 +563,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     name = template.replace("$name", name).replace("$amount", Integer.toString(icon.getAmount()));
                 }
             }
+
             name = ChatColor.translateAlternateColorCodes('&', name);
 
             String description = configuration.getString("description");
@@ -565,6 +578,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     } else {
                         description = spell.getDescription();
                     }
+                } else if (attribute != null && attributeAmount == 0) {
+                    description = attribute.getDescription(controller.getMessages());
                 }
             }
 
@@ -670,6 +685,24 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     }
                     if (icon == null && spellTemplate.getIconURL() != null) {
                         icon = controller.getURLSkull(spellTemplate.getIconURL());
+                    }
+                }
+            }
+
+            if (icon == null && attribute != null) {
+                String iconKey = attribute.getIconKey();
+                if (iconKey != null && !iconKey.isEmpty()) {
+                    ItemData iconData = controller.getOrCreateItem(iconKey);
+                    if (iconData != null) {
+                        int amount = 1;
+                        if (attributeAmount == 0) {
+                            CasterProperties caster = getCaster(context);
+                            Double attributeAmount = caster.getAttribute(attributeKey);
+                            if (attributeAmount != null) {
+                                amount = (int)Math.floor(attributeAmount);
+                            }
+                        }
+                        icon = iconData.getItemStack(Math.max(1, amount));
                     }
                 }
             }
@@ -796,22 +829,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
-            CasterProperties caster = null;
-            if (applyTo != null) {
-                MagicProperties properties = mage.getProperties().getStorage(applyTo);
-                if (properties instanceof CasterProperties) {
-                    caster = (CasterProperties)properties;
-                }
-            } else if (applyToClass != null && !applyToClass.isEmpty()) {
-                caster = mage.getClass(applyToClass);
-            } else if (applyToWand) {
-                if (wand == null) {
-                    context.showMessage("no_wand", getDefaultMessage(context, "no_wand"));
-                    return SpellResult.NO_TARGET;
-                }
-                caster = wand;
-            } else if (applyToCaster) {
-                caster = mage.getActiveProperties();
+            CasterProperties caster = getCaster(context);
+            if (applyToWand && caster == null) {
+                context.showMessage("no_wand", getDefaultMessage(context, "no_wand"));
+                return SpellResult.NO_TARGET;
             }
 
             if (caster != null && items != null) {
@@ -827,11 +848,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             if (caster != null && attributeKey != null && !attributeKey.isEmpty()) {
-                MagicAttribute attributeDefiniton = context.getController().getAttribute(attributeKey);
+                MagicAttribute attributeDefinition = context.getController().getAttribute(attributeKey);
                 Double amount = caster.getAttribute(attributeKey);
-                if (amount != null && attributeDefiniton != null) {
+                if (amount != null && attributeDefinition != null) {
                     double newValue = amount + attributeAmount;
-                    if (!attributeDefiniton.inRange(newValue)) {
+                    if (!attributeDefinition.inRange(newValue)) {
                         return SpellResult.NO_TARGET;
                     }
                     caster.setAttribute(attributeKey, newValue);
@@ -911,6 +932,26 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             return SpellResult.CAST;
+        }
+
+        @Nullable
+        public CasterProperties getCaster(CastContext context) {
+            Mage mage = context.getMage();
+            Wand wand = context.getWand();
+            CasterProperties caster = null;
+            if (applyTo != null) {
+                MagicProperties properties = mage.getProperties().getStorage(applyTo);
+                if (properties instanceof CasterProperties) {
+                    caster = (CasterProperties)properties;
+                }
+            } else if (applyToClass != null && !applyToClass.isEmpty()) {
+                caster = mage.getClass(applyToClass);
+            } else if (applyToWand) {
+                caster = wand;
+            } else if (applyToCaster) {
+                caster = mage.getActiveProperties();
+            }
+            return caster;
         }
 
         public Integer getSlot() {

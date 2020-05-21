@@ -19,6 +19,7 @@ spells:
     description: Jump backwards to avoid attacks
   playerstats:
     name: Player Stats
-  statchange:
+  attributeselector:
     name: Player Attributes
+    title: Attributes
 

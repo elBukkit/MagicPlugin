@@ -255,6 +255,9 @@
     { "predicate": {"damaged": 0, "damage": 0.1587708066581306}, "model": "item/spells_disabled/arrow8"},
     { "predicate": {"damaged": 0, "damage": 0.15941101152368758}, "model": "item/spells_disabled/arrow9"},
     { "predicate": {"damaged": 0, "damage": 0.16005121638924455}, "model": "item/spells_disabled/arrow10"},
+    { "predicate": {"damaged": 0, "damage": 0.160691421254802}, "model": "item/spells/capture"},
+    { "predicate": {"damaged": 0, "damage": 0.161331626120359}, "model": "item/spells/up_arrow"},
+    { "predicate": {"damaged": 0, "damage": 0.161971830985915}, "model": "item/spells/down_arrow"},
 
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_hoe"}
   ]

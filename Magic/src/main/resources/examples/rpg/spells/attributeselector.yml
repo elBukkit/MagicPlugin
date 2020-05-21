@@ -11,35 +11,62 @@ attributeselector:
     options:
     - placeholder: true
     - attribute: strength
+      icon: spell_icon:252
+      attribute_amount: 1
       cost: 1
     - attribute: constitution
+      icon: spell_icon:252
+      attribute_amount: 1
       cost: 1
     - attribute: dexterity
+      icon: spell_icon:252
+      attribute_amount: 1
       cost: 1
     - attribute: intelligence
+      icon: spell_icon:252
+      attribute_amount: 1
       cost: 1
     - attribute: luck
+      icon: spell_icon:252
+      attribute_amount: 1
       cost: 1
     - attribute: wisdom
+      icon: spell_icon:252
+      attribute_amount: 1
       cost: 1
     - placeholder: true
     - placeholder: true
     - placeholder: true
     - attribute: strength
+    - attribute: constitution
+    - attribute: dexterity
+    - attribute: intelligence
+    - attribute: luck
+    - attribute: wisdom
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
+    - attribute: strength
+      icon: spell_icon:253
       attribute_amount: -1
       earn: 1
     - attribute: constitution
+      icon: spell_icon:253
       attribute_amount: -1
       earn: 1
     - attribute: dexterity
+      icon: spell_icon:253
       attribute_amount: -1
       earn: 1
     - attribute: intelligence
+      icon: spell_icon:253
       attribute_amount: -1
       earn: 1
     - attribute: luck
+      icon: spell_icon:253
       attribute_amount: -1
       earn: 1
     - attribute: wisdom
+      icon: spell_icon:253
       attribute_amount: -1
       earn: 1
