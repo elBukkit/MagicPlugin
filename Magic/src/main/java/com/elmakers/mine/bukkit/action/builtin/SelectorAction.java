@@ -516,7 +516,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     InventoryUtils.makeUnbreakable(icon);
                     InventoryUtils.hideFlags(icon, (byte)63);
                     ItemMeta meta = icon.getItemMeta();
-                    meta.setDisplayName("");
+                    meta.setDisplayName(" ");
                     icon.setItemMeta(meta);
                 }
                 return;
