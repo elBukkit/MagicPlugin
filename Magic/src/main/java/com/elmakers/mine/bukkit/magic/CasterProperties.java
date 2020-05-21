@@ -536,7 +536,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     public Double getAttribute(String attributeKey) {
         ConfigurationSection attributes = getConfigurationSection("attributes");
-        Double value = attributes == null ? null : attributes.getDouble(attributeKey);
+        Double value = attributes == null || !attributes.contains(attributeKey) ? null
+            : attributes.getDouble(attributeKey);
         if (value == null) {
             MagicAttribute defaultSetting = controller.getAttribute(attributeKey);
             if (defaultSetting != null) {
