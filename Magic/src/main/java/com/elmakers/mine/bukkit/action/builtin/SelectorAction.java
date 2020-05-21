@@ -28,6 +28,9 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
+import com.elmakers.mine.bukkit.api.magic.MagicProperties;
+import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -168,8 +171,12 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nullable List<Cost> earns = null;
         protected @Nullable Map<String,String> alternateSpellTags;
         protected @Nonnull String effects = "selected";
+        protected @Nullable String attributeKey = null;
+        protected int attributeAmount = 1;
         protected boolean applyToWand = false;
         protected boolean applyToCaster = false;
+        protected MagicPropertyType applyTo = null;
+        protected @Nullable String applyToClass = null;
         protected boolean showConfirmation = false;
         protected boolean showUnavailable = false;
         protected boolean switchClass = false;
@@ -177,6 +184,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean free = false;
         protected boolean applyLoreToItem = false;
         protected boolean applyNameToItem = false;
+
         protected int limit = 0;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
@@ -189,6 +197,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected void parse(ConfigurationSection configuration) {
             applyToWand = configuration.getBoolean("apply_to_wand", applyToWand);
             applyToCaster = configuration.getBoolean("apply_to_caster", applyToCaster);
+            applyToClass = configuration.getString("apply_to_class", applyToClass);
             putInHand = configuration.getBoolean("put_in_hand", putInHand);
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
@@ -196,6 +205,18 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 switchClass = true;
                 unlockClass = configuration.getString("switch_class");
             }
+            String applyToString = configuration.getString("apply_to", applyTo == null ? null : applyTo.name());
+            if (applyToString != null && !applyToString.isEmpty()) {
+                try {
+                    applyTo = MagicPropertyType.valueOf(applyToString.toUpperCase());
+                } catch (Exception ex) {
+                    context.getLogger().warning("Invalid apply_to: " + applyToString);
+                }
+            } else {
+                applyTo = null;
+            }
+            attributeAmount = configuration.getInt("attribute_amount", attributeAmount);
+            attributeKey = configuration.getString("attribute", attributeKey);
             limit = configuration.getInt("limit", limit);
             unlockKey = configuration.getString("unlock", unlockKey);
             unlockSection = configuration.getString("unlock_section", unlockSection);
@@ -449,6 +470,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.castSpell = defaults.castSpell;
             this.applyToWand = defaults.applyToWand;
             this.applyToCaster = defaults.applyToCaster;
+            this.applyTo = defaults.applyTo;
+            this.applyToClass = defaults.applyToClass;
+            this.attributeKey = defaults.attributeKey;
+            this.attributeAmount = defaults.attributeAmount;
             this.unlockClass = defaults.unlockClass;
             this.switchClass = defaults.switchClass;
             this.putInHand = defaults.putInHand;
@@ -772,7 +797,14 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             CasterProperties caster = null;
-            if (applyToWand) {
+            if (applyTo != null) {
+                MagicProperties properties = mage.getProperties().getStorage(applyTo);
+                if (properties instanceof CasterProperties) {
+                    caster = (CasterProperties)properties;
+                }
+            } else if (applyToClass != null && !applyToClass.isEmpty()) {
+                caster = mage.getClass(applyToClass);
+            } else if (applyToWand) {
                 if (wand == null) {
                     context.showMessage("no_wand", getDefaultMessage(context, "no_wand"));
                     return SpellResult.NO_TARGET;
@@ -791,6 +823,20 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     String inapplicable = getMessage("not_applicable").replace("$item", name);
                     context.showMessage(inapplicable);
                     return SpellResult.NO_TARGET;
+                }
+            }
+
+            if (caster != null && attributeKey != null && !attributeKey.isEmpty()) {
+                MagicAttribute attributeDefiniton = context.getController().getAttribute(attributeKey);
+                Double amount = caster.getAttribute(attributeKey);
+                if (amount != null && attributeDefiniton != null) {
+                    double newValue = amount + attributeAmount;
+                    if (!attributeDefiniton.inRange(newValue)) {
+                        return SpellResult.NO_TARGET;
+                    }
+                    caster.setAttribute(attributeKey, newValue);
+                } else {
+                    context.getLogger().warning("Invalid attribute: " + attributeKey);
                 }
             }
 

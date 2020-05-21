@@ -1,0 +1,4 @@
+currency:
+  ap:
+    amount: $amount AP
+    name: Attribute Points
