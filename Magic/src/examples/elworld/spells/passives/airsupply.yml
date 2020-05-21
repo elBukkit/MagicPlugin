@@ -1,0 +1,17 @@
+airsupply:
+  name: Air Supply
+  description: One last breath
+  icon: spell_icon:76
+  icon_disabled: spell_icon_disabled:76
+  passive: true
+  triggers:
+    # This triggers when the player takes drowning damage
+    - trigger: damage
+      damage_type: drowning
+  actions:
+    cast:
+      - class: AirSupply
+  parameters:
+    target: self
+    air: max
+    # cooldown: 60000

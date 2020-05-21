@@ -16,12 +16,16 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 public class AirSupplyAction extends BaseSpellAction
 {
     private int air;
+    private boolean max;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        air = parameters.getInt("air", 0);
+        max = parameters.getString("air", "").equalsIgnoreCase("max");
+        if (!max) {
+            air = parameters.getInt("air", 0);
+        }
     }
 
     @Override
@@ -35,7 +39,9 @@ public class AirSupplyAction extends BaseSpellAction
         LivingEntity livingEntity = (LivingEntity)entity;
 
         int airLevel = air;
-        if (airLevel > livingEntity.getMaximumAir()) {
+        if (max) {
+            airLevel = livingEntity.getMaximumAir();
+        } else if (airLevel > livingEntity.getMaximumAir()) {
             airLevel = livingEntity.getMaximumAir();
         }
         context.registerModified(livingEntity);

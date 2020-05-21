@@ -23,6 +23,7 @@
  - Add "invert" flag to all CheckXXX actions
  - Add magma wand appearance (thanks, Toffy!)
  - Allow using "examples" instead of "add_examples" in config.yml
+ - Add "air: max" option to AirSupply action
 
 # 7.9.1
 
