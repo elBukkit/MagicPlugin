@@ -1,0 +1,12 @@
+immortality:
+  name: Immortality
+  icon: diamond_axe:74
+  icon_disabled: spell_icon_disabled:74
+  passive: true
+  triggers:
+    - trigger: damage
+      damage_type: fall
+    - trigger: damage
+      damage_type: magic
+    - trigger: damage
+      damage_type: physical
