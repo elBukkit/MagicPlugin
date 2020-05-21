@@ -65,4 +65,9 @@ public interface MagicConfigurable extends MagicProperties {
      * @return true if the property existed and was removed.
      */
     boolean removeProperty(String key);
+
+    /**
+     * Retrieve the storage associated with a given type
+     */
+    MagicConfigurable getStorage(MagicPropertyType storageType);
 }

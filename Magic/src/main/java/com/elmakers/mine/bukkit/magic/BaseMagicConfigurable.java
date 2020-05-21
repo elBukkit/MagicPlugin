@@ -19,6 +19,7 @@ import org.bukkit.util.NumberConversions;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
+import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -125,7 +126,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     @Nullable
-    protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
+    public BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         return null;
     }
 

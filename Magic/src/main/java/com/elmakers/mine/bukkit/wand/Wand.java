@@ -48,7 +48,9 @@ import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
+import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -68,9 +70,7 @@ import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MageParameters;
-import com.elmakers.mine.bukkit.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -5790,7 +5790,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Nullable
     @Override
-    protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
+    public BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         switch (propertyType) {
             case WAND: return this;
             case SUBCLASS: return mageClass;

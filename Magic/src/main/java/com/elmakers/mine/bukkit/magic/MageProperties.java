@@ -8,6 +8,7 @@ import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -83,5 +84,20 @@ public class MageProperties extends CasterProperties {
     @Nullable
     public Color getEffectColor() {
        return effectColor == null ? null : effectColor.getColor();
+    }
+
+    @Nullable
+    @Override
+    public BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
+        switch (propertyType) {
+            case WAND:
+                return mage.getActiveWand();
+            case CLASS:
+            case SUBCLASS:
+                return mage.getActiveClass().getStorage(propertyType);
+            case MAGE:
+                return this;
+        }
+        return null;
     }
 }

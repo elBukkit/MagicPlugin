@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -165,11 +166,12 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     @Nullable
     @Override
-    protected BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
+    public BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
         switch (propertyType) {
             case SUBCLASS: return this;
             case CLASS: return getRoot();
             case MAGE: return mageProperties;
+            case WAND: return mage == null ? null : mage.getActiveWand();
             default: return null;
         }
     }
