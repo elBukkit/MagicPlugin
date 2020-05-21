@@ -21,5 +21,7 @@ spells:
     name: Player Stats
   attributeselector:
     name: Player Attributes
-    title: Attributes ($balance AP&0)
+    title: Attributes ($balance&0)
+    selected_free: ""
+    selected: ""
 

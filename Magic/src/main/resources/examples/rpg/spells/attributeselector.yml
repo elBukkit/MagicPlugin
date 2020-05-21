@@ -8,30 +8,37 @@ attributeselector:
     apply_to: mage
     cost_type: "ap"
     earn_type: "ap"
+    show_unavailable: true
     options:
     - placeholder: true
     - attribute: strength
       icon: spell_icon:252
+      icon_disabled: spell_icon_disabled:252
       attribute_amount: 1
       cost: 1
     - attribute: constitution
       icon: spell_icon:252
+      icon_disabled: spell_icon_disabled:252
       attribute_amount: 1
       cost: 1
     - attribute: dexterity
       icon: spell_icon:252
+      icon_disabled: spell_icon_disabled:252
       attribute_amount: 1
       cost: 1
     - attribute: intelligence
       icon: spell_icon:252
+      icon_disabled: spell_icon_disabled:252
       attribute_amount: 1
       cost: 1
     - attribute: luck
       icon: spell_icon:252
+      icon_disabled: spell_icon_disabled:252
       attribute_amount: 1
       cost: 1
     - attribute: wisdom
       icon: spell_icon:252
+      icon_disabled: spell_icon_disabled:252
       attribute_amount: 1
       cost: 1
     - placeholder: true
@@ -48,25 +55,31 @@ attributeselector:
     - placeholder: true
     - attribute: strength
       icon: spell_icon:253
+      icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
       earn: 1
     - attribute: constitution
       icon: spell_icon:253
+      icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
       earn: 1
     - attribute: dexterity
       icon: spell_icon:253
+      icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
       earn: 1
     - attribute: intelligence
       icon: spell_icon:253
+      icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
       earn: 1
     - attribute: luck
       icon: spell_icon:253
+      icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
       earn: 1
     - attribute: wisdom
       icon: spell_icon:253
+      icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
       earn: 1

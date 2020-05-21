@@ -591,6 +591,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         public void updateIcon(CastContext context, CostReducer reducer) {
             MageController controller = context.getController();
 
+            unavailable = false;
             icon = parseItem(iconKey);
             if (icon != null && icon.hasItemMeta()) {
                 ItemMeta meta = icon.getItemMeta();
@@ -715,17 +716,28 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 if (iconKey != null && !iconKey.isEmpty()) {
                     ItemData iconData = controller.getOrCreateItem(iconKey);
                     if (iconData != null) {
-                        int amount = 1;
-                        if (attributeAmount == 0) {
-                            CasterProperties caster = getCaster(context);
-                            Double attributeAmount = caster.getAttribute(attributeKey);
-                            if (attributeAmount != null) {
-                                amount = (int)Math.floor(attributeAmount);
-                            }
-                        }
-                        icon = iconData.getItemStack(Math.max(1, amount));
+                        icon = iconData.getItemStack();
                     }
                 }
+            }
+
+            if (icon != null && attribute != null) {
+                int amount = 1;
+                CasterProperties caster = getCaster(context);
+                Double currentAmount = caster.getAttribute(attributeKey);
+                if (currentAmount != null) {
+                    if (attributeAmount == 0) {
+                        amount = (int)Math.floor(currentAmount);
+                    } else {
+                        double newValue = attributeAmount + currentAmount;
+                        if (attribute != null && !attribute.inRange(newValue)) {
+                            unavailable = true;
+                            String template = attributeAmount < 0 ? getMessage("attribute_min") : getMessage("attribute_max");
+                            unavailableMessage = template.replace("$attribute", attribute.getName(context.getController().getMessages()));
+                        }
+                    }
+                }
+                icon.setAmount(Math.max(1, amount));
             }
 
             if (unavailable && iconDisabledKey != null) {
@@ -1113,7 +1125,9 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         String unpurchasableMessage = InventoryUtils.getMetaString(item, "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
-            mage.deactivateGUI();
+            if (autoClose) {
+                mage.deactivateGUI();
+            }
             return;
         }
 

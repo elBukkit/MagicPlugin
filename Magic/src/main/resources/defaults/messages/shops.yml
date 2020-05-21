@@ -48,3 +48,5 @@ shops:
   item_amount: "$name x$amount"
   increase_attribute: "Increase $attribute by $amount"
   decrease_attribute: "Decrease $attribute by $amount"
+  attribute_max: "You can not increase $attribute any further"
+  attribute_min: "You can not decrease $attribute any further"
