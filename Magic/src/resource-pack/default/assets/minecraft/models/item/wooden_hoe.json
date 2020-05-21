@@ -50,6 +50,7 @@
     {"predicate": {"damaged": 0, "damage": 0.683333333333333}, "model": "item/custom/green_wand"},
     {"predicate": {"damaged": 0, "damage": 0.7}, "model": "item/custom/nothing"},
     {"predicate": {"damaged": 0, "damage": 0.716}, "model": "item/custom/gauntlet"},
+    {"predicate": {"damaged": 0, "damage": 0.733}, "model": "item/custom/magmawand"},
 
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/wooden_hoe"}
   ]

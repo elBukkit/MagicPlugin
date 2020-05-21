@@ -40,7 +40,6 @@ appearanceshop:
           - path: conduit
         - item: none
         - item: none
-        - item: none
         - item: appearance_moon
           unlock: moon
           confirm: true
@@ -61,6 +60,10 @@ appearanceshop:
           unlock: claw
           confirm: true
           cost: 7000
+        - item: appearance_magma
+          unlock: magma
+          confirm: true
+          cost: 7500
         - item: appearance_orb
           unlock: orb
           confirm: true

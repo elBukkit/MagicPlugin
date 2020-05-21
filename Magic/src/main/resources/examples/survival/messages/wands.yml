@@ -388,6 +388,9 @@ wands:
     appearance_orb:
         name: Orb Wand Appearance
         description: A wand lovingly imbued with a powerful orb
+    appearance_magma:
+        name: Magma Staff Appearance
+        description: A staff containing the essence of pure magma
     uberwand:
         name: "Überwand"
         description: The Ultimate Wand

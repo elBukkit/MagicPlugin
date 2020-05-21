@@ -21,6 +21,7 @@
  - Fix Dragonball not earning SP on hit
  - Add more detailed support for potion effect lists in PotionEffect action
  - Add "invert" flag to all CheckXXX actions
+ - Add magma wand appearance (thanks, Toffy!)
 
 # 7.9.1
 

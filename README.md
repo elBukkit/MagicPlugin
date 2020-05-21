@@ -35,8 +35,9 @@ Requires recent Java 8 JDK. Import directly as Maven Project. Build against pare
   - Boosik
   - Dr00bles
   - grisstyl
-- 3D Artist: 
+- 3D Artists: 
   - Dr00bles
+  - Toffy
   - VelVoxel Raptor (https://www.youtube.com/watch?v=5QId3rMv89o)
 - 2D Artists:
   - Dr00bles

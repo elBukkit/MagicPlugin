@@ -63,6 +63,11 @@ appearance_orb:
     icon: wand_icon:37
     upgrade_icon: wand_icon:37
 
+appearance_magma:
+    upgrade: true
+    icon: wand_icon:44
+    upgrade_icon: wand_icon:44
+
 appearance_bow1:
     upgrade: true
     icon: bow_icon:1
