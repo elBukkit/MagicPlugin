@@ -152,7 +152,11 @@ public class BaseSpell implements MageSpell, Cloneable {
         );
 
     public static DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
-    public static DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0.##");
+    public static DecimalFormat HOURS_FORMATTER = new DecimalFormat("0");
+    public static DecimalFormat MINUTES_FORMATTER = new DecimalFormat("0");
+    public static DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0");
+    public static DecimalFormat MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat("0");
+    public static DecimalFormat MOMENT_SECONDS_FORMATTER = new DecimalFormat("0.##");
 
     /*
      * protected members that are helpful to use
@@ -1268,35 +1272,41 @@ public class BaseSpell implements MageSpell, Cloneable {
         color = ConfigurationUtils.getColor(workingParameters, "color", color);
         particle = workingParameters.getString("particle", null);
 
-        double cooldownRemaining = getRemainingCooldown() / 1000.0;
+        double cooldownRemaining = (double)getRemainingCooldown() / 1000.0;
         String timeDescription = "";
         if (cooldownRemaining > 0) {
-            if (cooldownRemaining > 60 * 60) {
-                long hours = (long)Math.ceil(cooldownRemaining / (60 * 60));
-                if (hours == 1) {
-                    timeDescription = controller.getMessages().get("cooldown.wait_hour");
+            if (cooldownRemaining >= 60 * 60) {
+                double hours = cooldownRemaining / (60 * 60);
+                if ((long)Math.floor(hours) == 1) {
+                    timeDescription = controller.getMessages().get("cooldown.wait_hour")
+                        .replace("$hours", HOURS_FORMATTER.format(hours));
                 } else {
-                    timeDescription = controller.getMessages().get("cooldown.wait_hours").replace("$hours", Long.toString(hours));
+                    timeDescription = controller.getMessages().get("cooldown.wait_hours")
+                        .replace("$hours", HOURS_FORMATTER.format(hours));
                 }
-            } else if (cooldownRemaining > 60) {
-                long minutes = (long)Math.ceil(cooldownRemaining / 60);
-                if (minutes == 1) {
-                    timeDescription = controller.getMessages().get("cooldown.wait_minute");
+            } else if (cooldownRemaining >= 60) {
+                double minutes = cooldownRemaining / 60;
+                if ((long)Math.floor(minutes) == 1) {
+                    timeDescription = controller.getMessages().get("cooldown.wait_minute")
+                        .replace("$minutes", MINUTES_FORMATTER.format(minutes));
                 } else {
-                    timeDescription = controller.getMessages().get("cooldown.wait_minutes").replace("$minutes", Long.toString(minutes));
+                    timeDescription = controller.getMessages().get("cooldown.wait_minutes")
+                        .replace("$minutes", MINUTES_FORMATTER.format(minutes));
                 }
             } else if (cooldownRemaining >= 1) {
-                long seconds = (long)Math.ceil(cooldownRemaining);
-                if (seconds == 1) {
-                    timeDescription = controller.getMessages().get("cooldown.wait_second");
+                double seconds = cooldownRemaining;
+                if ((long)Math.floor(seconds) == 1) {
+                    timeDescription = controller.getMessages().get("cooldown.wait_second")
+                        .replace("$seconds", SECONDS_FORMATTER.format(cooldownRemaining));
                 } else {
-                    timeDescription = controller.getMessages().get("cooldown.wait_seconds").replace("$seconds", Long.toString(seconds));
+                    timeDescription = controller.getMessages().get("cooldown.wait_seconds")
+                        .replace("$seconds", SECONDS_FORMATTER.format(cooldownRemaining));
                 }
             } else {
                 timeDescription = controller.getMessages().get("cooldown.wait_moment");
-                if (timeDescription.contains("$seconds")) {
-                    timeDescription = timeDescription.replace("$seconds", SECONDS_FORMATTER.format(cooldownRemaining));
-                }
+                timeDescription = timeDescription
+                    .replace("$milliseconds", MOMENT_MILLISECONDS_FORMATTER.format(cooldownRemaining * 1000))
+                    .replace("$seconds", MOMENT_SECONDS_FORMATTER.format(cooldownRemaining));
             }
             castMessage(getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN, workingParameters);
@@ -2263,28 +2273,34 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Nullable
     private String getTimeDescription(Messages messages, int time) {
         if (time > 0) {
-            int timeInSeconds = time / 1000;
-            if (timeInSeconds > 60 * 60) {
-                int hours = timeInSeconds / (60 * 60);
-                if (hours == 1) {
-                    return messages.get("cooldown.description_hour");
+            double timeInSeconds = (double)time / 1000;
+            if (timeInSeconds >= 60 * 60) {
+                double hours = timeInSeconds / (60 * 60);
+                if ((long)Math.floor(hours) == 1) {
+                    return messages.get("cooldown.description_hour")
+                        .replace("$hours", HOURS_FORMATTER.format(hours));
                 }
-                return messages.get("cooldown.description_hours").replace("$hours", Integer.toString(hours));
-            } else if (timeInSeconds > 60) {
-                int minutes = timeInSeconds / 60;
-                if (minutes == 1) {
-                    return messages.get("cooldown.description_minute");
+                return messages.get("cooldown.description_hours")
+                    .replace("$hours", HOURS_FORMATTER.format(hours));
+            } else if (timeInSeconds >= 60) {
+                double minutes = timeInSeconds / 60;
+                if ((long)Math.floor(minutes) == 1) {
+                    return messages.get("cooldown.description_minute")
+                        .replace("$minutes", MINUTES_FORMATTER.format(minutes));
                 }
-                return messages.get("cooldown.description_minutes").replace("$minutes", Integer.toString(minutes));
-            } else if (timeInSeconds > 1) {
-                return messages.get("cooldown.description_seconds").replace("$seconds", Integer.toString(timeInSeconds));
-            } else if (timeInSeconds == 1) {
-                return messages.get("cooldown.description_second");
+                return messages.get("cooldown.description_minutes")
+                    .replace("$minutes", MINUTES_FORMATTER.format(minutes));
+            } else if (timeInSeconds >= 2) {
+                return messages.get("cooldown.description_seconds")
+                    .replace("$seconds", SECONDS_FORMATTER.format(timeInSeconds));
+            } else if (timeInSeconds >= 1) {
+                return messages.get("cooldown.description_second")
+                    .replace("$seconds", SECONDS_FORMATTER.format(timeInSeconds));
             } else {
                 String timeDescription = controller.getMessages().get("cooldown.description_moment");
-                if (timeDescription.contains("$seconds")) {
-                    timeDescription = timeDescription.replace("$seconds", SECONDS_FORMATTER.format(time / 1000.0D));
-                }
+                timeDescription = timeDescription
+                    .replace("$milliseconds", MOMENT_MILLISECONDS_FORMATTER.format(timeInSeconds * 1000))
+                    .replace("$seconds", MOMENT_SECONDS_FORMATTER.format(timeInSeconds));
                 return timeDescription;
             }
         }

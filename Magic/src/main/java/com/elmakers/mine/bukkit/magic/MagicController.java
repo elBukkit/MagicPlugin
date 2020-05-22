@@ -2640,8 +2640,12 @@ public class MagicController implements MageController {
 
         messagePrefix = properties.getString("message_prefix", messagePrefix);
         castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
-        BaseSpell.SECONDS_FORMATTER = new DecimalFormat(properties.getString("seconds_formatter"));
         BaseSpell.RANGE_FORMATTER = new DecimalFormat(properties.getString("range_formatter"));
+        BaseSpell.MOMENT_SECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_seconds_formatter"));
+        BaseSpell.MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_milliseconds_formatter"));
+        BaseSpell.SECONDS_FORMATTER = new DecimalFormat(properties.getString("seconds_formatter"));
+        BaseSpell.MINUTES_FORMATTER = new DecimalFormat(properties.getString("minutes_formatter"));
+        BaseSpell.HOURS_FORMATTER = new DecimalFormat(properties.getString("hours_formatter"));
 
         redstoneReplacement = ConfigurationUtils.getMaterialAndData(properties, "redstone_replacement", redstoneReplacement);
 

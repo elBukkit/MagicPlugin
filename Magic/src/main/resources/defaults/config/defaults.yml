@@ -79,10 +79,16 @@ message_prefix: "&d&o"
 cast_message_prefix: "a:&5&o"
 
 # How to format the range display in spell lore
-range_formatter: 0.#
+range_formatter: "0.#"
 
 # How to format partial seconds in spell lore
-seconds_formatter: 0.##
+moment_seconds_formatter: "0.##"
+
+# How to format other duration values
+moment_milliseconds_formatter: "0"
+seconds_formatter: "0"
+minutes_formatter: "0"
+hours_formatter: "0"
 
 # Enable/Disable Sound Effects
 sounds: true
