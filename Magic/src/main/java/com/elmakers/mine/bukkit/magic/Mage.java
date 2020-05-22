@@ -1145,6 +1145,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             loading = false;
+            // Force-add default class
+            getActiveClass();
             armorUpdated();
             trigger("join");
         } catch (Exception ex) {
