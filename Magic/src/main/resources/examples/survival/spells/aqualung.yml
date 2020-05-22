@@ -1,0 +1,16 @@
+aqualung:
+  icon: spell_icon:76
+  icon_disabled: spell_icon_disabled:76
+  passive: true
+  worth: 30
+  triggers:
+    # This triggers when the player takes drowning damage
+    - trigger: damage
+      damage_type: drowning
+  actions:
+    cast:
+      - class: AirSupply
+  parameters:
+    target: self
+    air: max
+    cooldown: 60000

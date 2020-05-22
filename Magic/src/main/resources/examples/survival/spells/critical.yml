@@ -1,0 +1,24 @@
+critical:
+  icon: spell_icon:161
+  icon_disabled: spell_icon_disabled:161
+  passive: true
+  worth: 500
+  triggers:
+    # This triggers when the player deals magic damage
+    - trigger: damage_dealt
+      damage_type: magic
+  actions:
+    cast:
+      - class: Probability
+        actions:
+          - class: Delay
+          - class: Message
+            equation: "1 + damage_dealt * 0.5"
+            message_type: "action_bar"
+            message: "&cCritical Hit! &f(&7+&4@equation&f)"
+          - class: Damage
+  parameters:
+    delay: 100
+    target: damage_target
+    probability: 0.2
+    damage: "1 + damage_dealt * 0.5"

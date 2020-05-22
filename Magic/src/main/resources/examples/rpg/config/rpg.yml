@@ -2,6 +2,8 @@
 # Set up for an RPG-style server, with different classes for players to choose from.
 #
 
+# No SP system here
+sp_enabled: false
 
 # This is a modifier on the default survival configs
 inherit: survival

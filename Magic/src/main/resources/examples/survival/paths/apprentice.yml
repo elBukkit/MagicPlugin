@@ -13,6 +13,7 @@ apprentice:
       - ghast
       - glide
       - horse
+      - critical
     spells:
       - breach
       - disintegrate

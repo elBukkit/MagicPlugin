@@ -1683,3 +1683,10 @@ spells:
       title: Reset Player?
       selected_free: "You reset your player data"
       confirm_title: "REALLY Sure?"
+    aqualung:
+      name: Aqualung
+      description: One last big breath
+      usage: Refills air one time when you run out
+    critical:
+      name: Critical
+      description: A chance to deal some extra damage
