@@ -151,6 +151,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private ConfigurationSection variables;
     private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
     private final Set<String> triggeredSpells = new HashSet<>();
+    private final Set<String> triggeringSpells = new HashSet<>();
     private final List<TriggeredSpell> processingTriggers = new ArrayList<>();
     private final Map<String, Long> lastTriggers = new HashMap<>();
     protected ConfigurationSection data = new MemoryConfiguration();
@@ -1682,6 +1683,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void tick() {
+        triggeringSpells.clear();
         long now = System.currentTimeMillis();
         if (entityData != null) {
             if (lastTick != 0) {
@@ -4204,7 +4206,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (TriggeredSpell triggered : processingTriggers) {
             if (triggered.getTrigger().isValid(this)) {
                 Spell spell = getSpell(triggered.getSpellKey());
-                if (spell != null && spell.isEnabled()) {
+                if (spell != null && spell.isEnabled() && triggeringSpells.contains(spell.getKey())) {
+                    triggeringSpells.add(spell.getKey());
                     cancelLaunch = cancelLaunch || triggered.getTrigger().isCancelLaunch();
                     activated = spell.cast() || activated;
                     triggered.getTrigger().triggered();

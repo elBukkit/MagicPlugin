@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,6 +28,7 @@ public class EntityMageData {
     protected long tickInterval;
     protected long lifetime;
     protected @Nullable Multimap<String, MobTrigger> triggers;
+    private final Set<String> triggering = new HashSet<>();
     protected ConfigurationSection mageProperties;
     protected boolean requiresTarget;
     protected ItemData requiresWand;
@@ -104,6 +106,8 @@ public class EntityMageData {
     }
 
     public boolean trigger(Mage mage, String triggerKey) {
+        if (triggering.contains(triggerKey)) return false;
+        triggering.add(triggerKey);
         Collection<MobTrigger> triggers = getTriggers(triggerKey);
         if (triggers == null || triggers.isEmpty()) return false;
         boolean activated = false;
@@ -118,6 +122,7 @@ public class EntityMageData {
     }
 
     public void tick(Mage mage) {
+        triggering.clear();
         if (lifetime > 0 && System.currentTimeMillis() > mage.getCreatedTime() + lifetime) {
             trigger(mage, "death");
             mage.getEntity().remove();

@@ -17,10 +17,10 @@ classselector:
     options:
     - placeholder: true
     - placeholder: true
-    - unlock_class: alchemist
-    - unlock_class: ranger
-    - unlock_class: rogue
-    - unlock_class: warrior
-    - unlock_class: wizard
+    - switch_class: alchemist
+    - switch_class: ranger
+    - switch_class: rogue
+    - switch_class: warrior
+    - switch_class: wizard
     - placeholder: true
     - placeholder: true
