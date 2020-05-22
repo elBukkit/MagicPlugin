@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,17 +30,26 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     protected final MageProperties mageProperties;
     protected final Mage mage;
     private MageClass parent;
-    private Collection<EntityAttributeModifier> attributeModifiers;
+    private List<EntityAttributeModifier> attributeModifiers;
     private boolean checkedAttributes = false;
 
     private static class EntityAttributeModifier {
         public EntityAttributeModifier(Attribute attribute, AttributeModifier modifier) {
             this.attribute = attribute;
             this.modifier = modifier;
+            this.base = null;
+        }
+
+        public EntityAttributeModifier(Attribute attribute, double base) {
+            this.attribute = attribute;
+            this.modifier = null;
+            this.base = base;
         }
 
         public final AttributeModifier modifier;
         public final Attribute attribute;
+        public final Double base;
+        public Double previous;
     }
 
     @SuppressWarnings("null") // template initialised via setter
@@ -403,18 +413,25 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         for (EntityAttributeModifier modifier : modifiers) {
             AttributeInstance attribute = entity.getAttribute(modifier.attribute);
 
-            // Only do this once, it's really here to clean up attributes that may have gotten stuck on server crash
-            if (!checkedAttributes) {
-                Collection<AttributeModifier> existingModifiers = attribute.getModifiers();
-                for (AttributeModifier existing : existingModifiers) {
-                    if (existing.getName().equalsIgnoreCase(modifier.modifier.getName())) {
-                        mage.getController().getLogger().warning("Removed duplicate attribute modifier " + modifier.modifier.getName() + ", was this leftover from a server crash?");
-                        attribute.removeModifier(existing);
-                        break;
+            if (modifier.modifier != null) {
+                if (!checkedAttributes) {
+                    // Only do this once, it's really here to clean up attributes that may have gotten stuck on server crash
+                    Collection<AttributeModifier> existingModifiers = attribute.getModifiers();
+                    for (AttributeModifier existing : existingModifiers) {
+                        if (existing.getName().equalsIgnoreCase(modifier.modifier.getName())) {
+                            mage.getController().getLogger().warning("Removed duplicate attribute modifier " + modifier.modifier.getName() + ", was this leftover from a server crash?");
+                            attribute.removeModifier(existing);
+                            break;
+                        }
                     }
                 }
+                attribute.addModifier(modifier.modifier);
             }
-            attribute.addModifier(modifier.modifier);
+
+            if (modifier.base != null) {
+                modifier.previous = attribute.getBaseValue();
+                attribute.setBaseValue(modifier.base);
+            }
         }
 
         checkedAttributes = true;
@@ -433,9 +450,17 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         LivingEntity entity = mage.getLivingEntity();
         if (entity == null) return;
 
-        for (EntityAttributeModifier modifier : attributeModifiers) {
+        // Remove in reverse-order in case a base attribute was changed twice
+        ListIterator<EntityAttributeModifier> it = attributeModifiers.listIterator(attributeModifiers.size());
+        while (it.hasPrevious()) {
+            EntityAttributeModifier modifier = it.previous();
             AttributeInstance attribute = entity.getAttribute(modifier.attribute);
-            attribute.removeModifier(modifier.modifier);
+            if (modifier.modifier != null) {
+                attribute.removeModifier(modifier.modifier);
+            }
+            if (modifier.previous != null) {
+                attribute.setBaseValue(modifier.previous);
+            }
         }
         attributeModifiers = null;
     }
@@ -454,6 +479,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         for (String key : keys) {
             String name = "mage_" + getKey() + "_" + key;
             double value;
+            Double base = null;
             String attributeKey = key;
             AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
             if (config.isConfigurationSection(key)) {
@@ -462,7 +488,9 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
                 attributeKey = modifierConfig.getString("attribute", attributeKey);
                 value = modifierConfig.getDouble("value");
                 String operationType = modifierConfig.getString("operation");
-                if (operationType != null && !operationType.isEmpty()) {
+                if (operationType.equalsIgnoreCase("base")) {
+                    base = value;
+                } else  if (operationType != null && !operationType.isEmpty()) {
                     try {
                         operation = AttributeModifier.Operation.valueOf(operationType.toUpperCase());
                     } catch (Exception ex) {
@@ -479,8 +507,12 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
                 controller.getLogger().warning("Invalid attribute " + attributeKey + " on entity_attributes." + key + " in mage class " + getKey());
             }
             if (attribute != null) {
-                AttributeModifier modifier = new AttributeModifier(name, value, operation);
-                attributeModifiers.add(new EntityAttributeModifier(attribute, modifier));
+                if (base != null) {
+                    attributeModifiers.add(new EntityAttributeModifier(attribute, base));
+                } else {
+                    AttributeModifier modifier = new AttributeModifier(name, value, operation);
+                    attributeModifiers.add(new EntityAttributeModifier(attribute, modifier));
+                }
             }
         }
 
