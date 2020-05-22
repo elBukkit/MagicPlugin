@@ -1,1 +1,6 @@
+# This IS a dev server, after all!
+log_verbosity: 10
+debug_effects: true
+
+# Use the RPG configs
 example: rpg

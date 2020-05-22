@@ -1,11 +1,5 @@
-alchemist:
+ranger:
   inherit: base
   locked: true
   entity_attributes:
     generic_max_health: "constitution * 2"
-  mana_max: 200
-  mana: 100
-  spells:
-   - missile
-   - blast
-

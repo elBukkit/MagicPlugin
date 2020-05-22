@@ -1,3 +1,5 @@
 rogue:
   inherit: base
   locked: true
+  entity_attributes:
+    generic_max_health: "constitution * 2"

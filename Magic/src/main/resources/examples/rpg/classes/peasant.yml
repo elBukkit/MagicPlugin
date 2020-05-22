@@ -1,4 +1,8 @@
-alchemist:
+peasant:
   inherit: base
   locked: false
+  entity_attributes:
+    generic_max_health:
+      operation: MULTIPLY_SCALAR_1
+      value: 0.5
 

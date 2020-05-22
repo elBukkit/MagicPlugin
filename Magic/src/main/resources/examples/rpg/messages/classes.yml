@@ -8,8 +8,8 @@ classes:
   rogue:
     name: "Rogue"
     description: "Stealth and subversion"
-  archer:
-    name: "Archer"
+  ranger:
+    name: "Ranger"
     description: "Master of the bow"
   alchemist:
     name: "Alchemist"
