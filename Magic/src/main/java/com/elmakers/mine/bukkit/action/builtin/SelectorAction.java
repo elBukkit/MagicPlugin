@@ -236,6 +236,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             actions = configuration.getString("actions", actions);
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
             commands = ConfigurationUtils.getStringList(configuration, "commands");
+            String command = configuration.getString("command");
+            if (command != null && !command.isEmpty()) {
+                if (commands == null) commands = new ArrayList<>();
+                commands.add(command);
+            }
             free = configuration.getBoolean("free", free);
             effects = configuration.getString("effects", effects);
             applyLoreToItem = configuration.getBoolean("apply_lore_to_item", applyLoreToItem);
