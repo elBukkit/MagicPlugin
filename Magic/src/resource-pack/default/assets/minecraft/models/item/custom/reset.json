@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_full",
+    "textures": {
+        "particle": "item/spells/kill",
+        "texture": "item/spells/kill"
+    }
+}

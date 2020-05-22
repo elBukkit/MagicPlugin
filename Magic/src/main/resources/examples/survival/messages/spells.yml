@@ -1678,3 +1678,8 @@ spells:
     powerstone:
       name: Power Stone
       description: Unleash a devastating shockwave of power
+    reset:
+      name: Player Reset
+      title: Reset Player?
+      selected_free: "You reset your player data"
+      confirm_title: "REALLY Sure?"

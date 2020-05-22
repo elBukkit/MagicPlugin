@@ -25,6 +25,7 @@
  - Allow using "examples" instead of "add_examples" in config.yml
  - Add "air: max" option to AirSupply action
  - Additional customization options for time and range displays in spell lore
+ - Added ResetMage action, "reset" spell for player reset GUI
 
 # 7.9.1
 

@@ -1,0 +1,28 @@
+reset:
+  icon: spell_icon:266
+  icon_disabled: spell_icon_disabled:266
+  cast_on_no_target: false
+  actions:
+    cast:
+      - class: Selector
+        options:
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true
+        - icon: spell_icon:265
+          actions: reset
+          name: "&4Reset All Player Data"
+          description: "This will &cPERMANENTLY &freset all of your player data.\n\n&cTHIS CAN NOT BE UNDONE!"
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true
+        reset:
+          - class: ResetMageAction
+  parameters:
+    placeholder_icon: black
+    confirm: true
+    auto_close: true
+    confirm_filler: black
+    cooldown: 0
