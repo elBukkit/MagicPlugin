@@ -718,7 +718,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 icon = InventoryUtils.getCopy(items.get(0));
                 // This prevents getting two copies of the lore
                 // Only do this if lore was actually provided, since this setting is on by default for the Shop action
-                if (applyLoreToItem && this.lore != null) {
+                if (applyLoreToItem && this.lore != null && !this.lore.isEmpty()) {
                     ItemMeta meta = icon.getItemMeta();
                     meta.setLore(null);
                     icon.setItemMeta(meta);
