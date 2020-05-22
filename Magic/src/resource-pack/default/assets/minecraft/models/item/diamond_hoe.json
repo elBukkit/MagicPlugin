@@ -265,7 +265,7 @@
     {"predicate": {"damaged": 0, "damage": 0.1651728553137}, "model": "item/attributes_disabled/luck"},
     {"predicate": {"damaged": 0, "damage": 0.165813060179257}, "model": "item/attributes_disabled/strength"},
     {"predicate": {"damaged": 0, "damage": 0.166453265044814}, "model": "item/attributes_disabled/wisdom"},
-    {"predicate": {"damaged": 0, "damage": 0.166453265044814}, "model": "item/classes_disabled/wisdom"},
+    {"predicate": {"damaged": 0, "damage": 0.166453265044814}, "model": "item/attributes_disabled/wisdom"},
     {"predicate": {"damaged": 0, "damage": 0.167093469910371}, "model": "item/classes_disabled/cleric"},
     {"predicate": {"damaged": 0, "damage": 0.167733674775928}, "model": "item/classes_disabled/fighter"},
     {"predicate": {"damaged": 0, "damage": 0.168373879641485}, "model": "item/classes_disabled/ranger"},
