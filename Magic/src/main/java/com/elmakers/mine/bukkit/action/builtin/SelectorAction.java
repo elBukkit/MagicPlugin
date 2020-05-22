@@ -740,6 +740,9 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
             MagicAttribute attribute = attributeKey == null ? null : controller.getAttribute(attributeKey);
             if (icon == null && attribute != null) {
+                if (iconDisabledKey == null) {
+                    iconDisabledKey = attribute.getIconDisabledKey();
+                }
                 String iconKey = attribute.getIconKey();
                 if (iconKey != null && !iconKey.isEmpty()) {
                     ItemData iconData = controller.getOrCreateItem(iconKey);
@@ -770,6 +773,22 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     }
                 }
                 icon.setAmount(Math.max(1, amount));
+            }
+
+            if (icon == null && unlockClass != null && !unlockClass.isEmpty()) {
+                MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
+                if (mageClass != null) {
+                    if (iconDisabledKey == null) {
+                        iconDisabledKey = mageClass.getIconDisabledKey();
+                    }
+                    String iconKey = mageClass.getIconKey();
+                    if (iconKey != null && !iconKey.isEmpty()) {
+                        ItemData iconData = controller.getOrCreateItem(iconKey);
+                        if (iconData != null) {
+                            icon = iconData.getItemStack();
+                        }
+                    }
+                }
             }
 
             if (unavailable && iconDisabledKey != null) {

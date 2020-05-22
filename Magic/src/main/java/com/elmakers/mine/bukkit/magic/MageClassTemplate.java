@@ -88,4 +88,12 @@ public class MageClassTemplate extends BaseMagicProperties implements com.elmake
     public String getDescription() {
         return description;
     }
+
+    public @Nullable String getIconKey() {
+        return getString("icon");
+    }
+
+    public @Nullable String getIconDisabledKey() {
+        return getString("icon_disabled");
+    }
 }

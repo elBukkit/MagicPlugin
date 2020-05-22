@@ -1,6 +1,8 @@
 warrior:
   inherit: base
   locked: true
+  icon: spell_icon:259
+  icon_disabled: spell_icon_disabled:259
   entity_attributes:
     generic_max_health:
       value: "constitution * 1.5"

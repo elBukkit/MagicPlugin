@@ -1,4 +1,6 @@
 rogue:
+  icon: spell_icon:256
+  icon_disabled: spell_icon_disabled:256
   inherit: base
   locked: true
   entity_attributes:

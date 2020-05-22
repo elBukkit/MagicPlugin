@@ -3,6 +3,8 @@ wizard:
   locked: true
   mana_max: 50
   mana: 50
+  icon: spell_icon:260
+  icon_disabled: spell_icon_disabled:260
   mana_regeneration: 5
   entity_attributes:
     generic_max_health:

@@ -1,4 +1,6 @@
 alchemist:
+  icon: spell_icon:257
+  icon_disabled: spell_icon_disabled:257
   inherit: base
   locked: true
   entity_attributes:
