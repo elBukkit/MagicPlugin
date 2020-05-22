@@ -82,7 +82,7 @@ cast_message_prefix: "a:&5&o"
 range_formatter: "0.#"
 
 # How to format partial seconds in spell lore
-moment_seconds_formatter: "0.##"
+moment_seconds_formatter: "0.#"
 
 # How to format other duration values
 moment_milliseconds_formatter: "0"
