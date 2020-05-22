@@ -50,7 +50,8 @@ public class MessageAction extends BaseSpellAction
         messageTarget = parameters.getBoolean("message_target", false);
         if (parameters.contains("equation")) {
             double value = parameters.getDouble("equation");
-            message = message.replace("$equation", Double.toString(value));
+            message = message.replace("$equation", Double.toString(value))
+                .replace("@equation", Integer.toString((int)value));
         }
 
         String messageTypeString = parameters.getString("message_type", null);
