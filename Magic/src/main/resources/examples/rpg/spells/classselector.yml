@@ -1,0 +1,26 @@
+classselector:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    lock_class: peasant
+    confirm: true
+    auto_close: true
+    placeholder_icon: black
+    confirm_filler: black
+    quiet: false
+    loud: true
+    limit: 1
+    options:
+    - placeholder: true
+    - placeholder: true
+    - unlock_class: alchemist
+    - unlock_class: ranger
+    - unlock_class: rogue
+    - unlock_class: warrior
+    - unlock_class: wizard
+    - placeholder: true
+    - placeholder: true

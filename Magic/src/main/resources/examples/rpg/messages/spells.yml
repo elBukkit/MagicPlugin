@@ -6,4 +6,9 @@ spells:
     title: Attributes ($balance&0)
     selected_free: ""
     selected: ""
-
+  classselector:
+    name: Class Selector
+    title: Select Class
+    selected_free: "Became $name"
+    confirm_title: "Become $item?"
+    at_limit: "You have already chosen your class"

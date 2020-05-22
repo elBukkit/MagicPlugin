@@ -10,6 +10,7 @@ attributeselector:
     earn_type: "ap"
     show_unavailable: true
     allow_attribute_reduction: false
+    placeholder_icon: black
     options:
     - placeholder: true
     - attribute: strength
@@ -84,3 +85,5 @@ attributeselector:
       icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
       earn: 1
+    - placeholder: true
+    - placeholder: true

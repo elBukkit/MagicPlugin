@@ -2,4 +2,6 @@ ranger:
   inherit: base
   locked: true
   entity_attributes:
-    generic_max_health: "constitution * 2"
+    generic_max_health:
+      value: "constitution"
+      operation: base

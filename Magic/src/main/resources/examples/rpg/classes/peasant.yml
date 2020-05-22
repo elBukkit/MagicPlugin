@@ -3,6 +3,6 @@ peasant:
   locked: false
   entity_attributes:
     generic_max_health:
-      operation: MULTIPLY_SCALAR_1
-      value: 0.5
+      operation: base
+      value: 6
 

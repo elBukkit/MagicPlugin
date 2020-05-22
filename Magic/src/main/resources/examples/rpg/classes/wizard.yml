@@ -5,7 +5,9 @@ wizard:
   mana: 50
   mana_regeneration: 5
   entity_attributes:
-    generic_max_health: "constitution * 2"
+    generic_max_health:
+      vvalue: "constitution / 1.2"
+      operation: base
   spells:
    - missile
    - arrow
