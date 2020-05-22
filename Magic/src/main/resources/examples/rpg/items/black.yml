@@ -1,0 +1,10 @@
+black:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: DIAMOND_AXE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      Damage: 254
