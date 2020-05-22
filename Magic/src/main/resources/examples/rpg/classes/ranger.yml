@@ -1,6 +1,6 @@
 ranger:
-  icon: spell_icon:258
-  icon_disabled: spell_icon_disabled:258
+  icon: spell_icon:263
+  icon_disabled: spell_icon_disabled:263
   inherit: base
   locked: true
   entity_attributes:

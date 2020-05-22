@@ -482,7 +482,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
             Double base = null;
             String attributeKey = key;
             AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
-            if (config.isConfigurationSection(key)) {
+            if (config.isConfigurationSection(key) && config.contains("value")) {
                 ConfigurationSection modifierConfig = config.getConfigurationSection(key);
                 name = modifierConfig.getString("name", name);
                 attributeKey = modifierConfig.getString("attribute", attributeKey);

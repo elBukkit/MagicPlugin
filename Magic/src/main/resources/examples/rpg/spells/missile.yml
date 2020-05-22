@@ -1,0 +1,6 @@
+missile:
+  upgrade_required_path: ""
+  upgrade_required_casts: 0
+  parameters:
+    player_damage: "intelligence / 4"
+    entity_damage: "intelligence / 2"

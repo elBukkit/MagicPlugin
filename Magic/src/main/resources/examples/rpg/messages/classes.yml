@@ -2,8 +2,8 @@ classes:
   wizard:
     name: "Wizard"
     description: "Use wands to cast spells"
-  warrior:
-    name: "Warrior"
+  fighter:
+    name: "Fighter"
     description: "Use powerful physical attacks"
   rogue:
     name: "Rogue"
@@ -12,7 +12,7 @@ classes:
     name: "Ranger"
     description: "Master of the bow"
   alchemist:
-    name: "Alchemist"
+    name: "Cleric"
     description: "Potions and alchemy"
   peasant:
     name: "Peasant"

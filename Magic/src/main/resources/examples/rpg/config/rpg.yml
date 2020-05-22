@@ -19,6 +19,10 @@ skip_inherited:
 # Default class
 default_mage_class: peasant
 
+# Turn off the enchant table
+enchant_click: ""
+enchant_sneak_click: ""
+
 custom_currency:
  ap:
   max: 100

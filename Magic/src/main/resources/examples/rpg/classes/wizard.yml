@@ -1,17 +1,16 @@
 wizard:
   inherit: base
   locked: true
-  mana_max: 50
-  mana: 50
-  icon: spell_icon:260
-  icon_disabled: spell_icon_disabled:260
-  mana_regeneration: 5
+  mana_max: "wisdom * 10"
+  mana_regeneration: "wisdom"
+  icon: spell_icon:265
+  icon_disabled: spell_icon_disabled:265
   entity_attributes:
     generic_max_health:
-      vvalue: "constitution / 1.2"
+      value: "constitution / 1.2"
       operation: base
   spells:
-   - missile
-   - arrow
-   - blast
+    - missile
+  class_items:
+    - wizardwand
 
