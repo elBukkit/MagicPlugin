@@ -39,7 +39,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -56,7 +55,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
     protected double earnScale = 1;
     protected boolean autoClose = true;
     protected SelectorConfiguration defaultConfiguration;
-    protected MaterialAndData confirmFillMaterial;
+    protected ItemData confirmFillMaterial;
     protected CastContext context;
     private Map<Integer, SelectorOption> showingItems;
     private int itemCount;
@@ -165,6 +164,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected @Nonnull String costTypeFallback = "item";
         protected @Nullable String castSpell = null;
         protected @Nullable String unlockClass = null;
+        protected @Nullable String lockClass = null;
         protected @Nullable String selectedMessage = null;
         protected @Nullable String selectedFreeMessage = null;
         protected @Nullable String unlockKey = null;
@@ -207,6 +207,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             putInHand = configuration.getBoolean("put_in_hand", putInHand);
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
+            lockClass = configuration.getString("lock_class", lockClass);
             allowAttributeReduction = configuration.getBoolean("allow_attribute_reduction", allowAttributeReduction);
             if (configuration.contains("switch_class")) {
                 switchClass = true;
@@ -484,6 +485,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.attributeAmount = defaults.attributeAmount;
             this.allowAttributeReduction = defaults.allowAttributeReduction;
             this.unlockClass = defaults.unlockClass;
+            this.lockClass = defaults.lockClass;
             this.switchClass = defaults.switchClass;
             this.putInHand = defaults.putInHand;
             this.limit = defaults.limit;
@@ -594,7 +596,11 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             if (description == null) {
                 if (unlockClass != null && !unlockClass.isEmpty()) {
                     MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
-                    description = mageClass.getDescription();
+                    if (mageClass != null) {
+                        description = mageClass.getDescription();
+                    } else {
+                        controller.getLogger().warning("Unknown class in selector config: " + unlockClass);
+                    }
                 } else if (castSpell != null && !castSpell.isEmpty()) {
                     SpellTemplate spell = controller.getSpellTemplate(castSpell);
                     if (spell == null) {
@@ -789,6 +795,15 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             // Prepare icon
+            String name = this.name;
+            if (attributeKey != null && attributeAmount == 0) {
+                Double value = context.getMage().getAttribute(attributeKey);
+                if (value != null) {
+                    String template = getMessage("attribute");
+                    name = template.replace("$attribute", name)
+                        .replace("$amount", Integer.toString((int)(double)value));
+                }
+            }
             meta.setDisplayName(name);
             if (!lore.isEmpty()) {
                 List<String> itemLore = meta.getLore();
@@ -887,6 +902,9 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     mage.lockClass(activeClass.getKey());
                 }
                 mage.unlockClass(unlockClass);
+                if (lockClass != null && !lockClass.isEmpty()) {
+                    mage.lockClass(lockClass);
+                }
                 if (switchClass) {
                     mage.setActiveClass(unlockClass);
 
@@ -1172,7 +1190,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 for (int i = 0; i < 9; i++)
                 {
                     if (i != 4) {
-                        ItemStack filler = confirmFillMaterial.getItemStack(1);
+                        ItemStack filler = confirmFillMaterial == null ? null : confirmFillMaterial.getItemStack(1);
+                        if (filler == null) {
+                            filler = new ItemStack(Material.AIR);
+                        }
                         ItemMeta meta = filler.getItemMeta();
                         if (meta != null)
                         {
@@ -1210,7 +1231,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         this.context = context;
 
         defaultConfiguration = new SelectorConfiguration(parameters);
-        confirmFillMaterial = ConfigurationUtils.getMaterialAndData(parameters, "confirm_filler", new MaterialAndData(Material.AIR));
+        String fillerKey = parameters.getString("confirm_filler");
+        if (fillerKey != null && !fillerKey.isEmpty()) {
+            confirmFillMaterial = context.getController().getItem(fillerKey);
+        }
         autoClose = parameters.getBoolean("auto_close", true);
         costScale = parameters.getDouble("scale", 1);
         earnScale = parameters.getDouble("earn_scale", costScale);
