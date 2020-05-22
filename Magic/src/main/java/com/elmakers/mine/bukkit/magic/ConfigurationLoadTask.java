@@ -133,7 +133,7 @@ public class ConfigurationLoadTask implements Runnable {
                         InputStream inheritInput = plugin.getResource(inheritFileName);
                         if (inheritInput != null) {
                             ConfigurationSection inheritedConfig = CompatibilityUtils.loadConfiguration(inheritInput);
-                            ConfigurationUtils.addConfigurations(config, inheritedConfig);
+                            ConfigurationUtils.addConfigurations(config, inheritedConfig, false);
                             info("  Inheriting from " + inheritFrom);
                         }
                     }
