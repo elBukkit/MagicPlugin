@@ -2029,6 +2029,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
+        if (stoppedPending == null && spellKey != null && !spellKey.isEmpty()) {
+            Spell cancelSpell = getSpell(spellKey);
+            if (cancelSpell != null) {
+                cancelSpell.cancel();
+            }
+        }
         return stoppedPending;
     }
 

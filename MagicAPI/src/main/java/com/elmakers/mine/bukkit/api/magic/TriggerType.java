@@ -7,6 +7,9 @@ public enum TriggerType {
     // PLAYER-ONLY
     JOIN,
 
+    // MAGE CLASS
+    UNLOCK, LOCK,
+
     // COMMON
     INTERVAL, DEATH, DAMAGE, LAUNCH, DEAL_DAMAGE, KILL
 }

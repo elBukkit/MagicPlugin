@@ -21,7 +21,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
+import com.elmakers.mine.bukkit.api.magic.Trigger;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -367,6 +370,9 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
                 mage.removeItem(item);
             }
         }
+        cancelTrigger("unlock");
+        cancelTrigger("join");
+        trigger("lock");
     }
 
     public void onUnlocked() {
@@ -394,6 +400,42 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
                 }
             }
         }
+        trigger("unlock");
+    }
+
+    private void cancelTrigger(String triggerType) {
+        List<TriggeredSpell> triggers = getTriggers(triggerType);
+        for (TriggeredSpell triggered : triggers) {
+            mage.cancelPending(triggered.getSpellKey());
+        }
+    }
+
+    private void trigger(String triggerType) {
+        List<TriggeredSpell> triggers = getTriggers(triggerType);
+        for (TriggeredSpell triggered : triggers) {
+            if (triggered.getTrigger().isValid(mage)) {
+                Spell spell = mage.getSpell(triggered.getSpellKey());
+                if (spell != null && spell.isEnabled()) {
+                    spell.cast();
+                    triggered.getTrigger().triggered();
+                }
+            }
+        }
+    }
+
+    private List<TriggeredSpell> getTriggers(String triggerType) {
+        List<TriggeredSpell> triggers = new ArrayList<>();
+        for (String spellKey : getSpells()) {
+            Spell spell = getSpell(spellKey);
+            if (spell == null) continue;
+            Collection<Trigger> spellTriggers = spell.getTriggers();
+            for (Trigger trigger : spellTriggers) {
+                if (trigger.getTrigger().equalsIgnoreCase(triggerType)) {
+                    triggers.add(new TriggeredSpell(spellKey, trigger));
+                }
+            }
+        }
+        return triggers;
     }
 
     public void activateAttributes() {

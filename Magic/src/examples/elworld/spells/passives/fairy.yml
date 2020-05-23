@@ -1,0 +1,12 @@
+fairy:
+  name: Fairy Powers
+  icon: spell_icon:57
+  icon_disabled: spell_icon_disabled:57
+  passive: true
+  triggers:
+    - trigger: join
+    - trigger: unlock
+  effects:
+    cast: butterfly
+  parameters:
+    target: self

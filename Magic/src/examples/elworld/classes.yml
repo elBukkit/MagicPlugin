@@ -73,3 +73,8 @@ vampire:
   passive: true
   spells:
     - lifedrain
+
+fairy:
+  passive: true
+  spells:
+    - fairy

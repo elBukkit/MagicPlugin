@@ -2,6 +2,7 @@
 
 # 7.9.3
 
+ - Add lock/unlock triggers for classes.
  - Add FX to Aqualung and Critical passives
  - Rank up broadcast disabled by default. See here for how to turn back on: https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/paths/default.yml
  - Spell shop and advancement can now work without a wand. Changed messaging a little.
