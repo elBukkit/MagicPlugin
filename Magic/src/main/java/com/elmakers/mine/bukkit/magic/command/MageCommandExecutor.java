@@ -663,13 +663,17 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mage unlock [player] <class>");
             return true;
         }
-        Mage mage = controller.getMage(player);
         String classKey = parameters[0];
-        MageClass mageClass = mage.unlockClass(classKey);
-        if (mageClass == null) {
-            sender.sendMessage(ChatColor.RED + "Invalid class: " + ChatColor.WHITE + classKey);
+        Mage mage = controller.getMage(player);
+        if (mage.hasClassUnlocked(classKey)) {
+            sender.sendMessage(ChatColor.RED + "Class is already unlocked: " + ChatColor.WHITE + classKey);
         } else {
-            sender.sendMessage("Unlocked class " + classKey + " for " + player.getName());
+            MageClass mageClass = mage.unlockClass(classKey);
+            if (mageClass == null) {
+                sender.sendMessage(ChatColor.RED + "Invalid class: " + ChatColor.WHITE + classKey);
+            } else {
+                sender.sendMessage("Unlocked class " + classKey + " for " + player.getName());
+            }
         }
         return true;
     }
