@@ -11,7 +11,7 @@
 # You can also add individual files to the automata/ folder
 #
 # To see the current default builtin configs, look in this folder:
-# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/automata
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/automata
 #
 # For customization help see:
 # https://github.com/elBukkit/MagicPlugin/wiki/Customization

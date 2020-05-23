@@ -8,7 +8,7 @@
 # spend SP to gain spells (or using the legacy enchanting system).
 #
 # To see the current default builtin configs, look in this folder:
-# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/paths
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/paths
 #
 # For customization help see:
 # https://github.com/elBukkit/MagicPlugin/wiki/Customization
