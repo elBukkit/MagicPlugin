@@ -35,14 +35,12 @@ public class UpgradePathAction extends BaseSpellAction {
                 return SpellResult.CAST;
             }
         }
-        CasterProperties caster = mage == null ? wand : mage.getActiveProperties();
-        if (caster != null) {
-            ProgressionPath path = caster.getPath();
-            ProgressionPath nextPath = path != null ? path.getNextPath() : null;
-            if (nextPath != null && path.checkUpgradeRequirements(caster, true) && !path.canProgress(caster)) {
-                path.upgrade(mage, wand);
-                return SpellResult.CAST;
-            }
+        CasterProperties caster = mage.getActiveProperties();
+        ProgressionPath path = caster.getPath();
+        ProgressionPath nextPath = path != null ? path.getNextPath() : null;
+        if (nextPath != null && path.checkUpgradeRequirements(caster, true) && !path.canProgress(caster)) {
+            path.upgrade(mage, wand);
+            return SpellResult.CAST;
         }
 
         return SpellResult.NO_TARGET;

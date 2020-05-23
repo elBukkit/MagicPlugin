@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -570,6 +571,28 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         updated();
     }
 
+    protected void cleanUpgradeConfig(ConfigurationSection upgradeConfig) {
+        upgradeConfig.set("id", null);
+        upgradeConfig.set("indestructible", null);
+        upgradeConfig.set("upgrade", null);
+        upgradeConfig.set("icon", null);
+        upgradeConfig.set("upgrade_icon", null);
+        upgradeConfig.set("template", null);
+        upgradeConfig.set("description", null);
+        upgradeConfig.set("name", null);
+    }
+
+    @Override
+    public boolean add(com.elmakers.mine.bukkit.api.wand.Wand wandUpgrade) {
+        if (!(wandUpgrade instanceof Wand)) {
+            return false;
+        }
+        Wand wand = (Wand)wandUpgrade;
+        ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(wand.getEffectiveConfiguration());
+        cleanUpgradeConfig(upgradeConfig);
+        return upgrade(upgradeConfig);
+    }
+
     @Override
     public boolean addItem(ItemStack item) {
         if (Wand.isSpell(item) && !Wand.isSkill(item)) {
@@ -586,6 +609,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (!materials.contains(materialKey) && addBrush(materialKey)) {
                 return true;
             }
+        } else if (Wand.isUpgrade(item)) {
+            Wand wand = controller.getWand(item);
+            return this.add(wand);
         }
         Mage mage = getMage();
         if (mage != null && !mage.isAtMaxSkillPoints() && controller.skillPointItemsEnabled()) {

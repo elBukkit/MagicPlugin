@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public interface CasterProperties extends MagicConfigurable {
     MageController getController();
@@ -32,6 +33,7 @@ public interface CasterProperties extends MagicConfigurable {
     Double getAttribute(String attributeKey);
     void setAttribute(String attributeKey, Double attributeValue);
     boolean addItem(ItemStack item);
+    boolean add(Wand other);
 
     /**
      * Returns a Spell for a given spell key, if this caster has the spell.

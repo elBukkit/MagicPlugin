@@ -3346,20 +3346,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return false;
     }
 
-    public boolean add(Wand other) {
-        return add(other, this.mage);
-    }
-
     @Override
+    @Deprecated
     public boolean add(com.elmakers.mine.bukkit.api.wand.Wand other, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         if (other instanceof Wand) {
-            return add((Wand)other, mage);
+            return add((Wand)other);
         }
 
         return false;
     }
 
-    public boolean add(Wand other, com.elmakers.mine.bukkit.api.magic.Mage mage) {
+    public boolean add(Wand other) {
         if (!isModifiable()) {
             // Only allow upgrading a modifiable wand via an upgrade item
             // and only if the paths match.
@@ -3403,11 +3400,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(other.getEffectiveConfiguration());
-        upgradeConfig.set("id", null);
-        upgradeConfig.set("indestructible", null);
-        upgradeConfig.set("upgrade", null);
+        cleanUpgradeConfig(upgradeConfig);
         upgradeConfig.set("icon", other.upgradeIcon == null ? null : other.upgradeIcon.getKey());
-        upgradeConfig.set("upgrade_icon", null);
         upgradeConfig.set("template", other.upgradeTemplate);
 
         Messages messages = controller.getMessages();
@@ -3415,16 +3409,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             String newName = messages.get("wands." + other.template + ".name");
             newName = templateConfig.getString("name", newName);
             upgradeConfig.set("name", newName);
-        } else {
-            upgradeConfig.set("name", null);
         }
 
         if (other.renameDescription && templateConfig != null) {
             String newDescription = messages.get("wands." + other.template + ".description");
             newDescription = templateConfig.getString("description", newDescription);
             upgradeConfig.set("description", newDescription);
-        } else {
-            upgradeConfig.set("description", null);
         }
         return upgrade(upgradeConfig);
     }
@@ -3768,34 +3758,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean addItem(ItemStack item) {
         if (isUpgrade) return false;
-
-        if (isModifiable() && isSpell(item) && !isSkill(item)) {
-            String spell = getSpell(item);
-            SpellKey spellKey = new SpellKey(spell);
-            Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
-            if ((currentLevel == null || currentLevel < spellKey.getLevel()) && addSpell(spell)) {
-                return true;
-            }
-        } else if (isModifiable() && isBrush(item)) {
-            String materialKey = getBrush(item);
-            Set<String> materials = getBrushes();
-            if (!materials.contains(materialKey) && addBrush(materialKey)) {
-                return true;
-            }
-        } else if (isUpgrade(item)) {
-            Wand wand = controller.getWand(item);
-            return this.add(wand);
-        }
-        if (mage != null && !mage.isAtMaxSkillPoints() && controller.skillPointItemsEnabled()) {
-            Integer sp = getSP(item);
-            if (sp != null) {
-                int amount = (int)Math.floor(mage.getEarnMultiplier() * sp * item.getAmount());
-                mage.addSkillPoints(amount);
-                return true;
-            }
-        }
-
-        return false;
+        Integer sp = getSP(item);
+        if (!isModifiable() && !isUpgrade(item) && sp == null) return false;
+        return super.addItem(item);
     }
 
     protected void updateEffects() {

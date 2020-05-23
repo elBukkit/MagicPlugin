@@ -78,7 +78,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean canUse(Player player);
     boolean fill(Player player);
     boolean fill(Player player, int maxLevel);
-    boolean add(Wand other);
+    @Deprecated
     boolean add(Wand other, Mage mage);
     @Override
     boolean addItem(ItemStack item);
