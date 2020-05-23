@@ -16,7 +16,6 @@ import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 // TODO: Actually deprecate this when we can.
 //@Deprecated
 public interface WandUpgradePath extends ProgressionPath {
-    boolean checkUpgradeRequirements(Wand wand, Mage mage);
     @Override
     Set<String> getTags();
     @Nullable

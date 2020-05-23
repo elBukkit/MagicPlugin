@@ -502,6 +502,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
+    public void setPath(String path) {
+        setProperty("path", path);
+    }
+
+    @Override
     public boolean canProgress() {
         ProgressionPath path = getPath();
         return (path != null && path.canProgress(this));
@@ -637,6 +642,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Nullable
     @Override
     public abstract Mage getMage();
+
+    @Override
+    public MageController getController() {
+        return controller;
+    };
 
     @SuppressWarnings("unchecked")
     protected void migrateBrushes(ConfigurationSection configuration) {

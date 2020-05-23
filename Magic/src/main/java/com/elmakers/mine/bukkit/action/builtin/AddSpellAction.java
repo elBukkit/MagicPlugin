@@ -8,8 +8,10 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -43,8 +45,10 @@ public class AddSpellAction extends BaseSpellAction
 
     @Override
     public SpellResult perform(CastContext context) {
+        if (spellKey == null || spellKey.isEmpty()) {
+            return SpellResult.FAIL;
+        }
         Mage mage = context.getMage();
-        Wand wand = context.getWand();
         Player player = mage.getPlayer();
         if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
@@ -52,17 +56,17 @@ public class AddSpellAction extends BaseSpellAction
         if (permissionNode != null && !player.hasPermission(permissionNode)) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
-        if (wand == null || spellKey == null || spellKey.isEmpty()) {
-            context.showMessage("no_wand", "You must be holding a wand!");
-            return SpellResult.FAIL;
-        }
-        if (wand.hasSpell(spellKey)) {
+
+        Wand wand = context.getWand();
+        String wandName = wand == null ? "?" : wand.getName();
+        CasterProperties caster = wand != null ? wand : mage.getActiveProperties();
+        if (caster.hasSpell(spellKey)) {
             return SpellResult.NO_TARGET;
         }
         if (requiredPath != null || exactPath != null) {
-            WandUpgradePath path = wand.getPath();
+            ProgressionPath path = caster.getPath();
             if (path == null) {
-                context.showMessage(context.getMessage("no_upgrade", "You may not learn with that $wand.").replace("$wand", wand.getName()));
+                context.showMessage(context.getMessage("no_upgrade", "You may not learn here").replace("$wand", wandName));
                 return SpellResult.FAIL;
             }
             MageController controller = context.getController();
@@ -85,28 +89,30 @@ public class AddSpellAction extends BaseSpellAction
                 return SpellResult.FAIL;
             }
             if (requiresCompletedPath != null) {
-                WandUpgradePath pathUpgrade = path.getUpgrade();
+                ProgressionPath pathUpgrade = path.getNextPath();
                 if (pathUpgrade == null) {
-                    context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you here.").replace("$wand", wand.getName()));
+                    context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you here.").replace("$wand", wandName));
                     return SpellResult.FAIL;
                 }
-                if (path.canEnchant(wand)) {
+                if (path.canProgress(wand)) {
                     context.showMessage(context.getMessage("no_path_end", "You must be ready to advance to $path!").replace("$path", pathUpgrade.getName()));
                     return SpellResult.FAIL;
                 }
             }
         }
 
-        if (!wand.addSpell(spellKey)) {
+        if (!caster.addSpell(spellKey)) {
             return SpellResult.NO_TARGET;
         }
-        wand.setActiveSpell(spellKey);
+        if (wand != null) {
+            wand.setActiveSpell(spellKey);
+        }
 
         if (autoUpgrade) {
-            com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
-            WandUpgradePath nextPath = path != null ? path.getUpgrade() : null;
-            if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
-                path.upgrade(wand, mage);
+            ProgressionPath path = caster.getPath();
+            ProgressionPath nextPath = path != null ? path.getNextPath() : null;
+            if (nextPath != null && path.checkUpgradeRequirements(caster, true) && !path.canProgress(caster)) {
+                path.upgrade(mage, wand);
             }
         }
 

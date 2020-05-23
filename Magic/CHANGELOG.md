@@ -2,6 +2,9 @@
 
 # 7.9.3
 
+ - Rank up broadcast disabled by default. See here for how to turn back on: https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/paths/default.yml
+ - Spell shop and advancement can now work without a wand. Changed messaging a little.
+ 
 # 7.9.2
  
  - Passive spell system!

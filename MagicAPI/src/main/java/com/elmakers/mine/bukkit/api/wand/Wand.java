@@ -102,7 +102,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     void setActiveSpell(String key);
     void setName(String name);
     void setDescription(String description);
-    void setPath(String path);
 
     LostWand makeLost(Location location);
     boolean isLost(LostWand wand);

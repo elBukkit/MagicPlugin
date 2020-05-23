@@ -2,8 +2,11 @@ package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
 import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public interface ProgressionPath {
     String getKey();
@@ -25,6 +28,11 @@ public interface ProgressionPath {
     Collection<String> getRequiredSpells();
     boolean earnsSP();
     boolean canProgress(CasterProperties properties);
+    @Nullable
+    ProgressionPath getNextPath();
+    boolean checkUpgradeRequirements(CasterProperties caster, boolean quiet);
+    boolean checkUpgradeRequirements(Wand wand, Mage mage);
+    void upgrade(@Nonnull Mage mage, @Nullable Wand wand);
 
     /**
      * Check to see if a specific spell is available on this exact path.

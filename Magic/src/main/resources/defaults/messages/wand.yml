@@ -164,7 +164,6 @@ wand:
     player_unenchanted: $name's wand has been turned into a normal item
     no_path: "&r&4Your $wand &4can not be enchanted"
     max_enchanted: "&r&4Your $wand &4can not be enchanted any further"
-    level_up: "&r&bYou have progressed to &r&5$path"
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
     restored: Your wands have been restored

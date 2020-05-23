@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 public interface CasterProperties extends MagicConfigurable {
+    MageController getController();
     boolean hasSpell(String spellKey);
     Collection<String> getSpells();
     boolean addSpell(String spellKey);
@@ -25,6 +26,7 @@ public interface CasterProperties extends MagicConfigurable {
     void setManaRegeneration(int manaRegeneration);
     @Nullable
     ProgressionPath getPath();
+    void setPath(String path);
     boolean canProgress();
     @Nullable
     Double getAttribute(String attributeKey);

@@ -7,11 +7,12 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class UpgradePathAction extends BaseSpellAction {
@@ -28,27 +29,24 @@ public class UpgradePathAction extends BaseSpellAction {
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
 
-        // For now... eventually I need to separate out the wand part, but not doing it now.
-        if (wand == null) {
-            return SpellResult.NO_TARGET;
-        }
-
-        if (upgradeLevels > 0) {
+        // TODO: Support randomizing classes?
+        if (upgradeLevels > 0 && wand != null) {
             if (wand.enchant(upgradeLevels, mage, false) > 0) {
                 return SpellResult.CAST;
             }
-        } else {
-            com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
-            WandUpgradePath nextPath = path != null ? path.getUpgrade() : null;
-            if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
-                path.upgrade(wand, mage);
+        }
+        CasterProperties caster = mage == null ? wand : mage.getActiveProperties();
+        if (caster != null) {
+            ProgressionPath path = caster.getPath();
+            ProgressionPath nextPath = path != null ? path.getNextPath() : null;
+            if (nextPath != null && path.checkUpgradeRequirements(caster, true) && !path.canProgress(caster)) {
+                path.upgrade(mage, wand);
                 return SpellResult.CAST;
             }
         }
 
         return SpellResult.NO_TARGET;
     }
-
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
