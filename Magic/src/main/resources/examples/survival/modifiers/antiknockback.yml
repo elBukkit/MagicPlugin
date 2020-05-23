@@ -1,0 +1,5 @@
+antiknockback:
+  entity_attributes:
+    generic_knockback_resistance:
+      value: 2
+      operation: base

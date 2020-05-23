@@ -10,14 +10,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class MageClassTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.magic.MageClassTemplate {
-    private MageClassTemplate parent;
+public class ModifierTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.magic.ModifierTemplate {
+    private ModifierTemplate parent;
     private final @Nonnull String key;
-    private boolean isLocked = false;
     private String name;
     private String description;
 
-    public MageClassTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
+    public ModifierTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         super(controller);
         checkNotNull(key, "key");
         checkNotNull(configuration, "configuration");
@@ -25,58 +24,47 @@ public class MageClassTemplate extends BaseMagicProperties implements com.elmake
         this.key = key;
         this.load(configuration);
 
-        isLocked = getProperty("locked", false);
-
         // Clear properties we don't want to pass along
-        clearProperty("locked");
         clearProperty("parent");
-        clearProperty("path_start");
-        clearProperty("hidden");
         clearProperty("enabled");
         clearProperty("inherit");
 
-        name = controller.getMessages().get("classes." + key + ".name", "");
-        description = controller.getMessages().get("classes." + key + ".description", "");
+        name = controller.getMessages().get("modifiers." + key + ".name", "");
+        description = controller.getMessages().get("modifiers." + key + ".description", "");
 
         name = configuration.getString("name", name);
         description = configuration.getString("description", description);
     }
 
-    private MageClassTemplate(MageClassTemplate copy, ConfigurationSection configuration) {
+    private ModifierTemplate(ModifierTemplate copy, ConfigurationSection configuration) {
         super(copy.controller, configuration);
-        this.isLocked = copy.isLocked;
         this.name = copy.name;
         this.description = copy.description;
         this.key = copy.key;
         this.parent = copy.parent;
     }
 
-    public MageClassTemplate getMageTemplate(Mage mage) {
-        MageParameters parameters = new MageParameters(mage, "Mage class " + getKey());
+    public ModifierTemplate getModifierTemplate(Mage mage) {
+        MageParameters parameters = new MageParameters(mage, "Modifier " + getKey());
         ConfigurationUtils.addConfigurations(parameters, configuration);
-        return new MageClassTemplate(this, parameters);
+        return new ModifierTemplate(this, parameters);
     }
 
     public @Nonnull String getKey() {
         return key;
     }
 
-    public @Nullable MageClassTemplate getParent() {
+    public @Nullable
+    ModifierTemplate getParent() {
         return parent;
     }
 
-    public void setParent(@Nullable  MageClassTemplate parent) {
+    public void setParent(@Nullable ModifierTemplate parent) {
         this.parent = parent;
     }
 
     public boolean hasParent() {
         return parent != null;
-    }
-
-    public boolean isLocked() {
-        if (isLocked) return true;
-        if (parent != null) return parent.isLocked();
-        return false;
     }
 
     @Override

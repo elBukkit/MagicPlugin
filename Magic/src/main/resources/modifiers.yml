@@ -1,0 +1,17 @@
+#
+# Modify this file to change or add new modifiers, which can be used in the AddModifier action.
+#
+# Modifiers in Magic can temporarily change vanilla attributes, Magic attributes, variables or other properties.
+# They can also apply triggered or interval spells.
+#
+# You can add new modifiers in this file or modify the builtin ones.
+#
+# You can also add individual files to the modifiers/ folder
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/modifiers
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+#

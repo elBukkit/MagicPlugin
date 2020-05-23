@@ -498,6 +498,8 @@ public interface MageController {
     Set<String> getMageClassKeys();
     MageClassTemplate getMageClassTemplate(String key);
 
+    ModifierTemplate getModifierTemplate(String key);
+
     // LightAPI integration
     boolean createLight(Location location, int lightlevel, boolean async);
     boolean deleteLight(Location location, boolean async);

@@ -1567,6 +1567,9 @@ public class MagicController implements MageController {
         loadMageClasses(loader.getClasses());
         getLogger().info("Loaded " + mageClasses.size() + " classes");
 
+        loadModifiers(loader.getModifiers());
+        getLogger().info("Loaded " + modifiers.size() + " classes");
+
         loadAutomatonTemplates(loader.getAutomata());
         getLogger().info("Loaded " + automatonTemplates.size() + " automata templates");
 
@@ -4140,6 +4143,40 @@ public class MagicController implements MageController {
         }
     }
 
+    public void loadModifiers(ConfigurationSection properties) {
+        modifiers.clear();
+
+        Set<String> modifierKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        for (String key : modifierKeys) {
+            loadModifierTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
+        }
+
+        // Resolve parents, we don't check for an inherited "parent" property, so it's important
+        // to use the original un-inherited configs for parenting.
+        for (String key : modifierKeys) {
+            ModifierTemplate template = modifiers.get(key);
+            if (template != null) {
+                String parentKey = properties.getConfigurationSection(key).getString("parent");
+                if (parentKey != null) {
+                    ModifierTemplate parent = modifiers.get(parentKey);
+                    if (parent == null) {
+                        getLogger().warning("Modifier '" + key + "' has unknown parent: " + parentKey);
+                    } else {
+                        template.setParent(parent);
+                    }
+                }
+            }
+        }
+
+        // Update registered mages so their classes are current
+        for (Mage mage : mages.values()) {
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).reloadClasses();
+            }
+        }
+    }
+
     @Override
     public Set<String> getMageClassKeys() {
         return mageClasses.keySet();
@@ -4152,6 +4189,12 @@ public class MagicController implements MageController {
     public void loadMageClassTemplate(String key, ConfigurationSection classNode) {
         if (classNode.getBoolean("enabled", true)) {
             mageClasses.put(key, new MageClassTemplate(this, key, classNode));
+        }
+    }
+
+    public void loadModifierTemplate(String key, ConfigurationSection classNode) {
+        if (classNode.getBoolean("enabled", true)) {
+            modifiers.put(key, new ModifierTemplate(this, key, classNode));
         }
     }
 
@@ -4179,6 +4222,11 @@ public class MagicController implements MageController {
     @Override
     public MageClassTemplate getMageClassTemplate(String key) {
         return mageClasses.get(key);
+    }
+
+    @Override
+    public ModifierTemplate getModifierTemplate(String key) {
+        return modifiers.get(key);
     }
 
     @Override
@@ -6137,6 +6185,7 @@ public class MagicController implements MageController {
     private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();
     private final Map<String, MageClassTemplate> mageClasses                = new HashMap<>();
+    private final Map<String, ModifierTemplate> modifiers                   = new HashMap<>();
     private final Map<String, SpellTemplate>    spells                      = new HashMap<>();
     private final Map<String, SpellTemplate>    spellAliases                = new HashMap<>();
     private final Map<String, SpellData>        templateDataMap             = new HashMap<>();

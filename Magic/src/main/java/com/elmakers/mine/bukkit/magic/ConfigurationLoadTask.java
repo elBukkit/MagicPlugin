@@ -34,7 +34,7 @@ public class ConfigurationLoadTask implements Runnable {
     private final CommandSender sender;
 
     private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
-            "classes", "wands", "items", "crafting", "mobs", "automata"};
+            "classes", "wands", "items", "crafting", "mobs", "automata", "modifiers"};
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
 
     private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
@@ -646,6 +646,10 @@ public class ConfigurationLoadTask implements Runnable {
 
     public ConfigurationSection getClasses() {
         return loadedConfigurations.get("classes");
+    }
+
+    public ConfigurationSection getModifiers() {
+        return loadedConfigurations.get("modifiers");
     }
 
     public ConfigurationSection getAttributes() {
