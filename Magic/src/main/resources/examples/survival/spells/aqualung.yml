@@ -10,6 +10,32 @@ aqualung:
   actions:
     cast:
       - class: AirSupply
+  effects:
+    cast:
+        - sound: magic.shimmer
+          sound_volume: 0.2
+          particle: bubble_column_up
+          particle_count: 16
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+        - sound: entity_generic_drink
+          sound_pitch: 0.8
+          location: origin
+          effectlib:
+            class: Modified
+            duration: 3000
+            parameters:
+              radius: "(t/i) * 3 + 0.3"
+            effect:
+              class: Sphere
+              particle_count: 4
+              particles: 16
+              particle_offset_x: 0.2
+              particle_offset_y: 0.2
+              particle_offset_z: 0.2
+              particle: water_bubble
+              radius: 1
   parameters:
     target: self
     air: max

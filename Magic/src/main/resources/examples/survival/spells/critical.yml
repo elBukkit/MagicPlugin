@@ -17,6 +17,27 @@ critical:
             message_type: "action_bar"
             message: "&cCritical Hit! &f(&7+&4@equation&f)"
           - class: Damage
+  effects:
+    cast:
+      - class: EffectSingle
+        location: target
+        particle: fireworks_spark
+        particle_count: 8
+        particle_offset_y: 0.5
+        particle_offset_x: 0.5
+        particle_offset_z: 0.5
+        particle_data: 0.1
+        sound: magic.zap
+        sound_volume: 0.1
+      - sound: entity_player_attack_crit
+        sound_pitch: 1.8
+        location: target
+        particle: crit_magic
+        particle_count: 32
+        particle_offset_y: 0.25
+        particle_offset_x: 0.25
+        particle_offset_z: 0.25
+        particle_data: 0.5
   parameters:
     delay: 100
     target: damage_target
