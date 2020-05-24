@@ -1,8 +1,11 @@
+
 critical:
+  inherit: false
   icon: spell_icon:161
   icon_disabled: spell_icon_disabled:161
   passive: true
   worth: 500
+  upgrade_required_casts: 50
   triggers:
     # This triggers when the player deals magic damage
     - trigger: damage_dealt
@@ -17,8 +20,10 @@ critical:
             message_type: "action_bar"
             message: "&cCritical Hit! &f(&7+&4@equation&f)"
           - class: Damage
+          - class: PlayEffects
+            effects: hit
   effects:
-    cast:
+    hit:
       - class: EffectSingle
         location: target
         particle: fireworks_spark
@@ -43,3 +48,13 @@ critical:
     target: damage_target
     probability: 0.2
     damage: "1 + damage_dealt * 0.5"
+
+critical|2:
+  upgrade_required_casts: 100
+  upgrade_required_path: master
+  parameters:
+    probability: 0.4
+
+critical|3:
+  parameters:
+    probability: 0.6

@@ -1690,3 +1690,4 @@ spells:
     critical:
       name: Critical
       description: A chance to deal some extra damage
+      upgrade_description: "Improved chances of critical"
