@@ -4918,7 +4918,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (path != null && !path.containsSpell(spellKey.getBaseKey())) return false;
         }
         suspendUpdate = true;
-        if (!super.addSpell(spellName)) {
+        if (!super.forceAddSpell(spellName)) {
             suspendUpdate = false;
             return false;
         }
