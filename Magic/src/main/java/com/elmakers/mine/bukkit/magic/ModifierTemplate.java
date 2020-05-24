@@ -66,14 +66,4 @@ public class ModifierTemplate extends TemplateProperties implements com.elmakers
     public String getDescription() {
         return description;
     }
-
-    @Override
-    public @Nullable String getIconKey() {
-        return getString("icon");
-    }
-
-    @Override
-    public @Nullable String getIconDisabledKey() {
-        return getString("icon_disabled");
-    }
 }

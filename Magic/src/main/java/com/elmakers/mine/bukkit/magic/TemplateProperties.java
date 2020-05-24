@@ -33,7 +33,18 @@ public abstract class TemplateProperties extends BaseMagicProperties {
     public abstract String getName();
 
     @Nullable
+    public abstract String getDescription();
+
+    @Nullable
     public TemplateProperties getParent() {
         return null;
+    }
+
+    public @Nullable String getIconKey() {
+        return getString("icon");
+    }
+
+    public @Nullable String getIconDisabledKey() {
+        return getString("icon_disabled");
     }
 }

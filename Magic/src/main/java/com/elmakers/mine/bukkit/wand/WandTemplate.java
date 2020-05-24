@@ -137,6 +137,11 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
     }
 
     @Override
+    public String getDescription() {
+        return controller.getMessages().get("wands." + getKey() + ".description", "?");
+    }
+
+    @Override
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);
         if (effectList == null) {
