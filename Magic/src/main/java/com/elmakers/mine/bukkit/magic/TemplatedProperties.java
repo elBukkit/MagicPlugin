@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,8 +10,16 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class TemplatedProperties extends CasterProperties {
+    @Nullable
+    private BaseMagicProperties template;
+
     public TemplatedProperties(MagicPropertyType type, MageController controller) {
+        this(type, controller, null);
+    }
+
+    public TemplatedProperties(MagicPropertyType type, MageController controller, @Nullable BaseMagicProperties template) {
         super(type, controller);
+        this.template = template;
     }
 
     @Nullable
@@ -30,6 +39,60 @@ public abstract class TemplatedProperties extends CasterProperties {
         return own;
     }
 
+    @Override
+    protected void migrateProperty(String key, MagicPropertyType propertyType) {
+        super.migrateProperty(key, propertyType, template);
+    }
+
+    @Override
+    public boolean hasProperty(String key) {
+        BaseMagicProperties storage = getStorage(key);
+        if (storage != null) {
+            return storage.hasOwnProperty(key);
+        }
+        return hasOwnProperty(key) || (template != null && template.hasProperty(key));
+    }
+
+    @Override
     @Nullable
-    protected abstract BaseMagicProperties getTemplate();
+    public Object getInheritedProperty(String key) {
+        Object value = super.getProperty(key);
+        if (value == null) {
+            value = template.getProperty(key);
+        }
+        return value;
+    }
+
+    public void setTemplate(@Nonnull BaseMagicProperties template) {
+        this.template = template;
+    }
+
+    @Nullable
+    protected BaseMagicProperties getTemplate() {
+        return template;
+    }
+
+    @Override
+    public boolean hasOwnProperty(String key) {
+        return super.hasOwnProperty(key) || (template != null && template.hasOwnProperty(key));
+    }
+
+    @Override
+    @Nullable
+    public ConfigurationSection getPropertyConfiguration(String key) {
+        BaseMagicProperties storage = getStorage(key);
+        if (storage != null && storage != this) {
+            return storage.getPropertyConfiguration(key);
+        }
+        if (configuration.contains(key)) {
+            return configuration;
+        }
+        return template.getConfiguration();
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        template = null;
+    }
 }

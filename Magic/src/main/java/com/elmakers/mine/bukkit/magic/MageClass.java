@@ -57,51 +57,16 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     @SuppressWarnings("null") // template initialised via setter
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
-        super(template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, mage.getController());
+        super(template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, mage.getController(), template);
         this.mageProperties = mage.getProperties();
         this.mage = mage;
         this.setTemplate(template);
     }
 
     @Override
-    protected void migrateProperty(String key, MagicPropertyType propertyType) {
-        super.migrateProperty(key, propertyType, template);
-    }
-
-    @Override
-    public boolean hasProperty(String key) {
-        BaseMagicProperties storage = getStorage(key);
-        if (storage != null) {
-            return storage.hasOwnProperty(key);
-        }
-        return hasOwnProperty(key) || template.hasProperty(key);
-    }
-
-    @Override
-    public boolean hasOwnProperty(String key) {
-        return super.hasOwnProperty(key) || template.hasOwnProperty(key);
-    }
-
-    @Override
-    @Nullable
-    public ConfigurationSection getPropertyConfiguration(String key) {
-        BaseMagicProperties storage = getStorage(key);
-        if (storage != null && storage != this) {
-            return storage.getPropertyConfiguration(key);
-        }
-        if (configuration.contains(key)) {
-            return configuration;
-        }
-        return template.getConfiguration();
-    }
-
-    @Override
     @Nullable
     public Object getInheritedProperty(String key) {
-        Object value = super.getProperty(key);
-        if (value == null) {
-            value = template.getProperty(key);
-        }
+        Object value = super.getInheritedProperty(key);
         if (value == null && parent != null) {
             value = parent.getInheritedProperty(key);
         }
@@ -337,6 +302,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     public void onRemoved() {
         onLocked();
+        trigger("removed");
     }
 
     public void onLocked() {
@@ -564,6 +530,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     public void setTemplate(@Nonnull MageClassTemplate template) {
         // TODO: This won't update the "type" field of the base base base class here if the
         // template hierarchy has drastically changed.
+        super.setTemplate(template);
         this.template = template.getMageTemplate(getMage());
     }
 

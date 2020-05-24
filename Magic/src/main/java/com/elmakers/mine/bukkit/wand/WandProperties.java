@@ -21,6 +21,7 @@ public abstract class WandProperties extends TemplatedProperties {
     }
 
     public void setWandTemplate(WandTemplate template) {
+        super.setTemplate(template);
         Mage mage = getMage();
         if (mage != null) {
             template = template.getMageTemplate(mage);
@@ -39,48 +40,13 @@ public abstract class WandProperties extends TemplatedProperties {
     }
 
     @Override
-    public boolean hasProperty(String key) {
-        BaseMagicProperties storage = getStorage(key);
-        if (storage != null) {
-            return storage.hasOwnProperty(key);
-        }
-        return hasOwnProperty(key) || (wandTemplate != null && wandTemplate.hasProperty(key));
-    }
-
-    @Override
-    public boolean hasOwnProperty(String key) {
-        return super.hasOwnProperty(key) || (wandTemplate != null && wandTemplate.hasOwnProperty(key));
-    }
-
-    @Override
-    protected void migrateProperty(String key, MagicPropertyType propertyType) {
-        super.migrateProperty(key, propertyType, wandTemplate);
-    }
-
-    @Override
     @Nullable
     public Object getInheritedProperty(String key) {
-        Object value = super.getProperty(key);
-        if (value == null && wandTemplate != null) {
-            value = wandTemplate.getProperty(key);
-        }
+        Object value = super.getInheritedProperty(key);
         if (value == null && mageClass != null) {
             value = mageClass.getInheritedProperty(key);
         }
         return value;
-    }
-
-    @Override
-    @Nullable
-    public ConfigurationSection getPropertyConfiguration(String key) {
-        BaseMagicProperties storage = getStorage(key);
-        if (storage != null && storage != this) {
-            return storage.getPropertyConfiguration(key);
-        }
-        if (configuration.contains(key)) {
-            return configuration;
-        }
-        return wandTemplate == null ? configuration : wandTemplate.getConfiguration();
     }
 
     public ConfigurationSection getEffectiveConfiguration() {
