@@ -10,20 +10,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class MageClassTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.magic.MageClassTemplate {
+public class MageClassTemplate extends TemplateProperties implements com.elmakers.mine.bukkit.api.magic.MageClassTemplate {
     private MageClassTemplate parent;
-    private final @Nonnull String key;
     private boolean isLocked = false;
     private String name;
     private String description;
 
     public MageClassTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
-        super(controller);
-        checkNotNull(key, "key");
+        super(controller, key, configuration);
         checkNotNull(configuration, "configuration");
-
-        this.key = key;
-        this.load(configuration);
 
         isLocked = getProperty("locked", false);
 
@@ -43,11 +38,10 @@ public class MageClassTemplate extends BaseMagicProperties implements com.elmake
     }
 
     private MageClassTemplate(MageClassTemplate copy, ConfigurationSection configuration) {
-        super(copy.controller, configuration);
+        super(copy.controller, copy.getKey(), configuration);
         this.isLocked = copy.isLocked;
         this.name = copy.name;
         this.description = copy.description;
-        this.key = copy.key;
         this.parent = copy.parent;
     }
 
@@ -57,10 +51,7 @@ public class MageClassTemplate extends BaseMagicProperties implements com.elmake
         return new MageClassTemplate(this, parameters);
     }
 
-    public @Nonnull String getKey() {
-        return key;
-    }
-
+    @Override
     public @Nullable MageClassTemplate getParent() {
         return parent;
     }

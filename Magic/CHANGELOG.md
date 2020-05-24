@@ -1,7 +1,10 @@
 # CHANGELOG
 
 # 7.9.3
-
+ - Vanilla attributes on wand migration removed
+   Look for this message in your logs:
+   "You have vanilla item attributes in the 'attributes' property of wand template"
+   If you see this, please update your wand configs by changing it to "item_attributes"!
  - Add lock/unlock triggers for classes.
  - Add FX to Aqualung and Critical passives
  - Rank up broadcast disabled by default. See here for how to turn back on: https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/paths/default.yml

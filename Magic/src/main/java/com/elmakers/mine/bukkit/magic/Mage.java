@@ -1422,8 +1422,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     private void assignParent(MageClass mageClass) {
-        MageClassTemplate template = mageClass.getTemplate();
-        MageClassTemplate parentTemplate = template.getParent();
+        TemplateProperties template = mageClass.getTemplate();
+        TemplateProperties parentTemplate = template.getParent();
         if (parentTemplate != null) {
             // Having a sub-class means having the parent class.
             MageClass parentClass = getClass(parentTemplate.getKey(), true);

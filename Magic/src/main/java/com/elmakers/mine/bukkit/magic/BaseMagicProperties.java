@@ -70,14 +70,18 @@ public class BaseMagicProperties implements MagicProperties {
     );
 
     protected BaseMagicProperties(@Nonnull MageController controller) {
+       this(controller, null);
+    }
+
+    protected BaseMagicProperties(@Nonnull MageController controller, ConfigurationSection configuration) {
         // Don't really like this, but Wand is very dependent on MagicController
         Preconditions.checkArgument(controller instanceof MagicController);
         this.controller = (MagicController)controller;
-    }
 
-    protected BaseMagicProperties(@Nonnull MagicController controller, ConfigurationSection configuration) {
-        this.controller = controller;
-        this.configuration = configuration;
+        // TODO: does this need to be a clone?
+        if (configuration != null) {
+            this.configuration = ConfigurationUtils.cloneConfiguration(configuration);
+        }
     }
 
     public void load(@Nullable ConfigurationSection configuration) {

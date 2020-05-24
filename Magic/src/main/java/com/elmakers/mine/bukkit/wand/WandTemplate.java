@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -19,14 +18,13 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.MageParameters;
+import com.elmakers.mine.bukkit.magic.TemplateProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
-public class WandTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
-    private final String key;
+public class WandTemplate extends TemplateProperties implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private Set<String> tags;
     private @Nonnull Set<String> categories = ImmutableSet.of();
@@ -42,36 +40,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     private String parentKey;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
-        super(controller);
-
-        // Migrate attributes
-        attributes = node.getConfigurationSection("item_attributes");
-        ConfigurationSection migrateAttributes = node.getConfigurationSection("attributes");
-        if (migrateAttributes != null) {
-            boolean nagged = false;
-            Set<String> keys = migrateAttributes.getKeys(false);
-            for (String attributeKey : keys) {
-                try {
-                    Attribute.valueOf(attributeKey.toUpperCase());
-                } catch (IllegalArgumentException ignored) {
-                    continue;
-                }
-
-                if (attributes == null) {
-                    attributes = node.createSection("item_attributes");
-                }
-                attributes.set(attributeKey, migrateAttributes.get(attributeKey));
-                node.set("attributes", null);
-                if (!nagged) {
-                    nagged = true;
-                    controller.getLogger().warning("You have vanilla item attributes in the 'attributes' property of wand template '" + key + "', please rename that to item_attributes.");
-                }
-            }
-        }
-
-        this.load(node);
-        this.key = key;
-
+        super(controller, key, node);
         effects.clear();
         creator = node.getString("creator");
         creatorId = node.getString("creator_id");
@@ -137,10 +106,9 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
     }
 
     protected WandTemplate(WandTemplate copy, ConfigurationSection configuration) {
-        super(copy.controller);
+        super(copy.controller, copy.getKey(), configuration);
         load(configuration);
 
-        this.key = copy.key;
         this.effects = copy.effects;
         this.tags = copy.tags;
         this.categories = copy.categories;
@@ -158,14 +126,14 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
 
     public WandTemplate getMageTemplate(Mage mage) {
-        MageParameters parameters = new MageParameters(mage, "Wand " + key);
+        MageParameters parameters = new MageParameters(mage, "Wand " + getKey());
         ConfigurationUtils.addConfigurations(parameters, configuration);
         return new WandTemplate(this, parameters);
     }
 
     @Override
-    public String getKey() {
-        return key;
+    public String getName() {
+        return controller.getMessages().get("wands." + getKey() + ".name", "?");
     }
 
     @Override
@@ -185,7 +153,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
     @Override
     public boolean playEffects(Wand wand, String effectName, float scale) {
-        return playEffects(wand.getMage(), wand, key, scale);
+        return playEffects(wand.getMage(), wand, getKey(), scale);
     }
 
     @Override
@@ -296,7 +264,7 @@ public class WandTemplate extends BaseMagicProperties implements com.elmakers.mi
 
     @Nullable
     @Override
-    public com.elmakers.mine.bukkit.api.wand.WandTemplate getParent() {
+    public WandTemplate getParent() {
         if (parentKey != null && !parentKey.isEmpty() && !parentKey.equalsIgnoreCase("false")) {
             return controller.getWandTemplate(parentKey);
         }

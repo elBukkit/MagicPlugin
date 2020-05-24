@@ -2,18 +2,15 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -28,11 +25,9 @@ import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
-public class MageClass extends TemplatedProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
-    protected @Nonnull MageClassTemplate template;
+public class MageClass extends ParentedProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
     protected final MageProperties mageProperties;
     protected final Mage mage;
-    private MageClass parent;
     private List<EntityAttributeModifier> attributeModifiers;
     private boolean checkedAttributes = false;
 
@@ -63,85 +58,6 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         this.setTemplate(template);
     }
 
-    @Override
-    @Nullable
-    public Object getInheritedProperty(String key) {
-        Object value = super.getInheritedProperty(key);
-        if (value == null && parent != null) {
-            value = parent.getInheritedProperty(key);
-        }
-        return value;
-    }
-
-    @Override
-    public @Nonnull MageClassTemplate getTemplate() {
-        return template;
-    }
-
-    public @Nullable MageClass getParent() {
-        return parent;
-    }
-
-    public MageClass getRoot() {
-        if (parent == null) return this;
-        return parent.getRoot();
-    }
-
-    public void setParent(@Nonnull MageClass parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
-        super.describe(sender, ignoreProperties, overriddenProperties);
-        if (overriddenProperties == null) {
-            overriddenProperties = new HashSet<>();
-        }
-        Set<String> ownKeys = getConfiguration().getKeys(false);
-        overriddenProperties.addAll(ownKeys);
-        sender.sendMessage("" + ChatColor.BOLD + ChatColor.GREEN + "Template Configuration for (" + ChatColor.DARK_GREEN + getKey() + ChatColor.GREEN + "):");
-
-        Set<String> overriddenTemplateProperties = new HashSet<>(overriddenProperties);
-        for (String key : template.getConfiguration().getKeys(false)) {
-            MagicPropertyType propertyRoute = propertyRoutes.get(key);
-            if (propertyRoute == null || propertyRoute == type) {
-                overriddenProperties.add(key);
-            } else {
-                overriddenTemplateProperties.add(key);
-            }
-        }
-
-        template.describe(sender, ignoreProperties, overriddenTemplateProperties);
-
-        MageClass parent = getParent();
-        if (parent != null) {
-            sender.sendMessage(ChatColor.AQUA + "Parent Class: " + ChatColor.GREEN + parent.getTemplate().getKey());
-            parent.describe(sender, ignoreProperties, overriddenProperties);
-        }
-    }
-
-    public ConfigurationSection getEffectiveConfiguration(boolean includeMage) {
-        ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(getConfiguration());
-        ConfigurationSection templateConfiguration = ConfigurationUtils.cloneConfiguration(template.getConfiguration());
-        for (String key : templateConfiguration.getKeys(false)) {
-            MagicPropertyType propertyRoute = propertyRoutes.get(key);
-            if (propertyRoute != null && propertyRoute != type) {
-                templateConfiguration.set(key, null);
-            }
-        }
-
-        ConfigurationUtils.overlayConfigurations(effectiveConfiguration, templateConfiguration);
-        if (parent != null) {
-            ConfigurationSection parentConfiguration = parent.getEffectiveConfiguration(includeMage);
-            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
-        } else if (includeMage) {
-            // If we have a parent, it has already incorporated Mage data
-            ConfigurationSection mageConfiguration = mageProperties.getConfiguration();
-            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, mageConfiguration);
-        }
-        return effectiveConfiguration;
-    }
-
     @Nullable
     @Override
     public BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
@@ -156,6 +72,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     @Override
     public boolean tickMana() {
+        ParentedProperties parent = getParent();
         if (!hasOwnMana() && parent != null) {
             return parent.tickMana();
         }
@@ -181,16 +98,12 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     @Override
     public void loadProperties() {
+        ParentedProperties parent = getParent();
         if (parent != null) {
             parent.loadProperties();
         }
         super.loadProperties();
         armorUpdated();
-    }
-
-    @Override
-    public String getKey() {
-        return template.getKey();
     }
 
     @Override
@@ -204,6 +117,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     public boolean updateMaxMana(Mage mage) {
         if (!hasOwnMana()) {
             boolean modified = false;
+            ParentedProperties parent = getParent();
             if (parent != null) {
                 modified = parent.updateMaxMana(mage);
                 effectiveManaMax = parent.getEffectiveManaMax();
@@ -229,20 +143,29 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
         mage.updatePassiveEffects();
     }
 
-    @Override
-    public String getName() {
-        return template.getName();
+    @Nullable
+    public MageClass getMageClassParent() {
+        ParentedProperties parent = getParent();
+        return parent instanceof MageClass ? (MageClass)parent : null;
     }
 
     public boolean isLocked() {
-        if (super.getProperty("locked", false)) return true;
-        if (parent != null) return parent.isLocked();
+        if (super.getProperty("locked", false)) {
+            return true;
+        }
+        MageClass parent = getMageClassParent();
+        if (parent != null) {
+            return parent.isLocked();
+        }
         return false;
     }
 
     public void unlock() {
         configuration.set("locked", null);
-        if (parent != null) parent.unlock();
+        MageClass parent = getMageClassParent();
+        if (parent != null) {
+            parent.unlock();
+        }
         onUnlocked();
     }
 
@@ -293,9 +216,12 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
 
     @Override
     protected String getMessageKey(String key) {
-        String mageKey = "classes." + template + "." + key;
-        if (controller.getMessages().containsKey(mageKey)) {
-            return mageKey;
+        TemplateProperties template = getTemplate();
+        if (template != null) {
+            String mageKey = "classes." + template.getKey() + "." + key;
+            if (controller.getMessages().containsKey(mageKey)) {
+                return mageKey;
+            }
         }
         return "mage." + key;
     }
@@ -530,8 +456,7 @@ public class MageClass extends TemplatedProperties implements com.elmakers.mine.
     public void setTemplate(@Nonnull MageClassTemplate template) {
         // TODO: This won't update the "type" field of the base base base class here if the
         // template hierarchy has drastically changed.
-        super.setTemplate(template);
-        this.template = template.getMageTemplate(getMage());
+        super.setTemplate(template.getMageTemplate(getMage()));
     }
 
     @Override

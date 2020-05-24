@@ -10,19 +10,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class ModifierTemplate extends BaseMagicProperties implements com.elmakers.mine.bukkit.api.magic.ModifierTemplate {
+public class ModifierTemplate extends TemplateProperties implements com.elmakers.mine.bukkit.api.magic.ModifierTemplate {
     private ModifierTemplate parent;
-    private final @Nonnull String key;
     private String name;
     private String description;
 
     public ModifierTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
-        super(controller);
-        checkNotNull(key, "key");
+        super(controller, key, configuration);
         checkNotNull(configuration, "configuration");
-
-        this.key = key;
-        this.load(configuration);
 
         // Clear properties we don't want to pass along
         clearProperty("parent");
@@ -37,10 +32,9 @@ public class ModifierTemplate extends BaseMagicProperties implements com.elmaker
     }
 
     private ModifierTemplate(ModifierTemplate copy, ConfigurationSection configuration) {
-        super(copy.controller, configuration);
+        super(copy.controller, copy.getKey(), configuration);
         this.name = copy.name;
         this.description = copy.description;
-        this.key = copy.key;
         this.parent = copy.parent;
     }
 
@@ -48,10 +42,6 @@ public class ModifierTemplate extends BaseMagicProperties implements com.elmaker
         MageParameters parameters = new MageParameters(mage, "Modifier " + getKey());
         ConfigurationUtils.addConfigurations(parameters, configuration);
         return new ModifierTemplate(this, parameters);
-    }
-
-    public @Nonnull String getKey() {
-        return key;
     }
 
     public @Nullable

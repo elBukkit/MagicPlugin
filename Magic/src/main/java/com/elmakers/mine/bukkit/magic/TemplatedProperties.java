@@ -11,13 +11,13 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class TemplatedProperties extends CasterProperties {
     @Nullable
-    private BaseMagicProperties template;
+    private TemplateProperties template;
 
     public TemplatedProperties(MagicPropertyType type, MageController controller) {
         this(type, controller, null);
     }
 
-    public TemplatedProperties(MagicPropertyType type, MageController controller, @Nullable BaseMagicProperties template) {
+    public TemplatedProperties(MagicPropertyType type, MageController controller, @Nullable TemplateProperties template) {
         super(type, controller);
         this.template = template;
     }
@@ -63,13 +63,24 @@ public abstract class TemplatedProperties extends CasterProperties {
         return value;
     }
 
-    public void setTemplate(@Nonnull BaseMagicProperties template) {
+    public void setTemplate(@Nonnull TemplateProperties template) {
         this.template = template;
     }
 
     @Nullable
-    protected BaseMagicProperties getTemplate() {
+    protected TemplateProperties getTemplate() {
         return template;
+    }
+
+    @Nonnull
+    public String getKey() {
+        return template == null ? "?" : template.getKey();
+    }
+
+    @Nullable
+    public String getName() {
+        TemplateProperties template = getTemplate();
+        return template == null ? "?" : template.getName();
     }
 
     @Override

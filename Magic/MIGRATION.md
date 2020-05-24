@@ -1,5 +1,12 @@
 # Migration Notes
 
+## 7.9.3
+
+ - Vanilla attributes on wand migration removed
+   Look for this message in your logs:
+   "You have vanilla item attributes in the 'attributes' property of wand template"
+   If you see this, please update your wand configs by changing it to "item_attributes"!
+
 ## 7.9.1
 
  - RecallSpell was removed, use RecallAction instead.
