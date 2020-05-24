@@ -44,6 +44,7 @@ public class ModifierTemplate extends TemplateProperties implements com.elmakers
         return new ModifierTemplate(this, parameters);
     }
 
+    @Override
     public @Nullable
     ModifierTemplate getParent() {
         return parent;

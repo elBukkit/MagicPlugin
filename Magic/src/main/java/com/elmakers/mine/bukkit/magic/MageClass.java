@@ -16,7 +16,6 @@ import com.elmakers.mine.bukkit.wand.Wand;
 
 public class MageClass extends BaseMageModifier implements com.elmakers.mine.bukkit.api.magic.MageClass  {
 
-    @SuppressWarnings("null") // template initialised via setter
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
         super(mage, template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, template);
         this.setTemplate(template);

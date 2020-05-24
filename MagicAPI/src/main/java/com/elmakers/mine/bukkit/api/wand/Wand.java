@@ -137,6 +137,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     void updateMana();
     @Override
     WandUpgradePath getPath();
+    @Override
     MageController getController();
     boolean showCastMessages();
     boolean showMessages();
