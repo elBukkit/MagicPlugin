@@ -75,7 +75,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MageClass;
@@ -2842,19 +2841,10 @@ public class BaseSpell implements MageSpell, Cloneable {
 
             // Reward SP
             Wand wand = context.getWand();
-            Wand activeWand = mage.getActiveWand();
-            if (activeWand != null && wand != null && activeWand.getItem() != null && wand.getItem() != null
-                && !InventoryUtils.isSameInstance(wand.getItem(), activeWand.getItem())
-                && activeWand.getItem().equals(wand.getItem())) {
-                wand = activeWand;
-            }
-            Wand offhandWand = mage.getOffhandWand();
-            if (offhandWand != null && wand != null && offhandWand.getItem() != null && wand.getItem() != null
-                && !InventoryUtils.isSameInstance(wand.getItem(), offhandWand.getItem())
-                && offhandWand.getItem().equals(wand.getItem())) {
-                wand = offhandWand;
-            }
             CasterProperties activeProperties = mage.getActiveProperties();
+            if (wand != null) {
+                activeProperties = wand;
+            }
             ProgressionPath path = activeProperties.getPath();
             if (earns != null && path != null && path.earnsSP() && controller.isSPEnabled() && controller.isSPEarnEnabled()) {
                 long now = System.currentTimeMillis();
@@ -2879,20 +2869,19 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
 
             // Check for level up
-            // This currently only works on wands.
-            if (wand != null && wand.upgradesAllowed() && wand.getSpellLevel(spellKey.getBaseKey()) == spellKey.getLevel())
+            if (activeProperties.upgradesAllowed() && activeProperties.getSpellLevel(spellKey.getBaseKey()) == spellKey.getLevel())
             {
                 if (controller.isSpellUpgradingEnabled()) {
                     SpellTemplate upgrade = getUpgrade();
                     long requiredCasts = getRequiredUpgradeCasts();
                     String upgradePath = getRequiredUpgradePath();
-                    WandUpgradePath currentPath = wand.getPath();
+                    ProgressionPath currentPath = activeProperties.getPath();
                     Set<String> upgradeTags = getRequiredUpgradeTags();
                     if ((upgrade != null && requiredCasts > 0 && getCastCount() >= requiredCasts)
                             && (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
                             && (upgradeTags == null || upgradeTags.isEmpty() || (currentPath != null && currentPath.hasAllTags(upgradeTags))))
                     {
-                        if (PrerequisiteSpell.hasPrerequisites(wand, upgrade)) {
+                        if (PrerequisiteSpell.hasPrerequisites(activeProperties, upgrade)) {
                             MageSpell newSpell = mage.getSpell(upgrade.getKey());
                             if (isActive()) {
                                 deactivate(true, true);
@@ -2900,12 +2889,13 @@ public class BaseSpell implements MageSpell, Cloneable {
                                     newSpell.activate();
                                 }
                             }
-                            wand.forceAddSpell(upgrade.getKey());
+                            activeProperties.forceAddSpell(upgrade.getKey());
                             playEffects("upgrade");
 
                             if (controller.isPathUpgradingEnabled()) {
-                                wand.checkAndUpgrade(true);
+                                activeProperties.checkAndUpgrade(true);
                             }
+                            mage.updatePassiveEffects();
                             return; // return so progress upgrade doesn't also happen
                         }
                     }
@@ -2915,7 +2905,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                     long currentLevel = getProgressLevel();
 
                     if (currentLevel != previousLevel) {
-                        wand.addSpell(getKey());
+                        activeProperties.addSpell(getKey());
                         if (currentLevel > previousLevel) {
                             Messages messages = controller.getMessages();
                             String progressDescription = getProgressDescription();
@@ -2929,8 +2919,9 @@ public class BaseSpell implements MageSpell, Cloneable {
                             }
                         }
                         if (controller.isPathUpgradingEnabled()) {
-                            wand.checkAndUpgrade(true);
+                            activeProperties.checkAndUpgrade(true);
                         }
+                        mage.updatePassiveEffects();
                     }
                 }
             }

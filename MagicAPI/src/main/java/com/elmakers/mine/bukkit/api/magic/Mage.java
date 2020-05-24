@@ -738,4 +738,5 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean toggleSpellEnabled(String spellKey);
     @Nonnull
     ConfigurationSection getVariables();
+    void updatePassiveEffects();
 }

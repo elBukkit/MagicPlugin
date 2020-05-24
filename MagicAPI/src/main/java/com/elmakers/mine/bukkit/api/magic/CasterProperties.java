@@ -15,6 +15,7 @@ public interface CasterProperties extends MagicConfigurable {
     Collection<String> getSpells();
     boolean addSpell(String spellKey);
     boolean setSpelLLevel(String spellKey, int level);
+    int getSpellLevel(String spellKey);
     Mage getMage();
     void removeMana(float mana);
     float getMana();
@@ -34,6 +35,11 @@ public interface CasterProperties extends MagicConfigurable {
     void setAttribute(String attributeKey, Double attributeValue);
     boolean addItem(ItemStack item);
     boolean add(Wand other);
+    boolean upgradesAllowed();
+    /**
+     * Adds a spell to an otherwise locked set of properties
+     */
+    boolean forceAddSpell(String key);
 
     /**
      * Returns a Spell for a given spell key, if this caster has the spell.
@@ -54,4 +60,11 @@ public interface CasterProperties extends MagicConfigurable {
      */
     @Nullable
     SpellTemplate getSpellTemplate(String spellKey);
+
+    /**
+     * Checks if this caster can be upgraded to the next {@link ProgressionPath} and if so upgrades it.
+     *
+     * @return false if the player is blocked based on a path requirement
+     */
+    boolean checkAndUpgrade(boolean quiet);
 }

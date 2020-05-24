@@ -74,7 +74,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean hasSpell(SpellKey spellKey);
     boolean hasBrush(String key);
     boolean isLocked();
-    boolean upgradesAllowed();
     boolean canUse(Player player);
     boolean fill(Player player);
     boolean fill(Player player, int maxLevel);
@@ -87,11 +86,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean addBrush(String key);
     @Override
     boolean addSpell(String key);
-
-    /**
-     * Adds a spell to a locked wand.
-     */
-    boolean forceAddSpell(String key);
     boolean removeBrush(String key);
     boolean removeSpell(String key);
     String getActiveBrushKey();
@@ -161,7 +155,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean isQuickCast();
     void cycleHotbar();
     void damageDealt(double damage, Entity target);
-    int getSpellLevel(String spellKey);
     boolean hasTag(String tag);
     void bind();
     void unbind();
@@ -184,13 +177,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
      * you need to force an update right away.
      */
     void saveState();
-
-    /**
-     * Checks if the wand can be upgraded to the next {@link WandUpgradePath} and if so upgrades it.
-     *
-     * @return false if the player is blocked based on a path requirement
-     */
-    boolean checkAndUpgrade(boolean quiet);
 
     /**
      * See if this wand is ready for an upgrade.

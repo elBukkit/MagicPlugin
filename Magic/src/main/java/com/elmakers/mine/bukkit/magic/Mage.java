@@ -3461,7 +3461,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return Math.min(1, stackValue + currentValue);
     }
 
-    protected void updatePassiveEffects() {
+    @Override
+    public void updatePassiveEffects() {
         protection.clear();
         strength.clear();
         weakness.clear();

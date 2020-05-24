@@ -5618,23 +5618,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
-    public boolean checkAndUpgrade(boolean quiet) {
-        WandUpgradePath path = getPath();
-        WandUpgradePath nextPath = path != null ? path.getUpgrade() : null;
-        if (nextPath == null) {
-            return true;
-        }
-        if (canProgress()) {
-            return true;
-        }
-        if (!path.checkUpgradeRequirements(this, quiet ? null : mage)) {
-            return false;
-        }
-        path.upgrade(this, mage);
-        return true;
-    }
-
-    @Override
     public boolean hasUpgrade() {
         WandUpgradePath path = getPath();
         return path != null && path.hasUpgrade();

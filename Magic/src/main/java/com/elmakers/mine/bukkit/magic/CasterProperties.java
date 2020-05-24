@@ -260,8 +260,14 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return modified;
     }
 
+
     @Override
     public boolean addSpell(String spellKey) {
+        return forceAddSpell(spellKey);
+    }
+
+    @Override
+    public boolean forceAddSpell(String spellKey) {
         BaseMagicConfigurable storage = getStorage("spells");
         if (storage != this && storage != null) {
             return storage.addSpell(spellKey);
@@ -397,6 +403,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return modified;
     }
 
+    @Override
     public int getSpellLevel(String spellKey) {
         Map<String, Integer> spellLevels = getSpellLevels();
         Integer level = spellLevels.get(spellKey);
@@ -733,5 +740,27 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             migrate(version, configuration);
         }
         super.load(configuration);
+    }
+
+    @Override
+    public boolean upgradesAllowed() {
+        return true;
+    }
+
+    @Override
+    public boolean checkAndUpgrade(boolean quiet) {
+        ProgressionPath path = getPath();
+        ProgressionPath nextPath = path != null ? path.getNextPath() : null;
+        if (nextPath == null) {
+            return true;
+        }
+        if (canProgress()) {
+            return true;
+        }
+        if (!path.checkUpgradeRequirements(getWand(), quiet ? null : getMage())) {
+            return false;
+        }
+        path.upgrade(getMage(), getWand());
+        return true;
     }
 }
