@@ -1,217 +1,25 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
-import com.elmakers.mine.bukkit.api.magic.Trigger;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
-public class MageClass extends ParentedProperties implements com.elmakers.mine.bukkit.api.magic.MageClass  {
-    protected final MageProperties mageProperties;
-    protected final Mage mage;
-    private List<EntityAttributeModifier> attributeModifiers;
-    private boolean checkedAttributes = false;
-
-    private static class EntityAttributeModifier {
-        public EntityAttributeModifier(Attribute attribute, AttributeModifier modifier) {
-            this.attribute = attribute;
-            this.modifier = modifier;
-            this.base = null;
-        }
-
-        public EntityAttributeModifier(Attribute attribute, double base) {
-            this.attribute = attribute;
-            this.modifier = null;
-            this.base = base;
-        }
-
-        public final AttributeModifier modifier;
-        public final Attribute attribute;
-        public final Double base;
-        public Double previous;
-    }
+public class MageClass extends BaseMageModifier implements com.elmakers.mine.bukkit.api.magic.MageClass  {
 
     @SuppressWarnings("null") // template initialised via setter
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
-        super(template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, mage.getController(), template);
-        this.mageProperties = mage.getProperties();
-        this.mage = mage;
+        super(mage, template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, template);
         this.setTemplate(template);
-    }
-
-    @Nullable
-    @Override
-    public BaseMagicConfigurable getStorage(MagicPropertyType propertyType) {
-        switch (propertyType) {
-            case SUBCLASS: return this;
-            case CLASS: return getRoot();
-            case MAGE: return mageProperties;
-            case WAND: return mage == null ? null : mage.getActiveWand();
-            default: return null;
-        }
-    }
-
-    @Override
-    public boolean tickMana() {
-        ParentedProperties parent = getParent();
-        if (!hasOwnMana() && parent != null) {
-            return parent.tickMana();
-        }
-
-        return super.tickMana();
-    }
-
-    @Override
-    public Mage getMage() {
-        return mage;
-    }
-
-    @Override
-    public boolean isPlayer() {
-        return mageProperties.isPlayer();
-    }
-
-    @Nullable
-    @Override
-    public Player getPlayer() {
-        return mageProperties.getPlayer();
-    }
-
-    @Override
-    public void loadProperties() {
-        ParentedProperties parent = getParent();
-        if (parent != null) {
-            parent.loadProperties();
-        }
-        super.loadProperties();
-        armorUpdated();
-    }
-
-    @Override
-    public void armorUpdated() {
-        if (hasOwnMana()) {
-            updateMaxMana(mage);
-        }
-    }
-
-    @Override
-    public boolean updateMaxMana(Mage mage) {
-        if (!hasOwnMana()) {
-            boolean modified = false;
-            ParentedProperties parent = getParent();
-            if (parent != null) {
-                modified = parent.updateMaxMana(mage);
-                effectiveManaMax = parent.getEffectiveManaMax();
-                effectiveManaRegeneration = parent.getEffectiveManaRegeneration();
-            }
-            return modified;
-        }
-
-        return super.updateMaxMana(mage);
-    }
-
-    @Override
-    public void updated() {
-        updateMaxMana(mage);
-        Wand activeWand = mage.getActiveWand();
-        if (activeWand != null) {
-            activeWand.updated();
-        }
-        if (!isLocked()) {
-            deactivateAttributes();
-            activateAttributes();
-        }
-        mage.updatePassiveEffects();
-    }
-
-    @Nullable
-    public MageClass getMageClassParent() {
-        ParentedProperties parent = getParent();
-        return parent instanceof MageClass ? (MageClass)parent : null;
-    }
-
-    public boolean isLocked() {
-        if (super.getProperty("locked", false)) {
-            return true;
-        }
-        MageClass parent = getMageClassParent();
-        if (parent != null) {
-            return parent.isLocked();
-        }
-        return false;
-    }
-
-    public void unlock() {
-        configuration.set("locked", null);
-        MageClass parent = getMageClassParent();
-        if (parent != null) {
-            parent.unlock();
-        }
-        onUnlocked();
-    }
-
-    public void lock() {
-        configuration.set("locked", true);
-        onLocked();
-    }
-
-    @Override
-    public float getCostReduction() {
-        float costReduction = getFloat("cost_reduction");
-        if (mage != null) {
-            float reduction = mage.getCostReduction();
-            return stackPassiveProperty(reduction, costReduction);
-        }
-        return costReduction;
-    }
-
-    @Override
-    public float getCooldownReduction() {
-        float cooldownReduction = getFloat("cooldown_reduction");
-        if (mage != null) {
-            float reduction = mage.getCooldownReduction();
-            return stackPassiveProperty(reduction, cooldownReduction);
-        }
-        return cooldownReduction;
-    }
-
-    @Override
-    public boolean isCooldownFree() {
-        return getFloat("cooldown_reduction") > 1;
-    }
-
-    @Override
-    public float getConsumeReduction() {
-        float consumeReduction = getFloat("consume_reduction");
-        if (mage != null) {
-            float reduction = mage.getConsumeReduction();
-            return stackPassiveProperty(reduction, consumeReduction);
-        }
-        return consumeReduction;
-    }
-
-    @Override
-    public float getCostScale() {
-        return 1.0f;
     }
 
     @Override
@@ -231,6 +39,7 @@ public class MageClass extends ParentedProperties implements com.elmakers.mine.b
         trigger("removed");
     }
 
+    @Override
     public void onLocked() {
         deactivateAttributes();
         if (getBoolean("clean_on_lock", false)) {
@@ -267,6 +76,7 @@ public class MageClass extends ParentedProperties implements com.elmakers.mine.b
         trigger("lock");
     }
 
+    @Override
     public void onUnlocked() {
         activateAttributes();
         List<String> classItems = getStringList("class_items");
@@ -294,164 +104,6 @@ public class MageClass extends ParentedProperties implements com.elmakers.mine.b
         }
         trigger("unlock");
     }
-
-    private void cancelTrigger(String triggerType) {
-        List<TriggeredSpell> triggers = getTriggers(triggerType);
-        for (TriggeredSpell triggered : triggers) {
-            mage.cancelPending(triggered.getSpellKey());
-        }
-    }
-
-    private void trigger(String triggerType) {
-        List<TriggeredSpell> triggers = getTriggers(triggerType);
-        for (TriggeredSpell triggered : triggers) {
-            if (triggered.getTrigger().isValid(mage)) {
-                Spell spell = mage.getSpell(triggered.getSpellKey());
-                if (spell != null && spell.isEnabled()) {
-                    spell.cast();
-                    triggered.getTrigger().triggered();
-                }
-            }
-        }
-    }
-
-    private List<TriggeredSpell> getTriggers(String triggerType) {
-        List<TriggeredSpell> triggers = new ArrayList<>();
-        for (String spellKey : getSpells()) {
-            Spell spell = getSpell(spellKey);
-            if (spell == null) continue;
-            Collection<Trigger> spellTriggers = spell.getTriggers();
-            for (Trigger trigger : spellTriggers) {
-                if (trigger.getTrigger().equalsIgnoreCase(triggerType)) {
-                    triggers.add(new TriggeredSpell(spellKey, trigger));
-                }
-            }
-        }
-        return triggers;
-    }
-
-    public void activateAttributes() {
-        double healthScale = getDouble("health_scale");
-        if (healthScale > 0) {
-            Player player = mage.getPlayer();
-            if (player != null) {
-                player.setHealthScale(healthScale);
-            }
-        }
-
-        Collection<EntityAttributeModifier> modifiers = getAttributeModifiers();
-        if (modifiers == null) return;
-        LivingEntity entity = mage.getLivingEntity();
-        if (entity == null) return;
-
-        for (EntityAttributeModifier modifier : modifiers) {
-            AttributeInstance attribute = entity.getAttribute(modifier.attribute);
-
-            if (modifier.modifier != null) {
-                if (!checkedAttributes) {
-                    // Only do this once, it's really here to clean up attributes that may have gotten stuck on server crash
-                    Collection<AttributeModifier> existingModifiers = attribute.getModifiers();
-                    for (AttributeModifier existing : existingModifiers) {
-                        if (existing.getName().equalsIgnoreCase(modifier.modifier.getName())) {
-                            mage.getController().getLogger().warning("Removed duplicate attribute modifier " + modifier.modifier.getName() + ", was this leftover from a server crash?");
-                            attribute.removeModifier(existing);
-                            break;
-                        }
-                    }
-                }
-                attribute.addModifier(modifier.modifier);
-            }
-
-            if (modifier.base != null) {
-                modifier.previous = attribute.getBaseValue();
-                attribute.setBaseValue(modifier.base);
-            }
-        }
-
-        checkedAttributes = true;
-    }
-
-    public void deactivateAttributes() {
-        double healthScale = getDouble("health_scale");
-        if (healthScale > 0) {
-            Player player = mage.getPlayer();
-            if (player != null) {
-                player.setHealthScaled(false);
-            }
-        }
-
-        if (attributeModifiers == null) return;
-        LivingEntity entity = mage.getLivingEntity();
-        if (entity == null) return;
-
-        // Remove in reverse-order in case a base attribute was changed twice
-        ListIterator<EntityAttributeModifier> it = attributeModifiers.listIterator(attributeModifiers.size());
-        while (it.hasPrevious()) {
-            EntityAttributeModifier modifier = it.previous();
-            AttributeInstance attribute = entity.getAttribute(modifier.attribute);
-            if (modifier.modifier != null) {
-                attribute.removeModifier(modifier.modifier);
-            }
-            if (modifier.previous != null) {
-                attribute.setBaseValue(modifier.previous);
-            }
-        }
-        attributeModifiers = null;
-    }
-
-    @Nullable
-    public Collection<EntityAttributeModifier> getAttributeModifiers() {
-        if (attributeModifiers != null) {
-            return attributeModifiers;
-        }
-
-        ConfigurationSection config = getConfigurationSection("entity_attributes");
-        if (config == null) return null;
-        Set<String> keys = config.getKeys(false);
-        if (keys.isEmpty()) return null;
-        attributeModifiers = new ArrayList<>();
-        for (String key : keys) {
-            String name = "mage_" + getKey() + "_" + key;
-            double value;
-            Double base = null;
-            String attributeKey = key;
-            AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
-            if (config.isConfigurationSection(key) && config.contains("value")) {
-                ConfigurationSection modifierConfig = config.getConfigurationSection(key);
-                name = modifierConfig.getString("name", name);
-                attributeKey = modifierConfig.getString("attribute", attributeKey);
-                value = modifierConfig.getDouble("value");
-                String operationType = modifierConfig.getString("operation");
-                if (operationType.equalsIgnoreCase("base")) {
-                    base = value;
-                } else  if (operationType != null && !operationType.isEmpty()) {
-                    try {
-                        operation = AttributeModifier.Operation.valueOf(operationType.toUpperCase());
-                    } catch (Exception ex) {
-                        controller.getLogger().warning("Invalid operation " + operationType + " on entity_attributes." + key + " in mage class " + getKey());
-                    }
-                }
-            } else {
-                value = config.getDouble(key);
-            }
-            Attribute attribute = null;
-            try {
-                attribute = Attribute.valueOf(attributeKey.toUpperCase());
-            } catch (Exception ex) {
-                controller.getLogger().warning("Invalid attribute " + attributeKey + " on entity_attributes." + key + " in mage class " + getKey());
-            }
-            if (attribute != null) {
-                if (base != null) {
-                    attributeModifiers.add(new EntityAttributeModifier(attribute, base));
-                } else {
-                    AttributeModifier modifier = new AttributeModifier(name, value, operation);
-                    attributeModifiers.add(new EntityAttributeModifier(attribute, modifier));
-                }
-            }
-        }
-
-        return attributeModifiers;
-     }
 
     public void setTemplate(@Nonnull MageClassTemplate template) {
         // TODO: This won't update the "type" field of the base base base class here if the

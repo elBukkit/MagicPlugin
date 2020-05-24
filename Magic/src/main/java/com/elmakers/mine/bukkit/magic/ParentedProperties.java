@@ -95,4 +95,78 @@ public abstract class ParentedProperties extends TemplatedProperties {
             parent.describe(sender, ignoreProperties, overriddenProperties);
         }
     }
+
+    @Override
+    public boolean tickMana() {
+        ParentedProperties parent = getParent();
+        if (!hasOwnMana() && parent != null) {
+            return parent.tickMana();
+        }
+
+        return super.tickMana();
+    }
+
+    @Override
+    public void loadProperties() {
+        ParentedProperties parent = getParent();
+        if (parent != null) {
+            parent.loadProperties();
+        }
+        super.loadProperties();
+        armorUpdated();
+    }
+
+    @Override
+    public void armorUpdated() {
+        if (hasOwnMana()) {
+            updateMaxMana(getMage());
+        }
+    }
+
+    public boolean isLocked() {
+        if (super.getProperty("locked", false)) {
+            return true;
+        }
+        ParentedProperties parent = getParent();
+        if (parent != null) {
+            return parent.isLocked();
+        }
+        return false;
+    }
+
+    public void unlock() {
+        configuration.set("locked", null);
+        ParentedProperties parent = getParent();
+        if (parent != null) {
+            parent.unlock();
+        }
+        onUnlocked();
+    }
+
+    protected void onUnlocked() {
+    }
+
+    public void lock() {
+        configuration.set("locked", true);
+        onLocked();
+    }
+
+    protected void onLocked() {
+    }
+
+    @Override
+    public boolean updateMaxMana(Mage mage) {
+        if (!hasOwnMana()) {
+            boolean modified = false;
+            ParentedProperties parent = getParent();
+            if (parent != null) {
+                modified = parent.updateMaxMana(mage);
+                effectiveManaMax = parent.getEffectiveManaMax();
+                effectiveManaRegeneration = parent.getEffectiveManaRegeneration();
+            }
+            return modified;
+        }
+
+        return super.updateMaxMana(mage);
+    }
 }
