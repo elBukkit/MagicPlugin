@@ -2643,12 +2643,12 @@ public class MagicController implements MageController {
 
         messagePrefix = properties.getString("message_prefix", messagePrefix);
         castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
-        BaseSpell.RANGE_FORMATTER = new DecimalFormat(properties.getString("range_formatter"));
-        BaseSpell.MOMENT_SECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_seconds_formatter"));
-        BaseSpell.MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_milliseconds_formatter"));
-        BaseSpell.SECONDS_FORMATTER = new DecimalFormat(properties.getString("seconds_formatter"));
-        BaseSpell.MINUTES_FORMATTER = new DecimalFormat(properties.getString("minutes_formatter"));
-        BaseSpell.HOURS_FORMATTER = new DecimalFormat(properties.getString("hours_formatter"));
+        Messages.RANGE_FORMATTER = new DecimalFormat(properties.getString("range_formatter"));
+        Messages.MOMENT_SECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_seconds_formatter"));
+        Messages.MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_milliseconds_formatter"));
+        Messages.SECONDS_FORMATTER = new DecimalFormat(properties.getString("seconds_formatter"));
+        Messages.MINUTES_FORMATTER = new DecimalFormat(properties.getString("minutes_formatter"));
+        Messages.HOURS_FORMATTER = new DecimalFormat(properties.getString("hours_formatter"));
 
         redstoneReplacement = ConfigurationUtils.getMaterialAndData(properties, "redstone_replacement", redstoneReplacement);
 
@@ -4225,8 +4225,15 @@ public class MagicController implements MageController {
     }
 
     @Override
+    @Nullable
     public ModifierTemplate getModifierTemplate(String key) {
         return modifiers.get(key);
+    }
+
+    @Override
+    @Nonnull
+    public Collection<String> getModifierTemplateKeys() {
+        return modifiers.keySet();
     }
 
     @Override

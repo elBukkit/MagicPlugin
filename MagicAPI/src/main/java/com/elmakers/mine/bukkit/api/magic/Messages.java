@@ -58,6 +58,8 @@ public interface Messages {
     String formatPropertyString(String template, float amount, float max, String propertyTemplate);
 
     @Nonnull
+    String getTimeDescription(long time);
+    @Nonnull
     String getTimeDescription(long time, @Nonnull String descriptionType);
     @Nonnull
     String getTimeDescription(long time, @Nonnull String descriptionType, @Nullable String messagesPath);

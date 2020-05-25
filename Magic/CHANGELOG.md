@@ -1,11 +1,14 @@
 # CHANGELOG
 
 # 7.9.3
- - Vanilla attributes on wand migration removed
-   Look for this message in your logs:
-   "You have vanilla item attributes in the 'attributes' property of wand template"
-   If you see this, please update your wand configs by changing it to "item_attributes"!
- - Rank up broadcast disabled by default. See here for how to turn back on: https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/paths/default.yml
+ - PLEASE see important notes in MIGRATION.md *before* upgrading! Mostly if you have custom wands with "attributes" set.
+ - Modifier system added- for custom status effects
+   - Effects act very similar to temporary mage classes
+   - Can apply vanilla/magic attributes, mana modifiers, cost/cooldown adjustments and more
+   - Can have a duration or be manually removed
+   - Use the Modifier action to add/remove, similar syntax to PotionEffect
+   - Modifiers must be pre-defined in modifiers.yml
+   - There is a new "mage modifier" command for adding and removing modifiers 
  - Add lock/unlock triggers for classes.
  - Add FX to Aqualung and Critical passives
  - Add upgrade levels to Critical, fix FX showing every time

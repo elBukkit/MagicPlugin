@@ -307,6 +307,12 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
 
     @Override
     @Nonnull
+    public String getTimeDescription(long time) {
+        return getTimeDescription(time, "description", null);
+    }
+
+    @Override
+    @Nonnull
     public String getTimeDescription(long time, @Nonnull String descriptionType) {
         return getTimeDescription(time, descriptionType, null);
     }
@@ -346,7 +352,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 return timeDescription;
             }
         }
-        return "";
+        return "0";
     }
 
     @Override

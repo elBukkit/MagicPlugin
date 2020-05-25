@@ -433,6 +433,7 @@ commands:
         /mage describe    Show mage properties
         /mage add         Add spells and brushes to a player
         /mage remove      Remove spells or brushes from a player
+        /mage modifier    Add or remove modifiers to a player
         /mage activate    Set or clear a player's active class
         /mage unlock      Unlock a class for a player
         /mage lock        Lock a class for a player
@@ -476,6 +477,13 @@ commands:
     description: List mage properties, which can be changed with /mage configure
     permission: Magic.commands.mage.describe
     usage: /mage describe
+  "mage modifier":
+    description: Add or remove modifiers on a player
+    usage: |
+
+      /mage modifier add <modifier> [duration]
+      /mage modifier remove <modifier>
+    permission: Magic.commands.mage.modifier
   "mage upgrade":
     description: Upgrade mage properties, won't decrease values
     usage: |
@@ -1370,6 +1378,7 @@ permissions:
     - Magic.commands.mage.configure
     - Magic.commands.mage.add
     - Magic.commands.mage.remove
+    - Magic.commands.mage.modifier
     - Magic.commands.mage.upgrade
     - Magic.commands.mage.describe
     - Magic.commands.mage.getdata
@@ -1398,6 +1407,10 @@ permissions:
     default: op
   Magic.commands.mage.remove:
     description: Player may remove spells from players
+    type: boolean
+    default: op
+  Magic.commands.mage.modifier:
+    description: Player may add and remove modifiers on a player
     type: boolean
     default: op
   Magic.commands.mage.upgrade:

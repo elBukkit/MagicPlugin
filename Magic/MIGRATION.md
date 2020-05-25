@@ -6,6 +6,7 @@
    Look for this message in your logs:
    "You have vanilla item attributes in the 'attributes' property of wand template"
    If you see this, please update your wand configs by changing it to "item_attributes"!
+ - Rank up broadcast disabled by default. See here for how to turn back on: https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/paths/default.yml
 
 ## 7.9.1
 

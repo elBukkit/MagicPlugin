@@ -13,6 +13,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
@@ -151,7 +152,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
             Double base = null;
             String attributeKey = key;
             AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_NUMBER;
-            if (config.isConfigurationSection(key) && config.contains("value")) {
+            if (config.isConfigurationSection(key)) {
                 ConfigurationSection modifierConfig = config.getConfigurationSection(key);
                 name = modifierConfig.getString("name", name);
                 attributeKey = modifierConfig.getString("attribute", attributeKey);
@@ -273,5 +274,52 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     @Override
     public float getCostScale() {
         return 1.0f;
+    }
+
+    protected void takeItems() {
+        List<String> classItems = getStringList("gave_items");
+        if (classItems != null) {
+            for (String classItemKey : classItems) {
+                ItemStack item = controller.createItem(classItemKey);
+                if (item == null) {
+                    // We already nagged about this on load...
+                    continue;
+                }
+
+                mage.removeItem(item);
+            }
+            setProperty("gave_items", null);
+        }
+    }
+
+    protected void giveItems(String key) {
+        List<String> classItems = getStringList(key);
+        if (classItems != null) {
+            List<String> gaveItems = new ArrayList<>();
+            for (String classItemKey : classItems) {
+                ItemStack item = controller.createItem(classItemKey);
+                if (item == null) {
+                    controller.getLogger().warning("Invalid modifier item in " + getKey() + ": " + classItemKey);
+                    continue;
+                }
+
+                if (!mage.hasItem(item)) {
+                    gaveItems.add(key);
+                    String wandKey = controller.getWandKey(item);
+                    if (wandKey != null) {
+                        Wand wand = mage.getBoundWand(wandKey);
+                        if (wand != null) {
+                            mage.giveItem(wand.getItem());
+                            continue;
+                        }
+                    }
+
+                    mage.giveItem(item);
+                }
+            }
+            if (!gaveItems.isEmpty()) {
+                setProperty("gave_items", gaveItems);
+            }
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -57,19 +56,7 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
                 }
             }
         }
-
-        List<String> classItems = getStringList("class_items");
-        if (classItems != null) {
-            for (String classItemKey : classItems) {
-                ItemStack item = controller.createItem(classItemKey);
-                if (item == null) {
-                    // We already nagged about this on load...
-                    continue;
-                }
-
-                mage.removeItem(item);
-            }
-        }
+        takeItems();
         cancelTrigger("unlock");
         cancelTrigger("join");
         trigger("lock");
@@ -78,29 +65,7 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
     @Override
     public void onUnlocked() {
         activateAttributes();
-        List<String> classItems = getStringList("class_items");
-        if (classItems != null) {
-            for (String classItemKey : classItems) {
-                ItemStack item = controller.createItem(classItemKey);
-                if (item == null) {
-                    controller.getLogger().warning("Invalid class item in " + getKey() + ": " + classItemKey);
-                    continue;
-                }
-
-                if (!mage.hasItem(item)) {
-                    String wandKey = controller.getWandKey(item);
-                    if (wandKey != null) {
-                        Wand wand = mage.getBoundWand(wandKey);
-                        if (wand != null) {
-                            mage.giveItem(wand.getItem());
-                            continue;
-                        }
-                    }
-
-                    mage.giveItem(item);
-                }
-            }
-        }
+        giveItems("class_items");
         trigger("unlock");
     }
 

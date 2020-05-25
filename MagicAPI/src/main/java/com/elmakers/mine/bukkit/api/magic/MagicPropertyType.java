@@ -16,5 +16,5 @@ package com.elmakers.mine.bukkit.api.magic;
  * ones further down the chain will take precedent.
  */
 public enum MagicPropertyType {
-    WAND, SUBCLASS, CLASS, MAGE
+    WAND, SUBCLASS, CLASS, MODIFIER, MAGE
 }

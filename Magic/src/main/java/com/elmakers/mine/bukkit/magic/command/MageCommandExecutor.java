@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
+import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -101,6 +102,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         if (subCommand.equalsIgnoreCase("reset"))
         {
             return onMageReset(sender, player, args2);
+        }
+        if (subCommand.equalsIgnoreCase("modifier"))
+        {
+            return onMageModifier(sender, player, args2);
         }
         if (subCommand.equalsIgnoreCase("debug"))
         {
@@ -188,6 +193,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "configure");
             addIfPermissible(sender, options, "Magic.commands.mage.", "describe");
             addIfPermissible(sender, options, "Magic.commands.mage.", "upgrade");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "modifier");
             addIfPermissible(sender, options, "Magic.commands.mage.", "getdata");
             addIfPermissible(sender, options, "Magic.commands.mage.", "setdata");
             addIfPermissible(sender, options, "Magic.commands.mage.", "check");
@@ -233,6 +239,20 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                         for (Spell spell : spells) {
                             options.add(spell.getKey());
                         }
+                    }
+                }
+            }
+
+            if (subCommand.equalsIgnoreCase("modifier")) {
+                if (args.length <= 1) {
+                    options.add("add");
+                    options.add("remove");
+                } else if (args.length == 2) {
+                    if (args[0].equalsIgnoreCase("remove") && target != null) {
+                        Mage mage = controller.getMage(target);
+                        options.addAll(mage.getModifierKeys());
+                    } else {
+                        options.addAll(controller.getModifierTemplateKeys());
                     }
                 }
             }
@@ -771,6 +791,19 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
                 sender.sendMessage(ChatColor.AQUA + "Classes: " + ChatColor.GREEN + StringUtils.join(coloredClasses, ","));
             }
+            Collection<String> modifierKeys = mage.getModifierKeys();
+            if (!modifierKeys.isEmpty()) {
+                 sender.sendMessage(ChatColor.AQUA + "Modifiers:");
+                 for (String modifierKey : modifierKeys) {
+                     MageModifier modifier = mage.getModifier(modifierKey);
+                     String modifierDescription = ChatColor.DARK_AQUA + modifier.getName();
+                     if (modifier.hasDuration()) {
+                        int timeRemaining = modifier.getTimeRemaining();
+                        modifierDescription += ChatColor.GRAY + " (" + ChatColor.WHITE + controller.getMessages().getTimeDescription(timeRemaining) + ChatColor.GRAY + ")";
+                     }
+                     sender.sendMessage(modifierDescription);
+                 }
+            }
             if (!mageProperties.isEmpty()) {
                  sender.sendMessage(ChatColor.AQUA + "Mage properties:");
                  mageProperties.describe(sender, BaseMagicProperties.HIDDEN_PROPERTY_KEYS);
@@ -942,6 +975,76 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             }
         }
 
+        return true;
+    }
+
+    public boolean onMageAddModifier(CommandSender sender, Player player, String[] parameters) {
+        Mage mage = controller.getMage(player);
+        String modifierKey = parameters[0];
+        MageModifier modifier = null;
+        int duration = 0;
+        if (parameters.length > 1) {
+            try {
+                duration = Integer.parseInt(parameters[1]);
+            } catch (Exception ex) {
+                sender.sendMessage(controller.getMessages().get("commands.modifier.add.invalid")
+                    .replace("$input", parameters[1]));
+                return true;
+            }
+        }
+        if (mage.addModifier(modifierKey, duration)) {
+            modifier = mage.getModifier(modifierKey);
+            if (modifier != null) {
+                String message = duration > 0 ? "commands.modifier.add.success_duration" : "commands.modifier.add.success";
+                sender.sendMessage(controller.getMessages().get(message)
+                    .replace("$name", modifier.getName())
+                    .replace("$player", player.getName())
+                    .replace("$duration", controller.getMessages().getTimeDescription(duration))
+                );
+            }
+        }
+        if (modifier == null) {
+            sender.sendMessage(controller.getMessages().get("commands.modifier.add.fail")
+                .replace("$name", modifierKey)
+                .replace("$player", player.getName())
+            );
+        }
+        return true;
+    }
+
+    public boolean onMageRemoveModifier(CommandSender sender, Player player, String[] parameters) {
+        Mage mage = controller.getMage(player);
+        String modifierKey = parameters[0];
+        MageModifier modifier = mage.getModifier(modifierKey);;
+        if (modifier != null && mage.removeModifier(modifierKey)) {
+            sender.sendMessage(controller.getMessages().get("commands.modifier.remove.success")
+                .replace("$name", modifier.getName())
+                .replace("$player", player.getName())
+            );
+        } else {
+            sender.sendMessage(controller.getMessages().get("commands.modifier.remove.fail")
+                .replace("$name", modifierKey)
+                .replace("$player", player.getName())
+            );
+        }
+        return true;
+    }
+
+    public boolean onMageModifier(CommandSender sender, Player player, String[] parameters) {
+        if (parameters.length < 2) {
+            sender.sendMessage(controller.getMessages().get("commands.modifier.usage"));
+            return true;
+        }
+        String subCommand = parameters[0];
+        parameters = Arrays.copyOfRange(parameters, 1, parameters.length);
+        if (subCommand.equalsIgnoreCase("add")) {
+            return onMageAddModifier(sender, player, parameters);
+        }
+        if (subCommand.equalsIgnoreCase("remove")) {
+            return onMageRemoveModifier(sender, player, parameters);
+        }
+
+        sender.sendMessage(controller.getMessages().get("commands.modifier.usage"));
         return true;
     }
 }

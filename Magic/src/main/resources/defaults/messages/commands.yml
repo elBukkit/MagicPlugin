@@ -14,3 +14,13 @@ commands:
         usage: "&cUsage: /mconfig configure [$types] [key] [property] [value]"
         nokey: "&cInvalid type: $type, options: $options"
         success: "Changed $type $key, use '/magic load' to apply pending changes"
+    modifier:
+      usage: "Use: /mage modifier <add|remove> <modifier> [duration]"
+      add:
+        success: "Added modifier $name to $player"
+        success_duration: "Added modifier $name to $player for $duration"
+        fail: "Could not add modifier $name to $player, may already have it"
+        invalid: "Invalid duration: $input"
+      remove:
+        success: "Remove modifier $name from $player"
+        fail: "Could not remove modifier $name from $player, may not have it"

@@ -97,7 +97,8 @@ public class MageProperties extends CasterProperties {
                 return mage.getActiveClass().getStorage(propertyType);
             case MAGE:
                 return this;
+            default:
+                return null;
         }
-        return null;
     }
 }

@@ -5746,8 +5746,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return mageClass == null ? null : mageClass.getRoot();
             case MAGE:
                 return mage == null ? null : mage.getProperties();
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override

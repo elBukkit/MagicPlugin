@@ -147,6 +147,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected final String id;
     private final @Nonnull MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
+    private final Map<String, MageModifier> modifiers = new HashMap<>();
     private final Map<String, Double> attributes = new HashMap<>();
     private ConfigurationSection variables;
     private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
@@ -4351,5 +4352,63 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             variables = new MemoryConfiguration();
         }
         return variables;
+    }
+
+    @Override
+    public boolean addModifier(@Nonnull String key) {
+        return addModifier(key, 0);
+    }
+
+    @Override
+    public boolean addModifier(@Nonnull String key, int duration) {
+        return addModifier(key, duration, null);
+    }
+
+    @Override
+    public boolean addModifier(@Nonnull String key, int duration, @Nullable ConfigurationSection properties) {
+        MageModifier modifier = modifiers.get(key);
+        // TODO: Property diff/stacking?
+        if (modifier != null) {
+            if (!modifier.hasDuration()) {
+                return false;
+            }
+            if (duration > 0 && modifier.getTimeRemaining() > duration) {
+                return false;
+            }
+            modifier.reset(duration);
+            return true;
+        }
+        ModifierTemplate template = controller.getModifierTemplate(key);
+        if (template == null) {
+            controller.getLogger().warning("Invalid modifier key: " + key);
+            return false;
+        }
+
+        template = template.getMageTemplate(this);
+        modifier = new MageModifier(this, template);
+        modifiers.put(key, modifier);
+        modifier.onAdd(duration);
+        return true;
+    }
+
+    @Override
+    public boolean removeModifier(@Nonnull String key) {
+        MageModifier modifier = modifiers.remove(key);
+        if (modifier != null) {
+            modifier.onRemoved();
+        }
+        return modifier != null;
+    }
+
+    @Override
+    @Nonnull
+    public Set<String> getModifierKeys() {
+        return modifiers.keySet();
+    }
+
+    @Override
+    @Nullable
+    public MageModifier getModifier(String key) {
+        return modifiers.get(key);
     }
 }

@@ -24,7 +24,7 @@ public class ModifierTemplate extends TemplateProperties implements com.elmakers
         clearProperty("enabled");
         clearProperty("inherit");
 
-        name = controller.getMessages().get("modifiers." + key + ".name", "");
+        name = controller.getMessages().get("modifiers." + key + ".name", key);
         description = controller.getMessages().get("modifiers." + key + ".description", "");
 
         name = configuration.getString("name", name);
@@ -59,6 +59,7 @@ public class ModifierTemplate extends TemplateProperties implements com.elmakers
     }
 
     @Override
+    @Nonnull
     public String getName() {
         return name;
     }
@@ -66,5 +67,11 @@ public class ModifierTemplate extends TemplateProperties implements com.elmakers
     @Override
     public String getDescription() {
         return description;
+    }
+
+    public ModifierTemplate getMageTemplate(Mage mage) {
+        MageParameters parameters = new MageParameters(mage, "Mage modifier " + getKey());
+        ConfigurationUtils.addConfigurations(parameters, configuration);
+        return new ModifierTemplate(this, parameters);
     }
 }

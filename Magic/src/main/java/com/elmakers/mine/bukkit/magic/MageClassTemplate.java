@@ -30,7 +30,7 @@ public class MageClassTemplate extends TemplateProperties implements com.elmaker
         clearProperty("enabled");
         clearProperty("inherit");
 
-        name = controller.getMessages().get("classes." + key + ".name", "");
+        name = controller.getMessages().get("classes." + key + ".name", key);
         description = controller.getMessages().get("classes." + key + ".description", "");
 
         name = configuration.getString("name", name);

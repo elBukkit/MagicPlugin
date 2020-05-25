@@ -1,0 +1,11 @@
+damageboost:
+  entity_attributes:
+    generic_attack_damage:
+      value: 20
+      operation: MULTIPLY_SCALAR_1
+
+antiknockback:
+  entity_attributes:
+    generic_knockback_resistance:
+      value: 2
+      operation: base
