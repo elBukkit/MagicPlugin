@@ -1200,6 +1200,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
 
+            this.modifiers.clear();
+            Map<String, ConfigurationSection> modifierProperties = data.getModifierProperties();
+            for (Map.Entry<String, ConfigurationSection> entry : modifierProperties.entrySet()) {
+                String modifierKey = entry.getKey();
+                ModifierTemplate template = controller.getModifierTemplate(modifierKey);
+                if (template != null) {
+                    MageModifier newModifier = new MageModifier(this, template);
+                    newModifier.load(entry.getValue());
+                    modifiers.put(modifierKey, newModifier);
+                }
+            }
+
             // Link up parents. This may cause additional classes to be added or created, if the player did not
             // have that class loaded.
             // So we need to continue to assign parents until no new classes are added.
@@ -1496,6 +1508,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 classProperties.put(entry.getKey(), entry.getValue().getConfiguration());
             }
             data.setClassProperties(classProperties);
+
+            Map<String, ConfigurationSection> modifierProperties = new HashMap<>();
+            for (Map.Entry<String, MageModifier> entry : modifiers.entrySet()) {
+                modifierProperties.put(entry.getKey(), entry.getValue().getConfiguration());
+            }
+            data.setModifierProperties(modifierProperties);
 
             String activeClassKey = activeClass == null ? null : activeClass.getTemplate().getKey();
             data.setActiveClass(activeClassKey);
@@ -4249,6 +4267,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 mageClass.deactivateAttributes();
             }
         }
+        for (MageModifier modifier : modifiers.values()) {
+            modifier.deactivateAttributes();
+        }
     }
 
     @Override
@@ -4257,6 +4278,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (!mageClass.isLocked()) {
                 mageClass.activateAttributes();
             }
+        }
+        for (MageModifier modifier : modifiers.values()) {
+            modifier.activateAttributes();
         }
     }
 

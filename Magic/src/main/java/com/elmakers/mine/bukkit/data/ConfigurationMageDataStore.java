@@ -176,6 +176,15 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 ConfigurationUtils.addConfigurations(classSection, entry.getValue());
             }
         }
+
+        Map<String, ConfigurationSection> modifierProperties = mage.getModifierProperties();
+        if (modifierProperties != null) {
+            ConfigurationSection modifiersSection = saveFile.createSection("modifiers");
+            for (Map.Entry<String, ConfigurationSection> entry : modifierProperties.entrySet()) {
+                ConfigurationSection modifierSection = modifiersSection.createSection(entry.getKey());
+                ConfigurationUtils.addConfigurations(modifierSection, entry.getValue());
+            }
+        }
         saveFile.set("active_class", mage.getActiveClass());
         saveFile.set("health", mage.getHealth());
     }
@@ -257,6 +266,17 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         }
         data.setClassProperties(classProperties);
         data.setActiveClass(saveFile.getString("active_class"));
+
+        // Load modifiers
+        Map<String, ConfigurationSection> modifierProperties = new HashMap<>();
+        ConfigurationSection modifiers = saveFile.getConfigurationSection("modifiers");
+        if (modifiers != null) {
+            Set<String> modifierKeys = modifiers.getKeys(false);
+            for (String modifierKey : modifierKeys) {
+                modifierProperties.put(modifierKey, modifiers.getConfigurationSection(modifierKey));
+            }
+        }
+        data.setModifierProperties(modifierProperties);
 
         // Load extra data
         data.setExtraData(saveFile.getConfigurationSection("data"));
