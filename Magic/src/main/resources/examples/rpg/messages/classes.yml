@@ -11,10 +11,36 @@ classes:
   ranger:
     name: "Ranger"
     description: "Master of the bow"
-  alchemist:
+  cleric:
     name: "Cleric"
     description: "Potions and alchemy"
   peasant:
     name: "Peasant"
     description: "Just a regular Joe"
+  barbarian:
+    name: "Barbarian"
+    description: "Brutal attacks"
+  bard:
+    name: "Bard"
+    description: "Harness the music of the universe"
+  druid:
+    name: "Druid"
+    description: "Guide the forces of nature"
+  monk:
+    name: "Monk"
+    description: "Deliver devastating combos"
+  paladin:
+    name: "Paladin"
+    description: "Healing and protection"
+  sorcerer:
+    name: "Sorcerer"
+    description: "Learn to cast a variety of spells"
+  warlock:
+    name: "Warlock"
+    description: "Harness dark energy"
+
+
+
+
+
 

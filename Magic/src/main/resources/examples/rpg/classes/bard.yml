@@ -1,0 +1,10 @@
+bard:
+  inherit: base
+  locked: true
+  icon: spell_icon:268
+  icon_disabled: spell_icon_disabled:268
+  entity_attributes:
+    generic_max_health:
+      value: "constitution / 1.2"
+      operation: base
+

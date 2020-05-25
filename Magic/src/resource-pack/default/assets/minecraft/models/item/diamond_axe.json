@@ -270,7 +270,14 @@
     {"predicate": {"damaged": 0, "damage": 0.168373879641485}, "model": "item/classes/ranger"},
     {"predicate": {"damaged": 0, "damage": 0.169014084507042}, "model": "item/classes/rogue"},
     {"predicate": {"damaged": 0, "damage": 0.169654289372599}, "model": "item/classes/wizard"},
-    {"predicate": {"damaged": 0, "damage": 0.170934699103713}, "model": "item/custom/reset"},
+    {"predicate": {"damaged": 0, "damage": 0.170294494238156}, "model": "item/custom/reset"},
+    {"predicate": {"damaged": 0, "damage": 0.170934699103713}, "model": "item/classes/barbarian"},
+    {"predicate": {"damaged": 0, "damage": 0.17157490396927}, "model": "item/classes/bard"},
+    {"predicate": {"damaged": 0, "damage": 0.172215108834827}, "model": "item/classes/druid"},
+    {"predicate": {"damaged": 0, "damage": 0.172855313700384}, "model": "item/classes/monk"},
+    {"predicate": {"damaged": 0, "damage": 0.173495518565941}, "model": "item/classes/paladin"},
+    {"predicate": {"damaged": 0, "damage": 0.174135723431498}, "model": "item/classes/sorcerer"},
+    {"predicate": {"damaged": 0, "damage": 0.174775928297055}, "model": "item/classes/warlock"},
 
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_axe"}
   ]

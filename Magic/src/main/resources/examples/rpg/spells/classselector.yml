@@ -17,10 +17,30 @@ classselector:
     options:
     - placeholder: true
     - placeholder: true
+    - placeholder: true
+    - switch_class: sorcerer
+    - switch_class: warlock
     - switch_class: wizard
-    - switch_class: fighter
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
+
+    - placeholder: true
+    - placeholder: true
+    - switch_class: bard
     - switch_class: cleric
+    - switch_class: druid
+    - switch_class: paladin
+    - switch_class: monk
+    - placeholder: true
+    - placeholder: true
+
+    - placeholder: true
+    - placeholder: true
+    - switch_class: barbarian
+    - switch_class: fighter
     - switch_class: ranger
     - switch_class: rogue
+    - placeholder: true
     - placeholder: true
     - placeholder: true

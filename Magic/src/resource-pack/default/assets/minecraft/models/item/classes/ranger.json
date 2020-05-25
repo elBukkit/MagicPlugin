@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/spells/counterspell",
-        "texture": "item/spells/counterspell"
+        "particle": "item/spells/arrow7",
+        "texture": "item/spells/arrow7"
     }
 }

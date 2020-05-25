@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full_disabled",
     "textures": {
-        "particle": "item/spells/upgrades",
-        "texture": "item/spells/upgrades"
+        "particle": "item/spells/sharpen_sword",
+        "texture": "item/spells/sharpen_sword"
     }
 }

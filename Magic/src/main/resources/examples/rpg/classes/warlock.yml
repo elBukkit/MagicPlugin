@@ -1,0 +1,10 @@
+warlock:
+  inherit: base
+  locked: true
+  icon: spell_icon:273
+  icon_disabled: spell_icon_disabled:273
+  entity_attributes:
+    generic_max_health:
+      value: "constitution / 1.2"
+      operation: base
+

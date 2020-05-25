@@ -10,7 +10,7 @@ reset:
         - placeholder: true
         - placeholder: true
         - placeholder: true
-        - icon: spell_icon:265
+        - icon: spell_icon:266
           actions: reset
           name: "&4Reset All Player Data"
           description: "This will &cPERMANENTLY &freset all of your player data.\n\n&cTHIS CAN NOT BE UNDONE!"
