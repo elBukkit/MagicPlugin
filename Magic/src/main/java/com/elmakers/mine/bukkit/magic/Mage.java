@@ -4424,22 +4424,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public boolean addModifier(com.elmakers.mine.bukkit.api.magic.MageModifier apiModifier) {
-        if (!(apiModifier instanceof MageModifier)) return false;
-        MageModifier modifier = (MageModifier)apiModifier;
-        MageModifier existing = modifiers.get(modifier.getKey());
-        if (existing != null) {
-            existing.onRemoved();
-        }
-        modifiers.put(modifier.getKey(), modifier);
-        modifier.onAdd(modifier.getDuration());
-        updatePassiveEffects();
-        return true;
+    public boolean addModifier(@Nonnull String key) {
+        return addModifier(key, 0);
     }
 
     @Override
-    public boolean addModifier(@Nonnull String key) {
-        return addModifier(key, 0);
+    public boolean addModifier(@Nonnull String key, @Nullable ConfigurationSection properties) {
+        int duration = properties == null ? 0 : properties.getInt("duration");
+        return addModifier(key, duration, properties);
     }
 
     @Override

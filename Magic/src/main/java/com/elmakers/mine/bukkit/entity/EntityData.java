@@ -115,7 +115,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     protected Collection<PotionEffect> potionEffects = null;
     protected Collection<PotionEffectType> removeEffects = null;
-    protected Collection<MageModifier> modifiers = null;
+    protected Map<String, ConfigurationSection> modifiers = null;
     protected Collection<String> removeModifiers = null;
     protected Map<Attribute, Double> attributes = null;
 
@@ -317,14 +317,23 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
-        /*
-        Collection<ConfigurationSection> modifierList = ConfigurationUtils.getNodeList(parameters, "modifiers");
-        if (modifierList != null && !modifierList.isEmpty()) {
-            modifiers = new ArrayList<>();
-            for (ConfigurationSection modifierList : )
-        }
 
-         */
+
+        ConfigurationSection modifierSection = parameters.getConfigurationSection("modifiers");
+        if (modifierSection == null) {
+            List<String> modifierList = ConfigurationUtils.getStringList(parameters, "modifiers");
+            if (modifierList != null) {
+                modifiers = new HashMap<>();
+                for (String addKey : modifierList) {
+                    modifiers.put(addKey, null);
+                }
+            }
+        } else {
+            modifiers = new HashMap<>();
+            for (String addKey : modifierSection.getKeys(false)) {
+                modifiers.put(addKey, modifierSection.getConfigurationSection(addKey));
+            }
+        }
 
         defaultDrops = parameters.getBoolean("default_drops", true);
         dropsRequirePlayerKiller = parameters.getBoolean("drops_require_player_killer", false);
@@ -754,8 +763,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 Mage mage = controller.getRegisteredMage(li);
                 if (mage != null) {
                     if (modifiers != null) {
-                        for (MageModifier modifier : modifiers) {
-                            mage.addModifier(modifier);
+                        for (Map.Entry<String, ConfigurationSection> modifier : modifiers.entrySet()) {
+                            mage.addModifier(modifier.getKey(), modifier.getValue());
                         }
                     }
                     if (removeModifiers != null) {
@@ -889,9 +898,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void addModifier(MageModifier modifier) {
         if (this.modifiers == null) {
-            this.modifiers = new ArrayList<>();
+            this.modifiers = new HashMap<>();
         }
-        this.modifiers.add(modifier);
+        this.modifiers.put(modifier.getKey(), modifier.getConfiguration());
     }
 
     public void addModifierForRemoval(String modifierKey) {

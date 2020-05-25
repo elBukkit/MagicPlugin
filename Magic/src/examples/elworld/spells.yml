@@ -3787,7 +3787,8 @@ antiknockback:
     cast:
     - class: Modifier
   parameters:
-    target: self
+    target: other
+    range: 32
     add_modifiers:
       - antiknockback
     duration: 20000
