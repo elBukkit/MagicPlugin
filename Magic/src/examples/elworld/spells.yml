@@ -3780,3 +3780,14 @@ damagetest:
     target: self
     damage: 1
     damage_type: anvil
+
+antiknockback:
+  icon: stick
+  actions:
+    cast:
+    - class: Modifier
+  parameters:
+    target: self
+    add_modifiers:
+      - antiknockback
+    duration: 20000
