@@ -2322,7 +2322,7 @@ public class NMSUtils {
     
     public static void playCustomSound(Player player, Location location, String sound, float volume, float pitch)
     {
-        if (class_PacketPlayOutCustomSoundEffect_Constructor == null) return;
+        if (class_PacketPlayOutCustomSoundEffect_Constructor == null || sound == null) return;
         try {
             Object packet = null;
             if (class_MinecraftKey_constructor != null) {
