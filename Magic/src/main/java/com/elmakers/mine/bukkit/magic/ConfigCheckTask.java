@@ -42,7 +42,12 @@ public class ConfigCheckTask implements Runnable {
                 // Don't reload if the modifying player is not online
                 if (player != null || modifiedUserId == null) {
                     controller.getLogger().info("Config check file modified, reloading configuration");
-                    controller.loadConfiguration(Bukkit.getConsoleSender(), true);
+                    Bukkit.getScheduler().runTask(controller.getPlugin(), new Runnable() {
+                        @Override
+                        public void run() {
+                            controller.loadConfiguration(Bukkit.getConsoleSender(), true);
+                        }
+                    });
 
                     // The updating player should get their new spells
                     final Mage mage = player == null ? null : controller.getRegisteredMage(player);
