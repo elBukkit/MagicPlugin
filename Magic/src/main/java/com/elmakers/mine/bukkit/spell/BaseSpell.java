@@ -1408,7 +1408,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public boolean hasBreakPermission(Block block) {
         // Cast permissions bypass
-        if (bypassBreakRestriction || bypassAll) return true;
+        if (bypassBuildRestriction || bypassRegionPermission || bypassAll) return true;
         if (!ignoreRegionOverrides) {
             Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
             if (castPermission != null && castPermission == true) return true;
