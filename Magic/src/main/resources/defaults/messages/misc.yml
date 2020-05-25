@@ -30,6 +30,10 @@ worlds:
     world_the_end:
         name: The End
 
+cooldown:
+    description: "&eCooldown: &6$time"
+    mage_description: "&cExhaustion: &6$time"
+
 warmup:
     description: "&7Warmup: &6$time"
 
