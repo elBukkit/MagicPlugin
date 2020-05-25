@@ -1015,8 +1015,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     public boolean onMageRemoveModifier(CommandSender sender, Player player, String[] parameters) {
         Mage mage = controller.getMage(player);
         String modifierKey = parameters[0];
-        MageModifier modifier = mage.getModifier(modifierKey);;
-        if (modifier != null && mage.removeModifier(modifierKey)) {
+        MageModifier modifier = mage.removeModifier(modifierKey);
+        if (modifier != null) {
             sender.sendMessage(controller.getMessages().get("commands.modifier.remove.success")
                 .replace("$name", modifier.getName())
                 .replace("$player", player.getName())

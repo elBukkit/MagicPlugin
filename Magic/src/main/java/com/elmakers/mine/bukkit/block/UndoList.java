@@ -32,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
@@ -739,6 +740,31 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         EntityData entityData = modify(entity);
         if (entityData != null) {
             entityData.setHasPotionEffects(true);
+        }
+    }
+
+    @Override
+    public void addPotionEffectForRemoval(Entity entity, PotionEffectType potionEffectType)
+    {
+        EntityData entityData = modify(entity);
+        if (entityData != null) {
+            entityData.addPotionEffectForRemoval(potionEffectType);
+        }
+    }
+
+    @Override
+    public void addModifier(Entity entity, com.elmakers.mine.bukkit.api.magic.MageModifier modifier) {
+        EntityData entityData = modify(entity);
+        if (entityData != null) {
+            entityData.addModifier(modifier);
+        }
+    }
+
+    @Override
+    public void addModifierForRemoval(Entity entity, String modifierKey) {
+        EntityData entityData = modify(entity);
+        if (entityData != null) {
+            entityData.addModifierForRemoval(modifierKey);
         }
     }
 

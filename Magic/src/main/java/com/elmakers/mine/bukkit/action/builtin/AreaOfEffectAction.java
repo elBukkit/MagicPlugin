@@ -52,7 +52,6 @@ public class AreaOfEffectAction extends CompoundEntityAction
     {
         context.addWork((int)Math.ceil(radius) + 100);
         Mage mage = context.getMage();
-        Entity sourceEntity = context.getMage().getEntity();
         Location sourceLocation = context.getTargetLocation();
         if (mage.getDebugLevel() > 8)
         {

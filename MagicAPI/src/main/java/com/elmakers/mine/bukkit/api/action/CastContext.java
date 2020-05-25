@@ -17,6 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
@@ -28,6 +29,7 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -115,6 +117,9 @@ public interface CastContext extends WandEffectContext {
     void registerVelocity(Entity entity);
     void registerMoved(Entity entity);
     void registerPotionEffects(Entity entity);
+    void registerPotionEffectForRemoval(Entity entity, PotionEffectType potionEffectType);
+    void registerModifier(Entity entity, MageModifier modifier);
+    void registerModifierForRemoval(Entity entity, String modifierKey);
     void registerBreakable(Block block, double breakable);
     void registerReflective(Block block, double reflectivity);
     double registerBreaking(Block block, double breakAmount);

@@ -57,7 +57,7 @@ public abstract class TemplatedProperties extends CasterProperties {
     @Nullable
     public Object getInheritedProperty(String key) {
         Object value = super.getProperty(key);
-        if (value == null) {
+        if (value == null && template != null) {
             value = template.getProperty(key);
         }
         return value;
@@ -89,13 +89,13 @@ public abstract class TemplatedProperties extends CasterProperties {
     }
 
     @Override
-    @Nullable
+    @Nonnull
     public ConfigurationSection getPropertyConfiguration(String key) {
         BaseMagicProperties storage = getStorage(key);
         if (storage != null && storage != this) {
             return storage.getPropertyConfiguration(key);
         }
-        if (configuration.contains(key)) {
+        if (configuration.contains(key) || template == null) {
             return configuration;
         }
         return template.getConfiguration();

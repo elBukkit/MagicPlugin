@@ -16,6 +16,7 @@
  - Add upgrade levels to Critical, fix FX showing every time
  - Spell shop and advancement can now work without a wand. Changed messaging a little.
  - Spell upgrades now work without a wand
+ - Better potion effect undo
  
 # 7.9.2
  

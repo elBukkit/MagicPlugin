@@ -56,11 +56,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -112,6 +114,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Rabbit.Type rabbitType = null;
 
     protected Collection<PotionEffect> potionEffects = null;
+    protected Collection<PotionEffectType> removeEffects = null;
+    protected Collection<MageModifier> modifiers = null;
+    protected Collection<String> removeModifiers = null;
     protected Map<Attribute, Double> attributes = null;
 
     protected Vector velocity = null;
@@ -312,6 +317,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
+        /*
+        Collection<ConfigurationSection> modifierList = ConfigurationUtils.getNodeList(parameters, "modifiers");
+        if (modifierList != null && !modifierList.isEmpty()) {
+            modifiers = new ArrayList<>();
+            for (ConfigurationSection modifierList : )
+        }
+
+         */
 
         defaultDrops = parameters.getBoolean("default_drops", true);
         dropsRequirePlayerKiller = parameters.getBoolean("drops_require_player_killer", false);
@@ -727,14 +740,28 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (entity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)entity;
-            if (hasPotionEffects) {
-                Collection<PotionEffect> currentEffects = li.getActivePotionEffects();
-                for (PotionEffect effect : currentEffects) {
-                    li.removePotionEffect(effect.getType());
+            if (hasPotionEffects && potionEffects != null) {
+                for (PotionEffect effect : potionEffects) {
+                    li.addPotionEffect(effect);
                 }
-                if (potionEffects != null) {
-                    for (PotionEffect effect : potionEffects) {
-                        li.addPotionEffect(effect);
+            }
+            if (removeEffects != null) {
+                for (PotionEffectType effectType : removeEffects) {
+                    li.removePotionEffect(effectType);
+                }
+            }
+            if (modifiers != null || removeModifiers != null) {
+                Mage mage = controller.getRegisteredMage(li);
+                if (mage != null) {
+                    if (modifiers != null) {
+                        for (MageModifier modifier : modifiers) {
+                            mage.addModifier(modifier);
+                        }
+                    }
+                    if (removeModifiers != null) {
+                        for (String modifierKey : removeModifiers) {
+                            mage.removeModifier(modifierKey);
+                        }
                     }
                 }
             }
@@ -851,6 +878,27 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void setHasPotionEffects(boolean changed) {
         this.hasPotionEffects = changed;
+    }
+
+    public void addPotionEffectForRemoval(PotionEffectType potionEffectType) {
+        if (removeEffects == null) {
+            removeEffects = new ArrayList<>();
+        }
+        removeEffects.add(potionEffectType);
+    }
+
+    public void addModifier(MageModifier modifier) {
+        if (this.modifiers == null) {
+            this.modifiers = new ArrayList<>();
+        }
+        this.modifiers.add(modifier);
+    }
+
+    public void addModifierForRemoval(String modifierKey) {
+        if (removeModifiers == null) {
+            removeModifiers = new ArrayList<>();
+        }
+        removeModifiers.add(modifierKey);
     }
 
     public void setHasVelocity(boolean hasVelocity) {

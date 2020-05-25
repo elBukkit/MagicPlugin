@@ -31,6 +31,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
@@ -40,6 +41,7 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -432,6 +434,30 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         if (undoList != null)
         {
             undoList.addPotionEffects(entity);
+        }
+    }
+
+    @Override
+    public void registerPotionEffectForRemoval(Entity entity, PotionEffectType effectType) {
+        addWork(5);
+        if (undoList != null) {
+            undoList.addPotionEffectForRemoval(entity, effectType);
+        }
+    }
+
+    @Override
+    public void registerModifier(Entity entity, MageModifier modifier) {
+        addWork(5);
+        if (undoList != null) {
+            undoList.addModifier(entity, modifier);
+        }
+    }
+
+    @Override
+    public void registerModifierForRemoval(Entity entity, String modifierKey) {
+        addWork(5);
+        if (undoList != null) {
+            undoList.addModifierForRemoval(entity, modifierKey);
         }
     }
 

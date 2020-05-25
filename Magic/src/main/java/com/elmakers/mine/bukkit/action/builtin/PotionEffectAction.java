@@ -134,16 +134,10 @@ public class PotionEffectAction extends BaseSpellAction
         }
 
         LivingEntity targetEntity = (LivingEntity)entity;
-        context.registerPotionEffects(targetEntity);
         boolean effected = false;
-        if (addEffects != null && addEffects.size() > 0)
-        {
-            effected = true;
-            CompatibilityUtils.applyPotionEffects(targetEntity, addEffects);
-        }
-
         if (removeEffects != null)
         {
+            context.registerPotionEffects(targetEntity);
             Collection<PotionEffect> currentEffects = targetEntity.getActivePotionEffects();
             for (PotionEffect effect : currentEffects)
             {
@@ -152,6 +146,15 @@ public class PotionEffectAction extends BaseSpellAction
                 {
                     targetEntity.removePotionEffect(removeType);
                     effected = true;
+                }
+            }
+        }
+        if (addEffects != null && addEffects.size() > 0)
+        {
+            effected = true;
+            for (PotionEffect effect : addEffects) {
+                if (CompatibilityUtils.applyPotionEffect(targetEntity, effect)) {
+                    context.registerPotionEffectForRemoval(targetEntity, effect.getType());
                 }
             }
         }

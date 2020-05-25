@@ -113,7 +113,7 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static void applyPotionEffect(LivingEntity entity, PotionEffect effect) {
+    public static boolean applyPotionEffect(LivingEntity entity, PotionEffect effect) {
         // Avoid nerfing existing effects
         boolean applyEffect = true;
         Collection<PotionEffect> currentEffects = entity.getActivePotionEffects();
@@ -131,6 +131,7 @@ public class CompatibilityUtils extends NMSUtils {
         if (applyEffect) {
             entity.addPotionEffect(effect, true);
         }
+        return applyEffect;
     }
 
     public static boolean setDisplayName(ItemStack itemStack, String displayName) {

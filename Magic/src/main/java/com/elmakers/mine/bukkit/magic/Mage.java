@@ -4424,6 +4424,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean addModifier(com.elmakers.mine.bukkit.api.magic.MageModifier apiModifier) {
+        if (!(apiModifier instanceof MageModifier)) return false;
+        MageModifier modifier = (MageModifier)apiModifier;
+        MageModifier existing = modifiers.get(modifier.getKey());
+        if (existing != null) {
+            existing.onRemoved();
+        }
+        modifiers.put(modifier.getKey(), modifier);
+        modifier.onAdd(modifier.getDuration());
+        updatePassiveEffects();
+        return true;
+    }
+
+    @Override
     public boolean addModifier(@Nonnull String key) {
         return addModifier(key, 0);
     }
@@ -4462,13 +4476,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public boolean removeModifier(@Nonnull String key) {
+    public MageModifier removeModifier(@Nonnull String key) {
         MageModifier modifier = modifiers.remove(key);
         if (modifier != null) {
             modifier.onRemoved();
             updatePassiveEffects();
         }
-        return modifier != null;
+        return modifier;
     }
 
     @Override

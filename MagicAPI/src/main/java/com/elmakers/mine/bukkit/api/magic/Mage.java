@@ -742,10 +742,11 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nonnull
     ConfigurationSection getVariables();
     void updatePassiveEffects();
+    boolean addModifier(@Nonnull MageModifier modifier);
     boolean addModifier(@Nonnull String key);
     boolean addModifier(@Nonnull String key, int duration);
     boolean addModifier(@Nonnull String key, int duration, @Nullable ConfigurationSection properties);
-    boolean removeModifier(@Nonnull String key);
+    MageModifier removeModifier(@Nonnull String key);
     @Nonnull
     Set<String> getModifierKeys();
     @Nullable
