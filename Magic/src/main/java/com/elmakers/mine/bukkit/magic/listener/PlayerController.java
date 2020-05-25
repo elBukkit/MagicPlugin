@@ -36,6 +36,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -83,6 +85,23 @@ public class PlayerController implements Listener {
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
     }
 
+    private void trigger(Player player, String trigger) {
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage != null) {
+            mage.trigger(trigger);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerSneak(PlayerToggleSneakEvent event) {
+        trigger(event.getPlayer(), event.isSneaking() ? "sneak" : "stop_sneak");
+    }
+
+    @EventHandler
+    public void onPlayerSprint(PlayerToggleSprintEvent event) {
+        trigger(event.getPlayer(), event.isSprinting() ? "sprint" : "stop_sprint");
+    }
+
     @EventHandler
     public void onPlayerExpChange(PlayerExpChangeEvent event)
     {
@@ -94,8 +113,7 @@ public class PlayerController implements Listener {
     }
 
     @EventHandler
-    public void onPlayerToggleGlide(EntityToggleGlideEvent event)
-    {
+    public void onPlayerToggleGlide(EntityToggleGlideEvent event) {
         Entity entity = event.getEntity();
         Mage mage = controller.getRegisteredMage(entity);
         if (mage != null && mage.isGlidingAllowed() && !event.isGliding() && !entity.isOnGround()) {
@@ -104,6 +122,8 @@ public class PlayerController implements Listener {
             if (player != null) {
                 controller.addFlightExemption(player, 5000);
             }
+        } else if (mage != null) {
+            mage.trigger(event.isGliding() ? "glide" : "stop_glide");
         }
     }
 
@@ -410,6 +430,7 @@ public class PlayerController implements Listener {
         }
 
         Mage mage = controller.getMage(player);
+        mage.trigger("left_click");
 
         Wand wand = mage.checkWand();
         if (wand == null) return;
@@ -537,6 +558,9 @@ public class PlayerController implements Listener {
         }
         if (!isLeftClick && !mage.checkLastClick(clickCooldown)) {
             return;
+        }
+        if (isRightClick) {
+            mage.trigger("right_click");
         }
 
         // Prefer wand right-click if wand is active

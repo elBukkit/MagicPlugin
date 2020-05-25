@@ -1,0 +1,43 @@
+# This is an example of a passive spell, that is automatically triggered on sneaking
+stealth:
+  name: Stealth
+  description: Go invisible when you sneak
+  icon: spell_icon:116
+  icon_disabled: spell_icon_disabled:116
+  passive: true
+  triggers:
+    # This triggers when the player sneaks
+    - trigger: sneak
+  actions:
+    cast:
+      - class: PotionEffect
+      - class: Wear
+        item: nothing
+        armor_slot: 0
+      - class: Wear
+        item: nothing
+        armor_slot: 1
+      - class: Wear
+        item: nothing
+        armor_slot: 2
+      - class: Wear
+        item: nothing
+        armor_slot: 3
+  effects:
+    cast:
+      - class: EffectSingle
+        sound: magic.vanish
+      - class: EffectRing
+        particle: smoke_normal
+        location: target
+    undo:
+      - class: EffectSingle
+        sound: magic.vanish
+      - class: EffectRing
+        particle: smoke_normal
+        location: target
+  parameters:
+    target: self
+    duration: 5000
+    cooldown: 10000
+    effect_invisibility: 5

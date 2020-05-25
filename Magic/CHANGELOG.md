@@ -8,7 +8,9 @@
    - Can have a duration or be manually removed
    - Use the Modifier action to add/remove, similar syntax to PotionEffect
    - Modifiers must be pre-defined in modifiers.yml
-   - There is a new "mage modifier" command for adding and removing modifiers 
+   - There is a new "mage modifier" command for adding and removing modifiers
+   - Can have spells with added/removed triggers
+ - Added triggers: sneak, stop_sneak, sprint, stop_sprint, glide, stop_glide, left_click, right_click  
  - Add lock/unlock triggers for classes.
  - Add FX to Aqualung and Critical passives
  - Add upgrade levels to Critical, fix FX showing every time
