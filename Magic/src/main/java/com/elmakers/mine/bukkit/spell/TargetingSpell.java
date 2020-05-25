@@ -419,7 +419,7 @@ public class TargetingSpell extends BaseSpell {
     public double getRange()
     {
         TargetType targetType = targeting.getTargetType();
-        if (targetType == TargetType.NONE || targetType == TargetType.SELF) return 0;
+        if (!targetType.isRanged()) return 0;
         return getMaxRange();
     }
 
