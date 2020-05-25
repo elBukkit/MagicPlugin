@@ -3362,6 +3362,7 @@ public class MagicController implements MageController {
         mage.deactivate();
         mage.undoScheduled();
         mage.deactivateClasses();
+        mage.deactivateModifiers();
 
         // Delay removal one tick to avoid issues with plugins that kill
         // players on logout (CombatTagPlus, etc)
@@ -4172,7 +4173,7 @@ public class MagicController implements MageController {
         // Update registered mages so their classes are current
         for (Mage mage : mages.values()) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).reloadClasses();
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).reloadModifiers();
             }
         }
     }

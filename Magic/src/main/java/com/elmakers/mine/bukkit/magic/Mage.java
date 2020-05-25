@@ -148,6 +148,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final @Nonnull MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
     private final Map<String, MageModifier> modifiers = new HashMap<>();
+    private final Set<MageModifier> removeModifiers = new HashSet<>();
     private final Map<String, Double> attributes = new HashMap<>();
     private ConfigurationSection variables;
     private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
@@ -1233,6 +1234,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
             // Re-activate unlocked classes
             activateClasses();
+            activateModifiers();
 
             // Restore saved health, which may have gotten lowered when we deactivated classes
             double health = data.getHealth();
@@ -1721,6 +1723,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             lastTick = now;
         }
 
+        // Check for expired modifiers
+        for (MageModifier modifier : modifiers.values()) {
+            if (modifier.hasDuration() && modifier.getTimeRemaining() <= 0) {
+                removeModifiers.add(modifier);
+            }
+        }
+        for (MageModifier modifier : removeModifiers) {
+            modifiers.remove(modifier.getKey());
+            modifier.onRemoved();
+        }
+        if (!removeModifiers.isEmpty()) {
+            removeModifiers.clear();
+            updatePassiveEffects();
+        }
+
         if (isNPC) return;
 
         // We don't tick non-player or offline Mages, except
@@ -1817,6 +1834,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (!mageClass.isLocked()) {
                 mageClass.activateAttributes();
             }
+        }
+    }
+
+    protected void reloadModifiers() {
+        for (Iterator<Map.Entry<String, MageModifier>> it = modifiers.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, MageModifier> entry = it.next();
+            String templateKey = entry.getKey();
+            MageModifier modifier = entry.getValue();
+            ModifierTemplate template = controller.getModifierTemplate(templateKey);
+            if (template == null) {
+                modifier.onRemoved();
+                it.remove();
+                continue;
+            }
+            modifier.deactivateAttributes();
+            modifier.setTemplate(template);
+            modifier.activateAttributes();
         }
     }
 
@@ -3512,6 +3546,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 addPassiveEffects(mageClass, true);
             }
         }
+        for (MageModifier modifier : modifiers.values()) {
+            addPassiveEffects(modifier, true);
+        }
 
         if (activeWand != null && !activeWand.isPassive())
         {
@@ -4267,9 +4304,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 mageClass.deactivateAttributes();
             }
         }
-        for (MageModifier modifier : modifiers.values()) {
-            modifier.deactivateAttributes();
-        }
     }
 
     @Override
@@ -4279,6 +4313,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 mageClass.activateAttributes();
             }
         }
+    }
+
+    @Override
+    public void deactivateModifiers() {
+        for (MageModifier modifier : modifiers.values()) {
+            modifier.deactivateAttributes();
+        }
+    }
+
+    @Override
+    public void activateModifiers() {
         for (MageModifier modifier : modifiers.values()) {
             modifier.activateAttributes();
         }
@@ -4412,6 +4457,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         modifier = new MageModifier(this, template);
         modifiers.put(key, modifier);
         modifier.onAdd(duration);
+        updatePassiveEffects();
         return true;
     }
 
@@ -4420,6 +4466,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         MageModifier modifier = modifiers.remove(key);
         if (modifier != null) {
             modifier.onRemoved();
+            updatePassiveEffects();
         }
         return modifier != null;
     }

@@ -723,6 +723,9 @@ public interface Mage extends CostReducer, CooldownReducer {
      */
     void activateClasses();
 
+    void deactivateModifiers();
+    void activateModifiers();
+
     /**
      * Set this when launching vanilla projectiles, if you don't want the launch intercepted
      * by the bow/wand handler.
