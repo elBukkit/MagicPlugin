@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.spell;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -149,13 +148,6 @@ public class BaseSpell implements MageSpell, Cloneable {
             ),
             PERCENTAGE_PARAMETERS
         );
-
-    public static DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
-    public static DecimalFormat HOURS_FORMATTER = new DecimalFormat("0");
-    public static DecimalFormat MINUTES_FORMATTER = new DecimalFormat("0");
-    public static DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0");
-    public static DecimalFormat MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat("0");
-    public static DecimalFormat MOMENT_SECONDS_FORMATTER = new DecimalFormat("0.##");
 
     /*
      * protected members that are helpful to use
@@ -1271,42 +1263,10 @@ public class BaseSpell implements MageSpell, Cloneable {
         color = ConfigurationUtils.getColor(workingParameters, "color", color);
         particle = workingParameters.getString("particle", null);
 
-        double cooldownRemaining = (double)getRemainingCooldown() / 1000.0;
+        long cooldownRemaining = getRemainingCooldown();
         String timeDescription = "";
         if (cooldownRemaining > 0) {
-            if (cooldownRemaining >= 60 * 60) {
-                double hours = cooldownRemaining / (60 * 60);
-                if ((long)Math.floor(hours) == 1) {
-                    timeDescription = controller.getMessages().get("cooldown.wait_hour")
-                        .replace("$hours", HOURS_FORMATTER.format(hours));
-                } else {
-                    timeDescription = controller.getMessages().get("cooldown.wait_hours")
-                        .replace("$hours", HOURS_FORMATTER.format(hours));
-                }
-            } else if (cooldownRemaining >= 60) {
-                double minutes = cooldownRemaining / 60;
-                if ((long)Math.floor(minutes) == 1) {
-                    timeDescription = controller.getMessages().get("cooldown.wait_minute")
-                        .replace("$minutes", MINUTES_FORMATTER.format(minutes));
-                } else {
-                    timeDescription = controller.getMessages().get("cooldown.wait_minutes")
-                        .replace("$minutes", MINUTES_FORMATTER.format(minutes));
-                }
-            } else if (cooldownRemaining >= 1) {
-                double seconds = cooldownRemaining;
-                if ((long)Math.floor(seconds) == 1) {
-                    timeDescription = controller.getMessages().get("cooldown.wait_second")
-                        .replace("$seconds", SECONDS_FORMATTER.format(cooldownRemaining));
-                } else {
-                    timeDescription = controller.getMessages().get("cooldown.wait_seconds")
-                        .replace("$seconds", SECONDS_FORMATTER.format(cooldownRemaining));
-                }
-            } else {
-                timeDescription = controller.getMessages().get("cooldown.wait_moment");
-                timeDescription = timeDescription
-                    .replace("$milliseconds", MOMENT_MILLISECONDS_FORMATTER.format(cooldownRemaining * 1000))
-                    .replace("$seconds", MOMENT_SECONDS_FORMATTER.format(cooldownRemaining));
-            }
+            timeDescription = controller.getMessages().getTimeDescription(cooldownRemaining, "wait", "cooldown");
             castMessage(getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN, workingParameters);
             sendCastMessage(SpellResult.COOLDOWN, " (no cast)");
@@ -2272,36 +2232,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Nullable
     private String getTimeDescription(Messages messages, int time) {
         if (time > 0) {
-            double timeInSeconds = (double)time / 1000;
-            if (timeInSeconds >= 60 * 60) {
-                double hours = timeInSeconds / (60 * 60);
-                if ((long)Math.floor(hours) == 1) {
-                    return messages.get("cooldown.description_hour")
-                        .replace("$hours", HOURS_FORMATTER.format(hours));
-                }
-                return messages.get("cooldown.description_hours")
-                    .replace("$hours", HOURS_FORMATTER.format(hours));
-            } else if (timeInSeconds >= 60) {
-                double minutes = timeInSeconds / 60;
-                if ((long)Math.floor(minutes) == 1) {
-                    return messages.get("cooldown.description_minute")
-                        .replace("$minutes", MINUTES_FORMATTER.format(minutes));
-                }
-                return messages.get("cooldown.description_minutes")
-                    .replace("$minutes", MINUTES_FORMATTER.format(minutes));
-            } else if (timeInSeconds >= 2) {
-                return messages.get("cooldown.description_seconds")
-                    .replace("$seconds", SECONDS_FORMATTER.format(timeInSeconds));
-            } else if (timeInSeconds >= 1) {
-                return messages.get("cooldown.description_second")
-                    .replace("$seconds", SECONDS_FORMATTER.format(timeInSeconds));
-            } else {
-                String timeDescription = controller.getMessages().get("cooldown.description_moment");
-                timeDescription = timeDescription
-                    .replace("$milliseconds", MOMENT_MILLISECONDS_FORMATTER.format(timeInSeconds * 1000))
-                    .replace("$seconds", MOMENT_SECONDS_FORMATTER.format(timeInSeconds));
-                return timeDescription;
-            }
+            return controller.getMessages().getTimeDescription(time, "description", "cooldown");
         }
         return null;
     }
@@ -2709,7 +2640,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         double range = getRange();
         if (range > 0) {
-            lore.add(ChatColor.GRAY + messages.get("wand.range_description").replace("$range", RANGE_FORMATTER.format(range)));
+            lore.add(ChatColor.GRAY + messages.getRangeDescription(range, "wand.range_description"));
         }
 
         String effectiveDuration = this.getDurationDescription(messages);

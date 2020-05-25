@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.inventory.ItemStack;
@@ -55,4 +56,12 @@ public interface Messages {
      * @return
      */
     String formatPropertyString(String template, float amount, float max, String propertyTemplate);
+
+    @Nonnull
+    String getTimeDescription(long time, @Nonnull String descriptionType);
+    @Nonnull
+    String getTimeDescription(long time, @Nonnull String descriptionType, @Nullable String messagesPath);
+
+    @Nonnull
+    String getRangeDescription(double range, @Nonnull String messagesKey);
 }

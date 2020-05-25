@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -27,6 +28,13 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private static String PARAMETER_PATTERN_STRING = "\\$([a-zA-Z0-9]+)";
     private static Pattern PARAMETER_PATTERN = Pattern.compile(PARAMETER_PATTERN_STRING);
     private static Random random = new Random();
+
+    public static DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
+    public static DecimalFormat HOURS_FORMATTER = new DecimalFormat("0");
+    public static DecimalFormat MINUTES_FORMATTER = new DecimalFormat("0");
+    public static DecimalFormat SECONDS_FORMATTER = new DecimalFormat("0");
+    public static DecimalFormat MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat("0");
+    public static DecimalFormat MOMENT_SECONDS_FORMATTER = new DecimalFormat("0.##");
 
     private Map<String, String> messageMap = new HashMap<>();
     private Map<String, List<String>> randomized = new HashMap<>();
@@ -288,5 +296,62 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             roman = "-" + roman;
         }
         return roman;
+    }
+
+    private String getWithFallback(String key, String path, String fallbackPath) {
+        if (fallbackPath == null || fallbackPath.isEmpty()) {
+            return get(path + "." + key);
+        }
+        return get(path + "." + key, get(fallbackPath + "." + key));
+    }
+
+    @Override
+    @Nonnull
+    public String getTimeDescription(long time, @Nonnull String descriptionType) {
+        return getTimeDescription(time, descriptionType, null);
+    }
+
+    @Override
+    @Nonnull
+    public String getTimeDescription(long time, @Nonnull String descriptionType, @Nullable String messagesPath) {
+        if (time > 0) {
+            double timeInSeconds = (double)time / 1000;
+            if (timeInSeconds >= 60 * 60) {
+                double hours = timeInSeconds / (60 * 60);
+                if ((long)Math.floor(hours) == 1) {
+                    return getWithFallback(descriptionType + "_hour", "time", messagesPath)
+                        .replace("$hours", HOURS_FORMATTER.format(hours));
+                }
+                return getWithFallback(descriptionType + "_hours", "time", messagesPath)
+                    .replace("$hours", HOURS_FORMATTER.format(hours));
+            } else if (timeInSeconds >= 60) {
+                double minutes = timeInSeconds / 60;
+                if ((long)Math.floor(minutes) == 1) {
+                    return getWithFallback(descriptionType + "_minute", "time", messagesPath)
+                        .replace("$minutes", MINUTES_FORMATTER.format(minutes));
+                }
+                return getWithFallback(descriptionType + "_minutes", "time", messagesPath)
+                    .replace("$minutes", MINUTES_FORMATTER.format(minutes));
+            } else if (timeInSeconds >= 2) {
+                return getWithFallback(descriptionType + "_seconds", "time", messagesPath)
+                    .replace("$seconds", SECONDS_FORMATTER.format(timeInSeconds));
+            } else if (timeInSeconds >= 1) {
+                return getWithFallback(descriptionType + "_second", "time", messagesPath)
+                    .replace("$seconds", SECONDS_FORMATTER.format(timeInSeconds));
+            } else {
+                String timeDescription = getWithFallback(descriptionType + "_moment", "time", messagesPath);
+                timeDescription = timeDescription
+                    .replace("$milliseconds", MOMENT_MILLISECONDS_FORMATTER.format(timeInSeconds * 1000))
+                    .replace("$seconds", MOMENT_SECONDS_FORMATTER.format(timeInSeconds));
+                return timeDescription;
+            }
+        }
+        return "";
+    }
+
+    @Override
+    @Nonnull
+    public String getRangeDescription(double range, @Nonnull String messagesKey) {
+        return get(messagesKey).replace("$range", RANGE_FORMATTER.format(range));
     }
 }
