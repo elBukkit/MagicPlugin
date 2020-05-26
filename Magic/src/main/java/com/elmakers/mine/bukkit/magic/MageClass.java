@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -88,5 +89,27 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
     @Nullable
     public SpellTemplate getBaseSpell(String spellKey) {
         return getSpellTemplate(spellKey);
+    }
+
+    public boolean canUse(String itemKey) {
+        List<String> useable = getStringList("useable");
+        if (useable == null) return false;
+        for (String key : useable) {
+            if (key.equalsIgnoreCase(itemKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canCraft(String recipeKey) {
+        List<String> craftable = getStringList("craftable");
+        if (craftable == null) return false;
+        for (String key : craftable) {
+            if (key.equalsIgnoreCase(recipeKey)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

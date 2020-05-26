@@ -12,3 +12,39 @@ spells:
     selected_free: "Became $name"
     confirm_title: "Become $item?"
     at_limit: "You have already chosen your class"
+  arrow_spell_light:
+      name: Light Arrow
+      description: Fire an arrow of pure light
+      cast_player_message: "a:$player shot a $spell at you"
+  arrow_spell_bomb:
+      name: Bomb Arrow
+      description: Fire an exploding arrow
+      cast_player_message: "a:$player shot a $spell at you"
+  arrow_spell_poison:
+      name: Poison Arrow
+      description: Fire a arrow that bursts into a poison cloud
+      cast_player_message: "a:$player shot a $spell at you"
+  arrow_spell_regular:
+      name: Normal Arrow
+      description: Fire a normal arrow
+      cast_player_message: "a:$player shot a $spell at you"
+  arrow_spell_blink:
+      name: Blink Arrow
+      description: Teleport to the location where your arrow lands
+      cast_player_message: "a:$player shot a $spell at you"
+  arrow_spell_fire:
+      name: Fire Arrow
+      description: Lights a fire where it lands
+      cast_player_message: "a:$player shot a $spell at you"
+  arrow_spell_ice:
+      name: Ice Arrow
+      description: Freeze the area where it lands
+      cast_player_message: "a:$player shot an $spell at you"
+  arrow_spell_shock:
+      name: Shock Arrow
+      description: Electrify the target
+      cast_player_message: "a:$player shot a $spell at you"
+  arrow_spell_grapple:
+      name: Grapple Arrow
+      description: Shoot an arrow which pulls you towards it
+      cast_player_message: "a:$player shot a $spell at you"

@@ -83,6 +83,6 @@ public class MageClassTemplate extends TemplateProperties implements com.elmaker
 
     @Nullable
     public Collection<String> getRecipies() {
-        return getStringList("recipes");
+        return getStringList("craftable");
     }
 }

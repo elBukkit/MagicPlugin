@@ -7,7 +7,16 @@ ranger:
     generic_max_health:
       value: "constitution"
       operation: base
-  recipes:
+  craftable:
+    - arrow_blink
+    - arrow_fire
+    - arrow_bomb
+    - arrow_grapple
+    - arrow_ice
+    - arrow_light
+    - arrow_poison
+    - arrow_shock
+  useable:
     - arrow_blink
     - arrow_fire
     - arrow_bomb
