@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.item;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -93,11 +94,25 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         creator = configuration.getString("creator");
         creatorId = configuration.getString("creator_id");
 
-        // Convenience method for renaming items
+        // Convenience methods for top-level name, lore and tags
+        ConfigurationSection tagSection = configuration.getConfigurationSection("tags");
+        if (tagSection != null) {
+            item = CompatibilityUtils.makeReal(item);
+            InventoryUtils.saveTagsToItem(tagSection, item);
+        }
         String customName = configuration.getString("name");
         if (customName != null) {
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
+            item.setItemMeta(meta);
+        }
+        List<String> lore = configuration.getStringList("lore");
+        if (lore != null && !lore.isEmpty()) {
+            ItemMeta meta = item.getItemMeta();
+            for (int i = 0; i < lore.size(); i++) {
+                lore.set(i, ChatColor.translateAlternateColorCodes('&', lore.get(i)));
+            }
+            meta.setLore(lore);
             item.setItemMeta(meta);
         }
 
