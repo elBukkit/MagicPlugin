@@ -1,0 +1,31 @@
+arrow_spell_blink:
+  inherit: arrow_blink
+  costs: []
+
+arrow_spell_bomb:
+  inherit: arrow_blink
+  costs: []
+
+arrow_spell_fire:
+  inherit: arrow_fire
+  costs: []
+
+arrow_spell_grapple:
+  inherit: arrow_grapple
+  costs: []
+
+arrow_spell_ice:
+  inherit: arrow_ice
+  costs: []
+
+arrow_spell_light:
+  inherit: arrow_light
+  costs: []
+
+arrow_spell_poison:
+  inherit: arrow_poison
+  costs: []
+
+arrow_spell_shock:
+  inherit: arrow_shock
+  costs: []

@@ -1,0 +1,95 @@
+arrow_blink:
+  locked: true
+  output: arrow_blink
+  output_type: item
+
+  materials:
+    o: ender_eye
+    i: arrow
+
+  row_1: o
+  row_2: i
+
+arrow_fire:
+  locked: true
+  output: arrow_fire
+  output_type: item
+
+  materials:
+    o: flint_and_steel
+    i: arrow
+
+  row_1: o
+  row_2: i
+
+arrow_bomb:
+  locked: true
+  output: arrow_bomb
+  output_type: item
+
+  materials:
+    o: sulphur
+    i: arrow
+
+  row_1: o
+  row_2: i
+
+arrow_grapple:
+  locked: true
+  output: arrow_grapple
+  output_type: item
+
+  materials:
+    o: leash
+    i: arrow
+
+  row_1: o
+  row_2: i
+
+arrow_ice:
+  locked: true
+  output: arrow_ice
+  output_type: item
+
+  materials:
+    o: snowball
+    i: arrow
+
+  row_1: o
+  row_2: i
+
+arrow_light:
+  locked: true
+  output: arrow_light
+  output_type: item
+
+  materials:
+    o: glowstone_dust
+    i: arrow
+
+  row_1: o
+  row_2: i
+
+arrow_poison:
+  locked: true
+  output: arrow_poison
+  output_type: item
+
+  materials:
+    o: spider_eye
+    i: arrow
+
+  row_1: o
+  row_2: i
+
+arrow_shock:
+  locked: true
+  output: arrow_shock
+  output_type: item
+
+  materials:
+    o: redstone
+    i: arrow
+
+  row_1: o
+  row_2: i
