@@ -26,6 +26,7 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
@@ -50,7 +51,6 @@ import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class EntityController implements Listener {
-    private static final double MAX_ARROW_SPEED = 3;
     private final MagicController controller;
     private double meleeDamageReduction = 0;
     private boolean preventMeleeDamage = false;
@@ -491,6 +491,14 @@ public class EntityController implements Listener {
     }
 
     @EventHandler
+    public void onEntityShootBow(EntityShootBowEvent event) {
+        Entity shooter = event.getEntity();
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(shooter);
+        if (mage == null || mage.isLaunchingProjectile()) return;
+        mage.setLastBowPull(event.getForce());
+    }
+
+    @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         if (event.isCancelled()) return;
 
@@ -501,9 +509,6 @@ public class EntityController implements Listener {
         }
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage((Entity)shooter);
         if (mage == null || mage.isLaunchingProjectile()) return;
-
-        double pull = Math.min(1.0, projectile.getVelocity().length() / MAX_ARROW_SPEED);
-        mage.setLastBowPull(pull);
         mage.setLastProjectileType(projectile.getType());
         if (mage.trigger("launch")) {
             if (mage.isCancelLaunch()) {
@@ -518,6 +523,7 @@ public class EntityController implements Listener {
         if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) return;
         double minPull = wand.getDouble("cast_min_bowpull");
 
+        double pull = mage.getLastBowPull();
         if (minPull > 0 && pull < minPull) {
             if (wand.isInventoryOpen()) event.setCancelled(true);
             return;
