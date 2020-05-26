@@ -1347,7 +1347,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return true;
         }
         for (MageClass mageClass : classes.values()) {
-            if (mageClass.canUse(lockKey)) return true;
+            if (!mageClass.isLocked() && mageClass.canUse(lockKey)) return true;
         }
         return false;
     }

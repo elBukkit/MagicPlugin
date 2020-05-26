@@ -115,7 +115,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             meta.setLore(lore);
             item.setItemMeta(meta);
         }
-        InventoryUtils.setMeta(item, "key", key);
+        InventoryUtils.setMeta(item, "magic_key", key);
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
         if (categoriesList != null) {
