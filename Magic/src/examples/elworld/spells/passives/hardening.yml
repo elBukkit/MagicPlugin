@@ -21,8 +21,6 @@ hardening:
             variable: slowness
             value: slowness + 1
             default: 0
-          - class: Message
-            message: SLOW x @slowness
           - class: PotionEffect
             duration: 2000
             add_effects: slow
