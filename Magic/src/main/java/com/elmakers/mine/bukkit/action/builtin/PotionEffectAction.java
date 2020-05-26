@@ -79,6 +79,7 @@ public class PotionEffectAction extends BaseSpellAction
         super.prepare(context, parameters);
         ambient = parameters.getBoolean("effects_ambient", true);
         particles = parameters.getBoolean("effects_particles", true);
+        amplifier = parameters.getInt("amplifier", 0);
         if (parameters.contains("duration"))
         {
             int durationOverride = parameters.getInt("duration");
