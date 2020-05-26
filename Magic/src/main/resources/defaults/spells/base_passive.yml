@@ -1,0 +1,14 @@
+base_passive:
+  passive: true
+  cast_on_no_target: false
+  effects:
+    fail:
+    insufficient_resources:
+    insufficient_permission:
+    cooldown:
+    cursed:
+    backfire:
+    blocked:
+  parameters:
+    quiet: true
+    target: self

@@ -1,9 +1,7 @@
-
 critical:
-  inherit: false
+  inherit: base_passive
   icon: spell_icon:161
   icon_disabled: spell_icon_disabled:161
-  passive: true
   worth: 500
   upgrade_required_casts: 50
   triggers:
