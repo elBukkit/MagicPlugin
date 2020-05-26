@@ -1023,7 +1023,7 @@ public class ConfigurationUtils extends ConfigUtils {
                         continue;
                     }
                     int ticks = defaultDuration / 50;
-                    potionEffects.add(new PotionEffect(effectType, effectType.isInstant() ? 1 : ticks, 0, defaultAmbient, defaultParticles));
+                    potionEffects.add(new PotionEffect(effectType, effectType.isInstant() ? 1 : ticks, defaultAmplifier, defaultAmbient, defaultParticles));
                 } else {
                     ConfigurationSection potionEffectSection = genericEntry instanceof ConfigurationSection ? (ConfigurationSection)genericEntry : null;
                     if (potionEffectSection == null && genericEntry instanceof Map) {
