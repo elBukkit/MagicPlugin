@@ -37,10 +37,10 @@ classselector:
 
     - placeholder: true
     - placeholder: true
+    - switch_class: artificer
     - switch_class: barbarian
     - switch_class: fighter
     - switch_class: ranger
     - switch_class: rogue
-    - placeholder: true
     - placeholder: true
     - placeholder: true

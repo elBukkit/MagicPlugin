@@ -278,6 +278,7 @@
     {"predicate": {"damaged": 0, "damage": 0.173495518565941}, "model": "item/classes/paladin"},
     {"predicate": {"damaged": 0, "damage": 0.174135723431498}, "model": "item/classes/sorcerer"},
     {"predicate": {"damaged": 0, "damage": 0.174775928297055}, "model": "item/classes/warlock"},
+    {"predicate": {"damaged": 0, "damage": 0.175416133162612}, "model": "item/classes/artificer"},
 
     {"predicate": {"damaged": 1, "damage": 0}, "model": "item/diamond_axe"}
   ]

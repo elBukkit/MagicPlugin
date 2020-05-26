@@ -11,9 +11,12 @@ classes:
   ranger:
     name: "Ranger"
     description: "Master of the bow"
+  artificer:
+    name: "Artificer"
+    description: "Crafting, brewing and inventing"
   cleric:
     name: "Cleric"
-    description: "Potions and alchemy"
+    description: "Healing and protection"
   peasant:
     name: "Peasant"
     description: "Just a regular Joe"
@@ -31,7 +34,7 @@ classes:
     description: "Deliver devastating combos"
   paladin:
     name: "Paladin"
-    description: "Healing and protection"
+    description: "Holy protection"
   sorcerer:
     name: "Sorcerer"
     description: "Learn to cast a variety of spells"
