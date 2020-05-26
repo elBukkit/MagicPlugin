@@ -25,6 +25,7 @@ public abstract class CompoundAction extends BaseSpellAction
     private boolean requiresBreakPermission = false;
     private boolean stopOnSuccess = false;
     private boolean initialized = false;
+    protected boolean pauseOnNext = false;
     protected @Nullable ConfigurationSection actionConfiguration;
     protected @Nullable CastContext actionContext;
     private @Nullable Object baseActions;
@@ -115,7 +116,7 @@ public abstract class CompoundAction extends BaseSpellAction
             result = result.min(step(context));
 
             // Prevent infinite loops of no actions
-            if (context.getWorkAllowed() <= 0 && !result.isStop()) {
+            if ((pauseOnNext || context.getWorkAllowed() <= 0) && !result.isStop()) {
                 result = SpellResult.PENDING;
             }
         }

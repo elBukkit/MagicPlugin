@@ -17,6 +17,7 @@
  - Spell shop and advancement can now work without a wand. Changed messaging a little.
  - Spell upgrades now work without a wand
  - Better potion effect undo
+ - Add Interval action, like a combo of Repeat + Delay
  
 # 7.9.2
  
