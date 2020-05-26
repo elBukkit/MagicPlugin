@@ -46,6 +46,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
@@ -1336,6 +1337,47 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         classes.remove(classKey);
         if (activeClass != null && activeClass.getTemplate().getKey().equals(classKey)) {
             activeClass = null;
+        }
+        return true;
+    }
+
+    public boolean canUse(ItemStack itemStack) {
+        // TODO: tagged items, allowed list
+        return true;
+    }
+
+    public boolean useArrow(ItemStack itemStack, int slot, ProjectileLaunchEvent event) {
+        String spellKey = Wand.getArrowSpell(itemStack);
+        if (spellKey == null) return false;
+
+        Spell spell = getSpell(spellKey);
+        if (spell == null) {
+            return false;
+        }
+        event.setCancelled(true);
+        String skillClass = Wand.getArrowSpellClass(itemStack);
+        if (skillClass != null && !skillClass.isEmpty()) {
+            if (!setActiveClass(skillClass)) {
+                sendMessage(controller.getMessages().get("mage.no_class").replace("$name", spell.getName()));
+                return false;
+            }
+        }
+        if (!canUse(itemStack)) {
+            sendMessage(controller.getMessages().get("mage.no_class").replace("$name", spell.getName()));
+            return false;
+        }
+
+        if (!isCostFree()) {
+            if (itemStack.getAmount() <= 1) {
+                clearSlot(slot);
+            } else {
+                itemStack.setAmount(itemStack.getAmount() - 1);
+            }
+        }
+        try {
+            spell.cast();
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.SEVERE, "Error casting arrow spell", ex);
         }
         return true;
     }

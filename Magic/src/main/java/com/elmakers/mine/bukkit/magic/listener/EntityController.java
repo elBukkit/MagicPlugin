@@ -505,29 +505,7 @@ public class EntityController implements Listener {
         Integer slot = mage.getArrowToLaunch();
         if (slot == null) return;
         ItemStack itemStack = mage.getItemInSlot(slot);
-        String spellKey = Wand.getArrowSpell(itemStack);
-        if (spellKey == null) return;
-
-        Spell spell = mage.getSpell(spellKey);
-        if (spell == null) {
-            return;
-        }
-
-        if (!mage.isCostFree()) {
-            if (itemStack.getAmount() <= 1) {
-                mage.clearSlot(slot);
-            } else {
-                itemStack.setAmount(itemStack.getAmount() - 1);
-            }
-        }
-        event.setCancelled(true);
-        String[] parameters = {"bowpull", Double.toString(mage.getLastBowPull())};
-
-        try {
-            spell.cast(parameters);
-        } catch (Exception ex) {
-            controller.getLogger().log(Level.SEVERE, "Error casting arrow spell", ex);
-        }
+        mage.useArrow(itemStack, slot, event);
     }
 
     @EventHandler
@@ -571,10 +549,9 @@ public class EntityController implements Listener {
         }
 
         event.setCancelled(true);
-        String[] parameters = {"bowpull", Double.toString(pull)};
 
         try {
-            wand.cast(parameters);
+            wand.cast();
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error casting bow spell", ex);
         }
