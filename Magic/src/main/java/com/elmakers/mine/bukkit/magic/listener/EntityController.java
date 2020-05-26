@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -496,6 +497,37 @@ public class EntityController implements Listener {
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(shooter);
         if (mage == null || mage.isLaunchingProjectile()) return;
         mage.setLastBowPull(event.getForce());
+        mage.setLastBowUsed(event.getBow());
+    }
+
+    public void checkArrowLaunch(com.elmakers.mine.bukkit.magic.Mage mage, Projectile projectile, ProjectileLaunchEvent event) {
+        if (!(projectile instanceof Arrow) || !mage.isPlayer()) return;
+        Integer slot = mage.getArrowToLaunch();
+        if (slot == null) return;
+        ItemStack itemStack = mage.getItemInSlot(slot);
+        String spellKey = Wand.getArrowSpell(itemStack);
+        if (spellKey == null) return;
+
+        Spell spell = mage.getSpell(spellKey);
+        if (spell == null) {
+            return;
+        }
+
+        if (!mage.isCostFree()) {
+            if (itemStack.getAmount() <= 1) {
+                mage.clearSlot(slot);
+            } else {
+                itemStack.setAmount(itemStack.getAmount() - 1);
+            }
+        }
+        event.setCancelled(true);
+        String[] parameters = {"bowpull", Double.toString(mage.getLastBowPull())};
+
+        try {
+            spell.cast(parameters);
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.SEVERE, "Error casting arrow spell", ex);
+        }
     }
 
     @EventHandler
@@ -517,7 +549,10 @@ public class EntityController implements Listener {
         }
 
         Wand wand = mage.getActiveWand();
-        if (wand == null) return;
+        if (wand == null) {
+            checkArrowLaunch(mage, projectile, event);
+            return;
+        }
 
         Material wandIcon = wand.getIcon().getMaterial();
         if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) return;
@@ -538,7 +573,6 @@ public class EntityController implements Listener {
         event.setCancelled(true);
         String[] parameters = {"bowpull", Double.toString(pull)};
 
-        // prevent recursion!
         try {
             wand.cast(parameters);
         } catch (Exception ex) {

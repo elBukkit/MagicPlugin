@@ -12,6 +12,8 @@
    - Can have spells with added/removed triggers
  - Added triggers: sneak, stop_sneak, sprint, stop_sprint, glide, stop_glide, left_click, right_click  
  - Add lock/unlock triggers for classes.
+ - Add "magic arrows", a way to attach spells to arrows that can be fired from a normal bow
+ - Add "bowpower" attribute, for arrow spells to react to enchanted bows
  - Add FX to Aqualung and Critical passives
  - Add upgrade levels to Critical, fix FX showing every time
  - Spell shop and advancement can now work without a wand. Changed messaging a little.

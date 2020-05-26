@@ -2784,6 +2784,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
+    public static String getArrowSpell(ItemStack item) {
+        if (InventoryUtils.isEmpty(item)) return null;
+        Object arrowNode = InventoryUtils.getNode(item, "arrow");
+        if (arrowNode == null) return null;
+        Object spellNode = InventoryUtils.getNode(arrowNode, "spell");
+        if (spellNode == null) return null;
+        return InventoryUtils.getMetaString(spellNode, "key");
+    }
+
+    @Nullable
     public static String getSpell(ItemStack item) {
         if (InventoryUtils.isEmpty(item)) return null;
         Object spellNode = InventoryUtils.getNode(item, "spell");

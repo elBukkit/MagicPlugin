@@ -33,6 +33,7 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -51,6 +52,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -261,6 +263,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private double lastDamage;
     private double lastDamageDealt;
     private double lastBowPull;
+    private ItemStack lastBowUsed;
     private boolean cancelLaunch = false;
     private EntityType lastProjectileType;
 
@@ -4176,6 +4179,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case "bowpull": {
                 return getLastBowPull();
             }
+            case "bowpower": {
+                return (double)getLastBowPower();
+            }
 
             default:
                 return null;
@@ -4364,6 +4370,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.lastBowPull = lastBowPull;
     }
 
+    public int getLastBowPower() {
+        if (lastBowUsed == null || !lastBowUsed.hasItemMeta()) {
+            return 0;
+        }
+        ItemMeta meta = lastBowUsed.getItemMeta();
+        return meta.getEnchantLevel(Enchantment.ARROW_DAMAGE);
+    }
+
+    public void setLastBowUsed(ItemStack itemStack) {
+        this.lastBowUsed = itemStack;
+    }
+
     public void setLastProjectileType(EntityType t) {
         lastProjectileType = t;
     }
@@ -4487,5 +4505,68 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     public MageModifier getModifier(String key) {
         return modifiers.get(key);
+    }
+
+    /**
+     * Get the item slot of the arrow that will be fired from a bow.
+     * -1 : Main hand
+     * -2 : Offhand
+     * >=0 : Inventory slot
+     * @return null if the player is not holding an arrow
+     */
+    @Nullable
+    public Integer getArrowToLaunch() {
+        Player player = getPlayer();
+        PlayerInventory inventory = player == null ? null : player.getInventory();
+        if (inventory == null) {
+            return null;
+        }
+        ItemStack itemStack = inventory.getItemInMainHand();
+        if (itemStack.getType() == Material.ARROW) {
+            return -1;
+        }
+        itemStack = inventory.getItemInOffHand();
+        if (itemStack.getType() == Material.ARROW) {
+            return -2;
+        }
+        ItemStack[] contents = inventory.getContents();
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
+            if (item != null && item.getType() == Material.ARROW) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public ItemStack getItemInSlot(int slot) {
+        Player player = getPlayer();
+        PlayerInventory inventory = player == null ? null : player.getInventory();
+        if (inventory == null) {
+            return null;
+        }
+        if (slot == -1) {
+            return inventory.getItemInMainHand();
+        }
+        if (slot == -2) {
+            return inventory.getItemInOffHand();
+        }
+        return inventory.getItem(slot);
+    }
+
+    public void clearSlot(int slot) {
+        Player player = getPlayer();
+        PlayerInventory inventory = player == null ? null : player.getInventory();
+        if (inventory == null) {
+            return;
+        }
+        if (slot == -1) {
+            inventory.setItemInMainHand(null);
+        } else if (slot == -2) {
+            inventory.setItemInOffHand(null);
+        } else {
+            inventory.setItem(slot, null);
+        }
     }
 }
