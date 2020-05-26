@@ -1,0 +1,32 @@
+hardening:
+  inherit: base_passive
+  name: Hardening
+  icon: diamond_axe:238
+  icon_disabled: spell_icon_disabled:238
+  triggers:
+    - trigger: damage
+      max_health: 20
+  actions:
+    cast:
+      - class: Modifier
+        add_modifiers: hardened
+      - class: PotionEffect
+        add_effects: slow
+      - class: Repeat
+        repeat: 10
+        actions:
+          - class: Delay
+            delay: 1000
+          - class: ModifyVariable
+            variable: slowness
+            value: slowness + 1
+            default: 0
+          - class: Message
+            message: SLOW x @slowness
+          - class: PotionEffect
+            duration: 2000
+            add_effects: slow
+            amplifier: slowness
+  parameters:
+    duration: 10000
+    cooldown: 30000

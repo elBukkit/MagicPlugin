@@ -16,3 +16,12 @@ ironskin:
     generic_armor:
       value: 20
       operation: MULTIPLY_SCALAR_1
+
+hardened:
+  entity_attributes:
+    generic_armor:
+      value: 20
+      operation: add_number
+    generic_knockback_resistance:
+      value: 2
+      operation: add_number
