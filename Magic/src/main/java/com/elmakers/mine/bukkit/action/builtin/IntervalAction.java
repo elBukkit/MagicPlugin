@@ -44,11 +44,16 @@ public class IntervalAction extends CompoundAction
     }
 
     @Override
-    public SpellResult step(CastContext context) {
+    public SpellResult perform(CastContext context) {
         if (stepTime > 0 && System.currentTimeMillis() < stepTime + interval) {
             return SpellResult.PENDING;
         }
         stepTime = System.currentTimeMillis();
+        return super.perform(context);
+    }
+
+    @Override
+    public SpellResult step(CastContext context) {
         return startActions();
     }
 
