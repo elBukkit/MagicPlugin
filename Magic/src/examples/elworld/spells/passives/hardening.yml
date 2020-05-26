@@ -5,7 +5,7 @@ hardening:
   icon_disabled: spell_icon_disabled:238
   triggers:
     - trigger: damage
-      max_health: 20
+      max_health: 10
   actions:
     cast:
       - class: Modifier
