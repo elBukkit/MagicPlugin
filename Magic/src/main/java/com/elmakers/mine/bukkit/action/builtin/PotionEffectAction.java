@@ -29,6 +29,7 @@ public class PotionEffectAction extends BaseSpellAction
     private Integer duration;
     private boolean ambient = true;
     private boolean particles = true;
+    private int amplifier = 0;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -36,6 +37,7 @@ public class PotionEffectAction extends BaseSpellAction
         super.initialize(spell, parameters);
         ambient = parameters.getBoolean("effects_ambient", true);
         particles = parameters.getBoolean("effects_particles", true);
+        amplifier = parameters.getInt("amplifier", 0);
         if (parameters.contains("remove_effects"))
         {
             removeEffects = new HashSet<>();
@@ -119,7 +121,7 @@ public class PotionEffectAction extends BaseSpellAction
             }
             return effects;
         } else {
-            Collection<PotionEffect> effects = ConfigurationUtils.getPotionEffectObjects(parameters, sectionKey, context.getLogger(), duration, ambient, particles);
+            Collection<PotionEffect> effects = ConfigurationUtils.getPotionEffectObjects(parameters, sectionKey, context.getLogger(), duration, amplifier, ambient, particles);
             return effects == null ? Collections.emptyList() : effects;
         }
     }
