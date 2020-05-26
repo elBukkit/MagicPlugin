@@ -70,7 +70,7 @@ blink:
                particle_orbital: fireworks_spark
                iterations: 8
                particles_nucleus: 8
-               particles_radius: 5
+               particles_orbital: 5
          - class: EffectSingle
            color_override: color
            effectlib:
