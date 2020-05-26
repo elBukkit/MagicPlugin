@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -121,13 +122,24 @@ public class ChangeContextAction extends CompoundAction {
     @Override
     public SpellResult step(CastContext context) {
         Entity sourceEntity = context.getEntity();
-        Location sourceLocation = context.getEyeLocation().clone();
+        Location sourceLocation = context.getEyeLocation();
+        if (sourceLocation != null) {
+            sourceLocation = sourceLocation.clone();
+        }
         if (this.sourceLocation != null) {
             Vector newSource = ConfigurationUtils.toVector(this.sourceLocation);
             if (newSource != null) {
-                sourceLocation.setX(newSource.getX());
-                sourceLocation.setY(newSource.getY());
-                sourceLocation.setZ(newSource.getZ());
+                if (sourceLocation == null) {
+                    World world = context.getWorld();
+                    if (world == null) {
+                        return SpellResult.WORLD_REQUIRED;
+                    }
+                    sourceLocation = new Location(world, newSource.getX(), newSource.getY(), newSource.getZ());
+                } else {
+                    sourceLocation.setX(newSource.getX());
+                    sourceLocation.setY(newSource.getY());
+                    sourceLocation.setZ(newSource.getZ());
+                }
             }
         }
         Entity targetEntity = context.getTargetEntity();
@@ -145,10 +157,6 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (swapSourceAndTarget)
         {
-            // We can't have a null source location
-            if (targetLocation == null) {
-                return SpellResult.NO_TARGET;
-            }
             Entity swapEntity = targetEntity;
             targetEntity = sourceEntity;
             sourceEntity = swapEntity;
@@ -176,27 +184,27 @@ public class ChangeContextAction extends CompoundAction {
                 context.getBrush().setTarget(current, targetLocation);
             }
         }
-        if (sourceDirectionIsTarget && targetEntity != null)
+        if (sourceDirectionIsTarget && targetEntity != null && sourceLocation != null)
         {
             sourceLocation.setDirection(targetEntity.getLocation().getDirection());
         }
-        if (sourcePitch != null)
+        if (sourcePitch != null && sourceLocation != null)
         {
             sourceLocation.setPitch((float)(double)sourcePitch);
         }
-        if (sourceLocation.getPitch() > sourcePitchMin)
+        if (sourceLocation != null && sourceLocation.getPitch() > sourcePitchMin)
         {
             sourceLocation.setPitch(sourcePitchMin);
         }
-        else if (sourceLocation.getPitch() < sourcePitchMax)
+        else if (sourceLocation != null && sourceLocation.getPitch() < sourcePitchMax)
         {
             sourceLocation.setPitch(sourcePitchMax);
         }
-        if (sourceOffset != null)
+        if (sourceLocation != null && sourceOffset != null)
         {
             sourceLocation = sourceLocation.add(sourceOffset);
         }
-        if (relativeSourceOffset != null)
+        if (relativeSourceOffset != null && sourceLocation != null)
         {
             Location relativeSource;
             if (persistCaster) {
@@ -205,13 +213,15 @@ public class ChangeContextAction extends CompoundAction {
                 relativeSource = sourceLocation;
             }
 
-            if (!orientPitch) {
-                relativeSource.setPitch(0);
-            }
+            if (relativeSource != null) {
+                if (!orientPitch) {
+                    relativeSource.setPitch(0);
+                }
 
-            //If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may
-            Vector offset = VectorUtils.rotateVector(relativeSourceOffset, relativeSource);
-            sourceLocation.add(offset);
+                //If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may
+                Vector offset = VectorUtils.rotateVector(relativeSourceOffset, relativeSource);
+                sourceLocation.add(offset);
+            }
         }
         if (snapTargetToSize > 0 && targetLocation != null)
         {
@@ -246,7 +256,7 @@ public class ChangeContextAction extends CompoundAction {
             Vector offset = VectorUtils.rotateVector(relativeTargetOffset, relativeTarget);
             targetLocation.add(offset);
         }
-        if (randomSourceOffset != null)
+        if (randomSourceOffset != null && sourceLocation != null)
         {
             sourceLocation = RandomUtils.randomizeLocation(sourceLocation, randomSourceOffset);
         }
@@ -255,7 +265,7 @@ public class ChangeContextAction extends CompoundAction {
             targetLocation = RandomUtils.randomizeLocation(targetLocation, randomTargetOffset);
         }
         // Apply movement direction
-        if (sourceUseMovementDirection) {
+        if (sourceUseMovementDirection && sourceLocation != null) {
             sourceLocation.setDirection(context.getMage().getVelocity());
         }
         if (targetUseMovementDirection && targetLocation != null) {
@@ -268,7 +278,7 @@ public class ChangeContextAction extends CompoundAction {
         }
 
         // Given a yaw and pitch, this adjusts the source direction after rotating it.
-        if (relativeSourceDirectionYawOffset != 0  || relativeSourceDirectionPitchOffset != 0)
+        if ((relativeSourceDirectionYawOffset != 0  || relativeSourceDirectionPitchOffset != 0) && sourceLocation != null)
         {
             Vector relativeDirection = sourceLocation.getDirection();
             relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeSourceDirectionYawOffset, relativeSourceDirectionPitchOffset);
@@ -281,11 +291,11 @@ public class ChangeContextAction extends CompoundAction {
             relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeTargetDirectionYawOffset, relativeTargetDirectionPitchOffset);
             targetLocation.setDirection(relativeDirection);
         }
-        if (sourceYawOffset != 0)
+        if (sourceYawOffset != 0 && sourceLocation != null)
         {
             sourceLocation.setYaw(sourceLocation.getYaw() + sourceYawOffset);
         }
-        if (sourcePitchOffset != 0)
+        if (sourcePitchOffset != 0 && sourceLocation != null)
         {
             sourceLocation.setPitch(sourceLocation.getPitch() + sourcePitchOffset);
         }
@@ -301,7 +311,7 @@ public class ChangeContextAction extends CompoundAction {
         {
             targetLocation.setDirection(targetDirection);
         }
-        if (sourceDirection != null)
+        if (sourceDirection != null && sourceLocation != null)
         {
             sourceLocation.setDirection(sourceDirection);
             direction = sourceDirection.clone();
@@ -310,11 +320,11 @@ public class ChangeContextAction extends CompoundAction {
         {
             targetLocation.setDirection(targetLocation.getDirection().add(targetDirectionOffset));
         }
-        if (sourceDirectionOffset != null)
+        if (sourceDirectionOffset != null && sourceLocation != null)
         {
             sourceLocation.setDirection(direction.add(sourceDirectionOffset));
         }
-        if (sourceDirectionSpeed != null)
+        if (sourceDirectionSpeed != null && sourceLocation != null)
         {
             sourceLocation = sourceLocation.add(direction.clone().multiply(sourceDirectionSpeed));
         }
@@ -322,7 +332,7 @@ public class ChangeContextAction extends CompoundAction {
         {
             targetLocation = targetLocation.add(direction.clone().multiply(targetDirectionSpeed));
         }
-        if (sourceAtTarget && targetLocation != null)
+        if (sourceAtTarget && targetLocation != null && sourceLocation != null)
         {
             sourceLocation.setX(targetLocation.getX());
             sourceLocation.setY(targetLocation.getY());
@@ -333,10 +343,12 @@ public class ChangeContextAction extends CompoundAction {
         {
             context.setTargetLocation(targetLocation);
         }
-        context.getMage().sendDebugMessage(ChatColor.GREEN + " Set new source location to "
-                + ChatColor.GRAY + sourceLocation.getBlockX() + ChatColor.DARK_GRAY + ","
-                + ChatColor.GRAY + sourceLocation.getBlockY() + ChatColor.DARK_GRAY + ","
-                + ChatColor.GRAY + sourceLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
+        if (sourceLocation != null) {
+            context.getMage().sendDebugMessage(ChatColor.GREEN + " Set new source location to "
+                    + ChatColor.GRAY + sourceLocation.getBlockX() + ChatColor.DARK_GRAY + ","
+                    + ChatColor.GRAY + sourceLocation.getBlockY() + ChatColor.DARK_GRAY + ","
+                    + ChatColor.GRAY + sourceLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
+        }
         if (targetLocation != null) {
             context.getMage().sendDebugMessage(ChatColor.DARK_GREEN + " Set new target location to "
                     + ChatColor.GRAY + targetLocation.getBlockX() + ChatColor.DARK_GRAY + ","
