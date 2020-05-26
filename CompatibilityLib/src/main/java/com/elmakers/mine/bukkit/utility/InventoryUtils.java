@@ -38,8 +38,8 @@ public class InventoryUtils extends NMSUtils
         if (handle == null) return false;
         Object tag = getTag(handle);
         if (tag == null) return false;
-        
-        return saveTagsToNBT(tags, tag, null);
+
+        return addTagsToNBT(getMap(tags), tag);
     }
 
     public static boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
