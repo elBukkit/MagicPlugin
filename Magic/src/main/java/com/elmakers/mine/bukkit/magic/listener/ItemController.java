@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.item.ItemData;
+import com.elmakers.mine.bukkit.wand.Wand;
 
 public class ItemController {
     private MageController controller;
@@ -90,6 +91,10 @@ public class ItemController {
 
     @Nullable
     public ItemData get(ItemStack item) {
+        String key = Wand.getMagicKey(item);
+        if (key != null) {
+            return get(key);
+        }
         return itemsByStack.get(item);
     }
 

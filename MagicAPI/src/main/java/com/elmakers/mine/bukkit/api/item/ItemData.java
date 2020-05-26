@@ -24,6 +24,7 @@ public interface ItemData {
     ItemMeta getItemMeta();
     @Nullable
     MaterialAndData getMaterialAndData();
+    boolean isLocked();
 
     @Nullable
     @Deprecated

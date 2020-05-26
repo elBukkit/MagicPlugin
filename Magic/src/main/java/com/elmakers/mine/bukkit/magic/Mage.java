@@ -1342,7 +1342,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public boolean canUse(ItemStack itemStack) {
-        String lockKey = Wand.getLockKey(itemStack);
+        String lockKey = controller.getLockKey(itemStack);
         if (lockKey == null) {
             return true;
         }

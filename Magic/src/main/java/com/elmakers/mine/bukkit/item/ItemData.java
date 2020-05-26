@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableSet;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
@@ -25,10 +26,12 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private Set<String> categories = ImmutableSet.of();
     private String creatorId;
     private String creator;
+    private boolean locked;
 
     public ItemData(ItemStack itemStack) {
         this.item = NMSUtils.getCopy(itemStack);
         this.key = itemStack.getType().toString();
+        locked = (Wand.getLockKey(itemStack) != null);
     }
 
     public ItemData(String materialKey) throws Exception {
@@ -116,6 +119,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             item.setItemMeta(meta);
         }
         InventoryUtils.setMeta(item, "magic_key", key);
+        if (configuration.getBoolean("locked")) {
+            locked = true;
+            InventoryUtils.setMetaBoolean(item, "locked", true);
+        }
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
         if (categoriesList != null) {
@@ -210,5 +217,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         }
 
         return new MaterialAndData(item);
+    }
+
+    @Override
+    public boolean isLocked() {
+        return this.locked;
     }
 }

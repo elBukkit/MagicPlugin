@@ -7,4 +7,6 @@ fighter:
     generic_max_health:
       value: "constitution * 1.5"
       operation: base
+  useable:
+    diamond_sword
 

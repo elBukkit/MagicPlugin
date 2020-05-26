@@ -480,9 +480,17 @@ public class PlayerController implements Listener {
         // controller.getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()) + " cancelled: " + event.isCancelled());
 
         Player player = event.getPlayer();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
+        // Check for locked items
+        Mage mage = controller.getMage(player);
+        if (!mage.canUse(itemInHand)) {
+            mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
+            event.setCancelled(true);
+            return;
+        }
 
         // Don't allow interacting while holding spells, brushes or upgrades
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
         boolean isSkill = Wand.isSkill(itemInHand);
         boolean isSpell = !isSkill && Wand.isSpell(itemInHand);
         if (isSpell || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
@@ -500,8 +508,6 @@ public class PlayerController implements Listener {
                 return;
             }
         }
-
-        Mage mage = controller.getMage(player);
 
         // Check for right-clicking SP or currency items
         if (isRightClick) {

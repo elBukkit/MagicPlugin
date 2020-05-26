@@ -5387,6 +5387,18 @@ public class MagicController implements MageController {
         return items.getOrCreate(key);
     }
 
+    @Nullable
+    public String getLockKey(ItemStack itemStack) {
+        String metaKey = Wand.getLockKey(itemStack);
+        if (metaKey == null) {
+            ItemData item = getItem(itemStack.getType().name().toLowerCase());
+            if (item != null && item.isLocked()) {
+                return item.getKey();
+            }
+        }
+        return metaKey;
+    }
+
     @Override
     public void unloadItemTemplate(String key) {
         items.remove(key);
