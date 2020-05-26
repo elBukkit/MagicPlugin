@@ -124,6 +124,7 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         actions.add(actionContext);
     }
 
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         for (ActionContext action : actions)

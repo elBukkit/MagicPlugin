@@ -18,6 +18,8 @@
  - Spell upgrades now work without a wand
  - Better potion effect undo
  - Add Interval action, like a combo of Repeat + Delay
+ - Fix overlapping casts overwriting each others' variables
+ - Fix blocked-spells and allowed-spells flags (broken in 7.9.2)
  
 # 7.9.2
  

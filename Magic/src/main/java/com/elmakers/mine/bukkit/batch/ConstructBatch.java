@@ -568,10 +568,10 @@ public class ConstructBatch extends BrushBatch {
                 controller.logBlockChange(spell.getMage(), prior, block.getState());
             }
             if (breakable > 0) {
-                spell.getCurrentCast().registerBreakable(block, breakable);
+                context.registerBreakable(block, breakable);
             }
             if (backfireChance > 0) {
-                spell.getCurrentCast().registerReflective(block, backfireChance);
+                context.registerReflective(block, backfireChance);
             }
             if (spawnFallingBlocks) {
                 FallingBlock falling = DeprecatedUtils.spawnFallingBlock(block.getLocation(), previousMaterial, previousData);

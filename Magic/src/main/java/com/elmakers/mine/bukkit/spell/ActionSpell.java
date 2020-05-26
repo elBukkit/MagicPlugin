@@ -136,6 +136,7 @@ public class ActionSpell extends BrushSpell
         if (currentHandler != null)
         {
             currentHandler = (ActionHandler)currentHandler.clone();
+            currentCast.setRootHandler(currentHandler);
             try {
                 currentCast.setInitialResult(result);
                 result = currentHandler.start(currentCast, parameters);
@@ -163,8 +164,9 @@ public class ActionSpell extends BrushSpell
 
     @Override
     public void reloadParameters(CastContext context) {
-        if (currentHandler != null) {
-            currentHandler.prepare(context, workingParameters);
+        com.elmakers.mine.bukkit.api.action.ActionHandler handler = context.getRootHandler();
+        if (handler != null) {
+            handler.prepare(context, context.getWorkingParameters());
         }
     }
 

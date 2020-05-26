@@ -1169,8 +1169,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        if (this.currentCast == null)
-        {
+        if (this.currentCast == null) {
             getCurrentCast();
         }
 
@@ -1179,6 +1178,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         workingParameters = new SpellParameters(this, currentCast);
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
+        currentCast.setWorkingParameters(workingParameters);
         processParameters(workingParameters);
 
         // Check to see if this is allowed to be cast by a command block

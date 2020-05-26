@@ -34,6 +34,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -74,6 +75,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private Vector direction = null;
     private Boolean targetCaster = null;
     private final long startTime;
+    private ConfigurationSection workingParameters;
 
     private Set<UUID> targetMessagesSent = null;
 
@@ -91,6 +93,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private List<ActionHandlerContext> handlers = null;
     private List<ActionHandlerContext> finishedHandlers = null;
     private Map<String, String> messageParameters = null;
+    private ActionHandler rootHandler = null;
 
     // Base Context
     private int workAllowed = 500;
@@ -130,7 +133,8 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         this.result = copy.getResult();
         this.mageClass = copy.getMageClass();
         this.startTime = copy.getStartTime();
-        this.variables = copy.getVariables();
+        this.workingParameters = copy.getWorkingParameters();
+        this.rootHandler = copy.getRootHandler();
 
         Location centerLocation = copy.getTargetCenterLocation();
         if (centerLocation != null) {
@@ -139,6 +143,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
         if (copy instanceof CastContext)
         {
+            this.variables = ((CastContext)copy).variables;
             this.base = ((CastContext)copy).base;
             this.initialResult = ((CastContext)copy).initialResult;
             this.direction = ((CastContext)copy).direction;
@@ -520,7 +525,6 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
         // Create parameter map
         ConfigurationSection parameterMap = null;
-        ConfigurationSection workingParameters = spell.getWorkingParameters();
         ConfigurationSection handlerParameters = spell.getHandlerParameters(effectKey);
         if (handlerParameters != null || workingParameters != null) {
             if (workingParameters != null) {
@@ -1343,7 +1347,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     }
 
     @Override
-    public void addHandler(com.elmakers.mine.bukkit.api.action.ActionHandler handler) {
+    public void addHandler(ActionHandler handler) {
         if (base.handlers == null) {
             base.handlers = new ArrayList<>();
         }
@@ -1455,5 +1459,23 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public long getStartTime() {
         return startTime;
+    }
+
+    @Override
+    public ConfigurationSection getWorkingParameters() {
+        return workingParameters;
+    }
+
+    public void setWorkingParameters(ConfigurationSection workingParameters) {
+        this.workingParameters = workingParameters;
+    }
+
+    public void setRootHandler(ActionHandler handler) {
+        rootHandler = handler;
+    }
+
+    @Override
+    public ActionHandler getRootHandler() {
+        return rootHandler;
     }
 }
