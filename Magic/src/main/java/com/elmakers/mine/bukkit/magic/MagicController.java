@@ -4769,8 +4769,24 @@ public class MagicController implements MageController {
                         for (String key : keys) {
                             CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
                         }
+                    }
+                }
+            } else if (magicItemKey.startsWith("recipes:")) {
+                String recipeKey = magicItemKey.substring(8);
+                itemStack = CompatibilityUtils.getKnowledgeBook();
+                if (itemStack != null) {
+                    if (recipeKey.equals("*")) {
+                        Collection<String> keys = crafting.getRecipeKeys();
+                        for (String key : keys) {
+                            CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                        }
                     } else {
-                        CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipeKey);
+                        MageClassTemplate mageClass = getMageClassTemplate(recipeKey);
+                        if (mageClass != null) {
+                            for (String key : mageClass.getRecipies()) {
+                                CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                            }
+                        }
                     }
                 }
             } else if (skillPointItemsEnabled && magicItemKey.startsWith("sp:")) {

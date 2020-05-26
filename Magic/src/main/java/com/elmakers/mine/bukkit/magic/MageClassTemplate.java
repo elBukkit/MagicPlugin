@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.magic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -78,5 +79,10 @@ public class MageClassTemplate extends TemplateProperties implements com.elmaker
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Nullable
+    public Collection<String> getRecipies() {
+        return getStringList("recipes");
     }
 }
