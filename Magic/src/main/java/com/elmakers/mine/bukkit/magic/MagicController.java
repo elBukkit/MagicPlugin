@@ -3201,12 +3201,13 @@ public class MagicController implements MageController {
         Boolean result = null;
         for (CastPermissionManager manager : castManagers) {
             Boolean managerResult = manager.getRegionCastPermission(player, spell, location);
-            if (result != null) {
-                result = managerResult;
-                if (!result) {
-                    break;
+            if (managerResult != null) {
+                if (!managerResult) {
+                    return false;
                 }
-                break;
+                if (result == null) {
+                    result = managerResult;
+                }
             }
         }
         return result;
@@ -3220,12 +3221,13 @@ public class MagicController implements MageController {
         Boolean result = null;
         for (CastPermissionManager manager : castManagers) {
             Boolean managerResult = manager.getPersonalCastPermission(player, spell, location);
-            if (result != null) {
-                result = managerResult;
-                if (!result) {
-                    break;
+            if (managerResult != null) {
+                if (!managerResult) {
+                    return false;
                 }
-                break;
+                if (result == null) {
+                    result = managerResult;
+                }
             }
         }
         return result;
