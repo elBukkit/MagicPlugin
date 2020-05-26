@@ -358,7 +358,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             if (i < path.length - 1) {
-                node = InventoryUtils.getNode(node, key);
+                node = InventoryUtils.createNode(node, key);
             } else {
                 InventoryUtils.setMetaTyped(node, key, value);
             }
