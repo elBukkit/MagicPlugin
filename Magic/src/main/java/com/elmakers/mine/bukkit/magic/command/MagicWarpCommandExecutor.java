@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class MagicWarpCommandExecutor extends MagicTabExecutor {
@@ -57,6 +58,20 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (subCommand.equalsIgnoreCase("send")) {
+            if (args.length < 3) {
+                sender.sendMessage(ChatColor.RED + "Usage: mwarp send <player> <warp>");
+                return true;
+            }
+            Player sendPlayer = DeprecatedUtils.getPlayer(args[1]);
+            if (sendPlayer == null) {
+                sender.sendMessage(ChatColor.RED + "Can't find player: " + args[1]);
+                return true;
+            }
+            onSendWarp(sender, sendPlayer, args[2]);
+            return true;
+        }
+
         Player player = sender instanceof Player ? (Player)sender : null;
         if (player == null) {
             sender.sendMessage(ChatColor.RED + "This command may only be used from in-game.");
@@ -86,6 +101,15 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         Location location = magicController.getWarp(warpName);
         if (location == null) {
             player.sendMessage(ChatColor.RED + "Unknown warp: " + ChatColor.DARK_RED + warpName);
+            return;
+        }
+        player.teleport(location);
+    }
+
+    private void onSendWarp(CommandSender sender, Player player, String warpName) {
+        Location location = magicController.getWarp(warpName);
+        if (location == null) {
+            sender.sendMessage(ChatColor.RED + "Unknown warp: " + ChatColor.DARK_RED + warpName);
             return;
         }
         player.teleport(location);
@@ -124,10 +148,18 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "remove");
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "replace");
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "go");
+            addIfPermissible(sender, options, "Magic.commands.mwarp.", "send");
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "import");
-        } else if (args.length > 1) {
+        } else if (args.length == 2) {
             String subCommand = args[0];
             if (subCommand.equals("remove") || subCommand.equals("go") || subCommand.equals("replace")) {
+                options.addAll(magicController.getWarps().getCustomWarps());
+            } else if (subCommand.equals("send")) {
+                options.addAll(api.getPlayerNames());
+            }
+        } else if (args.length == 3) {
+            String subCommand = args[0];
+            if (subCommand.equals("send")) {
                 options.addAll(magicController.getWarps().getCustomWarps());
             }
         }

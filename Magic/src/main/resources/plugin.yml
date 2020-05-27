@@ -755,6 +755,7 @@ commands:
         /mwarp replace    Replace an existing warp
         /mwarp remove     Remove a warp
         /mwarp go         Go to a warp
+        /mwarp send       Send another player to a warp
         /mwarp import     Import warps from Essentials or CommandBook
     permission: Magic.commands.mwarp
   "mwarp add":
@@ -781,6 +782,12 @@ commands:
     usage: |
 
        /mwarp go <warpname>
+  "mwarp send":
+   description: Send a player to a warp
+   permission: Magic.commands.mwarp.send
+   usage: |
+
+      /mwarp send <player> <warpname>
   "mwarp import":
     description: Import warps from Essentials or CommandBook. Will overwrite any Magic warps on collision.
     permission: Magic.commands.mwarp.import
@@ -1561,6 +1568,7 @@ permissions:
     - Magic.commands.mwarp.replace
     - Magic.commands.mwarp.remove
     - Magic.commands.mwarp.go
+    - Magic.commands.mwarp.send
     - Magic.commands.mwarp.import
   Magic.commands.mwarp.add:
     description: Player may use the /mwarp add command
@@ -1576,6 +1584,10 @@ permissions:
     default: op
   Magic.commands.mwarp.go:
     description: Player may use the /mwarp go command
+    type: boolean
+    default: op
+  Magic.commands.mwarp.send:
+    description: Player may use the /mwarp send command
     type: boolean
     default: op
   Magic.commands.mwarp.import:
