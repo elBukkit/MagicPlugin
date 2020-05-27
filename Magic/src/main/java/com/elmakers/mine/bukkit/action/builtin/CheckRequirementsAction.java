@@ -12,11 +12,13 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class CheckRequirementsAction extends CheckAction {
     private Collection<Requirement> requirements;
+    private boolean sendMessage;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        sendMessage = parameters.getBoolean("send_message");
         requirements = new ArrayList<>();
         Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(parameters, "requirements");
         if (requirementConfigurations != null) {
@@ -28,6 +30,10 @@ public class CheckRequirementsAction extends CheckAction {
 
     @Override
     protected boolean isAllowed(CastContext context) {
-        return context.getController().checkRequirements(context, requirements) == null;
+        String message = context.getController().checkRequirements(context, requirements);
+        if (sendMessage && message != null) {
+            context.getMage().sendMessage(message);
+        }
+        return message == null;
     }
 }
