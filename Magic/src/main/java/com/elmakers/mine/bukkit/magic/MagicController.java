@@ -5493,7 +5493,7 @@ public class MagicController implements MageController {
             player.sendMessage(message);
         }
 
-        // Give them 2 seconds to read the message
+        // Give them some time to read the message
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {

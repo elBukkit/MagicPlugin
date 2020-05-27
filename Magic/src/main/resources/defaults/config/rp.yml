@@ -9,7 +9,7 @@ enable_resource_pack: true
 # client timing out on connect due to RP processing on potato computers.
 # This value is in milliseconds.
 # Set this to 0 to set resource packs immediately on join.
-resource_pack_delay: 2000
+resource_pack_delay: 200
 
 # Set this to true to turn on the player skull-based spell icons
 # This may be needed if you have disabled the RP, spell icons are in the RP.
