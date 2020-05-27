@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
@@ -53,6 +54,7 @@ public class SpawnEntityAction extends CompoundAction
     private boolean waitForDeath = true;
     private boolean repeatRandomize = true;
     private boolean tamed = false;
+    private boolean setOwner = true;
 
     private Vector direction = null;
     private double speed;
@@ -67,6 +69,7 @@ public class SpawnEntityAction extends CompoundAction
         loot = parameters.getBoolean("loot", false);
         force = parameters.getBoolean("force", false);
         tamed = parameters.getBoolean("tamed", false);
+        setOwner = parameters.getBoolean("owned", true);
         setTarget = parameters.getBoolean("set_target", false);
         setSource = parameters.getBoolean("set_source", false);
         waitForDeath = parameters.getBoolean("wait_for_death", true);
@@ -230,7 +233,9 @@ public class SpawnEntityAction extends CompoundAction
             effectPlayer.start(spawnedEntity.getLocation(), spawnedEntity, null, null);
         }
         context.registerForUndo(spawnedEntity);
-
+        if (setOwner && spawnedEntity instanceof Creature) {
+            spawnedEntity.setMetadata("owner", new FixedMetadataValue(controller.getPlugin(), context.getMage().getId()));
+        }
         if (setTarget)
         {
             context.setTargetEntity(spawnedEntity);

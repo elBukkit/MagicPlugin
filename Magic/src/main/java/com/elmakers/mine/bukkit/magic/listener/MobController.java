@@ -25,6 +25,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
@@ -114,12 +115,32 @@ public class MobController implements Listener {
     }
 
     @EventHandler
-    public void onEntityTargetEnttiy(EntityTargetLivingEntityEvent event)
+    public void onEntityTargetEntity(EntityTargetLivingEntityEvent event)
     {
         Entity source = event.getEntity();
         if (source instanceof Player || event.isCancelled()) return;
 
         Entity target = event.getTarget();
+        if (target != null) {
+            if (source.hasMetadata("owner")) {
+                List<MetadataValue> metadata = source.getMetadata("owner");
+                for (MetadataValue value : metadata) {
+                    String ownerId = value.asString();
+                    Mage mageOwner = controller.getRegisteredMage(ownerId);
+                    if (mageOwner != null && mageOwner.getEntity() == target) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+
+            Mage targetMage = controller.getRegisteredMage(target);
+            if (targetMage != null && targetMage.isSuperProtected()) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         Mage mage = controller.getRegisteredMage(source);
         if (mage == null) return;
 

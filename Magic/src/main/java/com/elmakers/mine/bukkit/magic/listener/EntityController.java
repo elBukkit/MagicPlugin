@@ -478,20 +478,6 @@ public class EntityController implements Listener {
     }
 
     @EventHandler
-    public void onEntityTarget(EntityTargetLivingEntityEvent event)
-    {
-        Entity target = event.getTarget();
-        if (target == null) return;
-        if (!(target instanceof Player)) return;
-        Mage mage = controller.getRegisteredMage(target);
-        if (mage == null) return;
-        if (mage.isSuperProtected())
-        {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
     public void onEntityShootBow(EntityShootBowEvent event) {
         Entity shooter = event.getEntity();
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(shooter);
