@@ -19,8 +19,10 @@ reset:
         - placeholder: true
         - placeholder: true
         reset:
-          - class: ResetMageAction
+          - class: ClearInventory
+          - class: ResetMage
   parameters:
+    target: self
     placeholder_icon: black
     confirm: true
     auto_close: true
