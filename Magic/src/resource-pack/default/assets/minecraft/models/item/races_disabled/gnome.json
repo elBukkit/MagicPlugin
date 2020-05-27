@@ -1,5 +1,5 @@
 {
-    "parent" : "item/custom/icon_full_disableds",
+    "parent" : "item/custom/icon_full_disabled",
     "textures": {
         "particle": "races/gnome",
         "texture": "races/gnome"
