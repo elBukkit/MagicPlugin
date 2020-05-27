@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.9.4
+
 # 7.9.3
  - PLEASE see important notes in MIGRATION.md *before* upgrading! Mostly if you have custom wands with "attributes" set.
  - Modifier system added- for custom status effects
