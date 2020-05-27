@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ModifyVariableAction extends BaseSpellAction {
     private String key;
@@ -29,14 +30,7 @@ public class ModifyVariableAction extends BaseSpellAction {
     }
 
     private void parseScope(ConfigurationSection parameters, Logger logger) {
-        String scopeString = parameters.getString("scope");
-        if (scopeString != null && !scopeString.isEmpty()) {
-            try {
-                scope = VariableScope.valueOf(scopeString.toUpperCase());
-            } catch (Exception ex) {
-                logger.warning("Invalid variable scope: " + scopeString);
-            }
-        }
+        scope = ConfigurationUtils.parseScope(parameters.getString("scope"), scope, logger);
     }
 
     @Override

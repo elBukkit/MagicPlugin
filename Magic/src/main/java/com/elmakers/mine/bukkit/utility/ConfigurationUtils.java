@@ -31,6 +31,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -1066,5 +1067,17 @@ public class ConfigurationUtils extends ConfigUtils {
          }
 
          return base;
+    }
+
+    public static VariableScope parseScope(String scopeString, VariableScope defaultScope, Logger logger) {
+        VariableScope scope = defaultScope;
+        if (scopeString != null && !scopeString.isEmpty()) {
+            try {
+                scope = VariableScope.valueOf(scopeString.toUpperCase());
+            } catch (Exception ex) {
+                logger.warning("Invalid variable scope: " + scopeString);
+            }
+        }
+        return scope;
     }
 }

@@ -3,10 +3,12 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 
 public class SpellParameters extends MageParameters {
@@ -16,24 +18,28 @@ public class SpellParameters extends MageParameters {
     private final @Nonnull Set<String> allParameters = new HashSet<>();
     private final @Nonnull MageSpell spell;
 
-    public SpellParameters(MageSpell spell) {
+    public SpellParameters(@Nonnull MageSpell spell, @Nullable ConfigurationSection mageVariables, @Nullable ConfigurationSection variables) {
         super(spell.getMage(), "Spell: " + spell.getKey());
         this.spell = spell;
         this.spellVariables = spell.getVariables();
-        this.mageVariables = spell.getMage() != null ? spell.getMage().getVariables() : null;
+        this.mageVariables = mageVariables;
         Set<String> superParameters = super.getParameters();
         if (superParameters != null) {
             this.allParameters.addAll(superParameters);
         }
+        this.castVariables = variables;
     }
 
-    public SpellParameters(MageSpell spell, CastContext context) {
-        this(spell);
-        castVariables = context.getVariables();
+    public SpellParameters(@Nonnull MageSpell spell, @Nullable ConfigurationSection variables) {
+        this(spell, spell.getMage() != null ? spell.getMage().getVariables() : null, variables);
     }
 
-    public SpellParameters(MageSpell spell, ConfigurationSection config) {
-        this(spell);
+    public SpellParameters(@Nonnull MageSpell spell, @Nonnull CastContext context) {
+        this(spell, context.getVariables());
+    }
+
+    public SpellParameters(@Nonnull MageSpell spell, @Nullable CastContext context, ConfigurationSection config) {
+        this(spell, context);
         wrap(config);
     }
 
@@ -81,5 +87,18 @@ public class SpellParameters extends MageParameters {
 
     public void setSpellVariables(@Nonnull ConfigurationSection variables) {
         this.spellVariables = variables;
+    }
+
+    @Nullable
+    public ConfigurationSection getVariables(VariableScope scope) {
+        switch (scope) {
+            case CAST:
+                return castVariables;
+            case SPELL:
+                return spellVariables;
+            case MAGE:
+                return mageVariables;
+        }
+        return null;
     }
 }

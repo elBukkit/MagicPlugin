@@ -61,6 +61,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
+import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
@@ -196,6 +197,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
     private List<Trigger> triggers = null;
+
+    // Variable default definitions
+    // For convenience, these can be provide as a list of configurations, or as a map to objects
+    private Collection<ConfigurationSection> variablesList;
+    private ConfigurationSection variablesSection;
 
     protected double cancelOnDamage             = 0;
     protected boolean cancelOnDeath            = false;
@@ -845,9 +851,21 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void loadTemplate(String key, ConfigurationSection node) {
         spellKey = new SpellKey(key);
-        this.parameters = new SpellParameters(this);
+        // Create a temporary cast and mage variable holders so they can be resolved if needed for template processing
+        ConfigurationSection castVariables = new MemoryConfiguration();
+        ConfigurationSection mageVariables = new MemoryConfiguration();
+        this.parameters = new SpellParameters(this, mageVariables, castVariables);
         this.configuration = node;
-        this.loadTemplate(node);
+        this.loadTemplate(node, parameters);
+    }
+
+    protected void loadTemplate(ConfigurationSection node, SpellParameters parameters) {
+        // Get variable definitions
+        variablesList = ConfigurationUtils.getNodeList(node, "variables");
+        variablesSection = node.getConfigurationSection("variables");
+
+        initializeVariables(parameters);
+        loadTemplate(node);
     }
 
     protected void loadTemplate(ConfigurationSection node) {
@@ -1179,6 +1197,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
         currentCast.setWorkingParameters(workingParameters);
+        initializeVariables((SpellParameters)workingParameters);
         processParameters(workingParameters);
 
         // Check to see if this is allowed to be cast by a command block
@@ -1333,6 +1352,33 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean cast(String[] extraParameters) {
         return cast(extraParameters, null);
+    }
+
+    public void initializeVariables(SpellParameters parameters) {
+        if (variablesSection != null) {
+            ConfigurationSection variables = parameters.getVariables(VariableScope.CAST);
+            if (variables != null) {
+                Set<String> keys = variablesSection.getKeys(false);
+                for (String variable : keys) {
+                    if (!variables.contains(variable)) {
+                        variables.set(variable, variablesSection.get(variable));
+                    }
+                }
+            }
+        } else {
+            if (variablesList != null && !variablesList.isEmpty()) {
+                for (ConfigurationSection variableConfig : variablesList) {
+                    VariableScope scope = ConfigurationUtils.parseScope(variableConfig.getString("scope"), VariableScope.CAST, controller.getLogger());
+                    ConfigurationSection variables = parameters.getVariables(scope);
+                    if (variables == null) continue;
+
+                    String variable = variableConfig.getString("variable");
+                    if (!variables.contains(variable)) {
+                        variables.set(variable, variableConfig.get("value"));
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -1813,6 +1859,11 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
             }
         }
+    }
+
+    @Override
+    public void reloadParameters(com.elmakers.mine.bukkit.api.action.CastContext context) {
+        processParameters(context.getWorkingParameters());
     }
 
     @Override

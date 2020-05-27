@@ -30,13 +30,15 @@ public class RandomAction extends CompoundAction
         if (spell instanceof MageSpell) {
             mageSpell = (MageSpell)spell;
         }
-        mapActions();
     }
 
     @Override
     public void reset(CastContext context)
     {
         super.reset(context);
+        if (actionProbability == null) {
+            mapActions(context);
+        }
         if (actionProbability.size() > 0) {
             currentAction = RandomUtils.weightedRandom(actionProbability);
             currentAction.getAction().reset(context);
@@ -58,7 +60,7 @@ public class RandomAction extends CompoundAction
         }
     }
 
-    protected void mapActions() {
+    protected void mapActions(CastContext context) {
         actionProbability = new ArrayDeque<>();
         ActionHandler actions = getHandler("actions");
         if (actions != null)
@@ -73,7 +75,7 @@ public class RandomAction extends CompoundAction
                 {
                     // To support equations
                     if (mageSpell != null) {
-                        actionParameters = new SpellParameters(mageSpell, actionParameters);
+                        actionParameters = new SpellParameters(mageSpell, context, actionParameters);
                     }
                     weight = (float)actionParameters.getDouble("weight", weight);
                 }
@@ -87,7 +89,8 @@ public class RandomAction extends CompoundAction
     public Object clone()
     {
         RandomAction action = (RandomAction)super.clone();
-        action.mapActions();
+        // Force actions to be re-mapped
+        action.actionProbability = null;
         return action;
     }
 }
