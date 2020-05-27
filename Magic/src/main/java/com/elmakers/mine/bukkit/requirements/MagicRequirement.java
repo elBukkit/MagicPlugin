@@ -34,8 +34,8 @@ public class MagicRequirement {
     private @Nullable List<String> wandTags = null;
     private @Nullable String requiresCompletedPath = null;
     private @Nullable String exactPath = null;
-    private @Nullable String mageClass = null;
-    private @Nullable String activeClass = null;
+    private @Nullable List<String> mageClass = null;
+    private @Nullable List<String> activeClass = null;
     private @Nullable List<PropertyRequirement> wandProperties = null;
     private @Nullable List<PropertyRequirement> classProperties = null;
     private @Nullable List<PropertyRequirement> attributes = null;
@@ -43,6 +43,8 @@ public class MagicRequirement {
     private @Nullable RangedRequirement lightLevel = null;
     private @Nullable RangedRequirement timeOfDay = null;
     private @Nullable RangedRequirement height = null;
+    private @Nullable RangedRequirement currency = null;
+    private @Nonnull String currencyType = "currency";
     private boolean requireWand = false;
 
     public MagicRequirement(@Nonnull MageController controller, @Nonnull Requirement requirement) {
@@ -55,8 +57,8 @@ public class MagicRequirement {
         requiresCompletedPath = configuration.getString("path_end");
         requiredTemplate = configuration.getString("wand");
         requireWand = configuration.getBoolean("holding_wand");
-        mageClass = configuration.getString("class");
-        activeClass = configuration.getString("active_class");
+        mageClass = ConfigurationUtils.getStringList(configuration, "class");
+        activeClass = ConfigurationUtils.getStringList(configuration, "active_class");
         wandTags = ConfigurationUtils.getStringList(configuration, "wand_tags");
         if (activeClass != null && mageClass == null) {
             mageClass = activeClass;
@@ -74,6 +76,8 @@ public class MagicRequirement {
         lightLevel = parseRangedRequirement(configuration, "light");
         timeOfDay = parseRangedRequirement(configuration, "time");
         height = parseRangedRequirement(configuration, "height");
+        currency = parseRangedRequirement(configuration, "currency");
+        currencyType = configuration.getString("currency_type", "currency");
 
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
@@ -134,6 +138,9 @@ public class MagicRequirement {
         if (height != null) {
             return location != null && height.check(location.getY());
         }
+        if (currency != null) {
+            return location != null && currency.check(mage.getCurrency(currencyType));
+        }
 
         if (wandTags != null) {
             if (!hasTags(wand)) {
@@ -159,13 +166,29 @@ public class MagicRequirement {
         ProgressionPath path = checkProperties.getPath();
 
         if (mageClass != null && !mageClass.isEmpty()) {
-            if (!mage.hasClassUnlocked(mageClass)) {
+            boolean hasAny = false;
+            for (String testClass : mageClass) {
+                if (mage.hasClassUnlocked(testClass)) {
+                    hasAny = true;
+                    break;
+                }
+            }
+            if (!hasAny) {
                 return false;
             }
         }
         if (activeClass != null && !activeClass.isEmpty()) {
             MageClass currentClass = mage.getActiveClass();
-            if (currentClass == null || !currentClass.getKey().equals(activeClass)) {
+            boolean hasAny = false;
+            if (currentClass != null) {
+                for (String testClass : activeClass) {
+                    if (currentClass.getKey().equals(testClass)) {
+                        hasAny = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasAny) {
                 return false;
             }
         }
@@ -204,7 +227,13 @@ public class MagicRequirement {
         }
 
         if (classProperties != null) {
-            MageClass activeClass = mageClass == null ? mage.getActiveClass() : mage.getClass(mageClass);
+            MageClass activeClass = mage.getActiveClass();
+            if (mageClass != null) {
+                for (String tryClass : mageClass) {
+                    activeClass = mage.getClass(tryClass);
+                    if (activeClass != null) break;
+                }
+            }
             if (activeClass == null) {
                 return false;
             }
@@ -271,19 +300,25 @@ public class MagicRequirement {
 
         Location location = mage.getLocation();
         if (timeOfDay != null) {
-            String message = checkRequiredProperty(context, timeOfDay, controller.getMessages().get("requirement.time"), location == null ? null : (double)location.getWorld().getTime());
+            String message = checkRequiredProperty(context, timeOfDay, getMessage(context, "time"), location == null ? null : (double)location.getWorld().getTime());
             if (message != null) {
                 return message;
             }
         }
         if (lightLevel != null) {
-            String message = checkRequiredProperty(context, lightLevel, controller.getMessages().get("requirement.light"), location == null ? null : (double)location.getBlock().getLightLevel());
+            String message = checkRequiredProperty(context, lightLevel, getMessage(context, "light"), location == null ? null : (double)location.getBlock().getLightLevel());
             if (message != null) {
                 return message;
             }
         }
         if (height != null) {
-            String message = checkRequiredProperty(context, height, controller.getMessages().get("requirement.height"), location == null ? null : location.getY());
+            String message = checkRequiredProperty(context, height, getMessage(context, "height"), location == null ? null : location.getY());
+            if (message != null) {
+                return message;
+            }
+        }
+        if (currency != null) {
+            String message = checkRequiredProperty(context, currency, getMessage(context, "currency"), mage.getCurrency(currencyType));
             if (message != null) {
                 return message;
             }
@@ -310,15 +345,31 @@ public class MagicRequirement {
         }
 
         if (mageClass != null && !mageClass.isEmpty()) {
-            if (mage.hasClassUnlocked(mageClass)) {
-                return getMessage(context, "no_class").replace("$class", mageClass);
+            boolean hasAny = false;
+            for (String testClass : mageClass) {
+                if (mage.hasClassUnlocked(testClass)) {
+                    hasAny = true;
+                    break;
+                }
+            }
+            if (!hasAny) {
+                return getMessage(context, "no_class").replace("$class", mageClass.get(0));
             }
         }
 
         if (activeClass != null && !activeClass.isEmpty()) {
             MageClass currentClass = mage.getActiveClass();
-            if (currentClass == null || !currentClass.getKey().equals(activeClass)) {
-                return getMessage(context, "no_class").replace("$class", activeClass);
+            boolean hasAny = false;
+            if (currentClass != null) {
+                for (String testClass : activeClass) {
+                    if (currentClass.getKey().equals(testClass)) {
+                        hasAny = true;
+                        break;
+                    }
+                }
+            }
+            if (!hasAny) {
+                return getMessage(context, "no_class").replace("$class", activeClass.get(0));
             }
         }
 
@@ -383,7 +434,13 @@ public class MagicRequirement {
         }
 
         if (classProperties != null) {
-            MageClass activeClass = mageClass == null ? mage.getActiveClass() : mage.getClass(mageClass);
+            MageClass activeClass = mage.getActiveClass();
+            if (mageClass != null) {
+                for (String tryClass : mageClass) {
+                    activeClass = mage.getClass(tryClass);
+                    if (activeClass != null) break;
+                }
+            }
             if (activeClass == null) {
                 return getMessage(context, "no_path");
             }
