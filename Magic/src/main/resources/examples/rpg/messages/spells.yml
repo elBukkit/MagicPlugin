@@ -54,3 +54,8 @@ spells:
       name: Grapple Arrow
       description: Shoot an arrow which pulls you towards it
       cast_player_message: "a:$player shot a $spell at you"
+  startgate:
+      name: Start Gate
+      description: Warps the player to "start" if they have chosen a class, race and attributes
+      property_max: "&cYou must allocate all of your Attribute Points"
+      no_class: "&cYou must choose a class and race"

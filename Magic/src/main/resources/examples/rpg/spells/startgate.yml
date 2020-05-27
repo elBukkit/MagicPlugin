@@ -1,0 +1,37 @@
+startgate:
+  icon: book
+  actions:
+    cast:
+    - class: CheckRequirements
+      requirements:
+        - class:
+          - artificer
+          - barbarian
+          - bard
+          - cleric
+          - druid
+          - fighter
+          - monk
+          - paladin
+          - ranger
+          - rogue
+          - sorcerer
+          - warlock
+          - wizard
+        - class:
+            - dwarf
+            - elf
+            - gnome
+            - halfling
+            - human
+        - currency:
+            max: 1
+          currency_type: ap
+      actions:
+        - class: Message
+        - class: Warp
+  parameters:
+    target: self
+    warp: start
+    send_message: true
+    message: "&3You're all set, have fun!"
