@@ -24,6 +24,7 @@
  - Fix blocked-spells and allowed-spells flags (broken in 7.9.2)
  - The SpawnEntity action now forces spawned mobs to ignore their owner by default. Set "owned: false" to prevent this.
  - Variables can now be pre-defined in a spell, in case you want to use them in base spell parameters
+ - Add Warp action, for simple warping (Recall can be complicated for this purpose)
  
 # 7.9.2
  
