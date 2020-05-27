@@ -10,3 +10,7 @@ requirements:
   no_required_path: "&cYou must be at least $path&r!"
   no_path_exact: "&cYou must be at $path&r!"
   no_path_end: "&cYou must be ready to advance from $path&r!"
+  light: "Light Level"
+  time: "Time of Day"
+  height: "Height"
+  currency: "Currency"
