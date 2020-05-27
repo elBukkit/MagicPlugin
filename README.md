@@ -42,6 +42,7 @@ Requires recent Java 8 JDK. Import directly as Maven Project. Build against pare
 - 2D Artists:
   - Dr00bles
   - eleazzaar
+  - Claire Meyers (https://www.behance.net/gallery/18354273/D-D-Class-Icon-System)
 - Sound Effects:
   - Dr00bles
   - S-Toad (Flute samples for Ocarina)

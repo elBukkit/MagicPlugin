@@ -9,8 +9,8 @@ classselector:
     lock_class: peasant
     confirm: true
     auto_close: true
-    placeholder_icon: black
-    confirm_filler: black
+    placeholder_icon: gray
+    confirm_filler: gray
     quiet: false
     loud: true
     limit: 1

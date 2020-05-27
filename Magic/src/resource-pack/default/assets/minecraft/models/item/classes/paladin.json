@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/spells/cure",
-        "texture": "item/spells/cure"
+        "particle": "item/classes/paladin",
+        "texture": "item/classes/paladin"
     }
 }

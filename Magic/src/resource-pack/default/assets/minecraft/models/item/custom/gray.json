@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_full",
+    "textures": {
+        "particle": "item/custom/gray",
+        "texture": "item/custom/gray"
+    }
+}

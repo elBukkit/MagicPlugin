@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/spells/recall",
-        "texture": "item/spells/recall"
+        "particle": "item/classes/monk",
+        "texture": "item/classes/monk"
     }
 }

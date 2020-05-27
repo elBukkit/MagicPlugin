@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/spells/harden",
-        "texture": "item/spells/harden"
+        "particle": "item/classes/artificer",
+        "texture": "item/classes/artificer"
     }
 }

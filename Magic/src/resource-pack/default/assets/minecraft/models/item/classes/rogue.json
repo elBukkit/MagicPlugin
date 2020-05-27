@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/spells/cloak",
-        "texture": "item/spells/cloak"
+        "particle": "item/classes/rogue",
+        "texture": "item/classes/rogue"
     }
 }

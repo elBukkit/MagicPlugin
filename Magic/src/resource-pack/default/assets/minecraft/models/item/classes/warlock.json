@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/spells/hat",
-        "texture": "item/spells/hat"
+        "particle": "item/classes/warlock",
+        "texture": "item/classes/warlock"
     }
 }

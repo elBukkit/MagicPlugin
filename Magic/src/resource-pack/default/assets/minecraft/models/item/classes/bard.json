@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/spells/music",
-        "texture": "item/spells/music"
+        "particle": "item/classes/bard",
+        "texture": "item/classes/bard"
     }
 }
