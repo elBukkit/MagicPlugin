@@ -18,7 +18,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.SpectralArrow;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.TippedArrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -486,7 +488,8 @@ public class EntityController implements Listener {
     }
 
     public void checkArrowLaunch(com.elmakers.mine.bukkit.magic.Mage mage, Projectile projectile, ProjectileLaunchEvent event) {
-        if (!(projectile instanceof Arrow) || !mage.isPlayer()) return;
+        if (!mage.isPlayer()) return;
+        if (!(projectile instanceof Arrow) && !(projectile instanceof TippedArrow) && !(projectile instanceof SpectralArrow)) return;
         Integer slot = mage.getArrowToLaunch();
         if (slot == null) return;
         ItemStack itemStack = mage.getItemInSlot(slot);
