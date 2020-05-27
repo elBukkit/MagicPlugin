@@ -10,7 +10,7 @@ attributeselector:
     earn_type: "ap"
     show_unavailable: true
     allow_attribute_reduction: false
-    placeholder_icon: black
+    placeholder_icon: gray
     options:
     - placeholder: true
     - attribute: strength

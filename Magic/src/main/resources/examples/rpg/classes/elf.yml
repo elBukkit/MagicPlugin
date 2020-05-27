@@ -1,0 +1,6 @@
+elf:
+  inherit: base
+  locked: true
+  passive: true
+  icon: spell_icon:277
+  icon_disabled: spell_icon_disabled:277

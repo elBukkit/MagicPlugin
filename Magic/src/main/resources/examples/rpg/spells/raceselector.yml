@@ -1,0 +1,25 @@
+raceselector:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    confirm: true
+    auto_close: true
+    placeholder_icon: gray
+    confirm_filler: gray
+    quiet: false
+    loud: true
+    limit: 1
+    options:
+    - placeholder: true
+    - placeholder: true
+    - unlock_class: human
+    - unlock_class: elf
+    - unlock_class: gnome
+    - unlock_class: dwarf
+    - unlock_class: halfling
+    - placeholder: true
+    - placeholder: true

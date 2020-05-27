@@ -1,0 +1,6 @@
+halfling:
+  inherit: base
+  locked: true
+  passive: true
+  icon: spell_icon:280
+  icon_disabled: spell_icon_disabled:280

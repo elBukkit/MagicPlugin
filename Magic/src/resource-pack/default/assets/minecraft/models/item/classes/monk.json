@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/classes/monk",
-        "texture": "item/classes/monk"
+        "particle": "classes/monk",
+        "texture": "classes/monk"
     }
 }

@@ -43,6 +43,7 @@ Requires recent Java 8 JDK. Import directly as Maven Project. Build against pare
   - Dr00bles
   - eleazzaar
   - Claire Meyers (https://www.behance.net/gallery/18354273/D-D-Class-Icon-System)
+  - https://vectorified.com/download-image#rpg-icon-1.png
 - Sound Effects:
   - Dr00bles
   - S-Toad (Flute samples for Ocarina)

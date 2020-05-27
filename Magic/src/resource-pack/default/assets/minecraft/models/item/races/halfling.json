@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_full",
+    "textures": {
+        "particle": "races/halfling",
+        "texture": "races/halfling"
+    }
+}

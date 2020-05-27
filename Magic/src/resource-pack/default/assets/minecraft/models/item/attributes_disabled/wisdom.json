@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full_disabled",
     "textures": {
-        "particle": "item/spells/light",
-        "texture": "item/spells/light"
+        "particle": "attributes/wisdom",
+        "texture": "attributes/wisdom"
     }
 }

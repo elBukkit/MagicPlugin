@@ -1,0 +1,6 @@
+dwarf:
+  inherit: base
+  locked: true
+  passive: true
+  icon: spell_icon:279
+  icon_disabled: spell_icon_disabled:279

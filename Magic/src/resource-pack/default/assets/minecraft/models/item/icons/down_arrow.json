@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_full",
+    "textures": {
+        "particle": "icons/down_arrow",
+        "texture": "icons/down_arrow"
+    }
+}

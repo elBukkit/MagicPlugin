@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon_full_disabled",
+    "textures": {
+        "particle": "races/elf",
+        "texture": "races/elf"
+    }
+}

@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full_disabled",
     "textures": {
-        "particle": "item/spells/protection_all",
-        "texture": "item/spells/protection_all"
+        "particle": "attributes/constitution",
+        "texture": "attributes/constitution"
     }
 }

@@ -42,6 +42,23 @@ classes:
     name: "Warlock"
     description: "Harness dark energy"
 
+## Races
+  human:
+    name: "Human"
+    description: "Adaptable to all situations"
+  elf:
+    name: "Elf"
+    description: "Grace and magic"
+  dwarf:
+    name: "Dwarf"
+    description: "Bold and hardy"
+  gnome:
+    name: "Gnome"
+    description: "Ambitious and energetic"
+  halfling:
+    name: "Halfling"
+    description: "Sneaky and agile"
+
 
 
 

@@ -12,6 +12,12 @@ spells:
     selected_free: "Became $name"
     confirm_title: "Become $item?"
     at_limit: "You have already chosen your class"
+  raceselector:
+    name: Race Selector
+    title: Select Race
+    selected_free: "Became $name"
+    confirm_title: "Become $item?"
+    at_limit: "You have already chosen your race"
   arrow_spell_light:
       name: Light Arrow
       description: Fire an arrow of pure light

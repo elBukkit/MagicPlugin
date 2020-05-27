@@ -1,7 +1,7 @@
 {
     "parent" : "item/custom/icon_full",
     "textures": {
-        "particle": "item/spells/upgrades",
-        "texture": "item/spells/upgrades"
+        "particle": "attributes/strength",
+        "texture": "attributes/strength"
     }
 }
