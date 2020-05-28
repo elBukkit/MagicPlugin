@@ -3,7 +3,7 @@ arrow_spell_blink:
   costs: []
 
 arrow_spell_bomb:
-  inherit: arrow_blink
+  inherit: arrow_bomb
   costs: []
 
 arrow_spell_fire:
