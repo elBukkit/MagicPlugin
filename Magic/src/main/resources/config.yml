@@ -22,7 +22,7 @@
 #
 
 # Load one of the included example configurations instead of the defaults.
-# Current options: potter, safe, survival
+# Current options: survival, potter, bending, stars, war, rpg, painterly, skulls, norp, heroes, arenas
 # Any customizations will still be loaded on top of the example configs.
 # example: potter
 
