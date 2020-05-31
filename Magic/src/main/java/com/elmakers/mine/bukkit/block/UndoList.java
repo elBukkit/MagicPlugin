@@ -279,7 +279,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected boolean addAttachable(BlockData block, BlockFace direction, @Nonnull MaterialSet materials)
     {
-        Block testBlock = block.getBlock().getRelative(direction);
+        Preconditions.checkNotNull(block, "block");
+        Preconditions.checkNotNull(direction, "direction");
+
+        Block baseBlock = block.getBlock();
+        if (baseBlock == null) {
+            // World unloaded.
+            // TODO: Move this check somewhere else?
+            return false;
+        }
+
+        Block testBlock = baseBlock.getRelative(direction);
         Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
 
         // This gets called recursively, so don't re-process anything
