@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -45,6 +47,7 @@ public class TargetingSpell extends BaseSpell {
     // This differs from CompatibilityUtils.MAX_ENTITY_RANGE,
     // block targeting can theoretically go farther
     private static final int  MAX_RANGE  = 511;
+    private static Set<GameMode> defaultTargetGameModes = new HashSet<>(Arrays.asList(GameMode.SURVIVAL, GameMode.ADVENTURE));
 
     private Targeting                           targeting               = new Targeting();
 
@@ -57,6 +60,7 @@ public class TargetingSpell extends BaseSpell {
     private boolean                                targetInvisible            = true;
     private boolean                                targetVanished            = false;
     private boolean                                targetUnknown            = true;
+    private Set<GameMode>                       targetGameModes         = null;
     private boolean                             targetTamed             = true;
     private boolean                             targetMount             = false;
     private String                              targetDisplayName       = null;
@@ -383,6 +387,7 @@ public class TargetingSpell extends BaseSpell {
             Player player = (Player)entity;
             if (checkProtection && player.hasPermission("Magic.protected." + this.getKey())) return false;
             if (controller.isMage(entity) && isSuperProtected(controller.getMage(entity))) return false;
+            if (targetGameModes.contains(player.getGameMode())) return false;
         }
         // Ignore invisible entities
         if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) return false;
@@ -559,6 +564,19 @@ public class TargetingSpell extends BaseSpell {
         targetUnknown = parameters.getBoolean("target_unknown", true);
         targetTamed = parameters.getBoolean("target_tamed", true);
         targetMount = parameters.getBoolean("target_mount", false);
+        targetGameModes = defaultTargetGameModes;
+        List<String> gameModes = ConfigurationUtils.getStringList(parameters, "target_game_modes");
+        if (gameModes != null) {
+            targetGameModes = new HashSet<>();
+            for (String gameMode : gameModes) {
+                try {
+                    GameMode mode = GameMode.valueOf(gameMode.toUpperCase());
+                    targetGameModes.add(mode);
+                } catch (Exception ex) {
+                    controller.getLogger().warning(("Invalid game mode: " + gameMode));
+                }
+            }
+        }
 
         if (parameters.contains("target_type")) {
             String entityTypeName = parameters.getString("target_type");
