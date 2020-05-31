@@ -5,7 +5,8 @@
  - ClearInventory action
  - Add "mwarp send" command, for using the builtin warp system from the console, NPCs or command blocks
  - Spells will only target survival and adventure mode players. This can be controlled with the target_game_modes parameter.
-
+ - Fix some items showing as "not trained" by mistake
+ 
 # 7.9.3
  - PLEASE see important notes in MIGRATION.md *before* upgrading! Mostly if you have custom wands with "attributes" set.
  - Modifier system added- for custom status effects
