@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.9.5
+
 # 7.9.4
 
  - ClearInventory action
