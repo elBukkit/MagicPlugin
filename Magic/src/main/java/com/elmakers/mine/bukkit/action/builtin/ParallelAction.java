@@ -54,10 +54,16 @@ public class ParallelAction extends CompoundAction
     @Override
     public SpellResult perform(CastContext context) {
         SpellResult result = SpellResult.NO_ACTION;
-        int startingWork = context.getWorkAllowed();
+
+        if (remaining.isEmpty()) {
+            return result;
+        }
+
         List<SubAction> subActions = new ArrayList<>(remaining);
         remaining.clear();
+
         context.setWorkAllowed(0);
+        int startingWork = context.getWorkAllowed();
         int splitWork = Math.max(1, startingWork / subActions.size());
         for (SubAction action : subActions) {
             context.setWorkAllowed(context.getWorkAllowed() + splitWork);
