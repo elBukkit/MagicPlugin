@@ -70,8 +70,8 @@ public class ParallelAction extends CompoundAction
         }
         remaining.clear();
 
-        context.setWorkAllowed(0);
         int startingWork = context.getWorkAllowed();
+        context.setWorkAllowed(0);
         int splitWork = Math.max(1, startingWork / processing.size());
         for (SubAction action : processing) {
             context.setWorkAllowed(context.getWorkAllowed() + splitWork);
