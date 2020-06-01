@@ -387,7 +387,7 @@ public class TargetingSpell extends BaseSpell {
             Player player = (Player)entity;
             if (checkProtection && player.hasPermission("Magic.protected." + this.getKey())) return false;
             if (controller.isMage(entity) && isSuperProtected(controller.getMage(entity))) return false;
-            if (targetGameModes.contains(player.getGameMode())) return false;
+            if (!targetGameModes.contains(player.getGameMode())) return false;
         }
         // Ignore invisible entities
         if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) return false;
