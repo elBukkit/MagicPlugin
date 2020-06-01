@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.9.6
+
 # 7.9.5
 
  - Fix gamemode targeting that was broken in 7.9.4
