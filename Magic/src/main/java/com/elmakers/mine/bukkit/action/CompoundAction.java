@@ -147,7 +147,7 @@ public abstract class CompoundAction extends BaseSpellAction
     {
         super.prepare(context, parameters);
         for (ActionHandler handler : handlers.values()) {
-            handler.prepare(context, parameters);
+            handler.prepare(context, context.getSpell().getWorkingParameters());
         }
         stopOnSuccess = parameters.getBoolean("stop_on_success", false);
     }

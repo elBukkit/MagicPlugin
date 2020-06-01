@@ -2,6 +2,9 @@
 
 # 7.9.5
 
+ - Fix gamemode targeting that was broken in 7.9.4
+ - Action parameters no longer inherit from parent actions to child actions. See MIGRATION.md for more info.
+
 # 7.9.4
 
  - Fix some items showing as "not trained" by mistake

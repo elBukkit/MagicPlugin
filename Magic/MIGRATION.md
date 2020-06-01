@@ -1,5 +1,13 @@
 # Migration Notes
 
+## 7.9.5
+
+ - Action parameters no longer inherit from parent actions to child actions
+   This means that if you have a CheckBlock action with "invert: true".
+   which has another CheckBlock in its "actions" list, the second CheckBlock
+   will not be inverted.
+   I think this was confusing behavior that I hope no one was relying on.
+  
 ## 7.9.3
 
  - Vanilla attributes on wand migration removed
