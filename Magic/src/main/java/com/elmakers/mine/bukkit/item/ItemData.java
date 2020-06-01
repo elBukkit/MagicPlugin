@@ -118,10 +118,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             meta.setLore(lore);
             item.setItemMeta(meta);
         }
-        InventoryUtils.setMeta(item, "magic_key", key);
         if (configuration.getBoolean("locked")) {
             locked = true;
             InventoryUtils.setMetaBoolean(item, "locked", true);
+            InventoryUtils.setMeta(item, "magic_key", key);
         }
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
