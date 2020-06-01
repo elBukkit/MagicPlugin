@@ -26,6 +26,7 @@ public class ParallelAction extends CompoundAction
     }
 
     private List<SubAction> remaining = null;
+    private List<SubAction> processing = null;
 
     @Override
     public void reset(CastContext context) {
@@ -33,7 +34,9 @@ public class ParallelAction extends CompoundAction
         ActionHandler actions = getHandler("actions");
         if (actions != null)
         {
-            remaining = new ArrayList<>();
+            if (remaining == null) {
+                remaining = new ArrayList<>();
+            }
             for (ActionContext action : actions.getActions()) {
                 action.getAction().reset(context);
                 remaining.add(new SubAction(action, context));
@@ -59,13 +62,18 @@ public class ParallelAction extends CompoundAction
             return result;
         }
 
-        List<SubAction> subActions = new ArrayList<>(remaining);
+        if (processing == null) {
+            processing = new ArrayList<>(remaining);
+        } else {
+            processing.clear();
+            processing.addAll(remaining);
+        }
         remaining.clear();
 
         context.setWorkAllowed(0);
         int startingWork = context.getWorkAllowed();
-        int splitWork = Math.max(1, startingWork / subActions.size());
-        for (SubAction action : subActions) {
+        int splitWork = Math.max(1, startingWork / processing.size());
+        for (SubAction action : processing) {
             context.setWorkAllowed(context.getWorkAllowed() + splitWork);
             SpellResult actionResult = action.perform();
             context.addResult(actionResult);
@@ -76,5 +84,15 @@ public class ParallelAction extends CompoundAction
         }
 
         return result;
+    }
+
+    @Override
+    public Object clone()
+    {
+        ParallelAction action = (ParallelAction)super.clone();
+        // Don't share these lists
+        action.remaining = null;
+        action.processing = null;
+        return action;
     }
 }

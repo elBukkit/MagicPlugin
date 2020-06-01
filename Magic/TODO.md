@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - Spamming F dupes wands?
+
  - Passives:
    - Need passive classes, which always have their passive spells active
    - Some way to tag/group passives, where only N spells from a group can be active at a time
