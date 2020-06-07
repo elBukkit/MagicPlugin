@@ -545,7 +545,12 @@ public class Targeting {
         targetType = TargetType.NONE;
         if (targetTypeName != null) {
             try {
-                targetType = TargetType.valueOf(targetTypeName.toUpperCase());
+                //  Just a little convenience hack
+                if (targetTypeName.equalsIgnoreCase("damager")) {
+                    targetType = TargetType.LAST_DAMAGER;
+                } else {
+                    targetType = TargetType.valueOf(targetTypeName.toUpperCase());
+                }
             } catch (Exception ex) {
                 targetType = TargetType.NONE;
             }
