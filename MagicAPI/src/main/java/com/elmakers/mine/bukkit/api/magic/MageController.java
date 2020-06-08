@@ -223,6 +223,8 @@ public interface MageController {
     Mage getRegisteredMage(@Nonnull Entity entity);
     @Nonnull
     Mage getAutomaton(@Nonnull String id, @Nonnull String name);
+    @Nonnull
+    Mage getConsoleMage();
 
     Collection<String> getBrushKeys();
 

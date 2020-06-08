@@ -459,6 +459,12 @@ public class MagicController implements MageController {
         }
     }
 
+    @Nonnull
+    @Override
+    public Mage getConsoleMage() {
+        return getMage(plugin.getServer().getConsoleSender());
+    }
+
     @Override
     public void info(String message)
     {
