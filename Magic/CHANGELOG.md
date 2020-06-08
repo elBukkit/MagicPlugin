@@ -2,6 +2,9 @@
 
 # 7.9.6
 
+ - EffectLib effects can now take "forever" as a duration and "random" as a color
+ - The Cast action supports "console: true" to cast as the console (take care with this)
+
 # 7.9.5
 
  - Fix gamemode targeting that was broken in 7.9.4
