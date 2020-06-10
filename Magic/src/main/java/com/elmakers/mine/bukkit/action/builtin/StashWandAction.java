@@ -29,16 +29,19 @@ public class StashWandAction extends BaseSpellAction
 
     private class StashWandUndoAction implements Runnable
     {
-        public StashWandUndoAction() {
+        private final CastContext context;
+
+        public StashWandUndoAction(CastContext context) {
+            this.context = context;
         }
 
         @Override
         public void run() {
-            returnItem();
+            returnItem(context);
         }
     }
 
-    private void returnItem() {
+    private void returnItem(CastContext context) {
         if (targetMage == null || stashedItem == null) return;
         Player player = targetMage.getPlayer();
         if (player == null) return;
@@ -65,7 +68,7 @@ public class StashWandAction extends BaseSpellAction
         if (!gave) {
             targetMage.giveItem(stashedItem);
         }
-        targetMage.checkWand();
+        context.checkWand();
         stashedItem = null;
         targetMage = null;
     }
@@ -123,7 +126,7 @@ public class StashWandAction extends BaseSpellAction
         }
 
         targetMage = mage;
-        context.registerForUndo(new StashWandUndoAction());
+        context.registerForUndo(new StashWandUndoAction(context));
         return SpellResult.CAST;
     }
 
@@ -154,7 +157,7 @@ public class StashWandAction extends BaseSpellAction
     public void finish(CastContext context) {
         super.finish(context);
         if (returnOnFinish) {
-            returnItem();
+            returnItem(context);
         }
     }
 

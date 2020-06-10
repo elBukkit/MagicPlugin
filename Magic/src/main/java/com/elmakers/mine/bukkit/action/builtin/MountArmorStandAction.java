@@ -225,7 +225,7 @@ public class MountArmorStandAction extends RideEntityAction
         } else {
             player.getInventory().setItem(slotNumber, item);
         }
-        mage.checkWand();
+        context.checkWand();
 
         item = null;
     }

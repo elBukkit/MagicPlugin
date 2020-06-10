@@ -1,0 +1,5 @@
+saviorchestplate:
+  icon: diamond_armor
+  passive: true
+  spells:
+  - savior

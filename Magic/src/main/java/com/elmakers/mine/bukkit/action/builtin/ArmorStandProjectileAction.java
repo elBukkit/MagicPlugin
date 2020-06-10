@@ -272,7 +272,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         } else {
             player.getInventory().setItem(slotNumber, wandItem);
         }
-        mage.checkWand();
+        context.checkWand();
 
         wandItem = null;
     }
