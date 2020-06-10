@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -15,13 +17,15 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ApplyCooldownAction extends BaseSpellAction
 {
     private int cooldownAmount;
-    private String[] spells;
+    private List<String> spells;
     private Set<String> excludeSpells;
     private boolean clear;
     private boolean bypassReduction;
@@ -38,15 +42,26 @@ public class ApplyCooldownAction extends BaseSpellAction
         clear = parameters.getBoolean("clear", false);
         bypassReduction = parameters.getBoolean("bypass_reduction", false);
         targetCaster = parameters.getBoolean("target_caster", false);
-        String spellCSV = parameters.getString("spells", null);
-        if (spellCSV != null)
-        {
-            spells = StringUtils.split(spellCSV, ',');
+        if (parameters.contains("spells")) {
+            spells = ConfigurationUtils.getStringList(parameters, "spells");
         }
-        else
-        {
-            spells = null;
+        if (parameters.contains("exclude_spells")) {
+            excludeSpells = new HashSet<>(ConfigurationUtils.getStringList(parameters, "exclude_spells"));
         }
+        if (parameters.contains("tags")) {
+            if (spells == null) {
+                spells = new ArrayList<>();
+            } else {
+                spells = new ArrayList<>(spells);
+            }
+            List<String> tags = ConfigurationUtils.getStringList(parameters, "tags");
+            for (SpellTemplate spell : context.getController().getSpellTemplates()) {
+                if (spell.hasAnyTag(tags)) {
+                    spells.add(spell.getKey());
+                }
+            }
+        }
+
         String excludeCSV = parameters.getString("exclude_spells", null);
         if (excludeCSV != null)
         {
