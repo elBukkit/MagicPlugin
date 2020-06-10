@@ -105,6 +105,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isSilent;
     protected boolean isTamed;
     protected boolean isSitting;
+    protected boolean isInvulnerable;
     protected boolean hasAI = true;
     protected boolean hasGravity = true;
     protected Boolean persist = null;
@@ -203,6 +204,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             isTamed = ((Tameable)entity).isTamed();
         }
         isSitting = CompatibilityUtils.isSitting(entity);
+        isInvulnerable = CompatibilityUtils.isInvulnerable(entity);
 
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
@@ -316,6 +318,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         isTamed = parameters.getBoolean("tamed", false);
         isSitting = parameters.getBoolean("sitting", false);
+        isInvulnerable = parameters.getBoolean("invulnerable", false);
         isBaby = parameters.getBoolean("baby", false);
         hasAI = parameters.getBoolean("ai", true);
         hasGravity = parameters.getBoolean("gravity", true);
@@ -701,6 +704,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             ((Tameable)entity).setTamed(isTamed);
         }
         CompatibilityUtils.setSitting(entity, isSitting);
+        CompatibilityUtils.setInvulnerable(entity, isInvulnerable);
 
         if (entity instanceof Colorable && dyeColor != null) {
             Colorable colorable = (Colorable)entity;

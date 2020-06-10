@@ -171,3 +171,13 @@ namedspider:
   name: Named Spider
   type: zombie
   health: 10
+
+npc_lootshop:
+  name: Sell Your Loot
+  type: villager
+  invulnerable: true
+  persist: true
+  interact_spell: lootshop
+  ai: false
+  gravity: false
+

@@ -184,6 +184,17 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static boolean isInvulnerable(Entity entity) {
+        if (class_Entity_invulnerableField == null) return false;
+        try {
+            Object handle = getHandle(entity);
+            return (boolean)class_Entity_invulnerableField.get(handle);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     public static void setSilent(Entity entity, boolean flag) {
         if (class_Entity_setSilentMethod == null) return;
         try {

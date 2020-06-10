@@ -4,7 +4,7 @@
 
  - EffectLib effects can now take "forever" as a duration and "random" as a color
  - The Cast action supports "console: true" to cast as the console (take care with this)
- - Add "persist" flag to mob configs
+ - Add "persist" and "invulnerable" flags to mob configs, for proto-npcs
 
 # 7.9.5
 
