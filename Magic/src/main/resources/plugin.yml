@@ -27,6 +27,7 @@ softdepend:
   - Citadel
   - Lockette
   - LockettePro
+  - PreciousStones
 loadbefore:
   - Scavenger
   - SilkSpawners
