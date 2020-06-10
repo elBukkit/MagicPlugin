@@ -180,4 +180,35 @@ npc_lootshop:
   interact_spell: lootshop
   ai: false
   gravity: false
+  interval: 1000
+  cast_requires_target: false
+  triggers:
+    interval:
+      cast:
+        - spell: dialog
+          message: "Sell your mob loot here!"
 
+
+
+## Would be nice syntax:
+# also would be nice if existing mobs updated on live reload.
+npc_base:
+  name: NPC
+  type: villager
+  invulnerable: true
+  persist: true
+  ai: false
+  gravity: false
+  cast_requires_target: false
+  interval: 5000
+  triggers:
+    interval:
+      cast:
+        - spell: dialog
+          message: $dialog
+
+npc_proto:
+  inherit: npc_base
+  name: "Loot Shop"
+  interact_spell: lootshop
+  dialog: "Sell your loot here!"

@@ -1,0 +1,12 @@
+dialog:
+  actions:
+    cast:
+      - class: AreaOfEffect
+        actions:
+          - class: Message
+  parameters:
+    target: self
+    message_target: true
+    message: Hello!
+    radius: 5
+    cooldown: 1000
