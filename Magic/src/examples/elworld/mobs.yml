@@ -172,6 +172,7 @@ namedspider:
   type: zombie
   health: 10
 
+# This works currently, but is a little cumbersome
 npc_lootshop:
   name: Sell Your Loot
   type: villager
@@ -187,8 +188,6 @@ npc_lootshop:
       cast:
         - spell: dialog
           message: "Sell your mob loot here!"
-
-
 
 ## Would be nice syntax:
 # also would be nice if existing mobs updated on live reload.

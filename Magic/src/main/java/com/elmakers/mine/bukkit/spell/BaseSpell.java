@@ -1603,7 +1603,9 @@ public class BaseSpell implements MageSpell, Cloneable {
                 message = message.replace("$material", materialName);
             }
 
-            message = currentCast.parameterizeMessage(message);
+            if (currentCast != null) {
+                message = currentCast.parameterizeMessage(message);
+            }
         }
         return message;
     }
