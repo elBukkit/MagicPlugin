@@ -97,6 +97,10 @@ public class RandomUtils {
         RandomUtils.populateProbabilityMap(String.class, probabilityMap, nodeMap, 0, 0, 0);
     }
 
+    public static void populateStringProbabilityList(Deque<WeightedPair<String>> probabilityMap, List<String> stringList) {
+        populateProbabilityList(String.class, probabilityMap, stringList);
+    }
+
     public static void populateFloatProbabilityMap(Deque<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
         RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
     }
