@@ -205,6 +205,27 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
+    public static void setPersist(Entity entity, boolean flag) {
+        if (class_Entity_persistField == null) return;
+        try {
+            Object handle = getHandle(entity);
+            class_Entity_persistField.set(handle, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static boolean isPersist(Entity entity) {
+        if (class_Entity_persistField == null) return false;
+        try {
+            Object handle = getHandle(entity);
+            return (boolean)class_Entity_persistField.get(handle);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     public static void setSitting(Entity entity, boolean flag) {
         if (class_Sittable == null) return;
         if (!class_Sittable.isAssignableFrom(entity.getClass())) return;

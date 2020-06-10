@@ -307,6 +307,7 @@ public class NMSUtils {
     protected static Constructor class_Vec3D_constructor;
 
     protected static Field class_Entity_invulnerableField;
+    protected static Field class_Entity_persistField;
     protected static Field class_Entity_motXField;
     protected static Field class_Entity_motYField;
     protected static Field class_Entity_motZField;
@@ -584,6 +585,14 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+
+            try {
+                class_Entity_persistField = class_Entity.getDeclaredField("persist");
+                class_Entity_persistField.setAccessible(true);
+            } catch (Throwable ex) {
+                class_Entity_persistField = null;
+                Bukkit.getLogger().warning("Could not bind to persist entity tag, can't make mobs persistent");
+            }
 
             try {
                 class_Sittable = Class.forName("org.bukkit.entity.Sittable");

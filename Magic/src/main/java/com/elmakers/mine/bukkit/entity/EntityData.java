@@ -107,6 +107,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isSitting;
     protected boolean hasAI = true;
     protected boolean hasGravity = true;
+    protected Boolean persist = null;
     protected int fireTicks;
 
     protected DyeColor dyeColor;
@@ -160,6 +161,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.location = location;
         this.fireTicks = entity.getFireTicks();
         this.isSilent = CompatibilityUtils.isSilent(entity);
+        this.persist = CompatibilityUtils.isPersist(entity);
         this.canPickupItems = (entity instanceof Creature) ? ((Creature)entity).getCanPickupItems() : false;
         name = entity.getCustomName();
         tags = CompatibilityUtils.getTags(entity);
@@ -290,6 +292,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             maxHealth = parameters.getDouble("max_health", 1);
         }
         isSilent = parameters.getBoolean("silent", false);
+        if (parameters.contains("persist")) {
+            persist = parameters.getBoolean("persist");
+        }
 
         String entityName = parameters.contains("type") ? parameters.getString("type") : key;
         type = parseEntityType(entityName);
@@ -679,6 +684,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData.apply(entity);
         }
 
+        if (persist != null) {
+            CompatibilityUtils.setPersist(entity, persist);
+        }
         CompatibilityUtils.setSilent(entity, isSilent);
         entity.setFireTicks(fireTicks);
         if (entity instanceof Ageable) {

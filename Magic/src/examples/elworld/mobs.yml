@@ -160,3 +160,14 @@ nerflock:
         missile: 20
   drops:
   - sp:10
+
+permaspider:
+  name: Perma-Spider
+  type: creeper
+  health: 1000
+  persist: true
+
+namedspider:
+  name: Named Spider
+  type: zombie
+  health: 10
