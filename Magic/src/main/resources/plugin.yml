@@ -28,6 +28,7 @@ softdepend:
   - Lockette
   - LockettePro
   - PreciousStones
+  - MobArena
 loadbefore:
   - Scavenger
   - SilkSpawners
