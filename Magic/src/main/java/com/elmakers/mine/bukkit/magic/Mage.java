@@ -2559,10 +2559,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         ItemStack[] contents = inventory.getContents();
         for (int index = 0; amount > 0 && index < contents.length; index++) {
             ItemStack item = contents[index];
-            if (item == null) continue;
-
-            if ((!allowVariants && controller.itemsAreEqual(itemStack, item)) || (allowVariants && itemStack.getType() == item.getType() && (!item.hasItemMeta() || item.getItemMeta().hasDisplayName())))
-            {
+            if (isMatch(itemStack, item, allowVariants)) {
                 if (amount >= item.getAmount()) {
                     amount -= item.getAmount();
                     inventory.setItem(index, null);
@@ -2573,12 +2570,84 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
+        PlayerInventory playerInventory = getPlayer().getInventory();
+        if (amount > 0) {
+            ItemStack[] extra = playerInventory.getExtraContents();
+            for (int index = 0; amount > 0 && index < extra.length; index++) {
+                ItemStack item = extra[index];
+                boolean modified = false;
+                if (isMatch(itemStack, item, allowVariants)) {
+                    if (amount >= item.getAmount()) {
+                        amount -= item.getAmount();
+                        extra[index] = null;
+                        modified = true;
+                    } else {
+                        item.setAmount(item.getAmount() - amount);
+                        amount = 0;
+                        modified = true;
+                    }
+                }
+                if (modified) {
+                    playerInventory.setExtraContents(extra);
+                }
+            }
+        }
+
+        if (amount > 0) {
+            ItemStack[] armor = playerInventory.getArmorContents();
+            for (int index = 0; amount > 0 && index < armor.length; index++) {
+                ItemStack item = armor[index];
+                boolean modified = false;
+                if (isMatch(itemStack, item, allowVariants)) {
+                    if (amount >= item.getAmount()) {
+                        amount -= item.getAmount();
+                        armor[index] = null;
+                        modified = true;
+                    } else {
+                        item.setAmount(item.getAmount() - amount);
+                        amount = 0;
+                        modified = true;
+                    }
+                }
+                if (modified) {
+                    playerInventory.setArmorContents(armor);
+                }
+            }
+        }
+
         return amount;
     }
 
     @Override
     public int removeItem(ItemStack itemStack) {
         return removeItem(itemStack, false);
+    }
+
+    protected boolean isMatch(ItemStack itemStack, ItemStack candidate, boolean allowVariants) {
+        if (candidate == null || itemStack == null) {
+            return false;
+        }
+        if (!allowVariants) {
+            return controller.itemsAreEqual(itemStack, candidate);
+        }
+        if (itemStack.getType() != candidate.getType()) {
+            return false;
+        }
+        // Display name still needs to match, if present
+        if (itemStack.hasItemMeta() != candidate.hasItemMeta()) {
+            return false;
+        }
+        if (itemStack.hasItemMeta()) {
+            ItemMeta meta = itemStack.getItemMeta();
+            ItemMeta candidateMeta = candidate.getItemMeta();
+            if (meta.hasDisplayName() != candidateMeta.hasDisplayName()) {
+                return false;
+            }
+            if (meta.hasDisplayName() && !meta.getDisplayName().equals(candidateMeta.getDisplayName())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -2596,10 +2665,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Inventory inventory = getInventory();
         ItemStack[] contents = inventory.getContents();
         for (ItemStack item : contents) {
-            if (item != null
-                && ((!allowVariants && controller.itemsAreEqual(itemStack, item)) || (allowVariants && itemStack.getType() == item.getType() && (!item.hasItemMeta() || item.getItemMeta().hasDisplayName())))
-                && (amount -= item.getAmount()) <= 0)
-            {
+            if (isMatch(itemStack, item, allowVariants) && (amount -= item.getAmount()) <= 0) {
+                return true;
+            }
+        }
+
+        PlayerInventory playerInventory = getPlayer().getInventory();
+        ItemStack[] armor = playerInventory.getArmorContents();
+        for (ItemStack item : armor) {
+            if (isMatch(itemStack, item, allowVariants) && (amount -= item.getAmount()) <= 0) {
+                return true;
+            }
+        }
+        ItemStack[] extra = playerInventory.getExtraContents();
+        for (ItemStack item : extra) {
+            if (isMatch(itemStack, item, allowVariants) && (amount -= item.getAmount()) <= 0) {
                 return true;
             }
         }

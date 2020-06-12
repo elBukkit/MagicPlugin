@@ -6,7 +6,8 @@
  - The Cast action supports "console: true" to cast as the console (take care with this)
  - Add "persist" and "invulnerable" flags to mob configs, for proto-npcs
  - Add "tags" parameter to ApplyCooldown action, for applying cooldowns to all spells with a one or more specific tags
- - Fix gltiches with broomsticks levelling up 
+ - Fix gltiches with broomsticks levelling up
+ - Include offhand and armor slots when checking/removing items from a player's inventory
 
 # 7.9.5
 
