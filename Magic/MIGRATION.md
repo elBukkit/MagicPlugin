@@ -1,5 +1,10 @@
 # Migration Notes
 
+# 7.9.6
+
+ - Automata have been moved out of the survival configs and into a separate example. Put this in config.yml to bring them back:
+   add_examples: automata 
+
 ## 7.9.5
 
  - Action parameters no longer inherit from parent actions to child actions

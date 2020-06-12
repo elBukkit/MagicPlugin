@@ -415,6 +415,7 @@
                 </includes>
                 <excludes>
                     <exclude>**/defaults/**/*.yml</exclude>
+                    <exclude>**/examples/automata/**/*.yml</exclude>
                     <exclude>**/examples/bending/**/*.yml</exclude>
                     <exclude>**/examples/potter/**/*.yml</exclude>
                     <exclude>**/examples/rpg/**/*.yml</exclude>
@@ -514,6 +515,24 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/defaults/effects.defaults.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/defaults/effects">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Automata Configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/automata/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/automata/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/automata/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/automata/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/automata/wands.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/automata/wands">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

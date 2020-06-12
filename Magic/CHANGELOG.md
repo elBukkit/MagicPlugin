@@ -8,6 +8,7 @@
  - Add "tags" parameter to ApplyCooldown action, for applying cooldowns to all spells with a one or more specific tags
  - Fix gltiches with broomsticks levelling up
  - Include offhand and armor slots when checking/removing items from a player's inventory
+ - Moved automata into a separate example. 
 
 # 7.9.5
 

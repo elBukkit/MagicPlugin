@@ -125,9 +125,6 @@ wands:
     borealis:
         name: Borealis
         description: The Aurora Wand
-    conway:
-        name: Conway's Wand
-        description: The Game of Life
     redeffects:
         name: Red Wand Effects
         description: Tint your wand effects!
@@ -278,24 +275,6 @@ wands:
     wolfhouse:
         name: Wolf House
         description: An auto-regenerating base-in-a-box
-    defenderheart:
-        name: Heart of Defender
-        description: It pulsates with power
-    virusheart:
-        name: Heart of Virus
-        description: This should be destroyed
-    hunterheart:
-        name: Heart of Hunter
-        description: It wants to be reborn
-    snakeheart:
-        name: Heart of Snake
-        description: Sssssssssave me
-    golemheart:
-        name: Heart of Golem
-        description: Your new best friend
-    wormheart:
-        name: Heart of Worm
-        description: It will consume the world
     cursedmeat:
         name: Cursed Meat
         description: Don't even touch it!

@@ -304,70 +304,6 @@ spells:
         name: Leap
         description: Take a big leap
         cast: Whee!
-    simulate:
-        name: Simulate
-        description: Conway's Game of Life!
-        cast: You bring the world to life
-    animate:
-        name: Animate
-        description: Animate the target material
-        cast: You create a Magic Golem
-        no_target: You must target two blocks next to each other
-        fail: You can not make a Golem out of $material
-        cast_broadcast: "&c&o$name &r&5was born"
-        death_broadcast: "&c&o$name &r&5has been defeated"
-    simulate3:
-        name: Simulate 3D
-        description: Conway's Game of Life ... in 3D!
-        cast: You bring the world to life
-    glider:
-        name: Glider
-        description: Create a powerful Automaton
-        cast: It's alive!
-    virus:
-        name: Virus
-        description: You probably don't want to cast this
-        cast: What have you done?
-        cast_broadcast: "&c&o$name &r&5was born"
-        death_broadcast: "&c&o$name &r&5has been defeated"
-        fail: You can not make a Virus out of $material
-    worm:
-        name: Worm
-        description: Release a dangerous giant worm
-        cast: It's not a virus, it's a worm!
-        cast_broadcast: "&c&o$name &r&5was born"
-        death_broadcast: "&c&o$name &r&5has been defeated"
-        fail: You can not make a Worm out of $material
-    snake:
-        name: Snake
-        description: Create a deadly snake-like creature
-        cast: Sssssssssnake time!
-        cast_broadcast: "&c&o$name &r&5was born"
-        death_broadcast: "&c&o$name &r&5has been defeated"
-        fail: You can not make a Worm out of $material
-    hunter:
-        no_target: You must target two blocks next to each other
-        name: Hunter
-        description: Create a deadly Automaton
-        fail: You can not make a Hunter out of $material
-        cast: Destroy all humans!
-        cast_broadcast: "&c&o$name &r&5was born"
-        death_broadcast: "&c&o$name &r&5has been defeated"
-    defender:
-        name: Defender
-        description: Create an Automata hunter
-        cast: I will hunt for you, human
-        fail: You can not make a Defender out of $material
-        cast_broadcast: "&c&o$name &r&5was born"
-        death_broadcast: "&c&o$name &r&5has been defeated"
-    life:
-        name: Life
-        description: Create a HUGE Life board
-        cast: Time to experiment!
-    life3:
-        name: Life 3D
-        description: Create a large 3D Life board
-        cast: Mad science!
     torch:
         name: Torch
         description: Creates a torch or glowstone
@@ -1504,14 +1440,6 @@ spells:
         insufficient: "&cRequires &4$cost"
         confirm_title: "Sell $item"
         deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$earn"
-    automatashop:
-        name: Automata Shop
-        title: "Sell Automata Hearts"
-        description: Sell Automata Hearts
-        no_items: There is nothing to sell here!
-        insufficient: Requires $cost
-        confirm_title: "Sell $item"
-        deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$cost"
     fxdemo:
         name: FX Demo
         description: Show off various EffectLib effects
@@ -1602,16 +1530,6 @@ spells:
       name: Backflip
       description: Quickly move backwards to evade your foes
       fail: "a:There's nowhere to go!"
-    birth_hunter:
-      name: Create Hunter
-    birth_defender:
-      name: Create Defender
-    birth_worm:
-      name: Create Worm
-    birth_virus:
-      name: Create Virus
-    birth_snake:
-      name: Create Snake
     equation:
       name: Equation Tester
       description: "Edit spells.yml to test your equations, by adding\nequation:\n  parameters:\n    equation: \"attribute * 5\""
