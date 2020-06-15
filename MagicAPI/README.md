@@ -20,14 +20,20 @@ You can easily import Magic's API into your project like this:
   <dependency>
       <groupId>com.elmakers.mine.bukkit</groupId>
       <artifactId>MagicAPI</artifactId>
-      <version>7.8</version>
+      <version>7.9.6</version>
       <scope>provided</scope>
   </dependency>
 </dependencies>
 <repositories>
+  <!-- Releases are published to github -->
+  <repository>
+      <id>elmakers-github</id>
+      <url>https://maven.pkg.github.com/elBukkit/MagicPlugin</url>
+  </repository>
+  <!-- Snapshots are published to the elMakers repository, which also has all of the dependencies -->
   <repository>
       <id>elmakers-repo</id>
-      <url>http://maven.elmakers.com/repository/ </url>
+      <url>http://maven.elmakers.com/repository/</url>
   </repository>
 </repositories>
 ```
