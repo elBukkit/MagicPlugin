@@ -160,6 +160,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private WandAction rightClickAction = WandAction.NONE;
     private WandAction dropAction = WandAction.NONE;
     private WandAction swapAction = WandAction.NONE;
+    private WandAction leftClickSneakAction = WandAction.NONE;
+    private WandAction rightClickSneakAction = WandAction.NONE;
+    private WandAction dropSneakAction = WandAction.NONE;
+    private WandAction swapSneakAction = WandAction.NONE;
 
     private MaterialAndData icon = null;
     private MaterialAndData upgradeIcon = null;
@@ -1791,6 +1795,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         rightClickAction = parseWandAction(getString("right_click"), rightClickAction);
         dropAction = parseWandAction(getString("drop"), dropAction);
         swapAction = parseWandAction(getString("swap"), swapAction);
+        leftClickSneakAction = parseWandAction(getString("left_click_sneak"), leftClickSneakAction);
+        rightClickSneakAction = parseWandAction(getString("right_click_sneak"), rightClickSneakAction);
+        dropSneakAction = parseWandAction(getString("drop_sneak"), dropSneakAction);
+        swapSneakAction = parseWandAction(getString("swap_sneak"), swapSneakAction);
 
         owner = getString("owner");
         ownerId = getString("owner_id");
@@ -5570,22 +5578,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public WandAction getDropAction() {
-        return dropAction;
+        return dropSneakAction != WandAction.NONE && mage != null && mage.isSneaking() ? dropSneakAction : dropAction;
     }
 
     @Override
     public WandAction getRightClickAction() {
-        return rightClickAction;
+        return rightClickSneakAction != WandAction.NONE && mage != null && mage.isSneaking() ? rightClickSneakAction : rightClickAction;
     }
 
     @Override
     public WandAction getLeftClickAction() {
-        return leftClickAction;
+        return leftClickSneakAction != WandAction.NONE && mage != null && mage.isSneaking() ? leftClickSneakAction : leftClickAction;
     }
 
     @Override
     public WandAction getSwapAction() {
-        return swapAction;
+        return swapSneakAction != WandAction.NONE && mage != null && mage.isSneaking() ? swapSneakAction : swapAction;
     }
 
     @Override

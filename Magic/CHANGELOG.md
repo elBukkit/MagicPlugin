@@ -2,6 +2,8 @@
 
 # 7.9.7
 
+ - Add left_click_sneak, right_click_sneak, drop_sneak and swap_sneak wand actions
+
 # 7.9.6
 
  - EffectLib effects can now take "forever" as a duration and "random" as a color
