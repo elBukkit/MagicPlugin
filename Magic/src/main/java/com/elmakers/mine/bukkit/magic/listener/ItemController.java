@@ -43,8 +43,12 @@ public class ItemController {
     public void loadItem(String itemKey, String material) {
         try {
             ItemData magicItem = new ItemData(itemKey, material);
-            items.put(itemKey, magicItem);
-            itemsByStack.put(magicItem.getItemStack(1), magicItem);
+            if (magicItem != null) {
+                items.put(itemKey, magicItem);
+                itemsByStack.put(magicItem.getItemStack(1), magicItem);
+            } else {
+                controller.getLogger().warning("Could not create item with key " + itemKey + " and material " + material);
+            }
         } catch (Throwable ex) {
             controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
@@ -53,8 +57,12 @@ public class ItemController {
     public void loadItem(String itemKey, ConfigurationSection configuration) {
         try {
             ItemData magicItem = new ItemData(itemKey, configuration);
-            items.put(itemKey, magicItem);
-            itemsByStack.put(magicItem.getItemStack(1), magicItem);
+            if (magicItem != null) {
+                items.put(itemKey, magicItem);
+                itemsByStack.put(magicItem.getItemStack(1), magicItem);
+            } else {
+                controller.getLogger().warning("Could not create item with key " + itemKey);
+            }
         } catch (Throwable ex) {
             controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
@@ -79,11 +87,13 @@ public class ItemController {
                     try {
                         short damage = Short.parseShort(pieces[1]);
                         item = item.createVariant(key, damage);
+                        if (item != null) {
+                            items.put(key, item);
+                        }
                     } catch (Exception ex) {
                         return null;
                     }
                 }
-                items.put(key, item);
             }
         }
         return item;

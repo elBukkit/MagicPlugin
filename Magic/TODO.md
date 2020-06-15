@@ -2,6 +2,7 @@
 
 ## Hot Issues
 
+ - Make melee a tag instead of a material list
  - Spamming F dupes wands?
 
  - Passives:
