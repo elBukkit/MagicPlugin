@@ -76,9 +76,9 @@ public class ConfigurationLoadTask implements Runnable {
         noPvpRestricted = properties.getBoolean("allow_pvp_restricted", false);
         saveDefaultConfigs = properties.getBoolean("save_default_configs", true);
         exampleDefaults = properties.getString("example", exampleDefaults);
-        addExamples = properties.getStringList("add_examples");
+        addExamples = ConfigurationUtils.getStringList(properties,"add_examples");
         if (addExamples.isEmpty()) {
-            addExamples = properties.getStringList("examples");
+            addExamples = ConfigurationUtils.getStringList(properties,"examples");
         }
         languageOverride = properties.getString("language");
     }

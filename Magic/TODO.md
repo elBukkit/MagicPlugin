@@ -3,6 +3,8 @@
 ## Hot Issues
 
  - Make melee a tag instead of a material list
+ - "Rage" wands restore mana when dropped
+ 
  - Spamming F dupes wands?
 
  - Passives:
