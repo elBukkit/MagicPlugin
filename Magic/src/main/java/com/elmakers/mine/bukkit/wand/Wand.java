@@ -4169,6 +4169,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public boolean cast(Spell spell, String[] parameters) {
+        if (spell == null) {
+            return false;
+        }
         if (spell.isPassive()) {
             if (spell.isToggleable()) {
                 spell.setEnabled(!spell.isEnabled());
@@ -4181,49 +4184,47 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return false;
             }
         }
-        if (spell != null) {
-            Collection<String> castParameters = null;
-            if (castOverrides != null && castOverrides.size() > 0) {
+        Collection<String> castParameters = null;
+        if (castOverrides != null && castOverrides.size() > 0) {
+            castParameters = new ArrayList<>();
+            for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
+                String[] key = StringUtils.split(entry.getKey(), '.');
+                if (key.length == 0) continue;
+                if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spell.getSpellKey().getBaseKey()) && !key[0].equals(spell.getSpellKey().getKey())) {
+                    continue;
+                }
+                castParameters.add(key.length == 2 ? key[1] : key[0]);
+                castParameters.add(entry.getValue());
+            }
+        }
+        if (parameters != null) {
+            if (castParameters == null) {
                 castParameters = new ArrayList<>();
-                for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
-                    String[] key = StringUtils.split(entry.getKey(), '.');
-                    if (key.length == 0) continue;
-                    if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spell.getSpellKey().getBaseKey()) && !key[0].equals(spell.getSpellKey().getKey())) {
-                        continue;
-                    }
-                    castParameters.add(key.length == 2 ? key[1] : key[0]);
-                    castParameters.add(entry.getValue());
-                }
             }
-            if (parameters != null) {
-                if (castParameters == null) {
-                    castParameters = new ArrayList<>();
-                }
-                for (String parameter : parameters) {
-                    castParameters.add(parameter);
-                }
+            for (String parameter : parameters) {
+                castParameters.add(parameter);
             }
-            if (spell.cast(castParameters == null ? null : castParameters.toArray(EMPTY_PARAMETERS))) {
-                Color spellColor = spell.getColor();
-                if (useMode != WandUseMode.PRECAST) {
-                    use();
-                }
-                if (spellColor != null && this.effectColor != null) {
-                    this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
-                    setProperty("effect_color", effectColor.toString());
-                    // Note that we don't save this change.
-                    // The hope is that the wand will get saved at some point later
-                    // And we don't want to trigger NBT writes every spell cast.
-                    // And the effect color morphing isn't all that important if a few
-                    // casts get lost.
-                }
-                updateHotbarStatus();
-                return true;
-            }
-
-            if (useMode == WandUseMode.ALWAYS) {
+        }
+        if (spell.cast(castParameters == null ? null : castParameters.toArray(EMPTY_PARAMETERS))) {
+            Color spellColor = spell.getColor();
+            if (useMode != WandUseMode.PRECAST) {
                 use();
             }
+            if (spellColor != null && this.effectColor != null) {
+                this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
+                setProperty("effect_color", effectColor.toString());
+                // Note that we don't save this change.
+                // The hope is that the wand will get saved at some point later
+                // And we don't want to trigger NBT writes every spell cast.
+                // And the effect color morphing isn't all that important if a few
+                // casts get lost.
+            }
+            updateHotbarStatus();
+            return true;
+        }
+
+        if (useMode == WandUseMode.ALWAYS) {
+            use();
         }
 
         return false;
