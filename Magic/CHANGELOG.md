@@ -3,6 +3,7 @@
 # 7.9.7
 
  - Add left_click_sneak, right_click_sneak, drop_sneak and swap_sneak wand actions
+ - The "examples" list in config.yml can now be put on a single line
 
 # 7.9.6
 

@@ -77,7 +77,7 @@ public class ConfigurationLoadTask implements Runnable {
         saveDefaultConfigs = properties.getBoolean("save_default_configs", true);
         exampleDefaults = properties.getString("example", exampleDefaults);
         addExamples = ConfigurationUtils.getStringList(properties,"add_examples");
-        if (addExamples.isEmpty()) {
+        if (addExamples == null || addExamples.isEmpty()) {
             addExamples = ConfigurationUtils.getStringList(properties,"examples");
         }
         languageOverride = properties.getString("language");
