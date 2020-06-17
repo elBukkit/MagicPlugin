@@ -10,10 +10,12 @@ public class CheckManaAction extends CheckAction {
     private boolean requireNotFull = false;
     private boolean requireEmpty = false;
     private double requireAmount = 0;
+    private double requirePercentage = 0;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        requirePercentage = parameters.getDouble("require_mana_percentage", 0);
         requireAmount = parameters.getDouble("require_mana", 0);
         requireNotFull = parameters.getBoolean("require_mana_not_full", false);
         requireEmpty = parameters.getBoolean("require_mana_empty", false);
@@ -31,6 +33,9 @@ public class CheckManaAction extends CheckAction {
         }
         int manaMax = mage.getEffectiveManaMax();
         if (requireNotFull && currentMana >= manaMax) {
+            return false;
+        }
+        if (requirePercentage > 0 && manaMax > 0 && currentMana / (double)manaMax < requirePercentage) {
             return false;
         }
         return true;
