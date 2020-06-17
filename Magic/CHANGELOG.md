@@ -6,6 +6,7 @@
  - The "examples" list in config.yml can now be put on a single line
  - Fix log spam when swinging a wand that has no active spell
  - Fix mana not saving properly on droppable wands
+ - Fix Colloportus in 1.14+
 
 # 7.9.6
 

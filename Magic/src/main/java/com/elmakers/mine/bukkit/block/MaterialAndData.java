@@ -511,7 +511,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         try {
             BlockState blockState = block.getState();
             if (material != null) {
+                Material currentMaterial = block.getType();
                 byte blockData = data != null ? (byte)(short)data : block.getData();
+
+                String extendedBlockData = this.blockData;
+                if (data == null && extendedBlockData == null) {
+                    extendedBlockData = CompatibilityUtils.getBlockData(block);
+                }
 
                 if (material == Material.AIR) {
                     // Clear chests and flower pots so they don't dump their contents.
@@ -519,9 +525,19 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
 
                 DeprecatedUtils.setTypeAndData(block, material, blockData, applyPhysics);
+                if (extendedBlockData != null) {
+                    if (currentMaterial != material) {
+                        String currentBlockData =  CompatibilityUtils.getBlockData(block);
+                        // Hacky, yes... is there a better way?
+                        // Is this going to cause some real strange behavior?
+                        String[] currentData = StringUtils.split(currentBlockData, "[", 2);
+                        String[] newData = StringUtils.split(extendedBlockData, "[", 2);
+                        if (newData.length > 1) {
+                            extendedBlockData = currentData[0] + "[" + newData[1];
+                        }
+                    }
 
-                if (this.blockData != null) {
-                    CompatibilityUtils.setBlockData(Bukkit.getServer(), block, this.blockData);
+                    CompatibilityUtils.setBlockData(Bukkit.getServer(), block, extendedBlockData);
                 }
                 blockState = block.getState();
             }
