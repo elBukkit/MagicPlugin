@@ -1847,7 +1847,7 @@ public class CompatibilityUtils extends NMSUtils {
         if (class_Block_getBlockDataMethod == null) return false;
         try {
             Object blockData = class_Server_createBlockDataMethod.invoke(server, data);
-            class_Block_setBlockDataMethod.invoke(block, blockData);
+            class_Block_setBlockDataMethod.invoke(block, blockData, false);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1965,7 +1965,7 @@ public class CompatibilityUtils extends NMSUtils {
             if (blockData == null) return false;
             if (!class_Powerable.isAssignableFrom(blockData.getClass())) return false;
             class_Powerable_setPoweredMethod.invoke(blockData, powered);
-            class_Block_setBlockDataMethod.invoke(block, blockData);
+            class_Block_setBlockDataMethod.invoke(block, blockData, true);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2008,7 +2008,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object blockData = class_Block_getBlockDataMethod.invoke(block);
             if (blockData == null || !class_Bisected.isAssignableFrom(blockData.getClass())) return false;
             class_Bisected_setHalfMethod.invoke(blockData, enum_BisectedHalf_TOP);
-            class_Block_setBlockDataMethod.invoke(block, blockData);
+            class_Block_setBlockDataMethod.invoke(block, blockData, false);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();

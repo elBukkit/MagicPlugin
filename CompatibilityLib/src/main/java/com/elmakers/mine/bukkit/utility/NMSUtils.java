@@ -622,7 +622,7 @@ public class NMSUtils {
 
                 Class<?> class_BlockData = Class.forName("org.bukkit.block.data.BlockData");
                 class_Block_getBlockDataMethod = Block.class.getMethod("getBlockData");
-                class_Block_setBlockDataMethod = Block.class.getMethod("setBlockData", class_BlockData);
+                class_Block_setBlockDataMethod = Block.class.getMethod("setBlockData", class_BlockData, Boolean.TYPE);
                 class_Server_createBlockDataMethod = Server.class.getMethod("createBlockData", String.class);
                 class_BlockData_getAsStringMethod = class_BlockData.getMethod("getAsString");
                 isModernVersion = true;
