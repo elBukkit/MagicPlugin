@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 public class GiveItemAction extends BaseSpellAction
 {
     private ItemStack item = null;
+    private int itemCount = 0;
     private ItemStack requireItem = null;
     private String permissionNode = null;
 
@@ -36,6 +37,7 @@ public class GiveItemAction extends BaseSpellAction
 
         permissionNode = parameters.getString("permission", null);
         String itemKey = parameters.getString("item");
+        itemCount = parameters.getInt("item_count", 0);
         item = controller.createItem(itemKey);
         if (item == null) {
             context.getLogger().warning("Invalid item: " + itemKey);
@@ -97,7 +99,11 @@ public class GiveItemAction extends BaseSpellAction
         }
 
         Mage mage = controller.getMage(player);
-        mage.giveItem(InventoryUtils.getCopy(item));
+        ItemStack itemCopy = InventoryUtils.getCopy(item);
+        if (itemCount > 0) {
+            itemCopy.setAmount(itemCount);
+        }
+        mage.giveItem(itemCopy);
         DeprecatedUtils.updateInventory(player);
         return SpellResult.CAST;
     }
