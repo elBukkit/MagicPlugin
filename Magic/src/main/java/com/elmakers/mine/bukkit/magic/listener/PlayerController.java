@@ -206,7 +206,6 @@ public class PlayerController implements Listener {
 
     @EventHandler
     public void onPlayerSwapItem(PlayerSwapHandItemsEvent event) {
-
         final Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
@@ -222,15 +221,32 @@ public class PlayerController implements Listener {
             activeWand.closeInventory();
             event.setCancelled(true);
         } else if (activeWand != null || offhandWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem())) {
-            if (activeWand != null) {
-                activeWand.saveState();
-                event.setOffHandItem(activeWand.getItem());
+            // Make sure to save changes to the active and offhand wands
+            boolean checkWand = false;
+            if (activeWand != null && Wand.isWand(event.getOffHandItem())) {
+                ItemStack activeItem = activeWand.getItem();
+                ItemMeta activeMeta = activeItem.getItemMeta();
+                ItemMeta offhandMeta = event.getOffHandItem().getItemMeta();
+                if (offhandMeta != null && activeMeta != null && activeMeta.equals(offhandMeta)) {
+                    activeWand.setItem(event.getOffHandItem());
+                    activeWand.saveState();
+                }
+                checkWand = true;
             }
-            if (offhandWand != null) {
-                offhandWand.saveState();
-                event.setMainHandItem(offhandWand.getItem());
+            if (offhandWand != null && Wand.isWand(event.getMainHandItem())) {
+                ItemStack offhandItem = offhandWand.getItem();
+                ItemMeta offhandMeta = offhandItem.getItemMeta();
+                ItemMeta mainHandMeta = event.getMainHandItem().getItemMeta();
+                if (mainHandMeta != null && offhandMeta != null && offhandMeta.equals(mainHandMeta)) {
+                    offhandWand.setItem(event.getMainHandItem());
+                    offhandWand.saveState();
+                }
+                checkWand = true;
             }
-            mage.checkWandNextTick();
+
+            if (checkWand) {
+                mage.checkWandNextTick();
+            }
         }
     }
 
@@ -261,7 +277,7 @@ public class PlayerController implements Listener {
         ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
         ItemMeta droppedMeta = droppedItem.getItemMeta();
         boolean droppedSpell = Wand.isSpell(droppedItem);
-        boolean droppedWand = droppedMeta != null && activeMeta != null && activeItem.getItemMeta().equals(droppedItem.getItemMeta());
+        boolean droppedWand = droppedMeta != null && activeMeta != null && activeMeta.equals(droppedMeta);
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new DropActionTask(activeWand));

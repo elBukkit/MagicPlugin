@@ -10,6 +10,7 @@
  - Fix Colloportus in 1.14+
  - Add require_mana_percentage parameter to CheckMana action
  - Add item_count parameter to GiveItem action so it can be used with variables
+ - Fix dupe bug/exploit with the swap key
 
 # 7.9.6
 

@@ -4,13 +4,9 @@
 
  - Make melee a tag instead of a material list
  
- - Spamming F dupes wands?
-
  - Passives:
    - Need passive classes, which always have their passive spells active
    - Some way to tag/group passives, where only N spells from a group can be active at a time
-
- - Global variables? Or is that just attributes.
 
  - Add support for Sponge schematics
 
