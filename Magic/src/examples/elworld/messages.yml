@@ -106,14 +106,6 @@ spells:
     title: Tickets!
     cooldown: You may only use this shop once!
     fail: ""
-    
-paths:
-  master:
-    required_spell: "You must find the &b$path &d&oto advance"
-  engineer:
-    required_spell: "You must find the &b$path &d&oto advance"
-  architect:
-    required_spell: "&b$path &d&ois next... but how?"
 
 #resource_pack:
 #  prompt: "Use /getrp to download the resource pack. It is STRONGLY recommended!"

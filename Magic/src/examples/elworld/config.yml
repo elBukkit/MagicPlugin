@@ -17,12 +17,13 @@ auto_rollback_explosions:
 
 # We are mixing in all of the configs here to show them off.
 examples:
+- automata
+- engineering
 - stars
 - potter
 - bending
 - war
 - arenas
-- automata
 
 # Testing custom currencies
 custom_currency:

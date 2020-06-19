@@ -1,9 +1,19 @@
 # Migration Notes
 
+# 7.9.7
+
+ - Engineering magic has been moved out of the survival configs and into a separate example. 
+   Put this in config.yml to bring it back, it will now be available to players who have 
+   completed the master path:
+   
+   examples: engineering
+   
 # 7.9.6
 
  - Automata have been moved out of the survival configs and into a separate example. Put this in config.yml to bring them back:
-   add_examples: automata 
+   
+   add_examples: 
+   - automata 
 
 ## 7.9.5
 

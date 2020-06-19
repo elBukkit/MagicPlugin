@@ -417,6 +417,7 @@
                     <exclude>**/defaults/**/*.yml</exclude>
                     <exclude>**/examples/automata/**/*.yml</exclude>
                     <exclude>**/examples/bending/**/*.yml</exclude>
+                    <exclude>**/examples/engineering/**/*.yml</exclude>
                     <exclude>**/examples/potter/**/*.yml</exclude>
                     <exclude>**/examples/rpg/**/*.yml</exclude>
                     <exclude>**/examples/stars/**/*.yml</exclude>
@@ -576,6 +577,29 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/bending/wands.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/bending/wands">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Engineering Configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/engineering/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/engineering/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/engineering/paths.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/engineering/paths">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/engineering/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/engineering/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/engineering/wands.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/engineering/wands">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

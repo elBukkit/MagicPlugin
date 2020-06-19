@@ -1,5 +1,5 @@
 uberwand:
-  inherit: conduit
+  inherit: master
   path: staff
   hotbar_count: 3
   fill: true
@@ -7,17 +7,12 @@ uberwand:
   cost_reduction: 2.0
   cooldown_reduction: 2.0
   sp_multiplier: 0
-  consume_reduction: 1
   mode: inventory
-  overrides:
-    - max_dimension 1024
-    - floodfill.depth 256
   effect_particle: ENCHANTMENT_TABLE
   potion_effects:
     - SATURATION
     - REGENERATION
     - SPEED
-  active_brush: erase
   active_spell: missile|4
   spells:
     - levitate@0
@@ -28,66 +23,5 @@ uberwand:
     - superkill@5
     - testdummy@6
     - debugger@7
-    - absorb@8
-    - place@9
-    - fill@10
-    - superblob@11
-    - superconvert@12
-    - supershell@13
-    - superrepair@14
-    - rollback@15
-    - supertorch@22
-    - recall@23
-    - push@24
-  brushes:
-    - bedrock
-    - clone@19
-    - copy@17
-    - diamond_block
-    - dirt
-    - emerald_block
-    - erase@16
-    - glass
-    - sea_lantern
-    - glowstone
-    - gold_block
-    - grass
-    - ice
-    - iron_block
-    - lapis_block
-    - lava
-    - leaves
-    - log
-    - map:128@21
-    - map@20
-    - mycel
-    - obsidian
-    - packed_ice
-    - quartz_block
-    - quartz_block:1
-    - quartz_block:2
-    - redstone_block
-    - replicate@18
-    - schematic:beacon
-    - schematic:blacksmith
-    - schematic:church
-    - schematic:compact_house
-    - schematic:creeper_rug
-    - schematic:elder_tree
-    - schematic:flare_beacon
-    - schematic:garden_house
-    - schematic:lantern
-    - schematic:rainbow_blocks
-    - schematic:small_house
-    - schematic:stash_chest
-    - soul_sand
-    - stained_clay
-    - stained_glass
-    - stained_glass_pane
-    - stationary_lava
-    - stationary_water
-    - vine
-    - water
-    - wood
-    - wool
-
+    - recall@8
+    - push@9

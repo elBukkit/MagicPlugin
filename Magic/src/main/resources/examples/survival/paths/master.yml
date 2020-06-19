@@ -1,14 +1,7 @@
 master:
     icon: wood_hoe:4
     migrate_icon: gold_axe
-    # These are spells that a player must obtain (outside of the normal spellshop progression) to proceed to the next
-    # path.
-    # This means that the engineer path is intentionally locked, server admins may allow players to progress to Engineer
-    # by giving them access to an engineershop.
-    required_spells:
-      - rollback
     upgrade: engineer
-    upgrade_item: engineer_upgrade
     inherit: apprentice
     mana_regeneration: 50
     mana_max: 250

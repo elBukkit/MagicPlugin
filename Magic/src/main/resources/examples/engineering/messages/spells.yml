@@ -1,0 +1,285 @@
+spells:
+    wolfhouse:
+        name: Wolf House
+        description: Create an auto-regenerating base
+    convert:
+        name: Convert
+        description: Convert a spherical area of blocks
+        usage: Does not fill air
+        cast_finish: Converted $count blocks to $material
+    collapse:
+        name: Collapse
+        description: Collapse a spherical area of blocks
+        cast_finish: Collapsed $count blocks
+        upgrade_description: "Increased radius, breaks more types of blocks"
+    superconvert:
+        name: SuperConvert
+        description: Convert a large sphere of blocks
+        usage: Cast twice to convert
+        cancel: SuperConvert cancelled
+        target_selected: Cast again to convert $target
+        fail: Too large!
+        cast_finish: Converted $count blocks to $material
+    supercollapse:
+        name: SuperCollapse
+        description: Collapse a large sphere of blocks
+        usage: Cast twice to collapse
+        cancel: SuperCollapse cancelled
+        target_selected: Cast again to collapse
+        fail: Too large!
+        cast_finish: Collapsed $count blocks
+    superblob:
+        name: SuperBlob
+        description: Create a large solid sphere
+        usage: Cast twice to construct
+        cancel: SuperBlob cancelled
+        target_selected: Cast again to build sphere
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superhemisphere:
+        name: SuperHemisphere
+        description: Create a large solid half-sphere
+        usage: Cast twice to construct
+        cancel: SuperHemisphere cancelled
+        target_selected: Cast again to build hemisphere
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    supercylinder:
+        name: SuperCylinder
+        description: Create a large cylinder
+        usage: Cast twice to construct
+        cancel: SuperCylinder cancelled
+        target_selected: Cast again to build cylinder
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superrepair:
+        name: SuperRepair
+        description: Repairs a large area saved with Backup
+        usage: Cast twice to repair
+        cancel: SuperRepair cancelled
+        target_selected: Cast again to repair
+        fail: Too large!
+        cast_finish: Repaired $count blocks
+    iterate:
+        name: Iterate
+        description: Construct a line of blocks
+        usage: Must aim at a target block
+        cast: Filled $count blocks
+    column:
+        name: Column
+        description: Construct a large column of blocks
+        cast: Filled $count blocks
+    rollback:
+        name: Rollback
+        description: Undo the targeted spell
+        cast: "&5You undo &d&o$target's &r&6$spell &5cast"
+        cast_player: "&5You undo &d&o$target's&r&6 $spell &5cast"
+        alternate_up: "&5You undo your previous&r&6 $spell &5cast"
+        alternate_down: "&5You undo &d&o$target's &r&6$spell &5cast"
+        deactivate: "&5You cancel your &6$spell &5cast"
+        fail: Nothing to undo
+        no_target: Nothing to undo there
+    commit:
+        name: Commit
+        description: Make your spells permanent
+        usage: Clears your Rollback queue
+        cast_player: You commit $target's spells
+        cast: Your Rollback queue has been cleared
+        fail: Nothing to commit
+    alter:
+        name: Alter
+        description: Alter certain objects
+        usage: Use on wool, stairs, etc
+        cast_entity: You altered the target $target
+        cast: You altered your target
+        fail: Can't adjust that
+    superalter:
+        name: SuperAlter
+        description: Alter objects recursively
+        usage: Use on wool, stairs, etc
+        cast: Altered $count blocks
+        fail: Can't adjust that
+    sphere:
+        name: Sphere
+        description: Create a real sphere
+        cast_finish: Created a $material sphere
+    backup:
+        name: Backup
+        description: Save your target area for Repair
+        cast_finish: Backed up the area
+        target_selected: Cast again to backup
+    superbackup:
+        name: SuperBackup
+        description: Save a large target area for Repair
+        usage: Cast twice to save
+        cancel: SuperBackup cancelled
+        fail: Too large!
+        cast_finish: Backed up the selected area
+        target_selected: Cast again to backup
+    superemp:
+        name: SuperEMP
+        description: Electrify a large area
+        usage: Cast twice to electrify
+        cancel: SuperEMP cancelled
+        fail: Too large!
+        cast_finish: Electrified $count blocks
+        target_selected: Cast again to electrify sphere
+    supershell:
+        name: SuperShell
+        description: Create a large hollow sphere
+        usage: Cast twice to construct
+        cancel: SuperShell cancelled
+        target_selected: Cast again to build shell
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superdisc:
+        name: SuperDisc
+        description: Create a large circular disc
+        usage: Cast twice to construct
+        cancel: SuperDisc cancelled
+        target_selected: Cast again to build disc
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superring:
+        name: SuperRing
+        description: Create a large circular ring
+        usage: Cast twice to construct
+        cancel: SuperRing cancelled
+        target_selected: Cast again to build ring
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superdome:
+        name: SuperDome
+        description: Create a very large dome
+        usage: Cast twice to construct
+        cancel: SuperDome cancelled
+        target_selected: Cast again to build dome
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superpyramid:
+        name: SuperPyramid
+        description: Create a large hollow pyramid
+        usage: Cast twice to construct
+        cancel: SuperPyramid cancelled
+        target_selected: Cast again to build pyramid
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superbox:
+        name: SuperBox
+        description: Create a large hollow box
+        usage: Cast twice to construct
+        cancel: SuperBox cancelled
+        target_selected: Cast again to build box
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    supercube:
+        name: SuperCube
+        description: Create a large solid cube
+        usage: Cast twice to construct
+        cancel: SuperCube cancelled
+        target_selected: Cast again to build cube
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    superblast:
+        name: SuperBlast
+        description: Mine out a very large area
+        cast_finish: Blasted $count blocks
+    box:
+        name: Box
+        description: Create a large hollow box
+        cast_finish: Filled $count blocks with $material
+    pillar:
+        name: Pillar
+        description: Raises a pillar up
+        cast: You create a pillar of $material
+        no_target: Can't pillar any further
+    raise:
+        name: Raise
+        description: Raises the ground up to form a nice slope
+        cast: You raise up the ground
+    flatten:
+        name: Flatten
+        description: Lower the ground to flatten it to the lowest point in the area
+        cast: You flatten the hills
+    place:
+        name: Place
+        description: Place a block at your target
+        cast: You place a block of $material
+    transmute:
+        name: Transmute
+        description: Convert your last construction
+        no_target: Nothing to transmute
+        cast: You transmute your structure to $material
+    fill:
+        name: Fill
+        description: Fill a selected cuboid area
+        usage: Cast twice to fill
+        cancel: Fill cancelled
+        target_selected: Cast again to fill with $material
+        fail: Can't fill that much!
+        cast_finish: Filled $count blocks with $material
+    superregenerate:
+        name: SuperRegenerate
+        description: Regenerate full chunks
+        usage: Cast twice to regenerate
+        fail: Can't regenerate that much!
+        cast: Regenerating chunks
+        target_selected: Cast again to regenerate chunks
+        cast_finish: Regenerated $count blocks
+        cancel: SuperRegenerate cancelled
+    regenerate:
+        name: Regenerate
+        description: Regenerate a selected area
+        fail: Can't regenerate that much!
+        usage: Cast twice to regenerate
+        cast: Regenerating area
+        target_selected: Cast again to regenerate area
+        cast_finish: Regenerated $count blocks
+        cancel: Regenerate cancelled
+    recurse:
+        name: Recurse
+        description: Recursively fill blocks
+        cast_finish: Filled $count blocks with $material
+    floodfill:
+        name: Flood Fill
+        description: Fill up a hole
+        cast_finish: Flooded $count blocks with $material
+    absorb:
+        name: Absorb
+        description: Absorb some of the target
+        usage: Adds materials to your wand
+        fail: This spell requires a wand
+        cast: Absorbing some $material
+    bridge:
+        name: Bridge
+        description: Extend the ground underneath you
+        usage: Can be used in mid-air
+        no_target: Can't bridge here
+        cast: A bridge of $material extends
+    brushselect:
+        name: Brush Selector
+        descriptions: Chooses your active brush
+        usage: Brushes are used by engineering spells
+        fail: You must be holding a wand!
+        variant_name: "&b$variant &3+Variants"
+        variant_description: "Choose a type of $variant"
+    tree:
+        name: Tree
+        description: Instantly grow a tree
+        fail: Your tree didn't grow
+        cast: You grow a $tree!
+    forest:
+        name: Forest
+        description: Instantly grow a forest
+        fail: No trees grew
+        cast: You grow a forest!
+    supertorch:
+        name: SuperTorch
+        description: Creates a permanent torch
+        no_target: Can't put a torch there
+        cast: Flame on!
+    tunnel:
+        name: Tunnel
+        description: Mine out a tunnel in front of you
+        no_target: You need to be standing on something!
+        cast: Tunneled through $count blocks

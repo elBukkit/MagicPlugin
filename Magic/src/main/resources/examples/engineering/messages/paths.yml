@@ -1,0 +1,11 @@
+paths:
+    engineer:
+        name: "&5Engineer"
+        description: Shape the world as you see fit
+    architect:
+        name: "&dArchitect"
+        description: Super-powerful engineering spells
+        required_spell: "&b$path &d&ois next... but how?"
+    conduit:
+        name: "&3Conduit"
+        description: Can manifest blocks from pure energy

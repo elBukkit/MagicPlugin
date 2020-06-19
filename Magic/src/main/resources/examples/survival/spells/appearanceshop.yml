@@ -30,14 +30,20 @@ appearanceshop:
           requirements:
           - path: master
         - item: appearance_engineer
+          show_unavailable: false
           requirements:
           - path: engineer
+            ignore_missing: true
         - item: appearance_architect
+          show_unavailable: false
           requirements:
           - path: architect
+            ignore_missing: true
         - item: appearance_conduit
+          show_unavailable: false
           requirements:
           - path: conduit
+            ignore_missing: true
         - item: none
         - item: none
         - item: appearance_moon

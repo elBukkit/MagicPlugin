@@ -1,4 +1,97 @@
 reparifarge:
-    inherit: rollback
+    icon: spell_icon:117
+    icon_disabled: spell_icon_disabled:117
+    icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
     category: staff
+    tags: noduel
+    cancellable: false
+    worth: 9999
+    actions:
+        cast:
+        -  class: Undo
+        alternate_up:
+        -  class: Undo
+           target_caster: true
+        alternate_down:
+        -  class: Undo
+           target_down: true
+    effects:
+        no_target:
+        - class: EffectSingle
+          sound: magic.bonk
+          sound_volume: 1
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 10
+            xEquation: "t/10"
+            yEquation: "sin(t) * (t/50)"
+            zEquation: "cos(t) * (t/50) + 1"
+            particle: crit
+            particle_count: 10
+            particle_offset_x: 0.1
+            particle_offset_y: 0.1
+            particle_offset_z: 0.1
+            updateDirections: false
+            particles: 20
+        alternate_up:
+        - class: EffectSingle
+          sound: magic.shimmer
+          sound_volume: 1
+          location: both
+          particle_override: particle_nucleus
+          color_override: colorOrbital
+          effectlib:
+               class: AtomEffect
+               particle_nucleus: enchantment_table
+               particle_orbital: redstone
+               iterations: 8
+        cast:
+        - sound: magic.shimmer
+          sound_volume: 1
+          location: both
+        - location: source
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 30
+            xEquation: t
+            yEquation: "sin(t)"
+            zEquation: "cos(t)"
+            particle: enchantment_table
+            particle_count: 20
+            speed: 1
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
+            updateDirections: false
+        - location: source
+          use_target_location: false
+          effectlib:
+            class: Equation
+            iterations: 10
+            xEquation: "t/10"
+            yEquation: "sin(t) * (t/50)"
+            zEquation: "cos(t) * (t/50) + 1"
+            particle: crit
+            particle_count: 10
+            particle_offset_x: 0.1
+            particle_offset_y: 0.1
+            particle_offset_z: 0.1
+            updateDirections: false
+            particles: 20
+        - location: target
+          firework: star
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 64
+        transparent: air
+        bypass_backfire: true
+        loud: true
+        cancel: true
+        admin_permission: Magic.undo_others
+        ignore_region_overrides: true
+    costs:
+        mana: 100
 

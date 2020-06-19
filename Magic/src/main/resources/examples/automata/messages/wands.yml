@@ -2,6 +2,9 @@ wands:
   conway:
     name: Conway's Wand
     description: The Game of Life
+  science:
+    name: For Science!
+    description: For testing automata
   defenderheart:
     name: Heart of Defender
     description: It pulsates with power

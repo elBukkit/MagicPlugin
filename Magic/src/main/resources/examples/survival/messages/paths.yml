@@ -11,16 +11,6 @@ paths:
     master:
         name: "&6Wizard"
         description: The penultimate wizard
-        required_spell: "&cNothing new to learn for now! &4What mystery lies ahead?"
-    engineer:
-        name: "&5Engineer"
-        description: Has engineering spells
-    architect:
-        name: "&dArchitect"
-        description: Has super-powerful engineering spells
-    conduit:
-        name: "&3Conduit"
-        description: Can manifest blocks from pure energy
     battle:
         name: "&7Warrior"
         description: Low-level combat spells

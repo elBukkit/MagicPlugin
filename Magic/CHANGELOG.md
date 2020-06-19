@@ -2,6 +2,7 @@
 
 # 7.9.7
 
+ - Moved engineering magic into a separate example
  - Add left_click_sneak, right_click_sneak, drop_sneak and swap_sneak wand actions
  - The "examples" list in config.yml can now be put on a single line
  - Fix log spam when swinging a wand that has no active spell

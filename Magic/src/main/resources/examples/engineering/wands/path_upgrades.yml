@@ -1,0 +1,26 @@
+engineer_upgrade:
+    icon: wand_icon:5
+    upgrade: true
+    hidden: true
+    indestructible: false
+    spells:
+    - brushselect
+    - place
+    brushes:
+    - dirt
+    - cobblestone
+
+architect_upgrade:
+    icon: wand_icon:5
+    upgrade: true
+    hidden: true
+    indestructible: false
+    spells:
+    - absorb
+
+conduit_upgrade:
+    icon: wand_icon:6
+    upgrade: true
+    hidden: true
+    indestructible: false
+    consume_reduction: 1

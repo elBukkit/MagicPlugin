@@ -1,0 +1,37 @@
+wands:
+    wolf:
+        name: The Wolf
+        description: NathanWolf's Staff
+    engineer:
+        name: Engineering Wand
+        description: "$path &rMagic Wand"
+    architect:
+        name: Architect Wand
+        description: "$path &rMagic Wand"
+    conduit:
+        name: Conduit Wand
+        description: "$path &rMagic Wand"
+    architectstaff:
+        name: The Architect
+        description: With Great Power Comes Great Responsibility
+    appearance_engineer:
+        name: Engineer Wand Appearance
+        description: A powerful staff imbued with ancient magic
+    appearance_architect:
+        name: Architect Wand Appearance
+        description: A powerful staff used for massive constructions
+    appearance_conduit:
+        name: Conduit Wand Appearance
+        description: A staff used by wizards of ages past
+    engineer_upgrade:
+        name: Engineer Upgrade
+        description: Upgrade to Engineer level
+    architect_upgrade:
+        name: Architect Upgrade
+        description: Upgrade to Architect level
+    conduit_upgrade:
+        name: Conduit Upgrade
+        description: Upgrade to Conduit level
+    wolfhouse:
+        name: Wolf House
+        description: An auto-regenerating base-in-a-box

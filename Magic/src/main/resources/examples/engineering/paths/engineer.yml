@@ -11,9 +11,6 @@
 engineer:
     icon: wood_hoe:5
     migrate_icon: gold_axe
-    # The architectshop is required to proceed to Architect
-    required_spells:
-      - absorb
     upgrade: architect
     upgrade_item: architect_upgrade
     inherit: master

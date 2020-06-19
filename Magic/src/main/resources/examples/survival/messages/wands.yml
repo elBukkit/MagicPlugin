@@ -38,18 +38,6 @@ wands:
     mastersword:
         name: Master Sword
         description: The legendary sword that seals the darkness
-    engineer:
-        name: Engineering Wand
-        description: "$path &rMagic Wand"
-    architect:
-        name: Architect Wand
-        description: "$path &rMagic Wand"
-    conduit:
-        name: Conduit Wand
-        description: "$path &rMagic Wand"
-    architectstaff:
-        name: The Architect
-        description: With Great Power Comes Great Responsibility
     staff:
         name: The Staff
         description: Use it Wisely!
@@ -113,9 +101,6 @@ wands:
     invisiblecloak:
         name: Cloak of Invisibility
         description: One of the fabled hallows
-    wolf:
-        name: The Wolf
-        description: NathanWolf's Staff/Broom
     minister:
         name: The Minister
         description: For Magic!
@@ -197,12 +182,6 @@ wands:
     master_upgrade:
         name: Master Upgrade
         description: Upgrade to Master level
-    engineer_upgrade:
-        name: Engineer Upgrade
-        description: Upgrade to Engineer level
-    architect_upgrade:
-        name: Architect Upgrade
-        description: Upgrade to Architect level
     hotbar1:
         name: Hotbar Reset
         description: Reset your wand to a single hotbar
@@ -272,9 +251,6 @@ wands:
     respawntoken:
         name: Respawn Token
         description: Cast to return to spawn
-    wolfhouse:
-        name: Wolf House
-        description: An auto-regenerating base-in-a-box
     cursedmeat:
         name: Cursed Meat
         description: Don't even touch it!
@@ -334,15 +310,6 @@ wands:
     appearance_master:
         name: Wizard Wand Appearance
         description: A powerful magical instrument
-    appearance_engineer:
-        name: Engineer Wand Appearance
-        description: A powerful staff imbued with ancient magic
-    appearance_architect:
-        name: Architect Wand Appearance
-        description: A powerful staff used for massive constructions
-    appearance_conduit:
-        name: Conduit Wand Appearance
-        description: A staff used by wizards of ages past
     appearance_magicka:
         name: Magicka Wand Appearance
         description: A large staff with a crescent moon holding powerful magical energy
