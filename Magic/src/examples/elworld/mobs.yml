@@ -211,3 +211,7 @@ npc_proto:
   name: "Loot Shop"
   interact_spell: lootshop
   dialog: "Sell your loot here!"
+
+redsheep:
+  type: sheep
+  color: red
