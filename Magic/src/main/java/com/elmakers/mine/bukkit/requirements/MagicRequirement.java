@@ -46,6 +46,7 @@ public class MagicRequirement {
     private @Nullable RangedRequirement currency = null;
     private @Nonnull String currencyType = "currency";
     private boolean requireWand = false;
+    private boolean ignoreMissing = false;
 
     public MagicRequirement(@Nonnull MageController controller, @Nonnull Requirement requirement) {
         this.controller = controller;
@@ -60,6 +61,7 @@ public class MagicRequirement {
         mageClass = ConfigurationUtils.getStringList(configuration, "class");
         activeClass = ConfigurationUtils.getStringList(configuration, "active_class");
         wandTags = ConfigurationUtils.getStringList(configuration, "wand_tags");
+        ignoreMissing = configuration.getBoolean("ignore_missing", false);
         if (activeClass != null && mageClass == null) {
             mageClass = activeClass;
         }
@@ -386,7 +388,7 @@ public class MagicRequirement {
                 String pathName = requiredPath;
                 if (requiresPath != null) {
                     pathName = requiresPath.getName();
-                } else {
+                } else if (!ignoreMissing) {
                     context.getLogger().warning("Invalid path specified in requirement " + requiredPath);
                 }
                 return getMessage(context, "no_required_path").replace("$path", pathName);
@@ -396,7 +398,7 @@ public class MagicRequirement {
                 String pathName = exactPath;
                 if (requiresPath != null) {
                     pathName = requiresPath.getName();
-                } else {
+                } else if (!ignoreMissing) {
                     context.getLogger().warning("Invalid path specified in requirement: " + exactPath);
                 }
                 return getMessage(context, "no_path_exact").replace("$path", pathName);
@@ -416,7 +418,7 @@ public class MagicRequirement {
                     String pathName = requiresCompletedPath;
                     if (requiresPath != null) {
                         pathName = requiresPath.getName();
-                    } else {
+                    } else if (!ignoreMissing) {
                         context.getLogger().warning("Invalid path specified in requirement: " + exactPath);
                     }
 
