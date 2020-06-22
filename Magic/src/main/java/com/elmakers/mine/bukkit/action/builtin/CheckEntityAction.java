@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 public class CheckEntityAction extends CheckAction {
     private boolean allowCaster;
     private boolean onlyCaster;
+    private Boolean onFire;
     private Set<EntityType> allowedTypes;
     private Set<EntityType> deniedTypes;
 
@@ -24,6 +25,9 @@ public class CheckEntityAction extends CheckAction {
         super.prepare(context, parameters);
         allowCaster = parameters.getBoolean("allow_caster", true);
         onlyCaster = parameters.getBoolean("only_caster", false);
+        if (parameters.contains("on_fire")) {
+            onFire = parameters.getBoolean("on_fire");
+        }
 
         if (parameters.contains("allowed_entities")) {
             List<String> keys = ConfigurationUtils.getStringList(parameters, "allowed_entities");
@@ -66,6 +70,9 @@ public class CheckEntityAction extends CheckAction {
             return false;
         }
         if (deniedTypes != null && deniedTypes.contains(targetEntity.getType())) {
+            return false;
+        }
+        if (onFire != null && onFire != (targetEntity.getFireTicks() > 0)) {
             return false;
         }
         return true;
