@@ -1031,18 +1031,32 @@ public class ConfigurationUtils extends ConfigUtils {
                         potionEffectSection = toConfigurationSection((Map<?, ?>)genericEntry);
                     }
                     if (potionEffectSection != null) {
-                        PotionEffectType effectType = PotionEffectType.getByName(potionEffectSection.getString("type").toUpperCase());
-                        if (effectType == null) {
-                            log.log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"));
-                            continue;
-                        }
-                        int ticks = (int) (potionEffectSection.getLong("duration", defaultDuration) / 50);
-                        ticks = potionEffectSection.getInt("ticks", ticks);
-                        int amplifier = potionEffectSection.getInt("amplifier", defaultAmplifier);
-                        boolean ambient = potionEffectSection.getBoolean("ambient", defaultAmbient);
-                        boolean particles = potionEffectSection.getBoolean("particles", defaultParticles);
+                        if (potionEffectSection.contains("type")) {
+                            PotionEffectType effectType = PotionEffectType.getByName(potionEffectSection.getString("type").toUpperCase());
+                            if (effectType == null) {
+                                log.log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"));
+                                continue;
+                            }
+                            int ticks = (int) (potionEffectSection.getLong("duration", defaultDuration) / 50);
+                            ticks = potionEffectSection.getInt("ticks", ticks);
+                            int amplifier = potionEffectSection.getInt("amplifier", defaultAmplifier);
+                            boolean ambient = potionEffectSection.getBoolean("ambient", defaultAmbient);
+                            boolean particles = potionEffectSection.getBoolean("particles", defaultParticles);
 
-                        potionEffects.add(new PotionEffect(effectType, effectType.isInstant() ? 1 : ticks, amplifier, ambient, particles));
+                            potionEffects.add(new PotionEffect(effectType, effectType.isInstant() ? 1 : ticks, amplifier, ambient, particles));
+                        } else {
+                            Collection<String> types = potionEffectSection.getKeys(false);
+                            for (String type : types) {
+                                PotionEffectType effectType = PotionEffectType.getByName(type.toUpperCase());
+                                if (effectType == null) {
+                                    log.log(Level.WARNING, "Invalid potion effect type: " + type);
+                                    continue;
+                                }
+                                int amplifier = potionEffectSection.getInt("type", defaultAmplifier);
+                                int ticks = defaultDuration / 50;
+                                potionEffects.add(new PotionEffect(effectType, effectType.isInstant() ? 1 : ticks, amplifier, defaultAmbient, defaultParticles));
+                            }
+                        }
                     }
                 }
             }
