@@ -15,10 +15,9 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ModifyVariableAction extends BaseSpellAction {
     private String key;
-    private boolean hasValue;
-    private double value;
     private boolean clear;
     private VariableScope scope = VariableScope.CAST;
+    private ConfigurationSection parameters;
 
     private void checkDefaults(ConfigurationSection variables, ConfigurationSection parameters) {
         if (!clear && !variables.contains(key)) {
@@ -60,18 +59,18 @@ public class ModifyVariableAction extends BaseSpellAction {
         key = parameters.getString("variable", "");
         clear = parameters.getBoolean("clear");
         checkDefaults(context.getVariables(scope), parameters);
-        String testValue = parameters.getString("value");
-        hasValue = testValue != null && !testValue.isEmpty();
-        if (hasValue) {
-            value = parameters.getDouble("value", 0);
-        }
+        this.parameters = parameters;
     }
 
     @Override
     public SpellResult perform(CastContext context) {
+        // Don't fetch the value at prepare() time in case another cast has modified it
+        String testValue = parameters.getString("value");
+        boolean hasValue = testValue != null && !testValue.isEmpty();
         if (!hasValue) {
             return SpellResult.NO_ACTION;
         }
+        double value = parameters.getDouble("value", 0);
         ConfigurationSection variables = context.getVariables(scope);
         if (clear) {
             if (!variables.contains(key)) {
