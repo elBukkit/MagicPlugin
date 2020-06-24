@@ -3560,12 +3560,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         if (player != null)
         {
+            boolean changed = false;
             ItemStack[] armor = player.getInventory().getArmorContents();
             for (int index = 0; index < armor.length; index++) {
                 ItemStack armorItem = armor[index];
+                if (InventoryUtils.isEmpty(armorItem)) continue;
+
+                // Check for locked items
+                if (!canUse(armorItem)) {
+                    sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(armorItem)));
+                    changed = true;
+                    armor[index] = null;
+                    giveItem(armorItem);
+                    continue;
+                }
+
                 if (Wand.isWand(armorItem)) {
                     activeArmor.put(index, controller.getWand(armorItem));
                 }
+            }
+
+            if (changed) {
+                player.getInventory().setArmorContents(armor);
             }
         }
 

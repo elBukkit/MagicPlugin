@@ -193,9 +193,9 @@ public class InventoryController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            if (Wand.isWand(clickedItem) || Wand.isWand(heldItem)) {
-                controller.onArmorUpdated(mage);
-            }
+
+            // Notify mage that armor was updated, but wait one tick to do it
+            controller.onArmorUpdated(mage);
         }
 
         // Another check for wearing spells

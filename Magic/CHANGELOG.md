@@ -2,6 +2,8 @@
 
 # 7.9.8
 
+ - Add support for class-locked armor
+
 # 7.9.7
 
  - Moved engineering magic into a separate example

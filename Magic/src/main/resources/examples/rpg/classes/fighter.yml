@@ -8,5 +8,9 @@ fighter:
       value: "constitution * 1.5"
       operation: base
   useable:
-    diamond_sword
+  - diamond_sword
+  - diamond_helmet
+  - diamond_chestplate
+  - diamond_leggings
+  - diamond_boots
 

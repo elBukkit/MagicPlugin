@@ -5396,7 +5396,7 @@ public class MagicController implements MageController {
     @Nullable
     public String getLockKey(ItemStack itemStack) {
         String metaKey = Wand.getLockKey(itemStack);
-        if (metaKey == null) {
+        if (metaKey == null && itemStack != null) {
             ItemData item = getItem(itemStack.getType().name().toLowerCase());
             if (item != null && item.isLocked()) {
                 return item.getKey();
