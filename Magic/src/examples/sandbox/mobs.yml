@@ -1,0 +1,24 @@
+npc_reload:
+  name: Reload configs
+  type: villager
+  invulnerable: true
+  persist: true
+  ai: false
+  gravity: false
+  triggers:
+    interact:
+      commands:
+        - magic load
+
+npc_day:
+  name: Reload configs
+  type: villager
+  invulnerable: true
+  persist: true
+  ai: false
+  gravity: false
+  triggers:
+    interact:
+      commands:
+        - time set day
+        - weather clear

@@ -371,7 +371,10 @@ public class PlayerController implements Listener {
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event)
     {
         Entity entity = event.getRightClicked();
-
+        Mage mobMage = controller.getRegisteredMage(entity);
+        if (mobMage != null) {
+            mobMage.trigger("interact");
+        }
         EntityData mob = controller.getMobByName(entity.getCustomName());
         if (mob == null) return;
         String interactSpell = mob.getInteractSpell();

@@ -5,6 +5,7 @@
  - 1.16.1 support
  - All builtin mobs using zombie pigmen changed to husks (RIP)
  - Add support for class-locked armor
+ - Add "interact" mob trigger for more advanced right-click functionality
 
 # 7.9.7
 
