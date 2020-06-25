@@ -8,7 +8,7 @@ cowlock:
     
 madscientist2:
   name: Mad Scientist
-  type: pig_zombie
+  type: husk
   disguise:
     type: player
     name: Mad Scientist
@@ -66,7 +66,7 @@ basher:
 
 killercar:
   name: Christine
-  type: pig_zombie
+  type: husk
   disguise:
     type: armor_stand
     name: Carrie
@@ -109,10 +109,10 @@ blocky:
   gravity: false
 
 fbi:
-  type: pig_zombie
+  type: husk
 
 soldier:
-  type: pig_zombie
+  type: husk
 
 player:
   drops_require_player_killer: true
