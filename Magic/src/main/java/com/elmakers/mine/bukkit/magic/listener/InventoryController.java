@@ -198,6 +198,12 @@ public class InventoryController implements Listener {
             controller.onArmorUpdated(mage);
         }
 
+        // Check for putting wands in a grindstone since they will re-apply their enchantments
+        if (inventoryType.name().equals("GRINDSTONE") && Wand.isWand(heldItem)) {
+            event.setCancelled(true);
+            return;
+        }
+
         // Another check for wearing spells
         boolean clickedSpell = Wand.isSpell(clickedItem);
         boolean clickedWearable = controller.isWearable(clickedItem);
