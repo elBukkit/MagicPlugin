@@ -1,5 +1,5 @@
 mutant_captain:
-  type: pig_zombie
+  type: husk
   item: iron_sword
   chestplate: gold_chestplate
   leggings: gold_leggings

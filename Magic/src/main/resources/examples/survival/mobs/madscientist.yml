@@ -1,6 +1,6 @@
 madscientist:
   name: Mad Scientist
-  type: pig_zombie
+  type: husk
   disguise:
     type: player
     name: Mad Scientist

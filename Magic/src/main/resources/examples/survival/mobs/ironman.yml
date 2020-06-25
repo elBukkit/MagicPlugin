@@ -1,6 +1,6 @@
 ironman:
   name: Iron Man
-  type: pig_zombie
+  type: husk
   disguise:
     type: player
     name: Iron Man
