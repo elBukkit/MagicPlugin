@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,6 +21,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -73,6 +76,7 @@ public class NMSUtils {
     protected static int FIREWORK_TYPE = 76;
 
     protected static Class<?> class_Block;
+    protected static Class<?> class_BlockBase;
     protected static Class<?> class_ItemStack;
     protected static Class<?> class_NBTBase;
     protected static Class<?> class_NBTTagCompound;
@@ -116,6 +120,7 @@ public class NMSUtils {
     protected static Class<?> class_BlockPosition;
     protected static Class<?> class_NBTCompressedStreamTools;
     protected static Class<?> class_TileEntity;
+    protected static Class<?> class_IBlockData;
     protected static Class<?> class_TileEntitySign;
     protected static Class<?> class_TileEntityContainer;
     protected static Class<?> class_ChestLock;
@@ -269,6 +274,9 @@ public class NMSUtils {
     protected static Method class_Powerable_setPoweredMethod;
     protected static Method class_Powerable_isPoweredMethod;
     protected static Method class_Bisected_setHalfMethod;
+    protected static Method class_ItemMeta_addAttributeModifierMethod;
+    protected static Method class_ItemMeta_removeAttributeModifierMethod;
+    protected static Method class_ItemMeta_getAttributeModifiers;
 
     protected static boolean legacyMaps;
 
@@ -305,6 +313,7 @@ public class NMSUtils {
     protected static Constructor class_GameProfileProperty_constructor;
     protected static Constructor class_MinecraftKey_constructor;
     protected static Constructor class_Vec3D_constructor;
+    protected static Constructor class_AttributeModifier_constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_persistField;
@@ -359,6 +368,8 @@ public class NMSUtils {
     protected static Object object_emptyChestLock;
     protected static Map<String, Object> damageSources;
     protected static Map<String, Object> entityTypes;
+
+    protected static boolean chatPacketHasUUID = false;
 
     public static boolean initialize() {
         // Find classes Bukkit hides from us. :-D
@@ -585,6 +596,13 @@ public class NMSUtils {
             boolean current = true;
 
             // Particularly volatile methods that we can live without
+            try {
+                class_ItemMeta_addAttributeModifierMethod = ItemMeta.class.getMethod("addAttributeModifier", Attribute.class, AttributeModifier.class);
+                class_ItemMeta_removeAttributeModifierMethod = ItemMeta.class.getMethod("removeAttributeModifier", Attribute.class);
+                class_AttributeModifier_constructor = AttributeModifier.class.getConstructor(UUID.class, String.class, Double.TYPE, AttributeModifier.Operation.class, EquipmentSlot.class);
+            } catch (Throwable ignore) {
+                class_ItemMeta_addAttributeModifierMethod = null;
+            }
 
             try {
                 class_Entity_persistField = class_Entity.getDeclaredField("persist");
@@ -944,74 +962,90 @@ public class NMSUtils {
             try {
                 try {
                     if (!isCurrentVersion) {
-                        throw new Exception("Not 1.15");
+                        throw new Exception("Not 1.16");
                     }
                     class_Entity_jumpingField = class_EntityLiving.getDeclaredField("jumping");
                     class_Entity_jumpingField.setAccessible(true);
-                    class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("aZ");
-                    class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bb");
+                    class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("aY");
+                    class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("ba");
                     if (!isPublic(class_Entity_moveStrafingField) || !isPublic(class_Entity_moveForwardField)) {
-                        throw new Exception("Not 1.1.5");
+                        throw new Exception("Not 1.16");
                     }
-                } catch (Throwable not15) {
-                    // 1.14
+                    if (class_Entity_moveStrafingField.getType() != Float.TYPE || class_Entity_moveForwardField.getType() != Float.TYPE) {
+                        throw new Exception("Not 1.16");
+                    }
+                } catch (Throwable not16) {
                     try {
                         if (!isCurrentVersion) {
-                            throw new Exception("Not 1.14");
+                            throw new Exception("Not 1.15");
                         }
                         class_Entity_jumpingField = class_EntityLiving.getDeclaredField("jumping");
                         class_Entity_jumpingField.setAccessible(true);
-                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bb");
-                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bd");
-                    } catch (Throwable not14) {
-                        // 1.13
+                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("aZ");
+                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bb");
+                        if (!isPublic(class_Entity_moveStrafingField) || !isPublic(class_Entity_moveForwardField)) {
+                            throw new Exception("Not 1.15");
+                        }
+                    } catch (Throwable not15) {
+                        // 1.14
                         try {
-                            if (!isModernVersion) {
-                                throw new Exception("Not 1.13");
+                            if (!isCurrentVersion) {
+                                throw new Exception("Not 1.14");
                             }
-                            class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bg");
+                            class_Entity_jumpingField = class_EntityLiving.getDeclaredField("jumping");
                             class_Entity_jumpingField.setAccessible(true);
-                            class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bh");
-                            class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bj");
-                        } catch (Throwable not13) {
-                            // 1.12
+                            class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bb");
+                            class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bd");
+                        } catch (Throwable not14) {
+                            // 1.13
                             try {
-                                if (!current) {
-                                    throw new Exception("Not 1.12");
+                                if (!isModernVersion) {
+                                    throw new Exception("Not 1.13");
                                 }
-                                class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bd");
+                                class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bg");
                                 class_Entity_jumpingField.setAccessible(true);
-                                class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("be");
-                                class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
-                            } catch (Throwable not12) {
-                                // 1.11
-                                current = false;
+                                class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bh");
+                                class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bj");
+                            } catch (Throwable not13) {
+                                // 1.12
                                 try {
+                                    if (!current) {
+                                        throw new Exception("Not 1.12");
+                                    }
                                     class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bd");
                                     class_Entity_jumpingField.setAccessible(true);
                                     class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("be");
-                                    class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bf");
-                                } catch (Throwable not11) {
-                                    // 1.10
+                                    class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
+                                } catch (Throwable not12) {
+                                    // 1.11
+                                    current = false;
                                     try {
-                                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("be");
+                                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bd");
                                         class_Entity_jumpingField.setAccessible(true);
-                                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bf");
-                                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
-                                    } catch (Throwable not10) {
-                                        class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bc");
-                                        class_Entity_jumpingField.setAccessible(true);
-                                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bd");
-                                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("be");
+                                        class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("be");
+                                        class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bf");
+                                    } catch (Throwable not11) {
+                                        // 1.10
+                                        try {
+                                            class_Entity_jumpingField = class_EntityLiving.getDeclaredField("be");
+                                            class_Entity_jumpingField.setAccessible(true);
+                                            class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bf");
+                                            class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("bg");
+                                        } catch (Throwable not10) {
+                                            class_Entity_jumpingField = class_EntityLiving.getDeclaredField("bc");
+                                            class_Entity_jumpingField.setAccessible(true);
+                                            class_Entity_moveStrafingField = class_EntityLiving.getDeclaredField("bd");
+                                            class_Entity_moveForwardField = class_EntityLiving.getDeclaredField("be");
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                if (!isPublic(class_Entity_moveStrafingField) || !isPublic(class_Entity_moveForwardField)) {
-                    throw new Exception("Could not find accessible methods");
+                    if (!isPublic(class_Entity_moveStrafingField) || !isPublic(class_Entity_moveForwardField)) {
+                        throw new Exception("Could not find accessible methods");
+                    }
                 }
             } catch (Throwable ex) {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering entity movement accessors, vehicle control will not work", ex);
@@ -1021,13 +1055,27 @@ public class NMSUtils {
             }
 
             try {
-                class_Block_durabilityField = class_Block.getDeclaredField("durability");
+                class_BlockBase = fixBukkitClass("net.minecraft.server.BlockBase");
+                class_Block_durabilityField = class_BlockBase.getDeclaredField("durability");
                 class_Block_durabilityField.setAccessible(true);
+            } catch (Exception not16) {
+                try {
+                    class_Block_durabilityField = class_Block.getDeclaredField("durability");
+                    class_Block_durabilityField.setAccessible(true);
+                    Class<?> craftMagicNumbers = fixBukkitClass("org.bukkit.craftbukkit.util.CraftMagicNumbers");
+                    class_CraftMagicNumbers_getBlockMethod = craftMagicNumbers.getMethod("getBlock", Material.class);
+                } catch (Throwable ex) {
+                    Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering block durability accessor, durability-based block checks will not work", ex);
+                    class_Block_durabilityField = null;
+                    class_CraftMagicNumbers_getBlockMethod = null;
+                }
+            }
+
+            try {
                 Class<?> craftMagicNumbers = fixBukkitClass("org.bukkit.craftbukkit.util.CraftMagicNumbers");
                 class_CraftMagicNumbers_getBlockMethod = craftMagicNumbers.getMethod("getBlock", Material.class);
             } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering block durability accessor, durability-based block checks will not work", ex);
-                class_Block_durabilityField = null;
+                Bukkit.getLogger().log(Level.WARNING, "An error occurred while registering block accessor, durability-based block checks will not work", ex);
                 class_CraftMagicNumbers_getBlockMethod = null;
             }
 
@@ -1040,10 +1088,18 @@ public class NMSUtils {
                     class_IChatBaseComponent = fixBukkitClass("net.minecraft.server.IChatBaseComponent");
                     class_ChatComponentText_constructor = class_ChatComponentText.getConstructor(String.class);
 
-                    // 1.12 specific
+                    // Common to 1.16 and below
                     class_ChatMessageType = (Class<Enum>)fixBukkitClass("net.minecraft.server.ChatMessageType");
                     enum_ChatMessageType_GAME_INFO = Enum.valueOf(class_ChatMessageType, "GAME_INFO");
-                    class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, class_ChatMessageType);
+
+                    // 1.16 specific
+                    try {
+                        class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, class_ChatMessageType, UUID.class);
+                        chatPacketHasUUID = true;
+                    } catch (Throwable not16) {
+                        // 1.12 specific
+                        class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, class_ChatMessageType);
+                    }
 
                 } catch (Throwable ex) {
                     // 1.11 fallback
@@ -1075,10 +1131,16 @@ public class NMSUtils {
 
             try {
                 try {
-                    // 1.12.1
-                    class_TileEntity_loadMethod = class_TileEntity.getMethod("load", class_NBTTagCompound);
-                } catch (Throwable ignore) {
-                    class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
+                    class_IBlockData = fixBukkitClass("net.minecraft.server.IBlockData");
+                    class_TileEntity_loadMethod = class_TileEntity.getMethod("load", class_IBlockData, class_NBTTagCompound);
+                } catch (Throwable not16) {
+                    class_IBlockData = null;
+                    try {
+                        // 1.12.1
+                        class_TileEntity_loadMethod = class_TileEntity.getMethod("load", class_NBTTagCompound);
+                    } catch (Throwable ignore) {
+                        class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
+                    }
                 }
                 try {
                     class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
@@ -2281,7 +2343,14 @@ public class NMSUtils {
                 items.clear();
             }
             class_NBTTagCompound_removeMethod.invoke(entityData,"Item");
-            class_TileEntity_loadMethod.invoke(tileEntity, entityData);
+            if (class_IBlockData != null) {
+                Object worldHandle = getHandle(location.getWorld());
+                Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+                Object blockType = class_World_getTypeMethod.invoke(worldHandle, blockLocation);
+                class_TileEntity_loadMethod.invoke(tileEntity, blockType, entityData);
+            } else {
+                class_TileEntity_loadMethod.invoke(tileEntity, entityData);
+            }
             class_TileEntity_updateMethod.invoke(tileEntity);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2298,7 +2367,14 @@ public class NMSUtils {
             class_NBTTagCompound_setIntMethod.invoke(data, "y", location.getBlockY());
             class_NBTTagCompound_setIntMethod.invoke(data, "z", location.getBlockZ());
 
-            class_TileEntity_loadMethod.invoke(tileEntity, data);
+            if (class_IBlockData != null) {
+                Object worldHandle = getHandle(location.getWorld());
+                Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+                Object blockType = class_World_getTypeMethod.invoke(worldHandle, blockLocation);
+                class_TileEntity_loadMethod.invoke(tileEntity, blockType, data);
+            } else {
+                class_TileEntity_loadMethod.invoke(tileEntity, data);
+            }
             class_TileEntity_updateMethod.invoke(tileEntity);
         } catch (Exception ex) {
             ex.printStackTrace();

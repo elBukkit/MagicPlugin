@@ -16,6 +16,7 @@ import org.bukkit.Rotation;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -44,6 +45,7 @@ import org.bukkit.entity.Witch;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -100,6 +102,7 @@ public class CompatibilityUtils extends NMSUtils {
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<>();
     public static Map<Integer, Material> materialIdMap;
     private static ItemStack dummyItem;
+    public static final UUID emptyUUID = new UUID(0L, 0L);
 
     private static final EnteredStateTracker DAMAGING = new EnteredStateTracker();
 
@@ -1214,6 +1217,48 @@ public class CompatibilityUtils extends NMSUtils {
     }
     
     public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
+        UUID attributeUUID = UUID.randomUUID();
+
+        if (class_ItemMeta_addAttributeModifierMethod != null) {
+            try {
+                AttributeModifier.Operation operation;
+                try {
+                     operation = AttributeModifier.Operation.values()[attributeOperation];
+                } catch (Throwable ex) {
+                    Bukkit.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
+                    return false;
+                }
+                ItemMeta meta = item.getItemMeta();
+                class_ItemMeta_removeAttributeModifierMethod.invoke(meta, attribute);
+                AttributeModifier modifier;
+                if (slot != null && !slot.isEmpty()) {
+                    EquipmentSlot equipmentSlot;
+                    try {
+                        if (slot.equalsIgnoreCase("mainhand")) {
+                            equipmentSlot = EquipmentSlot.HAND;
+                        } else if (slot.equalsIgnoreCase("offhand")) {
+                            equipmentSlot = EquipmentSlot.OFF_HAND;
+                        } else {
+                            equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase());
+                        }
+                    } catch (Throwable ex) {
+                        Bukkit.getLogger().warning("[Magic] invalid attribute slot: " + slot);
+                        return false;
+                    }
+
+                    modifier = (AttributeModifier)class_AttributeModifier_constructor.newInstance(
+                        attributeUUID, "Equipment Modifier", value, operation, equipmentSlot);
+                } else {
+                    modifier = new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation);
+                }
+                class_ItemMeta_addAttributeModifierMethod.invoke(meta, attribute, modifier);
+                item.setItemMeta(meta);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
+            return true;
+        }
         try {
             Object handle = getHandle(item);
             if (handle == null) {
@@ -1224,7 +1269,6 @@ public class CompatibilityUtils extends NMSUtils {
             
             Object attributesNode = getNode(tag, "AttributeModifiers");
             Object attributeNode = null;
-            UUID attributeUUID = UUID.randomUUID();
 
             String attributeName = toMinecraftAttribute(attribute);
             if (attributesNode == null) {
@@ -1345,6 +1389,8 @@ public class CompatibilityUtils extends NMSUtils {
             Object packet;
             if (enum_ChatMessageType_GAME_INFO == null) {
                 packet = class_PacketPlayOutChat_constructor.newInstance(chatComponent, (byte)2);
+            } else if (chatPacketHasUUID) {
+                packet = class_PacketPlayOutChat_constructor.newInstance(chatComponent, enum_ChatMessageType_GAME_INFO, emptyUUID);
             } else {
                 packet = class_PacketPlayOutChat_constructor.newInstance(chatComponent, enum_ChatMessageType_GAME_INFO);
             }
