@@ -11,7 +11,7 @@ npc_reload:
         - magic load
 
 npc_day:
-  name: Reload configs
+  name: Daytime
   type: villager
   invulnerable: true
   persist: true
