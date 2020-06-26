@@ -7,6 +7,8 @@
  - Add support for class-locked armor
  - Add "interact" mob trigger for more advanced right-click functionality
  - Prevent putting wands into a grindstone
+ - Fix wands disappearing under certain circumstances when dropped.
+   However, they will drop now under those same circumstances. It's the best I could do!
 
 # 7.9.7
 

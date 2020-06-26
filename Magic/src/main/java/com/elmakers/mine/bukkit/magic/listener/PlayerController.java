@@ -328,6 +328,17 @@ public class PlayerController implements Listener {
             cancelEvent = InventoryUtils.getMetaBoolean(droppedItem, "undroppable", false);
         }
         if (cancelEvent) {
+            // Work around a Spigot bug that would make the item disappear if the player's inventory is full
+            boolean isFull = true;
+            ItemStack[] items = player.getInventory().getStorageContents();
+            for (int i = items.length - 1; i >= 0; i--) {
+                if (CompatibilityUtils.isEmpty(items[i])) {
+                    isFull = false;
+                    break;
+                }
+            }
+            if (isFull) return;
+
             if (droppedWand) {
                 activeWand.setItem(droppedItem);
             }
