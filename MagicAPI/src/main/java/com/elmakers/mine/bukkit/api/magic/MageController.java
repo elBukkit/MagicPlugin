@@ -593,4 +593,5 @@ public interface MageController {
 
     @Nullable
     MagicAttribute getAttribute(String attributeKey);
+    boolean isUndoable(@Nonnull Material material);
 }

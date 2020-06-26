@@ -1,0 +1,4 @@
+# Modify this list to restrict what blocks are undoable
+# for example"
+# undoable: "!fire"
+undoable: "*"

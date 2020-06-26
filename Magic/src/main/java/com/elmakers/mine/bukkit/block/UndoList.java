@@ -226,6 +226,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             Thread.dumpStack();
         }
         if (bypass) return true;
+        if (owner != null && !owner.getController().isUndoable(blockData.getMaterial())) {
+            return false;
+        }
         if (!super.add(blockData)) {
             return false;
         }

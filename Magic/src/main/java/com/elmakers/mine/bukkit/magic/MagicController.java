@@ -689,6 +689,11 @@ public class MagicController implements MageController {
         return destructibleMaterials.testBlock(block);
     }
 
+    @Override
+    public boolean isUndoable(Material material) {
+        return undoableMaterials.testMaterial(material);
+    }
+
     @Deprecated // Material
     protected boolean isRestricted(Material material) {
         return restrictedMaterials.testMaterial(material);
@@ -2401,6 +2406,7 @@ public class MagicController implements MageController {
                 .getMaterialSetEmpty("interactible");
         containerMaterials = materialSetManager
                 .getMaterialSetEmpty("containers");
+        undoableMaterials = materialSetManager.getMaterialSetEmpty("undoable");
         wearableMaterials = materialSetManager.getMaterialSetEmpty("wearable");
         meleeMaterials = materialSetManager.getMaterialSetEmpty("melee");
         com.elmakers.mine.bukkit.block.UndoList.attachables = materialSetManager
@@ -6150,6 +6156,7 @@ public class MagicController implements MageController {
     private @Nonnull MaterialSet                containerMaterials              = MaterialSets.empty();
     private @Nonnull MaterialSet                wearableMaterials               = MaterialSets.empty();
     private @Nonnull MaterialSet                meleeMaterials                  = MaterialSets.empty();
+    private @Nonnull MaterialSet                undoableMaterials               = MaterialSets.wildcard();
 
     private boolean                             backupInventories               = true;
     private int                                    undoTimeWindow                    = 6000;
