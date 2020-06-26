@@ -5,6 +5,11 @@ spells:
         cast: Let me in!
     admission|2:
         upgrade_description: "Now opens iron doors"
+    collapse:
+        name: Collapse
+        description: Collapse a spherical area of blocks
+        cast_finish: Collapsed $count blocks
+        upgrade_description: "Increased radius, breaks more types of blocks"
     secure:
         name: Secure
         description: Secures containers

@@ -7,11 +7,6 @@ spells:
         description: Convert a spherical area of blocks
         usage: Does not fill air
         cast_finish: Converted $count blocks to $material
-    collapse:
-        name: Collapse
-        description: Collapse a spherical area of blocks
-        cast_finish: Collapsed $count blocks
-        upgrade_description: "Increased radius, breaks more types of blocks"
     superconvert:
         name: SuperConvert
         description: Convert a large sphere of blocks
