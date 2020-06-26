@@ -301,7 +301,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         String entityName = parameters.contains("type") ? parameters.getString("type") : key;
         type = parseEntityType(entityName);
         if (type == null) {
-            controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName + " in mob config for " + entityName + ", did you forget the 'type' parameter?");
+            controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName + " in mob config for " + key + ", did you forget the 'type' parameter?");
             return;
         }
 
