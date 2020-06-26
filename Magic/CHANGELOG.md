@@ -11,6 +11,7 @@
    However, they will drop now under those same circumstances. It's the best I could do!
  - Add "undoable" material list, for tweaking the undo system (e.g. excluding fire from undo)
  - Put "collapse" spell back in survival configs (whoops, sorry!)
+ - Add support for dyed leather horse armor
 
 # 7.9.7
 
