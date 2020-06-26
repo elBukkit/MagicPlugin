@@ -310,7 +310,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             try {
                 dyeColor = DyeColor.valueOf(colorString.toUpperCase());
             } catch (Exception ex) {
-                controller.getLogger().warning("Invalid color: " + colorString);
+                dyeColor = null;
             }
         }
 
