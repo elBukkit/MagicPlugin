@@ -398,7 +398,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             else if (type == EntityType.RABBIT && parameters.contains("rabbit_type")) {
                 rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
             }
-            else if (type == EntityType.ZOMBIE || type == EntityType.PIG_ZOMBIE) {
+            else if (type == EntityType.ZOMBIE || type.name().equals("PIG_ZOMBIE")) {
                 EntityZombieData zombieData = new EntityZombieData();
                 zombieData.isBaby = isBaby;
                 extraData = zombieData;
