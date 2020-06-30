@@ -1,12 +1,28 @@
 emerald_sword:
-  worth: 1000
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  creator: NathanWolf
+  worth: 1000.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: GOLD_SWORD
-    damage: 7
+    v: 2567
+    type: GOLDEN_SWORD
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
       display-name: Emerald Sword
-      Unbreakable: true
-      internal: H4sIAAAAAAAAAONiYOBkEHIsKSnKTCotSfXNT8lMy0wtKuZiYGBgYmHgCA31dPHNLy75pWwn49jgkcrCwAkS8klNLC7ZIL3n3PTWNYvZGNgcc/NL80ocGCCAg4ElOCe/hIEjNzEzLyMxL4WDgRduhV9ibiqDcHpqXmpRZrJeYklJYnJ2cEFqagozA6d/QWpRYklmfh7UFLBaIdfC0syC3NS8EgWY8xiQXHbaPvRySoy/BbLLlkyfI7zYdut5hMsUiHWZCKrLXBJzE9NTSXEaAwCwmFFiUwEAAA==
+      custom-model-data: 1
+      attribute-modifiers:
+        GENERIC_ATTACK_DAMAGE:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 8.0
+          name: Equipment Modifier
+          slot: HAND
+          uuid: be7c088e-291d-4497-b54d-5b1b15979cd1
+          operation: 0
+        GENERIC_ATTACK_SPEED:
+        - ==: org.bukkit.attribute.AttributeModifier
+          amount: 2.0
+          name: Equipment Modifier
+          slot: HAND
+          uuid: 5665f95b-de79-4453-a315-cc5874910086
+          operation: 0

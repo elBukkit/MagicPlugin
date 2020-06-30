@@ -3,6 +3,7 @@
 # 7.9.8
 
  - 1.16.1 support
+ - The emerald sword is no longer unbreakable (in 1.16 and up only)
  - All builtin mobs using zombie pigmen changed to husks (RIP)
  - Add support for class-locked armor
  - Add "interact" mob trigger for more advanced right-click functionality

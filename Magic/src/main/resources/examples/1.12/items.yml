@@ -124,3 +124,15 @@ skelliehorseegg:
         id: "minecraft:skeleton_horse"
         CustomName: Skellie Horse
 
+emerald_sword:
+  worth: 1000
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: GOLD_SWORD
+    damage: 7
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Emerald Sword
+      Unbreakable: true
+      internal: H4sIAAAAAAAAAONiYOBkEHIsKSnKTCotSfXNT8lMy0wtKuZiYGBgYmHgCA31dPHNLy75pWwn49jgkcrCwAkS8klNLC7ZIL3n3PTWNYvZGNgcc/NL80ocGCCAg4ElOCe/hIEjNzEzLyMxL4WDgRduhV9ibiqDcHpqXmpRZrJeYklJYnJ2cEFqagozA6d/QWpRYklmfh7UFLBaIdfC0syC3NS8EgWY8xiQXHbaPvRySoy/BbLLlkyfI7zYdut5hMsUiHWZCKrLXBJzE9NTSXEaAwCwmFFiUwEAAA==

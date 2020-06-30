@@ -5,6 +5,8 @@
         "layer0": "item/golden_sword"
     },
     "overrides": [
+        {"predicate": { "custom_model_data": 1}, "model": "item/custom/emerald_sword"},
+
         {"predicate": {"damaged": 0, "damage": 0.03030303030303}, "model": "item/custom/sword_master"},
         {"predicate": {"damaged": 0, "damage": 0.06060606060606}, "model": "item/saber/lightsaber_green"},
         {"predicate": {"damaged": 0, "damage": 0.09090909090909}, "model": "item/saber/lightsaber_blue"},
