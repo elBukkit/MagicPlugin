@@ -1,5 +1,5 @@
 police:
-  type: pig_zombie
+  type: husk
   item: pistol_item
   baby: false
   name: Police
