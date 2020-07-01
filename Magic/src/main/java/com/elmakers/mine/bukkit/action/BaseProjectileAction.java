@@ -17,6 +17,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.Targeting;
@@ -33,6 +34,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
 
     private Set<Entity> tracking;
     private long expiration;
+    private boolean startActionsRun;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -50,6 +52,13 @@ public abstract class BaseProjectileAction extends CompoundAction {
         super.reset(context);
         expiration = System.currentTimeMillis() + lifetime;
         tracking = null;
+        startActionsRun = false;
+    }
+
+    @Override
+    protected void addHandlers(Spell spell, ConfigurationSection parameters) {
+        super.addHandlers(spell, parameters);
+        addHandler(spell, "start");
     }
 
     @Override
@@ -70,6 +79,14 @@ public abstract class BaseProjectileAction extends CompoundAction {
             context.getMage().sendDebugMessage(ChatColor.DARK_GRAY + "Projectiles expired", 4);
             tracking = null;
             return SpellResult.NO_TARGET;
+        }
+
+        if (!startActionsRun) {
+            startActionsRun = true;
+            if (hasActions("start")) {
+                createActionContext(context);
+                return startActions("start");
+            }
         }
 
         for (Entity entity : tracking)

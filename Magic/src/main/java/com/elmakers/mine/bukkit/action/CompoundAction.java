@@ -294,6 +294,10 @@ public abstract class CompoundAction extends BaseSpellAction
         return message;
     }
 
+    public void createActionContext(CastContext context) {
+        actionContext = new com.elmakers.mine.bukkit.action.CastContext(context);
+    }
+
     public void createActionContext(CastContext context, Entity sourceEntity, Location sourceLocation) {
         actionContext = new com.elmakers.mine.bukkit.action.CastContext(context, sourceEntity, sourceLocation);
     }

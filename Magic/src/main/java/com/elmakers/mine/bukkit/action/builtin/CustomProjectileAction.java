@@ -156,7 +156,7 @@ public class CustomProjectileAction extends CompoundAction
 
     @Override
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
-        addHandler(spell, "actions");
+        super.addHandlers(spell, parameters);
         addHandler(spell, "headshot");
         addHandler(spell, "miss");
         addHandler(spell, "tick");
