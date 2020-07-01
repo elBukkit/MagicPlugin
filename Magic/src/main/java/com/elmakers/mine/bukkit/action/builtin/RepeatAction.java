@@ -20,7 +20,8 @@ public class RepeatAction extends CompoundAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        if (parameters.getString("repeat", "").equals("infinite")) {
+        String repeatString = parameters.getString("repeat", "");
+        if (repeatString.equals("infinite") || repeatString.equals("forever") || repeatString.equals("infinity")) {
             infinite = true;
         } else {
             count = parameters.getInt("repeat", 2);

@@ -2,6 +2,9 @@
 
 # 7.9.9
 
+ - Add dismount flag for Mount action
+ - Support infinite, infinity and forever as Repeat parameters
+
 # 7.9.8
 
  - 1.16.1 support
