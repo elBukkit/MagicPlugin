@@ -4,6 +4,7 @@
 
  - Add dismount flag for Mount action
  - Support infinite, infinity and forever as Repeat parameters
+ - Put in some fixes for wall-clipping Rocket spell exploits
 
 # 7.9.8
 

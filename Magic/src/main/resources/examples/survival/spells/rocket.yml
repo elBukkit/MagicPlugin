@@ -8,8 +8,30 @@ rocket:
     actions:
         cast:
         - class: FallProtection
-        - class: Firework
-        - class: Mount
+        - class: Parallel
+          actions:
+          - class: Firework
+            start:
+            - class: Mount
+            actions:
+            - class: Stop
+          - class: Repeat
+            repeat: infinite
+            actions:
+            - class: Delay
+            - class: Retarget
+            - class: Volume
+              center_y: false
+              x_size: 1
+              z_size: 1
+              y_size: 1
+              actions:
+                - class: CheckBlock
+                  allowed: "!passthrough"
+                  actions:
+                    - class: Mount
+                      dismount: true
+                    - class: Stop
     effects:
         cast:
         -  sound: entity_firework_launch
