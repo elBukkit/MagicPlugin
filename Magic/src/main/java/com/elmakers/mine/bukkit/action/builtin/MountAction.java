@@ -12,10 +12,12 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class MountAction extends BaseSpellAction {
     private boolean eject = false;
+    private boolean dismount = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         eject = parameters.getBoolean("eject", false);
+        dismount = parameters.getBoolean("dismount", false);
     }
 
     @Override
@@ -34,6 +36,9 @@ public class MountAction extends BaseSpellAction {
         Entity current = source.getVehicle();
         if (current != null) {
             current.eject();
+        }
+        if (dismount) {
+            return current != null ? SpellResult.CAST : SpellResult.NO_TARGET;
         }
         Entity targetEntity = context.getTargetEntity();
         if (targetEntity == null) {
