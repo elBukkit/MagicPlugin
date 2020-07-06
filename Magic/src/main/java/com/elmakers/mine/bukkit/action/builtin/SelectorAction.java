@@ -190,6 +190,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean free = false;
         protected boolean applyLoreToItem = false;
         protected boolean applyNameToItem = false;
+        protected boolean allowDroppedItems = false;
 
         protected int limit = 0;
 
@@ -245,6 +246,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             effects = configuration.getString("effects", effects);
             applyLoreToItem = configuration.getBoolean("apply_lore_to_item", applyLoreToItem);
             applyNameToItem = configuration.getBoolean("apply_name_to_item", applyNameToItem);
+            allowDroppedItems = configuration.getBoolean("allow_dropped_items", allowDroppedItems);
 
             if (costType.isEmpty() || costType.equalsIgnoreCase("none")) {
                 free = true;
@@ -508,6 +510,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.effects = defaults.effects;
             this.applyLoreToItem = defaults.applyLoreToItem;
             this.applyNameToItem = defaults.applyNameToItem;
+            this.allowDroppedItems = defaults.allowDroppedItems;
             this.iconKey = defaults.iconKey;
             this.iconPlaceholderKey = defaults.iconPlaceholderKey;
             this.iconDisabledKey = defaults.iconDisabledKey;
@@ -1011,9 +1014,20 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             if (items != null && caster == null) {
+                boolean gave = false;
                 for (ItemStack item : items) {
                     ItemStack copy = InventoryUtils.getCopy(item);
-                    mage.giveItem(copy, putInHand);
+                    if (allowDroppedItems) {
+                        mage.giveItem(copy, putInHand);
+                        gave = true;
+                    } else {
+                        gave = mage.tryGiveItem(copy, putInHand) | gave;
+                    }
+                }
+
+                if (!gave) {
+                    context.showMessage(getMessage("full"));
+                    return SpellResult.NO_TARGET;
                 }
             }
 

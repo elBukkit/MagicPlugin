@@ -51,3 +51,4 @@ shops:
   decrease_attribute: "Decrease $attribute by $amount"
   attribute_max: "You can not increase $attribute any further"
   attribute_min: "You can not decrease $attribute any further"
+  full: "Your inventory is full!"

@@ -3483,11 +3483,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void giveItem(ItemStack itemStack, boolean putInHand) {
+    }
+
+    @Override
+    public void giveItem(ItemStack itemStack) {
+        if (!tryGiveItem(itemStack)) {
+            Entity entity = getEntity();
+            if (entity != null) {
+                entity.getWorld().dropItem(entity.getLocation(), itemStack);
+            }
+        }
+    }
+
+    @Override
+    public boolean tryGiveItem(ItemStack itemStack, boolean putInHand) {
         if (putInHand) {
-            giveItem(itemStack);
+            return tryGiveItem(itemStack);
         } else {
             Player player = getPlayer();
-            if (player == null) return;
+            // See note in other version of tryGiveItem, not sure this is "right" but is probably "best".
+            if (player == null) return true;
 
             PlayerInventory inventory = player.getInventory();
             ItemStack inHand = inventory.getItemInMainHand();
@@ -3500,27 +3515,31 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             if (freeSlot == null) {
-                giveItem(itemStack);
+                return tryGiveItem(itemStack);
             } else {
                 inventory.setItem(freeSlot, itemStack);
             }
         }
+        return true;
     }
 
     @Override
-    public void giveItem(ItemStack itemStack) {
-        if (InventoryUtils.isEmpty(itemStack)) return;
+    public boolean tryGiveItem(ItemStack itemStack) {
+        if (InventoryUtils.isEmpty(itemStack)) return true;
 
         // Check for wand upgrades if appropriate
         Wand activeWand = getActiveWand();
         if (activeWand != null) {
             if (activeWand.addItem(itemStack)) {
-                return;
+                 return true;
             }
         }
 
         Player player = getPlayer();
-        if (player == null) return;
+        // Should this return false ?
+        // That'd be a change from previous behavior, giving items to mobs now means dropping items on the ground,
+        // which we probably don't want.
+        if (player == null) return true;
 
         // Bind item if configured to do so
         if (controller.isBindOnGive() && Wand.isWand(itemStack)) {
@@ -3532,10 +3551,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         if (hasStoredInventory()) {
-            if (!addToStoredInventory(itemStack)) {
-                player.getWorld().dropItem(player.getLocation(), itemStack);
-            }
-            return;
+            return addToStoredInventory(itemStack);
         }
 
         // Place directly in hand if possible
@@ -3555,10 +3571,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         } else {
             HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
-            if (returned.size() > 0) {
-                player.getWorld().dropItem(player.getLocation(), itemStack);
-            }
+            return returned.isEmpty();
         }
+        return true;
     }
 
     public void armorUpdated() {
