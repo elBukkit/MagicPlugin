@@ -9,6 +9,7 @@
  - Add StopSound action
  - Add "phase" parameter for ender dragon mobs
  - All "spells: *" in ApplyCooldown action to clear all cooldowns
+ - Add "current" parameter to Cancel action, to try to avoid canceling the current cast
 
 # 7.9.8
 

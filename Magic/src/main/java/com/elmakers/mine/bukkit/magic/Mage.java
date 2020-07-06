@@ -2094,6 +2094,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     @Override
     public Batch cancelPending(String spellKey, boolean force) {
+        return cancelPending(spellKey, force, true);
+    }
+
+    @Nullable
+    @Override
+    public Batch cancelPending(String spellKey, boolean force, boolean nonBatched) {
         Batch stoppedPending = null;
         if (!pendingBatches.isEmpty()) {
             List<Batch> batches = new ArrayList<>();
@@ -2133,7 +2139,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
-        if (stoppedPending == null && spellKey != null && !spellKey.isEmpty()) {
+        if (nonBatched && stoppedPending == null && spellKey != null && !spellKey.isEmpty()) {
             Spell cancelSpell = getSpell(spellKey);
             if (cancelSpell != null) {
                 cancelSpell.cancel();

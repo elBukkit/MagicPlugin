@@ -224,6 +224,8 @@ public interface Mage extends CostReducer, CooldownReducer {
     Batch cancelPending(boolean force);
     @Nullable
     Batch cancelPending(String spellKey, boolean force);
+    @Nullable
+    Batch cancelPending(String spellKey, boolean force, boolean nonBatched);
 
     /**
      * Undo the last construction performed by this Mage.
