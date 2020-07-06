@@ -4,7 +4,6 @@ emerald_sword:
   worth: 1000.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2567
     type: GOLDEN_SWORD
     meta:
       ==: ItemMeta
