@@ -94,7 +94,7 @@ public class AddSpellAction extends BaseSpellAction
                     context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you here.").replace("$wand", wandName));
                     return SpellResult.FAIL;
                 }
-                if (path.canProgress(wand)) {
+                if (path.canProgress(caster)) {
                     context.showMessage(context.getMessage("no_path_end", "You must be ready to advance to $path!").replace("$path", pathUpgrade.getName()));
                     return SpellResult.FAIL;
                 }
