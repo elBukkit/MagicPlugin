@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEffect {
@@ -60,6 +61,21 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
                 }
             }
         }
+    }
+
+    @Override
+    public void stop(Player player) {
+        if (sound != null) {
+            CompatibilityUtils.stopSound(player, sound);
+        }
+        if (customSound != null && !customSound.isEmpty()) {
+            CompatibilityUtils.stopSound(player, customSound);
+        }
+    }
+
+    @Override
+    public boolean isCustom() {
+        return sound == null;
     }
 
     @Override

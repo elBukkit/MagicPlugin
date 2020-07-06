@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.elmakers.mine.bukkit</groupId>
             <artifactId>CompatibilityLib</artifactId>
-            <version>1.9-1.15-3</version>
+            <version>1.9-1.15-4-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
