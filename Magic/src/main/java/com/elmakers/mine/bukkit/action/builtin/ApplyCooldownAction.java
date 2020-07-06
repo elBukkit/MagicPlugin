@@ -95,6 +95,13 @@ public class ApplyCooldownAction extends BaseSpellAction
             }
         }
         if (spells != null) {
+            List<String> spells = this.spells;
+            if (spells.size() == 1 && spells.get(0).equals("*")) {
+                spells = new ArrayList<>();
+                for (Spell spell : targetMage.getSpells()) {
+                    spells.add(spell.getKey());
+                }
+            }
             Wand wand = targetMage.getActiveWand();
             for (String spellName : spells) {
                 Spell spell = null;

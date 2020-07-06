@@ -8,6 +8,7 @@
  - Fix error when using a graduation NPC in potter configs without holding a wand
  - Add StopSound action
  - Add "phase" parameter for ender dragon mobs
+ - All "spells: *" in ApplyCooldown action to clear all cooldowns
 
 # 7.9.8
 
