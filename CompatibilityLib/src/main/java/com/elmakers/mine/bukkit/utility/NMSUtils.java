@@ -6,6 +6,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -276,7 +277,8 @@ public class NMSUtils {
     protected static Method class_Bisected_setHalfMethod;
     protected static Method class_ItemMeta_addAttributeModifierMethod;
     protected static Method class_ItemMeta_removeAttributeModifierMethod;
-    protected static Method class_ItemMeta_getAttributeModifiers;
+    protected static Method class_Player_stopSoundMethod;
+    protected static Method class_Player_stopSoundStringMethod;
 
     protected static boolean legacyMaps;
 
@@ -611,6 +613,16 @@ public class NMSUtils {
                 class_Entity_persistField = null;
                 Bukkit.getLogger().warning("Could not bind to persist entity tag, can't make mobs persistent");
             }
+
+            try {
+                class_Player_stopSoundMethod = Player.class.getMethod("stopSound", Sound.class);
+                class_Player_stopSoundStringMethod = Player.class.getMethod("stopSound", String.class);
+            } catch (Throwable ex) {
+                class_Player_stopSoundMethod = null;
+                class_Player_stopSoundStringMethod = null;
+                Bukkit.getLogger().warning("Could not bind to stopSound method, StopSound action will not work.");
+            }
+
 
             try {
                 class_Sittable = Class.forName("org.bukkit.entity.Sittable");

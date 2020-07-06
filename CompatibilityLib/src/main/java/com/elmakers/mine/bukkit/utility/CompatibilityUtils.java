@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.Server;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -2077,5 +2078,27 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return entity;
+    }
+
+    public static boolean stopSound(Player player, Sound sound) {
+        if (class_Player_stopSoundMethod == null) return false;
+        try {
+            class_Player_stopSoundMethod.invoke(player, sound);
+            return true;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean stopSound(Player player, String sound) {
+        if (class_Player_stopSoundStringMethod == null) return false;
+        try {
+            class_Player_stopSoundStringMethod.invoke(player, sound);
+            return true;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }
