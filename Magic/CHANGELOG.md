@@ -7,6 +7,7 @@
  - Put in some fixes for wall-clipping Rocket spell exploits
  - Fix error when using a graduation NPC in potter configs without holding a wand
  - Add StopSound action
+ - Add "phase" parameter for ender dragon mobs
 
 # 7.9.8
 

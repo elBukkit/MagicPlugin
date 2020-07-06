@@ -29,6 +29,7 @@ import org.bukkit.entity.Ageable;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -253,6 +254,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityFallingBlockData((FallingBlock)entity);
         } else if (entity.getType().name().equals("PARROT")) {
             extraData = new EntityParrotData(entity);
+        } else if (entity instanceof EnderDragon) {
+            extraData = new EntityEnderDragonData(entity);
         }
     }
 
@@ -413,6 +416,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 extraData = new EntityFallingBlockData(parameters);
             } else if (type.name().equals("PARROT")) {
                 extraData = new EntityParrotData(parameters, controller);
+            } else if (type == EntityType.ENDER_DRAGON) {
+                extraData = new EntityEnderDragonData(parameters, controller);
             }
 
         } catch (Exception ex) {
