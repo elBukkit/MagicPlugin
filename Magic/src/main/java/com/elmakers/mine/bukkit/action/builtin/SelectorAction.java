@@ -190,7 +190,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean free = false;
         protected boolean applyLoreToItem = false;
         protected boolean applyNameToItem = false;
-        protected boolean allowDroppedItems = false;
+        protected boolean allowDroppedItems = true;
 
         protected int limit = 0;
 
