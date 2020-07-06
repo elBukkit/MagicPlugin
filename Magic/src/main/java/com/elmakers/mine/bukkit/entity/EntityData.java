@@ -838,6 +838,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
             }
 
+            mageData.resetTriggers();
             mageData.trigger(apiMage, "spawn");
         }
     }

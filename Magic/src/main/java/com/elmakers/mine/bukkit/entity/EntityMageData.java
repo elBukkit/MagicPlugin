@@ -105,6 +105,10 @@ public class EntityMageData {
         return triggers == null ? null : triggers.get(type.toLowerCase());
     }
 
+    public void resetTriggers() {
+        triggering.clear();
+    }
+
     public boolean trigger(Mage mage, String triggerKey) {
         if (triggering.contains(triggerKey)) return false;
         triggering.add(triggerKey);
