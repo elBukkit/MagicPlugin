@@ -41,14 +41,24 @@ public class MobTrigger extends Trigger {
             if (!checkList.isEmpty()) {
                 Object first = checkList.get(0);
                 if (first instanceof String) {
-                    RandomUtils.populateStringProbabilityList(spells, (List<String>)checkList);
+                    // How to really make this cast?
+                    @SuppressWarnings("unchecked")
+                    List<String> stringList = (List<String>)checkList;
+                    RandomUtils.populateStringProbabilityList(spells, stringList);
                 } else if (first instanceof ConfigurationSection || first instanceof Map) {
                     float currentThreshold = 0;
                     spellsWithParameters = new ArrayDeque<>();
                     for (Object configGeneric : checkList) {
-                        ConfigurationSection config = configGeneric instanceof ConfigurationSection
-                            ? (ConfigurationSection)configGeneric
-                            : ConfigurationUtils.toConfigurationSection((Map<String, ?>)configGeneric);
+                        ConfigurationSection config = null;
+                        if (configGeneric instanceof ConfigurationSection) {
+                            config = (ConfigurationSection)configGeneric;
+                        }
+                        if (configGeneric instanceof Map) {
+                            // Arggggg
+                            @SuppressWarnings("unchecked")
+                            Map<String, ?> configMap = (Map<String, ?>)configGeneric;
+                            config = ConfigurationUtils.toConfigurationSection(configMap);
+                        }
                         String spellKey = config.getString("spell");
                         if (spellKey == null || spellKey.isEmpty()) {
                             controller.getLogger().warning("Trigger spell config missing 'spell' key");
