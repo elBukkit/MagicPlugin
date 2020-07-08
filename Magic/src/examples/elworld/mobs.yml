@@ -215,3 +215,8 @@ npc_proto:
 redsheep:
   type: sheep
   color: red
+
+mounted:
+  type: chicken
+  mount:
+    type: zombie

@@ -14,6 +14,7 @@
  - Add "allow_dropped_items" Selector parameter, will cancel a purchase if your inventory is full
  - Fix for mob triggers not properly re-triggering
  - Fix incorrect data type for HideFlags, which could cause issues with protocol plugins (e.g. Protocolize)
+ - Add "mount" property to mobs, which can be another mob to use as a mount
 
 # 7.9.8
 

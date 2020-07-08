@@ -68,6 +68,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -148,6 +149,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected ConfigurationSection disguise;
 
     protected EntityMageData mageData;
+    protected EntityData mount;
 
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
@@ -315,6 +317,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             } catch (Exception ex) {
                 dyeColor = null;
             }
+        }
+
+        ConfigurationSection mountConfig = ConfigurationUtils.getConfigurationSection(parameters, "mount");
+        if (mountConfig != null) {
+            mount = new EntityData(controller, mountConfig);
         }
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
@@ -857,6 +864,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (hasVelocity && velocity != null) {
             SafetyUtils.setVelocity(entity, velocity);
+        }
+        if (mount != null) {
+            Entity mountEntity = mount.spawn(controller, entity.getLocation());
+            DeprecatedUtils.setPassenger(mountEntity, entity);
         }
         return true;
     }
