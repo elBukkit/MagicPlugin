@@ -1021,7 +1021,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         mage.giveItem(copy, putInHand);
                         gave = true;
                     } else {
-                        gave = mage.tryGiveItem(copy, putInHand) | gave;
+                        gave = mage.tryGiveItem(copy, putInHand) || gave;
                     }
                 }
 
