@@ -524,7 +524,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 } else {
                     icon = InventoryUtils.makeReal(icon);
                     InventoryUtils.makeUnbreakable(icon);
-                    InventoryUtils.hideFlags(icon, (byte)63);
+                    InventoryUtils.hideFlags(icon, 63);
                     ItemMeta meta = icon.getItemMeta();
                     meta.setDisplayName(" ");
                     icon.setItemMeta(meta);
@@ -846,7 +846,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             icon = InventoryUtils.makeReal(icon);
 
             InventoryUtils.makeUnbreakable(icon);
-            InventoryUtils.hideFlags(icon, (byte)63);
+            InventoryUtils.hideFlags(icon, 63);
 
             if (unavailable) {
                 if (unavailableMessage != null && !unavailableMessage.isEmpty()) {

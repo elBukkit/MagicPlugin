@@ -13,6 +13,7 @@
  - Fix error loading emerald sword on startup in 1.15 and earlier
  - Add "allow_dropped_items" Selector parameter, will cancel a purchase if your inventory is full
  - Fix for mob triggers not properly re-triggering
+ - Fix incorrect data type for HideFlags, which could cause issues with protocol plugins (e.g. Protocolize)
 
 # 7.9.8
 

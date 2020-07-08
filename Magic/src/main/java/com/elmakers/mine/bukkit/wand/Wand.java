@@ -270,7 +270,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static String WAND_KEY = "wand";
     public static String UPGRADE_KEY = "wand_upgrade";
     public static String WAND_SELF_DESTRUCT_KEY = null;
-    public static byte HIDE_FLAGS = 63;
+    public static int HIDE_FLAGS = 63;
     public static String brushSelectSpell = "";
 
     private Inventory storedInventory = null;
@@ -1370,7 +1370,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
         InventoryUtils.makeUnbreakable(itemStack);
-        InventoryUtils.hideFlags(itemStack, (byte)63);
+        InventoryUtils.hideFlags(itemStack, 63);
         updateSpellItem(controller.getMessages(), itemStack, spell, args, mage, wand, wand == null ? null : wand.activeBrush, isItem);
 
         if (wand != null && wand.getMode() == WandMode.SKILLS && !isItem) {
@@ -1398,7 +1398,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             CompatibilityUtils.addGlow(itemStack);
         }
         InventoryUtils.makeUnbreakable(itemStack);
-        InventoryUtils.hideFlags(itemStack, (byte)63);
+        InventoryUtils.hideFlags(itemStack, 63);
         updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
         return itemStack;
     }

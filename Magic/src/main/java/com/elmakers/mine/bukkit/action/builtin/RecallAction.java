@@ -653,7 +653,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             waypointItem.setItemMeta(meta);
             waypointItem = InventoryUtils.makeReal(waypointItem);
-            InventoryUtils.hideFlags(waypointItem, (byte)63);
+            InventoryUtils.hideFlags(waypointItem, 63);
             InventoryUtils.setMeta(waypointItem, "waypoint", "true");
             CompatibilityUtils.makeUnbreakable(waypointItem);
             displayInventory.setItem(index, waypointItem);
@@ -697,7 +697,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
         markerItem.setItemMeta(meta);
         markerItem = InventoryUtils.makeReal(markerItem);
-        InventoryUtils.hideFlags(markerItem, (byte)63);
+        InventoryUtils.hideFlags(markerItem, 63);
         InventoryUtils.setMeta(markerItem, "move_marker", "true");
 
         displayInventory.setItem(4, markerItem);
