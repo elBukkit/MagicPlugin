@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 public class CraftingController implements Listener {
     private final MagicController controller;
     private boolean craftingEnabled = false;
+    private boolean allowWandsAsIngredients = true;
     private Map<Material, List<MagicRecipe>> recipes = new HashMap<>();
     private Set<String> recipeKeys = new HashSet<>();
 
@@ -74,6 +75,11 @@ public class CraftingController implements Listener {
         }
     }
 
+    public void loadMainConfiguration(ConfigurationSection configuration) {
+        craftingEnabled = configuration.getBoolean("enable_crafting", craftingEnabled);
+        allowWandsAsIngredients = craftingEnabled && configuration.getBoolean("allow_wands_as_ingredients", allowWandsAsIngredients);
+    }
+
     public boolean hasCraftPermission(Player player, MagicRecipe recipe)
     {
         if (player == null) return false;
@@ -105,11 +111,13 @@ public class CraftingController implements Listener {
         ItemStack[] contents = inventory.getMatrix();
 
         // Check for wands glitched into the crafting inventory
-        for (int i = 0; i < 9 && i < contents.length; i++) {
-            ItemStack item = contents[i];
-            if (Wand.isSpecial(item)) {
-                inventory.setResult(new ItemStack(Material.AIR));
-                return;
+        if (!allowWandsAsIngredients) {
+            for (int i = 0; i < 9 && i < contents.length; i++) {
+                ItemStack item = contents[i];
+                if (Wand.isSpecial(item)) {
+                    inventory.setResult(new ItemStack(Material.AIR));
+                    return;
+                }
             }
         }
 
@@ -147,7 +155,8 @@ public class CraftingController implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
+        // The only purpose of this handler is to prevent crafting with wands, so skip if we're allowed to do that.
+        if (allowWandsAsIngredients || !(event.getWhoClicked() instanceof Player)) return;
         if (event.isCancelled()) return;
 
         InventoryType inventoryType = event.getInventory().getType();
@@ -186,11 +195,6 @@ public class CraftingController implements Listener {
     public boolean isEnabled()
     {
         return craftingEnabled;
-    }
-
-    public void setEnabled(boolean enabled)
-    {
-        this.craftingEnabled = enabled;
     }
 
     public int getCount() {

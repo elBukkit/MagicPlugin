@@ -2844,7 +2844,7 @@ public class MagicController implements MageController {
         if (enchanting.isEnabled()) {
             getLogger().info("Wand enchanting is enabled");
         }
-        crafting.setEnabled(properties.getBoolean("enable_crafting", crafting.isEnabled()));
+        crafting.loadMainConfiguration(properties);
         if (crafting.isEnabled()) {
             getLogger().info("Wand crafting is enabled");
         }

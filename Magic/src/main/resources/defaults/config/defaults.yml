@@ -96,6 +96,9 @@ sounds: true
 # Whether wands can be crafted on a crafting table
 enable_crafting: true
 
+# Whether or not wands can be used as crafting ingredients
+allow_wands_as_ingredients: true
+
 # NOTE: If you disable spell upgrades, you probably also want to nerf magic missile's SP
 # earn rate, assuming you still have that spell enabled. Add this to spells.yml (not commented out)
 # missile:

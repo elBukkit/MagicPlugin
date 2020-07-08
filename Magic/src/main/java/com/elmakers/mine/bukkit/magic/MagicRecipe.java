@@ -275,16 +275,7 @@ public class MagicRecipe {
                 }
                 ItemMeta meta = item.getItemMeta();
                 if (meta != null) {
-                    ItemMeta ingredientMeta = ingredient.getItemMeta();
-                    if (ingredientMeta == null) {
-                        return MatchType.PARTIAL;
-                    }
-
-                    if (meta.hasDisplayName() && (!ingredientMeta.hasDisplayName() || !meta.getDisplayName().equals(ingredientMeta.getDisplayName()))) {
-                        return MatchType.PARTIAL;
-                    }
-
-                    if (meta.hasLore() && (!ingredientMeta.hasLore() || !meta.getLore().equals(ingredientMeta.getLore()))) {
+                    if (!controller.itemsAreEqual(ingredient, item.getItemStack())) {
                         return MatchType.PARTIAL;
                     }
                 }
