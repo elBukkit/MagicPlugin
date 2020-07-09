@@ -17,6 +17,7 @@
  - Add "mount" property to mobs, which can be another mob to use as a mount
  - Add SetSpawn action
  - Allow wands to be used as crafting ingredients
+ - Fix issues when dynmap is not fully working
 
 # 7.9.8
 
