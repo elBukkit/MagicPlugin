@@ -1,0 +1,36 @@
+deathfly:
+  name: Death Fly
+  icon: spell_icon:170
+  icon_disabled: spell_icon_disabled:170
+  actions:
+    cast:
+      - class: CustomProjectile
+        tick:
+          - class: AreaOfEffect
+            actions:
+              - class: Damage
+          - class: Volume
+            actions:
+              - class: ModifyBlock
+  effects:
+    projectile:
+    - location: source
+      color_override: color
+      effectlib:
+        class: EquationEffect
+        x_equation: 0
+        y_equation: "(cos(t/57.2958)  * (2.71828^(cos(t/57.2958)) - 2 * cos(4t/57.2958) - (sin(t/(12 * 57.2958)))^5))"
+        z_equation: "(sin(t/57.2958)  * (2.71828^(cos(t/57.2958)) - 2 * cos(4t/57.2958) - (sin(t/(12 * 57.2958)))^5))"
+        particles: 100
+        duration: 10000
+        relative_offset: -0.5,0,0
+  parameters:
+    range: 100
+    radius: 3
+    brush: erase
+    damage: 20
+    undo: 5000
+    block_hit_count: 100
+    entity_hit_count: 100
+    velocity: 10
+    undo_speed: 100
