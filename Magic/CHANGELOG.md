@@ -2,6 +2,8 @@
 
 # 7.9.10
 
+ - Hotfix for players not getting items from shops 
+
 # 7.9.9
 
  - Add dismount flag for Mount action
