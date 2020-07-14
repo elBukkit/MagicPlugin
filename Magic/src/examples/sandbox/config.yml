@@ -85,7 +85,7 @@
 # url_icons_enabled: true
 
 example: sandbox
-debug_effects: true
+# debug_effects: true
 
 # load_default_configs: true
 
