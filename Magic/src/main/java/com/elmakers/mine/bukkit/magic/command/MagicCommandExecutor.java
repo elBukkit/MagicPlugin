@@ -102,6 +102,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("castp    Cast spells as another player");
             sender.sendMessage("wandp    Modify other players' wands");
             sender.sendMessage("mskills  Show the skill selector");
+            sender.sendMessage("mwarp    Use and modify magic warps");
             return true;
         }
         if (subCommand.equalsIgnoreCase("rpcheck"))
