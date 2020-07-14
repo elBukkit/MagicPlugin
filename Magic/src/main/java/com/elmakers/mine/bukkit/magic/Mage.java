@@ -875,7 +875,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected void addBound(Wand wand) {
         WandTemplate template = wand.getTemplate();
         if (template != null && template.isRestorable()) {
-            boundWands.put(template.getKey(), wand);
+            String templateKey = template.getKey();
+            if (templateKey != null && !templateKey.isEmpty()) {
+                boundWands.put(templateKey, wand);
+            }
         }
     }
 
@@ -1185,7 +1188,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 for (ItemStack boundWandItem : boundWandItems.values()) {
                     try {
                         Wand boundWand = controller.getWand(boundWandItem);
-                        boundWands.put(boundWand.getTemplateKey(), boundWand);
+                        String templateKey = boundWand.getTemplateKey();
+                        if (templateKey != null && !templateKey.isEmpty()) {
+                            boundWands.put(templateKey, boundWand);
+                        }
                     } catch (Exception ex) {
                         controller.getLogger().log(Level.WARNING, "Failed to load bound wand for " + playerName + ": " + boundWandItem, ex);
                     }

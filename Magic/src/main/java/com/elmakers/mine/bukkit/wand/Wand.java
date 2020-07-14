@@ -4002,7 +4002,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void unbind() {
-        if (!bound) return;
         com.elmakers.mine.bukkit.api.magic.Mage owningMage = this.mage;
         deactivate();
 
@@ -4015,6 +4014,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 owningMage.unbind(this);
             }
             ownerId = null;
+        } else {
+            owningMage.unbind(this);
         }
         bound = false;
         owner = null;
