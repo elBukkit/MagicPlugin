@@ -2,6 +2,8 @@
 
 # 7.9.11
 
+ - Don't restore bound wands if they have been set as not bound (or disabled) in configs
+
 # 7.9.10
 
  - Hotfix for players not getting items from shops 

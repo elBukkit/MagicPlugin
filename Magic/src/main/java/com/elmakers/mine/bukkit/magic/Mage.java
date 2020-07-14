@@ -3190,10 +3190,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         int givenWands = 0;
         for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
-            if (foundTemplates.contains(wandEntry.getKey())) continue;
+            String templateKey = wandEntry.getKey();
+            if (foundTemplates.contains(templateKey)) continue;
+            WandTemplate template = controller.getWandTemplate(templateKey);
+            Wand wand = wandEntry.getValue();
+            if (template == null || !wand.isBound()) continue;
 
             givenWands++;
-            ItemStack wandItem = wandEntry.getValue().duplicate().getItem();
+            ItemStack wandItem = wand.duplicate().getItem();
             wandItem.setAmount(1);
             giveItem(wandItem);
         }
