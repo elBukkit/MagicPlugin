@@ -4,12 +4,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ThrownPotion;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
@@ -41,6 +47,7 @@ public class ProjectileAction  extends BaseProjectileAction
     private int startDistance;
     private SourceLocation sourceLocation;
     private String pickupStatus;
+    private String color;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -76,6 +83,7 @@ public class ProjectileAction  extends BaseProjectileAction
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
         pickupStatus = parameters.getString("pickup");
+        color = parameters.getString("color");
         sourceLocation = new SourceLocation(parameters);
     }
 
@@ -132,6 +140,24 @@ public class ProjectileAction  extends BaseProjectileAction
                     projectile.setShooter(shootingEntity);
                 }
 
+                if (projectile instanceof ThrownPotion && color != null && !color.isEmpty()) {
+                    ThrownPotion potion = (ThrownPotion)projectile;
+                    if (color.startsWith("#")) {
+                        color = color.substring(1);
+                    }
+                    try {
+                        Color potionColor = Color.fromRGB(Integer.parseInt(color, 16));
+                        ItemStack itemStack = new ItemStack(Material.SPLASH_POTION);
+                        ItemMeta meta = itemStack.getItemMeta();
+                        if (meta != null && meta instanceof PotionMeta) {
+                            CompatibilityUtils.setColor((PotionMeta)meta, potionColor);
+                            itemStack.setItemMeta(meta);
+                            potion.setItem(itemStack);
+                        }
+                    } catch (Exception ex) {
+                        context.getLogger().warning("Invalid potion color in Projectile action: " + color);
+                    }
+                }
                 if (projectile instanceof Fireball) {
                     Fireball fireball = (Fireball)projectile;
                     fireball.setIsIncendiary(useFire);

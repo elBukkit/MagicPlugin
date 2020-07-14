@@ -3,6 +3,7 @@
 # 7.9.11
 
  - Some changes and improvements to unbinding wands
+ - Add "color" parameter for thrown potions in Projectile action
 
 # 7.9.10
 
