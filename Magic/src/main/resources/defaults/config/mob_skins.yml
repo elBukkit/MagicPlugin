@@ -1,6 +1,7 @@
 # These are player skins that represent mobs. Some are provided here
 # as official Mojang skins, but more can be added.
 mob_skins:
+  bee: MHF_Bee
   blaze: MHF_Blaze
   cave_spider: MHF_CaveSpider
   chicken: MHF_Chicken
