@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.logging.Level;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -28,7 +30,10 @@ public class GriefPreventionManager implements BlockBuildManager, BlockBreakMana
                 if (griefPlugin != null) {
                     api = new GriefPreventionAPI(griefPlugin);
                 }
-            } catch (Throwable ignored) {
+            } catch (Throwable ex) {
+                plugin.getLogger().log(Level.WARNING, "Error integrating with GriefPrevention", ex);
+                api = null;
+                return;
             }
 
             if (api == null) {
