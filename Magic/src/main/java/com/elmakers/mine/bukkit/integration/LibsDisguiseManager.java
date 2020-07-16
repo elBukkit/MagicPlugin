@@ -111,6 +111,11 @@ public class LibsDisguiseManager {
             }
 
             FlagWatcher watcher = disguise.getWatcher();
+            String customName = configuration.getString("custom_name");
+            if (customName != null) {
+                watcher.setCustomName(customName);
+                watcher.setCustomNameVisible(configuration.getBoolean("custom_name_visible", true));
+            }
             watcher.setInvisible(configuration.getBoolean("invisible", false));
             watcher.setBurning(configuration.getBoolean("burning", false));
             watcher.setGlowing(configuration.getBoolean("glowing", false));

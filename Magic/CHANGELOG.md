@@ -4,6 +4,7 @@
 
  - Some changes and improvements to unbinding wands
  - Add "color" parameter for thrown potions in Projectile action
+ - Add custom_name to disguise parameters
 
 # 7.9.10
 
