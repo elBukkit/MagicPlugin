@@ -53,7 +53,9 @@ public class DisguiseAction extends BaseSpellAction
         }
 
         controller.disguise(entity, disguiseConfig);
-        context.registerForUndo(new UndoDisguise(controller, entity));
+        if (disguiseConfig != null) {
+            context.registerForUndo(new UndoDisguise(controller, entity));
+        }
         return SpellResult.CAST;
     }
 
