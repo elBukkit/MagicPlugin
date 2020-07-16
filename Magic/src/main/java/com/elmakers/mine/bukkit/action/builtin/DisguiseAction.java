@@ -52,6 +52,16 @@ public class DisguiseAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
+        ConfigurationSection disguiseConfig = this.disguiseConfig;
+        if (disguiseConfig != null && (disguiseConfig.contains("name") || disguiseConfig.contains("custom_name"))) {
+            disguiseConfig = ConfigurationUtils.cloneConfiguration(disguiseConfig);
+            if (disguiseConfig.contains("name")) {
+                disguiseConfig.set("name", context.parameterize(disguiseConfig.getString("name")));
+            }
+            if (disguiseConfig.contains("custom_name")) {
+                disguiseConfig.set("custom_name", context.parameterize(disguiseConfig.getString("custom_name")));
+            }
+        }
         controller.disguise(entity, disguiseConfig);
         if (disguiseConfig != null) {
             context.registerForUndo(new UndoDisguise(controller, entity));
