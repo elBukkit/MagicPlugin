@@ -63,6 +63,7 @@ disarm:
         target_breakables: 0
         cooldown: 10000
         undo: 5000
+        ignore_types: villager,wandering_trader
     costs:
         mana: 60
 

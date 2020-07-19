@@ -5,6 +5,7 @@
  - Some changes and improvements to unbinding wands
  - Add "color" parameter for thrown potions in Projectile action
  - Add custom_name to disguise parameters
+ - Villagers and wandering traders can't be Disarm'd
 
 # 7.9.10
 
