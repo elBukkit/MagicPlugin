@@ -652,6 +652,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         lastDamageType = getDamageType(damageType, cause);
+        damageType = lastDamageType;
 
         // Process triggers
         trigger("damage");

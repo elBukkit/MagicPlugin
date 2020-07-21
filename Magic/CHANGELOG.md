@@ -6,6 +6,7 @@
  - Add "color" parameter for thrown potions in Projectile action
  - Add custom_name to disguise parameters
  - Villagers and wandering traders can't be Disarm'd
+ - Fix damage-type-specific protection/weakness/strength
 
 # 7.9.10
 
