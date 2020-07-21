@@ -7,6 +7,7 @@
  - Add custom_name to disguise parameters
  - Villagers and wandering traders can't be Disarm'd
  - Fix damage-type-specific protection/weakness/strength
+ - Consumable items won't be consumed if their spell cast fails
 
 # 7.9.10
 

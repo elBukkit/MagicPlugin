@@ -872,9 +872,13 @@ public class PlayerController implements Listener {
             if (spell != null) {
                 if (Wand.isWand(item)) {
                     Wand wand = Wand.createWand(controller, item);
-                    wand.cast(spell);
+                    if (!wand.cast(spell)) {
+                        event.setCancelled(true);
+                    }
                 } else {
-                    spell.cast();
+                    if (!spell.cast()) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         }
