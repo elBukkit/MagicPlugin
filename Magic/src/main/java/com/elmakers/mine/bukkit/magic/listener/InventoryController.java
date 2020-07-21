@@ -214,6 +214,10 @@ public class InventoryController implements Listener {
         }
 
         boolean isHotbar = event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
+
+        // I'm not sure why or how this happens, but sometimes we can get a hotbar event without a slot number?
+        if (isHotbar && event.getHotbarButton() < 0) return;
+
         if (isHotbar && event.getSlotType() == InventoryType.SlotType.ARMOR)
         {
             int slot = event.getHotbarButton();
