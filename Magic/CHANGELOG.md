@@ -8,6 +8,7 @@
  - Villagers and wandering traders can't be Disarm'd
  - Fix damage-type-specific protection/weakness/strength
  - Consumable items won't be consumed if their spell cast fails
+ - Fix attributes not updating max health, etc until reload
 
 # 7.9.10
 

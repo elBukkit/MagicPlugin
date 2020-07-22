@@ -1912,6 +1912,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    protected void reloadAttributes() {
+        for (Iterator<Map.Entry<String, MageClass>> it = classes.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, MageClass> entry = it.next();
+            MageClass mageClass = entry.getValue();
+            if (!mageClass.isLocked()) {
+                mageClass.deactivateAttributes();
+                mageClass.activateAttributes();
+            }
+        }
+
+        for (Iterator<Map.Entry<String, MageModifier>> it = modifiers.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, MageModifier> entry = it.next();
+            MageModifier modifier = entry.getValue();
+            modifier.deactivateAttributes();
+            modifier.activateAttributes();
+        }
+    }
+
     protected void loadSpells(ConfigurationSection spellConfiguration) {
         if (spellConfiguration == null) return;
 
@@ -4471,6 +4489,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void attributesUpdated() {
+        reloadAttributes();
         updatePassiveEffects();
 
         // Reload spell parameter so lore updates
