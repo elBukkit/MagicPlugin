@@ -10,6 +10,7 @@
  - Consumable items won't be consumed if their spell cast fails
  - Fix attributes not updating max health, etc until reload
  - Fix bending water whip spell
+ - Fix Blink ascend (level 3)
 
 # 7.9.10
 
