@@ -9,6 +9,7 @@
  - Fix damage-type-specific protection/weakness/strength
  - Consumable items won't be consumed if their spell cast fails
  - Fix attributes not updating max health, etc until reload
+ - Fix bending water whip spell
 
 # 7.9.10
 

@@ -33,6 +33,7 @@ waterwhip:
       cooldown: 5000
       delay: 250
       damage_type: water
+      destructible: all_water,all_air
   costs:
       mana: 50
 
