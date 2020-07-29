@@ -16,14 +16,15 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-public class PlaceholderAPIManager extends PlaceholderHook {
+public class PlaceholderAPIManager extends PlaceholderExpansion {
     private final MageController controller;
 
     public PlaceholderAPIManager(MageController controller) {
         this.controller = controller;
 
-        if (!PlaceholderAPI.registerPlaceholderHook("magic", this)) {
+        if (!register()) {
             controller.getLogger().warning("PlaceholderAPI integration failed");
         } else {
             controller.getLogger().info("PlaceholderAPI integration enabled. Available placeholders:");
@@ -83,5 +84,25 @@ public class PlaceholderAPIManager extends PlaceholderHook {
                 return Integer.toString(casterProperties.getSpells().size());
         }
         return "";
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "magic";
+    }
+
+    @Override
+    public String getPlugin() {
+        return "Magic";
+    }
+
+    @Override
+    public String getAuthor() {
+        return "NathanWolf";
+    }
+
+    @Override
+    public String getVersion() {
+        return controller.getPlugin().getDescription().getVersion();
     }
 }

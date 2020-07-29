@@ -11,6 +11,7 @@
  - Fix attributes not updating max health, etc until reload
  - Fix bending water whip spell
  - Fix Blink ascend (level 3)
+ - Update PAPI integration to new API
 
 # 7.9.10
 
