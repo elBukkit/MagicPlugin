@@ -329,7 +329,7 @@ public class MagicRequirement {
                     }
                     break;
                 case "clear":
-                    if (location == null || location.getWorld().isThundering()|| location.getWorld().hasStorm()) {
+                    if (location == null || location.getWorld().isThundering() || location.getWorld().hasStorm()) {
                         return getMessage(context, "no_weather");
                     }
                     break;
