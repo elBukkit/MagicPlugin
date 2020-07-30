@@ -44,6 +44,7 @@ public class MagicRequirement {
     private @Nullable RangedRequirement timeOfDay = null;
     private @Nullable RangedRequirement height = null;
     private @Nullable RangedRequirement currency = null;
+    private @Nullable String weather = null;
     private @Nonnull String currencyType = "currency";
     private boolean requireWand = false;
     private boolean ignoreMissing = false;
@@ -80,6 +81,8 @@ public class MagicRequirement {
         height = parseRangedRequirement(configuration, "height");
         currency = parseRangedRequirement(configuration, "currency");
         currencyType = configuration.getString("currency_type", "currency");
+
+        weather = configuration.getString("weather");
 
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
@@ -131,6 +134,18 @@ public class MagicRequirement {
 
         Location location = mage.getLocation();
 
+        if (weather != null) {
+            switch (weather) {
+                case "storm":
+                    return location != null && location.getWorld().hasStorm();
+                case "thunder":
+                    return location != null && location.getWorld().isThundering();
+                case "clear":
+                    return location != null && !location.getWorld().isThundering() && !location.getWorld().hasStorm();
+                default:
+                    context.getLogger().warning("Invalid weather specified in requirement " + weather + ", looking for clear/storm/thunder");
+            }
+        }
         if (timeOfDay != null) {
             return location != null && timeOfDay.check((double)location.getWorld().getTime());
         }
@@ -301,6 +316,27 @@ public class MagicRequirement {
         }
 
         Location location = mage.getLocation();
+        if (weather != null) {
+            switch (weather) {
+                case "storm":
+                    if (location == null || !location.getWorld().hasStorm()) {
+                        return getMessage(context, "no_weather");
+                    }
+                    break;
+                case "thunder":
+                    if (location == null || !location.getWorld().isThundering()) {
+                        return getMessage(context, "no_weather");
+                    }
+                    break;
+                case "clear":
+                    if (location == null || location.getWorld().isThundering()|| location.getWorld().hasStorm()) {
+                        return getMessage(context, "no_weather");
+                    }
+                    break;
+                default:
+                    context.getLogger().warning("Invalid weather specified in requirement " + weather + ", looking for clear/storm/thunder");
+            }
+        }
         if (timeOfDay != null) {
             String message = checkRequiredProperty(context, timeOfDay, getMessage(context, "time"), location == null ? null : (double)location.getWorld().getTime());
             if (message != null) {

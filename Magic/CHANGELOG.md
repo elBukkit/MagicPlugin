@@ -12,6 +12,7 @@
  - Fix bending water whip spell
  - Fix Blink ascend (level 3)
  - Update PAPI integration to new API
+ - Add weather requirement (storm/thunder/clear)
 
 # 7.9.10
 
@@ -71,7 +72,7 @@
  - Add "tags" parameter to ApplyCooldown action, for applying cooldowns to all spells with a one or more specific tags
  - Fix glitches with broomsticks leveling up
  - Include offhand and armor slots when checking/removing items from a player's inventory
- - Moved automata into a separate example. 
+ - Moved automata into a separate example.
 
 # 7.9.5
 
@@ -84,7 +85,7 @@
  - Added ClearInventory action
  - Add "mwarp send" command, for using the builtin warp system from the console, NPCs or command blocks
  - Spells will only target survival and adventure mode players. This can be controlled with the target_game_modes parameter.
- 
+
 # 7.9.3
  - PLEASE see important notes in MIGRATION.md *before* upgrading! Mostly if you have custom wands with "attributes" set.
  - Modifier system added- for custom status effects
@@ -110,9 +111,9 @@
  - The SpawnEntity action now forces spawned mobs to ignore their owner by default. Set "owned: false" to prevent this.
  - Variables can now be pre-defined in a spell, in case you want to use them in base spell parameters
  - Add Warp action, for simple warping (Recall can be complicated for this purpose)
- 
+
 # 7.9.2
- 
+
  - Passive spell system!
    - Add "triggers" option to a spell, it can be auto-cast under various circumstances
    - Add "passive" flag for spells that can not be directly cast but still show up in the spell inventory
@@ -229,7 +230,7 @@
  - Potential fix for a mage data loading issue with a complex class hierarchy
 
 # 7.7.6
- 
+
  - Fix undoing block data changes, fixes Admission not closing the door.
  - Add CheckPotionEffects action, for seeing if a target has some specific effects
  - Add light and time requirements, can be used in CheckRequirements or Selector for time of day or light level checks
@@ -350,7 +351,7 @@
  - Add "numeric" option to ModifyLore action
  - Fix some spells, like Torch, not working in natural caves in 1.13
  - Fix the appearance shop and other wand customizations
- 
+
 # 7.6.13
 
  - Add "permission" parameter to Recall options, to allow locking warps/commands with permissions
@@ -494,7 +495,7 @@
  - Fix Heroes integration
  - Use 1.13 resource packs by default, unless running on 1.12 and using default configs.
  - Fix some specific issues Multiply actions interfering with one another
- - Add extraspellshop, for selling spells not included in the normal paths. 
+ - Add extraspellshop, for selling spells not included in the normal paths.
  - Add Forest and Mob to Conduit and Wizard paths, respectively
  - Fix scale parameter on sell shops
  - Support attribute equations in wand properties and configs
@@ -518,7 +519,7 @@
  - Fix exploits with certain spells (Stash, Workbench) quick-cast
  - Add randomize_yaw and randomize_pitch spawner parameters
  - Fix some issues restoring wands
- 
+
 
 # 7.5.3
 
@@ -578,7 +579,7 @@
  - Add class_items option for classes, for items given when unlocking a class and taken away when locking.
  - Fix specifying a custom item-based currency in config.yml
  - Added Book and Cast actions (Thanks, MineStein!)
- 
+
 # 7.4.4
 
  - Fix the switch_class option in a Selector menu keeping the menu open
@@ -596,7 +597,7 @@
  - Mob configs support inheritance
  - Fix some issues with certain actions getting cancelled and not cleaning up properly
 
-# 7.4.2 
+# 7.4.2
 
  - Fix breaking some plugins' auto-updaters
  - Fix filled wands re-organizing their spell inventory
@@ -625,7 +626,7 @@
  - Add support for randomized drop tables to magic mobs
  - Add "spawn" trigger to magic mobs
  - Fix auto-targeting on Gatling Gun and Laser
- - Fix sand blocks breaking in doubles 
+ - Fix sand blocks breaking in doubles
 
 # 7.3.9
 
@@ -671,7 +672,7 @@
 
 # 7.3.6
 
- - Added warnings for use of deprecated spell classes. 
+ - Added warnings for use of deprecated spell classes.
    Please check your startup logs!
    Better to fix these spells now, the classes will be removed in 8.0
  - Fix Shock Arrows spewing an error to logs
@@ -769,7 +770,7 @@
  - Add basic support for magic bows
  - Fix wand_undroppable behavior with shulker boxes
  - Fix sexist camera (wasn't working with alex skins)
- 
+
 ## 7.2.5
 
  - Magic mobs can now have a list of triggers, can cast spells or run commands on death/interval/damage.
@@ -783,7 +784,7 @@
  - The Cleric Chestplate now heals more the closer players are to the wearer
  - Add hide_flags wand attribute for specific flag visibility per wand
  - Enable headshots on husks, vindicators, evokers and illusioners
-   Examples: 
+   Examples:
     /mmob clear warlock 20                Clear all warlocks within 20 blocks of your location
     /mmob clear all 20 0 64 0 world   Clear all magic mobs within 20 blocks of a specific location
 
@@ -802,7 +803,7 @@
      like that in configs.
    - This was done to prevent possible exploits with certain cost-free wands by holding them in the offhand.
  - Add "boostable" wand property for making wands that aren't affected by mana boosts
-   
+
 ## 7.2.3
 
  - Fix painterly resource pack
@@ -823,7 +824,7 @@
 ## 7.2
 
  - Add Magic Torch (magictorch) item, not craftable, requires LightAPI
- - Added support for spells requiring SkillAPI classes or skills. 
+ - Added support for spells requiring SkillAPI classes or skills.
    Thanks @robotnikthingy and my other helpful contributors!
  - Add commands and generic requirements support to Selector action
  - Sniper scope is now toggleable
@@ -838,7 +839,7 @@
  - Wand protection format changed to a map (e.g. protection.fall) for greater flexibility. See MIGRATION.md
  - Add "size" parameter for slimes to magic mobs
  - Add requirement, cost scaling, and many other features to Selector action
-  
+
 ## 7.1.5
 
  - Unbreak wands broken in 7.1.4 (your data should be fine)
@@ -871,7 +872,7 @@
  - Added "equation" spell for easily testing the equation system and attributes
  - The configure commands now support equations, e.g. "/wand configure cooldown_reduction x*2+1"
  - Add MobArena integration to optionally respect arena protection, globally based on protected status or per-arena
- 
+
 ## 7.1.2
 
  - Fix stars and bending class progression
@@ -885,15 +886,15 @@
 
  - Protection progression removed from wands.
    Old wands will still have protection on them if they earned it.
-   
+
  - Mana progression changed to only happen on rank up
  - Fix ranking up (was only happening after getting all spells then using an enchant table again)
 
  - SkillAPI attribute parameters no longer use an underscore prefix.
    See: https://github.com/elBukkit/MagicPlugin/wiki/SkillAPI
-   
+
  - Heroes attributes can now also be used in spell parameters
-   
+
  - Crafting recipes can now be added on the fly with /magic load
    - They can not be modified or removed, however, due to Spigot/Mojang limitations.
  - Implement class chooser, used in bending configs. Bending classes are now locked by default!
@@ -937,7 +938,7 @@ many users have always wanted it to be.
 For now what this mainly means is that you can configure how data is stored, instead of it always being stored on the wand items.
 
 The default wands are now set up to store mana, spells and a few other attributes to the owning player. This means that
-player progression is now tied to the player, not the wand. 
+player progression is now tied to the player, not the wand.
 
 If a player were to craft a new wand, they will see it has their mana and spells on it.
 
@@ -946,7 +947,7 @@ their own play style without having to re-earn the same spells over and over.
 
 The war configs also make use of this new setup, allowing players to increase their "skill" with certain weapons.
 
-Potter and stars configs have not yet been converted, but they will be, probably in the next release. 
+Potter and stars configs have not yet been converted, but they will be, probably in the next release.
 Mana and spells will be stored in separate classes, so that configs can still be mixed together and make sense.
 
 In the future I hope to expand on all of this with a class system in the new "rpg" configs. This isn't ready yet, however,
@@ -1113,7 +1114,7 @@ I hope you enjoy! Please let me know if you run into any issues.
    of course duped and now you need to turn off SP items.
  - Fix cycle mode with upgraded spells
  - The GiveItem action now needs to have "target: self" added if you want the item given to the player, see giveitem spell
- 
+
 ## 6.9.8
 
  - 1.12 Compatibility
@@ -1223,7 +1224,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Add SuperLaser spell (to Architect path)
  - Fix engineering spell bug with erase brush when switching from a non-engineering wand, would fill with dirt
  - Fix passive wand potion effects (like night vision goggles) not always restoring after death
- - Add sp_multiplier property to wands. Can be used for bonuses, or to turn off SP earn. 
+ - Add sp_multiplier property to wands. Can be used for bonuses, or to turn off SP earn.
  - Mana Talisman got a new icon and some buffs
  - Fix some issues with NPC casting on custom environments (don't load NPCs as player data)
  - Fix enchantwand spell giving 30 levels instead of 1
@@ -1235,7 +1236,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Add spellbook item which is like a cross between a chest and inventory mode wand and the skill selector.
    Won't be really useful in default configs until 7.0, but may be useful with Heroes skills.
    The heroes example configs override the spellbook to use Heroes skills.
- - The enchantment table will still show the spell shop if SP is disabled. 
+ - The enchantment table will still show the spell shop if SP is disabled.
    Set enchant_block: "" in config.yml if you don't want this.
  - EffectLib memory optimizations
  - Fix Pollinate double-high flowers
@@ -1273,7 +1274,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Fix Velocity actions glitching out dropped items and TNT
 
 ## 6.7.1
- 
+
  - Magic Heroes skills will broadcast their use-text like other skills
  - Change Talisman recipe to use gold nuggets for 1.10 and below support
 
@@ -1286,7 +1287,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Some fixes to the potter config progression
  - Add dementor and deatheater mobs to the potter configs
  - Fix Ocarina 7F# note (note07)
- - Fix some wand effect colors not working (hex with no letters) 
+ - Fix some wand effect colors not working (hex with no letters)
  - Add a disabled icon for skull-based configs to use
  - Add resource_pack_check_interval, defaults to 5 minutes, to auto-update RP SHA while running
  - Heroes integration improvements:
@@ -1314,10 +1315,10 @@ I hope you enjoy! Please let me know if you run into any issues.
    - Add "-Magic.cast.*" to prevent players casting any spells
    - Add "Magic.cast.<spell>" to add back individual spells
  - The /mage delete command changed to /mage reset
- - Enchanting configs renamed to "paths". 
+ - Enchanting configs renamed to "paths".
    - Old enchanting.yml file will be renamed (one-time migration)
    - enchanting folder no longer used, please move files by hand if you have any in there.
- - Wands no longer have unique ids by default, unless they are tracked and dropped on the ground. 
+ - Wands no longer have unique ids by default, unless they are tracked and dropped on the ground.
  - New properties (you may want to set on your wands if you have completely custom configs):
    - unique: if true, wand will always have a unique id (in case you need it for API integration, or want to avoid stacking)
    - track: if true, wand will be tracked when dropped on the ground
@@ -1401,7 +1402,7 @@ I hope you enjoy! Please let me know if you run into any issues.
 
 ## 6.3.3
 
- - Add work-around for broken zombie villagers in 1.11. 
+ - Add work-around for broken zombie villagers in 1.11.
    Not sure I can really fix this while keeping backwards compatibility :(
  - Update resource pack, fix Ocarina sounds
 
@@ -1498,7 +1499,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Don't allow water spreading when water naturally flows as a result of magic
    This fixes a server-crashing issue with player skulls and flowing water (Triggers internal Spigot bug)
  - Add support for custom mob spawners that spawn magic mobs
- - Add spawnershop and custom mob spawners (including Warlocks) 
+ - Add spawnershop and custom mob spawners (including Warlocks)
  - Warlocks now have fall protection and thorns armor
 
 ## 6.0.10
@@ -1552,7 +1553,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Fix welcome_wand feature
  - Add "Capture" spell- Conduit (staff) only for now. Captures any mob into a spawn egg.
  - Add support for a few attributes to the /mitem command (attack damage, attack speed, movement speed)
- - Add "Philbert Egg" item, a charged creeper egg. DANGER! 
+ - Add "Philbert Egg" item, a charged creeper egg. DANGER!
  - Add "mobshop" for selling mob eggs, several more custom spawn eggs
  - Add relative location support to the "mmob spawn" command
 
@@ -1566,9 +1567,9 @@ I hope you enjoy! Please let me know if you run into any issues.
 
  - Add craftable Ocarina item (Thank you, SexyToad!)
  - Cloak of Invisibility is now invisible while worn
- - Fix wand effect_bubbles 
+ - Fix wand effect_bubbles
  - Add items.yml, configuration for setting up non-wand items and item values
- - Add new permissions: Magic.wand.overwrite, Magic.wand.overwrite_own for controlling "/wand save" 
+ - Add new permissions: Magic.wand.overwrite, Magic.wand.overwrite_own for controlling "/wand save"
  - Default wand is now called "wand" rather than "default"
  - Added "/wand delete" command for deleting saved wands
  - Add /mitem command:
@@ -1649,7 +1650,7 @@ I hope you enjoy! Please let me know if you run into any issues.
 ## 5.4.8
 
  - Added Fury spell (uses new Asynchronous action, and "plan" CustomProjectile flight plan config)
- - Added Chain Lightning spell 
+ - Added Chain Lightning spell
  - Wands (including the Master Sword and magic armor) can no longer be enchanted via an anvil.
    Set enable_combining: true in config.yml if you want this back.
  - Update FX on all Engineering Spells
@@ -1692,7 +1693,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Renamed the "master" path to "Wizard" (just the label, not the key)
  - Wool is now destructible for levelled up spells
  - Disable several OP crafting recipes by default.
- - Add 5-second warmup to Phase spell 
+ - Add 5-second warmup to Phase spell
 
 ## 5.4.5
 
@@ -1705,7 +1706,7 @@ I hope you enjoy! Please let me know if you run into any issues.
 
  - ! Secure key format changed to use masked UUIDs. Old keys will work on old chests, old chests
    can be converted to new format by casting at them with the old key in your inventory.
- 
+
  - Nerfed Broomsticks, now have a 60-second duration and a 10-second cooldown.
  - Secure keys are now kept on death
  - Add sneak-cast alt to Secure to unlock
@@ -1778,7 +1779,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Updated Meteor Shower to use CustomProjectile (EPIC! Thanks, Droobledore!)
  - Added destructible2 and destructible3 lists, no non-engineering spells use check_destructible: false anymore.
  - Add more levels to Breach, Peek and Sandblast
- - Updated admin wands, added developer wand. 
+ - Updated admin wands, added developer wand.
  - Added SuperGather (old-school Gather), PhaseBackup - admin/dev spells, SuperPhase
  - Add Town support to Recall (Towny)
  - Add CreatePlot action, for automatic Towny plot generation
@@ -1829,7 +1830,7 @@ I hope you enjoy! Please let me know if you run into any issues.
 ## 5.3
 
  - Add "fxdemo" spell, to demo all of the EffectLib FX (well, most of them)
- - Converted spells to projectiles: 
+ - Converted spells to projectiles:
    - Magic Missile
    - Curse
    - Silence
@@ -1855,7 +1856,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Fixed some performance and timing issues with the scheduler
  - Added tab-completion to /wand override command
  - Added Cancel action, for cancelling a target's in-progress spell.
- 
+
 ## 5.2.2
 
  - Add CustomProjectile action, re-work Kill spell and Blaster item
@@ -1871,7 +1872,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Add "targetable" parameter for a targetable block type list
  - Undo action "target_self" parameter changed to "target_caster"
  - Fix /mgive blink|2 (giving spell-level items)
- 
+
 
 ## 5.2.1
 
@@ -1908,7 +1909,7 @@ I hope you enjoy! Please let me know if you run into any issues.
  - Changed icon for invisibility cloak back to ender eye
  - Fixed PVP checks with GriefPrevention integration
  - Add Blaster item, very WIP
- 
+
 ## 5.1.8
 
  - Add Nuke Level 2 (Breaks all block types, larger radius)
@@ -2376,7 +2377,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Fix painting copy/undo (Thanks, Chilinot!)
  - Fix /magic load working with spells that have changed class
  - Fix enchantment path/level scaling (all levels were maxed)
- 
+
 ## 3.5
 
  - Fix stack overflow error in the welcome wand feature.
@@ -2479,7 +2480,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Automata will have randomly generated names (thanks, @lathame!)
  - Allow removing brushes and spells from your wand
  - Finalize dtlTraders integration
- 
+
  - ... WHOOHOO!
 
 ## 3.0-RC2
@@ -2542,7 +2543,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Enable periodic auto-save by default, once an hour.
  - Add configurable pending batch limit for constructions. Mostly a safety thing for out-of-control Automata.
  - Command blocks, portal and ender portal blocks are restricted, except for superpowered wands.
- 
+
 ## 2.9.8.1
 
  - Add "Pickpocket" spell, like invsee at close range. (er, maybe not working yet, not sure!)
@@ -2657,9 +2658,9 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Removed the "IronSkin" and "LeatherSkin" spells- not really useful.
  - Add "Stash" and "Flamethrower" spells.
  - Only load player data on demand, save on quit.
- 
-## 2.9.2 
- 
+
+## 2.9.2
+
  - Add "schematic" brushes, requires WorldEdit for schematic loading.
  - Make superconvert work better for cleaning up lava and water.
  - Implement "load_defaults" parameter for spells.yml and wands.yml, if you don't want any of the default spells or wands.
@@ -2712,7 +2713,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Added "Column" (superiterate) spell.
  - Added "Neutron Bomb" spell, make wither apply wither effects (MIGRATION NOTE)
  - Prevent destroying wands via crafting.
- 
+
 ## 2.8.9.1
 
  - Fix right-click-to-cycle option.
@@ -2747,7 +2748,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Add /magic commit command
  - Add flag to disable WG protection
  - magic.yml is now additive to magic.defaults.yml, if present (MIGRATION NOTE)
- 
+
 ## 2.8.7
 
  - Add /wand organize command
@@ -2788,7 +2789,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Some tweaks to wand organizing
  - Make alter pass through entities that can't be altered.
  - Add tab-completion. Very basic at the moment, but very helpful for /castp and /wandp admin commands.
- 
+
 ## 2.8.3
 
  - Add /wand combine command
@@ -2879,14 +2880,14 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Support buying and selling wands via Essentials.
 
 ## 2.7.2
- 
+
  - Added effects to fill and blink.
  - Fix boon spell's icon.
  - Add effects to disintegrate, shrink, fire, frost, disarm.
  - Put a hack in to work-around annoying double-interact event breaking fill.
  - Add effects to recall, remove item.
  - Add messages.yml for localization
- 
+
 ## 2.7.1
 
  - Added raw particle effects
@@ -2982,7 +2983,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - TRY to: Fix spell and material names to be simpler when the inventory is open. (thwarted by client-side-only inventory open event)
 
 ## 2.5.4
- 
+
  - Allow altering the profession of villagers
  - Update xp regeneration system, make it a separate "mana" system.
  - Fix some strange behavior with how material positions are saved when there are too many for the wand to hold.
@@ -3022,7 +3023,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Add functionality to enchant wands to add more spells
 
 ## 2.4.0
- 
+
  - Add an optional block generator, which will randomly put wands in naturally spawned chests
  - Update spells with cooldowns
  - Add cooldown reduction option for wands
@@ -3034,7 +3035,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Added "leap", "time" and "sniper" spells
  - Fix "sandblast"
  - Changed wand data NBT format, though old wands should get updated.
- 
+
 ## 2.3.2
 
  - Fix absorb spell to work with new wand inventory system
@@ -3070,7 +3071,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Add "cat" spell (OcelotSpell)
  - Add Head Shrinker spell
  - Add flare spell
- 
+
 ## 2.2.3
 
  - Experiment with a hacky method of showing the active spell as you cycle spells and materials.
@@ -3241,7 +3242,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Fix score function in entity targeting, only target living entities
 
 ## 1.03
- 
+
  - Add weather and lightning spells, modify fireball.
 
 ## 1.02
@@ -3265,7 +3266,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
 
  - Bring back tunnel, torches disabled.
  - Update permissions support for Persistence 0.55, drop Groups
- - Simplify the spells list 
+ - Simplify the spells list
 
 ## 0.98
 
@@ -3372,7 +3373,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Absorb and manifest now give you the material directly, instead of dropping it at your feet.
 
 ## 0.77
- 
+
  - API release, many protected Spell methods made public. Some javadocs added.
 
 ## 0.76
@@ -3430,7 +3431,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Alter now knows what data values are valid for alterable materials.
 
 ## 0.65
- 
+
  - More work on the undo system, make the cave-in-proof thing optional.
  - Add paint and shell spells.
  - Fix variants with multiple parameters.
@@ -3526,7 +3527,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
 
 ## 0.29
 
-- Fix multiplayer use of "fill" 
+- Fix multiplayer use of "fill"
 - Added "mine"
 - Added "quiet" and "silent" plugin options
 
