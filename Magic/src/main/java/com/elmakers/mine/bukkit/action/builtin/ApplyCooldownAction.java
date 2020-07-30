@@ -114,8 +114,7 @@ public class ApplyCooldownAction extends BaseSpellAction
                 if (spell != null) {
                     if (clear) {
                         spell.clearCooldown();
-                    }
-                    if (amount > 0) {
+                    } else if (amount > 0) {
                         spell.setRemainingCooldown(amount);
                     } else {
                         spell.reduceRemainingCooldown(-amount);
@@ -128,8 +127,7 @@ public class ApplyCooldownAction extends BaseSpellAction
                 if (!excludeSpells.contains(spell.getSpellKey().getBaseKey())) {
                     if (clear) {
                         spell.clearCooldown();
-                    }
-                    if (amount > 0) {
+                    } else if (amount > 0) {
                         spell.setRemainingCooldown(amount);
                     } else {
                         spell.reduceRemainingCooldown(-amount);
@@ -139,8 +137,7 @@ public class ApplyCooldownAction extends BaseSpellAction
         } else {
             if (clear) {
                 targetMage.clearCooldown();
-            }
-            if (amount > 0) {
+            } else if (amount > 0) {
                 targetMage.setRemainingCooldown(amount);
             } else {
                 targetMage.reduceRemainingCooldown(-amount);
