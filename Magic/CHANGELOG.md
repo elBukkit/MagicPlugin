@@ -15,6 +15,7 @@
  - Add weather requirement (storm/thunder/clear)
  - Add drop_skull parameter to ShrinkEntity action, so it can be used to shrink but not drop skulls
  - Add SpellInventoryEvent (BetonQuest compatibility)
+ - Add DropSkull action, works like ShrinkEntity + ShrinkBlock, but without killing the entity or breaking the block.
 
 # 7.9.10
 
