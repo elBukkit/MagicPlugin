@@ -14,43 +14,25 @@ wolfhouse:
         -  class: EffectTrail
            particle: block_crack
     parameters:
-        ignore_region_overrides: true
-        target_type: LivingEntity
-        allow_max_range: true
-        check_destructible: false
-        physics: defer
-        range: 16
-        radius: 4
-        type: sphere
-        cooldown: 20000
-        brush: schematic|wolfhouse
-        obx: -3
-        oby: -22
-        obz: 10
-        otx: 1
-        oty: 1
-        brushmod: erase
-        transparent: transparent_to_construction
-        destructible: destructible_replace
         commands:
-          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
-          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water
-          wolf_dome: castp @p[r=7] supershell target none undo 0 type sphere brush stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35 free true
-          wolf_shields: castp @p[r=7] supershell target none undo 0 brush obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37 free true
-          wolf_undo: castp @p[r=6] rollback
-          wolf_commit: castp @p[r=6] commit
-          wolf_nothing: msg @p[r=6] Nothing here!
-          wolf_clear: castp @p[r=7] superblob target self none 0 type sphere brush erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36
-          wolf_destruct: castp @p[r=7] superblob target self none 0 brush erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60
-          wolf_convert: castp @p superconvert target none undo 0 radius 64 md 128 ty ~-1 obx -1 obz 2 brush copy free true
-          wolf_phase: castp @p[r=2] phase delay 0
-          wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
-          wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0
-          wolf_tp_hub: tp @p[r=4] ~-3 ~-2 ~24
-          wolf_tp_booth: tp @p[r=4] ~9 ~2 ~-29
-          wolf_tp_enchanting: tp @p[r=3] ~-5 ~35 ~-17
-          wolf_recall_wand: castp @p[r=2] recall type wand delay 0
-          wolf_recall_death: castp @p[r=2] recall type death delay 0
-          wolf_recall_spawn: castp @p[r=2] recall type spawn delay 0
+          wolf_generate: castp @p[distance=..7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
+          wolf_underwater: castp @p[distance=..7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water
+          wolf_dome: castp @p[distance=..7] supershell target none undo 0 type sphere brush stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35 free true
+          wolf_shields: castp @p[distance=..7] supershell target none undo 0 brush obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37 free true
+          wolf_undo: castp @p[distance=..6] rollback
+          wolf_commit: castp @p[distance=..6] commit
+          wolf_nothing: msg @p[distance=..6] Nothing here!
+          wolf_clear: castp @p[distance=..7] superblob target self none 0 type sphere brush erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36
+          wolf_destruct: castp @p[distance=..7] superblob target self none 0 brush erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60
+          wolf_convert: castp @p[distance=..7] superconvert target none undo 0 radius 64 md 128 ty ~-1 obx -1 obz 2 brush copy free true
+          wolf_phase: castp @p[distance=..2] phase delay 0
+          wolf_tp_living: tp @p[distance=..4] ~7 ~15 ~-13
+          wolf_tp_observation: tp @p[distance=..3] ~-17 ~62 ~0
+          wolf_tp_hub: tp @p[distance=..4] ~-3 ~-2 ~24
+          wolf_tp_booth: tp @p[distance=..4] ~9 ~2 ~-29
+          wolf_tp_enchanting: tp @p[distance=..3] ~-5 ~35 ~-17
+          wolf_recall_wand: castp @p[distance=..2] recall type wand delay 0
+          wolf_recall_death: castp @p[distance=..2] recall type death delay 0
+          wolf_recall_spawn: castp @p[distance=..2] recall type spawn delay 0
     costs:
         mana: 1000
