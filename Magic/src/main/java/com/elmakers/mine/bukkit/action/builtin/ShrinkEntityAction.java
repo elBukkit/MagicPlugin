@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -25,6 +26,15 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class ShrinkEntityAction extends DamageAction
 {
+    private boolean dropSkull;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        dropSkull = parameters.getBoolean("drop_skull", true);
+    }
+
     @Override
     public SpellResult perform(CastContext context)
     {
@@ -51,7 +61,7 @@ public class ShrinkEntityAction extends DamageAction
         Location targetLocation = targetEntity.getLocation();
         if (li instanceof Player) {
             super.perform(context);
-            if (li.isDead() && !alreadyDead) {
+            if (li.isDead() && !alreadyDead && dropSkull) {
                 dropHead(context, targetEntity, itemName);
             }
         } else if (li.getType() == EntityType.GIANT) {
@@ -72,7 +82,7 @@ public class ShrinkEntityAction extends DamageAction
         */
         } else {
             super.perform(context);
-            if ((li.isDead() || li.getHealth() == 0) && !alreadyDead) {
+            if ((li.isDead() || li.getHealth() == 0) && !alreadyDead && dropSkull) {
                 dropHead(context, targetEntity, itemName);
             }
         }
@@ -122,12 +132,12 @@ public class ShrinkEntityAction extends DamageAction
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
-        parameters.add("skeletons");
+        parameters.add("drop_skull");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("skeletons")) {
+        if (parameterKey.equals("drop_skull")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);

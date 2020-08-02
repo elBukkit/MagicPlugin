@@ -13,6 +13,7 @@
  - Fix Blink ascend (level 3)
  - Update PAPI integration to new API
  - Add weather requirement (storm/thunder/clear)
+ - Add drop_skull parameter to ShrinkEntity action, so it can be used to shrink but not drop skulls
 
 # 7.9.10
 
