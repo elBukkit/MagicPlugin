@@ -16,6 +16,7 @@
  - Add drop_skull parameter to ShrinkEntity action, so it can be used to shrink but not drop skulls
  - Add SpellInventoryEvent (BetonQuest compatibility)
  - Add DropSkull action, works like ShrinkEntity + ShrinkBlock, but without killing the entity or breaking the block.
+ - Fix spell dupe exploit if players get ahold of a spell item
 
 # 7.9.10
 

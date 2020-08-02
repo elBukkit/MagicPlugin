@@ -4027,11 +4027,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         if (player != null) {
             Location location = getLocation();
+            boolean isWandInventory = hasStoredInventory();
             for (int i = 0; i < Wand.HOTBAR_SIZE; i++) {
                 ItemStack spellItem = player.getInventory().getItem(i);
                 String spellKey = Wand.getSpell(spellItem);
                 String classKey = Wand.getSpellClass(spellItem);
-                if (spellKey != null) {
+                boolean isSkill = Wand.isSkill(spellItem);
+                if (spellKey != null && (isSkill || isWandInventory)) {
                     Spell spell = getSpell(spellKey);
                     if (spell != null) {
                         int targetAmount = 1;
