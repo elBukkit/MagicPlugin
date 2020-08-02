@@ -44,6 +44,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.economy.Currency;
+import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
@@ -3625,6 +3626,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (mage == null) return;
         if (System.currentTimeMillis() < mage.getWandDisableTime()) return;
 
+        SpellInventoryEvent event = new SpellInventoryEvent(mage, true);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
         WandMode wandMode = getMode();
         if (wandMode == WandMode.CHEST || wandMode == WandMode.SKILLS) {
             inventoryIsOpen = true;
@@ -3654,6 +3662,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public void closeInventory(boolean closePlayerInventory) {
         if (!isInventoryOpen()) return;
+
+        SpellInventoryEvent event = new SpellInventoryEvent(mage, false);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
         controller.disableItemSpawn();
         inventoryWasOpen = true;
         WandMode mode = getMode();
