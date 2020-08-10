@@ -178,7 +178,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                 lock.setString(1, id);
                 lock.execute();
             } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "Could not obtain lock for mage " + id, ex);
+                controller.info("Could not obtain lock for mage " + id);
             } finally {
                 close(lockLookup);
                 close(results);
