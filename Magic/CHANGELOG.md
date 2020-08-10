@@ -7,6 +7,8 @@
  - Improve MySQL connection robustness
  - Add support for material lists as costs
  - Try to prevent players glitching through blocks via brooms 
+ - Add show_no_permission parameter to SpellShop action, for allowing purchasing of spells even if a
+   player does not have permission to cast that spell.
 
 # 7.9.11
 

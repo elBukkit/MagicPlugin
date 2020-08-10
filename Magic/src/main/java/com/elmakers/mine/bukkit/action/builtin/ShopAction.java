@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class ShopAction extends SelectorAction {
+    private boolean showNoPermission;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -31,6 +32,7 @@ public class ShopAction extends SelectorAction {
         boolean showExtra = parameters.getBoolean("show_extra_spells", false);
         boolean showRequired = parameters.getBoolean("show_required_spells", false);
         boolean showFree = parameters.getBoolean("show_free", false);
+        showNoPermission = parameters.getBoolean("show_no_permission", false);
 
         // Don't load items as defaults
         Object itemDefaults = parameters.get("items");
@@ -106,7 +108,7 @@ public class ShopAction extends SelectorAction {
                 mage.sendDebugMessage(ChatColor.GRAY + " Skipping " + spellKey + ", is free", 3);
                 continue;
             }
-            if (!spell.hasCastPermission(mage.getCommandSender())) {
+            if (!showNoPermission && !spell.hasCastPermission(mage.getCommandSender())) {
                 mage.sendDebugMessage(ChatColor.YELLOW + " Skipping " + spellKey + ", no permission", 3);
                 continue;
             }
