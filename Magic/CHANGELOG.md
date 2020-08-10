@@ -5,7 +5,8 @@
  - Automata hearts ("automata" example) may no longer be used to respawn automata
  - Add EarnEvent to API and Skript, for tracking SP earn
  - Improve MySQL connection robustness
- - Add support for material lists as costs 
+ - Add support for material lists as costs
+ - Try to prevent players glitching through blocks via brooms 
 
 # 7.9.11
 
