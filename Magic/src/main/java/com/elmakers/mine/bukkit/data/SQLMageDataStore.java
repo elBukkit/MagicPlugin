@@ -42,6 +42,17 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             connection = createConnection();
             checkSchema();
         }
+        int retries = 3;
+        boolean isValid = connection.isValid(5000);
+        while (!isValid && retries >= 0) {
+            try {
+                retries--;
+                Thread.sleep(1000);
+                isValid = connection.isValid(5000);
+            } catch (InterruptedException ex) {
+                break;
+            }
+        }
         return connection;
     }
 
