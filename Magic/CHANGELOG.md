@@ -17,6 +17,7 @@
  - Add SpellInventoryEvent (BetonQuest compatibility)
  - Add DropSkull action, works like ShrinkEntity + ShrinkBlock, but without killing the entity or breaking the block.
  - Fix spell dupe exploit if players get ahold of a spell item
+ - Add EarnEvent to API and Skript, for tracking SP earn
 
 # 7.9.10
 

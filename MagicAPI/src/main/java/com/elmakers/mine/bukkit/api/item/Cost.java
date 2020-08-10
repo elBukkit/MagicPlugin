@@ -152,6 +152,13 @@ public interface Cost {
     String getFullDescription(Messages messages);
 
     /**
+     * This will return the currency type key or item key.
+     * @return
+     */
+    @Nonnull
+    String getType();
+
+    /**
      * Get a copy of the item represented by this cost.
      *
      * <p>This will return null for non-item costs.

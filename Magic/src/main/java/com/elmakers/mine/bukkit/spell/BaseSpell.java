@@ -51,6 +51,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
+import com.elmakers.mine.bukkit.api.event.EarnEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -2841,7 +2842,11 @@ public class BaseSpell implements MageSpell, Cloneable {
                 if (scaledEarn > 0) {
                     Cost earnCost = new Cost(earns);
                     earnCost.setAmount(Math.floor(mage.getEarnMultiplier() * scaledEarn));
-                    if (earnCost.give(mage, activeProperties)) {
+
+                    EarnEvent event = new EarnEvent(mage, earns.getType(), earnCost.getAmount(), EarnEvent.EarnCause.SPELL_CAST);
+                    Bukkit.getPluginManager().callEvent(event);
+
+                    if (!event.isCancelled() && earnCost.give(mage, activeProperties)) {
                         if (scaled) {
                             context.playEffects("earn_scaled_sp");
                         } else {

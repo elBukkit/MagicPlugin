@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.item;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -276,13 +277,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     @Override
     public String toString() {
-        if (item != null) {
-            return item.getType().name() + ":" + amount;
-        }
-        if (currency != null) {
-            return currency.getKey() + ":" + amount;
-        }
-        return "Unknown Cost:" + amount;
+        return getType() + ":" + amount;
     }
 
     @Nullable
@@ -355,5 +350,17 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         }
 
         return costs;
+    }
+
+    @Override
+    @Nonnull
+    public String getType() {
+        if (currency != null) {
+            return currency.getKey();
+        }
+        if (item != null) {
+            return item.getType().name();
+        }
+        return "Unknown";
     }
 }
