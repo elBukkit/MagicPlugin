@@ -7,7 +7,7 @@ wands:
     description: For testing automata
   defenderheart:
     name: Heart of Defender
-    description: It pulsates with power
+    description: He sacrified himself to save you
   virusheart:
     name: Heart of Virus
     description: This should be destroyed
@@ -19,7 +19,7 @@ wands:
     description: Sssssssssave me
   golemheart:
     name: Heart of Golem
-    description: Your new best friend
+    description: It pulsates with power
   wormheart:
     name: Heart of Worm
-    description: It will consume the world
+    description: It wanted to consume the world

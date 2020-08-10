@@ -1,5 +1,11 @@
 # CHANGELOG
 
+# 7.9.12
+
+ - Automata hearts ("automata" example) may no longer be used to respawn automata
+ - Add EarnEvent to API and Skript, for tracking SP earn
+ - Improve MySQL connection robustness 
+
 # 7.9.11
 
  - Some changes and improvements to unbinding wands
@@ -17,7 +23,6 @@
  - Add SpellInventoryEvent (BetonQuest compatibility)
  - Add DropSkull action, works like ShrinkEntity + ShrinkBlock, but without killing the entity or breaking the block.
  - Fix spell dupe exploit if players get ahold of a spell item
- - Add EarnEvent to API and Skript, for tracking SP earn
 
 # 7.9.10
 
