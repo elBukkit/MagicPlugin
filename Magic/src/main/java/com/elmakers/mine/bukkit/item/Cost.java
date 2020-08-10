@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +16,7 @@ import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -25,6 +27,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     protected ItemStack item;
     protected boolean itemWildcard;
     protected double amount;
+    protected String materialSetKey;
 
     public Cost(MageController controller, String key, double cost)
     {
@@ -43,7 +46,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             }
             this.item = controller.createItem(key, true);
             if (this.item == null) {
-                controller.getLogger().warning("Invalid cost type: " + key);
+                materialSetKey = key;
+                MaterialSet materialSet = getMaterialSet(controller);
+                if (materialSet == null) {
+                    materialSetKey = null;
+                    controller.getLogger().warning("Invalid cost type: " + key);
+                }
             }
         }
     }
@@ -68,6 +76,18 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         if (item != null) {
             return isConsumeFree(reducer) || isCostFree(reducer) || mage.hasItem(getItemStack(reducer), itemWildcard);
         }
+        if (materialSetKey != null) {
+            if (isConsumeFree(reducer) || isCostFree(reducer)) {
+                return true;
+            }
+            MaterialSet set = getMaterialSet(mage.getController());
+            for (Material material : set.getMaterials()) {
+                if (mage.hasItem(getItemStackFromMaterial(material, reducer), itemWildcard)) {
+                    return true;
+                }
+            }
+            return false;
+        }
         if (currency != null) {
             return currency.has(mage, caster, getAmount(reducer));
         }
@@ -89,6 +109,16 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         if (item != null && !isConsumeFree(reducer) && !isCostFree(reducer)) {
             ItemStack itemStack = getItemStack(reducer);
             mage.removeItem(itemStack, itemWildcard);
+        }
+        if (materialSetKey != null && !isConsumeFree(reducer) && !isCostFree(reducer)) {
+            MaterialSet set = getMaterialSet(mage.getController());
+            for (Material material : set.getMaterials()) {
+                ItemStack item = getItemStackFromMaterial(material, reducer);
+                if (mage.hasItem(item, itemWildcard)) {
+                    mage.removeItem(item, itemWildcard);
+                    break;
+                }
+            }
         }
         if (currency != null) {
             currency.deduct(mage, caster, getAmount(reducer));
@@ -112,6 +142,15 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             mage.giveItem(itemStack);
             result = true;
         }
+        if (materialSetKey != null) {
+            // This may convert costs from one to the other, but can't see a way around that.
+            MaterialSet set = getMaterialSet(mage.getController());
+            for (Material material : set.getMaterials()) {
+                ItemStack item = getItemStackFromMaterial(material, reducer);
+                mage.giveItem(item);
+                break;
+            }
+        }
         if (currency != null) {
             result = currency.give(mage, caster, getAmount(reducer)) || result;
         }
@@ -131,6 +170,18 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             Inventory inventory = mage.getInventory();
             for (ItemStack item : inventory.getContents()) {
                 if (item != null && mage.getController().itemsAreEqual(itemStack, item)) {
+                    balance += item.getAmount();
+                }
+            }
+            return balance;
+        }
+
+        if (materialSetKey != null) {
+            MaterialSet set = getMaterialSet(mage.getController());
+            double balance = 0;
+            Inventory inventory = mage.getInventory();
+            for (ItemStack item : inventory.getContents()) {
+                if (item != null && set.testItem(item)) {
                     balance += item.getAmount();
                 }
             }
@@ -204,6 +255,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         if (currency != null) {
             return currency.getName(messages);
         }
+        if (materialSetKey != null) {
+            return materialSetKey;
+        }
         return "";
     }
 
@@ -219,6 +273,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         }
         if (currency != null) {
             return currency.formatAmount(getAmount(reducer), messages);
+        }
+        if (materialSetKey != null) {
+            return getRoundedAmount(reducer) + " " + materialSetKey;
         }
         return "";
     }
@@ -241,6 +298,15 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     protected ItemStack getItemStack(CostReducer reducer)
     {
         ItemStack item = CompatibilityUtils.getCopy(this.item);
+        if (item != null) {
+            item.setAmount(Math.max(1, getRoundedCost(amount, reducer)));
+        }
+        return item;
+    }
+
+    protected ItemStack getItemStackFromMaterial(Material material, CostReducer reducer)
+    {
+        ItemStack item = new ItemStack(material);
         if (item != null) {
             item.setAmount(Math.max(1, getRoundedCost(amount, reducer)));
         }
@@ -352,6 +418,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         return costs;
     }
 
+    @Nullable
+    public MaterialSet getMaterialSet(MageController controller) {
+        return materialSetKey == null ? null : controller.getMaterialSetManager().getMaterialSet(materialSetKey);
+    }
+
     @Override
     @Nonnull
     public String getType() {
@@ -360,6 +431,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         }
         if (item != null) {
             return item.getType().name();
+        }
+        if (materialSetKey != null) {
+            return materialSetKey;
         }
         return "Unknown";
     }
