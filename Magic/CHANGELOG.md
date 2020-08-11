@@ -9,6 +9,7 @@
  - Try to prevent players glitching through blocks via brooms 
  - Add show_no_permission parameter to SpellShop action, for allowing purchasing of spells even if a
    player does not have permission to cast that spell.
+ - Removed wizard clothes texture from RP
 
 # 7.9.11
 
