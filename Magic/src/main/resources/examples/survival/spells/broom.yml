@@ -11,24 +11,24 @@ broom:
     creative_restricted: true
     actions:
       cast:
-      - class: ChangeContext
-        target_offset: 0,1,0
-        ignore_result: true
-        actions:
-          - class: Volume
-            radius: 1
-            actions:
-              - class: CheckBlock
-                allowed: passthrough
-                fail:
-                  - class: Message
-                    ignore_result: true
-                    message_type: action_bar
-                    message_key: nospace
-                  - class: CastResult
-                    result: no_target
-                    end_result: true
-                  - class: Stop
+        - class: ChangeContext
+          target_offset: 0,1,0
+          ignore_result: true
+          actions:
+            - class: Volume
+              radius: 1
+              actions:
+                - class: CheckBlock
+                  allowed: passthrough
+                  fail:
+                    - class: Message
+                      ignore_result: true
+                      message_type: action_bar
+                      message_key: nospace
+                    - class: CastResult
+                      result: no_target
+                      end_result: true
+                    - class: Stop
         - class: MountArmorStand
     effects:
         cast:
