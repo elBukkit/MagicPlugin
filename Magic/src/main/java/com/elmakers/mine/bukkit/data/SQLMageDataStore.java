@@ -125,6 +125,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             insert.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error saving player " + mage.getId(), ex);
+            close();
         } finally {
             close(insert);
         }
@@ -149,6 +150,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                 controller.info("Released lock for " + mage.getId() + " at " + System.currentTimeMillis());
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Unable to release lock for " + mage.getId(), ex);
+                close();
             } finally {
                 close(release);
             }
@@ -190,6 +192,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                 lock.execute();
             } catch (Exception ex) {
                 controller.info("Could not obtain lock for mage " + id);
+                close();
             } finally {
                 close(lockLookup);
                 close(results);
@@ -216,6 +219,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error loading player " + id, ex);
+            close();
         } finally {
             close(results);
             close(loadQuery);
@@ -235,6 +239,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             delete.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Unable to delete mage " + id, ex);
+            close();
         } finally {
             close(delete);
         }
@@ -253,6 +258,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Unable to lookup all mage ids", ex);
+            close();
         } finally {
             close(idsQuery);
             close(idResults);
@@ -269,6 +275,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
             migrate.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Could not set mage " + id + " as migrated", ex);
+            close();
         } finally {
             close(migrate);
         }
