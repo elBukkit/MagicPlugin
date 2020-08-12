@@ -1,4 +1,5 @@
 wizardchestplate:
+  enabled: false
   output: wizardchestplate
   output_type: wand
   materials:

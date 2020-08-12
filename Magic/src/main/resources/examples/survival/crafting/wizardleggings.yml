@@ -1,4 +1,5 @@
 wizardleggings:
+  enabled: false
   output: wizardleggings
   output_type: wand
   materials:

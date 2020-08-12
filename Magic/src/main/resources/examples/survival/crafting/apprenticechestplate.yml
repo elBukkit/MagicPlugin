@@ -1,4 +1,5 @@
 apprenticechestplate:
+  enabled: false
   output: apprenticechestplate
   output_type: wand
   materials:

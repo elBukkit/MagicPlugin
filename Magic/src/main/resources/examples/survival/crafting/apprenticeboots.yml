@@ -1,4 +1,5 @@
 apprenticeboots:
+  enabled: false
   output: apprenticeboots
   output_type: wand
   materials:

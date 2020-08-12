@@ -1,4 +1,5 @@
 apprenticeleggings:
+  enabled: false
   output: apprenticeleggings
   output_type: wand
   materials:

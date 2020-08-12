@@ -2,6 +2,8 @@
 
 # 7.9.13
 
+ - Crafting recipes for wizard and apprentice armor are now disbled by default
+
 # 7.9.12
 
  - 1.16.2 Compatibility fixes

@@ -1,4 +1,5 @@
 wizardboots:
+  enabled: false
   output: wizardboots
   output_type: wand
   materials:

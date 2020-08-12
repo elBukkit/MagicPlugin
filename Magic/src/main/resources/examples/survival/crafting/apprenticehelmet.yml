@@ -1,4 +1,5 @@
 apprenticehelmet:
+  enabled: false
   output: apprenticehelmet
   output_type: wand
   materials:

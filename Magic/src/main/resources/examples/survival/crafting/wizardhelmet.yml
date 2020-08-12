@@ -1,4 +1,5 @@
 wizardhelmet:
+  enabled: false
   output: wizardhelmet
   output_type: wand
   materials:
