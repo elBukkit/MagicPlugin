@@ -2,6 +2,7 @@
 
 # 7.9.12
 
+ - 1.16.2 Compatibility fixes
  - Automata hearts ("automata" example) may no longer be used to respawn automata
  - Add EarnEvent to API and Skript, for tracking SP earn
  - Improve MySQL connection robustness
