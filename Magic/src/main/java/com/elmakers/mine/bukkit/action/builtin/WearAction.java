@@ -84,14 +84,20 @@ public class WearAction extends BaseSpellAction
             Player player = this.player.get();
             if (player == null) return;
 
+            Mage targetMage = controller.getRegisteredMage(player);
             ItemStack[] armor = player.getInventory().getArmorContents();
             ItemStack currentItem = armor[slotNumber];
             if (NMSUtils.isTemporary(currentItem)) {
                 ItemStack replacement = NMSUtils.getReplacement(currentItem);
-                armor[slotNumber] = replacement;
+
+                // This will handle the case where the player is now dead
+                // Clear the temporary item first, then use setArmorContents, which will
+                // set the armor if player is alive, else add it to respawn inventory to get
+                // added after they respawn.
+                armor[slotNumber] = new ItemStack(Material.AIR);
                 player.getInventory().setArmorContents(armor);
+                targetMage.setArmorItem(slotNumber, replacement);
             }
-            Mage targetMage = controller.getRegisteredMage(player);
             if (targetMage != null && targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage)targetMage).armorUpdated();
             }

@@ -532,6 +532,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     CommandSender getDebugger();
     void giveItem(ItemStack item);
     void giveItem(ItemStack item, boolean putInHand);
+    void setArmorItem(int armorSlot, ItemStack item);
 
     /**
      * Will not drop the item on the ground, unlike giveItem

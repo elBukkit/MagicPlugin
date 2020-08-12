@@ -3483,8 +3483,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             player.getInventory().setArmorContents(armor);
         }
         if (respawnInventory != null) {
+            List<ItemStack> addToInventory = null;
             for (Map.Entry<Integer, ItemStack> entry : respawnInventory.entrySet()) {
-                inventory.setItem(entry.getKey(), entry.getValue());
+                int slot = entry.getKey();
+                ItemStack item = entry.getValue();
+                if (slot >= 0) {
+                    inventory.setItem(entry.getKey(), item);
+                } else {
+                    if (addToInventory == null) {
+                        addToInventory = new ArrayList();
+                    }
+                    addToInventory.add(item);
+                }
+            }
+            if (addToInventory != null) {
+                for (ItemStack item : addToInventory) {
+                    Map<Integer, ItemStack> returned = inventory.addItem(item);
+                    if (!returned.isEmpty()) {
+                        player.getWorld().dropItem(player.getLocation(), item);
+                    }
+                }
             }
         }
         clearRespawnInventories();
@@ -3494,6 +3512,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 armorUpdated();
             }
         }, 1);
+    }
+
+
+    public void addToRespawnInventory(ItemStack item) {
+        addToRespawnInventory(-1, item);
     }
 
     public void addToRespawnInventory(int slot, ItemStack item) {
@@ -3508,6 +3531,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             respawnArmor = new HashMap<>();
         }
         respawnArmor.put(slot, item);
+    }
+
+    public void setArmorItem(int armorSlot, ItemStack itemStack) {
+        Player player = getPlayer();
+        if (player == null) return;
+        if (player.isDead()) {
+            addToRespawnArmor(armorSlot, itemStack);
+            return;
+        }
+
+        ItemStack[] armor = player.getInventory().getArmorContents();
+        armor[armorSlot] = itemStack;
+        player.getInventory().setArmorContents(armor);
     }
 
     @Override
@@ -3538,6 +3574,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Player player = getPlayer();
             // See note in other version of tryGiveItem, not sure this is "right" but is probably "best".
             if (player == null) return true;
+
+            if (player.isDead()) {
+                addToRespawnInventory(itemStack);
+                return true;
+            }
 
             PlayerInventory inventory = player.getInventory();
             ItemStack inHand = inventory.getItemInMainHand();
@@ -3583,6 +3624,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 wand.tryToOwn(player);
                 itemStack = wand.getItem();
             }
+        }
+
+        if (player.isDead()) {
+            addToRespawnInventory(itemStack);
+            return true;
         }
 
         if (hasStoredInventory()) {

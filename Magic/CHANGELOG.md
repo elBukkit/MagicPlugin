@@ -10,6 +10,7 @@
  - Add show_no_permission parameter to SpellShop action, for allowing purchasing of spells even if a
    player does not have permission to cast that spell.
  - Removed wizard clothes texture from RP
+ - Fix Cloaked players losing their armor if they die while cloaked.
 
 # 7.9.11
 
