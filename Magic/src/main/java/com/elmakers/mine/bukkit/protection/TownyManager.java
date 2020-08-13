@@ -11,9 +11,10 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 
-public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildManager {
+public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildManager, EntityTargetingManager {
     private boolean enabled = false;
     private TownyBridge towny = null;
     protected boolean wildernessBypass;
@@ -79,6 +80,7 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
         return towny.isPVPAllowed(location);
     }
 
+    @Override
     public boolean canTarget(Entity entity, Entity target) {
         if (!enabled || towny == null || entity == null || target == null)
             return true;

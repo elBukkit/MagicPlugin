@@ -13,10 +13,11 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
+import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
-public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager, CastPermissionManager {
+public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager, CastPermissionManager, EntityTargetingManager {
     private boolean enabled = false;
     private boolean override = true;
     private PreciousStonesAPI api;
@@ -82,6 +83,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
         return hasBuildPermission(player, block);
     }
 
+    @Override
     public boolean canTarget(Entity source, Entity target) {
         if (!enabled || target == null || api == null)
         {
