@@ -107,6 +107,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
+import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
@@ -175,6 +176,7 @@ import com.elmakers.mine.bukkit.protection.NCPManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.ProtectionManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
+import com.elmakers.mine.bukkit.protection.ResidenceManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.requirements.RequirementsController;
@@ -1299,6 +1301,20 @@ public class MagicController implements MageController {
             getLogger().info("Citadel integration disabled.");
         }
 
+        // Residence
+        if (residenceConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("Residence")) {
+                try {
+                    residenceManager = new ResidenceManager(pluginManager.getPlugin("Residence"), this, residenceConfiguration);
+                    getLogger().info("Integrated with residence for build/break/pvp/target checks");
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with Residence", ex);
+                }
+            }
+        } else {
+            getLogger().info("Residence integration disabled.");
+        }
+
         // Activate Metrics
         activateMetrics();
 
@@ -1600,9 +1616,15 @@ public class MagicController implements MageController {
         if (!initialized) {
             finalizeIntegration();
         }
+
         // Cast Managers
         if (worldGuardManager.isEnabled()) castManagers.add(worldGuardManager);
         if (preciousStonesManager.isEnabled()) castManagers.add(preciousStonesManager);
+
+        // Entity Targeting Managers
+        if (preciousStonesManager.isEnabled()) targetingProviders.add(preciousStonesManager);
+        if (townyManager.isEnabled()) targetingProviders.add(townyManager);
+        if (residenceManager != null) targetingProviders.add(residenceManager);
 
         // PVP Managers
         if (worldGuardManager.isEnabled()) pvpManagers.add(worldGuardManager);
@@ -1612,6 +1634,7 @@ public class MagicController implements MageController {
         if (townyManager.isEnabled()) pvpManagers.add(townyManager);
         if (griefPreventionManager.isEnabled()) pvpManagers.add(griefPreventionManager);
         if (factionsManager.isEnabled()) pvpManagers.add(factionsManager);
+        if (residenceManager != null) pvpManagers.add(residenceManager);
 
         // Build Managers
         if (worldGuardManager.isEnabled()) blockBuildManagers.add(worldGuardManager);
@@ -1621,6 +1644,7 @@ public class MagicController implements MageController {
         if (townyManager.isEnabled()) blockBuildManagers.add(townyManager);
         if (griefPreventionManager.isEnabled()) blockBuildManagers.add(griefPreventionManager);
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBuildManagers.add(mobArenaManager);
+        if (residenceManager != null) blockBuildManagers.add(residenceManager);
 
         // Break Managers
         if (worldGuardManager.isEnabled()) blockBreakManagers.add(worldGuardManager);
@@ -1631,6 +1655,7 @@ public class MagicController implements MageController {
         if (griefPreventionManager.isEnabled()) blockBreakManagers.add(griefPreventionManager);
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBreakManagers.add(mobArenaManager);
         if (citadelManager != null) blockBreakManagers.add(citadelManager);
+        if (residenceManager != null) blockBreakManagers.add(residenceManager);
 
         Runnable genericIntegrationTask = new Runnable() {
             @Override
@@ -2634,6 +2659,7 @@ public class MagicController implements MageController {
         skriptEnabled = properties.getBoolean("skript_enabled", skriptEnabled);
         citadelConfiguration = properties.getConfigurationSection("citadel");
         mobArenaConfiguration = properties.getConfigurationSection("mobarena");
+        residenceConfiguration = properties.getConfigurationSection("residence");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);
         }
@@ -3933,7 +3959,12 @@ public class MagicController implements MageController {
         {
             return false;
         }
-        return preciousStonesManager.canTarget(attacker, entity) && townyManager.canTarget(attacker, entity);
+        for (EntityTargetingManager manager : targetingProviders) {
+            if (!manager.canTarget(attacker, entity)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -6361,6 +6392,7 @@ public class MagicController implements MageController {
     private boolean                             placeholdersEnabled         = true;
     private boolean                             lightAPIEnabled                = true;
     private boolean                             skriptEnabled                = true;
+    private ConfigurationSection                residenceConfiguration        = null;
     private ConfigurationSection                citadelConfiguration        = null;
     private ConfigurationSection                mobArenaConfiguration       = null;
     private boolean                             enableResourcePackCheck     = true;
@@ -6386,6 +6418,7 @@ public class MagicController implements MageController {
     private NCPManager                          ncpManager                   = new NCPManager();
     private ProtectionManager                   protectionManager           = new ProtectionManager();
     private CitadelManager                      citadelManager              = null;
+    private ResidenceManager                    residenceManager            = null;
     private RequirementsController              requirementsController      = null;
     private HeroesManager                       heroesManager               = null;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
@@ -6403,6 +6436,7 @@ public class MagicController implements MageController {
     private List<CastPermissionManager>         castManagers                = new ArrayList<>();
     private List<AttributeProvider>             attributeProviders          = new ArrayList<>();
     private List<TeamProvider>                  teamProviders               = new ArrayList<>();
+    private List<EntityTargetingManager>        targetingProviders          = new ArrayList<>();
     private NPCSupplierSet                      npcSuppliers                = new NPCSupplierSet();
     private Map<String, RequirementsProcessor>  requirementProcessors       = new HashMap<>();
 }

@@ -154,6 +154,11 @@ skript_enabled: true
 # Engineering magic will be logged via LogBlock
 logblock_enabled: true
 
+# Residence integration
+residence:
+  # Set to false to disable Residence integration
+  enabled : true
+
 # Citadel integration
 citadel:
   # Set to false to disable Citadel integration
@@ -173,8 +178,7 @@ citadel:
 # Indirect integration with other protection plugins.
 # Add a plugin here to have Magic send it fake Block/Break events to check for permission.
 # This may have strange behavior, use with caution.
-generic_protection:
-  - Residence
+generic_protection: []
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.

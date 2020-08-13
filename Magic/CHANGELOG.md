@@ -3,6 +3,7 @@
 # 7.9.13
 
  - Crafting recipes for wizard and apprentice armor are now disbled by default
+ - Add proper Residence integration
 
 # 7.9.12
 
