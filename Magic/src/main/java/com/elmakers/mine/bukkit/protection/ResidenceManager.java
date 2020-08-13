@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.protection;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
@@ -12,6 +10,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.containers.Flags;
+import com.bekvon.bukkit.residence.containers.ResidencePlayer;
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
+import com.bekvon.bukkit.residence.protection.PlayerManager;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
@@ -20,70 +23,31 @@ import com.elmakers.mine.bukkit.api.protection.PVPManager;
 
 public class ResidenceManager implements PVPManager, BlockBreakManager, BlockBuildManager, EntityTargetingManager {
     private final MageController controller;
-    private final Plugin residencePlugin;
+    private final Residence residence;
 
-    private final Class<Enum> enum_Flags;
-    private final Class<Enum> enum_FlagCombo;
-
-    private final Class<?> class_PlayerManager;
-    private final Class<?> class_ResidencePlayer;
-    private final Class<?> class_FlagPermissions;
-
-    private final Method method_getPlayerManager;
-    private final Method method_getResidencePlayer;
-    private final Method method_getPermsByLoc;
-    private final Method method_hasPermission;
-    private final Method method_canPlaceBlock;
-    private final Method method_canBreakBlock;
-    private final Method method_canDamageEntity;
-
-    private final Enum<?> enum_Flags_pvp;
-    private final Enum<?> enum_FlagCombo_TrueOrNone;
-
-    public ResidenceManager(Plugin residencePlugin, MageController controller, ConfigurationSection configuration)
-            throws ClassNotFoundException, NoSuchMethodException {
+    @SuppressWarnings({ "unchecked" })
+    public ResidenceManager(Plugin residencePlugin, MageController controller, ConfigurationSection configuration) {
         this.controller = controller;
-        this.residencePlugin = residencePlugin;
-        ClassLoader classLoader = ResidenceManager.class.getClassLoader();
-
-        enum_Flags = (Class<Enum>)classLoader.loadClass("com.bekvon.bukkit.residence.containers.Flags");
-        enum_Flags_pvp = Enum.valueOf(enum_Flags, "pvp");
-
-        enum_FlagCombo = (Class<Enum>)classLoader.loadClass("com.bekvon.bukkit.residence.protection.FlagPermissions$FlagCombo");
-        enum_FlagCombo_TrueOrNone = Enum.valueOf(enum_FlagCombo, "TrueOrNone");
-
-        class_FlagPermissions = classLoader.loadClass("com.bekvon.bukkit.residence.protection.FlagPermissions");
-        method_getPermsByLoc = residencePlugin.getClass().getMethod("getPermsByLoc", Location.class);
-        method_hasPermission = class_FlagPermissions.getMethod("has", enum_Flags, enum_FlagCombo);
-
-        class_PlayerManager = classLoader.loadClass("com.bekvon.bukkit.residence.api.ResidencePlayerInterface");
-        class_ResidencePlayer = classLoader.loadClass("com.bekvon.bukkit.residence.containers.ResidencePlayer");
-
-        method_getPlayerManager = residencePlugin.getClass().getMethod("getPlayerManager");
-        method_getResidencePlayer = class_PlayerManager.getMethod("getResidencePlayer", Player.class);
-
-        method_canBreakBlock = class_ResidencePlayer.getMethod("canBreakBlock", Block.class, Boolean.TYPE);
-        method_canPlaceBlock = class_ResidencePlayer.getMethod("canBreakBlock", Block.class, Boolean.TYPE);
-        method_canDamageEntity = class_ResidencePlayer.getMethod("canDamageEntity", Entity.class, Boolean.TYPE);
+        this.residence = (Residence)residencePlugin;
     }
 
     @Nullable
-    protected Object getResidencePlayer(Player player) throws InvocationTargetException, IllegalAccessException {
-        Object playerManager = method_getPlayerManager.invoke(residencePlugin);
+    protected ResidencePlayer getResidencePlayer(Player player) {
+        PlayerManager playerManager = residence.getPlayerManager();
         if (playerManager == null) {
             return null;
         }
-        return method_getResidencePlayer.invoke(playerManager, player);
+        return playerManager.getResidencePlayer(player);
     }
 
     @Override
     public boolean isPVPAllowed(Player player, Location location) {
         try {
-            Object permissions = method_getPermsByLoc.invoke(residencePlugin, location);
+            FlagPermissions permissions = residence.getPermsByLoc(location);
             if (permissions == null) {
                 return true;
             }
-            return (boolean)method_hasPermission.invoke(permissions, enum_Flags_pvp, enum_FlagCombo_TrueOrNone);
+            return permissions.has(Flags.pvp, FlagPermissions.FlagCombo.TrueOrNone);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Something is going wrong with Residence pvp checks", ex);
         }
@@ -94,11 +58,11 @@ public class ResidenceManager implements PVPManager, BlockBreakManager, BlockBui
     @Override
     public boolean hasBuildPermission(Player player, Block block) {
         try {
-            Object residencePlayer = getResidencePlayer(player);
+            ResidencePlayer residencePlayer = getResidencePlayer(player);
             if (residencePlayer == null) {
                 return true;
             }
-            return (boolean)method_canPlaceBlock.invoke(residencePlayer, block, false);
+            return residencePlayer.canPlaceBlock(block, false);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Something is going wrong with Residence build checks", ex);
         }
@@ -109,11 +73,11 @@ public class ResidenceManager implements PVPManager, BlockBreakManager, BlockBui
     @Override
     public boolean hasBreakPermission(Player player, Block block) {
         try {
-            Object residencePlayer = getResidencePlayer(player);
+            ResidencePlayer residencePlayer = getResidencePlayer(player);
             if (residencePlayer == null) {
                 return true;
             }
-            return (boolean)method_canBreakBlock.invoke(residencePlayer, block, false);
+            return residencePlayer.canBreakBlock(block, false);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Something is going wrong with Residence break checks", ex);
         }
@@ -127,11 +91,11 @@ public class ResidenceManager implements PVPManager, BlockBreakManager, BlockBui
             return true;
         }
         try {
-            Object residencePlayer = getResidencePlayer((Player)source);
+            ResidencePlayer residencePlayer = getResidencePlayer((Player)source);
             if (residencePlayer == null) {
                 return true;
             }
-            return (boolean)method_canDamageEntity.invoke(residencePlayer, target, false);
+            return residencePlayer.canDamageEntity(target, false);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Something is going wrong with Residence entity targeting checks", ex);
         }
