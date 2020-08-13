@@ -137,7 +137,7 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         File playerData = new File(playerDataFolder, id + ".dat");
         if (playerData.exists()) {
             migratedDataFolder.mkdirs();
-            File migratedData = new File(migratedDataFolder, id + ".dat.migrated");
+            File migratedData = new File(migratedDataFolder, id + ".dat");
             playerData.renameTo(migratedData);
         }
     }
