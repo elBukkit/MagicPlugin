@@ -3491,7 +3491,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     inventory.setItem(entry.getKey(), item);
                 } else {
                     if (addToInventory == null) {
-                        addToInventory = new ArrayList();
+                        addToInventory = new ArrayList<>();
                     }
                     addToInventory.add(item);
                 }
@@ -3533,6 +3533,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         respawnArmor.put(slot, item);
     }
 
+    @Override
     public void setArmorItem(int armorSlot, ItemStack itemStack) {
         Player player = getPlayer();
         if (player == null) return;
