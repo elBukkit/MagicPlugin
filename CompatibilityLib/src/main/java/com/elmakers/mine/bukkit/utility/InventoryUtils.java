@@ -327,7 +327,7 @@ public class InventoryUtils extends NMSUtils
 
     public static ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
         try {
-            Object gameProfile = class_GameProfile_constructor.newInstance(id, "MFH_Question");
+            Object gameProfile = class_GameProfile_constructor.newInstance(id, "MHF_Question");
             Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(gameProfile);
             if (properties == null) {
                 return itemStack;
