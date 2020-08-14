@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.integration.skript.EffCast;
 import com.elmakers.mine.bukkit.integration.skript.EffSpawn;
 import com.elmakers.mine.bukkit.integration.skript.EvtCast;
 import com.elmakers.mine.bukkit.integration.skript.EvtEarn;
+import com.elmakers.mine.bukkit.integration.skript.EvtPreCast;
 import com.elmakers.mine.bukkit.integration.skript.ExprActiveSpell;
 import com.elmakers.mine.bukkit.integration.skript.ExprCaster;
 import com.elmakers.mine.bukkit.integration.skript.ExprTargets;
@@ -31,6 +32,7 @@ public class SkriptManager {
         Plugin plugin = controller.getPlugin();
 
         EvtCast.register();
+        EvtPreCast.register();
         EvtEarn.register();
         EffCast.register();
         EffSpawn.register();

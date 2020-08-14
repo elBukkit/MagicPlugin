@@ -4,6 +4,7 @@
 
  - Crafting recipes for wizard and apprentice armor are now disbled by default
  - Add proper Residence integration
+ - Fix Skript pre-cast ('on casting of') event
 
 # 7.9.12
 

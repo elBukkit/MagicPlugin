@@ -3,20 +3,20 @@ package com.elmakers.mine.bukkit.integration.skript;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 
-import com.elmakers.mine.bukkit.api.event.CastEvent;
+import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 
-public class EvtCast extends SkriptEvent {
+public class EvtPreCast extends SkriptEvent {
     private Literal<String> spells;
 
     public static void register() {
-        Skript.registerEvent("Cast Spell", EvtCast.class, CastEvent.class, "cast [[of] [spell] %-string%]")
-            .description("Called when a player or magic mob casts a spell")
-            .examples("on cast", "on cast of missile", "on cast of spell blink");
+        Skript.registerEvent("Casting Spell", EvtPreCast.class, PreCastEvent.class, "casting [[of] [spell] %-string%]")
+            .description("Called when a player or magic mob is about to cast a spell")
+            .examples("on casting", "on casting of missile", "on casting of spell blink");
     }
 
     @Override
@@ -28,8 +28,8 @@ public class EvtCast extends SkriptEvent {
 
     @Override
     public boolean check(Event event) {
-        if (!(event instanceof CastEvent)) return false;
-        final CastEvent spellCast = (CastEvent)event;
+        if (!(event instanceof PreCastEvent)) return false;
+        final PreCastEvent spellCast = (PreCastEvent)event;
         if (spells != null) {
             String spellKey = spellCast.getSpell().getKey();
             String spellName = ChatColor.stripColor(spellCast.getSpell().getName());
@@ -48,6 +48,6 @@ public class EvtCast extends SkriptEvent {
 
     @Override
     public String toString(Event event, boolean debug) {
-        return "cast" + (spells != null ? " of " + spells.toString(event, debug) : "");
+        return "casting" + (spells != null ? " of " + spells.toString(event, debug) : "");
     }
 }
