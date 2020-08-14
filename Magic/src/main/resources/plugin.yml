@@ -1622,11 +1622,11 @@ permissions:
     type: boolean
   Magic.wand.override_bind:
     description: A player may use a wand even if it is bound to another player.
-    default: op
+    default: false
     type: boolean
   Magic.wand.override_stash:
     description: A player may put wands in chests.
-    default: op
+    default: false
     type: boolean
   Magic.wand.override_locked:
     description: A player may modify locked wands with wand commands.
@@ -1634,15 +1634,15 @@ permissions:
     type: boolean
   Magic.bypass_pvp:
     description: A player always bypasses PVP checks
-    default: op
+    default: false
     type: boolean
   Magic.bypass_build:
     description: A player always bypasses build checks
-    default: op
+    default: false
     type: boolean
   Magic.bypass_break:
     description: A player always bypasses block break checks
-    default: op
+    default: false
     type: boolean
   Magic.bypass_hidden:
     description: A player sees hidden spells in /spells and tab-complete
@@ -1650,11 +1650,11 @@ permissions:
     type: boolean
   Magic.bypass:
     description: A player always bypasses other permission checks
-    default: op
+    default: false
     type: boolean
   Magic.bypass_restricted:
     description: A player may bypass restricted material checks
-    default: op
+    default: false
     type: boolean
   Magic.bypass_upgrade_commands:
     description: A player will skip upgrade commands when ranking up
@@ -1721,7 +1721,7 @@ permissions:
     type: boolean
   Magic.spawners:
     description: A player may place custom mob spawners without being op'd
-    default: op
+    default: false
     type: boolean
   Magic.migrate:
     description: A player will be notified of data migration status

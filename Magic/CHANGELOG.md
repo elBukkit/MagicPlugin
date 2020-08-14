@@ -6,6 +6,9 @@
  - Add proper Residence integration
  - Fix Skript pre-cast ('on casting of') event
  - Fix trinketshop skull icons in 1.16
+ - Bypass permissions are no longer applied to ops by default.
+   I changed this to reduce confusion about when protection is and is not working.
+   If you prefer to bypass, give yourself the "Magic.bypass" permission.
 
 # 7.9.12
 
