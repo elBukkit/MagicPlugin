@@ -1,11 +1,4 @@
 skull_aquarium:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bAquarium
-      internal: H4sIAAAAAAAAAE2PzU6DQBhFP01MkPgYbkmG38LChRFsh5RBaaEwO6BTYWaoTQsGeC4fUJYub845i6sCqPC0E4OUH9fvUyuZAvf4CM+OvfIcj5VaVXm6ZrHa0Fyr8rS6sq3SZAZya1cFdYku7Nq37PYISs/GfriymwoAdwo8ZKUcGPyyKUQ0b9AxD2U9YWfZ+x2SMeaXFT5nU/WGHdwtfPPqbCfvn2v35cGWhRk29Pw5VF2GtmYi2SbR6y79IV0i4nVgRzy1Il9MlGOD8mAkc6QTIx0Lnk5F987jdYEKIxPFnJrkgO3YDzuyD5vYzwTlpInmYCZcGNT/smgbeqccvSwP4A/gG1P2HAEAAA==
+  item: player_head:http://textures.minecraft.net/texture/6dd8a9258092f26f117357e1b52bac8f4cedc575b982f52a85df3a313696d88f
+  worth: 200
+  name: '&bAquarium'

@@ -1,12 +1,4 @@
 skull_furnace:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bFurnace
-      internal: H4sIAAAAAAAAAE2OzW6CQBhFvzZtQomP0S3J8KssujBF60wcrIrosGlkGAI4o0bACE/VRyzLLm/OycnVAXQYbU+tlN+3S15KocFLeFQCRnQx/1m3om7Ky1mDZ5zB+8QWY25ayJj4uWU4rmUbE55lBndQ6vtjnqemp4M+lK7i1pSifgOtEY+mvYlaB4AnDV7jo2wF/IqOoORQoOxAJO+wN+xoi+QKV9cxPsdd+ok9rAa+mHrLzv/nus1x70pmkyI5r9tUxWhpb6RYbEyudvdVkFU04GgVUIuqncsi1ifR1Gb7WceqqcOqWIXW+kGDuQwj6ob7eUGrmUl7UoQBt8Ied8kXOSXByWE9UbQkfn5AH8N7+AOjeArkLQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/87c0748362e9a63e07aa2b08b5f7d101e5395aa21532a476722dbdd98c2f2
+  worth: 200
+  name: '&bFurnace'

@@ -1,14 +1,4 @@
 skull_soupcan:
-  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
-  creator: NathanWolf
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCan of Soup
-      internal: H4sIAAAAAAAAAD2O3U6DMBzF/xpNkOwxvCVpoYC9XLKZQUbnvtjaG8NYEbBlhoEynsjHtFdenJyPi1+ODWDDZPvZK/XWXopKSQseWKYlTJLF6/u6l9euujQW3EdneM4DLF8odp2CEuQQzw0dmoWBIykJCQqzU3EiNtiG9CXbrpLXJ7A6OXR9K682ANxZ8JhmqpfwK72NkosNznU6rpput0VqZdz0nyDSJTovpsHyRpE4mnyMVX7zu+zgK+7FpWjW/UmnaPnP2H8LnfjJgftsN/V4vSa8FpqNc98ICR2XXM895jLN6g+cjJuS79KKjRFJxnzg9XxYzbgrZnssNDcbK5nLq+KIqXkNf8Eqh0AlAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/fc91f9507b48b6f719714fbaba77cf68534aa5b728371b11866d55ff833a7f
+  worth: 200
+  name: '&bCan of Soup'

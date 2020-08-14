@@ -1,12 +1,4 @@
 skull_ale:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bAle
-      internal: H4sIAAAAAAAAAE2Oy06DQBhGf40mSPoYbkmGO10aCbd0QKjltjFcBmE60IaCKTyTDylLlyffyZfDA/CwO55nxj7GS9MxwsGTX/QEdtixvsKZ3KbuMnDw6NbwWqhVJRqSJqjIqATFaBShkA0k1LpeGnpDtFKReOC3pysZp47cXoCbyH2aR3LjAeCBg+e4YDOBX7J4KE9bVKceqxZX2/jziFjg0qvuDvFSvrua22+786Ydlv0/V52KRGWZ7LX5EM5lH6ODHDHiRGLVn34CO5NzGyvZer7ntG4xjVgmhWq2xixIQpSbLcUr67Ft0cDEK5Ys5pvfIl5PYpBYNKNth02s+DTvN79rUnG/lcMfH3uaEykBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/8f7dc8c91f7a24ecd9c5e9d4d8c39f0ac8333ae4853559acb8b03866f9d
+  worth: 200
+  name: '&bAle'

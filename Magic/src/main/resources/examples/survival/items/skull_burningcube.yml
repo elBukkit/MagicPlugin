@@ -1,12 +1,4 @@
 skull_burningcube:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bBurning Cube
-      internal: H4sIAAAAAAAAAE2Oy26CQBiF/zZtQomP0S3JOAwUFl0YrXGIM62ICGwa0FEuAxoujeNT9RHLsjmrL+fLydEBdJhsq0HKr/ZyKqTQ4ImntYAJWy2/N4Po+uLSaPBIj/BqZZZlWogYDibCIDg7GW5qp4ZzJIg42DQPtqmDPi5dRdsXonsBrRe3fmhFpwPAgwbPYSoHAb9CeSiJcnSMPHlQ1B452CL5ScvrG21Clc2pTeuxX83stXL/uVaf7i0Zm16eNJshq0O0Nn0pVv70UO9+2H3MYqeSICk4/iD8XimGvSouzyQpK8SC8zQJzigud5jVfsn3lPDAH12vYItlGd9nN45jxWo2jYM853PPPUXofXwPf4CIU78tAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/333052e6b7a87923bdb88f94185e84b562dc5b854b7bb01cc017f22c5a8a4
+  worth: 200
+  name: '&bBurning Cube'

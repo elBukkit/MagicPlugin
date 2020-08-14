@@ -1,12 +1,4 @@
 skull_yoshi:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bYoshi
-      internal: H4sIAAAAAAAAAA2Ly26DMBBFp1UiUSuf0S2SDQXCoot2ESURyrMijx3Bg0w7JgjstvD18eYcHV1dBsBgdvyxRLvuXtWEHjyvJLxGsRSpjOe+A/pvIqn8m5ChzxNMRIBRgnPBgLlTi52psX8Bz+C/sR32DACePJjmBVkEheGBcHkQpc7HbWO+jpy2zq7/4pVWXC4/4mxIxyIgWw6RKU4RXcK1ujZ7e9M5z7honb9LvdBysencPmaCfstAtVnzaa/DOq3O/B3Ag8mm0AjTy71XNcADeG5TVd4AAAA=
-      skull-owner: Yoshi
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/Yoshi.png
+  worth: 200
+  name: '&bYoshi'

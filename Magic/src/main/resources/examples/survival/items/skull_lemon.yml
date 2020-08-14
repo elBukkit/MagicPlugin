@@ -1,12 +1,4 @@
 skull_lemon:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bLemon
-      internal: H4sIAAAAAAAAAD2Oy27CMBREb6tWSiM+o9tINsakWXZBCwg7BZznpgqJ0zxsqCChJF/Uz6xXXc2MdHQ0NoANk33bK/VxPpW1khY88ExLmLDl2+e2l5euPh0tuF8V8CxnU1IgmTnF1KXOjBbE8ZBbOi7OMSkPL3mOsQ22MX3Lc1fLyxNYnbx1/VlebAC4s+AxzFQv4VeSnZLLHc51OPrHTuyR8k2a/TNf6QoVy9f5ZvBQGpser1U+0C6LqErIukqP2/6gQ7T5dwRXXwQk1VvMNa+YCCgfvwgf25E1uzZtgpsvGObvqylvGE1E1frRumFiQZlmJBl5m4p24NHC8KpOolBzzeoyxp55DX/EQzebJQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/957fd56ca15978779324df519354b6639a8d9bc1192c7c3de925a329baef6c
+  worth: 200
+  name: '&bLemon'

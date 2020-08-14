@@ -1,12 +1,4 @@
 skull_moneybag:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bMoney Bag
-      internal: H4sIAAAAAAAAAE2PwW6CQBRFX5s2ocTP6JZkAAdl0UVTYxniYEWgMpsGcSgMM2gUtPBd/cCy7PLmnJzk6gA6TLZ1J+XH+VhUkmvwEGSKw4R6y69Nxy9tdWw0uCcHeD5kDppPrbnBLQsZUxvnhus4rmEV3M4RnuEpnuugj6UTP7cVvzyB1vKftjvziw4Adxo8JpnsOPzy3kdsV6LDzpd5T5xxR1sk10ScZqRJ+v0bcYgauffqrHr3n4vb7BPL1PZL1my6vUrQyg4l90IzV/GVRdRiUY2YYIIOYUmHGAUiUakVozSqb0z4kooYB0M6rBdSpqK26UKWNCJ9MFAzGELFRH5jaoPY+7IMxLdJK98tduhlfAB/8T8uXDEBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/e36e94f6c34a35465fce4a90f2e25976389eb9709a12273574ff70fd4daa6852
+  worth: 200
+  name: '&bMoney Bag'

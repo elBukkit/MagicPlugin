@@ -1,12 +1,4 @@
 skull_lantern:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bLantern
-      internal: H4sIAAAAAAAAAE2O306DMByFfxpNkOwxvCUpY2Xh0riMQdZO2GSUG0NLkT/ttmygwlP5iHLp1cnJ9+XkmAAmzPZtr9Tb9VzWShrwQHMtYUY264+ol7euPp8MuA8KeHZz4XluiSyRc24tsL20eOFiC3FuF9xeFiUqTDCnpYu8drW8PYHRyZ+uv8qbCQB3Bjwmueol/MohRFlaoSINlRgCd+qHPVK7oLksg1My8NfADfTENy/udvD+ubjLj1gxJ6yyU9RznaCtEyu5iW2h37/oSqCs+cR01SLikwX1s4o0zCEH9k2OZNz5DDMdK3qIHDafmJ5yXFfEpxUZqzZrBGbzWJFRINKELdWkLlPbm97DH5FTa1QtAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/474f894940c84fa2671601c38f9bde547cfa2d7c1a0ca38df79cde37422d6c
+  worth: 200
+  name: '&bLantern'

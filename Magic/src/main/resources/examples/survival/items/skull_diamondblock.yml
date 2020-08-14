@@ -1,12 +1,4 @@
 skull_diamondblock:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bDiamond Block
-      internal: H4sIAAAAAAAAAE2PwW6CQBRFX5s2ocTP6JZkEKFl4cKWqkNkLDiizKYRZgjQGTQCVvyufmBZdnlyT25ydAAdRpvvTsrP8zEvpdDggRyUgFGwnH+FnWja8lhrcI85PFvcsk2RZcbY4tyYIFcYryhzDStPc5Tm3BFppoM+PJ3EuS1F8wRaK65tdxaNDgB3GjzGB9kJ+BW9j9i+QHzvy6zHzsB0g+QaV6cXXMd9+o4drIZ9OXNWvfvPtdvDzpaJ5ResDrtUxWhlRVIsIzNT28uaJreAbm0yjipGI0m8mRnsthPmxQWh4Y1U4XVwxskOm2TBSlZhM6FvknnJD/G4CuhckuoDBYtwsl74iniFwrXp5uF0OhTAH8dOJgMxAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/9631597dce4e4051e8d5a543641966ab54fbf25a0ed6047f11e6140d88bf48f
+  worth: 200
+  name: '&bDiamond Block'

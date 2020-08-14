@@ -1,12 +1,4 @@
 skull_mario:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bMario
-      internal: H4sIAAAAAAAAAA2Ly07DMBQFb1ErBaufwTaSUzspWbAoi6qtQp8oQHfGvlYCdlq5NpB8PV6NzhwNASAwPX0HY/buoluDCdytFTxIzR85Z3maU6FSLrN5KkrUKVezQohyrhkrCJAYXdH5Fm/3kHj888HhjQDAKIFJLUxAaJAdDa6OmbT1sOv864maXWTcv8XaNlStFkXVl4OYmSD73Iu33HywTXPuDuHT1rSi2TXyS9qlVcuti/8QXSOt+am653DuN6V+p08ACYy3wiJMXoRrLwD/R+QR1d4AAAA=
-      skull-owner: Mario
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/Mario.png
+  worth: 200
+  name: '&bMario'

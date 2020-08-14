@@ -1,12 +1,4 @@
 skull_watermelon:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bWatermelon
-      internal: H4sIAAAAAAAAAD2OzU6DQBzE/xpNkPQxvJIsH4ty6MEEtG26i1CkZS+GLkta2KWmBQs8kw8pXjzNTCbzy+gAOsw2dSfl+/lUHqXQ4I7mSsCMLF4/o05c2uOp0eB2WcAj2pduWXDLwNx2DEdgbuReiQwXP5mu5dromXMd9In0Jc7tUVweQGtF33ZncdEB4EaD+zSXnYAfYcdSLGKTq3QMmzbZIBlOOuWru1QHVCxe3PXgIbab/G4l+YDbfItlZq8OrIm6vUrR+p/x8c0qgolPrrRiVWYRRKvaZEnQE4tJlpCevhFMVWBSP5ZZVfdhkg1EpVNX1Nk26JkfYFplIx1j9bcJ/chZNqZXRvP59Bx+ATZMQ5QpAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/f3903066ccc4695e113fee314c96a544eb919622eee7daa1d1966374f3fe848
+  worth: 200
+  name: '&bWatermelon'

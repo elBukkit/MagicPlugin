@@ -1,12 +1,4 @@
 skull_arrowleft:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bArrow Left
-      internal: H4sIAAAAAAAAAE2PwW6CQBRFX5s2ocTP6JYERBAWLppS6xAHqrbgzKaBYQiMM2gErPhd/cCy7PLkntzk6AA6THaHXsqP87GsJdfgIcoUhwleLb83PW+7+thocI8KeJ6WWeFZM9ewPDc3ZsxnhsfcqTEvHMZy07PLLNNBH59O/NzVvH0CrePXrj/zVgeAOw0ek0z2HH75EJp0X5nFPpRsQO7InztTxkic5qhJhvwVuUiN++rFXQ/+P9fpstSRxA4r2mz6XCXm2t5KvtpaTH1diEI/VFAZvy9VFNCK3KgiKZnFweEaBW8OTpd1JKjCglxpQGwsaBXdDk6c4im+FYKKUI6eFadU4pSKKGA2aiy/3CwWYwH8Aep4Ls0xAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/bb0f6e8af46ac6faf88914191ab66f261d6726a7999c637cf2e4159fe1fc477
+  worth: 200
+  name: '&bArrow Left'

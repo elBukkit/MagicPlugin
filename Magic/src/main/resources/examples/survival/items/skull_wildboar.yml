@@ -1,12 +1,4 @@
 skull_wildboar:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bWild Boar
-      internal: H4sIAAAAAAAAAE2PwW6CQBRFX5s2ocTP6JYEBoGwcGFqW4coVBzAYdMADhWYQSNgHL6rH1iWXd6ck5NcFUCF2b4ZOP+6nsuKMwWe/EwwmG3XH9+7gXV9dW4VeMRHeHVNyy1KZGuoKHVt7qJMy53c0GzTdYyCGQ7L5iqoU+nCrn3FuhdQenbvhyvrVAB4UOA5zvjA4JdJT08PJ/148HghsT1tstd5gOuLg9tY5m/YxmLi66W9ke4/1+qzxOLU9E5puxtyEesbM+RsHRqFiG4UvSMfeYIm4Wlbp1UqQhF8YpOSSFKBZUA8kSYhD8jPmK6oRetQbElh0HFpBgRLf2zu/qrRfRTNKYlFsPIEbg233C0W0wP4AyErOwIxAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/ca67bfada26bfdf8b7a52bb292fede983d69b4f175c079227914947e8a5f82f
+  worth: 200
+  name: '&bWild Boar'

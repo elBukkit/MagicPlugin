@@ -1,12 +1,4 @@
 skull_sushi:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bSushi
-      internal: H4sIAAAAAAAAAD2OzU6DQBhFP40mSPoYbkkYKJOyNNHakg4I5W9mYygdZGCmNRRq4Yl8TFm5uvcuzsnVAXRY7NtByo/uXAnJNXjwC8VhQTbrz3Dgl16cTxrcb4/wjLG1OmCMDNMtbWNZHk3jgArHqNyqdDCqVg7GOuiz6Zt3veCXJ9B6fuuHjl90ALjT4DEt5MDhl9uR5JsIlSqdglMf700ZzDnvH7xVtXncvODd6Josn3vuyXJ0+iJzJLW9mp3C4aBSc/fvSK6k8QVrakWtt5FmdPLjdqRTgvwpEiT2JbG8hjX0xmJP0SxZkqa1g9cvRKZUkfeoZdm69meWxSGiDRM0DkWVI3d+DX/57RZxJQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/23bf8fca2af3592c5574b13e3bcf61e2fae829788535f0ddeaa7a2e45b6ba4
+  worth: 200
+  name: '&bSushi'

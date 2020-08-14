@@ -1,12 +1,4 @@
 skull_lavamonster:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bLava Monster
-      internal: H4sIAAAAAAAAAE2O326CMByFf1u2hBEfY7ckrbQoF16Y/bPE4lAm0pulSFFZi0bBCE+1RxyXuzsn38mXYwPYMFj9NFp/no/FQSsLHkJpFAz47P07atSlPhwrC+5ZDs8jkhGqXOxIb0gcQsaZI+XIdfCYEipRkbvYt8HuTSd1rg/q8gRWrW51c1YXGwDuLHhcS90o+FVtgMRmj/JNoLct8/oer5BesPI0YtW6zV6Yx0zPZ1Nv3vr/trSWCdWpG+xFFTWZWaO5u9RqtsRb83UVr9GNlxxxw4Y8TrGIcyNKhnm8o4uPCKXdDi+SQAvDUZhw0ueSl0KHHUO8mw55+UZ5F9Gw4yRM0o5V2C+iyaR/D3/YX3ZVLQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/d412342b6165e7ff251898d4c859befc45c89bc26e7243062193497385f3
+  worth: 200
+  name: '&bLava Monster'

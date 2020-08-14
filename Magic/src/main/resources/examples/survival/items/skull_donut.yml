@@ -1,12 +1,4 @@
 skull_donut:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bDonut
-      internal: H4sIAAAAAAAAAD2Oy26CQBiF/zZtQomP0S3JcJmpLFw0ERQjQ1FEh03DZayDM9goWPGZ+pBl1dU5J1/y5egAOozWx07Kj/NpLyTX4InmisMonPufcccvrTg1GjwGFby6Y4dwp+QGITkyHFyYhlvmb4aNcVVYDiFjjHXQB9M3P7eCX15Aa/mt7c78ogPAgwbPaS47Dr/cXkk+X5mlSu9R0yZrJKMhh/1DAnVA1fydLHsXZbuh7xay7HGbb7Fk9uKQNXFXqBQt/x2bazQNbXaXIpouRJh8WbTeWFkiFa1DK7S8niV+TZWHWJ2KKKF1pjycbRnKZv6RKnajKsB0loqBy/DOelqXTtCY7j6eTIbn8AcP/jJcKQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/837c9b82b186656e9f6363a2a1c6a4b5b93cfa9ef4dad6f16b94ebb5e362678
+  worth: 200
+  name: '&bDonut'

@@ -1,12 +1,4 @@
 skull_apple:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bApple
-      internal: H4sIAAAAAAAAABWNUU+DMBSFr0YT1vgzfCWhUNh43B4ImLlNMKh7MaW9zdB2Emgzx6+3Pp1830nOIQAEHppvp/Vh/FG9xgDudtwgLJ7L4nM9DP/mtpLwyHiyzBjGoZBsFTJKu5CrpUfBlIq5kHRFCRA/M+Boe5wWEFj8tW7EiQDATQD3LdcOQWNSayxrKkw778/2tYn03qfnS1aZUyTLdba95jOPtRPX1PK3VH8kT6fj+cV1po22ER18fglTGFnsRt/P3lW1zjei3EzHJr10RvTqneb+Gf4AAKwN3eYAAAA=
-      skull-owner: MHF_Apple
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/MHF_Apple.png
+  worth: 200
+  name: '&bApple'

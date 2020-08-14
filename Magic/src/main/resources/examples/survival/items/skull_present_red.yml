@@ -1,12 +1,4 @@
 skull_present_red:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bPresent
-      internal: H4sIAAAAAAAAABWOy07DMBRELwikYPUz2EaynTpplmyiBPWZohS6Qa59owbsEKW2SvP1mNXRzGhGQwAIzPbf3pjt+NN2BiO4rzQ8z1MhNW1pzBjP4rlc6HihuIgTmXGhUWQiYwRIKA04ug4vTxA5/HV+xAsBgLsIHhtpPMKASW2wrJmyzbTp3duemk1g0Ne0smeqy5d0ecsnyY1XN+HkQZiP5PV87Hf+ZBu6pGwI/FK2sLpYjyGfglfVJt/9bx4Pgq46cT1Z1bXvLAeI4GEtLcJsVRaf2/AIe8cB/gAVZTp77QAAAA==
-      skull-owner: MHF_Present2
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/MHF_Present2.png
+  worth: 200
+  name: '&bPresent'

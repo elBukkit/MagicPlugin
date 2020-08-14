@@ -1,12 +1,4 @@
 skull_cookie:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCookie
-      internal: H4sIAAAAAAAAAD2OzW6CQBSFb5s2ocTH6NZkhnFIWDaxVozDKII4bBoql/Azow1CVZ6oj1lW3Zxzvs2XYwPYMNk1vdab9lxUGi14CjKDMBHLxee2x0tXnU8WPPo5vDKSc8/JcUrdMWY551PP8bJpwZEVGWHo0sIGezR9Y9tVeHkBq8Nb17d4sQHgwYLnfaZ7hF9kocZlSI9mP8hTF+2IlmOPfHV9U5J8+eau7x5JD+M+rPTxzrss4VqxVZmetv2X2ZP1vyP+UXXMhQmMTBQR5p2qqKxl1FAZqVkwb4bUhI1I/JtI4quqFVfJognqLRNOaoJ5PMh5WCoTU/nhs9QIpoZjVRyoN76GPw9rUPklAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/b592cf9f42a5a8c995968493fdd1b11e0b69aad6473ff45384abe58b7fc7c7
+  worth: 200
+  name: '&bCookie'

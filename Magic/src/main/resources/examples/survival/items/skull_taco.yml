@@ -1,12 +1,4 @@
 skull_taco:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bTaco
-      internal: H4sIAAAAAAAAAD2OzU6DQBSFr0YTJH0MtyRDgRIWLppYBdKh0vK/MRQugXGmNe1QS5/Ix3RWrs75FufL0QF0mO2+Rs4/Tsdu4KjBQ1QLhBn13z7jEc9yOB40uA9aeN43podNWxsuQdew7c429o7nGlbtoTefm11nmjroyvSNJzng+Qk0iVc5nvCsA8CdBo9ZzUeEX7S2HP2t2YjstjnIZEf4RqXin0UgetL6y8V68khVqF6EvJkcWecOL62wrw7xuBcZWf870ssm6VmVx1b0vpooW040X5n0lolIhKxKgmt561nE6FSywKLzLaMidqIkVdxcy4Ta1WtqUVY6JaNqp1xD6HUFeVGv4Q/fhobXJQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/98ced74a22021a535f6bce21c8c632b273dc2d9552b71a38d57269b3538cf
+  worth: 200
+  name: '&bTaco'

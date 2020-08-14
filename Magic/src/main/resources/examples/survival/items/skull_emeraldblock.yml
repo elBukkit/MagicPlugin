@@ -1,12 +1,4 @@
 skull_emeraldblock:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bEmerald Block
-      internal: H4sIAAAAAAAAAE2OwU6DQBiEf40mSPoYXkkWYSEcPDQlWkh3a1tKy14MLItQdmlDoRGeykcUbx4n882X0QF0mO3qXsqP9lxUUmjwQFMlYEaWb5+bXly76txocB/k8OxyE6XCwkbGMTZsB3MjRQU3shfbxMJDiLueDvpkuoi2q8T1CbROfHd9K646ANxp8BinshfwI4YQsWOJ8mMo+RA4U452SK6D08UNmnjIFoETqKlfzp3V4P1jcZcesEyssGTNps9UjFbWVorl1uRqf0sOBBOf1fT0ZbMoMdf+fKBRgplfW8SPKxpxnCgqacQkeyc2VXFJD2SkKqzZ306xExn3JolYSce8povQK47odXoPv7Fg0S0tAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/ac906d688e65802569d9705b579bce56edc86ea5c36bdd6d6fc35516a77d4
+  worth: 200
+  name: '&bEmerald Block'

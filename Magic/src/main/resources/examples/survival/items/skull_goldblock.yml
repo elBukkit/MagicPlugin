@@ -1,12 +1,4 @@
 skull_goldblock:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bGold Block
-      internal: H4sIAAAAAAAAAE2OzW6CQBSFb5s2ocTH6JZkHH6KCxf9Mw5xsCKizKYBuVZwLhqFRvpUfcSy7O58OV9OjglgwmB5aLX+OB93pUYD7sKMEAZyOvlctHhpymNtwK0o4HFXYOa7rLAy9HPLwSGz/JzZluf7tjNyMuSeZ4LZL53w3JR4eQCjwWvTnvFiAsCNAfdJpluEX+wCpjZ7VmwCve2E13O8ZHouqtOTqJMufxWeoL6fPnuzbvTPdZts7erUDvaqXrQ5JWxmRxqn0XBLq+8wjkpVfbmSqyqkSCuaHGT17qhq68gf1XNCKa14n0muZZdyeU1J8DB+qeZvAaU8PMxjTZLkVa1XXNTD0W4xHvfv4Q/8lr2fLQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/54bf893fc6defad218f7836efefbe636f1c2cc1bb650c82fccd99f2c1ee6
+  worth: 200
+  name: '&bGold Block'

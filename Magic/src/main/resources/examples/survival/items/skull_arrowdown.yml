@@ -1,12 +1,4 @@
 skull_arrowdown:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bArrow Down
-      internal: H4sIAAAAAAAAAE2Py26CQBiF/zZtQomP0S0Jw1UWLkwpMkaZqlwcNo3CIMiABsGWPlcfsLPs6uTLuSRHBpBhsqsHzj+6S1FxJsFTcGgYTNa+97kZ2K2vLq0EjziH1yzLDcspbAXlBVIMrXCUqYNMBZk506e2o1rMkEEWS1fW9RW7vYDUs+9+6NhNBoAHCZ7jAx8Y/LJxqab7Us33S56N2BIc7lRO8Plq4zYej2/Ywo3w/bm1Gp1/WbM/JCan+rJM281wbGJ1pW8587coa6I7SbBOtUgjblCv3ZNGFl4ZuGtdKKdn+kU1wUlcEneOSJhWVEubdOFVQYMRTeiYuu9jENaIiA4NTypxox/cIqfYzGbiAfwBGHv4jzEBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/9b7ce683d0868aa4378aeb60caa5ea80596bcffdab6b5af2d12595837a84853
+  worth: 200
+  name: '&bArrow Down'

@@ -1,12 +1,4 @@
 skull_glados:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bGLaDOS
-      internal: H4sIAAAAAAAAAA2LQU/CMBhAP4zE2fgzvC5pt3XQAwcSAsxMBpvM4K22HwFtJxltlP16e3p5eXkEgMBT8+2N2fY/x7PBCO4KDc96mqda0CyesATjLMmyWOQTEZRLqvlUMoUESJgu2LszXh8hcvjnfI9XAgCjCMatNB7BYFobXNdM2XaoOvfWUFMFBv/NC3uiej3Py5sYZGK8unEn37k5pC+nj27nP21LS8ougV/KLq1ebvrQh5Lq18O+3u6HwqsV74qOieNuNgOI4H4jLcLDqpSLqkkA/gF36Xnr5AAAAA==
-      skull-owner: GLaDOS2
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/GLaDOS2.png
+  worth: 200
+  name: '&bGLaDOS'

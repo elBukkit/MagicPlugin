@@ -1,12 +1,4 @@
 skull_cake:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCake
-      internal: H4sIAAAAAAAAAD2OzW6CQBSFb5s2ocTH6JYEBKQuSbSKcZiKI1U2jcKlAjPawKDAE/UxO6uuzk9yvhwdQIfRtmo5/6ivecFRg6fwKBBGZPn+tWmxkcX1osFjkMHrxPMszJ3c8NAcG87JdIyTi7aRpR5mb3aeOlamg65IP1jLApsX0CR2sq2x0QHgQYPn+MhbhF+0I47LyEpFPNCLZFuTU6Uq3yeBOJvZ0p+s+6mZ7JXfr3jau/L46fKDvTonl017ErG5/mfsbklZdWQ4WIRFggybPmFZGbLgThfzLpwFfcj88YF9j8NybtFFLOgsqohQ/azqSemrLed0sRJh6Q9E7DrKSJHvral6DX9RTe4/JQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/f9136514f342e7c5208a1422506a866158ef84d2b249220139e8bf6032e193
+  worth: 200
+  name: '&bCake'

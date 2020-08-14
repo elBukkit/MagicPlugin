@@ -1,12 +1,4 @@
 skull_lavabucket:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bLava Bucket
-      internal: H4sIAAAAAAAAAE2PwW6CQBiE/zZtQomP0SsJWxYsBw+m1LpEloIrulwahKWgCxoBKzxXH7Ace5z5Jl8yKoAKk/Wxk/LzcspLKRR4oEklYOItF19BJ5q2PNUK3JMMnk2EkhzjTLOmuaVhLKZaYqQvmoWzV4zTzLBNrII6ms7i0paieQKlFbe2u4hGBYA7BR6jRHYCfkXv6vGu0LOdK9OeWGNma1365HCekjrq92/EItXIl3Nr1dv/tmabbE3JDbeI66DbV5G+MkIpliFKq83V/wgQdYjB2fdAWfDD2RxzRivOXEkPG8QHYtJDWHhO2lPHQx4LkO+EBR0Wkg8eip249Leb29gd48qV3vCOSY3sPJjNxgfwB8rfALYxAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/8d5427a83540a08a3fa2e655c2964a07243514584a71ec35d6b9e184dfbe318
+  worth: 200
+  name: '&bLava Bucket'

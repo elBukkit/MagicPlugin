@@ -1,12 +1,4 @@
 skull_carrot:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCarrot
-      internal: H4sIAAAAAAAAAD2OzU6DQBhFP40mSPoYbkmGKaAsXNRgS0mZkTJQYGMoDOFnoKaACk/kY8rKzb33bE6uDCDDym9GId6vl6ISXII7krYcVq69/fBG3g/VpZPgdp/Do5EjTTU0pBTPuqpo2RJpmp6VDBkYc6ybxhOWQV5Mn/w6VLx/AGngP8N45b0MADcS3IepGDn88vVRcPuoZm04025gPhJ06YW/jX1botzeGIfJREm07MgR2aQP6UkX8dopk84bz22IDv+O4Mut31TKGo1aHnJxKMgcNm79WhNL1NQSZdxuG8ICRE5ORXZJRaxgjpk3xfVmplZZEeZhUrsqYbFOd04b+45ZROhleQ1//EK7xiUBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/2159988443ee75d20c49c89abad5545bb4fb453a42b0388b5466355698bfa
+  worth: 200
+  name: '&bCarrot'

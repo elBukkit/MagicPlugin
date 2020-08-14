@@ -1,12 +1,4 @@
 skull_pokeball:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bPokeball
-      internal: H4sIAAAAAAAAAA2LXU+DMBRAr0YjNv4MX0nKkAIPezAmcxjCZDP48da1lzC9ZaRro+PX26eTk5PDABjc7X480as99gfCCC4rDfeJynUvRR4rsdfxQ16UccG5jEudy7QQC5ViwYCFaULrDni6hcjhn/MWTwwALiK47iR5BMJ0S7jeJsp082Z0bztOm8Dgv6IyA9frR1Gfy1kuyKtz5uR7Rp/py/A1tn5vOl7zZAr8VmZl9Kqxoc81b476YxqUab16zsZqTMq+XS4BIrhqpEG4eRr8LK0G+AcZgoi05AAAAA==
-      skull-owner: Chuzard
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/Chuzard.png
+  worth: 200
+  name: '&bPokeball'

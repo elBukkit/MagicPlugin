@@ -1,12 +1,4 @@
 skull_books:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bBooks
-      internal: H4sIAAAAAAAAAA2L0U7CMBRAr0aS2fgZvi65HRu6Bx9QQ4DMoYxM5a1dbzO0nWS0ge3r7dPJyclhAAzuql9vzHv/pw+GIrheKbjXPOePKlFxkkoep4owFo0UcYbygUupUq0zBixMR+rdgU63EDm6ON/TiQHAVQSTWhhP0NJ0a2i55Y2tx03ndhWaTWDw82xlW1TL+awY8lEkxjdD5sRnZr6n63bffXhpayyQHwN/GruwalH2oY8Flru31/ml6J79fljn+gufACK4KYUlmLxUiBzgH/YCmXveAAAA
-      skull-owner: CS001
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/CS001.png
+  worth: 200
+  name: '&bBooks'

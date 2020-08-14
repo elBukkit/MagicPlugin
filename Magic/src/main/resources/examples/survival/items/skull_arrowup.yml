@@ -1,12 +1,4 @@
 skull_arrowup:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bArrow Up
-      internal: H4sIAAAAAAAAAE2PzW6CQBzE/23ahBIfo1eSRRbQQw9Gqy5x16IospeGj0XFXTV8NOBz9QHLsZdJJvObSUYH0GGwvTRSfpW3/CyFBi8sVgIGdDn/9htR1efbVYNnksG7wJmbIDcx7HGeGjh3XSNBo6QXjB2ER1maYR30fukuyvosqjfQatHWTSkqHQCeNHjdx7IR8Cs6D/HDCWUHT6YdcXofbJFck+Lukuu+S6bEIarPlxNn1Y3/sXYdh7aMLO/Er36TqD1aWRsplhszVbsfFpwUD4hJw09EFztEg8jiM2ry2QTTkHbscRyuw3lBg10bhZHNFBlGym+Z2lxocXywhW/yBbVo0XcK32KPS8un3jg/oI/+AfwBFMPXGzEBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/58fe251a40e4167d35d081c27869ac151af96b6bd16dd2834d5dc7235f47791d
+  worth: 200
+  name: '&bArrow Up'

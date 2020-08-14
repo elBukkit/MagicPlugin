@@ -1,12 +1,4 @@
 skull_bread:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bBread
-      internal: H4sIAAAAAAAAAE2Py26CQBiF/zZtQomP0S3JMFzURReNogyRoep4gU2DzlguM2oULPhcfcDSXZfnO19OcnQAHXrLspby43I65FJo8ERTJaAX+pPPeS2uVX46avBIOLw61sDmGA8Mt29ywxZob6RpHxvctixzYDnisMM66N3SWVyqXFxfQKtEU9UXcdUB4EGD53UqawE/og1Qss0Q3wZy3xK3y2yJZESKc58c1+1uRFyiut5/d2ft8J/rVOnGkbEVZMlxXu/UGs2shRT+wtyr1Y0yz4kYL2MWo3A8v8cFsen4qw0Lr6F/DHuYsoVKpiFKWJbRO2lpEWM6JSiaeh2blLEiJmU8p5vwO1Grho6C4WGL3roH8AsCPsNGMQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/51997da64043b284822115643a654fdc4e8a7226664b48a4e1dbb557b5c0fe14
+  worth: 200
+  name: '&bBread'

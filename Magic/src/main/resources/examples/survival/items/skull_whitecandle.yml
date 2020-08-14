@@ -1,12 +1,4 @@
 skull_whitecandle:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bWhite Candle
-      internal: H4sIAAAAAAAAAE2Oy06DQBhGf40mSPoYbkmG4SJdGrEypDPYC1DYGC5Dy3SgTYGm9Kl8RFm6PDknXz4VQIXZ5jhI+X05VbXkCjyxrOEwo97iZzXwrq9PrQKPpIRXXpZ24SBLqxzd0Exe2Vpu5Eiz7Hnh5KZpYhOroE5LZ37pa969gNLzWz9ceKcCwIMCz1EmBw6/fPRRujugcufLYiT2xNsNkgER5zfSRmP+QWzSTN57t5fj/F9r9VlsycTwD2m7GvImQktjLbm31osmvLL7/kYFwUyEOHX3I9sSi8bklrqlZG6IE1GgNGbHBIdj4CYGFZ842CaIxpO7Uz0RC0kFq4OYIOoSg32FdbXT59N7+ANJCm0vLQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/781226656d825291b1d7e456b74ecdce28672169641e6c35b1e23b9b40274e
+  worth: 200
+  name: '&bWhite Candle'

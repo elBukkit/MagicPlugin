@@ -1,12 +1,4 @@
 skull_tea:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCup of Tea
-      internal: H4sIAAAAAAAAAD2OzU6DQBSFr0YTJH0MtyTTTkFYuDCplpIyCEUoszH8zEjbO60poIUn8jHFjatzTvLly9EBdJhsDh3i6/kkdyg0uGG5EjDx3Zf3sBNNuzsdNbheVXBfOdKyqXQMc5Y/GHO7sAw7r6RRSLOwZEVzk1Ad9NH0Kc7tTjR3oLXi0nZn0egAcKXBbZJjJ+BH0AiFG01LlQzBsY03BIMxx/1trVRNKvfJWvcO4duxbz0se7PNUxMz6tX8GHaFSsj63/H2xRc1BnF04MuQsj3WLPUwi0sSLHzK1Irw1Kf+8DFwFQ5MhT3bl/M/ns38IVMJ+ovnC49rZMtsyhU7sN5z5JY8jq/hF2V65kIlAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/d8e94ddd769a5bea748376b4ec7383fd36d267894d7c3bee011e8e4f5fcd7
+  worth: 200
+  name: '&bCup of Tea'

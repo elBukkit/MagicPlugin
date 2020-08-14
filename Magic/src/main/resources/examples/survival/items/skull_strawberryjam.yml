@@ -1,12 +1,4 @@
 skull_strawberryjam:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bStrawberry Jam
-      internal: H4sIAAAAAAAAAD2Oy06DQBiFf40mSPoYbklmuJUuutBggaYw9kYLG8NlKJeBGi6W8kw+pLNydc6XnHw5IoAIs301MPbZXrOCUQGevKimMHPt1dd2oF1fXBsBHp0UXrW5EWNNViQFoVhSdUOVDAPHUibLVFWMDM0XmggiN33Tti9o9wJCT8d+aGknAsCDAM9+xAYKv1TZMWrvcFL7E2n6wx4xwpPzTXfqHKX2m765L1B45v28Zsld66OTxgJlnYfNdohrH23+HcefYHoviOVgYl608HQcgymYiJlXwRSWbu3i0FpXHt94ZaV61oqF9RF7pjuS08eNHHzmlbsqKBPZnS6c04KYzug0eJFtl0v+HP4AmTBOcSkBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/c0b8b5889ee1c6388dc6c2c5dbd70b6984aefe54319a095e64db7638097b821
+  worth: 200
+  name: '&bStrawberry Jam'

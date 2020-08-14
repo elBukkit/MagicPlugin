@@ -1,12 +1,4 @@
 skull_crate:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCrate
-      internal: H4sIAAAAAAAAAE2Oy26CQBiF/zZtQomP0S3JjMhUFl2Y0ioTB4oXYNg0KEO4zKhRMMBT9RHLsrtz8p18OTqADpNt3Ur5fT3npRQaPHmpEjBhq6+foBW3pjyfNHh0M3hFmAhMDsTAJLcMhHPbyOYzYmQWQWJmzvM0tXTQR9NFXJtS3F5Aa0TXtFdx0wHgQYPnMJWtgF/RU5TEBcpiKo+9S8a+2yLpu9XlzT2F/eHDJa4a+WpB1r39b2s1aWRJbtIiOQXtQYVobW6kWG3wUe3vvsOwv0xKvqOKRbTmw77zI1r4Tii9HZt6iha8Kuok4hZXVHrOAo15ygZZMbUf+MCxtww6tvzsEqeoWU/tPEbv43v4A+mnqvAtAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/8358fba2f1bdc519ba85e5366bab8def9bbe404ef639c2e3c654d10a1d8d3
+  worth: 200
+  name: '&bCrate'

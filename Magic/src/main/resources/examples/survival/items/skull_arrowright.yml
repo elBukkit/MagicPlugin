@@ -1,12 +1,4 @@
 skull_arrowright:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bArrow Right
-      internal: H4sIAAAAAAAAAE2Oy06DQBiFf40mSPoYbkm4FCiLLtRWOqQMth1pZzaGyxDAgTZcKvSpfERZujsn38mXIwPIMDt890J8NOesEFyCBxxVHGb+5v1r1/O2K861BPcohWdHN2PV1iLFThaGMje4rTjplBaZbmjJQtfsdC6DPJkuvOkK3j6B1PGh6xveygBwJ8FjGImewy8fPZWdcjU9eSIZkTV1clBFgMqLjepwjN+QhaqJb16s7ej825pddDQFNbyc1bs+rkJ1a+wF3+y1pPq8stKrfH09MpeVjLyWvr7PaZkKRtY/zEW3YBUKTNAYHOlAiW9i4quU5AUlSMcrOuBbLvxbWmKX5QHBBao1J9stl9N7+AMN8q4SLQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/f2f3a2dfce0c3dab7ee10db385e5229f1a39534a8ba2646178e37c4fa93b
+  worth: 200
+  name: '&bArrow Right'

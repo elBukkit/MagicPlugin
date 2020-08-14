@@ -1,12 +1,4 @@
 skull_pancakes:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bPancakes
-      internal: H4sIAAAAAAAAAD2Oz26CQBjEvzZtQomP0SvJyiLCoYemtSpxl6KIsJcG4aO4Ltoo+O+Z+pDdU08zk8z8MiaACb3FtlPq87CvNgoNeOB5g9Bjk4+vqMNju9nvDLiflvC8Lm10165vlXZBLSf3fMsrysrySVW4ZIiYe0MTTE36wUO7weMTGC1e2u6ARxMA7gx4THLVIfwinSuczPtFk9zCXRsviAq16nx2p01NysmrO7v6RKTap4EqroM2Xw1URoNa7KJu3SRk9s9YntgtokLOG74aUT5mNpfbC5Pf58yOHDZeUhZHTiajQSYDKeIRFWPecN0X78s+u2UOl1O9T7ZhHNRhXNhZLOrwLfCrlLzo5/AHwDpBYikBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/347f4f5a74c6691280cd80e7148b49b2ce17dcf64fd55368627f5d92a976a6a8
+  worth: 200
+  name: '&bPancakes'

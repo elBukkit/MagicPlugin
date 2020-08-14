@@ -1,12 +1,4 @@
 skull_luigi:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bLuigi
-      internal: H4sIAAAAAAAAAA2LQU/CMBhAP40ks/FneF3yldFGDh70QIA0oGCGcivtNzdt5zLayPbr6enl5eUxAAYP+9/o3Fv/VzWOMrhdWXiUVSF5hZhr/iTyGVmen4TFnIREY2bCGj5lwNLUUR8aOt9DFugSYk9nBgA3GUxK7SJBTcXO0XLHjS/HbRs+9ui2icn/5crXaJcvUg3zUU9dNIMI+iDcV7Guj+17PPkSFfIu8cf4hbeLTZ/6qPDC9cF2qn2Nx2E9rz7xGSCDu432BBMVm+8G4Apo+Jnv3gAAAA==
-      skull-owner: Luigi
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/Luigi.png
+  worth: 200
+  name: '&bLuigi'

@@ -1,12 +1,4 @@
 skull_hamburger:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bHamburger
-      internal: H4sIAAAAAAAAAD2OwU6DQBRFn0YTJP0MtyQMDLQsNdJS0hmkpVBmYyhMA8NMayio5Yv8TFm5OuduTq4OoMNs1w5SvneXUyO5Bg+0UBxmJFh+xAO/9s3lrMH9uoLnAnuYY7wwFgjNDWzbhVHMvYXhVhw5qHS9o4V10KfSJ+/6hl+fQOv5Tz90/KoDwJ0Gj2khBw6/3N5KHmxRqdIxOvfJzpTRxGl/u2tVm1Xw4m5unskOkx9CWd6cvsgcmdthzc7xcFSpuflv7L/yhEkmloKIVNHEt5gIJbXiiaVFRWkS8SrJSGu2oopYtGWiHaMVbchYqSjzTZL5OBcERW+5w8TeirJ1czogb3oNf/NvDO0lAQAA
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/a6ef1c25f516f2e7d6f7667420e33adcf3cdf938cb37f9a41a8b35869f569b
+  worth: 200
+  name: '&bHamburger'

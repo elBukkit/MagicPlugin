@@ -1,12 +1,4 @@
 skull_companion:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCompanion Cube
-      internal: H4sIAAAAAAAAAA2LQU+DMBiGP40m2PgzvJJAC2UcdvAyh5nMbQajt9J+ZHNtJV0bhV+/np68z5uHABB4PJyD1u/udzhpTOC2UfBEGRM1DjyVw0KkRUEXaU25TPtCUdZzxauyJ0BiNKLzJ7w8QOLx3weHFwIANwncd0IHhBHZXuN6n0vTzVvrPw6Z3kbG/ccbc8zU+plvpnoWVAc5lV58lvqLvR6/7S70pss2WT5G/kizMmrVuvjP0Wlp2lzaM2tnGeRLaRub18NuuQRI4K4VBoG8oZPBTVVVAVwBpvDNx+sAAAA=
-      skull-owner: Mercury777
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/Mercury777.png
+  worth: 200
+  name: '&bCompanion Cube'

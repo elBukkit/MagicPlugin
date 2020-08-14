@@ -1,12 +1,4 @@
 skull_ironman:
-  worth: 2000.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bIron Man
-      internal: H4sIAAAAAAAAAA2LQU/CMBhAP40mteFneF3Slg3cwYMeFiALKJiBXEy3fQ3Tr4OUNrr9ent6eXl5HIDDZPcTiN7c2XSEDG6XLTxKKYxp5ioRptVJipgnOhVPCWKGudIo55hy4HG6oPMdXh+AefzzweGVA8ANg/tKU0AgnG4JF1vZ2Grc9P5jJ2gTGf13trQn0S5eZuWQj1pRaIbM631Gn9PV6di/h9pWohTyEvnd2MK2xdrFPpaKhlplpt4Xoexfw3FY5eYgngEY3K21RWCdO/dfVvcA/2yJKVLlAAAA
-      skull-owner: iron_man
+  item: player_head:http://skins.minecraft.net/MinecraftSkins/iron_man.png
+  worth: 200
+  name: '&bIron Man'

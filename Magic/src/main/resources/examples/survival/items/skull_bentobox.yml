@@ -1,12 +1,4 @@
 skull_bentobox:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bBento Box
-      internal: H4sIAAAAAAAAAD2Oz26CQBjEvzZtQomP0SvJImDLsY1VMe5aVMDdS8Ofz0jZ1UZBZZ+oj9k99TCZmWTyy9gANgzWTSfl5+m4qyVa8MByhTCgs8lX3OG5rY8HC+6jCp5LF8sq9FznNfcCxy9GxCn84YsTBmVO/ArRzX0bbEP6wVNb4/kJrBZvbXfCsw0AdxY8prnsEH7RW0mcrdxSpXp5aDdrIpfGTb+OIrUn1exttOhDIrYmb+ey7IM2zwLJvfleHOKuUClZ/DOSi1CJpuOk5zrRLEtubJwEbPhB6IZJrmnPv42yiRLTuF+Ouc+UaHgWDUWWNkzTK9XvkmZRwKbcM3tfKF7vtm5oXsMf+T3aAyUBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/fe3052c535e14597a413ec32b32aafdd28686fdab6eed73030e1b94f7c38ff
+  worth: 200
+  name: '&bBento Box'

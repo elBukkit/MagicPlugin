@@ -1,12 +1,4 @@
 skull_globe:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bGlobe
-      internal: H4sIAAAAAAAAAE2Oy06DQBiFf01MkPgYbkkGKCALF400dkgH5CIw7LjMpMBMbVpQ6FP5iLJ0d76c7yRHBVDhKRkmIT4uX7wTTIF73MKz47Y2q12mOS91o224xbXKMnTN5IzXDeIIWY4K6jo6s8vYsesjKCObx+nCrioA3CnwkFViYvDLFh+VxRG1hS+aBdsrpwkSIe7PDj5lS/2GbSzXfr+1D4v7z7XGKrcENf1jeYqmWmboYMaC7WO9kZ/f1KCIeAMikt6CPpaBDDpqZLJcE0l3OkkbK+ijmXh4E8gdCt/xTPOso2ljkj66lSmeQ2+7rPZPmAcDSXyXF+h1fQ9/noYolhgBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/cf40942f364f6cbceffcf1151796410286a48b1aeba77243e218026c09cd1
+  worth: 200
+  name: '&bGlobe'

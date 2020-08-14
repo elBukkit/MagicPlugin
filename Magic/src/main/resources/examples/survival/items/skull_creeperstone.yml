@@ -1,12 +1,4 @@
 skull_creeperstone:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCreeper Stone
-      internal: H4sIAAAAAAAAAE2OyW6DMBiE/1atRFEeo1ckYwKUQw5diaPYKVkg5lKxGLEYEiWQBJ6qj1iOPcxh9I0+jQqgwmRTdVJ+nw5ZIYUCDyyqBUzo/OvH68S5LQ6NAvckhWd9GuPESSItw9aLNk2nWIsdU9dwhpAdCWHrwlZBHU1HcWoLcX4CpRW3tjuJswoAdwo8+pHsBPyKfoHCfY7S/UImPbHGvt0guSLl0SaN38fvxCL1yOev1rJ3/m3NNgpMyY1FHjZeF9c+WhprKeZrPal3F16mOSv5wGrPHHNduRzTbTWsgk9MXa4z7EvqeldaViYf3orwgxgUk57X3kBdeguDUDKXG8zdITqwnDS6k3mz2fge/gCzE3HoLQEAAA==
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/b7a6636d96d08f61939a60f57ee0d0299c0bd273b2bd30c1efe4f74e433a
+  worth: 200
+  name: '&bCreeper Stone'

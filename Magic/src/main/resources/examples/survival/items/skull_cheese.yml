@@ -1,12 +1,4 @@
 skull_cheese:
-  worth: 200.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: SKULL_ITEM
-    damage: 3
-    meta:
-      ==: ItemMeta
-      meta-type: SKULL
-      display-name: §bCheese
-      internal: H4sIAAAAAAAAAE2PzW6CQBRGb5s2ocTH6JaEgQpl4cLUvyECBRWc2TQol8o4g41CLT5XH7Asu/xyTk7y6QA6DFbHVsr386msJGrwEOYKYRAsZh9xi5emOtUa3NMCnktnXziIppF7ZGe8ILqGZ1uFUeZF7ril++oVRAe9L33huanw8gRagz9Ne8aLDgB3GjymuWwRfrHzTb49mMXWl/uOOv1er0wZUfHl0jrtdm/Uoarni7Gz7Lx/7rDJs6Fktn/gddzuVGou7UTiIiF7tfkObonimV+x25TwyewYzkMRCr/iWSLCLLbZ2q9Cxa5cxBazYsLE2IrW/BBNPk0+39hhtumiiZTBLRVMURJY0yutiVfGo1H/AP4AqVO8DzEBAAA=
-      skull-owner: MHF_Question
+  item: player_head:http://textures.minecraft.net/texture/34febbc15d1d4cc62bedc5d7a2b6f0f46cd5b0696a884de75e289e35cbb53a0
+  worth: 200
+  name: '&bCheese'
