@@ -243,7 +243,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                     } else {
                         String disabledIconURL = skill.spell.getDisabledIconURL();
                         if (disabledIconURL != null && !disabledIconURL.isEmpty()) {
-                            InventoryUtils.setNewSkullURL(skillItem, disabledIconURL);
+                            InventoryUtils.setSkullURL(skillItem, disabledIconURL);
                         }
                     }
                 }

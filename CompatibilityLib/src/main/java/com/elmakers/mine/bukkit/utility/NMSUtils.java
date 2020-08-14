@@ -313,6 +313,7 @@ public class NMSUtils {
     protected static Constructor class_ShapedRecipe_constructor;
     protected static Constructor class_GameProfile_constructor;
     protected static Constructor class_GameProfileProperty_constructor;
+    protected static Constructor class_GameProfileProperty_noSignatureConstructor;
     protected static Constructor class_MinecraftKey_constructor;
     protected static Constructor class_Vec3D_constructor;
     protected static Constructor class_AttributeModifier_constructor;
@@ -580,6 +581,7 @@ public class NMSUtils {
             class_GameProfileProperty_name = class_GameProfileProperty.getDeclaredField("name");
             class_GameProfileProperty_name.setAccessible(true);
             class_GameProfileProperty_constructor = class_GameProfileProperty.getConstructor(String.class, String.class, String.class);
+            class_GameProfileProperty_noSignatureConstructor = class_GameProfileProperty.getConstructor(String.class, String.class);
 
             class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
             class_BlockPosition_Constructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);

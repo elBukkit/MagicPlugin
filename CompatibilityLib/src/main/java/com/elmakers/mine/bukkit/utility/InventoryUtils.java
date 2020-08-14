@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.google.common.collect.Multimap;
+
 public class InventoryUtils extends NMSUtils
 {
     public static int MAX_LORE_LENGTH = 24;
@@ -301,17 +303,9 @@ public class InventoryUtils extends NMSUtils
         return false;
     }
 
-    public static void setNewSkullURL(ItemStack itemStack, String url) {
-        try {
-            setSkullURL(itemStack, new URL(url), UUID.randomUUID());
-        } catch (MalformedURLException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
-        }
-    }
-
     public static ItemStack setSkullURL(ItemStack itemStack, String url) {
         try {
-            return setSkullURLAndName(itemStack, new URL(url), "MHF_Question", UUID.randomUUID());
+            return setSkullURL(itemStack, new URL(url), UUID.randomUUID());
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
@@ -323,7 +317,7 @@ public class InventoryUtils extends NMSUtils
             itemStack = makeReal(itemStack);
             Object skullOwner = createNode(itemStack, "SkullOwner");
             setMeta(skullOwner, "Name", ownerName);
-            setSkullURL(itemStack, url, id);
+            return setSkullURL(itemStack, url, id);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -331,25 +325,28 @@ public class InventoryUtils extends NMSUtils
         return itemStack;
     }
 
-    public static void setSkullURL(ItemStack itemStack, URL url, UUID id) {
+    public static ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
         try {
-            Object skullOwner = createNode(itemStack, "SkullOwner");
-            setMeta(skullOwner, "Id", id.toString());
-
-            Object properties = createNode(skullOwner, "Properties");
-
-            Object listMeta = class_NBTTagList_constructor.newInstance();
-            Object textureNode = class_NBTTagCompound_constructor.newInstance();
+            Object gameProfile = class_GameProfile_constructor.newInstance(id, "MFH_Question");
+            Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(gameProfile);
+            if (properties == null) {
+                return itemStack;
+            }
+            itemStack = makeReal(itemStack);
 
             String textureJSON = "{textures:{SKIN:{url:\"" + url + "\"}}}";
             String encoded = Base64Coder.encodeString(textureJSON);
 
-            setMeta(textureNode, "Value", encoded);
-            addToList(listMeta, textureNode);
-            class_NBTTagCompound_setMethod.invoke(properties, "textures", listMeta);
+            properties.put("textures", class_GameProfileProperty_noSignatureConstructor.newInstance("textures", encoded));
+
+            ItemMeta skullMeta = itemStack.getItemMeta();
+            setSkullProfile(skullMeta, gameProfile);
+
+            itemStack.setItemMeta(skullMeta);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        return itemStack;
     }
 
     public static String getSkullURL(ItemStack skull) {

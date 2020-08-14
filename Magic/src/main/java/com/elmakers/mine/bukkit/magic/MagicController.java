@@ -5726,7 +5726,8 @@ public class MagicController implements MageController {
     public ItemStack getURLSkull(String url) {
         try {
             // The "MHF_Question" is here so serialization doesn't cause an NPE
-            return getURLSkull(new URL(url), "MHF_Question", UUID.randomUUID());
+            ItemStack stack = getURLSkull(new URL(url), UUID.randomUUID());
+            return stack == null ? new ItemStack(Material.AIR) : stack;
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
@@ -5734,14 +5735,14 @@ public class MagicController implements MageController {
         return new ItemStack(Material.AIR);
     }
 
-    private ItemStack getURLSkull(URL url, String ownerName, UUID id) {
+    @Nullable
+    private ItemStack getURLSkull(URL url, UUID id) {
         MaterialAndData skullType = skullItems.get(EntityType.PLAYER);
         if (skullType == null) {
             return new ItemStack(Material.AIR);
         }
         ItemStack skull = skullType.getItemStack(1);
-        skull = InventoryUtils.setSkullURLAndName(skull, url, ownerName, id);
-        return skull;
+        return InventoryUtils.setSkullURL(skull, url, id);
     }
 
     @Override

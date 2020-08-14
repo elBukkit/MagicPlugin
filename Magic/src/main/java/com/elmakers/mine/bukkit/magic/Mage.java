@@ -4152,7 +4152,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                             String currentURL = InventoryUtils.getSkullURL(spellItem);
                             if (!canCast) {
                                 if (!disabledUrlIcon.equals(currentURL)) {
-                                    InventoryUtils.setNewSkullURL(spellItem, disabledUrlIcon);
+                                    spellItem = InventoryUtils.setSkullURL(spellItem, disabledUrlIcon);
                                     player.getInventory().setItem(i, spellItem);
                                 }
                                 if (!canCastSpell) {
@@ -4163,7 +4163,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                 }
                             } else {
                                 if (!urlIcon.equals(currentURL)) {
-                                    InventoryUtils.setNewSkullURL(spellItem, urlIcon);
+                                    spellItem = InventoryUtils.setSkullURL(spellItem, urlIcon);
                                     player.getInventory().setItem(i, spellItem);
                                 }
                             }

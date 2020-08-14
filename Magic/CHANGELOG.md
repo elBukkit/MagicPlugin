@@ -5,6 +5,7 @@
  - Crafting recipes for wizard and apprentice armor are now disbled by default
  - Add proper Residence integration
  - Fix Skript pre-cast ('on casting of') event
+ - Fix skull icons in 1.16
 
 # 7.9.12
 
