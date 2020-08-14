@@ -68,9 +68,14 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                     + "`data` " + getTextFieldType() + ","
                     + "`locked` tinyint default 0,"
                     + "`migrated` tinyint default 0,"
-                    + "PRIMARY KEY  (`id`)) ;";
+                    + "PRIMARY KEY  (`id`))";
+            sql += getTableEncoding() + ';';
             execute(sql);
         }
+    }
+
+    protected String getTableEncoding() {
+        return "";
     }
 
     public void execute(String query) throws SQLException {

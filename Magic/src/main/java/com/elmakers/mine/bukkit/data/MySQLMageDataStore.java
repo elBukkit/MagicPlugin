@@ -36,6 +36,11 @@ public class MySQLMageDataStore extends SQLMageDataStore {
     }
 
     @Override
+    public String getTableEncoding() {
+        return "charset = utf8;";
+    }
+
+    @Override
     protected Connection createConnection() throws SQLException {
         return DriverManager.getConnection(connectionString, user, password);
     }
