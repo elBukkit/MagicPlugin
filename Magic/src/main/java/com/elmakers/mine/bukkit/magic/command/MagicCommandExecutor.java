@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -27,6 +28,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -42,6 +44,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -54,6 +57,7 @@ import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
@@ -114,6 +118,34 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         if (subCommand.equalsIgnoreCase("rpsend"))
         {
             api.getController().sendResourcePackToAllPlayers(sender);
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("skulls"))
+        {
+            String[] skulls = {"skull_ale","skull_apple","skull_aquarium","skull_arrowdown","skull_arrowleft","skull_arrowright","skull_arrowup","skull_bentobox","skull_books","skull_bread","skull_burningcube","skull_cake","skull_carrot","skull_cheese","skull_chocolatebar","skull_clock","skull_companion","skull_cookie","skull_crate","skull_creeperstone","skull_diamondblock","skull_donut","skull_emeraldblock","skull_fries","skull_furnace","skull_glados","skull_globe","skull_goldblock","skull_hamburger","skull_ironman","skull_lantern","skull_lavabucket","skull_lavamonster","skull_lemon","skull_luigi","skull_mario","skull_moneybag","skull_pancakes","skull_pokeball","skull_popcorn","skull_present_green","skull_present_red","skull_soupcan","skull_strawberryjam","skull_sushi","skull_sushiroll","skull_taco","skull_tea","skull_watermelon","skull_whitecandle","skull_wildboar","skull_yoshi"};
+            for (String skull : skulls) {
+                ItemData itemData = controller.getItem(skull);
+                ItemStack itemStack = itemData.getItemStack();
+                String url = InventoryUtils.getSkullURL(itemStack);
+                itemStack = InventoryUtils.setSkullURL(itemStack, url);
+
+                YamlConfiguration itemConfig = new YamlConfiguration();
+                ConfigurationSection itemSection = itemConfig.createSection(skull);
+                itemSection.set("item", "player_head:" + url);
+                itemSection.set("worth", 200);
+                itemSection.set("name", itemStack.getItemMeta().getDisplayName().replace("" + ChatColor.COLOR_CHAR, "&"));
+
+                File itemFolder = new File(controller.getConfigFolder(), "items");
+                File itemFile = new File(itemFolder, skull + ".yml");
+                itemFolder.mkdirs();
+                try {
+                    itemConfig.save(itemFile);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            sender.sendMessage("Updated skulls");
             return true;
         }
         if (subCommand.equalsIgnoreCase("save"))
