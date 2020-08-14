@@ -37,7 +37,7 @@ public class MySQLMageDataStore extends SQLMageDataStore {
 
     @Override
     public String getTableEncoding() {
-        return "charset = utf8;";
+        return "charset = utf8mb4;";
     }
 
     @Override
