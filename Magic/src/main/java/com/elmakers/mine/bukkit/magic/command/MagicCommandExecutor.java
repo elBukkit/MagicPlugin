@@ -95,7 +95,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("mconfig  Configure Magic in-game");
             sender.sendMessage("magic    Reload configs and other admin functions");
             sender.sendMessage("mitem    Create or modify vanilla items");
-            sender.sendMessage("mmob     Spwan vanilla or magic mobs");
+            sender.sendMessage("mnpc     Create and manage Magic NPCs");
+            sender.sendMessage("mmob     Spawn vanilla or magic mobs");
             sender.sendMessage("cast     Cast spells and test parameter changes");
             sender.sendMessage("mtrait   Create or modify Magic Citizens NPCs");
             sender.sendMessage("mmap     Create maps from images or players");

@@ -655,6 +655,20 @@ commands:
         /mmob clear mutant world          Clear all mutants from a specific world
         /mmob clear all 20                Clear all magic mobs within 20 blocks of your location
         /mmob clear all 20 0 64 0 world   Clear all magic mobs within 20 blocks of a specific location
+  mnpc:
+    description: Manage Magic NPCs
+    permission: Magic.commands.mnpc
+    usage: |
+        /mnpc add Spell Teacher           Create a new NPC where you are standing
+        /mnpc select                      Select the NPC in front of you
+        /mnpc select Spell Teacher        Select a specific NPC
+        /mnpc name Spell Teacher          Rename the selected NPC
+        /mnpc list                        List all saved NPCs
+        /mnpc remove                      Remove the selected NPC
+        /mnpc configure                   Configure an NPC
+        /mnpc import                      Import Citizens NPCs
+        /mnpc tp                          Teleport to the selected NPC
+        /mnpc tphere                      Theleport the selected NPC to your location
   mmap:
     description: Create and manage Magic image maps
     permission: Magic.commands.mmap
@@ -807,6 +821,7 @@ permissions:
     - Magic.commands.mgive.others
     - Magic.commands.mtrait
     - Magic.commands.mmob
+    - Magic.commands.mnpc
     - Magic.commands.mauto
     - Magic.commands.cast
     - Magic.commands.castp
@@ -853,6 +868,10 @@ permissions:
     default: op
   Magic.commands.mmob:
     description: Player may spawn vanilla and magic mobs
+    type: boolean
+    default: op
+  Magic.commands.mcnp:
+    description: Player may manage magic NPCs
     type: boolean
     default: op
   Magic.commands.mauto:
