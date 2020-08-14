@@ -326,8 +326,14 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
+        // Old versions of Bukkit would NPE trying to save a skull without an owner name
+        // So we'll use MHF_Question, why not.
+        return setSkullURL(itemStack, url, id, "MHF_Question");
+    }
+
+    public static ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String name) {
         try {
-            Object gameProfile = class_GameProfile_constructor.newInstance(id, "MHF_Question");
+            Object gameProfile = class_GameProfile_constructor.newInstance(id, name);
             Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(gameProfile);
             if (properties == null) {
                 return itemStack;
