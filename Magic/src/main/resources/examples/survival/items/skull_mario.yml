@@ -1,4 +1,4 @@
 skull_mario:
-  item: player_head:http://skins.minecraft.net/MinecraftSkins/Mario.png
+  item: player_head:http://textures.minecraft.net/texture/3f09df4e9ea64ca36b16d41bffeeb20f8d5c429b060d809aa41a64f37d5cf058
   worth: 200
   name: '&bMario'

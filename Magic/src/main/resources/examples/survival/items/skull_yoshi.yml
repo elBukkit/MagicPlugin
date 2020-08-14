@@ -1,4 +1,4 @@
 skull_yoshi:
-  item: player_head:http://skins.minecraft.net/MinecraftSkins/Yoshi.png
+  item: player_head:http://textures.minecraft.net/texture/6eedf164b500a63149fecb21b590524eda532c20d60976656c6f91e11f2f8223
   worth: 200
   name: '&bYoshi'

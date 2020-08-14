@@ -1,4 +1,4 @@
 skull_present_green:
-  item: player_head:http://skins.minecraft.net/MinecraftSkins/MHF_Present1.png
+  item: player_head:http://textures.minecraft.net/texture/2e10ac999703c735bf7ba6da63f9842d415c5bde07a742f96f3060e11ccfa6c6
   worth: 200
   name: '&bPresent'

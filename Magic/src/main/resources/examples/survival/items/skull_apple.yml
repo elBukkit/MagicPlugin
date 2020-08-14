@@ -1,4 +1,4 @@
 skull_apple:
-  item: player_head:http://skins.minecraft.net/MinecraftSkins/MHF_Apple.png
+  item: player_head:http://textures.minecraft.net/texture/85ee2debeff42d9a958428840680204179e23cbbdafd6040101503e1b8f55827
   worth: 200
   name: '&bApple'
