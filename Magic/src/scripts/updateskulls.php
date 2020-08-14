@@ -121,6 +121,7 @@ foreach ($dir as $fileinfo)  {
     echo " Skull $filename : $name\n";
 
     $url = getCurrentSkin($name);
+    sleep(5);
     if (!$url) {
         echo "   failed :(\n";
         continue;
