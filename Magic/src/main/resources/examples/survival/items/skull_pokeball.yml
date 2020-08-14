@@ -1,4 +1,4 @@
 skull_pokeball:
-  item: player_head:http://skins.minecraft.net/MinecraftSkins/Chuzard.png
+  item: player_head:http://textures.minecraft.net/texture/782f734fbd660723c46a4d9e161e04a0530f0a71329716d44760dad4693e0c44
   worth: 200
   name: '&bPokeball'
