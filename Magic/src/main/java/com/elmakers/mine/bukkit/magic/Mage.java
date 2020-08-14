@@ -841,7 +841,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         blockPlaceTimeout = System.currentTimeMillis() + 200;
         updatePassiveEffects();
 
-        if (activeWand != null) {
+        if (activeWand != null && !isLoading()) {
             WandActivatedEvent activatedEvent = new WandActivatedEvent(this, activeWand);
             Bukkit.getPluginManager().callEvent(activatedEvent);
         }
@@ -857,7 +857,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         blockPlaceTimeout = System.currentTimeMillis() + 200;
         updatePassiveEffects();
 
-        if (offhandWand != null) {
+        if (offhandWand != null && !isLoading()) {
             WandActivatedEvent activatedEvent = new WandActivatedEvent(this, offhandWand);
             Bukkit.getPluginManager().callEvent(activatedEvent);
         }

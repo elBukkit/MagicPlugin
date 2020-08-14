@@ -321,15 +321,19 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                     mage.sendMessage(controller.getMessages().get("spell.upgrade_description_prefix"), upgradeDescription);
                 }
 
-                SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, getWand(), currentSpell, template);
-                Bukkit.getPluginManager().callEvent(upgradeEvent);
+                if (!mage.isLoading()) {
+                    SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, getWand(), currentSpell, template);
+                    Bukkit.getPluginManager().callEvent(upgradeEvent);
+                }
             } else {
                 // This is a little hacky, but it is here to fix duplicate spell messages from the spellshop.
                 if (mage.getActiveGUI() == null)
                     sendAddMessage("spell_added", template.getName());
 
-                AddSpellEvent addEvent = new AddSpellEvent(mage, getWand(), template);
-                Bukkit.getPluginManager().callEvent(addEvent);
+                if (!mage.isLoading()) {
+                    AddSpellEvent addEvent = new AddSpellEvent(mage, getWand(), template);
+                    Bukkit.getPluginManager().callEvent(addEvent);
+                }
             }
         }
         updated();
