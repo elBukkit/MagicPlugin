@@ -1851,16 +1851,8 @@ public class MagicController implements MageController {
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {
-                // Load lost wands
-                info("Loading lost wand data");
                 loadLostWands();
-
-                // Load toggle-on-load blocks
-                info("Loading automata data");
                 loadAutomata();
-
-                // Load NPCs
-                info("Loading NPCs");
                 loadNPCs();
 
                 // Load URL Map Data
@@ -1871,7 +1863,6 @@ public class MagicController implements MageController {
                     ex.printStackTrace();
                 }
 
-                info("Loading warps");
                 ConfigurationSection warps = loadDataFile(WARPS_FILE);
                 if (warps != null) {
                     warpController.load(warps);
