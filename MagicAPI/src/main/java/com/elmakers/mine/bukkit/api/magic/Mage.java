@@ -763,4 +763,5 @@ public interface Mage extends CostReducer, CooldownReducer {
     MageModifier getModifier(String key);
     @Nullable
     MagicNPC getSelectedNPC();
+    void setSelectedNPC(@Nullable MagicNPC npc);
 }

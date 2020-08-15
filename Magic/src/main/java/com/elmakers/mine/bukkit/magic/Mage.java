@@ -4828,4 +4828,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public MagicNPC getSelectedNPC() {
         return selectedNPC;
     }
+
+    @Override
+    public void setSelectedNPC(@Nullable com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
+        if (npc instanceof MagicNPC) {
+            this.selectedNPC = (MagicNPC)npc;
+        }
+    }
 }

@@ -284,7 +284,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         load(controller, parameters);
     }
 
-    protected void load(@Nonnull MageController controller, ConfigurationSection parameters) {
+    public void load(@Nonnull MageController controller, ConfigurationSection parameters) {
         // This is required to allow changes to health
         hasChangedHealth = true;
         name = parameters.getString("name");
@@ -1097,5 +1097,37 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public boolean isCancelLaunch() {
         return mageData != null ? mageData.isCancelLaunch : true;
+    }
+
+    public boolean hasAI() {
+        return hasAI;
+    }
+
+    public void setAI(boolean hasAI) {
+        this.hasAI = hasAI;
+    }
+
+    public boolean isInvulnerable() {
+        return isInvulnerable;
+    }
+
+    public void setInvulnerable(boolean invulnerable) {
+        isInvulnerable = invulnerable;
+    }
+
+    public boolean hasGravity() {
+        return hasGravity;
+    }
+
+    public void setGravity(boolean hasGravity) {
+        this.hasGravity = hasGravity;
+    }
+
+    public boolean isPersist() {
+        return persist != null && persist;
+    }
+
+    public void setPersist(boolean persist) {
+        this.persist = persist;
     }
 }

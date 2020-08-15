@@ -167,6 +167,7 @@ import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
+import com.elmakers.mine.bukkit.npc.MagicNPC;
 import com.elmakers.mine.bukkit.protection.CitadelManager;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
@@ -1858,6 +1859,10 @@ public class MagicController implements MageController {
                 info("Loading automata data");
                 loadAutomata();
 
+                // Load NPCs
+                info("Loading NPCs");
+                loadNPCs();
+
                 // Load URL Map Data
                 try {
                     maps.resetAll();
@@ -1926,6 +1931,44 @@ public class MagicController implements MageController {
         }
 
         info("Loaded " + lostWands.size() + " lost wands");
+    }
+
+    protected void loadNPCs() {
+        int npcCount = 0;
+        try {
+            ConfigurationSection npcData = loadDataFile(NPC_DATA_FILE);
+            if (npcData != null) {
+                Collection<ConfigurationSection> list = ConfigurationUtils.getNodeList(npcData, "npcs");
+                for (ConfigurationSection node : list) {
+                    MagicNPC npc = new MagicNPC(this, node);
+                    if (!npc.isValid()) continue;
+
+                    String chunkId = getChunkKey(npc.getLocation());
+                    if (chunkId == null) continue;
+
+                    List<MagicNPC> restoreChunk = npcs.get(chunkId);
+                    if (restoreChunk == null) {
+                        restoreChunk = new ArrayList<>();
+                        npcs.put(chunkId, restoreChunk);
+                    }
+
+                    npcCount++;
+                    restoreChunk.add(npc);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        if (npcCount > 0) {
+            for (World world : Bukkit.getWorlds()) {
+                for (Chunk chunk : world.getLoadedChunks()) {
+                    restoreNPCs(chunk);
+                }
+            }
+        }
+
+        info("Loaded " + npcCount + " NPCs");
     }
 
     protected void loadAutomata() {
@@ -1999,6 +2042,24 @@ public class MagicController implements MageController {
             }
             automataData.set("automata", nodes);
             stores.add(automataData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    protected void saveNPCs(Collection<YamlDataFile> stores) {
+        try {
+            YamlDataFile npcData = createDataFile(NPC_DATA_FILE);
+            List<ConfigurationSection> nodes = new ArrayList<>();
+            for (Entry<String, List<MagicNPC>> toggleEntry : npcs.entrySet()) {
+                for (MagicNPC npc : toggleEntry.getValue()) {
+                    ConfigurationSection node = new MemoryConfiguration();
+                    npc.save(node);
+                    nodes.add(node);
+                }
+            }
+            npcData.set("npcs", nodes);
+            stores.add(npcData);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -2238,6 +2299,7 @@ public class MagicController implements MageController {
         saveLostWands(saveData);
         saveAutomata(saveData);
         saveWarps(saveData);
+        saveNPCs(saveData);
 
         if (mageDataStore != null) {
             if (asynchronous) {
@@ -3732,6 +3794,9 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isNPC(Entity entity) {
+        if (activeNPCs.contains(entity.getUniqueId())) {
+            return true;
+        }
         return npcSuppliers.isNPC(entity);
     }
 
@@ -5375,9 +5440,17 @@ public class MagicController implements MageController {
 
     @Override
     @Nullable
-    public EntityData getMob(String key) {
+    public com.elmakers.mine.bukkit.entity.EntityData getMob(String key) {
         // This null check is hopefully temporary, but deals with actions that look up a mob during interrogation.
-        return mobs == null ? null : mobs.get(key);
+        com.elmakers.mine.bukkit.entity.EntityData mob = mobs == null ? null : mobs.get(key);
+        if (mob == null) {
+            EntityType entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(key);
+            if (entityType != null) {
+                mob = new com.elmakers.mine.bukkit.entity.EntityData(entityType);
+            }
+        }
+
+        return mob;
     }
 
     @Override
@@ -6156,6 +6229,77 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public Collection<com.elmakers.mine.bukkit.api.npc.MagicNPC> getNPCs() {
+        List<com.elmakers.mine.bukkit.api.npc.MagicNPC> all = new ArrayList<>();
+        for (List<MagicNPC> list : npcs.values()) {
+            all.addAll(list);
+        }
+        return all;
+    }
+
+    @Override
+    public void removeNPC(com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
+        Location location = npc.getLocation();
+        String chunkId = getChunkKey(location);
+        if (chunkId == null) return;
+
+        List<MagicNPC> chunkNPCs = npcs.get(chunkId);
+        if (chunkNPCs != null) {
+            Iterator<MagicNPC> it = chunkNPCs.iterator();
+            while (it.hasNext()) {
+                MagicNPC found = it.next();
+                if (npc.getUUID().equals(found.getUUID())) {
+                    npc.remove();
+                    it.remove();
+                }
+            }
+        }
+        activeNPCs.remove(npc.getUUID());
+    }
+
+    @Override
+    @Nullable
+    public MagicNPC addNPC(com.elmakers.mine.bukkit.api.magic.Mage creator, String name) {
+        Location location = creator.getLocation();
+        String chunkId = getChunkKey(location);
+        if (chunkId == null) return null;
+
+        MagicNPC npc = new MagicNPC(this, creator, location, name);
+        List<MagicNPC> chunkNPCs = npcs.get(chunkId);
+        if (chunkNPCs == null) {
+            chunkNPCs = new ArrayList<>();
+            npcs.put(chunkId, chunkNPCs);
+        }
+        chunkNPCs.add(npc);
+        activeNPCs.add(npc.getUUID());
+        return npc;
+    }
+
+    @Override
+    @Nullable
+    public MagicNPC getNPC(@Nullable Entity entity) {
+        for (List<MagicNPC> list : npcs.values()) {
+            for (MagicNPC npc : list) {
+                if (entity.getUniqueId().equals(npc.getUUID())) {
+                    return npc;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void restoreNPCs(final Chunk chunk) {
+        String chunkKey = getChunkKey(chunk);
+        List<MagicNPC> chunkData = npcs.get(chunkKey);
+        if (chunkData != null) {
+            for (MagicNPC npc : chunkData) {
+                npc.restore();
+                activeNPCs.add(npc.getUUID());
+            }
+        }
+    }
+
+    @Override
     @Nullable
     public String getPlaceholder(Player player, String namespace, String placeholder) {
         return placeholderAPIManager == null ? null : placeholderAPIManager.getPlaceholder(player, namespace, placeholder);
@@ -6177,6 +6321,7 @@ public class MagicController implements MageController {
     private static final String WARPS_FILE          = "warps";
     private static final String SPELLS_DATA_FILE    = "spells";
     private static final String AUTOMATA_DATA_FILE  = "automata";
+    private static final String NPC_DATA_FILE       = "npcs";
     private static final String URL_MAPS_FILE       = "imagemaps";
 
     private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
@@ -6332,6 +6477,9 @@ public class MagicController implements MageController {
     private Map<String, Currency> currencies = new HashMap<>();
 
     private PhysicsHandler                        physicsHandler                = null;
+
+    private Map<String, List<MagicNPC>>          npcs                       = new HashMap<>();
+    private Set<UUID>                            activeNPCs                 = new HashSet<>();
 
     private Map<String, Map<Long, Automaton>>    automata                   = new HashMap<>();
     private Map<Long, Automaton>                 activeAutomata             = new HashMap<>();

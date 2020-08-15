@@ -36,6 +36,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.maps.MapController;
+import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -594,4 +595,12 @@ public interface MageController {
     @Nullable
     MagicAttribute getAttribute(String attributeKey);
     boolean isUndoable(@Nonnull Material material);
+
+    @Nonnull
+    Collection<MagicNPC> getNPCs();
+    void removeNPC(MagicNPC npc);
+    @Nullable
+    MagicNPC addNPC(Mage creator, String name);
+    @Nullable
+    MagicNPC getNPC(@Nullable Entity entity);
 }
