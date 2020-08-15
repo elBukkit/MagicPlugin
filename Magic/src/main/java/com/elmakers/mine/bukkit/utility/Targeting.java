@@ -29,6 +29,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.effect.TargetingContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 
@@ -229,7 +230,7 @@ public class Targeting {
         this.source = source.clone();
     }
 
-    public Target overrideTarget(CastContext context, Target target) {
+    public Target overrideTarget(TargetingContext context, Target target) {
         if (targetLocationOffset != null) {
             target.add(targetLocationOffset);
         }
@@ -247,7 +248,7 @@ public class Targeting {
         return target;
     }
 
-    public Target target(CastContext context, double range)
+    public Target target(TargetingContext context, double range)
     {
         if (source == null)
         {
@@ -287,7 +288,7 @@ public class Targeting {
      *
      * @return The target block
      */
-    protected Target findTarget(CastContext context, double range)
+    protected Target findTarget(TargetingContext context, double range)
     {
         if (targetType == TargetType.NONE) {
             return new Target(source);
@@ -341,12 +342,15 @@ public class Targeting {
         }
 
         // Don't allow targeting entities in an area you couldn't cast the spell in
-        if (entityTarget != null && !context.canCast(entityTarget.getLocation())) {
-            entityTarget = null;
-        }
-        if (targetBlock != null && !context.canCast(targetBlock.getLocation())) {
-            result = TargetingResult.MISS;
-            targetBlock = null;
+        if (context instanceof CastContext) {
+            CastContext castContext = (CastContext)context;
+            if (entityTarget != null && !castContext.canCast(entityTarget.getLocation())) {
+                entityTarget = null;
+            }
+            if (targetBlock != null && !castContext.canCast(targetBlock.getLocation())) {
+                result = TargetingResult.MISS;
+                targetBlock = null;
+            }
         }
 
         if (targetType == TargetType.OTHER_ENTITY && entityTarget == null) {
@@ -383,7 +387,7 @@ public class Targeting {
         return new Target(source);
     }
 
-    protected void findTargetBlock(CastContext context, double range)
+    protected void findTargetBlock(TargetingContext context, double range)
     {
         if (source == null)
         {
@@ -416,11 +420,12 @@ public class Targeting {
         while (block != null)
         {
             if (targetMinOffset <= 0) {
-                if (targetSpaceRequired) {
-                    if (!context.allowPassThrough(block)) {
+                if (targetSpaceRequired && context instanceof  CastContext) {
+                    CastContext castContext = (CastContext)context;
+                    if (!castContext.allowPassThrough(block)) {
                         break;
                     }
-                    if (context.isOkToStandIn(block) && context.isOkToStandIn(block.getRelative(BlockFace.UP))) {
+                    if (castContext.isOkToStandIn(block) && castContext.isOkToStandIn(block.getRelative(BlockFace.UP))) {
                         break;
                     }
                 } else if (context.isTargetable(block)) {
@@ -438,7 +443,7 @@ public class Targeting {
         }
     }
 
-    public List<Target> getAllTargetEntities(CastContext context, double range) {
+    public List<Target> getAllTargetEntities(TargetingContext context, double range) {
         Entity sourceEntity = context.getEntity();
         Mage mage = context.getMage();
 
@@ -608,7 +613,7 @@ public class Targeting {
         return result;
     }
 
-    public void getTargetEntities(CastContext context, double range, int targetCount, Collection<WeakReference<Entity>> entities)
+    public void getTargetEntities(TargetingContext context, double range, int targetCount, Collection<WeakReference<Entity>> entities)
     {
         List<Target> candidates = getAllTargetEntities(context, range);
         if (targetCount < 0) {
@@ -621,8 +626,9 @@ public class Targeting {
         }
     }
 
-    protected int breakBlockRecursively(CastContext context, Block block, int depth) {
-        if (depth <= 0) return 0;
+    protected int breakBlockRecursively(TargetingContext targetingContext, Block block, int depth) {
+        if (depth <= 0 || !(targetingContext instanceof CastContext)) return 0;
+        CastContext context = (CastContext)targetingContext;
         if (!context.isBreakable(block)) return 0;
 
         // Play break FX

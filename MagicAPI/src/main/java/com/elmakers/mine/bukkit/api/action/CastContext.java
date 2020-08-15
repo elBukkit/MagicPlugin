@@ -171,9 +171,6 @@ public interface CastContext extends WandEffectContext {
     boolean isPassthrough(Block block);
     boolean isDestructible(Block block);
     boolean areAnyDestructible(Block block);
-    boolean isTargetable(Block block);
-    boolean canTarget(Entity entity);
-    boolean canTarget(Entity entity, Class<?> targetType);
     @Nullable
     MaterialBrush getBrush();
     void setBrush(MaterialBrush brush);
