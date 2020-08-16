@@ -113,7 +113,7 @@ public class MobController implements Listener {
             event.setCancelled(true);
         } else if (event.getReason() == EntityTargetEvent.TargetReason.CLOSEST_PLAYER) {
             com.elmakers.mine.bukkit.api.entity.EntityData entityData = controller.getMob(entity);
-            if (entityData.isDocile()) {
+            if (entityData != null && entityData.isDocile()) {
                 event.setCancelled(true);
             }
         }
