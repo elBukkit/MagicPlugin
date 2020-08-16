@@ -4,3 +4,5 @@ base_npc:
   invulnerable: true
   gravity: false
   persist: false
+  interact_spell_target: none
+  interact_spell_caster: false

@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.api.entity;
 
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Art;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -15,6 +17,17 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface EntityData {
+    enum TargetType {
+        NONE,
+        PLAYER,
+        MOB
+    }
+
+    enum SourceType {
+        PLAYER,
+        MOB
+    }
+
     String getKey();
     Location getLocation();
     EntityType getType();
@@ -41,7 +54,14 @@ public interface EntityData {
     @Nullable
     EntityData getRelativeTo(Location center);
     String describe();
+    @Nullable
     String getInteractSpell();
+    SourceType getInteractSpellSource();
+    TargetType getInteractSpellTarget();
+    @Nullable
+    ConfigurationSection getInteractSpellParameters();
+    @Nullable
+    List<String> getInteractCommands();
     void setMaterial(@Nonnull MaterialAndData material);
     @Nullable
     MaterialAndData getMaterial();

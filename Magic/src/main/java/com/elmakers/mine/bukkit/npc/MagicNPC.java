@@ -268,7 +268,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     public void describe(CommandSender sender) {
         String mobTypeName = mobKey == null ? "Default Mob Type" : mobKey;
-        sender.sendMessage(ChatColor.GOLD + name + ChatColor.DARK_GRAY + " (" + ChatColor.GRAY + mobTypeName + ChatColor.DARK_GRAY + ")" );
+        sender.sendMessage(ChatColor.GOLD + name + ChatColor.DARK_GRAY + " (" + ChatColor.GRAY + mobTypeName + ChatColor.DARK_GRAY + ")");
         sender.sendMessage(ChatColor.AQUA + "Location: " + ChatColor.WHITE + TextUtils.printLocation(location));
         sender.sendMessage(ChatColor.AQUA + "Created By: " + ChatColor.WHITE + creatorName);
         ConfigurationSection parameters;

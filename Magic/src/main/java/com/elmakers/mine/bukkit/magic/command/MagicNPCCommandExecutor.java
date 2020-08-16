@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +20,8 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.effect.NPCTargetingContext;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 
@@ -187,18 +190,18 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     protected void onAddNPC(Mage mage, String name) {
         MagicNPC npc = controller.addNPC(mage, name);
         mage.setSelectedNPC(npc);
-        mage.sendMessage(ChatColor.GREEN + " Created npc: " + ChatColor.GOLD + npc.getName());
+        mage.sendMessage(ChatColor.GREEN + "Created npc: " + ChatColor.GOLD + npc.getName());
     }
 
     protected void onRenameNPC(Mage mage, MagicNPC npc, String name) {
-        mage.sendMessage(ChatColor.GREEN + " Changed name of npc " + ChatColor.GOLD + npc.getName()
+        mage.sendMessage(ChatColor.GREEN + "Changed name of npc " + ChatColor.GOLD + npc.getName()
                 + ChatColor.GREEN + " to " + ChatColor.YELLOW + name);
         npc.setName(name);
     }
 
     protected void onChangeNPCType(Mage mage, MagicNPC npc, String typeKey) {
         if (npc.setType(typeKey)) {
-            mage.sendMessage(ChatColor.GREEN + " Changed type of npc " + ChatColor.GOLD + npc.getName()
+            mage.sendMessage(ChatColor.GREEN + "Changed type of npc " + ChatColor.GOLD + npc.getName()
                 + ChatColor.GREEN + " to " + ChatColor.YELLOW + typeKey);
         } else {
             mage.sendMessage(ChatColor.RED + "Unknown mob type: " + ChatColor.YELLOW + typeKey);
@@ -206,13 +209,21 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onChangeNPCSpell(Mage mage, MagicNPC npc, String[] parameters) {
-        if (parameters.length > 1) {
-            mage.sendMessage(ChatColor.RED + "Spell parameters not yet supported");
-            return;
-        }
         npc.configure("interact_spell", parameters[0]);
-        mage.sendMessage(ChatColor.GREEN + " Changed npc " + ChatColor.GOLD + npc.getName()
+        mage.sendMessage(ChatColor.GREEN + "Changed npc " + ChatColor.GOLD + npc.getName()
             + ChatColor.GREEN + " to cast " + ChatColor.YELLOW + parameters[0]);
+
+        if (parameters.length > 1) {
+            mage.sendMessage(ChatColor.GREEN + " With parameters:");
+            ConfigurationSection spellParameters = new MemoryConfiguration();
+            ConfigurationUtils.addParameters(Arrays.copyOfRange(parameters, 1, parameters.length), spellParameters);
+            npc.configure("interact_spell_parameters", spellParameters);
+            Set<String> keys = spellParameters.getKeys(false);
+            for (String key : keys) {
+                Object value = spellParameters.get(key);
+                mage.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
+            }
+        }
     }
 
     @Nullable
@@ -289,14 +300,16 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onConfigureNPC(Mage mage, MagicNPC npc, String[] parameters) {
-        if (parameters.length == 0 || parameters[0].length() == 0) {
+        if (parameters.length == 0 || parameters[0].isEmpty()) {
             mage.sendMessage(ChatColor.RED + "Missing parameter name");
             return;
         }
         String key = parameters[0];
         String value = null;
-        if (parameters.length > 1) {
+        if (parameters.length == 2) {
             value = parameters[1];
+        } else if (parameters.length > 2) {
+            value = StringUtils.join(Arrays.copyOfRange(parameters, 1, parameters.length), " ");
         }
         npc.configure(key, value);
         if (value == null) {
@@ -340,13 +353,26 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         } else if (args.length == 2 && args[0].equals("configure")) {
             options.add("ai");
             options.add("gravity");
-            options.add("interact_spell");
-        } else if (args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell")
+            options.add("interact_spell_source");
+            options.add("interact_spell_target");
+            options.add("interact_commands");
+        } else if ((args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell"))
                || (args.length == 2 && args[0].equals("cast"))
                || (args.length == 2 && args[0].equals("spell"))) {
             for (SpellTemplate spell : controller.getSpellTemplates()) {
                 options.add(spell.getKey());
             }
+        } else if (args.length == 3 && args[0].equals("configure")
+               && (args[1].equals("ai") || args[1].equals("gravity") || args[1].equals("interact_spell_caster"))) {
+            options.add("true");
+            options.add("false");
+        } else if (args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell_target")) {
+            options.add("none");
+            options.add("npc");
+            options.add("player");
+        } else if (args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell_source")) {
+            options.add("npc");
+            options.add("player");
         }
         return options;
     }

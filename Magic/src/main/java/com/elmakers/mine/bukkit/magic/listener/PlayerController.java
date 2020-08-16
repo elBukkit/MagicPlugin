@@ -1,9 +1,14 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import java.util.List;
+import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.ArmorStand;
@@ -54,8 +59,10 @@ import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
@@ -390,14 +397,52 @@ public class PlayerController implements Listener {
         EntityData mob = controller.getMob(entity);
         if (mob == null) return;
         String interactSpell = mob.getInteractSpell();
-        if (interactSpell == null || interactSpell.isEmpty()) return;
+        interactSpell = interactSpell != null && interactSpell.isEmpty() ? null : interactSpell;
+        List<String> interactCommands = mob.getInteractCommands();
+        interactCommands = interactCommands != null && interactCommands.isEmpty() ? null : interactCommands;
+        if (interactSpell == null && interactCommands == null) return;
 
         Player player = event.getPlayer();
-        Mage mage = controller.getMage(player);
         event.setCancelled(true);
-        ConfigurationSection config = new MemoryConfiguration();
-        config.set("entity", entity.getUniqueId().toString());
-        controller.cast(mage, interactSpell, config, player, player);
+
+        if (interactSpell != null) {
+            ConfigurationSection parameters = mob.getInteractSpellParameters();
+            parameters = parameters == null ? new MemoryConfiguration() : ConfigurationUtils.cloneConfiguration(parameters);
+            Entity sourceEntity = player;
+            switch (mob.getInteractSpellTarget()) {
+                case PLAYER:
+                    sourceEntity = player;
+                    break;
+                case MOB:
+                    sourceEntity = entity;
+                    break;
+            }
+            Mage mage = controller.getMage(sourceEntity);
+            switch (mob.getInteractSpellTarget()) {
+                case PLAYER:
+                    parameters.set("player", player.getName());
+                    break;
+                case MOB:
+                    parameters.set("entity", entity.getUniqueId().toString());
+                    break;
+                case NONE:
+                    break;
+            }
+
+            controller.cast(mage, interactSpell, parameters, player, sourceEntity);
+        }
+        if (interactCommands != null) {
+            CommandSender executor = Bukkit.getConsoleSender();
+            Location location = entity.getLocation();
+            for (String command : interactCommands) {
+                try {
+                    String converted = TextUtils.parameterize(command, location, player);
+                    controller.getPlugin().getServer().dispatchCommand(executor, converted);
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Error running command: " + command, ex);
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)

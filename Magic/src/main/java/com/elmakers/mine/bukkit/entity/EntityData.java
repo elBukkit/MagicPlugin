@@ -147,6 +147,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected List<Deque<WeightedPair<String>>> drops;
     protected Set<String> tags;
     protected String interactSpell;
+    protected ConfigurationSection interactSpellParameters;
+    protected EntityData.SourceType interactSpellSource;
+    protected EntityData.TargetType interactSpellTarget;
+    protected List<String> interactCommands;
     protected ConfigurationSection disguise;
 
     protected EntityMageData mageData;
@@ -368,6 +372,29 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             dropXp = parameters.getInt("drop_xp");
         }
         interactSpell = parameters.getString("interact_spell");
+        interactSpellParameters = ConfigurationUtils.getConfigurationSection(parameters, "interact_spell_parameters");
+        String sourceType = parameters.getString("interact_spell_source", "PLAYER");
+        if (sourceType.equals("NPC")) {
+            sourceType = "MOB";
+        }
+        try {
+            interactSpellSource = EntityData.SourceType.valueOf(sourceType.toUpperCase());
+        } catch (Exception ex) {
+            controller.getLogger().warning("Invalid mob source type: " + sourceType);
+            interactSpellSource = EntityData.SourceType.PLAYER;
+        }
+        String targetType = parameters.getString("interact_spell_target", "MOB");
+        if (targetType.equals("NPC")) {
+            targetType = "MOB";
+        }
+        try {
+            interactSpellTarget = EntityData.TargetType.valueOf(targetType.toUpperCase());
+        } catch (Exception ex) {
+            controller.getLogger().warning("Invalid mob target type: " + targetType);
+            interactSpellTarget = EntityData.TargetType.MOB;
+        }
+
+        interactCommands = ConfigurationUtils.getStringList(parameters, "interact_commands", ";");
         if (parameters.isList("drops")) {
             @SuppressWarnings("unchecked")
             List<Object> list = (List<Object>)parameters.getList("drops");
@@ -701,7 +728,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entity == null || entity.getType() != type) return false;
 
         controller.registerMob(entity, this);
-
         boolean isPlayer = (entity instanceof Player);
         if (extraData != null) {
             extraData.apply(entity);
@@ -1068,8 +1094,31 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Override
+    @Nullable
     public String getInteractSpell() {
         return interactSpell;
+    }
+
+    @Override
+    @Nullable
+    public ConfigurationSection getInteractSpellParameters() {
+        return interactSpellParameters;
+    }
+
+    @Override
+    public EntityData.SourceType getInteractSpellSource() {
+        return interactSpellSource;
+    }
+
+    @Override
+    public EntityData.TargetType getInteractSpellTarget() {
+        return interactSpellTarget;
+    }
+
+    @Override
+    @Nullable
+    public List<String> getInteractCommands() {
+        return interactCommands;
     }
 
     public boolean shouldFocusOnDamager() {

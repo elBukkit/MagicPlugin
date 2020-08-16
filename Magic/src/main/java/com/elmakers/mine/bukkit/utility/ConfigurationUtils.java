@@ -726,6 +726,20 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     @Nullable
+    public static List<String> getStringList(ConfigurationSection section, String path, String delimiter) {
+        if (section.isList(path)) {
+            List<Object> raw = getList(section, path);
+            return getStringList(raw);
+        }
+        String value = section.getString(path);
+        if (value == null) {
+            return null;
+        }
+        String[] pieces = StringUtils.split(value, delimiter);
+        return Arrays.asList(pieces);
+    }
+
+    @Nullable
     public static List<String> getStringList(Object o) {
         List<Object> raw = getList(o);
         return getStringList(raw);
