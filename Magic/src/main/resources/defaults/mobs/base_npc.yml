@@ -1,4 +1,5 @@
 base_npc:
+  type: villager
   ai: false
   invulnerable: true
   gravity: false

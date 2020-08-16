@@ -51,12 +51,15 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             EntityData entityData = controller.getMob(template);
             parentParameters = entityData == null ? null : entityData.getConfiguration();
         }
-        mobKey = configuration.getString("mob");
-        uuid = UUID.fromString(configuration.getString("uuid"));
-        name = configuration.getString("name");
-        createdAt = configuration.getLong("created", 0);
-        creatorId = configuration.getString("creator");
-        creatorName = configuration.getString("creator_name");
+        mobKey = configuration.getString("mob", mobKey);
+        String uuidString = configuration.getString("uuid");
+        if (uuidString != null && !uuidString.isEmpty()) {
+            uuid = UUID.fromString(uuidString);
+        }
+        name = configuration.getString("name", name);
+        createdAt = configuration.getLong("created", createdAt);
+        creatorId = configuration.getString("creator", creatorId);
+        creatorName = configuration.getString("creator_name", creatorName);
         ConfigurationSection location = ConfigurationUtils.getConfigurationSection(configuration, "location");
         if (location != null) {
             double x = location.getDouble("x");
@@ -83,31 +86,35 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             parameters = new MemoryConfiguration();
         }
 
-        EntityData entity = controller.getMob(mobKey);
+        boolean hasMobKey = mobKey != null && !mobKey.isEmpty();
+        EntityData entity = hasMobKey ? controller.getMob(mobKey) : null;
         if (entity == null) {
-            controller.getLogger().warning("NPC has unknown mob type: " + mobKey + ", will change to villager");
-            defaultMob();
-        } else {
-            setEntityData(entity);
+            String defaultType = parentParameters == null ? "villager" : parentParameters.getString("type", "villager");
+            if (hasMobKey) {
+                controller.getLogger().warning("NPC has unknown mob type: " + mobKey + ", will change to " + defaultType);
+            }
+            entity = controller.getMob(defaultType);
         }
+        if (entity == null) {
+            controller.getLogger().warning("NPC has unknown mob type: " + mobKey + ", and no deafult mob type was available. Defaulting to villager.");
+            entity = new EntityData(EntityType.VILLAGER);
+        }
+        setEntityData(entity);
     }
 
     public MagicNPC(MagicController controller, Mage creator, Location location, String name) {
-        this.controller = controller;
+        this(controller, new MemoryConfiguration());
         this.location = location.clone();
         this.name = name;
-        this.parameters = new MemoryConfiguration();
         this.createdAt = System.currentTimeMillis();
         this.creatorId = creator.getId();
         this.creatorName = creator.getName();
-        defaultMob();
         restore();
     }
 
     protected void defaultMob() {
         entityData = new EntityData(EntityType.VILLAGER);
         configureEntityData();
-        mobKey = "villager";
     }
 
     protected boolean isLocationValid() {
@@ -150,13 +157,15 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
         }
         if (!effectiveParameters.getKeys(false).isEmpty()) {
+            // Always keep entity type
+            effectiveParameters.set("type", null);
             entityData.load(controller, effectiveParameters);
         }
     }
 
     @Nullable
     protected Entity getEntity() {
-        return CompatibilityUtils.getEntity(location.getWorld(), uuid);
+        return uuid == null ? null : CompatibilityUtils.getEntity(location.getWorld(), uuid);
     }
 
     @Override
