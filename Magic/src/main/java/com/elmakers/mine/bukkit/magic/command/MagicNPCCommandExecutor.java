@@ -311,6 +311,17 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         } else if (parameters.length > 2) {
             value = StringUtils.join(Arrays.copyOfRange(parameters, 1, parameters.length), " ");
         }
+
+        // Some special helper cases
+        if (key.equals("spell") || key.equals("cast")) {
+            key = "interact_spell";
+        } else if (key.equals("command") || key.equals("commands")) {
+            key = "interact_commands";
+        } else if (key.equals("cast_source")) {
+            key = "interact_spell_source";
+        } else if (key.equals("cast_target")) {
+            key = "interact_spell_target";
+        }
         npc.configure(key, value);
         if (value == null) {
             mage.sendMessage(ChatColor.GREEN + " Configured npc " + ChatColor.GOLD + npc.getName()
@@ -353,9 +364,9 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         } else if (args.length == 2 && args[0].equals("configure")) {
             options.add("ai");
             options.add("gravity");
-            options.add("interact_spell_source");
-            options.add("interact_spell_target");
-            options.add("interact_commands");
+            options.add("cast_source");
+            options.add("cast_target");
+            options.add("commands");
         } else if ((args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell"))
                || (args.length == 2 && args[0].equals("cast"))
                || (args.length == 2 && args[0].equals("spell"))) {
@@ -366,11 +377,11 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
                && (args[1].equals("ai") || args[1].equals("gravity") || args[1].equals("interact_spell_caster"))) {
             options.add("true");
             options.add("false");
-        } else if (args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell_target")) {
+        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_target") || args[1].equals("cast_target"))) {
             options.add("none");
             options.add("npc");
             options.add("player");
-        } else if (args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell_source")) {
+        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_source") || args[1].equals("cast_source"))) {
             options.add("npc");
             options.add("player");
         }

@@ -256,10 +256,6 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Override
     public void configure(String key, Object value) {
-        // Some special helper cases
-        if (key.equals("spell")) {
-            key = "interact_spell";
-        }
         parameters.set(key, value);
         configureEntityData();
         restore();
