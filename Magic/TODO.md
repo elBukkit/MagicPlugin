@@ -2,6 +2,10 @@
 
 ## Hot Issues
 
+ - NPCs:
+   - Need "template" command to change inherited template?
+   - Need "spell" command to easily set spell?
+
  - Make melee a tag instead of a material list
  
  - Passives:
