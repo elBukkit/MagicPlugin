@@ -343,6 +343,7 @@ public interface MageController {
      */
     boolean isNPC(Entity entity);
     boolean isStaticNPC(Entity entity);
+    boolean isMagicNPC(Entity entity);
     boolean isVanished(Entity entity);
 
     /**
@@ -433,6 +434,8 @@ public interface MageController {
     Entity spawnMob(String key, Location location);
     @Nullable
     EntityData getMob(String key);
+    @Nullable
+    EntityData getMob(Entity entity);
     @Nullable
     EntityData getMobByName(String name);
     EntityData loadMob(ConfigurationSection configuration);
@@ -603,4 +606,5 @@ public interface MageController {
     MagicNPC addNPC(Mage creator, String name);
     @Nullable
     MagicNPC getNPC(@Nullable Entity entity);
+    void registerMob(@Nonnull Entity entity, @Nonnull EntityData entityData);
 }

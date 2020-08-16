@@ -386,7 +386,8 @@ public class PlayerController implements Listener {
         if (mobMage != null) {
             mobMage.trigger("interact");
         }
-        EntityData mob = controller.getMobByName(entity.getCustomName());
+
+        EntityData mob = controller.getMob(entity);
         if (mob == null) return;
         String interactSpell = mob.getInteractSpell();
         if (interactSpell == null || interactSpell.isEmpty()) return;

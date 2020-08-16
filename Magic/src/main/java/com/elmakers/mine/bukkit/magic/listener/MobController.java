@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,6 +41,7 @@ public class MobController implements Listener {
     private final Map<String, EntityData> mobs = new HashMap<>();
     private final Map<String, EntityData> mobsByName = new HashMap<>();
     private final Map<EntityType, EntityData> defaultMobs = new HashMap<>();
+    private final Map<Entity, EntityData> activeMobs = new WeakHashMap<>();
 
     public MobController(MageController controller) {
         this.controller = controller;
@@ -102,15 +106,16 @@ public class MobController implements Listener {
         }, 1);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
-        // TODO: Don't use metadata!
-        if (event.isCancelled() || !event.getEntity().hasMetadata("docile")) {
-            return;
-        }
-
-        if (event.getReason() == EntityTargetEvent.TargetReason.CLOSEST_PLAYER) {
+        Entity entity = event.getEntity();
+        if (controller.isMagicNPC(entity)) {
             event.setCancelled(true);
+        } else if (event.getReason() == EntityTargetEvent.TargetReason.CLOSEST_PLAYER) {
+            com.elmakers.mine.bukkit.api.entity.EntityData entityData = controller.getMob(entity);
+            if (entityData.isDocile()) {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -152,38 +157,30 @@ public class MobController implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-
         Entity entity = event.getEntity();
-        if (!(entity instanceof LivingEntity))
-        {
+        if (!(entity instanceof LivingEntity)) {
             return;
         }
 
-        LivingEntity died = (LivingEntity)entity;
-        String name = died.getCustomName();
-        if (name == null || name.isEmpty())
-        {
-            EntityData mob = defaultMobs.get(died.getType());
-            if (mob != null && !died.hasMetadata("nodrops")) {
+        EntityData mob = activeMobs.get(entity);
+        if (mob == null) {
+            mob = defaultMobs.get(entity.getType());
+            if (mob != null && !entity.hasMetadata("nodrops")) {
                 mob.modifyDrops(controller, event);
             }
             return;
         }
 
-        EntityData mob = mobsByName.get(name);
-        if (mob == null) return;
+        // Prevent processing double-death events
+        activeMobs.remove(entity);
 
         MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
         Bukkit.getPluginManager().callEvent(deathEvent);
 
-        if (!died.hasMetadata("nodrops")) {
+        if (!entity.hasMetadata("nodrops")) {
             mob.modifyDrops(controller, event);
         }
-
-        // Prevent double-deaths .. gg Mojang?
-        // Kind of hacky to use this flag for it, but seemed easiest
-        died.setCustomNameVisible(false);
-        died.setCustomName(null);
+        entity.removeMetadata("nodrops", controller.getPlugin());
     }
 
     public int getCount() {
@@ -200,6 +197,20 @@ public class MobController implements Listener {
 
     public EntityData getByName(String name) {
         return mobsByName.get(name);
+    }
+
+    public void register(@Nonnull Entity entity, @Nonnull EntityData entityData) {
+        activeMobs.put(entity, entityData);
+    }
+
+    @Nullable
+    public EntityData getEntityData(Entity entity) {
+        return activeMobs.get(entity);
+    }
+
+    @Nonnull
+    public Collection<Entity> getActiveMobs() {
+        return new ArrayList<>(activeMobs.keySet());
     }
 
     @EventHandler

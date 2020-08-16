@@ -25,6 +25,7 @@ public interface EntityData {
     double getHealth();
     void setHasMoved(boolean hasMoved);
     void setDamaged(boolean damaged);
+    boolean isDocile();
     @Nullable
     Entity spawn();
     @Nullable
