@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class TextUtils
@@ -77,5 +78,17 @@ public class TextUtils
 
     public static String printBlock(Block block) {
         return printLocation(block.getLocation(), 0) + ChatColor.GRAY + "(" + ChatColor.GOLD + block.getType() + ChatColor.GRAY + ")";
+    }
+
+    public static String parameterize(String command, Location location, Player player) {
+        return command
+            .replace("@pd", player.getDisplayName())
+            .replace("@pn", player.getName())
+            .replace("@p", player.getName())
+            .replace("@uuid", player.getUniqueId().toString())
+            .replace("@world", location.getWorld().getName())
+            .replace("@x", Double.toString(location.getX()))
+            .replace("@y", Double.toString(location.getY()))
+            .replace("@z", Double.toString(location.getZ()));
     }
 }

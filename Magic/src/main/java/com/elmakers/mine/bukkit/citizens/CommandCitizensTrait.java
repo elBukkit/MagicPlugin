@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.utility.TextUtils;
+
 import net.citizensnpcs.api.util.DataKey;
 
 public class CommandCitizensTrait extends CitizensTrait {
@@ -53,16 +55,7 @@ public class CommandCitizensTrait extends CitizensTrait {
         String[] commands = StringUtils.split(command, ";");
         for (String command : commands) {
             try {
-                String converted = command
-                    .replace("@pd", player.getDisplayName())
-                    .replace("@pn", player.getName())
-                    .replace("@p", player.getName())
-                    .replace("@uuid", player.getUniqueId().toString())
-                    .replace("@world", location.getWorld().getName())
-                    .replace("@x", Double.toString(location.getX()))
-                    .replace("@y", Double.toString(location.getY()))
-                    .replace("@z", Double.toString(location.getZ()));;
-
+                String converted = TextUtils.parameterize(command, location, player);
                 api.getPlugin().getServer().dispatchCommand(executor, converted);
             } catch (Exception ex) {
                 result = false;
