@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
@@ -201,6 +202,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private DamagedBy lastDamager;
     private Map<UUID, DamagedBy> damagedBy;
     private WeakReference<Entity> lastDamageTarget;
+    private Map<Player, MageConversation> conversations = new WeakHashMap<>();
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     private Map<String, Double> protection = new HashMap<>();
@@ -4834,5 +4836,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (npc instanceof MagicNPC) {
             this.selectedNPC = (MagicNPC)npc;
         }
+    }
+
+    /**
+     * This isa non-API method that returns the live version of the conversation map
+     */
+    @Nonnull
+    public Map<Player, MageConversation> getConversations() {
+        return conversations;
     }
 }

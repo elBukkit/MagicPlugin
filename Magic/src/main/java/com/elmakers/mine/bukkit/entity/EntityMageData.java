@@ -1,7 +1,10 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,13 +14,16 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.TriggerType;
+import com.elmakers.mine.bukkit.magic.MageConversation;
 import com.elmakers.mine.bukkit.magic.MobTrigger;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -35,6 +41,8 @@ public class EntityMageData {
     protected boolean aggro;
     protected double trackRadiusSquared;
     protected boolean isCancelLaunch = true;
+    protected List<String> dialog;
+    protected double dialogRadius;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItemOrWand(parameters.getString("cast_requires_item"));
@@ -56,6 +64,13 @@ public class EntityMageData {
         requiresTarget = parameters.getBoolean("cast_requires_target", parameters.getBoolean("interval_requires_target", true));
         trackRadiusSquared = parameters.getDouble("track_radius", 128);
         trackRadiusSquared = trackRadiusSquared * trackRadiusSquared;
+
+        dialog = ConfigurationUtils.getStringList(parameters, "dialog");
+        dialogRadius = parameters.getDouble("dialog_range", 3);
+        int dialogInterval = parameters.getInt("dialog_interval", 2000);
+        if (hasDialog()) {
+            tickInterval = Math.max(tickInterval, dialogInterval);
+        }
 
         ConfigurationSection triggerConfig = parameters.getConfigurationSection("triggers");
 
@@ -92,7 +107,11 @@ public class EntityMageData {
         boolean hasTriggers = triggers != null;
         boolean hasProperties = mageProperties != null;
         boolean hasLifetime = lifetime > 0;
-        return !hasProperties && !hasTriggers && !aggro && !hasLifetime;
+        return !hasProperties && !hasTriggers && !aggro && !hasLifetime && !hasDialog();
+    }
+
+    public boolean hasDialog() {
+        return dialog != null && !dialog.isEmpty();
     }
 
     @Nullable
@@ -134,19 +153,46 @@ public class EntityMageData {
         }
 
         Collection<MobTrigger> intervalTriggers = getTriggers(TriggerType.INTERVAL);
-        if (intervalTriggers == null) return;
+        if (intervalTriggers != null) {
+            boolean isValid = true;
+            Entity entity = mage.getLivingEntity();
+            Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
+            if (requiresTarget && (creature == null || creature.getTarget() == null)) {
+                isValid = false;
+            }
+            if (isValid && requiresWand != null && entity instanceof LivingEntity) {
+                LivingEntity li = (LivingEntity)entity;
+                ItemStack itemInHand = li.getEquipment().getItemInMainHand();
+                if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) {
+                    isValid = false;
+                }
+            }
 
-        Entity entity = mage.getLivingEntity();
-        Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
-        if (requiresTarget && (creature == null || creature.getTarget() == null)) return;
-        if (requiresWand != null && entity instanceof LivingEntity) {
-            LivingEntity li = (LivingEntity)entity;
-            ItemStack itemInHand = li.getEquipment().getItemInMainHand();
-            if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) return;
+            if (isValid) {
+                for (MobTrigger trigger : intervalTriggers) {
+                    trigger.execute(mage);
+                }
+            }
         }
 
-        for (MobTrigger trigger : intervalTriggers) {
-            trigger.execute(mage);
+        if (hasDialog() && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+            // Forgive me for my sins
+            com.elmakers.mine.bukkit.magic.Mage speaker = (com.elmakers.mine.bukkit.magic.Mage)mage;
+            Map<Player, MageConversation> conversations = speaker.getConversations();
+            Map<Player, MageConversation> progress = conversations.isEmpty() ? conversations : new HashMap<>(conversations);
+            conversations.clear();
+
+            Collection<Entity> nearby = mage.getLocation().getWorld().getNearbyEntities(mage.getLocation(), dialogRadius, dialogRadius, dialogRadius);
+            for (Entity targetEntity : nearby) {
+                if (!(targetEntity instanceof Player)) continue;
+                Player targetPlayer = (Player)targetEntity;
+                MageConversation conversation = progress.get(targetPlayer);
+                if (conversation == null) {
+                    conversation = new MageConversation(speaker, targetPlayer);
+                }
+                conversation.sayNextLine(dialog);
+                conversations.put(targetPlayer, conversation);
+            }
         }
     }
 
