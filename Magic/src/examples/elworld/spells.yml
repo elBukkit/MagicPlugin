@@ -3834,3 +3834,18 @@ tempboon:
       effect_speed: 3
       cooldown: 500
       duration: 10000
+
+nethershop:
+    inherit: buyshop
+    hidden: true
+    parameters:
+        items:
+        - netherrack@64
+        - ghast_tear
+        - blaze_rod
+        - crimson_nylium@64
+        - warped_nylium@64
+        - warped_planks@64
+        - warped_stem@64
+        - crimson_planks@64
+        - crimson_stem@64
