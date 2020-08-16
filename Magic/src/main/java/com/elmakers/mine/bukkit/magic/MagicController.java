@@ -5509,6 +5509,25 @@ public class MagicController implements MageController {
     }
 
     @Nullable
+    @Override
+    public ItemData getOrCreateMagicItem(String key) {
+        if (key == null || key.isEmpty()) {
+            return null;
+        }
+        Wand wand = createWand(key);
+        if (wand != null) {
+            return new com.elmakers.mine.bukkit.item.ItemData(wand.getItem());
+        }
+        SpellTemplate spell = getSpellTemplate(key);
+        if (spell != null) {
+            ItemStack itemStack = spell.getIcon().getItemStack(1);
+            InventoryUtils.makeUnbreakable(itemStack);
+            return new com.elmakers.mine.bukkit.item.ItemData(itemStack);
+        }
+        return items.getOrCreate(key);
+    }
+
+    @Nullable
     public String getLockKey(ItemStack itemStack) {
         String metaKey = Wand.getLockKey(itemStack);
         if (metaKey == null && itemStack != null) {

@@ -482,6 +482,8 @@ public interface MageController {
     ItemData getOrCreateItem(String key);
     @Nullable
     ItemData getOrCreateItemOrWand(String key);
+    @Nullable
+    ItemData getOrCreateMagicItem(String key);
     void unloadItemTemplate(String key);
     void loadItemTemplate(String key, ConfigurationSection itemNode);
     @Nullable
