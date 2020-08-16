@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.npc;
 
+import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -14,11 +16,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Nonnull
@@ -215,7 +220,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         configuration.set("name", name);
         configuration.set("created", createdAt);
         configuration.set("creator", creatorId);
-        configuration.set("creatorName", creatorName);
+        configuration.set("creator_name", creatorName);
         ConfigurationSection locationSection = configuration.createSection("location");
         locationSection.set("world", location.getWorld().getName());
         locationSection.set("x", location.getX());
@@ -262,6 +267,35 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Override
     public void describe(CommandSender sender) {
-        sender.sendMessage("Not yet implemented, sorry");
+        String mobTypeName = mobKey == null ? "Default Mob Type" : mobKey;
+        sender.sendMessage(ChatColor.GOLD + name + ChatColor.DARK_GRAY + " (" + ChatColor.GRAY + mobTypeName + ChatColor.DARK_GRAY + ")" );
+        sender.sendMessage(ChatColor.AQUA + "Location: " + ChatColor.WHITE + TextUtils.printLocation(location));
+        sender.sendMessage(ChatColor.AQUA + "Created By: " + ChatColor.WHITE + creatorName);
+        ConfigurationSection parameters;
+        if (this.parentParameters != null) {
+            parameters = ConfigurationUtils.cloneConfiguration(this.parentParameters);
+            parameters = ConfigurationUtils.addConfigurations(parameters, this.parameters);
+        } else {
+            parameters = ConfigurationUtils.cloneConfiguration(this.parameters);
+        }
+        parameters.set("type", null);
+        String interactSpell = parameters.getString("interact_spell");
+        if (interactSpell != null && !interactSpell.isEmpty()) {
+            SpellTemplate template = controller.getSpellTemplate(interactSpell);
+            String spellName = template == null ? (ChatColor.RED + interactSpell) : (ChatColor.YELLOW + template.getName());
+            sender.sendMessage(ChatColor.AQUA + "Casts" + ChatColor.GRAY + ": " + spellName);
+            parameters.set("interact_spell", null);
+        }
+        Set<String> keys = parameters.getKeys(false);
+        for (String key : keys) {
+            Object value = parameters.get(key);
+            if (value != null) {
+                ChatColor propertyColor = ChatColor.GRAY;
+                if (this.parameters.contains(key)) {
+                    propertyColor = ChatColor.DARK_AQUA;
+                }
+                sender.sendMessage(propertyColor.toString() + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
+            }
+        }
     }
 }
