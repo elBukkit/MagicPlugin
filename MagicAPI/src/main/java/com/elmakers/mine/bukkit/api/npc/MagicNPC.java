@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 
@@ -22,4 +23,5 @@ public interface MagicNPC {
     void teleport(@Nonnull Location location);
     boolean setType(@Nonnull String mobKey);
     void remove();
+    void describe(CommandSender sender);
 }

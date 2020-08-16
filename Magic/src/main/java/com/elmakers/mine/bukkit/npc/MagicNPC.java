@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
@@ -39,10 +40,17 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Nonnull
     private ConfigurationSection parameters;
+    @Nullable
+    private ConfigurationSection parentParameters;
 
     public MagicNPC(MagicController controller, ConfigurationSection configuration) {
         this.controller = controller;
 
+        String template = configuration.getString("inherit", "base_npc");
+        if (!template.isEmpty()) {
+            EntityData entityData = controller.getMob(template);
+            parentParameters = entityData == null ? null : entityData.getConfiguration();
+        }
         mobKey = configuration.getString("mob");
         uuid = UUID.fromString(configuration.getString("uuid"));
         name = configuration.getString("name");
@@ -122,6 +130,11 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         }
         setEntityData(newEntityData);
         this.mobKey = mobKey;
+        Entity entity = getEntity();
+        if (entity != null && entity.isValid()) {
+            entity.remove();
+            restore();
+        }
         return true;
     }
 
@@ -131,21 +144,26 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     }
 
     protected void configureEntityData() {
-        entityData.setAI(false);
-        entityData.setInvulnerable(false);
-        entityData.setGravity(false);
-        entityData.setPersist(false);
-        ConfigurationSection mobOverrides = parameters.getConfigurationSection("mob");
-        if (mobOverrides != null) {
-            entityData.load(controller, mobOverrides);
+        ConfigurationSection effectiveParameters = parameters;
+        if (parentParameters != null && !parentParameters.getKeys(false).isEmpty()) {
+            effectiveParameters = ConfigurationUtils.cloneConfiguration(parentParameters);
+            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
         }
+        if (!effectiveParameters.getKeys(false).isEmpty()) {
+            entityData.load(controller, effectiveParameters);
+        }
+    }
+
+    @Nullable
+    protected Entity getEntity() {
+        return CompatibilityUtils.getEntity(location.getWorld(), uuid);
     }
 
     @Override
     public void teleport(@Nonnull Location location) {
         this.location = location.clone();
-        Entity entity = CompatibilityUtils.getEntity(location.getWorld(), uuid);
-        if (entity != null) {
+        Entity entity = getEntity();
+        if (entity != null && entity.isValid()) {
             entity.teleport(location);
         }
     }
@@ -158,7 +176,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Override
     public void remove() {
-        Entity entity = CompatibilityUtils.getEntity(location.getWorld(), uuid);
+        Entity entity = getEntity();
         if (entity != null) {
             entity.remove();
         }
@@ -166,11 +184,11 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Nullable
     public Entity restore() {
-        Entity entity = CompatibilityUtils.getEntity(location.getWorld(), uuid);
-        if (entity == null) {
+        Entity entity = getEntity();
+        if (entity == null || !entity.isValid()) {
             entity = entityData.spawn(controller, location);
         } else {
-            entityData.modify(entity);
+            entityData.modify(controller, entity);
             entity.teleport(location);
         }
         if (entity == null) {
@@ -224,6 +242,17 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Override
     public void configure(String key, Object value) {
+        // Some special helper cases
+        if (key.equals("spell")) {
+            key = "interact_spell";
+        }
         parameters.set(key, value);
+        configureEntityData();
+        restore();
+    }
+
+    @Override
+    public void describe(CommandSender sender) {
+        sender.sendMessage("Not yet implemented, sorry");
     }
 }

@@ -110,6 +110,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isInvulnerable;
     protected boolean hasAI = true;
     protected boolean hasGravity = true;
+    protected boolean isDocile;
     protected Boolean persist = null;
     protected int fireTicks;
 
@@ -150,6 +151,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     protected EntityMageData mageData;
     protected EntityData mount;
+
+    protected ConfigurationSection configuration;
 
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
@@ -285,6 +288,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public void load(@Nonnull MageController controller, ConfigurationSection parameters) {
+        this.configuration = parameters;
         // This is required to allow changes to health
         hasChangedHealth = true;
         name = parameters.getString("name");
@@ -302,12 +306,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (parameters.contains("persist")) {
             persist = parameters.getBoolean("persist");
         }
+        isDocile = parameters.getBoolean("docile");
 
         String entityName = parameters.contains("type") ? parameters.getString("type") : key;
-        type = parseEntityType(entityName);
-        if (type == null) {
-            controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName + " in mob config for " + key + ", did you forget the 'type' parameter?");
-            return;
+        if (entityName != null && !entityName.isEmpty()) {
+            type = parseEntityType(entityName);
+            if (type == null) {
+                controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName + " in mob config for " + key + ", did you forget the 'type' parameter?");
+                return;
+            }
         }
 
         String colorString = parameters.getString("color");
@@ -335,7 +342,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
-
 
         ConfigurationSection modifierSection = parameters.getConfigurationSection("modifiers");
         if (modifierSection == null) {
@@ -693,6 +699,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     private boolean modifyPreSpawn(MageController controller, Entity entity) {
         if (entity == null || entity.getType() != type) return false;
+
+        controller.registerMob(entity, this);
 
         boolean isPlayer = (entity instanceof Player);
         if (extraData != null) {
@@ -1129,5 +1137,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void setPersist(boolean persist) {
         this.persist = persist;
+    }
+
+    @Override
+    public boolean isDocile() {
+        return isDocile;
+    }
+
+    @Nullable
+    public ConfigurationSection getConfiguration() {
+        return configuration;
     }
 }

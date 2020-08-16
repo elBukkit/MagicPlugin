@@ -3785,7 +3785,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isNPC(Entity entity) {
-        if (activeNPCs.contains(entity.getUniqueId())) {
+        if (isMagicNPC(entity)) {
             return true;
         }
         return npcSuppliers.isNPC(entity);
@@ -3793,7 +3793,15 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isStaticNPC(Entity entity) {
+        if (isMagicNPC(entity)) {
+            return true;
+        }
         return npcSuppliers.isStaticNPC(entity);
+    }
+
+    @Override
+    public boolean isMagicNPC(Entity entity) {
+        return activeNPCs.contains(entity.getUniqueId());
     }
 
     @Override
@@ -5429,6 +5437,12 @@ public class MagicController implements MageController {
         return location.getWorld().spawnEntity(location, entityType);
     }
 
+    @Nullable
+    @Override
+    public EntityData getMob(Entity entity) {
+        return mobs.getEntityData(entity);
+    }
+
     @Override
     @Nullable
     public com.elmakers.mine.bukkit.entity.EntityData getMob(String key) {
@@ -5446,8 +5460,8 @@ public class MagicController implements MageController {
 
     @Override
     @Nullable
-    public EntityData getMobByName(String key) {
-        return mobs.getByName(key);
+    public EntityData getMobByName(String name) {
+        return mobs.getByName(name);
     }
 
     @Override
@@ -6300,6 +6314,11 @@ public class MagicController implements MageController {
     @Nonnull
     public String setPlaceholders(Player player, String message) {
         return placeholderAPIManager == null ? message : placeholderAPIManager.setPlaceholders(player, message);
+    }
+
+    @Override
+    public void registerMob(@Nonnull Entity entity, @Nonnull EntityData entityData) {
+        mobs.register(entity, (com.elmakers.mine.bukkit.entity.EntityData)entityData);
     }
 
     /*

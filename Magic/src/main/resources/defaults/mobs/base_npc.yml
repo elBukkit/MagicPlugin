@@ -1,0 +1,5 @@
+base_npc:
+  ai: false
+  invulnerable: true
+  gravity: false
+  persist: false
