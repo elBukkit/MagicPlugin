@@ -6290,11 +6290,20 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public MagicNPC addNPC(com.elmakers.mine.bukkit.api.magic.Mage creator, String name) {
-        Location location = creator.getLocation();
-        String chunkId = getChunkKey(location);
-        if (chunkId == null) return null;
+        MagicNPC npc = new MagicNPC(this, creator, creator.getLocation(), name);
+        if (!registerNPC(npc)) {
+            return null;
+        }
+        return npc;
+    }
 
-        MagicNPC npc = new MagicNPC(this, creator, location, name);
+    public boolean registerNPC(MagicNPC npc) {
+        Location location = npc.getLocation();
+        String chunkId = getChunkKey(location);
+        if (chunkId == null) {
+            return false;
+        }
+
         List<MagicNPC> chunkNPCs = npcs.get(chunkId);
         if (chunkNPCs == null) {
             chunkNPCs = new ArrayList<>();
@@ -6302,7 +6311,7 @@ public class MagicController implements MageController {
         }
         chunkNPCs.add(npc);
         activeNPCs.add(npc.getUUID());
-        return npc;
+        return true;
     }
 
     @Override
@@ -6344,6 +6353,10 @@ public class MagicController implements MageController {
     @Override
     public void registerMob(@Nonnull Entity entity, @Nonnull EntityData entityData) {
         mobs.register(entity, (com.elmakers.mine.bukkit.entity.EntityData)entityData);
+    }
+
+    public CitizensController getCitizensController() {
+        return citizens;
     }
 
     /*
