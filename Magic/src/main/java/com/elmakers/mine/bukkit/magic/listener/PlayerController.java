@@ -409,7 +409,7 @@ public class PlayerController implements Listener {
             ConfigurationSection parameters = mob.getInteractSpellParameters();
             parameters = parameters == null ? new MemoryConfiguration() : ConfigurationUtils.cloneConfiguration(parameters);
             Entity sourceEntity = player;
-            switch (mob.getInteractSpellTarget()) {
+            switch (mob.getInteractSpellSource()) {
                 case PLAYER:
                     sourceEntity = player;
                     break;
