@@ -3,7 +3,6 @@ madscientist:
   type: husk
   disguise:
     type: player
-    name: Mad Scientist
     skin: NathanWolf
   item: madscientist_wand
   chestplate: warlock_chestplate

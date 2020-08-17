@@ -56,7 +56,7 @@ public class LibsDisguiseManager {
             Disguise disguise = null;
             switch (disguiseType) {
                 case PLAYER:
-                    PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("name"));
+                    PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("name", entity.getCustomName()));
                     String skin = configuration.getString("skin");
                     if (skin != null) {
                         playerDisguise.setSkin(skin);
