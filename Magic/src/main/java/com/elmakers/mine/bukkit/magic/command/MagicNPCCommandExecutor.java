@@ -461,6 +461,10 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             key = "interact_spell_source";
         } else if (key.equals("cast_target")) {
             key = "interact_spell_target";
+        } else if (key.equals("command_source")) {
+            key = "interact_command_source";
+        } else if (key.equals("permission")) {
+            key = "interact_permission";
         }
         npc.configure(key, value);
         if (value == null) {
@@ -508,8 +512,10 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("ai");
             options.add("gravity");
             options.add("cast_source");
+            options.add("command_source");
             options.add("cast_target");
             options.add("commands");
+            options.add("permission");
             options.add("helmet");
             options.add("item");
             options.add("offhand");
@@ -530,7 +536,8 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("none");
             options.add("npc");
             options.add("player");
-        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_source") || args[1].equals("cast_source"))) {
+        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_source") || args[1].equals("cast_source")
+                || args[1].equals("interact_command_source") || args[1].equals("command_source"))) {
             options.add("npc");
             options.add("player");
         } else if (args.length == 3 && args[0].equals("configure")
