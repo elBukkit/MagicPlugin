@@ -5521,6 +5521,7 @@ public class MagicController implements MageController {
         SpellTemplate spell = getSpellTemplate(key);
         if (spell != null) {
             ItemStack itemStack = spell.getIcon().getItemStack(1);
+            itemStack = InventoryUtils.makeReal(itemStack);
             InventoryUtils.makeUnbreakable(itemStack);
             return new com.elmakers.mine.bukkit.item.ItemData(itemStack);
         }
