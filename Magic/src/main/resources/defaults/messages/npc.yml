@@ -4,3 +4,5 @@ npc:
   dialog: "&7[$speaker&7]&8: &f$line"
   insufficient: "&cCosts $cost"
   deducted: "&cTook $cost"
+  no_permission: "&r&4You may not interact with me!"
+

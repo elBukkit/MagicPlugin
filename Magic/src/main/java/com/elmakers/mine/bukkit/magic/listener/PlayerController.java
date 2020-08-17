@@ -407,15 +407,22 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         event.setCancelled(true);
 
+        String permission = mob.getInteractPermission();
+        Mage playerMage = controller.getMage(player);
+        if (permission != null && !permission.isEmpty() && !player.hasPermission(permission)) {
+            String message = controller.getMessages().get("npc.no_permission");
+            playerMage.sendMessage(message);
+            return;
+        }
+
         Collection<Cost> costs = mob.getInteractCosts();
         if (costs != null) {
-            Mage mage = controller.getMage(player);
             for (Cost cost : costs) {
-                if (!cost.has(mage, mage.getActiveWand(), null)) {
+                if (!cost.has(playerMage, playerMage.getActiveWand(), null)) {
                     String baseMessage = controller.getMessages().get("npc.insufficient");
                     String costDescription = cost.getFullDescription(controller.getMessages(), null);
                     costDescription = baseMessage.replace("$cost", costDescription);
-                    mage.sendMessage(costDescription);
+                    playerMage.sendMessage(costDescription);
                     return;
                 }
             }
@@ -464,13 +471,12 @@ public class PlayerController implements Listener {
 
 
         if (costs != null && success) {
-            Mage mage = controller.getMage(player);
             String baseMessage = controller.getMessages().get("npc.deducted");
             for (Cost cost : costs) {
-                cost.deduct(mage, mage.getActiveWand(), null);
+                cost.deduct(playerMage, playerMage.getActiveWand(), null);
                 String costDescription = cost.getFullDescription(controller.getMessages(), null);
                 costDescription = baseMessage.replace("$cost", costDescription);
-                mage.sendMessage(costDescription);
+                playerMage.sendMessage(costDescription);
             }
         }
     }

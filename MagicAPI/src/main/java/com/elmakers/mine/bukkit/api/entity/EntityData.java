@@ -68,6 +68,8 @@ public interface EntityData {
     Collection<Cost> getInteractCosts();
     void setMaterial(@Nonnull MaterialAndData material);
     @Nullable
+    String getInteractPermission();
+    @Nullable
     MaterialAndData getMaterial();
 
     /**

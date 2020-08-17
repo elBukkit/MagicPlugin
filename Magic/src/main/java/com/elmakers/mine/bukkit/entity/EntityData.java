@@ -148,6 +148,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected List<Deque<WeightedPair<String>>> drops;
     protected Set<String> tags;
     protected String interactSpell;
+    protected String interactPermission;
     protected List<com.elmakers.mine.bukkit.api.item.Cost> interactCosts;
     protected ConfigurationSection interactSpellParameters;
     protected EntityData.SourceType interactSpellSource;
@@ -377,6 +378,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         interactSpellParameters = ConfigurationUtils.getConfigurationSection(parameters, "interact_spell_parameters");
         List<Cost> interactCosts = Cost.parseCosts(ConfigurationUtils.getConfigurationSection(parameters, "interact_costs"), controller);
         this.interactCosts = (interactCosts == null) ? null : new ArrayList<>(interactCosts);
+        interactPermission = parameters.getString("interact_permission");
         String sourceType = parameters.getString("interact_spell_source", "PLAYER");
         if (sourceType.equalsIgnoreCase("NPC")) {
             sourceType = "MOB";
@@ -813,7 +815,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             LivingEntity li = (LivingEntity)entity;
             if (hasPotionEffects && potionEffects != null) {
                 for (PotionEffect effect : potionEffects) {
-                    li.addPotionEffect(effect);
+                        li.addPotionEffect(effect);
                 }
             }
             if (removeEffects != null) {
@@ -1206,5 +1208,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Nullable
     public ConfigurationSection getConfiguration() {
         return configuration;
+    }
+
+    @Nullable
+    @Override
+    public String getInteractPermission() {
+        return interactPermission;
     }
 }
