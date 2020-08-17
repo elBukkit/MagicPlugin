@@ -440,6 +440,14 @@ public class PlayerController implements Listener {
                 case MOB:
                     sourceEntity = entity;
                     break;
+                case CONSOLE:
+                    controller.getLogger().info("Invalid spell source on " + mob.getKey() + ": CONSOLE, using MOB instead");
+                    sourceEntity = entity;
+                    break;
+                case OPPED_PLAYER:
+                    controller.getLogger().info("Invalid spell source on " + mob.getKey() + ": OPPED_PLAYER, will not op player for spell cast");
+                    sourceEntity = player;
+                    break;
             }
             Mage mage = controller.getMage(sourceEntity);
             switch (mob.getInteractSpellTarget()) {
@@ -456,15 +464,39 @@ public class PlayerController implements Listener {
             success = controller.cast(mage, interactSpell, parameters, player, sourceEntity);
         }
         if (interactCommands != null) {
-            CommandSender executor = Bukkit.getConsoleSender();
+            CommandSender executor = player;
+            boolean opPlayer = false;
+            switch (mob.getInteractCommandSource()) {
+                case CONSOLE:
+                    executor = Bukkit.getConsoleSender();
+                    break;
+                case PLAYER:
+                    executor = player;
+                    break;
+                case OPPED_PLAYER:
+                    executor = player;
+                    opPlayer = !player.isOp();
+                    break;
+                case MOB:
+                    controller.getLogger().info("Invalid spell source on " + mob.getKey() + ": MOB, will use CONSOLE instead");
+                    executor = Bukkit.getConsoleSender();
+                    break;
+            }
             Location location = entity.getLocation();
             for (String command : interactCommands) {
                 try {
+                    if (opPlayer) {
+                        executor.setOp(true);
+                    }
                     String converted = TextUtils.parameterize(command, location, player);
                     controller.getPlugin().getServer().dispatchCommand(executor, converted);
                     success = true;
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.WARNING, "Error running command: " + command, ex);
+                } finally {
+                    if (opPlayer) {
+                        executor.setOp(false);
+                    }
                 }
             }
         }

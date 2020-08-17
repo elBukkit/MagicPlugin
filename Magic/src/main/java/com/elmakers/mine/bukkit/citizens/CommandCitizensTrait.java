@@ -42,6 +42,14 @@ public class CommandCitizensTrait extends CitizensTrait {
         return command;
     }
 
+    public boolean isConsole() {
+        return console;
+    }
+
+    public boolean isOP() {
+        return op;
+    }
+
     @Override
     public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {
         if (command == null || command.isEmpty()) return false;

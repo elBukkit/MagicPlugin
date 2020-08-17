@@ -160,6 +160,13 @@ public class CitizensController implements NPCSupplier {
                     if (trait instanceof CommandCitizensTrait) {
                         CommandCitizensTrait command = (CommandCitizensTrait)trait;
                         parameters.set("interact_commands", command.getCommand());
+                        if (!command.isConsole()) {
+                            if (command.isOP()) {
+                                parameters.set("interact_command_source", "OPPED_PLAYER");
+                            } else {
+                                parameters.set("interact_command_source", "PLAYER");
+                            }
+                        }
                     }
 
                     if (trait instanceof MagicCitizensTrait) {

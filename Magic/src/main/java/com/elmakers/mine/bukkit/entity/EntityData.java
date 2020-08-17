@@ -153,6 +153,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected ConfigurationSection interactSpellParameters;
     protected EntityData.SourceType interactSpellSource;
     protected EntityData.TargetType interactSpellTarget;
+    protected EntityData.SourceType interactCommandSource;
     protected List<String> interactCommands;
     protected ConfigurationSection disguise;
 
@@ -382,6 +383,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         String sourceType = parameters.getString("interact_spell_source", "PLAYER");
         if (sourceType.equalsIgnoreCase("NPC")) {
             sourceType = "MOB";
+        } else if (sourceType.equalsIgnoreCase("OPPED_PLAYER")) {
+            controller.getLogger().warning("Invalid spell source type: " + sourceType);
+            sourceType = "PLAYER";
         }
         try {
             interactSpellSource = EntityData.SourceType.valueOf(sourceType.toUpperCase());
@@ -398,6 +402,18 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } catch (Exception ex) {
             controller.getLogger().warning("Invalid mob target type: " + targetType);
             interactSpellTarget = EntityData.TargetType.MOB;
+        }
+
+        sourceType = parameters.getString("interact_command_source", "CONSOLE");
+        if (sourceType.equalsIgnoreCase("MOB") || sourceType.equalsIgnoreCase("NPC")) {
+            controller.getLogger().warning("Invalid command source type: " + sourceType);
+            sourceType = "CONSOLE";
+        }
+        try {
+            interactCommandSource = EntityData.SourceType.valueOf(sourceType.toUpperCase());
+        } catch (Exception ex) {
+            controller.getLogger().warning("Invalid command source type: " + sourceType);
+            interactCommandSource = SourceType.CONSOLE;
         }
 
         interactCommands = ConfigurationUtils.getStringList(parameters, "interact_commands", ";");
@@ -1125,6 +1141,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Nullable
     public List<String> getInteractCommands() {
         return interactCommands;
+    }
+
+    @Override
+    public EntityData.SourceType getInteractCommandSource() {
+        return interactCommandSource;
     }
 
     @Override

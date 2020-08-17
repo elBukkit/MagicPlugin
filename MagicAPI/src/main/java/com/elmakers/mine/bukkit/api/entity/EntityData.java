@@ -27,7 +27,9 @@ public interface EntityData {
 
     enum SourceType {
         PLAYER,
-        MOB
+        MOB,
+        CONSOLE,
+        OPPED_PLAYER
     }
 
     String getKey();
@@ -62,7 +64,7 @@ public interface EntityData {
     TargetType getInteractSpellTarget();
     @Nullable
     ConfigurationSection getInteractSpellParameters();
-    @Nullable
+    SourceType getInteractCommandSource();
     List<String> getInteractCommands();
     @Nullable
     Collection<Cost> getInteractCosts();
