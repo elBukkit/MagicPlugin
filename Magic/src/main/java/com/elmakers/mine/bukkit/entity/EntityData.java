@@ -65,6 +65,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -147,6 +148,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected List<Deque<WeightedPair<String>>> drops;
     protected Set<String> tags;
     protected String interactSpell;
+    protected List<com.elmakers.mine.bukkit.api.item.Cost> interactCosts;
     protected ConfigurationSection interactSpellParameters;
     protected EntityData.SourceType interactSpellSource;
     protected EntityData.TargetType interactSpellTarget;
@@ -373,6 +375,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         interactSpell = parameters.getString("interact_spell");
         interactSpellParameters = ConfigurationUtils.getConfigurationSection(parameters, "interact_spell_parameters");
+        List<Cost> interactCosts = Cost.parseCosts(ConfigurationUtils.getConfigurationSection(parameters, "interact_costs"), controller);
+        this.interactCosts = (interactCosts == null) ? null : new ArrayList<>(interactCosts);
         String sourceType = parameters.getString("interact_spell_source", "PLAYER");
         if (sourceType.equalsIgnoreCase("NPC")) {
             sourceType = "MOB";
@@ -1119,6 +1123,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Nullable
     public List<String> getInteractCommands() {
         return interactCommands;
+    }
+
+    @Override
+    @Nullable
+    public Collection<com.elmakers.mine.bukkit.api.item.Cost> getInteractCosts() {
+        return interactCosts;
     }
 
     public boolean shouldFocusOnDamager() {

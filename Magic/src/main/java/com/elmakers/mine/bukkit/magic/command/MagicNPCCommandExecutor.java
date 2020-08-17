@@ -50,7 +50,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mnpc [add|configure|cast|describe|type|name|list|remove|tp|tphere|import|player] <name|type>");
+            sender.sendMessage(ChatColor.RED + "Usage: mnpc [add|configure|cast|costs|describe|type|name|list|remove|tp|tphere|import|player] <name|type>");
             return true;
         }
 
@@ -141,6 +141,11 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equalsIgnoreCase("configure")) {
             onConfigureNPC(mage, npc, parameters);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("costs")) {
+            onNPCCost(mage, npc, parameters);
             return true;
         }
 
@@ -337,6 +342,31 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         npc.update();
     }
 
+    protected void onNPCCost(Mage mage, MagicNPC npc, String[] parameters) {
+        if (parameters.length == 0) {
+            mage.sendMessage(ChatColor.GREEN + " Configured npc " + ChatColor.GOLD + npc.getName() + ChatColor.GREEN + ", cleared costs");
+            npc.configure("interact_costs", null);
+            return;
+        }
+        double value = 0;
+        try {
+            value = Double.parseDouble(parameters[0]);
+        } catch (Exception ex) {
+            mage.sendMessage(ChatColor.RED + "Invalid cost amount: " + parameters[0]);
+            return;
+        }
+        String costType = parameters.length > 1 ? parameters[1] : "currency";
+        if (controller.getCurrency(costType) == null) {
+            mage.sendMessage(ChatColor.RED + "Invalid cost type: " + costType);
+            return;
+        }
+        ConfigurationSection costSection = new MemoryConfiguration();
+        costSection.set(costType, value);
+        npc.configure("interact_costs", costSection);
+        mage.sendMessage(ChatColor.GREEN + " Configured npc " + ChatColor.GOLD + npc.getName()
+            + ChatColor.GREEN + " to cost " + ChatColor.WHITE + ((int)value) + ChatColor.YELLOW + " " + costType);
+    }
+
     protected void onConfigureNPC(Mage mage, MagicNPC npc, String[] parameters) {
         if (parameters.length == 0 || parameters[0].isEmpty()) {
             mage.sendMessage(ChatColor.RED + "Missing parameter name");
@@ -388,6 +418,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("import");
             options.add("select");
             options.add("cast");
+            options.add("costs");
             options.add("player");
         } else if (args.length == 2 && args[0].equals("type")) {
             options.addAll(controller.getMobKeys());
@@ -451,6 +482,25 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         } else if (args.length == 2 && args[0].equals("player")) {
             for (Player player : controller.getPlugin().getServer().getOnlinePlayers()) {
                 options.add(player.getName());
+            }
+        } else if (args.length == 2 && args[0].equals("costs")) {
+            options.add("1");
+            options.add("10");
+            options.add("100");
+        } else if (args.length == 3 && args[0].equals("costs")) {
+            for (String currency : controller.getCurrencyKeys()) {
+                options.add(currency);
+            }
+            Collection<String> allWands = api.getWandKeys();
+            for (String wandKey : allWands) {
+               options.add(wandKey);
+            }
+            for (Material material : Material.values()) {
+                options.add(material.name().toLowerCase());
+            }
+            Collection<String> allItems = api.getController().getItemKeys();
+            for (String itemKey : allItems) {
+                options.add(itemKey);
             }
         }
         return options;

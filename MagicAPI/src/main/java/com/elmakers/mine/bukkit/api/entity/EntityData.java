@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.entity;
 
+import java.util.Collection;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,6 +15,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.item.Cost;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface EntityData {
@@ -62,6 +64,8 @@ public interface EntityData {
     ConfigurationSection getInteractSpellParameters();
     @Nullable
     List<String> getInteractCommands();
+    @Nullable
+    Collection<Cost> getInteractCosts();
     void setMaterial(@Nonnull MaterialAndData material);
     @Nullable
     MaterialAndData getMaterial();

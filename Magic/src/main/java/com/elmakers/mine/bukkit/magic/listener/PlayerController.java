@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -50,6 +51,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.item.Cost;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
@@ -405,6 +407,21 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         event.setCancelled(true);
 
+        Collection<Cost> costs = mob.getInteractCosts();
+        if (costs != null) {
+            Mage mage = controller.getMage(player);
+            for (Cost cost : costs) {
+                if (!cost.has(mage, mage.getActiveWand(), null)) {
+                    String baseMessage = controller.getMessages().get("npc.insufficient");
+                    String costDescription = cost.getFullDescription(controller.getMessages(), null);
+                    costDescription = baseMessage.replace("$cost", costDescription);
+                    mage.sendMessage(costDescription);
+                    return;
+                }
+            }
+        }
+
+        boolean success = false;
         if (interactSpell != null) {
             ConfigurationSection parameters = mob.getInteractSpellParameters();
             parameters = parameters == null ? new MemoryConfiguration() : ConfigurationUtils.cloneConfiguration(parameters);
@@ -429,7 +446,7 @@ public class PlayerController implements Listener {
                     break;
             }
 
-            controller.cast(mage, interactSpell, parameters, player, sourceEntity);
+            success = controller.cast(mage, interactSpell, parameters, player, sourceEntity);
         }
         if (interactCommands != null) {
             CommandSender executor = Bukkit.getConsoleSender();
@@ -438,9 +455,22 @@ public class PlayerController implements Listener {
                 try {
                     String converted = TextUtils.parameterize(command, location, player);
                     controller.getPlugin().getServer().dispatchCommand(executor, converted);
+                    success = true;
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.WARNING, "Error running command: " + command, ex);
                 }
+            }
+        }
+
+
+        if (costs != null && success) {
+            Mage mage = controller.getMage(player);
+            String baseMessage = controller.getMessages().get("npc.deducted");
+            for (Cost cost : costs) {
+                cost.deduct(mage, mage.getActiveWand(), null);
+                String costDescription = cost.getFullDescription(controller.getMessages(), null);
+                costDescription = baseMessage.replace("$cost", costDescription);
+                mage.sendMessage(costDescription);
             }
         }
     }
