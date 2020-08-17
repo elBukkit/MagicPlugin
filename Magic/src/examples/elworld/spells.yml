@@ -3849,3 +3849,62 @@ nethershop:
         - warped_stem@64
         - crimson_planks@64
         - crimson_stem@64
+
+fireprotect:
+  icon: spell_icon:45
+  icon_disabled: spell_icon_disabled:45
+  actions:
+    cast:
+      - class: PotionEffect
+  effects:
+    cast:
+      - class: EffectSingle
+        sound: magic.shimmer
+        effectlib:
+          class: ConeEffect
+          iterations: 5
+          lengthGrow: .12
+          particle: heart
+      - class: EffectSingle
+        sound: magic.shimmer
+        location: target
+        target_offset: 0,-2,0
+        effectlib:
+          class: Modified
+          period: 2
+          parameters:
+            radius: "(t/i) * 0.5 + 1"
+            rings: "(1 - (t/i)) * 11 + 1"
+          effect:
+            class: WarpEffect
+            particle: heart
+            particles: 7
+      - class: EffectSingle
+        target_offset: 0,-1.5,0
+        effectlib:
+          class: LineEffect
+          particle: heart
+          duration: 5000
+          particles: 10
+          period: 20
+    cast_finish:
+      - class: EffectSingle
+        custom_sound: magic.shimmer_quiet
+        sound_pitch: 5
+        location: origin
+        effectlib:
+          class: AnimatedBall
+          duration: 200
+          particle: heart
+          size: 3
+  parameters:
+    target_type: LivingEntity
+    target: other_entity
+    range: 16
+    cooldown: 10000
+    add_effects:
+      fire_resistance: 5
+    duration: 30000
+  costs:
+    mana: 50
+
