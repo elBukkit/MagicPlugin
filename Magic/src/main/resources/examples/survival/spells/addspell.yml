@@ -2,6 +2,7 @@ addspell:
     icon: iron_hoe
     category: npc
     hidden: true
+    cast_on_no_target: false
     effects:
       cast:
       -  class: EffectSingle
