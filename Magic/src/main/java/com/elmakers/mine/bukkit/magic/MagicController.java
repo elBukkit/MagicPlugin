@@ -1870,6 +1870,7 @@ public class MagicController implements MageController {
                 }
 
                 getLogger().info("Finished loading data.");
+                dataLoaded = true;
             }
         }, 10);
     }
@@ -2277,7 +2278,7 @@ public class MagicController implements MageController {
 
     public void save(boolean asynchronous)
     {
-        if (!initialized) return;
+        if (!initialized || !dataLoaded) return;
         maps.save(asynchronous);
 
         final List<YamlDataFile> saveData = new ArrayList<>();
@@ -6535,6 +6536,7 @@ public class MagicController implements MageController {
     private Collection<String>                  addExamples                 = null;
     private boolean                             initialized                 = false;
     private boolean                             loaded                      = false;
+    private boolean                             dataLoaded                  = false;
     private String                              defaultSkillIcon            = "stick";
     private int                                 skillInventoryRows          = 6;
     private boolean                             skillsUseHeroes             = true;
