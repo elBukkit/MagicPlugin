@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 

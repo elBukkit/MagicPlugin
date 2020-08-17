@@ -75,6 +75,7 @@ public class CitizensController implements NPCSupplier {
 
     @SuppressWarnings({"unchecked"})
     public Collection<MagicNPC> importAll(MagicController controller, Mage creator) {
+        int imported = 0;
         List<MagicNPC> npcs = new ArrayList<>();
         Set<Integer> alreadyImported = new HashSet<>();
         for (com.elmakers.mine.bukkit.api.npc.MagicNPC npc : controller.getNPCs()) {
@@ -182,6 +183,13 @@ public class CitizensController implements NPCSupplier {
 
             // This will force-update the NPC
             magicNPC.setType(entityType);
+
+            imported++;
+        }
+        if (imported == 0) {
+            creator.sendMessage(ChatColor.YELLOW + "No Citizens NPCs to import out of " + ChatColor.WHITE + npcs.size() + ChatColor.YELLOW + ", are they all imported already?");
+        } else {
+            creator.sendMessage(ChatColor.AQUA + "Imported " + ChatColor.DARK_AQUA + imported + ChatColor.AQUA + " Citizens NPCs");
         }
         return npcs;
     }
