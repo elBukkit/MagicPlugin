@@ -123,10 +123,6 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         if (subCommand.equalsIgnoreCase("cast") || subCommand.equalsIgnoreCase("spell")) {
-            if (parameters.length == 0) {
-                sender.sendMessage(ChatColor.RED + "Usage: mnpc cast <spell>");
-                return true;
-            }
             onChangeNPCSpell(mage, npc, parameters);
             return true;
         }
@@ -209,21 +205,38 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onChangeNPCSpell(Mage mage, MagicNPC npc, String[] parameters) {
-        npc.configure("interact_spell", parameters[0]);
-        mage.sendMessage(ChatColor.GREEN + "Changed npc " + ChatColor.GOLD + npc.getName()
-            + ChatColor.GREEN + " to cast " + ChatColor.YELLOW + parameters[0]);
+        ConfigurationSection currentParameters = npc.getParameters();
+        if (parameters.length == 0) {
+            String previousSpell = currentParameters.getString("interact_spell");
+            if (previousSpell == null || previousSpell.isEmpty()) {
+                mage.sendMessage(ChatColor.DARK_AQUA + "NPC has no spell set: " + ChatColor.GOLD);
+                return;
+            }
+            ConfigurationSection previousParameters = ConfigurationUtils.getConfigurationSection(currentParameters, "interact_spell_parameters");
+            npc.configure("interact_spell", null);
+            mage.sendMessage(ChatColor.DARK_AQUA + "Cleared spell cast for npc " + ChatColor.GOLD);
+            mage.sendMessage(ChatColor.AQUA + "Was: " + ChatColor.WHITE + previousSpell);
+            if (previousParameters != null) {
+                mage.sendMessage(InventoryUtils.describeProperty(previousParameters));
+            }
+        } else {
+            currentParameters.set("interact_spell", parameters[0]);
+            mage.sendMessage(ChatColor.GREEN + "Changed npc " + ChatColor.GOLD + npc.getName()
+                + ChatColor.GREEN + " to cast " + ChatColor.YELLOW + parameters[0]);
 
-        if (parameters.length > 1) {
-            mage.sendMessage(ChatColor.GREEN + " With parameters:");
-            ConfigurationSection spellParameters = new MemoryConfiguration();
-            ConfigurationUtils.addParameters(Arrays.copyOfRange(parameters, 1, parameters.length), spellParameters);
-            npc.configure("interact_spell_parameters", spellParameters);
-            Set<String> keys = spellParameters.getKeys(false);
-            for (String key : keys) {
-                Object value = spellParameters.get(key);
-                mage.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
+            if (parameters.length > 1) {
+                mage.sendMessage(ChatColor.GREEN + " With parameters:");
+                ConfigurationSection spellParameters = new MemoryConfiguration();
+                ConfigurationUtils.addParameters(Arrays.copyOfRange(parameters, 1, parameters.length), spellParameters);
+                currentParameters.set("interact_spell_parameters", spellParameters);
+                Set<String> keys = spellParameters.getKeys(false);
+                for (String key : keys) {
+                    Object value = spellParameters.get(key);
+                    mage.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
+                }
             }
         }
+        npc.update();
     }
 
     @Nullable

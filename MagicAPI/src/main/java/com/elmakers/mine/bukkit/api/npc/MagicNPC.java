@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 
@@ -18,6 +19,9 @@ public interface MagicNPC {
     String getName();
     void setName(@Nonnull String name);
     void configure(String key, Object value);
+    void update();
+    @Nonnull
+    ConfigurationSection getParameters();
     @Nonnull
     UUID getUUID();
     void teleport(@Nonnull Location location);

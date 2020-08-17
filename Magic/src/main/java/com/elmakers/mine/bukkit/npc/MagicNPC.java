@@ -258,8 +258,19 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     public void configure(String key, Object value) {
         parameters.set(key, value);
+        update();
+    }
+
+    @Override
+    public void update() {
         configureEntityData();
         restore();
+    }
+
+    @Override
+    @Nonnull
+    public ConfigurationSection getParameters() {
+        return parameters;
     }
 
     @Override
