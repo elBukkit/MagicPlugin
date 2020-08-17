@@ -26,12 +26,12 @@ public class MageConversation {
             return true;
         }
         String line = dialog.get(nextLine);
-        String message = formatString.replace("$line", line);
-
-        message = message.replace("$speaker", speaker.getDisplayName())
-                .replace("$target", target.getDisplayName());
-
-        target.sendMessage(message);
+        if (!line.isEmpty()) {
+            String message = formatString.replace("$line", line);
+            message = message.replace("$speaker", speaker.getDisplayName())
+                    .replace("$target", target.getDisplayName());
+            target.sendMessage(message);
+        }
         nextLine++;
         return nextLine >= dialog.size();
     }
