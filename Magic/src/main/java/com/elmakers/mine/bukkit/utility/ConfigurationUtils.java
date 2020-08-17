@@ -1108,4 +1108,26 @@ public class ConfigurationUtils extends ConfigUtils {
         }
         return scope;
     }
+
+    @Nullable
+    public static Object convertProperty(@Nullable Object value) {
+        if (value == null) return value;
+        Object result = value;
+        boolean isTrue = value.equals("true");
+        boolean isFalse = value.equals("false");
+        if (isTrue || isFalse) {
+            result = Boolean.valueOf(isTrue);
+        } else {
+            try {
+                result = Double.valueOf(value instanceof Double ? ((Double)value).doubleValue() : (value instanceof Float ? (double)((Float)value).floatValue() : Double.parseDouble(value.toString())));
+            } catch (Exception notADouble) {
+                try {
+                    result = Integer.valueOf(value instanceof Integer ? ((Integer)value).intValue() : Integer.parseInt(value.toString()));
+                } catch (Exception ignored) {
+                }
+            }
+        }
+
+        return result;
+    }
 }

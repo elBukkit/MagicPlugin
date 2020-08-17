@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ColorHD;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public abstract class BaseMagicConfigurable extends BaseMagicProperties implements MagicConfigurable {
@@ -131,24 +132,9 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         return null;
     }
 
-    protected Object convertProperty(Object value) {
-        Object result = value;
-        boolean isTrue = value.equals("true");
-        boolean isFalse = value.equals("false");
-        if (isTrue || isFalse) {
-            result = Boolean.valueOf(isTrue);
-        } else {
-            try {
-                result = Double.valueOf(value instanceof Double ? ((Double)value).doubleValue() : (value instanceof Float ? (double)((Float)value).floatValue() : Double.parseDouble(value.toString())));
-            } catch (Exception notADouble) {
-                try {
-                    result = Integer.valueOf(value instanceof Integer ? ((Integer)value).intValue() : Integer.parseInt(value.toString()));
-                } catch (Exception ignored) {
-                }
-            }
-        }
-
-        return result;
+    @Nullable
+    protected Object convertProperty(@Nullable Object value) {
+        return ConfigurationUtils.convertProperty(value);
     }
 
     protected boolean upgradeProperty(String key, Object value) {
