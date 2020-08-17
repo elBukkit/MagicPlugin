@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -380,6 +381,12 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("cast_source");
             options.add("cast_target");
             options.add("commands");
+            options.add("helmet");
+            options.add("item");
+            options.add("offhand");
+            options.add("chestplate");
+            options.add("boots");
+            options.add("leggings");
         } else if ((args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell"))
                || (args.length == 2 && args[0].equals("cast"))
                || (args.length == 2 && args[0].equals("spell"))) {
@@ -397,6 +404,25 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_source") || args[1].equals("cast_source"))) {
             options.add("npc");
             options.add("player");
+        } else if (args.length == 3 && args[0].equals("configure")
+               && (args[1].equals("helmet") || args[1].equals("item") || args[1].equals("offhand")
+                    || args[1].equals("chestplate") || args[1].equals("boots") || args[1].equals("leggings"))
+        ) {
+            Collection<SpellTemplate> spellList = api.getSpellTemplates(true);
+            for (SpellTemplate spell : spellList) {
+                options.add(spell.getKey());
+            }
+            Collection<String> allWands = api.getWandKeys();
+            for (String wandKey : allWands) {
+               options.add(wandKey);
+            }
+            for (Material material : Material.values()) {
+                options.add(material.name().toLowerCase());
+            }
+            Collection<String> allItems = api.getController().getItemKeys();
+            for (String itemKey : allItems) {
+                options.add(itemKey);
+            }
         }
         return options;
     }
