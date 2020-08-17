@@ -5621,7 +5621,7 @@ public class MagicController implements MageController {
         if (resourcePackPrompt) {
             String message = messages.get("resource_pack.prompt");
             if (message != null && !message.isEmpty()) {
-                player.sendMessage(message);
+                com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
             }
             return false;
         }
