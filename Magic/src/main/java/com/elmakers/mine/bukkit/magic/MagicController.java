@@ -5299,6 +5299,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean hasDisguises() {
+        return libsDisguiseEnabled && libsDisguiseManager != null;
+    }
+
+    @Override
     public boolean disguise(Entity entity, ConfigurationSection configuration) {
         if (!libsDisguiseEnabled || libsDisguiseManager == null || entity == null) {
             return false;

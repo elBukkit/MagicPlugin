@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -49,7 +50,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mnpc [add|configure|cast|describe|type|name|list|remove|tp|tphere|import] <name|type>");
+            sender.sendMessage(ChatColor.RED + "Usage: mnpc [add|configure|cast|describe|type|name|list|remove|tp|tphere|import|player] <name|type>");
             return true;
         }
 
@@ -145,6 +146,15 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equalsIgnoreCase("describe")) {
             onDescribeNPC(mage, npc);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("player")) {
+            if (parameters.length == 0) {
+                sender.sendMessage(ChatColor.RED + "Usage: mnpc player <player name>");
+                return true;
+            }
+            onPlayerNPC(mage, npc, parameters[0]);
             return true;
         }
 
@@ -298,6 +308,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     protected void onTPNPC(Mage mage, MagicNPC npc) {
         if (!mage.isPlayer()) {
             mage.sendMessage(ChatColor.RED + "This command may only be used in-game");
+            return;
         }
         mage.getEntity().teleport(npc.getLocation());
     }
@@ -305,12 +316,25 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     protected void onTPNPCHere(Mage mage, MagicNPC npc) {
         if (!mage.isPlayer()) {
             mage.sendMessage(ChatColor.RED + "This command may only be used in-game");
+            return;
         }
         npc.teleport(mage.getEntity().getLocation());
     }
 
     protected void onDescribeNPC(Mage mage, MagicNPC npc) {
         npc.describe(mage.getCommandSender());
+    }
+
+    protected void onPlayerNPC(Mage mage, MagicNPC npc, String playerName) {
+        if (!controller.hasDisguises()) {
+            mage.sendMessage(ChatColor.RED + "Player NPCs require LibsDisguises");
+            return;
+        }
+        ConfigurationSection parameters = npc.getParameters();
+        ConfigurationSection disguise = parameters.getConfigurationSection("disguise");
+        disguise.set("skin", playerName);
+        disguise.set("type", "player");
+        npc.update();
     }
 
     protected void onConfigureNPC(Mage mage, MagicNPC npc, String[] parameters) {
@@ -364,6 +388,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("import");
             options.add("select");
             options.add("cast");
+            options.add("player");
         } else if (args.length == 2 && args[0].equals("type")) {
             options.addAll(controller.getMobKeys());
             for (EntityType entityType : EntityType.values()) {
@@ -422,6 +447,10 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             Collection<String> allItems = api.getController().getItemKeys();
             for (String itemKey : allItems) {
                 options.add(itemKey);
+            }
+        } else if (args.length == 2 && args[0].equals("player")) {
+            for (Player player : controller.getPlugin().getServer().getOnlinePlayers()) {
+                options.add(player.getName());
             }
         }
         return options;

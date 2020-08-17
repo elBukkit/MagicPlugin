@@ -413,6 +413,7 @@ public interface MageController {
     void sendPlayerToServer(final Player player, final String server);
     void warpPlayerToServer(final Player player, final String server, final String warp);
     boolean isDisguised(Entity entity);
+    boolean hasDisguises();
     boolean isPathUpgradingEnabled();
     boolean isSpellUpgradingEnabled();
     boolean isSpellProgressionEnabled();
