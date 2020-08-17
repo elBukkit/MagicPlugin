@@ -42,6 +42,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     private long createdAt;
     private String creatorId;
     private String creatorName;
+    private Integer importedId;
 
     @Nonnull
     private ConfigurationSection parameters;
@@ -65,6 +66,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         createdAt = configuration.getLong("created", createdAt);
         creatorId = configuration.getString("creator", creatorId);
         creatorName = configuration.getString("creator_name", creatorName);
+        if (configuration.contains("imported_id")) {
+            importedId = configuration.getInt("imported_id");
+        }
         ConfigurationSection location = ConfigurationUtils.getConfigurationSection(configuration, "location");
         if (location != null) {
             double x = location.getDouble("x");
@@ -114,7 +118,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         this.createdAt = System.currentTimeMillis();
         this.creatorId = creator.getId();
         this.creatorName = creator.getName();
-        restore();
+        update();
     }
 
     protected void defaultMob() {
@@ -156,16 +160,18 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     }
 
     protected void configureEntityData() {
-        ConfigurationSection effectiveParameters = parameters;
-        if (parentParameters != null && !parentParameters.getKeys(false).isEmpty()) {
+        ConfigurationSection effectiveParameters;
+        if (parentParameters != null) {
             effectiveParameters = ConfigurationUtils.cloneConfiguration(parentParameters);
             effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
+        } else {
+            effectiveParameters = ConfigurationUtils.cloneConfiguration(parameters);
         }
-        if (!effectiveParameters.getKeys(false).isEmpty()) {
-            // Always keep entity type
-            effectiveParameters.set("type", null);
-            entityData.load(controller, effectiveParameters);
-        }
+
+        // Always keep entity type and name
+        effectiveParameters.set("type", null);
+        effectiveParameters.set("name", name);
+        entityData.load(controller, effectiveParameters);
     }
 
     @Nullable
@@ -221,6 +227,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         configuration.set("created", createdAt);
         configuration.set("creator", creatorId);
         configuration.set("creator_name", creatorName);
+        configuration.set("imported_id", importedId);
         ConfigurationSection locationSection = configuration.createSection("location");
         locationSection.set("world", location.getWorld().getName());
         locationSection.set("x", location.getX());
@@ -306,5 +313,14 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
                 sender.sendMessage(propertyColor.toString() + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
             }
         }
+    }
+
+    @Nullable
+    public Integer getImportedId() {
+        return importedId;
+    }
+
+    public void setImportedId(int importedId) {
+        this.importedId = importedId;
     }
 }

@@ -28,4 +28,6 @@ public interface MagicNPC {
     boolean setType(@Nonnull String mobKey);
     void remove();
     void describe(CommandSender sender);
+    @Nullable
+    Integer getImportedId();
 }

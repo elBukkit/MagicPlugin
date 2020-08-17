@@ -62,6 +62,14 @@ public class MagicCitizensTrait extends CitizensTrait {
         data.setString("parameters", parameterString);
     }
 
+    public String getSpell() {
+        return spellKey;
+    }
+
+    public ConfigurationSection getSpellParameters() {
+        return parameters;
+    }
+
     @Override
     public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {
         if (spellKey == null || spellKey.isEmpty()) return false;

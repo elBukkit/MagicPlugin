@@ -21,7 +21,9 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.effect.NPCTargetingContext;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -173,7 +175,16 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onImportNPCs(CommandSender sender) {
-        sender.sendMessage(ChatColor.RED + "Not yet implemented");
+        MagicController magic = (MagicController)controller;
+        CitizensController citizens = magic.getCitizensController();
+        if (citizens == null) {
+            sender.sendMessage(ChatColor.RED + "Citizens is not installed");
+            return;
+        }
+
+        citizens.importAll(magic, controller.getMage(sender));
+        sender.sendMessage(ChatColor.GREEN + "Finished importing! If everything looks OK now you can safely remove the Citizens plugin.");
+        sender.sendMessage(ChatColor.GREEN + "Until then, all of your NPCs will be doubled up");
     }
 
     protected List<MagicNPC> getNPCList() {

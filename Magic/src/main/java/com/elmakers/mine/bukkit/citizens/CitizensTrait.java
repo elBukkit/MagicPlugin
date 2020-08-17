@@ -69,6 +69,26 @@ public abstract class CitizensTrait extends Trait {
         data.setString("mob", mobKey);
     }
 
+    public boolean isInvisible() {
+        return invisible;
+    }
+
+    public String getPermissionNode() {
+        return permissionNode;
+    }
+
+    public String getMobKey() {
+        return mobKey;
+    }
+
+    public ItemStack getHat() {
+        return hatItem;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
     @Override
     public void onRemove() {
     }

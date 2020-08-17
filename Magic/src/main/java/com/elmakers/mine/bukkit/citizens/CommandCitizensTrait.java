@@ -38,6 +38,10 @@ public class CommandCitizensTrait extends CitizensTrait {
         data.setBoolean("op", op);
     }
 
+    public String getCommand() {
+        return command;
+    }
+
     @Override
     public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {
         if (command == null || command.isEmpty()) return false;
