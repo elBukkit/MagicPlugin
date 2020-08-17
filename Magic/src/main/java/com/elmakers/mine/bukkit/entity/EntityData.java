@@ -374,7 +374,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         interactSpell = parameters.getString("interact_spell");
         interactSpellParameters = ConfigurationUtils.getConfigurationSection(parameters, "interact_spell_parameters");
         String sourceType = parameters.getString("interact_spell_source", "PLAYER");
-        if (sourceType.equals("NPC")) {
+        if (sourceType.equalsIgnoreCase("NPC")) {
             sourceType = "MOB";
         }
         try {
@@ -384,7 +384,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             interactSpellSource = EntityData.SourceType.PLAYER;
         }
         String targetType = parameters.getString("interact_spell_target", "MOB");
-        if (targetType.equals("NPC")) {
+        if (targetType.equalsIgnoreCase("NPC")) {
             targetType = "MOB";
         }
         try {
