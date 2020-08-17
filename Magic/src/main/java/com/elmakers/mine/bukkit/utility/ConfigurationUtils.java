@@ -1051,8 +1051,12 @@ public class ConfigurationUtils extends ConfigUtils {
                                 log.log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"));
                                 continue;
                             }
-                            int ticks = (int) (potionEffectSection.getLong("duration", defaultDuration) / 50);
-                            ticks = potionEffectSection.getInt("ticks", ticks);
+                            int ticks = Integer.MAX_VALUE;
+                            String duration = potionEffectSection.getString("duration");
+                            if (duration == null || (!duration.equals("forever") && !duration.equals("infinite") && !duration.equals("infinity"))) {
+                                ticks = (int) (potionEffectSection.getLong("duration", defaultDuration) / 50);
+                                ticks = potionEffectSection.getInt("ticks", ticks);
+                            }
                             int amplifier = potionEffectSection.getInt("amplifier", defaultAmplifier);
                             boolean ambient = potionEffectSection.getBoolean("ambient", defaultAmbient);
                             boolean particles = potionEffectSection.getBoolean("particles", defaultParticles);
