@@ -15,8 +15,7 @@ public class NPCTargetingContext extends TargetingContext {
 
     @Override
     public boolean canTarget(Entity entity) {
-        // TODO: check if this is an NPC
-        return !(entity instanceof Player);
+        return mage.getController().isMagicNPC(entity);
     }
 
     @Override
