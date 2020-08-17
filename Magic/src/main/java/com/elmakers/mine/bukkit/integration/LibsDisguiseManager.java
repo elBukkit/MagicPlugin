@@ -56,7 +56,12 @@ public class LibsDisguiseManager {
             Disguise disguise = null;
             switch (disguiseType) {
                 case PLAYER:
-                    PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("name", entity.getCustomName()));
+                    String name = configuration.getString("name", entity.getCustomName());
+                    if (name == null || name.isEmpty()) {
+                        owningPlugin.getLogger().warning("Missing disguise name in player disguise");
+                        return false;
+                    }
+                    PlayerDisguise playerDisguise = new PlayerDisguise(name);
                     String skin = configuration.getString("skin");
                     if (skin != null) {
                         playerDisguise.setSkin(skin);
@@ -123,6 +128,8 @@ public class LibsDisguiseManager {
             watcher.setSneaking(configuration.getBoolean("sneaking", false));
             watcher.setAddEntityAnimations(configuration.getBoolean("animations", false));
             watcher.setSprinting(configuration.getBoolean("sprinting", false));
+            watcher.setSwimming(configuration.getBoolean("swimming", false));
+            watcher.setRightClicking(configuration.getBoolean("right_clicking", false));
             DisguiseAPI.disguiseEntity(entity, disguise);
         } catch (Exception ex) {
             owningPlugin.getLogger().log(Level.WARNING, "Error creating disguise", ex);
