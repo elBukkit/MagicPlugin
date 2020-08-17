@@ -44,6 +44,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -390,6 +391,7 @@ public class PlayerController implements Listener {
     @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event)
     {
+        if (event.getHand() != EquipmentSlot.HAND) return;
         Entity entity = event.getRightClicked();
         Mage mobMage = controller.getRegisteredMage(entity);
         if (mobMage != null) {
