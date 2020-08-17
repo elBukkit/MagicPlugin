@@ -409,6 +409,7 @@ public class BlockController implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent e) {
         controller.resumeAutomata(e.getChunk());
+        controller.restoreNPCs(e.getChunk());
     }
 
     @EventHandler
