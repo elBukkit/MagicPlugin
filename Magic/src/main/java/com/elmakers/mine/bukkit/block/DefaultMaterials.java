@@ -39,6 +39,7 @@ public class DefaultMaterials {
     private Material mobSpawner = null;
     private Material filledMap = null;
     private Material netherPortal = null;
+    private Material writeableBook = null;
     private MaterialAndData wallTorch = null;
     private MaterialAndData redstoneTorchOn = null;
     private MaterialAndData redstoneTorchOff = null;
@@ -172,6 +173,15 @@ public class DefaultMaterials {
 
     public void setNetherPortal(Material material) {
         this.netherPortal = material;
+    }
+
+    @Nullable
+    public static Material getWriteableBook() {
+        return getInstance().writeableBook;
+    }
+
+    public void setWriteableBook(Material material) {
+        this.writeableBook = material;
     }
 
     @Nullable

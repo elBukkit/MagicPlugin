@@ -1,11 +1,18 @@
 # CHANGELOG
 
 # 7.9.13
-
- - Crafting recipes for wizard and apprentice armor are now disbled by default
+ - Magic NPCs
+   - Manage via new /mnpc command
+   - Lightweight replacement for simple use-cases of Citizens
+   - Can import from Citizens
+   - Can run spells and commands, talk to nearby players
+   - Can do anything Magic Mobs can do
+   - Add dialog scripts in-game using written books
+   - Will stay put!
  - Add proper Residence integration
  - Fix Skript pre-cast ('on casting of') event
  - Fix trinketshop skull icons in 1.16
+ - Crafting recipes for wizard and apprentice armor are now disabled by default
  - Bypass permissions are no longer applied to ops by default.
    I changed this to reduce confusion about when protection is and is not working.
    If you prefer to bypass, give yourself the "Magic.bypass" permission.

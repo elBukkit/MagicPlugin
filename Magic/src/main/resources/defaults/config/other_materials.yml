@@ -10,3 +10,4 @@ redstone_wall_torch_off: redstone_torch_on,redstone_torch:0
 mob_spawner: spawner,mob_spawner
 filled_map: filled_map,map
 nether_portal: nether_portal,portal
+writable_book: writable_book,book_and_quill

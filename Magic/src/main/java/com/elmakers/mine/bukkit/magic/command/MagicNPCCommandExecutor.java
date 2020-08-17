@@ -16,11 +16,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.effect.NPCTargetingContext;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -52,7 +55,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mnpc [add|configure|cast|costs|describe|type|name|list|remove|tp|tphere|import|player] <name|type>");
+            sender.sendMessage(ChatColor.RED + "Usage: mnpc [add|configure|cast|costs|describe|dialog|type|name|list|remove|tp|tphere|import|player] <name|type>");
             return true;
         }
 
@@ -167,6 +170,11 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equalsIgnoreCase("remove") || subCommand.equalsIgnoreCase("delete")) {
             onRemoveNPC(mage, npc);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("dialog") || subCommand.equalsIgnoreCase("text")) {
+            onNPCDialog(mage, npc);
             return true;
         }
 
@@ -321,6 +329,59 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         mage.sendMessage(ChatColor.GREEN + " Removed npc: " + ChatColor.GOLD + npc.getName());
     }
 
+    protected void onNPCDialog(Mage mage, MagicNPC npc) {
+        if (!mage.isPlayer()) {
+            mage.sendMessage(ChatColor.RED + "This command may only be used in-game");
+            return;
+        }
+
+        ItemStack item = mage.getPlayer().getInventory().getItemInMainHand();
+        if (InventoryUtils.hasMeta(item, "npc")) {
+            BookMeta meta = (BookMeta)item.getItemMeta();
+            List<String> pages = meta.getPages();
+            boolean isEmpty = true;
+            for (String page : pages) {
+                if (!page.trim().isEmpty()) {
+                    isEmpty = false;
+                    break;
+                }
+            }
+            if (isEmpty) {
+                pages = null;
+                mage.sendMessage(ChatColor.GREEN + "NPC dialog script cleared for " + ChatColor.GOLD + npc.getName());
+            } else {
+                mage.sendMessage(ChatColor.GREEN + "NPC dialog script set for " + ChatColor.GOLD + npc.getName());
+            }
+            npc.configure("dialog", pages);
+            mage.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            return;
+        }
+
+        Material bookMaterial = DefaultMaterials.getWriteableBook();
+        if (bookMaterial == null) {
+            mage.sendMessage(ChatColor.RED + "Could not create writable book");
+            return;
+        }
+        ItemStack book = new ItemStack(bookMaterial);
+        BookMeta meta = (BookMeta)book.getItemMeta();
+        meta.setTitle("NPC Script: " + npc.getName());
+        meta.setAuthor(mage.getDisplayName());
+        List<String> pages = npc.getParameters().getStringList("dialog");
+        if (pages == null) {
+            pages = new ArrayList<>();
+        }
+        if (pages.isEmpty()) {
+            pages.add("");
+        }
+        meta.setPages(pages);
+
+        book.setItemMeta(meta);
+        book = InventoryUtils.makeReal(book);
+        InventoryUtils.setMeta(book, "npc", npc.getUUID().toString());
+        mage.giveItem(book);
+        mage.sendMessage(ChatColor.GREEN + "Edit the script book and use this command again while holding the book to set the NPC's chat dialog");
+    }
+
     protected void onTPNPC(Mage mage, MagicNPC npc) {
         if (!mage.isPlayer()) {
             mage.sendMessage(ChatColor.RED + "This command may only be used in-game");
@@ -431,6 +492,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("cast");
             options.add("costs");
             options.add("player");
+            options.add("dialog");
         } else if (args.length == 2 && args[0].equals("type")) {
             options.addAll(controller.getMobKeys());
             for (EntityType entityType : EntityType.values()) {

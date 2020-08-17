@@ -668,6 +668,7 @@ commands:
         /mnpc type                        Change the mob type for the selected NPC
         /mnpc configure                   Configure an NPC
         /mnpc describe                    Describe an NPC
+        /mnpc dialog                      Add some text for the NPC to say to nearby players
         /mnpc cast                        Make an NPC cast a spell on right-click
         /mnpc costs                       Require a player pay to interact with this NPC
         /mnpc player                      Add a player disguise to an NPC

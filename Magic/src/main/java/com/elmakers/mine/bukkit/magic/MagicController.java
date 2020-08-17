@@ -3052,6 +3052,7 @@ public class MagicController implements MageController {
         defaultMaterials.setRedstoneWallTorchOff(getVersionedMaterialAndData(configuration, "redstone_wall_torch_off"));
         defaultMaterials.setMobSpawner(getVersionedMaterial(configuration, "mob_spawner"));
         defaultMaterials.setNetherPortal(getVersionedMaterial(configuration, "nether_portal"));
+        defaultMaterials.setWriteableBook(getVersionedMaterial(configuration, "writable_book"));
         defaultMaterials.setFilledMap(getVersionedMaterial(configuration, "filled_map"));
     }
 
