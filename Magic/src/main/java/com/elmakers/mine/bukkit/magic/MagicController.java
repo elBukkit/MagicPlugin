@@ -5630,7 +5630,7 @@ public class MagicController implements MageController {
         }
         String message = messages.get("resource_pack.sending");
         if (message != null && !message.isEmpty()) {
-            player.sendMessage(message);
+            com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
         }
 
         // Give them some time to read the message

@@ -917,13 +917,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void sendMessage(String prefix, String message) {
         if (message == null || message.length() == 0 || quiet || !controller.showMessages()) return;
+        sendMessage(getCommandSender(), getPlayer(), prefix, message);
+    }
 
-        CommandSender sender = getCommandSender();
-        if (sender == null) {
-            return;
-        }
-
-        Player player = getPlayer();
+    public static void sendMessage(CommandSender sender, Player player, String prefix, String message) {
+        if (message == null || message.length() == 0 || sender == null) return;
         boolean isTitle = false;
         boolean isActionBar = false;
         if (prefix.startsWith("a:")) {
