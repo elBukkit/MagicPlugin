@@ -91,6 +91,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
         if (noTarget) {
             entity.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
         }
+        CompatibilityUtils.setPersist(entity, false);
 
         if (entity instanceof LivingEntity) {
             CompatibilityUtils.setMaxHealth(((LivingEntity) entity), 1000.0);

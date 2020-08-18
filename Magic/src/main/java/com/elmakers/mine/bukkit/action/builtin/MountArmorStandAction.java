@@ -180,6 +180,7 @@ public class MountArmorStandAction extends RideEntityAction
         if (armorStandSmall) {
             armorStand.setSmall(true);
         }
+        CompatibilityUtils.setPersist(armorStand, false);
 
         MageController controller = context.getController();
         controller.setForceSpawn(true);

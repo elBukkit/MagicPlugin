@@ -18,6 +18,7 @@
    I changed this to reduce confusion about when protection is and is not working.
    If you prefer to bypass, give yourself the "Magic.bypass" permission.
  - Allow using titles and other escape prefixes in resoure_pack.sending message
+ - Set persist:false on broomsticks and entity projectiles, hoping they won't stick around
 
 # 7.9.12
 
