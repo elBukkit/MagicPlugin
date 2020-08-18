@@ -3908,3 +3908,19 @@ fireprotect:
   costs:
     mana: 50
 
+findall:
+  icon: torch
+  actions:
+    cast:
+      - class: AreaOfEffect
+        actions:
+         - class: PotionEffect
+  parameters:
+    target_npc: true
+    target_type: Villager
+    target: self
+    radius: 64
+    add_effects:
+      glowing: 1
+    duration: 30000
+
