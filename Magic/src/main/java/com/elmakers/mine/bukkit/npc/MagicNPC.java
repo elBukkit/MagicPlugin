@@ -315,6 +315,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         }
     }
 
+    @Override
     @Nullable
     public Integer getImportedId() {
         return importedId;

@@ -3,9 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class MageConversation {
     private final Mage speaker;
@@ -34,10 +32,6 @@ public class MageConversation {
                     .replace("$target", target.getDisplayName());
             target.sendMessage(message);
         }
-        Location location = speaker.getLocation();
-        Vector direction = target.getLocation().toVector().subtract(location.toVector());
-        location.setDirection(direction);
-        speaker.getEntity().teleport(location);
         nextLine++;
         return nextLine >= dialog.size();
     }

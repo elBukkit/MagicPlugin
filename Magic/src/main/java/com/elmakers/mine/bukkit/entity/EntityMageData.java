@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -176,15 +178,15 @@ public class EntityMageData {
         }
 
         if (hasDialog() && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            // Forgive me for my sins
             com.elmakers.mine.bukkit.magic.Mage speaker = (com.elmakers.mine.bukkit.magic.Mage)mage;
             Map<Player, MageConversation> conversations = speaker.getConversations();
             Map<Player, MageConversation> progress = conversations.isEmpty() ? conversations : new HashMap<>(conversations);
             conversations.clear();
 
+            Location targetLocation = null;
             Collection<Entity> nearby = mage.getLocation().getWorld().getNearbyEntities(mage.getLocation(), dialogRadius, dialogRadius, dialogRadius);
             for (Entity targetEntity : nearby) {
-                if (!(targetEntity instanceof Player)) continue;
+                if (!(targetEntity instanceof Player) || mage.getController().isNPC(targetEntity)) continue;
                 Player targetPlayer = (Player)targetEntity;
                 MageConversation conversation = progress.get(targetPlayer);
                 if (conversation == null) {
@@ -192,6 +194,21 @@ public class EntityMageData {
                 }
                 conversation.sayNextLine(dialog);
                 conversations.put(targetPlayer, conversation);
+                if (targetLocation == null) {
+                    targetLocation = targetPlayer.getLocation().clone();
+                } else {
+                    targetLocation.add(targetPlayer.getLocation()).multiply(0.5);
+                }
+            }
+
+            if (targetLocation != null) {
+                Entity entity = mage.getEntity();
+                if (entity != null && entity.isValid()) {
+                    Location location = entity.getLocation();
+                    Vector direction = targetLocation.toVector().subtract(location.toVector());
+                    location.setDirection(direction);
+                    entity.teleport(location);
+                }
             }
         }
     }
