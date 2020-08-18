@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
@@ -88,15 +89,35 @@ public class CitizensController implements NPCSupplier {
             if (alreadyImported.contains(npc.getId())) {
                 continue;
             }
-            MagicNPC magicNPC = new MagicNPC(controller, creator, npc.getStoredLocation(), npc.getName());
+            Entity entity = npc.getEntity();
+            if (entity == null) {
+                try {
+                    npc.spawn(npc.getStoredLocation());
+                } catch (Exception ex) {
+                    creator.sendMessage(ChatColor.RED + "An error occurred spawning NPC " + npc.getName() + ", please check logs");
+                    ex.printStackTrace();
+                }
+                entity = npc.getEntity();
+            }
+            Location location = npc.getStoredLocation();
+            if (location == null || location.getWorld() == null) {
+                location = entity == null ? null : entity.getLocation();
+                if (location == null || location.getWorld() == null) {
+                    creator.sendMessage(ChatColor.RED + "NPC " + npc.getName() + " is missing location and entity, skipping");
+                    continue;
+                } else {
+                    creator.sendMessage(ChatColor.YELLOW + "NPC " + npc.getName() + " is missing stored location, using entity location instead");
+                }
+            }
+            String name = npc.getName();
+            if (name == null || name.isEmpty()) {
+                creator.sendMessage(ChatColor.YELLOW + "NPC " + npc.getName() + " is missing a name, setting to 'NPC'");
+                name = "NPC";
+            }
+            MagicNPC magicNPC = new MagicNPC(controller, creator, location, name);
             controller.registerNPC(magicNPC);
             ConfigurationSection parameters = magicNPC.getParameters();
             String entityType = "villager";
-            Entity entity = npc.getEntity();
-            if (entity == null) {
-                npc.spawn(npc.getStoredLocation());
-                entity = npc.getEntity();
-            }
             if (entity == null) {
                 creator.sendMessage(ChatColor.YELLOW + "NPC " + npc.getName() + " is missing entity, defaulting to villager");
             } else {
