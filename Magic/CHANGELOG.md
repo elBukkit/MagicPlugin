@@ -9,6 +9,7 @@
    - Can do anything Magic Mobs can do
    - Add dialog scripts in-game using written books
    - Will stay put!
+ - Fix mob triggers not repeating
  - Add proper Residence integration
  - Fix Skript pre-cast ('on casting of') event
  - Fix trinketshop skull icons in 1.16

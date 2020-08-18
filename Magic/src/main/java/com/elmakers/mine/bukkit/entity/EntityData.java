@@ -1112,7 +1112,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             return false;
         }
 
-        return mageData.trigger(mage, trigger);
+        boolean result = mageData.trigger(mage, trigger);
+        mageData.resetTriggers();
+        return result;
     }
 
     @Override
