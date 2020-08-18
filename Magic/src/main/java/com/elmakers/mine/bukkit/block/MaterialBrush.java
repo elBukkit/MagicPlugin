@@ -387,13 +387,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public Location fromTargetLocation(World targetWorld, Location target) {
         if (cloneSource == null || cloneTarget == null) return null;
         Location translated = target.clone();
-        translated.setX(translated.getBlockX());
-        translated.setY(translated.getBlockY());
-        translated.setZ(translated.getBlockZ());
-        Vector cloneVector = new Vector(cloneSource.getBlockX(), cloneSource.getBlockY(), cloneSource.getBlockZ());
-        translated.subtract(cloneVector);
-        Vector cloneTargetVector = new Vector(cloneTarget.getBlockX(), cloneTarget.getBlockY(), cloneTarget.getBlockZ());
-        translated.add(cloneTargetVector);
+        translated.subtract(cloneSource.toVector());
+        translated.add(cloneTarget.toVector());
         translated.setWorld(targetWorld);
         return translated;
     }
@@ -643,7 +638,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && cloneSource != null)
         {
             List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<>();
-
+            // This is a hack... to really fix this we will need to gather up all the target chunks!
+            cloneSource.getChunk().load();
             World sourceWorld = cloneSource.getWorld();
             List<Entity> entities = sourceWorld.getEntities();
             for (Entity entity : entities) {
