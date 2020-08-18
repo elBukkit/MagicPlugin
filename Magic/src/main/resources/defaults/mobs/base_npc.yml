@@ -5,6 +5,7 @@ base_npc:
   gravity: false
   persist: false
   interact_spell_target: none
-  interact_spell_caster: false
+  interact_spell_source: player
+  interact_command_source: console
   dialog_interval: 2000
   dialog_range: 4
