@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 
@@ -30,4 +31,6 @@ public interface MagicNPC {
     void describe(CommandSender sender);
     @Nullable
     Integer getImportedId();
+    @Nullable
+    Entity getEntity();
 }

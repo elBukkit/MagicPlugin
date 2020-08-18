@@ -14,10 +14,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -318,6 +322,11 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
                 mage.sendMessage(ChatColor.RED + "Could not find NPC: " + ChatColor.GOLD + name);
             }
         } else {
+            Entity entity = npc.getEntity();
+            if (entity instanceof LivingEntity) {
+                LivingEntity li = (LivingEntity)entity;
+                li.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5 * 20, 1, true, false));
+            }
             mage.setSelectedNPC(npc);
             mage.sendMessage(ChatColor.GRAY + "Selected NPC: " + ChatColor.GOLD + npc.getName());
         }

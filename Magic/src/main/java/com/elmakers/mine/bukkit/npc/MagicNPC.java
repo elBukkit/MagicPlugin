@@ -174,8 +174,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         entityData.load(controller, effectiveParameters);
     }
 
+    @Override
     @Nullable
-    protected Entity getEntity() {
+    public Entity getEntity() {
         return uuid == null ? null : CompatibilityUtils.getEntity(location.getWorld(), uuid);
     }
 
