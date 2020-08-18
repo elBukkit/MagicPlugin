@@ -692,6 +692,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Nullable
+    public Entity spawn(MageController controller) {
+        return spawn(controller, null);
+    }
+
+    @Nullable
     @Override
     public Entity spawn(MageController controller, Location location) {
         return spawn(controller, location, null);
@@ -749,7 +754,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     private boolean modifyPreSpawn(MageController controller, Entity entity) {
         if (entity == null || entity.getType() != type) return false;
 
-        controller.registerMob(entity, this);
+        if (controller != null) {
+            controller.registerMob(entity, this);
+        }
         boolean isPlayer = (entity instanceof Player);
         if (extraData != null) {
             extraData.apply(entity);

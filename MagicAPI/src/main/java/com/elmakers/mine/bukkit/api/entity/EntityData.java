@@ -46,6 +46,8 @@ public interface EntityData {
     @Nullable
     Entity spawn();
     @Nullable
+    Entity spawn(MageController controller);
+    @Nullable
     Entity spawn(Location location);
     @Nullable
     Entity spawn(MageController controller, Location location);
