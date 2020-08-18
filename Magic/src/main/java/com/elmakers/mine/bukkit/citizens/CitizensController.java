@@ -174,6 +174,12 @@ public class CitizensController implements NPCSupplier {
                         MagicCitizensTrait spell = (MagicCitizensTrait)trait;
                         parameters.set("interact_spell", spell.getSpell());
                         parameters.set("interact_spell_parameters", spell.getSpellParameters());
+                        if (!spell.isCaster()) {
+                            parameters.set("interact_spell_source", "PLAYER");
+                        }
+                        if (spell.isTargetPlayer()) {
+                            parameters.set("interact_spell_target", "PLAYER");
+                        }
                     }
                 }
             }

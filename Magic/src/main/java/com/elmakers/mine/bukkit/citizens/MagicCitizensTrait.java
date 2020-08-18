@@ -70,6 +70,14 @@ public class MagicCitizensTrait extends CitizensTrait {
         return parameters;
     }
 
+    public boolean isCaster() {
+        return npcCaster;
+    }
+
+    public boolean isTargetPlayer() {
+        return targetPlayer;
+    }
+
     @Override
     public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event) {
         if (spellKey == null || spellKey.isEmpty()) return false;
