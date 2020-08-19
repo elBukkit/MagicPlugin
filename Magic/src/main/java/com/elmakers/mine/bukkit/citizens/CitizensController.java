@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -29,6 +30,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.TraitInfo;
+import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.trait.text.Text;
 
 public class CitizensController implements NPCSupplier {
@@ -132,7 +134,38 @@ public class CitizensController implements NPCSupplier {
             }
 
             for (Trait trait : npc.getTraits()) {
-                if (trait instanceof Text) {
+                if (trait instanceof Equipment) {
+                    Equipment equipment = (Equipment)trait;
+                    Map<Equipment.EquipmentSlot, ItemStack> items = equipment.getEquipmentBySlot();
+                    for (Equipment.EquipmentSlot slot : Equipment.EquipmentSlot.values()) {
+                        ItemStack item = items.get(slot);
+                        if (CompatibilityUtils.isEmpty(item)) continue;
+                        String key = null;
+                        switch (slot) {
+                            case HAND:
+                                key = "item";
+                                break;
+                            case BOOTS:
+                                key = "boots";
+                                break;
+                            case LEGGINGS:
+                                key = "leggings";
+                                break;
+                            case HELMET:
+                                key = "helmet";
+                                break;
+                            case CHESTPLATE:
+                                key = "chestplate";
+                                break;
+                            default:
+                                creator.sendMessage(ChatColor.YELLOW + "NPC " + npc.getName() + " has unhandled equipment slot " + slot);
+                                break;
+                        }
+                        if (key != null) {
+                            parameters.set(key, controller.getItemKey(item));
+                        }
+                    }
+                } else if (trait instanceof Text) {
                     Text text = (Text)trait;
                     if (!hasTextTraitField) {
                         hasTextTraitField = true;
@@ -140,7 +173,7 @@ public class CitizensController implements NPCSupplier {
                             textTraitText = Text.class.getDeclaredField("text");
                             textTraitText.setAccessible(true);
                         } catch (NoSuchFieldException e) {
-                            creator.sendMessage(ChatColor.RED + "Error reading Text trait text, NPC dialog will not be imported");
+                            creator.sendMessage(ChatColor.YELLOW + "Error reading Text trait for NPC " + npc.getName() + ", dialog will not be imported");
                         }
                     }
                     if (textTraitText != null) {
@@ -151,7 +184,7 @@ public class CitizensController implements NPCSupplier {
                             }
                         } catch (IllegalAccessException ex) {
                             ex.printStackTrace();
-                            creator.sendMessage(ChatColor.RED + "Error reading Text trait text, NPC dialog will not be imported");
+                            creator.sendMessage(ChatColor.YELLOW + "Error reading Text trait for NPC " + npc.getName() + ", dialog will not be imported");
                         }
                     }
                 } else if (trait instanceof CitizensTrait) {
