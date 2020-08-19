@@ -161,6 +161,7 @@ public class Automaton {
         }
 
         if (mage != null) {
+            Mage mage = this.mage;
             mage.deactivate();
             mage.undoScheduled();
             if (template != null && template.isUndoAll()) {
@@ -170,7 +171,6 @@ public class Automaton {
                 }
             }
             controller.forgetMage(mage);
-            mage = null;
         }
     }
 
