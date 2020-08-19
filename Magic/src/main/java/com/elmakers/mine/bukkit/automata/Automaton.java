@@ -105,7 +105,7 @@ public class Automaton {
     public void save(ConfigurationSection node) {
         node.set("created", createdAt);
         node.set("creator", creatorId);
-        node.set("creatorName", creatorName);
+        node.set("creator_name", creatorName);
         node.set("template", templateKey);
         node.set("world", location.getWorld().getName());
         node.set("x", location.getX());
