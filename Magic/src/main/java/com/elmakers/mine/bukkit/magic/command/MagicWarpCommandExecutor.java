@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class MagicWarpCommandExecutor extends MagicTabExecutor {
     private final MagicController magicController;
+    private static final int warpsPerPage = 8;
 
     public MagicWarpCommandExecutor(MagicController controller) {
         super(controller.getAPI(), "mwarp");
@@ -30,7 +31,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mwarp [add|replace|remove|go|import]");
+            sender.sendMessage(ChatColor.RED + "Usage: mwarp [add|replace|remove|go|list|import]");
             return true;
         }
 
@@ -43,6 +44,20 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equalsIgnoreCase("import")) {
             onImportWarps(sender);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("list")) {
+            int pageNumber = 1;
+            if (args.length > 1) {
+                try {
+                    pageNumber = Integer.parseInt(args[1]);
+                } catch (NumberFormatException ex) {
+                    sender.sendMessage(ChatColor.RED + "Invalid page number: " + pageNumber);
+                    return true;
+                }
+            }
+            onListWarps(sender, pageNumber);
             return true;
         }
 
@@ -131,6 +146,20 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.AQUA + "Removed warp: " + ChatColor.DARK_AQUA + warpName);
         } else {
             sender.sendMessage(ChatColor.RED + "Unknown warp: " + ChatColor.DARK_RED + warpName);
+        }
+    }
+
+    private void onListWarps(CommandSender sender, int pageNumber) {
+        int startIndex = (pageNumber - 1) * warpsPerPage;
+        List<String> warps = magicController.getWarps().getWarps();
+        for (int i = startIndex; i < startIndex + warpsPerPage && i < warps.size(); i++) {
+            String warp = warps.get(i);
+            sender.sendMessage(ChatColor.YELLOW + Integer.toString(i) + ChatColor.GRAY + ": " + ChatColor.GOLD + warp);
+        }
+        if (warps.size() > warpsPerPage) {
+            int pages = (warps.size() / warpsPerPage) + 1;
+            sender.sendMessage("  " + ChatColor.GRAY + "Page " + ChatColor.YELLOW
+                + pageNumber + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
         }
     }
 

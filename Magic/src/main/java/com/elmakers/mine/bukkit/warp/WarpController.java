@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.warp;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -77,5 +79,9 @@ public class WarpController {
     public boolean setEssentials(Plugin plugin) {
         essentials = EssentialsWarps.create(plugin);
         return (essentials != null);
+    }
+
+    public List<String> getWarps() {
+        return new ArrayList<>(warps.keySet());
     }
 }
