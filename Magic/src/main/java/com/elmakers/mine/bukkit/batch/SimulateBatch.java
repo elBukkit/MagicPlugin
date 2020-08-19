@@ -397,7 +397,6 @@ public class SimulateBatch extends SpellBatch {
             if (deadIndex >= 0 && deadIndex < deadBlocks.size()) {
                 Block killBlock = deadBlocks.get(deadIndex);
                 if (!killBlock.getChunk().isLoaded()) {
-                    killBlock.getChunk().load();
                     return processedBlocks;
                 }
 
@@ -420,7 +419,6 @@ public class SimulateBatch extends SpellBatch {
             if (bornIndex >= 0 && bornIndex < bornBlocks.size()) {
                 Block birthBlock = bornBlocks.get(bornIndex);
                 if (!birthBlock.getChunk().isLoaded()) {
-                    birthBlock.getChunk().load();
                     return processedBlocks;
                 }
                 createBlock(birthBlock);
