@@ -33,6 +33,7 @@ public class DefaultMaterials {
 
     private MaterialAndData playerSkullItem = null;
     private MaterialAndData playerSkullWallBlock = null;
+    private MaterialAndData skeletonSkullItem = null;
     private Material groundSignBlock = null;
     private Material wallSignBlock = null;
     private Material firework = null;
@@ -214,6 +215,15 @@ public class DefaultMaterials {
     @Nullable
     public static MaterialAndData getPlayerSkullWallBlock() {
         return getInstance().playerSkullWallBlock;
+    }
+
+    public void setSkeletonSkullItem(MaterialAndData item) {
+        skeletonSkullItem = item;
+    }
+
+    @Nullable
+    public static MaterialAndData getSkeletonSkullItem() {
+        return getInstance().skeletonSkullItem;
     }
 
     public void loadBlockItems(ConfigurationSection blocks) {
