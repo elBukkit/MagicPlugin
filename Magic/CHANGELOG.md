@@ -21,6 +21,11 @@
  - Set persist:false on broomsticks and entity projectiles, hoping they won't stick around
  - Add "split" flag for slime mobs, to prevent them from splitting. Add "cube" mob to survival.
  - Add "/mwarp list" command
+ - General improvements to Recall:
+   - Allow using an "options" list much like Selector
+   - Maintain order of "warps" and "commands" map
+   - Allow for multiple markers
+   - Add Recall level 4 and 5 to survival configs, 2 and 3 markers respectively.
 
 # 7.9.12
 

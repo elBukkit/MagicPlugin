@@ -53,16 +53,19 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private String markerKey = "recall_marker";
     private String unlockKey = "recall_warps";
     private String friendKey = "recall_friends";
+    private int markerCount = 1;
 
     private class UndoMarkerMove implements Runnable
     {
         private final Location location;
         private final Mage mage;
+        private final String markerKey;
 
-        public UndoMarkerMove(Mage mage, Location currentLocation)
+        public UndoMarkerMove(Mage mage, Location currentLocation, String markerKey)
         {
             this.location = currentLocation;
             this.mage = mage;
+            this.markerKey = markerKey;
         }
 
         @Override
@@ -90,6 +93,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
 
+    private String getMarkerKey(int markerNumber) {
+        String key = markerKey;
+        if (markerNumber > 1) {
+            key += markerNumber;
+        }
+        return key;
+    }
+
     private class Waypoint implements Comparable<Waypoint>
     {
         public final RecallType type;
@@ -106,6 +117,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final boolean maintainDirection;
         public final String warpName;
         public final String serverName;
+        public final int markerNumber;
 
         public boolean safe = true;
 
@@ -122,6 +134,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.opPlayer = false;
             this.asConsole = false;
             this.maintainDirection = maintainDirection;
+            this.markerNumber = 0;
             serverName = null;
             warpName = null;
         }
@@ -139,6 +152,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.opPlayer = false;
             this.asConsole = false;
             this.maintainDirection = false;
+            this.markerNumber = 0;
             serverName = null;
             warpName = null;
         }
@@ -158,6 +172,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.opPlayer = false;
             this.asConsole = false;
             this.maintainDirection = false;
+            this.markerNumber = 0;
         }
 
         public Waypoint(RecallType type, String command, boolean opPlayer, boolean asConsole, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
@@ -173,6 +188,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.opPlayer = opPlayer;
             this.asConsole = asConsole;
             this.maintainDirection = false;
+            this.markerNumber = 0;
             serverName = null;
             warpName = null;
         }
@@ -208,6 +224,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             String defaultFailMessage = "";
             String defaultDescription = "";
             Location location = null;
+            int markerNumber = 0;
             boolean defaultMaintainDirection = false;
             boolean defaultSafe = true;
             switch (type) {
@@ -217,12 +234,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 defaultFailMessage = context.getMessage("no_target_warp", "");
                 break;
             case MARKER:
-                String key = configuration.getString("marker", markerKey);
-                location = ConfigurationUtils.getLocation(mage.getData(), key);
-                defaultTitle = context.getMessage("title_marker", "Marker");
-                defaultMessage = context.getMessage("cast_marker", "");
-                defaultFailMessage = context.getMessage("no_target_marker", "");
-                defaultDescription =  context.getMessage("description_marker", "");
+                markerNumber = configuration.getInt("marker", 1);
+                location = ConfigurationUtils.getLocation(mage.getData(), getMarkerKey(markerNumber));
+                defaultTitle = context.getMessage("title_marker", "Marker #$number").replace("$number", Integer.toString(markerNumber));
+                defaultMessage = context.getMessage("cast_marker", "").replace("$number", Integer.toString(markerNumber));
+                defaultFailMessage = context.getMessage("no_target_marker", "").replace("$number", Integer.toString(markerNumber));
+                defaultDescription =  context.getMessage("description_marker", "").replace("$number", Integer.toString(markerNumber));
                 defaultIcon = getIcon(context, parameters, "icon_marker");
                 defaultMaintainDirection = true;
                 break;
@@ -282,6 +299,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             maintainDirection = configuration.getBoolean("keep_direction", defaultMaintainDirection);
             safe = configuration.getBoolean("safe", defaultSafe);
             this.location = location;
+            this.markerNumber = markerNumber;
         }
 
         @Override
@@ -345,9 +363,15 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return;
         }
         ItemStack item = event.getCurrentItem();
+        if (InventoryUtils.hasMeta(item, "placeholder"))
+        {
+            context.getMage().deactivateGUI();
+            return;
+        }
         if (InventoryUtils.hasMeta(item, "move_marker"))
         {
-            if (placeMarker(context.getLocation().getBlock()))
+            int markerNumber = InventoryUtils.getMetaInt(item, "move_marker", 1);
+            if (placeMarker(context.getLocation().getBlock(), markerNumber))
             {
                 context.sendMessageKey("target_selected");
             }
@@ -381,6 +405,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.unlockKey = parameters.getString("unlock_key", "recall_warps");
         this.friendKey = parameters.getString("friend_key", "recall_friends");
         this.protectionTime = parameters.getInt("protection_duration", 0);
+        this.markerCount = parameters.getInt("marker_count", 1);
 
         allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
     }
@@ -675,7 +700,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                         showMarkerConfirm(context);
                         return SpellResult.CAST;
                     }
-                    if (placeMarker(block))
+                    if (placeMarker(block, 1))
                     {
                         return SpellResult.TARGET_SELECTED;
                     }
@@ -711,17 +736,17 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 isPlaceholder = true;
             }
             ItemStack waypointItem = null;
-            if (waypoint.iconURL != null && !waypoint.iconURL.isEmpty()) {
-                waypointItem = controller.getURLSkull(waypoint.iconURL);
-            } else if (waypoint.icon != null) {
-                waypointItem = waypoint.icon.getItemStack(1);
-            } else {
-                if (isPlaceholder) {
-                    String iconPlaceholderKey = parameters.getString("placeholder_icon", "air");
-                    waypointItem = controller.createItem(iconPlaceholderKey);
-                }
+            if (isPlaceholder) {
+                String iconPlaceholderKey = parameters.getString("placeholder_icon", "air");
+                waypointItem = controller.createItem(iconPlaceholderKey);
                 if (waypointItem == null) {
                     waypointItem = new ItemStack(DefaultWaypointMaterial);
+                }
+            } else {
+                if (waypoint.iconURL != null && !waypoint.iconURL.isEmpty()) {
+                    waypointItem = controller.getURLSkull(waypoint.iconURL);
+                } else if (waypoint.icon != null) {
+                    waypointItem = waypoint.icon.getItemStack(1);
                 }
             }
             ItemMeta meta = waypointItem == null ? null : waypointItem.getItemMeta();
@@ -743,6 +768,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 InventoryUtils.hideFlags(waypointItem, 63);
                 InventoryUtils.setMeta(waypointItem, "waypoint", "true");
                 CompatibilityUtils.makeUnbreakable(waypointItem);
+                if (isPlaceholder) {
+                    InventoryUtils.setMetaBoolean(waypointItem, "placeholder", true);
+                }
             }
             displayInventory.setItem(index, waypointItem);
             index++;
@@ -769,26 +797,33 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     {
         options.clear();
         String inventoryTitle = context.getMessage("move_marker_title", "Move Marker");
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
+        int invSize = (int)Math.ceil(markerCount / 9.0f) * 9;
+        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         MaterialAndData iconType = getIcon(context, parameters, "icon_move_marker");
-        ItemStack markerItem = iconType.getItemStack(1);
-
-        ItemMeta meta = markerItem.getItemMeta();
-        meta.setDisplayName(context.getMessage("title_move_marker"));
-        String description = context.getMessage("description_move_marker");
-        if (description != null && description.length() > 0)
-        {
-            List<String> lore = new ArrayList<>();
-            lore.add(description);
-            meta.setLore(lore);
+        int startIndex = 0;
+        if (markerCount < 8) {
+            startIndex = (9 - markerCount) / 2;
         }
-        markerItem.setItemMeta(meta);
-        markerItem = InventoryUtils.makeReal(markerItem);
-        InventoryUtils.hideFlags(markerItem, 63);
-        InventoryUtils.setMeta(markerItem, "move_marker", "true");
+        for (int marker = 1; marker <= markerCount; marker++) {
+            int inventoryIndex = startIndex + marker - 1;
+            ItemStack markerItem = iconType.getItemStack(1);
+            ItemMeta meta = markerItem.getItemMeta();
+            meta.setDisplayName(context.getMessage("title_move_marker").replace("$number", Integer.toString(marker)));
+            String description = context.getMessage("description_move_marker");
+            if (description != null && description.length() > 0)
+            {
+                List<String> lore = new ArrayList<>();
+                lore.add(description);
+                meta.setLore(lore);
+            }
+            markerItem.setItemMeta(meta);
+            markerItem = InventoryUtils.makeReal(markerItem);
+            InventoryUtils.hideFlags(markerItem, 63);
+            InventoryUtils.setMetaInt(markerItem, "move_marker", marker);
 
-        displayInventory.setItem(4, markerItem);
-        context.getMage().activateGUI(this, displayInventory);
+            displayInventory.setItem(inventoryIndex, markerItem);
+            context.getMage().activateGUI(this, displayInventory);
+        }
     }
 
     @Nullable
@@ -979,7 +1014,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return true;
     }
 
-    protected boolean placeMarker(Block target)
+    protected boolean placeMarker(Block target, int markerNumber)
     {
         if (target == null)
         {
@@ -988,9 +1023,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         Mage mage = context.getMage();
         ConfigurationSection mageData = mage.getData();
+        String markerKey = getMarkerKey(markerNumber);
         Location location = ConfigurationUtils.getLocation(mageData, markerKey);
 
-        context.registerForUndo(new UndoMarkerMove(mage, location));
+        context.registerForUndo(new UndoMarkerMove(mage, location, markerKey));
         if (location != null)
         {
             context.sendMessageKey("cast_marker_move");

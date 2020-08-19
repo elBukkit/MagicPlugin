@@ -731,9 +731,9 @@ spells:
         no_target_town: You're not in a town
         no_target_fields: You have no fields
         no_target_friend: Invalid friend $name
-        title_move_marker: Move Marker to Here
+        title_move_marker: "Move Marker #$number to Here"
         description_move_marker: Replaces your current marker
-        title_marker: Marker
+        title_marker: "Marker #$number"
         description_marker: Aim down to move your marker
         title_death: Last Death
         description_death: Your last death location
@@ -759,6 +759,10 @@ spells:
     recall|3:
         upgrade_description: "Unlock marker, aim down to set location."
         usage: Has a 5-second warmup. Cast down to set a marker
+    recall|4:
+        upgrade_description: "Allows for a second marker"
+    recall|5:
+        upgrade_description: "Allows for a thrid marker"
     warpunlock:
       name: Unlock Warp
       description: Useful in command blocks or region commands to unlock Recall waypoints when a player discovers an area

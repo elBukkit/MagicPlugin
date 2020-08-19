@@ -83,9 +83,12 @@ recall:
         - type: spawn
         - type: placeholder
         - type: placeholder
-        - type: placeholder
-        - type: placeholder
         - type: marker
+          marker: 3
+        - type: marker
+          marker: 2
+        - type: marker
+          marker: 1
       placeholder_icon:
       warmup: 5000
       cancel_on_damage: 1
@@ -100,11 +103,11 @@ recall:
       allow_fields: true
       icon_death: skull_item
       icon_field: wood_door
-      icon_wand: wood_hoe
+      icon_wand: wood_hoeAllow
       icon_spawn: wood_door
       icon_home: bed
       icon_town: iron_door
-      icon_marker: redstone_torch_on
+      icon_marker: redstone_block
       icon_move_marker: redstone_block
       loud: true
       cooldown: 15000
@@ -118,10 +121,20 @@ recall|2:
         allow_death: true
 
 recall|3:
-    actions:
-      alternate_down:
-      -  class: Recall
-         type: place
-    parameters:
-        allow_marker: true
+  upgrade_required_path: apprentice
+  actions:
+    alternate_down:
+      - class: Recall
+        type: place
+  parameters:
+      allow_marker: true
+
+recall|4:
+  upgrade_required_path: master
+  parameters:
+    marker_count: 2
+
+recall|5:
+  parameters:
+    marker_count: 3
 
