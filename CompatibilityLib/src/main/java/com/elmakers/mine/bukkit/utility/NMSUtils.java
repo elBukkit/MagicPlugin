@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -279,6 +280,8 @@ public class NMSUtils {
     protected static Method class_ItemMeta_removeAttributeModifierMethod;
     protected static Method class_Player_stopSoundMethod;
     protected static Method class_Player_stopSoundStringMethod;
+    protected static Method class_Chunk_addPluginChunkTicketMethod;
+    protected static Method class_Chunk_removePluginChunkTicketMethod;
 
     protected static boolean legacyMaps;
 
@@ -598,6 +601,15 @@ public class NMSUtils {
 
             // We don't want to consider new-ish builds as "legacy" and print a warning, so keep a separate flag
             boolean current = true;
+
+            try {
+                class_Chunk_addPluginChunkTicketMethod = Chunk.class.getMethod("addPluginChunkTicket", Plugin.class);
+                class_Chunk_removePluginChunkTicketMethod = Chunk.class.getMethod("removePluginChunkTicket", Plugin.class);
+            } catch (Throwable ex) {
+                Bukkit.getLogger().warning("Could not bind to chunk ticket API, chunk locking will not work");
+                class_Chunk_addPluginChunkTicketMethod = null;
+                class_Chunk_removePluginChunkTicketMethod = null;
+            }
 
             // Particularly volatile methods that we can live without
             try {

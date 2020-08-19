@@ -6365,6 +6365,34 @@ public class MagicController implements MageController {
         return citizens;
     }
 
+    @Override
+    public void lockChunk(Chunk chunk) {
+        Integer locked = lockedChunks.get(chunk);
+        if (locked == null) {
+            lockedChunks.put(chunk, 1);
+            CompatibilityUtils.lockChunk(chunk, plugin);
+        } else {
+            lockedChunks.put(chunk, locked + 1);
+        }
+    }
+
+    @Override
+    public void unlockChunk(Chunk chunk) {
+        Integer locked = lockedChunks.get(chunk);
+        if (locked == null || locked <= 1) {
+            lockedChunks.remove(chunk);
+            CompatibilityUtils.unlockChunk(chunk, plugin);
+        } else {
+            lockedChunks.put(chunk, locked - 1);
+        }
+    }
+
+    @Override
+    @Nonnull
+    public Collection<Chunk> getLockedChunks() {
+        return lockedChunks.keySet();
+    }
+
     /*
      * Private data
      */
@@ -6485,6 +6513,7 @@ public class MagicController implements MageController {
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
     private final Map<String, WeakReference<Schematic>> schematics          = new HashMap<>();
     private final Map<String, Collection<EffectPlayer>> effects             = new HashMap<>();
+    private final Map<Chunk, Integer> lockedChunks                          = new HashMap<>();
 
     private MageDataStore                       mageDataStore               = null;
     private MageDataStore                       migrateDataStore            = null;

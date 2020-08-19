@@ -2101,4 +2101,26 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return false;
     }
+
+    public static boolean lockChunk(Chunk chunk, Plugin plugin) {
+        if (class_Chunk_addPluginChunkTicketMethod == null) return false;
+        try {
+            class_Chunk_addPluginChunkTicketMethod.invoke(chunk, plugin);
+            return true;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean unlockChunk(Chunk chunk, Plugin plugin) {
+        if (class_Chunk_removePluginChunkTicketMethod == null) return false;
+        try {
+            class_Chunk_removePluginChunkTicketMethod.invoke(chunk, plugin);
+            return true;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

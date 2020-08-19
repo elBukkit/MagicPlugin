@@ -23,7 +23,10 @@ public abstract class BrushBatch extends SpellBatch {
     protected abstract boolean contains(Location location);
 
     protected void touch(Block block) {
-        affectedChunks.add(block.getChunk());
+        Chunk chunk = block.getChunk();
+        if (affectedChunks.add(chunk)) {
+            controller.lockChunk(chunk);
+        }
     }
 
     @Override
@@ -53,6 +56,10 @@ public abstract class BrushBatch extends SpellBatch {
                     }
                 }
             }
+            for (Chunk chunk : affectedChunks) {
+                controller.unlockChunk(chunk);
+            }
+            affectedChunks.clear();
             super.finish();
         }
     }

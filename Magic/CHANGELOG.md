@@ -28,6 +28,8 @@
  - Add "split" flag for slime mobs, to prevent them from splitting. Add "cube" mob to survival.
  - Add "/mwarp list" command
  - Improvements to making sure data files don't get wiped
+ - Use chunk ticket API for performance improvements in large construction and undo tasks in unloaded areas
+ - Automaton will no longer force-load chunks
 
 # 7.9.12
 

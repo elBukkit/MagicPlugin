@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.batch;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.bukkit.Chunk;
 import org.bukkit.block.BlockState;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -18,6 +22,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     protected int listSize;
     protected int listProcessed;
     protected double partialWork = 0;
+    private Set<Chunk> affectedChunks = new HashSet<>();
 
     private final MaterialSet attachables;
 
@@ -77,6 +82,11 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
                 // There may have been a forced chunk load here
                 workPerformed += 20;
                 break;
+            } else {
+                Chunk chunk = undone.getChunk();
+                if (affectedChunks.add(chunk)) {
+                    controller.lockChunk(chunk);
+                }
             }
             if (prior != null) {
                 Mage mage = undoList.getOwner();
@@ -108,6 +118,10 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
             if (context != null) {
                 context.playEffects("undo_finished");
             }
+            for (Chunk chunk : affectedChunks) {
+                controller.unlockChunk(chunk);
+            }
+            affectedChunks.clear();
         }
     }
 

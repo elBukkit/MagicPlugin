@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -610,4 +611,8 @@ public interface MageController {
     @Nullable
     MagicNPC getNPC(@Nullable Entity entity);
     void registerMob(@Nonnull Entity entity, @Nonnull EntityData entityData);
+    @Nonnull
+    Collection<Chunk> getLockedChunks();
+    void lockChunk(Chunk chunk);
+    void unlockChunk(Chunk chunk);
 }

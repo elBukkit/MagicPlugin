@@ -321,6 +321,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             }
 
             Collection<Mage> mages = controller.getMages();
+            sender.sendMessage(ChatColor.AQUA + "Locked Chunks (" + ChatColor.LIGHT_PURPLE + controller.getLockedChunks().size() + ChatColor.AQUA + ")");
             sender.sendMessage(ChatColor.AQUA + "Modified blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getModified().size() + ChatColor.AQUA + ")");
             sender.sendMessage(ChatColor.AQUA + "Watching blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getWatching().size() + ChatColor.AQUA + ")");
             sender.sendMessage(ChatColor.AQUA + "Registered breaking (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreaking().size() + ChatColor.AQUA + ")");
