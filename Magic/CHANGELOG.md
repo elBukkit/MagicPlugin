@@ -26,6 +26,7 @@
    - Maintain order of "warps" and "commands" map
    - Allow for multiple markers
    - Add Recall level 4 and 5 to survival configs, 2 and 3 markers respectively.
+   - Waypoints waiting to be unlocked will now show in the menu (configurable)
 
 # 7.9.12
 

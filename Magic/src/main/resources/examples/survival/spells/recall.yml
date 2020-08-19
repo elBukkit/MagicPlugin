@@ -80,14 +80,19 @@ recall:
         - type: home
         - type: death
         - type: town
+          show_unavailable: false
         - type: spawn
+          show_unavailable: false
         - type: placeholder
         - type: placeholder
         - type: marker
+          show_unavailable: false
           marker: 3
         - type: marker
+          show_unavailable: false
           marker: 2
         - type: marker
+          show_unavailable: false
           marker: 1
       placeholder_icon:
       warmup: 5000
@@ -109,6 +114,8 @@ recall:
       icon_town: iron_door
       icon_marker: redstone_block
       icon_move_marker: redstone_block
+      show_unavailable: true
+      unavailable_icon: skull:http://textures.minecraft.net/texture/d34e063cafb467a5c8de43ec78619399f369f4a52434da8017a983cdd92516a0
       loud: true
       cooldown: 15000
       protection_duration: 5000

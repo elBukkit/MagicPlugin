@@ -754,6 +754,10 @@ spells:
         unlock_warp: "&bYou have unlocked &5$name &bas a &6Recall &bdestination!"
         add_friend: "&bYou have added &5$name &bas a &6Recall &bdestination!"
         remove_friend: "&cYou have removed &5$name &cas a &6Recall &cdestination!"
+        invalid_description: "\n&cThis location is invalid"
+        unavailable_description: "\n&eLevel up to unlock this"
+        unavailable_warp_description: "\n&eFind this location to unlock!"
+        unavailable_name: "&c$name"
     recall|2:
         upgrade_description: "Unlock last death location"
     recall|3:
@@ -762,7 +766,7 @@ spells:
     recall|4:
         upgrade_description: "Allows for a second marker"
     recall|5:
-        upgrade_description: "Allows for a thrid marker"
+        upgrade_description: "Allows for a third marker"
     warpunlock:
       name: Unlock Warp
       description: Useful in command blocks or region commands to unlock Recall waypoints when a player discovers an area

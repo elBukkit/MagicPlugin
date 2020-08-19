@@ -694,6 +694,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Nullable
+    @Override
     public Entity spawn(MageController controller) {
         return spawn(controller, null);
     }

@@ -2473,6 +2473,7 @@ public class MagicController implements MageController {
         defaultMaterials.loadBlockItems(blockItems);
         defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
         defaultMaterials.setPlayerSkullWallBlock(skullWallBlocks.get(EntityType.PLAYER));
+        defaultMaterials.setSkeletonSkullItem(skullItems.get(EntityType.SKELETON));
 
         buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
         indestructibleMaterials = materialSetManager
