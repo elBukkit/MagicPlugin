@@ -2302,10 +2302,6 @@ public class MagicController implements MageController {
                             for (MageData mageData : saveMages) {
                                 mageDataStore.save(mageData, null, false);
                             }
-                            for (YamlDataFile config : saveData) {
-                                config.save();
-                            }
-                            info("Finished saving");
                         }
                     }
                 });
@@ -2314,11 +2310,28 @@ public class MagicController implements MageController {
                     for (MageData mageData : saveMages) {
                         mageDataStore.save(mageData, null, false);
                     }
-                    for (YamlDataFile config : saveData) {
-                        config.save();
-                    }
-                    info("Finished saving");
                 }
+            }
+        }
+
+        if (asynchronous) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (saveLock) {
+                        for (YamlDataFile config : saveData) {
+                            config.save();
+                        }
+                        info("Finished saving");
+                    }
+                }
+            });
+        } else {
+            synchronized (saveLock) {
+                for (YamlDataFile config : saveData) {
+                    config.save();
+                }
+                info("Finished saving");
             }
         }
 
