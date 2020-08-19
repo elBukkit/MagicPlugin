@@ -20,6 +20,7 @@
  - Allow using titles and other escape prefixes in resoure_pack.sending message
  - Set persist:false on broomsticks and entity projectiles, hoping they won't stick around
  - Add "split" flag for slime mobs, to prevent them from splitting. Add "cube" mob to survival.
+ - Add "/mwarp list" command
 
 # 7.9.12
 
