@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -130,6 +131,9 @@ public class CitizensController implements NPCSupplier {
                     disguise.set("type", "player");
                     disguise.set("skin", npc.getName());
                     parameters.set("disguise", disguise);
+                } else if (entity instanceof Villager) {
+                    Villager villager = (Villager)entity;
+                    parameters.set("villager_profession", villager.getProfession().name().toLowerCase());
                 }
             }
 
