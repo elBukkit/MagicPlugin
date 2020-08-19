@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.block;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -26,6 +27,8 @@ public interface BlockData extends MaterialAndData {
     String getWorldName();
     @Nullable
     Block getBlock();
+    @Nullable
+    Chunk getChunk();
     BlockVector getPosition();
     void restore();
     void restore(boolean applyPhysics);

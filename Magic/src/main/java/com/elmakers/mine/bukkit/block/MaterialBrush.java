@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -630,38 +632,49 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return null;
     }
 
-    @Nullable
+    protected void addEntities(Collection<Entity> source, Collection<com.elmakers.mine.bukkit.api.entity.EntityData> destination) {
+        for (Entity entity : source) {
+            if (!(entity instanceof Player || entity instanceof Item || controller.isNPC(entity))) {
+                Location entityLocation = entity.getLocation();
+                Location translated = fromTargetLocation(cloneTarget.getWorld(), entityLocation);
+                EntityData entityData = new EntityData(translated, entity);
+                destination.add(entityData);
+            }
+        }
+    }
+
     @Override
-    public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities() {
+    @Nullable
+    public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities(Collection<Chunk> chunks) {
         if (cloneTarget == null) return null;
 
-        if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && cloneSource != null)
-        {
-            List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<>();
-            // This is a hack... to really fix this we will need to gather up all the target chunks!
-            cloneSource.getChunk().load();
+        if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && cloneSource != null) {
             World sourceWorld = cloneSource.getWorld();
-            List<Entity> entities = sourceWorld.getEntities();
-            for (Entity entity : entities) {
-                if (!(entity instanceof Player || entity instanceof Item)) {
-                    Location entityLocation = entity.getLocation();
-                    Location translated = fromTargetLocation(cloneTarget.getWorld(), entityLocation);
-                    EntityData entityData = new EntityData(translated, entity);
-                    copyEntities.add(entityData);
+            List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<>();
+            if (chunks == null) {
+                addEntities(sourceWorld.getEntities(), copyEntities);
+            } else {
+                for (Chunk chunk : chunks) {
+                    Chunk sourceChunk = sourceWorld.getChunkAt(chunk.getX(), chunk.getZ());
+                    sourceChunk.load();
+                    addEntities(Arrays.asList(sourceChunk.getEntities()), copyEntities);
                 }
             }
-
             return copyEntities;
         }
-        else if (mode == BrushMode.SCHEMATIC)
-        {
-            if (schematic != null)
-            {
+        else if (mode == BrushMode.SCHEMATIC) {
+            if (schematic != null) {
                 return schematic.getEntities(cloneTarget);
             }
         }
 
         return null;
+    }
+
+    @Nullable
+    @Override
+    public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities() {
+        return getEntities(null);
     }
 
     @Override

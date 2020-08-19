@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.api.block;
 
 import java.util.Collection;
+import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
@@ -24,4 +27,6 @@ public interface BlockList extends Collection<BlockData> {
     boolean add(Block block);
     void contain(Vector vector);
     boolean contains(Block block);
+    @Nonnull
+    Set<Chunk> getChunks();
 }

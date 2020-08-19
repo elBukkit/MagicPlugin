@@ -312,6 +312,20 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         return block;
     }
 
+    @Nullable
+    @Override
+    public Chunk getChunk() {
+        Chunk chunk = null;
+        if (location != null)
+        {
+            World world = getWorld();
+            if (world != null) {
+                chunk = world.getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4);
+            }
+        }
+        return chunk;
+    }
+
     @Override
     public boolean isDifferent()
     {

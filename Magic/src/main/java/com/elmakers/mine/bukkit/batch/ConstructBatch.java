@@ -537,6 +537,7 @@ public class ConstructBatch extends BrushBatch {
     protected void modifyWith(Block block, MaterialAndData brush) {
         Material previousMaterial = block.getType();
         byte previousData = DeprecatedUtils.getData(block);
+        touch(block);
 
         if (brush.isValid() && (brush.isDifferent(block) || commit)) {
             if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {

@@ -203,6 +203,7 @@ public class ShapeBatch extends BrushBatch {
             return false;
         }
 
+        touch(block);
         // Prepare material brush, it may update
         // given the current target (clone, replicate)
         MaterialBrush brush = spell.getBrush();

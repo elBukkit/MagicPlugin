@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
@@ -295,4 +298,15 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     public String getWorldName() {
         return worldName;
     }
+
+    @Override
+    @Nonnull
+    public Set<Chunk> getChunks() {
+        Set<Chunk> chunks = new HashSet<>();
+        for (BlockData block : blockList) {
+            chunks.add(block.getChunk());
+        }
+        return chunks;
+    }
+
 }
