@@ -50,8 +50,8 @@ player_data_store:
 #   user: minecraft
 #   password: somethingsecure
 
-# Auto-save interval in milliseconds (default is one hour, 0 to disable)
-auto_save: 3600000
+# Auto-save interval in milliseconds (default is 10 minutes, 0 to disable)
+auto_save: 600000
 
 # Can be used to turn off saving player data entirely
 save_player_data: true
