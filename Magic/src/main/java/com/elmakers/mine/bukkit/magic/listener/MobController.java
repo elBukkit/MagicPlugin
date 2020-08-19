@@ -27,7 +27,9 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
@@ -155,6 +157,15 @@ public class MobController implements Listener {
         }
     }
 
+    @EventHandler
+    public void onSlimeSplit(SlimeSplitEvent event) {
+        Entity entity = event.getEntity();
+        if (entity.hasMetadata("nosplit")) {
+            event.setCancelled(true);
+            entity.removeMetadata("nosplit", controller.getPlugin());
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         Entity entity = event.getEntity();
@@ -163,20 +174,23 @@ public class MobController implements Listener {
         }
 
         EntityData mob = activeMobs.get(entity);
+        boolean isMagicMob = mob != null;
         if (mob == null) {
             mob = defaultMobs.get(entity.getType());
-            if (mob != null && !entity.hasMetadata("nodrops")) {
-                mob.modifyDrops(controller, event);
-            }
+        }
+        if (mob == null) {
             return;
         }
 
         // Prevent processing double-death events
-        activeMobs.remove(entity);
-
-        MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
-        Bukkit.getPluginManager().callEvent(deathEvent);
-
+        if (isMagicMob) {
+            activeMobs.remove(entity);
+            MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
+            Bukkit.getPluginManager().callEvent(deathEvent);
+        }
+        if (!mob.isSplittable()) {
+            entity.setMetadata("nosplit", new FixedMetadataValue(controller.getPlugin(), true));
+        }
         if (!entity.hasMetadata("nodrops")) {
             mob.modifyDrops(controller, event);
         }

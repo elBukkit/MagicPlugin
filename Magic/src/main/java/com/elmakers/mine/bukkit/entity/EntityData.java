@@ -94,6 +94,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean hasMoved = false;
     protected boolean hasChangedHealth = false;
     protected boolean isTemporary = false;
+    protected boolean isSplittable = false;
     private boolean respawn = false;
     protected String name = null;
     protected Art art;
@@ -347,6 +348,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isBaby = parameters.getBoolean("baby", false);
         hasAI = parameters.getBoolean("ai", true);
         hasGravity = parameters.getBoolean("gravity", true);
+        isSplittable = parameters.getBoolean("split", true);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -1244,5 +1246,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public String getInteractPermission() {
         return interactPermission;
+    }
+
+    public boolean isSplittable() {
+        return isSplittable;
     }
 }

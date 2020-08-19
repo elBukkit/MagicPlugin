@@ -4,12 +4,10 @@
 
  - NPCs:
    - Need "template" command to change inherited template?
-   - Need "spell" command to easily set spell?
 
  - Make melee a tag instead of a material list
  
  - Passives:
-   - Need passive classes, which always have their passive spells active
    - Some way to tag/group passives, where only N spells from a group can be active at a time
 
  - Add support for Sponge schematics
@@ -22,7 +20,6 @@
  - Look at bug with equations from Reuben
  - Some way to specify order of icons in Recall
 
- - Option for slime mobs to not split on death
  - while moving or flying (it happens more often while doing this) around and right clicking to cast, it throws this error: https://hastebin.com/ixilazasig.makefile  it doesn't seem to happen with left click. Not an expert but by reading a bit I think it's because minecraft thinks the player item is being replaced by air and acts like we want to place such air as a block, which is imposible. Hope it helps!
    (This may be a creative mode only bug?)
  - Rocket boots + rocket spell underwater = profit? https://www.youtube.com/watch?v=mAOrgu8P4r8
