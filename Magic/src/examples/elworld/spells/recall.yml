@@ -1,39 +1,6 @@
 recall:
   parameters:
-    commands:
-      hub:
-        name: elMakers Hub
-        description: Return to the Hub
-        icon: nether_star
-        command: mserver hub
-        op: true
-        locked: true
     warps:
-      bean:
-        name: Chicago Warzone
-        description: Leave this world
-        server: chicago
-        icon: iron_nugget
-        locked: true
-      walls:
-        name: The Walls
-        description: A sprawling urbal dueling arena
-        icon: wood_hoe:3
-      falcon:
-        name: Milennium Falcon
-        description: May the force be with you!
-        locked: false
-        icon: wood_hoe:14
-      greenfield:
-        name: Greenfield Car Dealership
-        description: Explore a sprawling city
-        locked: false
-        icon: diamond_pickaxe:10
-      airtemple:
-        name: Southern Air Temple
-        description: A relic of a long-lost civilization
-        locked: false
-        icon: wood_hoe:34
       mansion:
         name: The Mansion
         description: Return to the training mansion
@@ -54,6 +21,25 @@ recall:
         description: The old city of yore
         locked: true
         icon: compass
+      falcon:
+        name: Milennium Falcon
+        description: May the force be with you!
+        locked: false
+        icon: wood_hoe:14
+      greenfield:
+        name: Greenfield Car Dealership
+        description: Explore a sprawling city
+        locked: false
+        icon: diamond_pickaxe:10
+      airtemple:
+        name: Southern Air Temple
+        description: A relic of a long-lost civilization
+        locked: false
+        icon: wood_hoe:34
+      walls:
+        name: The Walls
+        description: A sprawling urbal dueling arena
+        icon: wood_hoe:3
       battle:
         name: Battle School
         description: Buy your way to power
