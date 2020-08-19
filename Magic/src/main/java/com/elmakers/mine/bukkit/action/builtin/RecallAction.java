@@ -90,7 +90,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
 
-    private static class Waypoint implements Comparable<Waypoint>
+    private class Waypoint implements Comparable<Waypoint>
     {
         public final RecallType type;
         public final String name;
@@ -179,19 +179,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         public Waypoint(CastContext context, ConfigurationSection configuration) {
             warpName = configuration.getString("warp", "");
-            String optionName = configuration.getString("name", warpName);
-            name = ChatColor.translateAlternateColorCodes('&', context.getMessage("title_warp", "$name").replace("$name", optionName));
-            message = configuration.getString("message",  context.getMessage("cast_warp").replace("$name", name));
-            description = ChatColor.translateAlternateColorCodes('&', configuration.getString("description", ""));
-            failMessage = configuration.getString("fail_message", context.getMessage("no_target_warp")).replace("$name", warpName);
-            icon = ConfigurationUtils.getMaterialAndData(configuration, "icon", defaultMaterial);
-            iconURL = configuration.getString("iconURL");
             command = configuration.getString("command");
-            opPlayer = configuration.getBoolean("op");
-            asConsole = configuration.getBoolean("console");
-            maintainDirection = configuration.getBoolean("keep_direction", false);
-            location = null;
-
             if (command != null) {
                 type = RecallType.COMMAND;
                 serverName = null;
@@ -208,6 +196,92 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 type = parsedType;
                 serverName = null;
             }
+
+            // Determine default messages and icon based on type
+            // Note that the default icon should not be set here, in case it is a placeholder.
+            // The default icon will be used if no other icon matches, at inventory generation time
+            Mage mage = context.getMage();
+            Player player = mage.getPlayer();
+            MaterialAndData defaultIcon = null;
+            String defaultTitle = "";
+            String defaultMessage = "";
+            String defaultFailMessage = "";
+            String defaultDescription = "";
+            Location location = null;
+            boolean defaultMaintainDirection = false;
+            boolean defaultSafe = true;
+            switch (type) {
+            case WARP:
+                defaultTitle = context.getMessage("title_warp", "$name").replace("$name", warpName);
+                defaultMessage = context.getMessage("cast_warp", "");
+                defaultFailMessage = context.getMessage("no_target_warp", "");
+                break;
+            case MARKER:
+                String key = configuration.getString("marker", markerKey);
+                location = ConfigurationUtils.getLocation(mage.getData(), key);
+                defaultTitle = context.getMessage("title_marker", "Marker");
+                defaultMessage = context.getMessage("cast_marker", "");
+                defaultFailMessage = context.getMessage("no_target_marker", "");
+                defaultDescription =  context.getMessage("description_marker", "");
+                defaultIcon = getIcon(context, parameters, "icon_marker");
+                defaultMaintainDirection = true;
+                break;
+            case DEATH:
+                location = mage.getLastDeathLocation();
+                defaultTitle = context.getMessage("title_death", "Last Death");
+                defaultMessage = context.getMessage("cast_death", "");
+                defaultFailMessage = context.getMessage("no_target_death", "");
+                defaultDescription =  context.getMessage("description_death", "");
+                defaultIcon = getIcon(context, parameters, "icon_death");
+                defaultMaintainDirection = true;
+                defaultSafe = false;
+                break;
+            case SPAWN:
+                location = context.getWorld().getSpawnLocation();
+                defaultTitle = context.getMessage("title_spawn", "Spawn");
+                defaultMessage = context.getMessage("cast_spawn", "");
+                defaultFailMessage = context.getMessage("no_target_spawn", "");
+                defaultDescription =  context.getMessage("description_spawn", "");
+                defaultIcon = getIcon(context, parameters, "icon_spawn");
+                break;
+            case TOWN:
+                location = player == null ? null : context.getController().getTownLocation(player);
+                defaultTitle = context.getMessage("title_town", "Town");
+                defaultMessage = context.getMessage("cast_town", "");
+                defaultFailMessage = context.getMessage("no_target_town", "");
+                defaultDescription =  context.getMessage("description_town", "");
+                defaultIcon = getIcon(context, parameters, "icon_town");
+                break;
+            case HOME:
+                Location bedLocation = player == null ? null : player.getBedSpawnLocation();
+                if (bedLocation != null) {
+                    bedLocation = bedLocation.clone();
+                    bedLocation.setX(bedLocation.getX() + 0.5);
+                    bedLocation.setZ(bedLocation.getZ() + 0.5);
+                    bedLocation.setY(bedLocation.getY() + 1);
+                }
+                location = bedLocation;
+                defaultTitle = context.getMessage("title_home", "Home");
+                defaultMessage = context.getMessage("cast_home", "");
+                defaultFailMessage = context.getMessage("no_target_home", "");
+                defaultDescription =  context.getMessage("description_home", "");
+                defaultIcon = getIcon(context, parameters, "icon_home");
+            default:
+                break;
+            }
+
+            String optionName = configuration.getString("name", defaultTitle);
+            name = ChatColor.translateAlternateColorCodes('&', optionName);
+            message = configuration.getString("message",  defaultMessage).replace("$name", name);;
+            description = ChatColor.translateAlternateColorCodes('&', configuration.getString("description", defaultDescription));
+            failMessage = configuration.getString("fail_message", defaultFailMessage).replace("$name", name);
+            icon = ConfigurationUtils.getMaterialAndData(configuration, "icon", defaultIcon);
+            iconURL = configuration.getString("iconURL");
+            opPlayer = configuration.getBoolean("op");
+            asConsole = configuration.getBoolean("console");
+            maintainDirection = configuration.getBoolean("keep_direction", defaultMaintainDirection);
+            safe = configuration.getBoolean("safe", defaultSafe);
+            this.location = location;
         }
 
         @Override
@@ -629,30 +703,47 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         int index = 0;
         for (Waypoint waypoint : options)
         {
-            ItemStack waypointItem;
+            boolean isPlaceholder = waypoint.type == RecallType.PLACEHOLDER;
+            if (!isPlaceholder && !parameters.getBoolean("allow_" + waypoint.type.name().toLowerCase(), true)) {
+                isPlaceholder = true;
+            }
+            if (!isPlaceholder && !waypoint.isValid(allowCrossWorld, playerLocation)) {
+                isPlaceholder = true;
+            }
+            ItemStack waypointItem = null;
             if (waypoint.iconURL != null && !waypoint.iconURL.isEmpty()) {
                 waypointItem = controller.getURLSkull(waypoint.iconURL);
-            } else {
+            } else if (waypoint.icon != null) {
                 waypointItem = waypoint.icon.getItemStack(1);
+            } else {
+                if (isPlaceholder) {
+                    String iconPlaceholderKey = parameters.getString("placeholder_icon", "air");
+                    waypointItem = controller.createItem(iconPlaceholderKey);
+                }
+                if (waypointItem == null) {
+                    waypointItem = new ItemStack(DefaultWaypointMaterial);
+                }
             }
             ItemMeta meta = waypointItem == null ? null : waypointItem.getItemMeta();
-            if (meta == null) {
+            if (meta == null && !isPlaceholder) {
                 waypointItem = new ItemStack(DefaultWaypointMaterial);
                 meta = waypointItem.getItemMeta();
                 controller.getLogger().warning("Invalid waypoint icon for " + waypoint.name);
             }
-            meta.setDisplayName(waypoint.name);
-            if (waypoint.description != null && waypoint.description.length() > 0)
-            {
-                List<String> lore = new ArrayList<>();
-                InventoryUtils.wrapText(waypoint.description, lore);
-                meta.setLore(lore);
+            if (meta != null) {
+                meta.setDisplayName(waypoint.name);
+                if (waypoint.description != null && waypoint.description.length() > 0)
+                {
+                    List<String> lore = new ArrayList<>();
+                    InventoryUtils.wrapText(waypoint.description, lore);
+                    meta.setLore(lore);
+                }
+                waypointItem.setItemMeta(meta);
+                waypointItem = InventoryUtils.makeReal(waypointItem);
+                InventoryUtils.hideFlags(waypointItem, 63);
+                InventoryUtils.setMeta(waypointItem, "waypoint", "true");
+                CompatibilityUtils.makeUnbreakable(waypointItem);
             }
-            waypointItem.setItemMeta(meta);
-            waypointItem = InventoryUtils.makeReal(waypointItem);
-            InventoryUtils.hideFlags(waypointItem, 63);
-            InventoryUtils.setMeta(waypointItem, "waypoint", "true");
-            CompatibilityUtils.makeUnbreakable(waypointItem);
             displayInventory.setItem(index, waypointItem);
             index++;
         }
@@ -797,7 +888,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     }
 
     @Nullable
-    protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key) {
+    protected static MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key) {
         String iconKey = parameters.getString(key);
         if (iconKey == null || iconKey.isEmpty()) return null;
 

@@ -76,29 +76,40 @@ recall:
              particle_offset_z: 0.9
              offset: 0,-1,0
     parameters:
-        warmup: 5000
-        cancel_on_damage: 1
-        cancel_on_cast_other: true
-        allow_spawn: false
-        allow_marker: false
-        allow_death: false
-        allow_wand: true
-        allow_home: true
-        allow_cross_world: true
-        allow_town: true
-        allow_fields: true
-        icon_death: skull_item
-        icon_field: wood_door
-        icon_wand: wood_hoe
-        icon_spawn: wood_door
-        icon_home: bed
-        icon_town: iron_door
-        icon_marker: redstone_torch_on
-        icon_move_marker: redstone_block
-        loud: true
-        cooldown: 15000
-        protection_duration: 5000
-        target: self
+      options:
+        - type: home
+        - type: death
+        - type: town
+        - type: spawn
+        - type: placeholder
+        - type: placeholder
+        - type: placeholder
+        - type: placeholder
+        - type: marker
+      placeholder_icon:
+      warmup: 5000
+      cancel_on_damage: 1
+      cancel_on_cast_other: true
+      allow_spawn: false
+      allow_marker: false
+      allow_death: false
+      allow_wand: true
+      allow_home: true
+      allow_cross_world: true
+      allow_town: true
+      allow_fields: true
+      icon_death: skull_item
+      icon_field: wood_door
+      icon_wand: wood_hoe
+      icon_spawn: wood_door
+      icon_home: bed
+      icon_town: iron_door
+      icon_marker: redstone_torch_on
+      icon_move_marker: redstone_block
+      loud: true
+      cooldown: 15000
+      protection_duration: 5000
+      target: self
 
 recall|2:
     upgrade_required_path: student
