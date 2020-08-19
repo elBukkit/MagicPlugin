@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -355,6 +356,7 @@ public class BlockController implements Listener {
         for (Mage mage : mages) {
             Collection<Batch> pending = new ArrayList<>(mage.getPendingBatches());
             int cancelled = 0;
+            int fastForwarded = 0;
             for (Batch batch : pending) {
                 if (batch instanceof SpellBatch) {
                     SpellBatch spellBatch = (SpellBatch)batch;
@@ -364,10 +366,22 @@ public class BlockController implements Listener {
                         batch.finish();
                         cancelled++;
                     }
+                } else if (batch instanceof UndoBatch) {
+                    UndoBatch undoBatch = (UndoBatch)batch;
+                    UndoList undoList = undoBatch.getUndoList();
+                    if (undoList != null && undoList.affectsWorld(world)) {
+                        while (!undoBatch.isFinished()) {
+                            undoBatch.process(-1);
+                        }
+                        fastForwarded++;
+                    }
                 }
             }
             if (cancelled > 0) {
                 controller.info("Cancelled " + cancelled + " pending spells for " + mage.getName() + " prior to " + logType + " of world " + world.getName());
+            }
+            if (fastForwarded > 0) {
+                controller.info("Fast-forwarded " + fastForwarded + " pending undo tasks for " + mage.getName() + " prior to " + logType + " of world " + world.getName());
             }
         }
         Collection<UndoList> pending = new ArrayList<>(controller.getPendingUndo());
