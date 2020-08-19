@@ -38,6 +38,20 @@ public class YamlDataFile extends YamlConfiguration {
             }
             File backupFile = new File(file.getAbsolutePath() + ".bak");
             save(tempFile);
+
+            if (backupFile.exists() && backupFile.length() > tempFile.length()) {
+                logger.warning("Backup file " + backupFile.getName() + " is larger than " + tempFile.getName());
+                int index = 1;
+                File saveBackup = new File(backupFile.getAbsolutePath() + "." + index);
+                while (saveBackup.exists()) {
+                    index++;
+                    saveBackup = new File(backupFile.getAbsolutePath() + "." + index);
+                }
+                logger.info("This may be normal, but just in case the backup file will be saved permanently as " + saveBackup.getName());
+                logger.info("If data seems missing, please restore the backup file while the server is shut down");
+                backupFile.renameTo(saveBackup);
+            }
+
             if (backupFile.exists()) {
                 backupFile.delete();
             }

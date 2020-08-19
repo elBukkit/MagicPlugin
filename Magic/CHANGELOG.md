@@ -9,6 +9,12 @@
    - Can do anything Magic Mobs can do
    - Add dialog scripts in-game using written books
    - Will stay put!
+ - General improvements to Recall:
+   - Allow using an "options" list much like Selector
+   - Maintain order of "warps" and "commands" map
+   - Allow for multiple markers
+   - Add Recall level 4 and 5 to survival configs, 2 and 3 markers respectively.
+   - Waypoints waiting to be unlocked will now show in the menu (configurable)
  - Fix mob triggers not repeating
  - Add proper Residence integration
  - Fix Skript pre-cast ('on casting of') event
@@ -21,12 +27,7 @@
  - Set persist:false on broomsticks and entity projectiles, hoping they won't stick around
  - Add "split" flag for slime mobs, to prevent them from splitting. Add "cube" mob to survival.
  - Add "/mwarp list" command
- - General improvements to Recall:
-   - Allow using an "options" list much like Selector
-   - Maintain order of "warps" and "commands" map
-   - Allow for multiple markers
-   - Add Recall level 4 and 5 to survival configs, 2 and 3 markers respectively.
-   - Waypoints waiting to be unlocked will now show in the menu (configurable)
+ - Improvements to making sure data files don't get wiped
 
 # 7.9.12
 
