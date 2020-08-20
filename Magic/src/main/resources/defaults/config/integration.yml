@@ -75,6 +75,21 @@ pvp_restricted: false
 # targeting each other with spells.
 use_scoreboard_teams: false
 
+# Use permissions to group players into teams for friendly fire
+# If two players share a permission in a group, they are considered to be on a team.
+# This can be a simple list of permissions, like
+#
+# permission_teams:
+# - teams.team1
+# - teams.team2
+#
+# or a more complicated grouping of factions, such as
+# permission_teams:
+# - - teams.jedi
+#   - teams.rebels
+# - - teams.sith
+#   - teams.empire
+
 # If not using scoreboard teams or Heroes parties, should players be "friends" by default?
 # This will affect being able to cast healing or other perk type spells on other players.
 # This does not affect targeting with normal (damaging, etc) spells.

@@ -137,6 +137,7 @@ import com.elmakers.mine.bukkit.economy.ManaCurrency;
 import com.elmakers.mine.bukkit.economy.SpellPointCurrency;
 import com.elmakers.mine.bukkit.economy.VaultCurrency;
 import com.elmakers.mine.bukkit.elementals.ElementalsController;
+import com.elmakers.mine.bukkit.entity.PermissionsTeamProvider;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.EssentialsController;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
@@ -2732,6 +2733,22 @@ public class MagicController implements MageController {
             mobArenaManager.configure(mobArenaConfiguration);
         }
 
+        List<? extends Object> permissionTeams = properties.getList("permission_teams");
+        if (permissionTeams != null) {
+            this.permissionTeams = new ArrayList<>();
+            for (Object o : permissionTeams) {
+                if (o instanceof List) {
+                    @SuppressWarnings("unchecked")
+                    List<String> stringList = (List<String>)o;
+                    this.permissionTeams.add(stringList);
+                } else if (o instanceof String) {
+                    List<String> newList = new ArrayList<>();
+                    newList.add((String)o);
+                    this.permissionTeams.add(newList);
+                }
+            }
+        }
+
         String defaultSpellIcon = properties.getString("default_spell_icon");
         try {
             BaseSpell.DEFAULT_SPELL_ICON = Material.valueOf(defaultSpellIcon.toUpperCase());
@@ -3195,6 +3212,9 @@ public class MagicController implements MageController {
         }
         if (useScoreboardTeams) {
             teamProviders.add(new ScoreboardTeamProvider());
+        }
+        if (permissionTeams != null && !permissionTeams.isEmpty()) {
+            teamProviders.add(new PermissionsTeamProvider(permissionTeams));
         }
         if (factionsManager != null) {
             teamProviders.add(factionsManager);
@@ -6551,6 +6571,7 @@ public class MagicController implements MageController {
     private boolean                             defaultFriendly             = true;
     private boolean                                protectLocked               = true;
     private boolean                             bindOnGive                  = false;
+    private List<List<String>>                  permissionTeams             = null;
 
     private String                                extraSchematicFilePath        = null;
     private Mailer                                mailer                        = null;

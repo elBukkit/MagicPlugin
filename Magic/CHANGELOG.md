@@ -38,6 +38,7 @@
    for spells that only target entities with specific potion effects applied
  - Allow wand overrides to work with sections, such as "requirement.permission somepermission"
  - Add "requirement" option to CheckRequirements, for using a single requirement instead of a list
+ - Add permission_teams option for permission-based friendly fire grouping
 
 # 7.9.12
 
