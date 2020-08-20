@@ -170,6 +170,7 @@ public class NMSUtils {
     protected static Class<?> class_KnowledgeBookMeta;
     protected static Class<?> class_entityTypes;
     protected static Class<?> class_Powerable;
+    protected static Class<?> class_Waterlogged;
     protected static Class<?> class_Bisected;
     protected static Class<Enum> class_BisectedHalf;
     protected static Enum<?> enum_BisectedHalf_TOP;
@@ -273,6 +274,7 @@ public class NMSUtils {
     protected static Method class_KnowledgeBookMeta_addRecipeMethod;
     protected static Method class_World_getTileEntityMethod;
     protected static Method class_Bukkit_getMapMethod;
+    protected static Method class_Waterlogged_setWaterloggedMethod;
     protected static Method class_Powerable_setPoweredMethod;
     protected static Method class_Powerable_isPoweredMethod;
     protected static Method class_Bisected_setHalfMethod;
@@ -686,6 +688,12 @@ public class NMSUtils {
                     Bukkit.getLogger().warning("Could not bind to getMap method, magic maps will not work");
                     class_Bukkit_getMapMethod = null;
                 }
+            }
+            try {
+                class_Waterlogged = Class.forName("org.bukkit.block.data.Waterlogged");
+                class_Waterlogged_setWaterloggedMethod = class_Waterlogged.getMethod("setWaterlogged", Boolean.TYPE);
+            } catch (Exception ex) {
+                class_Waterlogged_setWaterloggedMethod = null;
             }
             try {
                 class_Powerable = Class.forName("org.bukkit.block.data.Powerable");

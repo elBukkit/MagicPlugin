@@ -39,6 +39,7 @@
  - Allow wand overrides to work with sections, such as "requirement.permission somepermission"
  - Add "requirement" option to CheckRequirements, for using a single requirement instead of a list
  - Add permission_teams option for permission-based friendly fire grouping
+ - Fix an exploit that could be used to place water in the nether
 
 # 7.9.12
 

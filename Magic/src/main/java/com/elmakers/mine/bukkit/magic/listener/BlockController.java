@@ -166,6 +166,10 @@ public class BlockController implements Listener {
             com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
             if (modifiedBlock != null) {
                 com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
+                // Prevent creating waterlogged blocks accidentally, since these can be exploited for water, even in the nether
+                if (event.getBlockReplacedState().getType() == Material.WATER) {
+                    CompatibilityUtils.setWaterlogged(block, false);
+                }
             }
             if (DefaultMaterials.isMobSpawner(block.getType()) && event.getItemInHand() != null && DefaultMaterials.isMobSpawner(event.getItemInHand().getType()) && player.hasPermission("Magic.spawners")) {
                 CompatibilityUtils.applyItemData(event.getItemInHand(), block);

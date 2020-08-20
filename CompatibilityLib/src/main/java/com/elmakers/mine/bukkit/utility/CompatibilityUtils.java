@@ -2003,7 +2003,8 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean setPowered(Block block, boolean powered) {
-        if (class_Powerable == null || class_Powerable_setPoweredMethod == null || class_Block_getBlockDataMethod == null) {
+        if (class_Powerable == null || class_Powerable_setPoweredMethod == null
+                || class_Block_setBlockDataMethod == null || class_Block_getBlockDataMethod == null) {
             return setPoweredLegacy(block, powered);
         }
 
@@ -2012,6 +2013,25 @@ public class CompatibilityUtils extends NMSUtils {
             if (blockData == null) return false;
             if (!class_Powerable.isAssignableFrom(blockData.getClass())) return false;
             class_Powerable_setPoweredMethod.invoke(blockData, powered);
+            class_Block_setBlockDataMethod.invoke(block, blockData, true);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean setWaterlogged(Block block, boolean waterlogged) {
+        if (class_Waterlogged == null || class_Waterlogged_setWaterloggedMethod == null
+            || class_Block_setBlockDataMethod == null || class_Block_getBlockDataMethod == null) {
+            return false;
+        }
+
+        try {
+            Object blockData = class_Block_getBlockDataMethod.invoke(block);
+            if (blockData == null) return false;
+            if (!class_Waterlogged.isAssignableFrom(blockData.getClass())) return false;
+            class_Waterlogged_setWaterloggedMethod.invoke(blockData, waterlogged);
             class_Block_setBlockDataMethod.invoke(block, blockData, true);
             return true;
         } catch (Exception ex) {
