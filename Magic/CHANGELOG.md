@@ -1,6 +1,9 @@
 # CHANGELOG
 
+# 7.9.14
+
 # 7.9.13
+
  - Magic NPCs
    - Manage via new /mnpc command
    - Lightweight replacement for simple use-cases of Citizens
