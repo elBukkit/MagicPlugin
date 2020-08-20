@@ -58,6 +58,8 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
 
     @Override
     public int process(int maxWork) {
+        if (finished) return 0;
+
         int workPerformed = 0;
         double undoSpeed = undoList.getUndoSpeed();
         if (undoSpeed > 0 && listProcessed < listSize && maxWork >= 0) {
@@ -138,5 +140,12 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     @Override
     public UndoList getUndoList() {
         return undoList;
+    }
+
+    @Override
+    public void complete() {
+        while (!isFinished()) {
+            process(-1);
+        }
     }
 }

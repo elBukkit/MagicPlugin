@@ -2184,9 +2184,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             batches.addAll(pendingBatches);
             for (Batch batch : batches) {
                 if (batch instanceof UndoBatch) {
-                    while (!batch.isFinished()) {
-                        batch.process(1000);
-                    }
+                    ((UndoBatch)batch).complete();
                     pendingBatches.remove(batch);
                     finished++;
                 }

@@ -374,9 +374,7 @@ public class BlockController implements Listener {
                     UndoBatch undoBatch = (UndoBatch)batch;
                     UndoList undoList = undoBatch.getUndoList();
                     if (undoList != null && undoList.affectsWorld(world)) {
-                        while (!undoBatch.isFinished()) {
-                            undoBatch.process(-1);
-                        }
+                        undoBatch.complete();
                         fastForwarded++;
                     }
                 }
