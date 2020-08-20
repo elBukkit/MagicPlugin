@@ -34,6 +34,8 @@
  - Fix firework action (e.g. stun spell) bypassing pvp restriction
  - Fix projectile target_self_timeout always turning on self-targeting
  - Fix arenas example "battle" sword, it was supposed to have abilities
+ - Add target_potion_effects and ignore_potion_effects parameters, 
+   for spells that only target entities with specific potion effects applied
 
 # 7.9.12
 

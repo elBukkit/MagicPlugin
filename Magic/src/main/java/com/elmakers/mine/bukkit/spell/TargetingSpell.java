@@ -67,6 +67,8 @@ public class TargetingSpell extends BaseSpell {
     protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
     protected Set<EntityType>                   ignoreEntityTypes       = null;
+    protected Set<PotionEffectType>             targetPotionEffectTypes = null;
+    protected Set<PotionEffectType>             ignorePotionEffectTypes = null;
     protected Material                          targetContents          = null;
     protected double                             targetBreakables        = 0;
     protected boolean                           instantBlockEffects     = false;
@@ -369,6 +371,33 @@ public class TargetingSpell extends BaseSpell {
         if (targetDisplayName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(targetDisplayName))) {
             return false;
         }
+        if (targetPotionEffectTypes != null) {
+            if (!(entity instanceof LivingEntity)) {
+                return false;
+            }
+            LivingEntity li = (LivingEntity)entity;
+            boolean has = false;
+            for (PotionEffectType type : targetPotionEffectTypes) {
+                if (li.hasPotionEffect(type)) {
+                    has = true;
+                    break;
+                }
+            }
+            if (!has) {
+                return false;
+            }
+        }
+
+        if (ignorePotionEffectTypes != null) {
+            if (entity instanceof LivingEntity) {
+                LivingEntity li = (LivingEntity)entity;
+                for (PotionEffectType type : targetPotionEffectTypes) {
+                    if (li.hasPotionEffect(type)) {
+                        return false;
+                    }
+                }
+            }
+        }
 
         if (damageResistanceProtection > 0 && entity instanceof LivingEntity)
         {
@@ -557,6 +586,8 @@ public class TargetingSpell extends BaseSpell {
             }
         }
 
+        targetPotionEffectTypes = parsePotionEffectTypes(parameters, "target_potion_effects");
+        ignorePotionEffectTypes = parsePotionEffectTypes(parameters, "ignore_potion_effects");
         targetNPCs = parameters.getBoolean("target_npc", false);
         targetArmorStands = parameters.getBoolean("target_armor_stand", false);
         targetInvisible = parameters.getBoolean("target_invisible", true);
@@ -651,6 +682,24 @@ public class TargetingSpell extends BaseSpell {
         if (targetUnderwater && isUnderwater()) {
             targetThroughMaterials = MaterialSets.union(targetThroughMaterials, DefaultMaterials.getWaterSet());
         }
+    }
+
+    @Nullable
+    protected Set<PotionEffectType> parsePotionEffectTypes(ConfigurationSection parameters, String key) {
+        Set<PotionEffectType> types = null;
+        List<String> potionEffects = ConfigurationUtils.getStringList(parameters, key);
+        if (potionEffects != null && !potionEffects.isEmpty()) {
+            types = new HashSet<>();
+            for (String effectType : potionEffects) {
+                PotionEffectType effect = PotionEffectType.getByName(effectType);
+                if (effect == null) {
+                    controller.getLogger().warning("Invalid potion effect type: " + effectType + " in target/ignore parameters of " + getKey());
+                } else {
+                    types.add(effect);
+                }
+            }
+        }
+        return types;
     }
 
     @Override
