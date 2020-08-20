@@ -63,10 +63,10 @@ public class AreaOfEffectAction extends CompoundEntityAction
             );
         }
         List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, yRadius, radius);
+        Entity targetEntity = context.getTargetEntity();
         if (targetCount > 0)
         {
             List<Target> targets = new ArrayList<>();
-            Entity targetEntity = context.getTargetEntity();
             for (Entity entity : candidates)
             {
                 boolean canTarget = true;
@@ -93,7 +93,9 @@ public class AreaOfEffectAction extends CompoundEntityAction
         {
             for (Entity entity : candidates)
             {
-                if (context.canTarget(entity))
+                boolean canTarget = true;
+                if (entity == targetEntity && !targetSource) canTarget = false;
+                if (canTarget && context.canTarget(entity))
                 {
                     entities.add(new WeakReference<>(entity));
                     mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType(), 12);
