@@ -31,6 +31,7 @@
  - Use chunk ticket API for performance improvements in large construction and undo tasks in unloaded areas
  - Automaton will no longer force-load chunks
  - Some fixes to undoing spells on world save, to prevent leftover spell changes
+ - Fix firework action (e.g. stun spell) bypassing pvp restriction
 
 # 7.9.12
 

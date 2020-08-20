@@ -8,6 +8,8 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Projectile;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.BaseProjectileAction;
@@ -99,7 +101,10 @@ public class FireworkAction extends BaseProjectileAction
 
         FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail, useWandColor);
         Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown, silent);
-
+        Entity sourceEntity = context.getEntity();
+        if (firework instanceof Projectile && sourceEntity instanceof ProjectileSource) {
+            ((Projectile)firework).setShooter((ProjectileSource)sourceEntity);
+        }
         if (firework == null) {
             if (direction != null) {
                 org.bukkit.Bukkit.getLogger().warning("Failed to spawn firework entity");
