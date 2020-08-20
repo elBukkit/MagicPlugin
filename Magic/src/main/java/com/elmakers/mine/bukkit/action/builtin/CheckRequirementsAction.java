@@ -26,6 +26,10 @@ public class CheckRequirementsAction extends CheckAction {
                 requirements.add(new Requirement(requirementConfiguration));
             }
         }
+        ConfigurationSection singleConfiguration = ConfigurationUtils.getConfigurationSection(parameters, "requirement");
+        if (singleConfiguration != null) {
+            requirements.add(new Requirement(singleConfiguration));
+        }
     }
 
     @Override

@@ -36,6 +36,8 @@
  - Fix arenas example "battle" sword, it was supposed to have abilities
  - Add target_potion_effects and ignore_potion_effects parameters, 
    for spells that only target entities with specific potion effects applied
+ - Allow wand overrides to work with sections, such as "requirement.permission somepermission"
+ - Add "requirement" option to CheckRequirements, for using a single requirement instead of a list
 
 # 7.9.12
 
