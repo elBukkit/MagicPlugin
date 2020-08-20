@@ -40,6 +40,8 @@
  - Add "requirement" option to CheckRequirements, for using a single requirement instead of a list
  - Add permission_teams option for permission-based friendly fire grouping
  - Fix an exploit that could be used to place water in the nether
+ - Fix exploit duplicating treasure loot, though containers will stay on the indestructible list for now
+ - Add "casted" event for Skript, StartCastEvent for API
 
 # 7.9.12
 

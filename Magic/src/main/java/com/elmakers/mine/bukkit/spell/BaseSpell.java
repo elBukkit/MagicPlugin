@@ -53,6 +53,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.EarnEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.api.event.StartCastEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -1540,6 +1541,9 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (success && toggle != ToggleType.NONE) {
             activate();
         }
+
+        StartCastEvent castEvent = new StartCastEvent(mage, this, result, success);
+        Bukkit.getPluginManager().callEvent(castEvent);
 
         sendCastMessage(result, " (" + success + ")");
         return success;
