@@ -4205,7 +4205,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (castOverrides != null && castOverrides.size() > 0) {
             castParameters = new ArrayList<>();
             for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
-                String[] key = StringUtils.split(entry.getKey(), '.');
+                String[] key = StringUtils.split(entry.getKey(), ".", 2);
                 if (key.length == 0) continue;
                 if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spell.getSpellKey().getBaseKey()) && !key[0].equals(spell.getSpellKey().getKey())) {
                     continue;
