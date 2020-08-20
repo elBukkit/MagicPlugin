@@ -20,6 +20,14 @@ base_arena_lightsaber:
   immortal: false
   track: false
 
+base_arena_sword:
+  inherit: base_sword
+  bound: false
+  keep: false
+  invulnerable: false
+  immortal: false
+  track: false
+
 # Level 1 Wands
 
 mage:
@@ -84,7 +92,7 @@ rogue:
      - boon
 
 warrior:
-    inherit: base_arena
+    inherit: base_arena_sword
     icon: gold_sword:1
     effect_color: "882222"
     active_spell: wound

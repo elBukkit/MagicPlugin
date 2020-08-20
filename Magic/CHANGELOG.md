@@ -32,6 +32,8 @@
  - Automaton will no longer force-load chunks
  - Some fixes to undoing spells on world save, to prevent leftover spell changes
  - Fix firework action (e.g. stun spell) bypassing pvp restriction
+ - Fix projectile target_self_timeout always turning on self-targeting
+ - Fix arenas example "battle" sword, it was supposed to have abilities
 
 # 7.9.12
 
