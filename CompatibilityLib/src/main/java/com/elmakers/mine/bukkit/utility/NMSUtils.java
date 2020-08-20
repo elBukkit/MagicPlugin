@@ -13,6 +13,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -175,6 +176,7 @@ public class NMSUtils {
     protected static Class<Enum> class_BisectedHalf;
     protected static Enum<?> enum_BisectedHalf_TOP;
     protected static Class<?> class_Sittable;
+    protected static Class<?> class_Lootable;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -284,6 +286,7 @@ public class NMSUtils {
     protected static Method class_Player_stopSoundStringMethod;
     protected static Method class_Chunk_addPluginChunkTicketMethod;
     protected static Method class_Chunk_removePluginChunkTicketMethod;
+    protected static Method class_Lootable_setLootTableMethod;
 
     protected static boolean legacyMaps;
 
@@ -692,6 +695,13 @@ public class NMSUtils {
             try {
                 class_Waterlogged = Class.forName("org.bukkit.block.data.Waterlogged");
                 class_Waterlogged_setWaterloggedMethod = class_Waterlogged.getMethod("setWaterlogged", Boolean.TYPE);
+            } catch (Exception ex) {
+                class_Waterlogged_setWaterloggedMethod = null;
+            }
+            try {
+                class_Lootable = Class.forName("org.bukkit.loot.Lootable");
+                Class<?> class_LootTable = Class.forName("org.bukkit.loot.LootTable");
+                class_Lootable_setLootTableMethod = class_Lootable.getMethod("setLootTable", class_LootTable);
             } catch (Exception ex) {
                 class_Waterlogged_setWaterloggedMethod = null;
             }
@@ -2406,6 +2416,15 @@ public class NMSUtils {
                 class_TileEntity_loadMethod.invoke(tileEntity, entityData);
             }
             class_TileEntity_updateMethod.invoke(tileEntity);
+
+            if (class_Lootable_setLootTableMethod != null && class_Lootable != null) {
+                Block block = location.getBlock();
+                BlockState blockState = block.getState();
+                if (class_Lootable.isAssignableFrom(blockState.getClass())) {
+                    class_Lootable_setLootTableMethod.invoke(blockState, new Object[]{ null });
+                    blockState.update();
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
