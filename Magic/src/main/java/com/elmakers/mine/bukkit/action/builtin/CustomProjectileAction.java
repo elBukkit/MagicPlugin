@@ -889,12 +889,8 @@ public class CustomProjectileAction extends CompoundAction
             return SpellResult.NO_ACTION;
         }
         actionContext.playEffects(hitEffectKey);
-        if (targetSelf != null)
-        {
+        if (targetSelf != null && targetSelfTimeout == 0) {
             actionContext.setTargetsCaster(targetSelf);
-        }
-        if (targetSelfTimeout > 0) {
-            actionContext.setTargetsCaster(true);
         }
         return startActions();
     }
