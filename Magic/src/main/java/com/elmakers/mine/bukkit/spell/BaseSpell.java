@@ -2435,6 +2435,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (spellData.isActive()) {
             spellData.setIsActive(false);
             onDeactivate();
+            playEffects("deactivate");
 
             mage.deactivateSpell(this);
             if (!quiet) {
