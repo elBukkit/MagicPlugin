@@ -337,7 +337,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         int removed = 0;
         for (Mage mage : mages) {
             EntityData entityData = mage.getEntityData();
-            if (entityData == null) continue;
+            if (entityData == null || entityData.getKey() == null) continue;
             if (worldName != null && !mage.getLocation().getWorld().getName().equals(worldName)) continue;
             if (mobType != null && !entityData.getKey().equals(mobType)) continue;
             if (radiusSquared != null && targetLocation != null && mage.getLocation().distanceSquared(targetLocation) > radiusSquared) continue;
