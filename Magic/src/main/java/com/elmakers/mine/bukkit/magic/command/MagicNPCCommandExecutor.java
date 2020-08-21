@@ -534,7 +534,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         } else if ((args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell"))
                || (args.length == 2 && args[0].equals("cast"))
                || (args.length == 2 && args[0].equals("spell"))) {
-            for (SpellTemplate spell : controller.getSpellTemplates()) {
+            for (SpellTemplate spell : controller.getSpellTemplates(true)) {
                 options.add(spell.getKey());
             }
         } else if (args.length == 3 && args[0].equals("configure")
