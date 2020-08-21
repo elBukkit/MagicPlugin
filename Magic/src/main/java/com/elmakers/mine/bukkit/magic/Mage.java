@@ -2315,6 +2315,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return true;
             }
         }
+        MageClass activeClass = getActiveClass();
+        if (activeClass != null && activeClass.getBoolean("protected")) {
+            return true;
+        }
         if (offhandCast && offhandWand != null) {
             return offhandWand.isSuperProtected();
         }
@@ -2323,6 +2327,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isSuperPowered() {
+        if (activeClass != null && activeClass.getBoolean("powered")) {
+            return true;
+        }
         if (offhandCast && offhandWand != null) {
             return offhandWand.isSuperPowered();
         }
