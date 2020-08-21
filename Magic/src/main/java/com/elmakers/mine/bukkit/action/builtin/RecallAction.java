@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
@@ -1053,5 +1054,16 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         mageData.set(markerKey, ConfigurationUtils.fromLocation(location));
         return true;
+    }
+
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("addfriend");
+        parameters.add("removefriend");
+        parameters.add("lock");
+        parameters.add("unlock");
+        parameters.add("warp");
+        parameters.add("type");
     }
 }
