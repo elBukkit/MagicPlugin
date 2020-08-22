@@ -1825,6 +1825,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         cancelOnNoPermission = parameters.getBoolean("cancel_on_no_permission", false);
         cancelOnNoWand = parameters.getBoolean("cancel_on_no_wand", false);
         commandBlockAllowed = parameters.getBoolean("command_block_allowed", true);
+        passive = parameters.getBoolean("passive", passive);
 
         MaterialSetManager materials = controller.getMaterialSetManager();
         preventPassThroughMaterials = materials.getMaterialSetEmpty("indestructible");
