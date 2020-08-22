@@ -48,8 +48,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 0)
         {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list|clear|egg] <type> [count]");
-            return true;
+            return false;
         }
 
         if (args[0].equalsIgnoreCase("list"))

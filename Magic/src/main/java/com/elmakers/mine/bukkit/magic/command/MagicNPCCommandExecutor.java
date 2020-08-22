@@ -59,8 +59,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mnpc [add|configure|cast|costs|describe|dialog|type|name|list|remove|tp|tphere|import|player] <name|type>");
-            return true;
+            return false;
         }
 
         String subCommand = args[0];
