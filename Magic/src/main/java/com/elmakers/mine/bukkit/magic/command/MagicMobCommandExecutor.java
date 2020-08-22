@@ -56,7 +56,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("clear"))
+        if (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("remove"))
         {
             onClearMobs(sender, args);
             return true;
@@ -71,7 +71,8 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (!args[0].equalsIgnoreCase("spawn") || args.length < 2)
+        boolean isSpawnCommand = args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("spawn");
+        if (!isSpawnCommand || args.length < 2)
         {
             return false;
         }
@@ -361,18 +362,23 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         if (!sender.hasPermission("Magic.commands.mmob")) return options;
 
         if (args.length == 1) {
+            options.add("add");
             options.add("spawn");
             options.add("egg");
             options.add("list");
             options.add("clear");
-        } else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("egg"))) {
+            options.add("remove");
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn")
+                || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("add")
+                || args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("egg")
+        )) {
             options.addAll(api.getController().getMobKeys());
             for (EntityType entityType : EntityType.values()) {
                 if (entityType.isAlive() && entityType.isSpawnable()) {
                     options.add(entityType.name().toLowerCase());
                 }
             }
-        } else if (args.length == 3 && args[0].equalsIgnoreCase("clear")) {
+        } else if (args.length == 3 && (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("remove"))) {
             List<World> worlds = api.getPlugin().getServer().getWorlds();
             for (World world : worlds) {
                 options.add(world.getName());
