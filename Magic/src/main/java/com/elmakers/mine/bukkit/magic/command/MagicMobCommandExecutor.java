@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.magic.command;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -181,9 +180,9 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
     protected void onListMobs(CommandSender sender, boolean all) {
         Map<String, Integer> mobCounts = new HashMap<>();
-        Collection<Mage> mages = new ArrayList<>(api.getController().getMobMages());
-        for (Mage mage : mages) {
-            EntityData entityData = mage.getEntityData();
+        Collection<Entity> mobs = new ArrayList<>(api.getController().getActiveMobs());
+        for (Entity mob : mobs) {
+            EntityData entityData = controller.getMob(mob);
             if (entityData == null) continue;
 
             Integer mobCount = mobCounts.get(entityData.getKey());
@@ -332,59 +331,26 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        Collection<Mage> mages = new ArrayList<>(api.getController().getMobMages());
+        MageController controller = api.getController();
+        Collection<Entity> mobs = new ArrayList<>(controller.getActiveMobs());
         int removed = 0;
-        for (Mage mage : mages) {
-            EntityData entityData = mage.getEntityData();
+        for (Entity entity : mobs) {
+            if (controller.isNPC(entity)) continue;
+            EntityData entityData = controller.getMob(entity);
             if (entityData == null || entityData.getKey() == null) continue;
-            if (worldName != null && !mage.getLocation().getWorld().getName().equals(worldName)) continue;
+            if (worldName != null && !entity.getLocation().getWorld().getName().equals(worldName)) continue;
             if (mobType != null && !entityData.getKey().equals(mobType)) continue;
-            if (radiusSquared != null && targetLocation != null && mage.getLocation().distanceSquared(targetLocation) > radiusSquared) continue;
+            if (radiusSquared != null && targetLocation != null && entity.getLocation().distanceSquared(targetLocation) > radiusSquared) continue;
 
-            Entity entity = mage.getEntity();
-            mage.undoScheduled();
-            api.getController().removeMage(mage);
+            Mage mage = controller.getRegisteredMage(entity);
+            if (mage != null) {
+                mage.undoScheduled();
+                api.getController().removeMage(mage);
+            }
             if (entity != null) {
                 entity.remove();
             }
             removed++;
-        }
-        List<World> worlds = new ArrayList<>();
-        if (worldName != null) {
-            World world = Bukkit.getWorld(worldName);
-            if (world == null) {
-                sender.sendMessage(ChatColor.RED + "Unknown world: " + ChatColor.WHITE + worldName);
-                return;
-            }
-            worlds.add(world);
-        } else {
-            worlds.addAll(Bukkit.getWorlds());
-        }
-        Set<String> mobNames = new HashSet<>();
-        if (mobType != null) {
-            EntityData mob = api.getController().getMob(mobType);
-            if (mob == null) {
-                sender.sendMessage(ChatColor.RED + "Unknown mob type: " + ChatColor.WHITE + mobType);
-                return;
-            }
-            mobNames.add(mob.getName());
-        } else {
-            Set<String> allKeys = api.getController().getMobKeys();
-            for (String key : allKeys) {
-                EntityData mob = api.getController().getMob(key);
-                mobNames.add(mob.getName());
-            }
-        }
-        for (World world : worlds) {
-            List<Entity> entities = world.getEntities();
-            for (Entity entity : entities) {
-                String customName = entity.getCustomName();
-                if (entity.isValid() && customName != null && mobNames.contains(customName)) {
-                    if (radiusSquared != null && targetLocation != null && entity.getLocation().distanceSquared(targetLocation) > radiusSquared) continue;
-                    entity.remove();
-                    removed++;
-                }
-            }
         }
         sender.sendMessage("Removed " + removed + " magic mobs");
     }
