@@ -764,4 +764,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     MagicNPC getSelectedNPC();
     void setSelectedNPC(@Nullable MagicNPC npc);
+    boolean isBypassEnabled();
+    void setBypassEnabled(boolean enable);
 }

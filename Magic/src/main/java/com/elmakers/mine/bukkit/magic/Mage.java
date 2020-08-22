@@ -270,6 +270,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private ItemStack lastBowUsed;
     private boolean cancelLaunch = false;
     private EntityType lastProjectileType;
+    private boolean bypassEnabled;
 
     private MagicNPC selectedNPC;
 
@@ -2469,6 +2470,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Deprecated
     public boolean isRestricted(Material material) {
         Player player = getPlayer();
+        if (controller.hasBypassPermission(player)) return false;
         if (player != null && player.hasPermission("Magic.bypass_restricted"))
             return false;
         return controller.isRestricted(material);
@@ -2477,6 +2479,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isRestricted(Material material, Short data) {
         Player player = getPlayer();
+        if (controller.hasBypassPermission(player)) return false;
         if (player != null && player.hasPermission("Magic.bypass_restricted"))
             return false;
         return controller.isRestricted(material, data);
@@ -3371,7 +3374,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         boolean hasBuildBypass = false;
         boolean hasBreakBypass = false;
         if (player != null) {
-            hasBypass = player.hasPermission("Magic.bypass");
+            hasBypass = controller.hasBypassPermission(player);
             hasPVPBypass = player.hasPermission("Magic.bypass_pvp");
             hasBuildBypass = player.hasPermission("Magic.bypass_build");
             sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(hasBypass, true, null));
@@ -4847,5 +4850,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nonnull
     public Map<Player, MageConversation> getConversations() {
         return conversations;
+    }
+
+    @Override
+    public boolean isBypassEnabled() {
+        return bypassEnabled;
+    }
+
+    @Override
+    public void setBypassEnabled(boolean enable) {
+        bypassEnabled = enable;
     }
 }

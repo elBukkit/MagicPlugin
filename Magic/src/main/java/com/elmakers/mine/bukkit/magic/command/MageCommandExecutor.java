@@ -99,6 +99,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageCheck(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("bypass"))
+        {
+            return onMageBypass(sender, player);
+        }
         if (subCommand.equalsIgnoreCase("reset"))
         {
             return onMageReset(sender, player, args2);
@@ -207,6 +211,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
             addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
             addIfPermissible(sender, options, "Magic.commands.mage.", "attribute");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "bypass");
         } else if (args.length == 2 && sender.hasPermission("Magic.commands.mage.others")) {
             options.addAll(api.getPlayerNames());
         }
@@ -390,6 +395,24 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     {
         Mage mage = controller.getMage(player);
         mage.debugPermissions(sender, null);
+        return true;
+    }
+
+    protected boolean onMageBypass(CommandSender sender, Player player) {
+        Mage mage = controller.getMage(player);
+        if (mage.isBypassEnabled()) {
+            if (sender != player) {
+                sender.sendMessage(ChatColor.GOLD + "Turned off bypass for player " + player.getName());
+            }
+            player.sendMessage(ChatColor.GOLD + "Your magic permissions are back to normal");
+            mage.setBypassEnabled(false);
+        } else {
+            if (sender != player) {
+                sender.sendMessage(ChatColor.GOLD + "Turned on bypass for player " + player.getName());
+            }
+            player.sendMessage(ChatColor.GOLD + "Magic PVP/build/break/etc bypass enabled");
+            mage.setBypassEnabled(true);
+        }
         return true;
     }
 

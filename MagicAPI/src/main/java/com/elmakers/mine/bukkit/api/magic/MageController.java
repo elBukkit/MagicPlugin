@@ -181,6 +181,7 @@ public interface MageController {
     void sendToMages(String message, Location location);
     Collection<Mage> getMages();
     Collection<Mage> getMobMages();
+    Collection<Entity> getActiveMobs();
     void removeMage(Mage mage);
     void removeMage(String id);
 
@@ -243,6 +244,7 @@ public interface MageController {
     Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location);
     boolean isPVPAllowed(Player player, Location location);
     boolean isExitAllowed(Player player, Location location);
+    boolean hasBypassPermission(CommandSender sender);
 
     /**
      * Check whether or not one entity is allowed to target another.

@@ -83,7 +83,7 @@ public class BlockController implements Listener {
                 return;
             }
         }
-        if (controller.areLocksProtected() && controller.isContainer(block) && !event.getPlayer().hasPermission("Magic.bypass")) {
+        if (controller.areLocksProtected() && controller.isContainer(block) && !controller.hasBypassPermission(event.getPlayer())) {
             String lockKey = CompatibilityUtils.getLock(block);
             if (lockKey != null && !lockKey.isEmpty()) {
                 Inventory inventory = player.getInventory();

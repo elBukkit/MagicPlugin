@@ -249,6 +249,17 @@ public class MagicController implements MageController {
     }
 
     @Nullable
+    public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(@Nonnull CommandSender commandSender) {
+        checkNotNull(commandSender);
+        if (commandSender instanceof Player) {
+            return getRegisteredMage((Player)commandSender);
+        }
+
+        String mageId = mageIdentifier.fromCommandSender(commandSender);
+        return getRegisteredMage(mageId);
+    }
+
+    @Nullable
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(@Nonnull Entity entity) {
         checkNotNull(entity);
@@ -308,6 +319,7 @@ public class MagicController implements MageController {
         CommandSender commandSender = (entity instanceof Player) ? (Player) entity : null;
         return getMageFromEntity(entity, commandSender);
     }
+
     @Nonnull
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull CommandSender commandSender) {
@@ -721,6 +733,7 @@ public class MagicController implements MageController {
         // Check all protection plugins
         if (bypassBuildPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_build")) return true;
+        if (hasBypassPermission(player)) return true;
 
         boolean allowed = true;
         for (BlockBuildManager manager : blockBuildManagers) {
@@ -736,6 +749,7 @@ public class MagicController implements MageController {
         // This is the same has hasBuildPermission for everything but Towny!
         if (bypassBreakPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_break")) return true;
+        if (hasBypassPermission(player)) return true;
 
         boolean allowed = true;
         for (BlockBreakManager manager : blockBreakManagers) {
@@ -3295,7 +3309,7 @@ public class MagicController implements MageController {
 
     public boolean hasWandPermission(Player player, Wand wand)
     {
-        if (player.hasPermission("Magic.bypass")) return true;
+        if (hasBypassPermission(player)) return true;
         if (wand.isSuperPowered() && !player.hasPermission("Magic.wand.use.powered")) return false;
         if (wand.isSuperProtected() && !player.hasPermission("Magic.wand.use.protected")) return false;
 
@@ -3314,8 +3328,7 @@ public class MagicController implements MageController {
     public boolean hasCastPermission(CommandSender sender, SpellTemplate spell)
     {
         if (sender == null) return true;
-
-        if (sender instanceof Player && ((Player)sender).hasPermission("Magic.bypass")) {
+        if (hasBypassPermission(sender)) {
             return true;
         }
         return hasPermission(sender, spell.getPermissionNode());
@@ -3324,7 +3337,7 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location) {
-        if (player != null && player.hasPermission("Magic.bypass")) return true;
+        if (hasBypassPermission(player)) return true;
         Boolean result = null;
         for (CastPermissionManager manager : castManagers) {
             Boolean managerResult = manager.getRegionCastPermission(player, spell, location);
@@ -3343,8 +3356,7 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location) {
-        if (player != null && player.hasPermission("Magic.bypass")) return true;
-
+        if (hasBypassPermission(player)) return true;
         Boolean result = null;
         for (CastPermissionManager manager : castManagers) {
             Boolean managerResult = manager.getPersonalCastPermission(player, spell, location);
@@ -3358,6 +3370,15 @@ public class MagicController implements MageController {
             }
         }
         return result;
+    }
+
+    @Override
+    public boolean hasBypassPermission(CommandSender sender) {
+        if (sender == null) return false;
+        if (sender instanceof Player && sender.hasPermission("Magic.bypass")) return true;
+        Mage mage = getRegisteredMage(sender);
+        if (mage == null) return false;
+        return mage.isBypassEnabled();
     }
 
     @Override
@@ -3957,6 +3978,12 @@ public class MagicController implements MageController {
         Collection<? extends Mage> values = mobMages.values();
         return Collections.unmodifiableCollection(values);
     }
+
+    @Override
+    public Collection<Entity> getActiveMobs() {
+        return mobs.getActiveMobs();
+    }
+
 
     @Override
     @Deprecated

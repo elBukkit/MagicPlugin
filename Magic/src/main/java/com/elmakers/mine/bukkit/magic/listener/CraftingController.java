@@ -84,7 +84,7 @@ public class CraftingController implements Listener {
     {
         if (player == null) return false;
 
-        if (player.hasPermission("Magic.bypass")) {
+        if (controller.hasBypassPermission(player)) {
             return true;
         }
         if (!controller.hasPermission(player, "Magic.wand.craft")) {

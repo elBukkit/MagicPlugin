@@ -445,6 +445,7 @@ commands:
         /mage setdata     Modify Mage data
         /mage getdata     Describe Mage data
         /mage attribute   Set or check mage attributes
+        /mage bypass      Toggle bypass on until logout
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
         /mage reset       Reset all data for a Mage, or for a specific class
@@ -581,6 +582,13 @@ commands:
         /mage clear NathanWolf
         /mage clear NathanWolf all
         /mage clear NathanWolf all
+  "mage bypass":
+    description: Toggle on/off bypass for pvp, build, break and other checks
+    permission: Magic.commands.mage.bypass
+    usage: |
+        /mage bypass [Player]
+        /mage bypass
+        /mage bypass NathanWolf
   "mage check":
     description: Do a permission check on player, show debug info
     permission: Magic.commands.mage.check

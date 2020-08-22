@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
@@ -32,8 +31,7 @@ public class BlockSpell extends UndoableSpell {
     public boolean isIndestructible(Block block)
     {
         if (mage.isSuperPowered()) return false;
-        Player player = mage.getPlayer();
-        if (player != null && player.hasPermission("Magic.bypass")) return false;
+        if (controller.hasBypassPermission(mage.getPlayer())) return false;
         if (controller.isLocked(block)) return true;
         return indestructible.testBlock(block) || mage.isIndestructible(block);
     }

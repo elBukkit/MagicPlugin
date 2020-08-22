@@ -2,8 +2,9 @@
 
 # 7.9.14
 
+ - Add "/mage bypass" command, a simple replacement for using "/op" to get magic bypass permissions
  - Fix Cleric chestplate preventing Recall
- - Fix "mmob clear" not working if NPCs are present
+ - Fixes and improvements to "mmob clear" command
  - Allow protected and powered properties on classes
 
 # 7.9.13
