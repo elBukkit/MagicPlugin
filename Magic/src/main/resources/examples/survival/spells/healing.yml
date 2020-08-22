@@ -4,6 +4,7 @@ healing:
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     category: light
     hidden: true
+    passive: true
     worth: 150
     actions:
         cast:
@@ -26,7 +27,6 @@ healing:
         heal_max_distance: 10
         amount: 1
         bypass_pvp: true
-        bypass_undo: true
         bypass_friendly_fire: true
         only_friendly: true
         bypass_undo: true

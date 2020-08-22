@@ -2,6 +2,10 @@
 
 # 7.9.14
 
+ - Fix Cleric chestplate preventing Recall
+ - Fix "mmob clear" not working if NPCs are present
+ - Allow protected and powered properties on classes
+
 # 7.9.13
 
  - Magic NPCs
