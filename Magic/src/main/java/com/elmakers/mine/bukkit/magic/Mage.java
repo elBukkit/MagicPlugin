@@ -2733,6 +2733,44 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return hasItem(itemStack, false);
     }
 
+    @Override
+    public int getItemCount(ItemStack itemStack, boolean allowDamaged) {
+        if (!isPlayer()) return 0;
+        Integer sp = Wand.getSP(itemStack);
+        if (sp != null) {
+            return getSkillPoints();
+        }
+
+        int amount = 0;
+        Inventory inventory = getInventory();
+        ItemStack[] contents = inventory.getContents();
+        for (ItemStack item : contents) {
+            if (isMatch(itemStack, item, allowDamaged)) {
+                amount += item.getAmount();
+            }
+        }
+
+        PlayerInventory playerInventory = getPlayer().getInventory();
+        ItemStack[] armor = playerInventory.getArmorContents();
+        for (ItemStack item : armor) {
+            if (isMatch(itemStack, item, allowDamaged)) {
+                amount += item.getAmount();
+            }
+        }
+        ItemStack[] extra = playerInventory.getExtraContents();
+        for (ItemStack item : extra) {
+            if (isMatch(itemStack, item, allowDamaged)) {
+                amount += item.getAmount();
+            }
+        }
+        return amount;
+    }
+
+    @Override
+    public int getItemCount(ItemStack itemStack) {
+        return getItemCount(itemStack, false);
+    }
+
     @Nullable
     @Override
     @Deprecated

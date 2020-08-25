@@ -27,6 +27,7 @@ public class GiveItemAction extends BaseSpellAction
 {
     private ItemStack item = null;
     private int itemCount = 0;
+    private int maxItemCount = 0;
     private ItemStack requireItem = null;
     private String permissionNode = null;
 
@@ -38,6 +39,7 @@ public class GiveItemAction extends BaseSpellAction
         permissionNode = parameters.getString("permission", null);
         String itemKey = parameters.getString("item");
         itemCount = parameters.getInt("item_count", 0);
+        maxItemCount = parameters.getInt("max_item_count", 0);
         item = controller.createItem(itemKey);
         if (item == null) {
             context.getLogger().warning("Invalid item: " + itemKey);
@@ -100,8 +102,23 @@ public class GiveItemAction extends BaseSpellAction
 
         Mage mage = controller.getMage(player);
         ItemStack itemCopy = InventoryUtils.getCopy(item);
-        if (itemCount > 0) {
-            itemCopy.setAmount(itemCount);
+        int setAmount = itemCount;
+        if (maxItemCount > 0) {
+            int currentCount = mage.getItemCount(item);
+            int maxAmount = maxItemCount - currentCount;;
+            if (setAmount > 0) {
+                setAmount = Math.min(setAmount, maxAmount);
+            } else {
+                setAmount = maxAmount;
+            }
+
+            if (setAmount <= 0) {
+                return SpellResult.NO_TARGET;
+            }
+        }
+
+        if (setAmount > 0) {
+            itemCopy.setAmount(setAmount);
         }
         mage.giveItem(itemCopy);
         DeprecatedUtils.updateInventory(player);
