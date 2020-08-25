@@ -286,7 +286,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
                     continue;
                 }
 
-                mage.removeItem(item);
+                mage.removeItem(item, true);
             }
             setProperty("gave_items", null);
         }
@@ -304,7 +304,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
                 }
 
                 if (!mage.hasItem(item)) {
-                    gaveItems.add(key);
+                    gaveItems.add(classItemKey);
                     String wandKey = controller.getWandKey(item);
                     if (wandKey != null) {
                         Wand wand = mage.getBoundWand(wandKey);

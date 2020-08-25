@@ -1,11 +1,9 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -31,18 +29,6 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
 
     public void onRemoved() {
         deactivateAttributes();
-        List<String> classItems = getStringList("items");
-        if (classItems != null) {
-            for (String classItemKey : classItems) {
-                ItemStack item = controller.createItem(classItemKey);
-                if (item == null) {
-                    // We already nagged about this on load...
-                    continue;
-                }
-
-                mage.removeItem(item);
-            }
-        }
         takeItems();
         cancelTrigger("unlock");
         trigger("removed");
