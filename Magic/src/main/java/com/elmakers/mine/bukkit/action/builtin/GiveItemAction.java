@@ -118,9 +118,20 @@ public class GiveItemAction extends BaseSpellAction
         }
 
         if (setAmount > 0) {
-            itemCopy.setAmount(setAmount);
+            int maxStack = itemCopy.getMaxStackSize();
+            if (maxStack < 1) maxStack = 1;
+            while (setAmount > 0) {
+                int giveAmount = Math.min(maxStack, setAmount);
+                itemCopy.setAmount(setAmount);
+                mage.giveItem(itemCopy);
+                setAmount -= giveAmount;
+                if (setAmount > 0) {
+                    itemCopy = InventoryUtils.getCopy(itemCopy);
+                }
+            }
+        } else {
+            mage.giveItem(itemCopy);
         }
-        mage.giveItem(itemCopy);
         DeprecatedUtils.updateInventory(player);
         return SpellResult.CAST;
     }
