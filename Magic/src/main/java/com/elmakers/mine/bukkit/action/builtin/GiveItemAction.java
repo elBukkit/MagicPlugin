@@ -28,6 +28,7 @@ public class GiveItemAction extends BaseSpellAction
     private ItemStack item = null;
     private int itemCount = 0;
     private int maxItemCount = 0;
+    private int stackSize = 0;
     private ItemStack requireItem = null;
     private String permissionNode = null;
 
@@ -40,6 +41,7 @@ public class GiveItemAction extends BaseSpellAction
         String itemKey = parameters.getString("item");
         itemCount = parameters.getInt("item_count", 0);
         maxItemCount = parameters.getInt("max_item_count", 0);
+        stackSize = parameters.getInt("stack_size", 0);
         item = controller.createItem(itemKey);
         if (item == null) {
             context.getLogger().warning("Invalid item: " + itemKey);
@@ -120,6 +122,9 @@ public class GiveItemAction extends BaseSpellAction
         if (setAmount > 0) {
             int maxStack = itemCopy.getMaxStackSize();
             if (maxStack < 1) maxStack = 1;
+            if (stackSize > 0) {
+                maxStack = stackSize;
+            }
             while (setAmount > 0) {
                 int giveAmount = Math.min(maxStack, setAmount);
                 itemCopy.setAmount(setAmount);

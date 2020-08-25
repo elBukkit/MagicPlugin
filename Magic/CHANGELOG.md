@@ -6,7 +6,8 @@
  - Fix Cleric chestplate preventing Recall
  - Fixes and improvements to "mmob clear" and "mmob list" commands
  - Allow protected and powered properties on classes
- - Add max_item_count parameter to GiveItem action, for filling a player's item up to a certain amount
+ - Add max_item_count and stack_size parameters to GiveItem action, 
+   for filling a player's item up to a certain amount, and allowing illegal stack sizes
 
 # 7.9.13
 
