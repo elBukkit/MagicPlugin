@@ -3924,3 +3924,13 @@ findall:
       glowing: 1
     duration: 30000
 
+spectralsword:
+  icon: emerald_sword
+  actions:
+    cast:
+      - class: Modifier
+  parameters:
+    target: self
+    add_modifiers: spectralsword
+    duration: 10000
+    cooldown: 30000

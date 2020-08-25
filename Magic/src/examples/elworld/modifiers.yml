@@ -25,3 +25,6 @@ hardened:
     generic_knockback_resistance:
       value: 2
       operation: add_number
+
+spectralsword:
+  items: emerald_sword
