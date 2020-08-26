@@ -3,10 +3,13 @@ package com.elmakers.mine.bukkit.item;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -96,6 +99,42 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         worth = configuration.getDouble("worth", 0);
         creator = configuration.getString("creator");
         creatorId = configuration.getString("creator_id");
+
+        Collection<ConfigurationSection> attributes = ConfigurationUtils.getNodeList(configuration, "attributes");
+        if (attributes != null && !attributes.isEmpty()) {
+            item = InventoryUtils.makeReal(item);
+            for (ConfigurationSection attributeConfig : attributes) {
+                String attributeKey = attributeConfig.getString("type");
+                try {
+                    Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
+                    double value = attributeConfig.getDouble("amount");
+                    String slot = attributeConfig.getString("slot");
+                    String uuidString = attributeConfig.getString("uuid");
+                    UUID uuid = null;
+                    if (uuidString != null) {
+                        try {
+                            uuid = UUID.fromString(uuidString);
+                        } catch (Exception ignore) {
+
+                        }
+                    }
+                    if (uuid == null) {
+                        uuid = UUID.randomUUID();
+                    }
+                    int operation = attributeConfig.getInt("operation", 0);
+                    if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot, operation, uuid)) {
+                        Bukkit.getLogger().warning("Failed to set attribute: " + attributeKey);
+                    }
+                } catch (Exception ex) {
+                     Bukkit.getLogger().warning("Invalid attribute: " + attributeKey);
+                }
+            }
+        } else {
+            ConfigurationSection simpleAttributes = configuration.getConfigurationSection("attributes");
+            if (simpleAttributes != null) {
+                InventoryUtils.applyAttributes(item, simpleAttributes, configuration.getString("attribute_slot"));
+            }
+        }
 
         // Convenience methods for top-level name, lore and tags
         ConfigurationSection tagSection = configuration.getConfigurationSection("tags");

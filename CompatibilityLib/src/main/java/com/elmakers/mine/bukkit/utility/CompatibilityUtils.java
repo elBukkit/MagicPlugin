@@ -1216,10 +1216,12 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot) {
         return setItemAttribute(item, attribute, value, slot, 0);
     }
-    
-    public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
-        UUID attributeUUID = UUID.randomUUID();
 
+    public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
+        return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
+    }
+    
+    public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
         if (class_ItemMeta_addAttributeModifierMethod != null) {
             try {
                 AttributeModifier.Operation operation;
