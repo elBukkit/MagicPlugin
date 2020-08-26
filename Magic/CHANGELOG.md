@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.10.1
+
 # 7.10
 
  - Fix compatibility with older versions of Spigot (whoops, sorry!)
