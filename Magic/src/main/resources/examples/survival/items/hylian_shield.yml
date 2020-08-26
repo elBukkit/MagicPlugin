@@ -9,7 +9,5 @@ hylian_shield:
       display-name: §aHylian Shield
       lore:
       - Link's Shield
-      ItemFlags: !!set
-        HIDE_POTION_EFFECTS: null
-      internal: H4sIAAAAAAAAAHWOMU7DQBBFf7Cx10ZQBA7ACahpECQkBRIhSOCOZmOP7VXs3bA7LjgJDR1cgVNQUHAhjAPIQWK60Xtf/8dAhOGI2apFwzQzmcoVWRcDGAj4V7ImDKf3jVrVpPnwRwgQjGrTaD7D+nxESXIxuSTp+OXxaf/55PXdQzRfkZWsjF474suZGcdvp8lHdjc/bituKsMITZ6XUmcCu79juu6DgjRZlR5JZpkuJ7KWBSHG3rgy6XKqWfHDrSwiiOvWIKu76YFA+P3DSxfGw/a5qYxtUYg+y6s+G/TZVln2kL+BmHtoZxO5f1N/dnjwx9JRp+ETbDt/LYkBAAA=
+      internal: H4sIAAAAAAAAAHXOTQ5AMBQE4KFoVeJQxN7CBUrqJxpN9G3cnojFI7GcfDPJaECjrJwf1majhY7OTDlUa4jsvgUNIFOQT4YYei+Q1t75/SIJbqPjFnGL55lR8iIiRsWbwu/q80MgqUywdw0n1U4Sy9UAAAA=
       blockMaterial: SHIELD
