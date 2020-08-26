@@ -1,4 +1,4 @@
 skull_sushiroll:
-  item: player_head:http://textures.minecraft.net/texture/2e12f267953e76ae66a8dd025a3286aecbc64b4ad98eeb10b3c67a69aae15
+  item: skull:http://textures.minecraft.net/texture/2e12f267953e76ae66a8dd025a3286aecbc64b4ad98eeb10b3c67a69aae15
   worth: 200
   name: '&bSushi Roll'

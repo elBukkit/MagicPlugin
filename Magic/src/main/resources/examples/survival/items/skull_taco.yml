@@ -1,4 +1,4 @@
 skull_taco:
-  item: player_head:http://textures.minecraft.net/texture/98ced74a22021a535f6bce21c8c632b273dc2d9552b71a38d57269b3538cf
+  item: skull:http://textures.minecraft.net/texture/98ced74a22021a535f6bce21c8c632b273dc2d9552b71a38d57269b3538cf
   worth: 200
   name: '&bTaco'

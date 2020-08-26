@@ -1,4 +1,4 @@
 skull_pancakes:
-  item: player_head:http://textures.minecraft.net/texture/347f4f5a74c6691280cd80e7148b49b2ce17dcf64fd55368627f5d92a976a6a8
+  item: skull:http://textures.minecraft.net/texture/347f4f5a74c6691280cd80e7148b49b2ce17dcf64fd55368627f5d92a976a6a8
   worth: 200
   name: '&bPancakes'

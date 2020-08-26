@@ -1,4 +1,4 @@
 skull_glados:
-  item: player_head:http://textures.minecraft.net/texture/d9d048ce03f44f190842e12a8507434045e52add01a4f3bb6cc674c1a17e98be
+  item: skull:http://textures.minecraft.net/texture/d9d048ce03f44f190842e12a8507434045e52add01a4f3bb6cc674c1a17e98be
   worth: 200
   name: '&bGLaDOS'

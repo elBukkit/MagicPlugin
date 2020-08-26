@@ -1,4 +1,4 @@
 skull_globe:
-  item: player_head:http://textures.minecraft.net/texture/cf40942f364f6cbceffcf1151796410286a48b1aeba77243e218026c09cd1
+  item: skull:http://textures.minecraft.net/texture/cf40942f364f6cbceffcf1151796410286a48b1aeba77243e218026c09cd1
   worth: 200
   name: '&bGlobe'

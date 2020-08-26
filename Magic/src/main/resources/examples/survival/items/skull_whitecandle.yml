@@ -1,4 +1,4 @@
 skull_whitecandle:
-  item: player_head:http://textures.minecraft.net/texture/781226656d825291b1d7e456b74ecdce28672169641e6c35b1e23b9b40274e
+  item: skull:http://textures.minecraft.net/texture/781226656d825291b1d7e456b74ecdce28672169641e6c35b1e23b9b40274e
   worth: 200
   name: '&bWhite Candle'

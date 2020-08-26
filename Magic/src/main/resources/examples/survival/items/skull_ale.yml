@@ -1,4 +1,4 @@
 skull_ale:
-  item: player_head:http://textures.minecraft.net/texture/8f7dc8c91f7a24ecd9c5e9d4d8c39f0ac8333ae4853559acb8b03866f9d
+  item: skull:http://textures.minecraft.net/texture/8f7dc8c91f7a24ecd9c5e9d4d8c39f0ac8333ae4853559acb8b03866f9d
   worth: 200
   name: '&bAle'

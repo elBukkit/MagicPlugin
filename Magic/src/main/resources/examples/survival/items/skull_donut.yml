@@ -1,4 +1,4 @@
 skull_donut:
-  item: player_head:http://textures.minecraft.net/texture/837c9b82b186656e9f6363a2a1c6a4b5b93cfa9ef4dad6f16b94ebb5e362678
+  item: skull:http://textures.minecraft.net/texture/837c9b82b186656e9f6363a2a1c6a4b5b93cfa9ef4dad6f16b94ebb5e362678
   worth: 200
   name: '&bDonut'

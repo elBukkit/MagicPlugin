@@ -1,4 +1,4 @@
 skull_present_red:
-  item: player_head:http://textures.minecraft.net/texture/407c0d34f90548abf94040e5167c1e07c3427b920f66680d7356e23e11c1a77f
+  item: skull:http://textures.minecraft.net/texture/407c0d34f90548abf94040e5167c1e07c3427b920f66680d7356e23e11c1a77f
   worth: 200
   name: '&bPresent'

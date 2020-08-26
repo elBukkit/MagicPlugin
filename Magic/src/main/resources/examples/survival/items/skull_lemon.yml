@@ -1,4 +1,4 @@
 skull_lemon:
-  item: player_head:http://textures.minecraft.net/texture/957fd56ca15978779324df519354b6639a8d9bc1192c7c3de925a329baef6c
+  item: skull:http://textures.minecraft.net/texture/957fd56ca15978779324df519354b6639a8d9bc1192c7c3de925a329baef6c
   worth: 200
   name: '&bLemon'

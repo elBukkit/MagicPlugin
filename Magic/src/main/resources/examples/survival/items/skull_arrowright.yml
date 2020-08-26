@@ -1,4 +1,4 @@
 skull_arrowright:
-  item: player_head:http://textures.minecraft.net/texture/f2f3a2dfce0c3dab7ee10db385e5229f1a39534a8ba2646178e37c4fa93b
+  item: skull:http://textures.minecraft.net/texture/f2f3a2dfce0c3dab7ee10db385e5229f1a39534a8ba2646178e37c4fa93b
   worth: 200
   name: '&bArrow Right'

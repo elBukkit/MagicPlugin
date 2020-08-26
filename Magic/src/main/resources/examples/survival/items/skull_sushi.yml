@@ -1,4 +1,4 @@
 skull_sushi:
-  item: player_head:http://textures.minecraft.net/texture/23bf8fca2af3592c5574b13e3bcf61e2fae829788535f0ddeaa7a2e45b6ba4
+  item: skull:http://textures.minecraft.net/texture/23bf8fca2af3592c5574b13e3bcf61e2fae829788535f0ddeaa7a2e45b6ba4
   worth: 200
   name: '&bSushi'

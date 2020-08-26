@@ -1,4 +1,4 @@
 skull_arrowup:
-  item: player_head:http://textures.minecraft.net/texture/58fe251a40e4167d35d081c27869ac151af96b6bd16dd2834d5dc7235f47791d
+  item: skull:http://textures.minecraft.net/texture/58fe251a40e4167d35d081c27869ac151af96b6bd16dd2834d5dc7235f47791d
   worth: 200
   name: '&bArrow Up'

@@ -1,7 +1,8 @@
 # CHANGELOG
 
-# 7.9.14
+# 7.10
 
+ - Fix compatibility with older versions of Spigot (whoops, sorry!)
  - Add "/mage bypass" command, a simple replacement for using "/op" to get magic bypass permissions
  - Fix Cleric chestplate preventing Recall
  - Fixes and improvements to "mmob clear" and "mmob list" commands

@@ -1,4 +1,4 @@
 skull_creeperstone:
-  item: player_head:http://textures.minecraft.net/texture/b7a6636d96d08f61939a60f57ee0d0299c0bd273b2bd30c1efe4f74e433a
+  item: skull:http://textures.minecraft.net/texture/b7a6636d96d08f61939a60f57ee0d0299c0bd273b2bd30c1efe4f74e433a
   worth: 200
   name: '&bCreeper Stone'

@@ -1,4 +1,4 @@
 skull_clock:
-  item: player_head:http://textures.minecraft.net/texture/a1af7105d7549ca59e5ddd0a3d6ba6ec64413e070daf288a13d0c30961052398
+  item: skull:http://textures.minecraft.net/texture/a1af7105d7549ca59e5ddd0a3d6ba6ec64413e070daf288a13d0c30961052398
   worth: 200
   name: '&bClock'

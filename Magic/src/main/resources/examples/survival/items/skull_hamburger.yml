@@ -1,4 +1,4 @@
 skull_hamburger:
-  item: player_head:http://textures.minecraft.net/texture/a6ef1c25f516f2e7d6f7667420e33adcf3cdf938cb37f9a41a8b35869f569b
+  item: skull:http://textures.minecraft.net/texture/a6ef1c25f516f2e7d6f7667420e33adcf3cdf938cb37f9a41a8b35869f569b
   worth: 200
   name: '&bHamburger'

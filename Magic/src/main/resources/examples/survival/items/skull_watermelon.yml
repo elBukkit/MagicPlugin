@@ -1,4 +1,4 @@
 skull_watermelon:
-  item: player_head:http://textures.minecraft.net/texture/f3903066ccc4695e113fee314c96a544eb919622eee7daa1d1966374f3fe848
+  item: skull:http://textures.minecraft.net/texture/f3903066ccc4695e113fee314c96a544eb919622eee7daa1d1966374f3fe848
   worth: 200
   name: '&bWatermelon'

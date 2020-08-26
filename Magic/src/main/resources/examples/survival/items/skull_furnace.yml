@@ -1,4 +1,4 @@
 skull_furnace:
-  item: player_head:http://textures.minecraft.net/texture/87c0748362e9a63e07aa2b08b5f7d101e5395aa21532a476722dbdd98c2f2
+  item: skull:http://textures.minecraft.net/texture/87c0748362e9a63e07aa2b08b5f7d101e5395aa21532a476722dbdd98c2f2
   worth: 200
   name: '&bFurnace'

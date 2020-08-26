@@ -1,4 +1,4 @@
 skull_cake:
-  item: player_head:http://textures.minecraft.net/texture/f9136514f342e7c5208a1422506a866158ef84d2b249220139e8bf6032e193
+  item: skull:http://textures.minecraft.net/texture/f9136514f342e7c5208a1422506a866158ef84d2b249220139e8bf6032e193
   worth: 200
   name: '&bCake'

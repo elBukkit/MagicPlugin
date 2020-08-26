@@ -1,4 +1,4 @@
 skull_lavabucket:
-  item: player_head:http://textures.minecraft.net/texture/8d5427a83540a08a3fa2e655c2964a07243514584a71ec35d6b9e184dfbe318
+  item: skull:http://textures.minecraft.net/texture/8d5427a83540a08a3fa2e655c2964a07243514584a71ec35d6b9e184dfbe318
   worth: 200
   name: '&bLava Bucket'
