@@ -1,6 +1,6 @@
 madscientist:
   name: Mad Scientist
-  type: husk
+  type: zombie
   disguise:
     type: player
     skin: NathanWolf

@@ -1,6 +1,6 @@
 ironman:
   name: Iron Man
-  type: husk
+  type: zombie
   disguise:
     type: player
     name: Iron Man

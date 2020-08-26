@@ -1,5 +1,5 @@
 dummy:
-  type: husk
+  type: zombie
   name: Dummy
   health: 100
   protection:

@@ -1,5 +1,5 @@
 riotpolice:
-  type: husk
+  type: zombie
   item: shotgun_item
   baby: false
   chestplate: iron_chestplate

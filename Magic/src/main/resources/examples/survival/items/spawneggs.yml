@@ -13,7 +13,7 @@ philbertegg:
 mutantegg:
   worth: 400.0
   item:
-    type: HUSK_SPAWN_EGG
+    type: ZOMBIE_SPAWN_EGG
     tags:
       display:
         Name: "{\"text\":\"Spawn Mutant\"}"
