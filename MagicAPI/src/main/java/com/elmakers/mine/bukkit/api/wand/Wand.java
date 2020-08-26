@@ -47,6 +47,10 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean organizeInventory(Mage mage);
     boolean organizeInventory();
     boolean alphabetizeInventory();
+    Map<String, Integer> getBrushInventory();
+    void updateBrushInventory(Map<String, Integer> updateBrushes);
+    Map<String, Integer> getSpellInventory();
+    void updateSpellInventory(Map<String, Integer> updateSpells);
     @Nullable
     ItemStack getItem();
     MaterialAndData getIcon();
@@ -155,6 +159,8 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean isInventoryOpen();
     boolean isQuickCast();
     void cycleHotbar();
+    void setCurrentHotbar(int hotbar);
+    int getCurrentHotbar();
     void damageDealt(double damage, Entity target);
     boolean hasTag(String tag);
     void bind();

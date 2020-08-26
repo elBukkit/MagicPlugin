@@ -9,6 +9,7 @@
  - Allow protected and powered properties on classes
  - Add max_item_count and stack_size parameters to GiveItem action, 
    for filling a player's item up to a certain amount, and allowing illegal stack sizes
+ - Expose some Wand methods to manipulate wand spell/brush inventories
 
 # 7.9.13
 

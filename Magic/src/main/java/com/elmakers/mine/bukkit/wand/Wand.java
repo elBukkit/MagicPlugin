@@ -1525,7 +1525,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-    protected void updateBrushInventory(Map<String, Integer> updateBrushes) {
+    @Override
+    public void updateBrushInventory(Map<String, Integer> updateBrushes) {
         for (Map.Entry<String, Integer> brushEntry : brushInventory.entrySet()) {
             String brushKey = brushEntry.getKey();
             Integer slot = updateBrushes.get(brushKey);
@@ -1543,7 +1544,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-    protected void updateSpellInventory(Map<String, Integer> updateSpells) {
+    @Override
+    public void updateSpellInventory(Map<String, Integer> updateSpells) {
         for (Map.Entry<String, Integer> spellEntry : spellInventory.entrySet()) {
             String spellKey = spellEntry.getKey();
             Integer slot = updateSpells.get(spellKey);
@@ -5538,11 +5540,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return controller;
     }
 
-    protected Map<String, Integer> getSpellInventory() {
+    @Override
+    public Map<String, Integer> getSpellInventory() {
         return new HashMap<>(spellInventory);
     }
 
-    protected Map<String, Integer> getBrushInventory() {
+    @Override
+    public Map<String, Integer> getBrushInventory() {
         return new HashMap<>(brushInventory);
     }
 
@@ -5764,9 +5768,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return mageClassKeys == null || mageClassKeys.isEmpty() ? null : mageClassKeys.get(0);
     }
 
+    @Override
     public void setCurrentHotbar(int hotbar) {
         this.currentHotbar = hotbar;
         setProperty("hotbar", currentHotbar);
+    }
+
+    @Override
+    public int getCurrentHotbar() {
+        return currentHotbar;
     }
 
     public int getInventorySize() {
