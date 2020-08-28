@@ -2,7 +2,9 @@
 
 # 7.10.1
 
+ - Add RedProtect integration
  - Add auto_wands config option, for automatically converting items of a specific type into wands
+ - Improved parsing and error messages for vectors in effect configs
 
 # 7.10
 

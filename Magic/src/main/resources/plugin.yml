@@ -30,6 +30,7 @@ softdepend:
   - PreciousStones
   - MobArena
   - Residence
+  - RedProtect
 loadbefore:
   - Scavenger
   - SilkSpawners

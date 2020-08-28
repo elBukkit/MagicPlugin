@@ -178,6 +178,7 @@ import com.elmakers.mine.bukkit.protection.NCPManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.ProtectionManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
+import com.elmakers.mine.bukkit.protection.RedProtectManager;
 import com.elmakers.mine.bukkit.protection.ResidenceManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
@@ -1331,6 +1332,20 @@ public class MagicController implements MageController {
             getLogger().info("Residence integration disabled.");
         }
 
+        // RedProtect
+        if (redProtectConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("RedProtect")) {
+                try {
+                    redProtectManager = new RedProtectManager(pluginManager.getPlugin("RedProtect"), this, redProtectConfiguration);
+                    getLogger().info("Integrated with RedProtect for build/break/pvp target checks");
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with RedProtect", ex);
+                }
+            }
+        } else {
+            getLogger().info("RedProtect integration disabled.");
+        }
+
         // Activate Metrics
         activateMetrics();
 
@@ -1641,6 +1656,7 @@ public class MagicController implements MageController {
         if (preciousStonesManager.isEnabled()) targetingProviders.add(preciousStonesManager);
         if (townyManager.isEnabled()) targetingProviders.add(townyManager);
         if (residenceManager != null) targetingProviders.add(residenceManager);
+        if (redProtectManager != null) targetingProviders.add(redProtectManager);
 
         // PVP Managers
         if (worldGuardManager.isEnabled()) pvpManagers.add(worldGuardManager);
@@ -1661,6 +1677,7 @@ public class MagicController implements MageController {
         if (griefPreventionManager.isEnabled()) blockBuildManagers.add(griefPreventionManager);
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBuildManagers.add(mobArenaManager);
         if (residenceManager != null) blockBuildManagers.add(residenceManager);
+        if (redProtectManager != null) blockBuildManagers.add(redProtectManager);
 
         // Break Managers
         if (worldGuardManager.isEnabled()) blockBreakManagers.add(worldGuardManager);
@@ -1672,6 +1689,7 @@ public class MagicController implements MageController {
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBreakManagers.add(mobArenaManager);
         if (citadelManager != null) blockBreakManagers.add(citadelManager);
         if (residenceManager != null) blockBreakManagers.add(residenceManager);
+        if (redProtectManager != null) blockBreakManagers.add(redProtectManager);
 
         Runnable genericIntegrationTask = new Runnable() {
             @Override
@@ -1812,10 +1830,16 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey) {
+        return loadEffects(configuration, effectKey, null);
+    }
+
+    @Override
+    @Nullable
+    public Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey, String logContext) {
         if (configuration.isString(effectKey)) {
             return getEffects(configuration.getString(effectKey));
         }
-        return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey);
+        return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey, getLogger(), logContext);
     }
 
     public void loadConfiguration() {
@@ -2743,6 +2767,7 @@ public class MagicController implements MageController {
         citadelConfiguration = properties.getConfigurationSection("citadel");
         mobArenaConfiguration = properties.getConfigurationSection("mobarena");
         residenceConfiguration = properties.getConfigurationSection("residence");
+        redProtectConfiguration = properties.getConfigurationSection("redprotect");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);
         }
@@ -6692,6 +6717,7 @@ public class MagicController implements MageController {
     private boolean                             lightAPIEnabled                = true;
     private boolean                             skriptEnabled                = true;
     private ConfigurationSection                residenceConfiguration        = null;
+    private ConfigurationSection                redProtectConfiguration     = null;
     private ConfigurationSection                citadelConfiguration        = null;
     private ConfigurationSection                mobArenaConfiguration       = null;
     private boolean                             enableResourcePackCheck     = true;
@@ -6718,6 +6744,7 @@ public class MagicController implements MageController {
     private ProtectionManager                   protectionManager           = new ProtectionManager();
     private CitadelManager                      citadelManager              = null;
     private ResidenceManager                    residenceManager            = null;
+    private RedProtectManager                   redProtectManager           = null;
     private RequirementsController              requirementsController      = null;
     private HeroesManager                       heroesManager               = null;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
