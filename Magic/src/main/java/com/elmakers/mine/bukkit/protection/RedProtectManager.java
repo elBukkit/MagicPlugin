@@ -79,6 +79,12 @@ public class RedProtectManager implements BlockBreakManager, BlockBuildManager, 
             if (source instanceof Player && target instanceof Player) {
                 return region.canPVP((Player)source, (Player)target);
             }
+            if (region.getFlagBool("passives") && !(target instanceof Player)) {
+                if (source instanceof Player && region.isMember((Player)source)) {
+                    return true;
+                }
+                return false;
+            }
 
             return true;
         } catch (Exception ex) {
