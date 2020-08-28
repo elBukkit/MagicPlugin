@@ -1076,7 +1076,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
                 else
                 {
-                    effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
+                    effects.put(effectKey, controller.loadEffects(effectsNode, effectKey, "spell " + getKey()));
                 }
             }
         } else if (node.contains("effects")) {

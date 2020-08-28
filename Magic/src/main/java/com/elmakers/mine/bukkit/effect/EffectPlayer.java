@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -62,6 +63,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     public static boolean SOUNDS_ENABLED = true;
 
     protected Plugin plugin;
+    protected String logContext;
 
     private DynamicLocation origin;
     private DynamicLocation target;
@@ -136,6 +138,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
+    public void load(Plugin plugin, ConfigurationSection configuration, String logContext) {
+        this.logContext = logContext;
+        load(plugin, configuration);
+    }
+
     public void load(Plugin plugin, ConfigurationSection configuration) {
         this.plugin = plugin;
 
@@ -149,13 +156,14 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             effectLibConfig = null;
         }
 
+        Logger logger = plugin == null ? null : plugin.getLogger();
         broadcastSound = configuration.getBoolean("sound_broadcast", true);
         useParticleOverride = configuration.getString("particle_override", null);
         useColorOverride = configuration.getString("color_override", null);
-        originOffset = ConfigurationUtils.getVector(configuration, "origin_offset",  ConfigurationUtils.getVector(configuration, "offset"));
-        targetOffset = ConfigurationUtils.getVector(configuration, "target_offset");
-        originRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_offset");
-        targetRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_target_offset");
+        originOffset = ConfigurationUtils.getVector(configuration, "origin_offset",  ConfigurationUtils.getVector(configuration, "offset", null, logger, logContext), logger, logContext);
+        targetOffset = ConfigurationUtils.getVector(configuration, "target_offset", null, logger, logContext);
+        originRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_offset", null, logger, logContext);
+        targetRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_target_offset", null, logger, logContext);
         delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
         material1 = ConfigurationUtils.getMaterialAndData(configuration, "material");
         if (configuration.isBoolean("color") && !configuration.getBoolean("color")) {
@@ -665,6 +673,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
+        return loadEffects(plugin, root, key, null);
+    }
+
+    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, String logContext) {
         List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
         Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
         if (effectNodes != null)
@@ -688,7 +700,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                     @SuppressWarnings("unchecked")
                     Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
                     EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
-                    player.load(plugin, effectValues);
+                    player.load(plugin, effectValues, logContext);
                     players.add(player);
                 } catch (ClassNotFoundException unknown) {
                     if (plugin != null) {

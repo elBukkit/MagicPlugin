@@ -126,7 +126,7 @@ public class ChangeContextAction extends CompoundAction {
         if (sourceLocation != null) {
             sourceLocation = sourceLocation.clone();
         }
-        if (this.sourceLocation != null) {
+        if (this.sourceLocation != null && !this.sourceLocation.isEmpty()) {
             Vector newSource = ConfigurationUtils.toVector(this.sourceLocation);
             if (newSource != null) {
                 if (sourceLocation == null) {
@@ -140,18 +140,22 @@ public class ChangeContextAction extends CompoundAction {
                     sourceLocation.setY(newSource.getY());
                     sourceLocation.setZ(newSource.getZ());
                 }
+            } else {
+                context.getLogger().warning("Invalid source location in spell " + context.getSpell().getKey() + ": " + this.sourceLocation);
             }
         }
         Entity targetEntity = context.getTargetEntity();
         Location targetLocation = context.getTargetLocation();
         if (targetLocation != null) {
             targetLocation = targetLocation.clone();
-            if (this.targetLocation != null) {
+            if (this.targetLocation != null && !this.targetLocation.isEmpty()) {
                 Vector newTarget = ConfigurationUtils.toVector(this.targetLocation);
                 if (newTarget != null) {
                     targetLocation.setX(newTarget.getX());
                     targetLocation.setY(newTarget.getY());
                     targetLocation.setZ(newTarget.getZ());
+                } else {
+                    context.getLogger().warning("Invalid target location in spell " + context.getSpell().getKey() + ": " + this.targetLocation);
                 }
             }
         }

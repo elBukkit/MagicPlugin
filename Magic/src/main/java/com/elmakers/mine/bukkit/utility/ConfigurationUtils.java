@@ -83,12 +83,24 @@ public class ConfigurationUtils extends ConfigUtils {
 
     @Nullable
     public static Vector getVector(ConfigurationSection node, String path, Vector def) {
+        return getVector(node, path, def, null, null);
+    }
+
+    @Nullable
+    public static Vector getVector(ConfigurationSection node, String path, Vector def, Logger logger, String logContext) {
         String stringData = node.getString(path, null);
         if (stringData == null) {
             return def;
         }
 
-        return toVector(stringData);
+        Vector result = toVector(stringData);
+        if (result == null && logger != null) {
+            if (logContext == null) {
+                logContext = "unknown";
+            }
+            logger.warning("Invalid vector in " + logContext + ": " + stringData);
+        }
+        return result;
     }
 
     @Nullable
@@ -144,9 +156,9 @@ public class ConfigurationUtils extends ConfigUtils {
                 float pitch = 0;
                 float yaw = 0;
                 String[] pieces = StringUtils.split((String)o, ',');
-                double x = Double.parseDouble(pieces[0]);
-                double y = Double.parseDouble(pieces[1]);
-                double z = Double.parseDouble(pieces[2]);
+                double x = parseDouble(pieces[0]);
+                double y = parseDouble(pieces[1]);
+                double z = parseDouble(pieces[2]);
                 World world = null;
                 if (pieces.length > 3) {
                     world = Bukkit.getWorld(pieces[3]);
@@ -458,58 +470,34 @@ public class ConfigurationUtils extends ConfigUtils {
         return first;
     }
 
-    protected static double parseDouble(String s)
+    protected static double parseDouble(String s) throws NumberFormatException
     {
         if (s == null || s.isEmpty()) return 0;
         char firstChar = s.charAt(0);
         if (firstChar == 'r' || firstChar == 'R')
         {
             String[] pieces = StringUtils.split(s, "(,)");
-            try {
-                double min = Double.parseDouble(pieces[1].trim());
-                double max = Double.parseDouble(pieces[2].trim());
-                return random.nextDouble() * (max - min) + min;
-            } catch (Exception ex) {
-                Bukkit.getLogger().warning("Failed to parse: " + s);
-                ex.printStackTrace();
-            }
+            double min = Double.parseDouble(pieces[1].trim());
+            double max = Double.parseDouble(pieces[2].trim());
+            return random.nextDouble() * (max - min) + min;
         }
 
-        try {
-            return Double.parseDouble(s);
-        } catch (Exception ex) {
-            Bukkit.getLogger().warning("Failed to parse as double: " + s);
-            ex.printStackTrace();
-        }
-
-        return 0;
+        return Double.parseDouble(s);
     }
 
-    protected static int parseInt(String s)
+    protected static int parseInt(String s) throws NumberFormatException
     {
         if (s == null || s.isEmpty()) return 0;
         char firstChar = s.charAt(0);
         if (firstChar == 'r' || firstChar == 'R')
         {
             String[] pieces = StringUtils.split(s, "(,)");
-            try {
-                double min = Double.parseDouble(pieces[1].trim());
-                double max = Double.parseDouble(pieces[2].trim());
-                return (int)Math.floor(random.nextDouble() * (max - min) + min);
-            } catch (Exception ex) {
-                Bukkit.getLogger().warning("Failed to parse: " + s);
-                ex.printStackTrace();
-            }
+            double min = Double.parseDouble(pieces[1].trim());
+            double max = Double.parseDouble(pieces[2].trim());
+            return (int)Math.floor(random.nextDouble() * (max - min) + min);
         }
 
-        try {
-            return (int)Math.floor(Double.parseDouble(s));
-        } catch (Exception ex) {
-            Bukkit.getLogger().warning("Failed to parse as int: " + s);
-            ex.printStackTrace();
-        }
-
-        return 0;
+        return (int)Math.floor(Double.parseDouble(s));
     }
 
     public static double overrideDouble(String override, double value)
@@ -662,7 +650,12 @@ public class ConfigurationUtils extends ConfigUtils {
     public static Integer getInteger(ConfigurationSection node, String path, Integer def)
     {
         if (node.contains(path)) {
-            return parseInt(node.getString(path));
+            String strVal = node.getString(path);
+            try {
+                return parseInt(strVal);
+            } catch (NumberFormatException ex) {
+                Bukkit.getLogger().warning("Failed to parse as integer: " + strVal);
+            }
         }
         return def;
     }
@@ -670,7 +663,12 @@ public class ConfigurationUtils extends ConfigUtils {
     public static Double getDouble(ConfigurationSection node, String path, Double def)
     {
         if (node.contains(path)) {
-            return parseDouble(node.getString(path));
+            String strVal = node.getString(path);
+            try {
+                return parseDouble(strVal);
+            } catch (NumberFormatException ex) {
+                Bukkit.getLogger().warning("Failed to parse as number: " + strVal);
+            }
         }
         return def;
     }
