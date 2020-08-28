@@ -63,6 +63,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     public static boolean SOUNDS_ENABLED = true;
 
     protected Plugin plugin;
+    protected Logger logger;
     protected String logContext;
 
     private DynamicLocation origin;
@@ -132,14 +133,24 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.plugin = plugin;
     }
 
+    @Nullable
+    private Logger getLogger() {
+        if (this.logger == null && this.plugin != null) {
+            this.logger = this.plugin.getLogger();
+        }
+        return this.logger;
+    }
+
     private void warn(String warning) {
-        if (plugin != null) {
-            plugin.getLogger().warning(warning);
+        Logger logger = getLogger();
+        if (logger != null) {
+            logger.warning(warning);
         }
     }
 
-    public void load(Plugin plugin, ConfigurationSection configuration, String logContext) {
+    public void load(Plugin plugin, ConfigurationSection configuration, Logger logger, String logContext) {
         this.logContext = logContext;
+        this.logger = logger;
         load(plugin, configuration);
     }
 
@@ -156,7 +167,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             effectLibConfig = null;
         }
 
-        Logger logger = plugin == null ? null : plugin.getLogger();
+        Logger logger = getLogger();
         broadcastSound = configuration.getBoolean("sound_broadcast", true);
         useParticleOverride = configuration.getString("particle_override", null);
         useColorOverride = configuration.getString("color_override", null);
@@ -673,10 +684,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
-        return loadEffects(plugin, root, key, null);
+        return loadEffects(plugin, root, key, null, null);
     }
 
-    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, String logContext) {
+    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, Logger logger, String logContext) {
         List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
         Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
         if (effectNodes != null)
@@ -700,16 +711,16 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                     @SuppressWarnings("unchecked")
                     Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
                     EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
-                    player.load(plugin, effectValues, logContext);
+                    player.load(plugin, effectValues, logger, logContext);
                     players.add(player);
                 } catch (ClassNotFoundException unknown) {
-                    if (plugin != null) {
-                        plugin.getLogger().warning("Unknown effect class: " + effectClass);
+                    if (logger != null) {
+                        logger.warning("Unknown effect class: " + effectClass);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    if (plugin != null) {
-                        plugin.getLogger().warning("Error creating effect class: " + effectClass + " " + ex.getMessage());
+                    if (logger != null) {
+                        logger.warning("Error creating effect class: " + effectClass + " " + ex.getMessage());
                     }
                 }
             }
