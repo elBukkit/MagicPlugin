@@ -186,10 +186,14 @@ public class ConfigurationUtils extends ConfigUtils {
             try {
                 String parse = (String)o;
                 if (parse.isEmpty()) return null;
-                if (!parse.contains(" ")) {
+                if (parse.contains(",")) {
+                    parse = parse.replace(" ", "");
                     parse = parse.replace(",", " ");
                 }
-                parse = parse.replace("|", " ");
+                if (parse.contains("|")) {
+                    parse = parse.replace(" ", "");
+                    parse = parse.replace("|", " ");
+                }
                 String[] pieces = StringUtils.split(parse, ' ');
                 double x = parseDouble(pieces[0]);
                 double y = parseDouble(pieces[1]);
