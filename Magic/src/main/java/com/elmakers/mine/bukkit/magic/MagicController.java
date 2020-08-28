@@ -1337,7 +1337,7 @@ public class MagicController implements MageController {
             if (pluginManager.isPluginEnabled("RedProtect")) {
                 try {
                     redProtectManager = new RedProtectManager(pluginManager.getPlugin("RedProtect"), this, redProtectConfiguration);
-                    getLogger().info("Integrated with RedProtect for build/break/pvp target checks");
+                    getLogger().info("Integrated with RedProtect for build/break/pvp/target checks");
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with RedProtect", ex);
                 }
@@ -1667,6 +1667,7 @@ public class MagicController implements MageController {
         if (griefPreventionManager.isEnabled()) pvpManagers.add(griefPreventionManager);
         if (factionsManager.isEnabled()) pvpManagers.add(factionsManager);
         if (residenceManager != null) pvpManagers.add(residenceManager);
+        if (redProtectManager != null) pvpManagers.add(redProtectManager);
 
         // Build Managers
         if (worldGuardManager.isEnabled()) blockBuildManagers.add(worldGuardManager);

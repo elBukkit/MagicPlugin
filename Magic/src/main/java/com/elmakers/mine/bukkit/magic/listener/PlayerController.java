@@ -185,7 +185,7 @@ public class PlayerController implements Listener {
 
         // Check for auto wand
         boolean isWand = Wand.isWand(next);
-        String templateKey = controller.getAutoWandKey(next.getType());
+        String templateKey = next == null ? null : controller.getAutoWandKey(next.getType());
         if (templateKey != null && !isWand && !templateKey.isEmpty()) {
             Wand wand = controller.createWand(templateKey);
             if (wand == null) {
