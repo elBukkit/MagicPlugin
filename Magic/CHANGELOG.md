@@ -2,6 +2,8 @@
 
 # 7.10.1
 
+ - Add auto_wands config option, for automatically converting items of a specific type into wands
+
 # 7.10
 
  - Fix compatibility with older versions of Spigot (whoops, sorry!)

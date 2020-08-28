@@ -2807,6 +2807,18 @@ public class MagicController implements MageController {
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 
+        ConfigurationSection autoWandsConfig = properties.getConfigurationSection("auto_wands");
+        Set<String> autoWandsKeys = autoWandsConfig.getKeys(false);
+        autoWands.clear();
+        for (String autoWandKey : autoWandsKeys) {
+            try {
+                Material autoWandMaterial = Material.valueOf(autoWandKey.toUpperCase());
+                autoWands.put(autoWandMaterial, autoWandsConfig.getString(autoWandKey));
+            } catch (Exception ex) {
+                getLogger().warning("Invalid material in auto_wands config: " + autoWandKey);
+            }
+        }
+
         Wand.regenWhileInactive = properties.getBoolean("regenerate_while_inactive", Wand.regenWhileInactive);
         if (properties.contains("mana_display")) {
             String manaDisplay = properties.getString("mana_display");
@@ -4239,6 +4251,12 @@ public class MagicController implements MageController {
     @Override
     public Collection<com.elmakers.mine.bukkit.api.wand.WandTemplate> getWandTemplates() {
         return new ArrayList<>(wandTemplates.values());
+    }
+
+    @Override
+    @Nullable
+    public String getAutoWandKey(@Nonnull Material material) {
+        return autoWands.get(material);
     }
 
     @Nullable
@@ -6720,4 +6738,5 @@ public class MagicController implements MageController {
     private List<EntityTargetingManager>        targetingProviders          = new ArrayList<>();
     private NPCSupplierSet                      npcSuppliers                = new NPCSupplierSet();
     private Map<String, RequirementsProcessor>  requirementProcessors       = new HashMap<>();
+    private Map<Material, String>               autoWands                   = new HashMap<>();
 }

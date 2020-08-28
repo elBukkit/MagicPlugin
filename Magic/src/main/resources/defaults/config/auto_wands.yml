@@ -1,0 +1,5 @@
+# This can be used to automatically turn items of a specific type into wands when held
+# e.g.
+# auto_wands:
+#   stick: wand
+auto_wands: {}

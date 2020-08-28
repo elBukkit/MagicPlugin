@@ -183,8 +183,21 @@ public class PlayerController implements Listener {
             return;
         }
 
-        // Check for active Wand
+        // Check for auto wand
         boolean isWand = Wand.isWand(next);
+        String templateKey = controller.getAutoWandKey(next.getType());
+        if (templateKey != null && !isWand && !templateKey.isEmpty()) {
+            Wand wand = controller.createWand(templateKey);
+            if (wand == null) {
+                controller.getLogger().warning("Invalid wand template in auto_wands config: " + templateKey);
+            } else {
+                next = wand.getItem();
+                inventory.setItem(event.getNewSlot(), next);
+                isWand = true;
+            }
+        }
+
+        // Check for active Wand
         if (activeWand != null && activeWand.isInventoryOpen()) {
             // If the wand inventory is open, we're going to let them select a spell or material
             if (!isWand) {

@@ -617,4 +617,6 @@ public interface MageController {
     Collection<Chunk> getLockedChunks();
     void lockChunk(Chunk chunk);
     void unlockChunk(Chunk chunk);
+    @Nullable
+    String getAutoWandKey(@Nonnull Material material);
 }
