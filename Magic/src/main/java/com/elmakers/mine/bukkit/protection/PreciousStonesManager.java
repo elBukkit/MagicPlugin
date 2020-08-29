@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -15,9 +18,12 @@ import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
-public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager, CastPermissionManager, EntityTargetingManager {
+public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager,
+        CastPermissionManager, EntityTargetingManager, PlayerWarpManager {
     private boolean enabled = false;
     private boolean override = true;
     private PreciousStonesAPI api;
@@ -113,5 +119,23 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
             return null;
 
         return api.getFieldLocations(player);
+    }
+
+    @Nullable
+    @Override
+    public Collection<PlayerWarp> getWarps(@Nonnull Player player) {
+        if (!enabled || api == null || player == null)
+            return null;
+
+        Map<String, Location> locations = api.getFieldLocations(player);
+        if (locations == null || locations.isEmpty()) {
+            return null;
+        }
+        Collection<PlayerWarp> warps = new ArrayList<>();
+        for (Map.Entry<String, Location> entry : locations.entrySet()) {
+            PlayerWarp warp = new PlayerWarp(entry.getKey(), entry.getValue());
+            warps.add(warp);
+        }
+        return warps;
     }
 }

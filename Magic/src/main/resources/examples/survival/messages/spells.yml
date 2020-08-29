@@ -720,7 +720,7 @@ spells:
         cast_wand: Returning you to your lost wand
         cast_warp: Warping you to $name
         cast_town: Warping you to your home town
-        cast_field: Warping you to a protected area
+        cast_regions: Warping you to a protected area
         cast_friend: Warping you to $name
         no_target_death: No recorded death location
         no_target_wand: No recorded lost wands
@@ -729,7 +729,7 @@ spells:
         no_target_marker: No marker set
         no_target_spawn: Can't recall to spawn
         no_target_town: You're not in a town
-        no_target_fields: You have no fields
+        no_target_regions: You have no homes
         no_target_friend: Invalid friend $name
         title_move_marker: "Move Marker #$number to Here"
         description_move_marker: Replaces your current marker
@@ -747,7 +747,7 @@ spells:
         description_wand: A wand you've dropped on the ground
         title_town: Town Square
         description_town: The center of your home town
-        description_field: A protected area
+        description_regions: A protected area
         cross_world_disallowed: You are not allowed to Recall to another world
         title: Choose Destination
         move_marker_title: Move Marker

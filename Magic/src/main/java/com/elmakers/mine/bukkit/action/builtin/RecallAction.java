@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -32,6 +31,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
@@ -79,7 +79,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     private enum RecallType
     {
-        FIELDS,
+        REGIONS,
         DEATH,
         SPAWN,
         TOWN,
@@ -655,20 +655,33 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                             }
                         }
                         break;
-                    case FIELDS:
-                        Map<String, Location> fields = controller.getHomeLocations(player);
-                        if (fields != null) {
-                            for (Map.Entry<String, Location> fieldEntry : fields.entrySet()) {
-                                Location location = fieldEntry.getValue().clone();
-                                location.setX(location.getX() + 0.5);
-                                location.setZ(location.getZ() + 0.5);
-                                options.add(new Waypoint(RecallType.FIELDS, location,
-                                        fieldEntry.getKey(),
-                                        context.getMessage("cast_field"),
-                                        context.getMessage("no_target_field"),
-                                        context.getMessage("description_field", ""),
-                                        getIcon(context, parameters, "icon_field"),
-                                        true));
+                    case REGIONS:
+                        Set<String> warpProviders = controller.getPlayerWarpProviderKeys();
+                        for (String key : warpProviders) {
+                            if (parameters.getBoolean("allow_" + key.toLowerCase(), true)) {
+                                Collection<PlayerWarp> warps = controller.getPlayerWarps(player, key);
+                                for (PlayerWarp warp : warps) {
+                                    Location location = warp.getLocation().clone();
+                                    String description = warp.getDescription();
+                                    if (description == null) {
+                                        description = context.getMessage("description_" + key, context.getMessage("description_regions"));
+                                    }
+                                    MaterialAndData icon = (MaterialAndData)warp.getIcon();
+                                    if (icon == null) {
+                                        icon = getIcon(context, parameters, "icon_" + key);
+                                        if (icon == null) {
+                                            icon = getIcon(context, parameters, "icon_regions");
+                                        }
+                                    }
+
+                                    options.add(new Waypoint(RecallType.REGIONS, location,
+                                            warp.getName(),
+                                            context.getMessage("cast_" + key, context.getMessage("cast_regions")),
+                                            context.getMessage("no_target_" + key, context.getMessage("no_target_regions")),
+                                            description,
+                                            icon,
+                                            true));
+                                }
                             }
                         }
                         break;

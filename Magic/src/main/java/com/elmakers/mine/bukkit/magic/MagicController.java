@@ -109,6 +109,8 @@ import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -3220,7 +3222,6 @@ public class MagicController implements MageController {
         pvpManagers.addAll(loadEvent.getPVPManagers());
         attributeProviders.addAll(loadEvent.getAttributeProviders());
         teamProviders.addAll(loadEvent.getTeamProviders());
-        requirementProcessors.putAll(loadEvent.getRequirementProcessors());
         castManagers.addAll(loadEvent.getCastManagers());
 
         // Load builtin default currencies
@@ -3273,6 +3274,12 @@ public class MagicController implements MageController {
         }
         if (battleArenaManager != null && useBattleArenaTeams) {
             teamProviders.add(battleArenaManager);
+        }
+
+        // Register player warp managers
+        playerWarpManagers.putAll(loadEvent.getWarpManagers());
+        if (preciousStonesManager != null) {
+            playerWarpManagers.put("fields", preciousStonesManager);
         }
 
         // Register requirement processors
@@ -4189,6 +4196,22 @@ public class MagicController implements MageController {
     @Override
     public Map<String, Location> getHomeLocations(Player player) {
         return preciousStonesManager.getFieldLocations(player);
+    }
+
+    @Nonnull
+    @Override
+    public Set<String> getPlayerWarpProviderKeys() {
+        return playerWarpManagers.keySet();
+    }
+
+    @Nullable
+    @Override
+    public Collection<PlayerWarp> getPlayerWarps(Player player, String key) {
+        PlayerWarpManager manager = playerWarpManagers.get(key);
+        if (manager == null) {
+            return null;
+        }
+        return manager.getWarps(player);
     }
 
     public TownyManager getTowny() {
@@ -6766,5 +6789,6 @@ public class MagicController implements MageController {
     private List<EntityTargetingManager>        targetingProviders          = new ArrayList<>();
     private NPCSupplierSet                      npcSuppliers                = new NPCSupplierSet();
     private Map<String, RequirementsProcessor>  requirementProcessors       = new HashMap<>();
+    private Map<String, PlayerWarpManager>      playerWarpManagers          = new HashMap<>();
     private Map<Material, String>               autoWands                   = new HashMap<>();
 }

@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -622,4 +623,8 @@ public interface MageController {
     void unlockChunk(Chunk chunk);
     @Nullable
     String getAutoWandKey(@Nonnull Material material);
+    @Nonnull
+    Set<String> getPlayerWarpProviderKeys();
+    @Nullable
+    Collection<PlayerWarp> getPlayerWarps(Player player, String key);
 }

@@ -2,7 +2,7 @@
 
 # 7.10.1
 
- - Add RedProtect integration
+ - Add RedProtect integration, for build/break/pvp/mob targeting permissions, and Recall warps
  - Add auto_wands config option, for automatically converting items of a specific type into wands
  - Improved parsing and error messages for vectors in effect configs
 

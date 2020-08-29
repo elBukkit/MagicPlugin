@@ -17,6 +17,7 @@ import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 
 /**
@@ -33,6 +34,7 @@ public class PreLoadEvent extends Event {
     private List<PVPManager> pvpManagers = new ArrayList<>();
     private List<CastPermissionManager> castmanagers = new ArrayList<>();
     private Map<String, RequirementsProcessor> requirementProcessors = new HashMap<>();
+    private Map<String, PlayerWarpManager> warpManagers = new HashMap<>();
 
     public PreLoadEvent(MageController controller) {
         this.controller = controller;
@@ -141,6 +143,22 @@ public class PreLoadEvent extends Event {
      */
     public void registerCastPermissionManager(CastPermissionManager manager) {
         castmanagers.add(manager);
+    }
+
+    /**
+     * Register a PlayerWarpManager, for providing warps to be used in the Recall menu.
+     * The name of the manager as registered corresponds with the "allow_player_warps" map in the recall
+     * spell configuration.
+     *
+     * @param key The name of the manager
+     * @param manager The manager to add
+     */
+    public void registerPlayerWarpManager(String key, PlayerWarpManager manager) {
+        warpManagers.put(key, manager);
+    }
+
+    public Map<String, PlayerWarpManager> getWarpManagers() {
+        return warpManagers;
     }
 
     public Map<String, RequirementsProcessor> getRequirementProcessors() {
