@@ -37,6 +37,7 @@ loadbefore:
   - Quests
   - Heroes
   - MobArena
+  - CMI
 commands:
   getrp:
     description: Download the Magic resource pack
