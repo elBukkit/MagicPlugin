@@ -46,7 +46,8 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
                 Plugin psPlugin = plugin.getServer().getPluginManager().getPlugin("PreciousStones");
                 if (psPlugin != null) {
                     api = new PreciousStonesAPI(plugin, psPlugin);
-                    plugin.getLogger().info("PreciousStones found, will respect build and PVP permissions for force fields");
+                    plugin.getLogger().info("PreciousStones found, will respect build and PVP permissions for protection fields");
+                    plugin.getLogger().info("Disable warping to fields in recall config with allow_fields: false");
                 }
             } catch (Throwable ignored) {
             }

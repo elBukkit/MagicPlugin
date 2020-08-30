@@ -17,6 +17,7 @@ wolf:
   overrides:
     - max_dimension 1024
     - floodfill.depth 256
+    - recall.warmup 0
   effect_particle: ENCHANTMENT_TABLE
   potion_effects:
     - SATURATION

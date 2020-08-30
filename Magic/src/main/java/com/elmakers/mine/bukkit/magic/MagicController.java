@@ -1340,6 +1340,7 @@ public class MagicController implements MageController {
                 try {
                     redProtectManager = new RedProtectManager(pluginManager.getPlugin("RedProtect"), this, redProtectConfiguration);
                     getLogger().info("Integrated with RedProtect for build/break/pvp/target checks");
+                    getLogger().info("Disable warping to fields in recall config with allow_redprotect: false");
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with RedProtect", ex);
                 }
@@ -1693,6 +1694,42 @@ public class MagicController implements MageController {
         if (citadelManager != null) blockBreakManagers.add(citadelManager);
         if (residenceManager != null) blockBreakManagers.add(residenceManager);
         if (redProtectManager != null) blockBreakManagers.add(redProtectManager);
+
+        // Attribute providers
+        if (skillAPIManager != null) {
+            attributeProviders.add(skillAPIManager);
+        }
+        if (heroesManager != null) {
+            attributeProviders.add(heroesManager);
+        }
+
+        // Team providers
+        if (heroesManager != null && useHeroesParties) {
+            teamProviders.add(heroesManager);
+        }
+        if (skillAPIManager != null && useSkillAPIAllies) {
+            teamProviders.add(skillAPIManager);
+        }
+        if (useScoreboardTeams) {
+            teamProviders.add(new ScoreboardTeamProvider());
+        }
+        if (permissionTeams != null && !permissionTeams.isEmpty()) {
+            teamProviders.add(new PermissionsTeamProvider(permissionTeams));
+        }
+        if (factionsManager != null) {
+            teamProviders.add(factionsManager);
+        }
+        if (battleArenaManager != null && useBattleArenaTeams) {
+            teamProviders.add(battleArenaManager);
+        }
+
+        // Player warp providers
+        if (preciousStonesManager != null && preciousStonesManager.isEnabled()) {
+            playerWarpManagers.put("fields", preciousStonesManager);
+        }
+        if (redProtectManager != null) {
+            playerWarpManagers.put("redprotect", redProtectManager);
+        }
 
         Runnable genericIntegrationTask = new Runnable() {
             @Override
@@ -3213,6 +3250,7 @@ public class MagicController implements MageController {
         blockBuildManagers.clear();
         pvpManagers.clear();
         castManagers.clear();
+        playerWarpManagers.clear();
 
         PreLoadEvent loadEvent = new PreLoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
@@ -3248,39 +3286,12 @@ public class MagicController implements MageController {
 
         // Register attribute providers
         attributeProviders.addAll(loadEvent.getAttributeProviders());
-        if (skillAPIManager != null) {
-            attributeProviders.add(skillAPIManager);
-        }
-        if (heroesManager != null) {
-            attributeProviders.add(heroesManager);
-        }
 
         // Register team providers
         teamProviders.addAll(loadEvent.getTeamProviders());
-        if (heroesManager != null && useHeroesParties) {
-            teamProviders.add(heroesManager);
-        }
-        if (skillAPIManager != null && useSkillAPIAllies) {
-            teamProviders.add(skillAPIManager);
-        }
-        if (useScoreboardTeams) {
-            teamProviders.add(new ScoreboardTeamProvider());
-        }
-        if (permissionTeams != null && !permissionTeams.isEmpty()) {
-            teamProviders.add(new PermissionsTeamProvider(permissionTeams));
-        }
-        if (factionsManager != null) {
-            teamProviders.add(factionsManager);
-        }
-        if (battleArenaManager != null && useBattleArenaTeams) {
-            teamProviders.add(battleArenaManager);
-        }
 
-        // Register player warp managers
+        // Register player warp managers=
         playerWarpManagers.putAll(loadEvent.getWarpManagers());
-        if (preciousStonesManager != null) {
-            playerWarpManagers.put("fields", preciousStonesManager);
-        }
 
         // Register requirement processors
         requirementProcessors.putAll(loadEvent.getRequirementProcessors());
