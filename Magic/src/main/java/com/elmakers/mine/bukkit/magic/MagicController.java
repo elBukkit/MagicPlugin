@@ -1326,6 +1326,7 @@ public class MagicController implements MageController {
                 try {
                     residenceManager = new ResidenceManager(pluginManager.getPlugin("Residence"), this, residenceConfiguration);
                     getLogger().info("Integrated with residence for build/break/pvp/target checks");
+                    getLogger().info("Disable warping to residences in recall config with allow_residence: false");
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with Residence", ex);
                 }
@@ -1729,6 +1730,9 @@ public class MagicController implements MageController {
         }
         if (redProtectManager != null) {
             playerWarpManagers.put("redprotect", redProtectManager);
+        }
+        if (residenceManager != null) {
+            playerWarpManagers.put("residence", residenceManager);
         }
 
         Runnable genericIntegrationTask = new Runnable() {

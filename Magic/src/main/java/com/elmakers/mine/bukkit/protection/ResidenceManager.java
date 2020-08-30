@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -13,6 +16,7 @@ import org.bukkit.plugin.Plugin;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.containers.ResidencePlayer;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.PlayerManager;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -20,8 +24,11 @@ import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
 
-public class ResidenceManager implements PVPManager, BlockBreakManager, BlockBuildManager, EntityTargetingManager {
+public class ResidenceManager implements PVPManager, BlockBreakManager, BlockBuildManager,
+        EntityTargetingManager, PlayerWarpManager {
     private final MageController controller;
     private final Residence residence;
 
@@ -101,5 +108,29 @@ public class ResidenceManager implements PVPManager, BlockBreakManager, BlockBui
         }
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public Collection<PlayerWarp> getWarps(@Nonnull Player player) {
+        ResidencePlayer residencePlayer = getResidencePlayer(player);
+        if (residencePlayer == null) {
+            return null;
+        }
+        Collection<ClaimedResidence> residences = residencePlayer.getResList();
+        if (residences == null || residences.isEmpty()) {
+            return null;
+        }
+        Collection<PlayerWarp> warps = new ArrayList<>();
+        for (ClaimedResidence residence : residences) {
+            Location location = residence.getTeleportLocation(player);
+            if (location == null) {
+                location = residence.getMainArea().getHighLoc().clone().add(residence.getMainArea().getLowLoc()).multiply(0.5);
+                location = location.getWorld().getHighestBlockAt(location).getLocation();
+            }
+            PlayerWarp warp = new PlayerWarp(residence.getName(), location);
+            warps.add(warp);
+        }
+        return warps;
     }
 }
