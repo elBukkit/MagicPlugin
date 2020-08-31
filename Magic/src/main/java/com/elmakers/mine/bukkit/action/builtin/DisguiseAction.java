@@ -53,13 +53,16 @@ public class DisguiseAction extends BaseSpellAction
         }
 
         ConfigurationSection disguiseConfig = this.disguiseConfig;
-        if (disguiseConfig != null && (disguiseConfig.contains("name") || disguiseConfig.contains("custom_name"))) {
+        if (disguiseConfig != null && (disguiseConfig.contains("name") || disguiseConfig.contains("custom_name") || disguiseConfig.contains("skin"))) {
             disguiseConfig = ConfigurationUtils.cloneConfiguration(disguiseConfig);
             if (disguiseConfig.contains("name")) {
                 disguiseConfig.set("name", context.parameterize(disguiseConfig.getString("name")));
             }
             if (disguiseConfig.contains("custom_name")) {
                 disguiseConfig.set("custom_name", context.parameterize(disguiseConfig.getString("custom_name")));
+            }
+            if (disguiseConfig.contains("skin")) {
+                disguiseConfig.set("skin", context.parameterize(disguiseConfig.getString("skin")));
             }
         }
         controller.disguise(entity, disguiseConfig);
