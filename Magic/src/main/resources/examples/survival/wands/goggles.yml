@@ -1,5 +1,4 @@
 goggles:
-    mode: cast
     icon: wand_icon:16
     migrate_icon: monster_eggs:1
     indestructible: true
@@ -9,8 +8,6 @@ goggles:
     mana_regeneration_boost: -0.1
     potion_effects: night_vision:3
     glow: true
-    active_spell: wear
     quiet: 2
-    spells:
-        - wear
+    wearable: helmet
 

@@ -9,6 +9,7 @@ magichat:
     effect_color: '888888'
     mana_max_boost: 0.2
     mana_regeneration_boost: 0.1
+    wearable: helmet
     spells:
         - magichat
 

@@ -184,9 +184,11 @@ public class InventoryController implements Listener {
             return;
         }
 
-        // Check for wearing spells
+        // Check for wearing spells or wands
         ItemStack heldItem = event.getCursor();
+        boolean heldWand = Wand.isWand(heldItem);
         boolean heldSpell = Wand.isSpell(heldItem);
+        boolean clickedWand = Wand.isWand(clickedItem);
         if (event.getSlotType() == InventoryType.SlotType.ARMOR)
         {
             if (heldSpell) {
@@ -194,12 +196,35 @@ public class InventoryController implements Listener {
                 return;
             }
 
+            if (heldWand) {
+                Wand wand = controller.getWand(heldItem);
+                int slot = event.getSlot();
+                if (wand.isWearableInSlot(slot)) {
+                    ItemStack existing = player.getInventory().getItem(slot);
+                    player.getInventory().setItem(slot, heldItem);
+                    event.setCursor(existing);
+                    event.setCancelled(true);
+                    controller.onArmorUpdated(mage);
+                    return;
+                }
+            }
+
             // Notify mage that armor was updated, but wait one tick to do it
             controller.onArmorUpdated(mage);
         }
 
+        if (clickedWand && action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+            int slot = event.getSlot();
+            Wand wand = slot == player.getInventory().getHeldItemSlot() ? mage.getActiveWand() :
+                controller.getWand(clickedItem);
+            if (wand.tryToWear(mage)) {
+                player.getInventory().setItem(slot, null);
+                event.setCancelled(true);
+            }
+        }
+
         // Check for putting wands in a grindstone since they will re-apply their enchantments
-        if (inventoryType.name().equals("GRINDSTONE") && Wand.isWand(heldItem)) {
+        if (inventoryType.name().equals("GRINDSTONE") && heldWand) {
             event.setCancelled(true);
             return;
         }
@@ -247,7 +272,6 @@ public class InventoryController implements Listener {
         // TODO: use enum when dropping backwards compat
         if (!isChest) isChest = inventoryType.name().equals("SHULKER_BOX");
         if (!isChest) isChest = inventoryType.name().equals("BARREL");
-        boolean clickedWand = Wand.isWand(clickedItem);
         boolean isContainerSlot = event.getSlot() == event.getRawSlot();
 
         if (isWandInventoryOpen)

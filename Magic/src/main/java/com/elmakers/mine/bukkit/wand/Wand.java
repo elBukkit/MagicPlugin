@@ -67,6 +67,7 @@ import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.effect.WandEffectContext;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.item.ArmorSlot;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
@@ -5859,5 +5860,70 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean isInOffhand() {
         return isInOffhand;
+    }
+
+    public boolean isWearableInSlot(int slotNumber) {
+        if (getBoolean("wearable")) return true;
+        Collection<String> slots = getStringList("wearable");
+        if (slots != null) {
+            for (String slotKey : slots) {
+                try {
+                    ArmorSlot slot = ArmorSlot.valueOf(slotKey.toUpperCase());
+                    if (slot.getSlot() == slotNumber) {
+                        return true;
+                    }
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid wearable slot: " + slotKey);
+                }
+            }
+        }
+        return false;
+    }
+
+    @Nullable
+    public Collection<Integer> getWearableSlots() {
+        List<Integer> slots = null;
+        if (getBoolean("wearable")) {
+            slots = new ArrayList<>();
+            for (ArmorSlot slot : ArmorSlot.values()) {
+                if (slot.getSlot() >= 0) {
+                    slots.add(slot.getSlot());
+                }
+            }
+            return slots;
+        }
+        Collection<String> slotList = getStringList("wearable");
+        if (slotList != null) {
+            slots = new ArrayList<>();
+            for (String slotKey : slotList) {
+                try {
+                    ArmorSlot slot = ArmorSlot.valueOf(slotKey.toUpperCase());
+                    slots.add(slot.getSlot());
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid wearable slot: " + slotKey);
+                }
+            }
+        }
+        return slots;
+    }
+
+    public boolean tryToWear(Mage mage) {
+        Player player = mage.getPlayer();
+        if (player == null) return false;
+        Collection<Integer> slots = getWearableSlots();
+        if (slots != null) {
+            for (int slot : slots) {
+                ItemStack existing = player.getInventory().getItem(slot);
+                if (CompatibilityUtils.isEmpty(existing)) {
+                    deactivate();
+                    player.getInventory().setItem(slot, getItem());
+                    player.getInventory().setItemInMainHand(existing);
+                    mage.checkWand();
+                    controller.onArmorUpdated(mage);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

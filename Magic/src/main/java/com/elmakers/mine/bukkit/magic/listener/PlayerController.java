@@ -817,6 +817,8 @@ public class PlayerController implements Listener {
                 // This prevents glitches when using block-based consumable wands
                 event.setUseInteractedBlock(Event.Result.DENY);
             }
+        } else if (isRightClick) {
+            wand.tryToWear(mage);
         }
     }
 

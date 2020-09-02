@@ -11,6 +11,7 @@
  - Add "transformable" mob parameter, can be used to prevent vanilla transformations (e.g. zombie->drowned)
  - Add "robes" example, add this in to get the crafting recipes and textures back for apprentice/wizard armor
  - Upgrade items, spells and brushes are now added to a wand by dropping them onto a wand
+ - Add "wearable" property for wands, so they can be worn like a normal armor piece
 
 # 7.10
 
@@ -19,7 +20,7 @@
  - Fix Cleric chestplate preventing Recall
  - Fixes and improvements to "mmob clear" and "mmob list" commands
  - Allow protected and powered properties on classes
- - Add max_item_count and stack_size parameters to GiveItem action, 
+ - Add max_item_count and stack_size parameters to GiveItem action,
    for filling a player's item up to a certain amount, and allowing illegal stack sizes
  - Expose some Wand methods to manipulate wand spell/brush inventories
 
@@ -58,7 +59,7 @@
  - Fix firework action (e.g. stun spell) bypassing pvp restriction
  - Fix projectile target_self_timeout always turning on self-targeting
  - Fix arenas example "battle" sword, it was supposed to have abilities
- - Add target_potion_effects and ignore_potion_effects parameters, 
+ - Add target_potion_effects and ignore_potion_effects parameters,
    for spells that only target entities with specific potion effects applied
  - Allow wand overrides to work with sections, such as "requirement.permission somepermission"
  - Add "requirement" option to CheckRequirements, for using a single requirement instead of a list
@@ -74,7 +75,7 @@
  - Add EarnEvent to API and Skript, for tracking SP earn
  - Improve MySQL connection robustness
  - Add support for material lists as costs
- - Try to prevent players glitching through blocks via brooms 
+ - Try to prevent players glitching through blocks via brooms
  - Add show_no_permission parameter to SpellShop action, for allowing purchasing of spells even if a
    player does not have permission to cast that spell.
  - Removed wizard clothes texture from RP
@@ -100,7 +101,7 @@
 
 # 7.9.10
 
- - Hotfix for players not getting items from shops 
+ - Hotfix for players not getting items from shops
 
 # 7.9.9
 
