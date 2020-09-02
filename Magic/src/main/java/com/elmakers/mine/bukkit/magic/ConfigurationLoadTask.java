@@ -326,7 +326,7 @@ public class ConfigurationLoadTask implements Runnable {
                         if (disableDefaults || disableInherited) {
                             enableAll(exampleConfig);
                         }
-                        ConfigurationUtils.addConfigurations(config, exampleConfig, true);
+                        ConfigurationUtils.addConfigurations(config, exampleConfig, false);
                         info(" Added " + examplesFileName);
                     } catch (Exception ex) {
                         getLogger().severe("Error loading file: " + examplesFileName);
