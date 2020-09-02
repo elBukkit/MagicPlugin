@@ -1,0 +1,4 @@
+# This is a modifier on the default survival configs
+inherit: survival
+
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-1.16.zip"

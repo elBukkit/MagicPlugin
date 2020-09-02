@@ -1,0 +1,23 @@
+apprenticeboots:
+  enabled: true
+
+apprenticechestplate:
+  enabled: true
+
+apprenticehelmet:
+  enabled: true
+
+apprenticeleggings:
+  enabled: true
+
+wizardboots:
+  enabled: true
+
+wizardchestplate:
+  enabled: true
+
+wizardhelmet:
+  enabled: true
+
+wizardleggings:
+  enabled: true

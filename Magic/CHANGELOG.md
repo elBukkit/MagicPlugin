@@ -8,6 +8,8 @@
  - Improved parsing and error messages for vectors in effect configs
  - Add "deactivate_self" parameter to Deactivate action, off by default.
    This reverses a change made in 7.9.1 where Deactivate would cancel its own spell.
+ - Add "transformable" mob parameter, can be used to prevent vanilla transformations (e.g. zombie->drowned)
+ - Add "robes" example, add this in to get the crafting recipes and textures back for apprentice/wizard armor
 
 # 7.10
 
