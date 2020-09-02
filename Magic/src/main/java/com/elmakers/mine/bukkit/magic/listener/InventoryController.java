@@ -487,6 +487,23 @@ public class InventoryController implements Listener {
                 }
             }
         }
+
+        // Check for dropping upgrades onto a wand
+        if (clickedWand && (Wand.isUpgrade(heldItem)
+            || Wand.isSpell(heldItem) || Wand.isSP(heldItem) || Wand.isBrush(heldItem))) {
+            if (activeWand != null) {
+                activeWand.deactivate();
+            }
+            Wand wand = controller.createWand(clickedItem);
+            if (wand.addItem(heldItem)) {
+                event.setCancelled(true);
+                event.setCursor(null);
+                player.getInventory().setItem(event.getSlot(), wand.getItem());
+            }
+            if (activeWand != null) {
+                mage.checkWand();
+            }
+        }
     }
 
     @EventHandler
@@ -529,7 +546,7 @@ public class InventoryController implements Listener {
                 previousWand.closeInventory();
             }
         } else {
-            if (previousWand != null && !previousWand.wasInventoryOpen()) {
+            if (previousWand != null && !previousWand.wasInventoryOpen() && previousWand.isAutoAbsorb()) {
                 previousWand.checkInventoryForUpgrades();
             }
             mage.checkWand();

@@ -25,6 +25,6 @@ currency:
 
 sp:
     name: "&e$amount &6Spell Points"
-    description: Will be absorbed by your wand
+    description: Grants you spell points
     limit: "a:&eThe limit for &6Spell Points &eis &c$amount"
     deposited: "a:&aDeposited &2$amount &6Spell Points&a, balance: &2$balance"

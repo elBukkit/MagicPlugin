@@ -1,10 +1,10 @@
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.
-    upgrade_item_description: "&eWill be absorbed by your wand"
-    #spell_item_description: "&eWill be absorbed by your wand"
+    upgrade_item_description: "&eDrop on a wand to upgrade"
+    #spell_item_description: "&eDrop on a wand to learn"
     spell_item_description: ""
-    #brush_item_description: "&eWill be absorbed by your wand"
+    #brush_item_description: "&eDrop on a wand to learn"
     brush_item_description: ""
     copy_material_name: Copy
     copy_material_description: Fills with the target material

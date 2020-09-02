@@ -970,11 +970,21 @@ public class PlayerController implements Listener {
             controller.removeLostWand(wand.getId());
         }
 
+        // Auto-absorb SP items
+        if (Wand.isSP(pickup)) {
+            if (mage.getActiveProperties().addItem(pickup)) {
+                event.getItem().remove();
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         // Wands will absorb spells and upgrade items
         Wand activeWand = mage.getActiveWand();
         if (activeWand != null
+                && activeWand.isAutoAbsorb()
                 && activeWand.isModifiable()
-                && (Wand.isSpell(pickup) || Wand.isBrush(pickup) || Wand.isUpgrade(pickup) || Wand.isSP(pickup))
+                && (Wand.isSpell(pickup) || Wand.isBrush(pickup) || Wand.isUpgrade(pickup))
                 && activeWand.addItem(pickup)) {
             event.getItem().remove();
             event.setCancelled(true);

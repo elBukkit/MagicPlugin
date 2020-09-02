@@ -190,6 +190,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private boolean hasInventory = false;
     private boolean locked = false;
+    private boolean autoAbsorb = false;
     private boolean lockedAllowUpgrades = false;
     private boolean forceUpgrade = false;
     private boolean isHeroes = false;
@@ -684,6 +685,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean isModifiable() {
         return !locked;
+    }
+
+    public boolean isAutoAbsorb() {
+        return autoAbsorb;
     }
 
     @Override
@@ -1598,6 +1603,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public void loadProperties() {
         super.loadProperties();
         locked = getBoolean("locked", locked);
+        autoAbsorb = getBoolean("auto_absorb", false);
         lockedAllowUpgrades = getBoolean("locked_allow_upgrades", false);
         consumeReduction = getFloat("consume_reduction");
         cooldownReduction = getFloat("cooldown_reduction");
@@ -4753,7 +4759,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         boolean forceUpdate = false;
-        if (checkInventoryForUpgrades()) {
+        if (autoAbsorb && checkInventoryForUpgrades()) {
             forceUpdate = true;
             needsSave = true;
         }

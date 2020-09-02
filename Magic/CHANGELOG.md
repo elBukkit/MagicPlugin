@@ -10,6 +10,7 @@
    This reverses a change made in 7.9.1 where Deactivate would cancel its own spell.
  - Add "transformable" mob parameter, can be used to prevent vanilla transformations (e.g. zombie->drowned)
  - Add "robes" example, add this in to get the crafting recipes and textures back for apprentice/wizard armor
+ - Upgrade items, spells and brushes are now added to a wand by dropping them onto a wand
 
 # 7.10
 
