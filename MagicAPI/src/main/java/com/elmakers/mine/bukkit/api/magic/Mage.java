@@ -369,6 +369,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      */
     void deactivateAllSpells();
     void deactivateAllSpells(boolean force, boolean quiet);
+    void deactivateAllSpells(boolean force, boolean quiet, String exceptSpellKey);
 
     ConfigurationSection getData();
 

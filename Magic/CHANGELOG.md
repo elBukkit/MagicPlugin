@@ -6,6 +6,8 @@
  - Add support for Residence regions in Recall
  - Add auto_wands config option, for automatically converting items of a specific type into wands
  - Improved parsing and error messages for vectors in effect configs
+ - Add "deactivate_self" parameter to Deactivate action, off by default.
+   This reverses a change made in 7.9.1 where Deactivate would cancel its own spell.
 
 # 7.10
 

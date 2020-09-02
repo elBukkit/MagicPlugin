@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -10,6 +11,14 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class DeactivateAction extends BaseSpellAction
 {
+    private boolean deactivateSelf;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        deactivateSelf = parameters.getBoolean("deactivate_self", false);
+    }
+
     @Override
     public SpellResult perform(CastContext context)
     {
@@ -24,7 +33,7 @@ public class DeactivateAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        targetMage.deactivateAllSpells(true, false);
+        targetMage.deactivateAllSpells(true, false, deactivateSelf ? null : context.getSpell().getSpellKey().getBaseKey());
         return SpellResult.CAST;
     }
 

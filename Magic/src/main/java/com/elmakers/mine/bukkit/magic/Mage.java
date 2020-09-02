@@ -2126,9 +2126,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return cancelPending(spellKey, force, true);
     }
 
+
     @Nullable
     @Override
     public Batch cancelPending(String spellKey, boolean force, boolean nonBatched) {
+        return cancelPending(spellKey, force, nonBatched, null);
+    }
+
+    @Nullable
+    public Batch cancelPending(String spellKey, boolean force, boolean nonBatched, String exceptSpellKey) {
         Batch stoppedPending = null;
         if (!pendingBatches.isEmpty()) {
             List<Batch> batches = new ArrayList<>();
@@ -2148,6 +2154,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     }
                     if (spellKey != null && !spell.getSpellKey().getBaseKey().equalsIgnoreCase(spellKey)) {
                         continue;
+                    }
+                }
+                if (exceptSpellKey != null) {
+                    if (batch instanceof SpellBatch) {
+                        SpellBatch spellBatch = (SpellBatch)batch;
+                        Spell spell = spellBatch.getSpell();
+                        if (spell != null && spell.getSpellKey().getBaseKey().equalsIgnoreCase(exceptSpellKey)) {
+                            continue;
+                        }
                     }
                 }
 
@@ -2281,9 +2296,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void deactivateAllSpells(boolean force, boolean quiet) {
+        deactivateAllSpells(force, quiet, null);
+    }
+
+    @Override
+    public void deactivateAllSpells(boolean force, boolean quiet, String exceptSpellKey) {
         // Copy this set since spells will get removed while iterating!
         List<MageSpell> active = new ArrayList<>(activeSpells);
         for (MageSpell spell : active) {
+            if (exceptSpellKey != null && spell.getSpellKey().getBaseKey().equalsIgnoreCase(exceptSpellKey)) continue;
             if (spell.deactivate(force, quiet)) {
                 activeSpells.remove(spell);
             }
@@ -2292,7 +2313,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // This is mainly here to prevent multi-wand spamming and for
         // Disarm to be more powerful.. because Disarm needs to be more
         // powerful :|
-        cancelPending(false);
+        cancelPending(null, false, true, exceptSpellKey);
     }
 
     @Override
