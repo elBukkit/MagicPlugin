@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.item.ArmorSlot;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -23,9 +24,6 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import de.slikey.effectlib.math.VectorTransform;
 
 public class ArmorStandProjectileAction extends EntityProjectileAction {
-    public enum Slot {
-        HELMET, RIGHT_ARM, CHESTPLATE, LEGGINGS, BOOTS
-    }
 
     private boolean smallArmorStand = false;
     private boolean armorStandMarker = false;
@@ -49,7 +47,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private VectorTransform headTransform;
     private int visibleDelayTicks = 1;
 
-    private Slot wandSlot;
+    private ArmorSlot wandSlot;
     private boolean useWand;
     private ItemStack wandItem;
     private int slotNumber;
@@ -99,7 +97,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
 
         String wandSlotString = parameters.getString("wand_slot", "HELMET");
         try {
-            wandSlot = Slot.valueOf(wandSlotString.toUpperCase());
+            wandSlot = ArmorSlot.valueOf(wandSlotString.toUpperCase());
         } catch (Exception ex) {
             context.getLogger().warning("Invalid wand slot: " + wandSlotString);
         }
@@ -228,27 +226,27 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
             player.getInventory().setItem(slotNumber, new ItemStack(Material.AIR));
         }
         if (stepCount == visibleDelayTicks) {
-            if (wandItem != null && wandSlot == Slot.HELMET) {
+            if (wandItem != null && wandSlot == ArmorSlot.HELMET) {
                 armorStand.setHelmet(wandItem);
             } else {
                 armorStand.setHelmet(helmetItem);
             }
-            if (wandItem != null && wandSlot == Slot.RIGHT_ARM) {
+            if (wandItem != null && wandSlot == ArmorSlot.RIGHT_ARM) {
                 armorStand.setItemInHand(wandItem);
             } else {
                 armorStand.setItemInHand(rightArmItem);
             }
-            if (wandItem != null && wandSlot == Slot.CHESTPLATE) {
+            if (wandItem != null && wandSlot == ArmorSlot.CHESTPLATE) {
                 armorStand.setChestplate(wandItem);
             } else {
                 armorStand.setChestplate(chestplateItem);
             }
-            if (wandItem != null && wandSlot == Slot.LEGGINGS) {
+            if (wandItem != null && wandSlot == ArmorSlot.LEGGINGS) {
                 armorStand.setLeggings(wandItem);
             } else {
                 armorStand.setLeggings(leggingsItem);
             }
-            if (wandItem != null && wandSlot == Slot.BOOTS) {
+            if (wandItem != null && wandSlot == ArmorSlot.BOOTS) {
                 armorStand.setBoots(wandItem);
             } else {
                 armorStand.setBoots(bootsItem);
