@@ -43,6 +43,7 @@ public interface EntityData {
     void setHasMoved(boolean hasMoved);
     void setDamaged(boolean damaged);
     boolean isDocile();
+    boolean isTransformable();
     @Nullable
     Entity spawn();
     @Nullable

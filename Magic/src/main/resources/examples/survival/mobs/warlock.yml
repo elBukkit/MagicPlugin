@@ -10,6 +10,7 @@ warlock:
   name: Warlock
   health: 200
   default_drops: false
+  transformable: false
   protection:
     fall: 1
   interval: 1000
