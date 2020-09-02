@@ -94,6 +94,7 @@ echo "** BUILDING ALL **"
 mkdir all
 cd all
 cp -R ../../default/* .
+cp -R ../../chainmail/assets/minecraft/textures/* assets/minecraft/textures/
 cp -R ../../war/assets/minecraft/sounds/* assets/minecraft/sounds/
 cp -R ../../war/assets/minecraft/models/item/* assets/minecraft/models/item/
 cp -R ../../war/assets/minecraft/textures/misc assets/minecraft/textures/
