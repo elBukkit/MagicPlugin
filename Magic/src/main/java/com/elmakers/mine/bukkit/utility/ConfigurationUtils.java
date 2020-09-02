@@ -417,6 +417,7 @@ public class ConfigurationUtils extends ConfigUtils {
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override, boolean requireExisting)
     {
         if (second == null) return first;
+        override = override || second.getBoolean("override");
         Map<String, Object> map = NMSUtils.getMap(second);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();

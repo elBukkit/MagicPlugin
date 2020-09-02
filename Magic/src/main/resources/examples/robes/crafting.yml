@@ -1,23 +1,31 @@
 apprenticeboots:
+  override: true
   enabled: true
 
 apprenticechestplate:
+  override: true
   enabled: true
 
 apprenticehelmet:
+  override: true
   enabled: true
 
 apprenticeleggings:
+  override: true
   enabled: true
 
 wizardboots:
+  override: true
   enabled: true
 
 wizardchestplate:
+  override: true
   enabled: true
 
 wizardhelmet:
+  override: true
   enabled: true
 
 wizardleggings:
+  override: true
   enabled: true
