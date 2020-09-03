@@ -46,7 +46,7 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         File playerData = new File(playerDataFolder, mage.getId() + ".dat");
         YamlDataFile saveFile = new YamlDataFile(controller.getLogger(), playerData);
         save(mage, saveFile);
-        saveFile.save();
+        saveFile.save(false);
         if (releaseLock) {
             releaseLock(mage);
         }

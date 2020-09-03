@@ -30,6 +30,10 @@ public class YamlDataFile extends YamlConfiguration {
     }
 
     public void save() {
+        save(true);
+    }
+
+    public void save(boolean checkBackupSize) {
         try {
             File tempFile = new File(file.getAbsolutePath() + ".tmp");
             if (tempFile.exists()) {
@@ -39,7 +43,7 @@ public class YamlDataFile extends YamlConfiguration {
             File backupFile = new File(file.getAbsolutePath() + ".bak");
             save(tempFile);
 
-            if (backupFile.exists() && backupFile.length() > tempFile.length()) {
+            if (checkBackupSize && backupFile.exists() && backupFile.length() > tempFile.length()) {
                 logger.warning("Backup file " + backupFile.getName() + " is larger than " + tempFile.getName());
                 int index = 1;
                 File saveBackup = new File(backupFile.getAbsolutePath() + "." + index);

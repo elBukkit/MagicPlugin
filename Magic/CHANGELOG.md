@@ -2,6 +2,7 @@
 
 # 7.10.1
 
+ - Fix saving lots of player data backup files
  - Add RedProtect integration, for build/break/pvp/mob targeting permissions, and Recall warps
  - Add support for Residence regions in Recall
  - Add auto_wands config option, for automatically converting items of a specific type into wands
