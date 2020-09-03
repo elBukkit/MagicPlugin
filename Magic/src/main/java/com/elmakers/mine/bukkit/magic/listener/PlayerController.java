@@ -147,6 +147,9 @@ public class PlayerController implements Listener {
         ItemStack next = inventory.getItem(event.getNewSlot());
 
         Mage mage = controller.getMage(player);
+        if (mage.getDebugLevel() >= 10) {
+            mage.sendDebugMessage("EQUIP " + event.getNewSlot() + " from " + event.getPreviousSlot(), 10);
+        }
 
         // Check for self-destructing and temporary items
         if (Wand.isSelfDestructWand(next)) {
@@ -232,7 +235,12 @@ public class PlayerController implements Listener {
         final Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
-
+        if (mage.getDebugLevel() >= 10) {
+            ItemStack main = event.getMainHandItem();
+            ItemStack offhand = event.getOffHandItem();
+            mage.sendDebugMessage("SWAP ITEM: " + (main == null ? "(Nothing)" : main.getType().name())
+                + " with " + (offhand == null ? "(Nothing)" : offhand.getType().name()), 10);
+        }
         final Wand activeWand = mage.getActiveWand();
         final Wand offhandWand = mage.getOffhandWand();
 
@@ -279,6 +287,11 @@ public class PlayerController implements Listener {
         final Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
+        if (mage.getDebugLevel() >= 10) {
+            Item item = event.getItemDrop();
+            ItemStack itemStack = item == null ? null : item.getItemStack();
+            mage.sendDebugMessage("DROP ITEM: " + (itemStack == null ? "(Nothing)" : itemStack.getType().name()));
+        }
 
         // As of 1.15 we will get an animation event right after the drop event.
         // We want to ignore this.
@@ -382,6 +395,10 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
+        if (mage.getDebugLevel() >= 10) {
+            ItemStack playerItem = event.getPlayerItem();
+            mage.sendDebugMessage("ENTITY ARMOR STAND with: " + event.getHand() + " at " + event.getRightClicked() + " with " + (playerItem == null ? "(Nothing)" : playerItem.getType().name()));
+        }
         com.elmakers.mine.bukkit.api.wand.Wand wand = mage.checkWand();
         if (wand != null) {
             if (wand.isUndroppable()) {
@@ -424,6 +441,9 @@ public class PlayerController implements Listener {
 
         String permission = mob.getInteractPermission();
         Mage playerMage = controller.getMage(player);
+        if (playerMage.getDebugLevel() >= 10) {
+            playerMage.sendDebugMessage("ENTITY AT INTERACT with: " + event.getHand() + " at " + entity + " : " + TextUtils.printVector(event.getClickedPosition()));
+        }
         if (permission != null && !permission.isEmpty() && !player.hasPermission(permission)) {
             String message = controller.getMessages().get("npc.no_permission");
             playerMage.sendMessage(message);
@@ -538,6 +558,10 @@ public class PlayerController implements Listener {
         // Check for a player placing a wand in an item frame
         Entity clickedEntity = event.getRightClicked();
 
+        if (mage.getDebugLevel() >= 10) {
+            mage.sendDebugMessage("ENTITY INTERACT with: " + event.getHand() + " at " + clickedEntity);
+        }
+
         // Don't think this ever fires for ArmorStand - see above
         boolean isPlaceable = clickedEntity instanceof ItemFrame || clickedEntity instanceof ArmorStand;
         if (isPlaceable) {
@@ -588,6 +612,9 @@ public class PlayerController implements Listener {
 
         Mage mage = controller.getMage(player);
         mage.trigger("left_click");
+        if (mage.getDebugLevel() >= 10) {
+            mage.sendDebugMessage("ANIMATE: " + event.getAnimationType());
+        }
 
         Wand wand = mage.checkWand();
         if (wand == null) return;
@@ -633,14 +660,17 @@ public class PlayerController implements Listener {
         // So this is kind of useless. :\
         //if (event.isCancelled()) return;
 
-        // Block block = event.getClickedBlock();
-        // controller.getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()) + " cancelled: " + event.isCancelled());
-
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         // Check for locked items
         Mage mage = controller.getMage(player);
+        if (mage.getDebugLevel() >= 10) {
+            ItemStack item = event.getItem();
+            Block block = event.getClickedBlock();
+            mage.sendDebugMessage("INTERACT " + event.getAction()  + " with " + event.getHand() + " using: " + (item == null ? "(Nothing)" : item.getType().name())
+                + ", block: " + (block == null ? "(Nothing)" : block.getType().name()));
+        }
         if (!mage.canUse(itemInHand)) {
             mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
             event.setCancelled(true);

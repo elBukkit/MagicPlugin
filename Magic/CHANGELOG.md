@@ -3,6 +3,7 @@
 # 7.10.2
 
  - Fix RedProtect failed integration log-spawn
+ - Add several Bukkit events to mage debug information
 
 # 7.10.1
 

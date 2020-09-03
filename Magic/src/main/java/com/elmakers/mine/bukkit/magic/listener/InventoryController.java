@@ -19,6 +19,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -66,9 +67,27 @@ public class InventoryController implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onInventoryCreative(InventoryCreativeEvent event) {
+        HumanEntity clicked = event.getWhoClicked();
+        Mage mage = controller.getRegisteredMage(clicked);
+        if (mage == null) return;
+        if (mage.getDebugLevel() >= 10) {
+            ItemStack cursor = event.getCursor();
+            ItemStack current = event.getCurrentItem();
+            mage.sendDebugMessage("CREATIVE: " + event.getAction()  + " of " + event.getClick() + " cursor: "
+                + (cursor == null ? "(Nothing)" : cursor.getType().name())
+                + (current == null ? "(Current" : current.getType().name())
+                );
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryDrag(InventoryDragEvent event) {
         HumanEntity clicked = event.getWhoClicked();
         Mage mage = controller.getMage(clicked);
+        if (mage.getDebugLevel() >= 10) {
+            mage.sendDebugMessage("DRAG: " + event.getType()  + " in " + event.getInventory().getType() + " slots: " + event.getInventorySlots());
+        }
         GUIAction activeGUI = mage.getActiveGUI();
         if (activeGUI != null) {
             activeGUI.dragged(event);
@@ -134,13 +153,15 @@ public class InventoryController implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // controller.getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in " + event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
-
         if (event.isCancelled()) return;
         if (!(event.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player)event.getWhoClicked();
         final Mage mage = controller.getMage(player);
+
+        if (mage.getDebugLevel() >= 10) {
+            mage.sendDebugMessage("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in " + event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+        }
 
         GUIAction gui = mage.getActiveGUI();
         if (gui != null)
