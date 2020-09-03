@@ -160,13 +160,11 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     }
 
     protected void configureEntityData() {
-        ConfigurationSection effectiveParameters;
+        ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(entityData.getConfiguration());
         if (parentParameters != null) {
-            effectiveParameters = ConfigurationUtils.cloneConfiguration(parentParameters);
-            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
-        } else {
-            effectiveParameters = ConfigurationUtils.cloneConfiguration(parameters);
+            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parentParameters);
         }
+        effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
 
         // Always keep entity type and name
         effectiveParameters.set("type", entityData.getType().name());
