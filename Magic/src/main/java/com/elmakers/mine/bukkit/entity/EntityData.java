@@ -297,6 +297,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         load(controller, parameters);
     }
 
+    @Override
     public void load(@Nonnull MageController controller, ConfigurationSection parameters) {
         this.configuration = parameters;
         // This is required to allow changes to health
@@ -1246,6 +1247,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Nullable
+    @Override
     public ConfigurationSection getConfiguration() {
         return configuration;
     }

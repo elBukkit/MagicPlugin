@@ -98,6 +98,11 @@ public class SpawnEntityAction extends CompoundAction
             entityData = context.getController().getMob(mobType);
             if (entityData == null) {
                 entityData = new com.elmakers.mine.bukkit.entity.EntityData(context.getController(), parameters);
+            } else {
+                entityData = entityData.clone();
+                ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(entityData.getConfiguration());
+                effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
+                entityData.load(context.getController(), effectiveParameters);
             }
         }
 

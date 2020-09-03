@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.item.Cost;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public interface EntityData {
+public interface EntityData extends Cloneable {
     enum TargetType {
         NONE,
         PLAYER,
@@ -76,6 +76,9 @@ public interface EntityData {
     String getInteractPermission();
     @Nullable
     MaterialAndData getMaterial();
+    @Nullable
+    ConfigurationSection getConfiguration();
+    void load(@Nonnull MageController controller, ConfigurationSection parameters);
 
     /**
      * Attach this mob to an existing entity. This does not modify the entity, and only has an effect
@@ -85,4 +88,6 @@ public interface EntityData {
      * @param entity The entity to attach to
      */
     void attach(@Nonnull MageController controller, @Nonnull Entity entity);
+    @Nonnull
+    EntityData clone();
 }
