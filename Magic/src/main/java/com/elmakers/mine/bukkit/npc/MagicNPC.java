@@ -169,7 +169,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         }
 
         // Always keep entity type and name
-        effectiveParameters.set("type", null);
+        effectiveParameters.set("type", entityData.getType().name());
         effectiveParameters.set("name", name);
         entityData.load(controller, effectiveParameters);
     }
