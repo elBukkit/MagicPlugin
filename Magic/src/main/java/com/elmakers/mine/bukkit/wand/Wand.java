@@ -3218,7 +3218,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 brushInventory.put(brushKey, slot);
             } else if (mage != null) {
                 // Must have been an item inserted directly into player's inventory?
-                mage.giveItem(item);
+                // Make sure it's not the wand item, that can happen due to glitchiness with the pick block
+                // button.
+                if (!item.equals(this.item)) {
+                    mage.giveItem(item);
+                }
                 return false;
             }
         }
