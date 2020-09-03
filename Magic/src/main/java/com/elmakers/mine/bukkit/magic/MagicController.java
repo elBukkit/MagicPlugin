@@ -1337,13 +1337,15 @@ public class MagicController implements MageController {
 
         // RedProtect
         if (redProtectConfiguration.getBoolean("enabled")) {
-            try {
-                redProtectManager = new RedProtectManager(pluginManager.getPlugin("RedProtect"), this, redProtectConfiguration);
-                getLogger().info("Integrated with RedProtect for build/break/pvp/target checks");
-                getLogger().info("Disable warping to fields in recall config with allow_redprotect: false");
-                getLogger().info("Added custom flags: " + StringUtils.join(RedProtectManager.flags, ','));
-            } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "Error integrating with RedProtect", ex);
+            if (pluginManager.isPluginEnabled("RedProtect")) {
+                try {
+                    redProtectManager = new RedProtectManager(pluginManager.getPlugin("RedProtect"), this, redProtectConfiguration);
+                    getLogger().info("Integrated with RedProtect for build/break/pvp/target checks");
+                    getLogger().info("Disable warping to fields in recall config with allow_redprotect: false");
+                    getLogger().info("Added custom flags: " + StringUtils.join(RedProtectManager.flags, ','));
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with RedProtect", ex);
+                }
             }
         } else {
             getLogger().info("RedProtect integration disabled.");

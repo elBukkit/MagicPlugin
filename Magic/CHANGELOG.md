@@ -2,6 +2,8 @@
 
 # 7.10.2
 
+ - Fix RedProtect failed integration log-spawn
+
 # 7.10.1
 
  - Fix saving lots of player data backup files
