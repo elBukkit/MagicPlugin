@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,6 +20,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -42,7 +44,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         "spawn.limit", "spawn.limit_range", "spawn.vertical_range", "spawn.radius",
         "spawn.vertical_radius", "spawn.retries", "min_players", "player_range",
         "min_time", "max_time", "min_moon_phase", "max_moon_phase", "moon_phase",
-        "cast.spells", "cast.recast", "cast.undo_all"
+        "cast.spells", "cast.recast", "cast.undo_all", "spawn.count", "spawn.leash",
+        "spawn.interval"
     );
 
     private static class SelectedAutomata {
@@ -296,12 +299,23 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         Location location = automaton.getLocation();
 
         String rangeMessage = playEffects(sender, automaton, "blockselect");
-        String message = ChatColor.GREEN + "Selection: " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+        String message = ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
             + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
         }
         sender.sendMessage(message);
+        Collection<WeakReference<Entity>> spawned = automaton.getSpawned();
+        if (spawned != null && !spawned.isEmpty()) {
+            int limit = automaton.getSpawnLimit();
+            sender.sendMessage(ChatColor.GOLD + "Has " + ChatColor.GREEN + spawned.size()
+                + ChatColor.GRAY + "/" + ChatColor.DARK_GREEN + limit
+                + ChatColor.GOLD + " active spawns");
+        }
+        if (automaton.hasSpawner()) {
+            long timeToNextSpawn = automaton.getTimeToNextSpawn();
+            sender.sendMessage(ChatColor.GOLD + "Time to next spawn: " + controller.getMessages().getTimeDescription(timeToNextSpawn, "description", "cooldown"));
+        }
 
         String creatorName = automaton.getCreatorName();
         creatorName = (creatorName == null || creatorName.isEmpty()) ? ChatColor.YELLOW + "(Unknown)" : ChatColor.GREEN + creatorName;
@@ -315,8 +329,10 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 + ChatColor.DARK_AQUA + " Parameters");
             for (String key : keys) {
                 Object property = parameters.get(key);
-                sender.sendMessage(ChatColor.AQUA + key + ChatColor.GRAY + ": "
-                    + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
+                if (!(property instanceof ConfigurationSection)) {
+                    sender.sendMessage(ChatColor.AQUA + key + ChatColor.GRAY + ": "
+                        + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
+                }
             }
         }
     }
@@ -468,9 +484,11 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                     }
                     break;
                 case "cast.undo_all":
+                case "cast.leash":
                 case "cast.recast":
                     options.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
                     break;
+                case "spawn.interval":
                 case "interval":
                     options.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
                     break;
@@ -502,6 +520,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 case "spawn.radius":
                 case "spawn.vertical_radius":
                 case "spawn.vertical_range":
+                case "spawn.limit":
+                case "spawn.count":
                 case "spawn.limit_range":
                 case "spawn.player_range":
                 case "spawn.retries":

@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -160,9 +159,8 @@ public class AutomatonTemplate {
         }
 
         if (spawner != null) {
-            List<Entity> entities = spawner.spawn(instance.getLocation());
-            if (entities != null && !entities.isEmpty()) {
-                instance.track(entities);
+            if (instance.getTimeToNextSpawn() <= 0) {
+                instance.spawn();
             }
             instance.checkEntities();
         }
@@ -230,5 +228,10 @@ public class AutomatonTemplate {
 
     public boolean isUndoAll() {
         return caster != null && caster.isUndoAll();
+    }
+
+    @Nullable
+    public Spawner getSpawner() {
+        return spawner;
     }
 }

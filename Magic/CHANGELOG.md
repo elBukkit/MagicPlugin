@@ -9,6 +9,7 @@
  - Fix SpawnEntity action not using parameters
  - Improved support for JSON tags in configs, including skulls from sites like minecraft-heads.com
  - Fix NPCs not respawning when an error happens, and make them silent by default
+ - Some improvements to automata spawners, including range-based leashing
 
 # 7.10.1
 

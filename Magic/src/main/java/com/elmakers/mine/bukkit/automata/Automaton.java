@@ -39,6 +39,7 @@ public class Automaton {
 
     private long nextTick;
     private List<WeakReference<Entity>> spawned;
+    private long lastSpawn;
     private EffectContext effectContext;
     private boolean isActive;
 
@@ -140,7 +141,6 @@ public class Automaton {
                 player.start(getEffectContext());
             }
         }
-
     }
 
     public void deactivate() {
@@ -154,6 +154,7 @@ public class Automaton {
                 }
             }
         }
+        lastSpawn = 0;
 
         if (effectContext != null) {
             effectContext.cancelEffects();
@@ -193,13 +194,33 @@ public class Automaton {
 
     public void checkEntities() {
         if (spawned == null) return;
+        Spawner spawner = template.getSpawner();
+        double leashRangeSquared = spawner == null || !spawner.isLeashed() ? 0 : spawner.getLimitRange();
+        if (leashRangeSquared > 0) {
+            leashRangeSquared = leashRangeSquared * leashRangeSquared;
+        }
         Iterator<WeakReference<Entity>> iterator = spawned.iterator();
         while (iterator.hasNext()) {
             WeakReference<Entity> mobReference = iterator.next();
             Entity mob = mobReference.get();
             if (mob == null || !mob.isValid()) {
                 iterator.remove();
+                lastSpawn = System.currentTimeMillis();
+            } else if (leashRangeSquared > 0) {
+                if (mob.getLocation().distanceSquared(location) > leashRangeSquared) {
+                    mob.teleport(spawner.getSpawnLocation(location));
+                }
             }
+        }
+    }
+
+    public void spawn() {
+        Spawner spawner = template.getSpawner();
+        if (spawner == null) return;
+        List<Entity> entities = spawner.spawn(getLocation());
+        if (entities != null && !entities.isEmpty()) {
+            lastSpawn = System.currentTimeMillis();
+            track(entities);
         }
     }
 
@@ -210,6 +231,23 @@ public class Automaton {
         if (now < nextTick) return;
         template.tick(this);
         nextTick = now + template.getInterval();
+    }
+
+    public boolean hasSpawner() {
+        return template.getSpawner() != null;
+    }
+
+    public long getTimeToNextSpawn() {
+        Spawner spawner = template.getSpawner();
+        if (spawner == null) return 0;
+        int spawnInterval = spawner.getInterval();
+        if (spawnInterval == 0) return 0;
+        return Math.max(0, lastSpawn + spawnInterval - System.currentTimeMillis());
+    }
+
+    public int getSpawnLimit() {
+        Spawner spawner = template.getSpawner();
+        return spawner == null ? 0 : spawner.getLimit();
     }
 
     public long getId() {
@@ -256,5 +294,10 @@ public class Automaton {
         }
 
         return mage;
+    }
+
+    @Nullable
+    public Collection<WeakReference<Entity>> getSpawned() {
+        return spawned;
     }
 }

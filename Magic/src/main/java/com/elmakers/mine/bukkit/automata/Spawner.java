@@ -48,6 +48,8 @@ public class Spawner {
     private final int locationRetry;
     private final MaterialSet passthrough;
     private final boolean track;
+    private final boolean leash;
+    private int interval;
 
     public Spawner(@Nonnull MageController controller, @Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
         this.controller = controller;
@@ -67,6 +69,7 @@ public class Spawner {
         playerRange = configuration.getInt("player_range", 64);
         minPlayers = configuration.getInt("min_players", 1);
 
+        interval = configuration.getInt("interval", 0);
         limit = configuration.getInt("limit", 0);
         limitRange = configuration.getInt("limit_range", 16);
         verticalRange = configuration.getInt("vertical_range", 0);
@@ -77,6 +80,7 @@ public class Spawner {
         randomizePitch = configuration.getBoolean("randomize_pitch", false);
         randomizeYaw = configuration.getBoolean("randomize_yaw", false);
         track = configuration.getBoolean("track", true);
+        leash = configuration.getBoolean("leash", true);
     }
 
     private boolean isSafe(Location location) {
@@ -175,27 +179,7 @@ public class Spawner {
 
         List<Entity> spawned = new ArrayList<>();
         for (int num = 0; num < count; num++) {
-            Location target = location;
-            if (radius > 0) {
-                for (int i = 0; i < locationRetry + 1; i++) {
-                    target = location.clone();
-                    double vertical = verticalRadius >= 0 ? verticalRadius : radius;
-                    double xOffset = 2 * radius * random.nextDouble() - radius;
-                    double yOffset = vertical > 0 ? 2 * vertical * random.nextDouble() - vertical : 0;
-                    double zOffset = 2 * radius * random.nextDouble() - radius;
-
-                    target.setX(target.getX() + xOffset);
-                    target.setY(target.getY() + yOffset);
-                    target.setZ(target.getZ() + zOffset);
-
-                    target = getSafeLocation(target);
-                    if (target != null) break;
-                }
-            }
-
-            if (target == null) {
-               target = location;
-            }
+            Location target = getSpawnLocation(location);
 
             if (randomizeYaw) {
                 target.setYaw(RandomUtils.getRandom().nextFloat() * 360);
@@ -230,5 +214,48 @@ public class Spawner {
         }
 
         return track ? spawned : null;
+    }
+
+    @Nonnull
+    public Location getSpawnLocation(Location location) {
+        Location target = location;
+        if (radius > 0) {
+            Random random = controller.getRandom();
+            for (int i = 0; i < locationRetry + 1; i++) {
+                target = location.clone();
+                double vertical = verticalRadius >= 0 ? verticalRadius : radius;
+                double xOffset = 2 * radius * random.nextDouble() - radius;
+                double yOffset = vertical > 0 ? 2 * vertical * random.nextDouble() - vertical : 0;
+                double zOffset = 2 * radius * random.nextDouble() - radius;
+
+                target.setX(target.getX() + xOffset);
+                target.setY(target.getY() + yOffset);
+                target.setZ(target.getZ() + zOffset);
+
+                target = getSafeLocation(target);
+                if (target != null) break;
+            }
+        }
+
+        if (target == null) {
+           target = location;
+        }
+        return target;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public boolean isLeashed() {
+        return leash && limitRange > 0;
+    }
+
+    public int getLimitRange() {
+        return limitRange;
     }
 }
