@@ -7,6 +7,7 @@
  - Fix setting NPCs to configured magic mob types
  - Fix a certain spell dupe exploit that shall go unnamed
  - Fix SpawnEntity action not using parameters
+ - Improved support for JSON tags in configs, including skulls from sites like minecraft-heads.com
 
 # 7.10.1
 

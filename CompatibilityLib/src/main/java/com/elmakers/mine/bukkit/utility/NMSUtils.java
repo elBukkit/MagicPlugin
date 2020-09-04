@@ -315,6 +315,9 @@ public class NMSUtils {
     protected static NBTConstructor class_NBTTagInt_constructor;
     protected static NBTConstructor class_NBTTagFloat_constructor;
     protected static NBTConstructor class_NBTTagLong_constructor;
+    protected static Constructor class_NBTTagIntArray_constructor;
+    protected static Constructor class_NBTTagByteArray_constructor;
+    protected static Constructor class_NBTTagLongArray_constructor;
     protected static Constructor class_PacketPlayOutChat_constructor;
     protected static Constructor class_ChatComponentText_constructor;
     protected static Constructor class_NamespacedKey_constructor;
@@ -532,6 +535,13 @@ public class NMSUtils {
             class_NBTTagInt_constructor = new NBTConstructor(class_NBTTagInt, Integer.TYPE);
             class_NBTTagFloat_constructor = new NBTConstructor(class_NBTTagFloat, Float.TYPE);
             class_NBTTagLong_constructor = new NBTConstructor(class_NBTTagLong, Long.TYPE);
+
+            Class<?> class_NBTTagIntArray = fixBukkitClass("net.minecraft.server.NBTTagIntArray");
+            Class<?> class_NBTTagByteArray = fixBukkitClass("net.minecraft.server.NBTTagByteArray");
+            Class<?> class_NBTTagLongArray = fixBukkitClass("net.minecraft.server.NBTTagLongArray");
+            class_NBTTagIntArray_constructor = class_NBTTagIntArray.getConstructor(List.class);
+            class_NBTTagByteArray_constructor = class_NBTTagByteArray.getConstructor(List.class);
+            class_NBTTagLongArray_constructor = class_NBTTagLongArray.getConstructor(List.class);
 
             class_NBTTagList_list = class_NBTTagList.getDeclaredField("list");
             class_NBTTagList_list.setAccessible(true);

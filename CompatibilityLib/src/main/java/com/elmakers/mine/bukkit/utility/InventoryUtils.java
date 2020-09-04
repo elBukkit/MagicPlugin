@@ -188,22 +188,86 @@ public class InventoryUtils extends NMSUtils
             wrappedValue = class_NBTTagCompound_constructor.newInstance();
             @SuppressWarnings("unchecked")
             Map<String, Object> valueMap = (Map<String, Object>)value;
-            saveTagsToNBT(valueMap, wrappedValue, null);
+            addTagsToNBT(valueMap, wrappedValue);
         } else if (value instanceof Collection) {
             @SuppressWarnings("unchecked")
             Collection<Object> list = (Collection<Object>)value;
             Object listMeta = class_NBTTagList_constructor.newInstance();
-            for (Object item : list) {
-                if (item != null) {
-                    addToList(listMeta, wrapInTag(item));
+            if (list.size() > 1 && list instanceof List) {
+                @SuppressWarnings("unchecked")
+                List<Object> checkList = (List<Object>)value;
+                Object first = checkList.get(0);
+                Object second = checkList.get(1);
+                if (first instanceof String && !(second instanceof String)) {
+                    list = new ArrayList<>();
+                    for (int i = 1; i < checkList.size(); i++) {
+                        if (first.equals("I")) {
+                            list.add(convertToInteger(checkList.get(i)));
+                        } else if (first.equals("L")) {
+                            list.add(convertToLong(checkList.get(i)));
+                        } else if (first.equals("B")) {
+                            list.add(convertToByte(checkList.get(i)));
+                        } else {
+                            list.add(checkList.get(i));
+                        }
+                    }
+                    if (first.equals("I")) {
+                        wrappedValue = class_NBTTagIntArray_constructor.newInstance(list);
+                    } else if (first.equals("L")) {
+                        wrappedValue = class_NBTTagLongArray_constructor.newInstance(list);
+                    } else if (first.equals("B")) {
+                        wrappedValue = class_NBTTagByteArray_constructor.newInstance(list);
+                    }
                 }
             }
-            wrappedValue = listMeta;
+            if (wrappedValue == null) {
+                for (Object item : list) {
+                    if (item != null) {
+                        addToList(listMeta, wrapInTag(item));
+                    }
+                }
+                wrappedValue = listMeta;
+            }
         } else {
             wrappedValue = class_NBTTagString_consructor.newInstance(value.toString());
         }
 
         return wrappedValue;
+    }
+
+    protected static Long convertToLong(Object o) {
+        if (o == null) return null;
+        if (o instanceof Long) return (Long)o;
+        if (o instanceof Integer) return (long)(int)(Integer)o;
+        if (o instanceof Byte) return (long)(Byte)o;
+        if (o instanceof Double) return (long)(double)(Double)o;
+        if (o instanceof String) return Long.parseLong((String)o);
+        return null;
+    }
+
+    protected static Integer convertToInteger(Object o) {
+        Long intVal = convertToLong(o);
+        return intVal == null ? null : (int)(long)intVal;
+    }
+
+    protected static Byte convertToByte(Object o) {
+        Long intVal = convertToLong(o);
+        return intVal == null ? null : (byte)(long)intVal;
+    }
+
+    protected static Short convertToShort(Object o) {
+        Long intVal = convertToLong(o);
+        return intVal == null ? null : (short)(long)intVal;
+    }
+
+    protected static Double convertToDouble(Object o) {
+        if (o == null) return null;
+        if (o instanceof Double) return (Double)o;
+        if (o instanceof Integer) return (double)(Integer)o;
+        if (o instanceof Long) return (double)(long)(Long)o;
+        if (o instanceof Byte) return (double)(Byte)o;
+        if (o instanceof String) return Double.parseDouble((String)o);
+        return null;
     }
 
     @SuppressWarnings("unchecked")
