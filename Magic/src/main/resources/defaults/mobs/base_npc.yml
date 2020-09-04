@@ -2,6 +2,7 @@ base_npc:
   type: villager
   ai: false
   invulnerable: true
+  silent: true
   gravity: false
   persist: false
   interact_spell_target: none
