@@ -69,6 +69,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         } else if (configuration.isConfigurationSection("item")) {
             ConfigurationSection itemConfiguration = configuration.getConfigurationSection("item");
             String materialKey = itemConfiguration.getString("type", key);
+            materialKey = materialKey.replace("minecraft:", "");
             MaterialAndData material = new MaterialAndData(materialKey);
             if (material.isValid()) {
                 item = material.getItemStack(1);
@@ -84,6 +85,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             }
         } else {
             String materialKey = configuration.getString("item", key);
+            materialKey = materialKey.replace("minecraft:", "");
             MaterialAndData material = new MaterialAndData(materialKey);
             if (material.isValid()) {
                 item = material.getItemStack(1);

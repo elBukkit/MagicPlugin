@@ -105,6 +105,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
         } else {
             final Mage mage = controller.getMage(player);
             final int itemCount = count;
+            itemName = itemName.replace("minecraft", "");
             final String itemKey = itemName;
             api.getController().createItem(itemName, mage, false, new ItemUpdatedCallback() {
                 @Override
