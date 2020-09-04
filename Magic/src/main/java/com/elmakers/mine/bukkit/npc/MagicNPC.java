@@ -146,12 +146,15 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         }
         setEntityData(newEntityData);
         this.mobKey = mobKey;
-        Entity entity = getEntity();
-        if (entity != null && entity.isValid()) {
-            entity.remove();
+        remove();
+        checkForRestore();
+        return true;
+    }
+
+    protected void checkForRestore() {
+        if (location != null && location.getChunk().isLoaded()) {
             restore();
         }
-        return true;
     }
 
     protected void setEntityData(EntityData templateData) {
