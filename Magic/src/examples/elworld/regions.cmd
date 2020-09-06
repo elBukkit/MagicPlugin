@@ -39,3 +39,4 @@ region flag spleef -w world keep-inventory yes
 region flag spleef -w world keep-exp yes
 region flag refugees -w world keep-inventory yes
 region flag refugees -w world keep-exp yes
+region flag dungeon -w world console-command-on-entry /castp %username% warpunlock unlock dungeon

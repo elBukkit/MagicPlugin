@@ -16,6 +16,11 @@ recall:
         description: The capitol city
         locked: false
         icon: compass
+      dungeon:
+        name: The Dungeon
+        description: A magical challenge!
+        locked: false
+        icon: diamond_sword
       lodge:
         name: Old Town
         description: The old city of yore
