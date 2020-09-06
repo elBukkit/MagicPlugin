@@ -94,6 +94,7 @@ public class Automaton {
                 this.template = template.getVariant(parameters);
             }
             nextTick = 0;
+            lastSpawn = 0;
         }
     }
 
@@ -217,7 +218,7 @@ public class Automaton {
     public void spawn() {
         Spawner spawner = template.getSpawner();
         if (spawner == null) return;
-        List<Entity> entities = spawner.spawn(getLocation());
+        List<Entity> entities = spawner.spawn(this);
         if (entities != null && !entities.isEmpty()) {
             lastSpawn = System.currentTimeMillis();
             track(entities);
@@ -248,6 +249,11 @@ public class Automaton {
     public int getSpawnLimit() {
         Spawner spawner = template.getSpawner();
         return spawner == null ? 0 : spawner.getLimit();
+    }
+
+    public int getSpawnMinPlayers() {
+        Spawner spawner = template.getSpawner();
+        return spawner == null ? 0 : spawner.getMinPlayers();
     }
 
     public long getId() {
@@ -294,6 +300,23 @@ public class Automaton {
         }
 
         return mage;
+    }
+
+    public int getSpawnedCount() {
+        return spawned == null ? 0 : spawned.size();
+    }
+
+    @Nullable
+    public Nearby getNearby() {
+        Spawner spawner = template.getSpawner();
+        Nearby nearby = null;
+        if (spawner != null) {
+            nearby = spawner.getNearby(this);
+            if (nearby != null && spawner.isTracked()) {
+                nearby.mobs = spawned == null ? 0 : spawned.size();
+            }
+        }
+        return nearby;
     }
 
     @Nullable

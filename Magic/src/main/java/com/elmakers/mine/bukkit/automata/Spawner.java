@@ -30,7 +30,7 @@ public class Spawner {
     @Nonnull
     private final MageController controller;
     @Nonnull
-    private final Deque<WeightedPair<String>> entityTypeProbability;
+    private final Deque<WeightedPair<EntityData>> entityTypeProbability;
     @Nonnull
     private final Deque<WeightedPair<Integer>> countProbability;
     private final Set<String> entityNames = new HashSet<>();
@@ -54,9 +54,29 @@ public class Spawner {
     public Spawner(@Nonnull MageController controller, @Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
         this.controller = controller;
         entityTypeProbability = new ArrayDeque<>();
-        RandomUtils.populateStringProbabilityMap(entityTypeProbability, configuration, "mobs");
-        if (entityTypeProbability.isEmpty()) {
+        Deque<WeightedPair<String>> keyProbability = new ArrayDeque<>();
+        RandomUtils.populateStringProbabilityMap(keyProbability, configuration, "mobs");
+        if (keyProbability.isEmpty()) {
             controller.getLogger().warning("Automaton template " + automaton.getKey() + " has a spawner with no mobs defined");
+        } else {
+            for (WeightedPair<String> keyPair : keyProbability) {
+                String mobKey = keyPair.getValue();
+                EntityData entityData = null;
+                if (!mobKey.equalsIgnoreCase("none")) {
+                    entityData = controller.getMob(mobKey);
+                    if (entityData == null) {
+                        controller.getLogger().warning("Invalid mob type in automaton " + automaton.getKey() + ": " + mobKey);
+                    } else {
+                        String customMob = entityData.getName();
+                        if (customMob == null || customMob.isEmpty()) {
+                            entityTypes.add(entityData.getType());
+                        } else {
+                            entityNames.add(customMob);
+                        }
+                    }
+                }
+                entityTypeProbability.add(new WeightedPair<>(keyPair, entityData));
+            }
         }
         countProbability = new ArrayDeque<>();
         RandomUtils.populateIntegerProbabilityMap(countProbability, configuration, "count", 0, 0, 0);
@@ -117,8 +137,46 @@ public class Spawner {
         return null;
     }
 
+    public Nearby getNearby(Automaton automaton) {
+        Location location = automaton.getLocation();
+        int range = 0;
+        Nearby nearby = new Nearby();
+        nearby.mobs = automaton.getSpawnedCount();
+        int playerRangeSquared = playerRange * playerRange;
+        int limitRangeSquared = limitRange * limitRange;
+        boolean hasLimit = limit > 0 && limitRange > 0;
+        boolean requiresPlayers = playerRange > 0 && minPlayers > 0;
+        if (hasLimit) {
+            range = limitRange;
+        }
+        if (requiresPlayers) {
+            range = Math.max(playerRange, range);
+        }
+        int vertical = verticalRange > 0 ? verticalRange : range;
+        Collection<Entity> entities = location.getWorld().getNearbyEntities(location, range, vertical, range);
+        for (Entity entity : entities) {
+            if (entity instanceof Player) {
+                if (playerRange == range || entity.getLocation().distanceSquared(location) <= playerRangeSquared) {
+                    nearby.players++;
+                }
+            } else if (!track && hasLimit && (limitRange == range || entity.getLocation().distanceSquared(location) <= limitRangeSquared)) {
+                String customName = entity.getCustomName();
+                if (customName == null || customName.isEmpty()) {
+                    if (entityTypes.contains(entity.getType())) {
+                        nearby.mobs++;
+                    }
+                } else if (entityNames.contains(customName)) {
+                    nearby.mobs++;
+                }
+                if (nearby.mobs >= limit) break;
+            }
+        }
+        return nearby;
+    }
+
     @Nullable
-    public List<Entity> spawn(Location location) {
+    public List<Entity> spawn(Automaton automaton) {
+        Location location = automaton.getLocation();
         if (entityTypeProbability.isEmpty()) {
             return null;
         }
@@ -130,51 +188,22 @@ public class Spawner {
             }
         }
 
-        int mobCount = 0;
+        Nearby nearby = null;
         boolean hasLimit = limit > 0 && limitRange > 0;
         boolean requiresPlayers = playerRange > 0 && minPlayers > 0;
         if (hasLimit || requiresPlayers) {
-            int range = 0;
-            int playerRangeSquared = playerRange * playerRange;
-            int limitRangeSquared = limitRange * limitRange;
-            if (hasLimit) {
-                range = limitRange;
-            }
-            if (requiresPlayers) {
-                range = Math.max(playerRange, range);
-            }
-            int playerCount = 0;
-            int vertical = verticalRange > 0 ? verticalRange : range;
-            Collection<Entity> entities = location.getWorld().getNearbyEntities(location, range, vertical, range);
-            for (Entity entity : entities) {
-                if (entity instanceof Player) {
-                    if (playerRange == range || entity.getLocation().distanceSquared(location) <= playerRangeSquared) {
-                        playerCount++;
-                    }
-                } else if (hasLimit && (limitRange == range || entity.getLocation().distanceSquared(location) <= limitRangeSquared)) {
-                    String customName = entity.getCustomName();
-                    if (customName == null || customName.isEmpty()) {
-                        if (entityTypes.contains(entity.getType())) {
-                            mobCount++;
-                        }
-                    } else if (entityNames.contains(customName)) {
-                        mobCount++;
-                    }
-                    if (mobCount >= limit) break;
-                }
-            }
-
-            if (requiresPlayers && playerCount < minPlayers) {
+            nearby = getNearby(automaton);
+            if (requiresPlayers && nearby.players < minPlayers) {
                 return null;
             }
-            if (hasLimit && mobCount >= limit) {
+            if (hasLimit && nearby.mobs >= limit) {
                 return null;
             }
         }
 
         int count = RandomUtils.weightedRandom(countProbability);
-        if (hasLimit) {
-            count = Math.min(count, limit - mobCount);
+        if (nearby != null) {
+            count = Math.min(count, limit - nearby.mobs);
         }
 
         List<Entity> spawned = new ArrayList<>();
@@ -190,19 +219,9 @@ public class Spawner {
             }
 
             Entity entity;
-            String randomType = RandomUtils.weightedRandom(entityTypeProbability);
+            EntityData entityData = RandomUtils.weightedRandom(entityTypeProbability);
+            if (entityData == null) continue;
             try {
-                EntityData entityData = controller.getMob(randomType);
-                if (entityData == null) {
-                    EntityType entityType = EntityType.valueOf(randomType.toUpperCase());
-                    entityData = new com.elmakers.mine.bukkit.entity.EntityData(entityType);
-                }
-                String customMob = entityData.getName();
-                if (customMob == null || customMob.isEmpty()) {
-                    entityTypes.add(entityData.getType());
-                } else {
-                    entityNames.add(entityData.getName());
-                }
                 entity = entityData.spawn(controller, target);
             } catch (Throwable ex) {
                 controller.getLogger().log(Level.WARNING, "Error spawning mob from automaton at " + location, ex);
@@ -257,5 +276,13 @@ public class Spawner {
 
     public int getLimitRange() {
         return limitRange;
+    }
+
+    public boolean isTracked() {
+        return track;
+    }
+
+    public int getMinPlayers() {
+        return minPlayers;
     }
 }

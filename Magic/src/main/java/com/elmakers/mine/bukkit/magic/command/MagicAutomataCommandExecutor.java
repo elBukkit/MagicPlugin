@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,12 +19,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.automata.Automaton;
+import com.elmakers.mine.bukkit.automata.Nearby;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -305,14 +304,19 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             message += rangeMessage;
         }
         sender.sendMessage(message);
-        Collection<WeakReference<Entity>> spawned = automaton.getSpawned();
-        if (spawned != null && !spawned.isEmpty()) {
-            int limit = automaton.getSpawnLimit();
-            sender.sendMessage(ChatColor.GOLD + "Has " + ChatColor.GREEN + spawned.size()
-                + ChatColor.GRAY + "/" + ChatColor.DARK_GREEN + limit
-                + ChatColor.GOLD + " active spawns");
-        }
         if (automaton.hasSpawner()) {
+            Nearby nearby = automaton.getNearby();
+            if (nearby != null) {
+                int limit = automaton.getSpawnLimit();
+                sender.sendMessage(ChatColor.GOLD + "Has " + ChatColor.GREEN + nearby.mobs
+                    + ChatColor.GRAY + "/" + ChatColor.DARK_GREEN + limit
+                    + ChatColor.GOLD + " active mobs");
+                int minPlayers = automaton.getSpawnMinPlayers();
+                sender.sendMessage(ChatColor.GOLD + "Has " + ChatColor.GREEN + nearby.players
+                    + ChatColor.GRAY + "/" + ChatColor.DARK_GREEN + minPlayers
+                    + ChatColor.GOLD + " nearby players");
+            }
+
             long timeToNextSpawn = automaton.getTimeToNextSpawn();
             sender.sendMessage(ChatColor.GOLD + "Time to next spawn: " + controller.getMessages().getTimeDescription(timeToNextSpawn, "description", "cooldown"));
         }
