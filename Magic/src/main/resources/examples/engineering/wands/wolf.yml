@@ -93,7 +93,7 @@ wolf:
     - portal@119
     - pull@25
     - push@24
-    - recall@22
+    - recall|5@22
     - recurse@97
     - regenerate@98
     - repair@99
