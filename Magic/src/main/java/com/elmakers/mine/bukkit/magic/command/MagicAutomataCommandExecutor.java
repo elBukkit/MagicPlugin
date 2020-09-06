@@ -202,7 +202,12 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 if (!aInWorld) return 0;
                 double aDistance = sortLocation.distanceSquared(a.getLocation());
                 double bDistance = sortLocation.distanceSquared(b.getLocation());
-                return (int) Math.round(aDistance - bDistance);
+                if (aDistance < bDistance) {
+                    return -1;
+                } else if (aDistance > bDistance) {
+                    return 1;
+                }
+                return 0;
             }
         });
         return sorted;
