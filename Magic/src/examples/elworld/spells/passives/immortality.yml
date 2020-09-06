@@ -1,12 +1,16 @@
 immortality:
+  icon: spell_icon:76
+  icon_disabled: spell_icon_disabled:76
   name: Immortality
-  icon: diamond_axe:74
-  icon_disabled: spell_icon_disabled:74
-  passive: true
+  inherit: base_passive
   triggers:
     - trigger: damage
-      damage_type: fall
-    - trigger: damage
-      damage_type: magic
-    - trigger: damage
-      damage_type: physical
+  actions:
+    cast:
+    - class: CheckHealth
+      actions:
+        - class: Heal
+  parameters:
+    target: self
+    max_health: damage
+    amount: damage - health + 1
