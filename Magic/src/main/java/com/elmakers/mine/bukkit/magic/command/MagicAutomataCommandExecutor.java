@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.automata.Automaton;
+import com.elmakers.mine.bukkit.automata.AutomatonTemplate;
 import com.elmakers.mine.bukkit.automata.Nearby;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -44,7 +45,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         "spawn.vertical_radius", "spawn.retries", "min_players", "player_range",
         "min_time", "max_time", "min_moon_phase", "max_moon_phase", "moon_phase",
         "cast.spells", "cast.recast", "cast.undo_all", "spawn.count", "spawn.leash",
-        "spawn.interval"
+        "spawn.interval", "spawn.parameters"
     );
 
     private static class SelectedAutomata {
@@ -330,17 +331,32 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         creatorName = (creatorName == null || creatorName.isEmpty()) ? ChatColor.YELLOW + "(Unknown)" : ChatColor.GREEN + creatorName;
         sender.sendMessage(ChatColor.DARK_GREEN + "  Created by: " + creatorName);
         ConfigurationSection parameters = automaton.getParameters();
+        Set<String> parameterKeys = null;
         if (parameters == null) {
             sender.sendMessage(ChatColor.YELLOW + "(No Parameters)");
         } else {
-            Set<String> keys = parameters.getKeys(true);
-            sender.sendMessage(ChatColor.DARK_AQUA + "Has " + ChatColor.AQUA + Integer.toString(keys.size())
+            parameterKeys = parameters.getKeys(true);
+            sender.sendMessage(ChatColor.DARK_AQUA + "Has " + ChatColor.AQUA + parameterKeys.size()
                 + ChatColor.DARK_AQUA + " Parameters");
-            for (String key : keys) {
+            for (String key : parameterKeys) {
                 Object property = parameters.get(key);
                 if (!(property instanceof ConfigurationSection)) {
                     sender.sendMessage(ChatColor.AQUA + key + ChatColor.GRAY + ": "
                         + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
+                }
+            }
+        }
+        AutomatonTemplate template = automaton.getTemplate();
+        if (template != null) {
+            ConfigurationSection templateParameters = template.getConfiguration();
+            Set<String> keys = templateParameters.getKeys(true);
+            for (String key : keys) {
+                Object property = templateParameters.get(key);
+                if (!(property instanceof ConfigurationSection)) {
+                    if (parameterKeys == null || !parameterKeys.contains(key)) {
+                        sender.sendMessage(ChatColor.GRAY + key + ChatColor.DARK_GRAY + ": "
+                            + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
+                    }
                 }
             }
         }

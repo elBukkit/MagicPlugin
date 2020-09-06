@@ -269,6 +269,12 @@ public class Automaton {
         return templateKey;
     }
 
+    @Nullable
+    public AutomatonTemplate getTemplate() {
+        return template;
+    }
+
+
     @Nonnull
     private EffectContext getEffectContext() {
         if (effectContext == null) {

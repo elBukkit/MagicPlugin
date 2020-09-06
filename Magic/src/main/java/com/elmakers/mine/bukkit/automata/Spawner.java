@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
@@ -53,6 +54,7 @@ public class Spawner {
 
     public Spawner(@Nonnull MageController controller, @Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
         this.controller = controller;
+        ConfigurationSection entityParameters = configuration.getConfigurationSection("parameters");
         entityTypeProbability = new ArrayDeque<>();
         Deque<WeightedPair<String>> keyProbability = new ArrayDeque<>();
         RandomUtils.populateStringProbabilityMap(keyProbability, configuration, "mobs");
@@ -67,6 +69,12 @@ public class Spawner {
                     if (entityData == null) {
                         controller.getLogger().warning("Invalid mob type in automaton " + automaton.getKey() + ": " + mobKey);
                     } else {
+                        if (entityParameters != null) {
+                            entityData = entityData.clone();
+                            ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(entityData.getConfiguration());
+                            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, entityParameters);
+                            entityData.load(controller, effectiveParameters);
+                        }
                         String customMob = entityData.getName();
                         if (customMob == null || customMob.isEmpty()) {
                             entityTypes.add(entityData.getType());

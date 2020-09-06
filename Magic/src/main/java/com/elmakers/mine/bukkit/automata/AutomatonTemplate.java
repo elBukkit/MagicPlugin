@@ -234,4 +234,8 @@ public class AutomatonTemplate {
     public Spawner getSpawner() {
         return spawner;
     }
+
+    public ConfigurationSection getConfiguration() {
+        return configuration;
+    }
 }

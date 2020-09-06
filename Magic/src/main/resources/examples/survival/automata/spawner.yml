@@ -13,6 +13,8 @@ spawner:
     probability: 1
     radius: 8
     vertical_radius: 1
+    parameters:
+      persist: false
     mobs:
       warlock: 100
       dark_wizard: 5
