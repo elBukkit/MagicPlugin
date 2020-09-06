@@ -3,14 +3,16 @@ spawner:
   description: A simple mob spawner, can be customized via the "mobs" parameter, among others.
   interval: 5000
   spawn:
-    player_range: 32
+    player_range: 24
     min_players: 1
     limit_range: 32
     vertical_range: 8
-    limit: 3
+    limit: 1
+    count: 1
+    interval: 60000
     probability: 1
-    radius: 16
-    vertical_radius: 0
+    radius: 8
+    vertical_radius: 1
     mobs:
       warlock: 100
       dark_wizard: 5

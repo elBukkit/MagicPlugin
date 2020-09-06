@@ -43,8 +43,9 @@ seaspawner:
   name: Sea Spawner
   interval: 10000
   spawn:
-    limit_range: 16
+    limit_range: 32
     limit: 20
+    count: 5
     probability: 1
     radius: 4
     vertical_radius: 2
