@@ -236,7 +236,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         Location location = player.getLocation();
         Automaton existing = magicController.getAutomatonAt(location);
         if (existing != null) {
-            player.sendMessage(ChatColor.RED + "Automata already exists: " + ChatColor.LIGHT_PURPLE + existing.getTemplateKey()
+            player.sendMessage(ChatColor.RED + "Automata already exists: " + ChatColor.LIGHT_PURPLE + existing.getName()
                 + ChatColor.RED + " at " + TextUtils.printLocation(existing.getLocation(), 0));
             return;
         }
@@ -253,7 +253,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         playEffects(player, automaton, "blockselect");
         getSelection(player).selected = automaton;
 
-        player.sendMessage(ChatColor.AQUA + "Created automaton: " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+        player.sendMessage(ChatColor.AQUA + "Created automaton: " + ChatColor.LIGHT_PURPLE + automaton.getName()
             + ChatColor.AQUA + " at " + TextUtils.printLocation(automaton.getLocation(), 0));
     }
 
@@ -293,7 +293,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         selection.selected = null;
 
         String rangeMessage = playEffects(sender, automaton, "blockremove");
-        String message = ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+        String message = ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + automaton.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
@@ -413,7 +413,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         Location location = automaton.getLocation();
 
         String rangeMessage = playEffects(sender, automaton, "blockselect");
-        String message = ChatColor.GREEN + "Configured " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+        String message = ChatColor.GREEN + "Configured " + ChatColor.LIGHT_PURPLE + automaton.getName()
             + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
@@ -445,7 +445,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
     }
 
     private void onSelectAutomata(CommandSender sender, SelectedAutomata selection, String[] args) {
-        if (selection == null || selection.list == null || selection.list.isEmpty()) {
+        if (selection == null || selection.list == null || selection.list.isEmpty() || args.length == 0) {
             if (sender instanceof Player) {
                 Location location = ((Player)sender).getLocation();
                 List<Automaton> nearby = getSorted(magicController.getActiveAutomata(), location, 24);
@@ -455,7 +455,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                     selection.selected = automaton;
 
                     String rangeMessage = playEffects(sender, automaton, "blockselect");
-                    String message = ChatColor.GREEN + "Selected nearby " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+                    String message = ChatColor.GREEN + "Selected nearby " + ChatColor.LIGHT_PURPLE + automaton.getName()
                         + ChatColor.GREEN + " at " + TextUtils.printLocation(automaton.getLocation(), 0);
                     if (rangeMessage != null) {
                         message += rangeMessage;
@@ -490,7 +490,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         Location location = automaton.getLocation();
 
         String rangeMessage = playEffects(sender, automaton, "blockselect");
-        String message = ChatColor.GREEN + "Selected " + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+        String message = ChatColor.GREEN + "Selected " + ChatColor.LIGHT_PURPLE + automaton.getName()
             + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
