@@ -16,6 +16,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Art;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -898,12 +899,26 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         if (controller != null && disguise != null) {
-            if (!controller.disguise(entity, disguise)) {
-                controller.getLogger().warning("Invalid disguise type: " + disguise.getString("type"));
+            tryDisguise(controller, entity, disguise);
+            int redisguise = disguise.getString("type", "").equalsIgnoreCase("player") ? 2 : 0;
+            redisguise = disguise.getInt("redisguise", redisguise);
+            if (redisguise > 0) {
+                Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+                    @Override
+                    public void run() {
+                        tryDisguise(controller, entity, disguise);
+                    }
+                }, redisguise);
             }
         }
 
         return true;
+    }
+
+    private void tryDisguise(final MageController controller, final Entity entity, final ConfigurationSection disguise) {
+        if (!controller.disguise(entity, disguise)) {
+            controller.getLogger().warning("Invalid disguise type: " + disguise.getString("type"));
+        }
     }
 
     @Override

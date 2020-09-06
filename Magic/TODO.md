@@ -2,18 +2,10 @@
 
 ## Hot Issues
 
- - NPC disguises don't work on chunk reload
- - Mob spawner limits not working
- - Mob spawner select is weird, just pick closest!
- - Mob spawner, mob parameters would be nice
- - Look at sea spawner, make entities non-persistent
- - Mob spawner show mobs in range when not "tracked" in describe message
- - Show automaton template config in describe
- - Add `/mauto name` command
-
-
- - NPCs:
-   - Need "template" command to change inherited template?
+ - Add inactive automata to list?
+ - For NPCs and automata, highlight active ones
+ - Sort NPC list by closest, persist list like automata?
+ - Need NPC "template" command to change inherited template?
 
  - Make melee a tag instead of a material list
  
