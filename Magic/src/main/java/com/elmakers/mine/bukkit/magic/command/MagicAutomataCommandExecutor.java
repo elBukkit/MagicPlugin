@@ -13,6 +13,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -47,6 +48,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         "cast.spells", "cast.recast", "cast.undo_all", "spawn.count", "spawn.leash",
         "spawn.interval", "spawn.parameters"
     );
+    private static final ImmutableSet<String> IGNORE_PROPERTIES = ImmutableSet.of("name", "description");
 
     private static class SelectedAutomata {
         public Automaton selected;
@@ -66,7 +68,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mauto [add|select|remove|list|configure|describe]");
+            sender.sendMessage(ChatColor.RED + "Usage: mauto [add|select|remove|list|configure|describe|name]");
             return true;
         }
 
@@ -101,6 +103,11 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equalsIgnoreCase("configure")) {
             onConfigureAutomata(sender, selection, args);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("name")) {
+            onNameAutomata(sender, selection, args);
             return true;
         }
 
@@ -167,7 +174,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             Automaton automaton = automata.get(i);
             Location automatonLocation = automaton.getLocation();
             String message = ChatColor.WHITE + Integer.toString(i + 1) + ChatColor.GRAY + ": "
-                + ChatColor.LIGHT_PURPLE + automaton.getTemplateKey() + ChatColor.DARK_PURPLE
+                + ChatColor.LIGHT_PURPLE + automaton.getName() + ChatColor.DARK_PURPLE
                 + " at " + TextUtils.printLocation(automatonLocation, 0);
 
             String effectsKey = first ? "blockfindfirst" : "blockfind";
@@ -304,12 +311,16 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         Location location = automaton.getLocation();
 
         String rangeMessage = playEffects(sender, automaton, "blockselect");
-        String message = ChatColor.LIGHT_PURPLE + automaton.getTemplateKey()
+        String message = ChatColor.LIGHT_PURPLE + automaton.getName()
             + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
         }
         sender.sendMessage(message);
+        String description = automaton.getDescription();
+        if (description != null) {
+            sender.sendMessage(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + description);
+        }
         if (automaton.hasSpawner()) {
             Nearby nearby = automaton.getNearby();
             if (nearby != null) {
@@ -339,6 +350,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.DARK_AQUA + "Has " + ChatColor.AQUA + parameterKeys.size()
                 + ChatColor.DARK_AQUA + " Parameters");
             for (String key : parameterKeys) {
+                if (IGNORE_PROPERTIES.contains(key)) continue;
                 Object property = parameters.get(key);
                 if (!(property instanceof ConfigurationSection)) {
                     sender.sendMessage(ChatColor.AQUA + key + ChatColor.GRAY + ": "
@@ -351,15 +363,32 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             ConfigurationSection templateParameters = template.getConfiguration();
             Set<String> keys = templateParameters.getKeys(true);
             for (String key : keys) {
+                if (IGNORE_PROPERTIES.contains(key)) continue;
+                if (parameterKeys != null && parameterKeys.contains(key)) continue;
                 Object property = templateParameters.get(key);
                 if (!(property instanceof ConfigurationSection)) {
-                    if (parameterKeys == null || !parameterKeys.contains(key)) {
-                        sender.sendMessage(ChatColor.GRAY + key + ChatColor.DARK_GRAY + ": "
-                            + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
-                    }
+                    sender.sendMessage(ChatColor.GRAY + key + ChatColor.DARK_GRAY + ": "
+                        + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
                 }
             }
         }
+    }
+
+    private void onNameAutomata(CommandSender sender, SelectedAutomata selection, String[] args) {
+        if (selection == null || selection.selected == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            return;
+        }
+
+        if (args.length == 0) {
+            selection.selected.setName(null);
+            sender.sendMessage(ChatColor.GREEN + "Cleared custom name for " + ChatColor.WHITE + selection.selected.getName());
+            return;
+        }
+
+        String currentName = selection.selected.getName();
+        selection.selected.setName(StringUtils.join(args, " "));
+        sender.sendMessage(ChatColor.GREEN + "Renamed " + ChatColor.WHITE + currentName + ChatColor.GRAY + " to " + ChatColor.AQUA + selection.selected.getName());
     }
 
     private void onConfigureAutomata(CommandSender sender, SelectedAutomata selection, String[] args) {
@@ -490,6 +519,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             options.add("select");
             options.add("configure");
             options.add("describe");
+            options.add("name");
         } else if (args.length == 2 && subCommand.equalsIgnoreCase("add")) {
             options.addAll(magicController.getAutomatonTemplateKeys());
         } else if (isConfigure) {

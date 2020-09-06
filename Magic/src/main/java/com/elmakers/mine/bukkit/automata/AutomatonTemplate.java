@@ -24,6 +24,8 @@ public class AutomatonTemplate {
     private final String key;
     @Nullable
     private String name;
+    @Nullable
+    private String description;
     private int interval;
     @Nullable
     private Spawner spawner;
@@ -44,6 +46,7 @@ public class AutomatonTemplate {
         this.controller = controller;
         this.configuration = configuration;
         name = configuration.getString("name");
+        description = configuration.getString("description");
         interval = configuration.getInt("interval", 0);
         if (configuration.isList("effects")) {
             effects = controller.loadEffects(configuration, "effects");
@@ -137,6 +140,11 @@ public class AutomatonTemplate {
     public String getName() {
         String name = this.name;
         return name == null ? key : name;
+    }
+
+    @Nullable
+    public String getDescription() {
+        return description;
     }
 
     public int getInterval() {

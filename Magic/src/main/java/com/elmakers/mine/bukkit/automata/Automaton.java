@@ -36,6 +36,7 @@ public class Automaton {
     private long createdAt;
     private String creatorId;
     private String creatorName;
+    private String name;
 
     private long nextTick;
     private List<WeakReference<Entity>> spawned;
@@ -58,6 +59,7 @@ public class Automaton {
         createdAt = node.getLong("created", 0);
         creatorId = node.getString("creator");
         creatorName = node.getString("creator_name");
+        name = node.getString("name");
 
         double x = node.getDouble("x");
         double y = node.getDouble("y");
@@ -116,6 +118,7 @@ public class Automaton {
         node.set("yaw", location.getYaw());
         node.set("pitch", location.getPitch());
         node.set("parameters", parameters);
+        node.set("name", name);
     }
 
     public long getCreatedTime() {
@@ -328,5 +331,19 @@ public class Automaton {
     @Nullable
     public Collection<WeakReference<Entity>> getSpawned() {
         return spawned;
+    }
+
+    @Nonnull
+    public String getName() {
+        return name == null ? (template == null ? "(Unknown)" : template.getName()) : name;
+    }
+
+    @Nullable
+    public String getDescription() {
+        return template == null ? null : template.getDescription();
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
