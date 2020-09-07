@@ -103,7 +103,6 @@ import com.elmakers.mine.bukkit.effect.MageEffectContext;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
-import com.elmakers.mine.bukkit.npc.MagicNPC;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.TriggeredSpell;
@@ -271,8 +270,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean cancelLaunch = false;
     private EntityType lastProjectileType;
     private boolean bypassEnabled;
-
-    private MagicNPC selectedNPC;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -4887,19 +4884,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             inventory.setItemInOffHand(null);
         } else {
             inventory.setItem(slot, null);
-        }
-    }
-
-    @Override
-    @Nullable
-    public MagicNPC getSelectedNPC() {
-        return selectedNPC;
-    }
-
-    @Override
-    public void setSelectedNPC(@Nullable com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
-        if (npc instanceof MagicNPC) {
-            this.selectedNPC = (MagicNPC)npc;
         }
     }
 
