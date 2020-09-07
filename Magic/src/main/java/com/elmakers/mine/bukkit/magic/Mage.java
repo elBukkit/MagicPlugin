@@ -4568,6 +4568,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean trigger(String trigger) {
+        if (!trigger.equals("interval")) {
+            sendDebugMessage("Processing trigger: " + trigger, 5);
+        }
         lastTriggers.put(trigger, System.currentTimeMillis());
         if (entityData != null) {
             cancelLaunch = true;
@@ -4577,9 +4580,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         List<TriggeredSpell> spells = triggers.get(trigger.toLowerCase());
         if (spells == null || spells.isEmpty()) {
             return false;
-        }
-        if (!trigger.equals("interval")) {
-            sendDebugMessage("Processing trigger: " + trigger, 5);
         }
 
         // Copy the trigger list since spells can modify it
