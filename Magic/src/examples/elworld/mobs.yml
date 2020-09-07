@@ -222,6 +222,7 @@ mounted:
     type: zombie
 
 dungeonboss:
+  name: Dungeon Master
   type: zombie
   item: warlock_wand
   cast_requires_item: warlock_wand
@@ -229,7 +230,6 @@ dungeonboss:
   leggings: warlock_leggings
   helmet: chainmail_helmet
   boots: warlock_boots
-  name: Dungeon Master
   health: 100
   default_drops: false
   transformable: false
@@ -257,3 +257,8 @@ dungeonboss:
     gold_nugget@12: 50
     gold_nugget@8: 20
   - sp:128
+
+loot:
+  name: Diamond
+  type: dropped_item
+  item: diamond

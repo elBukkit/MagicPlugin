@@ -32,12 +32,33 @@ glideranimation:
 
 firetrap:
     name: Fire Trap
-    interval: 1000
+    interval: 5000
     min_players: 1
     player_range: 3
     cast:
-      spells: fire radius 0 undo 0 quiet true
+      spells: fire radius 2 undo 0 quiet true
       recast: false
+
+spooky:
+  name: Dungeon sounds
+  effects:
+    - class: Repeat
+      sound: entity_wither_death
+      pitch: 0.9
+      probability: 0.5
+      duration: infinite
+      delay: 5000
+
+loot:
+  name: Dungeon Loot
+  interval: 1000
+  spawn:
+    interval: 120000
+    player_range: 6
+    track: false
+    limit: 5
+    count: 5
+    mobs: loot
 
 seaspawner:
   name: Sea Spawner
@@ -56,3 +77,4 @@ seaspawner:
       cod: 100
       salmon: 100
       tropical_fish: 100
+

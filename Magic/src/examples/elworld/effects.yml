@@ -9,3 +9,37 @@ fountain:
      particle_offset_z: 0.1
      particle_count: 15
      period: 8
+
+flameo:
+ - effectlib:
+     class: Icon
+     particle: flame
+     duration: forever
+     y_offset: 0
+     period: 4
+     particle_offset_x: 10
+     particle_offset_y: 0.5
+     particle_offset_z: 10
+     particle_count: 15
+ - effectlib:
+     class: Icon
+     particle: lava
+     duration: forever
+     y_offset: 0
+     period: 5
+     particle_offset_x: 10
+     particle_offset_y: 0.1
+     particle_offset_z: 10
+     particle_count: 15
+
+ashy:
+ - effectlib:
+     class: Icon
+     type: REPEATING
+     particle: ash
+     duration: forever
+     period: 8
+     particle_offset_x: 10
+     particle_offset_y: 0.1
+     particle_offset_z: 10
+     particle_count: 15
