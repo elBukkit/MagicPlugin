@@ -36,6 +36,10 @@ public class WeightedPair<T extends Object> implements Comparable<WeightedPair<?
         }
     }
 
+    public WeightedPair(T value) {
+        this(1.0f, 1.0f, value);
+    }
+
     public WeightedPair(Float threshold, T value) {
         this(threshold, threshold, value);
     }

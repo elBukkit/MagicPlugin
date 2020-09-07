@@ -25,18 +25,50 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class MobTrigger extends Trigger {
-    protected Deque<WeightedPair<String>> spells;
-    protected Deque<WeightedPair<ConfigurationSection>> spellsWithParameters;
+    protected class SpellCast {
+        public final String spell;
+        public final ConfigurationSection parameters;
+
+        public SpellCast(String spell, ConfigurationSection parameters) {
+            this.spell = spell;
+            this.parameters = parameters;
+        }
+
+        public SpellCast(String spell) {
+            this(spell, null);
+        }
+    }
+
+    protected Deque<WeightedPair<SpellCast>> spells;
     protected Collection<EffectPlayer> effects;
     protected List<String> commands;
 
     public MobTrigger(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         super(controller, configuration, key);
 
-        if (configuration.isConfigurationSection("cast")) {
+        if (configuration.isString("cast")) {
+            String castCommand = configuration.getString("cast");
+            if (!castCommand.isEmpty()) {
+                spells = new ArrayDeque<>();
+                String[] pieces = StringUtils.split(castCommand, " ");
+                String spellKey = pieces[0];
+                ConfigurationSection parameters = null;
+
+                if (pieces.length > 1) {
+                    String[] castParameters = Arrays.copyOfRange(pieces, 1, pieces.length);
+                    parameters = new MemoryConfiguration();
+                    ConfigurationUtils.addParameters(castParameters, parameters);
+                }
+                spells.add(new WeightedPair<>(new SpellCast(spellKey, parameters)));
+            }
+        } else if (configuration.isConfigurationSection("cast")) {
+            ArrayDeque<WeightedPair<String>> spellKeys = new ArrayDeque<>();
             spells = new ArrayDeque<>();
-            RandomUtils.populateStringProbabilityMap(spells, configuration, "cast");
-        } if (configuration.isList("cast")) {
+            RandomUtils.populateStringProbabilityMap(spellKeys, configuration, "cast");
+            for (WeightedPair<String> spellKey : spellKeys) {
+                spells.add(new WeightedPair<>(spellKey, new SpellCast(spellKey.getValue())));
+            }
+        } else if (configuration.isList("cast")) {
             List<?> checkList = configuration.getList("cast");
             if (!checkList.isEmpty()) {
                 Object first = checkList.get(0);
@@ -44,10 +76,15 @@ public class MobTrigger extends Trigger {
                     // How to really make this cast?
                     @SuppressWarnings("unchecked")
                     List<String> stringList = (List<String>)checkList;
-                    RandomUtils.populateStringProbabilityList(spells, stringList);
+                    spells = new ArrayDeque<>();
+                    ArrayDeque<WeightedPair<String>> spellKeys = new ArrayDeque<>();
+                    RandomUtils.populateStringProbabilityList(spellKeys, stringList);
+                    for (WeightedPair<String> spellKey : spellKeys) {
+                        spells.add(new WeightedPair<>(spellKey, new SpellCast(spellKey.getValue())));
+                    }
                 } else if (first instanceof ConfigurationSection || first instanceof Map) {
                     float currentThreshold = 0;
-                    spellsWithParameters = new ArrayDeque<>();
+                    spells = new ArrayDeque<>();
                     for (Object configGeneric : checkList) {
                         ConfigurationSection config = null;
                         if (configGeneric instanceof ConfigurationSection) {
@@ -59,14 +96,16 @@ public class MobTrigger extends Trigger {
                             Map<String, ?> configMap = (Map<String, ?>)configGeneric;
                             config = ConfigurationUtils.toConfigurationSection(configMap);
                         }
+                        if (config == null) continue;
                         String spellKey = config.getString("spell");
                         if (spellKey == null || spellKey.isEmpty()) {
                             controller.getLogger().warning("Trigger spell config missing 'spell' key");
                             continue;
                         }
+                        config.set("spell", null);
 
                         currentThreshold += (float)config.getDouble("probability", 1);
-                        spellsWithParameters.add(new WeightedPair<>(currentThreshold,  config));
+                        spells.add(new WeightedPair<>(currentThreshold, new SpellCast(spellKey, config)));
                     }
                 }
             }
@@ -127,12 +166,8 @@ public class MobTrigger extends Trigger {
             }
         }
         if (spells != null && !spells.isEmpty()) {
-            String spell = RandomUtils.weightedRandom(spells);
-            cast(mage, spell);
-        }
-        if (spellsWithParameters != null && !spellsWithParameters.isEmpty()) {
-            ConfigurationSection spell = RandomUtils.weightedRandom(spellsWithParameters);
-            cast(mage, spell.getString("spell"), spell);
+            SpellCast spellCast = RandomUtils.weightedRandom(spells);
+            cast(mage, spellCast.spell, spellCast.parameters);
         }
         if (commands != null) {
             Entity topDamager = mage.getTopDamager();
