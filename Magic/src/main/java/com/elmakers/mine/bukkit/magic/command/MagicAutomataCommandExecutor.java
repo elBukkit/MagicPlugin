@@ -370,39 +370,57 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         List<Automaton> list = selections.getList(sender);
         if (list == null || args.length == 0) {
             if (sender instanceof Player) {
-                List<Automaton> selection = selections.updateList(sender).getList();
-                if (selection != null && !selection.isEmpty()) {
-                    Automaton automaton = selection.get(0);
-                    selections.playEffects(sender, automaton, "blockselect");
-                    String message = ChatColor.GREEN + "Selected nearby " + ChatColor.LIGHT_PURPLE + automaton.getName()
-                        + ChatColor.GREEN + " at " + TextUtils.printLocation(automaton.getLocation(), 0)
-                        + selections.getDistanceMessage(sender, automaton);
-                    sender.sendMessage(message);
+                list = selections.updateList(sender).getList();
+                if (args.length == 0) {
+                    if (list.isEmpty()) {
+                        sender.sendMessage(ChatColor.RED + "Could not find any automata");
+                    } else {
+                        Automaton automaton = list.get(0);
+                        selections.playEffects(sender, automaton, "blockselect");
+                        String message = ChatColor.GREEN + "Selected nearby " + ChatColor.LIGHT_PURPLE + automaton.getName()
+                            + ChatColor.GREEN + " at " + TextUtils.printLocation(automaton.getLocation(), 0)
+                            + selections.getDistanceMessage(sender, automaton);
+                        sender.sendMessage(message);
+                    }
                     return;
                 }
+            } else {
+                if (args.length == 0) {
+                    sender.sendMessage(ChatColor.RED + "Nothing to select, Use " + ChatColor.WHITE + "/mauto list");
+                    return;
+                } else {
+                    list = selections.updateList(sender).getList();
+                }
             }
-
-            sender.sendMessage(ChatColor.RED + "Nothing to select, Use " + ChatColor.WHITE + "/mauto list");
-            return;
         }
 
-        int index = 1;
+        Automaton automaton = null;
+        String name = args[0];
         if (args.length > 0) {
             try {
-                index = Integer.parseInt(args[0]);
-            } catch (Exception ex) {
-                sender.sendMessage(ChatColor.RED + "Invalid index: " + ChatColor.WHITE + args[0]);
-                return;
+                int index = Integer.parseInt(name);
+                if (index <= 0 || index > list.size()) {
+                    sender.sendMessage(ChatColor.RED + "Index out of range: " + ChatColor.WHITE + args[0]
+                        + ChatColor.GRAY + "/" + ChatColor.WHITE + list.size());
+                    return;
+                }
+                automaton = list.get(index - 1);
+            } catch (NumberFormatException ignore) {
             }
         }
-
-        if (index <= 0 || index > list.size()) {
-            sender.sendMessage(ChatColor.RED + "Index out of range: " + ChatColor.WHITE + args[0]
-                + ChatColor.GRAY + "/" + ChatColor.WHITE + list.size());
+        if (automaton == null) {
+            for (Automaton candidate : list) {
+                if (candidate.getName().equalsIgnoreCase(name) || candidate.getTemplateKey().equalsIgnoreCase(name)) {
+                    automaton = candidate;
+                    break;
+                }
+            }
+        }
+        if (automaton == null) {
+            sender.sendMessage(ChatColor.RED + "Could not find: " + ChatColor.WHITE + name);
             return;
         }
 
-        Automaton automaton = list.get(index - 1);
         selections.setSelection(sender, automaton);
         Location location = automaton.getLocation();
 
