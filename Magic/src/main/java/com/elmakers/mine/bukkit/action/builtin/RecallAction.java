@@ -660,6 +660,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                         for (String key : warpProviders) {
                             if (parameters.getBoolean("allow_" + key.toLowerCase(), true)) {
                                 Collection<PlayerWarp> warps = controller.getPlayerWarps(player, key);
+                                if (warps == null) {
+                                    break;
+                                }
                                 for (PlayerWarp warp : warps) {
                                     Location location = warp.getLocation();
                                     if (location == null) continue;

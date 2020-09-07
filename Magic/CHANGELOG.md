@@ -2,7 +2,8 @@
 
 # 7.10.2
 
- - Fix RedProtect failed integration log-spawn
+ - Fix RedProtect failed integration log-span
+ - Fix Recall failing and log-spam
  - Add several Bukkit events to mage debug information
  - Fix setting NPCs to configured magic mob types
  - Fix a certain spell dupe exploit that shall go unnamed
