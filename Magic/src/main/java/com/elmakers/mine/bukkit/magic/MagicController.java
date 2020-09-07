@@ -1839,6 +1839,10 @@ public class MagicController implements MageController {
         return activeAutomata.values();
     }
 
+    public Automaton getActiveAutomaton(long id) {
+        return activeAutomata.get(id);
+    }
+
     public Collection<Automaton> getAutomata() {
         List<Automaton> list = new ArrayList<>();
         for (Map<Long, Automaton> chunk : automata.values()) {

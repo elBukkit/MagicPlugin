@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -155,9 +156,11 @@ public class Automaton implements Locatable {
             for (WeakReference<Entity> mobReference : spawned) {
                 Entity mob = mobReference.get();
                 if (mob != null && mob.isValid()) {
+                    mob.removeMetadata("automaton", controller.getPlugin());
                     mob.remove();
                 }
             }
+            spawned.clear();
         }
         lastSpawn = 0;
 
@@ -201,10 +204,13 @@ public class Automaton implements Locatable {
     }
 
     public void track(List<Entity> entities) {
+        Spawner spawner = template.getSpawner();
+        if (spawner == null || !spawner.isTracked()) return;
         if (spawned == null) {
             spawned = new ArrayList<>();
         }
         for (Entity entity : entities) {
+            entity.setMetadata("automaton", new FixedMetadataValue(controller.getPlugin(), getId()));
             spawned.add(new WeakReference<>(entity));
         }
     }
@@ -222,13 +228,16 @@ public class Automaton implements Locatable {
             Entity mob = mobReference.get();
             if (mob == null || !mob.isValid()) {
                 iterator.remove();
-                lastSpawn = System.currentTimeMillis();
             } else if (leashRangeSquared > 0) {
                 if (mob.getLocation().distanceSquared(location) > leashRangeSquared) {
                     mob.teleport(spawner.getSpawnLocation(location));
                 }
             }
         }
+    }
+
+    public void onSpawnDeath() {
+        lastSpawn = System.currentTimeMillis();
     }
 
     public void spawn() {

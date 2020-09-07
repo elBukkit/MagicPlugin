@@ -98,7 +98,7 @@ public class Spawner {
         minPlayers = configuration.getInt("min_players", 1);
 
         interval = configuration.getInt("interval", 0);
-        limit = configuration.getInt("limit", 0);
+        int configuredLimit = configuration.getInt("limit", 0);
         limitRange = configuration.getInt("limit_range", 16);
         verticalRange = configuration.getInt("vertical_range", 0);
         radius = configuration.getDouble("radius");
@@ -109,6 +109,12 @@ public class Spawner {
         randomizeYaw = configuration.getBoolean("randomize_yaw", false);
         track = configuration.getBoolean("track", true);
         leash = configuration.getBoolean("leash", true);
+
+        // Make sure the limit is at least big enough for all the spawn cunts
+        for (WeightedPair<Integer> count : countProbability) {
+            configuredLimit = Math.max(configuredLimit, count.getValue());
+        }
+        limit = configuredLimit;
     }
 
     private boolean isSafe(Location location) {
@@ -240,7 +246,7 @@ public class Spawner {
             }
         }
 
-        return track ? spawned : null;
+        return spawned;
     }
 
     @Nonnull

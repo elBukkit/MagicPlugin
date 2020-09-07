@@ -37,6 +37,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
@@ -44,6 +45,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -248,6 +250,18 @@ public class EntityController implements Listener {
     public void onEntityDeath(EntityDeathEvent event)
     {
         Entity entity = event.getEntity();
+        if (entity.hasMetadata("automaton")) {
+            for (MetadataValue value : entity.getMetadata("automaton")) {
+                if (value.getOwningPlugin() == controller.getPlugin()) {
+                    long id = value.asLong();
+                    Automaton automaton = controller.getActiveAutomaton(id);
+                    if (automaton != null) {
+                        automaton.onSpawnDeath();
+                    }
+                }
+            }
+            entity.removeMetadata("automaton", controller.getPlugin());
+        }
         if (entity.hasMetadata("nodrops")) {
             event.setDroppedExp(0);
             event.getDrops().clear();
