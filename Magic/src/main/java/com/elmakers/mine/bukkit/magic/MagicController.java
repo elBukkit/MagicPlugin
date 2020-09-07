@@ -1633,9 +1633,6 @@ public class MagicController implements MageController {
         loadModifiers(loader.getModifiers());
         getLogger().info("Loaded " + modifiers.size() + " classes");
 
-        loadAutomatonTemplates(loader.getAutomata());
-        getLogger().info("Loaded " + automatonTemplates.size() + " automata templates");
-
         loadPaths(loader.getPaths());
         getLogger().info("Loaded " + getPathCount() + " progression paths");
 
@@ -1644,6 +1641,9 @@ public class MagicController implements MageController {
 
         loadMobs(loader.getMobs());
         getLogger().info("Loaded " + mobs.getCount() + " mob templates");
+
+        loadAutomatonTemplates(loader.getAutomata());
+        getLogger().info("Loaded " + automatonTemplates.size() + " automata templates");
 
         crafting.load(loader.getCrafting());
         getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
