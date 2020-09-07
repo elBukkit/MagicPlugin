@@ -108,7 +108,7 @@ recall:
       allow_fields: true
       icon_death: skull_item
       icon_field: wood_door
-      icon_wand: wood_hoeAllow
+      icon_wand: wand_icon
       icon_spawn: wood_door
       icon_home: bed
       icon_town: iron_door
