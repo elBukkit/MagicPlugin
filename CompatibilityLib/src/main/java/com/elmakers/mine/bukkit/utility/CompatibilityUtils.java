@@ -2125,6 +2125,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean lockChunk(Chunk chunk, Plugin plugin) {
+        if (!plugin.isEnabled()) return false;
         if (class_Chunk_addPluginChunkTicketMethod == null) return false;
         try {
             class_Chunk_addPluginChunkTicketMethod.invoke(chunk, plugin);
@@ -2136,6 +2137,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean unlockChunk(Chunk chunk, Plugin plugin) {
+        if (!plugin.isEnabled()) return false;
         if (class_Chunk_removePluginChunkTicketMethod == null) return false;
         try {
             class_Chunk_removePluginChunkTicketMethod.invoke(chunk, plugin);
