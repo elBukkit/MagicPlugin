@@ -5921,8 +5921,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (CompatibilityUtils.isEmpty(existing)) {
                     deactivate();
                     player.getInventory().setItem(slot, getItem());
-                    player.getInventory().setItemInMainHand(existing);
-                    mage.checkWand();
                     controller.onArmorUpdated(mage);
                     return true;
                 }

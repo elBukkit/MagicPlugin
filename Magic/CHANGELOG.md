@@ -9,6 +9,7 @@
  - Fix a certain spell dupe exploit that shall go unnamed
  - Fix SpawnEntity action not using parameters
  - Fix NPCs not respawning when an error happens, and make them silent by default
+ - Fix items getting lost when wearing wearable wands
  - Improved support for JSON tags in configs, including skulls from sites like minecraft-heads.com
  - Some improvements to automata spawners, including range-based leashing
  - General improvements to admin commands for NPC and Automata management

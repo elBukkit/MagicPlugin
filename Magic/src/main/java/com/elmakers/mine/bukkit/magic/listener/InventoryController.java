@@ -241,6 +241,8 @@ public class InventoryController implements Listener {
             if (wand.tryToWear(mage)) {
                 player.getInventory().setItem(slot, null);
                 event.setCancelled(true);
+                mage.checkWand();
+                return;
             }
         }
 

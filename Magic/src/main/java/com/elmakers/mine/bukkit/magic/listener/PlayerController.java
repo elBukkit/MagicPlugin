@@ -848,7 +848,10 @@ public class PlayerController implements Listener {
                 event.setUseInteractedBlock(Event.Result.DENY);
             }
         } else if (isRightClick) {
-            wand.tryToWear(mage);
+            if (wand.tryToWear(mage)) {
+                player.getInventory().setItemInMainHand(null);
+                mage.checkWand();
+            }
         }
     }
 
