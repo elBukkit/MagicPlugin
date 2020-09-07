@@ -697,6 +697,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 String effectClass = effectValues.getString("class", "EffectSingle");
                 try {
                     if (!effectClass.contains(".")) {
+                        if (!effectClass.startsWith("Effect")) {
+                            effectClass = "Effect" + effectClass;
+                        }
                         effectClass = EFFECT_BUILTIN_CLASSPATH + "." + effectClass;
                     }
                     Class<?> genericClass = effectClasses.get(effectClass);
