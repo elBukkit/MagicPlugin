@@ -1,8 +1,10 @@
 # CHANGELOG
 
+# 7.10.3
+
 # 7.10.2
 
- - Fix RedProtect failed integration log-span
+ - Fix RedProtect failed integration log-spam
  - Fix Recall failing and log-spam
  - Fix randomtp spell and other spells using random vectors
  - Fix setting NPCs to configured magic mob types
