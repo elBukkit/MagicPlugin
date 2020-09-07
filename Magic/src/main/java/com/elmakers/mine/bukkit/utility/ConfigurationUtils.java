@@ -186,7 +186,8 @@ public class ConfigurationUtils extends ConfigUtils {
             try {
                 String parse = (String)o;
                 if (parse.isEmpty()) return null;
-                if (parse.contains(",")) {
+                // rand() coordinates can not use commas as the delimiter
+                if (!parse.contains("r") && !parse.contains("R") && parse.contains(",")) {
                     parse = parse.replace(" ", "");
                     parse = parse.replace(",", " ");
                 }

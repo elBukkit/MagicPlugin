@@ -4,15 +4,16 @@
 
  - Fix RedProtect failed integration log-span
  - Fix Recall failing and log-spam
- - Add several Bukkit events to mage debug information
+ - Fix randomtp spell and other spells using random vectors
  - Fix setting NPCs to configured magic mob types
  - Fix a certain spell dupe exploit that shall go unnamed
  - Fix SpawnEntity action not using parameters
- - Improved support for JSON tags in configs, including skulls from sites like minecraft-heads.com
  - Fix NPCs not respawning when an error happens, and make them silent by default
+ - Improved support for JSON tags in configs, including skulls from sites like minecraft-heads.com
  - Some improvements to automata spawners, including range-based leashing
  - General improvements to admin commands for NPC and Automata management
  - Player disguises will be applied twice as a hacky work-around to them not working sometimes
+ - Add several Bukkit events to mage debug information
 
 # 7.10.1
 
