@@ -1,4 +1,4 @@
-blockfindfirst:
+blockitem:
   - class: EffectSingle
     location: target
     use_block_location: true
@@ -6,13 +6,13 @@ blockfindfirst:
       class: CubeEffect
       iterations: 15
       particle: redstone
-      color: "FF00FF"
+      color: "00FFAA"
       edge_length: 1.2
       enable_rotation: false
       offset: 0.5,0.5,0.5
   - class: EffectTrail
-    particle: fireworks_spark
-    particle_count: 20
-    particle_offset_x: 0.1
-    particle_offset_y: 0.1
-    particle_offset_z: 0.1
+    particle: crit_magic
+    particle_count: 10
+    particle_offset_x: 0.05
+    particle_offset_y: 0.05
+    particle_offset_z: 0.05
