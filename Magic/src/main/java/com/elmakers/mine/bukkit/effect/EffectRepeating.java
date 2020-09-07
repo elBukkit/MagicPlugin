@@ -1,12 +1,16 @@
 package com.elmakers.mine.bukkit.effect;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
 public abstract class EffectRepeating extends EffectPlayer implements Runnable {
+    private static final Random random = new Random();
     protected int iterations = 4;
     protected int period = 1;
+    protected double probability = 1;
     protected boolean reverse = false;
 
     protected Integer taskId;
@@ -26,15 +30,26 @@ public abstract class EffectRepeating extends EffectPlayer implements Runnable {
     public void load(Plugin plugin, ConfigurationSection configuration) {
         super.load(plugin, configuration);
 
-        iterations = configuration.getInt("iterations", iterations);
-        period = configuration.getInt("period", period);
+        String durationString = configuration.getString("duration", "");
+        if (configuration.contains("delay")) {
+            period = configuration.getInt("delay") * 20 / 1000;
+        } else {
+            period = configuration.getInt("period", period);
+        }
         if (period < 1) {
             period = 1;
         }
-        reverse = configuration.getBoolean("reverse", reverse);
         if (configuration.contains("duration")) {
-            iterations = (int)Math.ceil(configuration.getDouble("duration") / period / 50);
+            if (durationString.equals("infinite") || durationString.equals("forever") || durationString.equals("infinity")) {
+                iterations = Integer.MAX_VALUE;
+            } else {
+                iterations = (int)Math.ceil(configuration.getDouble("duration") / period / 50);
+            }
+        } else {
+             iterations = configuration.getInt("iterations", iterations);
         }
+        probability = configuration.getDouble("probability", 1);
+        reverse = configuration.getBoolean("reverse", reverse);
     }
 
     public void setPeriod(int period) {
@@ -69,7 +84,9 @@ public abstract class EffectRepeating extends EffectPlayer implements Runnable {
     @Override
     public void run() {
         taskId = null;
-        iterate();
+        if (probability >= 1 || random.nextDouble() <= probability) {
+            iterate();
+        }
 
         if (++iteration < iterations) {
             schedule();
