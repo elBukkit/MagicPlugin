@@ -381,6 +381,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                             + ChatColor.GREEN + " at " + TextUtils.printLocation(automaton.getLocation(), 0)
                             + selections.getDistanceMessage(sender, automaton);
                         sender.sendMessage(message);
+                        selections.setSelection(sender, automaton);
                     }
                     return;
                 }

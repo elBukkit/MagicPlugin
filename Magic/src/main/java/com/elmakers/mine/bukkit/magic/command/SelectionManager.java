@@ -115,8 +115,10 @@ public abstract class SelectionManager<T extends Locatable> {
 
     public void list(CommandSender sender, String[] args) {
         int page = 0;
+        String pageNumber = "?";
         if (args.length > 0) {
             try {
+                pageNumber = args[0];
                 page = Integer.parseInt(args[0]) - 1;
             } catch (Exception ex) {
                 sender.sendMessage(ChatColor.RED + "Invalid page number: " + ChatColor.WHITE + args[0]);
@@ -126,11 +128,15 @@ public abstract class SelectionManager<T extends Locatable> {
 
         Selection<T> selection = updateList(sender);
         List<T> sorted = selection.getList();
-        int start = (page - 1) * rowsPerPage;
+        if (sorted.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "No automata to list");
+            return;
+        }
+        int start = page * rowsPerPage;
         int end = start + rowsPerPage;
         int pages = (int)Math.ceil((double)sorted.size() / rowsPerPage) + 1;
         if (start < 0 || start > sorted.size()) {
-            sender.sendMessage(ChatColor.RED + "Invalid page number: " + ChatColor.WHITE + args[0]
+            sender.sendMessage(ChatColor.RED + "Invalid page number: " + ChatColor.WHITE + pageNumber
                 + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
             return;
         }
