@@ -2,9 +2,7 @@
 
 ## Hot Issues
 
- - Add inactive automata to list?
- - For NPCs and automata, highlight active ones
- - Sort NPC list by closest, persist list like automata?
+ - Paginate wands and spells command output, make base class of SelectionManager, like Paginator<T extends Named>
  - Need NPC "template" command to change inherited template?
 
  - Make melee a tag instead of a material list

@@ -123,15 +123,22 @@ public abstract class SelectionManager<T extends Locatable> {
                 return;
             }
         }
+
         Selection<T> selection = updateList(sender);
         List<T> sorted = selection.getList();
+        int start = (page - 1) * rowsPerPage;
+        int end = start + rowsPerPage;
+        int pages = (int)Math.ceil((double)sorted.size() / rowsPerPage) + 1;
+        if (start < 0 || start > sorted.size()) {
+            sender.sendMessage(ChatColor.RED + "Invalid page number: " + ChatColor.WHITE + args[0]
+                + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
+            return;
+        }
         sender.sendMessage(ChatColor.AQUA + "Total " + getTypeNamePlural() + ": " + ChatColor.DARK_AQUA + sorted.size());
         ListType listType;
         ChatColor color;
         T target = getTarget(sender, sorted);
         T selected = selection.getSelected();
-        int start = page * rowsPerPage;
-        int end = start + rowsPerPage;
         end = Math.min(end, sorted.size());
         for (int i = start; i < end; i++) {
             T item = sorted.get(i);
@@ -156,7 +163,6 @@ public abstract class SelectionManager<T extends Locatable> {
         }
 
         if (sorted.size() > rowsPerPage) {
-            int pages = (sorted.size() / rowsPerPage) + 1;
             sender.sendMessage("  " + ChatColor.GRAY + "Page " + ChatColor.YELLOW
                 + (page + 1) + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
         }
