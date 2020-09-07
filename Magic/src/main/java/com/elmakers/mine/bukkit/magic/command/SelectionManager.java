@@ -149,10 +149,8 @@ public abstract class SelectionManager<T extends Locatable> {
                 color = ChatColor.GRAY;
             }
             showListItem(sender, item, listType);
-            Location itemLocation = item.getLocation();
             String message = ChatColor.WHITE + Integer.toString(i + 1) + ChatColor.GRAY + ": "
                 + color + item.getName() + ChatColor.DARK_PURPLE
-                + " at " + TextUtils.printLocation(itemLocation, 0)
                 + getDistanceMessage(sender, item);
             sender.sendMessage(message);
         }
