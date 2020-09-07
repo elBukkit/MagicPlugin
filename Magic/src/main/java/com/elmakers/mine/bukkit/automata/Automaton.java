@@ -165,6 +165,12 @@ public class Automaton implements Locatable {
             effectContext.cancelEffects();
             effectContext = null;
         }
+        Collection<EffectPlayer> effects = template.getEffects();
+        if (effects != null) {
+            for (EffectPlayer player : effects) {
+                player.cancel();
+            }
+        }
 
         if (mage != null) {
             Mage mage = this.mage;
