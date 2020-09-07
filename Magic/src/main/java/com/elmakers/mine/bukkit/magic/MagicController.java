@@ -2159,6 +2159,12 @@ public class MagicController implements MageController {
         }
     }
 
+    public void moveAutomaton(Automaton automaton, Location location) {
+        unregisterAutomaton(automaton);
+        automaton.setLocation(location);
+        registerAutomaton(automaton);
+    }
+
     public void registerAutomaton(Automaton automaton) {
         String chunkId = getChunkKey(automaton.getLocation());
         if (chunkId == null) return;

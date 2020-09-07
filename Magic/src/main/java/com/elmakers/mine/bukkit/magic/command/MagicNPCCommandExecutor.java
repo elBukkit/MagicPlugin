@@ -119,8 +119,8 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("tphere")) {
-            onTPNPCHere(mage, npc);
+        if (subCommand.equalsIgnoreCase("move") || subCommand.equalsIgnoreCase("tphere")) {
+            onMoveNPC(mage, npc);
             return true;
         }
 
@@ -369,7 +369,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         mage.getEntity().teleport(npc.getLocation());
     }
 
-    protected void onTPNPCHere(Mage mage, MagicNPC npc) {
+    protected void onMoveNPC(Mage mage, MagicNPC npc) {
         if (!mage.isPlayer()) {
             mage.sendMessage(ChatColor.RED + "This command may only be used in-game");
             return;
@@ -471,7 +471,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("type");
             options.add("remove");
             options.add("tp");
-            options.add("tphere");
+            options.add("move");
             options.add("import");
             options.add("select");
             options.add("cast");

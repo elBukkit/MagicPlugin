@@ -33,7 +33,7 @@ public class Automaton implements Locatable {
     private ConfigurationSection parameters;
     private String templateKey;
     @Nonnull
-    private final Location location;
+    private Location location;
     private long createdAt;
     private String creatorId;
     private String creatorName;
@@ -188,6 +188,10 @@ public class Automaton implements Locatable {
     @Override
     public Location getLocation() {
         return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void track(List<Entity> entities) {

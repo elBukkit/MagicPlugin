@@ -79,6 +79,16 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (subCommand.equalsIgnoreCase("tp")) {
+            onTPAutomata(sender, selection);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("move") || subCommand.equalsIgnoreCase("tphere")) {
+            onMoveAutomata(sender, selection);
+            return true;
+        }
+
         if (subCommand.equalsIgnoreCase("describe")) {
             onDescribeAutomata(sender, selection);
             return true;
@@ -173,6 +183,49 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         if (rangeMessage != null) {
             message += rangeMessage;
         }
+        sender.sendMessage(message);
+    }
+
+    private void onTPAutomata(CommandSender sender, Automaton automaton) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
+            return;
+        }
+        if (automaton == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            return;
+        }
+
+        Player player = (Player)sender;
+        Location location = automaton.getLocation();
+        player.teleport(automaton.getLocation());
+        String message = ChatColor.YELLOW + "Teleported you to " + ChatColor.LIGHT_PURPLE + automaton.getName()
+            + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
+        sender.sendMessage(message);
+    }
+
+    private void onMoveAutomata(CommandSender sender, Automaton automaton) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
+            return;
+        }
+        if (automaton == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            return;
+        }
+
+        Player player = (Player)sender;
+        Location location = player.getLocation();
+        Automaton existing = magicController.getAutomatonAt(location);
+        if (existing != null) {
+            player.sendMessage(ChatColor.RED + "Automata already exists: " + ChatColor.LIGHT_PURPLE + existing.getName()
+                + ChatColor.RED + " at " + TextUtils.printLocation(existing.getLocation(), 0));
+            return;
+        }
+
+        magicController.moveAutomaton(automaton, location);
+        String message = ChatColor.YELLOW + "Moved " + ChatColor.LIGHT_PURPLE + automaton.getName()
+            + ChatColor.YELLOW + " to " + TextUtils.printLocation(location, 0);
         sender.sendMessage(message);
     }
 
@@ -382,6 +435,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             options.add("configure");
             options.add("describe");
             options.add("name");
+            options.add("tp");
+            options.add("move");
         } else if (args.length == 2 && subCommand.equalsIgnoreCase("add")) {
             options.addAll(magicController.getAutomatonTemplateKeys());
         } else if (isConfigure) {

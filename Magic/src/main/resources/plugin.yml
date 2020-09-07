@@ -650,6 +650,8 @@ commands:
         /mauto list <page>                List all automata
         /mauto describe                   Show details of selected automaton
         /mauto configure                  Configure properties of selected automaton
+        /mauto tp                         Teleport to the selected automaton
+        /mauto move                       Move the selected automaton to your location
   mmob:
     description: Manage Magic Mobs
     permission: Magic.commands.mmob
@@ -683,7 +685,7 @@ commands:
         /mnpc player                      Add a player disguise to an NPC
         /mnpc import                      Import Citizens NPCs
         /mnpc tp                          Teleport to the selected NPC
-        /mnpc tphere                      Theleport the selected NPC to your location
+        /mnpc move                        Moves the selected NPC to your location
   mmap:
     description: Create and manage Magic image maps
     permission: Magic.commands.mmap
