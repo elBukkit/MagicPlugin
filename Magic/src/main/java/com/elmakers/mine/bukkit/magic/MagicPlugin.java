@@ -300,7 +300,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     @Override
     public Collection<com.elmakers.mine.bukkit.api.magic.Mage> getAutomata() {
         Collection<com.elmakers.mine.bukkit.api.magic.Mage> automata = new ArrayList<>();
-        automata.addAll(controller.getAutomata());
+        automata.addAll(controller.getAutomataMages());
         return automata;
     }
 

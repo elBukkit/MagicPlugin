@@ -6,7 +6,7 @@ blockitem:
       class: CubeEffect
       iterations: 15
       particle: redstone
-      color: "00FFAA"
+      color: "FF00FF"
       edge_length: 1.2
       enable_rotation: false
       offset: 0.5,0.5,0.5

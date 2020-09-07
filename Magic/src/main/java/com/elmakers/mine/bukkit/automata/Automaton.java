@@ -17,13 +17,14 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.magic.Locatable;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class Automaton {
+public class Automaton implements Locatable {
     @Nonnull
     private final MagicController controller;
     @Nullable
@@ -179,10 +180,12 @@ public class Automaton {
         }
     }
 
+    @Override
     public boolean isActive() {
         return isActive;
     }
 
+    @Override
     public Location getLocation() {
         return location;
     }
@@ -333,6 +336,7 @@ public class Automaton {
         return spawned;
     }
 
+    @Override
     @Nonnull
     public String getName() {
         return name == null ? (template == null ? "(Unknown)" : template.getName()) : name;

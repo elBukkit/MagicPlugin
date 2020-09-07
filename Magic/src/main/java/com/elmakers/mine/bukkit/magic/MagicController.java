@@ -1839,6 +1839,24 @@ public class MagicController implements MageController {
         return activeAutomata.values();
     }
 
+    public Collection<Automaton> getAutomata() {
+        List<Automaton> list = new ArrayList<>();
+        for (Map<Long, Automaton> chunk : automata.values()) {
+            list.addAll(chunk.values());
+        }
+        return list;
+    }
+
+    public Collection<Mage> getAutomataMages() {
+        Collection<Mage> all = new ArrayList<>();
+        for (Mage mage : mages.values()) {
+            if (mage.isAutomaton()) {
+                all.add(mage);
+            }
+        }
+        return all;
+    }
+
     public boolean isActive(@Nonnull Automaton automaton) {
         return activeAutomata.containsKey(automaton.getId());
     }
@@ -3781,16 +3799,6 @@ public class MagicController implements MageController {
     @Override
     public Collection<com.elmakers.mine.bukkit.api.wand.LostWand> getLostWands() {
         return new ArrayList<>(lostWands.values());
-    }
-
-    public Collection<Mage> getAutomata() {
-        Collection<Mage> all = new ArrayList<>();
-        for (Mage mage : mages.values()) {
-            if (mage.isAutomaton()) {
-                all.add(mage);
-            }
-        }
-        return all;
     }
 
     public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity)

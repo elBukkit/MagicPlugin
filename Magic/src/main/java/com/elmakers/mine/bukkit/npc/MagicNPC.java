@@ -197,6 +197,12 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     }
 
     @Override
+    public boolean isActive() {
+        Entity entity = getEntity();
+        return entity != null && entity.isValid();
+    }
+
+    @Override
     public void remove() {
         Entity entity = getEntity();
         if (entity != null) {

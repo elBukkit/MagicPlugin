@@ -14,14 +14,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -29,26 +25,16 @@ import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
-import com.elmakers.mine.bukkit.effect.NPCTargetingContext;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.Targeting;
 
 public class MagicNPCCommandExecutor extends MagicTabExecutor {
-    private static final int npcsPerPage = 10;
-    private static final int selectRange = 32;
-    private final Targeting targeting;
+    private final NPCSelectionManager selections;
 
     public MagicNPCCommandExecutor(MagicAPI api) {
         super(api, "mnpc");
-        targeting = new Targeting();
-        ConfigurationSection targetingParameters = new MemoryConfiguration();
-        targetingParameters.set("range", selectRange);
-        targetingParameters.set("target", "other_entity");
-        targetingParameters.set("ignore_blocks", true);
-        targeting.processParameters(targetingParameters);
+        selections = new NPCSelectionManager((MagicController)api.getController());
     }
 
     @Override
@@ -68,22 +54,13 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        String[] parameters = Arrays.copyOfRange(args, 1, args.length);
         if (subCommand.equalsIgnoreCase("list")) {
-            int pageNumber = 1;
-            if (args.length > 1) {
-                try {
-                    pageNumber = Integer.parseInt(args[1]);
-                } catch (NumberFormatException ex) {
-                    sender.sendMessage(ChatColor.RED + "Invalid page number: " + pageNumber);
-                    return true;
-                }
-            }
-            onListNPCs(sender, pageNumber);
+            onListNPCs(sender, parameters);
             return true;
         }
 
         Mage mage = controller.getMage(sender);
-        String[] parameters = Arrays.copyOfRange(args, 1, args.length);
         if (subCommand.equalsIgnoreCase("add") || subCommand.equalsIgnoreCase("create")) {
             if (parameters.length == 0) {
                 sender.sendMessage(ChatColor.RED + "Usage: mnpc add <name>");
@@ -107,7 +84,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         // Requires a selection
-        MagicNPC npc = mage == null ? null : mage.getSelectedNPC();
+        MagicNPC npc = mage == null ? null : selections.getSelected(mage.getCommandSender());
 
         if (npc == null) {
             sender.sendMessage(ChatColor.RED + "Select an NPC first using /mnpc select");
@@ -207,23 +184,13 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         return list;
     }
 
-    protected void onListNPCs(CommandSender sender, int pageNumber) {
-        List<MagicNPC> npcs = getNPCList();
-        int startIndex = (pageNumber - 1) * npcsPerPage;
-        for (int i = startIndex; i < startIndex + npcsPerPage && i < npcs.size(); i++) {
-            MagicNPC npc = npcs.get(i);
-            sender.sendMessage(ChatColor.YELLOW + Integer.toString(i) + ChatColor.GRAY + ": " + ChatColor.GOLD + npc.getName());
-        }
-        if (npcs.size() > npcsPerPage) {
-            int pages = (npcs.size() / npcsPerPage) + 1;
-            sender.sendMessage("  " + ChatColor.GRAY + "Page " + ChatColor.YELLOW
-                + pageNumber + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
-        }
+    protected void onListNPCs(CommandSender sender, String[] args) {
+        selections.list(sender, args);
     }
 
     protected void onAddNPC(Mage mage, String name) {
         MagicNPC npc = controller.addNPC(mage, name);
-        mage.setSelectedNPC(npc);
+        selections.setSelection(mage.getCommandSender(), npc);
         mage.sendMessage(ChatColor.GREEN + "Created npc: " + ChatColor.GOLD + npc.getName());
     }
 
@@ -301,19 +268,27 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onSelectNPC(Mage mage, String name) {
-        MagicNPC npc = findNPC(name);
-        if (npc == null && mage.isPlayer()) {
-            NPCTargetingContext context = new NPCTargetingContext(mage);
-            targeting.reset();
-            Target target = targeting.target(context, selectRange);
-            if (target != null && target.hasEntity()) {
-                npc = controller.getNPC(target.getEntity());
+        MagicNPC npc = null;
+        List<MagicNPC> list = selections.getList(mage.getCommandSender());
+        if (list != null && name != null && !name.isEmpty()) {
+            try {
+                int index = Integer.parseInt(name);
+                if (index > 0 && index < list.size()) {
+                    npc = list.get(index);
+                }
+            } catch (NumberFormatException ignore) {
             }
+        }
+        if (npc == null) {
+            npc = findNPC(name);
+        }
+        if (npc == null && mage.isPlayer()) {
+            npc = selections.getTarget(mage.getCommandSender(), null);
         }
         if (npc == null) {
             if (name == null || name.isEmpty()) {
                 if (!mage.isPlayer()) {
-                    mage.sendMessage(ChatColor.RED + "When using from console, must provide NPC name");
+                    mage.sendMessage(ChatColor.RED + "When using from console, must provide NPC name or index");
                 } else {
                     mage.sendMessage(ChatColor.RED + "There is no NPC in front of you");
                 }
@@ -321,19 +296,15 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
                 mage.sendMessage(ChatColor.RED + "Could not find NPC: " + ChatColor.GOLD + name);
             }
         } else {
-            Entity entity = npc.getEntity();
-            if (entity instanceof LivingEntity) {
-                LivingEntity li = (LivingEntity)entity;
-                li.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5 * 20, 1, true, false));
-            }
-            mage.setSelectedNPC(npc);
+            selections.highlight(npc);
+            selections.setSelection(mage.getCommandSender(), npc);
             mage.sendMessage(ChatColor.GRAY + "Selected NPC: " + ChatColor.GOLD + npc.getName());
         }
     }
 
     protected void onRemoveNPC(Mage mage, MagicNPC npc) {
         controller.removeNPC(npc);
-        mage.setSelectedNPC(null);
+        selections.clearSelection(mage.getCommandSender());
         mage.sendMessage(ChatColor.GREEN + " Removed npc: " + ChatColor.GOLD + npc.getName());
     }
 
@@ -382,7 +353,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             pages.add("");
         }
         meta.setPages(pages);
-
+        selections.highlight(npc);
         book.setItemMeta(meta);
         book = InventoryUtils.makeReal(book);
         InventoryUtils.setMeta(book, "npc", npc.getUUID().toString());
@@ -408,6 +379,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
 
     protected void onDescribeNPC(Mage mage, MagicNPC npc) {
         npc.describe(mage.getCommandSender());
+        selections.highlight(npc);
     }
 
     protected void onPlayerNPC(Mage mage, MagicNPC npc, String playerName) {
@@ -474,6 +446,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         } else if (key.equals("permission")) {
             key = "interact_permission";
         }
+        selections.highlight(npc);
         npc.configure(key, value);
         if (value == null) {
             mage.sendMessage(ChatColor.GREEN + " Configured npc " + ChatColor.GOLD + npc.getName()
