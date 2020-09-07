@@ -55,8 +55,8 @@ commands:
     permission: Magic.commands.cast
   spells:
     aliases: [mspells]
-    description: List all the spells you know
-    usage: spells [category]
+    description: List all spells
+    usage: spells <page>
     permission: Magic.commands.spells
   wand:
     description: Create and modify wands
@@ -81,6 +81,7 @@ commands:
         /wand save        Save a wand as a new template
         /wand delete      Delete a saved wand
         /wand levelspells Level up all spells for a wand
+        /wand list        List all wands
     permission: Magic.commands.wand
   "wand add":
     description: Add a spell or brush to a wand

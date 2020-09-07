@@ -2,6 +2,9 @@
 
 # 7.10.3
 
+ - Add simpler format for triggered spells on mobs
+ - Paginate `/spells` and `/wand list` output
+
 # 7.10.2
 
  - Fix RedProtect failed integration log-spam

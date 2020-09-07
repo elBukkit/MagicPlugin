@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -39,9 +38,11 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.WandMode;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
+    private final WandPaginator wandPaginator;
 
     public WandCommandExecutor(MagicAPI api) {
         super(api, new String[] {"wand", "wandp"});
+        wandPaginator = new WandPaginator(api.getController());
     }
 
     @Override
@@ -72,7 +73,8 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                 sendNoPermission(sender);
                 return true;
             }
-            onWandList(sender);
+            String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+            onWandList(sender, args2);
             return true;
         }
 
@@ -335,8 +337,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         if (subCommand.equalsIgnoreCase("list"))
         {
             if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
-
-            onWandList(sender);
+            onWandList(sender, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("add"))
@@ -532,28 +533,8 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         return onWand(sender, player, args);
     }
 
-    public boolean onWandList(CommandSender sender) {
-        Collection<WandTemplate> templates = api.getController().getWandTemplates();
-        Map<String, ConfigurationSection> nameMap = new TreeMap<>();
-        for (WandTemplate template : templates)
-        {
-            nameMap.put(template.getKey(), template.getConfiguration());
-        }
-        for (Map.Entry<String, ConfigurationSection> templateEntry : nameMap.entrySet())
-        {
-            ConfigurationSection templateConfig = templateEntry.getValue();
-            if (templateConfig.getBoolean("hidden", false)) continue;
-
-            String key = templateEntry.getKey();
-            String name = api.getMessages().get("wands." + key + ".name", api.getMessages().get("wand.default_name"));
-            String description = api.getMessages().get("wands." + key + ".description", "");
-            description = ChatColor.YELLOW + description;
-            if (!name.equals(key)) {
-                description = ChatColor.BLUE + name + ChatColor.WHITE + " : " + description;
-            }
-            sender.sendMessage(ChatColor.AQUA + key + ChatColor.WHITE + " : " + description);
-        }
-
+    public boolean onWandList(CommandSender sender, String[] args) {
+        wandPaginator.list(sender, args);
         return true;
     }
 

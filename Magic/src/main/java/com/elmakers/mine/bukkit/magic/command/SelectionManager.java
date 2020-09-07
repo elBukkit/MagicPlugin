@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.Locatable;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
-public abstract class SelectionManager<T extends Locatable> {
+public abstract class SelectionManager<T extends Locatable> extends Paginator<T> {
     protected enum ListType {
         ACTIVE,
         TARGET,
@@ -31,7 +31,6 @@ public abstract class SelectionManager<T extends Locatable> {
     protected final MagicController controller;
     private final Selection<T> consoleSelection = new Selection<>();
     private final Map<UUID, Selection<T>> selections = new HashMap<>();
-    private int rowsPerPage = 8;
 
     public SelectionManager(MagicController controller) {
         this.controller = controller;
@@ -81,9 +80,6 @@ public abstract class SelectionManager<T extends Locatable> {
     @Nonnull
     protected abstract Collection<T> getAll();
 
-    @Nonnull
-    protected abstract String getTypeNamePlural();
-
     protected abstract void showListItem(CommandSender sender, T item, ListType listType);
 
     @Nullable
@@ -113,41 +109,15 @@ public abstract class SelectionManager<T extends Locatable> {
         return selection;
     }
 
-    public void list(CommandSender sender, String[] args) {
-        int page = 0;
-        String pageNumber = "?";
-        if (args.length > 0) {
-            try {
-                pageNumber = args[0];
-                page = Integer.parseInt(args[0]) - 1;
-            } catch (Exception ex) {
-                sender.sendMessage(ChatColor.RED + "Invalid page number: " + ChatColor.WHITE + args[0]);
-                return;
-            }
-        }
-
-        Selection<T> selection = updateList(sender);
-        List<T> sorted = selection.getList();
-        if (sorted.isEmpty()) {
-            sender.sendMessage(ChatColor.RED + "No automata to list");
-            return;
-        }
-        int start = page * rowsPerPage;
-        int end = start + rowsPerPage;
-        int pages = (int)Math.ceil((double)sorted.size() / rowsPerPage) + 1;
-        if (start < 0 || start > sorted.size()) {
-            sender.sendMessage(ChatColor.RED + "Invalid page number: " + ChatColor.WHITE + pageNumber
-                + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
-            return;
-        }
-        sender.sendMessage(ChatColor.AQUA + "Total " + getTypeNamePlural() + ": " + ChatColor.DARK_AQUA + sorted.size());
+    @Override
+    protected void showItems(CommandSender sender, List<T> items, int start, int end) {
         ListType listType;
         ChatColor color;
-        T target = getTarget(sender, sorted);
-        T selected = selection.getSelected();
-        end = Math.min(end, sorted.size());
+        T target = getTarget(sender, items);
+        T selected = getSelected(sender);
+        end = Math.min(end, items.size());
         for (int i = start; i < end; i++) {
-            T item = sorted.get(i);
+            T item = items.get(i);
             if (item == selected) {
                 listType = ListType.SELECTED;
                 color = ChatColor.GOLD;
@@ -163,15 +133,16 @@ public abstract class SelectionManager<T extends Locatable> {
             }
             showListItem(sender, item, listType);
             String message = ChatColor.WHITE + Integer.toString(i + 1) + ChatColor.GRAY + ": "
-                + color + item.getName() + ChatColor.DARK_PURPLE
+                + color + describe(item) + ChatColor.DARK_PURPLE
                 + getDistanceMessage(sender, item);
             sender.sendMessage(message);
         }
+    }
 
-        if (sorted.size() > rowsPerPage) {
-            sender.sendMessage("  " + ChatColor.GRAY + "Page " + ChatColor.YELLOW
-                + (page + 1) + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
-        }
+    @Override
+    @Nonnull
+    protected String describe(T item) {
+        return item.getName();
     }
 
     @Nonnull

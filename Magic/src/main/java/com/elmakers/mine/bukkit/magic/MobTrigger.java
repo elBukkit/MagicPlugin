@@ -25,7 +25,7 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 public class MobTrigger extends Trigger {
-    protected class SpellCast {
+    protected static class SpellCast {
         public final String spell;
         public final ConfigurationSection parameters;
 

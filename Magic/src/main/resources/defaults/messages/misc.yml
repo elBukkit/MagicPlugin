@@ -1,8 +1,4 @@
 general:
-    no_spells: You don't know any spells
-    no_spells_in_category: You don't know any spells in the $category category
-    spell_list_page: You know $count spells [page $page of $pages]
-    spell_list: You know $count spells
     locked_chest: That chest is locked, you cannot break it.
     spawn_egg_title: "$entity Spawn Egg"
 

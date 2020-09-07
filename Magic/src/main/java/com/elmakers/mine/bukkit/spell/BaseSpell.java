@@ -2044,7 +2044,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public final String getName()
     {
-        return name;
+        return name == null ? getKey() : name;
     }
 
     @Override
