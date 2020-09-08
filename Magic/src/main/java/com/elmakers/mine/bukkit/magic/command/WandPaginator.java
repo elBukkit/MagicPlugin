@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -47,9 +48,14 @@ public class WandPaginator extends Paginator<WandTemplate> {
         String key = template.getKey();
         String name = controller.getMessages().get("wands." + key + ".name", controller.getMessages().get("wand.default_name"));
         String description = controller.getMessages().get("wands." + key + ".description", "");
+        String[] pieces = StringUtils.split(description, "\n");
+        description = pieces[0];
+        if (description.length() > 30) {
+            description = description.substring(0, 27) + "...";
+        }
         description = ChatColor.YELLOW + description;
         if (!name.equals(key)) {
-            description = ChatColor.BLUE + name + ChatColor.WHITE + " : " + description;
+            description = ChatColor.DARK_AQUA + name + ChatColor.WHITE + " : " + description;
         }
         return ChatColor.AQUA + key + ChatColor.WHITE + " : " + description;
     }

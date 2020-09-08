@@ -7,11 +7,10 @@ import java.util.Comparator;
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
@@ -41,13 +40,15 @@ public class SpellsPaginator extends Paginator<SpellTemplate> {
     protected String describe(SpellTemplate spell) {
         String name = spell.getName();
         String description = spell.getDescription();
+        String[] pieces = StringUtils.split(description, "\n");
+        description = pieces[0];
+        if (description.length() > 30) {
+            description = description.substring(0, 27) + "...";
+        }
         if (!name.equals(spell.getKey())) {
             description = name + " : " + description;
         }
-        MaterialAndData spellIcon = spell.getIcon();
-        Material material = spellIcon == null ? null : spellIcon.getMaterial();
-        String icon = material == null ? "None" : material.name().toLowerCase();
-        return ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + icon + "] : " + ChatColor.YELLOW + description;
+        return ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + description;
     }
 
     @Nonnull

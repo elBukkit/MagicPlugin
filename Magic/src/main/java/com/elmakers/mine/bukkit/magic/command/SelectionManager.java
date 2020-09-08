@@ -85,10 +85,17 @@ public abstract class SelectionManager<T extends Locatable> extends Paginator<T>
     @Nullable
     protected abstract T getTarget(CommandSender sender, List<T> sorted);
 
+    @Override
     @Nullable
     public List<T> getList(CommandSender sender) {
         Selection<T> selection = getSelection(sender);
         return selection == null ? null : selection.getList();
+    }
+
+    @Override
+    public void list(CommandSender sender, String[] args) {
+        updateList(sender);
+        super.list(sender, args);
     }
 
     @Nonnull

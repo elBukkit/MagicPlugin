@@ -36,13 +36,13 @@ public abstract class Paginator<T> {
         }
 
         List<T> sorted = getList(sender);
-        if (sorted.isEmpty()) {
+        if (sorted == null || sorted.isEmpty()) {
             sender.sendMessage(ChatColor.RED + "No " + getTypeNamePlural() + " to list");
             return;
         }
         int start = page * rowsPerPage;
         int end = start + rowsPerPage;
-        int pages = (int)Math.ceil((double)sorted.size() / rowsPerPage) + 1;
+        int pages = (int)Math.ceil((double)sorted.size() / rowsPerPage);
         if (start < 0 || start > sorted.size()) {
             sender.sendMessage(ChatColor.RED + "Invalid page number: " + ChatColor.WHITE + pageNumber
                 + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
