@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 
 public class AnvilController implements Listener {
     private final MagicController controller;
+    private boolean bindingEnabled = false;
     private boolean combiningEnabled = false;
     private boolean organizingEnabled = false;
     private boolean clearDescriptionOnRename = false;
@@ -31,6 +32,7 @@ public class AnvilController implements Listener {
     }
 
     public void load(ConfigurationSection properties) {
+        bindingEnabled = properties.getBoolean("enable_anvil_binding", bindingEnabled);
         combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
         organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
         clearDescriptionOnRename = properties.getBoolean("anvil_rename_clears_description", clearDescriptionOnRename);
@@ -123,7 +125,9 @@ public class AnvilController implements Listener {
                     if (organizingEnabled) {
                         wand.organizeInventory(controller.getMage(player));
                     }
-                    wand.tryToOwn(player);
+                    if (bindingEnabled) {
+                        wand.tryToOwn(player);
+                    }
                 } else {
                     // Moving from inventory to anvil
                     Wand wand = controller.getWand(current);
@@ -146,7 +150,7 @@ public class AnvilController implements Listener {
                         wand.setDescription("");
                     }
                     wand.updateName(true);
-                    if (event.getWhoClicked() instanceof Player) {
+                    if (event.getWhoClicked() instanceof Player && bindingEnabled) {
                         wand.tryToOwn((Player)event.getWhoClicked());
                     }
                 }
@@ -175,7 +179,9 @@ public class AnvilController implements Listener {
                 if (organizingEnabled) {
                     wand.organizeInventory(controller.getMage(player));
                 }
-                wand.tryToOwn(player);
+                if (bindingEnabled) {
+                    wand.tryToOwn(player);
+                }
                 wand.saveState();
                 return;
             }
@@ -208,7 +214,9 @@ public class AnvilController implements Listener {
                     if (organizingEnabled) {
                         firstWand.organizeInventory(mage);
                     }
-                    firstWand.tryToOwn(player);
+                    if (bindingEnabled) {
+                        firstWand.tryToOwn(player);
+                    }
                     player.getInventory().addItem(firstWand.getItem());
                     mage.sendMessage("Your wands have been combined!");
 
@@ -221,7 +229,9 @@ public class AnvilController implements Listener {
                     anvilInventory.setItem(1,  null);
                     cursor.setType(Material.AIR);
                     firstWand.organizeInventory(mage);
-                    firstWand.tryToOwn(player);
+                    if (bindingEnabled) {
+                        firstWand.tryToOwn(player);
+                    }
                     player.getInventory().addItem(firstWand.getItem());
                     mage.sendMessage("Your wand has been organized!");
                 }

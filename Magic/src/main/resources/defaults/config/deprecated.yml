@@ -46,6 +46,9 @@ enable_enchanting: false
 # Whether wands can be combined on an anvil
 enable_combining: false
 
+# Wands will bind to the player when put in an anvil
+enable_anvil_binding: false
+
 # Whether renaming on an anvil will also clear the description
 # In the future, it may be possible to change the description on
 # an anvil.
