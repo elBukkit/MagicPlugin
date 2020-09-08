@@ -110,6 +110,12 @@ public abstract class SelectionManager<T extends Locatable> extends Paginator<T>
             sorted = getSorted(all, location);
         } else {
             sorted = new ArrayList<>(all);
+            Collections.sort(sorted, new Comparator<T>() {
+                @Override
+                public int compare(T o1, T o2) {
+                    return o1.getName().compareTo(o2.getName());
+                }
+            });
         }
         Selection<T> selection = createSelection(sender);
         selection.setList(sorted);
