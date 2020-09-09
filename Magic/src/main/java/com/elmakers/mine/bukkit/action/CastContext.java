@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action;
 
 import static com.google.common.base.Verify.verifyNotNull;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1266,6 +1267,11 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         double breakAmount = com.elmakers.mine.bukkit.block.UndoList.getRegistry().registerBreaking(block, addAmount);
         undoList.addDamage(block, addAmount);
         return breakAmount;
+    }
+
+    @Override
+    public void registerFakeBlock(Block block, Collection<WeakReference<Player>> players) {
+        undoList.registerFakeBlock(block, players);
     }
 
     @Override

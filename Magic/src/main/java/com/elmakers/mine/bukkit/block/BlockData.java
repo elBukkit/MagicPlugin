@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -13,12 +14,14 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.
@@ -39,6 +42,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     // Transient
     protected com.elmakers.mine.bukkit.api.block.BlockData nextState;
     protected com.elmakers.mine.bukkit.api.block.BlockData priorState;
+    protected Collection<WeakReference<Player>> fakeSentToPlayers;
 
     // Persistent
     protected BlockVector location;
@@ -172,6 +176,19 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         Block block = getBlock();
         if (block == null)
         {
+            return true;
+        }
+        if (fakeSentToPlayers != null) {
+            if (nextState == null) {
+                for (WeakReference<Player> playerRef : fakeSentToPlayers) {
+                    Player player = playerRef.get();
+                    if (player != null) {
+                        DeprecatedUtils.sendBlockChange(player, block);
+                    }
+                }
+            }
+            fakeSentToPlayers = null;
+            unlink();
             return true;
         }
 
@@ -383,5 +400,15 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     @Override
     public void addDamage(double damage) {
         this.damage += damage;
+    }
+
+    @Override
+    public void setFake(Collection<WeakReference<Player>> players) {
+        this.fakeSentToPlayers = players;
+    }
+
+    @Override
+    public boolean isFake() {
+        return fakeSentToPlayers != null;
     }
 }

@@ -2,6 +2,7 @@
 
 # 7.10.3
 
+ - Add FakeBlock action, use for peek spell
  - Add simpler format for triggered spells on mobs
  - Paginate `/spells` and `/wand list` output
  - Anvils will no longer bind wands by default, set `enable_anvil_binding: true` to turn this back on

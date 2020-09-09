@@ -27,6 +27,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Hanging;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -1094,6 +1095,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         BlockData blockData = get(block);
         blockData.addDamage(damage);
     }
+
+    @Override
+    public void registerFakeBlock(Block block, Collection<WeakReference<Player>> players) {
+        if (contains(block)) return;
+        BlockData blockData = get(block);
+        blockData.setFake(players);
+    }
+
 
     @Override
     public Collection<Entity> getAllEntities() {

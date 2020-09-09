@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.block;
 
+import java.lang.ref.WeakReference;
+import java.util.Collection;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -7,6 +9,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
@@ -52,4 +55,6 @@ public interface BlockData extends MaterialAndData {
     boolean containsAny(MaterialSet materials);
     double getDamage();
     void addDamage(double damage);
+    void setFake(Collection<WeakReference<Player>> players);
+    boolean isFake();
 }

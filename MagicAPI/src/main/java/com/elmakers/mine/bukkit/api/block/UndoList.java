@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.block;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -113,4 +115,5 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     void addDamage(Block block, double damage);
     @Deprecated
     void setUndoBreaking(boolean breaking);
+    void registerFakeBlock(Block block, Collection<WeakReference<Player>> players);
 }

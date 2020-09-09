@@ -262,3 +262,9 @@ loot:
   name: Diamond
   type: dropped_item
   item: diamond
+
+goblin:
+  type: husk
+  name: "§2Goblin"
+  health: 50
+  prevent_melee: true

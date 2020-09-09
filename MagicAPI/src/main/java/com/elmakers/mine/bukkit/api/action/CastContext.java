@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.action;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -124,6 +126,7 @@ public interface CastContext extends WandEffectContext {
     void registerReflective(Block block, double reflectivity);
     double registerBreaking(Block block, double breakAmount);
     void unregisterBreaking(Block block);
+    void registerFakeBlock(Block block, Collection<WeakReference<Player>> players);
     Block getPreviousBlock();
     void setPreviousBlock(Block previous);
     boolean isIndestructible(Block block);

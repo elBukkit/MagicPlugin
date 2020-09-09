@@ -49,6 +49,14 @@ public class DeprecatedUtils {
         }
     }
 
+    public static void sendBlockChange(Player player, Location location, Material material, byte data) {
+        player.sendBlockChange(location, material, data);
+    }
+
+    public static void sendBlockChange(Player player, Block block) {
+        player.sendBlockChange(block.getLocation(), block.getType(), block.getData());
+    }
+
     public static byte getData(Block block) {
         // @deprecated Magic value
         return block.getData();

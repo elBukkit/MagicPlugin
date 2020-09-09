@@ -286,7 +286,9 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
             if (!blockList.isEmpty()) {
                 List<String> blockData = new ArrayList<>();
                 for (BlockData block : blockList) {
-                    blockData.add(block.toString());
+                    if (!block.isFake()) {
+                        blockData.add(block.toString());
+                    }
                 }
                 node.set("blocks", blockData);
             }
