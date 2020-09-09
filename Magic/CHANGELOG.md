@@ -6,6 +6,7 @@
  - Paginate `/spells` and `/wand list` output
  - Anvils will no longer bind wands by default, set `enable_anvil_binding: true` to turn this back on
  - Add prevent_melee and prevent_projectiles options to mobs
+ - Add new WG custom flags: always-allowed(-spells,-spell-categories,-wands) - to override blocked flags
 
 # 7.10.2
 
