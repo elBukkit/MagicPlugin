@@ -167,12 +167,6 @@ public class EntityController implements Listener {
                     undoList.modify(entity);
                 }
             }
-        } else {
-            EntityData entityData = controller.getMob(damager);
-            if (entityData != null && entityData.isPreventMelee()) {
-                event.setCancelled(true);
-                return;
-            }
         }
 
         // Make sure to resolve the source after getting the undo list, since the undo
@@ -188,6 +182,16 @@ public class EntityController implements Listener {
     public void onEntityPreDamageByEntity(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
+
+        if (event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            Entity damager = event.getDamager();
+            EntityData entityData = controller.getMob(damager);
+            if (entityData != null && entityData.isPreventMelee()) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         Mage entityMage = controller.getRegisteredMage(entity);
         if (entityMage != null) {
             entityMage.damagedBy(event.getDamager(), event.getDamage());
