@@ -115,6 +115,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean hasGravity = true;
     protected boolean isDocile;
     protected boolean transformable;
+    protected boolean preventProjectiles;
+    protected boolean preventMelee;
     protected Boolean persist = null;
     protected int fireTicks;
 
@@ -320,6 +322,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         isDocile = parameters.getBoolean("docile");
         transformable = parameters.getBoolean("transformable", true);
+        preventProjectiles = parameters.getBoolean("prevent_projectiles", false);
+        preventMelee = parameters.getBoolean("prevent_melee", false);
 
         String entityName = parameters.contains("type") ? parameters.getString("type") : key;
         if (entityName != null && !entityName.isEmpty()) {
@@ -1275,5 +1279,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public boolean isSplittable() {
         return isSplittable;
+    }
+
+    @Override
+    public boolean isPreventProjectiles() {
+        return preventProjectiles;
+    }
+
+    @Override
+    public boolean isPreventMelee() {
+        return preventMelee;
     }
 }

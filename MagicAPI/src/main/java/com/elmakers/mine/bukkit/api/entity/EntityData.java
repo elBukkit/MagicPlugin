@@ -43,6 +43,8 @@ public interface EntityData extends Cloneable {
     void setHasMoved(boolean hasMoved);
     void setDamaged(boolean damaged);
     boolean isDocile();
+    boolean isPreventProjectiles();
+    boolean isPreventMelee();
     boolean isTransformable();
     @Nullable
     Entity spawn();

@@ -42,6 +42,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -165,6 +166,12 @@ public class EntityController implements Listener {
                 } else {
                     undoList.modify(entity);
                 }
+            }
+        } else {
+            EntityData entityData = controller.getMob(damager);
+            if (entityData != null && entityData.isPreventMelee()) {
+                event.setCancelled(true);
+                return;
             }
         }
 
@@ -520,14 +527,24 @@ public class EntityController implements Listener {
             return;
         }
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage((Entity)shooter);
-        if (mage == null || mage.isLaunchingProjectile()) return;
-        mage.setLastProjectileType(projectile.getType());
-        if (mage.trigger("launch")) {
-            if (mage.isCancelLaunch()) {
-                event.setCancelled(true);
+        if (mage != null) {
+            if (mage.isLaunchingProjectile()) return;
+            mage.setLastProjectileType(projectile.getType());
+            if (mage.trigger("launch")) {
+                if (mage.isCancelLaunch()) {
+                    event.setCancelled(true);
+                }
             }
         }
+        EntityData entityData = controller.getMob((Entity)shooter);
+        if (entityData != null && entityData.isPreventProjectiles()) {
+            event.setCancelled(true);
+            return;
+        }
 
+        if (mage == null) {
+            return;
+        }
         Wand wand = mage.getActiveWand();
         if (wand == null) {
             checkArrowLaunch(mage, projectile, event);
