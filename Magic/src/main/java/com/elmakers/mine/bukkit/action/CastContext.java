@@ -77,6 +77,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private Boolean targetCaster = null;
     private final long startTime;
     private ConfigurationSection workingParameters;
+    private Map<String, Object> castData;
 
     private Set<UUID> targetMessagesSent = null;
 
@@ -1483,5 +1484,19 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public ActionHandler getRootHandler() {
         return rootHandler;
+    }
+
+    @Override
+    public void setCastData(@Nonnull String key, Object value) {
+        if (castData == null) {
+            castData = new HashMap<>();
+        }
+        castData.put(key, value);
+    }
+
+    @Override
+    @Nullable
+    public Object getCastData(@Nonnull String key) {
+        return castData == null ? null : castData.get(key);
     }
 }
