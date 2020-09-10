@@ -57,17 +57,28 @@ public class FakeBlockAction extends BaseSpellAction {
             return SpellResult.FAIL;
         }
 
-        List<WeakReference<Player>> targetPlayers = new ArrayList<>();
-        if (mage.isPlayer()) {
-            targetPlayers.add(new WeakReference<>(mage.getPlayer()));
-        }
-        if (radius > 0) {
-            double radiusSquared = radius * radius;
-            for (Player player : block.getWorld().getPlayers()) {
-                if (player != mage.getPlayer() && player.getLocation().distanceSquared(block.getLocation()) <= radiusSquared) {
-                    targetPlayers.add(new WeakReference<>(player));
+        // Store this list for the duration of the cast to prevent making a zillion lists
+        List<WeakReference<Player>> targetPlayers;
+        String targetKey = "FakeBlockTargets-" + (int)Math.floor(radius);
+        Object cachedTargets = context.getCastData(targetKey);
+        if (cachedTargets != null && cachedTargets instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<WeakReference<Player>> targetPlayersUnchecked = (List<WeakReference<Player>>)cachedTargets;
+            targetPlayers = targetPlayersUnchecked;
+        } else {
+            targetPlayers = new ArrayList<>();
+            if (mage.isPlayer()) {
+                targetPlayers.add(new WeakReference<>(mage.getPlayer()));
+            }
+            if (radius > 0) {
+                double radiusSquared = radius * radius;
+                for (Player player : block.getWorld().getPlayers()) {
+                    if (player != mage.getPlayer() && player.getLocation().distanceSquared(block.getLocation()) <= radiusSquared) {
+                        targetPlayers.add(new WeakReference<>(player));
+                    }
                 }
             }
+            context.setCastData(targetKey, targetPlayers);
         }
         context.registerFakeBlock(block, targetPlayers);
 
