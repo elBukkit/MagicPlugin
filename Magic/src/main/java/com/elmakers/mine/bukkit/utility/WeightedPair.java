@@ -50,7 +50,7 @@ public class WeightedPair<T extends Object> implements Comparable<WeightedPair<?
         this.rawThreshold = rawThreshold;
     }
 
-    public WeightedPair(WeightedPair weights, T value) {
+    public WeightedPair(WeightedPair<?> weights, T value) {
         this.threshold = weights.threshold;
         this.value = value;
         this.rawThreshold = weights.rawThreshold;
