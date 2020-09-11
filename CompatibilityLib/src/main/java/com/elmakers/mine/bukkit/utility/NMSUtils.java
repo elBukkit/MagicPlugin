@@ -1245,51 +1245,55 @@ public class NMSUtils {
                 Bukkit.getLogger().log(Level.WARNING, "An error occurred, using specific damage types will not work, will use normal damage instead", ex);
             }
             try {
+                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("disabledSlots");
+            } catch (Exception notcurrent) {
                 try {
-                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bv");
-                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.15/1.14, maybe");
-                } catch (Exception not16) {
                     try {
-                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bE");
-                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.13, maybe");
-                    } catch (Exception not14) {
-                        // 1.13
+                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bv");
+                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.15/1.14, maybe");
+                    } catch (Exception not16) {
                         try {
-                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bH");
-                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.12, maybe");
-                        } catch (Exception not13) {
+                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bE");
+                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.13, maybe");
+                        } catch (Exception not14) {
+                            // 1.13
                             try {
-                                // 1.12, same as 1.10
-                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                                if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.11, maybe");
-                            } catch (Throwable not12) {
+                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bH");
+                                if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.12, maybe");
+                            } catch (Exception not13) {
                                 try {
-                                    // 1.11
-                                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
-                                } catch (Throwable ignore) {
-                                    // 1.10 and earlier
-                                    setLegacy();
+                                    // 1.12, same as 1.10
+                                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
+                                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.11, maybe");
+                                } catch (Throwable not12) {
                                     try {
-                                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
-                                    } catch (Throwable ignore2) {
+                                        // 1.11
+                                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
+                                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
+                                    } catch (Throwable ignore) {
+                                        // 1.10 and earlier
+                                        setLegacy();
                                         try {
-                                            // 1.9.4
-                                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                                        } catch (Throwable ignore3) {
-                                            // 1.9.2
-                                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
+                                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
+                                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
+                                        } catch (Throwable ignore2) {
+                                            try {
+                                                // 1.9.4
+                                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
+                                            } catch (Throwable ignore3) {
+                                                // 1.9.2
+                                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                } catch (Throwable ex) {
+                    Bukkit.getLogger().log(Level.WARNING, "An error occurred, armor stand slots cannot be locked", ex);
+                    class_EntityArmorStand_disabledSlotsField = null;
                 }
-            } catch (Throwable ex) {
-                Bukkit.getLogger().log(Level.WARNING, "An error occurred, armor stand slots cannot be locked", ex);
-                class_EntityArmorStand_disabledSlotsField = null;
             }
             if (class_EntityArmorStand_disabledSlotsField != null) {
                 class_EntityArmorStand_disabledSlotsField.setAccessible(true);

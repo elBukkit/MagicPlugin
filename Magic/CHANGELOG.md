@@ -2,6 +2,7 @@
 
 # 7.10.3
 
+ - Support for 1.16.3
  - Add FakeBlock action, use for peek spell
  - Add simpler format for triggered spells on mobs
  - Paginate `/spells` and `/wand list` output
