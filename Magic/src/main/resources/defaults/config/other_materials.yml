@@ -1,6 +1,6 @@
 # These define mappings of materials for backwards compatibility
-ground_sign_block: sign_post,sign
-wall_sign_block: wall_sign
+ground_sign_block: oak_sign,sign_post,sign
+wall_sign_block: oak_wall_sign,wall_sign
 firework: firework,firework_rocket
 wall_torch: wall_torch,torch
 redstone_torch_on: redstone_torch_on,redstone_torch:1
