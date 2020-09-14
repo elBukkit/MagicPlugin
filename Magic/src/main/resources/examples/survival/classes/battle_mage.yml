@@ -5,7 +5,6 @@ battle_mage:
   spells:
     - missile
     - arrow
-    - curse
     - fire
     - push
 
