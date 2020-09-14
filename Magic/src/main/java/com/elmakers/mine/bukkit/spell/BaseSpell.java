@@ -2440,7 +2440,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (spellData.isActive()) {
             spellData.setIsActive(false);
             onDeactivate();
-            playEffects("deactivate");
 
             mage.deactivateSpell(this);
             if (!quiet) {
@@ -2457,6 +2456,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             if (toggle != ToggleType.NONE) {
                 mage.cancelPending(getSpellKey().getBaseKey(), true);
             }
+            playEffects("deactivate");
         }
 
         return true;
