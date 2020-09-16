@@ -2,6 +2,8 @@
 
 # 7.10.4
 
+ - Fix how using `example: engineering` or `example: automata` removes survival configs
+
 # 7.10.3
 
  - Support for 1.16.3

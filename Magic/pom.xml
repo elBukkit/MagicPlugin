@@ -550,6 +550,11 @@
 
                                 <!-- Automata Configs -->
 
+                                <concat destfile="${project.build.directory}/classes/examples/automata/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/automata/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/automata/messages.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/automata/messages">
                                         <include name="**/*.yml"/>
@@ -611,6 +616,11 @@
 
                                 <!-- Engineering Configs -->
 
+                                <concat destfile="${project.build.directory}/classes/examples/engineering/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/engineering/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/engineering/messages.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/engineering/messages">
                                         <include name="**/*.yml"/>
