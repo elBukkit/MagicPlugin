@@ -6,6 +6,7 @@
  - Fix copper_chunk item log-spam on older Spigot versionsers
  - Add "angry" option for wolf mobs, default interval to 1 second if not specified and using interval triggers
  - Add Equation action .. not sure what you'd use this for, but there is a spiral example in elworld/spells
+ - Added Sound and Particle effectlib effects, and "probability" parameter
 
 # 7.10.3
 
