@@ -3,7 +3,8 @@
 # 7.10.4
 
  - Fix how using `example: engineering` or `example: automata` removes survival configs
- - Fix copper_chunk item log-spam on older Spigot versions
+ - Fix copper_chunk item log-spam on older Spigot versionsers
+ - Add "angry" option for wolf mobs, default interval to 1 second if not specified and using interval trigg
 
 # 7.10.3
 

@@ -106,6 +106,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Double maxHealth;
     protected Double health;
     protected Integer airLevel;
+    protected boolean isAngry;
     protected boolean isBaby;
     protected boolean isSilent;
     protected boolean isTamed;
@@ -252,6 +253,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Wolf) {
             Wolf wolf = (Wolf)entity;
             dyeColor = wolf.getCollarColor();
+            isAngry = wolf.isAngry();
         } else if (entity instanceof Ocelot) {
             Ocelot ocelot = (Ocelot)entity;
             ocelotType = ocelot.getCatType();
@@ -354,6 +356,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isSitting = parameters.getBoolean("sitting", false);
         isInvulnerable = parameters.getBoolean("invulnerable", false);
         isBaby = parameters.getBoolean("baby", false);
+        isAngry = parameters.getBoolean("angry", false);
         hasAI = parameters.getBoolean("ai", true);
         hasGravity = parameters.getBoolean("gravity", true);
         isSplittable = parameters.getBoolean("split", true);
@@ -827,9 +830,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             droppedItem.setItemStack(item);
-        } else if (entity instanceof Wolf && dyeColor != null) {
+        } else if (entity instanceof Wolf) {
             Wolf wolf = (Wolf)entity;
-            wolf.setCollarColor(dyeColor);
+            if (dyeColor != null) {
+                wolf.setCollarColor(dyeColor);
+            }
+            wolf.setAngry(isAngry);
         } else if (entity instanceof Ocelot && ocelotType != null) {
             Ocelot ocelot = (Ocelot)entity;
             ocelot.setCatType(ocelotType);
