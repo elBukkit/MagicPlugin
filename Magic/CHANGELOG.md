@@ -3,6 +3,7 @@
 # 7.10.4
 
  - Fix how using `example: engineering` or `example: automata` removes survival configs
+ - Fix copper_chunk item log-spam on older Spigot versions
 
 # 7.10.3
 
