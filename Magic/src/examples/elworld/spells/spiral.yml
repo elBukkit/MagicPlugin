@@ -1,0 +1,36 @@
+spiral:
+    icon: spell_icon:142
+    icon_disabled: spell_icon_disabled:142
+    icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
+    category: engineering
+    actions:
+        cast:
+        - class: Equation
+          actions:
+          - class: ModifyBlock
+#          - class: Message
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: block_grass_step
+        iterate:
+        - class: EffectSingle
+          particle: block_crack
+          particle_count: 21
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+          location: target
+    parameters:
+      target: none
+      transparent: transparent_to_construction
+      destructible: destructible_replace
+      orient: true
+      orient_pitch: false
+      x_equation: t/5
+      y_equation: cos(t)*(t/10)
+      z_equation: sin(t)*(t/10)
+      iterations: 100
+      message: Targeting @tx @ty @tz
+      undo: 5000
+
