@@ -336,6 +336,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
+        // Prevent further errors from missing types
+        if (type == null) {
+            type = EntityType.ZOMBIE;
+        }
+
         String colorString = parameters.getString("color");
         if (colorString != null) {
             try {
