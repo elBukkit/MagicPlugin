@@ -18,7 +18,7 @@ public class EffectLibPlay implements EffectPlay {
         try {
             effect.cancel();
         } catch (Exception ex) {
-            org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error cancelling EffectLib efffect", ex);
+            org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error cancelling EffectLib effect", ex);
         }
     }
 }
