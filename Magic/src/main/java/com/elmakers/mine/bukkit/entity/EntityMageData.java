@@ -95,7 +95,7 @@ public class EntityMageData {
         }
 
         // Default to 1-second interval if any interval triggers are set but no interval was specified
-        if (triggers != null && tickInterval <= 0 && triggers.containsKey(TriggerType.INTERVAL.name())) {
+        if (triggers != null && tickInterval <= 0 && triggers.containsKey(TriggerType.INTERVAL.name().toLowerCase())) {
             tickInterval = 1000;
         }
         if (tickInterval < lifetime / 2) {
