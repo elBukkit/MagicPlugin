@@ -1,0 +1,16 @@
+cleararea:
+  name: Clear Area
+  description: Removes everything above y=8 in a 50x50 area around you
+  icon: tnt
+  actions:
+    cast:
+      - class: Volume
+        actions:
+          - class: ModifyBlock
+  parameters:
+    destructible: "!bedrock"
+    brush: erase
+    x_size: 50
+    z_size: 50
+    y_size: 123
+    ty: 137
