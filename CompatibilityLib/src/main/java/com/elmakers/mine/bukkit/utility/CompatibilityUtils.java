@@ -2147,4 +2147,26 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return false;
     }
+
+    public static boolean setFirstTrustedPlayer(Entity entity, Player player) {
+        if (class_Fox_setFirstTrustedPlayerMethod == null) return false;
+        try {
+            class_Fox_setFirstTrustedPlayerMethod.invoke(entity, player);
+            return true;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean isFirstTrustedPlayer(Entity entity, Player player) {
+        if (class_Fox_getFirstTrustedPlayerMethod == null) return false;
+        try {
+            Object trusted = class_Fox_getFirstTrustedPlayerMethod.invoke(entity);
+            return trusted == player;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

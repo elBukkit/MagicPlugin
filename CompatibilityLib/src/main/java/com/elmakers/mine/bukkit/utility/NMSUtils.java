@@ -18,6 +18,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
@@ -287,6 +288,8 @@ public class NMSUtils {
     protected static Method class_Chunk_addPluginChunkTicketMethod;
     protected static Method class_Chunk_removePluginChunkTicketMethod;
     protected static Method class_Lootable_setLootTableMethod;
+    protected static Method class_Fox_setFirstTrustedPlayerMethod;
+    protected static Method class_Fox_getFirstTrustedPlayerMethod;
 
     protected static boolean legacyMaps;
 
@@ -616,6 +619,15 @@ public class NMSUtils {
 
             // We don't want to consider new-ish builds as "legacy" and print a warning, so keep a separate flag
             boolean current = true;
+
+            try {
+                Class<?> class_Fox = Class.forName("org.bukkit.entity.Fox");
+                class_Fox_setFirstTrustedPlayerMethod = class_Fox.getMethod("setFirstTrustedPlayer", AnimalTamer.class);
+                class_Fox_getFirstTrustedPlayerMethod = class_Fox.getMethod("getFirstTrustedPlayer");
+            } catch (Throwable ex) {
+                class_Fox_setFirstTrustedPlayerMethod = null;
+                class_Fox_getFirstTrustedPlayerMethod = null;
+            }
 
             try {
                 class_Chunk_addPluginChunkTicketMethod = Chunk.class.getMethod("addPluginChunkTicket", Plugin.class);

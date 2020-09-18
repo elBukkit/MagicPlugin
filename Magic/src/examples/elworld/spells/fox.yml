@@ -1,0 +1,15 @@
+fox:
+  name: Fox
+  description: Spawn a trusty fox
+  icon: sweet_berry
+  actions:
+    cast:
+      - class: SpawnEntity
+      - class: Delay
+      - class: Tame
+  parameters:
+    target: block
+    allow_max_range: true
+    set_target: true
+    type: fox
+    range: 2
