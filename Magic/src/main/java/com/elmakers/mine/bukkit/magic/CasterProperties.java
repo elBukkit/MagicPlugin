@@ -154,51 +154,21 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getLong("mana_timestamp");
     }
 
-    public void armorUpdated() {
+    public void passiveEffectsUpdated() {
     }
 
     public boolean updateMaxMana(Mage mage) {
         if (!usesMana()) {
             return false;
         }
+
         int currentMana = effectiveManaMax;
         int currentManaRegen = effectiveManaRegeneration;
-
-        float effectiveBoost = getManaMaxBoost();
-        float effectiveRegenBoost = getManaRegenerationBoost();
-        if (mage != null)
-        {
-            MageClass activeClass = mage.getActiveClass();
-            if (activeClass != null) {
-                // We don't stack up through classes, on ly the active class will be used
-                // the active class overrides this class
-                effectiveBoost = activeClass.getManaMaxBoost();
-                effectiveRegenBoost = activeClass.getManaRegenerationBoost();
-            }
-            Collection<Wand> activeArmor = mage.getActiveArmor();
-            for (Wand armorWand : activeArmor) {
-                effectiveBoost += armorWand.getManaMaxBoost();
-                effectiveRegenBoost += armorWand.getManaRegenerationBoost();
-            }
-            Wand activeWand = mage.getActiveWand();
-            if (activeWand != null && !activeWand.isPassive()) {
-                effectiveBoost += activeWand.getManaMaxBoost();
-                effectiveRegenBoost += activeWand.getManaRegenerationBoost();
-            }
-            Wand offhandWand = mage.getOffhandWand();
-            if (offhandWand != null && !offhandWand.isPassive()) {
-                effectiveBoost += offhandWand.getManaMaxBoost();
-                effectiveRegenBoost += offhandWand.getManaRegenerationBoost();
-            }
-        }
-        boolean boostable = getBoolean("boostable", true);
         effectiveManaMax = getManaMax();
-        if (boostable && effectiveBoost != 0) {
-            effectiveManaMax = (int)Math.ceil(effectiveManaMax + effectiveBoost * effectiveManaMax);
-        }
         effectiveManaRegeneration = getManaRegeneration();
-        if (boostable && effectiveRegenBoost != 0) {
-            effectiveManaRegeneration = (int)Math.ceil(effectiveManaRegeneration + effectiveRegenBoost * effectiveManaRegeneration);
+        if (mage != null && getBoolean("boostable", true)) {
+            effectiveManaMax = (int)((float)effectiveManaMax * mage.getManaMaxMultiplier());
+            effectiveManaRegeneration = (int)((float)effectiveManaRegeneration * mage.getManaRegenerationMultiplier());
         }
 
         return (currentMana != effectiveManaMax || effectiveManaRegeneration != currentManaRegen);

@@ -4375,19 +4375,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
-    public void armorUpdated() {
+    public void passiveEffectsUpdated() {
         updateMaxMana(true);
     }
 
     protected void updateMaxMana(boolean updateLore) {
         if (isHeroes) return;
         if (!hasOwnMana() && mageClass != null) {
-            if (mageClass.updateMaxMana(mage) && updateLore) {
-                updateLore();
-            }
+            updateLore = mageClass.updateMaxMana(mage) && updateLore;
 
             effectiveManaMax = mageClass.getEffectiveManaMax();
             effectiveManaRegeneration = mageClass.getEffectiveManaRegeneration();
+            if (updateLore) {
+                updateLore();
+            }
         } else if (super.updateMaxMana(mage) && updateLore) {
             updateLore();
         }
@@ -4446,7 +4447,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public void setActiveMage(com.elmakers.mine.bukkit.api.magic.Mage mage) {
         if (mage instanceof Mage) {
             this.mage = (Mage)mage;
-            armorUpdated();
+            passiveEffectsUpdated();
         }
     }
 

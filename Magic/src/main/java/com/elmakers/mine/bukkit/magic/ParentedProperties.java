@@ -113,11 +113,11 @@ public abstract class ParentedProperties extends TemplatedProperties {
             parent.loadProperties();
         }
         super.loadProperties();
-        armorUpdated();
+        passiveEffectsUpdated();
     }
 
     @Override
-    public void armorUpdated() {
+    public void passiveEffectsUpdated() {
         if (hasOwnMana()) {
             updateMaxMana(getMage());
         }

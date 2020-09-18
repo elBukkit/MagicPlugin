@@ -212,6 +212,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float consumeReduction = 0;
     private float powerMultiplier = 1;
     private float earnMultiplier = 1;
+    private float manaMaxBoost = 0;
+    private float manaRegenerationBoost = 0;
 
     private boolean costFree = false;
     private boolean cooldownFree = false;
@@ -3755,11 +3757,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
-        if (activeWand != null) {
-            activeWand.armorUpdated();
-        } else if (activeClass != null) {
-            activeClass.armorUpdated();
-        }
         updatePassiveEffects();
     }
 
@@ -3789,6 +3786,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected void addPassiveEffects(CasterProperties properties, boolean activeReduction) {
         earnMultiplier = (float) (earnMultiplier * properties.getDouble("earn_multiplier", properties.getDouble("sp_multiplier", 1.0)));
+        manaRegenerationBoost += properties.getFloat("mana_regeneration_boost", 0);
+        manaMaxBoost += properties.getFloat("mana_max_boost", 0);
 
         boolean stack = properties.getBoolean("stack", false);
         addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
@@ -3848,6 +3847,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         cooldownReduction = 0;
         costReduction = 0;
         consumeReduction = 0;
+        manaMaxBoost = 0;
+        manaRegenerationBoost = 0;
 
         List<PotionEffectType> currentEffects = new ArrayList<>(effectivePotionEffects.keySet());
         LivingEntity entity = getLivingEntity();
@@ -3897,6 +3898,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 PotionEffect effect = new PotionEffect(effects.getKey(), Integer.MAX_VALUE, effects.getValue(), true, false);
                 CompatibilityUtils.applyPotionEffect(entity, effect);
             }
+        }
+
+        if (activeWand != null) {
+            activeWand.passiveEffectsUpdated();
+        } else if (activeClass != null) {
+            activeClass.passiveEffectsUpdated();
+        }
+        if (offhandWand != null) {
+            offhandWand.passiveEffectsUpdated();
         }
     }
 
@@ -4903,5 +4913,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void setBypassEnabled(boolean enable) {
         bypassEnabled = enable;
+    }
+
+    public float getManaMaxMultiplier() {
+        return 1.0f + manaMaxBoost;
+    }
+
+    public float getManaRegenerationMultiplier() {
+        return 1.0f + manaRegenerationBoost;
     }
 }
