@@ -1,0 +1,16 @@
+ajshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: water_bucket
+        - item: golden_apple
+        - item: torch
+        - item: coal
+        - item: dirt
+        - item: trap_door
+        - item: raw_fish
+        - item: none
+        - item: none
+        - item: none
+   
+  

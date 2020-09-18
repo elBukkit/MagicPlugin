@@ -1,0 +1,50 @@
+drainlife:
+  name: Drain Life
+  description: Inflict minor damage to regenerate health
+  icon: diamond_axe:3
+  icon_disabled: diamond_axe:3
+  icon_url: http://textures.minecraft.net/texture/b635f01b8b4cd9f44436154be3dd5d735e4487617089d3dadda39b4dada14
+  category: necromancy
+  worth: 10000
+  actions:
+      cast:
+      - class: Repeat
+        actions:
+        - class: Damage
+        - class: ChangeContext
+          requires_entity_target: true
+          actions:
+          - class: ChangeContext
+            target_caster: true
+            actions:
+            - class: Heal
+        - class: Delay
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: ENTITY_CREEPER_DEATH
+      location: both
+      color_override: color
+      effectlib:
+        class: LineEffect
+        duration: 3000
+        type: repeating
+        particle: redstone
+        color: red
+  costs:
+      mana: 50
+  parameters:
+      allow_max_range: true
+      velocity: 200
+      damage: 0.5
+      range: 30
+      hitbox: true
+      target: other
+      target_npc: true
+      target_type: LivingEntity
+      cooldown: 10000
+      repeat: 10
+      delay: 500
+      amount: 1
+      damage: 0.75
+

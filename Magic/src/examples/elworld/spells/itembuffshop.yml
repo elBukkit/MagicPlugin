@@ -1,0 +1,17 @@
+itembuffshop:
+  icon: diamond_axe:234
+  icon_disabled: diamond_hoe:234
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    confirm: true
+    confirm_filler: stained_glass:13
+    cost_type: sp
+    options:
+    - cast_spell: add_lore
+      cost: 200
+

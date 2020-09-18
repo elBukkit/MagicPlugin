@@ -1,0 +1,29 @@
+throwcar:
+    icon: diamond_sword
+    actions:
+        cast:
+        - class: EntityProjectile
+          actions:
+          - class: Damage
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 4
+                radius: 0.2
+                duration: 30000
+    parameters:
+      velocity: 10
+      type: armor_stand
+      helmet: model3_item
+      invisible: true
+      marker: true
+      attach_duration: 5000
+      gravity: 0.05
+      cooldown: 10000
+      damage: 10
+    costs:
+      mana: 30
+

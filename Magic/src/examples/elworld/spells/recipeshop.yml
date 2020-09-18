@@ -1,0 +1,8 @@
+recipeshop:
+    inherit: buyshop
+    parameters:
+        auto_close: true
+        items:
+        - item: recipe:*
+          cost: 10
+

@@ -1,0 +1,58 @@
+base_trap:
+  icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
+  icon: ender_pearl
+  category: combat
+  actions:
+    cast:
+      - class: Delay
+        delay: $delay1
+      - class: Repeat
+        stop_on_success: true
+        actions:
+          - class: AreaOfEffect
+            stop_on_success: false
+            actions:
+              - class: Serial
+                actions: $trap_actions
+              - class: PlayEffects
+                effects: hit
+          - class: Delay
+            delay: $delay2
+  effects:
+    cast:
+      - location: target
+        particle: smoke_normal
+    tick:
+      - class: EffectSingle
+        location: target
+        particle: smoke_normal
+        particle_count: 20
+        particle_offset_x: 1
+        particle_offset_y: 1
+        particle_offset_z: 1
+    hit:
+      - class: EffectSingle
+        location: target
+        color: 2E2E2E
+        firework: ball
+      - class: EffectSingle
+        location: target
+        use_hit_location: false
+        requires_entity_target: true
+        effectlib:
+          class: SphereEffect
+          iterations: 17
+          period: 4
+          particle: smoke_normal
+          radius: 0.5
+          particles: 20
+  parameters:
+    radius: 5
+    range: 1
+    #reorient: true
+    target: other
+    target_type: LivingEntity
+    allow_max_range: true
+    delay1: 10000
+    delay2: 250
+    

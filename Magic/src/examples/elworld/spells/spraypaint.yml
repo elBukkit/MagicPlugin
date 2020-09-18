@@ -1,0 +1,39 @@
+spraypaint:
+  hidden: true
+  icon: tripwire_hook
+  icon_url: http://textures.minecraft.net/texture/719e9875ffb35adfbd135c416e51dcf80dec38bf3d0dca2f94eb6595b90c0b5
+  uses_brush: true
+  brush_effects: true
+  actions:
+    cast:
+    - class: Repeat
+      actions:
+      - class: Retarget
+        actions:
+          - class: PlayEffects
+          - class: Delay
+  effects:
+      cast:
+      -  class: EffectSingle
+         sound: creeper_hiss
+         location: both
+      paint:
+      -  class: EffectSingle
+         location: target
+         effectlib:
+          class: IconEffect
+          yOffset: 0
+          particle: block_crack
+          particleCount: 10
+          particleOffsetX: 0.01
+          particleOffsetY: 0.01
+          particleOffsetZ: 0.01
+          speed: 0
+  parameters:
+    effects: paint
+    target: other
+    range: 16
+    allow_max_range: true
+    repeat: 100
+    delay: 50
+    

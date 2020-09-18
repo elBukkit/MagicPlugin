@@ -1,0 +1,51 @@
+stoptest:
+    category: FireBending
+    actions:
+        cast:
+        -   class: Parallel
+            actions:
+            -   class: CustomProjectile
+                velocity_transform:
+                    x: 10
+                    y: 0
+                    z: 0
+                actions:
+                -   class: Damage
+                -   class: Stop
+            -   class: CustomProjectile
+                velocity_transform:
+                    x: 1
+                    y: 0
+                    z: 0
+                actions:
+                -   class: Damage
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 20
+                radius: 0.2
+                duration: 30000
+        cast:
+        -   class: EffectSingle
+            location: self
+            use_wand_location: false
+            effectlib:
+                offset: 0,-0.5,0
+                class: SphereEffect
+                particle: smoke_normal
+                particles: 10
+                radius: 1
+                duration: 1
+    parameters:
+        target_type: LivingEntity
+        range: 100
+        lifetime: 10000
+        hitbox_size: 1
+        damage: 1
+        entity_damage: 2
+        cooldown: 0
+
+

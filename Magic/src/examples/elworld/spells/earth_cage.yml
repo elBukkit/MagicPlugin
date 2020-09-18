@@ -1,0 +1,38 @@
+earth_cage:
+    actions:
+        cast:
+            -   class: CustomProjectile
+                actions:
+                -   class: ChangeContext
+                    source_at_target: true
+                    actions:
+                    -   class: Brush
+                        brush: stone
+                        actions:
+                        -   class: Sphere
+                            actions:
+                            -   class: ModifyBlock
+                        -   class: Stop
+    effects:
+        projectile:
+        -   class: EffectSingle
+            use_wand_location: false
+            location: origin
+            effectlib:
+                class: SphereEffect
+                radius: 0.5
+                particles: 50
+                duration: 500
+                particle: block_crack
+                material: stone
+    parameters:
+        range: 16
+        target: LivingEntity
+        destructible: destructible_replace
+        transparent: transparent_no_water
+        radius: 5
+        thickness: 1
+        velocity: 16
+        reorient: true
+        undo: 4000
+

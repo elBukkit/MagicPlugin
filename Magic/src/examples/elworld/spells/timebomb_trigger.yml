@@ -1,0 +1,9 @@
+timebomb_trigger:
+  icon: tnt
+  actions:
+    cast:
+    - class: Trigger
+  parameters:
+    range: 32
+    trigger: detonate
+

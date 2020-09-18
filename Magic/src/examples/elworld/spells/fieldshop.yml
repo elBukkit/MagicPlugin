@@ -1,0 +1,34 @@
+fieldshop:
+    inherit: buyshop
+    parameters:
+        confirm: true
+        confirm_filler: stained_glass:3
+        auto_close: true
+        items:
+        - item: beacon
+          cost: 2000
+          name: "&3Home Protection"
+          lore:
+          - '&eThis will protect a single plot'
+          - '&3with a radius of 32'
+          - '&7Six allowed per player'
+          - 'See: https://youtu.be/l7tsg3kt8BU'
+        - item: bookshelf
+          cost: 10000
+          name: "&3Commune Stone"
+          lore:
+          - '&eThis will protect a fullheight area'
+          - '&3with a radius of 60'
+          - '&7Four allowed per player'
+          - Use /ps allow <player> to add members
+          - 'See: https://youtu.be/l7tsg3kt8BU'
+        - item: mossy_cobblestone
+          cost: 50000
+          name: "&6Town Stone"
+          lore:
+          - '&eThis will protect a fullheight area'
+          - '&3with a radius of 100'
+          - '&7One allowed per player'
+          - Use /ps allow <player> to add members
+          - 'See: https://youtu.be/l7tsg3kt8BU'
+

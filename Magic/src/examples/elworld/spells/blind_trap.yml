@@ -1,0 +1,8 @@
+blind_trap:
+  inherit: base_trap
+  parameters:
+    trap_actions:
+    - class: PotionEffect
+    effect_blind: 1
+    duration: 10000
+    

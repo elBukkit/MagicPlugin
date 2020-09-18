@@ -1,0 +1,11 @@
+spectralsword:
+  icon: emerald_sword
+  actions:
+    cast:
+      - class: Modifier
+  parameters:
+    target: self
+    add_modifiers: spectralsword
+    duration: 10000
+    cooldown: 30000
+

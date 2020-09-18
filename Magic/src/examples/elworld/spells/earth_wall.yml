@@ -1,0 +1,47 @@
+earth_wall:
+    actions:
+        cast:
+        -   class: CheckBlock
+            allowed: earth
+            actions:
+            -   class: ChangeContext
+                source_at_target: true
+                actions:
+                -   class: Brush
+                    brush: stone
+                    actions:
+                    -   class: AreaOfEffect
+                        radius: 2
+                        actions:
+                        -   class: Velocity
+                            living_entity_speed: 0.5
+                            push: 1
+                    -   class: Volume
+                        y_size: 1
+                        x_size: 1
+                        z_size: 0
+                        actions:
+                        -   class: ModifyBlock
+                    -   class: Delay
+                    -   class: Volume
+                        y_size: 2
+                        x_size: 2
+                        z_size: 0
+                        actions:
+                        -   class: ModifyBlock
+                    -   class: Delay
+                    -   class: Volume
+                        y_size: 3
+                        x_size: 2
+                        z_size: 1
+                        actions:
+                        -   class: ModifyBlock
+    parameters:
+        destructible: destructible_replace
+        range: 12
+        undo: 16000
+        delay: 250
+        axis: z
+        orient: true
+
+

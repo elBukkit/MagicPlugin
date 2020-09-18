@@ -1,0 +1,10 @@
+stream2:
+  inherit: stream
+  parameters:
+    brush: ice
+    start: 2
+    increment_data: false
+    transparent: air,ice
+    undo_to: 10
+    track_range: 0
+

@@ -1,0 +1,51 @@
+flare2:
+    icon: diamond_axe:148
+    icon_disabled: diamond_hoe:148
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+    category: light
+    worth: 20
+    earns_sp: 1
+    show_undoable: false
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Firework
+            firework: burst
+            color: "red"
+            color2: "red"
+          - class: Firework
+            firework: ball
+            color: "blue"
+            color2: "red"
+          miss:
+          - class: Firework
+            firework: burst
+            color: "red"
+            color2: "red"
+          - class: Firework
+            firework: ball
+            color: "blue"
+            color2: "red"
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: entity_firework_launch
+        tick:
+        - particle: fireworks_spark
+          location: target
+          particle_count: 20
+          particle_offset_x: 0.8
+          particle_offset_y: 0.8
+          particle_offset_z: 0.7
+    parameters:
+        allow_max_range: true
+        range: 16
+        velocity: 10
+        ticks_flown: 2
+        expected_lifespan: 1
+        cooldown: 2000
+    costs:
+        mana: 10
+
+

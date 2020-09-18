@@ -1,0 +1,12 @@
+antiknockback:
+  icon: stick
+  actions:
+    cast:
+    - class: Modifier
+  parameters:
+    target: other
+    range: 32
+    add_modifiers:
+      - antiknockback
+    duration: 20000
+

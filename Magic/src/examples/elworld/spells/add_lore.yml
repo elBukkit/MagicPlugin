@@ -1,0 +1,17 @@
+add_lore:
+  icon: diamond_axe:234
+  icon_disabled: diamond_hoe:234
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  hidden: true
+  cast_on_no_target: false
+  actions:
+    cast:
+    - class: ModifyLore
+  parameters:
+    target: self
+    digits: 0
+    modify:
+    - pattern: "&o&3\\+(\\d*) &4Damage"
+      value: "x + 1"
+      max: 10
+

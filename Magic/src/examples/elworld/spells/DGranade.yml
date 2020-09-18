@@ -1,0 +1,38 @@
+DGranade:
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+              duration: 1000
+              effect_wither: 1
+            - class: PotionEffect
+            - class: ApplyCooldown
+            - class: Deactivate
+            - class: Repeat
+              repeat: 10
+              actions:
+              - class: Damage
+                damage: 2
+              - class: Delay
+                delay: 500
+    parameters:
+        attach_duration: 5000
+        duration: 5000
+        effect_slow: 20
+        effect_wither: 1
+        effect_confusion: 5
+        target: other
+        allow_max_range: true
+        velocity: 40
+        gravity: 0.03
+        range: 120
+        target_type: Damageable
+        player_damage: 6
+        entity_damage: 10
+        attach_duration: 5000
+        radius: 8
+
+

@@ -1,0 +1,20 @@
+plantshop:
+    inherit: buyshop
+    parameters:
+        items:
+          red_rose:6@2: 5
+          water_lily: 5
+          red_rose:5@2: 5
+          red_rose:4@2: 5
+          red_rose:2@2: 5
+          red_rose:1@2: 5
+          red_rose:0@2: 5
+          yellow_flower:0@2: 5
+          flower_pot_item: 20
+          red_mushroom@2: 10
+          vine@8: 10
+          leaves@16: 10
+          leaves:1@16: 10
+          leaves:2@16: 10
+          leaves:3@16: 10
+

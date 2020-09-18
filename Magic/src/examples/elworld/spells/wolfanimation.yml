@@ -1,0 +1,30 @@
+wolfanimation:
+    icon: diamond_axe:169
+    icon_disabled: diamond_hoe:169
+    icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
+    category: engineering
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: Skip
+            actions:
+            - class: Delay
+          - class: ModifyBlock
+    parameters:
+        target: self
+        use_brush_size: true
+        undo: 2000
+        undo_speed: 1
+        cooldown: 20000
+        brush: schematic|nathanwolf
+        breakable: 3
+        destructible: destructible_replace
+        skip: 32
+        delay: 50
+        volume_type: xzy
+        quiet: true
+        undo_sorted: false
+        oty: -1
+        bypass: true
+

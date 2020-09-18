@@ -1,0 +1,56 @@
+rasengan:
+    name: Rasengan
+    description: Crea una bola de chakra que impulse tu objetivo hacia adelante
+    icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
+    icon: rails
+    category: elemental
+    worth: 50
+    earns_sp: 3
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
+    actions:
+        cast:
+        - class: VelocityAction
+          y_offset: 1
+          speed: 0.3
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: PlayEffects
+            effects: iterate
+          - class: Damage
+          - class: VelocityAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: 1
+           sound_pitch: -0.1
+           location: origin
+           effectlib:
+             class: SphereEffect
+             particle: firework
+             color: 00FFFF
+             iterations: 5
+             radius: 0.25
+             particles: 15
+             period: 1
+             visibleRange: 100
+             firework: ball
+        iterate:
+        -  class: EffectSingle
+           location: targets
+           color: 00FFFF
+           firework: ball
+    parameters:
+        target_type: LivingEntity
+        range: 8
+        fov: 1
+        target_count: 2
+        repeat: 10
+        speed: 1.2
+        delay: 250
+        y_offset: 0.3
+        cooldown: 5000
+        damage: 2
+

@@ -1,0 +1,19 @@
+unlockedwandshop:
+  inherit: buyshop
+  parameters:
+      confirm: true
+      confirm_filler: stained_glass:3
+      items:
+      - item: wand|default
+        cost: 500
+        permission: unlocked.beginner
+      - item: wand|student
+        cost: 500
+        permission: unlocked.student
+      - item: wand|apprentice
+        cost: 500
+        permission: unlocked.apprentice
+      - item: wand|master
+        cost: 500
+        permission: unlocked.master
+

@@ -1,0 +1,19 @@
+areamissile:
+  inherit: missile
+  actions:
+      cast:
+      - class: CustomProjectile
+        actions:
+        - class: SpawnEntity
+  parameters:
+    type: area_effect_cloud
+    radius: 10
+    color: "00AAFF"
+    particle: redstone
+    duration: 20000
+    potion_effects:
+    - type: slow
+      duration: 10000
+    - type: confusion
+      duration: 5000
+

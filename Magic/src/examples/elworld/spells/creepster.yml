@@ -1,0 +1,42 @@
+creepster:
+    icon: sulphur
+    actions:
+        cast:
+        - class: ArmorStandProjectile
+          actions:
+          - class: Damage
+    parameters:
+      velocity: 0.5
+      helmet_item: skull_item:NathanWolf
+      chestplate_item: chainmail_chestplate
+      boots_item: chainmail_boots
+      leggings_item: chainmail_leggings
+      location_offset: 0,4,0
+      armor_stand_invisible: false
+      armor_stand_marker: true
+      attach_duration: 5000
+      head_transform:
+        x: 0
+        y: 1
+        z: 1.6
+      body_transform:
+        x: 0
+        y: 2
+        z: 0
+      right_arm_transform:
+        x: "6.28*sin(0.4*t + 0.01)"
+        y: 0
+        z: 0
+      right_leg_transform:
+        x: "6.28*sin(0.4*t + 0.02)"
+        y: 0
+        z: 0
+      left_arm_transform:
+        x: "6.28*sin(0.4*t + 0.03)"
+        y: 0
+        z: 0
+      left_leg_transform:
+        x: "6.28*sin(0.4*t + 0.04)"
+        y: 0
+        z: 0
+

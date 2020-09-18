@@ -1,0 +1,77 @@
+scorch:
+    icon: diamond_axe:153
+    icon_disabled: diamond_hoe:153
+    upgrade_required_path: beginner
+    upgrade_required_casts: 15
+    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
+    category: combat
+    pvp_restricted: true
+    worth: 150
+    earns_sp: 10
+    actions:
+        cast:
+        - class: Parallel
+          actions:
+          - class: Projectile
+            actions:
+            - class: Damage
+          - class: ChangeContext
+            source_yaw_offset: 45
+            actions:
+            - class: Projectile
+              actions:
+              - class: Damage
+          - class: ChangeContext
+            source_yaw_offset: -45
+            actions:
+            - class: Projectile
+              actions:
+              - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_ghast_shoot
+        -  class: EffectSingle
+           effectlib:
+             class: ShieldEffect
+             particle: flame
+             particles: 10
+             iterations: 3
+             period: 1
+             particleOffsetX: 0.9
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.9
+             radius: 3
+             offset: 0,-1,0
+             duration: $warmup
+        hit:
+        -  class: EffectSingle
+           particle: explosion_large
+           sound: entity_generic_explode
+        -  class: EffectSingle
+           effectlib:
+             class: WarpEffect
+             particle: flame
+             particles: 10
+             iterations: 3
+             period: 1
+             particleOffsetX: 0.9
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.9
+             radius: 3
+             offset: 0,-1,0
+             duration: $warmup
+    parameters:
+        projectile: LargeFireball
+        fire: false
+        size: 1
+        cooldown: 10000
+        start: 5
+        break_blocks: false
+        damage: 2
+        speed: 3
+        radius: 0
+        warmup: 1000
+    costs:
+        mana: 40
+

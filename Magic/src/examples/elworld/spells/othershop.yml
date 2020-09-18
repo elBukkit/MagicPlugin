@@ -1,0 +1,19 @@
+othershop:
+    icon: ender_pearl
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        loud: true
+        auto_upgrade: true
+        confirm_filler: stained_glass:2
+        spells:
+          phase: 500
+          blink: 200
+          laser: 1000
+          breach: 800
+          grenade: 700
+          disintegrate: 600
+

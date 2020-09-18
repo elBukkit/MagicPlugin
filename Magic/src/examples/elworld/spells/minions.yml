@@ -1,0 +1,38 @@
+minions:
+    name: Summon Minions
+    icon_url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
+    icon: monster_egg
+    category: elemental
+    pvp_restricted: true
+    actions:
+      cast:
+      - class: Repeat
+        actions:
+        - class: ChangeContext
+          actions:
+          - class: SpawnEntity
+    worth: 200
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_moan
+        -  class: EffectSingle
+           location: targets
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particleNucleus: drip_lava
+    parameters:
+        target: self
+        force: true
+        track: false
+        random_target_offset: 5,0,5
+        target_offset: 0,-1,0
+        type: undead_minion
+        cooldown: 10000
+        undo: 120000
+        loot: false
+        repeat: 3
+    costs:
+        mana: 50
+

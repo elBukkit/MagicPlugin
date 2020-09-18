@@ -1,0 +1,20 @@
+Berserk:
+    actions:
+        cast:
+        -  class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_fire_extinguish
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 70
+             period: .1
+             particle: redstone
+             color: 0A2A0A
+             radius: 2
+             particles: 20
+    parameters:
+        target: self
+

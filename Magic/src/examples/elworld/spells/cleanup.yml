@@ -1,0 +1,24 @@
+cleanup:
+    icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
+    icon: iron_spade
+    category: engineering
+    class: ConstructSpell
+    worth: 2500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        check_destructible: true
+        destructible: cleanup
+        radius: 32
+        replace: true
+        transparent: transparent_to_construction
+        cooldown: 2000
+    costs:
+        mana: 100
+

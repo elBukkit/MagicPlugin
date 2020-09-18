@@ -1,0 +1,31 @@
+acshop:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        - class: Selector
+          options:
+          - item: rollback
+            costs:
+              ac: 100
+          - item: absorb
+            costs:
+              tc: 50
+          - item: nuke
+            costs:
+              diamond: 20
+          - item: earthquake
+            costs:
+              sp: 2000
+          - icon: diamond
+            name: AC -> TC
+            costs:
+              ac: 100
+            earns:
+              tc: 10
+    parameters:
+        cost_type: ac
+        quiet: true
+        confirm_filler: stained_glass:2
+

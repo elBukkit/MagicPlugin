@@ -1,0 +1,18 @@
+sunbeam:
+  name: Sunbeam
+  description: Harness the power of the sun
+  icon: wooden_hoe{CustomModelData:1}
+  actions:
+    cast:
+      - class: CheckRequirements
+        requirements:
+        - light:
+            min: 5
+      - class: AreaOfEffect
+        actions:
+        - class: Damage
+  parameters:
+    target: self
+    damage: 10
+    radius: 32
+

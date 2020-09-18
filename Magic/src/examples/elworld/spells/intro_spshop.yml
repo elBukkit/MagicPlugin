@@ -1,0 +1,15 @@
+intro_spshop:
+    inherit: buyshop
+    cast_on_no_target: false
+    parameters:
+        items:
+        - item: sp:1000
+          cost: 1000
+        cooldown: 360000000
+        confirm: true
+        auto_close: true
+        confirm_filler: stained_glass:3
+        require_wand: true
+        quiet: false
+        loud: true
+

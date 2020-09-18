@@ -1,0 +1,31 @@
+CrownOfGod:
+    icon: diamond_axe:10
+    icon_disabled: diamond_hoe:10
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+          - class: PotionEffect
+          - class: PlayEffects
+            effects: effected
+          - class: Delay
+    effects:
+        effected:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           location: origin
+           target_offset: 0,1,0
+           particle_count: 20
+           effectlib:
+             class: HelixEffect
+             particle: redstone
+             iterations: 3
+             color: 00FF00
+             radius: 0.5
+    parameters:
+        target: self
+        duration: 1000
+        repeat: 10000000
+        delay: 900
+        effect_regeneration: 1
+

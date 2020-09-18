@@ -1,0 +1,51 @@
+arrowstorm:
+    icon: diamond_axe:181
+    icon_disabled: diamond_hoe:181
+    icon_url: http://textures.minecraft.net/texture/7d89462020cc12f63d5117d37b52e642536de7fa774d2d96e80c72e1d4ff6
+    category: utility
+    worth: 150
+    earns_sp: 5
+    actions:
+        cast:
+        -  class: ThrowBlock
+           actions:
+           -  class: ChangeContext
+              target_offset: 0,1,0
+              actions:
+              - class: AreaOfEffect
+                radius: 5
+                actions:
+                -  class: Projectile
+                   actions: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           sound_pitch: 0.2
+           sound_volume: 1.0
+           location: both
+        -  class: EffectSingle
+           location: both
+           sound: orb_pickup
+           sound_volume: 0.5
+    parameters:
+        target: none
+        brush: dispenser
+        allow_max_range: false
+        range: 15
+        undo: 1000
+        projectile: TippedArrow
+        count: 30
+        fire: false
+        spread: 10
+        speed: 1
+        py: ~4
+        pdy: ~-0.2
+        cooldown: 1000
+        direction: 0,1,0
+        instant_block_effects: true
+        target_self: false
+        duration: 4000
+    costs:
+        mana: 40
+

@@ -1,0 +1,28 @@
+tempboon:
+    icon: spell_icon:11
+    icon_disabled: spell_icon_disabled:11
+    icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
+    actions:
+      cast:
+      - class: PotionEffect
+    effects:
+      cast:
+        - sound: entity_experience_orb_pickup
+        - location: origin
+          source_location: body
+          color_override: color
+          effectlib:
+            class: EquationEffect
+            x_equation: 0
+            y_equation: "0.4 * (cos(t/57.2958)  * (2.71828^(cos(t/57.2958)) - 2 * cos(4t/57.2958) - (sin(t/(12 * 57.2958)))^5))"
+            z_equation: "0.4 * (sin(t/57.2958)  * (2.71828^(cos(t/57.2958)) - 2 * cos(4t/57.2958) - (sin(t/(12 * 57.2958)))^5))"
+            particles: 50
+            duration: 10000
+            relative_offset: -0.5,0,0
+            disappear_with_origin_entity: true
+    parameters:
+      target: self
+      effect_speed: 3
+      cooldown: 500
+      duration: 10000
+

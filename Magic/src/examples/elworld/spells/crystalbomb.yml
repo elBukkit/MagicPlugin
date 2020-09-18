@@ -1,0 +1,23 @@
+crystalbomb:
+    icon: ender_pearl
+    actions:
+        cast:
+        - class: EntityProjectile
+          actions:
+          - class: Explosion
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 4
+                radius: 0.2
+                duration: 30000
+    parameters:
+      type: ender_crystal
+      velocity: 10
+      gravity: 0.05
+
+
+

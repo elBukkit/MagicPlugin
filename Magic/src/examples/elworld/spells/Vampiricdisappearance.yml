@@ -1,0 +1,35 @@
+Vampiricdisappearance:
+    icon_url: http://textures.minecraft.net/texture/74e9c6e98582ffd8ff8feb3322cd1849c43fb16b158abb11ca7b42eda7743eb
+    icon: jack_o_lantern
+    category: dark
+    actions:
+        cast:
+        - class: PotionEffect
+        - class: Vanish
+        - class: Repeat
+          actions:
+          - class: SpawnEntity
+    pvp_restricted: true
+    worth: 300
+    effects:
+        cast:
+        - particle: explosion_large
+          particle_count: 10
+          particle_offset_x: 1
+          particle_offset_y: 1
+          particle_offset_z: 1
+        - particle: smoke_large
+          particle_count: 50
+          particle_offset_x: 5
+          particle_offset_y: 5
+          particle_offset_z: 5
+    parameters:
+        target: self
+        cooldown: 45000
+        undo: 30000
+        repeat: 20
+        duration: 8000
+        cooldown: 30000
+        effect_invisibility: 5
+        type: bat
+

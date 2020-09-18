@@ -1,0 +1,10 @@
+clearcooldowns:
+    actions:
+      cast:
+      - class: ApplyCooldownAction
+    parameters:
+      spells: intro_spshop
+      duration: 0
+      clear: true
+      target: self
+

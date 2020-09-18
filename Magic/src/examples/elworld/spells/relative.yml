@@ -1,0 +1,59 @@
+relative:
+    icon: paper
+    actions:
+        cast:
+        -   class: CustomProjectile
+            actions:
+            -   class: Damage
+    effects:
+        cast:
+        -   class: EffectSingle
+            location: self
+            use_wand_location: false
+            use_eye_location: true
+            effectlib:
+                class: SphereEffect
+                particle: smoke_normal
+                radius: 1
+                duration: 10000
+                updateLocations: false
+                relativeOffset: 5,2,5
+        -   class: EffectSingle
+            location: self
+            use_wand_location: false
+            use_eye_location: true
+            effectlib:
+                class: SphereEffect
+                particle: redstone
+                radius: 1
+                duration: 10000
+                updateLocations: false
+                relativeOffset: 5,2,-5
+        -  class: EffectSingle
+           sound: magic.shimmer_big
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 210B61
+             lengthGrow: 0.01
+             yawOffset: -90
+        -  class: EffectSingle
+           sound: magic.shimmer_big
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 210B61
+             lengthGrow: 0.01
+             yawOffset: 90
+    parameters:
+        target_type: LivingEntity
+        velocity: 1
+        range: 100
+        lifetime: 5000
+        hitbox_size: 0.2
+        damage: 1
+        entity_damage: 2
+        cooldown: 0
+      

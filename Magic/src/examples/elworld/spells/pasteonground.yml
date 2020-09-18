@@ -1,0 +1,31 @@
+pasteonground:
+    icon: diamond_axe:129
+    icon_disabled: diamond_hoe:129
+    actions:
+        cast:
+        - class: Cover
+          actions:
+          - class: ChangeContext
+            actions:
+            - class: Volume
+              actions:
+              - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield
+        -  class: EffectTrail
+           particle: drip_lava
+    parameters:
+        allow_max_range: true
+        range: 10
+        use_brush_size: true
+        undo: 30000
+        cooldown: 40000
+        brush: schematic|tent
+        destructible: destructible_replace
+        orient: true
+        target_offset: 0,-2,0
+    costs:
+        mana: 100
+

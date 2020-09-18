@@ -1,0 +1,11 @@
+blasterexchange:
+  hidden: true
+  actions:
+    cast:
+    - class: GiveItem
+  parameters:
+    item: wand:blaster
+    requires: wand:blaster
+    loud: true
+
+

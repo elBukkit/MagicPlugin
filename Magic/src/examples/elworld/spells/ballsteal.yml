@@ -1,0 +1,40 @@
+ballsteal:
+    name: Ball Steal
+    description: Attempt to grab the Quaffle!
+    icon: diamond_axe:80
+    icon_disabled: diamond_pickaxe:80
+    worth: 150
+    hidden: true
+    category: Minigames
+    actions:
+        cast:
+        - class: ConeOfEffectAction
+          actions:
+          - class: TakeItem
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: ENTITY_PLAYER_ATTACK_SWEEP
+          sound_pitch: 0.8
+          sound_volume: 2
+          location: origin
+          use_hit_location: false
+          use_wand_location: false
+          target_offset: 0,-1.3,0
+          effectlib:
+            offset: 0,-1.3,0
+            class: AnimatedBall
+            duration: 750
+            particle: sweep_attack
+            color: 62EEFF
+            size: .75
+    parameters:
+        fov: 360
+        range: 3
+        target_type: Player
+        target_count: 10
+        target: other
+        hitbox: false
+        display_name: "&4Quaffle"
+        cooldown: 1000
+

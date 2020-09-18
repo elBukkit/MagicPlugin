@@ -1,0 +1,24 @@
+architect2:
+    icon: diamond_axe:194
+    actions:
+      cast:
+      - class: ChangeContext
+        source_yaw_offset: 90
+        actions:
+        - class: Volume
+          actions:
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+    parameters:
+        target: other
+        allow_max_range: true
+        range: 15
+        use_brush_size: true
+        brush: schematic|tent
+        orient: true
+        orient_snap: 90
+        check_destructible: false
+

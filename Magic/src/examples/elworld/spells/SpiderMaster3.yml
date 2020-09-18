@@ -1,0 +1,16 @@
+SpiderMaster3:
+  icon: "diamond_axe:64"
+  pvp_restricted: true
+  actions:
+    cast:
+      - class: SpawnEntity
+  parameters:
+    allow_max_range: false
+    cooldown: 1
+    costs:
+      mana: 100
+    range: 24
+    track: true
+    type: mutant
+    undo: 15000
+

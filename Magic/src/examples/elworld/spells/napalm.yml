@@ -1,0 +1,48 @@
+napalm:
+    icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
+    icon: poisonous_potato
+    category: master
+    worth: 7500
+    upgrade_required_path: master
+    actions:
+        cast:
+        - class: Projectile
+          actions:
+          - class: Delay
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+          - class: Disc
+            actions:
+            - class: Cover
+              actions:
+              - class: Skip
+                actions:
+                - class: Delay
+                  delay: 5
+              - class: Burn
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+        hit:
+        -  class: EffectSingle
+           location: source
+           effectlib:
+             class: HelixEffect
+             particle: flame
+             iterations: 1
+    parameters:
+        target: none
+        target_type: LivingEntity
+        projectile: LargeFireball
+        fire: true
+        delay: 3000
+        player_damage: 20
+        entity_damage: 40
+        radius: 16
+        cooldown: 120000
+        skip: 8
+    costs:
+        mana: 555
+

@@ -1,0 +1,13 @@
+scooter:
+   inherit: airscooter
+   parameters:
+       start_speed: 0.5
+       steer_speed: 0.1
+       crash_dismount_speed: 0.1
+       min_speed: 0
+       max_speed: 1
+       controllable: true
+       strafe_controllable: 1
+       max_acceleration: 0.02
+       max_deceleration: 0.05
+

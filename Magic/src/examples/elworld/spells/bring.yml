@@ -1,0 +1,41 @@
+#      reflective: "!air"
+bring:
+    name: Bring
+    icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
+    icon: fishing_rod
+    category: elemental
+    worth: 20
+    actions:
+        cast:
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+            direction: 0,1,0
+            entity_speed: 1
+        - class: Delay
+          delay: 500
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: block_fire_extinguish
+           location: targets
+           effectlib:
+             class: SphereEffect
+             iterations: 2
+             period: 1
+             particle: spell
+             radius: 0.8
+    parameters:
+        target: self
+        target_type: LivingEntity
+        count: 16
+        radius: 32
+        y_radius: 5
+        entity_speed: 2
+        push: -1
+    costs:
+        mana: 50
+

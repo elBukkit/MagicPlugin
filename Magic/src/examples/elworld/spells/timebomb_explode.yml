@@ -1,0 +1,9 @@
+timebomb_explode:
+  actions:
+    cast:
+    - class: Explosion
+    - class: Kill
+  parameters:
+    target: self
+    size: 3
+

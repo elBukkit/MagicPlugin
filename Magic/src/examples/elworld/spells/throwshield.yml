@@ -1,0 +1,50 @@
+throwshield:
+    icon: feather
+    parameters:
+      undo: 1000
+    actions:
+        cast:
+        - class: ChangeContext
+          target_caster: true
+          actions:
+          - class: CheckInventory
+            item: shield{CustomModelData:1006}
+          - class: TakeItem
+            item: shield{CustomModelData:1006}
+        - class: ArmorStandProjectile
+          velocity_transform:
+            x:
+              class: dSin
+              a: 20
+              b: 1.5707
+              c: 0
+            y: 0
+            z:
+              class: dSin
+              a: 4.7123
+              b: 3.1416
+              c: 0
+          velocity: 50
+          fov: 100
+          range: 50
+          armor_stand_invisible: true
+          lifetime: 100000
+          hitbox_size: 1.5
+          right_arm_item: shield{CustomModelData:1006}
+          location_offset: 0,-1,0
+          teleport: true
+          apply_velocity: true
+          right_arm_transform:
+            x: "6.28*sin(0.2*t)"
+            y: 0
+            z: 0
+          actions:
+          - class: Damage
+            damage: 15
+            magic_damage: false
+          - class: Delay
+            delay: 1000
+          - class: Command
+            console: true
+            command: /minecraft:give @p shield{CustomModelData:1006}
+

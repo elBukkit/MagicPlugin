@@ -1,0 +1,28 @@
+phase:
+   parameters:
+      worlds:
+          world:
+             target: world_other
+             scale: 1
+          world_other:
+             target: world
+             scale: 1
+          world_nether:
+             target: world
+             scale: 8
+          world_the_end:
+             target: world
+             scale: 1
+          world_backup:
+             target: world
+             scale: 1
+          world_other_backup:
+             target: world_other
+             scale: 1
+          world_nether_backup:
+             target: world_nether
+             scale: 1
+          world_the_end_backup:
+             target: world_the_end
+             scale: 1
+

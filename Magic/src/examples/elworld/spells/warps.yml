@@ -1,0 +1,19 @@
+warps:
+  icon: sulphur
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    title: "Warp"
+    selected: ""
+    show_unavailable: true
+    options:
+    - placeholder: true
+    - placeholder: true
+    - name: Warp Somewhere
+      icon: diamond_axe:66
+      commands:
+      - warp somewhere @p
+

@@ -1,0 +1,86 @@
+corpseexplosion:
+   name: Corpse Explosion
+   icon: diamond_axe:196
+   icon_disabled: diamond_hoe:196
+   icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
+   category: combat
+   worth: 10000
+   actions:
+     cast:
+       - class: ChangeContext
+         source_at_target: true
+         source_is_target: true
+         requires_entity_target: true
+         actions:
+         - class: Firework
+         - class: Mount
+         - class: Delay
+         - class: ChangeContext
+           target_entity: true
+           actions:
+           - class: Explosion
+   effects:
+       cast:
+       -  class: EffectSingle
+          custom_sound: magic.whip
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.protego
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.vanish
+          location: origin
+          effectlib:
+            class: ConeEffect
+            iterations: 16
+            particle: spell_mob
+            color: FE2EF7
+            lengthGrow: 0.4
+       -  class: EffectSingle
+          location: target
+          color: FE2EF7
+          firework: star
+       - class: EffectSingle
+         location: target
+         particle_override: particleOrbital
+         effectlib:
+            class: AtomEffect
+            particleNucleus: spell_instant
+            particleOrbital: spell_instant
+            iterations: 16
+       no_target:
+       -  class: EffectSingle
+          custom_sound: magic.whip
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.protego
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.vanish
+          location: origin
+          effectlib:
+            class: ConeEffect
+            iterations: 16
+            particle: spell_mob
+            color: FE2EF7
+            lengthGrow: 0.4
+       -  class: EffectSingle
+          location: target
+          color: FE2EF7
+          firework: star
+   parameters:
+       range: 24
+       instant_block_effects: true
+       target_name: Skeletal Companion
+       launch: true
+       cooldown: 3000
+       power: 0
+       speed: 0.15
+       expected_lifespan: 30
+       size: 4
+       delay: 1500
+       set_target: true
+       duration: 20000
+   costs:
+       mana: 10
+

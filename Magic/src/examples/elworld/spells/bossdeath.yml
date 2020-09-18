@@ -1,0 +1,15 @@
+bossdeath:
+  actions:
+    cast:
+      - class: Volume
+        actions:
+          - class: ModifyBlock
+  parameters:
+    target: self
+    undo: 30000
+    brush: erase
+    x_size: 64
+    z_size: 64
+    y_size: 8
+    destructible: nether_brick_wall
+

@@ -1,0 +1,15 @@
+beaconshop:
+    icon: beacon
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        use_xp: true
+        confirm_filler: stained_glass:5
+        items:
+          beacon: 1200
+

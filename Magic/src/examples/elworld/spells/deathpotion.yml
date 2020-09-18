@@ -1,0 +1,14 @@
+deathpotion:
+  icon: potion:000000
+  actions:
+    cast:
+      - class: Projectile
+        actions:
+          - class: AreaOfEffect
+            actions:
+              - class: Kill
+  parameters:
+    projectile: Potion
+    color: "000000"
+    radius: 3
+

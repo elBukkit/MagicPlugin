@@ -1,0 +1,7 @@
+phaseshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: phase
+          cost: 1000
+              

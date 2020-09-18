@@ -1,0 +1,29 @@
+skeletonarmy:
+   icon: diamond_axe:10
+   icon_disabled: diamond_axe:10
+   name: Skeleton Army
+   description: Summon 3 Skeletal Companions, at the sacrifice of 3 hearts.
+   actions:
+       cast:
+       - class: Repeat
+         actions:
+         - class: SpawnEntity
+         - class: Tame
+   effects:
+       cast:
+       -  class: EffectSingle
+          sound: block_portal_travel
+          location: both
+          effectlib:
+            class: WarpEffect
+            particle: portal
+   parameters:
+       target: self
+       type: skeletoncompanion
+       set_target: true
+       track: false
+       repeat: 3
+       cooldown: 20000
+   costs:
+      health: 6
+

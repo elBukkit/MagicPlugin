@@ -1,0 +1,15 @@
+blinkshop:
+    icon: ender_pearl
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        loud: true
+        auto_upgrade: true
+        confirm_filler: stained_glass:2
+        spells:
+          blink: 200
+          phase: 500
+

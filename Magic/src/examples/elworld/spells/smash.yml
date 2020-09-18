@@ -1,0 +1,58 @@
+## In testing
+smash:
+    icon: feather
+    icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
+    category: combat
+    worth: 1000
+    pvp_restricted: true
+    actions:
+        cast:
+        - class: FallProtection
+        - class: Repeat
+          actions:
+          - class: Velocity
+          - class: Delay
+        - class: Repeat
+          repeat: 5
+          actions:
+          - class: Velocity
+            direction: 0,-1,0
+          - class: Delay
+            delay: 400
+        -  class: ChangeContext
+           target_caster: true
+           actions:
+           - class: Sphere
+             actions:
+             -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1
+           effectlib:
+             class: TraceEffect
+             iterations: 30
+             particle: spell
+        land:
+        -  class: EffectRing
+           particle: spell
+           period: 2
+    parameters:
+        duration: 240000
+        target: self
+        min_speed: 5
+        max_speed: 5
+        delay: 500
+        falling: true
+        speed: 0.9
+        brush: air
+        radius: 5
+        undo: 15000
+        cooldown: 30000
+        check_destructible: false
+        direction: 0,1,0
+        repeat: 5
+    costs:
+        mana: 60
+

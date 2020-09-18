@@ -1,0 +1,45 @@
+debugfloodfill2:
+    icon: diamond_axe:82
+    icon_disabled: diamond_hoe:82
+    icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
+    category: engineering
+    tags: noduel
+    cancellable: false
+    worth: 6000
+    actions:
+        cast:
+        - class: ChangeContext
+          target_attachment: true
+          actions:
+          - class: Recurse
+            actions:
+            - class: Skip
+              actions:
+              - class: Delay
+    effects:
+        cast:
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: false
+        range: 32
+        depth: 10
+        destructible: air
+        transparent: transparent_to_construction
+        cooldown: 1000
+        consume: true
+        delay: 1
+        skip: 100000
+        debug_material: concrete
+        destructible: "air,concrete"
+        depth_first: true
+        faces:
+        - down
+        - north
+        - east
+        - south
+        - west
+        undo_speed: 10
+    costs:
+        mana: 200
+

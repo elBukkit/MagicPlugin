@@ -1,0 +1,123 @@
+terracotta:
+  name: Terra Cotta
+  actions:
+    cast:
+    - class: ChangeContext
+      actions:
+      - class: Repeat
+        actions:
+        - class: Brush
+          brush: black_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: gray_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: silver_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: white_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: red_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: orange_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: yellow_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: green_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: lime_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: blue_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: light_blue_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: cyan_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: purple_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: magenta_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: pink_glazed_terracotta
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+  parameters:
+    cooldown: 30000
+    radius: 2
+    undo: 100
+    target: self
+    destructible: "*"
+    axis: x
+    repeat: 5
+    delay: 100
+    target_offset: 4,1,0
+

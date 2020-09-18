@@ -1,0 +1,5 @@
+equation:
+  parameters:
+    #equation: "rand(20*intelligence/7,30*intelligence/5)"
+    equation: "((((intelligence * (1 + (10 / 150)) - 1) + 0 + 0) ^ 1.05) + 10) * 1"
+

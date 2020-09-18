@@ -1,0 +1,18 @@
+divingshop:
+    icon: ender_pearl
+    category: utility
+    hidden: true
+    inherit: buyshop
+    parameters:
+        items:
+        - item: divinghelmet
+          cost: 100
+        - item: deluxedivinghelmet
+          cost: 1000
+        - item: trident
+          cost: 500
+        - item: supertrident
+          cost: 5000
+        - item: turtle_helmet
+          cost: 50
+

@@ -1,0 +1,16 @@
+takesword:
+  icon: stone_sword
+  actions:
+    cast:
+      - class: AreaOfEffect
+        radius: 6
+        actions:
+          - class: TakeItem
+            item: stone_sword
+  parameters:
+    undo: 1000
+    entity_undo: true
+    target: self
+    give_to_caster: false
+
+

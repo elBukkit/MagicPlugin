@@ -1,0 +1,12 @@
+pollinateshop:
+  inherit: buyshop
+  parameters:
+    spells:
+    - pollinate
+    confirm: true
+    confirm_filler: stained_glass:3
+    auto_close: true
+    cost_override: currency
+    requirements:
+    - wand: wand
+

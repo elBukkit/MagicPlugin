@@ -1,0 +1,20 @@
+transformtest:
+    icon: bucket
+    icon_url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
+    effects:
+        cast:
+        -  class: EffectTransform
+           particle: redstone
+           material: redstone_block
+           particle_count: 1
+           particle_offset_x: 0
+           particle_offset_y: 0
+           particle_offset_z: 0
+           duration: 10000
+           steps: 50
+           position_transform:
+            x: 0.02 * t
+            y: 3 * cos(t)
+            z: 2 * sin(t * 2)
+
+

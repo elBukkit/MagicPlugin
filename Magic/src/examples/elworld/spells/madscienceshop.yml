@@ -1,0 +1,16 @@
+madscienceshop:
+    icon: ender_pearl
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        loud: true
+        auto_upgrade: true
+        confirm_filler: stained_glass:15
+        spells:
+          emp: 500
+          superemp: 4000
+          glider: 5000
+

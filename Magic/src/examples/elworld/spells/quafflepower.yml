@@ -1,0 +1,64 @@
+quafflepower:
+    icon: diamond_hoe:101
+    actions:
+        cast:
+        - class: ArmorStandProjectile
+          actions:
+          - class: GiveItem
+          miss:
+          - class: DropItem
+    effects:
+        tick:
+        - particle: redstone
+          color: FF0000
+          location: target
+          particle_count: 10
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: crit
+           particle_count: 15
+           particle_offset_x: 0
+           particle_offset_y: 0
+           particle_offset_z: 0
+           particle_data: 0.8
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: crit
+           particle_count: 10
+           particle_offset_x: 0
+           particle_offset_y: 0
+           particle_offset_z: 0
+           particle_data: 1
+    parameters:
+      head_transform:
+          orient: false
+          x: 0
+          y: "10*t"
+          z: 0
+      target: other
+      hitbox: false
+      falling: false
+      velocity: 30
+      hitbox_size: 1.5
+      helmet_item: quaffleitem
+      armor_stand_invisible: true
+      armor_stand_marker: true
+      orient_right_arm: true
+      gravity: 0.05
+      interval: 1
+      fov: 0.3
+      drag: 0.01
+      location_offset: 0,0,0
+      lifetime: 7000
+      track_target: true
+      target_self_timeout: 5000
+      target_type: Player
+      hit_requires_entity: true
+      projectile_effects:
+        glowing: 10000,1
+

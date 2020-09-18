@@ -1,0 +1,38 @@
+launchmob:
+    name: Launch Mob
+    description: Launches a mob high into the air!
+    icon: diamond_axe:63
+    icon_disabled: diamond_hoe:63
+    icon_url: http://textures.minecraft.net/texture/621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4
+    category: elemental
+    hidden: true
+    worth: 100
+    actions:
+        cast:
+        - class: SpawnEntity
+          entity_types:
+              chicken: 30
+              cow: 100
+              pig: 100
+              mushroom_cow: 15
+              iron_golem: 2
+        - class: VelocityAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_villager_yes
+           effectlib:
+             class: DnaEffect
+             particleHelix: drip_lava
+             iterations: 24
+             particleBase1: drip_water
+    parameters:
+        target: self
+        set_target: true
+        cooldown: 0
+        undo: 10000
+        loot: false
+        living_entity_speed: 1
+        y_offset: 0.2
+        target_breakables: 0
+

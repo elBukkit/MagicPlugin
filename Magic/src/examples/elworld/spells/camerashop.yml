@@ -1,0 +1,10 @@
+camerashop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: camera
+          cost: 100
+        confirm: true
+        auto_close: true
+        confirm_filler: stained_glass:3
+

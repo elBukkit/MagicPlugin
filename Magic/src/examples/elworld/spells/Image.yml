@@ -1,0 +1,19 @@
+Image:
+    parameters:
+      range: 10
+      allow_max_range: true
+    effects:
+        cast:
+        - class: EffectSingle
+          location: target
+          effectlib:
+            enableRotation: false
+            class: ColoredImageEffect
+            fileName: https://i.imgur.com/kL4Jvq5.gif
+            stepX: 2
+            stepY: 2
+            size: 0.1
+            period: 1
+            frameDelay: 1
+            transparency: true
+

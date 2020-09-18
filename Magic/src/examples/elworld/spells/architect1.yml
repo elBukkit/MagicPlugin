@@ -1,0 +1,20 @@
+architect1:
+    icon: diamond_axe:193
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_player_levelup
+    parameters:
+        target: other
+        allow_max_range: true
+        range: 3
+        use_brush_size: true
+        brush: schematic|mobarena
+        check_destructible: false
+        undo: 30000
+

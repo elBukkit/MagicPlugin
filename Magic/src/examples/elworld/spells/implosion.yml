@@ -1,0 +1,18 @@
+implosion:
+    parameters:
+      target: block
+      range: 32
+      allow_max_range: true
+    effects:
+        cast:
+        - class: EffectSingle
+          location: target
+          effectlib:
+            class: Modified
+            effect:
+              class: Sphere
+            parameters:
+              # for 100 iterations, go from radius 10 to 0
+              # 10 / 100 = 0.1
+              radius: "10 - t * 0.1"
+

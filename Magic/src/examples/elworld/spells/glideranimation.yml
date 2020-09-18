@@ -1,0 +1,80 @@
+glideranimation:
+    icon: diamond_axe:169
+    icon_disabled: diamond_hoe:169
+    icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
+    category: engineering
+    actions:
+        cast:
+        - class: Brush
+          brush: schematic|glider1
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: schematic|glider2
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: schematic|glider3
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: schematic|glider4
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: schematic|glider5
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: schematic|glider6
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: schematic|glider7
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: schematic|glider8
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+        - class: Brush
+          brush: schematic|glider9
+          actions:
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+        - class: Delay
+    parameters:
+        target: self
+        use_brush_size: true
+        destructible: "*"
+        delay: 50
+        quiet: true
+        bypass: true
+        oty: 3
+        undo: 1000
+

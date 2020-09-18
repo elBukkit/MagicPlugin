@@ -1,0 +1,67 @@
+placer:
+    icon: diamond_axe:145
+    icon_disabled: diamond_hoe:145
+    icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
+    category: demolition
+    worth: 450
+    earns_sp: 8
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    pvp_restricted: true
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+          - class: PlayEffects
+            effects: beam
+          - class: Retarget
+            actions:
+            - class: ChangeContext
+              target_attachment: true
+              actions:
+              - class: Damage
+              - class: ModifyBlock
+          - class: Delay
+    effects:
+        beam:
+        -  class: EffectSingle
+           sound: magic.zap
+           location: origin
+           sound_volume: 0.1
+           color_override: colorHelix
+           effectlib:
+             class: DnaEffect
+             particles_base: 5
+             particlesHelix: 7
+             particleHelix: redstone
+             particleBase1: drip_lava
+             particleBase2: smoke_normal
+             relativeOffset: -2,0,0
+             iterations: 10
+             radius: 0.5
+             grow: 0.2
+             base_interval: 5
+             length: 16
+        cast:
+        -  class: EffectSingle
+           particle: drip_lava
+           particle_count: 20
+    parameters:
+        target: other
+        target_type: Damageable
+        player_damage: 0.5
+        entity_damage: 1
+        target_count: 5
+        range: 32
+        destructible: destructible_replace
+        allow_max_range: true
+        undo: 30000
+        brush: ice
+        undo: 15000
+        cooldown: 10000
+        repeat: 20
+        undo_speed: 1
+        delay: 100
+    costs:
+        mana: 120
+

@@ -1,0 +1,31 @@
+lumos:
+    icon: diamond_axe:228
+    icon_disabled: diamond_hoe:228
+    category: charms
+    icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
+    worth: 10
+    actions:
+        cast:
+        - class: Repeat
+          actions:
+           - class: Retarget
+             actions:
+             - class: Light
+           - class: Delay
+           - class: Undo
+             undo_to: 1
+        - class: Delay
+        - class: Undo
+    effects:
+        cast:
+        -  class: EffectSingle
+           particle: smoke_normal
+           particle_count: 10
+           sound: creeper_death
+    parameters:
+        target: self
+        async: false
+        delay: 100
+        repeat: 100
+        duration: 10000
+

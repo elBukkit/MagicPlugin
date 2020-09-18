@@ -1,0 +1,10 @@
+damagetest:
+  icon: stick
+  actions:
+    cast:
+    - class: Damage
+  parameters:
+    target: self
+    damage: 1
+    damage_type: anvil
+

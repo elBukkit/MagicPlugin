@@ -1,0 +1,8 @@
+cursedmeatshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: cursedmeat
+          cost: 10
+        auto_close: true
+

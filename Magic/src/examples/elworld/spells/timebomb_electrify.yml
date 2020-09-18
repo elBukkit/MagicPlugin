@@ -1,0 +1,7 @@
+timebomb_electrify:
+  actions:
+    cast:
+    - class: Electrify
+  parameters:
+    target: self
+

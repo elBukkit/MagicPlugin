@@ -1,0 +1,5 @@
+boomerang:
+  parameters:
+    location_offset: 0,-1,0
+    armor_stand_invisible: true
+

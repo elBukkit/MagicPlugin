@@ -1,0 +1,39 @@
+test_cage:
+    icon_url: http://textures.minecraft.net/texture/77c999f4dfd915fc5f1d66120334796687c48189124e6ca944fba1aebd986b
+    icon: skull_item:4
+
+    actions:
+        cast:
+        -   class: CustomProjectile
+            actions:
+            -   class: ChangeContext
+                source_at_target: true
+                actions:
+                -   class: CheckBlock
+                    allowed: earth_full_block
+                    actions:
+                    -   class: Brush
+                        sample: true
+                        actions:
+                        -   class: Sphere
+                            actions:
+                            -   class: ModifyBlock
+                    -   class: Stop
+                -   class: Brush
+                    brush: stone
+                    actions:
+                    -   class: Sphere
+                        actions:
+                        -   class: ModifyBlock
+                    -   class: Stop
+    parameters:
+        range: 16
+        target: LivingEntity
+        destructible: destructible_replace
+        transparent: transparent_no_water
+        radius: 5
+        thickness: 1
+        velocity: 16
+        reorient: true
+        undo: 4000
+

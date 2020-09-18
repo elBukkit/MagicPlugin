@@ -1,0 +1,60 @@
+fuzzytp:
+    icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
+    category: utility
+    cast_on_no_target: true
+    actions:
+        cast:
+        - class: ChangeContext
+          target_caster: true
+          ignore_result: true
+          actions:
+          - class: FallProtectionAction
+        - class: ChangeContext
+          target_offset:
+        - class: Teleport
+    effects:
+        teleport:
+        - class: EffectSingle
+          sound: magic.teleport
+          location: target
+          particle_override: particleNucleus
+          color_override: colorOrbital
+          source_location: eyes
+          effectlib:
+             class: AtomEffect
+             particleNucleus: dragon_breath
+             particleOrbital: redstone
+             iterations: 8
+             offset: 0,-1,0
+        precast:
+         - class: EffectSingle
+           sound: magic.teleport
+           location: origin
+           particle_override: particleNucleus
+           color_override: colorOrbital
+           source_location: eyes
+           effectlib:
+               class: AtomEffect
+               updateLocations: false
+               particleNucleus: dragon_breath
+               particleOrbital: redstone
+               iterations: 8
+               offset: 0,-1,0
+         - class: EffectSingle
+           color_override: color
+           effectlib:
+               class: LineEffect
+               particle: redstone
+               updateLocations: false
+    parameters:
+        target: block
+        allow_max_range: true
+        allow_passthrough: false
+        range: 12
+        cooldown: 10000
+        prevent_passthrough: nopassthrough
+        bypass_confusion: true
+        vertical_range: 8
+    costs:
+        mana: 50
+

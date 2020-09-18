@@ -1,0 +1,37 @@
+earth_test:
+    icon: sand
+    actions:
+        cast:
+        -   class: CheckBlock
+            allowed: sand
+            actions:
+            -   class: Cylinder
+                radius: 2
+                actions:
+                -   class: Brush
+                    brush: erase
+                    actions:
+                    -   class: ModifyBlock
+            -   class: Delay
+            -   class: Cylinder
+                radius: 3
+                actions:
+                -   class: Brush
+                    brush: erase
+                    actions:
+                    -   class: ModifyBlock
+            -   class: Delay
+            -   class: Cylinder
+                radius: 4
+                actions:
+                -   class: Brush
+                    brush: erase
+                    actions:
+                    -   class: ModifyBlock
+    parameters:
+        target: block
+        destructible: sand
+        falling: true
+        delay: 50
+        undo: 4000
+

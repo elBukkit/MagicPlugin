@@ -1,0 +1,20 @@
+plotter:
+    icon: compass
+    parameters:
+      range: 5
+      allow_max_range: true
+      target: block
+    effects:
+        cast:
+        - class: EffectSingle
+          location: target
+          effectlib:
+            class: Plot
+            # 5 blocks wide
+            xEquation: "5 * t / i"
+            #yEquation: "5 * t / i"
+            yScale: 1
+            #yEquation: "select(t - 10, t * 5, 50, select(i - t - 10, 50, 50, (i - t - 10) * 5))"
+            # yEquation: "select(t - 10, t * 5, 50, select(t - i + 10, 50, 50, abs(t - i) * 5))"
+            yEquation: "select(t - 10, (10 - t) * 0.3 + 0.5, 0.5, select(t - i + 10, 0.5, 0.5, (t - i + 10) * 0.3 + 0.5))"
+

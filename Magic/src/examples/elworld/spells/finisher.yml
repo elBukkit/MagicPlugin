@@ -1,0 +1,12 @@
+finisher:
+  name: Finisher
+  description: Finish off a poisoned foe
+  actions:
+    cast:
+      - class: CheckPotionEffects
+        required: poison
+      - class: Damage
+  parameters:
+    damage: 20
+    range: 30
+

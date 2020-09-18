@@ -1,0 +1,33 @@
+equationeffects:
+    icon: paper
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 4
+                radius: 0.2
+                duration: 30000
+        tick:
+        - particle: redstone
+          color: FF0000
+          location: target
+    parameters:
+        target_type: LivingEntity
+        range: 100
+        lifetime: 10000
+        hitbox_size: 0.2
+        damage: 1
+        entity_damage: 2
+        cooldown: 0
+        velocity_transform:
+          x: "10*sin(0.31416 * t)"
+          y: 0
+          z: "5*sin(0.62832 * t)"
+

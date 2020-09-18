@@ -1,0 +1,35 @@
+testmodifiedeffect:
+    icon: diamond_axe:148
+    icon_disabled: diamond_hoe:148
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+    category: light
+    worth: 20
+    earns_sp: 1
+    show_undoable: false
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    effects:
+      cast:
+        - location: target
+          use_block_location: true
+          effectlib:
+            class: Modified
+            period: 3
+            iterations: 10
+            parameters:
+              radius: "(1 - (t / i)) * 3 + 0.9"
+            effect:
+              class: Sphere
+              particle: block_crack
+              yOffset: 0
+              offset: 0,0.7,0
+              particleCount: 4
+              particles: 30
+              particleOffsetX: 0.1
+              particleOffsetY: 0.1
+              particleOffsetZ: 0.1
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 16
+

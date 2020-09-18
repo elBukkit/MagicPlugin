@@ -1,0 +1,52 @@
+unpolymorph:
+    icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188
+    icon: nether_brick_item
+    category: combat
+    worth: 300
+    earns_sp: 8
+    actions:
+      cast:
+      - class: CustomProjectile
+        actions:
+        - class: Disguise
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_big
+        -  class: EffectSingle
+           sound: magic.zap
+        tick:
+        - location: target
+          particle: fireworks_spark
+          particle_count: 3
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
+        hit:
+        - class: EffectSingle
+          location: target
+          color: F5EFFB
+          firework: ball
+        - class: EffectSingle
+          sound: entity_experience_orb_pickup
+          location: target
+          requires_entity_target: true
+          particle_override: particleOrbital
+          effectlib:
+             class: AtomEffect
+             particleNucleus: fireworks_spark
+             particleOrbital: fireworks_spark
+             iterations: 40
+    costs:
+        mana: 150
+    parameters:
+        velocity: 150
+        range: 48
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        duration: 20000
+        hitbox: true
+        cooldown: 30000
+        
+      

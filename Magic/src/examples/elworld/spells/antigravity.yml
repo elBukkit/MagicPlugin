@@ -1,0 +1,94 @@
+antigravity:
+    icon: diamond_axe:125
+    icon_disabled: diamond_hoe:125
+    icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
+    category: combat
+    worth: 800
+    earns_sp: 8
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+    effects:
+        cast:
+        -  class: EffectSingle
+           location: origin
+           sound: block_portal_travel
+           color_override: color
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particle: cloud
+             lengthGrow: 0.15
+             radiusGrow: 0.004
+             updateLocations: false
+             updateDirections: false
+        tick:
+        -  class: EffectSingle
+           location: target
+           particle: redstone
+           particle_count: 2
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+        hit_block:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.2
+           particle_offset_y: 1
+           particle_offset_z: 0.2
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 30
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        hit:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           location: target
+           effectlib:
+             class: HelixEffect
+             particle: cloud
+             iterations: 2
+    parameters:
+        velocity: 80
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 16
+        effect_levitation: 10
+        effect_slowness: 2
+        effect_nausea: 2
+        duration: 500
+        radius: 2
+        target_self: false
+        cooldown: 30000
+        reorient: false
+    costs:
+        mana: 200
+
+antigravity|2:
+    worth: 950
+    earns_sp: 16
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 75
+    parameters:
+        duration: 150
+        cooldown: 35000
+        effect_levitation: 10
+        effect_slowness: 3
+        effect_nausea: 5
+        radius: 4
+        mana: 300
+        range: 32
+

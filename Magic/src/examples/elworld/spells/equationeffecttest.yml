@@ -1,0 +1,25 @@
+equationeffecttest:
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+    icon: firework
+    category: light
+    worth: 20
+    earns_sp: 1
+    show_undoable: false
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           effectlib: 
+              class: EquationEffect
+              xEquation: "0.1*t"
+              yEquation: "0.1*t/2"
+              zEquation: "0.5*sin(t)"
+              iterations: 100
+              particles: 10
+              updateLocations: false
+              updateDirections: false
+              
+    costs:
+        mana: 10
+        

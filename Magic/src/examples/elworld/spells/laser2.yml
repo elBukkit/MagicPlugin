@@ -1,0 +1,5 @@
+laser2:
+  inherit: laser
+  parameters:
+    brush: ice
+

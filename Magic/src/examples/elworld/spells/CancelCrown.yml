@@ -1,0 +1,10 @@
+CancelCrown:
+    icon: diamond_axe:10
+    icon_disabled: diamond_hoe:10
+    actions:
+        cast:
+        - class: Cancel
+    parameters:
+      target: self
+      spell: CrownOfGod
+

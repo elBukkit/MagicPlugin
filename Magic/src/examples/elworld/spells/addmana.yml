@@ -1,0 +1,11 @@
+addmana:
+    icon: iron_hoe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: ModifyMana
+    parameters:
+        mana: 100
+        quiet: true
+
