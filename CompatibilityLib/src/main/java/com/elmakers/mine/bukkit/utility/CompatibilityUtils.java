@@ -2190,6 +2190,7 @@ public class CompatibilityUtils extends NMSUtils {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public static Object getFoxType(String typeKey) {
         if (enum_Fox_Type == null) return null;
         try {
