@@ -16,7 +16,6 @@ cone:
             variable: radius
             value: radius + 0.5
     parameters:
-      brush: stone
       target: block
       range: 32
       size: 16

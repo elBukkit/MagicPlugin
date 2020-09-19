@@ -1,0 +1,18 @@
+surface:
+    icon: spell_icon:145
+    icon_disabled: spell_icon_disabled:145
+    icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
+    actions:
+        cast:
+          - class: EquationVolume
+            actions:
+            - class: ModifyBlock
+    parameters:
+      equation: "select(sin(x)*2+sin(z)*2-y, 0, 0, 1)"
+      x_size: 25
+      y_size: 25
+      z_size: 25
+      target: self
+      destructible: air
+      undo: 15000
+      cooldown: 10000

@@ -11,6 +11,7 @@
  - Added Sound and Particle effectlib effects, and "probability" parameter
  - The Tame action/spell can now be used to make foxes trust you
  - Add "fox_type" mob parameter
+ - Add EquationVolume action, see surface example
 
 # 7.10.3
 
