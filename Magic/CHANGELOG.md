@@ -10,6 +10,7 @@
  - Add Equation action .. not sure what you'd use this for, but there is a spiral example in elworld/spells
  - Added Sound and Particle effectlib effects, and "probability" parameter
  - The Tame action/spell can now be used to make foxes trust you
+ - Add "fox_type" mob parameter
 
 # 7.10.3
 

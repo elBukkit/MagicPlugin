@@ -32,7 +32,7 @@ tame:
              iterations: 20
              particle: slime
     parameters:
-        target_type: Tameable
+        target_type: LivingEntity
         allow_max_range: false
         range: 8
         cooldown: 30000
