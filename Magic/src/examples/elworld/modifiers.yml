@@ -28,3 +28,7 @@ hardened:
 
 spectralsword:
   items: emerald_sword
+
+empowered:
+  mana_max_boost: 2
+  mana_regeneration_boost: 0.5
