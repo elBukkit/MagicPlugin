@@ -265,6 +265,15 @@ loot:
 
 goblin:
   type: husk
-  name: "§2Goblin"
+  name: "&2Goblin"
   health: 50
   prevent_melee: true
+
+superfox:
+  type: fox
+  name: "&2Foxy"
+  fox_type: snow
+  trusted: 892bba3e-76c1-4cd4-97cb-bfa8221e2332
+  health: 10000
+  protection:
+    all: 2

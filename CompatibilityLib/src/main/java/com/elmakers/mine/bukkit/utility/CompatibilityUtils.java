@@ -24,6 +24,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ComplexEntityPart;
@@ -2148,7 +2149,7 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
-    public static boolean setFirstTrustedPlayer(Entity entity, Player player) {
+    public static boolean setFirstTrustedPlayer(Entity entity, AnimalTamer player) {
         if (class_Fox_setFirstTrustedPlayerMethod == null) return false;
         try {
             class_Fox_setFirstTrustedPlayerMethod.invoke(entity, player);
@@ -2159,15 +2160,19 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
-    public static boolean isFirstTrustedPlayer(Entity entity, Player player) {
-        if (class_Fox_getFirstTrustedPlayerMethod == null) return false;
+    public static Object getFirstTrustedPlayer(Entity entity) {
+        if (class_Fox_getFirstTrustedPlayerMethod == null) return null;
         try {
             Object trusted = class_Fox_getFirstTrustedPlayerMethod.invoke(entity);
-            return trusted == player;
+            return trusted;
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
-        return false;
+        return null;
+    }
+
+    public static boolean isFirstTrustedPlayer(Entity entity, Player player) {
+        return getFirstTrustedPlayer(entity) == player;
     }
 
     public static boolean isFox(Entity entity) {
