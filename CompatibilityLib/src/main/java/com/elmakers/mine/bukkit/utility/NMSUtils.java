@@ -178,6 +178,8 @@ public class NMSUtils {
     protected static Enum<?> enum_BisectedHalf_TOP;
     protected static Class<?> class_Sittable;
     protected static Class<?> class_Lootable;
+    protected static Class<?> class_Fox;
+    protected static Class<Enum> enum_Fox_Type;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -290,6 +292,8 @@ public class NMSUtils {
     protected static Method class_Lootable_setLootTableMethod;
     protected static Method class_Fox_setFirstTrustedPlayerMethod;
     protected static Method class_Fox_getFirstTrustedPlayerMethod;
+    protected static Method class_Fox_setTypeMethod;
+    protected static Method class_Fox_getTypeMethod;
 
     protected static boolean legacyMaps;
 
@@ -621,10 +625,17 @@ public class NMSUtils {
             boolean current = true;
 
             try {
-                Class<?> class_Fox = Class.forName("org.bukkit.entity.Fox");
+                class_Fox = Class.forName("org.bukkit.entity.Fox");
+                enum_Fox_Type = (Class<Enum>)Class.forName("org.bukkit.entity.Fox$Type");
                 class_Fox_setFirstTrustedPlayerMethod = class_Fox.getMethod("setFirstTrustedPlayer", AnimalTamer.class);
                 class_Fox_getFirstTrustedPlayerMethod = class_Fox.getMethod("getFirstTrustedPlayer");
+                class_Fox_setTypeMethod = class_Fox.getMethod("setFoxType", enum_Fox_Type);
+                class_Fox_getTypeMethod = class_Fox.getMethod("getFoxType");
             } catch (Throwable ex) {
+                class_Fox = null;
+                enum_Fox_Type = null;
+                class_Fox_setTypeMethod = null;
+                class_Fox_getTypeMethod = null;
                 class_Fox_setFirstTrustedPlayerMethod = null;
                 class_Fox_getFirstTrustedPlayerMethod = null;
             }

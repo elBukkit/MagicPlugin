@@ -17,7 +17,7 @@ public class TameAction extends BaseSpellAction
         Entity entity = context.getTargetEntity();
         if (!(entity instanceof Tameable))
         {
-            if (entity.getType().name().equals("FOX")) {
+            if (CompatibilityUtils.isFox(entity)) {
                 Player tamer = context.getMage().getPlayer();
                 if (tamer != null) {
                     if (CompatibilityUtils.isFirstTrustedPlayer(entity, tamer)) {

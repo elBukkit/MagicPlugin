@@ -276,6 +276,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityParrotData(entity);
         } else if (entity instanceof EnderDragon) {
             extraData = new EntityEnderDragonData(entity);
+        } else if (CompatibilityUtils.isFox(entity)) {
+            extraData = new EntityFoxData(entity);
         }
     }
 
@@ -498,6 +500,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 extraData = new EntityParrotData(parameters, controller);
             } else if (type == EntityType.ENDER_DRAGON) {
                 extraData = new EntityEnderDragonData(parameters, controller);
+            } else if (type.name().equals("FOX")) {
+                extraData = new EntityFoxData(parameters, controller);
             }
 
         } catch (Exception ex) {

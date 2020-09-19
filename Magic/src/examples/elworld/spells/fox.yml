@@ -1,7 +1,7 @@
 fox:
   name: Fox
   description: Spawn a trusty fox
-  icon: sweet_berry
+  icon: sweet_berries
   actions:
     cast:
       - class: SpawnEntity
@@ -13,3 +13,4 @@ fox:
     set_target: true
     type: fox
     range: 2
+    fox_type: snow

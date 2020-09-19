@@ -2169,4 +2169,40 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return false;
     }
+
+    public static boolean isFox(Entity entity) {
+        if (class_Fox == null) return false;
+        return class_Fox.isAssignableFrom(entity.getClass());
+    }
+
+    public static Object getFoxType(Entity entity) {
+        if (class_Fox_getTypeMethod == null) return null;
+        try {
+            return class_Fox_getTypeMethod.invoke(entity);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Object getFoxType(String typeKey) {
+        if (enum_Fox_Type == null) return null;
+        try {
+            return Enum.valueOf(enum_Fox_Type, typeKey);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean setFoxType(Entity entity, Object type) {
+        if (class_Fox_setTypeMethod == null) return false;
+        try {
+            class_Fox_setTypeMethod.invoke(entity, type);
+            return true;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }
