@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
+
 public class CylinderAction extends VolumeAction
 {
     protected double innerRadiusSquared;
 
     @Override
-    protected boolean containsPoint(int x, int y, int z)
+    protected boolean containsPoint(CastContext context, int y, int z, int x)
     {
         double distanceSquared = ((double)x * (double)x) + ((double)z * (double)z);
         if (thickness > 0) {

@@ -427,7 +427,7 @@ public class VolumeAction extends CompoundAction
     public SpellResult step(CastContext context) {
         SpellResult result = SpellResult.NO_ACTION;
         boolean singleBlock = radius < 1;
-        boolean validBlock = singleBlock ? true : containsPoint(dx, dy, dz);
+        boolean validBlock = singleBlock ? true : containsPoint(context, dy, dz, dx);
         float probability = centerProbability;
         if (!singleBlock && centerProbability != outerProbability) {
             float weight = Math.abs((float) dx + dz) / ((float) spiralRadius * 2);
@@ -472,7 +472,7 @@ public class VolumeAction extends CompoundAction
         return true;
     }
 
-    protected boolean containsPoint(int x, int y, int z)
+    protected boolean containsPoint(CastContext context, int y, int z, int x)
     {
         return thickness == 0 || x > radius - thickness || y > radius - thickness || z > radius - thickness;
     }

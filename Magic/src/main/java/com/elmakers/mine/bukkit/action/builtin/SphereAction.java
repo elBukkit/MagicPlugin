@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
+
 public class SphereAction extends VolumeAction
 {
     protected double innerRadiusSquared;
@@ -11,7 +13,7 @@ public class SphereAction extends VolumeAction
     }
 
     @Override
-    protected boolean containsPoint(int x, int y, int z)
+    protected boolean containsPoint(CastContext context, int y, int z, int x)
     {
         double distanceSquared = (((double)x * (double)x) + ((double)y * (double)y) + ((double)z * (double)z));
         if (thickness > 0) {

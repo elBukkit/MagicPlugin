@@ -77,7 +77,7 @@ public class PlaneAction extends VolumeAction {
     }
 
     @Override
-    protected boolean containsPoint(int x, int y, int z)
+    protected boolean containsPoint(CastContext context, int y, int z, int x)
     {
         return true;
     }

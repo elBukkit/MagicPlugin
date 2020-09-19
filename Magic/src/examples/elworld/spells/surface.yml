@@ -2,17 +2,33 @@ surface:
     icon: spell_icon:145
     icon_disabled: spell_icon_disabled:145
     icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
+    uses_brush: false
     actions:
         cast:
-          - class: EquationVolume
+          - class: ChangeContext
             actions:
-            - class: ModifyBlock
+            - class: EquationVolume
+              actions:
+              - class: ModifyBlock
     parameters:
-      equation: "select(sin(x)*2+sin(z)*2-y, 0, 0, 1)"
-      x_size: 25
-      y_size: 25
-      z_size: 25
-      target: self
+      target: block
+      allow_max_range: true
+      range: 128
+      equation: "select(sin(x)*2+sin(z)*2-y, 0, 0, y+5)"
+      brushes:
+        0: none
+        1: red_wool
+        2: orange_wool
+        3: yellow_wool
+        4: green_wool
+        5: blue_wool
+        6: cyan_wool
+        7: purple_wool
+        8: none
+      x_size: 30
+      y_size: 5
+      z_size: 30
+      target_offset: 0,5,0
       destructible: air
       undo: 15000
       cooldown: 10000

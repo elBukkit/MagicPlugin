@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
+
 public class DiscAction extends PlaneAction
 {
     protected double innerRadiusSquared;
 
     @Override
-    protected boolean containsPoint(int x, int y, int z)
+    protected boolean containsPoint(CastContext context, int y, int z, int x)
     {
         double distanceSquared;
         switch (axis)
