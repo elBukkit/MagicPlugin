@@ -803,6 +803,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         MagicProperties mageProperties = mage.getProperties();
 
         if (parameters.length == 0) {
+            sender.sendMessage(ChatColor.AQUA + "Mage " + ChatColor.GOLD + mage.getName());
+            sender.sendMessage(ChatColor.GRAY + mage.getId());
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage describe <property>" + ChatColor.BLUE + " for specific properties");
             sender.sendMessage(ChatColor.BLUE + "Use " + ChatColor.AQUA + "/mage activate" + ChatColor.BLUE + " to change or clear the active class");
             Collection<String> classKeys = mage.getClassKeys();
