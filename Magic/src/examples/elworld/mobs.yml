@@ -275,5 +275,10 @@ superfox:
   fox_type: snow
   trusted: 892bba3e-76c1-4cd4-97cb-bfa8221e2332
   health: 10000
+  persist: true
+  baby: true
+  disguise:
+    type: fox
+    baby: true
   protection:
     all: 2
