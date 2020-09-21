@@ -2,7 +2,7 @@ surface:
     icon: spell_icon:145
     icon_disabled: spell_icon_disabled:145
     icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
-    uses_brush: false
+    show_brush: false
     actions:
         cast:
           - class: ChangeContext

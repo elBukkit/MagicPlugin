@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.10.5
+
 # 7.10.4
 
  - Fix exploit/dupe bugs with keep-inventory plugins and wands
@@ -8,7 +10,8 @@
  - Fix paste spell and building with schematics stalling the server
  - Allow mana_max_boost and mana_regeneration boost on classes and modifiers
  - The deprecated xp_max_boost and xp_regeneration_boost properties no longer work
- - Add "angry" option for wolf mobs, default interval to 1 second if not specified and using interval triggers
+ - Add "angry" option for wolf mobs
+ - Default mob interval to 1 second if not specified and using interval triggers
  - Add Equation action .. not sure what you'd use this for, but there is a spiral example in elworld/spells
  - Added Sound and Particle effectlib effects, and "probability" parameter
  - The Tame action/spell can now be used to make foxes trust you
