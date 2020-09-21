@@ -2,6 +2,8 @@
 
 # 7.10.5
 
+ - The wands in the "ranks" example are now static wands, they are not on a path nor are they bound.
+
 # 7.10.4
 
  - Fix exploit/dupe bugs with keep-inventory plugins and wands

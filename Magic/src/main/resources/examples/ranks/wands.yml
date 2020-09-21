@@ -3,8 +3,7 @@
 #
 
 guest:
-    inherit: base_wand
-    path: beginner
+    inherit: static_wand
     effect_color: '00FF00'
     mana_regeneration: 5
     mana_max: 50
@@ -16,8 +15,7 @@ guest:
         - camera
 
 villager:
-    inherit: base_wand
-    path: student
+    inherit: static_wand
     effect_color: '00FF00'
     mana_regeneration: 10
     protection_falling: 0.1
@@ -32,8 +30,7 @@ villager:
         - perk
 
 knight:
-    inherit: base_wand
-    path: battle
+    inherit: static_wand
     effect_color: '11FF11'
     mana_regeneration: 15
     mana_max: 80
@@ -51,8 +48,7 @@ knight:
         - perk
 
 baron:
-    inherit: base_wand
-    path: battle
+    inherit: static_wand
     effect_color: '11FF11'
     mana_regeneration: 18
     mana_max: 100
@@ -73,8 +69,7 @@ baron:
         - perk
 
 lord:
-    inherit: base_wand
-    path: battle
+    inherit: static_wand
     effect_color: '11FF11'
     mana_regeneration: 20
     mana_max: 130
@@ -98,8 +93,7 @@ lord:
         - perk
 
 hero:
-    inherit: base_wand
-    path: battle
+    inherit: static_wand
     effect_color: '11FF11'
     mana_regeneration: 25
     mana_max: 150
@@ -127,8 +121,7 @@ hero:
         - perk
 
 king:
-    inherit: base_wand
-    path: battle
+    inherit: static_wand
     effect_color: '22FF22'
     mana_regeneration: 30
     mana_max: 175
@@ -159,8 +152,7 @@ king:
         - perk
 
 legend:
-    inherit: base_wand
-    path: apprentice
+    inherit: static_wand
     effect_color: '22FF22'
     mana_regeneration: 40
     mana_max: 200
@@ -196,8 +188,7 @@ legend:
         - perk
 
 overseer:
-    inherit: base_wand
-    path: apprentice
+    inherit: static_wand
     effect_color: '22FF22'
     mana_regeneration: 50
     mana_max: 250
@@ -237,8 +228,7 @@ overseer:
         - chop
 
 wizard:
-    inherit: base_wand
-    path: master
+    inherit: static_wand
     effect_color: '89A0D5'
     mana_regeneration: 75
     mana_max: 400
@@ -279,8 +269,7 @@ wizard:
         - fire
 
 nether:
-    inherit: base_wand
-    path: master
+    inherit: static_wand
     effect_color: 'B40404'
     mana_regeneration: 100
     mana_max: 500
@@ -327,8 +316,7 @@ nether:
         - fire
 
 ender:
-    inherit: base_wand
-    path: master
+    inherit: static_wand
     effect_color: 'AC58FA'
     mana_regeneration: 150
     mana_max: 800
@@ -380,7 +368,7 @@ ender:
         - fire
 
 explorer:
-    inherit: base_wand
+    inherit: static_wand
     active_spell: flare
     mana_regeneration: 1
     effect_color: '008800'
@@ -392,7 +380,7 @@ explorer:
         - flare
 
 psychic:
-    inherit: base_wand
+    inherit: static_wand
     protection_falling: 0.9
     mana_regeneration: 1
     effect_color: '000088'
@@ -407,7 +395,7 @@ psychic:
         - force
 
 painter:
-    inherit: base_wand
+    inherit: static_wand
     mana_regeneration: 10
     effect_color: '118811'
     mana_max: 200
@@ -483,7 +471,7 @@ painter:
         - schematic:rainbow
 
 decorator:
-    inherit: base_wand
+    inherit: static_wand
     locked: true
     cost_reduction: 1
     effect_color: '118811'
@@ -557,7 +545,7 @@ decorator:
         - stained_glass_pane:15
 
 mining:
-    inherit: base_wand
+    inherit: static_wand
     mana_regeneration: 10
     effect_color: '888888'
     mana_max: 100
@@ -570,7 +558,7 @@ mining:
         - torch
 
 farming:
-    inherit: base_wand
+    inherit: static_wand
     mana_regeneration: 10
     effect_color: '0000EE'
     mana_max: 100
@@ -588,7 +576,7 @@ farming:
         - water
 
 alchemist:
-    inherit: base_wand
+    inherit: static_wand
     mana_regeneration: 10
     effect_color: 'EE00EE'
     mana_max: 100
@@ -609,7 +597,7 @@ alchemist:
         - sand
 
 elementalist:
-    inherit: base_wand
+    inherit: static_wand
     mana_regeneration: 10
     effect_color: '0000FF'
     mana_max: 100
@@ -623,7 +611,7 @@ elementalist:
         - weather
 
 necromancer:
-    inherit: base_wand
+    inherit: static_wand
     mana_regeneration: 10
     effect_color: '111111'
     mana_max: 100
@@ -637,7 +625,7 @@ necromancer:
         - wither
 
 white:
-    inherit: base_wand
+    inherit: static_wand
     cost_reduction: 0.5
     protection: 0.9
     mana_regeneration: 50
@@ -699,7 +687,7 @@ white:
         - quartz_block:2
 
 black:
-    inherit: base_wand
+    inherit: static_wand
     cost_reduction: 0.5
     protection: 0.9
     mana_regeneration: 50
@@ -765,7 +753,7 @@ black:
         - wool:15
 
 red:
-    inherit: base_wand
+    inherit: static_wand
     protection_fire: 1
     protection: 0.6
     mana_regeneration: 40
@@ -802,7 +790,7 @@ red:
         - redstone_block
 
 blue:
-    inherit: base_wand
+    inherit: static_wand
     protection: 0.8
     mana_regeneration: 40
     mana_max: 300
@@ -843,7 +831,7 @@ blue:
         - diamond_block
 
 green:
-    inherit: base_wand
+    inherit: static_wand
     protection: 0.8
     mana_regeneration: 40
     mana_max: 300

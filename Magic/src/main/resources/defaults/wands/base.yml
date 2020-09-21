@@ -16,6 +16,19 @@ base_bound:
   undroppable: true
   indestructible: true
 
+static_wand:
+  hidden: true
+  mode: inventory
+  drop: cycle_hotbar
+  left_click: cast
+  right_click: toggle
+  swap: cycle_hotbar
+  quiet: 1
+  effect_bubbles: false
+  item_attributes:
+    GENERIC_ATTACK_SPEED: 10
+  item_attribute_slot: mainhand
+
 base_wand:
     hidden: true
     inherit: base_bound
