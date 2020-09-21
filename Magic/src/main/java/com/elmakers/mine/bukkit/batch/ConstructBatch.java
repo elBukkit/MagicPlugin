@@ -44,7 +44,7 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 public class ConstructBatch extends BrushBatch {
     private final Location center;
     private Vector orient = null;
-    private final int radius;
+    private int radius;
     private final ConstructionType type;
     private final int thickness;
     private final boolean spawnFallingBlocks;
@@ -79,6 +79,7 @@ public class ConstructBatch extends BrushBatch {
     private boolean consumeVariants = true;
     private boolean checkChunks = true;
     private boolean deferPhysics = true;
+    private boolean useBrushSize = false;
 
     private int x = 0;
     private int y = 0;
@@ -103,10 +104,6 @@ public class ConstructBatch extends BrushBatch {
         this.delayed = materials.getMaterialSetEmpty("delayed");
         this.deferredTypes = materials.getMaterialSetEmpty("deferred");
         this.orient = orientVector == null ? new Vector(0, 1, 0) : orientVector;
-    }
-
-    public void setBounds(Vector bounds) {
-        this.bounds = bounds;
     }
 
     public void setPower(boolean power) {
@@ -164,6 +161,21 @@ public class ConstructBatch extends BrushBatch {
     @Override
     public int process(int workAllowed) {
         int workPerformed = 0;
+
+        if (useBrushSize && bounds == null) {
+            MaterialBrush brush = spell.getBrush();
+            if (!brush.isReady()) {
+                return 0;
+            }
+            bounds = brush.getSize();
+            if (bounds == null) {
+                finished = true;
+                return 0;
+            }
+            minOrientDimension = 0;
+            radius = (int)Math.max(Math.max(bounds.getX() / 2, bounds.getZ() / 2), bounds.getY());
+        }
+
         if (finishedDelayedBlocks) {
             if (deferred == null || deferred.isEmpty()) {
                 finish();
@@ -646,5 +658,8 @@ public class ConstructBatch extends BrushBatch {
     }
     public void setCheckChunks(boolean checkChunks) {
         this.checkChunks = checkChunks;
+    }
+    public void setUseBrushSize(boolean useBrushSize) {
+        this.useBrushSize = useBrushSize;
     }
 }

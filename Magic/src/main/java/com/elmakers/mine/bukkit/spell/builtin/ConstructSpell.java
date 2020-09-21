@@ -72,31 +72,10 @@ public class ConstructSpell extends BrushSpell
         double breakable = parameters.getDouble("breakable", 0);
         double backfireChance = parameters.getDouble("reflect_chance", 0);
 
-
         String physicsType = parameters.getString("physics", "");
         Vector orientTo = null;
-        Vector bounds = null;
 
-        if (parameters.getBoolean("use_brush_size", false)) {
-            if (!buildWith.isReady()) {
-                long timeout = System.currentTimeMillis() + 10000;
-                while (System.currentTimeMillis() < timeout) {
-                    try {
-                        Thread.sleep(500);
-                        if (buildWith.isReady()) {
-                            break;
-                        }
-                    } catch (InterruptedException ex) {
-                        break;
-                    }
-                }
-                if (!buildWith.isReady()) {
-                    return SpellResult.NO_ACTION;
-                }
-            }
-            bounds = buildWith.getSize();
-            radius = (int)Math.max(Math.max(bounds.getX() / 2, bounds.getZ() / 2), bounds.getY());
-        } else if (isSelect) {
+        if (isSelect) {
             if (targetLocation2 != null) {
                 this.targetBlock = targetLocation2.getBlock();
             }
@@ -171,6 +150,7 @@ public class ConstructSpell extends BrushSpell
 
         ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, thickness, falling, orientTo);
 
+        batch.setUseBrushSize(parameters.getBoolean("use_brush_size", false));
         batch.setCommit(commit);
         batch.setConsume(consume);
         batch.setCheckChunks(checkChunks);
@@ -231,10 +211,6 @@ public class ConstructSpell extends BrushSpell
         }
         if (parameters.getBoolean("power", false)) {
             batch.setPower(true);
-        }
-        if (bounds != null) {
-            batch.setBounds(bounds);
-            batch.setOrientDimensionMin(0);
         }
         boolean success = mage.addBatch(batch);
         deactivate();

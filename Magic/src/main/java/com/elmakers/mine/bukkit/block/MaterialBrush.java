@@ -711,9 +711,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                     cloneTarget = cloneTarget.add(targetOffset);
                 }
             } else if (mode == BrushMode.SCHEMATIC) {
-                if (schematic == null && schematicName != null) {
-                    schematic = mage.getController().loadSchematic(schematicName);
-                }
+                checkSchematic();
                 boolean recenter = true;
 
                 if (schematic != null && schematic.isLoaded()) {
