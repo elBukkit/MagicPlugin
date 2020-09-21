@@ -2,8 +2,8 @@
 
 ## Hot Issues
 
- - Login seems delayed? Can't use my wand right away, will fall and die if I was flying, even lost items once from that
- - Need to be able to turn off the brush display for spells like surface
+ - airship schematic, paintings and item frames didn't undo
+ - breaking schematic builds drops dirt
 
  - Allow customizing effects, or lists in general?
  - Paginate wands and spells command output, make base class of SelectionManager, like Paginator<T extends Named>

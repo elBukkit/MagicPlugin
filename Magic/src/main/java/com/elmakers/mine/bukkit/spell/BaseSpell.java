@@ -791,6 +791,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public boolean showBrush() {
+        return usesBrushSelection();
+    }
+
+    @Override
     public boolean isUndoable()
     {
         return false;

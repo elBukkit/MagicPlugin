@@ -2125,7 +2125,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String name = "";
         if (spell != null) {
             String spellPrefix = ChatColor.translateAlternateColorCodes('&', messages.get("wand.spell_prefix"));
-            if (brush != null && spell.usesBrush()) {
+            if (brush != null && spell.usesBrush() && spell.showBrush()) {
                 name = spellPrefix + spell.getName() + " " + getBrushDisplayName(messages, brush) + ChatColor.WHITE;
             } else {
                 name = spellPrefix + spell.getName() + ChatColor.WHITE;

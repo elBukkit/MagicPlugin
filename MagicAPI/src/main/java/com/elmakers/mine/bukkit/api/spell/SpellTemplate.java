@@ -90,6 +90,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     boolean isHidden();
     boolean usesBrush();
     boolean usesBrushSelection();
+    boolean showBrush();
     boolean isUndoable();
     boolean showUndoable();
     boolean isScheduledUndo();

@@ -24,6 +24,7 @@ public class BrushSpell extends BlockSpell {
     protected boolean usesBrush = true;
     protected boolean brushIsErase = false;
     protected boolean usesBrushEffects = true;
+    protected Boolean showBrush = null;
 
     public static final String[] BRUSH_PARAMETERS = {
         "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget", "brushcolor", "preserve_data"
@@ -99,6 +100,9 @@ public class BrushSpell extends BlockSpell {
         super.loadTemplate(node);
         usesBrush = node.getBoolean("uses_brush", usesBrush);
         usesBrushEffects = node.getBoolean("brush_effects", true);
+        if (node.contains("show_brush")) {
+            showBrush = node.getBoolean("show_brush");
+        }
 
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
         if (parameters != null)
@@ -166,6 +170,14 @@ public class BrushSpell extends BlockSpell {
     public boolean usesBrush()
     {
         return usesBrush && !hasBrushOverride();
+    }
+
+    @Override
+    public boolean showBrush() {
+        if (showBrush != null) {
+            return showBrush;
+        }
+        return usesBrushSelection();
     }
 
     @Override
