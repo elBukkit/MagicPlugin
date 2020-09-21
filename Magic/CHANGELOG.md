@@ -5,6 +5,7 @@
  - Fix exploit/dupe bugs with keep-inventory plugins and wands
  - Fix how using `example: engineering` or `example: automata` removes survival configs
  - Fix copper_chunk item log-spam on older Spigot versions
+ - Fix paste spell and building with schematics stalling the server
  - Allow mana_max_boost and mana_regeneration boost on classes and modifiers
  - The deprecated xp_max_boost and xp_regeneration_boost properties no longer work
  - Add "angry" option for wolf mobs, default interval to 1 second if not specified and using interval triggers
@@ -13,6 +14,7 @@
  - The Tame action/spell can now be used to make foxes trust you
  - Add "fox_type" mob parameter
  - Add EquationVolume action, see surface example
+ - The Commit spell will now clear all of a player's undo queues, preventing cross-server undo from staying forever
 
 # 7.10.3
 

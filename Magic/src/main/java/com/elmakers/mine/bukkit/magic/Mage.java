@@ -2211,6 +2211,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean commit() {
+        externalUndoData.clear();
         return getUndoQueue().commit();
     }
 
