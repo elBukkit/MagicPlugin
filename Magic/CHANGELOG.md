@@ -2,6 +2,7 @@
 
 # 7.10.4
 
+ - Fix exploit/dupe bugs with keep-inventory plugins and wands
  - Fix how using `example: engineering` or `example: automata` removes survival configs
  - Fix copper_chunk item log-spam on older Spigot versions
  - Allow mana_max_boost and mana_regeneration boost on classes and modifiers

@@ -33,6 +33,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
@@ -306,6 +307,7 @@ public class EntityController implements Listener {
         }
         final Player player = (Player)entity;
 
+        if (event instanceof PlayerDeathEvent && ((PlayerDeathEvent)event).getKeepInventory()) return;
         String rule = entity.getWorld().getGameRuleValue("keepInventory");
         if (rule.equals("true")) return;
 
