@@ -70,7 +70,7 @@ public class HealAction extends BaseSpellAction
             return SpellResult.CANCELLED;
         }
         healAmount = event.getAmount();
-        if (healAmount == 0)
+        if (healAmount <= 0)
         {
             return SpellResult.NO_TARGET;
         }
