@@ -41,7 +41,12 @@ loadbefore:
 commands:
   getrp:
     description: Download the Magic resource pack
-    usage: getrp
+    usage:
+      usage: |
+        /getrp         Get the current resource pack
+        /getrp url     Show the current RP URL
+        /getrp manual  Turn off automatic sending of the RP on login
+        /getrp auto    Turn on automatic sending of the RP on login
     permission: Magic.commands.getrp
   cast:
     aliases: [mcast]
