@@ -1,0 +1,8 @@
+manaboost:
+  actions:
+    cast:
+      - class: Modifier
+  parameters:
+    target: self
+    add_modifiers: empowered
+    duration: 30000
