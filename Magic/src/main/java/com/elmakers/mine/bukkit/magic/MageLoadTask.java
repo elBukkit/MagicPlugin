@@ -19,6 +19,9 @@ public class MageLoadTask implements Runnable {
         try {
             mage.onLoad(data);
             mage.setLoading(false);
+            if (mage.isPlayer() && mage.isResourcePackEnabled()) {
+                mage.getController().promptResourcePack(mage.getPlayer());
+            }
             MageLoadEvent event = new MageLoadEvent(mage, data == null);
             Bukkit.getPluginManager().callEvent(event);
         } catch (Exception ex) {

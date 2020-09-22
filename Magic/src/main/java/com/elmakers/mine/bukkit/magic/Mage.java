@@ -217,6 +217,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private boolean costFree = false;
     private boolean cooldownFree = false;
+    private boolean resourcePackEnabled = true;
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
@@ -1265,6 +1266,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 fallProtection = System.currentTimeMillis() + fallProtection;
             }
 
+            resourcePackEnabled = data.getResourcePackEnabled();
             gaveWelcomeWand = data.getGaveWelcomeWand();
             playerName = data.getName();
             lastDeathLocation = data.getLastDeathLocation();
@@ -1562,6 +1564,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             data.setGaveWelcomeWand(gaveWelcomeWand);
+            data.setResourcePackEnabled(resourcePackEnabled);
             data.setExtraData(this.data);
             data.setProperties(properties.getConfiguration());
             data.setVariables(variables);
@@ -4922,5 +4925,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public float getManaRegenerationMultiplier() {
         return 1.0f + manaRegenerationBoost;
+    }
+
+    public boolean isResourcePackEnabled() {
+        return resourcePackEnabled;
+    }
+
+    public void setResourcePackEnabled(boolean enable) {
+        resourcePackEnabled = enable;
     }
 }

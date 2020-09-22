@@ -4,6 +4,7 @@
 
  - The wands in the "ranks" example are now static wands, they are not on a path nor are they bound.
  - Allow using a mob type/key in a "mount" config in another mob
+ - Extend the getrp command to let players turn automatic resource packs on and off
 
 # 7.10.4
 

@@ -150,6 +150,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         saveFile.set("level", mage.getStoredLevel());
         saveFile.set("open_wand", mage.isOpenWand());
         saveFile.set("gave_welcome_wand", mage.getGaveWelcomeWand());
+        saveFile.set("resource_pack_enabled", mage.getResourcePackEnabled());
 
         ConfigurationSection extraData = mage.getExtraData();
         if (extraData != null) {
@@ -420,6 +421,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         }
         data.setOpenWand(saveFile.getBoolean("open_wand", false));
         data.setGaveWelcomeWand(saveFile.getBoolean("gave_welcome_wand", false));
+        data.setResourcePackEnabled(saveFile.getBoolean("resource_pack_enabled", controller.isResourcePackEnabledByDefault()));
         data.setHealth(saveFile.getDouble("health"));
 
         return data;

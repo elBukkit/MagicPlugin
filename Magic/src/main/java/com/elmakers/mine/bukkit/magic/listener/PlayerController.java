@@ -865,7 +865,6 @@ public class PlayerController implements Listener {
         if (player.hasPermission("Magic.migrate")) {
            controller.checkForMigration(player);
         }
-        controller.promptResourcePack(player);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

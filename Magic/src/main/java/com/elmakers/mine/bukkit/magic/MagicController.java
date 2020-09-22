@@ -2645,6 +2645,7 @@ public class MagicController implements MageController {
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
+        isResourcePackEnabledByDefault = properties.getBoolean("resource_pack_default_auto", true);
         resourcePackPrompt = properties.getBoolean("resource_pack_prompt", false);
         enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
         resourcePackCheckInterval = properties.getInt("resource_pack_check_interval", 0);
@@ -6541,6 +6542,16 @@ public class MagicController implements MageController {
         return lockedChunks.keySet();
     }
 
+    @Override
+    @Nullable
+    public String getResourcePackURL() {
+        return resourcePack;
+    }
+
+    public boolean isResourcePackEnabledByDefault() {
+        return isResourcePackEnabledByDefault;
+    }
+
     /*
      * Private data
      */
@@ -6787,6 +6798,7 @@ public class MagicController implements MageController {
     private String                              resourcePack                = null;
     private byte[]                              resourcePackHash            = null;
     private long                                resourcePackDelay           = 0;
+    private boolean                             isResourcePackEnabledByDefault = true;
     private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
 
     private boolean                             hasShopkeepers              = false;
