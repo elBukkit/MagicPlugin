@@ -31,6 +31,10 @@ madscientist2:
   - type: speed
     amplifier: 1
 
+nathanstack:
+  inherit: madscientist
+  mount: nathanstack
+
 skeletoncompanion:
    type: wolf
    name: Skeletal Companion

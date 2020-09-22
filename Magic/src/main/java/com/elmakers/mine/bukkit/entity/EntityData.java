@@ -83,6 +83,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<>();
 
     public static boolean isSpawning = false;
+    private static int mobStackSize = 0;
+    private static final int maxMobStackSize = 255;
 
     protected String key;
     protected WeakReference<Entity> entity = null;
@@ -165,6 +167,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     protected EntityMageData mageData;
     protected EntityData mount;
+    protected String mountType;
 
     protected ConfigurationSection configuration;
 
@@ -355,6 +358,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         ConfigurationSection mountConfig = ConfigurationUtils.getConfigurationSection(parameters, "mount");
         if (mountConfig != null) {
             mount = new EntityData(controller, mountConfig);
+        } else {
+            mountType = parameters.getString("mount");
         }
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
@@ -968,9 +973,29 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (hasVelocity && velocity != null) {
             SafetyUtils.setVelocity(entity, velocity);
         }
-        if (mount != null) {
-            Entity mountEntity = mount.spawn(controller, entity.getLocation());
-            DeprecatedUtils.setPassenger(mountEntity, entity);
+        if (mount != null || mountType != null) {
+            mobStackSize++;
+            boolean allowMount = true;
+            if (mobStackSize > maxMobStackSize) {
+                if (controller != null) {
+                    controller.getLogger().warning("Mob " + key + " has more than " + maxMobStackSize + " mounts");
+                }
+                allowMount = false;
+            }
+            if (mount == null) {
+                mount = (EntityData)controller.getMob(mountType);
+                if (mount == null) {
+                    if (controller != null) {
+                        controller.getLogger().warning("Mob " + key + " has invalid mount: " + mountType);
+                    }
+                    allowMount = false;
+                }
+            }
+            if (allowMount) {
+                Entity mountEntity = mount.spawn(controller, entity.getLocation());
+                DeprecatedUtils.setPassenger(mountEntity, entity);
+            }
+            mobStackSize--;
         }
         return true;
     }

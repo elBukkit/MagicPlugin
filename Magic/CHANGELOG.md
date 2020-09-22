@@ -3,6 +3,7 @@
 # 7.10.5
 
  - The wands in the "ranks" example are now static wands, they are not on a path nor are they bound.
+ - Allow using a mob type/key in a "mount" config in another mob
 
 # 7.10.4
 
