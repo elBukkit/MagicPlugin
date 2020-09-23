@@ -62,12 +62,14 @@ public class BookAction extends BaseSpellAction {
     private List<String> replaceContents(CastContext context, Mage targetMage) {
         List<Replacement> replacements = new ArrayList<>();
 
-
         Set<String> attributes = context.getController().getAttributes();
         Set<String> currencies = context.getController().getCurrencyKeys();
 
         for (String attr : attributes) {
-            replacements.add(new Replacement("$" + attr, Integer.toString((int)Math.ceil(targetMage.getAttribute(attr)))));
+            Double value = targetMage.getAttribute(attr);
+            if (value != null) {
+                replacements.add(new Replacement("$" + attr, Integer.toString((int)Math.ceil(value))));
+            }
         }
 
         for (String currency : currencies) {
