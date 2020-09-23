@@ -39,16 +39,24 @@ public class SpellsPaginator extends Paginator<SpellTemplate> {
     @Override
     protected String describe(SpellTemplate spell) {
         String name = spell.getName();
-        String description = spell.getDescription();
-        String[] pieces = StringUtils.split(description, "\n");
-        description = pieces[0];
-        if (description.length() > 30) {
-            description = description.substring(0, 27) + "...";
-        }
+        String message = ChatColor.AQUA + name;
         if (!name.equals(spell.getKey())) {
-            description = name + " : " + description;
+            message = message + ChatColor.DARK_GRAY + " (" + ChatColor.BLUE + spell.getKey() + ChatColor.DARK_GRAY + ")";
         }
-        return ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + description;
+        String description = spell.getDescription();
+        if (description != null) {
+            String[] pieces = StringUtils.split(description, "\n");
+            if (pieces.length > 0) {
+                description = pieces[0];
+                if (description.length() > 30) {
+                    description = description.substring(0, 27) + "...";
+                }
+            }
+            if (!description.isEmpty()) {
+                message = message + ChatColor.DARK_GRAY + " : " + ChatColor.GRAY + description;
+            }
+        }
+        return message;
     }
 
     @Nonnull
