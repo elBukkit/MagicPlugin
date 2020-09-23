@@ -3,7 +3,7 @@ rocketboots:
     indestructible: true
     locked: true
     keep: true
-    passive: true
+    worn: true
     mana_regeneration_boost: -0.1
     potion_effects: speed:2,jump:20
     glow: true

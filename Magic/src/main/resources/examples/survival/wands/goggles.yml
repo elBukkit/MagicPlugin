@@ -4,7 +4,7 @@ goggles:
     indestructible: true
     locked: true
     keep: true
-    passive: true
+    worn: true
     mana_regeneration_boost: -0.1
     potion_effects: night_vision:3
     glow: true

@@ -31,7 +31,7 @@ public class BaseMagicProperties implements MagicProperties {
 
     public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(
             "active_spell", "active_brush", "alternate_spell", "alternate_spell2",
-            "path", "template", "passive",
+            "path", "template", "worn",
             "mana", "mana_regeneration", "mana_max", "mana_max_boost",
             "mana_regeneration_boost",
             "mana_per_damage", "reset_mana_on_activate",

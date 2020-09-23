@@ -3,7 +3,7 @@ magneticleggings:
     indestructible: true
     locked: true
     keep: true
-    passive: true
+    worn: true
     mana_regeneration_boost: -0.3
     cast_spell: grab
     cast_interval: 5000

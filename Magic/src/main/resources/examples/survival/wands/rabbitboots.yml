@@ -3,7 +3,7 @@ rabbitboots:
     indestructible: false
     locked: true
     keep: false
-    passive: true
+    worn: true
     mana_regeneration_boost: -0.1
     potion_effects: speed:4,jump:4
     enchantments:

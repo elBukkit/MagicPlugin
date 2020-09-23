@@ -3,7 +3,7 @@ clericchestplate:
     indestructible: true
     locked: true
     keep: true
-    passive: true
+    worn: true
     mana_regeneration_boost: -0.2
     cast_spell: healing
     cast_interval: 2000

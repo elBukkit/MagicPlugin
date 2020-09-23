@@ -3,7 +3,7 @@ hulkboots:
     indestructible: true
     locked: true
     keep: true
-    passive: true
+    worn: true
     mana_regeneration_boost: -0.3
     glow: true
     protection:

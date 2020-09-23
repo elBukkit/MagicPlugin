@@ -3856,11 +3856,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addPassiveAttributes(modifier);
         }
 
-        if (activeWand != null && !activeWand.isPassive()) {
+        if (activeWand != null && !activeWand.isWorn()) {
             addPassiveAttributes(activeWand);
         }
         // Don't add these together so things stay balanced!
-        if (offhandWand != null && !offhandWand.isPassive()) {
+        if (offhandWand != null && !offhandWand.isWorn()) {
             addPassiveAttributes(offhandWand);
         }
         for (Wand armorWand : activeArmor.values()) {
@@ -3905,13 +3905,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addPassiveEffects(modifier, true);
         }
 
-        if (activeWand != null && !activeWand.isPassive())
+        if (activeWand != null && !activeWand.isWorn())
         {
             addPassiveEffects(activeWand, false);
             effectivePotionEffects.putAll(activeWand.getPotionEffects());
         }
         // Don't add these together so things stay balanced!
-        if (offhandWand != null && !offhandWand.isPassive())
+        if (offhandWand != null && !offhandWand.isWorn())
         {
             addPassiveEffects(offhandWand, false);
             effectivePotionEffects.putAll(offhandWand.getPotionEffects());

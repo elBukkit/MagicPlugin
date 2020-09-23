@@ -8,7 +8,7 @@ invisiblecloak:
     keep: true
     mana_regeneration_boost: -0.5
     potion_effects: invisibility
-    passive: true
+    worn: true
     glow: true
     spells:
         - invisiblecloak

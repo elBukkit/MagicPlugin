@@ -139,7 +139,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean indestructible = false;
     private boolean undroppable = false;
     private boolean keep = false;
-    private boolean passive = false;
+    private boolean worn = false;
     private WandUseMode useMode = WandUseMode.SUCCESS;
     private boolean autoOrganize = false;
     private boolean autoAlphabetize = false;
@@ -732,7 +732,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public float getCostReduction() {
         if (mage != null) {
             float reduction = mage.getCostReduction();
-            return passive ? reduction : stackPassiveProperty(reduction, costReduction * controller.getMaxCostReduction());
+            return worn ? reduction : stackPassiveProperty(reduction, costReduction * controller.getMaxCostReduction());
         }
         return costReduction;
     }
@@ -741,7 +741,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public float getCooldownReduction() {
         if (mage != null) {
             float reduction = mage.getCooldownReduction();
-            return passive ? reduction : stackPassiveProperty(reduction, cooldownReduction * controller.getMaxCooldownReduction());
+            return worn ? reduction : stackPassiveProperty(reduction, cooldownReduction * controller.getMaxCooldownReduction());
         }
         return cooldownReduction;
     }
@@ -750,7 +750,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public float getConsumeReduction() {
         if (mage != null) {
             float reduction = mage.getConsumeReduction();
-            return passive ? reduction : stackPassiveProperty(reduction, consumeReduction);
+            return worn ? reduction : stackPassiveProperty(reduction, consumeReduction);
         }
         return consumeReduction;
     }
@@ -1686,7 +1686,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         quietLevel = getInt("quiet");
         effectBubbles = getBoolean("effect_bubbles");
         keep = getBoolean("keep");
-        passive = getBoolean("passive");
+        worn = getBoolean("worn", getBoolean("passive"));
         indestructible = getBoolean("indestructible");
         superPowered = getBoolean("powered");
         superProtected = getBoolean("protected");
@@ -2321,7 +2321,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // If this is a passive wand, then reduction properties stack onto the mage when worn.
         // In this case we should show it as such in the lore.
-        if (passive) isSingleSpell = false;
+        if (worn) isSingleSpell = false;
 
         if (consumeReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("consume_reduction", consumeReduction), lore);
 
@@ -4368,7 +4368,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             updateHotbarStatus();
         }
 
-        if (!passive)
+        if (!worn)
         {
             updateEffects();
         }
@@ -4955,8 +4955,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         setProperty("locked", false);
     }
 
-    public boolean isPassive() {
-        return passive;
+    public boolean isWorn() {
+        return worn;
     }
 
     @Override
