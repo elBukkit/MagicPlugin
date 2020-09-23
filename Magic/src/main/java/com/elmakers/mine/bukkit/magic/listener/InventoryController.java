@@ -112,6 +112,18 @@ public class InventoryController implements Listener {
 
             // Update armor if moving magic items around
             if (Wand.isWand(oldCursor)) {
+                // Check to see if this wand is wearable in the target slot
+                if (isArmorSlot) {
+                    Wand wand = controller.createWand(oldCursor);
+                    if (wand.hasWearable()) {
+                        for (int slot : slots) {
+                            if (!wand.isWearableInSlot(slot)) {
+                                event.setCancelled(true);
+                                return;
+                            }
+                        }
+                    }
+                }
                 controller.onArmorUpdated(mage);
             }
         }
@@ -219,14 +231,19 @@ public class InventoryController implements Listener {
 
             if (heldWand) {
                 Wand wand = controller.getWand(heldItem);
-                int slot = event.getSlot();
-                if (wand.isWearableInSlot(slot)) {
-                    ItemStack existing = player.getInventory().getItem(slot);
-                    player.getInventory().setItem(slot, heldItem);
-                    event.setCursor(existing);
-                    event.setCancelled(true);
-                    controller.onArmorUpdated(mage);
-                    return;
+                if (wand.hasWearable()) {
+                    int slot = event.getSlot();
+                    if (wand.isWearableInSlot(slot)) {
+                        ItemStack existing = player.getInventory().getItem(slot);
+                        player.getInventory().setItem(slot, heldItem);
+                        event.setCursor(existing);
+                        event.setCancelled(true);
+                        controller.onArmorUpdated(mage);
+                        return;
+                    } else {
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
             }
 

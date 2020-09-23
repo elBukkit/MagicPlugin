@@ -9,6 +9,7 @@
  - Extend the getrp command to let players turn automatic resource packs on and off
  - Fix error in /spells
  - Add netherrite armor and tools to wearable and melee material lists
+ - Armor can now be made to be worn in a slot other than the vanilla slot it's supposed to go in (see: hardhat)
 
 # 7.10.4
 

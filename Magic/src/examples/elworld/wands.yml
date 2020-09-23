@@ -226,10 +226,13 @@ badicon:
   inherit: wand
   icon: bad_icon:2
 
-hardarmor:
-  icon: diamond_chestplate
+hardhat:
+  name: Hard Hat
+  icon: diamond_chestplate{CustomModelData:1}
   stack: true
   passive: true
+  wearable:
+    - helmet
   attributes:
     constitution: 2
 

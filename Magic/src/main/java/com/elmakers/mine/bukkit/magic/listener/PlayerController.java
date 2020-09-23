@@ -787,12 +787,9 @@ public class PlayerController implements Listener {
 
         // Check for wearing via right-click
         // Special-case here for skulls, which actually are not wearable via right-click.
-        if (itemInHand != null && isRightClick && controller.isWearable(itemInHand) && !DefaultMaterials.isSkull(itemInHand.getType()))
+        // Wearable wands are handled below.
+        if (wand == null && itemInHand != null && isRightClick && controller.isWearable(itemInHand) && !DefaultMaterials.isSkull(itemInHand.getType()))
         {
-            if (wand != null)
-            {
-                wand.deactivate();
-            }
             controller.onArmorUpdated(mage);
             return;
         }
@@ -849,6 +846,7 @@ public class PlayerController implements Listener {
             }
         } else if (isRightClick) {
             if (wand.tryToWear(mage)) {
+                event.setCancelled(true);
                 player.getInventory().setItemInMainHand(null);
                 mage.checkWand();
             }

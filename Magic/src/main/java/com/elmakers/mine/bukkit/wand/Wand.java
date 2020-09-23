@@ -5867,6 +5867,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return isInOffhand;
     }
 
+    public boolean hasWearable() {
+        return hasProperty("wearable");
+    }
+
     public boolean isWearableInSlot(int slotNumber) {
         if (getBoolean("wearable")) return true;
         Collection<String> slots = getStringList("wearable");
