@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.api.event.CraftWandEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicRecipe;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class CraftingController implements Listener {
@@ -156,7 +157,7 @@ public class CraftingController implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         // The only purpose of this handler is to prevent crafting with wands, so skip if we're allowed to do that.
-        if (allowWandsAsIngredients || !(event.getWhoClicked() instanceof Player)) return;
+        if (!(event.getWhoClicked() instanceof Player)) return;
         if (event.isCancelled()) return;
 
         InventoryType inventoryType = event.getInventory().getType();
@@ -164,9 +165,10 @@ public class CraftingController implements Listener {
         // Check for wand clicks to prevent grinding them to dust, or whatever.
         if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
             ItemStack cursor = event.getCursor();
-            if (Wand.isSpecial(cursor)) {
+            if (Wand.isSpecial(cursor) && !allowWandsAsIngredients) {
                 event.setCancelled(true);
-                return;
+            } else if (InventoryUtils.getMetaBoolean(cursor, "undroppable", false)) {
+                event.setCancelled(true);
             }
         }
     }
