@@ -226,3 +226,10 @@ badicon:
   inherit: wand
   icon: bad_icon:2
 
+hardarmor:
+  icon: diamond_chestplate
+  stack: true
+  passive: true
+  attributes:
+    constitution: 2
+
