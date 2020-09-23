@@ -3788,6 +3788,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
        }
     }
 
+    protected void addPassiveAttributes(CasterProperties properties) {
+        boolean stack = properties.getBoolean("stack", false);
+        addPassiveEffectsGroup(attributes, properties, "attributes", stack, null);
+    }
+
     protected void addPassiveEffects(CasterProperties properties, boolean activeReduction) {
         earnMultiplier = (float) (earnMultiplier * properties.getDouble("earn_multiplier", properties.getDouble("sp_multiplier", 1.0)));
         manaRegenerationBoost += properties.getFloat("mana_regeneration_boost", 0);
@@ -3797,7 +3802,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
         addPassiveEffectsGroup(weakness, properties, "weakness", stack, 1.0);
         addPassiveEffectsGroup(strength, properties, "strength", stack, 1.0);
-        addPassiveEffectsGroup(attributes, properties, "attributes", stack, null);
 
         if (activeReduction || properties.getBoolean("passive") || stack) {
             if (stack) {
@@ -3836,10 +3840,40 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void updatePassiveEffects() {
+        // Need to do attributes first, in case they are used by any of the other properties
+        attributes.clear();
+
+        addPassiveAttributes(properties);
+        if (activeClass != null) {
+            addPassiveAttributes(activeClass);
+        }
+        for (MageClass mageClass : classes.values()) {
+            if (mageClass != activeClass && !mageClass.isLocked() && mageClass.getBoolean("passive")) {
+                addPassiveAttributes(mageClass);
+            }
+        }
+        for (MageModifier modifier : modifiers.values()) {
+            addPassiveAttributes(modifier);
+        }
+
+        if (activeWand != null && !activeWand.isPassive()) {
+            addPassiveAttributes(activeWand);
+        }
+        // Don't add these together so things stay balanced!
+        if (offhandWand != null && !offhandWand.isPassive()) {
+            addPassiveAttributes(offhandWand);
+        }
+        for (Wand armorWand : activeArmor.values()) {
+            if (armorWand != null) {
+                addPassiveAttributes(armorWand);
+            }
+        }
+        reloadAttributes();
+
+        // Now do everything else
         protection.clear();
         strength.clear();
         weakness.clear();
-        attributes.clear();
 
         // Try to avoid constantly re-creating these, don't clear the whole map
         for (List<TriggeredSpell> triggerList : triggers.values()) {
@@ -3859,8 +3893,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         effectivePotionEffects.clear();
 
         addPassiveEffects(properties, true);
-        if (activeClass != null)
-        {
+        if (activeClass != null) {
             addPassiveEffects(activeClass, true);
         }
         for (MageClass mageClass : classes.values()) {
@@ -4619,7 +4652,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void attributesUpdated() {
-        reloadAttributes();
         updatePassiveEffects();
 
         // Reload spell parameter so lore updates
