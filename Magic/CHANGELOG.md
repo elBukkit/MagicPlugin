@@ -8,6 +8,7 @@
  - Allow using a mob type/key in a "mount" config in another mob
  - Extend the getrp command to let players turn automatic resource packs on and off
  - Fix error in /spells
+ - Add netherrite armor and tools to wearable and melee material lists
 
 # 7.10.4
 
