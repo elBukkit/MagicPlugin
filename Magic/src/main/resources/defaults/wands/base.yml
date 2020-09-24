@@ -14,6 +14,7 @@ base_bound:
   immortal: true
   track: true
   undroppable: true
+  unstashable: true
   indestructible: true
 
 static_wand:
