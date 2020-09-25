@@ -1654,7 +1654,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object[] allMaterials = Material.AIR.getDeclaringClass().getEnumConstants();
             for (Object o : allMaterials) {
                 Material material = (Material)o;
-                if (isLegacy(material)) {
+                if (!hasLegacyMaterials() || isLegacy(material)) {
                     materialIdMap.put(material.getId(), material);
                 }
             }
@@ -1679,6 +1679,10 @@ public class CompatibilityUtils extends NMSUtils {
         } catch (Exception ignore) {
         }
         return null;
+    }
+
+    public static boolean hasLegacyMaterials() {
+        return class_Material_isLegacyMethod != null;
     }
 
     public static boolean isLegacy(Material material) {
