@@ -124,6 +124,7 @@ import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.automata.AutomatonTemplate;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.block.LegacySchematic;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
@@ -852,12 +853,11 @@ public class MagicController implements MageController {
             return null;
         }
 
-        // TODO: This should really just return a ListenableFuture
-        com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic();
-        schematics.put(schematicName, new WeakReference<Schematic>(schematic));
+        LegacySchematic schematic = new LegacySchematic();
+        schematics.put(schematicName, new WeakReference<>(schematic));
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                SchematicUtils.loadSchematic(inputSchematic, schematic);
+                SchematicUtils.loadLegacySchematic(inputSchematic, schematic);
                 info("Finished loading schematic");
             } catch (Exception ex) {
                 ex.printStackTrace();

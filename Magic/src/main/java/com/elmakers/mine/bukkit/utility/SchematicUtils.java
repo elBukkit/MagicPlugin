@@ -9,10 +9,10 @@ import java.util.Collection;
 import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.block.Schematic;
+import com.elmakers.mine.bukkit.block.LegacySchematic;
 
 public class SchematicUtils extends CompatibilityUtils {
-    public static boolean loadSchematic(File inputFile, Schematic schematic) {
+    public static boolean loadLegacySchematic(File inputFile, LegacySchematic schematic) {
         if (inputFile == null || !inputFile.exists() || schematic == null) {
             return false;
         }
@@ -25,10 +25,10 @@ public class SchematicUtils extends CompatibilityUtils {
             return false;
         }
 
-        return loadSchematic(inputStream, schematic);
+        return loadLegacySchematic(inputStream, schematic);
     }
 
-    public static boolean loadSchematic(InputStream input, Schematic schematic) {
+    public static boolean loadLegacySchematic(InputStream input, LegacySchematic schematic) {
         if (input == null || schematic == null || class_NBTCompressedStreamTools_loadFileMethod == null) return false;
 
         try {
