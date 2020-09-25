@@ -1,31 +1,62 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.LegacySchematic;
+import com.elmakers.mine.bukkit.block.Schematic;
 
+@SuppressWarnings("unchecked")
 public class SchematicUtils extends CompatibilityUtils {
-    public static boolean loadLegacySchematic(File inputFile, LegacySchematic schematic) {
-        if (inputFile == null || !inputFile.exists() || schematic == null) {
-            return false;
-        }
 
-        InputStream inputStream = null;
+    public static boolean loadSchematic(InputStream input, Schematic schematic) {
+        if (input == null || schematic == null || class_NBTCompressedStreamTools_loadFileMethod == null) return false;
+
         try {
-            inputStream = new FileInputStream(inputFile);
+            Object nbtData = class_NBTCompressedStreamTools_loadFileMethod.invoke(null, input);
+            if (nbtData == null) {
+                return false;
+            }
+
+            short width = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Width");
+            short height = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Height");
+            short length = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Length");
+
+            Object palette = class_NBTTagCompound_getCompoundMethod.invoke(nbtData, "Palette");
+            byte[] blockData = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "BlockData");
+            Map<Integer, String> paletteDataMap = null;
+            Map<Integer, Material> paletteMaterialMap = null;
+
+            if (palette != null) {
+                // Map the palette
+                paletteDataMap = new HashMap<>();
+                paletteMaterialMap = new HashMap<>();
+                Set<String> keys = (Set<String>)class_NBTTagCompound_getKeysMethod.invoke(palette);
+                for (String key : keys) {
+                    int index = (int)class_NBTTagCompound_getIntMethod.invoke(palette, key);
+                    paletteDataMap.put(index, key);
+                    Material material = CompatibilityUtils.getMaterial(key);
+                    if (material != null) {
+                        paletteMaterialMap.put(index, material);
+                    }
+                }
+            }
+
+            Vector origin = new Vector(0, 0, 0);
+            schematic.load(width, height, length, blockData, paletteMaterialMap, paletteDataMap, null, null, origin);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
-
-        return loadLegacySchematic(inputStream, schematic);
+        return true;
     }
 
     public static boolean loadLegacySchematic(InputStream input, LegacySchematic schematic) {

@@ -1662,6 +1662,25 @@ public class CompatibilityUtils extends NMSUtils {
         return materialIdMap.get(id);
     }
 
+    public static Material getMaterial(String blockData) {
+        String[] pieces = StringUtils.split(blockData, "[", 2);
+        if (pieces.length == 0) return null;
+        pieces = StringUtils.split(pieces[0], ":", 2);
+        if (pieces.length == 0) return null;
+        String materialKey = "";
+        if (pieces.length == 2) {
+            if (!pieces[0].equals("minecraft")) return null;
+            materialKey = pieces[1];
+        } else {
+            materialKey = pieces[0];
+        }
+        try {
+            return Material.valueOf(materialKey.toUpperCase());
+        } catch (Exception ignore) {
+        }
+        return null;
+    }
+
     public static boolean isLegacy(Material material) {
         if (class_Material_isLegacyMethod == null) {
             return false;
@@ -1877,6 +1896,10 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean hasBlockDataSupport() {
+        return class_Block_getBlockDataMethod != null;
     }
 
     public static String getBlockData(Block block) {

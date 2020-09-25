@@ -802,6 +802,46 @@ public class MagicController implements MageController {
     }
 
     @Nullable
+    protected InputStream findSchematic(String schematicName, String extension) {
+        InputStream inputSchematic;
+        try {
+            // Check extra path first
+            File extraSchematicFile = null;
+            File magicSchematicFolder = new File(plugin.getDataFolder(), "schematics");
+            if (magicSchematicFolder.exists()) {
+                extraSchematicFile = new File(magicSchematicFolder, schematicName + "." + extension);
+                info("Checking for schematic: " + extraSchematicFile.getAbsolutePath(), 2);
+                if (!extraSchematicFile.exists()) {
+                    extraSchematicFile = null;
+                }
+            }
+            if (extraSchematicFile == null && extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+                File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+                if (schematicFolder.exists()) {
+                    extraSchematicFile = new File(schematicFolder, schematicName + "." + extension);
+                    info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath(), 2);
+                }
+            }
+
+            if (extraSchematicFile != null && extraSchematicFile.exists()) {
+                inputSchematic = new FileInputStream(extraSchematicFile);
+                info("Loading file: " + extraSchematicFile.getAbsolutePath());
+            } else {
+                String fileName = schematicName + "." + extension;
+                inputSchematic = plugin.getResource("schematics/" + fileName);
+                info("Loading builtin schematic: " + fileName);
+            }
+            if (inputSchematic == null) {
+                throw new FileNotFoundException();
+            }
+        } catch (Exception ignored) {
+            getLogger().warning("Could not load schematic: " + schematicName);
+            inputSchematic = null;
+        }
+        return inputSchematic;
+    }
+
+    @Nullable
     @Override
     public Schematic loadSchematic(String schematicName) {
         if (schematicName == null || schematicName.length() == 0) return null;
@@ -816,48 +856,35 @@ public class MagicController implements MageController {
             }
         }
 
-        InputStream inputSchematic;
-        try {
-            // Check extra path first
-            File extraSchematicFile = null;
-            File magicSchematicFolder = new File(plugin.getDataFolder(), "schematics");
-            if (magicSchematicFolder.exists()) {
-                extraSchematicFile = new File(magicSchematicFolder, schematicName + ".schematic");
-                info("Checking for schematic: " + extraSchematicFile.getAbsolutePath(), 2);
-                if (!extraSchematicFile.exists()) {
-                    extraSchematicFile = null;
-                }
-            }
-            if (extraSchematicFile == null && extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-                File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-                if (schematicFolder.exists()) {
-                    extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
-                    info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath(), 2);
-                }
-            }
+        // Look for new schematic format first
+        if (CompatibilityUtils.hasBlockDataSupport()) {
+            final InputStream inputSchematic = findSchematic(schematicName, "schem");
+            if (inputSchematic != null) {
+                com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic();
+                schematics.put(schematicName, new WeakReference<>(schematic));
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                    try {
+                        SchematicUtils.loadSchematic(inputSchematic, schematic);
+                        info("Finished loading schematic");
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
 
-            if (extraSchematicFile != null && extraSchematicFile.exists()) {
-                inputSchematic = new FileInputStream(extraSchematicFile);
-                info("Loading file: " + extraSchematicFile.getAbsolutePath());
-            } else {
-                String fileName = schematicName + ".schematic";
-                inputSchematic = plugin.getResource("schematics/" + fileName);
-                info("Loading builtin schematic: " + fileName);
+                return schematic;
             }
-
-            if (inputSchematic == null) {
-                throw new FileNotFoundException();
-            }
-        } catch (Exception ignored) {
-            getLogger().warning("Could not load schematic: " + schematicName);
-            return null;
         }
 
+        // Look for legacy schematic
+        final InputStream legacySchematic = findSchematic(schematicName, "schematic");
+        if (legacySchematic == null) {
+            return null;
+        }
         LegacySchematic schematic = new LegacySchematic();
         schematics.put(schematicName, new WeakReference<>(schematic));
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                SchematicUtils.loadLegacySchematic(inputSchematic, schematic);
+                SchematicUtils.loadLegacySchematic(legacySchematic, schematic);
                 info("Finished loading schematic");
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -904,8 +931,11 @@ public class MagicController implements MageController {
                     ZipEntry entry = zip.getNextEntry();
                     while (entry != null) {
                         String name = entry.getName();
-                        if (name.startsWith("schematics/") && name.endsWith(".schematic")) {
-                            String schematicName = name.replace(".schematic", "").replace("schematics/", "");
+                        if (name.startsWith("schematics/") && (name.endsWith(".schem") || name.endsWith(".schematic"))) {
+                            String schematicName = name
+                                .replace(".schematic", "")
+                                .replace(".schem", "")
+                                .replace("schematics/", "");
                             schematicNames.add(schematicName);
                         }
                         entry = zip.getNextEntry();
@@ -922,8 +952,10 @@ public class MagicController implements MageController {
             if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
                 File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
                 for (File schematicFile : schematicFolder.listFiles()) {
-                    if (schematicFile.getName().endsWith(".schematic")) {
-                        String schematicName = schematicFile.getName().replace(".schematic", "");
+                    if (schematicFile.getName().endsWith(".schematic") || schematicFile.getName().endsWith(".schem")) {
+                        String schematicName = schematicFile.getName()
+                            .replace(".schematic", "")
+                            .replace(".schem", "");
                         schematicNames.add(schematicName);
                     }
                 }
