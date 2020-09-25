@@ -4,6 +4,7 @@
 
  - Fix issues with attributes on armor and wands not applying when worn/held
  - Add support for .schem schematics
+ - Fix cage spell (updated schematic)
  - Change "passive" wand/armor property to "worn" ("passive" will still work though)
  - The wands in the "ranks" example are now static wands, they are not on a path nor are they bound.
  - Allow using a mob type/key in a "mount" config in another mob
