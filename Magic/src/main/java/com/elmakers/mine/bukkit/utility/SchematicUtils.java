@@ -50,8 +50,34 @@ public class SchematicUtils extends CompatibilityUtils {
                 }
             }
 
+            // Load entities
+            Collection<Object> tileEntityData = new ArrayList<>();
+            Collection<Object> entityData = new ArrayList<>();
+
+            Object entityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", NBT_TYPE_COMPOUND);
+            Object tileEntityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", NBT_TYPE_COMPOUND);
+            if (tileEntityList == null) {
+                tileEntityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "BlockEntities", NBT_TYPE_COMPOUND);
+            }
+
+            if (entityList != null) {
+                int size = (Integer)class_NBTTagList_sizeMethod.invoke(entityList);
+                for (int i = 0; i < size; i++) {
+                    Object entity = class_NBTTagList_getMethod.invoke(entityList, i);
+                    entityData.add(entity);
+                }
+            }
+
+            if (tileEntityList != null) {
+                int size = (Integer)class_NBTTagList_sizeMethod.invoke(tileEntityList);
+                for (int i = 0; i < size; i++) {
+                    Object tileEntity = class_NBTTagList_getMethod.invoke(tileEntityList, i);
+                    tileEntityData.add(tileEntity);
+                }
+            }
+
             Vector origin = new Vector(0, 0, 0);
-            schematic.load(width, height, length, blockData, paletteMaterialMap, paletteDataMap, null, null, origin);
+            schematic.load(width, height, length, blockData, paletteMaterialMap, paletteDataMap, tileEntityData, entityData, origin);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
