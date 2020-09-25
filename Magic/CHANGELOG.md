@@ -12,6 +12,7 @@
  - Armor can now be made to be worn in a slot other than the vanilla slot it's supposed to go in (see: hardhat)
  - Undroppable wands can not be used as crafting ingredients
  - Wands are once again unstashable by default. Set `unstashable: false` on base_bound to turn this back off
+ - Fix error in Commit spell
 
 # 7.10.4
 
