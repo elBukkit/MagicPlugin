@@ -6580,6 +6580,7 @@ public class MagicController implements MageController {
         return resourcePack;
     }
 
+    @Override
     public boolean isResourcePackEnabledByDefault() {
         return isResourcePackEnabledByDefault;
     }
