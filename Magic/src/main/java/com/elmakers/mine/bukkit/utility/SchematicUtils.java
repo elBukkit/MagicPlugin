@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.LegacySchematic;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.Schematic;
 
 @SuppressWarnings("unchecked")
@@ -32,20 +33,17 @@ public class SchematicUtils extends CompatibilityUtils {
 
             Object palette = class_NBTTagCompound_getCompoundMethod.invoke(nbtData, "Palette");
             byte[] blockData = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "BlockData");
-            Map<Integer, String> paletteDataMap = null;
-            Map<Integer, Material> paletteMaterialMap = null;
+            Map<Integer, MaterialAndData> paletteMap = null;
 
             if (palette != null) {
                 // Map the palette
-                paletteDataMap = new HashMap<>();
-                paletteMaterialMap = new HashMap<>();
+                paletteMap = new HashMap<>();
                 Set<String> keys = (Set<String>)class_NBTTagCompound_getKeysMethod.invoke(palette);
                 for (String key : keys) {
                     int index = (int)class_NBTTagCompound_getIntMethod.invoke(palette, key);
-                    paletteDataMap.put(index, key);
                     Material material = CompatibilityUtils.getMaterial(key);
                     if (material != null) {
-                        paletteMaterialMap.put(index, material);
+                        paletteMap.put(index, new MaterialAndData(material, key));
                     }
                 }
             }
@@ -77,7 +75,7 @@ public class SchematicUtils extends CompatibilityUtils {
             }
 
             Vector origin = new Vector(0, 0, 0);
-            schematic.load(width, height, length, blockData, paletteMaterialMap, paletteDataMap, tileEntityData, entityData, origin);
+            schematic.load(width, height, length, blockData, paletteMap, tileEntityData, entityData, origin);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
