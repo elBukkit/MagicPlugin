@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,7 +19,7 @@ import com.elmakers.mine.bukkit.block.Schematic;
 @SuppressWarnings("unchecked")
 public class SchematicUtils extends CompatibilityUtils {
 
-    public static boolean loadSchematic(InputStream input, Schematic schematic) {
+    public static boolean loadSchematic(InputStream input, Schematic schematic, Logger log) {
         if (input == null || schematic == null || class_NBTCompressedStreamTools_loadFileMethod == null) return false;
 
         try {
@@ -33,6 +34,7 @@ public class SchematicUtils extends CompatibilityUtils {
 
             Object palette = class_NBTTagCompound_getCompoundMethod.invoke(nbtData, "Palette");
             byte[] blockData = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "BlockData");
+            int[] blockMap = null;
             Map<Integer, MaterialAndData> paletteMap = null;
 
             if (palette != null) {
@@ -45,6 +47,27 @@ public class SchematicUtils extends CompatibilityUtils {
                     if (material != null) {
                         paletteMap.put(index, new MaterialAndData(material, key));
                     }
+                }
+            }
+            if (blockData != null) {
+                int varInt = 9;
+                int varIntLength = 0;
+                int index = 0;
+                blockMap = new int[width * height * length];
+
+                for (int i = 0; i < blockData.length; i++) {
+                    varInt |= (blockData[i] & 127) << (varIntLength++ * 7);
+
+                    if ((blockData[i] & 128) == 128) {
+                        continue;
+                    }
+
+                    blockMap[index++] = varInt;
+                    varIntLength = 0;
+                    varInt = 0;
+                }
+                if (index != blockMap.length - 1) {
+                    log.warning("Block data array length does not match dimensions in schematic");
                 }
             }
 
@@ -75,7 +98,7 @@ public class SchematicUtils extends CompatibilityUtils {
             }
 
             Vector origin = new Vector(0, 0, 0);
-            schematic.load(width, height, length, blockData, paletteMap, tileEntityData, entityData, origin);
+            schematic.load(width, height, length, blockMap, paletteMap, tileEntityData, entityData, origin);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

@@ -864,7 +864,7 @@ public class MagicController implements MageController {
                 schematics.put(schematicName, new WeakReference<>(schematic));
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     try {
-                        SchematicUtils.loadSchematic(inputSchematic, schematic);
+                        SchematicUtils.loadSchematic(inputSchematic, schematic, getLogger());
                         info("Finished loading schematic");
                     } catch (Exception ex) {
                         ex.printStackTrace();

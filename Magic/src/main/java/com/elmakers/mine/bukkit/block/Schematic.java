@@ -7,7 +7,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 public class Schematic  extends AbstractSchematic {
-    public void load(short width, short height, short length, byte[] blockTypes, Map<Integer, MaterialAndData> palette, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin) {
+    public void load(short width, short height, short length, int[] blockTypes, Map<Integer, MaterialAndData> palette, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin) {
         initialize(width, height, length);
         loadEntities(entityData, origin);
         loadTileEntities(tileEntityData);

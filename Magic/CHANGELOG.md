@@ -2,9 +2,11 @@
 
 # 7.10.5
 
+ - Wands are once again unstashable by default. Set `unstashable: false` on base_bound to turn this back off
  - Fix issues with attributes on armor and wands not applying when worn/held
+ - Fix error in Commit spell
  - Add support for .schem schematics
- - Fix cage spell (updated schematic)
+ - Fix cage, wolfhouse spells (updated all builtin schematics)
  - Fix pasting schematics on older Spigot versions
  - Change "passive" wand/armor property to "worn" ("passive" will still work though)
  - The wands in the "ranks" example are now static wands, they are not on a path nor are they bound.
@@ -14,8 +16,6 @@
  - Add netherrite armor and tools to wearable and melee material lists
  - Armor can now be made to be worn in a slot other than the vanilla slot it's supposed to go in (see: hardhat)
  - Undroppable wands can not be used as crafting ingredients
- - Wands are once again unstashable by default. Set `unstashable: false` on base_bound to turn this back off
- - Fix error in Commit spell
 
 # 7.10.4
 
