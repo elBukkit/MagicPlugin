@@ -127,6 +127,7 @@ architect:
       - schematic|compact_house
       - schematic|small_house
       - schematic|nathanwolf
+      - schematic|warped_house
 
       # 1.13
 
