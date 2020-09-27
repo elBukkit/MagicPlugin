@@ -16,6 +16,7 @@
  - Add netherrite armor and tools to wearable and melee material lists
  - Armor can now be made to be worn in a slot other than the vanilla slot it's supposed to go in (see: hardhat)
  - Undroppable wands can not be used as crafting ingredients
+ - Command variables changed such that @tx, etc prints integer and $tx prints with decimals
 
 # 7.10.4
 

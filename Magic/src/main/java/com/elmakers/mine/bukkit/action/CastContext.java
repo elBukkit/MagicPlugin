@@ -1318,18 +1318,24 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         if (location != null) {
             command = command
                     .replace("@world", location.getWorld().getName())
-                    .replace("@x", Double.toString(location.getX()))
-                    .replace("@y", Double.toString(location.getY()))
-                    .replace("@z", Double.toString(location.getZ()));
+                    .replace("$x", Double.toString(location.getX()))
+                    .replace("$y", Double.toString(location.getY()))
+                    .replace("$z", Double.toString(location.getZ()))
+                    .replace("@x", Integer.toString(location.getBlockX()))
+                    .replace("@y", Integer.toString(location.getBlockY()))
+                    .replace("@z", Integer.toString(location.getBlockZ()));
         }
 
         Location targetLocation = getTargetLocation();
         if (targetLocation != null) {
             command = command
                     .replace("@tworld", targetLocation.getWorld().getName())
-                    .replace("@tx", Double.toString(targetLocation.getX()))
-                    .replace("@ty", Double.toString(targetLocation.getY()))
-                    .replace("@tz", Double.toString(targetLocation.getZ()));
+                    .replace("$tx", Double.toString(targetLocation.getX()))
+                    .replace("$ty", Double.toString(targetLocation.getY()))
+                    .replace("$tz", Double.toString(targetLocation.getZ()))
+                    .replace("@tx", Integer.toString(targetLocation.getBlockX()))
+                    .replace("@ty", Integer.toString(targetLocation.getBlockY()))
+                    .replace("@tz", Integer.toString(targetLocation.getBlockZ()));
         }
 
         Entity targetEntity = getTargetEntity();
