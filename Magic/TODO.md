@@ -5,6 +5,8 @@
  - airship schematic, paintings and item frames didn't undo
  - breaking schematic builds drops dirt
 
+ - Can fly through glass panes on a broomstick
+
  - Allow customizing effects, or lists in general?
  - Paginate wands and spells command output, make base class of SelectionManager, like Paginator<T extends Named>
  - Need NPC "template" command to change inherited template?

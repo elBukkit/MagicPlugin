@@ -22,6 +22,7 @@
  - Undroppable wands can not be used as crafting ingredients
  - Command variables changed such that @tx, etc prints integer and $tx prints with decimals
  - Add "orient" parameter to Atom effect
+ - Support color codes in NPC names and dialog
 
 # 7.10.4
 

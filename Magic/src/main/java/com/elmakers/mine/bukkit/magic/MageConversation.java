@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class MageConversation {
@@ -30,7 +31,7 @@ public class MageConversation {
             String message = formatString.replace("$line", line);
             message = message.replace("$speaker", speaker.getDisplayName())
                     .replace("$target", target.getDisplayName());
-            target.sendMessage(message);
+            target.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
         }
         nextLine++;
         return nextLine >= dialog.size();
