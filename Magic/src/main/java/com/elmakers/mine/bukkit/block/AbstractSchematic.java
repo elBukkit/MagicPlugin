@@ -55,9 +55,16 @@ public abstract class AbstractSchematic implements Schematic {
     }
 
     protected void addTileEntity(BlockVector blockLocation, MaterialAndData block) {
-        if (tileEntities == null) return;
+        addTileEntity(blockLocation, block, false);
+    }
+
+    protected MaterialAndData addTileEntity(BlockVector blockLocation, MaterialAndData block, boolean copy) {
+        if (tileEntities == null) return block;
         Object tileEntity = tileEntities.get(blockLocation);
         if (tileEntity != null) {
+            if (copy) {
+                block = new MaterialAndData(block);
+            }
             try {
                 if (DefaultMaterials.isCommand(block.getMaterial())) {
                     String customName = NMSUtils.getMetaString(tileEntity, "CustomName");
@@ -72,6 +79,7 @@ public abstract class AbstractSchematic implements Schematic {
                 ex.printStackTrace();
             }
         }
+        return block;
     }
 
     protected void loadEntities(Collection<Object> entityData, Vector origin) {

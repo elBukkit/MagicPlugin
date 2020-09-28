@@ -25,7 +25,7 @@ public class Schematic  extends AbstractSchematic {
                         if (material != null) {
                             // Check for tile entity data
                             BlockVector blockLocation = new BlockVector(x, y, z);
-                            addTileEntity(blockLocation, material);
+                            material = addTileEntity(blockLocation, material, true);
                             blocks[x][y][z] = material;
                         }
                     }
