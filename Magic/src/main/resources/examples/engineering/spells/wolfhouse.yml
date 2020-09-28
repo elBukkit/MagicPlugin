@@ -7,6 +7,7 @@ wolfhouse:
     class: ConstructSpell
     worth: 1000
     cancellable: false
+    cast_on_no_target: false
     effects:
         cast:
         -  class: EffectSingle
@@ -14,6 +15,24 @@ wolfhouse:
         -  class: EffectTrail
            particle: block_crack
     parameters:
+        ignore_region_overrides: true
+        target_type: LivingEntity
+        allow_max_range: true
+        check_destructible: false
+        physics: defer
+        range: 16
+        radius: 4
+        type: sphere
+        cooldown: 20000
+        brush: schematic|wolfhouse
+        obx: -3
+        oby: -22
+        obz: 10
+        otx: 1
+        oty: 1
+        brushmod: erase
+        transparent: transparent_to_construction
+        destructible: destructible_replace
         commands:
           wolf_generate: castp @p[distance=..7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
           wolf_underwater: castp @p[distance=..7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water
