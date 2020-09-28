@@ -273,6 +273,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         } else {
             isValid = false;
         }
+        isTargetValid = true;
         fillWithAir = true;
         mode = BrushMode.MATERIAL;
     }
@@ -410,6 +411,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
         pieces = splitMaterialKey(activeMaterial);
         isValid = true;
+        isTargetValid = true;
         if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
             enableCopying();
         } else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
@@ -456,19 +458,19 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public boolean update(final Mage fromMage, final Location target) {
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
             if (cloneSource == null) {
-                isValid = false;
+                isTargetValid = false;
                 return true;
             }
             if (cloneTarget == null) cloneTarget = target;
             materialTarget = toTargetLocation(target);
             if (materialTarget.getY() < 0 || materialTarget.getWorld() == null || materialTarget.getY() > materialTarget.getWorld().getMaxHeight()) {
-                isValid = false;
+                isTargetValid = false;
             } else {
                 Block block = materialTarget.getBlock();
                 if (!block.getChunk().isLoaded()) return false;
 
                 updateFromBlock(block, fromMage.getRestrictedMaterialSet());
-                isValid = fillWithAir || material != Material.AIR;
+                isTargetValid = fillWithAir || material != Material.AIR;
             }
         }
 
@@ -477,16 +479,16 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 return true;
             }
             if (cloneTarget == null) {
-                isValid = false;
+                isTargetValid = false;
                 return true;
             }
             Vector diff = target.toVector().subtract(cloneTarget.toVector());
             com.elmakers.mine.bukkit.api.block.MaterialAndData newMaterial = schematic.getBlock(diff);
             if (newMaterial == null) {
-                isValid = false;
+                isTargetValid = false;
             } else {
                 updateFrom(newMaterial);
-                isValid = fillWithAir || newMaterial.getMaterial() != Material.AIR;
+                isTargetValid = fillWithAir || newMaterial.getMaterial() != Material.AIR;
             }
         }
 
@@ -513,7 +515,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                     controller.getLogger().log(Level.WARNING, "Error reading map id " + mapId, ex);
                 }
             }
-            isValid = false;
+            isTargetValid = false;
             if (mapCanvas != null && cloneTarget != null) {
                 Vector diff = target.toVector().subtract(cloneTarget.toVector());
 
@@ -538,7 +540,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 if (mapColor != null) {
                     this.material = mapMaterialBase;
                     DefaultMaterials.getInstance().colorize(this, mapColor);
-                    isValid = this.material != null;
+                    isTargetValid = this.material != null;
                 }
             }
         }

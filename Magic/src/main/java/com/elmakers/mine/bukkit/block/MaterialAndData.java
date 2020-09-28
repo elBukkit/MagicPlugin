@@ -84,6 +84,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected BlockExtraData extraData;
     protected String blockData;
     protected boolean isValid = true;
+    protected boolean isTargetValid = true;
 
     public static final Material DEFAULT_MATERIAL = Material.AIR;
 
@@ -368,6 +369,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
             blockData = o.blockData;
             isValid = o.isValid;
+            isTargetValid = o.isTargetValid;
             if (o.tags != null) {
                 tags = new HashMap<>(o.tags);
             }
@@ -396,6 +398,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         isValid = material != null;
+        isTargetValid = true;
     }
 
     @Override
@@ -468,6 +471,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         isValid = true;
+        isTargetValid = true;
     }
 
     public static void clearItems(BlockState block) {
@@ -508,7 +512,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     @SuppressWarnings("deprecation")
     public void modify(Block block, boolean applyPhysics) {
-        if (!isValid) return;
+        if (!isValid || !isTargetValid) return;
 
         try {
             BlockState blockState = block.getState();
