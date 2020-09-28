@@ -131,7 +131,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         if (subCommand.equalsIgnoreCase("clearcache"))
         {
             api.clearCache();
-            sender.sendMessage("Image map cache cleared.");
+            sender.sendMessage("Image map and schematic caches cleared.");
             return true;
         }
         if (subCommand.equalsIgnoreCase("commit"))
