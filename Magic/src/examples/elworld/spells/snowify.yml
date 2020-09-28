@@ -1,0 +1,11 @@
+snowify:
+  icon: snowball
+  actions:
+    cast:
+      - class: ModifyEntity
+  parameters:
+    target: other
+    target_type: Fox
+    range: 32
+    type: fox
+    fox_type: snow
