@@ -5662,6 +5662,25 @@ public class MagicController implements MageController {
 
     @Override
     @Nullable
+    public EntityData getMob(ConfigurationSection parameters) {
+        String mobType = parameters.getString("type");
+        com.elmakers.mine.bukkit.entity.EntityData mob = null;
+        if (mobType != null && !mobType.isEmpty()) {
+            mob = getMob(mobType);
+        }
+        if (mob != null && parameters != null && !parameters.getKeys(false).isEmpty()) {
+            mob = mob.clone();
+            ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(mob.getConfiguration());
+            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
+            mob.load(this, effectiveParameters);
+        } else if (mob == null) {
+            mob = new com.elmakers.mine.bukkit.entity.EntityData(this, parameters);
+        }
+        return mob;
+    }
+
+    @Override
+    @Nullable
     public EntityData getMobByName(String name) {
         return mobs.getByName(name);
     }

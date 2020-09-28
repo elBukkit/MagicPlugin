@@ -3,6 +3,7 @@
 # 7.10.5
 
  - Wands are once again unstashable by default. Set `unstashable: false` on base_bound to turn this back off
+ - Fix EntityProjectile mob parameters getting ignored
  - Fix issues with attributes on armor and wands not applying when worn/held
  - Fix error in Commit spell
  - Add support for .schem schematics

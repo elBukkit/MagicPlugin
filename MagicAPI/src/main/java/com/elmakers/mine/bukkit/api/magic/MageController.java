@@ -440,6 +440,8 @@ public interface MageController {
     @Nullable
     EntityData getMob(String key);
     @Nullable
+    EntityData getMob(ConfigurationSection parameters);
+    @Nullable
     EntityData getMob(Entity entity);
     @Nullable
     EntityData getMobByName(String name);
