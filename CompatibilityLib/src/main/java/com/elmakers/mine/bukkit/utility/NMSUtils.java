@@ -33,6 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import java.io.InputStream;
@@ -72,8 +73,9 @@ public class NMSUtils {
 
     protected final static int NBT_TYPE_COMPOUND = 10;
     protected final static int NBT_TYPE_INT_ARRAY= 11;
-    protected final static int NBT_TYPE_DOUBLE = 6;
+    protected final static int NBT_TYPE_INTEGER = 3;
     protected final static int NBT_TYPE_FLOAT = 5;
+    protected final static int NBT_TYPE_DOUBLE = 6;
     protected final static int NBT_TYPE_STRING = 8;
 
     protected static int WITHER_SKULL_TYPE = 66;
@@ -214,6 +216,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getCompoundMethod;
     protected static Method class_NBTTagCompound_getShortMethod;
     protected static Method class_NBTTagCompound_getByteArrayMethod;
+    protected static Method class_NBTTagCompound_getIntArrayMethod;
     protected static Method class_NBTTagCompound_getListMethod;
     protected static Method class_Entity_saveMethod;
     protected static Method class_Entity_getTypeMethod;
@@ -869,6 +872,14 @@ public class NMSUtils {
                     class_ItemDye_bonemealMethod = null;
                     Bukkit.getLogger().info("Couldn't bind to ItemDye bonemeal method, Bonemeal action will not work");
                 }
+            }
+
+
+            try {
+                class_NBTTagCompound_getIntArrayMethod = class_NBTTagCompound.getMethod("getIntArray", String.class);
+            } catch (Throwable ex) {
+                class_NBTTagCompound_getIntArrayMethod = null;
+                Bukkit.getLogger().info("Couldn't bind to NBT getIntArray method, pasting tile entities from schematics may not work");
             }
 
             try {
@@ -2501,6 +2512,18 @@ public class NMSUtils {
             if (x != null && y != null && z != null) {
                 return new Vector(x, y, z);
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static BlockVector getBlockVector(Object entityData, String tag) {
+        if (class_NBTTagCompound_getIntArrayMethod == null) return null;
+        try {
+            int[] coords = (int[])class_NBTTagCompound_getIntArrayMethod.invoke(entityData, tag);
+            if (coords == null || coords.length < 3) return null;
+            return new BlockVector(coords[0], coords[1], coords[2]);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

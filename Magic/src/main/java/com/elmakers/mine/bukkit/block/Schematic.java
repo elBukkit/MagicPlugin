@@ -1,10 +1,13 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class Schematic  extends AbstractSchematic {
     public void load(short width, short height, short length, int[] blockTypes, Map<Integer, MaterialAndData> palette, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin) {
@@ -30,5 +33,21 @@ public class Schematic  extends AbstractSchematic {
             }
         }
         loaded = true;
+    }
+
+    @Override
+    protected void loadTileEntities(Collection<Object> tileEntityData) {
+        if (tileEntityData == null || tileEntityData.isEmpty()) return;
+        tileEntities = new HashMap<>();
+        for (Object tileEntity : tileEntityData)
+        {
+            try {
+                BlockVector position = NMSUtils.getBlockVector(tileEntity, "Pos");
+                if (position == null) continue;
+                tileEntities.put(position, tileEntity);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }

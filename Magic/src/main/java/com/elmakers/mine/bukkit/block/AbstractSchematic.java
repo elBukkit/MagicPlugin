@@ -35,7 +35,7 @@ public abstract class AbstractSchematic implements Schematic {
     }
 
     protected void loadTileEntities(Collection<Object> tileEntityData) {
-        if (tileEntityData == null) return;
+        if (tileEntityData == null || tileEntityData.isEmpty()) return;
         tileEntities = new HashMap<>();
         for (Object tileEntity : tileEntityData)
         {
@@ -75,7 +75,7 @@ public abstract class AbstractSchematic implements Schematic {
     }
 
     protected void loadEntities(Collection<Object> entityData, Vector origin) {
-        if (entityData == null) return;
+        if (entityData == null || entityData.isEmpty()) return;
         for (Object entity : entityData) {
             String type = NMSUtils.getMetaString(entity, "id");
             Vector position = NMSUtils.getPosition(entity, "Pos");

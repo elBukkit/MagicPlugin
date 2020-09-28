@@ -50,7 +50,7 @@ public class SchematicUtils extends CompatibilityUtils {
                 }
             }
             if (blockData != null) {
-                int varInt = 9;
+                int varInt = 0;
                 int varIntLength = 0;
                 int index = 0;
                 blockMap = new int[width * height * length];
@@ -66,7 +66,7 @@ public class SchematicUtils extends CompatibilityUtils {
                     varIntLength = 0;
                     varInt = 0;
                 }
-                if (index != blockMap.length - 1) {
+                if (index != blockMap.length) {
                     log.warning("Block data array length does not match dimensions in schematic");
                 }
             }
@@ -76,9 +76,11 @@ public class SchematicUtils extends CompatibilityUtils {
             Collection<Object> entityData = new ArrayList<>();
 
             Object entityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", NBT_TYPE_COMPOUND);
-            Object tileEntityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", NBT_TYPE_COMPOUND);
-            if (tileEntityList == null) {
+            Object tileEntityList = null;
+            if ((boolean)class_NBTTagCompound_hasKeyMethod.invoke(nbtData, "BlockEntities")) {
                 tileEntityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "BlockEntities", NBT_TYPE_COMPOUND);
+            } else {
+                class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", NBT_TYPE_COMPOUND);
             }
 
             if (entityList != null) {
