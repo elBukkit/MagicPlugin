@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -9,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,6 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class MagicGiveCommandExecutor extends MagicTabExecutor {
     public MagicGiveCommandExecutor(MagicAPI api) {
@@ -50,7 +54,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
         } else {
             playerName = args[0];
             Player testPlayer = DeprecatedUtils.getPlayer(playerName);
-            if (testPlayer == null) {
+            if (testPlayer == null && !playerName.startsWith("@")) {
                 itemName = args[0];
                 countString = args[1];
             } else {
@@ -68,58 +72,66 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        Player player = null;
-        if (playerName != null && sender.hasPermission("Magic.commands.mgive.others")) {
-            player = DeprecatedUtils.getPlayer(playerName);
-        }
-
-        if (player == null) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage("Console usage: mgive <player> <item> [count]");
-                return true;
-            }
-            player = (Player)sender;
-        }
-
         if (!api.hasPermission(sender, "Magic.create." + itemName) && !api.hasPermission(sender, "Magic.create.*")) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to create " + itemName);
             return true;
         }
 
-        Set<String> customCosts = controller.getCurrencyKeys();
-        if (itemName.equalsIgnoreCase("xp")) {
-            api.giveExperienceToPlayer(player, count);
-            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " experience to " + ChatColor.GOLD + player.getName());
-            return true;
-        } else if (itemName.equalsIgnoreCase("sp")) {
-            Mage mage = controller.getMage(player);
-            mage.addSkillPoints(count);
-            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " skill points to " + ChatColor.GOLD + player.getName());
-            return true;
-        } else if (customCosts.contains(itemName)) {
-            Mage mage = controller.getMage(player);
-            mage.addCurrency(itemName, count);
-            sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " " + controller.getMessages().get("currency." + itemName + ".name", itemName)
-                    + " to " + ChatColor.GOLD + player.getName());
-            return true;
-        } else {
-            final Mage mage = controller.getMage(player);
-            final int itemCount = count;
-            itemName = itemName.replace("minecraft", "");
-            final String itemKey = itemName;
-            api.getController().createItem(itemName, mage, false, new ItemUpdatedCallback() {
-                @Override
-                public void updated(@Nullable ItemStack itemStack) {
-                    if (itemStack == null) {
-                        sender.sendMessage(ChatColor.RED + "Unknown item type " + ChatColor.DARK_RED + itemKey);
-                        return;
+        List<Player> players = new ArrayList<>();
+        if (playerName != null && sender.hasPermission("Magic.commands.mgive.others")) {
+            List<Entity> targets = NMSUtils.selectEntities(sender, playerName);
+            if (targets != null) {
+                for (Entity entity : targets) {
+                    if (entity instanceof Player) {
+                        players.add((Player)entity);
                     }
-                    itemStack.setAmount(itemCount);
-                    String displayName = api.describeItem(itemStack);
-                    sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + itemCount + " " + ChatColor.LIGHT_PURPLE + displayName + ChatColor.AQUA + " to " + ChatColor.GOLD + mage.getName());
-                    mage.giveItem(itemStack);
                 }
-            });
+            } else {
+                Player player = DeprecatedUtils.getPlayer(playerName);
+                if (player == null) {
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage("Console usage: mgive <player> <item> [count]");
+                        return true;
+                    }
+                    player = (Player)sender;
+                }
+                players.add(player);
+            }
+        }
+
+        Set<String> customCosts = controller.getCurrencyKeys();
+        for (Player player : players) {
+            if (itemName.equalsIgnoreCase("xp")) {
+                api.giveExperienceToPlayer(player, count);
+                sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " experience to " + ChatColor.GOLD + player.getName());
+            } else if (itemName.equalsIgnoreCase("sp")) {
+                Mage mage = controller.getMage(player);
+                mage.addSkillPoints(count);
+                sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " skill points to " + ChatColor.GOLD + player.getName());
+            } else if (customCosts.contains(itemName)) {
+                Mage mage = controller.getMage(player);
+                mage.addCurrency(itemName, count);
+                sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " " + controller.getMessages().get("currency." + itemName + ".name", itemName)
+                        + " to " + ChatColor.GOLD + player.getName());
+            } else {
+                final Mage mage = controller.getMage(player);
+                final int itemCount = count;
+                itemName = itemName.replace("minecraft", "");
+                final String itemKey = itemName;
+                api.getController().createItem(itemName, mage, false, new ItemUpdatedCallback() {
+                    @Override
+                    public void updated(@Nullable ItemStack itemStack) {
+                        if (itemStack == null) {
+                            sender.sendMessage(ChatColor.RED + "Unknown item type " + ChatColor.DARK_RED + itemKey);
+                            return;
+                        }
+                        itemStack.setAmount(itemCount);
+                        String displayName = api.describeItem(itemStack);
+                        sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + itemCount + " " + ChatColor.LIGHT_PURPLE + displayName + ChatColor.AQUA + " to " + ChatColor.GOLD + mage.getName());
+                        mage.giveItem(itemStack);
+                    }
+                });
+            }
         }
 
         return true;

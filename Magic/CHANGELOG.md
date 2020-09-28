@@ -23,6 +23,7 @@
  - Command variables changed such that @tx, etc prints integer and $tx prints with decimals
  - Add "orient" parameter to Atom effect
  - Support color codes in NPC names and dialog
+ - Support selectors in wandp, mgive and castp commands
 
 # 7.10.4
 

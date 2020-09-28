@@ -18,6 +18,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -35,6 +36,7 @@ import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.WandMode;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
@@ -54,16 +56,26 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                 sender.sendMessage("Usage: /wandp [player] [wand name/command]");
                 return true;
             }
-            Player player = DeprecatedUtils.getPlayer(args[0]);
+            String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+            String playerName = args[0];
+            List<Entity> targets = NMSUtils.selectEntities(sender, playerName);
+            if (targets != null) {
+                for (Entity target : targets) {
+                    if (target instanceof Player) {
+                        processWandCommand("wandp", sender, (Player)target, args2);
+                    }
+                }
+                return true;
+            }
+            Player player = DeprecatedUtils.getPlayer(playerName);
             if (player == null) {
-                sender.sendMessage("Can't find player " + args[0]);
+                sender.sendMessage("Can't find player " + playerName);
                 return true;
             }
             if (!player.isOnline()) {
-                sender.sendMessage("Player " + args[0] + " is not online");
+                sender.sendMessage("Player " + playerName + " is not online");
                 return true;
             }
-            String[] args2 = Arrays.copyOfRange(args, 1, args.length);
             return processWandCommand("wandp", sender, player, args2);
         }
 

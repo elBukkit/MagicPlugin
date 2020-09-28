@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - Support custom prefixes for spells, used by NPCs to put their name in front of everything
+
  - airship schematic, paintings and item frames didn't undo
  - breaking schematic builds drops dirt
 

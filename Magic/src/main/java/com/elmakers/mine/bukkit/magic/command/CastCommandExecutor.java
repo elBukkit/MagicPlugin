@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class CastCommandExecutor extends MagicTabExecutor {
 
@@ -39,98 +42,115 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             String playerName = args[0];
+            List<Entity> targets = NMSUtils.selectEntities(sender, playerName);
+            List<Mage> mages = new ArrayList<>();
+            if (targets != null) {
+                MageController controller = api.getController();
+                for (Entity entity : targets) {
+                    Mage mage = controller.getMage(entity);
+                    mages.add(mage);
+                }
+            } else {
+                // Look for Entity-based Mages
+                Mage mage = null;
+                if (playerName.contains(",")) {
+                    String[] idPieces = StringUtils.split(playerName, ',');
+                    if (idPieces.length == 4 || idPieces.length == 2) {
+                        try {
+                            String entityId = idPieces[idPieces.length - 1];
+                            Entity entity = CompatibilityUtils.getEntity(UUID.fromString(entityId));
+                            if (entity == null) {
+                                if (sender != null) sender.sendMessage("Entity not found with id " + entityId);
+                                return false;
+                            }
 
-            // Look for Entity-based Mages
-            Mage mage = null;
-            if (playerName.contains(",")) {
-                String[] idPieces = StringUtils.split(playerName, ',');
-                if (idPieces.length == 4 || idPieces.length == 2) {
-                    try {
-                        String entityId = idPieces[idPieces.length - 1];
-                        Entity entity = CompatibilityUtils.getEntity(UUID.fromString(entityId));
-                        if (entity == null) {
-                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId);
+                            MageController controller = api.getController();
+                            mage = controller.getMage(entity);
+
+                            // If we have the mage, we no longer want to send anything to the console.
+                            sender = null;
+
+                        } catch (Throwable ex) {
+                            if (sender != null) sender.sendMessage("Failed to find entity by id, check server logs for errors");
+                            ex.printStackTrace();
                             return false;
                         }
+                    }
+                }
+                else if (playerName.contains(":")) {
+                    // Look for custom id/name Mages
+                    String[] pieces = StringUtils.split(playerName, ':');
+                    String mageId = pieces[0];
+                    String mageName = (pieces.length > 0) ? pieces[1] : mageId;
 
-                        MageController controller = api.getController();
-                        mage = controller.getMage(entity);
+                    MageController controller = api.getController();
+                    mage = controller.getMage(mageId, mageName);
+                }
 
-                        // If we have the mage, we no longer want to send anything to the console.
-                        sender = null;
+                Player player = DeprecatedUtils.getPlayer(playerName);
+                if (mage == null && player == null && playerName.contains("-")) {
+                    try {
+                        Entity entity = CompatibilityUtils.getEntity(UUID.fromString(playerName));
+                        if (entity != null) {
+                            mage = api.getController().getMage(entity);
 
+                            // If we have the mage, we no longer want to send anything to the console.
+                            sender = null;
+                        }
                     } catch (Throwable ex) {
-                        if (sender != null) sender.sendMessage("Failed to find entity by id, check server logs for errors");
+                        if (sender != null) sender.sendMessage("Failed to find entity " + playerName + ", check server logs for errors");
                         ex.printStackTrace();
                         return false;
                     }
                 }
-            }
-            else if (playerName.contains(":")) {
-                // Look for custom id/name Mages
-                String[] pieces = StringUtils.split(playerName, ':');
-                String mageId = pieces[0];
-                String mageName = (pieces.length > 0) ? pieces[1] : mageId;
-
-                MageController controller = api.getController();
-                mage = controller.getMage(mageId, mageName);
-            }
-
-            Player player = DeprecatedUtils.getPlayer(playerName);
-            if (mage == null && player == null && playerName.contains("-")) {
-                try {
-                    Entity entity = CompatibilityUtils.getEntity(UUID.fromString(playerName));
-                    if (entity != null) {
-                        mage = api.getController().getMage(entity);
-
-                        // If we have the mage, we no longer want to send anything to the console.
-                        sender = null;
+                if (mage == null && player != null) {
+                    if (!player.isOnline()) {
+                        if (sender != null) sender.sendMessage("Player " + playerName + " is not online");
+                        return true;
                     }
-                } catch (Throwable ex) {
-                    if (sender != null) sender.sendMessage("Failed to find entity " + playerName + ", check server logs for errors");
-                    ex.printStackTrace();
-                    return false;
+                    mage = controller.getMage(player);
+
+                }
+                if (mage != null) {
+                    mages.add(mage);
                 }
             }
 
-            if (mage != null && !mage.isLoading()) {
-                String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
-                if (castParameters.length < 1) {
-                    if (sender != null) sender.sendMessage("Invalid command line, expecting more parameters");
-                    return false;
-                }
-
-                String spellName = castParameters[0];
-                Spell spell = mage.getSpell(spellName);
-                if (spell == null) {
-                    if (sender != null) sender.sendMessage("Unknown spell " + spellName);
-                    return false;
-                }
-
-                String[] parameters = new String[castParameters.length - 1];
-                for (int i = 1; i < castParameters.length; i++)
-                {
-                    parameters[i - 1] = castParameters[i];
-                }
-
-                if (spell.cast(parameters)) {
-                    if (sender != null) sender.sendMessage("Cast " + spell.getName() + " as " + mage.getName());
-                } else {
-                    if (sender != null) sender.sendMessage("Failed to cast " + spell.getName() + " as " + mage.getName());
+            if (mages.isEmpty()) {
+                if (sender != null) {
+                    sender.sendMessage("No targets match selectors");
                 }
                 return true;
             }
 
-            if (player == null) {
-                if (sender != null) sender.sendMessage("Can't find player " + playerName);
-                return true;
+            for (Mage mage : mages) {
+                if (mage != null && !mage.isLoading()) {
+                    String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
+                    if (castParameters.length < 1) {
+                        if (sender != null) sender.sendMessage("Invalid command line, expecting more parameters");
+                        return false;
+                    }
+
+                    String spellName = castParameters[0];
+                    Spell spell = mage.getSpell(spellName);
+                    if (spell == null) {
+                        if (sender != null) sender.sendMessage("Unknown spell " + spellName);
+                        return false;
+                    }
+
+                    String[] parameters = new String[castParameters.length - 1];
+                    for (int i = 1; i < castParameters.length; i++) {
+                        parameters[i - 1] = castParameters[i];
+                    }
+
+                    if (spell.cast(parameters)) {
+                        if (sender != null) sender.sendMessage("Cast " + spell.getName() + " as " + mage.getName());
+                    } else {
+                        if (sender != null) sender.sendMessage("Failed to cast " + spell.getName() + " as " + mage.getName());
+                    }
+                }
             }
-            if (!player.isOnline()) {
-                if (sender != null) sender.sendMessage("Player " + playerName + " is not online");
-                return true;
-            }
-            String[] args2 = Arrays.copyOfRange(args, 1, args.length);
-            return processCastCommand(sender, player, args2);
+            return true;
         }
 
         if (commandName.equalsIgnoreCase("cast"))
