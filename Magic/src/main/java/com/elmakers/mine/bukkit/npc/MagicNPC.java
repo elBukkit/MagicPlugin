@@ -223,7 +223,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             controller.getLogger().warning("Failed to restore NPC entity");
             return null;
         }
-        entity.setCustomName(name);
+        entity.setCustomName(getName());
         this.uuid = entity.getUniqueId();
         return entity;
     }
