@@ -10,6 +10,7 @@
  - Fix cage, wolfhouse spells (updated all builtin schematics)
  - Fix pasting schematics on older Spigot versions
  - Fix Wolf House spell/item
+ - Fix off-by-one error selecting NPCs by index
  - Add ModifyEntity action (see snowify example in elworld configs)
  - Change "passive" wand/armor property to "worn" ("passive" will still work though)
  - The wands in the "ranks" example are now static wands, they are not on a path nor are they bound.

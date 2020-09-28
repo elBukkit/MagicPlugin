@@ -273,9 +273,12 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         if (list != null && name != null && !name.isEmpty()) {
             try {
                 int index = Integer.parseInt(name);
-                if (index > 0 && index < list.size()) {
-                    npc = list.get(index);
+                if (index <= 0 || index > list.size()) {
+                    mage.sendMessage(ChatColor.RED + "Index out of range: " + ChatColor.WHITE + name
+                        + ChatColor.GRAY + "/" + ChatColor.WHITE + list.size());
+                    return;
                 }
+                npc = list.get(index - 1);
             } catch (NumberFormatException ignore) {
             }
         }
