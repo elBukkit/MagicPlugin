@@ -5671,7 +5671,10 @@ public class MagicController implements MageController {
         if (mob != null && parameters != null && !parameters.getKeys(false).isEmpty()) {
             mob = mob.clone();
             ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(mob.getConfiguration());
+            // Have to preserve the mob type config, it can't be overridden
+            String originalType = effectiveParameters.getString("type", mobType);
             effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
+            effectiveParameters.set("type", originalType);
             mob.load(this, effectiveParameters);
         } else if (mob == null) {
             mob = new com.elmakers.mine.bukkit.entity.EntityData(this, parameters);
