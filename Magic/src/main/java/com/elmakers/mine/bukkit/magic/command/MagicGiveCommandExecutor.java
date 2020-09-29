@@ -89,14 +89,17 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             } else {
                 Player player = DeprecatedUtils.getPlayer(playerName);
                 if (player == null) {
-                    if (!(sender instanceof Player)) {
-                        sender.sendMessage("Console usage: mgive <player> <item> [count]");
-                        return true;
-                    }
-                    player = (Player)sender;
+                    sender.sendMessage("No players matched: " + playerName);
+                    return true;
                 }
                 players.add(player);
             }
+        } else {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("Console usage: mgive <player> <item> [count]");
+                return true;
+            }
+            players.add((Player)sender);
         }
 
         Set<String> customCosts = controller.getCurrencyKeys();
