@@ -12,7 +12,7 @@ potterwand:
       gold_axe: wood_hoe:25
       gold_pickaxe: wood_hoe:26
     active_spell: vermillious
-    quiet: 1
+    quiet: 0
     effect_color: '888888'
     effect_bubbles: false
 
