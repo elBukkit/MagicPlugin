@@ -64,6 +64,8 @@ public interface Spell extends SpellTemplate {
     boolean isDisguiseRestricted();
     void sendMessage(String message);
     void castMessage(String message);
+    void sendMessageKey(String key, String message);
+    void castMessageKey(String key, String message);
     MaterialAndData getEffectMaterial();
     @Nullable
     String getEffectParticle();

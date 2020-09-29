@@ -159,7 +159,9 @@ public interface CastContext extends WandEffectContext {
     Location findPlaceToStand(Location target, int verticalSearchDistance, boolean goUp);
     void castMessage(String message);
     void sendMessage(String message);
+    void castMessageKey(String key, String message);
     void castMessageKey(String key);
+    void sendMessageKey(String key, String message);
     void sendMessageKey(String key);
     void showMessage(String message);
     void showMessage(String key, String def);

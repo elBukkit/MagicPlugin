@@ -244,6 +244,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean cancelEffects = false;
     protected boolean commandBlockAllowed       = true;
     protected int verticalSearchDistance        = 8;
+    protected Set<String> hideMessages          = null;
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
@@ -618,6 +619,28 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    public void sendMessageKey(String key) {
+        sendMessageKey(key, null);
+    }
+
+    @Override
+    public void sendMessageKey(String key, String message) {
+        if (hideMessages != null && hideMessages.contains(key.toLowerCase())) return;
+        if (message == null) message = getMessage(key);
+        sendMessage(message);
+    }
+
+    public void castMessageKey(String key) {
+        castMessageKey(key, null);
+    }
+
+    @Override
+    public void castMessageKey(String key, String message) {
+        if (hideMessages != null && hideMessages.contains(key.toLowerCase())) return;
+        if (message == null) message = getMessage(key);
+        castMessage(message);
+    }
+
     @Nullable
     @Override
     public Location getLocation() {
@@ -901,6 +924,13 @@ public class BaseSpell implements MageSpell, Cloneable {
             requiredUpgradeTags = null;
         } else {
             requiredUpgradeTags = new HashSet<>(pathTags);
+        }
+
+        List<String> hideMessageKeys = ConfigurationUtils.getStringList(node, "hide_messages");
+        if (hideMessageKeys == null || hideMessageKeys.isEmpty()) {
+            hideMessages = null;
+        } else {
+            hideMessages = new HashSet<>(hideMessageKeys);
         }
 
         requiredSpells = new ArrayList<>();
@@ -1293,7 +1323,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         String timeDescription = "";
         if (cooldownRemaining > 0) {
             timeDescription = controller.getMessages().getTimeDescription(cooldownRemaining, "wait", "cooldown");
-            castMessage(getMessage("cooldown").replace("$time", timeDescription));
+            castMessageKey("cooldown", getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN, workingParameters);
             sendCastMessage(SpellResult.COOLDOWN, " (no cast)");
             return false;
@@ -1305,9 +1335,9 @@ public class BaseSpell implements MageSpell, Cloneable {
             String costDescription = required.getDescription(controller.getMessages(), mage);
             // Send loud messages when items are required.
             if (required.isItem()) {
-                sendMessage(baseMessage.replace("$cost", costDescription));
+                sendMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
             } else {
-                castMessage(baseMessage.replace("$cost", costDescription));
+                castMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
             }
             processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
             sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
@@ -1655,7 +1685,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 } else if (targetEntity != null) {
                     message = getMessage("cast_entity", message);
                 }
-                castMessage(message);
+                castMessageKey(resultName, message);
             } else
             // Special cases where messaging is handled elsewhere
             if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
@@ -1666,9 +1696,9 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
 
                 if (result.isFailure()) {
-                    sendMessage(getMessage(resultName, message));
+                    sendMessageKey(resultName, getMessage(resultName, message));
                 } else {
-                    castMessage(getMessage(resultName, message));
+                    castMessageKey(resultName, getMessage(resultName, message));
                 }
             }
         }
@@ -2400,7 +2430,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public boolean cancel()
     {
         if (isActive()) {
-            sendMessage(getMessage("cancel"));
+            sendMessageKey("cancel");
         }
         if (currentCast != null) {
             currentCast.cancelEffects();
@@ -2448,7 +2478,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
             mage.deactivateSpell(this);
             if (!quiet) {
-                sendMessage(getMessage("deactivate"));
+                sendMessageKey("deactivate");
             }
             if (currentCast != null) {
                 currentCast.addResult(SpellResult.DEACTIVATE);

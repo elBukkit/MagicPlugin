@@ -76,7 +76,7 @@ public class ThrowBlockAction extends BaseProjectileAction
             ItemStack requires = buildWith.getItemStack(1);
             if (!mage.hasItem(requires, consumeVariants)) {
                 String requiresMessage = context.getMessage("insufficient_resources");
-                context.sendMessage(requiresMessage.replace("$cost", buildWith.getName()));
+                context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", buildWith.getName()));
                 return SpellResult.STOP;
             }
             mage.removeItem(requires, consumeVariants);

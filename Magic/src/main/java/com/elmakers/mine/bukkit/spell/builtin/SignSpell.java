@@ -43,7 +43,7 @@ public class SignSpell extends BlockSpell
             if (player == null) {
                 return SpellResult.PLAYER_REQUIRED;
             }
-            castMessage(getMessage("cast_give"));
+            castMessageKey("cast_give");
             controller.giveItemToPlayer(player, new ItemStack(Material.SIGN, 4));
             return SpellResult.CAST;
         }

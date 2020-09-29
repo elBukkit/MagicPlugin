@@ -420,7 +420,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     protected void crash()
     {
         deactivate(true, false);
-        sendMessage(getMessage("crash"));
+        sendMessageKey("crash");
         mage.deactivateAllSpells();
         playEffects("crash");
         LivingEntity livingEntity = mage.getLivingEntity();

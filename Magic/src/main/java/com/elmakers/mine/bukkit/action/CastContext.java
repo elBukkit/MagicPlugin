@@ -713,21 +713,27 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     }
 
     @Override
-    public void castMessageKey(String key)
-    {
-        if (baseSpell != null)
-        {
-            baseSpell.castMessage(getMessage(key));
+    public void castMessageKey(String key, String message) {
+        if (baseSpell != null) {
+            baseSpell.castMessageKey(key, message);
         }
     }
 
     @Override
-    public void sendMessageKey(String key)
-    {
-        if (baseSpell != null)
-        {
-            baseSpell.sendMessage(getMessage(key));
+    public void castMessageKey(String key) {
+        castMessageKey(key, null);
+    }
+
+    @Override
+    public void sendMessageKey(String key, String message) {
+        if (baseSpell != null) {
+            baseSpell.sendMessageKey(key, message);
         }
+    }
+
+    @Override
+    public void sendMessageKey(String key) {
+        sendMessageKey(key, null);
     }
 
     @Override

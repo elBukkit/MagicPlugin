@@ -516,7 +516,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             warpName = ChatColor.translateAlternateColorCodes('&', warpName);
             String unlockMessage = context.getMessage("unlock_warp").replace("$name", warpName);
-            context.sendMessage(unlockMessage);
+            context.sendMessageKey("unlock_warp", unlockMessage);
 
             return SpellResult.CAST;
         }
@@ -568,7 +568,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             mageData.set(friendKey, friendString);
 
             String message = context.getMessage("add_friend").replace("$name", online.getDisplayName());
-            context.sendMessage(message);
+            context.sendMessageKey("add_friend", message);
 
             return SpellResult.CAST;
         }
@@ -594,7 +594,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             mageData.set(friendKey, friendString);
 
             String message = context.getMessage("remove_friend").replace("$name", online.getDisplayName());
-            context.sendMessage(message);
+            context.sendMessageKey("remove_friend", message);
 
             return SpellResult.DEACTIVATE;
         }
@@ -1018,7 +1018,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 if (warpName != null && serverName != null) {
                     context.getController().warpPlayerToServer(player, serverName, warpName);
                 } else {
-                    context.sendMessage(waypoint.failMessage);
+                    context.sendMessageKey("teleport_failed", waypoint.failMessage);
                 }
             return false;
         }
@@ -1035,9 +1035,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
         mage.enableSuperProtection(protectionTime);
         if (context.teleport(player, targetLocation, verticalSearchDistance, waypoint.safe, waypoint.safe)) {
-            context.castMessage(waypoint.message);
+            context.castMessageKey("teleport", waypoint.message);
         } else {
-            context.castMessage(waypoint.failMessage);
+            context.sendMessageKey("teleport_failed", waypoint.failMessage);
         }
         return true;
     }

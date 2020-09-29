@@ -556,7 +556,7 @@ public class ConstructBatch extends BrushBatch {
                 ItemStack requires = brush.getItemStack(1);
                 if (!mage.hasItem(requires, consumeVariants)) {
                     String requiresMessage = context.getMessage("insufficient_resources");
-                    context.sendMessage(requiresMessage.replace("$cost", brush.getName()));
+                    context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", brush.getName()));
                     finish();
                     return;
                 }

@@ -1439,7 +1439,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
     public SpellResult start(CastContext context) {
         RequirementsResult check = checkDefaultRequirements(context);
         if (!check.result.isSuccess()) {
-            context.sendMessage(check.message);
+            context.sendMessageKey(check.result.name(), check.message);
             return check.result;
         }
 

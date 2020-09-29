@@ -24,6 +24,7 @@
  - Add "orient" parameter to Atom effect
  - Support color codes in NPC names and dialog
  - Support selectors in wandp, mgive and castp commands
+ - Add hide_messages, optional list on a spell to hide specific messages
 
 # 7.10.4
 
