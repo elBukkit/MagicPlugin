@@ -5162,16 +5162,17 @@ public class MagicController implements MageController {
                         return null;
                     }
 
-                    String spDescription = messages.get("currency." + costKey + ".description", messages.get("currency.description"));
-                    if (spDescription.length() > 0)
+                    String currencyDescription = messages.get("currency." + costKey + ".description", messages.get("currency.description"));
+                    if (currencyDescription.length() > 0)
                     {
                         List<String> lore = new ArrayList<>();
-                        lore.add(ChatColor.translateAlternateColorCodes('&', spDescription));
+                        InventoryUtils.wrapText(ChatColor.translateAlternateColorCodes('&', currencyDescription), lore);
                         meta.setLore(lore);
                     }
                     itemStack.setItemMeta(meta);
                     itemStack = CompatibilityUtils.makeReal(itemStack);
                     InventoryUtils.makeUnbreakable(itemStack);
+                    InventoryUtils.hideFlags(itemStack, 63);
                     Object currencyNode = InventoryUtils.createNode(itemStack, "currency");
                     InventoryUtils.setMetaInt(currencyNode, "amount", intAmount);
                     InventoryUtils.setMeta(currencyNode, "type", costKey);
