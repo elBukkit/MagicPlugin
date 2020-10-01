@@ -34,14 +34,14 @@ wolfhouse:
         transparent: transparent_to_construction
         destructible: destructible_replace
         commands:
-          wolf_generate: castp @p[distance=..7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt free true
+          wolf_generate: castp @p[distance=..7] wolfhouse type sphere loud true cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt free true
           wolf_underwater: castp @p[distance=..7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water free true
           wolf_dome: castp @p[distance=..7] supershell target none undo 0 type sphere brush stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35 free true
           wolf_shields: castp @p[distance=..7] supershell target none undo 0 brush obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37 free true
-          wolf_undo: castp @p[distance=..6] rollback free true
+          wolf_undo: castp @p[distance=..6] rollback free true target_caster true
           wolf_commit: castp @p[distance=..6] commit free true
           wolf_nothing: msg @p[distance=..6] Nothing here!
-          wolf_clear: castp @p[distance=..7] superblob target self type sphere brush erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36 free true
+          wolf_clear: castp @p[distance=..7] superblob target self brush erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36 free true destructible destructible,!glowstone
           wolf_destruct: castp @p[distance=..7] superblob target self brush erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60 free true
           wolf_convert: castp @p[distance=..7] superconvert target none undo 0 radius 64 md 128 ty ~-1 obx -1 obz 2 brush copy free true
           wolf_phase: castp @p[distance=..2] phase warmup 0 free true
