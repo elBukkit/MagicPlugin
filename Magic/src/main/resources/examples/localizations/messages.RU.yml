@@ -335,25 +335,6 @@ spell:
     upgrade_description_prefix: "&r&b&bull; &6"
     passive: "&2Пассивное"
     disabled: "&eВыключено"
-spells:
-    default:
-        fizzle: Заклинание ослабло!
-        backfire: Заклинание отлетело в вас!
-        fail: Что-то пошло не так!
-        insufficient_permission: У тебя нет прав использовать это здесь.
-        cast_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
-        indirect_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
-        insufficient_resources: Недостаточно $cost
-        insufficient: "&cТребуется &4$cost"
-        cooldown: Подожди $time.
-        cancelled: Твое заклинание было отменено
-        entity_required: Требуется сущность.
-        living_entity_required: Требуется живая сущность.
-        player_required: Требуется игрок.
-        location_required: Требуется место.
-        world_required: Требуется мир.
-        invalid_world: Указанный мир недействителен.
-        cast_finish: ""
 time:
     wait_seconds: еще $seconds сек.
     wait_minutes: еще $minutes мин.
@@ -371,242 +352,6 @@ time:
     description_moment: Мгновение
     description: "&eПерезарядка: &6$time"
     mage_description: "&cИстощение: &6$time"
-wand:
-    default_name: Палочка
-    upgrade_default_description: Улучшит твою палочку.
-    upgrade_item_description: "&eБудет поглощено твоей палочкой"
-    spell_item_description: "&eБудет поглощено твоей палочкой"
-    brush_item_description: "&eБудет поглощено твоей палочкой"
-    copy_material_name: Копия
-    copy_material_description: Заполняет выбранным материалом
-    erase_material_name: Стереть
-    erase_material_description: Заполняет воздухом
-    clone_material_name: Клонировать
-    clone_material_description: Копирует блоки
-    replicate_material_name: Репликация
-    replicate_material_description: Реплицирует клонируемую цель
-    clone_material_activated: Клонирование выбрано
-    replicate_material_activated: Репликация выбрано
-    erase_modifier_activated: Стереть выбрано
-    map_material_name: "Карта $id"
-    map_material_name_scaled: "Карта $id ($sizex$size)"
-    map_material_description: Создает пиксель-арт из последней карты, которую ты держал в руке
-    schematic_material_description: Использует $schematic для строительства.
-    building_material_description: Строит при помощи $material
-    upgrade_uses: "&aДобавляет $count использований"
-    upgrade_uses_singular: "&aДобавляет $count использование"
-    uses_remaining_brief: "&c$count использований"
-    uses_remaining_singular: "&c$count использование"
-    uses_remaining: $count использований осталось
-    enchantment_level_1: I
-    enchantment_level_2: II
-    enchantment_level_3: III
-    enchantment_level_4: IV
-    enchantment_level_5: V
-    enchantment_level_max: X
-    spell_count: Изучено $count Заклинаний
-    material_count: Имеет $count Материалов
-    upgrade_spell_count: Добавляет $count Заклинаний
-    upgrade_material_count: Добавляет $count Материалов
-    mana_max: "&eМана: $amount"
-    mana_amount: "&eМана: $amount"
-    mana_amount_boosted: "&eМана: $amount &f(&b$mana&f)"
-    mana_regeneration: "&eВосстановление маны: $amount/сек."
-    mana_per_damage: "&eЯрость маны: $amount/HP"
-    mana_regeneration_boosted: "&eВосстановление маны: $amount &f(&b$mana&f)&d/сек."
-    mana_boost: "&eУвеличение маны: $amount%"
-    mana_regeneration_boost: "&eУвеличение восстановления маны: $amount%"
-    sp_multiplier: "&6Увеличение полученных ОЗ: $amount%"
-    block_chance: "&bШанс блока $roman"
-    reflect_chance: "&bШанс отразить $roman"
-    cost_reduction: "&6Снижение стоимости $roman"
-    consume_reduction: "&6Снижение потребления"
-    cooldown_reduction: "&6Снижение перезарядки $roman"
-    power: "&6Сила $roman"
-    attributes: "&d$attribute $value"
-    property_stack: "+$property"
-    property_stack_negative: "&c$property"
-    property_value: "$property"
-    property_value_negative: "&c$property"
-    item_attributes:
-      GENERIC_ATTACK_DAMAGE: "Урон от атаки"
-    protection:
-      overall: "&2Защита $roman"
-      physical: "&2Физ. защита $roman"
-      projectile: "&2Зашита от снарядов $roman"
-      fall: "&2Невесомость $roman"
-      fire: "&2Огнеупорность $roman"
-      explosion: "&2Взрывоустойчивость $roman"
-      magic: "&2Защита от магии $roman"
-      unknown: "&2$type Защита $roman"
-    strength:
-      overall: '&2+Урон $roman'
-      physical: '&2+Физ. урон $roman'
-      projectile: '&2+Урон от снарядов $roman'
-      fall: '&2+Урон от падения $roman'
-      fire: '&2+Урон от огня $roman'
-      explosion: '&2+Урон от взрыва $roman'
-      magic: '&2Магический урон $roman'
-      unknown: '&2$type урон $roman'
-    weakness:
-      overall: '&4Уязвимость $roman'
-      physical: '&4Физ. уязвимость $roman'
-      projectile: '&4Уязвимость к снарядам $roman'
-      fall: '&4Уязвимость к падению $roman'
-      fire: '&4Уязвимость к огню $roman'
-      explosion: '&Уязвимость к взрывам $roman'
-      magic: '&4Уязвимость к магии $roman'
-      unknown: '&4$type Уязвимость $roman'
-    enchantments:
-        ARROW_DAMAGE: "Урон Стрелы"
-        ARROW_FIRE: "Пламя Стрелы"
-        ARROW_INFINITE: "Бесконечность"
-        ARROW_KNOCKBACK: "Откидывание Стрелы"
-        BINDING_CURSE: "Проклятие несъемности"
-        CHANNELING: "Громовержец"
-        DAMAGE_ALL: Острота
-        DAMAGE_ARTHROPODS: Бич членистоногих
-        DAMAGE_UNDEAD: Небесная кара
-        DEPTH_STRIDER: Ходьба под водой
-        DIG_SPEED: Эффективность
-        DURABILITY: Прочность
-        FIRE_ASPECT: Заговор огня
-        FROST_WALKER: Ледоход
-        IMPALING: Пронзание
-        KNOCKBACK: Отдача
-        LOOT_BONUS_BLOCKS: Удача
-        LOOT_BONUS_MOBS: Добыча
-        LOYALTY: Верность
-        LUCK: Везучий рыбак
-        LURE: Приманка
-        MENDING: Починка
-        OXYGEN: Подводное дыхание
-        PROTECTION_ENVIRONMENTAL: Защита
-        PROTECTION_EXPLOSIONS: Взрывоустойчивость
-        PROTECTION_FALL: Невесомость
-        PROTECTION_FIRE: Огнестойкость
-        PROTECTION_PROJECTILE: Защита от снарядов
-        RIPTIDE: Тягун
-        SILK_TOUCH: Шелковое касание
-        SWEEPING_EDGE: Разящий клинок
-        THORNS: Шипы
-        VANISHING_CURSE: Проклятие утраты
-        WATER_WORKER: Подводник
-    potion_effect: "&b$effect $roman"
-    super_powered: "&3Сверхмощный"
-    super_protected: "&3Неуязвимость"
-    spell_aura: "&bАура: &6$spell"
-    costs_description: Потребляет $description
-    active_costs_description: Потребляет $description в секунду
-    range_description: "&9Дальность: &6$range &9метров"
-    owner_description: "&2&oПалочка $name"
-    bound_description: "&3&oПринадлежит $name"
-    unmodifiable: Эта палочка не может быть модифицирована
-    player_unmodifiable: Палочка игрока $name не может быть модифицирована
-    bound_to_other: Эта палочка тебе не принадлежит
-    bound: Эта палочка принадлежит игроку $name
-    spell_added: "&d&oТы изучил заклинание &r&6$name"
-    brush_added: "&d&oТы изучил кисть &r&7$name"
-    player_spell_upgraded: "&d&oЗаклинание &r&6$name &d&oигрока $players улучшено до &3$level"
-    spell_upgraded: "&r&6$name &d&oбыло улучшено до &3$level"
-    spell_override_upgraded: "&r&6$name &d&oбыло улучшено"
-    upgraded_property: "&r&dТы был улучшен до &r&b$name"
-    spell_progression: "&r&6$name &d&oуровня &3$level&d&o/&3$max_level"
-    mana_added: "&r&dДобавлено $value маны"
-    hotbar_count: "$amount хотбаров"
-    player_upgraded: Палочка игрока $name была улучшена
-    player_not_upgraded: Палочка игрока $name не была улучшена
-    player_spells_levelled: "Улучшено $count заклинаний игрока $name"
-    player_spells_not_levelled: "Улучшено 0 заклинаний игрока $name"
-    spells_levelled: "Улучшено $count твоих заклинаний"
-    spells_not_levelled: "Улучшено 0 твоих заклинаний"
-    no_wand: Ты должен держать палочку в руке
-    player_no_wand: $name не держит в руке палочку
-    no_item: Ты должен держать предмет в руке
-    player_no_item: $name не держит в руке предмет
-    reorganized: "$wand &bбыла переорганизирована"
-    player_reorganized: Палочка игрока $name была переорганизирована
-    alphabetized: "$wand &bбыла отсортирована по алфавиту"
-    player_alphabetized: Палочка игрока $name была отсортирована по алфавиту
-    already_enchanted: Предмет $item уже является палочкой
-    enchanted: Предмет $item превратился в палочку
-    player_enchanted: Предмет $item игрока $name превратился в палочку
-    unenchanted: Твоя палочка превратилась в обычный предмет
-    player_unenchanted: Палочка игрока $name превратилась в обычный предмет
-    no_path: "&r&4$wand &4не может быть улучшена"
-    max_enchanted: "&r&4$wand &4больше не может быть улучшена"
-    duplicated: Твоя палочка была скопирована
-    player_duplicated: Палочка игрока $name была скопирована
-    restored: Твои палочки были восстановлены
-    player_restored: Палочки игрока $name были восстановлены
-    not_restored: У тебя нечего восстанавливать
-    player_not_restored: У игрока $name нечего восстанавливать
-    setbound: Твоя палочка теперь привязана к тебе
-    player_setbound: Палочка игрока $name теперь привязана к нему
-    unbound: Твоя палочка больше не привязана к тебе
-    player_unbound: Палочка игрока $name больше не привязана к нему
-    unboundall: Все твои палочки больше не привязаны к тебе
-    player_unboundall: Все палочки игрока $name больше не привязаны к нему. Их инвентарь не был очищен!
-    notunbound: "У тебя нет привязанных палочек '$wand'"
-    player_notunbound: "Игрок $name не имеет привязанных палочек '$wand'"
-    unlocked: Твоя палочка была разблокирована
-    player_unlocked: Палочка игрока $name была разблокирована
-    unknown_template: Неизвестное название $name
-    reconfigured: Палочка изменена
-    not_reconfigured: Палочка не изменена
-    removed_property: Убрано свойство $name
-    no_property: $wand не имеет свойства $name
-    player_reconfigured: Палочка игрока $name была изменена
-    player_not_reconfigured: Палочка игрока $name не была изменена
-    filled: "&b$wand &bтеперь содержит все твои заклинания"
-    player_filled: Палочка игрока $name была заполнена заклинаниями
-    renamed: Твоя палочка была переименована
-    player_renamed: Палочка игрока $name была переименована
-    self_destruct: Древний артефакт рассыпается в твоих руках
-    no_permission: "&r&4Тебе не разрешено использовать '$wand' &r&4здесь."
-    single_spell: Палочка с заклинанием $spell
-    fully_enchanted: "&cБольше нечего изучать &4(на данный момент)"
-    need_more_levels: "Нужно хотя бы &r&4$levels &d&oуровней для зачарования"
-    require_more_levels: "You must enchant at a higher level"
-    randomized_lore: Какая палочка достанется тебе?
-    randomized_name: Коробочка с Палочкой
-    upgrade_name: Улучшение - $name
-    randomized_description: "&o&2$description"
-    description_lore: "&o&a$description"
-    path_lore: ""
-    #path_lore: "&o$path"
-    hotbar_count_usage: "&eНажми $cycle_hotbar, когда $wand &eактивен(на), чтобы менять хотбары"
-    inventory_instructions: "&r&e$wand &eтеперь имеет больше одного заклинания. Нажми $toggle, чтобы открыть/закрыть инвентарь заклинаний. Нажимай клавиши хотбара (1-9), чтобы выбрать заклинание"
-    chest_instructions: "&r&e$wand &eтеперь имеет больше одного заклинания. Нажми $toggle, чтобы открыть/закрыть инвентарь заклинаний, нажми на заклинание, чтобы его применить."
-    skills_instructions: "&r&e$wand &eтеперь имеет больше одного заклинания. Нажми $toggle, чтобы открыть/закрыть инвентарь заклинаний, пермещай заклинания в хотбар, чтобы их применять."
-    cycle_instructions: "&r&e$wand &eтеперь имеет больше одного заклинания. Нажми $cycle, чтобы переключаться между заклинаниями."
-    page_instructions: "&r&e$wand &eтеперь имеет больше одной страницы заклинаний. Нажми вне рамок инвентаря, чтобы листать страницы."
-    bound_instructions: "&r&3$wand &3привязана к тебе и ее нельзя выбросить."
-    spell_instructions: "&r&bВзмахни своим посохом/палочкой, &bчтобы применить заклинание &r&6$spell&d&o. Заклинания потребляют ману, она отображена в виде полосы опыта над хотбаром."
-    enchant_instructions: "&r&b$wand &bможет быть улучшена на столе зачарований путем добавления на нее заклинаний."
-    brush_instructions: "&r&e$wand&e теперь имеет кисть. Шифт+$toggle, чтобы выбрать кисть."
-    sp_instructions: "&r&6Ты заработал немного Очков Заклинаний! ОЗ отображены над шкалой маны и могут быть потрачены в столе зачарования на покупку заклинаний. Комбинируй заклинания, чтобы получать больше ОЗ!"
-    earn_instructions: "&r&6Ты заработал немного $currency! Они отображены над шкалой маны и могут быть потрачены в столе зачарования на покупку заклинаний. Комбинируй заклинания, чтобы получать больше ОЗ!"
-    hotbar_changed: ""
-    spell_activated: "$spell"
-    upgrade_prefix: "&6"
-    single_use_prefix: "&4"
-    bound_prefix: "&3"
-    unbound_prefix: "&b"
-    has_path_prefix: "&d"
-    unmodifiable_prefix: "&6"
-    spell_prefix: "&6"
-    brush_prefix: "&7"
-    chest_inventory_title: "Заклинания"
-    # You can use this to show an action bar message whenever the player cycles their hotbar
-    #hotbar_changed: "a:Switched hotbars"
-    # Messages can also be sent as simple titles with default fade in/out
-    #hotbar_changed: "t:Switched hotbars"
-wands:
-  testwand:
-    name: Тестовая палочка
-    description: Пустая палочка для тестирования заклинаний.
-
 automata:
   awaken: '&c&o$name &r&5пробудился'
   default_name: Автоматон
@@ -824,22 +569,23 @@ paths:
     description: Заклинания лучника
 spells:
   default:
-    fizzle: Неудача!
-    backfire: Заклинание отразилось!
+    fizzle: Заклинание ослабло!
+    backfire: Заклинание отлетело в вас!
     fail: Что-то пошло не так!
-    insufficient_permission: Нету разрешения использовать это здесь.
-    cast_player_message: a:&d&o$player &r&5использует заклинание &3&o$spell &r&5!
-    indirect_player_message: a:&d&o$player &r&5использует заклинание &3&o$spell &r&5!
-    insufficient_resources: Нужна $cost
-    cooldown: Подожди $time
-    cancelled: Твое заклинание было отменено!
-    entity_required: Нужна цель(существо).
-    living_entity_required: Нужна цель(живое существо).
-    player_required: Нужна цель(игрок).
-    location_required: Нужна цель(местность).
-    world_required: Нужна цель(мир).
-    invalid_world: Выбранный мир не существует
-    cast_finish: ''
+    insufficient_permission: У тебя нет прав использовать это здесь.
+    cast_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
+    indirect_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
+    insufficient_resources: Недостаточно $cost
+    insufficient: "&cТребуется &4$cost"
+    cooldown: Подожди $time.
+    cancelled: Твое заклинание было отменено
+    entity_required: Требуется сущность.
+    living_entity_required: Требуется живая сущность.
+    player_required: Требуется игрок.
+    location_required: Требуется место.
+    world_required: Требуется мир.
+    invalid_world: Указанный мир недействителен.
+    cast_finish: ""
   admission:
     name: Вход
     description: Открывает выбранную дверь
@@ -2758,8 +2504,8 @@ wand:
     #hotbar_changed: "t:Switched hotbars"
 wands:
   testwand:
-    name: Test Wand
-    description: An empty wand to use for testing spells.
+    name: Тестовая палочка
+    description: Пустая палочка для тестирования заклинаний.
   default:
     name: Палочка
     description: '&rПалочка ранга $path'
@@ -3121,7 +2867,7 @@ wands:
     description: ПКМ, чтобы открыть меню способностей. Перетаскивай их в хотбар, чтобы использовать.
   spellbook:
     name: Книга заклинаний
-    description: &rКнига заклинаний ранга $path
+    description: "&rКнига заклинаний ранга $path"
     spell_instructions: '&r&bИспользуй кнопки хотбара 1-9, чтобы применить заклинания.'
     inventory_instructions: '&r&bПКМ, чтобы открыть меню заклинаний. Перетаскивай их в хотбар, чтобы использовать.'
   appearance_beginner:
