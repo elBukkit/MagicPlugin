@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.10.6
+
 # 7.10.5
 
  - Wands are once again unstashable by default. Set `unstashable: false` on base_bound to turn this back off
