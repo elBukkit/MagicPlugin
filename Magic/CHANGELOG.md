@@ -25,6 +25,7 @@
  - Support color codes in NPC names and dialog
  - Support selectors in wandp, mgive and castp commands
  - Add hide_messages, optional list on a spell to hide specific messages
+ - Add builtin Russian (RU) localization, thanks to Phantom
 
 # 7.10.4
 
