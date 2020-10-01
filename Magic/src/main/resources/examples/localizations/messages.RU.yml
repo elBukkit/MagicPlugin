@@ -108,7 +108,7 @@ item:
     cleaned: Твой предмет был очищен от всей магии
     no_item: Ты должен держать в руке предмет!
     renamed: Твой предмет был переименован
-    rename_clear: Персональное имя предмета было стерто 
+    rename_clear: Персональное имя предмета было стерто
     flag_added: "Добавлен $flag флаг к твоему предмету"
     flag_removed: "Убран $flag флаг у твоего предмета"
     no_flags: У этого предмета нет флагов
@@ -124,7 +124,7 @@ item:
     already_unplaceable: Этот предмет уже неставящийся
     add_unplaceable: Этот предмет теперь неставящийся
     remove_unplaceable: Этот предмет больше не неставящийся
-    no_enchants: Этот предмет не имеет зачарований 
+    no_enchants: Этот предмет не имеет зачарований
     no_enchant: "У этого предмета нет зачарования $enchant"
     enchant_removed: "Убрано зачарование $enchant у твоего предмета"
     enchant_added: "Добавлено зачарование $enchant к твоему предмету"
@@ -971,7 +971,6 @@ spells:
     name: Монстр
     description: Призывает монстра на твою сторону
     deactivate: Ты освободил своего монстра
-    cast: 
   mob:
     name: Орда
     description: Призывает орду монстров
@@ -1159,7 +1158,7 @@ spells:
     cast_finish: Заполнено $count блоков с $material
   superrepair:
     name: СуперПочинка
-    description: Чинит выбранную территорию 
+    description: Чинит выбранную территорию
     usage: Используй дважды, чтобы починить
     cancel: СуперПочинка отменена
     fail: Слишком большая область!
@@ -1372,7 +1371,7 @@ spells:
     cast_finish: Заполнено $count блоков с $material
   floodfill:
     name: Заполнить водой
-    description: Заполняет водой 
+    description: Заполняет водой
     cast_finish: Заполнено $count блоков с $material
   fire:
     name: Пламя
