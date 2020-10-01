@@ -57,6 +57,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             if (testPlayer == null && !playerName.startsWith("@")) {
                 itemName = args[0];
                 countString = args[1];
+                playerName = null;
             } else {
                 itemName = args[1];
             }
