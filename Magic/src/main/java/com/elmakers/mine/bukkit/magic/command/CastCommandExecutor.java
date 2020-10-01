@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Location;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -123,6 +125,11 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 return true;
             }
 
+            Location targetLocation = null;
+            if (sender instanceof BlockCommandSender) {
+                targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
+            }
+
             for (Mage mage : mages) {
                 if (mage != null && !mage.isLoading()) {
                     String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
@@ -143,7 +150,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                         parameters[i - 1] = castParameters[i];
                     }
 
-                    if (spell.cast(parameters)) {
+                    if (spell.cast(parameters, targetLocation)) {
                         if (sender != null) sender.sendMessage("Cast " + spell.getName() + " as " + mage.getName());
                     } else {
                         if (sender != null) sender.sendMessage("Failed to cast " + spell.getName() + " as " + mage.getName());
