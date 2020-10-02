@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.ConstructionType;
-import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -59,7 +58,6 @@ public class ConstructBatch extends BrushBatch {
     private final @Nonnull MaterialSet delayed;
     private final @Nonnull MaterialSet deferredTypes;
     private Set<String> replace;
-    private Map<String, String> commandMap;
 
     private boolean finishedNonAttached = false;
     private boolean finishedAttached = false;
@@ -567,14 +565,6 @@ public class ConstructBatch extends BrushBatch {
                 registerForUndo(block);
             }
 
-            // Check for command overrides
-            if (commandMap != null && DefaultMaterials.isCommand(brush.getMaterial())) {
-                String commandKey = brush.getCommandLine();
-                if (commandKey != null && commandKey.length() > 0 && commandMap.containsKey(commandKey)) {
-                    brush.setCommandLine(commandMap.get(commandKey));
-                }
-            }
-
             BlockState prior = block.getState();
             brush.modify(block, applyPhysics);
             if (!undoList.isScheduled()) {
@@ -602,14 +592,6 @@ public class ConstructBatch extends BrushBatch {
                 blockData.commit();
             }
         }
-    }
-
-    public void addCommandMapping(String key, String command) {
-        if (commandMap == null) {
-            commandMap = new HashMap<>();
-        }
-
-        commandMap.put(key,  command);
     }
 
     public void setReplace(Collection<MaterialAndData> replace) {

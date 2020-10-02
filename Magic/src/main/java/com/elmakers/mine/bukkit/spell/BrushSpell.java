@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -87,6 +88,15 @@ public class BrushSpell extends BlockSpell {
                     if (bestDyeColor != null) {
                         brush.colorize(bestDyeColor);
                     }
+                }
+            }
+
+            // Check for command block overrides
+            if (parameters.contains("brush_commands")) {
+                ConfigurationSection commandMap = parameters.getConfigurationSection("brush_commands");
+                Set<String> keys = commandMap.getKeys(false);
+                for (String key : keys) {
+                    brush.addCommandMapping(key, commandMap.getString(key));
                 }
             }
         } else {

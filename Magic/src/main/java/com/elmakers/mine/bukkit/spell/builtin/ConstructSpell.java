@@ -176,12 +176,14 @@ public class ConstructSpell extends BrushSpell
         }
 
         // Check for command block overrides
+        // this is here for backwards-compatibility, the better way to do this now is via brush_commands
+        // which is handled by BrushSpell
         if (parameters.contains("commands"))
         {
             ConfigurationSection commandMap = parameters.getConfigurationSection("commands");
             Set<String> keys = commandMap.getKeys(false);
             for (String key : keys) {
-                batch.addCommandMapping(key, commandMap.getString(key));
+                brush.addCommandMapping(key, commandMap.getString(key));
             }
         }
 

@@ -89,6 +89,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     private String schematicName = "";
     private boolean fillWithAir = true;
     private Vector orientVector = null;
+    private Map<String, String> commandMap;
 
     // For the MAP brush
     private Material mapMaterialBase = null;
@@ -489,6 +490,14 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             } else {
                 updateFrom(newMaterial);
                 isTargetValid = fillWithAir || newMaterial.getMaterial() != Material.AIR;
+
+                // Check for command overrides
+                if (commandMap != null && DefaultMaterials.isCommand(material)) {
+                    String commandKey = getCommandLine();
+                    if (commandKey != null && commandKey.length() > 0 && commandMap.containsKey(commandKey)) {
+                        setCommandLine(commandMap.get(commandKey));
+                    }
+                }
             }
         }
 
@@ -889,5 +898,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public String toString() {
         return mode + ": " + super.toString();
+    }
+
+    public void addCommandMapping(String key, String command) {
+        if (commandMap == null) {
+            commandMap = new HashMap<>();
+        }
+
+        commandMap.put(key,  command);
     }
 }
