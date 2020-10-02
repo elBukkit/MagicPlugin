@@ -4,6 +4,7 @@
 
  - Fix loading on old versions of Spigot
  - Fix errors using `/mgive someitem someamount` without a player target
+ - Some improvements to Wolf House
 
 # 7.10.5
 

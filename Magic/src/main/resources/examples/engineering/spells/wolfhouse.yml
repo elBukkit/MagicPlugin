@@ -1,10 +1,9 @@
-wolfhouse:
+wolfhouse_base:
     icon: spell_icon:158
     icon_disabled: spell_icon_disabled:158
     hidden: true
     icon_url: http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
     category: engineering
-    class: ConstructSpell
     worth: 1000
     cancellable: false
     cast_on_no_target: false
@@ -15,43 +14,98 @@ wolfhouse:
         -  class: EffectTrail
            particle: block_crack
     parameters:
-        ignore_region_overrides: true
-        target_type: LivingEntity
-        allow_max_range: true
-        check_destructible: false
-        physics: defer
-        range: 16
-        radius: 4
-        type: sphere
-        cooldown: 20000
-        brush: schematic|wolfhouse
-        obx: -3
-        oby: -22
-        obz: 10
-        otx: 1
-        oty: 1
-        brushmod: erase
-        transparent: transparent_to_construction
-        destructible: destructible_replace
-        commands:
-          wolf_generate: castp @p[distance=..7] wolfhouse type sphere loud true cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt free true
-          wolf_underwater: castp @p[distance=..7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water free true
-          wolf_dome: castp @p[distance=..7] supershell target none undo 0 type sphere brush stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35 free true
-          wolf_shields: castp @p[distance=..7] supershell target none undo 0 brush obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37 free true
-          wolf_undo: castp @p[distance=..6] rollback free true target_caster true
-          wolf_commit: castp @p[distance=..6] commit free true
-          wolf_nothing: msg @p[distance=..6] Nothing here!
-          wolf_clear: castp @p[distance=..7] superblob target self brush erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36 free true destructible destructible,!glowstone
-          wolf_destruct: castp @p[distance=..7] superblob target self brush erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60 free true
-          wolf_convert: castp @p[distance=..7] superconvert target none undo 0 radius 64 md 128 ty ~-1 obx -1 obz 2 brush copy free true
-          wolf_phase: castp @p[distance=..2] phase warmup 0 free true
-          wolf_tp_living: tp @p[distance=..4] ~7 ~15 ~-13
-          wolf_tp_observation: tp @p[distance=..3] ~-17 ~62 ~0
-          wolf_tp_hub: tp @p[distance=..4] ~-3 ~-2 ~24
-          wolf_tp_booth: tp @p[distance=..4] ~9 ~2 ~-29
-          wolf_tp_enchanting: tp @p[distance=..3] ~-5 ~35 ~-17
-          wolf_recall_wand: castp @p[distance=..2] recall type wand warmup 0 free true
-          wolf_recall_death: castp @p[distance=..2] recall type death warmup 0 free true
-          wolf_recall_spawn: castp @p[distance=..2] recall type spawn warmup 0 free true
-    costs:
-        mana: 1000
+      target: other
+      ignore_region_overrides: true
+      target_type: LivingEntity
+      allow_max_range: true
+      check_destructible: false
+      physics: defer
+      range: 16
+      type: sphere
+      cooldown: 20000
+      brush: schematic|wolfhouse
+      obx: -3
+      oby: -22
+      obz: 10
+      otx: 1
+      oty: 1
+      brushmod: erase
+      transparent: transparent_to_construction
+      destructible: destructible_replace
+      brush_commands:
+        wolf_generate: castp @p[distance=..7] wolfhouse_build loud true cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt free true
+        wolf_underwater: castp @p[distance=..7] wolfhouse_build cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water free true
+        wolf_dome: castp @p[distance=..7] wolfhouse_dome
+        wolf_shields: castp @p[distance=..7] wolfhouse_shields
+        wolf_undo: castp @p[distance=..6] rollback free true target_caster true
+        wolf_commit: castp @p[distance=..6] commit free true
+        wolf_nothing: msg @p[distance=..6] Nothing here!
+        wolf_clear: castp @p[distance=..7] wolfhouse_clear
+        wolf_destruct: castp @p[distance=..7] wolfhouse_destruct
+        wolf_convert: castp @p[distance=..7] superconvert target none undo 0 radius 64 md 128 ty ~-1 obx -1 obz 2 brush copy free true
+        wolf_phase: castp @p[distance=..2] phase warmup 0 free true
+        wolf_tp_living: tp @p[distance=..4] ~7 ~15 ~-13
+        wolf_tp_observation: tp @p[distance=..3] ~-17 ~62 ~0
+        wolf_tp_hub: tp @p[distance=..4] ~-3 ~-2 ~24
+        wolf_tp_booth: tp @p[distance=..4] ~9 ~2 ~-29
+        wolf_tp_enchanting: tp @p[distance=..3] ~-5 ~35 ~-17
+        wolf_recall_wand: castp @p[distance=..2] recall type wand warmup 0 free true
+        wolf_recall_death: castp @p[distance=..2] recall type death warmup 0 free true
+        wolf_recall_spawn: castp @p[distance=..2] recall type spawn warmup 0 free true
+
+wolfhouse:
+  inherit: wolfhouse_base
+  actions:
+    cast:
+    - class: Sphere
+      actions:
+        - class: ModifyBlock
+        - class: Skip
+          actions:
+          - class: Delay
+  parameters:
+    delay: 100
+    skip: 4
+    radius: 4
+  costs:
+    mana: 1000
+
+wolfhouse_build:
+  inherit: wolfhouse_base
+  class: ConstructSpell
+  cancellable: false
+  parameters:
+      target: none
+      undo: 0
+      type: sphere
+      max_dimension: 100
+      radius: 35
+      tx: ~-5
+      ty: ~16
+      tz: ~12
+      destructible: destructible_replace
+      transparent: transparent_to_construction
+      ignore_region_overrides: true
+
+wolfhouse_clear:
+  inherit: wolfhouse_build
+  parameters:
+    brush: erase
+    radius: 36
+
+wolfhouse_destruct:
+  inherit: wolfhouse_clear
+  parameters:
+    check_destructible: false
+    radius: 60
+
+wolfhouse_dome:
+  inherit: wolfhouse_build
+  parameters:
+    brush: stained_glass:15
+    thickness: 1
+
+wolfhouse_shields:
+  inherit: wolfhouse_dome
+  parameters:
+    brush: obisidian
