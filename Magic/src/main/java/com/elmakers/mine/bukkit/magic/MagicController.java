@@ -3864,15 +3864,6 @@ public class MagicController implements MageController {
             }
         }
 
-        // This is a bit of a hack to make automata maintain direction
-        if (targetLocation != null) {
-            Location mageLocation = mage.getLocation();
-            if (mageLocation != null) {
-                targetLocation.setPitch(mageLocation.getPitch());
-                targetLocation.setYaw(mageLocation.getYaw());
-            }
-        }
-
         SpellTemplate template = getSpellTemplate(spellName);
         if (template == null || !template.hasCastPermission(usePermissions))
         {
