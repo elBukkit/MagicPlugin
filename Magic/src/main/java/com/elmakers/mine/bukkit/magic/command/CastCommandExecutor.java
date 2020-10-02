@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
@@ -20,6 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -169,12 +171,20 @@ public class CastCommandExecutor extends MagicTabExecutor {
         } else {
             castParameters = null;
         }
-        boolean result = spell.cast(castParameters, targetLocation);
+        boolean result;
+        ((MagicController)controller).toggleCastCommandOverrides(mage, sender, true);
+        try {
+            result = spell.cast(castParameters, targetLocation);
+        } catch (Throwable ex) {
+            result = false;
+            controller.getLogger().log(Level.SEVERE, "Error casting spell via command", ex);
+        }
         if (result) {
             if (sender != null && messageSuffix != null) sender.sendMessage("Cast " + spell.getName() + messageSuffix);
         } else {
             if (sender != null && messageSuffix != null) sender.sendMessage("Failed to cast " + spell.getName() + messageSuffix);
         }
+        ((MagicController)controller).toggleCastCommandOverrides(mage, sender, false);
         return result;
     }
 
