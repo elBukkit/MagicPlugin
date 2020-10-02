@@ -708,7 +708,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             if (cloneTarget == null
                     || mode == BrushMode.CLONE
                     || !center.getWorld().getName().equals(cloneTarget.getWorld().getName())) {
-                cloneTarget = center;
+                cloneTarget = center.clone();
                 if (targetOffset != null) {
                     cloneTarget = cloneTarget.add(targetOffset);
                 }
@@ -722,7 +722,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 }
 
                 if (recenter) {
-                    cloneTarget = center;
+                    cloneTarget = center.clone();
                     if (targetOffset != null) {
                         cloneTarget = cloneTarget.add(targetOffset);
                     }
