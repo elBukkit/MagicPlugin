@@ -2,6 +2,14 @@ spells:
     wolfhouse:
         name: Wolf House
         description: Create an auto-regenerating base
+    wolfhouse_build:
+        name: Wolf House Expand
+    wolfhouse_clear:
+        name: Wolf House Self-Destruct
+    wolfhouse_dome:
+        name: Wolf House Dome
+    wolfhouse_shields:
+        name: Wolf House Shields
     convert:
         name: Convert
         description: Convert a spherical area of blocks
