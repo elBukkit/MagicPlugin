@@ -169,6 +169,7 @@ import com.elmakers.mine.bukkit.magic.listener.InventoryController;
 import com.elmakers.mine.bukkit.magic.listener.ItemController;
 import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
+import com.elmakers.mine.bukkit.magic.listener.MobController2;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.npc.MagicNPC;
@@ -989,6 +990,10 @@ public class MagicController implements MageController {
         explosionController = new ExplosionController(this);
         requirementsController = new RequirementsController(this);
 
+        if (NMSUtils.isCurrentVersion()) {
+            mobs2 = new MobController2(this);
+        }
+
         File urlMapFile = getDataFile(URL_MAPS_FILE);
         File imageCache = new File(dataFolder, "imagemapcache");
         imageCache.mkdirs();
@@ -1528,6 +1533,9 @@ public class MagicController implements MageController {
         pm.registerEvents(playerController, plugin);
         pm.registerEvents(inventoryController, plugin);
         pm.registerEvents(explosionController, plugin);
+        if (mobs2 != null) {
+            pm.registerEvents(mobs2, plugin);
+        }
     }
 
     public Collection<Mage> getPending() {
@@ -6808,6 +6816,7 @@ public class MagicController implements MageController {
     // Sub-Controllers
     private CraftingController                    crafting                    = null;
     private MobController                       mobs                        = null;
+    private MobController2                      mobs2                        = null;
     private ItemController                      items                        = null;
     private EnchantingController                enchanting                    = null;
     private AnvilController                        anvil                        = null;

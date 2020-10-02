@@ -27,7 +27,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.entity.EntityTransformEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -257,26 +256,6 @@ public class MobController implements Listener {
         if (toRemove != null) {
             for (Entity entity : toRemove) {
                 entity.remove();
-            }
-        }
-    }
-
-    @EventHandler
-    public void onEntityTransform(EntityTransformEvent event) {
-        Entity original = event.getEntity();
-        com.elmakers.mine.bukkit.api.entity.EntityData entityData = controller.getMob(original);
-        if (entityData != null && !entityData.isTransformable()) {
-            event.setCancelled(true);
-
-            // Sadly it seems the mob does not get their equipment back when this event is cancelled.
-            // I think it gets moved to the target entity, so we'll take it back.
-            Entity transformed = event.getTransformedEntity();
-            if (transformed instanceof LivingEntity && original instanceof LivingEntity) {
-                LivingEntity from = (LivingEntity)transformed;
-                LivingEntity to = (LivingEntity)original;
-                to.getEquipment().setArmorContents(from.getEquipment().getArmorContents());
-                to.getEquipment().setItemInMainHand(from.getEquipment().getItemInMainHand());
-                to.getEquipment().setItemInOffHand(from.getEquipment().getItemInOffHand());
             }
         }
     }

@@ -2,6 +2,7 @@
 
 # 7.10.6
 
+ - Fix loading on old versions of Spigot
  - Fix errors using `/mgive someitem someamount` without a player target
 
 # 7.10.5
