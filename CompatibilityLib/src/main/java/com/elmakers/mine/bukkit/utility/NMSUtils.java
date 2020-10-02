@@ -550,10 +550,15 @@ public class NMSUtils {
 
             Class<?> class_NBTTagIntArray = fixBukkitClass("net.minecraft.server.NBTTagIntArray");
             Class<?> class_NBTTagByteArray = fixBukkitClass("net.minecraft.server.NBTTagByteArray");
-            Class<?> class_NBTTagLongArray = fixBukkitClass("net.minecraft.server.NBTTagLongArray");
-            class_NBTTagIntArray_constructor = class_NBTTagIntArray.getConstructor(List.class);
-            class_NBTTagByteArray_constructor = class_NBTTagByteArray.getConstructor(List.class);
-            class_NBTTagLongArray_constructor = class_NBTTagLongArray.getConstructor(List.class);
+            class_NBTTagIntArray_constructor = class_NBTTagIntArray.getConstructor(int[].class);
+            class_NBTTagByteArray_constructor = class_NBTTagByteArray.getConstructor(byte[].class);
+
+            try {
+                Class<?> class_NBTTagLongArray = fixBukkitClass("net.minecraft.server.NBTTagLongArray");
+                class_NBTTagLongArray_constructor = class_NBTTagLongArray.getConstructor(long[].class);
+            } catch (Throwable ignore) {
+                class_NBTTagLongArray_constructor = null;
+            }
 
             class_NBTTagList_list = class_NBTTagList.getDeclaredField("list");
             class_NBTTagList_list.setAccessible(true);

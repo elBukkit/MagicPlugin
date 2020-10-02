@@ -211,12 +211,12 @@ public class InventoryUtils extends NMSUtils
                             list.add(checkList.get(i));
                         }
                     }
-                    if (first.equals("I")) {
-                        wrappedValue = class_NBTTagIntArray_constructor.newInstance(list);
+                    if (first.equals("B")) {
+                        wrappedValue = class_NBTTagByteArray_constructor.newInstance(makeByteArray((List<Object>)list));
+                    } else if (first.equals("I") || class_NBTTagLongArray_constructor == null) {
+                        wrappedValue = class_NBTTagIntArray_constructor.newInstance(makeIntArray((List<Object>)list));
                     } else if (first.equals("L")) {
-                        wrappedValue = class_NBTTagLongArray_constructor.newInstance(list);
-                    } else if (first.equals("B")) {
-                        wrappedValue = class_NBTTagByteArray_constructor.newInstance(list);
+                        wrappedValue = class_NBTTagLongArray_constructor.newInstance(makeLongArray((List<Object>)list));
                     }
                 }
             }
@@ -233,6 +233,39 @@ public class InventoryUtils extends NMSUtils
         }
 
         return wrappedValue;
+    }
+
+    protected static byte[] makeByteArray(List<Object> list) {
+        byte[] a = new byte[list.size()];
+
+        for (int i = 0; i < list.size(); ++i) {
+            Byte b = (Byte)list.get(i);
+            a[i] = b == null ? 0 : b;
+        }
+
+        return a;
+    }
+
+    protected static int[] makeIntArray(List<Object> list) {
+        int[] a = new int[list.size()];
+
+        for (int i = 0; i < list.size(); ++i) {
+            Integer value = (Integer)list.get(i);
+            a[i] = value == null ? 0 : value;
+        }
+
+        return a;
+    }
+
+    protected static long[]  makeLongArray(List<Object> list) {
+        long[] a = new long[list.size()];
+
+        for (int i = 0; i < list.size(); ++i) {
+            Long l = (Long)list.get(i);
+            a[i] = l == null ? 0 : l;
+        }
+
+        return a;
     }
 
     protected static Long convertToLong(Object o) {
