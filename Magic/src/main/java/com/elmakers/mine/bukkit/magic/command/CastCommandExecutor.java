@@ -125,36 +125,15 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 return true;
             }
 
-            Location targetLocation = null;
-            if (sender instanceof BlockCommandSender) {
-                targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
+            Location sourceLocation = null;
+            if (sender != null && sender instanceof BlockCommandSender) {
+                sourceLocation = ((BlockCommandSender) sender).getBlock().getLocation();
             }
 
+            String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
             for (Mage mage : mages) {
                 if (mage != null && !mage.isLoading()) {
-                    String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
-                    if (castParameters.length < 1) {
-                        if (sender != null) sender.sendMessage("Invalid command line, expecting more parameters");
-                        return false;
-                    }
-
-                    String spellName = castParameters[0];
-                    Spell spell = mage.getSpell(spellName);
-                    if (spell == null) {
-                        if (sender != null) sender.sendMessage("Unknown spell " + spellName);
-                        return false;
-                    }
-
-                    String[] parameters = new String[castParameters.length - 1];
-                    for (int i = 1; i < castParameters.length; i++) {
-                        parameters[i - 1] = castParameters[i];
-                    }
-
-                    if (spell.cast(parameters, targetLocation)) {
-                        if (sender != null) sender.sendMessage("Cast " + spell.getName() + " as " + mage.getName());
-                    } else {
-                        if (sender != null) sender.sendMessage("Failed to cast " + spell.getName() + " as " + mage.getName());
-                    }
+                    processCastCommand(sender, mage, castParameters, sourceLocation, " as " + mage.getName());
                 }
             }
             return true;
@@ -166,32 +145,37 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 sendNoPermission(sender);
                 return true;
             }
-            Player player = null;
-            if (sender instanceof Player) {
-                player = (Player)sender;
-            }
-            return processCastCommand(sender, player, args);
+            return processCastCommand(sender, controller.getMage(sender), args, null, null);
         }
 
         return false;
     }
 
-    public boolean processCastCommand(CommandSender sender, Entity entity, String[] castParameters)
-    {
-        if (castParameters.length < 1) return false;
+    public boolean processCastCommand(CommandSender sender, Mage mage, String[] castParameters, Location targetLocation, String messageSuffix) {
+        if (castParameters.length < 1) {
+            if (sender != null) sender.sendMessage("Missing spell in cast command");
+            return false;
+        }
 
         String spellName = castParameters[0];
-        String[] parameters = null;
-        if (sender.hasPermission("Magic.commands.cast.parameters"))
-        {
-            parameters = new String[castParameters.length - 1];
-            for (int i = 1; i < castParameters.length; i++)
-            {
-                parameters[i - 1] = castParameters[i];
-            }
+        Spell spell = mage.getSpell(spellName);
+        if (spell == null) {
+            if (sender != null) sender.sendMessage("Unknown spell " + spellName);
+            return false;
         }
-        api.cast(spellName, parameters, sender, entity);
-        return true;
+
+        if (sender.hasPermission("Magic.commands.cast.parameters")) {
+            castParameters = Arrays.copyOfRange(castParameters, 1, castParameters.length);
+        } else {
+            castParameters = null;
+        }
+        boolean result = spell.cast(castParameters, targetLocation);
+        if (result) {
+            if (sender != null && messageSuffix != null) sender.sendMessage("Cast " + spell.getName() + messageSuffix);
+        } else {
+            if (sender != null && messageSuffix != null) sender.sendMessage("Failed to cast " + spell.getName() + messageSuffix);
+        }
+        return result;
     }
 
     @Override
