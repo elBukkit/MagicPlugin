@@ -17,6 +17,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public abstract class AbstractSchematic implements Schematic {
@@ -86,15 +87,23 @@ public abstract class AbstractSchematic implements Schematic {
         if (entityData == null || entityData.isEmpty()) return;
         for (Object entity : entityData) {
             String type = NMSUtils.getMetaString(entity, "id");
+            boolean modern = false;
+            if (type == null || type.isEmpty()) {
+                modern = true;
+                type =  NMSUtils.getMetaString(entity, "Id");
+            }
             Vector position = NMSUtils.getPosition(entity, "Pos");
             if (position == null) continue;
             position = position.subtract(origin).subtract(center);
 
-            if (type == null) continue;
+            if (type == null || type.isEmpty()) continue;
+            type = type.replace("minecraft:", "");
 
             // Only doing paintings and item frames for now.
-            if (type.equals("Painting")) {
+            if (type.equalsIgnoreCase("Painting")) {
                 String motive = NMSUtils.getMetaString(entity, "Motive");
+                motive = motive.replace("minecraft:", "");
+                motive = motive.replace("_", "");
                 motive = motive.toLowerCase();
                 Art art = Art.ALBAN;
                 for (Art test : Art.values()) {
@@ -103,10 +112,20 @@ public abstract class AbstractSchematic implements Schematic {
                         break;
                     }
                 }
-                byte facing = NMSUtils.getMetaByte(entity, "Facing");
-                EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(position, art, getFacing(facing));
+
+                byte facingData = NMSUtils.getMetaByte(entity, "Facing");
+                BlockFace facing = getFacing(facingData);
+
+                // I really hate all this mess. Why can't these just have locations that make sense?
+                // Apparently the Sponge format does, so we have to pre-negate all the nonsense we do to work with
+                // Bukkit's painting stupidity
+                if (modern) {
+                    position.subtract(CompatibilityUtils.getPaintingOffset(facing, art));
+                }
+
+                EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(position, art, facing);
                 entities.add(painting);
-            } else if (type.equals("ItemFrame")) {
+            } else if (type.equalsIgnoreCase("ItemFrame")) {
                 byte facing = NMSUtils.getMetaByte(entity, "Facing");
                 byte rotation = NMSUtils.getMetaByte(entity, "ItemRotation");
                 Rotation rot = Rotation.NONE;

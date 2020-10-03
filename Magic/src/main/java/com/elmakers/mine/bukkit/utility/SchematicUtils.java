@@ -100,6 +100,12 @@ public class SchematicUtils extends CompatibilityUtils {
             }
 
             Vector origin = new Vector(0, 0, 0);
+            int[] offset = (int[])class_NBTTagCompound_getIntArrayMethod.invoke(nbtData, "Offset");
+            if (offset != null && offset.length == 3) {
+                origin.setX(offset[0]);
+                origin.setY(offset[1]);
+                origin.setZ(offset[2]);
+            }
             schematic.load(width, height, length, blockMap, paletteMap, tileEntityData, entityData, origin);
         } catch (Exception ex) {
             ex.printStackTrace();
