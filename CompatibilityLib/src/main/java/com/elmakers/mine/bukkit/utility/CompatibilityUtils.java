@@ -279,7 +279,13 @@ public class CompatibilityUtils extends NMSUtils {
      * @param facing
      * @return
      */
-    private static Location getPaintingOffset(Location loc, BlockFace facing, Art art) {
+    private static final Vector offset000 = new Vector(0, 0, 0);
+    private static final Vector offset0n10 = new Vector(0, -1, 0);
+    private static final Vector offset00n1 = new Vector(0, 0, -1);
+    private static final Vector offsetn100 = new Vector(-1, 0, 0);
+    private static final Vector offsetn1n10 = new Vector(-1, -1, 0);
+    private static final Vector offset0n1n1 = new Vector(0, -1, -1);
+    public static Vector getPaintingOffset(BlockFace facing, Art art) {
         switch(art) {
 
             // 1x1
@@ -290,12 +296,12 @@ public class CompatibilityUtils extends NMSUtils {
             case KEBAB:
             case PLANT:
             case WASTELAND:
-                return loc; // No calculation needed.
+                return offset000; // No calculation needed.
 
             // 1x2
             case GRAHAM:
             case WANDERER:
-                return loc.getBlock().getLocation().add(0, -1, 0);
+                return offset0n10;
 
             // 2x1
             case CREEBET:
@@ -307,11 +313,11 @@ public class CompatibilityUtils extends NMSUtils {
             // 4x3
             case SKELETON:
                 if(facing == BlockFace.WEST)
-                    return loc.getBlock().getLocation().add(0, 0, -1);
+                    return offset00n1;
                 else if(facing == BlockFace.SOUTH)
-                    return loc.getBlock().getLocation().add(-1, 0, 0);
+                    return offsetn100;
                 else
-                    return loc;
+                    return offset000;
 
             // 2x2
             case BUST:
@@ -328,11 +334,11 @@ public class CompatibilityUtils extends NMSUtils {
             case PIGSCENE:
             case POINTER:
                 if(facing == BlockFace.WEST)
-                    return loc.getBlock().getLocation().add(0, -1, -1);
+                    return offset0n1n1;
                 else if(facing == BlockFace.SOUTH)
-                    return loc.getBlock().getLocation().add(-1, -1, 0);
+                    return offsetn1n10;
                 else
-                    return loc.add(0, -1, 0);
+                    return offset0n10;
 
             default:
                 // Special cases for name changes...
@@ -340,23 +346,23 @@ public class CompatibilityUtils extends NMSUtils {
                     case "BURNINGSKULL":
                     case "BURNING_SKULL":
                         if(facing == BlockFace.WEST)
-                            return loc.getBlock().getLocation().add(0, -1, -1);
+                            return offset0n1n1;
                         else if(facing == BlockFace.SOUTH)
-                            return loc.getBlock().getLocation().add(-1, -1, 0);
+                            return offsetn1n10;
                         else
-                            return loc.add(0, -1, 0);
+                            return offset0n10;
                     case "DONKEYKONG":
                     case "DONKEY_KONG":
                         if(facing == BlockFace.WEST)
-                            return loc.getBlock().getLocation().add(0, 0, -1);
+                            return offset00n1;
                         else if(facing == BlockFace.SOUTH)
-                            return loc.getBlock().getLocation().add(-1, 0, 0);
+                            return offsetn100;
                         else
-                            return loc;
+                            return offset000;
                 }
 
                 // Unsupported artwork
-                return loc;
+                return offset000;
         }
     }
 
@@ -364,7 +370,7 @@ public class CompatibilityUtils extends NMSUtils {
     {
         Painting newPainting = null;
         try {
-            location = getPaintingOffset(location, facing, art);
+            location.add(getPaintingOffset(facing, art));
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = null;
             @SuppressWarnings("unchecked")
