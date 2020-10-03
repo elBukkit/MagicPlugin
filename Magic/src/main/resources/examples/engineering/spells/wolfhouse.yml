@@ -67,6 +67,7 @@ wolfhouse:
     delay: 100
     skip: 4
     radius: 4
+    physics: false
   costs:
     mana: 1000
 
