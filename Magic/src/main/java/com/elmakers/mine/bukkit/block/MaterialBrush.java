@@ -379,12 +379,18 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     @Nullable
-    public Location toTargetLocation(Location target) {
+    public Location toTargetLocation(World targetWorld, Location target) {
         if (cloneSource == null || cloneTarget == null) return null;
         Location translated = cloneSource.clone();
         translated.subtract(cloneTarget.toVector());
         translated.add(target.toVector());
+        translated.setWorld(targetWorld);
         return translated;
+    }
+
+    @Nullable
+    public Location toTargetLocation(Location target) {
+        return toTargetLocation(target.getWorld(), target);
     }
 
     @Nullable
@@ -666,7 +672,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 addEntities(sourceWorld.getEntities(), copyEntities);
             } else {
                 for (Chunk chunk : chunks) {
-                    Chunk sourceChunk = sourceWorld.getChunkAt(chunk.getX(), chunk.getZ());
+                    Location chunkLocation = chunk.getBlock(0, 0, 0).getLocation();
+                    chunkLocation = toTargetLocation(sourceWorld, chunkLocation);
+                    Chunk sourceChunk = chunkLocation.getChunk();
                     sourceChunk.load();
                     addEntities(Arrays.asList(sourceChunk.getEntities()), copyEntities);
                 }
