@@ -253,8 +253,13 @@ public class InventoryController implements Listener {
 
         if (clickedWand && action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             int slot = event.getSlot();
-            Wand wand = slot == player.getInventory().getHeldItemSlot() ? mage.getActiveWand() :
-                controller.getWand(clickedItem);
+            Wand wand = null;
+            if (slot == player.getInventory().getHeldItemSlot()) {
+                wand = mage.getActiveWand();
+            }
+            if (wand == null) {
+                wand = controller.getWand(clickedItem);
+            }
             if (wand.tryToWear(mage)) {
                 player.getInventory().setItem(slot, null);
                 event.setCancelled(true);
