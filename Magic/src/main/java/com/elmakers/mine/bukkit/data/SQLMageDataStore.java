@@ -24,6 +24,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
     private final Object lockingLock = new Object();
     private int lockTimeout = 0;
     private int lockRetry = 0;
+    private boolean hasIsValid = true;
 
     protected abstract @Nonnull Connection createConnection() throws SQLException;
 
@@ -37,18 +38,33 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
         }
     }
 
+    protected boolean isValid(Connection connection) {
+        if (connection == null) return false;
+        if (!hasIsValid) return true;
+        try {
+            return connection.isValid(5000);
+        } catch (AbstractMethodError old) {
+            // SQLLite does not have this method on older spigot versions
+            hasIsValid = false;
+            return true;
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.WARNING, "Error checking database connection", ex);
+        }
+        return false;
+    }
+
     protected @Nonnull Connection getConnection() throws SQLException {
         if (connection == null) {
             connection = createConnection();
             checkSchema();
         }
         int retries = 3;
-        boolean isValid = connection.isValid(5000);
+        boolean isValid = isValid(connection);
         while (!isValid && retries >= 0) {
             try {
                 retries--;
                 Thread.sleep(1000);
-                isValid = connection.isValid(5000);
+                isValid = isValid(connection);
             } catch (InterruptedException ex) {
                 break;
             }
