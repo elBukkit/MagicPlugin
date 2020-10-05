@@ -396,11 +396,16 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     @Nullable
-    public Location fromTargetLocation(World targetWorld, Location target) {
+    public Location fromTargetLocation(World targetWorld, Location target, boolean isBlock) {
         if (cloneSource == null || cloneTarget == null) return null;
         Location translated = target.clone();
-        translated.subtract(cloneSource.toVector());
-        translated.add(cloneTarget.toVector());
+        Vector delta = cloneTarget.toVector().subtract(cloneSource.toVector());
+        if (isBlock) {
+            delta.setX((int)delta.getX());
+            delta.setY((int)delta.getY());
+            delta.setZ((int)delta.getZ());
+        }
+        translated.add(delta);
         translated.setWorld(targetWorld);
         return translated;
     }
@@ -654,9 +659,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     protected void addEntities(Collection<Entity> source, Collection<com.elmakers.mine.bukkit.api.entity.EntityData> destination) {
         for (Entity entity : source) {
             if (!(entity instanceof Player || entity instanceof Item || controller.isNPC(entity))) {
-                Location entityLocation = entity.getLocation();
-                Location translated = fromTargetLocation(cloneTarget.getWorld(), entityLocation);
-                EntityData entityData = new EntityData(translated, entity);
+                EntityData entityData = new EntityData(entity);
+                Location translated = fromTargetLocation(cloneTarget.getWorld(), entityData.getLocation(), entity instanceof Hanging);
+                entityData.setLocation(translated);
                 destination.add(entityData);
             }
         }

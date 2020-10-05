@@ -172,24 +172,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected ConfigurationSection configuration;
 
     public EntityData(Entity entity) {
-        this(null, entity);
-    }
-
-    protected Location getEntityLocation(Entity entity) {
-        return CompatibilityUtils.getHangingLocation(entity);
-    }
-
-    public EntityData(Location location, Entity entity) {
-        if (location == null) {
-            location = getEntityLocation(entity);
-        }
         setEntity(entity);
+        this.location = CompatibilityUtils.getHangingLocation(entity);
         this.isTemporary = entity.hasMetadata("temporary");
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
         this.type = entity.getType();
-        this.location = location;
         this.fireTicks = entity.getFireTicks();
         this.isSilent = CompatibilityUtils.isSilent(entity);
         this.persist = CompatibilityUtils.isPersist(entity);
@@ -624,6 +613,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public Location getLocation() {
         return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     @Override
