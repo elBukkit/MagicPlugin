@@ -384,13 +384,15 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         Location translated = cloneSource.clone();
         translated.subtract(cloneTarget.toVector());
         translated.add(target.toVector());
-        translated.setWorld(targetWorld);
+        if (targetWorld != null) {
+            translated.setWorld(targetWorld);
+        }
         return translated;
     }
 
     @Nullable
     public Location toTargetLocation(Location target) {
-        return toTargetLocation(target.getWorld(), target);
+        return toTargetLocation(null, target);
     }
 
     @Nullable
