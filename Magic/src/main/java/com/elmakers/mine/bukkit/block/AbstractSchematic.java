@@ -17,7 +17,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public abstract class AbstractSchematic implements Schematic {
@@ -87,9 +86,7 @@ public abstract class AbstractSchematic implements Schematic {
         if (entityData == null || entityData.isEmpty()) return;
         for (Object entity : entityData) {
             String type = NMSUtils.getMetaString(entity, "id");
-            boolean modern = false;
             if (type == null || type.isEmpty()) {
-                modern = true;
                 type =  NMSUtils.getMetaString(entity, "Id");
             }
             Vector position = NMSUtils.getPosition(entity, "Pos");
@@ -115,14 +112,6 @@ public abstract class AbstractSchematic implements Schematic {
 
                 byte facingData = NMSUtils.getMetaByte(entity, "Facing");
                 BlockFace facing = getFacing(facingData);
-
-                // I really hate all this mess. Why can't these just have locations that make sense?
-                // Apparently the Sponge format does, so we have to pre-negate all the nonsense we do to work with
-                // Bukkit's painting stupidity
-                if (modern) {
-                    position.subtract(CompatibilityUtils.getPaintingOffset(facing, art));
-                }
-
                 EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(position, art, facing);
                 entities.add(painting);
             } else if (type.equalsIgnoreCase("ItemFrame")) {

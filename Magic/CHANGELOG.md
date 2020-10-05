@@ -6,6 +6,7 @@
  - Fix errors using `/mgive someitem someamount` without a player target
  - Some improvements to Wolf House
  - Fix issues with SQLLite on older Spigot versions
+ - Fix "Entity is already tracked!" errors
 
 # 7.10.5
 

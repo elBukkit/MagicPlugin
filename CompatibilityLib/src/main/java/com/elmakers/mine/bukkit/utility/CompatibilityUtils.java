@@ -34,6 +34,7 @@ import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
@@ -370,7 +371,6 @@ public class CompatibilityUtils extends NMSUtils {
     {
         Painting newPainting = null;
         try {
-            location.add(getPaintingOffset(facing, art));
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = null;
             @SuppressWarnings("unchecked")
@@ -378,12 +378,14 @@ public class CompatibilityUtils extends NMSUtils {
             Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             newEntity = class_EntityPaintingConstructor.newInstance(worldHandle, blockLocation, directionEnum);
             if (newEntity != null) {
+                if (class_EntityPainting_art != null) {
+                    Object notchArt = class_CraftArt_NotchToBukkitMethod.invoke(null, art);
+                    class_EntityPainting_art.set(newEntity, notchArt);
+                }
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
 
                 newPainting = (Painting)bukkitEntity;
-                newPainting.setFacingDirection(facing, true);
-                newPainting.setArt(art, true);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -408,7 +410,6 @@ public class CompatibilityUtils extends NMSUtils {
 
                 newItemFrame = (ItemFrame)bukkitEntity;
                 newItemFrame.setItem(getCopy(item));
-                newItemFrame.setFacingDirection(facing, true);
                 newItemFrame.setRotation(rotation);
             }
         } catch (Throwable ex) {
@@ -2243,5 +2244,22 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static Location getHangingLocation(Entity entity) {
+        Location location = entity.getLocation();
+        if (class_EntityHanging_blockPosition == null || !(entity instanceof Hanging)) {
+            return location;
+        }
+        Object handle = getHandle(entity);
+        try {
+            Object position = class_EntityHanging_blockPosition.get(handle);
+            location.setX((int)class_BlockPosition_getXMethod.invoke(position));
+            location.setY((int)class_BlockPosition_getYMethod.invoke(position));
+            location.setZ((int)class_BlockPosition_getZMethod.invoke(position));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return location;
     }
 }

@@ -172,10 +172,17 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected ConfigurationSection configuration;
 
     public EntityData(Entity entity) {
-        this(entity.getLocation(), entity);
+        this(null, entity);
+    }
+
+    protected Location getEntityLocation(Entity entity) {
+        return CompatibilityUtils.getHangingLocation(entity);
     }
 
     public EntityData(Location location, Entity entity) {
+        if (location == null) {
+            location = getEntityLocation(entity);
+        }
         setEntity(entity);
         this.isTemporary = entity.hasMetadata("temporary");
         this.isLiving = entity instanceof LivingEntity;
@@ -826,22 +833,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             creature.setCanPickupItems(canPickupItems);
         }
 
-        if (entity instanceof Painting) {
-            Painting painting = (Painting) entity;
-            if (art != null) {
-                painting.setArt(art, true);
-            }
-            if (facing != null) {
-                painting.setFacingDirection(facing, true);
-            }
-        }
-        else if (entity instanceof ItemFrame) {
-            ItemFrame itemFrame = (ItemFrame)entity;
-            itemFrame.setItem(item);
-            if (facing != null) {
-                itemFrame.setFacingDirection(facing, true);
-            }
-        } else if (entity instanceof Item) {
+        if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             droppedItem.setItemStack(item);
         } else if (entity instanceof Wolf) {
@@ -996,6 +988,21 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 DeprecatedUtils.setPassenger(mountEntity, entity);
             }
             mobStackSize--;
+        }
+        if (entity instanceof Painting) {
+            Painting painting = (Painting) entity;
+            if (art != null) {
+                painting.setArt(art, true);
+            }
+            if (facing != null) {
+                painting.setFacingDirection(facing, true);
+            }
+        } else if (entity instanceof ItemFrame) {
+            ItemFrame itemFrame = (ItemFrame)entity;
+            itemFrame.setItem(item);
+            if (facing != null) {
+                itemFrame.setFacingDirection(facing, true);
+            }
         }
         return true;
     }

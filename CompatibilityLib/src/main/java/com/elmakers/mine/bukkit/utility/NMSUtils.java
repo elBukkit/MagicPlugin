@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
@@ -299,6 +300,10 @@ public class NMSUtils {
     protected static Method class_Fox_getFirstTrustedPlayerMethod;
     protected static Method class_Fox_setTypeMethod;
     protected static Method class_Fox_getTypeMethod;
+    protected static Method class_CraftArt_NotchToBukkitMethod;
+    protected static Method class_BlockPosition_getXMethod;
+    protected static Method class_BlockPosition_getYMethod;
+    protected static Method class_BlockPosition_getZMethod;
 
     protected static boolean legacyMaps;
 
@@ -389,6 +394,8 @@ public class NMSUtils {
     protected static Field class_Entity_moveForwardField;
     protected static Field class_TileEntityContainer_lock;
     protected static Field class_ChestLock_key;
+    protected static Field class_EntityPainting_art;
+    protected static Field class_EntityHanging_blockPosition;
 
     protected static Object object_magicSource;
     protected static Object object_emptyChestLock;
@@ -648,6 +655,25 @@ public class NMSUtils {
                 class_Fox_getTypeMethod = null;
                 class_Fox_setFirstTrustedPlayerMethod = null;
                 class_Fox_getFirstTrustedPlayerMethod = null;
+            }
+
+            try {
+                Class<?> class_CraftArt = fixBukkitClass("org.bukkit.craftbukkit.CraftArt");
+                class_CraftArt_NotchToBukkitMethod = class_CraftArt.getMethod("BukkitToNotch", Art.class);
+                Class<?> class_EntityPainting = fixBukkitClass("net.minecraft.server.EntityPainting");
+                class_EntityPainting_art = class_EntityPainting.getDeclaredField("art");
+                class_EntityPainting_art.setAccessible(true);
+                Class<?> class_EntityHanging = fixBukkitClass("net.minecraft.server.EntityHanging");
+                class_EntityHanging_blockPosition = class_EntityHanging.getField("blockPosition");
+                class_EntityHanging_blockPosition.setAccessible(true);
+                class_BlockPosition_getXMethod = class_BlockPosition.getMethod("getX");
+                class_BlockPosition_getYMethod = class_BlockPosition.getMethod("getY");
+                class_BlockPosition_getZMethod = class_BlockPosition.getMethod("getZ");
+            } catch (Throwable ex) {
+                class_EntityPainting_art = null;
+                class_CraftArt_NotchToBukkitMethod = null;
+                class_EntityHanging_blockPosition = null;
+                Bukkit.getLogger().warning("Could not bind to painting art fields, restoring paintings may not work");
             }
 
             try {
