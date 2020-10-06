@@ -2168,4 +2168,19 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return location;
     }
+
+    public static BlockFace getCCW(BlockFace face) {
+        switch (face) {
+            case NORTH:
+                return BlockFace.WEST;
+            case SOUTH:
+                return BlockFace.EAST;
+            case WEST:
+                return BlockFace.SOUTH;
+            case EAST:
+                return BlockFace.NORTH;
+            default:
+                throw new IllegalStateException("Unable to get CCW facing of " + face);
+        }
+    }
 }

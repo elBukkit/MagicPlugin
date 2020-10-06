@@ -7,6 +7,7 @@
  - Some improvements to Wolf House
  - Fix issues with SQLLite on older Spigot versions
  - Fix "Entity is already tracked!" errors
+ - Improved undo of broken paintings
 
 # 7.10.5
 
