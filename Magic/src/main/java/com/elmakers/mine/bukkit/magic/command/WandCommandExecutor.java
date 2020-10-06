@@ -1185,7 +1185,9 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
         SpellTemplate currentSpell = wand.getBaseSpell(spellName);
         if (wand.addSpell(spellName)) {
-            wand.setActiveSpell(spellName);
+            if (!spell.isPassive()) {
+                wand.setActiveSpell(spellName);
+            }
             if (currentSpell != null) {
                 String levelDescription = spell.getLevelDescription();
                 if (levelDescription == null || levelDescription.isEmpty()) {
@@ -1200,9 +1202,13 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                 }
             }
         } else {
-            wand.setActiveSpell(spellName);
-            mage.sendMessage(spell.getName() + " activated");
-            if (sender != player) {
+            if (!spell.isPassive()) {
+                wand.setActiveSpell(spellName);
+                mage.sendMessage(spell.getName() + " activated");
+                if (sender != player) {
+                    sender.sendMessage(player.getName() + "'s wand already has " + spell.getName());
+                }
+            } else {
                 sender.sendMessage(player.getName() + "'s wand already has " + spell.getName());
             }
         }
