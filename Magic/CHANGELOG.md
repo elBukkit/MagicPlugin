@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.10.7
+
 # 7.10.6
 
  - Fix loading on old versions of Spigot
