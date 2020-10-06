@@ -3,6 +3,7 @@
 # 7.10.7
 
  - Fix the ModifyEntity, ShrinkEntity and GrowEntity actions destroying magic mob data (giant Warlocks!)
+ - Wands are once again stashable by default. I'll quit waffling on this now!
 
 # 7.10.6
 
