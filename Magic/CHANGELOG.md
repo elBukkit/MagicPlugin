@@ -2,6 +2,8 @@
 
 # 7.10.7
 
+ - Fix the ModifyEntity action destroy magic mob data
+
 # 7.10.6
 
  - Fix loading on old versions of Spigot

@@ -88,9 +88,7 @@ public class ModifyEntityAction extends BaseSpellAction
         Entity targetEntity = context.getTargetEntity();
         EntityType newType = entityData.getType();
         if (newType != null && !targetEntity.getType().equals(newType)) {
-            context.registerModified(targetEntity);
-            targetEntity.remove();
-            return spawn(context, targetEntity.getLocation());
+            return replaceEntity(targetEntity, context, targetEntity.getLocation());
         }
 
         Collection<EffectPlayer> entityEffects = context.getEffects("modified");
@@ -160,14 +158,24 @@ public class ModifyEntityAction extends BaseSpellAction
         return SpellResult.CAST;
     }
 
-    private SpellResult spawn(CastContext context, Location spawnLocation) {
+    private SpellResult replaceEntity(Entity targetEntity, CastContext context, Location spawnLocation) {
         MageController controller = context.getController();
+        EntityData targetData = controller.getMob(targetEntity);
+        EntityData newData = entityData;
+        if (targetData != null) {
+            newData = targetData.clone();
+            ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(newData.getConfiguration());
+            ConfigurationSection newParameters = entityData.getConfiguration();
+            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, newParameters);
+            newData.load(controller, effectiveParameters);
+        }
+
         if (force) {
             controller.setForceSpawn(true);
         }
         Entity spawnedEntity = null;
         try {
-            spawnedEntity = entityData.spawn(context.getController(), spawnLocation, spawnReason);
+            spawnedEntity = newData.spawn(context.getController(), spawnLocation, spawnReason);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -176,13 +184,17 @@ public class ModifyEntityAction extends BaseSpellAction
             controller.setForceSpawn(false);
         }
 
-        if (spawnedEntity != null) {
-            Collection<EffectPlayer> entityEffects = context.getEffects("spawned");
-            for (EffectPlayer effectPlayer : entityEffects) {
-                effectPlayer.start(spawnedEntity.getLocation(), spawnedEntity, null, null);
-            }
-            context.registerForUndo(spawnedEntity);
+        if (spawnedEntity == null) {
+            return SpellResult.FAIL;
         }
+
+        Collection<EffectPlayer> entityEffects = context.getEffects("spawned");
+        for (EffectPlayer effectPlayer : entityEffects) {
+            effectPlayer.start(spawnedEntity.getLocation(), spawnedEntity, null, null);
+        }
+        context.registerForUndo(spawnedEntity);
+        context.registerModified(targetEntity);
+        targetEntity.remove();
 
         return modify(context, spawnedEntity);
     }
