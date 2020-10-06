@@ -21,6 +21,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
@@ -443,6 +444,8 @@ public interface MageController {
     EntityData getMob(ConfigurationSection parameters);
     @Nullable
     EntityData getMob(Entity entity);
+    @Nullable
+    Entity replaceMob(Entity targetEntity, EntityData replaceType, boolean force, CreatureSpawnEvent.SpawnReason reason);
     @Nullable
     EntityData getMobByName(String name);
     EntityData loadMob(ConfigurationSection configuration);

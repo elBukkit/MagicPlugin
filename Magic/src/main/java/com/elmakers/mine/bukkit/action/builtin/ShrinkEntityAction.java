@@ -13,6 +13,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Zombie;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -21,6 +22,7 @@ import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
@@ -58,7 +60,6 @@ public class ShrinkEntityAction extends DamageAction
         String itemName = DeprecatedUtils.getDisplayName(li) + " Head";
         EntityType replaceType = null;
 
-        Location targetLocation = targetEntity.getLocation();
         if (li instanceof Player) {
             super.perform(context);
             if (li.isDead() && !alreadyDead && dropSkull) {
@@ -90,8 +91,10 @@ public class ShrinkEntityAction extends DamageAction
         if (replaceType != null) {
             UndoList spawnedList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(li);
             context.registerModified(li);
-            li.remove();
-            Entity replacement = targetLocation.getWorld().spawnEntity(targetLocation, replaceType);
+            Entity replacement = controller.replaceMob(li, new EntityData(replaceType), true, CreatureSpawnEvent.SpawnReason.CUSTOM);
+            if (replacement == null) {
+                return SpellResult.FAIL;
+            }
             if (replacement instanceof Zombie) {
                 ((Zombie)replacement).setBaby(false);
             }

@@ -2,7 +2,7 @@
 
 # 7.10.7
 
- - Fix the ModifyEntity action destroy magic mob data
+ - Fix the ModifyEntity, ShrinkEntity and GrowEntity actions destroying magic mob data (giant Warlocks!)
 
 # 7.10.6
 

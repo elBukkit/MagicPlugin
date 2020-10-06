@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.bukkit.DyeColor;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Creature;
@@ -88,7 +87,7 @@ public class ModifyEntityAction extends BaseSpellAction
         Entity targetEntity = context.getTargetEntity();
         EntityType newType = entityData.getType();
         if (newType != null && !targetEntity.getType().equals(newType)) {
-            return replaceEntity(targetEntity, context, targetEntity.getLocation());
+            return replaceEntity(targetEntity, context);
         }
 
         Collection<EffectPlayer> entityEffects = context.getEffects("modified");
@@ -158,32 +157,10 @@ public class ModifyEntityAction extends BaseSpellAction
         return SpellResult.CAST;
     }
 
-    private SpellResult replaceEntity(Entity targetEntity, CastContext context, Location spawnLocation) {
+    private SpellResult replaceEntity(Entity targetEntity, CastContext context) {
+        context.registerModified(targetEntity);
         MageController controller = context.getController();
-        EntityData targetData = controller.getMob(targetEntity);
-        EntityData newData = entityData;
-        if (targetData != null) {
-            newData = targetData.clone();
-            ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(newData.getConfiguration());
-            ConfigurationSection newParameters = entityData.getConfiguration();
-            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, newParameters);
-            newData.load(controller, effectiveParameters);
-        }
-
-        if (force) {
-            controller.setForceSpawn(true);
-        }
-        Entity spawnedEntity = null;
-        try {
-            spawnedEntity = newData.spawn(context.getController(), spawnLocation, spawnReason);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        if (force) {
-            controller.setForceSpawn(false);
-        }
-
+        Entity spawnedEntity = controller.replaceMob(targetEntity, entityData, force, spawnReason);
         if (spawnedEntity == null) {
             return SpellResult.FAIL;
         }
@@ -193,9 +170,6 @@ public class ModifyEntityAction extends BaseSpellAction
             effectPlayer.start(spawnedEntity.getLocation(), spawnedEntity, null, null);
         }
         context.registerForUndo(spawnedEntity);
-        context.registerModified(targetEntity);
-        targetEntity.remove();
-
         return modify(context, spawnedEntity);
     }
 

@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
@@ -13,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Zombie;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class GrowEntityAction extends BaseSpellAction
@@ -77,17 +78,17 @@ public class GrowEntityAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
         if (replaceType != null) {
-            context.registerModified(li);
             UndoList spawnedList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(li);
-            Location targetLocation = li.getLocation();
-            li.remove();
-            Entity replacement = targetLocation.getWorld().spawnEntity(targetLocation, replaceType);
+            context.registerModified(li);
+            Entity replacement = controller.replaceMob(li, new EntityData(replaceType), true, CreatureSpawnEvent.SpawnReason.CUSTOM);
+            if (replacement == null) {
+                return SpellResult.FAIL;
+            }
             context.registerForUndo(replacement);
             if (spawnedList != null) {
                 spawnedList.add(replacement);
             }
         }
-
 
         return SpellResult.CAST;
     }

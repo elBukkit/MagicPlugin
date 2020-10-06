@@ -67,6 +67,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -5691,6 +5692,41 @@ public class MagicController implements MageController {
     @Override
     public EntityData loadMob(ConfigurationSection configuration) {
         return new com.elmakers.mine.bukkit.entity.EntityData(this, configuration);
+    }
+
+    @Override
+    @Nullable
+    public Entity replaceMob(Entity targetEntity, EntityData replaceType, boolean force, CreatureSpawnEvent.SpawnReason reason) {
+        EntityData targetData = getMob(targetEntity);
+        EntityData newData = replaceType;
+        if (targetData != null) {
+            newData = targetData.clone();
+            ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(newData.getConfiguration());
+            ConfigurationSection newParameters = replaceType.getConfiguration();
+            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, newParameters);
+            // Handle the replacement type being bare
+            effectiveParameters.set("type", replaceType.getType().name());
+            newData.load(this, effectiveParameters);
+        }
+
+        if (force) {
+            setForceSpawn(true);
+        }
+        Entity spawnedEntity = null;
+        try {
+            spawnedEntity = newData.spawn(this, targetEntity.getLocation(), reason);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        if (force) {
+            setForceSpawn(false);
+        }
+        if (spawnedEntity != null) {
+            targetEntity.remove();
+        }
+
+        return spawnedEntity;
     }
 
     @Override
