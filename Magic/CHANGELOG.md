@@ -9,6 +9,7 @@
  - Add Magic.cast_via_command permission. This is a list, just like Magic.cast, but only applies to using the /cast
    command. Players will still need Magic.cast permission for the spell as well as Magic.commands.cast permission for
    the command.
+ - Add cast_spell requirement, can be used for making spell combos (see combo example spell)
 
 # 7.10.6
 

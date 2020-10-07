@@ -15,3 +15,4 @@ requirements:
   time: "Time of Day"
   height: "Height"
   currency: "Currency"
+  no_cast: "&cYou must cast $spell first"

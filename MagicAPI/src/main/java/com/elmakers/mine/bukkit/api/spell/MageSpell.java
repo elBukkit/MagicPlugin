@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 /**
  * This interface and its hierarchy represent the complete Spell
  * interface that must be implemented to make a new custom spell
- * class from scractch.
+ * class from scratch.
  *
  * <p>The implementations of Mage and MageController in the MagicPlugin
  * will adhere to this interface.

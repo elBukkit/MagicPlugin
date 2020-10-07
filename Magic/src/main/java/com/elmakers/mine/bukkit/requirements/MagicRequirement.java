@@ -19,7 +19,9 @@ import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -45,6 +47,8 @@ public class MagicRequirement {
     private @Nullable RangedRequirement height = null;
     private @Nullable RangedRequirement currency = null;
     private @Nullable String weather = null;
+    private @Nullable String castSpell = null;
+    private int castTimeout = 0;
     private @Nonnull String currencyType = "currency";
     private boolean requireWand = false;
     private boolean ignoreMissing = false;
@@ -78,11 +82,13 @@ public class MagicRequirement {
 
         lightLevel = parseRangedRequirement(configuration, "light");
         timeOfDay = parseRangedRequirement(configuration, "time");
+        weather = configuration.getString("weather");
         height = parseRangedRequirement(configuration, "height");
         currency = parseRangedRequirement(configuration, "currency");
         currencyType = configuration.getString("currency_type", "currency");
 
-        weather = configuration.getString("weather");
+        castSpell = configuration.getString("cast_spell", "");
+        castTimeout = configuration.getInt("cast_timeout", 0);
 
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
@@ -172,6 +178,19 @@ public class MagicRequirement {
         }
         if (currency != null) {
             if (location == null || !currency.check(mage.getCurrency(currencyType))) {
+                return false;
+            }
+        }
+        if (castSpell != null) {
+            Spell spell = mage.getSpell(castSpell);
+            if (spell == null) {
+                return false;
+            }
+            long lastCast = spell.getLastCast();
+            if (lastCast == 0) {
+                return false;
+            }
+            if (castTimeout > 0 && System.currentTimeMillis() - lastCast > castTimeout) {
                 return false;
             }
         }
@@ -376,6 +395,24 @@ public class MagicRequirement {
             String message = checkRequiredProperty(context, currency, getMessage(context, "currency"), mage.getCurrency(currencyType));
             if (message != null) {
                 return message;
+            }
+        }
+        if (castSpell != null) {
+            String spellName = "Unknown";
+            SpellTemplate template = controller.getSpellTemplate(castSpell);
+            if (template != null) {
+                spellName = template.getName();
+            }
+            Spell spell = mage.getSpell(castSpell);
+            if (spell == null) {
+                return getMessage(context, "no_cast").replace("$spell", spellName);
+            }
+            long lastCast = spell.getLastCast();
+            if (lastCast == 0) {
+                return getMessage(context, "no_cast").replace("$spell", spellName);
+            }
+            if (castTimeout > 0 && System.currentTimeMillis() - lastCast > castTimeout) {
+                return getMessage(context, "no_cast").replace("$spell", spellName);
             }
         }
 

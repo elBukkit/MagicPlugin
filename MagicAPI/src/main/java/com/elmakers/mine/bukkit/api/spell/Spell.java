@@ -112,4 +112,5 @@ public interface Spell extends SpellTemplate {
     boolean cancelSelection();
     boolean isEnabled();
     void setEnabled(boolean enabled);
+    long getLastCast();
 }

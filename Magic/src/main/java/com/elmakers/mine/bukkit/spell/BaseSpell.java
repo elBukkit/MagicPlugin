@@ -863,6 +863,11 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    @Override
+    public long getLastCast() {
+        return spellData.getLastCast();
+    }
+
     @Nullable
     protected List<CastingCost> parseCosts(ConfigurationSection node) {
         if (node == null) {

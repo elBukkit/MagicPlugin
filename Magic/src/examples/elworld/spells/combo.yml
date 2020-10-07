@@ -1,0 +1,30 @@
+combo1:
+  name: Combo Step 1
+  actions:
+    cast:
+      - class: AreaOfEffect
+        actions:
+          - class: PotionEffect
+  parameters:
+    target: self
+    add_effects:
+      slow: 2
+    duration: 2000
+    radius: 6
+
+combo2:
+  name: Combo Step 2
+  actions:
+    cast:
+      - class: CheckRequirements
+        actions:
+        - class: AreaOfEffect
+          actions:
+            - class: Damage
+  parameters:
+    target: self
+    damage: 10
+    requirements:
+      - cast_spell: combo1
+        cast_timeout: 2000
+    radius: 6
