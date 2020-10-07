@@ -190,6 +190,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean free = false;
         protected boolean applyLoreToItem = false;
         protected boolean applyNameToItem = false;
+        protected boolean nameItems = true;
         protected boolean allowDroppedItems = true;
 
         protected int limit = 0;
@@ -209,6 +210,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
             lockClass = configuration.getString("lock_class", lockClass);
+            nameItems = configuration.getBoolean("name_items", nameItems);
             allowAttributeReduction = configuration.getBoolean("allow_attribute_reduction", allowAttributeReduction);
             if (configuration.contains("switch_class")) {
                 switchClass = true;
@@ -510,6 +512,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.effects = defaults.effects;
             this.applyLoreToItem = defaults.applyLoreToItem;
             this.applyNameToItem = defaults.applyNameToItem;
+            this.nameItems = defaults.nameItems;
             this.allowDroppedItems = defaults.allowDroppedItems;
             this.iconKey = defaults.iconKey;
             this.iconPlaceholderKey = defaults.iconPlaceholderKey;
@@ -581,7 +584,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 startingAttributeValue = context.getMage().getAttribute(attributeKey);
             }
 
-            if (name.isEmpty() && items != null) {
+            if (name.isEmpty() && items != null && nameItems) {
                 ItemStack item = items.get(0);
                 name = controller.describeItem(item);
                 if (item.getAmount() > 1) {
@@ -590,7 +593,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
-            if (name.isEmpty() && iconKey != null) {
+            if (name.isEmpty() && iconKey != null && nameItems) {
                 ItemStack icon = parseItem(iconKey);
                 name = controller.describeItem(icon);
                 if (icon.getAmount() > 1) {
