@@ -2896,6 +2896,15 @@ wands:
   appearance_moon:
     name: Палочка "Луна"
     description: Палочка, которой, возможно, пользовалась Сейлор Мун
+  appearance_green:
+    name: Зеленая палочка
+    description: Палочка ядовитого цвета
+  appearance_bow1:
+    name: Египетский лук
+  appearance_bow2:
+    name: Тонкий лук
+  appearance_longbow:
+    name: Длинный лук
   appearance_spire:
     name: Посох "Шпиль"
     description: Волшебная башня, которую ты можешь держать в руке
