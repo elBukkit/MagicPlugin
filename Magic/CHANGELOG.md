@@ -4,6 +4,7 @@
 
  - Fix the ModifyEntity, ShrinkEntity and GrowEntity actions destroying magic mob data (giant Warlocks!)
  - Wands are once again stashable by default. I'll quit waffling on this now!
+ - Selector and Shops now set put_in_hand to true by default to avoid weird stacking behavior
 
 # 7.10.6
 

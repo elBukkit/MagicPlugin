@@ -186,7 +186,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean showConfirmation = false;
         protected boolean showUnavailable = false;
         protected boolean switchClass = false;
-        protected boolean putInHand = false;
+        protected boolean putInHand = true;
         protected boolean free = false;
         protected boolean applyLoreToItem = false;
         protected boolean applyNameToItem = false;
