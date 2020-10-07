@@ -1731,6 +1731,13 @@ permissions:
     description: A player may cast any spell on behalf of another player
     type: boolean
     default: op
+  Magic.cast_via_command:
+    description: The spells a player may cast with the /cast command
+    type: list
+  Magic.cast_via_command.*:
+    description: A player may cast any spell with the /cast command
+    type: boolean
+    default: true
   Magic.protected:
     description: The spells a player is immune to
     type: list

@@ -160,6 +160,11 @@ public class CastCommandExecutor extends MagicTabExecutor {
         }
 
         String spellName = castParameters[0];
+        if (!controller.hasPermission(sender, "Magic.cast_via_command." + spellName, true)) {
+            if (sender != null) sender.sendMessage("You do not have permission to do that");
+            return true;
+        }
+
         Spell spell = mage.getSpell(spellName);
         if (spell == null) {
             if (sender != null) sender.sendMessage("Unknown spell " + spellName);
