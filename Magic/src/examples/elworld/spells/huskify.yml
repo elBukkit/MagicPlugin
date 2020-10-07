@@ -1,0 +1,10 @@
+huskify:
+  icon: snowball
+  actions:
+    cast:
+      - class: ModifyEntity
+  parameters:
+    target: other
+    range: 32
+    delay: 5000
+    type: husk
