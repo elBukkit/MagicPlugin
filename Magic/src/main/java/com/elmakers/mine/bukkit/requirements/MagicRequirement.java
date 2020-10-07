@@ -137,26 +137,43 @@ public class MagicRequirement {
         if (weather != null) {
             switch (weather) {
                 case "storm":
-                    return location != null && location.getWorld().hasStorm();
+                    if (location == null || !location.getWorld().hasStorm()) {
+                        return false;
+                    }
+                    break;
                 case "thunder":
-                    return location != null && location.getWorld().isThundering();
+                    if (location == null || !location.getWorld().isThundering()) {
+                        return false;
+                    }
+                    break;
                 case "clear":
-                    return location != null && !location.getWorld().isThundering() && !location.getWorld().hasStorm();
+                    if (location == null || location.getWorld().isThundering() || location.getWorld().hasStorm()) {
+                        return false;
+                    }
+                    break;
                 default:
                     context.getLogger().warning("Invalid weather specified in requirement " + weather + ", looking for clear/storm/thunder");
             }
         }
         if (timeOfDay != null) {
-            return location != null && timeOfDay.check((double)location.getWorld().getTime());
+             if (location == null || !timeOfDay.check((double)location.getWorld().getTime())) {
+                 return false;
+             }
         }
         if (lightLevel != null) {
-            return location != null && lightLevel.check((double)location.getBlock().getLightLevel());
+            if (location == null || !lightLevel.check((double)location.getBlock().getLightLevel())) {
+                return false;
+            }
         }
         if (height != null) {
-            return location != null && height.check(location.getY());
+            if (location == null || !height.check(location.getY())) {
+                return false;
+            }
         }
         if (currency != null) {
-            return location != null && currency.check(mage.getCurrency(currencyType));
+            if (location == null || !currency.check(mage.getCurrency(currencyType))) {
+                return false;
+            }
         }
 
         if (wandTags != null) {
