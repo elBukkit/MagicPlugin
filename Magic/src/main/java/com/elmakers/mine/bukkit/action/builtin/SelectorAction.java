@@ -210,7 +210,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             castSpell = configuration.getString("cast_spell", castSpell);
             unlockClass = configuration.getString("unlock_class", unlockClass);
             lockClass = configuration.getString("lock_class", lockClass);
-            nameIcon = configuration.getBoolean("name_icon", nameIcon);
+            nameIcon = configuration.getBoolean("apply_name_to_icon", nameIcon);
             allowAttributeReduction = configuration.getBoolean("allow_attribute_reduction", allowAttributeReduction);
             if (configuration.contains("switch_class")) {
                 switchClass = true;

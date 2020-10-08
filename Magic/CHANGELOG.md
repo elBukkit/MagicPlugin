@@ -5,7 +5,7 @@
  - Fix the ModifyEntity, ShrinkEntity and GrowEntity actions destroying magic mob data (giant Warlocks!)
  - Wands are once again stashable by default. I'll quit waffling on this now!
  - Selector and Shops now set put_in_hand to true by default to avoid weird stacking behavior
- - Add name_icon parameter to Selector, set to false to use vanilla item names
+ - Add apply_name_to_icon parameter to Selector, set to false to use vanilla item names
  - Add Magic.cast_via_command permission. This is a list, just like Magic.cast, but only applies to using the /cast
    command. Players will still need Magic.cast permission for the spell as well as Magic.commands.cast permission for
    the command.
