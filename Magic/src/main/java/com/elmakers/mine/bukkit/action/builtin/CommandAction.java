@@ -81,7 +81,7 @@ public class CommandAction extends BaseSpellAction {
         if (variableNames != null && !variableNames.isEmpty()) {
             variables = new HashMap<>();
             for (String variable : variableNames) {
-                variables.put(variable, parameters.getString(variable));
+                variables.put(variable, parameters.getString(variable, ""));
             }
         }
     }
