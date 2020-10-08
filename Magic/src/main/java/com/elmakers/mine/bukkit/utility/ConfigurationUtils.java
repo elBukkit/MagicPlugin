@@ -758,10 +758,11 @@ public class ConfigurationUtils extends ConfigUtils {
         List<String> list = new ArrayList<>();
 
         for (Object o : rawList) {
-            if (o == null) {
+            // This prevents weird behaviors when we're expecting a list of strings but given
+            // a list of ConfigurationSections, Lists or other complex types
+            if (o == null || o instanceof ConfigurationSection || o instanceof List || o instanceof Map) {
                 continue;
             }
-
             list.add(o.toString());
         }
 
