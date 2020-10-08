@@ -1,0 +1,71 @@
+watersphere:
+  name: Water Sphere
+  description: Toggle some abilities on and off
+  icon: ice
+  actions:
+   cast:
+    - class: CheckRequirements
+      requirements:
+      - variables:
+        - variable: toggle
+          max: 1
+      actions:
+      - class: ModifyVariable
+        variable: toggle
+        scope: spell
+        value: 1
+      - class: Message
+        message: Start
+      - class: Repeat
+        actions:
+        - class: Retarget
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
+          - class: PotionEffect
+        - class: Delay
+      - class: ModifyVariable
+        variable: toggle
+        scope: spell
+        value: 0
+      - class: Message
+        message: Deactivated
+      - class: Cancel
+        spell: watersphere
+      - class: Command
+        command: ubar player:@p msg:"&1&lAqua Jet" color:white time:10 style:0 clear:death
+        console: true
+      - class: ApplyCooldown
+        spells: watersphere
+      fail:
+      - class: ModifyVariable
+        variable: toggle
+        scope: spell
+        value: 0
+      - class: Message
+        message: Deactivated
+      - class: Cancel
+        spell: watersphere
+      - class: Command
+        command: ubar player:@p msg:"&1&lAqua Jet" color:white time:10 style:0 clear:death
+        console: true
+      - class: ApplyCooldown
+        spells: watersphere
+        duration: 10000
+  parameters:
+    variables:
+      - variable: toggle
+        default: 0
+        scope: spell
+    target: self
+    radius: 2.5
+    brush: water
+    modifiable: "air"
+    delay: 100
+    repeat: 50
+    undo: 1
+    undo_speed: 75
+    potion_effects:
+      dolphins_grace: 2
+      water_breathing: 1
+      night_vision: 1
