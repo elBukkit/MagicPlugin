@@ -87,7 +87,7 @@ public class MagicRequirement {
         currency = parseRangedRequirement(configuration, "currency");
         currencyType = configuration.getString("currency_type", "currency");
 
-        castSpell = configuration.getString("cast_spell", "");
+        castSpell = configuration.getString("cast_spell");
         castTimeout = configuration.getInt("cast_timeout", 0);
 
         if (requiresCompletedPath != null) {
@@ -181,7 +181,7 @@ public class MagicRequirement {
                 return false;
             }
         }
-        if (castSpell != null) {
+        if (castSpell != null && !castSpell.isEmpty()) {
             Spell spell = mage.getSpell(castSpell);
             if (spell == null) {
                 return false;
