@@ -187,10 +187,10 @@ public class CastCommandExecutor extends MagicTabExecutor {
         if (result) {
             if (sender != null && messageSuffix != null) sender.sendMessage("Cast " + spell.getName() + messageSuffix);
         } else {
-            if (sender != null && messageSuffix != null) sender.sendMessage("Failed to cast " + spell.getName() + messageSuffix);
+            if (sender != null) sender.sendMessage("Failed to cast " + spell.getName() + messageSuffix);
         }
         ((MagicController)controller).toggleCastCommandOverrides(mage, sender, false);
-        return result;
+        return true;
     }
 
     @Override
