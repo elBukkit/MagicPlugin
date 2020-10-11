@@ -6,6 +6,8 @@ unlocked_doors:
 - jungle_door
 - acacia_door
 - dark_oak_door
+- crimson_door
+- warped_door
 
 # 1.13
 - oak_door
