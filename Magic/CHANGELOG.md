@@ -10,6 +10,7 @@
    command. Players will still need Magic.cast permission for the spell as well as Magic.commands.cast permission for
    the command.
  - Add cast_spell requirement, can be used for making spell combos (see combo example spell)
+ - Fix shop behavior when clicking an empty slot, auto_close shops will close, otherwise it will not
 
 # 7.10.6
 

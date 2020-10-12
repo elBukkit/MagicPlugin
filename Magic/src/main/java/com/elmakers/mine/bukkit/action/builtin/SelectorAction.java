@@ -1195,7 +1195,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
         if (item == null || !InventoryUtils.hasMeta(item, "slot")) {
-            if (!autoClose) {
+            if (autoClose) {
                 mage.deactivateGUI();
             }
             return;
