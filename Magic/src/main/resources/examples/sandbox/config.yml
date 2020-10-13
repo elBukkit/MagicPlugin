@@ -1,8 +1,11 @@
+# Make sure these settings get applied when adding this example
+example_override: true
+
 # Set this to true to only fill wands with spells created by the player
 # Useful in sandbox configs
 fill_wand_creator: true
 
-# Give players a sandbox win on joni
+# Give players a sandbox win on join
 welcome_wand: sandbox
 
 # This can be used for a server that is hooked up with a live editor

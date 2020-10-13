@@ -160,8 +160,9 @@ public class ConfigurationLoadTask implements Runnable {
                 {
                     try {
                         ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
-                        ConfigurationUtils.addConfigurations(config, exampleConfig, false);
-                        info(" Added " + examplesFileName);
+                        boolean override = exampleConfig.getBoolean("example_override", false);
+                        ConfigurationUtils.addConfigurations(config, exampleConfig, override);
+                        info(" Added " + examplesFileName + (override ? ", allowing overrides" : ""));
                     } catch (Exception ex) {
                         getLogger().severe("Error loading: " + examplesFileName);
                         throw ex;

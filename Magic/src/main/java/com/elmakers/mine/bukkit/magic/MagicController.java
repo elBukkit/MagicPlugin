@@ -3139,6 +3139,7 @@ public class MagicController implements MageController {
         }
         int configUpdateInterval = properties.getInt("config_update_interval");
         if (configUpdateInterval > 0) {
+            getLogger().info("Sandbox enabled, will check for updates from the web UI");
             final ConfigCheckTask configCheck = new ConfigCheckTask(this);
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
