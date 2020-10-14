@@ -81,7 +81,8 @@ public class DropAction extends BaseSpellAction {
             drops.addAll(block.getDrops(toolItem));
         } else if (falling) {
             Location blockLocation = block.getLocation();
-            FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, block.getType(), block.getData());
+            Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
+            FallingBlock falling = block.getWorld().spawnFallingBlock(blockCenter, block.getType(), block.getData());
             falling.setDropItem(false);
         }
 
