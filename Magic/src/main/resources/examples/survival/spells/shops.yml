@@ -371,22 +371,22 @@ redstoneshop:
         items:
         - slime_ball@1
         - redstone@8
+        - redstone_torch@2
         - redstone_block
         - redstone_lamp_off@4
         - daylight_detector@3
-        - dropper@2
-        - hopper@2
+        - dropper
+        - hopper
         - redstone_comparator@3
         - diode@3
-        - dispenser@2
-        - note_block@16
+        - dispenser
+        - note_block
         - piston_base
         - piston_sticky_base
         - lever
         - stone_button
-        - wood_button
         - stone_plate
-        - wood_plate
+        - observer
 
 redstonesellshop:
     inherit: sellshop
