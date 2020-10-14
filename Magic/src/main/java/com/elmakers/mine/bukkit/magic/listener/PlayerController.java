@@ -700,6 +700,7 @@ public class PlayerController implements Listener {
         if (isRightClick) {
             Integer sp = Wand.getSP(itemInHand);
             if (sp != null) {
+                sp *= itemInHand.getAmount();
                 if (mage.isAtMaxSkillPoints()) {
                     String limitMessage = controller.getMessages().get("sp.limit");
                     limitMessage = limitMessage.replace("$amount", Integer.toString(controller.getSPMaximum()));

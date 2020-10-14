@@ -2613,6 +2613,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!isPlayer()) return 0;
         Integer sp = Wand.getSP(itemStack);
         if (sp != null) {
+            sp *= itemStack.getAmount();
             int currentSP = getSkillPoints();
             int newSP = currentSP - sp;
             if (currentSP < sp) {
@@ -2724,7 +2725,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!isPlayer()) return false;
         Integer sp = Wand.getSP(itemStack);
         if (sp != null) {
-            return getSkillPoints() >= sp;
+            return getSkillPoints() >= sp * itemStack.getAmount();
         }
 
         int amount = itemStack == null ? 0 : itemStack.getAmount();
