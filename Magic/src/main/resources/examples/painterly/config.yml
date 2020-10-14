@@ -2,6 +2,6 @@
 inherit: survival
 
 # This config only changes the RP
-resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-8-1.zip"
-add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-8-1.zip"
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-1.16.zip"
+add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-1.16.zip"
 
