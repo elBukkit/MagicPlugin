@@ -184,6 +184,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     public void teleport(@Nonnull Location location) {
         this.location = location.clone();
+        if (location.getChunk().isLoaded()) {
+            restore();
+        }
         Entity entity = getEntity();
         if (entity != null && entity.isValid()) {
             entity.teleport(location);
