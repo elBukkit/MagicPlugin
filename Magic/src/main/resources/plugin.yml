@@ -31,6 +31,7 @@ softdepend:
   - MobArena
   - Residence
   - RedProtect
+  - LogBlock
 loadbefore:
   - Scavenger
   - SilkSpawners
