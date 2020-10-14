@@ -16,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
@@ -506,6 +507,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("chestplate");
             options.add("boots");
             options.add("leggings");
+            options.add("villager_profession");
         } else if ((args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell"))
                || (args.length == 2 && args[0].equals("cast"))
                || (args.length == 2 && args[0].equals("spell"))) {
@@ -520,6 +522,10 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("none");
             options.add("npc");
             options.add("player");
+        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("villager_profession"))) {
+            for (Villager.Profession profession : Villager.Profession.values()) {
+                options.add(profession.name().toLowerCase());
+            }
         } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_source") || args[1].equals("cast_source")
                 || args[1].equals("interact_command_source") || args[1].equals("command_source"))) {
             options.add("npc");

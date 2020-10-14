@@ -11,6 +11,7 @@
    the command.
  - Add cast_spell requirement, can be used for making spell combos (see combo example spell)
  - Fix shop behavior when clicking an empty slot, auto_close shops will close, otherwise it will not
+ - Some improvements to NPCs invulnerability
 
 # 7.10.6
 
