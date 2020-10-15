@@ -1,16 +1,12 @@
-#
-# Brooms
-#
 thestral:
     mode: cast
-    active_spell: broom
+    active_spell: thestralride
     icon: bone
     indestructible: false
     locked: true
     effect_color: '880088'
     uses: 1
     quiet: 2
-    overrides: mount_variant skeleton_horse stash_item false
     spells:
-        - broom
+        - thestralride
 

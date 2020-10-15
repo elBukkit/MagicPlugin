@@ -1,0 +1,33 @@
+thestralride:
+  inherit: broom
+  actions:
+    cast:
+        - class: ChangeContext
+          target_offset: 0,1,0
+          ignore_result: true
+          actions:
+            - class: Volume
+              radius: 1
+              actions:
+                - class: CheckBlock
+                  allowed: passthrough
+                  fail:
+                    - class: Message
+                      ignore_result: true
+                      message_type: action_bar
+                      message_key: nospace
+                    - class: CastResult
+                      result: no_target
+                      end_result: true
+                    - class: Stop
+            - class: SpawnEntity
+            - class: RideEntity
+  parameters:
+    type: skeleton_horse
+    stash_item: false
+    cooldown: 0
+    mount_name: Thestral
+    mount_wand: false
+    set_target: true
+
+

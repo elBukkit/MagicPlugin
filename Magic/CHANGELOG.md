@@ -17,6 +17,7 @@
    resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-8-1.zip"
  - Drop action will spawn a falling block in the center of a block
  - Fix an issue with duplicate entity attributes on classes and modifiers
+ - Fix Thestral bone in potter configs
 
 # 7.10.6
 
