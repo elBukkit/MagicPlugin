@@ -1177,6 +1177,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean load(MageData data) {
         try {
+            resourcePackEnabled = controller.isResourcePackEnabledByDefault();
             if (data == null) {
                 finishLoad(data);
                 return true;

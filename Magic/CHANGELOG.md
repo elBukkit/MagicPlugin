@@ -2,6 +2,8 @@
 
 # 7.10.8
 
+ - Fix resource_pack_default_auto config option (won't change anything except for new players though)
+
 # 7.10.7
 
  - Wands are once again stashable by default. I'll quit waffling on this now!
