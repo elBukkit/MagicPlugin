@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 7.10.8
+
 # 7.10.7
 
  - Wands are once again stashable by default. I'll quit waffling on this now!
