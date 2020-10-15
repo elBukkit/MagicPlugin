@@ -16,6 +16,7 @@
  - Update painterly example to use modern RP. To use the old one:
    resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-8-1.zip"
  - Drop action will spawn a falling block in the center of a block
+ - Fix an issue with duplicate entity attributes on classes and modifiers
 
 # 7.10.6
 

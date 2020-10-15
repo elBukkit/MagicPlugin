@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.bukkit.attribute.Attribute;
@@ -95,7 +96,11 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
                         }
                     }
                 }
-                attribute.addModifier(modifier.modifier);
+                try {
+                    attribute.addModifier(modifier.modifier);
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Error adding vanilla attribute modifier: " + modifier.modifier.getName() + " from class/modifier " + getKey(), ex);
+                }
             }
 
             if (modifier.base != null) {
