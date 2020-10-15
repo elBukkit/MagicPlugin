@@ -1218,6 +1218,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Override
+    public boolean hasInteract() {
+        if (interactSpell != null && !interactSpell.isEmpty()) return true;
+        if (interactCommands != null && !interactCommands.isEmpty()) return true;
+        return false;
+    }
+
+    @Override
     public EntityData.SourceType getInteractCommandSource() {
         return interactCommandSource;
     }

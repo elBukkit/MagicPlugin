@@ -2,22 +2,23 @@
 
 # 7.10.7
 
- - Fix the ModifyEntity, ShrinkEntity and GrowEntity actions destroying magic mob data (giant Warlocks!)
  - Wands are once again stashable by default. I'll quit waffling on this now!
+ - Fix the ModifyEntity, ShrinkEntity and GrowEntity actions destroying magic mob data (giant Warlocks!)
+ - Fix an issue with duplicate entity attributes on classes and modifiers
+ - Fix Thestral bone in potter configs
+ - Fix NPC interaction when using villagers that have an assigned profession
+ - Fix shop behavior when clicking an empty slot, auto_close shops will close, otherwise it will not
+ - Fix right-clicking stacked SP items not giving all of the SP
+ - Some improvements to NPCs invulnerability
+ - Drop action will spawn a falling block in the center of a block
  - Selector and Shops now set put_in_hand to true by default to avoid weird stacking behavior
  - Add apply_name_to_icon parameter to Selector, set to false to use vanilla item names
  - Add Magic.cast_via_command permission. This is a list, just like Magic.cast, but only applies to using the /cast
    command. Players will still need Magic.cast permission for the spell as well as Magic.commands.cast permission for
    the command.
  - Add cast_spell requirement, can be used for making spell combos (see combo example spell)
- - Fix shop behavior when clicking an empty slot, auto_close shops will close, otherwise it will not
- - Some improvements to NPCs invulnerability
- - Fix right-clicking stacked SP items not giving all of the SP
  - Update painterly example to use modern RP. To use the old one:
    resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-8-1.zip"
- - Drop action will spawn a falling block in the center of a block
- - Fix an issue with duplicate entity attributes on classes and modifiers
- - Fix Thestral bone in potter configs
 
 # 7.10.6
 

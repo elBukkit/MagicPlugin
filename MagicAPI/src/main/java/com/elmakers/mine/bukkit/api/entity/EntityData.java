@@ -73,6 +73,7 @@ public interface EntityData extends Cloneable {
     List<String> getInteractCommands();
     @Nullable
     Collection<Cost> getInteractCosts();
+    boolean hasInteract();
     void setMaterial(@Nonnull MaterialAndData material);
     @Nullable
     String getInteractPermission();

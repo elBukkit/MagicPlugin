@@ -550,13 +550,22 @@ public class PlayerController implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Entity clickedEntity = event.getRightClicked();
+        // Check for this event being sent in addition to "at entity". We'll let the other handler
+        // perform the actions, but we need to cancel this one too otherwise villager interaction
+        // interfers with NPC interaction.
+        EntityData mob = controller.getMob(clickedEntity);
+        if (mob != null && mob.hasInteract()) {
+            event.setCancelled(true);
+            return;
+        }
+
         Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
         Wand wand = mage.checkWand();
 
         // Check for a player placing a wand in an item frame
-        Entity clickedEntity = event.getRightClicked();
 
         if (mage.getDebugLevel() >= 10) {
             mage.sendDebugMessage("ENTITY INTERACT with: " + event.getHand() + " at " + clickedEntity);
