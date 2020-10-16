@@ -5683,6 +5683,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 replaceTemplate(replacementTemplate);
                 if (mage != null) {
+                    Mage mage = this.mage;
+                    deactivate();
                     mage.checkWandNextTick();
                 }
                 break;

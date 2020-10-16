@@ -3,6 +3,7 @@
 # 7.10.8
 
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)
+ - Fix potter wands not activating right away after opening the box
 
 # 7.10.7
 
