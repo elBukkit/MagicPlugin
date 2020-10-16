@@ -77,9 +77,9 @@ costs:
     xp_amount: $amount Опыта
     levels_amount: $amount Уровней опыта
     mana_amount: $amount Маны
-    mana: Мана
+    mana: маны
     xp: Опыт
-    levels: Уровни
+    levels: уровней
     sp: Очки заклинаний
     hunger: Энергия
     health: Health
@@ -331,7 +331,7 @@ spell:
     earns: "&2Дает до &6$earns"
     description_lore: "&b$description"
     level_lore: "&6$level"
-    toggle: "&Используй, чтобы переключить"
+    toggle: "&aИспользуй, чтобы переключить"
     upgrade_description_prefix: "&r&b&bull; &6"
     passive: "&2Пассивное"
     disabled: "&eВыключено"
@@ -639,6 +639,7 @@ spells:
     fail: Недостаточно места!
     cursed: Ты слишком сильно ударился, чтобы лететь!
     upgrade_description: Увеличена продолжительность, скорость и управляемость
+    nospace: "&cНужно свободное место для того чтобы взлететь!"
   superbroom:
     name: СуперМетла
     cast: Твоя палочка превратилась в метлу!
@@ -746,6 +747,10 @@ spells:
     name: Электрическая стрела
     description: Бьет вашу цель током
     cast_player_message: a:$spell игрока $player задела тебя!
+  arrow_grapple:
+    name: Стрела-гарпун
+    description: Выстрел стрелой, которая тянет тебя сторону цели
+    cast_player_message: "a:$spell игрока $player задела тебя!"
   toss:
     name: Бросок
     description: Бросает блок
