@@ -5,6 +5,7 @@
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)
  - Fix potter wands not activating right away after opening the box
  - Add divinghelmet_pro item, a diving helmet with night vision
+ - Fix broomstick dismount behavior when the duration expires
 
 # 7.10.7
 
