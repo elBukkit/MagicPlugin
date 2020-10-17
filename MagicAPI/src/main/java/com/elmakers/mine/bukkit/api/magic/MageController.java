@@ -275,6 +275,7 @@ public interface MageController {
     boolean isFriendly(Entity source, Entity target);
 
     boolean isUrlIconsEnabled();
+    boolean isLegacyIconsEnabled();
     Set<EntityType> getUndoEntityTypes();
 
     boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message);

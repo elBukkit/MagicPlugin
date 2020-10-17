@@ -1,3 +1,4 @@
 # Use RP for 1.12 and below
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-7.zip"
 add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-7.zip"
+legacy_icons_enabled: true

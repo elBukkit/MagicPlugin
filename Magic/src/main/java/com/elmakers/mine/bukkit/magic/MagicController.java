@@ -2714,6 +2714,7 @@ public class MagicController implements MageController {
         castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
         activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
+        legacyIconsEnabled = properties.getBoolean("legacy_icons_enabled", legacyIconsEnabled);
         spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
         autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
         autoPathUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoPathUpgradesEnabled);
@@ -4909,6 +4910,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean isLegacyIconsEnabled() {
+        return legacyIconsEnabled;
+    }
+
+    @Override
     public Set<EntityType> getUndoEntityTypes() {
         return undoEntityTypes;
     }
@@ -6790,6 +6796,7 @@ public class MagicController implements MageController {
     private int                                 castHoloTextRange           = 0;
     private int                                 activateHoloTextRange       = 0;
     private boolean                                urlIconsEnabled             = true;
+    private boolean                             legacyIconsEnabled          = false;
     private boolean                             autoSpellUpgradesEnabled    = true;
     private boolean                             autoPathUpgradesEnabled     = true;
     private boolean                             spellProgressionEnabled     = true;

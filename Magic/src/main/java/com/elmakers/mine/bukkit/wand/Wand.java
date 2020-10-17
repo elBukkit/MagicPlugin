@@ -319,7 +319,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 // So that we save the data after to avoid re-migrating.
                 needsSave = true;
             }
-            randomizeOnActivate = !wandConfig.contains("icon");
+            randomizeOnActivate = !wandConfig.contains(getIconPrefix());
             load(wandConfig);
         } else {
             updateIcon();
@@ -417,6 +417,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateName();
     }
 
+    protected String getIconPrefix() {
+        if (controller == null) return "icon";
+        return controller.isLegacyIconsEnabled() ? "legacy_icon" : "icon";
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     protected void migrate(int version, ConfigurationSection wandConfig) {
@@ -428,9 +433,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (templateConfig != null) {
                 // This is an unfortunate special case for wands waiting to be randomized
                 String randomizeIcon = templateConfig.getString("randomize_icon");
-                String currentIcon = wandConfig.getString("icon");
+                String currentIcon = wandConfig.getString(getIconPrefix());
                 if (randomizeIcon != null && currentIcon != null && randomizeIcon.equals(currentIcon)) {
-                    wandConfig.set("icon", null);
+                    wandConfig.set(getIconPrefix(), null);
                 }
                 // This was a potentially leftover property from randomized wands we can ditch
                 wandConfig.set("randomize", null);
@@ -472,9 +477,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Remove icon if matches template
         if (version <= 3) {
             ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(wandConfig.getString("template"));
-            String templateIcon = templateConfig == null ? null : templateConfig.getString("icon");
-            if (templateIcon != null && templateIcon.equals(wandConfig.getString("icon", ""))) {
-                wandConfig.set("icon", null);
+            String templateIcon = templateConfig == null ? null : templateConfig.getString(getIconPrefix());
+            if (templateIcon != null && templateIcon.equals(wandConfig.getString(getIconPrefix(), ""))) {
+                wandConfig.set(getIconPrefix(), null);
             }
         }
 
@@ -559,9 +564,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 iconKey = null;
             }
             WandTemplate template = getTemplate();
-            String templateIcon = template != null ? template.getProperty("icon", "") : null;
+            String templateIcon = template != null ? template.getProperty(getIconPrefix(), "") : null;
             if (templateIcon == null || !templateIcon.equals(iconKey)) {
-                setProperty("icon", iconKey);
+                setProperty(getIconPrefix(), iconKey);
             }
         }
     }
@@ -1861,8 +1866,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         WandTemplate wandTemplate = getTemplate();
 
-        if (hasProperty("icon_inactive")) {
-            String iconKey = getString("icon_inactive");
+        String inactiveIconKey = getIconPrefix() + "_inactive";
+        if (hasProperty(inactiveIconKey)) {
+            String iconKey = getString(inactiveIconKey);
             if (wandTemplate != null) {
                 iconKey = wandTemplate.migrateIcon(iconKey);
             }
@@ -1878,6 +1884,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         inactiveIconDelay = getInt("icon_inactive_delay");
         randomizeOnActivate = randomizeOnActivate && hasProperty("randomize_icon");
+        String iconConfigKey = getIconPrefix();
         if (randomizeOnActivate) {
             String randomizeIcon = getString("randomize_icon");
             setIcon(loadIcon(randomizeIcon));
@@ -1885,8 +1892,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 controller.getLogger().warning("Invalid randomize_icon in wand '" + template + "' config: " + randomizeIcon);
                 setIcon(new MaterialAndData(DefaultWandMaterial));
             }
-        } else if (hasProperty("icon")) {
-            String iconKey = getString("icon");
+        } else if (hasProperty(iconConfigKey)) {
+            String iconKey = getString(iconConfigKey);
             if (wandTemplate != null) {
                 iconKey = wandTemplate.migrateIcon(iconKey);
             }
@@ -1897,7 +1904,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             // Port old custom wand icons
             if (templateConfig != null && iconKey.contains("i.imgur.com")) {
-                iconKey = templateConfig.getString("icon");
+                iconKey = templateConfig.getString(iconConfigKey);
             }
             setIcon(loadIcon(iconKey));
             if (item == null) {
@@ -3348,8 +3355,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected void randomize() {
         if (template != null && template.length() > 0) {
             ConfigurationSection wandConfig = controller.getWandTemplateConfiguration(template);
-            if (wandConfig != null && wandConfig.contains("icon")) {
-                String iconKey = wandConfig.getString("icon");
+            String iconConfigKey = getIconPrefix();
+            if (wandConfig != null && wandConfig.contains(iconConfigKey)) {
+                String iconKey = wandConfig.getString(iconConfigKey);
                 if (iconKey.contains(",")) {
                     Random r = new Random();
                     String[] keys = StringUtils.split(iconKey, ',');
@@ -3433,6 +3441,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(other.getTemplateKey());
 
         // Check for forced upgrades
+        String iconConfigKey = getIconPrefix();
         if (other.isForcedUpgrade()) {
             if (templateConfig == null) {
                 return false;
@@ -3442,9 +3451,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             templateConfig.set("description", templateConfig.getString("upgrade_description"));
             templateConfig.set("force", null);
             templateConfig.set("upgrade", null);
-            templateConfig.set("icon", templateConfig.getString("upgrade_icon"));
+            templateConfig.set(iconConfigKey, templateConfig.getString("upgrade_" + iconConfigKey));
             templateConfig.set("indestructible", null);
-            templateConfig.set("upgrade_icon", null);
+            templateConfig.set("upgrade_" + iconConfigKey, null);
 
             configure(templateConfig);
             return true;
@@ -3457,7 +3466,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(other.getEffectiveConfiguration());
         cleanUpgradeConfig(upgradeConfig);
-        upgradeConfig.set("icon", other.upgradeIcon == null ? null : other.upgradeIcon.getKey());
+        upgradeConfig.set(iconConfigKey, other.upgradeIcon == null ? null : other.upgradeIcon.getKey());
         upgradeConfig.set("template", other.upgradeTemplate);
 
         Messages messages = controller.getMessages();
@@ -4831,6 +4840,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         playEffects("replace");
         setTemplate(newTemplate);
         clearProperty("icon");
+        clearProperty("legacy_icon");
         loadProperties();
         saveState();
     }
