@@ -3456,9 +3456,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(other.getEffectiveConfiguration());
-        upgradeConfig.set("icon", ConfigurationUtils.getIcon(upgradeConfig, controller.isLegacyIconsEnabled(), "upgrade_icon"));
-        upgradeConfig.set("template", other.upgradeTemplate);
+        String upgradeIcon = ConfigurationUtils.getIcon(upgradeConfig, controller.isLegacyIconsEnabled(), "upgrade_icon");
         cleanUpgradeConfig(upgradeConfig);
+        upgradeConfig.set("icon", upgradeIcon);
+        upgradeConfig.set("template", other.upgradeTemplate);
 
         Messages messages = controller.getMessages();
         if (other.rename && templateConfig != null) {
