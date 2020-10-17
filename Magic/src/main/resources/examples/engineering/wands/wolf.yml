@@ -1,8 +1,8 @@
 wolf:
   inherit: base_wand
   path: staff
-  icon: wand_icon:7
-  migrate_icon: gold_hoe
+  icon: blaze_rod{CustomModelData:7}
+  migrate_icon: wand_icon:7
   hotbar_count: 3
   protected: true
   powered: true

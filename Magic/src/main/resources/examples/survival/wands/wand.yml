@@ -4,8 +4,24 @@
 wand:
     inherit: base_wand
     class: mage
-    icon: wand_icon:1
-    migrate_icon: wand_icon
+    icon: stick{CustomModelData:1}
+    migrate_legacy_icons:
+        "wand_icon:1": stick{CustomModelData:1}
+        "wand_icon:2": stick{CustomModelData:2}
+        "wand_icon:3": stick{CustomModelData:3}
+        "wand_icon:4": stick{CustomModelData:4}
+        "wand_icon:5": blaze_rod{CustomModelData:5}
+        "wand_icon:6": blaze_rod{CustomModelData:6}
+        "wand_icon:7": blaze_rod{CustomModelData:7}
+        "wand_icon:8": stick{CustomModelData:8}
+        "wand_icon:9": blaze_rod{CustomModelData:9}
+        "wand_icon:10": stick{CustomModelData:10}
+        "wand_icon:36": stick{CustomModelData:36}
+        "wand_icon:37": stick{CustomModelData:37}
+        "wand_icon:38": stick{CustomModelData:38}
+        "wand_icon:40": blaze_rod{CustomModelData:40}
+        "wand_icon:42": stick{CustomModelData:42}
+        "wand_icon:45": stick{CustomModelData:45}
     effect_color: random
     active_spell: missile
     tags:
