@@ -268,6 +268,9 @@ wands:
     divinghelmet:
         name: Diving Helmet
         description: Work freely underwater
+    divinghelmet_pro:
+        name: Pro Diving Helmet
+        description: Work (and see!) freely underwater
     heroes:
         name: Wand
         description: Use the Q Button to Open Skill Inventory
