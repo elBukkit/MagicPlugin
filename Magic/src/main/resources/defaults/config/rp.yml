@@ -1,6 +1,6 @@
 # This resource pack will automatically be used if none is defined in your server.properties
 # Set this to "" if you have some other plugin or Bungee managing resource packs.
-resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-1.16.zip"
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-8-1.16.zip"
 
 # Use this to turn off all resource pack functionality
 enable_resource_pack: true
@@ -14,6 +14,12 @@ resource_pack_delay: 200
 # Set this to true to turn on the player skull-based spell icons
 # This may be needed if you have disabled the RP, spell icons are in the RP.
 url_icons_enabled: false
+
+# This should get set automatically based on your version, but if you want to override this
+# you can.
+# This will use the "legacy_icon" field in wands and spells, which generally use damage-based
+# icons rather than custom model data icons
+legacy_icons_enabled: false
 
 # Set this to allow Magic to periodically check for updates to the resource pack.
 # Setting this to false is the same as setting resource_pack_check_interval to 0.

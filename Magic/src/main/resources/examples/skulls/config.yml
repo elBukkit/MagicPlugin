@@ -2,8 +2,8 @@
 inherit: survival
 
 # This resource pack is identical to survival except is also includes the flat skull model
-resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-8-1.zip"
-add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-8-1.zip"
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-8-1.16.zip"
+add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-8-1.16.zip"
 
 # Turn back on skull-based icons
 url_icons_enabled: true

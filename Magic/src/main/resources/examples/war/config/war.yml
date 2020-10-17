@@ -7,8 +7,8 @@
 sp_enabled: false
 
 # Use a special RP
-resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-war-RP-1.16.zip"
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-war-RP-8-1.16.zip"
 
 # Use a different RP when combined with other configs
-add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-1.16.zip"
+add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-8-1.16.zip"
 
