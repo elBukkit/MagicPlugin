@@ -216,6 +216,12 @@ public class RideEntityAction extends BaseSpellAction
         if (currentMount == null) {
             return SpellResult.CAST;
         }
+        if (duration > 0) {
+            long flightTime = System.currentTimeMillis() - liftoffTime;
+            if (flightTime > duration) {
+                return SpellResult.CAST;
+            }
+        }
         if (!mount.isValid() || mount != currentMount) {
             remount(context);
             if (mount == null) {
