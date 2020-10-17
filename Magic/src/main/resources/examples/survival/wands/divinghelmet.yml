@@ -13,3 +13,6 @@ divinghelmet:
       water_worker: 1
       depth_strider: 3
 
+divinghelmet_pro:
+  inherit: divinghelmet
+    potion_effects: water_breathing,night_vision
