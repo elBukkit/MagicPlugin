@@ -1139,4 +1139,15 @@ public class ConfigurationUtils extends ConfigUtils {
 
         return result;
     }
+
+    public static String getIcon(ConfigurationSection node, boolean legacy) {
+         return getIcon(node, legacy, "icon");
+    }
+
+    public static String getIcon(ConfigurationSection node, boolean legacy, String iconKey) {
+        if (legacy) {
+            return node.getString("legacy_" + iconKey, node.getString(iconKey));
+        }
+        return node.getString(iconKey);
+    }
 }

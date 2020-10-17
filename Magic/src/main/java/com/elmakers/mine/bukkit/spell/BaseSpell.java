@@ -994,8 +994,8 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         // Load basic properties
         boolean legacyIcons = controller.isLegacyIconsEnabled();
-        icon = loadIcon(node.getString(legacyIcons ? "legacy_icon" : "icon"));
-        disabledIcon = loadIcon(node.getString(legacyIcons ? "legacy_icon_disabled" : "icon_disabled"));
+        icon = loadIcon(ConfigurationUtils.getIcon(node, legacyIcons));
+        disabledIcon = loadIcon(ConfigurationUtils.getIcon(node, legacyIcons, "icon_disabled"));
 
         iconURL = node.getString("icon_url");
         iconDisabledURL = node.getString("icon_disabled_url");

@@ -218,6 +218,30 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     @Nullable
+    public String getIcon(boolean legacy) {
+        return getIcon(legacy, "icon");
+    }
+
+    @Nullable
+    public String getIcon(boolean legacy, String iconKey) {
+        if (legacy) {
+            return getString("legacy_" + iconKey, getString(iconKey));
+        }
+        return getString(iconKey);
+    }
+
+    public boolean hasIcon(boolean legacy) {
+        return hasIcon(legacy, "icon");
+    }
+
+    public boolean hasIcon(boolean legacy, String iconKey) {
+        if (legacy) {
+            return hasProperty("legacy_" + iconKey) || hasProperty(iconKey);
+        }
+        return hasProperty(iconKey);
+    }
+
+    @Nullable
     public ConfigurationSection getConfigurationSection(String key) {
         Object value = getProperty(key);
         return value == null || !(value instanceof ConfigurationSection) ? null : (ConfigurationSection)value;

@@ -558,6 +558,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         upgradeConfig.set("upgrade", null);
         upgradeConfig.set("icon", null);
         upgradeConfig.set("upgrade_icon", null);
+        upgradeConfig.set("legacy_icon", null);
+        upgradeConfig.set("legacy_upgrade_icon", null);
         upgradeConfig.set("template", null);
         upgradeConfig.set("description", null);
         upgradeConfig.set("name", null);
