@@ -1,6 +1,8 @@
 arrow_grapple:
-    icon: spell_icon:57
-    icon_disabled: spell_icon_disabled:57
+    icon: tipped_arrow{CustomModelData:12,Potion:invisibility}
+    icon_disabled: tipped_arrow{CustomModelData:13,Potion:invisibility}
+    legacy_icon: spell_icon:243
+    legacy_icon_disabled: spell_icon_disabled:243
     category: combat
     worth: 300
     toggle: cancel

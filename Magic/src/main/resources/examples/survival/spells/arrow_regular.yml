@@ -1,5 +1,7 @@
 arrow_regular:
-    icon: arrow
+    icon: arrow{CustomModelData:1}
+    icon_disabled: arrow{CustomModelData:2}
+    legacy_icon: arrow
     category: combat
     worth: 100
     earns_sp: 2
