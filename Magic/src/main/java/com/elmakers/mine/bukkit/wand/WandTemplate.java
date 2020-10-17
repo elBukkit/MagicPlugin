@@ -62,6 +62,14 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
         clearProperty("inherit");
 
         ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
+        // This ! may look odd, but we only want to use legacy icon migration if we're *not* using legacy icons,
+        // since the intention is to migrate the legacy icons to the new icons.
+        if (!controller.isLegacyIconsEnabled()) {
+            ConfigurationSection migrateLegacyConfig = node.getConfigurationSection("migrate_legacy_icons");
+            if (migrateLegacyConfig != null) {
+                migrateConfig = migrateLegacyConfig;
+            }
+        }
         if (migrateConfig != null) {
             migrateIcons = new HashMap<>();
             Set<String> keys = migrateConfig.getKeys(false);
