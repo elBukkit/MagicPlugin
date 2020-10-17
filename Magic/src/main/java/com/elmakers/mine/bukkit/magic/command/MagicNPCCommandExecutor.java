@@ -522,7 +522,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("none");
             options.add("npc");
             options.add("player");
-        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("villager_profession"))) {
+        } else if (args.length == 3 && args[0].equals("configure") && args[1].equals("villager_profession")) {
             for (Villager.Profession profession : Villager.Profession.values()) {
                 options.add(profession.name().toLowerCase());
             }
