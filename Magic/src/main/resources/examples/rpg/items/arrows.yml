@@ -1,7 +1,7 @@
 arrow_blink:
   worth: 100
   locked: true
-  item: arrow{CustomModelData:1}
+  item: tipped_arrow{CustomModelData:2}
   name: Blink Arrow
   lore:
     - Teleport to wherever your arrow may land
@@ -11,10 +11,22 @@ arrow_blink:
         key: arrow_spell_blink
         class: ranger
 
+arrow_bomb:
+  worth: 100
+  locked: true
+  item: tipped_arrow{CustomModelData:3}
+  name: Bomb Arrow
+  lore:
+    - An explosive surprise
+  tags:
+    arrow:
+      spell:
+        key: arrow_spell_bomb
+
 arrow_fire:
   worth: 100
   locked: true
-  item: arrow{CustomModelData:3}
+  item: tipped_arrow{CustomModelData:4}
   name: Fire Arrow
   lore:
     - Lights the target on fire
@@ -24,22 +36,10 @@ arrow_fire:
         key: arrow_spell_fire
         class: ranger
 
-arrow_bomb:
-  worth: 100
-  locked: true
-  item: arrow{CustomModelData:2}
-  name: Bomb Arrow
-  lore:
-    - An explosive surprise
-  tags:
-    arrow:
-      spell:
-        key: arrow_spell_bomb
-
 arrow_grapple:
   worth: 100
   locked: true
-  item: arrow{CustomModelData:4}
+  item: tipped_arrow{CustomModelData:5}
   name: Grapple Arrow
   lore:
     - An arrow with a grappling hook attached
@@ -51,7 +51,7 @@ arrow_grapple:
 arrow_ice:
   locked: true
   worth: 100
-  item: arrow{CustomModelData:5}
+  item: tipped_arrow{CustomModelData:6}
   name: Ice Arrow
   lore:
     - A freezing arrow
@@ -63,7 +63,7 @@ arrow_ice:
 arrow_light:
   locked: true
   worth: 100
-  item: arrow{CustomModelData:6}
+  item: tipped_arrow{CustomModelData:7}
   name: Light Arrow
   lore:
     - A blast of pure energy
@@ -75,7 +75,7 @@ arrow_light:
 arrow_poison:
   locked: true
   worth: 100
-  item: arrow{CustomModelData:8}
+  item: tipped_arrow{CustomModelData:8}
   name: Poison Arrow
   lore:
     - An arrow tipped with a cloud of poison gas
@@ -87,7 +87,7 @@ arrow_poison:
 arrow_shock:
   locked: true
   worth: 100
-  item: arrow{CustomModelData:9}
+  item: tipped_arrow{CustomModelData:9}
   name: Shock Arrow
   lore:
     - An arrow with an electrical shock

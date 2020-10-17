@@ -1,0 +1,19 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/tipped_arrow_head",
+    "layer1": "item/tipped_arrow_base"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 1}, "model": "item/arrow/normal"},
+    {"predicate": { "custom_model_data": 2}, "model": "item/arrow/blink"},
+    {"predicate": { "custom_model_data": 3}, "model": "item/arrow/bomb"},
+    {"predicate": { "custom_model_data": 4}, "model": "item/arrow/fire"},
+    {"predicate": { "custom_model_data": 5}, "model": "item/arrow/grapple"},
+    {"predicate": { "custom_model_data": 6}, "model": "item/arrow/ice"},
+    {"predicate": { "custom_model_data": 7}, "model": "item/arrow/light"},
+    {"predicate": { "custom_model_data": 8}, "model": "item/arrow/poison"},
+    {"predicate": { "custom_model_data": 9}, "model": "item/arrow/shock"}
+  ]
+}
