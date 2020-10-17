@@ -728,6 +728,15 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     ItemMeta meta = icon.getItemMeta();
                     meta.setLore(null);
                     icon.setItemMeta(meta);
+                } else if ((applyToWand || applyToCaster) && controller.isWandUpgrade(icon)) {
+                    // This is a bit of a hack to get rid of the upgrade_item_description lore
+                    ItemMeta meta = icon.getItemMeta();
+                    List<String> iconLore = meta.getLore();
+                    if (iconLore != null && !iconLore.isEmpty()) {
+                        iconLore.remove(iconLore.size() - 1);
+                        meta.setLore(iconLore);
+                        icon.setItemMeta(meta);
+                    }
                 }
             }
 
