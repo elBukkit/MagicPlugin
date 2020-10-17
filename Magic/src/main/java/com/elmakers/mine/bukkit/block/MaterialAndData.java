@@ -747,6 +747,19 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return false;
     }
 
+    @Override
+    public boolean isDifferent(ItemStack itemStack) {
+        if (getMaterial() != itemStack.getType()) return true;
+        if (getData() != itemStack.getDurability()) return true;
+        if (tags != null) {
+            Object customModelData = tags.get("CustomModelData");
+            int itemModelData = InventoryUtils.getMetaInt(itemStack, "CustomModelData", 0);
+            if (customModelData == null && itemModelData != 0) return true;
+            if (customModelData != null && customModelData instanceof Integer && itemModelData != (Integer)customModelData) return true;
+        }
+        return false;
+    }
+
     @Nullable
     @Override
     public ItemStack getItemStack(int amount) {
