@@ -15,4 +15,4 @@ divinghelmet:
 
 divinghelmet_pro:
   inherit: divinghelmet
-    potion_effects: water_breathing,night_vision
+  potion_effects: water_breathing,night_vision
