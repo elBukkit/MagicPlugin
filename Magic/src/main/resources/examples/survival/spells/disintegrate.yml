@@ -18,7 +18,7 @@ disintegrate:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_magmacube_jump
+           sound: entity_magma_cube_jump
         tick:
         -  location: target
            particle: drip_lava
