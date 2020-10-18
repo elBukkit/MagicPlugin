@@ -6,11 +6,18 @@
 potterwand:
     inherit: base_wand
     class: wizard
-    icon: wand_icon:24,wand_icon:25,wand_icon:26
+    icon: stick{CustomModelData:24},stick{CustomModelData:25},stick{CustomModelData:26}
     migrate_icons:
       wood_hoe: wood_hoe:24
       gold_axe: wood_hoe:25
       gold_pickaxe: wood_hoe:26
+    migrate_legacy_icons:
+      wood_hoe: stick{CustomModelData:24}
+      gold_axe: stick{CustomModelData:25}
+      gold_pickaxe: stick{CustomModelData:26}
+      "wand_icon:24": stick{CustomModelData:24}
+      "wand_icon:25": stick{CustomModelData:25}
+      "wand_icon:26": stick{CustomModelData:26}
     active_spell: vermillious
     quiet: 0
     effect_color: '888888'
