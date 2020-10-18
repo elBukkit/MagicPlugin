@@ -1,84 +1,118 @@
 appearance_beginner:
     upgrade: true
-    icon: wand_icon:1
-    upgrade_icon: wand_icon:1
+    legacy_icon: wand_icon:1
+    legacy_upgrade_icon: wand_icon:1
+    icon: blaze_rod{CustomModelData:1}
+    upgrade_icon: blaze_rod{CustomModelData:1}
 
 appearance_student:
     upgrade: true
-    icon: wand_icon:2
-    upgrade_icon: wand_icon:2
+    legacy_icon: wand_icon:2
+    legacy_upgrade_icon: wand_icon:2
+    icon: blaze_rod{CustomModelData:2}
+    upgrade_icon: blaze_rod{CustomModelData:2}
 
 appearance_apprentice:
     upgrade: true
-    icon: wand_icon:3
-    upgrade_icon: wand_icon:3
+    legacy_icon: wand_icon:3
+    legacy_upgrade_icon: wand_icon:3
+    icon: blaze_rod{CustomModelData:3}
+    upgrade_icon: blaze_rod{CustomModelData:3}
 
 appearance_master:
     upgrade: true
-    icon: wand_icon:4
-    upgrade_icon: wand_icon:4
+    legacy_icon: wand_icon:4
+    legacy_upgrade_icon: wand_icon:4
+    icon: blaze_rod{CustomModelData:4}
+    upgrade_icon: blaze_rod{CustomModelData:4}
 
 appearance_engineer:
     upgrade: true
-    icon: wand_icon:5
-    upgrade_icon: wand_icon:5
-
-appearance_architect:
-    upgrade: true
-    icon: wand_icon:39
-    upgrade_icon: wand_icon:39
+    legacy_icon: wand_icon:5
+    legacy_upgrade_icon: wand_icon:5
+    icon: blaze_rod{CustomModelData:5}
+    upgrade_icon: blaze_rod{CustomModelData:5}
 
 appearance_conduit:
     upgrade: true
-    icon: wand_icon:6
-    upgrade_icon: wand_icon:6
+    legacy_icon: wand_icon:6
+    legacy_upgrade_icon: wand_icon:6
+    icon: stick{CustomModelData:6}
+    upgrade_icon: stick{CustomModelData:6}
 
 appearance_magicka:
     upgrade: true
-    icon: wand_icon:9
-    upgrade_icon: wand_icon:9
+    legacy_icon: wand_icon:9
+    legacy_upgrade_icon: wand_icon:9
+    icon: stick{CustomModelData:9}
+    upgrade_icon: stick{CustomModelData:9}
 
 appearance_moon:
     upgrade: true
-    icon: wand_icon:10
-    upgrade_icon: wand_icon:10
-
-appearance_green:
-    upgrade: true
-    icon: wand_icon:41
-    upgrade_icon: wand_icon:41
+    legacy_icon: wand_icon:10
+    legacy_upgrade_icon: wand_icon:10
+    icon: stick{CustomModelData:10}
+    upgrade_icon: stick{CustomModelData:10}
 
 appearance_spire:
     upgrade: true
-    icon: wand_icon:35
-    upgrade_icon: wand_icon:35
+    legacy_icon: wand_icon:35
+    legacy_upgrade_icon: wand_icon:35
+    icon: stick{CustomModelData:35}
+    upgrade_icon: stick{CustomModelData:35}
 
 appearance_claw:
     upgrade: true
-    icon: wand_icon:36
-    upgrade_icon: wand_icon:36
+    legacy_icon: wand_icon:36
+    legacy_upgrade_icon: wand_icon:36
+    icon: stick{CustomModelData:36}
+    upgrade_icon: stick{CustomModelData:36}
 
 appearance_orb:
     upgrade: true
-    icon: wand_icon:37
-    upgrade_icon: wand_icon:37
+    legacy_icon: wand_icon:37
+    legacy_upgrade_icon: wand_icon:37
+    icon: stick{CustomModelData:37}
+    upgrade_icon: stick{CustomModelData:37}
+
+appearance_architect:
+    upgrade: true
+    legacy_icon: wand_icon:39
+    legacy_upgrade_icon: wand_icon:39
+    icon: blaze_rod{CustomModelData:39}
+    upgrade_icon: blaze_rod{CustomModelData:39}
+
+appearance_green:
+    upgrade: true
+    legacy_icon: wand_icon:41
+    legacy_upgrade_icon: wand_icon:41
+    icon: stick{CustomModelData:41}
+    upgrade_icon: stick{CustomModelData:41}
 
 appearance_magma:
     upgrade: true
-    icon: wand_icon:44
-    upgrade_icon: wand_icon:44
+    legacy_icon: wand_icon:44
+    legacy_upgrade_icon: wand_icon:44
+    icon: stick{CustomModelData:44}
+    upgrade_icon: stick{CustomModelData:44}
 
 appearance_bow1:
     upgrade: true
-    icon: bow_icon:1
-    upgrade_icon: bow_icon:1
+    legacy_icon: bow_icon:1
+    legacy_upgrade_icon: bow_icon:1
+    icon: bow{CustomModelData:1}
+    upgrade_icon: bow{CustomModelData:1}
 
 appearance_bow2:
     upgrade: true
-    icon: bow_icon:2
-    upgrade_icon: bow_icon:2
+    legacy_icon: bow_icon:2
+    legacy_upgrade_icon: bow_icon:2
+    icon: bow{CustomModelData:2}
+    upgrade_icon: bow{CustomModelData:2}
 
 appearance_longbow:
     upgrade: true
-    icon: bow_icon:3
-    upgrade_icon: bow_icon:3
+    legacy_icon: bow_icon:3
+    legacy_upgrade_icon: bow_icon:3
+    icon: bow{CustomModelData:3
+    upgrade_icon: bow{CustomModelData:3}

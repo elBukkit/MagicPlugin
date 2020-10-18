@@ -16,12 +16,12 @@ wand:
         "wand_icon:8": stick{CustomModelData:8}
         "wand_icon:9": blaze_rod{CustomModelData:9}
         "wand_icon:10": stick{CustomModelData:10}
+        "wand_icon:35": stick{CustomModelData:35}
         "wand_icon:36": stick{CustomModelData:36}
         "wand_icon:37": stick{CustomModelData:37}
-        "wand_icon:38": stick{CustomModelData:38}
-        "wand_icon:40": blaze_rod{CustomModelData:40}
-        "wand_icon:42": stick{CustomModelData:42}
-        "wand_icon:45": stick{CustomModelData:45}
+        "wand_icon:39": blaze_rod{CustomModelData:39}
+        "wand_icon:41": stick{CustomModelData:41}
+        "wand_icon:44": stick{CustomModelData:44}
     effect_color: random
     active_spell: missile
     tags:
