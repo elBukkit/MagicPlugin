@@ -12,6 +12,11 @@
    - TODO
    - Wand crafting changed to a stick + diamond
 
+ - Brush improvements (engineering configs)
+   - The Absorb spell now copies block data
+   - Brush inventory reorganized, wills how block data variants
+   - Better tab-completion for /wand(or mage) remove brush <some long brush key>
+
 # 7.10.8
 
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)

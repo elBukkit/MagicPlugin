@@ -175,6 +175,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         // Check for block data
+        String blockData = null;
         String[] blockPieces = StringUtils.split(materialKey, "?");
         if (blockPieces.length > 1) {
             materialKey = blockPieces[0];
@@ -199,7 +200,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         Short data = 0;
         Material material = null;
         BlockExtraData extraData = null;
-        String blockData = null;
         materialKey = pieces[0];
         if (materialKey.equalsIgnoreCase("skull") || materialKey.equalsIgnoreCase("skull_item")) {
             MaterialAndData skullData = DefaultMaterials.getPlayerSkullItem();
