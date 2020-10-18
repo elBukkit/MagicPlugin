@@ -60,6 +60,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     void makeUpgrade();
     @Override
     Collection<String> getSpells();
+    @Override
     Collection<String> getBrushes();
     @Override
     void describe(CommandSender sender);
