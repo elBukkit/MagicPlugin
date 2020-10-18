@@ -1,7 +1,8 @@
 skillbook:
     mode: cast
     active_spell: skills
-    icon: book
+    icon: book{CustomModelData:1}
+    legacy_icon: book
     indestructible: false
     locked: true
     spells:

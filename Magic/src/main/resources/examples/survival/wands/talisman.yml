@@ -1,5 +1,6 @@
 talisman:
-  icon: wand_icon:30
+  legacy_icon: wand_icon:30
+  icon: stick{CustomModelData:30}
   indestructible: true
   mana_max_boost: 0.3
   mana_regeneration_boost: 0.2

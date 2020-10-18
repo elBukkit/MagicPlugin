@@ -2,7 +2,8 @@ gauntlet:
   inherit: base_wand
   bound: false
   undroppable: false
-  icon: wooden_hoe:43
+  legacy_icon: wand_icon:43
+  icon: stick{CustomModelData:43}
   alternate_spell: powerstone
   mode: cast
   right_click: cast

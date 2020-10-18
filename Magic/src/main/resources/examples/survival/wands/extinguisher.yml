@@ -1,6 +1,7 @@
 extinguisher:
     mode: cast
-    icon: wand_icon:32
+    legacy_icon: wand_icon:32
+    icon: stick{CustomModelData:32}
     indestructible: true
     undroppable: true
     spells: extinguish

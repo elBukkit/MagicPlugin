@@ -5,6 +5,7 @@ magicbow:
   inherit: base_bow
   class: archer_mage
   icon: bow{CustomModelData:1}
+  legacy_icon: bow_icon:1
   migrate_legacy_icons:
     "bow_icon:1": bow{CustomModelData:1}
     "bow_icon:2": bow{CustomModelData:2}

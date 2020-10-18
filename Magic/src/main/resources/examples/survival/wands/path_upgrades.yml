@@ -3,19 +3,22 @@
 #
 
 student_upgrade:
-    icon: wand_icon:2
+    legacy_icon: wand_icon:2
+    icon: stick{CustomModelData:2}
     upgrade: true
     hidden: true
     indestructible: false
     hotbar_count: 2
 apprentice_upgrade:
-    icon: wand_icon:3
+    legacy_icon: wand_icon:3
+    icon: stick{CustomModelData:3}
     upgrade: true
     hidden: true
     indestructible: false
     hotbar_count: 2
 master_upgrade:
-    icon: wand_icon:4
+    legacy_icon: wand_icon:4
+    icon: stick{CustomModelData:4}
     upgrade: true
     hidden: true
     indestructible: false

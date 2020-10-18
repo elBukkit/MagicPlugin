@@ -1,6 +1,7 @@
 borealis:
     inherit: master
-    icon: wand_icon:10
+    legacy_icon: wand_icon:10
+    icon: stick{CustomModelData:10}
     migrate_icon: gold_axe
     quiet: 2
     effect_color: '00AACC'

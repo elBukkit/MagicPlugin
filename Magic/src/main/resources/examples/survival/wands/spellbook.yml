@@ -1,6 +1,7 @@
 spellbook:
     mode: skills
-    icon: wand_icon:31
+    icon: book{CustomModelData:1}
+    legacy_icon: wand_icon:31
     indestructible: true
     right_click: toggle
     undroppable: true
