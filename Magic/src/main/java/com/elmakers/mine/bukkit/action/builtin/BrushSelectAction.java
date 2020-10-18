@@ -165,10 +165,13 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                         variants.put(baseVariant, variantList);
                     }
                     variantList.add(brushItem);
+                    // Don't set "previous" here or we'll end up removing the wrong item type
+                    // This is because this is a special edge-case of having a variant of something
+                    // without having the base thing added first
                 } else {
                     brushes.add(brushItem);
+                    previous = material;
                 }
-                previous = material;
             }
         }
 
