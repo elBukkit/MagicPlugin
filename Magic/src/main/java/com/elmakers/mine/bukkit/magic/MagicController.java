@@ -4959,6 +4959,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean isWandUpgrade(ItemStack item) {
+        return Wand.isUpgrade(item);
+    }
+
+    @Override
     public boolean isSkill(ItemStack item) {
         return Wand.isSkill(item);
     }

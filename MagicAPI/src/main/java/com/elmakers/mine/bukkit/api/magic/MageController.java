@@ -552,6 +552,7 @@ public interface MageController {
     Set<String> getInternalAttributes();
 
     boolean isWand(ItemStack item);
+    boolean isWandUpgrade(ItemStack item);
     boolean isSkill(ItemStack item);
     boolean isMagic(ItemStack item);
 
