@@ -1,5 +1,17 @@
 # CHANGELOG
 
+# 8.0
+
+ - Minecraft 1.16 will now use a new resource pack:
+   - (WIP)
+   - All icons and models now use CustomModelData instead of damage predicates
+   - Spells and magical items are represented by recognizable vanilla items
+   - Wands should now be much easier to use without a resource pack
+   - Combining Magic's RP with other RPs may now be somewhat more complicated, I will work on a script to help in the future.
+ - Rebalance
+   - TODO
+   - Wand crafting changed to a stick + diamond
+
 # 7.10.8
 
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)
