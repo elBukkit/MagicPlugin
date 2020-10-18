@@ -2,7 +2,8 @@ crudfirebolt:
     mode: cast
     active_spell: broom
     migrate_icon: gold_spade
-    icon: wand_icon:29
+    legacy_icon: wand_icon:29
+    icon: birch_sapling{CustomModelData:1}
     indestructible: false
     locked: true
     effect_color: 'FF00FF'

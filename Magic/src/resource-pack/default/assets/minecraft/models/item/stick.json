@@ -32,7 +32,7 @@
     {"predicate": {"custom_model_data": 26}, "model": "item/flat/brown"},
     {"predicate": {"custom_model_data": 27}, "model": "item/flat/elder"},
     {"predicate": {"custom_model_data": 28}, "model": "item/flat/wolf"},
-    {"predicate": {"custom_model_data": 39}, "model": "item/custom/broomstick2"},
+    {"predicate": {"custom_model_data": 29}, "model": "item/custom/broomstick2"},
     {"predicate": {"custom_model_data": 30}, "model": "item/custom/crystalball"},
     {"predicate": {"custom_model_data": 31}, "model": "item/custom/enchantedbook"},
     {"predicate": {"custom_model_data": 32}, "model": "item/custom/extinguisher"},

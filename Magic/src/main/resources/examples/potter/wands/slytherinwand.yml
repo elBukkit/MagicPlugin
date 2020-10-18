@@ -1,7 +1,8 @@
 slytherinwand:
     inherit: base_wand
     migrate_icon: gold_axe
-    icon: wand_icon:25
+    legacy_icon: wand_icon:25
+    icon: stick{CustomModelData:25}
     path: graduate
     fill: true
     organize: true

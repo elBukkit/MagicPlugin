@@ -3,7 +3,8 @@ cleansweep1:
     path: broom
     active_spell: broom
     migrate_icon: gold_spade
-    icon: wand_icon:11
+    legacy_icon: wand_icon:11
+    icon: acacia_sapling{CustomModelData:1}
     indestructible: false
     locked: true
     effect_color: 'FFFF00'

@@ -8,7 +8,11 @@ broomstick:
     indestructible: true
     active_spell: broom
     migrate_icon: gold_spade
-    icon: wand_icon:11
+    legacy_icon: wand_icon:11
+    icon: acacia_sapling{CustomModelData:1}
+    migrate_legacy_icons:
+        "wand_icon:11": acacia_sapling{CustomModelData:1}
+        "wand_icon:29": birch_sapling{CustomModelData:1}
     effect_color: '880088'
     spells:
         - broom

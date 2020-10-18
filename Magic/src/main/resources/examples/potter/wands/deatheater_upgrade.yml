@@ -1,6 +1,7 @@
 deatheater_upgrade:
     name: Deatheater Wand
-    icon: wand_icon:25
+    legacy_icon: wand_icon:25
+    icon: stick{CustomModelData:25}
     rename: true
     upgrade: true
     effect_color: '#010101'
