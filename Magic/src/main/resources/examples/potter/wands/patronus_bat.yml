@@ -1,5 +1,0 @@
-patronus_bat:
-    icon: nether_star
-    upgrade: true
-    overrides: patronus.type bat
-

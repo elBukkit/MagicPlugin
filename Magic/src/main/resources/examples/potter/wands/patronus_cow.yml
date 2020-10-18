@@ -1,5 +1,0 @@
-patronus_cow:
-    icon: nether_star
-    upgrade: true
-    overrides: patronus.type cow
-

@@ -1,7 +1,0 @@
-hotbar2:
-    upgrade: true
-    indestructible: false
-    icon: nether_star
-    hotbar_count: 2
-
-

@@ -1,5 +1,0 @@
-randomeffects:
-    upgrade: true
-    indestructible: false
-    icon: skull_item:http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
-    effect_color: 'random'

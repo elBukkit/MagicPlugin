@@ -1,6 +1,0 @@
-black_upgrade:
-    name: Black Wand Appearance
-    upgrade: true
-    icon: wand_icon:25
-    upgrade_icon: wand_icon:25
-

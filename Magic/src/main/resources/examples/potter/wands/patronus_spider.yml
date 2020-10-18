@@ -1,5 +1,0 @@
-patronus_spider:
-    icon: nether_star
-    upgrade: true
-    overrides: patronus.type spider
-

@@ -1,6 +1,0 @@
-silent:
-    upgrade: true
-    indestructible: false
-    icon: nether_star
-    quiet: -3
-

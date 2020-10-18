@@ -1,5 +1,0 @@
-patronus_horse:
-    icon: nether_star
-    upgrade: true
-    overrides: patronus.type horse
-

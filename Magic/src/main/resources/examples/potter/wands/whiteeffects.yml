@@ -1,9 +1,0 @@
-# Upgrades taken from default configs
-#
-# COLOR UPGRADE ITEMS
-#
-whiteeffects:
-    upgrade: true
-    indestructible: false
-    icon: carpet:0
-    effect_color: 'FFFFFF'

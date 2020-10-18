@@ -1,5 +1,0 @@
-patronus_sheep:
-    icon: nether_star
-    upgrade: true
-    overrides: patronus.type sheep
-

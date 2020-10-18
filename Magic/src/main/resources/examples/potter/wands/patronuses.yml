@@ -1,0 +1,58 @@
+# Patronus upgrades
+patronus_wolf:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type wolf,patronus.sound wolf_howl,patronus.name Wolfie
+
+patronus_thestral:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type skeleton_horse
+
+patronus_spider:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type spider
+
+patronus_slime:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type slime
+
+patronus_sheep:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type sheep
+
+patronus_pig:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type pig
+
+patronus_horse:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type horse
+
+patronus_cow:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type cow
+
+patronus_chicken:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type chicken
+
+patronus_cat:
+    icon: nether_star
+    upgrade: true
+    overrides: patronus.type cat
+
+patronus_bat:
+  icon: nether_star
+  upgrade: true
+  overrides: patronus.type bat
+
+
+

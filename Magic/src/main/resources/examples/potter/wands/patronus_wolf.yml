@@ -1,6 +1,0 @@
-# Patronus upgrades
-patronus_wolf:
-    icon: nether_star
-    upgrade: true
-    overrides: patronus.type wolf,patronus.sound wolf_howl,patronus.name Wolfie
-

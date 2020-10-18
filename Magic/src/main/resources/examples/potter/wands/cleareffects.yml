@@ -1,6 +1,0 @@
-cleareffects:
-    force: true
-    upgrade: true
-    effect_bubbles: false
-    effect_particle: ""
-    icon: barrier

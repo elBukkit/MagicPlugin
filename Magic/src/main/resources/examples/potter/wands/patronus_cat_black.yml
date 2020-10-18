@@ -1,5 +1,0 @@
-patronus_cat_black:
-    icon: nether_star
-    upgrade: true
-    overrides: patronus.type ocelot, patronus.variant black_cat
-

@@ -1,5 +1,0 @@
-patronus_chicken:
-    icon: nether_star
-    upgrade: true
-    overrides: patronus.type chicken
-
