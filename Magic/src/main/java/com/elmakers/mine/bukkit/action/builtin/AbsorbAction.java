@@ -29,7 +29,6 @@ public class AbsorbAction extends BaseSpellAction
 
         MageController controller = context.getController();
         Material material = target.getType();
-        byte data = target.getData();
 
         MaterialSet buildingMaterials = controller.getBuildingMaterialSet();
         MaterialSet restrictedMaterials = mage.getRestrictedMaterialSet();
@@ -43,7 +42,7 @@ public class AbsorbAction extends BaseSpellAction
         }
 
         // Add to the wand
-        MaterialAndData mat = new MaterialAndData(material, data);
+        MaterialAndData mat = new MaterialAndData(target);
         if (!wand.addBrush(mat.getKey())) {
             // Still try and activate it
             wand.setActiveBrush(mat.getKey());
