@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:block/acacia_sapling"
+    "layer0": "minecraft:block/birch_sapling"
   },
   "overrides": [
     {"predicate": {"custom_model_data": 1}, "model": "item/custom/broomstick2"}
