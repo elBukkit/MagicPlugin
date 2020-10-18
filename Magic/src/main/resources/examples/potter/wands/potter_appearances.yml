@@ -4,6 +4,12 @@ skinny_upgrade:
     icon: wand_icon:24
     upgrade_icon: wand_icon:24
 
+black_upgrade:
+    name: Black Wand Appearance
+    upgrade: true
+    icon: wand_icon:25
+    upgrade_icon: wand_icon:25
+
 brown_upgrade:
     name: Brown Wand Appearance
     upgrade: true
