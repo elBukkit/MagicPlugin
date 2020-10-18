@@ -1407,6 +1407,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         InventoryUtils.makeUnbreakable(itemStack);
         InventoryUtils.hideFlags(itemStack, 63);
         updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
+        List<String> lore = new ArrayList<>();
+        InventoryUtils.wrapText(ChatColor.GRAY + materialKey, lore);
+        CompatibilityUtils.setLore(itemStack, lore);
         return itemStack;
     }
 
