@@ -13,6 +13,7 @@ public interface CasterProperties extends MagicConfigurable {
     MageController getController();
     boolean hasSpell(String spellKey);
     Collection<String> getSpells();
+    Collection<String> getBrushes();
     boolean addSpell(String spellKey);
     boolean setSpelLLevel(String spellKey, int level);
     int getSpellLevel(String spellKey);

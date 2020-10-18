@@ -274,12 +274,21 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 if (subCommand.equalsIgnoreCase("remove")) {
                     if (target != null) {
                         Mage mage = controller.getMage(target);
-                        MageClass mageClass = mage.getActiveClass();
+                        CasterProperties mageClass = mage.getActiveProperties();
                         if (mageClass != null) {
-                            options.addAll(mageClass.getSpells());
+                            options.addAll(mageClass.getBrushes());
                         }
                     }
                     options.add("brush");
+                }
+
+                if (subCommand.equalsIgnoreCase("remove") && args.length > 0 && args[0].equalsIgnoreCase("brush") && target != null) {
+                    Mage mage = controller.getMage(target);
+
+                    CasterProperties mageClass = mage.getActiveProperties();
+                    if (mageClass != null) {
+                        options.addAll(mageClass.getSpells());
+                    }
                 }
 
                 if (subCommand.equalsIgnoreCase("clear")) {

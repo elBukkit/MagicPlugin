@@ -458,6 +458,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return mage.getSpell(spellKey);
     }
 
+    @Override
     public Set<String> getBrushes() {
         Object existingBrushes = getObject("brushes");
         Set<String> brushes = new HashSet<>();

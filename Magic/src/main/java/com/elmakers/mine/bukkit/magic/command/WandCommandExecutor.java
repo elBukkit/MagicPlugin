@@ -241,6 +241,15 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                 }
             }
 
+            if (subCommand.equalsIgnoreCase("remove") && args.length > 0 && args[0].equalsIgnoreCase("brush") && player != null) {
+                Wand activeWand = null;
+                Mage mage = controller.getMage(player);
+                activeWand = mage.getActiveWand();
+                if (activeWand != null) {
+                    options.addAll(activeWand.getSpells());
+                }
+            }
+
             if (subCommand.equalsIgnoreCase("combine")) {
                 Collection<String> allWands = api.getWandKeys();
                 for (String wandKey : allWands) {
