@@ -27,7 +27,8 @@ public class ActionSpell extends BrushSpell
 
     @Override
     protected void processResult(SpellResult result, ConfigurationSection castParameters) {
-        if (!result.isSuccess())
+        // The CAST result is handled separate in onCast()
+        if (result != SpellResult.CAST)
         {
             ActionHandler handler = actions.get(result.name().toLowerCase());
             if (handler != null)
