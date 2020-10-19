@@ -1,3 +1,9 @@
 empty:
-    hidden: true
-    icon: stick
+    inherit: base_wand
+    icon: stick{CustomModelData:1}
+    effect_color: random
+    tags:
+    - buffable
+    - transformable
+    - effectable
+    - tweakable
