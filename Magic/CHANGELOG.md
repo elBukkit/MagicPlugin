@@ -23,6 +23,7 @@
  - Fix potter wands not activating right away after opening the box
  - Add divinghelmet_pro item, a diving helmet with night vision
  - Fix broomstick dismount behavior when the duration expires
+ - Fix sharpness buff being allowed on a wand
 
 # 7.10.7
 

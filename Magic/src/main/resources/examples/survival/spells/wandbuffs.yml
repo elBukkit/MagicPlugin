@@ -66,7 +66,7 @@ wandbuffshop:
           type: wand
           property: enchantments.DAMAGE_ALL
       requirements:
-        - wands_tags: sharpenable
+        - wand_tags: sharpenable
         - wand_properties:
           - property: enchantments.DAMAGE_ALL
             max: 5
