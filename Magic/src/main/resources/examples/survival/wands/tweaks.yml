@@ -1,20 +1,24 @@
 quickcast_enable:
-    icon: diamond_axe:206
+    icon: warped_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:206
     upgrade: true
     force: true
     quick_cast: true
 quickcast_disable:
-    icon: diamond_axe:207
+    icon: crimson_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:207
     upgrade: true
     force: true
     quick_cast: disable
 quickcast_manual:
-    icon: diamond_axe:208
+    icon: acacia_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:208
     upgrade: true
     force: true
     quick_cast: manual
 quickcast_normal:
-    icon: diamond_axe:209
+    icon: oak_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:209
     upgrade: true
     force: true
     quick_cast: normal

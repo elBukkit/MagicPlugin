@@ -5,6 +5,7 @@
   },
 
   "overrides": [
-    {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/alphabetizer"}
+    {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/alphabetizer"},
+    {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/quickcast_enable"}
   ]
 }
