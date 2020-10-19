@@ -1,7 +1,9 @@
 airscooter:
+    icon: bone_meal{CustomModelData:1}
+    icon_disabled: bone_meal{CustomModelData:2}
     icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
-    icon: spell_icon:241
-    icon_disabled: spell_icon_disabled:241
+    legacy_icon: spell_icon:241
+    legacy_icon_disabled: spell_icon_disabled:241
     category: utility
     worth: 200
     show_undoable: false

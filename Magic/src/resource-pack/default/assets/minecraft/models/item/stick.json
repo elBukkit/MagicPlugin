@@ -47,6 +47,8 @@
     {"predicate": {"custom_model_data": 41}, "model": "item/custom/green_wand"},
     {"predicate": {"custom_model_data": 42}, "model": "item/custom/nothing"},
     {"predicate": {"custom_model_data": 43}, "model": "item/custom/gauntlet"},
-    {"predicate": {"custom_model_data": 44}, "model": "item/custom/magmawand"}
+    {"predicate": {"custom_model_data": 44}, "model": "item/custom/magmawand"},
+    {"predicate": {"custom_model_data": 45}, "model": "item/spells/wand"},
+    {"predicate": {"custom_model_data": 46}, "model": "item/spells_disabled/wand"}
   ]
 }

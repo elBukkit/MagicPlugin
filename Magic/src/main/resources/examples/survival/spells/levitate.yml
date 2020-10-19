@@ -1,6 +1,6 @@
 levitate:
-    icon: feather{CustomModelData:3}
-    icon_disabled: feather{CustomModelData:4}
+    icon: bone_meal{CustomModelData:3}
+    icon_disabled: bone_meal{CustomModelData:4}
     legacy_icon: spell_icon:150
     legacy_icon_disabled: spell_icon_disabled:150
     upgrade_required_path: master

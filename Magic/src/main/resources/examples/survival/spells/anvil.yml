@@ -1,6 +1,8 @@
 anvil:
-    icon: spell_icon:90
-    icon_disabled: spell_icon_disabled:90
+    icon: anvil{CustomModelData:1}
+    icon_disabled: anvil{CustomModelData:2}
+    legacy_icon: spell_icon:90
+    legacy_icon_disabled: spell_icon_disabled:90
     icon_url: http://textures.minecraft.net/texture/505b8ba793c372d9fb45db20df80c1606b19b7421a9bbcc258ae2a65d65ea7
     category: utility
     actions:

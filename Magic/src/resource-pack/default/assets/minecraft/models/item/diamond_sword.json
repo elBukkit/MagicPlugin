@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/diamond_sword"
+  },
+    "overrides": [
+        {"predicate": { "custom_model_data": 1}, "model": "item/custom/emerald_sword"},
+        {"predicate": { "custom_model_data": 2}, "model": "item/spells/wound"},
+        {"predicate": { "custom_model_data": 3}, "model": "item/spells_disabled/wound"},
+        {"predicate": { "custom_model_data": 4}, "model": "item/spells/sharpen_sword"},
+        {"predicate": { "custom_model_data": 5}, "model": "item/spells_disabled/sharpen_sword"}
+    ]
+}
