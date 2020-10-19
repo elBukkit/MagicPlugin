@@ -2,7 +2,8 @@ base_lightsaber:
     hidden: true
     inherit: base_bound
     mode: inventory
-    icon_inactive: wand_icon:14
+    icon_inactive: stick{CustomModelData:14}
+    legacy_icon_inactive: wand_icon:14
     icon_inactive_delay: 500
     drop: toggle
     left_click: none
