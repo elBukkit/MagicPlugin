@@ -20,7 +20,8 @@ quickcast_normal:
     quick_cast: normal
 
 mode_drop:
-    icon: diamond_axe:210
+    icon: birch_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:210
     upgrade: true
     force: true
     drop: toggle
@@ -29,7 +30,8 @@ mode_drop:
     swap: cycle_hotbar
     quick_cast: false
 mode_rightclick:
-    icon: diamond_axe:211
+    icon: dark_oak_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:211
     upgrade: true
     force: true
     drop: cycle_hotbar
@@ -38,7 +40,8 @@ mode_rightclick:
     swap: none
     quick_cast: false
 mode_sword:
-    icon: diamond_axe:212
+    icon: diamond_sword{CustomModelData:6}
+    legacy_icon: diamond_axe:212
     upgrade: true
     force: true
     drop: toggle
@@ -47,7 +50,8 @@ mode_sword:
     swap: cycle_hotbar
     quick_cast: true
 mode_swap:
-    icon: diamond_axe:213
+    icon: acacia_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:213
     upgrade: true
     force: true
     drop: cycle_hotbar
@@ -57,44 +61,52 @@ mode_swap:
     quick_cast: false
 
 chestmode:
-    icon: diamond_axe:205
+    icon: chest{CustomModelData:1}
+    legacy_icon: diamond_axe:205
     upgrade: true
     indestructible: false
     mode: chest
 inventorymode:
-    icon: diamond_axe:214
+    icon: oak_sign{CustomModelData:1}
+    legacy_icon: spell_icon:214
     upgrade: true
     indestructible: false
     mode: inventory
 cyclemode:
-    icon: diamond_axe:215
+    icon: music_disc_wait{CustomModelData:1}
+    legacy_icon: diamond_axe:215
     upgrade: true
     indestructible: false
     mode: cycle
 
 organizer:
-    icon: diamond_axe:216
+    icon: crimson_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:216
     upgrade: true
     indestructible: false
     organize: true
 alphabetizer:
-    icon: diamond_axe:217
+    icon: warped_sign{CustomModelData:1}
+    legacy_icon: diamond_axe:217
     upgrade: true
     indestructible: false
     alphabetize: true
 
 loud:
-    icon: diamond_axe:218
+    icon: music_disc_blocks{CustomModelData:1}
+    legacy_icon: diamond_axe:218
     upgrade: true
     indestructible: false
     quiet: 0
 quiet:
-    icon: diamond_axe:219
+    icon: music_disc_stal{CustomModelData:1}
+    legacy_icon: diamond_axe:219
     upgrade: true
     indestructible: false
     quiet: 1
 silent:
-    icon: diamond_axe:220
+    icon: music_disc_11{CustomModelData:1}
+    legacy_icon: diamond_axe:220
     upgrade: true
     indestructible: false
     quiet: 2

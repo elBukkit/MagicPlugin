@@ -8,6 +8,7 @@
         {"predicate": { "custom_model_data": 2}, "model": "item/spells/wound"},
         {"predicate": { "custom_model_data": 3}, "model": "item/spells_disabled/wound"},
         {"predicate": { "custom_model_data": 4}, "model": "item/spells/sharpen_sword"},
-        {"predicate": { "custom_model_data": 5}, "model": "item/spells_disabled/sharpen_sword"}
+        {"predicate": { "custom_model_data": 5}, "model": "item/spells_disabled/sharpen_sword"},
+        {"predicate": { "custom_model_data": 6}, "model": "item/upgrades/mode_sword"}
     ]
 }

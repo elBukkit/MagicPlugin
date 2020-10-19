@@ -1,6 +1,8 @@
 colorshop:
-    icon: spell_icon:125
-    icon_disabled: spell_icon_disabled:125
+    icon: red_dye{CustomModelData:1}
+    icon_disabled: red_dye{CustomModelData:2}
+    legacy_icon: spell_icon:125
+    legacy_icon_disabled: spell_icon_disabled:125
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
     category: npc
     hidden: true
