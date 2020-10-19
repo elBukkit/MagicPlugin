@@ -1,7 +1,7 @@
 {
-    "parent" : "item/custom/icon_disabled",
+    "parent" : "item/custom/icon",
     "textures": {
-        "particle": "item/spells/supergather",
-        "texture": "item/spells/supergather"
+        "particle": "item/spells_disabled/supergather",
+        "texture": "item/spells_disabled/supergather"
     }
 }
