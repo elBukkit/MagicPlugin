@@ -170,8 +170,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
 
         // Icon information for upgrading/migrating wands
-        icon = ConfigurationUtils.getMaterialAndData(template, "icon");
-        migrateIcon = ConfigurationUtils.getMaterialAndData(template, "migrate_icon");
+        icon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled()));
+        migrateIcon = ConfigurationUtils.toMaterialAndData(ConfigurationUtils.getIcon(template, controller.isLegacyIconsEnabled(), "migrate_icon"));
 
         // Validate requirements - disabling a required spell disables the upgrade.
         for (PrerequisiteSpell requiredSpell : requiredSpells) {

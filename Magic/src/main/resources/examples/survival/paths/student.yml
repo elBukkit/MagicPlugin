@@ -1,6 +1,7 @@
 student:
-    icon: wood_hoe:2
-    migrate_icon: wood_hoe
+    icon: stick{CustomModelData:2}
+    legacy_icon: wood_hoe:2
+    legacy_migrate_icon: wood_hoe
     upgrade: apprentice
     upgrade_item: apprentice_upgrade
     inherit: beginner

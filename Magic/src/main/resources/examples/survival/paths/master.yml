@@ -1,6 +1,7 @@
 master:
-    icon: wood_hoe:4
-    migrate_icon: gold_axe
+    icon: stick{CustomModelData:4}
+    legacy_icon: wood_hoe:4
+    legacy_migrate_icon: gold_axe
     upgrade: engineer
     inherit: apprentice
     mana_regeneration: 50
