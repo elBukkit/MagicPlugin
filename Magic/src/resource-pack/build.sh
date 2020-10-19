@@ -79,16 +79,6 @@ find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-war-RP-8-1.16.zip *
 cd ..
 
-echo "** BUILDING STARS **"
-
-mkdir stars
-cd stars
-cp -R ../../default/* .
-cp -R ../../stars/* .
-find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-stars-RP-8-1.16.zip *
-cd ..
-
 echo "** BUILDING ALL **"
 
 mkdir all
@@ -104,14 +94,4 @@ echo , >> assets/minecraft/sounds.json
 tail -n +2 ../../war/assets/minecraft/sounds.json >> assets/minecraft/sounds.json
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-all-RP-8-1.16.zip *
-cd ..
-
-echo "** BUILDING AJ **"
-
-mkdir aj
-cd aj
-cp -R ../../default/* .
-cp -R ../../aj/* .
-find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-aj.zip *
 cd ..
