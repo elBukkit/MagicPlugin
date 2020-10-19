@@ -1,0 +1,90 @@
+# Disable all magic items for now
+
+apprenticeboots:
+  enabled: false
+
+apprenticechestplate:
+  enabled: false
+
+apprenticehelmet:
+  enabled: false
+
+apprenticeleggings:
+  enabled: false
+
+wizardboots:
+  enabled: false
+
+wizardchestplate:
+  enabled: false
+
+wizardhelmet:
+  enabled: false
+
+wizardleggings:
+  enabled: false
+
+battle:
+  enabled: false
+
+broomstick:
+  enabled: false
+
+camera:
+  enabled: false
+
+divinghelmet:
+  enabled: false
+
+elytra:
+  enabled: false
+
+goggles:
+  enabled: false
+
+magicbow:
+  enabled: false
+
+magichat:
+  enabled: false
+
+mirrorshield:
+  enabled: false
+
+spellbook:
+  enabled: false
+
+talisman:
+  enabled: false
+
+wand:
+  enabled: false
+
+# Stars
+
+blaster_blue:
+  enabled: false
+
+blaster_green:
+  enabled: false
+
+blaster_red:
+  enabled: false
+
+lightsaber_blue:
+  enabled: false
+
+lightsaber_green:
+  enabled: false
+
+lightsaber_hilt:
+  enabled: false
+
+lightsaber_orange:
+  enabled: false
+
+lightsaber_purple:
+  enabled: false
+
+lightsaber_red:
+  enabled: false
