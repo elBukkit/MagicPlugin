@@ -30,8 +30,7 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
         if (finished) return 0;
         Spell spell = context.getSpell();
         if (spell.cancelOnNoPermission() && !context.canCast(context.getLocation())) {
-            spell.cancel();
-            finish();
+            cancel();
             return 0;
         }
         context.setWorkAllowed(maxBlocks);
@@ -62,6 +61,13 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
 
             finished = true;
         }
+    }
+
+    @Override
+    public void cancel() {
+        context.cancelEffects();
+        context.getSpell().cancel();
+        finish();
     }
 
     @Override

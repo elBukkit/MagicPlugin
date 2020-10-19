@@ -366,8 +366,7 @@ public class BlockController implements Listener {
                     SpellBatch spellBatch = (SpellBatch)batch;
                     UndoList undoList = spellBatch.getUndoList();
                     if (undoList != null && undoList.isScheduled() && undoList.affectsWorld(world)) {
-                        spellBatch.getSpell().cancel();
-                        batch.finish();
+                        spellBatch.cancel();
                         cancelled++;
                     }
                 } else if (batch instanceof UndoBatch) {

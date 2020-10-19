@@ -40,4 +40,11 @@ public abstract class SpellBatch extends UndoableBatch implements com.elmakers.m
     public UndoList getUndoList() {
         return undoList;
     }
+
+    @Override
+    public void cancel() {
+        context.cancelEffects();
+        spell.cancel();
+        finish();
+    }
 }

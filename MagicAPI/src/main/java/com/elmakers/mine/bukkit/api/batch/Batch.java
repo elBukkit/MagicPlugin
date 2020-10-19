@@ -38,6 +38,11 @@ public interface Batch {
     void finish();
 
     /**
+     * Finish this batch and force-cancel any outstanding effects.
+     */
+    void cancel();
+
+    /**
      * The size of this batch. May be in blocks, or some
      * other abstract unit.
      *

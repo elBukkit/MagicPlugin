@@ -1377,8 +1377,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 SpellBatch spellBatch = (SpellBatch)batch;
                 Spell spell = spellBatch.getSpell();
                 if (spell.cancelOnCastOther()) {
-                    spell.cancel();
-                    batch.finish();
+                    batch.cancel();
                     iterator.remove();
                 }
             }
