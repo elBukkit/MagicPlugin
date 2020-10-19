@@ -1,1 +1,1 @@
-solid: "!air,all_water,all_lava,barrier"
+solid: "!all_air,all_water,all_lava,barrier"
