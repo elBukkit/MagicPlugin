@@ -12,16 +12,18 @@
    - TODO
    - Wand crafting changed to a stick + diamond
 
+ - Brush improvements (engineering configs)
+   - The Absorb spell now copies block data
+   - Brush inventory reorganized, wills how block data variants
+   - Better tab-completion for /wand(or mage) remove brush <some long brush key>
+
 # 7.10.8
 
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)
  - Fix potter wands not activating right away after opening the box
  - Add divinghelmet_pro item, a diving helmet with night vision
  - Fix broomstick dismount behavior when the duration expires
- - Brush improvements (engineering configs)
-   - The Absorb spell now copies block data
-   - Brush inventory reorganized, wills how block data variants
-   - Better tab-completion for /wand(or mage) remove brush <some long brush key>
+ - Fix sharpness buff being allowed on a wand
 
 # 7.10.7
 
