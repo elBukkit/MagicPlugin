@@ -2,29 +2,29 @@ appearance_beginner:
     upgrade: true
     legacy_icon: wand_icon:1
     legacy_upgrade_icon: wand_icon:1
-    icon: blaze_rod{CustomModelData:1}
-    upgrade_icon: blaze_rod{CustomModelData:1}
+    icon: stick{CustomModelData:1}
+    upgrade_icon: stick{CustomModelData:1}
 
 appearance_student:
     upgrade: true
     legacy_icon: wand_icon:2
     legacy_upgrade_icon: wand_icon:2
-    icon: blaze_rod{CustomModelData:2}
-    upgrade_icon: blaze_rod{CustomModelData:2}
+    icon: stick{CustomModelData:2}
+    upgrade_icon: stick{CustomModelData:2}
 
 appearance_apprentice:
     upgrade: true
     legacy_icon: wand_icon:3
     legacy_upgrade_icon: wand_icon:3
-    icon: blaze_rod{CustomModelData:3}
-    upgrade_icon: blaze_rod{CustomModelData:3}
+    icon: stick{CustomModelData:3}
+    upgrade_icon: stick{CustomModelData:3}
 
 appearance_master:
     upgrade: true
     legacy_icon: wand_icon:4
     legacy_upgrade_icon: wand_icon:4
-    icon: blaze_rod{CustomModelData:4}
-    upgrade_icon: blaze_rod{CustomModelData:4}
+    icon: stick{CustomModelData:4}
+    upgrade_icon: stick{CustomModelData:4}
 
 appearance_engineer:
     upgrade: true
@@ -37,15 +37,15 @@ appearance_conduit:
     upgrade: true
     legacy_icon: wand_icon:6
     legacy_upgrade_icon: wand_icon:6
-    icon: stick{CustomModelData:6}
-    upgrade_icon: stick{CustomModelData:6}
+    icon: blaze_rod{CustomModelData:6}
+    upgrade_icon: blaze_rod{CustomModelData:6}
 
 appearance_magicka:
     upgrade: true
     legacy_icon: wand_icon:9
     legacy_upgrade_icon: wand_icon:9
-    icon: stick{CustomModelData:9}
-    upgrade_icon: stick{CustomModelData:9}
+    icon: blaze_rod{CustomModelData:9}
+    upgrade_icon: blaze_rod{CustomModelData:9}
 
 appearance_moon:
     upgrade: true

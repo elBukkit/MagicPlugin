@@ -1,6 +1,8 @@
 upgrades:
-    icon: spell_icon:187
-    icon_disabled: spell_icon_disabled:187
+    icon: rabbit_foot{CustomModelData:1}
+    icon_disabled: rabbit_foot{CustomModelData:2}
+    legacy_icon: spell_icon:187
+    legacy_icon_disabled: spell_icon_disabled:187
     icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
     category: npc
     hidden: true
