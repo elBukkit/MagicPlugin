@@ -135,6 +135,10 @@ public class EntityController implements Listener {
     public void onEntityCombust(EntityCombustEvent event)
     {
         Entity entity = event.getEntity();
+        if (controller.isMagicNPC(entity)) {
+            event.setCancelled(true);
+            return;
+        }
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
         if (mage != null) {
             mage.onCombust(event);
