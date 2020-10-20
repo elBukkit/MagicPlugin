@@ -21,7 +21,7 @@
 
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)
  - Fix potter wands not activating right away after opening the box
- - Add divinghelmet_pro item, a diving helmet with night vision
+ - Give the divinghelmet item night vision
  - Fix broomstick dismount behavior when the duration expires
  - Fix sharpness buff being allowed on a wand
  - Fix ModifyEntity changing mob types to zombies unintentionally
