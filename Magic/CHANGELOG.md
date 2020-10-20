@@ -25,6 +25,7 @@
  - Fix broomstick dismount behavior when the duration expires
  - Fix sharpness buff being allowed on a wand
  - Fix ModifyEntity changing mob types to zombies unintentionally
+ - Fix getting recipe books with a single recipe, add tab-completion
  - A "deactivate" action handler can be added to perform actions when a spell is toggled off
  - Add Levitate level 6, conduit-only, works like Superfly
  - Add glow option to appearance menu
