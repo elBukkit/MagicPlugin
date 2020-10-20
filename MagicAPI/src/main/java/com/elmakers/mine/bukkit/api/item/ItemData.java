@@ -25,6 +25,7 @@ public interface ItemData {
     @Nullable
     MaterialAndData getMaterialAndData();
     boolean isLocked();
+    int getDurability();
 
     @Nullable
     @Deprecated

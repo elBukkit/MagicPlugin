@@ -244,6 +244,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         return materialData;
     }
 
+    @Override
+    public int getDurability() {
+        return item == null ? 0 : item.getDurability();
+    }
+
     @Nullable
     @Override
     public ItemMeta getItemMeta() {
