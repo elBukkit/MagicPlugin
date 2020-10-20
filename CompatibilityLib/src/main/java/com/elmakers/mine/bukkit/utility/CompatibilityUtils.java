@@ -2183,4 +2183,39 @@ public class CompatibilityUtils extends NMSUtils {
                 throw new IllegalStateException("Unable to get CCW facing of " + face);
         }
     }
+
+    public static boolean setRecipeGroup(ShapedRecipe recipe, String group) {
+        if (class_Recipe_setGroupMethod == null) return false;
+        try {
+            class_Recipe_setGroupMethod.invoke(recipe, group);
+            return true;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient) {
+        if (class_RecipeChoice_ExactChoice == null) {
+            if (isLegacy()) {
+                @SuppressWarnings("deprecation")
+                org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getData();
+                if (material == null) {
+                    return false;
+                }
+                recipe.setIngredient(key, material);
+            } else {
+                recipe.setIngredient(key, ingredient.getType());
+            }
+            return true;
+        }
+        try {
+            Object exactChoice = class_RecipeChoice_ExactChoice_constructor.newInstance(ingredient);
+            class_ShapedRecipe_setIngredientMethod.invoke(recipe, key, exactChoice);
+            return true;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

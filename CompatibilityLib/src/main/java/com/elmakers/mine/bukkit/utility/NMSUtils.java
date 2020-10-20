@@ -185,6 +185,7 @@ public class NMSUtils {
     protected static Class<?> class_Lootable;
     protected static Class<?> class_Fox;
     protected static Class<Enum> enum_Fox_Type;
+    protected static Class<?> class_RecipeChoice_ExactChoice;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -305,6 +306,8 @@ public class NMSUtils {
     protected static Method class_BlockPosition_getXMethod;
     protected static Method class_BlockPosition_getYMethod;
     protected static Method class_BlockPosition_getZMethod;
+    protected static Method class_Recipe_setGroupMethod;
+    protected static Method class_ShapedRecipe_setIngredientMethod;
 
     protected static boolean legacyMaps;
 
@@ -346,6 +349,7 @@ public class NMSUtils {
     protected static Constructor class_MinecraftKey_constructor;
     protected static Constructor class_Vec3D_constructor;
     protected static Constructor class_AttributeModifier_constructor;
+    protected static Constructor class_RecipeChoice_ExactChoice_constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_persistField;
@@ -656,6 +660,18 @@ public class NMSUtils {
                 class_Fox_getTypeMethod = null;
                 class_Fox_setFirstTrustedPlayerMethod = null;
                 class_Fox_getFirstTrustedPlayerMethod = null;
+            }
+
+            try {
+                Class<?> class_RecipeChoice = Class.forName("org.bukkit.inventory.RecipeChoice");
+                class_RecipeChoice_ExactChoice = Class.forName("org.bukkit.inventory.RecipeChoice$ExactChoice");
+                class_RecipeChoice_ExactChoice_constructor = class_RecipeChoice_ExactChoice.getConstructor(ItemStack.class);
+                class_Recipe_setGroupMethod = ShapedRecipe.class.getMethod("setGroup", String.class);
+                class_ShapedRecipe_setIngredientMethod = ShapedRecipe.class.getMethod("setIngredient", Character.TYPE, class_RecipeChoice);
+            } catch (Throwable ex) {
+                class_Recipe_setGroupMethod = null;
+                class_RecipeChoice_ExactChoice = null;
+                logger.warning("Use an updated version of Spigot for better knowledge book recipes");
             }
 
             try {
@@ -1594,17 +1610,6 @@ public class NMSUtils {
 
     public static boolean isCurrentVersion() {
         return isModernVersion;
-    }
-
-    public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
-        Class<?> c = getBukkitClass(newVersion);
-        if (c == null) {
-            c = getBukkitClass(oldVersion);
-            if (c == null) {
-                logger.warning("Could not bind to " + newVersion + " or " + oldVersion);
-            }
-        }
-        return c;
     }
 
     public static Class<?> getClass(String className) {

@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 /**
  * Represents a crafting recipe which will make a wand item.
@@ -33,6 +32,7 @@ public class MagicRecipe {
     private Material outputType;
     private Material substitue;
     private String outputItemType;
+    private String group;
     private boolean disableDefaultRecipe;
     private ShapedRecipe recipe;
     private Map<Character, ItemData> ingredients = new HashMap<>();
@@ -55,6 +55,7 @@ public class MagicRecipe {
 
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
+        group = configuration.getString("group", "Magic");
 
         if (disableDefaultRecipe) {
             controller.getLogger().warning("Recipe " + key + " has disable_default: true, ignoring because trying to remove a recipe now throws an error.");
@@ -111,23 +112,19 @@ public class MagicRecipe {
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
                     ItemData ingredient = controller.getOrCreateItemOrWand(materialKey);
-                    if (NMSUtils.isLegacy()) {
-                        @SuppressWarnings("deprecation")
-                        org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getMaterialData();
-                        if (material == null) {
-                            outputType = null;
-                            controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
-                            return false;
-                        }
-                        shaped.setIngredient(key.charAt(0), material);
-                    } else {
-                        shaped.setIngredient(key.charAt(0), ingredient.getType());
+                    if (!CompatibilityUtils.setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1))) {
+                        outputType = null;
+                        controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
+                        return false;
                     }
                     ingredients.put(key.charAt(0), ingredient);
                 }
 
                 recipe = shaped;
             }
+        }
+        if (recipe != null && group != null && !group.isEmpty()) {
+            CompatibilityUtils.setRecipeGroup(recipe, group);
         }
         return outputType != null;
     }
