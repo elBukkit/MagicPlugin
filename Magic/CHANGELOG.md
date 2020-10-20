@@ -22,7 +22,7 @@
    - Brush inventory reorganized, wills how block data variants
    - Better tab-completion for /wand(or mage) remove brush <some long brush key>
 
-# 7.10.8
+# 7.11
 
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)
  - Fix potter wands not activating right away after opening the box
@@ -34,6 +34,7 @@
  - A "deactivate" action handler can be added to perform actions when a spell is toggled off
  - Add Levitate level 6, conduit-only, works like Superfly
  - Add glow option to appearance menu
+ - Prevent NPCs from burning
 
 # 7.10.7
 
