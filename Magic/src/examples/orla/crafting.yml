@@ -27,6 +27,9 @@ wizardleggings:
 battle:
   enabled: false
 
+magicsword:
+  enabled: false
+
 broomstick:
   enabled: false
 
