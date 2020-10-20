@@ -33,6 +33,7 @@ public class MagicRecipe {
     private Material substitue;
     private String outputItemType;
     private String group;
+    private boolean ignoreDamage;
     private boolean disableDefaultRecipe;
     private ShapedRecipe recipe;
     private Map<Character, ItemData> ingredients = new HashMap<>();
@@ -56,6 +57,7 @@ public class MagicRecipe {
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
         group = configuration.getString("group", "Magic");
+        ignoreDamage = configuration.getBoolean("ignore_damage", false);
 
         if (disableDefaultRecipe) {
             controller.getLogger().warning("Recipe " + key + " has disable_default: true, ignoring because trying to remove a recipe now throws an error.");
@@ -112,7 +114,7 @@ public class MagicRecipe {
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
                     ItemData ingredient = controller.getOrCreateItemOrWand(materialKey);
-                    if (!CompatibilityUtils.setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1))) {
+                    if (!CompatibilityUtils.setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1), ignoreDamage)) {
                         outputType = null;
                         controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
                         return false;
@@ -267,12 +269,18 @@ public class MagicRecipe {
                 if (ingredient.getType() != item.getType()) {
                     return MatchType.NONE;
                 }
-                if (ingredient.getDurability() != item.getMaterialData().getData()) {
+                if (!ignoreDamage && ingredient.getDurability() != item.getDurability()) {
                     return MatchType.NONE;
                 }
                 ItemMeta meta = item.getItemMeta();
                 if (meta != null) {
-                    if (!controller.itemsAreEqual(ingredient, item.getItemStack())) {
+                    ItemStack compareItem = item.getItemStack();
+                    ItemStack ingredientItem = ingredient;
+                    if (ignoreDamage && compareItem.getDurability() != ingredientItem.getDurability()) {
+                        ingredientItem = ingredientItem.clone();
+                        ingredientItem.setDurability(compareItem.getDurability());
+                    }
+                    if (!controller.itemsAreEqual(ingredientItem, compareItem)) {
                         return MatchType.PARTIAL;
                     }
                 }

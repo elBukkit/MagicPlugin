@@ -2,6 +2,7 @@ wizardleggings:
   enabled: false
   output: wizardleggings
   output_type: wand
+  ignore_damage: true
   materials:
     o: nether_star
     i: apprenticeleggings

@@ -2,6 +2,7 @@ wizardchestplate:
   enabled: false
   output: wizardchestplate
   output_type: wand
+  ignore_damage: true
   materials:
     o: nether_star
     i: apprenticechestplate

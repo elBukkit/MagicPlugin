@@ -2,6 +2,7 @@ wizardhelmet:
   enabled: false
   output: wizardhelmet
   output_type: wand
+  ignore_damage: true
   materials:
     o: nether_star
     i: apprenticehelmet

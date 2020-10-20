@@ -2195,8 +2195,8 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
-    public static boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient) {
-        if (class_RecipeChoice_ExactChoice == null) {
+    public static boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage) {
+        if (class_RecipeChoice_ExactChoice == null || ignoreDamage) {
             if (isLegacy()) {
                 @SuppressWarnings("deprecation")
                 org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getData();
