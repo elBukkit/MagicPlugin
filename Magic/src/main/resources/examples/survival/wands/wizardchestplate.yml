@@ -4,7 +4,11 @@ wizardchestplate:
     locked: true
     keep: true
     mana_max_boost: 0.1
+    mana_regeneration_boost: 0.05
+    passive: true
     enchantments:
       protection_explosions: 2
       protection_environmental: 1
+    protection:
+      magic: 0.1
 

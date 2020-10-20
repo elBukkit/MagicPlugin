@@ -1,11 +1,14 @@
 talisman:
   legacy_icon: wand_icon:30
-  icon: stick{CustomModelData:30}
+  icon: nether_star{CustomModelData:1}
   indestructible: true
   mana_max_boost: 0.3
   mana_regeneration_boost: 0.2
   earn_multiplier: 1.5
+  protection:
+    magic: 0.2
+    poison: 0.1
   color: random
-  effect_bubbles: true
   keep: true
   locked: true
+  glow: true
