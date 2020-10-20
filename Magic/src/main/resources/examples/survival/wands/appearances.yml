@@ -116,3 +116,17 @@ appearance_longbow:
     legacy_upgrade_icon: bow_icon:3
     icon: bow{CustomModelData:3
     upgrade_icon: bow{CustomModelData:3}
+
+glow_upgrade:
+    legacy_icon: spell_icon:233
+    icon: diamond{CustomModelData:1}
+    upgrade: true
+    force: true
+    glow: true
+
+noglow_upgrade:
+  legacy_icon: spell_icon:233
+  icon: diamond{CustomModelData:1}
+  upgrade: true
+  force: true
+  glow: false
