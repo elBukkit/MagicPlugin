@@ -1,6 +1,8 @@
 frost:
-    icon: spell_icon:37
-    icon_disabled: spell_icon_disabled:37
+    icon: snowball{CustomModelData:1}
+    icon_disabled: snowball{CustomModelData:2}
+    legacy_icon: spell_icon:37
+    legacy_icon_disabled: spell_icon_disabled:37
     icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
     category: combat
     worth: 200

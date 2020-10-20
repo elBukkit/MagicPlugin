@@ -1,6 +1,8 @@
 workbench:
-    icon: spell_icon:105
-    icon_disabled: spell_icon_disabled:105
+    icon: crafting_table{CustomModelData:1}
+    icon_disabled: crafting_table{CustomModelData:2}
+    legacy_icon: spell_icon:105
+    legacy_icon_disabled: spell_icon_disabled:105
     icon_url: http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff
     category: utility
     tags: noduel
@@ -16,7 +18,7 @@ workbench:
            effectlib:
             class: WarpEffect
             particle: block_crack
-            material: workbench
+            material: crafting_table
             duration: 1000
             particle_count: 10
             particle_offset_x: 1

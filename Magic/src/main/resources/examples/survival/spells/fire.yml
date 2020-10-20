@@ -1,6 +1,8 @@
 fire:
-    icon: spell_icon:75
-    icon_disabled: spell_icon_disabled:75
+    icon: flint_and_steel{CustomModelData:1}
+    icon_disabled: flint_and_steel{CustomModelData:2}
+    legacy_icon: spell_icon:75
+    legacy_icon_disabled: spell_icon_disabled:75
     icon_url: http://textures.minecraft.net/texture/7dbb7f75e74ad4218d2af7191752b5952144436ce8aa2bb6fb27168e6f28af
     alias: inferno
     category: demolition

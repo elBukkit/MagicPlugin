@@ -1,6 +1,8 @@
 fireball:
-    icon: spell_icon:153
-    icon_disabled: spell_icon_disabled:153
+    icon: fire_charge{CustomModelData:1}
+    icon_disabled: fire_charge{CustomModelData:2}
+    legacy_icon: spell_icon:153
+    legacy_icon_disabled: spell_icon_disabled:153
     upgrade_required_path: beginner
     upgrade_required_casts: 15
     icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928

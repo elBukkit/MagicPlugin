@@ -1,6 +1,8 @@
 reflect:
-    icon: spell_icon:23
-    icon_disabled: spell_icon_disabled:23
+    icon: iron_ingot{CustomModelData:1}
+    icon_disabled: iron_ingot{CustomModelData:2}
+    legacy_icon: spell_icon:23
+    legacy_icon_disabled: spell_icon_disabled:23
     icon_url: http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc
     category: light
     worth: 100

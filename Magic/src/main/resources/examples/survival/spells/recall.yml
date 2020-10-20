@@ -1,6 +1,8 @@
 recall:
-    icon: spell_icon:149
-    icon_disabled: spell_icon_disabled:149
+    icon: jungle_door{CustomModelData:1}
+    icon_disabled: jungle_door{CustomModelData:2}
+    legacy_icon: spell_icon:149
+    legacy_icon_disabled: spell_icon_disabled:149
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     category: utility
     tags: noduel,nojail

@@ -1,6 +1,8 @@
 push:
-    icon: spell_icon:32
-    icon_disabled: spell_icon_disabled:32
+    icon: wheat{CustomModelData:1}
+    icon_disabled: wheat{CustomModelData:2}
+    legacy_icon: spell_icon:32
+    legacy_icon_disabled: spell_icon_disabled:32
     icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
     category: elemental
     worth: 50

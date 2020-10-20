@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/milk_bucket"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 1}, "model": "item/spells/cure"},
+    {"predicate": { "custom_model_data": 2}, "model": "item/spells_disabled/cure"}
+  ]
+}

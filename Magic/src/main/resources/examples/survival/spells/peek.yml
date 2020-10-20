@@ -1,6 +1,8 @@
 peek:
-    icon: spell_icon:121
-    icon_disabled: spell_icon_disabled:121
+    icon: glass_pane{CustomModelData:1}
+    icon_disabled: glass_pane{CustomModelData:2}
+    legacy_icon: spell_icon:121
+    legacy_icon_disabled: spell_icon_disabled:121
     icon_url: http://textures.minecraft.net/texture/42fe4273a62118f32881159ab3d6eded9fac90748deedbdb16204d107f843
     category: mining
     worth: 300

@@ -1,0 +1,16 @@
+{
+    "parent": "item/handheld_rod",
+    "textures": {
+        "layer0": "item/fishing_rod"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "cast": 1
+            },
+            "model": "item/fishing_rod_cast"
+        },
+        {"predicate": { "custom_model_data": 1}, "model": "item/spells/pull"},
+        {"predicate": { "custom_model_data": 2}, "model": "item/spells_disabled/pull"}
+    ]
+}

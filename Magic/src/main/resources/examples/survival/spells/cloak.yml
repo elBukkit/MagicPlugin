@@ -1,6 +1,8 @@
 cloak:
-    icon: spell_icon:116
-    icon_disabled: spell_icon_disabled:116
+    icon: chainmail_chestplate{CustomModelData:1}
+    icon_disabled: chainmail_chestplate{CustomModelData:2}
+    legacy_icon: spell_icon:116
+    legacy_icon_disabled: spell_icon_disabled:116
     icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
     category: master
     tags: noduel

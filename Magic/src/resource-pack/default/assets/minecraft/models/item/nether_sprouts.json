@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/nether_sprouts"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 1}, "model": "item/spells/collapse"},
+    {"predicate": { "custom_model_data": 2}, "model": "item/spells_disabled/collapse"}
+  ]
+}

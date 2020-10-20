@@ -1,7 +1,9 @@
 aqualung:
+  icon: glass_bottle{CustomModelData:1}
+  icon_disabled: glass_bottle{CustomModelData:2}
   inherit: base_passive
-  icon: spell_icon:76
-  icon_disabled: spell_icon_disabled:76
+  legacy_icon: spell_icon:76
+  legacy_icon_disabled: spell_icon_disabled:76
   worth: 30
   triggers:
     # This triggers when the player takes drowning damage

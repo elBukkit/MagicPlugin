@@ -1,6 +1,8 @@
 blind:
-    icon: spell_icon:166
-    icon_disabled: spell_icon_disabled:166
+    icon: black_dye{CustomModelData:1}
+    icon_disabled: black_dye{CustomModelData:2}
+    legacy_icon: spell_icon:166
+    legacy_icon_disabled: spell_icon_disabled:166
     icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
     example_thumbnail: https://thumbs.gfycat.com/YoungBoilingAfricancivet-size_restricted.gif
     example_link: https://thumbs.gfycat.com/YoungBoilingAfricancivet
