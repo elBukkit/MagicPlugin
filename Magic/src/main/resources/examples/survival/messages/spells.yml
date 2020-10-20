@@ -780,6 +780,8 @@ spells:
         cast: You feel lighter
         cancel: You feel heavier
         upgrade_description: "Fly faster and higher, reduced cooldown"
+    levitate|6:
+        upgrade_description: "Unlimited height, cloud vanishes for visibility"
     boom:
         name: Boom
         description: Create an explosion

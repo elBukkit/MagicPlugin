@@ -26,6 +26,7 @@
  - Fix sharpness buff being allowed on a wand
  - Fix ModifyEntity changing mob types to zombies unintentionally
  - A "deactivate" action handler can be added to perform actions when a spell is toggled off
+ - Add Levitate level 6, conduit-only, works like Superfly
 
 # 7.10.7
 

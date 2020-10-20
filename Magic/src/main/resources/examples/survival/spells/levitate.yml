@@ -109,8 +109,47 @@ levitate|4:
         max_height_above_ground: 24
 
 levitate|5:
+    upgrade_required_path: conduit
+    upgrade_required_casts: 50
     parameters:
         speed: 2
         cooldown: 1000
         max_height_above_ground: 32
+
+levitate|6:
+    parameters:
+        speed: 2.5
+        cooldown: 500
+        max_height_above_ground: -1
+    effects:
+      cast:
+        - sound: entity_ender_dragon_flap
+          location: origin
+          color_override: color
+          source_location: feet
+          effectlib:
+            class: CylinderEffect
+            particle: redstone
+            radius: 1.2
+            height: 0
+            enable_rotation: false
+            particles: 20
+            offset: 0,-0.1,0
+            duration: 2000
+            disappear_with_origin_entity: true
+        - location: origin
+          source_location: feet
+          effectlib:
+            class: CylinderEffect
+            particle: cloud
+            radius: 0.6
+            height: 0
+            enable_rotation: false
+            particles: 20
+            particle_count: 4
+            particle_offset_x: 0.2
+            particle_offset_y: 0
+            particle_offset_z: 0.2
+            offset: 0,-0.1,0
+            duration: 2000
 
