@@ -4,6 +4,7 @@
 
  - Minecraft 1.16 will now use a new resource pack:
    - (WIP)
+   - If you want or need to turn this off, you can still update. Just put `example: 7` in your config.yml
    - All icons and models now use CustomModelData instead of damage predicates
    - Spells and magical items are represented by recognizable vanilla items
    - Wands should now be much easier to use without a resource pack
