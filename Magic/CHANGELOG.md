@@ -25,6 +25,7 @@
  - Add divinghelmet_pro item, a diving helmet with night vision
  - Fix broomstick dismount behavior when the duration expires
  - Fix sharpness buff being allowed on a wand
+ - Fix ModifyEntity changing mob types to zombies unintentionally
  - A "deactivate" action handler can be added to perform actions when a spell is toggled off
 
 # 7.10.7

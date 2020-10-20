@@ -337,11 +337,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        // Prevent further errors from missing types
-        if (type == null) {
-            type = EntityType.ZOMBIE;
-        }
-
         String colorString = parameters.getString("color");
         if (colorString != null) {
             try {
@@ -484,7 +479,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             else if (type == EntityType.RABBIT && parameters.contains("rabbit_type")) {
                 rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
             }
-            else if (type == EntityType.ZOMBIE || type.name().equals("PIG_ZOMBIE")) {
+            else if (type == EntityType.ZOMBIE || (type != null && type.name().equals("PIG_ZOMBIE"))) {
                 EntityZombieData zombieData = new EntityZombieData();
                 zombieData.isBaby = isBaby;
                 extraData = zombieData;
@@ -497,11 +492,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 extraData = slimeData;
             } else if (type == EntityType.FALLING_BLOCK) {
                 extraData = new EntityFallingBlockData(parameters);
-            } else if (type.name().equals("PARROT")) {
+            } else if (type != null && type.name().equals("PARROT")) {
                 extraData = new EntityParrotData(parameters, controller);
             } else if (type == EntityType.ENDER_DRAGON) {
                 extraData = new EntityEnderDragonData(parameters, controller);
-            } else if (type.name().equals("FOX")) {
+            } else if (type != null && type.name().equals("FOX")) {
                 extraData = new EntityFoxData(parameters, controller);
             }
 
@@ -780,7 +775,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     private boolean modifyPreSpawn(MageController controller, Entity entity) {
-        if (entity == null || entity.getType() != type) return false;
+        if (entity == null || (type != null && entity.getType() != type)) return false;
 
         if (controller != null) {
             controller.registerMob(entity, this);
@@ -934,6 +929,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public void attach(@Nonnull MageController controller, @Nonnull Entity entity) {
         if (mageData != null) {
             Mage apiMage = controller.getMage(entity);
+            if (apiMage.getEntityData() == this) return;
+
             if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
             }
@@ -949,7 +946,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     private boolean modifyPostSpawn(MageController controller, Entity entity) {
-        if (entity == null || entity.getType() != type) return false;
+        if (entity == null || (type != null && entity.getType() != type)) return false;
 
         if (hasMoved && location != null && !location.equals(entity.getLocation())) {
             entity.teleport(location);
