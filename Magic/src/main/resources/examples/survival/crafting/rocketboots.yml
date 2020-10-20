@@ -3,7 +3,7 @@ rocketboots:
   output: rocketboots
   output_type: wand
   materials:
-    o: nether_star
+    o: magicheart
     i: emerald
     f: firework
   row_1:

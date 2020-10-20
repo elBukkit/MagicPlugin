@@ -3,7 +3,7 @@ spellbook:
   output_type: wand
 
   materials:
-    o: nether_star
+    o: magicheart
     i: book
 
   row_1: o

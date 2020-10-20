@@ -2,8 +2,8 @@ goggles:
   output: goggles
   output_type: wand
   materials:
-    o: nether_star
-    i: stick
+    o: emerald
+    i: magicheart
     d: nether_fence
   row_1: oio
   row_2: d d

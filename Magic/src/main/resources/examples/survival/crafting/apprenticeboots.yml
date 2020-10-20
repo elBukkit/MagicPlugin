@@ -3,7 +3,7 @@ apprenticeboots:
   output: apprenticeboots
   output_type: wand
   materials:
-    o: emerald
+    o: magicheart
     i: wool
   row_1:
   row_2: i i

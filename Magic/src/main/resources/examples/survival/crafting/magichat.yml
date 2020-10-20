@@ -2,7 +2,7 @@ magichat:
   output: magichat
   output_type: wand
   materials:
-    o: nether_star
+    o: magicheart
     i: leather_helmet
   row_1: o
   row_2: i

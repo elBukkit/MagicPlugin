@@ -1,0 +1,4 @@
+magicheart:
+  icon: emerald{CustomModelData:1}
+  legacy_icon: wand_icon:30
+  indestructible: true

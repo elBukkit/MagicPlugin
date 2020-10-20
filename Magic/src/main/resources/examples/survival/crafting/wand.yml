@@ -16,8 +16,8 @@ wand:
 
   # This defines the materials that will be required to craft this wand
   materials:
-    o: nether_star
-    i: blaze_rod
+    o: magicheart
+    i: stick
 
   # This defines the shape of the recipe, row_1 is the top. Each row may
   # have up to 3 characters that map to the materials listed above.

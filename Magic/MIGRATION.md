@@ -2,6 +2,12 @@
 
 # 8.0
 
+ - If you would like to upgrade, but keep things mostly the same as in previous versions of Magic, add
+   `example: 7`
+   to your plugins/Magic/config.yml file.
+
+ - Default survival crafting recipes changed dramatically
+
  - There is a new resource pack structure that uses custom model data instead of damage values.
    - If you need to use a resource pack with damage values but are using the builtin configs, you can
      add `legacy_icons_enabled: true` to your config.yml

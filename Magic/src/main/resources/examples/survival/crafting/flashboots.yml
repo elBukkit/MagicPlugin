@@ -3,7 +3,7 @@ flashboots:
   output: flashboots
   output_type: wand
   materials:
-    o: nether_star
+    o: magicheart
     i: wool
     f: feather
   row_1:

@@ -3,9 +3,10 @@ broomstick:
   output_type: wand
   materials:
     i: stick
-    o: nether_star
+    o: elytra
     w: wheat
+    h: magicheart
   row_1: " i "
-  row_2: " i "
+  row_2: " h "
   row_3: "wow"
 

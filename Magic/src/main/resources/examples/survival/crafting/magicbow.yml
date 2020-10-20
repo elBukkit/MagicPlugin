@@ -4,7 +4,8 @@ magicbow:
   materials:
     o: nether_star
     i: bow
+    h: magicheart
   row_1: o
   row_2: i
-  row_3: ""
+  row_3: h
 

@@ -1,0 +1,178 @@
+wand:
+  materials:
+    o: nether_star
+    i: blaze_rod
+  row_1: o
+  row_2: i
+  row_3:
+
+magicheart:
+  enabled: false
+
+apprenticeboots:
+  materials:
+    o: magicheart
+    i: wool
+
+apprenticechestplate:
+  materials:
+    o: magicheart
+    i: wool
+
+apprenticehelmet:
+  materials:
+    o: magicheart
+    i: wool
+
+apprenticeleggings:
+  materials:
+    o: magicheart
+    i: wool
+
+magicsword:
+  materials:
+    o: nether_star
+    i: stick
+  row_1: o
+  row_2: o
+  row_3: i
+
+broomstick:
+  materials:
+    i: stick
+    o: nether_star
+    w: wheat
+  row_1: " i "
+  row_2: " i "
+  row_3: "wow"
+
+camera:
+  materials:
+    o: nether_star
+    i: dispenser
+    d: daylight_detector
+
+divinghelmet:
+  materials:
+    o: nether_star
+    i: stained_glass
+  row_1: iii
+  row_2: ioi
+  row_3: iii
+
+flashboots:
+  materials:
+    o: magicheart
+    i: wool
+    f: feather
+
+goggles:
+  materials:
+    o: emerald
+    i: magicheart
+    d: nether_fence
+  row_1: oio
+  row_2: d d
+  row_3: d d
+
+magicbow:
+  materials:
+    o: nether_star
+    i: bow
+  row_1: o
+  row_2: i
+  row_3: ""
+
+magichat:
+  materials:
+    o: nether_star
+    i: leather_helmet
+
+magictorch:
+  materials:
+    o: nether_star
+    i: torch
+
+mastersword:
+  materials:
+    o: nether_star
+    i: blaze_rod
+  row_1: o
+  row_2: o
+  row_3: i
+
+mirrorshield:
+  materials:
+    o: nether_star
+    i: shield
+
+rabbitboots:
+  materials:
+    i: rabbit_hide
+    r: rabbit_foot
+  row_1:
+  row_2: i i
+  row_3: r r
+
+rocketboots:
+  materials:
+    o: nether_star
+    i: emerald
+    f: firework
+
+spellbook:
+  materials:
+    o: nether_star
+    i: book
+
+talisman:
+  materials:
+    o: nether_star
+    i: gold_nugget
+  row_1: " i "
+  row_2: "ioi"
+  row_3: " i "
+
+wizardboots:
+  materials:
+    o: nether_star
+    i: wool
+  row_1:
+  row_2: i i
+  row_3: ioi
+
+wizardchestplate:
+  materials:
+    o: nether_star
+    i: wool
+  row_1: ioi
+  row_2: iii
+  row_3: iii
+
+wizardhelmet:
+  materials:
+    o: nether_star
+    i: wool
+  row_1: iii
+  row_2: ioi
+  row_3:
+
+wizardleggings:
+  materials:
+    o: nether_star
+    i: wool
+  row_1: iii
+  row_2: i i
+  row_3: ioi
+
+
+
+
+
+
+
+
+
+
+
+

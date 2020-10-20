@@ -4,8 +4,8 @@ wizardhelmet:
   output_type: wand
   materials:
     o: nether_star
-    i: wool
-  row_1: iii
-  row_2: ioi
+    i: apprenticehelmet
+  row_1: o
+  row_2: i
   row_3:
 

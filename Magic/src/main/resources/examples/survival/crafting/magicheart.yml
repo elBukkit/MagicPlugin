@@ -1,0 +1,9 @@
+magicheart:
+  output: magicheart
+  output_type: wand
+  materials:
+    o: emerald
+    O: diamond
+  row_1: ooo
+  row_2: oOo
+  row_3: ooo

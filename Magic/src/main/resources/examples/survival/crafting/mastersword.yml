@@ -3,9 +3,9 @@ mastersword:
   output: mastersword
   output_type: wand
   materials:
-    o: nether_star
-    i: blaze_rod
-  row_1: o
+    o: magicheart
+    i: diamond_sword
+  row_1:
   row_2: o
   row_3: i
 

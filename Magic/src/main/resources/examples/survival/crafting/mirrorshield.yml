@@ -3,7 +3,7 @@ mirrorshield:
   output_type: wand
 
   materials:
-    o: nether_star
+    o: magicheart
     i: shield
 
   row_1: o

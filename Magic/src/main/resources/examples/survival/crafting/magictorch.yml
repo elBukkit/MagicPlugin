@@ -4,7 +4,7 @@ magictorch:
   output_type: wand
 
   materials:
-    o: nether_star
+    o: magicheart
     i: torch
 
   row_1: o

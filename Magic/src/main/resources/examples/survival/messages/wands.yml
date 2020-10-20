@@ -290,6 +290,9 @@ wands:
     talisman:
         name: Mana Talisman
         description: Gives a mana bonus when held
+    magicheart:
+        name: Heart of Magic
+        description: Used for crafting magic items
     skillbook:
         name: Skill Book
         description: Right-click to view skills, drag skill to hotbar to use

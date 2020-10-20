@@ -2,9 +2,9 @@ magicsword:
   output: magicsword
   output_type: wand
   materials:
-    o: nether_star
-    i: stick
-  row_1: o
+    o: magicheart
+    i: netherite_sword
+  row_1:
   row_2: o
   row_3: i
 

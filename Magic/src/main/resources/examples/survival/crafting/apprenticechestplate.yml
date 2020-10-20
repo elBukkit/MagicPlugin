@@ -3,7 +3,7 @@ apprenticechestplate:
   output: apprenticechestplate
   output_type: wand
   materials:
-    o: emerald
+    o: magicheart
     i: wool
   row_1: ioi
   row_2: iii

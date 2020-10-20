@@ -2,9 +2,10 @@ divinghelmet:
   output: divinghelmet
   output_type: wand
   materials:
-    o: nether_star
+    o: heart_of_the_sea
     i: stained_glass
+    h: magicheart
   row_1: iii
   row_2: ioi
-  row_3: iii
+  row_3: ihi
 

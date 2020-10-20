@@ -2,6 +2,8 @@
 
 # 8.0
 
+ - See MIGRATION.md for important information!
+
  - Minecraft 1.16 will now use a new resource pack:
    - (WIP)
    - If you want or need to turn this off, you can still update. Just put `example: 7` in your config.yml
@@ -10,8 +12,10 @@
    - Wands should now be much easier to use without a resource pack
    - Combining Magic's RP with other RPs may now be somewhat more complicated, I will work on a script to help in the future.
  - Rebalance
-   - TODO
-   - Wand crafting changed to a stick + diamond
+   - Most magic crafting recipes have changed
+   - Now requires an intermediate item, the "Heart of Magic" - crafted with 8 emeralds and a diamond
+   - Wizard gear buffed a bit
+   - Mana Talisman given some protection buffs
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data

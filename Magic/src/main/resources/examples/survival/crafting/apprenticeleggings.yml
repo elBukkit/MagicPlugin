@@ -3,7 +3,7 @@ apprenticeleggings:
   output: apprenticeleggings
   output_type: wand
   materials:
-    o: emerald
+    o: magicheart
     i: wool
   row_1: iii
   row_2: i i
