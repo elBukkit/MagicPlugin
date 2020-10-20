@@ -235,6 +235,10 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             for (Mage mage : controller.getMages()) {
                 while (mage.cancelPending() != null) stoppedPending++;
             }
+            // This can catch orphaned mages that are still running spells
+            for (Mage mage : api.getMagesWithPendingBatches()) {
+                while (mage.cancelPending() != null) stoppedPending++;
+            }
 
             sender.sendMessage("Stopped " + stoppedPending + " pending spell casts");
 
