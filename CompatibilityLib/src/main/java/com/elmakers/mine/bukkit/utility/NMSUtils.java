@@ -1596,17 +1596,6 @@ public class NMSUtils {
         return isModernVersion;
     }
 
-    public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
-        Class<?> c = getBukkitClass(newVersion);
-        if (c == null) {
-            c = getBukkitClass(oldVersion);
-            if (c == null) {
-                logger.warning("Could not bind to " + newVersion + " or " + oldVersion);
-            }
-        }
-        return c;
-    }
-
     public static Class<?> getClass(String className) {
         Class<?> result = null;
         try {
