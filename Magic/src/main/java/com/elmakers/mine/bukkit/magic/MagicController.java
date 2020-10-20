@@ -5085,6 +5085,8 @@ public class MagicController implements MageController {
                         for (String key : keys) {
                             CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
                         }
+                    } else {
+                        CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipeKey);
                     }
                 }
             } else if (magicItemKey.startsWith("recipes:")) {
