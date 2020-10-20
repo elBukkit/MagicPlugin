@@ -170,6 +170,16 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             for (String currency : currencies) {
                 addIfPermissible(sender, options, "Magic.create.", currency);
             }
+            Collection<String> recipes = controller.getRecipeKeys();
+            for (String recipe : recipes) {
+                addIfPermissible(sender, options, "Magic.create.", "recipe:" + recipe);
+            }
+            Collection<String> classKeys = controller.getMageClassKeys();
+            for (String magicClass : classKeys) {
+                addIfPermissible(sender, options, "Magic.create.", "recipes:" + magicClass);
+            }
+            addIfPermissible(sender, options, "Magic.create.", "recipe:*");
+            addIfPermissible(sender, options, "Magic.create.", "recipes:*");
         }
         return options;
     }
