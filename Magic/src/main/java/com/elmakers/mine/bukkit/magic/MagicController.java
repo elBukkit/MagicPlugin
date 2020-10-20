@@ -5086,7 +5086,10 @@ public class MagicController implements MageController {
                             CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
                         }
                     } else {
-                        CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipeKey);
+                        String[] recipeKeys = StringUtils.split(recipeKey, ",");
+                        for (String recipe : recipeKeys) {
+                            CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipe);
+                        }
                     }
                 }
             } else if (magicItemKey.startsWith("recipes:")) {
@@ -5099,10 +5102,13 @@ public class MagicController implements MageController {
                             CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
                         }
                     } else {
-                        MageClassTemplate mageClass = getMageClassTemplate(recipeKey);
-                        if (mageClass != null) {
-                            for (String key : mageClass.getRecipies()) {
-                                CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                        String[] recipeKeys = StringUtils.split(recipeKey, ",");
+                        for (String recipe : recipeKeys) {
+                            MageClassTemplate mageClass = getMageClassTemplate(recipe);
+                            if (mageClass != null) {
+                                for (String key : mageClass.getRecipies()) {
+                                    CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                                }
                             }
                         }
                     }
