@@ -1,5 +1,15 @@
 # Migration Notes
 
+# 8.0
+
+ - There is a new resource pack structure that uses custom model data instead of damage values.
+   - If you need to use a resource pack with damage values but are using the builtin configs, you can
+     add `legacy_icons_enabled: true` to your config.yml
+   - If you have been using Magic's RP combined with your own, I will try to provide a script to combine
+     it with the new RP instead if you want to move forward
+ - The Magic Sword recipe name has changed from `battle` to `magicsword`.
+   This is important if you've disabled the recipe, please update your crafting.yml!
+
 # 7.9.7
 
  - Engineering magic has been moved out of the survival configs and into a separate example. 
