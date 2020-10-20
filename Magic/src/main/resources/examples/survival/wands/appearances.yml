@@ -82,3 +82,15 @@ appearance_longbow:
     upgrade: true
     icon: bow_icon:3
     upgrade_icon: bow_icon:3
+
+glow_upgrade:
+    icon: spell_icon:233
+    upgrade: true
+    force: true
+    glow: true
+
+noglow_upgrade:
+  icon: spell_icon:233
+  upgrade: true
+  force: true
+  glow: false

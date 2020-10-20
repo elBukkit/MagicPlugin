@@ -74,3 +74,14 @@ appearanceshop:
           unlock: orb
           confirm: true
           cost: 8000
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - item: glow_upgrade
+          unlock: glow
+          confirm: true
+          cost: 200
+        - item: noglow_upgrade
+          confirm: true
+          cost: 0

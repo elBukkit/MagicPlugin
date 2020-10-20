@@ -340,6 +340,12 @@ wands:
     appearance_magma:
         name: Magma Staff Appearance
         description: A staff containing the essence of pure magma
+    glow_upgrade:
+        name: Glowing
+        description: Make your wand shimmer
+    noglow_upgrade:
+        name: Not Glowing
+        description: Take away that shimmer
     uberwand:
         name: "Überwand"
         description: The Ultimate Wand
