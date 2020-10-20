@@ -8,6 +8,7 @@ ironman:
   health: 5000
   default_drops: false
   interval: 1000
+  helmet: nothing
   triggers:
     interval:
       cast:
