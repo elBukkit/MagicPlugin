@@ -1,5 +1,5 @@
 {
-    "parent" : "item/custom/icon_sparkles",
+    "parent" : "item/custom/icon",
     "textures": {
         "particle": "item/brushes/map",
         "texture": "item/brushes/map"
