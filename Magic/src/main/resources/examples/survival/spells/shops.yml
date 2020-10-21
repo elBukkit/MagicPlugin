@@ -460,6 +460,8 @@ toolshop:
         - diamond_axe
         - dwarven_spade
         - dwarven_axe
+        - diamond_pickaxe
+        - dwarven_pickaxe
 
 pickaxeshop:
     icon: diamond_pickaxe
