@@ -1,0 +1,249 @@
+sandman_teleport:
+ actions: 
+  cast:
+    - class: CheckBlock
+      actions:
+      - class: Delay
+      - class: ChangeContext
+        target_caster: true
+        ignore_result: true
+        actions:
+        - class: FallProtection
+      - class: Teleport
+ effects:
+  teleport:
+  - location: target
+    sound: block_sand_break
+    target_location: body
+    effectlib:
+     class: AnimatedBall
+     material: sand
+     particle: block_crack
+     y_factor: 1
+     z_factor: 0.5
+     x_factor: 0.5
+     duration: 1000
+  - location: target
+    sound: block_sand_break
+    target_location: body
+    effectlib:
+     class: Warp
+     particle: block_crack
+     material: sand
+     duration: 1000
+     radius: 0.5
+     rings: 12
+  precast:
+  - location: origin    
+    sound: block_sand_break
+    source_location: body
+    effectlib:
+     class: AnimatedBall
+     material: sand
+     particle: block_crack
+     y_factor: 1
+     z_factor: 0.5
+     x_factor: 0.5
+     duration: $warmup
+  - location: origin
+    sound: block_sand_break
+    source_location: body
+    effectlib:
+     class: Warp
+     particle: block_crack
+     material: sand
+     duration: $warmup
+     radius: 0.5
+     rings: 12
+ parameters:
+  cooldown: 15000
+  allowed: sand,red_sand
+  range: 64
+  target: block
+  warmup: 2000
+
+sand_body:
+ cast_on_no_target: false
+ actions: 
+  cast: 
+  - class: ChangeContext
+    target_offset: 0,-2,0
+    actions:
+    - class: CheckBlock
+      actions:
+      - class: PotionEffect
+ effects:
+  no_target: []
+  no_action: []
+  cast: 
+  - location: origin
+    source_location: head
+    effectlib:
+     class: AnimatedBall
+     material: sand
+     particle: block_crack
+     y_factor: 0.1
+     z_factor: 0.5
+     x_factor: 0.5
+     duration: $duration
+  - location: origin
+    source_location: body
+    effectlib:
+     class: AnimatedBall
+     material: sand
+     particle: block_crack
+     y_factor: 0.5
+     z_factor: 0.5
+     x_factor: 0.5
+     duration: $duration
+  - location: origin
+    source_location: feet
+    effectlib:
+     class: AnimatedBall
+     material: sand
+     particle: block_crack
+     y_factor: 0.5
+     z_factor: 0.5
+     x_factor: 0.5
+     duration: $duration
+ parameters:
+  add_effects:
+   regeneration: 2
+   saturation: 5
+  duration: 10000
+  cooldown: 25000
+  target: self
+  allowed: sand,red_sand
+  range: 3
+
+sand_punch:
+ actions: 
+  cast: 
+  - class: Line
+    actions:
+    - class: ModifyBlock
+  - class: Damage
+  - class: Velocity
+ effects:
+  undo:
+  - location: both
+    particle: block_crack
+    sound: block_sand_break
+    particle_count: 25
+    particle_offset_x: 0.5
+    particle_offset_y: 0.5
+    particle_offset_z: 0.5
+  cast:
+  - location: source
+    sound: block_sand_place
+  iterate:
+  - location: target
+    particle: block_crack
+    particle_count: 25
+    particle_offset_x: 0.5
+    particle_offset_y: 0.5
+    particle_offset_z: 0.5
+    sound: block_sand_place
+ parameters:
+  target: other
+  target_type: Damageable
+  transparent: transparent_to_construction
+  destructible: destructible_replace
+  allow_max_range: true
+  range: 8
+  damage: 6
+  size: 8
+  increment_data: false
+  undo: 250
+  cooldown: 3000
+  brush: sand
+
+sand_trap:
+ actions: 
+  cast:
+  - class: CheckBlock
+    actions:
+    - class: AreaOfEffect
+      actions:
+      - class: PotionEffect
+      - class: PlayEffects
+        effect: stun
+ effects:
+  no_target: []
+  cast:
+  - location: target
+    sound: block_sand_place
+    effectlib:
+     class: Modified
+     duration: $duration
+     parameters:
+      rotation: "5 * t/100"
+      curve: "-5"
+     effect:
+      class: Helix
+      particle: block_crack
+      radius: 5
+      particles: 20
+ parameters:
+  cooldown: 15000
+  allow_max_range: true
+  range: 16
+  target: other
+  target_self: false
+  add_effects:
+   slow: 10
+   jump: -10
+  duration: 5000
+  radius: 5
+  allowed: sand,red_sand
+
+sand_raise:
+ cast_on_no_target: false
+ actions: 
+  cast:
+  - class: Repeat
+    repeat: 5
+    actions:
+    - class: ChangeContext
+      target_offset: 0,-2,0
+      target_caster: true
+      actions:
+      - class: CheckBlock
+        actions:
+        - class: PlayEffects
+          effects: raise
+        - class: Sphere
+          radius: 1.5
+          replace: false
+          actions:
+          - class: ModifyBlock
+        - class: Delay
+          delay: 750
+ effects:
+  no_target: []
+  undo:
+  - location: target
+    particle: block_crack
+    sound: block_sand_break
+    particle_count: 25
+    particle_offset_x: 1.5
+    particle_offset_y: 1.5
+    particle_offset_z: 1.5
+  raise:
+  - location: target
+    particle: block_crack
+    sound: block_sand_break
+    particle_count: 25
+    particle_offset_x: 1.5
+    particle_offset_y: 1.5
+    particle_offset_z: 1.5
+ parameters:
+  transparent: transparent_to_construction
+  destructible: destructible_replace
+  brush: sand
+  undo: 15000
+  undo_reversed: false
+  undo_speed: 0.75
+  allowed: sand,red_sand
+  target: block
+  range: 16
