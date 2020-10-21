@@ -97,7 +97,6 @@ blink:
     parameters:
         target: block
         allow_max_range: true
-        allow_passthrough: false
         range: 12
         cooldown: 10000
         prevent_passthrough: nopassthrough

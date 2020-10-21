@@ -30,7 +30,7 @@ public class TeleportAction extends BaseTeleportAction
         super.prepare(context, parameters);
         Mage mage = context.getMage();
         ledgeSearchDistance = parameters.getInt("ledge_range", 2);
-        autoPassthrough = parameters.getBoolean("allow_passthrough", true);
+        autoPassthrough = parameters.getBoolean("allow_passthrough", false);
         useTargetLocation = parameters.getBoolean("use_target_location", false);
         passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
     }

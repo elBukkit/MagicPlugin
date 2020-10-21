@@ -16,6 +16,9 @@
  - The Magic Sword recipe name has changed from `battle` to `magicsword`.
    This is important if you've disabled the recipe, please update your crafting.yml!
 
+ - The `allow_passthrough` parameter of the Teleport action is now false by default. You may need to tweak any
+   custom spell configs using that action accordingly.
+
 # 7.9.7
 
  - Engineering magic has been moved out of the survival configs and into a separate example. 
