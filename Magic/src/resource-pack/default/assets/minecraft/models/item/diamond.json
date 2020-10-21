@@ -6,6 +6,7 @@
 
   "overrides": [
     {"predicate": {"custom_model_data": 1}, "model": "item/spells/wand"},
-    {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/wand"}
+    {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/wand"},
+    {"predicate": {"custom_model_data": 3}, "model": "item/custom/crystalball"}
   ]
 }
