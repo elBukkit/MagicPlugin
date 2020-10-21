@@ -94,6 +94,7 @@ public interface CastContext extends WandEffectContext {
     void setTargetEntity(Entity targetEntity);
     void setTargetLocation(Location targetLocation);
     void setTargetSourceLocation(Location targetLocation);
+    void setTargetBlock(Block targetBlock);
     @Nonnull
     Spell getSpell();
     @Nonnull

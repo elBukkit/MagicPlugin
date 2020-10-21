@@ -67,6 +67,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private @Nullable Location targetLocation;
     private @Nullable Location targetSourceLocation;
     private @Nullable Location targetCenterLocation;
+    private @Nullable Block targetBlock;
     private Block previousBlock;
     private @Nullable Entity targetEntity;
     private UndoList undoList;
@@ -275,6 +276,9 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Nullable
     @Override
     public Block getTargetBlock() {
+        if (targetBlock != null) {
+            return targetBlock;
+        }
         return targetLocation == null ? null : targetLocation.getBlock();
     }
 
@@ -320,6 +324,11 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public void setTargetLocation(Location targetLocation) {
         this.targetLocation = targetLocation;
+    }
+
+    @Override
+    public void setTargetBlock(Block targetBlock) {
+        this.targetBlock = targetBlock;
     }
 
     @Override

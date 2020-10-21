@@ -144,6 +144,7 @@ public class ChangeContextAction extends CompoundAction {
                 context.getLogger().warning("Invalid source location in spell " + context.getSpell().getKey() + ": " + this.sourceLocation);
             }
         }
+        Block targetBlock = null;
         Entity targetEntity = context.getTargetEntity();
         Location targetLocation = context.getTargetLocation();
         if (targetLocation != null) {
@@ -184,8 +185,8 @@ public class ChangeContextAction extends CompoundAction {
             Block previousBlock = context.getPreviousBlock();
             if (previousBlock != null) {
                 Location current = targetLocation;
-                targetLocation = previousBlock.getLocation();
-                context.getBrush().setTarget(current, targetLocation);
+                targetBlock = previousBlock;
+                context.getBrush().setTarget(current, targetBlock.getLocation());
             }
         }
         if (sourceDirectionIsTarget && targetEntity != null && sourceLocation != null)
@@ -371,6 +372,9 @@ public class ChangeContextAction extends CompoundAction {
         if (targetSelf != null)
         {
             actionContext.setTargetsCaster(targetSelf);
+        }
+        if (targetBlock != null) {
+            actionContext.setTargetBlock(targetBlock);
         }
         return startActions();
     }
