@@ -1,6 +1,8 @@
 monster:
-    icon: spell_icon:64
-    icon_disabled: spell_icon_disabled:64
+    icon: rabbit_hide{CustomModelData:1}
+    icon_disabled: rabbit_hide{CustomModelData:2}
+    legacy_icon: spell_icon:64
+    legacy_icon_disabled: spell_icon_disabled:64
     icon_url: http://textures.minecraft.net/texture/cd541541daaff50896cd258bdbdd4cf80c3ba816735726078bfe393927e57f1
     category: dark
     pvp_restricted: true

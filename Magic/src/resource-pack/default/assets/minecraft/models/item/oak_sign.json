@@ -6,6 +6,8 @@
 
   "overrides": [
     {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/inventorymode"},
-    {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/quickcast_normal"}
+    {"predicate": { "custom_model_data": 2}, "model": "item/upgrades/quickcast_normal"},
+    {"predicate": {"custom_model_data": 3}, "model": "item/spells/tag"},
+    {"predicate": {"custom_model_data": 4}, "model": "item/spells_disabled/tag"}
   ]
 }

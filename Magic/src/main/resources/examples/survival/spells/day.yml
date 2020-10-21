@@ -1,6 +1,8 @@
 day:
-    icon: spell_icon:84
-    icon_disabled: spell_icon_disabled:84
+    icon: honeycomb{CustomModelData:1}
+    icon_disabled: honeycomb{CustomModelData:2}
+    legacy_icon: spell_icon:84
+    legacy_icon_disabled: spell_icon_disabled:84
     icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
     example_thumbnail: https://thumbs.gfycat.com/DirtyScrawnyErin-size_restricted.gif
     example_link: https://thumbs.gfycat.com/DirtyScrawnyErin

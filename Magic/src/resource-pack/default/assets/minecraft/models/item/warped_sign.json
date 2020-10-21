@@ -6,6 +6,7 @@
 
   "overrides": [
     {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/alphabetizer"},
-    {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/quickcast_enable"}
+    {"predicate": { "custom_model_data": 2}, "model": "item/upgrades/quickcast_enable"},
+    {"predicate": { "custom_model_data": 3}, "model": "item/brushes/default"}
   ]
 }

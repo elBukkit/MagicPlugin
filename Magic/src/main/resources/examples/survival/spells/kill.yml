@@ -1,6 +1,8 @@
 kill:
-    icon: spell_icon:170
-    icon_disabled: spell_icon_disabled:170
+    icon: bone{CustomModelData:3}
+    icon_disabled: bone{CustomModelData:4}
+    legacy_icon: spell_icon:170
+    legacy_icon_disabled: spell_icon_disabled:170
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     example_thumbnail: https://thumbs.gfycat.com/IllCloudyAfricancivet-size_restricted.gif
     example_link: https://thumbs.gfycat.com/IllCloudyAfricancivet

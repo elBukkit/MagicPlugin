@@ -1,6 +1,8 @@
 admission:
-    icon: spell_icon:182
-    icon_disabled: spell_icon_disabled:182
+    icon: oak_door{CustomModelData:1}
+    icon_disabled: oak_door{CustomModelData:2}
+    legacy_icon: spell_icon:182
+    legacy_icon_disabled: spell_icon_disabled:182
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
     category: utility
     worth: 20

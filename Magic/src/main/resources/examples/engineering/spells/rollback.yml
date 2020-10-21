@@ -1,6 +1,8 @@
 rollback:
-    icon: spell_icon:117
-    icon_disabled: spell_icon_disabled:117
+    icon: bell{CustomModelData:1}
+    icon_disabled: bell{CustomModelData:2}
+    legacy_icon: spell_icon:117
+    legacy_icon_disabled: spell_icon_disabled:117
     alias: undo
     icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
     category: engineering

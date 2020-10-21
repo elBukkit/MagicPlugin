@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/turtle_egg"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 1}, "model": "item/spells/familiar"},
+    {"predicate": { "custom_model_data": 2}, "model": "item/spells_disabled/familiar"}
+  ]
+}

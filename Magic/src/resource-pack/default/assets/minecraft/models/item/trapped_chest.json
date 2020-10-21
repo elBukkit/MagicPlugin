@@ -1,0 +1,7 @@
+{
+    "parent": "item/chest",
+    "overrides": [
+        {"predicate": {"custom_model_data": 1}, "model": "item/spells/secure"},
+        {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/secure"}
+    ]
+}

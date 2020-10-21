@@ -1,6 +1,8 @@
 debugger:
-    icon: spell_icon:7
-    disabled_icon: diamond_hoe:7
+    icon: warped_sign{CustomModelData:3}
+    icon_disabled: warped_sign{CustomModelData:3}
+    legacy_icon: spell_icon:7
+    legacy_disabled_icon: spell_icon_disabled:7
     hidden: true
     category: staff
     worth: 50
