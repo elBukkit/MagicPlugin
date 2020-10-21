@@ -6,8 +6,8 @@ student:
     upgrade_item: apprentice_upgrade
     inherit: beginner
     # Mana will be upgraded when ranking up
-    mana_regeneration: 30
-    mana_max: 150
+    mana_regeneration: 15
+    mana_max: 100
     extra_spells:
       - familiar
       - monster

@@ -1,0 +1,23 @@
+student:
+  mana_regeneration: 30
+  mana_max: 150
+
+apprentice:
+  mana_regeneration: 40
+  mana_max: 200
+
+master:
+  mana_regeneration: 50
+  mana_max: 250
+
+engineer:
+  mana_regeneration: 55
+  mana_max: 300
+
+architect:
+  mana_regeneration: 60
+  mana_max: 400
+
+conduit:
+  mana_regeneration: 60
+  mana_max: 400

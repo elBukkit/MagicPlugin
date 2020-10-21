@@ -4,8 +4,8 @@ master:
     legacy_migrate_icon: gold_axe
     upgrade: engineer
     inherit: apprentice
-    mana_regeneration: 50
-    mana_max: 250
+    mana_regeneration: 35
+    mana_max: 200
     extra_spells:
       - mount
       - cage

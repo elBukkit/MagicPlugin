@@ -2,6 +2,8 @@ conduit:
     icon: wood_hoe:6
     migrate_icon: gold_pickaxe
     inherit: architect
+    mana_regeneration: 100
+    mana_max: 500
     spells:
       - portal
       - backup

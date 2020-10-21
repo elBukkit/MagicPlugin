@@ -50,5 +50,5 @@ grow:
         target_breakables: 1
         cooldown: 30000
     costs:
-        mana: 110
+        mana: 75
 

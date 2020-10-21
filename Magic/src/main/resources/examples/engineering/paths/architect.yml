@@ -9,7 +9,7 @@ architect:
     upgrade: conduit
     upgrade_item: conduit_upgrade
     mana_regeneration: 60
-    mana_max: 400
+    mana_max: 300
     extra_spells:
       - projector
     spells:

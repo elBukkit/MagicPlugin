@@ -16,6 +16,7 @@
    - Now requires an intermediate item, the "Heart of Magic" - crafted with 8 emeralds and a diamond
    - Wizard gear buffed a bit
    - Mana Talisman given some protection buffs
+   - Mana progression changed, slowed down and lowered cap
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data

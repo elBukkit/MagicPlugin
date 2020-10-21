@@ -1,8 +1,8 @@
 caster:
   inherit: base
   locked: false
-  mana_max: 50
   mana: 50
+  mana_max: 50
   mana_regeneration: 5
   spells:
   - missile
