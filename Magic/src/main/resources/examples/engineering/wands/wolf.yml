@@ -23,7 +23,7 @@ wolf:
     - SATURATION
     - REGENERATION
   active_brush: erase
-  active_spell: missile|4
+  active_spell: fling|4
   spells:
     - debugger@7
     - absorb@8
