@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/template_banner",
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 1}, "model": "item/brushes/schematic"}
+  ]
+}

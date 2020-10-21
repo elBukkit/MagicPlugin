@@ -6,29 +6,36 @@
 disabled_icon_url: http://textures.minecraft.net/texture/1c28376acb23cd93322c0a5d569b48b7cd631a6d65dd4f226adb9e9dd7e5c
 
 # Represents erase (fill with air)
-erase_item: diamond_axe:1
+erase_item: brick{CustomModelData:1}
+legacy_erase_item: diamond_axe:1
 erase_icon_url: http://textures.minecraft.net/texture/da486c55dfcb8d3f1e38e05ec924c7952811851869d9d92df236a313370ceb1
 # Represents copy (fill with the target material)
-copy_item: diamond_axe:2
+copy_item: netherite_scrap{CustomModelData:1}
+legacy_copy_item: diamond_axe:2
 copy_icon_url: http://textures.minecraft.net/texture/13e19c4f02f72d16191c1647c5e7cbd79974e642cd3458f553648632893cb9
 # Clone will copy the area you are standing in when the clone material is activated
-clone_item: diamond_axe:3
+clone_item: repeater{CustomModelData:1}
+legacy_clone_item: diamond_axe:3
 clone_icon_url: http://textures.minecraft.net/texture/b635f01b8b4cd9f44436154be3dd5d735e4487617089d3dadda39b4dada14
 # Replicate works like clone, but will sample a moving area, allowing you to "paint"
 # in a section of the world across multiple spell casts.
-replicate_item: diamond_axe:4
+replicate_item: comparator{CustomModelData:1}
+legacy_replicate_item: diamond_axe:4
 replicate_icon_url: http://textures.minecraft.net/texture/f92839237f03534717246a81656961781a8a79e8f6497bcfd2894fb16ad14d
 # The map material brush will fill in blocks from the last Map item you held. (Pixel art)
 # It will use stained clay, wool or stained glass. The default is stained clay, but it will
 # use one of the other types if it was the last material on your brush.
-map_item: diamond_axe:5
+map_item: filled_map{CustomModelData:1}
+legacy_map_item: diamond_axe:5
 map_icon_url: http://textures.minecraft.net/texture/c36adcbe21b520b7355936c89cd2b335ca5318e68173eaaa82e62f5fb986
 # The schematic material brush can be used (if WorldEdit is present) to construct with
 # schematic files
-schematic_item: diamond_axe:6
+schematic_item: cyan_banner{CustomModelData:1}
+legacy_schematic_item: diamond_axe:6
 schematic_icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
 # This icon will be used for any material that fails to create as an item
-default_brush_item: diamond_axe:7
+default_brush_item: warped_sign{CustomModelData:3}
+legacy_default_brush_item: diamond_axe:7
 default_brush_icon_url: http://textures.minecraft.net/texture/5163dafac1d91a8c91db576caac784336791a6e18d8f7f62778fc47bf146b6
 
 # Use this for block types that Minecraft won't allow in an inventory (lava, water)

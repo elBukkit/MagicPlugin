@@ -133,6 +133,19 @@ public class ConfigurationUtils extends ConfigUtils {
         return toMaterialAndData(stringData);
     }
 
+    @Nullable
+    public static MaterialAndData getIconMaterialAndData(ConfigurationSection node, String path, boolean legacy, MaterialAndData def) {
+        if (legacy) {
+            path = "legacy_" + path;
+        }
+        String stringData = node.getString(path);
+        if (stringData == null) {
+            return def;
+        }
+
+        return toMaterialAndData(stringData);
+    }
+
     public static String fromLocation(Location location) {
         if (location == null) return "";
         if (location.getWorld() == null) return "";
