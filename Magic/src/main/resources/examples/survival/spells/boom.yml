@@ -1,6 +1,8 @@
 boom:
-    icon: spell_icon:35
-    icon_disabled: spell_icon_disabled:35
+    icon: blaze_powder{CustomModelData:1}
+    icon_disabled: blaze_powder{CustomModelData:2}
+    legacy_icon: spell_icon:35
+    legacy_icon_disabled: spell_icon_disabled:35
     icon_url: http://textures.minecraft.net/texture/70df3afc6a6035b189f83d2cfc84ff9ffe33750273247d1e41acb5a805f54
     alias: kaboom
     category: combat

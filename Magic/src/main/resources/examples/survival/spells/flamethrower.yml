@@ -1,6 +1,8 @@
 flamethrower:
-    icon: spell_icon:144
-    icon_disabled: spell_icon_disabled:144
+    icon: campfire{CustomModelData:1}
+    icon_disabled: campfire{CustomModelData:2}
+    legacy_icon: spell_icon:144
+    legacy_icon_disabled: spell_icon_disabled:144
     icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
     category: combat
     worth: 250

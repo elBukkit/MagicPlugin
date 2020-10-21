@@ -4,7 +4,7 @@
     "layer0": "minecraft:item/lapis_lazuli"
   },
   "overrides": [
-    {"predicate": {"custom_model_data": 1}, "model": "item/spells/stun"},
-    {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/stun"}
+    {"predicate": {"custom_model_data": 1}, "model": "item/spells/stream"},
+    {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/stream"}
   ]
 }

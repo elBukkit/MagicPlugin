@@ -1,6 +1,8 @@
 heal:
-    icon: spell_icon:45
-    icon_disabled: spell_icon_disabled:45
+    icon: apple{CustomModelData:1}
+    icon_disabled: apple{CustomModelData:2}
+    legacy_icon: spell_icon:45
+    legacy_icon_disabled: spell_icon_disabled:45
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     category: light
     upgrade_required_path: student

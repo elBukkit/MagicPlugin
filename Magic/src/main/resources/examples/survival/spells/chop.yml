@@ -1,6 +1,8 @@
 chop:
-    icon: spell_icon:124
-    icon_disabled: spell_icon_disabled:124
+    icon: iron_axe{CustomModelData:1}
+    icon_disabled: iron_axe{CustomModelData:2}
+    legacy_icon: spell_icon:124
+    legacy_icon_disabled: spell_icon_disabled:124
     icon_url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
     example_thumbnail: https://gfycat.com/gifs/detail/FluidSkeletalBaldeagle-size_restricted.gif
     example_link: https://gfycat.com/gifs/detail/FluidSkeletalBaldeagle

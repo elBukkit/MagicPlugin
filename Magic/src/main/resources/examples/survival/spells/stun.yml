@@ -1,6 +1,6 @@
 stun:
-    icon: lapis_lazuli{CustomModelData:1}
-    icon_disabled: lapis_lazuli{CustomModelData:2}
+    icon: light_blue_dye{CustomModelData:1}
+    icon_disabled: light_blue_dye{CustomModelData:2}
     legacy_icon: spell_icon:179
     legacy_icon_disabled: spell_icon_disabled:179
     upgrade_required_path: student

@@ -1,6 +1,8 @@
 lightning:
-    icon: spell_icon:39
-    icon_disabled: spell_icon_disabled:39
+    icon: quartz{CustomModelData:1}
+    icon_disabled: quartz{CustomModelData:2}
+    legacy_icon: spell_icon:39
+    legacy_icon_disabled: spell_icon_disabled:39
     icon_url: http://textures.minecraft.net/texture/c0d34b6c68eca9dae0f9dabeadeb5f72536fa20ab4ecf669be895baf1c17
     alias: storm
     upgrade_required_path: apprentice
