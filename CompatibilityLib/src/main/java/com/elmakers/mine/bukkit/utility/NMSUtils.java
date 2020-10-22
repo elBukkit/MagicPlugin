@@ -101,6 +101,7 @@ public class NMSUtils {
     protected static Class<?> class_CraftInventoryCustom;
     protected static Class<?> class_CraftItemStack;
     protected static Class<?> class_CraftBlockState;
+    protected static Class<?> class_CraftBlock;
     protected static Class<?> class_CraftLivingEntity;
     protected static Class<?> class_CraftWorld;
     protected static Class<?> class_Consumer;
@@ -186,6 +187,11 @@ public class NMSUtils {
     protected static Class<?> class_Fox;
     protected static Class<Enum> enum_Fox_Type;
     protected static Class<?> class_RecipeChoice_ExactChoice;
+    protected static Class<?> class_BlockActionContext;
+    protected static Class<Enum> class_EnumHand;
+    protected static Enum<?> enum_EnumHand_MAIN_HAND;
+    protected static Class<?> class_MovingObjectPositionBlock;
+    protected static Class<?> class_Vec3D;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -308,6 +314,11 @@ public class NMSUtils {
     protected static Method class_BlockPosition_getZMethod;
     protected static Method class_Recipe_setGroupMethod;
     protected static Method class_ShapedRecipe_setIngredientMethod;
+    protected static Method class_CraftBlock_getNMSBlockMethod;
+    protected static Method class_Block_getPlacedStateMethod;
+    protected static Method class_MovingObjectPositionBlock_createMethod;
+    protected static Method class_CraftBlock_setTypeAndDataMethod;
+    protected static Method class_nms_Block_getBlockDataMethod;
 
     protected static boolean legacyMaps;
 
@@ -350,6 +361,7 @@ public class NMSUtils {
     protected static Constructor class_Vec3D_constructor;
     protected static Constructor class_AttributeModifier_constructor;
     protected static Constructor class_RecipeChoice_ExactChoice_constructor;
+    protected static Constructor class_BlockActionContext_constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_persistField;
@@ -740,7 +752,6 @@ public class NMSUtils {
 
             // 1.13 Support
             Class<?> class_MinecraftKey = null;
-            Class<?> class_Vec3D = null;
             try {
                 @SuppressWarnings("deprecation")
                 Class<?> unsafe = org.bukkit.UnsafeValues.class;
@@ -1585,6 +1596,26 @@ public class NMSUtils {
             } catch (Throwable ignore) {
                 // 1.10 and earlier
                 setLegacy();
+            }
+
+            // Auto block state creation
+            try {
+                class_CraftBlock = fixBukkitClass("org.bukkit.craftbukkit.block.CraftBlock");
+                class_CraftBlock_getNMSBlockMethod = class_CraftBlock.getDeclaredMethod("getNMSBlock");
+                class_CraftBlock_getNMSBlockMethod.setAccessible(true);
+                Class<?> class_BlockActionContext = fixBukkitClass("net.minecraft.server.BlockActionContext");
+                class_Block_getPlacedStateMethod = class_Block.getMethod("getPlacedState", class_BlockActionContext);
+                class_EnumHand = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumHand");
+                enum_EnumHand_MAIN_HAND = Enum.valueOf(class_EnumHand, "MAIN_HAND");
+                class_MovingObjectPositionBlock = fixBukkitClass("net.minecraft.server.MovingObjectPositionBlock");
+                class_BlockActionContext_constructor = class_BlockActionContext.getDeclaredConstructor(class_World, class_EntityHuman, class_EnumHand, class_ItemStack, class_MovingObjectPositionBlock);
+                class_BlockActionContext_constructor.setAccessible(true);
+                class_MovingObjectPositionBlock_createMethod = class_MovingObjectPositionBlock.getMethod("a", class_Vec3D, class_EnumDirection, class_BlockPosition);
+                class_CraftBlock_setTypeAndDataMethod = class_CraftBlock.getMethod("setTypeAndData", class_IBlockData, Boolean.TYPE);
+                class_nms_Block_getBlockDataMethod = class_Block.getMethod("getBlockData");
+            } catch (Throwable ex) {
+                class_CraftBlock = null;
+                logger.log(Level.WARNING, "Could not bind to auto block state methods", ex);
             }
         }
         catch (Throwable ex) {

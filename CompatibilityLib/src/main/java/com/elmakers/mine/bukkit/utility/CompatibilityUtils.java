@@ -2218,4 +2218,46 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return false;
     }
+
+    @SuppressWarnings("unchecked")
+    public static boolean setAutoBlockState(Block block, Location target, BlockFace facing, boolean physics, Player originator) {
+        if (class_CraftBlock == null) return false;
+        try {
+            Object nmsBlock = class_CraftBlock_getNMSBlockMethod.invoke(block);
+            if (nmsBlock == null) return false;
+            ItemStack blockItem = new ItemStack(block.getType());
+            Object world = getHandle(block.getWorld());
+            Object item = getHandle(makeReal(blockItem));
+            Object blockPosition = class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
+            Object vec3D = class_Vec3D_constructor.newInstance(target.getX(), target.getY(), target.getZ());
+            Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
+            Object movingObject = class_MovingObjectPositionBlock_createMethod.invoke(null, vec3D, directionEnum, blockPosition);
+            Object actionContext = class_BlockActionContext_constructor.newInstance(world, getHandle(originator), enum_EnumHand_MAIN_HAND, item, movingObject);
+            Object placedState = class_Block_getPlacedStateMethod.invoke(nmsBlock, actionContext);
+            Bukkit.getLogger().info("Placed from " + facing + ": " + placedState);
+            if (placedState == null) return false;
+            class_CraftBlock_setTypeAndDataMethod.invoke(block, placedState, physics);
+            // class_World_setTypeAndDataMethod.invoke(world, blockPosition, placedState, 11);
+            return true;
+         } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean forceUpdate(Block block, boolean physics) {
+        if (class_nms_Block_getBlockDataMethod == null) return false;
+        try {
+            Object nmsBlock = class_CraftBlock_getNMSBlockMethod.invoke(block);
+            Object blockData = class_nms_Block_getBlockDataMethod.invoke(nmsBlock);
+            Object world = getHandle(block.getWorld());
+            Object blockPosition = class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
+            Bukkit.getLogger().info("   Updating " + nmsBlock + " to " + blockData);
+            class_World_setTypeAndDataMethod.invoke(world, blockPosition, blockData, 11);
+            return true;
+         } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

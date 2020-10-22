@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
@@ -40,12 +41,14 @@ public class ModifyBlockAction extends BaseSpellAction {
     private boolean consumeBlocks = false;
     private boolean consumeVariants = true;
     private boolean checkChunk = false;
+    private boolean autoBlockState = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         spawnFallingBlocks = parameters.getBoolean("falling", false);
         applyPhysics = parameters.getBoolean("physics", false);
+        autoBlockState = parameters.getBoolean("auto_block_state", false);
         commit = parameters.getBoolean("commit", false);
         breakable = parameters.getDouble("breakable", 0);
         backfireChance = parameters.getDouble("reflect_chance", 0);
@@ -149,6 +152,23 @@ public class ModifyBlockAction extends BaseSpellAction {
         brush.modify(block, applyPhysics);
         if (undoList != null && !undoList.isScheduled()) {
             context.getController().logBlockChange(context.getMage(), prior, block.getState());
+        }
+
+        if (autoBlockState) {
+            Location targetLocation = context.getTargetLocation();
+            Block hitBlock = targetLocation.getBlock();
+            BlockFace direction = hitBlock.getFace(block);
+            if (direction == BlockFace.SELF) {
+                direction = BlockFace.UP;
+            }
+            CompatibilityUtils.setAutoBlockState(block, targetLocation, direction, applyPhysics, context.getMage().getPlayer());
+            /*
+            BlockFace[] neighbors = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.DOWN};
+            for (BlockFace blockFace : neighbors) {
+                Block neighbor = block.getRelative(blockFace);
+                CompatibilityUtils.forceUpdate(neighbor, applyPhysics);
+            }
+            */
         }
 
         boolean spawnFalling = spawnFallingBlocks && !DefaultMaterials.isAir(previousMaterial);

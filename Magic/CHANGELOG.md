@@ -24,6 +24,7 @@
    - Better tab-completion for /wand(or mage) remove brush <some long brush key>
 
  - Add ignore_damage option for crafting recipes
+ - Add auto_block_state for ModifyBlock, used by Place spell, attempts to place a block as if a player placed it
 
 # 7.11
 
