@@ -122,7 +122,7 @@ public class DynmapController {
             MarkerAPI markers = dynmap.getMarkerAPI();
             MarkerSet markerSet = markers.getMarkerSet(group);
             if (markerSet == null) {
-                markerSet = markers.createMarkerSet(group, group, null, false);
+                markerSet = markers.createMarkerSet(group, WordUtils.capitalize(group), null, false);
             }
             MarkerIcon wandIcon = markers.getMarkerIcon(icon);
             if (wandIcon == null) {
