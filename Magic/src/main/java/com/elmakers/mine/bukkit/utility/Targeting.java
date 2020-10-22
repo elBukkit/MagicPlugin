@@ -200,6 +200,10 @@ public class Targeting {
         return previousBlock;
     }
 
+    public Block getPreviousPreviousBlock() {
+        return previousPreviousBlock;
+    }
+
     public void setFOV(double fov) {
         this.fov = fov;
     }

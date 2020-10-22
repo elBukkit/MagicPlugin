@@ -145,6 +145,7 @@ public class ChangeContextAction extends CompoundAction {
             }
         }
         Block targetBlock = null;
+        Block previousBlock = null;
         Entity targetEntity = context.getTargetEntity();
         Location targetLocation = context.getTargetLocation();
         if (targetLocation != null) {
@@ -182,11 +183,12 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (attachBlock)
         {
-            Block previousBlock = context.getPreviousBlock();
+            previousBlock = context.getPreviousBlock();
             if (previousBlock != null) {
                 Location current = targetLocation;
                 targetBlock = previousBlock;
                 context.getBrush().setTarget(current, targetBlock.getLocation());
+                previousBlock = context.getPreviousPreviousBlock();
             }
         }
         if (sourceDirectionIsTarget && targetEntity != null && sourceLocation != null)
@@ -375,6 +377,9 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (targetBlock != null) {
             actionContext.setTargetBlock(targetBlock);
+        }
+        if (previousBlock != null) {
+            actionContext.setPreviousBlock(previousBlock);
         }
         return startActions();
     }

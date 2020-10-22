@@ -129,6 +129,7 @@ public interface CastContext extends WandEffectContext {
     void unregisterBreaking(Block block);
     void registerFakeBlock(Block block, Collection<WeakReference<Player>> players);
     Block getPreviousBlock();
+    Block getPreviousPreviousBlock();
     void setPreviousBlock(Block previous);
     boolean isIndestructible(Block block);
     boolean hasBuildPermission(Block block);

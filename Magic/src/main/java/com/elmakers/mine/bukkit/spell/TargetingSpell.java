@@ -188,6 +188,10 @@ public class TargetingSpell extends BaseSpell {
         return targeting.getPreviousBlock();
     }
 
+    public Block getPreviousPreviousBlock() {
+        return targeting.getPreviousPreviousBlock();
+    }
+
     public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset) {
         initializeTargeting();
         this.range = range;

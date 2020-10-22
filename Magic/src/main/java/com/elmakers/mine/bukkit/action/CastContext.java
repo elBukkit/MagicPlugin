@@ -484,6 +484,12 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         return targetingSpell != null ? targetingSpell.getPreviousBlock() : null;
     }
 
+    @Nullable
+    @Override
+    public Block getPreviousPreviousBlock() {
+        return targetingSpell != null ? targetingSpell.getPreviousPreviousBlock() : null;
+    }
+
     @Override
     public boolean isIndestructible(Block block) {
         return blockSpell != null ? blockSpell.isIndestructible(block) : true;
