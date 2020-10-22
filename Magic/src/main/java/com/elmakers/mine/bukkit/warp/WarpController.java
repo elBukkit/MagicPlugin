@@ -12,24 +12,31 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class WarpController {
+    private final MagicController controller;
     private CommandBookWarps commandBook;
     private EssentialsWarps essentials;
-    private final Map<String, Location> warps = new HashMap<>();
+    private final Map<String, MagicWarp> warps = new HashMap<>();
+
+    public WarpController(MagicController controller) {
+        this.controller = controller;
+    }
 
     public void load(ConfigurationSection warpData) {
         warps.clear();
         Set<String> keys = warpData.getKeys(false);
         for (String key : keys) {
-            warps.put(key, ConfigurationUtils.getLocation(warpData, key));
+            MagicWarp warp = new MagicWarp(key, warpData);
+            warps.put(key, warp);
+            warp.checkMarker(controller);
         }
     }
 
     public void save(ConfigurationSection warpData) {
-        for (Map.Entry<String, Location> warp : warps.entrySet()) {
-            warpData.set(warp.getKey(), ConfigurationUtils.fromLocation(warp.getValue()));
+        for (MagicWarp warp : warps.values()) {
+            warp.save(warpData);
         }
     }
 
@@ -42,7 +49,12 @@ public class WarpController {
     }
 
     public void setWarp(String warpName, Location location) {
-        warps.put(warpName, location);
+        MagicWarp warp = warps.get(warpName);
+        if (warp == null) {
+            warps.put(warpName, new MagicWarp(warpName, location));
+        } else {
+            warp.setLocation(location);
+        }
     }
 
     public boolean removeWarp(String warpName) {
@@ -51,17 +63,32 @@ public class WarpController {
 
     public int importWarps() {
         if (commandBook != null) {
-            warps.putAll(commandBook.getWarps());
+            for (Map.Entry<String, Location> warpEntry : commandBook.getWarps().entrySet()) {
+                String key = warpEntry.getKey();
+                warps.put(key, new MagicWarp(key, warpEntry.getValue()));
+            }
         }
         if (essentials != null) {
-            warps.putAll(essentials.getWarps());
+            for (Map.Entry<String, Location> warpEntry : essentials.getWarps().entrySet()) {
+                String key = warpEntry.getKey();
+                warps.put(key, new MagicWarp(key, warpEntry.getValue()));
+            }
         }
         return warps.size();
     }
 
     @Nullable
+    public MagicWarp getMagicWarp(String warpName) {
+        return warps.get(warpName);
+    }
+
+    @Nullable
     public Location getWarp(String warpName) {
-        Location warp = warps.get(warpName);
+        Location warp = null;
+        MagicWarp customWarp = warps.get(warpName);
+        if (customWarp != null) {
+            warp = customWarp.getLocation();
+        }
         if (warp == null && commandBook != null) {
             warp = commandBook.getWarp(warpName);
         }

@@ -3,9 +3,15 @@ package com.elmakers.mine.bukkit.dynmap;
 import java.io.InvalidClassException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
+import javax.annotation.Nullable;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -109,7 +115,7 @@ public class DynmapController {
          return false;
     }
 
-     public boolean addMarker(String id, String group, String title, String world, int x, int y, int z, String description) {
+     public boolean addMarker(String id, String icon, String group, String title, String world, int x, int y, int z, String description) {
         boolean created = false;
         if (isReady())
         {
@@ -118,9 +124,9 @@ public class DynmapController {
             if (markerSet == null) {
                 markerSet = markers.createMarkerSet(group, group, null, false);
             }
-            MarkerIcon wandIcon = markers.getMarkerIcon("wand");
+            MarkerIcon wandIcon = markers.getMarkerIcon(icon);
             if (wandIcon == null) {
-                wandIcon = markers.createMarkerIcon("wand", "Wand", plugin.getResource("wand_icon32.png"));
+                wandIcon = markers.createMarkerIcon(icon, WordUtils.capitalize(icon), plugin.getResource("wand_icon32.png"));
             }
 
             Marker marker = markerSet.findMarker(id);
@@ -168,5 +174,16 @@ public class DynmapController {
     {
         if (!isReady()) return 0;
         return dynmap.triggerRenderOfBlock(wid, x, y, z);
+    }
+
+    @Nullable
+    public Collection<String> getIcons() {
+         if (!isReady()) return null;
+         List<String> icons =  new ArrayList<>();
+        Set<MarkerIcon> markerIcons = dynmap.getMarkerAPI().getMarkerIcons();
+        for (MarkerIcon icon : markerIcons) {
+            icons.add(icon.getMarkerIconID());
+        }
+        return icons;
     }
 }

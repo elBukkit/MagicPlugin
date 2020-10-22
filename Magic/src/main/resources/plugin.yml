@@ -798,6 +798,7 @@ commands:
         /mwarp go         Go to a warp
         /mwarp send       Send another player to a warp
         /mwarp list       List warps
+        /mwarp configure  Configure warps for Recall or Dynmap
         /mwarp import     Import warps from Essentials or CommandBook
     permission: Magic.commands.mwarp
   "mwarp add":
@@ -836,6 +837,16 @@ commands:
     usage: |
 
        /mwarp list
+  "mwarp configure":
+    description: Configure warps, useful for Recall and Dynmap
+    permission: Magic.commands.mwarp.configure
+    usage: |
+
+       /mwarp configure <warp> name Temple of Time
+       /mwarp configure <warp> description A Holy PLace
+       /mwarp configure <warp> icon stick{CustomModelData:1}
+       /mwarp configure <warp> marker_icon portal
+       /mwarp configure <warp> marker_set portals
   "mwarp import":
     description: Import warps from Essentials or CommandBook. Will overwrite any Magic warps on collision.
     permission: Magic.commands.mwarp.import
@@ -1624,6 +1635,7 @@ permissions:
     - Magic.commands.mwarp.send
     - Magic.commands.mwarp.import
     - Magic.commands.mwarp.list
+    - Magic.commands.mwarp.configure
   Magic.commands.mwarp.add:
     description: Player may use the /mwarp add command
     type: boolean

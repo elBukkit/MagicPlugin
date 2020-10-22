@@ -25,6 +25,8 @@
 
  - Add ignore_damage option for crafting recipes
  - Add auto_block_state for ModifyBlock, used by Place spell, attempts to place a block as if a player placed it
+ - Add `/mwarp configure` command, used for Dynmap and Recall integration
+   - `/mwarp configure marker_icon portal` To add a warp to dynmap with the specified (built in to dynmap icon)
 
 # 7.11
 

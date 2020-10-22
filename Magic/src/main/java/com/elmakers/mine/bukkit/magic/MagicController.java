@@ -977,7 +977,7 @@ public class MagicController implements MageController {
      * Saving and loading
      */
     public void initialize() {
-        warpController = new WarpController();
+        warpController = new WarpController(this);
         crafting = new CraftingController(this);
         mobs = new MobController(this);
         items = new ItemController(this);
@@ -1558,20 +1558,32 @@ public class MagicController implements MageController {
 
     public boolean removeMarker(String id, String group) {
         boolean removed = false;
-        if (dynmap != null && dynmapShowWands) {
+        if (dynmap != null) {
             return dynmap.removeMarker(id, group);
         }
 
         return removed;
     }
 
-    public boolean addMarker(String id, String group, String title, String world, int x, int y, int z, String description) {
+    public boolean addMarker(String id, String icon, String group, String title, Location location, String description) {
+        return addMarker(id, icon, group, title, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), description);
+    }
+
+    public boolean addMarker(String id, String icon, String group, String title, String world, int x, int y, int z, String description) {
         boolean created = false;
-        if (dynmap != null && dynmapShowWands) {
-            created = dynmap.addMarker(id, group, title, world, x, y, z, description);
+        if (dynmap != null) {
+            created = dynmap.addMarker(id, icon, group, title, world, x, y, z, description);
         }
 
         return created;
+    }
+
+    @Nullable
+    public Collection<String> getMarkerIcons() {
+        if (dynmap == null) {
+            return null;
+        }
+        return dynmap.getIcons();
     }
 
     @Override
@@ -3812,8 +3824,11 @@ public class MagicController implements MageController {
     }
 
     protected boolean addLostWandMarker(LostWand lostWand) {
+        if (!dynmapShowWands) {
+            return false;
+        }
         Location location = lostWand.getLocation();
-        return addMarker("wand-" + lostWand.getId(), "Wands", lostWand.getName(), location.getWorld().getName(),
+        return addMarker("wand-" + lostWand.getId(), "wand",  "Wands", lostWand.getName(), location.getWorld().getName(),
             location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
         );
     }

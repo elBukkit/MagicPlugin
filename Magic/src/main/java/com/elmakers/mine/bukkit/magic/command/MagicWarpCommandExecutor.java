@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -13,6 +15,7 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.warp.MagicWarp;
 
 public class MagicWarpCommandExecutor extends MagicTabExecutor {
     private final MagicController magicController;
@@ -31,7 +34,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mwarp [add|replace|remove|go|list|import]");
+            sender.sendMessage(ChatColor.RED + "Usage: mwarp [add|replace|remove|go|list|import|configure]");
             return true;
         }
 
@@ -67,9 +70,15 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         }
 
         String warpName = args[1];
+        String[] parameters = Arrays.copyOfRange(args, 2, args.length);
 
         if (subCommand.equalsIgnoreCase("remove")) {
             onRemoveWarp(sender, warpName);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("configure")) {
+            onConfigureWarp(sender, warpName, parameters);
             return true;
         }
 
@@ -149,6 +158,96 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         }
     }
 
+    private void onConfigureWarp(CommandSender sender, String warpName, String[] parameters) {
+        MagicWarp warp = magicController.getWarps().getMagicWarp(warpName);
+        if (warp == null) {
+            sender.sendMessage(ChatColor.RED + "Unknown warp: " + ChatColor.DARK_RED + warpName);
+            return;
+        }
+        if (parameters.length == 0) {
+            sender.sendMessage(ChatColor.RED + "Missing parameter name");
+            return;
+        }
+        String parameterKey = parameters[0];
+        String value = "";
+        MagicController magic = (MagicController)controller;
+        if (parameters.length > 0) {
+            value = StringUtils.join(Arrays.copyOfRange(parameters, 1, parameters.length));
+        }
+        if (parameterKey.equalsIgnoreCase("marker_icon")) {
+            if (value.isEmpty()) {
+                warp.removeMarker(magic);
+                warp.setMarkerIcon(null);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
+                    + ChatColor.YELLOW + "marker icon");
+            } else {
+                warp.setMarkerIcon(value);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
+                    + ChatColor.YELLOW + "marker icon" + ChatColor.AQUA + " to "
+                    + ChatColor.GOLD + value);
+            }
+        } else if (parameterKey.equalsIgnoreCase("name")) {
+            if (value.isEmpty()) {
+                warp.setName(null);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
+                    + ChatColor.YELLOW + "name");
+            } else {
+                warp.setName(value);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
+                    + ChatColor.YELLOW + "name" + ChatColor.AQUA + " to "
+                    + ChatColor.GOLD + value);
+            }
+        } else if (parameterKey.equalsIgnoreCase("description")) {
+            if (value.isEmpty()) {
+                warp.setDescription(null);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
+                    + ChatColor.YELLOW + "description");
+            } else {
+                warp.setDescription(value);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
+                    + ChatColor.YELLOW + "description" + ChatColor.AQUA + " to "
+                    + ChatColor.GOLD + value);
+            }
+        } else if (parameterKey.equalsIgnoreCase("marker_set")) {
+            warp.removeMarker(magic);
+            if (value.isEmpty()) {
+                warp.setMarkerSet(null);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
+                    + ChatColor.YELLOW + "marker set");
+            } else {
+                warp.setMarkerSet(value);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
+                    + ChatColor.YELLOW + "marker set" + ChatColor.AQUA + " to "
+                    + ChatColor.GOLD + value);
+            }
+        } else if (parameterKey.equalsIgnoreCase("icon")) {
+            if (value.isEmpty()) {
+                warp.setIcon(null);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
+                    + ChatColor.YELLOW + "icon");
+            } else {
+                warp.setIcon(value);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
+                    + ChatColor.YELLOW + "icon" + ChatColor.AQUA + " to "
+                    + ChatColor.GOLD + value);
+            }
+        } else {
+            sender.sendMessage(ChatColor.RED + "Unknown warp parameter: " + ChatColor.YELLOW + parameterKey);
+            return;
+        }
+        warp.checkMarker(magic);
+    }
+
     private void onListWarps(CommandSender sender, int pageNumber) {
         int startIndex = (pageNumber - 1) * warpsPerPage;
         List<String> warps = magicController.getWarps().getWarps();
@@ -179,9 +278,11 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "go");
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "send");
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "import");
+            addIfPermissible(sender, options, "Magic.commands.mwarp.", "list");
+            addIfPermissible(sender, options, "Magic.commands.mwarp.", "configure");
         } else if (args.length == 2) {
             String subCommand = args[0];
-            if (subCommand.equals("remove") || subCommand.equals("go") || subCommand.equals("replace")) {
+            if (subCommand.equals("remove") || subCommand.equals("go") || subCommand.equals("replace") || subCommand.equals("configure")) {
                 options.addAll(magicController.getWarps().getCustomWarps());
             } else if (subCommand.equals("send")) {
                 options.addAll(api.getPlayerNames());
@@ -190,6 +291,27 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             String subCommand = args[0];
             if (subCommand.equals("send")) {
                 options.addAll(magicController.getWarps().getCustomWarps());
+            } else if (subCommand.equals("configure")) {
+                options.add("name");
+                options.add("description");
+                options.add("icon");
+                options.add("marker_icon");
+                options.add("marker_set");
+            }
+        } else if (args.length == 4) {
+            String subCommand = args[0];
+            if (subCommand.equals("configure")) {
+                String parameterKey = args[2];
+                if (parameterKey.equals("marker_icon")) {
+                    options.addAll(((MagicController)controller).getMarkerIcons());
+                } else if (parameterKey.equals("icon")) {
+                    Collection<String> allItems = api.getController().getItemKeys();
+                    for (String itemKey : allItems) {
+                        options.add(itemKey);
+                    }
+                } else if (parameterKey.equals("name")) {
+                    options.addAll(((MagicController)controller).getMarkerIcons());
+                }
             }
         }
         return options;
