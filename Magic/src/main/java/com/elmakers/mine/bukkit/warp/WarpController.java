@@ -54,8 +54,8 @@ public class WarpController {
             warps.put(warpName, new MagicWarp(warpName, location));
         } else {
             warp.setLocation(location);
+            warp.checkMarker(controller);
         }
-        warp.checkMarker(controller);
     }
 
     public boolean removeWarp(String warpName) {

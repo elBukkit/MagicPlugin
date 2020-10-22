@@ -24,7 +24,7 @@ public class MagicWarp {
         this.key = key;
         if (warps.isConfigurationSection(key)) {
             ConfigurationSection configuration = warps.getConfigurationSection(key);
-            location = ConfigurationUtils.getLocation(configuration, key);
+            location = ConfigurationUtils.getLocation(configuration, "location");
             icon = configuration.getString("icon");
             name = configuration.getString("name");
             description = configuration.getString("description");
@@ -48,6 +48,7 @@ public class MagicWarp {
         warpConfig.set("name", name);
         warpConfig.set("description", description);
         warpConfig.set("marker_set", markerSet);
+        warpConfig.set("marker_icon", markerIcon);
     }
 
     @Nonnull
