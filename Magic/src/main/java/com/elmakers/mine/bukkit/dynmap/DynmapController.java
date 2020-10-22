@@ -178,12 +178,23 @@ public class DynmapController {
 
     @Nullable
     public Collection<String> getIcons() {
-         if (!isReady()) return null;
-         List<String> icons =  new ArrayList<>();
+        if (!isReady()) return null;
+        List<String> icons =  new ArrayList<>();
         Set<MarkerIcon> markerIcons = dynmap.getMarkerAPI().getMarkerIcons();
         for (MarkerIcon icon : markerIcons) {
             icons.add(icon.getMarkerIconID());
         }
         return icons;
+    }
+
+    @Nullable
+    public Collection<String> getSets() {
+        if (!isReady()) return null;
+        List<String> sets =  new ArrayList<>();
+        Set<MarkerSet> markerSets = dynmap.getMarkerAPI().getMarkerSets();
+        for (MarkerSet set : markerSets) {
+            sets.add(set.getMarkerSetID());
+        }
+        return sets;
     }
 }

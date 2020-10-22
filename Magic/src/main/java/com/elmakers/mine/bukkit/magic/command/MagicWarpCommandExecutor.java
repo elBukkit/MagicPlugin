@@ -269,6 +269,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
 
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        MagicController magic = (MagicController)controller;
         List<String> options = new ArrayList<>();
         if (!sender.hasPermission("Magic.commands.mwarp")) return options;
         if (args.length == 1) {
@@ -303,7 +304,16 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             if (subCommand.equals("configure")) {
                 String parameterKey = args[2];
                 if (parameterKey.equals("marker_icon")) {
-                    options.addAll(((MagicController)controller).getMarkerIcons());
+                    Collection<String> icons = magic.getMarkerIcons();
+                    if (icons != null) {
+                        options.addAll(icons);
+                    }
+                } else if (parameterKey.equals("marker_set")) {
+                    Collection<String> sets = magic.getMarkerSets();
+                    if (sets != null) {
+                        options.addAll(sets);
+                    }
+                    options.add("magic");
                 } else if (parameterKey.equals("icon")) {
                     Collection<String> allItems = api.getController().getItemKeys();
                     for (String itemKey : allItems) {
@@ -311,7 +321,8 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                     }
                     options.add("wand");
                 } else if (parameterKey.equals("name")) {
-                    options.addAll(((MagicController)controller).getMarkerIcons());
+                    String warpName = args[1];
+                    options.add(MagicWarp.keyToName(warpName));
                 }
             }
         }

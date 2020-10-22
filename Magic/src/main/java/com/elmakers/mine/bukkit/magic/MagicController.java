@@ -1586,6 +1586,14 @@ public class MagicController implements MageController {
         return dynmap.getIcons();
     }
 
+    @Nullable
+    public Collection<String> getMarkerSets() {
+        if (dynmap == null) {
+            return null;
+        }
+        return dynmap.getSets();
+    }
+
     @Override
     public File getConfigFolder() {
         return configFolder;
@@ -2393,7 +2401,7 @@ public class MagicController implements MageController {
         }
 
         if (dynmapShowWands) {
-            if (removeMarker("wand-" + wandId, "Wands")) {
+            if (removeMarker("wand-" + wandId, "wands")) {
                 info("Wand removed from map");
             }
         }
@@ -3828,7 +3836,7 @@ public class MagicController implements MageController {
             return false;
         }
         Location location = lostWand.getLocation();
-        return addMarker("wand-" + lostWand.getId(), "wand",  "Wands", lostWand.getName(), location.getWorld().getName(),
+        return addMarker("wand-" + lostWand.getId(), "wand",  "wands", lostWand.getName(), location.getWorld().getName(),
             location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
         );
     }
