@@ -309,6 +309,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                     for (String itemKey : allItems) {
                         options.add(itemKey);
                     }
+                    options.add("wand");
                 } else if (parameterKey.equals("name")) {
                     options.addAll(((MagicController)controller).getMarkerIcons());
                 }
