@@ -55,6 +55,7 @@ public class WarpController {
         } else {
             warp.setLocation(location);
         }
+        warp.checkMarker(controller);
     }
 
     public boolean removeWarp(String warpName) {
