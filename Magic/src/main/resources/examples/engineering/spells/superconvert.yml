@@ -24,6 +24,7 @@ superconvert:
         transparent: transparent_to_construction
         consume: true
         ignore_region_overrides: true
+        match_data: false
     costs:
         mana: 300
 
