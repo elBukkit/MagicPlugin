@@ -95,7 +95,6 @@ wolf:
     - push@24
     - recall|5@22
     - recurse@97
-    - regenerate@98
     - repair@99
     - rollback@15
     - shell|4@63
@@ -115,7 +114,6 @@ wolf:
     - superdome@108
     - superkill@5
     - superpyramid@109
-    - superregenerate@110
     - superrepair@14
     - superring@111
     - supershell@13
