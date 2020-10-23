@@ -187,7 +187,7 @@ public class ChangeContextAction extends CompoundAction {
             if (previousBlock != null) {
                 Location current = targetLocation;
                 targetBlock = previousBlock;
-                context.getBrush().setTarget(current, targetBlock.getLocation());
+                context.getBrush().setTarget(current, current);
                 previousBlock = context.getPreviousPreviousBlock();
             }
         }

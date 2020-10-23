@@ -29,6 +29,7 @@
    - `/mwarp configure marker_icon portal` To add a warp to dynmap with the specified (built in to dynmap icon)
  - Fix warps getting corrupted if the target world is not loaded at server start
  - The `/mwarp go` and `/send` commands will try to load the target world if it is not loaded
+ - Fix using the replicate and clone brushes with the Place spell
 
 # 7.11
 
