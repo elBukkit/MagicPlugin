@@ -140,10 +140,12 @@ web_string:
   target: other
 
 web_hang:
- actions:
+ cast_on_no_target: false
+ actions: 
   cast:
-  - class: Sphere
-    radius: 2
+  - class: ChangeContext
+    target_offset: 0,-2,0
+    target_caster: true
     actions:
     - class: CheckBlock
       actions:
@@ -153,8 +155,8 @@ web_hang:
           origin_offset: 0,-3,0
           actions:
           - class: CustomProjectile
-            range: 16
-            target: other_entity
+            ignore_blocks: true
+            destructible: solid
             actions:
             - class: Repeat
               repeat: 5
@@ -171,6 +173,8 @@ web_hang:
               - class: Delay
                 delay: 250
  effects:
+  no_action: []
+  no_target: []
   hit_entity:
   - location: target
     target_location: body
@@ -198,18 +202,19 @@ web_hang:
     particle_offset_y: 0.01
     particle_offset_z: 0.01
  parameters:
+  cooldown: 15000
+  allow_max_range: true
   allowed: solid
-  destructible: solid
+  hitbox: true
   projectile_effects_use_target: true
-  interval: 100
   velocity: 200
-  target: self
+  target: other_entity
   target_self: false
   range: 16
 
 web_ball:
- actions:
-  cast:
+ actions: 
+  cast: 
   - class: CustomProjectile
     actions:
     - class: CheckBlock
@@ -218,12 +223,10 @@ web_ball:
         target_attachment: true
         actions:
         - class: ModifyBlock
-    - class: CheckEntity
-      actions:
-      - class: Damage
-      - class: Velocity
-        speed: 0.5
-      - class: PotionEffect
+    - class: Damage
+    - class: Velocity
+      speed: 0.5
+    - class: PotionEffect
  effects:
   cast:
   - location: origin
@@ -256,7 +259,7 @@ web_ball:
     particle_offset_x: 0.01
     particle_offset_z: 0.01
     particle_offset_y: 0.01
-  hit_entity:
+  hit_entity: 
   - location: target
     target_location: feet
     effectlib:
