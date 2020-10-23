@@ -2234,7 +2234,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object movingObject = class_MovingObjectPositionBlock_createMethod.invoke(null, vec3D, directionEnum, blockPosition);
             Object actionContext = class_BlockActionContext_constructor.newInstance(world, getHandle(originator), enum_EnumHand_MAIN_HAND, item, movingObject);
             Object placedState = class_Block_getPlacedStateMethod.invoke(nmsBlock, actionContext);
-            Bukkit.getLogger().info("Placed from " + facing + ": " + placedState);
+            // Bukkit.getLogger().info("Placed from " + facing + ": " + placedState);
             if (placedState == null) return false;
             class_CraftBlock_setTypeAndDataMethod.invoke(block, placedState, physics);
             // class_World_setTypeAndDataMethod.invoke(world, blockPosition, placedState, 11);
