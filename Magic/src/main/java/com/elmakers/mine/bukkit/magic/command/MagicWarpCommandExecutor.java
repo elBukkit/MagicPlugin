@@ -136,6 +136,10 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "Unknown warp: " + ChatColor.DARK_RED + warpName);
             return;
         }
+         if (location.getWorld() == null) {
+            sender.sendMessage(ChatColor.RED + "The target world for warp: " + ChatColor.DARK_RED + warpName + ChatColor.RED + " is not available");
+            return;
+        }
         player.teleport(location);
     }
 
