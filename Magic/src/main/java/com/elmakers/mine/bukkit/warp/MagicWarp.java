@@ -116,4 +116,9 @@ public class MagicWarp {
     public void setMarkerSet(String markerSet) {
         this.markerSet = markerSet;
     }
+
+    @Nullable
+    public String getWorldName() {
+        return ConfigurationUtils.getWorldName(locationDescriptor);
+    }
 }

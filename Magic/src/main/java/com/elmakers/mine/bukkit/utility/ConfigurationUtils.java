@@ -160,6 +160,13 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     @Nullable
+    public static String getWorldName(String descriptor) {
+        if (descriptor == null) return null;
+        String[] pieces = StringUtils.split(descriptor, ',');
+        return pieces.length > 3 ? pieces[3] : null;
+    }
+
+    @Nullable
     public static Location toLocation(Object o) {
         if (o instanceof Location) {
             return (Location)o;
