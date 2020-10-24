@@ -4,11 +4,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class MagicWarp {
     @Nonnull
@@ -156,5 +159,26 @@ public class MagicWarp {
     @Nullable
     public String getIcon() {
         return icon;
+    }
+
+    private void sendIfNotEmpty(CommandSender sender, String prefix, String value) {
+        if (value != null && !value.isEmpty()) {
+            sender.sendMessage(ChatColor.GOLD + prefix + ChatColor.YELLOW + value);
+        }
+    }
+
+    public void describe(CommandSender sender) {
+
+        sender.sendMessage(ChatColor.AQUA + "Warp " + ChatColor.DARK_AQUA + key);
+        sender.sendMessage(ChatColor.AQUA + "   " + TextUtils.printLocation(getLocation(), 0));
+        if (isLocked()) {
+            sender.sendMessage(ChatColor.RED + "(Locked)");
+        }
+        sendIfNotEmpty(sender, " Name:", getName());
+        sendIfNotEmpty(sender, " Description:", getDescription());
+        sendIfNotEmpty(sender, " Group:", getGroup());
+        sendIfNotEmpty(sender, " Icon:", getIcon());
+        sendIfNotEmpty(sender, " Marker Icon:", markerIcon);
+        sendIfNotEmpty(sender, " Marker Set:", markerSet);
     }
 }

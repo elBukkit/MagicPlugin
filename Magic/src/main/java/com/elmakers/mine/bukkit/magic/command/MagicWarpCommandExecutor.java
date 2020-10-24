@@ -36,8 +36,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mwarp [add|replace|remove|go|list|import|configure]");
-            return true;
+            return false;
         }
 
         String subCommand = args[0];
@@ -81,6 +80,11 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equalsIgnoreCase("configure")) {
             onConfigureWarp(sender, warpName, parameters);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("describe")) {
+            onDescribeWarp(sender, warpName);
             return true;
         }
 
@@ -169,6 +173,21 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         } else {
             sender.sendMessage(ChatColor.RED + "Unknown warp: " + ChatColor.DARK_RED + warpName);
         }
+    }
+
+    private void onDescribeWarp(CommandSender sender, String warpName) {
+        MagicWarp warp = magicController.getWarps().getMagicWarp(warpName);
+        if (warp == null) {
+            Location genericWarp = magicController.getWarp(warpName);
+            if (genericWarp != null) {
+                sender.sendMessage(ChatColor.AQUA + "Non-Magic warp " + ChatColor.DARK_AQUA + warpName
+                    + ChatColor.AQUA + " goes to " + TextUtils.printLocation(genericWarp, 0));
+                return;
+            }
+            sender.sendMessage(ChatColor.RED + "Unknown warp: " + ChatColor.DARK_RED + warpName);
+            return;
+        }
+        warp.describe(sender);
     }
 
     private void onConfigureWarp(CommandSender sender, String warpName, String[] parameters) {

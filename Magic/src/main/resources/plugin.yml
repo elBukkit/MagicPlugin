@@ -799,6 +799,7 @@ commands:
         /mwarp send       Send another player to a warp
         /mwarp list       List warps
         /mwarp configure  Configure warps for Recall or Dynmap
+        /mwarp describe   Show warp parameters
         /mwarp import     Import warps from Essentials or CommandBook
     permission: Magic.commands.mwarp
   "mwarp add":
@@ -847,6 +848,12 @@ commands:
        /mwarp configure <warp> icon stick{CustomModelData:1}
        /mwarp configure <warp> marker_icon portal
        /mwarp configure <warp> marker_set portals
+  "mwarp describe":
+    description: Describe warp parameters
+    permission: Magic.commands.mwarp.describe
+    usage: |
+
+      /mwarp describe <warp>
   "mwarp import":
     description: Import warps from Essentials or CommandBook. Will overwrite any Magic warps on collision.
     permission: Magic.commands.mwarp.import
@@ -1636,6 +1643,7 @@ permissions:
     - Magic.commands.mwarp.import
     - Magic.commands.mwarp.list
     - Magic.commands.mwarp.configure
+    - Magic.commands.mwarp.describe
   Magic.commands.mwarp.add:
     description: Player may use the /mwarp add command
     type: boolean
@@ -1650,6 +1658,14 @@ permissions:
     default: op
   Magic.commands.mwarp.go:
     description: Player may use the /mwarp go command
+    type: boolean
+    default: op
+  Magic.commands.mwarp.configure:
+    description: Player may use the /mwarp configure command
+    type: boolean
+    default: op
+  Magic.commands.mwarp.describe:
+    description: Player may use the /mwarp describe command
     type: boolean
     default: op
   Magic.commands.mwarp.send:
