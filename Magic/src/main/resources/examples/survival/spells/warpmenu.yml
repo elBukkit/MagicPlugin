@@ -5,11 +5,12 @@ warpmenu:
   hidden: true
   actions:
       cast:
-      -  class: Recall
+      - class: Recall
       alternate_down:
       alternate_up:
       alternate_sneak:
   parameters:
-      cooldown: 500
+      cooldown: 5000
       allow_marker: false
+      allow_death: true
 
