@@ -28,6 +28,7 @@ architect:
       - superring
       - superconvert
       - supercylinder
+      - superwalls
       - superdome
       - volley
       - floodfill

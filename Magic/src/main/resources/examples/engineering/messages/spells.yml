@@ -55,6 +55,14 @@ spells:
         target_selected: Cast again to build cylinder
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+    superwalls:
+        name: SuperWalls
+        description: Create a high walls around your area
+        usage: Cast twice to construct
+        cancel: SuperWalls cancelled
+        target_selected: Cast again to build walls
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     superrepair:
         name: SuperRepair
         description: Repairs a large area saved with Backup

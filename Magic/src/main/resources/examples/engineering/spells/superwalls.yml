@@ -1,0 +1,4 @@
+superwalls:
+    inherit: supercylinder
+    parameters:
+        orient_dimension_max: 16
