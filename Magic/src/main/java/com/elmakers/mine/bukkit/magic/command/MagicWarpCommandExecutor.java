@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -375,6 +376,9 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                     Collection<String> allItems = api.getController().getItemKeys();
                     for (String itemKey : allItems) {
                         options.add(itemKey);
+                    }
+                    for (Material material : Material.values()) {
+                        options.add(material.name().toLowerCase());
                     }
                     options.add("wand");
                 } else if (parameterKey.equals("name")) {
