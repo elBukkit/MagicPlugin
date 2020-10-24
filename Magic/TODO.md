@@ -2,6 +2,9 @@
 
 ## Hot Issues
 
+ - Undo entity effects before blocks
+ - Rollback not undoing levitate would be really nice
+
  - Support custom prefixes for spells, used by NPCs to put their name in front of everything
 
  - airship schematic, paintings and item frames didn't undo

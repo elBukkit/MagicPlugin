@@ -185,7 +185,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         String value = "";
         MagicController magic = (MagicController)controller;
         if (parameters.length > 0) {
-            value = StringUtils.join(Arrays.copyOfRange(parameters, 1, parameters.length));
+            value = StringUtils.join(Arrays.copyOfRange(parameters, 1, parameters.length), ' ');
         }
         if (parameterKey.equalsIgnoreCase("marker_icon")) {
             if (value.isEmpty()) {
