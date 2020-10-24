@@ -22,6 +22,8 @@ public class MagicWarp {
     private String description;
     private String markerIcon;
     private String markerSet;
+    private String group;
+    private boolean locked;
 
     public MagicWarp(String key, ConfigurationSection warps) {
         this.key = key;
@@ -33,6 +35,8 @@ public class MagicWarp {
             description = configuration.getString("description");
             markerIcon = configuration.getString("marker_icon");
             markerSet = configuration.getString("marker_set");
+            group = configuration.getString("group");
+            locked = configuration.getBoolean("locked");
         } else {
             // Legacy warp file format
             locationDescriptor = warps.getString(key);
@@ -52,6 +56,8 @@ public class MagicWarp {
         warpConfig.set("description", description);
         warpConfig.set("marker_set", markerSet);
         warpConfig.set("marker_icon", markerIcon);
+        warpConfig.set("group", group);
+        warpConfig.set("locked", locked);
     }
 
     @Nullable
@@ -92,6 +98,10 @@ public class MagicWarp {
         return keyToName(key);
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Nonnull
     public String getMarkerSet() {
         return markerSet != null ? markerSet : "magic";
@@ -117,8 +127,34 @@ public class MagicWarp {
         this.markerSet = markerSet;
     }
 
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
     @Nullable
     public String getWorldName() {
         return ConfigurationUtils.getWorldName(locationDescriptor);
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    @Nonnull
+    public String getKey() {
+        return key;
+    }
+
+    @Nullable
+    public String getIcon() {
+        return icon;
     }
 }

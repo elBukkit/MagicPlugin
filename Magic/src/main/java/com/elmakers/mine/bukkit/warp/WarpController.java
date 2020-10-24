@@ -83,6 +83,10 @@ public class WarpController {
         return warps.get(warpName);
     }
 
+    public Collection<MagicWarp> getMagicWarps() {
+        return warps.values();
+    }
+
     @Nullable
     public Location getWarp(String warpName) {
         Location warp = null;

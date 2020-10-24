@@ -18,6 +18,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -37,11 +38,13 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
+import com.elmakers.mine.bukkit.warp.MagicWarp;
 
 public class RecallAction extends BaseTeleportAction implements GUIAction
 {
@@ -477,6 +480,27 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         if (parameters.contains("warps"))
         {
             warpConfig = ConfigurationUtils.getConfigurationSection(parameters, "warps");
+        }
+
+        if (parameters.getBoolean("allow_magic_warps", true) && controller instanceof MagicController) {
+            String group = parameters.getString("group", null);
+            MagicController magic = (MagicController)controller;
+            Collection<MagicWarp> warps = magic.getWarps().getMagicWarps();
+            if (!warps.isEmpty() && warpConfig == null) {
+                warpConfig = new MemoryConfiguration();
+            }
+            for (MagicWarp warp : warps) {
+                String icon = warp.getIcon();
+                if (icon == null || icon.isEmpty()) continue;
+                String warpGroup = warp.getGroup();
+                if (group != null && !group.isEmpty() && warpGroup != null && !warpGroup.isEmpty() && !warpGroup.equalsIgnoreCase(group)) continue;
+                ConfigurationSection magicWarpConfig = new MemoryConfiguration();
+                magicWarpConfig.set("name", warp.getName());
+                magicWarpConfig.set("icon", icon);
+                magicWarpConfig.set("description", warp.getDescription());
+                magicWarpConfig.set("locked", warp.isLocked());
+                warpConfig.set(warp.getKey(), magicWarpConfig);
+            }
         }
 
         ConfigurationSection commandConfig = null;

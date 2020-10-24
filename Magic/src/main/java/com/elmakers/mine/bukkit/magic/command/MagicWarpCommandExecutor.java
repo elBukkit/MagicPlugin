@@ -254,6 +254,26 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                     + ChatColor.YELLOW + "icon" + ChatColor.AQUA + " to "
                     + ChatColor.GOLD + value);
             }
+        } else if (parameterKey.equalsIgnoreCase("group")) {
+            if (value.isEmpty()) {
+                warp.setGroup(null);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
+                    + ChatColor.YELLOW + "group");
+            } else {
+                warp.setGroup(value);
+                sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                    + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
+                    + ChatColor.YELLOW + "icongroup" + ChatColor.AQUA + " to "
+                    + ChatColor.GOLD + value);
+            }
+        } else if (parameterKey.equalsIgnoreCase("locked")) {
+            boolean bValue = value.equalsIgnoreCase("true");
+            warp.setLocked(bValue);
+            sender.sendMessage(ChatColor.AQUA + "Configured warp: "
+                + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
+                + ChatColor.YELLOW + "icongroup" + ChatColor.AQUA + " to "
+                + ChatColor.GOLD + bValue);
         } else {
             sender.sendMessage(ChatColor.RED + "Unknown warp parameter: " + ChatColor.YELLOW + parameterKey);
             return;
@@ -311,6 +331,8 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 options.add("icon");
                 options.add("marker_icon");
                 options.add("marker_set");
+                options.add("group");
+                options.add("locked");
             }
         } else if (args.length == 4) {
             String subCommand = args[0];
@@ -327,6 +349,9 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                         options.addAll(sets);
                     }
                     options.add("magic");
+                } else if (parameterKey.equals("locked")) {
+                    options.add("true");
+                    options.add("false");
                 } else if (parameterKey.equals("icon")) {
                     Collection<String> allItems = api.getController().getItemKeys();
                     for (String itemKey : allItems) {

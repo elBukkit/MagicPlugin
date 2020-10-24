@@ -27,6 +27,7 @@
  - Add auto_block_state for ModifyBlock, used by Place spell, attempts to place a block as if a player placed it
  - Add `/mwarp configure` command, used for Dynmap and Recall integration
    - `/mwarp configure marker_icon portal` To add a warp to dynmap with the specified (built in to dynmap icon)
+   - `/mwarp configure icon diamond` to add a warp to the recall spell
  - Fix warps getting corrupted if the target world is not loaded at server start
  - The `/mwarp go` and `/send` commands will try to load the target world if it is not loaded
  - Fix using the replicate and clone brushes with the Place spell
