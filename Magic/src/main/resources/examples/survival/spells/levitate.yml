@@ -135,9 +135,9 @@ levitate|6:
             radius: 1.2
             height: 0
             enable_rotation: false
-            particles: 20
+            particles: 10
             offset: 0,-0.1,0
-            duration: 2000
+            duration: 1000
             disappear_with_origin_entity: true
         - location: origin
           source_location: feet
@@ -147,11 +147,11 @@ levitate|6:
             radius: 0.6
             height: 0
             enable_rotation: false
-            particles: 20
+            particles: 10
             particle_count: 4
             particle_offset_x: 0.2
             particle_offset_y: 0
             particle_offset_z: 0.2
             offset: 0,-0.1,0
-            duration: 2000
+            duration: 1000
 
