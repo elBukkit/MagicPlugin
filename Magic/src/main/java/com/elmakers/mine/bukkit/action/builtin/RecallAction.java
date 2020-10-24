@@ -961,11 +961,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return new Waypoint(type, controller.getTownLocation(player), context.getMessage("title_town", "Town"), context.getMessage("cast_town"), context.getMessage("no_target_town"), context.getMessage("description_town", ""), getIcon(context, parameters, "icon_town"), false);
         case HOME:
             Location bedLocation = player == null ? null : player.getBedSpawnLocation();
-            if (bedLocation != null) {
-                bedLocation.setX(bedLocation.getX() + 0.5);
-                bedLocation.setZ(bedLocation.getZ() + 0.5);
-                bedLocation.setY(bedLocation.getY() + 1);
+            if (bedLocation == null || bedLocation.getWorld() == null) {
+                return null;
             }
+            bedLocation.setX(bedLocation.getX() + 0.5);
+            bedLocation.setZ(bedLocation.getZ() + 0.5);
+            bedLocation.setY(bedLocation.getY() + 1);
             return new Waypoint(type, bedLocation, context.getMessage("title_home", "Home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), getIcon(context, parameters, "icon_home"), false);
         case WAND:
             List<LostWand> lostWands = mage.getLostWands();
