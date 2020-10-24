@@ -56,6 +56,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private String unlockKey = "recall_warps";
     private String friendKey = "recall_friends";
     private int markerCount = 1;
+    private boolean teleport = true;
 
     private static class UndoMarkerMove implements Runnable
     {
@@ -438,6 +439,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.friendKey = parameters.getString("friend_key", "recall_friends");
         this.protectionTime = parameters.getInt("protection_duration", 0);
         this.markerCount = parameters.getInt("marker_count", 1);
+        this.teleport = parameters.getBoolean("teleport", true);
 
         allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
     }
@@ -1034,6 +1036,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             targetLocation.setPitch(playerLocation.getPitch());
         }
         mage.enableSuperProtection(protectionTime);
+        if (!teleport) {
+            context.setTargetLocation(targetLocation);
+            return true;
+        }
         if (context.teleport(player, targetLocation, verticalSearchDistance, waypoint.safe, waypoint.safe)) {
             context.castMessageKey("teleport", waypoint.message);
         } else {
