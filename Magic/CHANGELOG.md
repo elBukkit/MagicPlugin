@@ -30,6 +30,7 @@
  - Fix warps getting corrupted if the target world is not loaded at server start
  - The `/mwarp go` and `/send` commands will try to load the target world if it is not loaded
  - Fix using the replicate and clone brushes with the Place spell
+ - Add a third alt-cast spell to wands, for a total of 4 possible fixed spells
 
 # 7.11
 

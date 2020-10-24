@@ -124,6 +124,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String activeSpell = "";
     private String alternateSpell = "";
     private String alternateSpell2 = "";
+    private String alternateSpell3 = "";
     private String activeBrush = "";
     protected String wandName = "";
     protected String description = "";
@@ -1828,6 +1829,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         alternateSpell = getString("alternate_spell");
         alternateSpell2 = getString("alternate_spell2");
+        alternateSpell3 = getString("alternate_spell3");
         activeBrush = getString("active_brush", getString("active_material"));
 
         if (hasProperty("hotbar")) {
@@ -4141,6 +4143,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
+    public Spell getAlternateSpell3() {
+        if (mage == null || alternateSpell3 == null || alternateSpell3.length() == 0) return null;
+        return mage.getSpell(alternateSpell3);
+    }
+
+    @Nullable
     @Override
     public SpellTemplate getBaseSpell(String spellName) {
         return getBaseSpell(new SpellKey(spellName));
@@ -4186,6 +4194,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean alternateCast2() {
         return cast(getAlternateSpell2());
+    }
+
+    public boolean alternateCast3() {
+        return cast(getAlternateSpell3());
     }
 
     @Override
@@ -5646,6 +5658,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 break;
             case ALT_CAST2:
                 alternateCast2();
+                break;
+            case ALT_CAST3:
+                alternateCast3();
                 break;
             case TOGGLE:
                 if (mode == WandMode.CYCLE) {
