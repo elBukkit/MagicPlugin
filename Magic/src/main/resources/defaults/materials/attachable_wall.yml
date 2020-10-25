@@ -14,6 +14,8 @@ attachable_wall:
 - ladder
 - wall_sign
 - wall_banner
+- wall_torch
+- redstone_wall_torch
 - cocoa
 - cactus
 - bed_block

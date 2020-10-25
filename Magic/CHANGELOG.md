@@ -23,6 +23,9 @@
    - Brush inventory reorganized, wills how block data variants
    - Better tab-completion for /wand(or mage) remove brush <some long brush key>
 
+ - Fix using the replicate and clone brushes with the Place spell
+ - Fix pasting schematics with torches or other wall attachables
+
  - Add ignore_damage option for crafting recipes
  - Add auto_block_state for ModifyBlock, used by Place spell, attempts to place a block as if a player placed it
  - Add `/mwarp configure` command, used for Dynmap and Recall integration
@@ -31,7 +34,6 @@
  - Add `/mwarp describe` command
  - Fix warps getting corrupted if the target world is not loaded at server start
  - The `/mwarp go` and `/send` commands will try to load the target world if it is not loaded
- - Fix using the replicate and clone brushes with the Place spell
  - Add a third alt-cast spell to wands, for a total of 4 possible fixed spells
  - Add SuperWalls spells to default configs
 
