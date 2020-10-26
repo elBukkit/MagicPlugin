@@ -66,10 +66,10 @@ wands:
         name: Wizard's Boots
         description: Indestructible!
     apprenticehelmet:
-        name: Apprentice Scarf
+        name: Apprentice Helmet
         description: For new wizards
     apprenticechestplate:
-        name: Apprentice Robes
+        name: Apprentice Armor
         description: For new wizards
     apprenticeleggings:
         name: Apprentice Pants
