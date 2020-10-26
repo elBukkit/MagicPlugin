@@ -11,22 +11,22 @@ magicheart:
 
 apprenticeboots:
   materials:
-    o: magicheart
+    o: emerald
     i: wool
 
 apprenticechestplate:
   materials:
-    o: magicheart
+    o: emerald
     i: wool
 
 apprenticehelmet:
   materials:
-    o: magicheart
+    o: emerald
     i: wool
 
 apprenticeleggings:
   materials:
-    o: magicheart
+    o: emerald
     i: wool
 
 magicsword:
