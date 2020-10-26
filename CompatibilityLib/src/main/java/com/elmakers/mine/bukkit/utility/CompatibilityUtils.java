@@ -1762,6 +1762,9 @@ public class CompatibilityUtils extends NMSUtils {
     public static int[] getServerVersion() {
         String versionString = getVersionPrefix();
         int[] version = new int[2];
+        if (versionString.isEmpty()) {
+            return version;
+        }
         // Format:  v1_12_R1
         versionString = versionString.substring(1);
         try {
