@@ -2199,7 +2199,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage) {
-        if (class_RecipeChoice_ExactChoice == null || ignoreDamage) {
+        if (class_RecipeChoice_ExactChoice == null) {
             if (isLegacy()) {
                 @SuppressWarnings("deprecation")
                 org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getData();
@@ -2213,6 +2213,18 @@ public class CompatibilityUtils extends NMSUtils {
             return true;
         }
         try {
+            short maxDurability = ingredient.getType().getMaxDurability();
+            if (ignoreDamage && maxDurability > 0) {
+                List<ItemStack> damaged = new ArrayList<>();
+                for (short damage = 0 ; damage < maxDurability; damage++) {
+                    ingredient = ingredient.clone();
+                    ingredient.setDurability(damage);
+                    damaged.add(ingredient);
+                }
+                Object exactChoice = class_RecipeChoice_ExactChoice_List_constructor.newInstance(damaged);
+                class_ShapedRecipe_setIngredientMethod.invoke(recipe, key, exactChoice);
+                return true;
+            }
             Object exactChoice = class_RecipeChoice_ExactChoice_constructor.newInstance(ingredient);
             class_ShapedRecipe_setIngredientMethod.invoke(recipe, key, exactChoice);
             return true;

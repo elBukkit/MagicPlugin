@@ -361,6 +361,7 @@ public class NMSUtils {
     protected static Constructor class_Vec3D_constructor;
     protected static Constructor class_AttributeModifier_constructor;
     protected static Constructor class_RecipeChoice_ExactChoice_constructor;
+    protected static Constructor class_RecipeChoice_ExactChoice_List_constructor;
     protected static Constructor class_BlockActionContext_constructor;
 
     protected static Field class_Entity_invulnerableField;
@@ -678,6 +679,7 @@ public class NMSUtils {
                 Class<?> class_RecipeChoice = Class.forName("org.bukkit.inventory.RecipeChoice");
                 class_RecipeChoice_ExactChoice = Class.forName("org.bukkit.inventory.RecipeChoice$ExactChoice");
                 class_RecipeChoice_ExactChoice_constructor = class_RecipeChoice_ExactChoice.getConstructor(ItemStack.class);
+                class_RecipeChoice_ExactChoice_List_constructor = class_RecipeChoice_ExactChoice.getConstructor(List.class);
                 class_Recipe_setGroupMethod = ShapedRecipe.class.getMethod("setGroup", String.class);
                 class_ShapedRecipe_setIngredientMethod = ShapedRecipe.class.getMethod("setIngredient", Character.TYPE, class_RecipeChoice);
             } catch (Throwable ex) {
@@ -1603,7 +1605,7 @@ public class NMSUtils {
                 class_CraftBlock = fixBukkitClass("org.bukkit.craftbukkit.block.CraftBlock");
                 class_CraftBlock_getNMSBlockMethod = class_CraftBlock.getDeclaredMethod("getNMSBlock");
                 class_CraftBlock_getNMSBlockMethod.setAccessible(true);
-                Class<?> class_BlockActionContext = fixBukkitClass("net.minecraft.server.BlockActionContext");
+                class_BlockActionContext = fixBukkitClass("net.minecraft.server.BlockActionContext");
                 class_Block_getPlacedStateMethod = class_Block.getMethod("getPlacedState", class_BlockActionContext);
                 class_EnumHand = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumHand");
                 enum_EnumHand_MAIN_HAND = Enum.valueOf(class_EnumHand, "MAIN_HAND");
