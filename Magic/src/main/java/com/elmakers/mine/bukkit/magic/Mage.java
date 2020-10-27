@@ -3952,6 +3952,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void undoScheduled(String spellKey) {
+        if (undoQueue != null) {
+            undoQueue.undoScheduled(spellKey);
+        }
+    }
+
+    @Override
     public void undoScheduled() {
         // Immediately rollback any auto-undo spells
         if (undoQueue != null) {

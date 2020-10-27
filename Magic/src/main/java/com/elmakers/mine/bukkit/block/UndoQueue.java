@@ -87,8 +87,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         return scheduledSize > 0;
     }
 
-    @Override
-    public int undoScheduled()
+    public int undoScheduled(String spellKey)
     {
         int undid = 0;
         UndoList nextList = tail;
@@ -96,12 +95,21 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             UndoList checkList = nextList;
             nextList = nextList.getNext();
             if (checkList.isScheduled()) {
-                checkList.undoScheduled(true);
-                undid++;
+                if (spellKey == null || checkList.getSpell() == null || (checkList.hasBeenScheduled() && checkList.getSpell().getSpellKey().getBaseKey().equals(spellKey))) {
+                    checkList.undoScheduled(true);
+                    undid++;
+                }
             }
         }
 
         return undid;
+    }
+
+
+    @Override
+    public int undoScheduled()
+    {
+        return undoScheduled(null);
     }
 
     @Override

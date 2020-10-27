@@ -562,6 +562,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     void unbind(Wand wand);
     void unbindAll();
     void undoScheduled();
+    void undoScheduled(String spellKey);
     EntityData getEntityData();
     boolean tryToOwn(Wand wand);
     boolean isReflected(double angle);
