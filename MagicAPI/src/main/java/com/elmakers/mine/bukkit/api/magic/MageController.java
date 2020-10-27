@@ -528,7 +528,10 @@ public interface MageController {
     // LightAPI integration
     boolean createLight(Location location, int lightlevel, boolean async);
     boolean deleteLight(Location location, boolean async);
+    boolean updateLight(Location location, boolean force);
     boolean updateLight(Location location);
+    boolean isLightingAvailable();
+    int getLightCount();
 
     @Nullable
     String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements);

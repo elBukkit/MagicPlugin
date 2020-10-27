@@ -325,12 +325,18 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             }
 
             Collection<Mage> mages = controller.getMages();
-            sender.sendMessage(ChatColor.AQUA + "Locked Chunks (" + ChatColor.LIGHT_PURPLE + controller.getLockedChunks().size() + ChatColor.AQUA + ")");
-            sender.sendMessage(ChatColor.AQUA + "Modified blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getModified().size() + ChatColor.AQUA + ")");
-            sender.sendMessage(ChatColor.AQUA + "Watching blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getWatching().size() + ChatColor.AQUA + ")");
-            sender.sendMessage(ChatColor.AQUA + "Registered breaking (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreaking().size() + ChatColor.AQUA + ")");
-            sender.sendMessage(ChatColor.AQUA + "Registered breakable (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreakable().size() + ChatColor.AQUA + ")");
-            sender.sendMessage(ChatColor.AQUA + "Registered reflective (" + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getReflective().size() + ChatColor.AQUA + ")");
+            sender.sendMessage(ChatColor.AQUA + "Locked Chunks: " + ChatColor.LIGHT_PURPLE + controller.getLockedChunks().size());
+            sender.sendMessage(ChatColor.AQUA + "Modified blocks: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getModified().size());
+            sender.sendMessage(ChatColor.AQUA + "Watching blocks: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getWatching().size());
+            sender.sendMessage(ChatColor.AQUA + "Registered breaking: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreaking().size());
+            sender.sendMessage(ChatColor.AQUA + "Registered breakable: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreakable().size());
+            sender.sendMessage(ChatColor.AQUA + "Registered reflective: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getReflective().size());
+
+            int lightCount = controller.getLightCount();
+            if (lightCount > 0) {
+                sender.sendMessage(ChatColor.AQUA + "Registered lights: " + ChatColor.LIGHT_PURPLE + lightCount);
+            }
+
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + ChatColor.LIGHT_PURPLE + mages.size());
             Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
             sender.sendMessage(ChatColor.AQUA + "Pending undo (" + ChatColor.LIGHT_PURPLE + pendingUndo.size() + ChatColor.AQUA + "): ");

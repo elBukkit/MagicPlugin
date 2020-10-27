@@ -6404,19 +6404,72 @@ public class MagicController implements MageController {
     @Override
     public boolean createLight(Location location, int lightLevel, boolean async) {
         if (lightAPIManager == null) return false;
+        long blockId = BlockData.getBlockId(location);
+        String chunkId = getChunkKey(location);
+        Integer chunkRefs = lightChunks.get(chunkId);
+        if (chunkRefs == null) {
+            lightChunks.put(chunkId, 1);
+        } else {
+            lightChunks.put(chunkId, chunkRefs + 1);
+        }
+        Integer refCount = lightBlocks.get(blockId);
+        if (refCount != null) {
+            lightBlocks.put(blockId, refCount + 1);
+            return false;
+        }
+        lightBlocks.put(blockId, 1);
         return lightAPIManager.createLight(location, lightLevel, async);
     }
 
     @Override
     public boolean deleteLight(Location location, boolean async) {
         if (lightAPIManager == null) return false;
+        long blockId = BlockData.getBlockId(location);
+        Integer refCount = lightBlocks.get(blockId);
+        String chunkId = getChunkKey(location);
+        Integer chunkRefs = lightChunks.get(chunkId);
+        if (chunkRefs != null) {
+            if (chunkRefs <= 1) {
+                lightChunks.remove(chunkId);
+            } else {
+                lightChunks.put(chunkId, chunkRefs - 1);
+            }
+        }
+        if (refCount != null) {
+            if (refCount <= 1) {
+                lightBlocks.remove(blockId);
+            } else {
+                lightBlocks.put(blockId, refCount - 1);
+                return false;
+            }
+        }
         return lightAPIManager.deleteLight(location, async);
     }
 
     @Override
     public boolean updateLight(Location location) {
+        return updateLight(location, true);
+    }
+
+    @Override
+    public boolean updateLight(Location location, boolean force) {
         if (lightAPIManager == null) return false;
+        if (!force) {
+            String chunkId = getChunkKey(location);
+            Integer chunkRefs = lightChunks.get(chunkId);
+            if (chunkRefs != null) return false;
+        }
         return lightAPIManager.updateChunks(location);
+    }
+
+    @Override
+    public int getLightCount() {
+        return lightBlocks.size();
+    }
+
+    @Override
+    public boolean isLightingAvailable() {
+        return lightAPIManager != null;
     }
 
     @Override
@@ -6863,6 +6916,8 @@ public class MagicController implements MageController {
     private Map<Long, Automaton>                 activeAutomata             = new HashMap<>();
     private Map<String, LostWand>                lostWands                  = new HashMap<>();
     private Map<String, Set<String>>             lostWandChunks             = new HashMap<>();
+    private Map<Long, Integer>                   lightBlocks                = new HashMap<>();
+    private Map<String, Integer>                 lightChunks                = new HashMap<>();
 
     private int                                    metricsLevel                = 5;
     private Metrics                                metrics                        = null;
