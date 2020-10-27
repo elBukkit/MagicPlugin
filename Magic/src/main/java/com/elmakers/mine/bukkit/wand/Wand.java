@@ -200,7 +200,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean isSingleUse = false;
     private boolean limitSpellsToPath = false;
     private boolean limitBrushesToPath = false;
-    private boolean resetManaOnActivate = false;
+    private Double resetManaOnActivate = null;
     private Currency currencyDisplay = null;
 
     private float manaPerDamage = 0;
@@ -1708,9 +1708,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         enchantCount = getInt("enchant_count");
         maxEnchantCount = getInt("max_enchant_count");
         inventoryRows = getInt("inventory_rows", 5);
-        resetManaOnActivate = getBoolean("reset_mana_on_activate", false);
         showCycleModeLore = getBoolean("show_cycle_lore", true);
         if (inventoryRows <= 0) inventoryRows = 1;
+
+        resetManaOnActivate = null;
+        if (hasProperty("reset_mana_on_activate")) {
+            String asString = getString("reset_mana_on_activate");
+            if (asString.equalsIgnoreCase("true")) {
+                resetManaOnActivate = 0.0;
+            } else if (!asString.equalsIgnoreCase("false")) {
+                resetManaOnActivate = getDouble("reset_mana_on_activate", 0);
+            }
+        }
 
         if (hasProperty("effect_particle")) {
             effectParticle = ConfigurationUtils.toParticleEffect(getString("effect_particle"));
@@ -4763,8 +4772,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         // Check for mana reset
-        if (resetManaOnActivate) {
-            setMana(0.0f);
+        if (resetManaOnActivate != null) {
+            float newMana = (float)(double)resetManaOnActivate;
+            if (newMana < 1) {
+                newMana *= (float)getManaMax();
+            }
+            if (newMana < getMana()) {
+                setMana(newMana);
+            }
             setProperty("mana_timestamp", System.currentTimeMillis());
         }
 
