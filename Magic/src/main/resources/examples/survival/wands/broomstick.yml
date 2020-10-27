@@ -9,10 +9,10 @@ broomstick:
     active_spell: broom
     migrate_icon: gold_spade
     legacy_icon: wand_icon:11
-    icon: acacia_sapling{CustomModelData:1}
+    icon: acacia_sapling{CustomModelData:18001}
     migrate_legacy_icons:
-        "wand_icon:11": acacia_sapling{CustomModelData:1}
-        "wand_icon:29": birch_sapling{CustomModelData:1}
+        "wand_icon:11": acacia_sapling{CustomModelData:18001}
+        "wand_icon:29": birch_sapling{CustomModelData:18001}
     effect_color: '880088'
     spells:
         - broom

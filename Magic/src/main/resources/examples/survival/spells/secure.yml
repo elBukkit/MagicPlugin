@@ -1,6 +1,6 @@
 secure:
-    icon: trapped_chest{CustomModelData:1}
-    icon_disabled: trapped_chest{CustomModelData:2}
+    icon: trapped_chest{CustomModelData:18001}
+    icon_disabled: trapped_chest{CustomModelData:18002}
     legacy_icon: spell_icon:183
     legacy_icon_disabled: spell_icon_disabled:183
     icon_url: http://textures.minecraft.net/texture/e266e2ffa06f553ef326d8c92994c77edde2e521697b5fb4637ed644443e12

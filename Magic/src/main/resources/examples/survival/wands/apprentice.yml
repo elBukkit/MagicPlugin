@@ -1,7 +1,7 @@
 apprentice:
     inherit: student
     legacy_icon: wand_icon:3
-    icon: stick{CustomModelData:3}
+    icon: stick{CustomModelData:18003}
     effect_color: '22FF22'
     hotbar_count: 2
     mana_regeneration: 40

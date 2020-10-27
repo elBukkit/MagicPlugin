@@ -5,7 +5,7 @@
   },
 
   "overrides": [
-    {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/mode_swap"},
-    {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/quickcast_manual"}
+    {"predicate": { "custom_model_data": 18001}, "model": "item/upgrades/mode_swap"},
+    {"predicate": { "custom_model_data": 18001}, "model": "item/upgrades/quickcast_manual"}
   ]
 }

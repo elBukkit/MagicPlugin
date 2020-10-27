@@ -1,6 +1,6 @@
 talisman:
   legacy_icon: wand_icon:30
-  icon: nether_star{CustomModelData:1}
+  icon: nether_star{CustomModelData:18001}
   indestructible: true
   mana_max_boost: 0.3
   mana_regeneration_boost: 0.2

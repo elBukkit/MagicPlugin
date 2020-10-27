@@ -1,6 +1,6 @@
 railgun:
-    icon: prismarine_shard{CustomModelData:3}
-    icon_disabled: prismarine_shard{CustomModelData:4}
+    icon: prismarine_shard{CustomModelData:18003}
+    icon_disabled: prismarine_shard{CustomModelData:18004}
     legacy_icon: spell_icon:161
     legacy_icon_disabled: spell_icon_disabled:161
     icon_url: http://textures.minecraft.net/texture/436cb244bd2a9c1734f2db6517a973a91b1773f02ca4b481af5f24d17bb1496

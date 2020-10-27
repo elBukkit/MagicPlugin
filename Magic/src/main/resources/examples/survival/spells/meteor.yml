@@ -1,6 +1,6 @@
 meteor:
-    icon: melon_seeds{CustomModelData:1}
-    icon_disabled: melon_seeds{CustomModelData:2}
+    icon: melon_seeds{CustomModelData:18001}
+    icon_disabled: melon_seeds{CustomModelData:18002}
     legacy_icon: spell_icon:56
     legacy_icon_disabled: spell_icon_disabled:56
     icon_url: http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21

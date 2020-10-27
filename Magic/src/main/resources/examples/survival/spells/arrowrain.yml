@@ -1,6 +1,6 @@
 arrowrain:
-    icon: spectral_arrow{CustomModelData:28}
-    icon_disabled: spectral_arrow{CustomModelData:29}
+    icon: spectral_arrow{CustomModelData:18028}
+    icon_disabled: spectral_arrow{CustomModelData:18029}
     legacy_icon: spell_icon:54
     legacy_icon_disabled: spell_icon_disabled:54
     upgrade_required_path: apprentice

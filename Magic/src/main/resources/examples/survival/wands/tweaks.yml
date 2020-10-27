@@ -1,30 +1,30 @@
 quickcast_enable:
-    icon: warped_sign{CustomModelData:1}
+    icon: warped_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:206
     upgrade: true
     force: true
     quick_cast: true
 quickcast_disable:
-    icon: crimson_sign{CustomModelData:1}
+    icon: crimson_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:207
     upgrade: true
     force: true
     quick_cast: disable
 quickcast_manual:
-    icon: acacia_sign{CustomModelData:1}
+    icon: acacia_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:208
     upgrade: true
     force: true
     quick_cast: manual
 quickcast_normal:
-    icon: oak_sign{CustomModelData:1}
+    icon: oak_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:209
     upgrade: true
     force: true
     quick_cast: normal
 
 mode_drop:
-    icon: birch_sign{CustomModelData:1}
+    icon: birch_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:210
     upgrade: true
     force: true
@@ -34,7 +34,7 @@ mode_drop:
     swap: cycle_hotbar
     quick_cast: false
 mode_rightclick:
-    icon: dark_oak_sign{CustomModelData:1}
+    icon: dark_oak_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:211
     upgrade: true
     force: true
@@ -44,7 +44,7 @@ mode_rightclick:
     swap: none
     quick_cast: false
 mode_sword:
-    icon: diamond_sword{CustomModelData:6}
+    icon: diamond_sword{CustomModelData:18006}
     legacy_icon: diamond_axe:212
     upgrade: true
     force: true
@@ -54,7 +54,7 @@ mode_sword:
     swap: cycle_hotbar
     quick_cast: true
 mode_swap:
-    icon: acacia_sign{CustomModelData:1}
+    icon: acacia_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:213
     upgrade: true
     force: true
@@ -65,51 +65,51 @@ mode_swap:
     quick_cast: false
 
 chestmode:
-    icon: chest{CustomModelData:1}
+    icon: chest{CustomModelData:18001}
     legacy_icon: diamond_axe:205
     upgrade: true
     indestructible: false
     mode: chest
 inventorymode:
-    icon: oak_sign{CustomModelData:1}
+    icon: oak_sign{CustomModelData:18001}
     legacy_icon: spell_icon:214
     upgrade: true
     indestructible: false
     mode: inventory
 cyclemode:
-    icon: music_disc_wait{CustomModelData:1}
+    icon: music_disc_wait{CustomModelData:18001}
     legacy_icon: diamond_axe:215
     upgrade: true
     indestructible: false
     mode: cycle
 
 organizer:
-    icon: crimson_sign{CustomModelData:1}
+    icon: crimson_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:216
     upgrade: true
     indestructible: false
     organize: true
 alphabetizer:
-    icon: warped_sign{CustomModelData:1}
+    icon: warped_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:217
     upgrade: true
     indestructible: false
     alphabetize: true
 
 loud:
-    icon: music_disc_blocks{CustomModelData:1}
+    icon: music_disc_blocks{CustomModelData:18001}
     legacy_icon: diamond_axe:218
     upgrade: true
     indestructible: false
     quiet: 0
 quiet:
-    icon: music_disc_stal{CustomModelData:1}
+    icon: music_disc_stal{CustomModelData:18001}
     legacy_icon: diamond_axe:219
     upgrade: true
     indestructible: false
     quiet: 1
 silent:
-    icon: music_disc_11{CustomModelData:1}
+    icon: music_disc_11{CustomModelData:18001}
     legacy_icon: diamond_axe:220
     upgrade: true
     indestructible: false

@@ -4,6 +4,6 @@
     "layer0": "minecraft:item/book"
   },
   "overrides": [
-    {"predicate": {"custom_model_data": 1}, "model": "item/custom/enchantedbook"}
+    {"predicate": {"custom_model_data": 18001}, "model": "item/custom/enchantedbook"}
   ]
 }

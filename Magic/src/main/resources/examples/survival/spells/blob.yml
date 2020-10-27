@@ -1,6 +1,6 @@
 blob:
-    icon: clay_ball{CustomModelData:1}
-    icon_disabled: clay_ball{CustomModelData:2}
+    icon: clay_ball{CustomModelData:18001}
+    icon_disabled: clay_ball{CustomModelData:18002}
     legacy_icon: spell_icon:128
     legacy_icon_disabled: spell_icon_disabled:128
     icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14

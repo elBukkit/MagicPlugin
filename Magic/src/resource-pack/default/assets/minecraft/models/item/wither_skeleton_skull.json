@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/template_skull",
   "overrides": [
-    {"predicate": {"custom_model_data": 1}, "model": "item/spells/wither"},
-    {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/wither"}
+    {"predicate": {"custom_model_data": 18001}, "model": "item/spells/wither"},
+    {"predicate": {"custom_model_data": 18002}, "model": "item/spells_disabled/wither"}
   ]
 }

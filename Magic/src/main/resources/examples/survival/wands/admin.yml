@@ -2,7 +2,7 @@ admin:
     inherit: conduit
     path: staff
     legacy_icon: wand_icon:6
-    icon: stick{CustomModelData:6}
+    icon: stick{CustomModelData:18006}
     migrate_icon: monster_eggs:2
     cost_reduction: 2
     cooldown_reduction: 1

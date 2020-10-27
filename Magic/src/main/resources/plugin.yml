@@ -845,7 +845,7 @@ commands:
 
        /mwarp configure <warp> name Temple of Time
        /mwarp configure <warp> description A Holy PLace
-       /mwarp configure <warp> icon stick{CustomModelData:1}
+       /mwarp configure <warp> icon stick{CustomModelData:18001}
        /mwarp configure <warp> marker_icon portal
        /mwarp configure <warp> marker_set portals
   "mwarp describe":

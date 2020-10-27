@@ -3,7 +3,7 @@
 # beginner -> student -> apprentice -> master
 #
 beginner:
-    icon: stick{CustomModelData:1}
+    icon: stick{CustomModelData:18001}
     legacy_icon: wood_hoe:1
     legacy_migrate_icon: wood_hoe
     upgrade: student

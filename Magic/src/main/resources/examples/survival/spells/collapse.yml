@@ -1,6 +1,6 @@
 collapse:
-    icon: nether_sprouts{CustomModelData:1}
-    icon_disabled: nether_sprouts{CustomModelData:2}
+    icon: nether_sprouts{CustomModelData:18001}
+    icon_disabled: nether_sprouts{CustomModelData:18002}
     legacy_icon: spell_icon:114
     legacy_icon_disabled: spell_icon_disabled:114
     icon_url: http://textures.minecraft.net/texture/1789289cba5bdef5f92dee5165a99d063f8785db78bdc6b41e3c4b099c04ca4

@@ -1,6 +1,6 @@
 grow:
-    icon: cookie{CustomModelData:1}
-    icon_disabled: cookie{CustomModelData:2}
+    icon: cookie{CustomModelData:18001}
+    icon_disabled: cookie{CustomModelData:18002}
     legacy_icon: spell_icon:147
     legacy_icon_disabled: spell_icon_disabled:147
     icon_url: http://textures.minecraft.net/texture/b54fa4fb25cef58bc69cac7292e32e449322cac2ace4810a8a0749b2fbbb154

@@ -1,5 +1,5 @@
 apprentice:
-    icon: stick{CustomModelData:3}
+    icon: stick{CustomModelData:18003}
     legacy_icon: wood_hoe:3
     legacy_migrate_icon: wood_hoe
     upgrade: master

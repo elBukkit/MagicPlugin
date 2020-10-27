@@ -1,6 +1,6 @@
 lightsaber_red:
     inherit: base_lightsaber
     class: sith
-    icon: shield{CustomModelData:4}
+    icon: shield{CustomModelData:18004}
     effect_color: 'FF0000'
 

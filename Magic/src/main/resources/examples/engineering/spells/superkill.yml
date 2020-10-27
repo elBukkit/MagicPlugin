@@ -1,6 +1,6 @@
 superkill:
-    icon: bone{CustomModelData:1}
-    icon_disabled: bone{CustomModelData:2}
+    icon: bone{CustomModelData:18001}
+    icon_disabled: bone{CustomModelData:18002}
     legacy_icon: spell_icon:171
     legacy_icon_disabled: spell_icon_disabled:171
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c

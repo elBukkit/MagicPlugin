@@ -1,6 +1,6 @@
 spellbook:
     mode: skills
-    icon: book{CustomModelData:1}
+    icon: book{CustomModelData:18001}
     legacy_icon: wand_icon:31
     indestructible: true
     right_click: toggle

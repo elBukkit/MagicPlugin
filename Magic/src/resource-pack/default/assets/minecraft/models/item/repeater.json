@@ -5,6 +5,6 @@
   },
 
   "overrides": [
-    {"predicate": { "custom_model_data": 1}, "model": "item/brushes/clone"}
+    {"predicate": { "custom_model_data": 18001}, "model": "item/brushes/clone"}
   ]
 }

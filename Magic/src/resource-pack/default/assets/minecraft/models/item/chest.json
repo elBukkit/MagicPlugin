@@ -37,6 +37,6 @@
     },
 
     "overrides": [
-        {"predicate": { "custom_model_data": 1}, "model": "item/upgrades/chestmode"}
+        {"predicate": { "custom_model_data": 18001}, "model": "item/upgrades/chestmode"}
     ]
 }

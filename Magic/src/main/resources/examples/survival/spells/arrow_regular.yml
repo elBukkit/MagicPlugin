@@ -1,6 +1,6 @@
 arrow_regular:
-    icon: arrow{CustomModelData:1}
-    icon_disabled: arrow{CustomModelData:2}
+    icon: arrow{CustomModelData:18001}
+    icon_disabled: arrow{CustomModelData:18002}
     legacy_icon: arrow
     category: combat
     worth: 100

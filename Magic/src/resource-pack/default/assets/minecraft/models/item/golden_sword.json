@@ -22,6 +22,6 @@
 
         {"predicate": {"damaged": 1, "damage": 0}, "model": "item/golden_sword"},
 
-        {"predicate": { "custom_model_data": 1}, "model": "item/custom/emerald_sword"}
+        {"predicate": { "custom_model_data": 18001}, "model": "item/custom/emerald_sword"}
     ]
 }

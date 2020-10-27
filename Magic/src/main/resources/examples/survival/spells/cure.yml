@@ -1,6 +1,6 @@
 cure:
-    icon: milk_bucket{CustomModelData:1}
-    icon_disabled: milk_bucket{CustomModelData:2}
+    icon: milk_bucket{CustomModelData:18001}
+    icon_disabled: milk_bucket{CustomModelData:18002}
     legacy_icon: spell_icon:44
     legacy_icon_disabled: spell_icon_disabled:44
     icon_url: http://textures.minecraft.net/texture/1364e3f9597a295108d202d20c2f02539d5ad8377fef53ef622603a7f45b52f

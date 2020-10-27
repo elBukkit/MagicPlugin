@@ -1,6 +1,6 @@
 blast:
-    icon: gunpowder{CustomModelData:1}
-    icon_disabled: gunpowder{CustomModelData:2}
+    icon: gunpowder{CustomModelData:18001}
+    icon_disabled: gunpowder{CustomModelData:18002}
     legacy_icon: spell_icon:108
     legacy_icon_disabled: spell_icon_disabled:108
     icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9

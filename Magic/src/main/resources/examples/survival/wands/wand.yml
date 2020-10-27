@@ -4,24 +4,24 @@
 wand:
     inherit: base_wand
     class: mage
-    icon: stick{CustomModelData:1}
+    icon: stick{CustomModelData:18001}
     migrate_legacy_icons:
-        "wand_icon:1": stick{CustomModelData:1}
-        "wand_icon:2": stick{CustomModelData:2}
-        "wand_icon:3": stick{CustomModelData:3}
-        "wand_icon:4": stick{CustomModelData:4}
-        "wand_icon:5": blaze_rod{CustomModelData:5}
-        "wand_icon:6": blaze_rod{CustomModelData:6}
-        "wand_icon:7": blaze_rod{CustomModelData:7}
-        "wand_icon:8": stick{CustomModelData:8}
-        "wand_icon:9": blaze_rod{CustomModelData:9}
-        "wand_icon:10": stick{CustomModelData:10}
-        "wand_icon:35": stick{CustomModelData:35}
-        "wand_icon:36": stick{CustomModelData:36}
-        "wand_icon:37": stick{CustomModelData:37}
-        "wand_icon:39": blaze_rod{CustomModelData:39}
-        "wand_icon:41": stick{CustomModelData:41}
-        "wand_icon:44": stick{CustomModelData:44}
+        "wand_icon:1": stick{CustomModelData:18001}
+        "wand_icon:2": stick{CustomModelData:18002}
+        "wand_icon:3": stick{CustomModelData:18003}
+        "wand_icon:4": stick{CustomModelData:18004}
+        "wand_icon:5": blaze_rod{CustomModelData:18005}
+        "wand_icon:6": blaze_rod{CustomModelData:18006}
+        "wand_icon:7": blaze_rod{CustomModelData:18007}
+        "wand_icon:8": stick{CustomModelData:18008}
+        "wand_icon:9": blaze_rod{CustomModelData:18009}
+        "wand_icon:10": stick{CustomModelData:18010}
+        "wand_icon:35": stick{CustomModelData:18035}
+        "wand_icon:36": stick{CustomModelData:18036}
+        "wand_icon:37": stick{CustomModelData:18037}
+        "wand_icon:39": blaze_rod{CustomModelData:18039}
+        "wand_icon:41": stick{CustomModelData:18041}
+        "wand_icon:44": stick{CustomModelData:18044}
     effect_color: random
     active_spell: missile
     tags:

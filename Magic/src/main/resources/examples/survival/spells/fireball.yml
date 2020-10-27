@@ -1,6 +1,6 @@
 fireball:
-    icon: fire_charge{CustomModelData:1}
-    icon_disabled: fire_charge{CustomModelData:2}
+    icon: fire_charge{CustomModelData:18001}
+    icon_disabled: fire_charge{CustomModelData:18002}
     legacy_icon: spell_icon:153
     legacy_icon_disabled: spell_icon_disabled:153
     upgrade_required_path: beginner

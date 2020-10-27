@@ -2,7 +2,7 @@
     "parent": "minecraft:block/anvil",
 
   "overrides": [
-    {"predicate": { "custom_model_data": 1}, "model": "item/spells/anvil"},
-    {"predicate": { "custom_model_data": 2}, "model": "item/spells_disabled/anvil"}
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/anvil"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/anvil"}
   ]
 }

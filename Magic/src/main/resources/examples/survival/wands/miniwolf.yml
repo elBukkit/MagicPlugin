@@ -1,7 +1,7 @@
 miniwolf:
     inherit: master
     legacy_icon: wand_icon:8
-    icon: stick{CustomModelData:8}
+    icon: stick{CustomModelData:18008}
     migrate_icon: gold_axe
     hotbar_count: 2
     effect_color: '00AACC'

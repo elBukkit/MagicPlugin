@@ -1,6 +1,6 @@
 effectshop:
-    icon: orange_dye{CustomModelData:1}
-    icon_disabled: orange_dye{CustomModelData:2}
+    icon: orange_dye{CustomModelData:18001}
+    icon_disabled: orange_dye{CustomModelData:18002}
     legacy_icon: spell_icon:126
     legacy_icon_disabled: spell_icon_disabled:126
     category: npc

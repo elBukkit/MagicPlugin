@@ -1,6 +1,6 @@
 pull:
-    icon: fishing_rod{CustomModelData:1}
-    icon_disabled: fishing_rod{CustomModelData:2}
+    icon: fishing_rod{CustomModelData:18001}
+    icon_disabled: fishing_rod{CustomModelData:18002}
     legacy_icon: spell_icon:33
     legacy_icon_disabled: spell_icon_disabled:33
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079

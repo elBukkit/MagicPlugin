@@ -1,6 +1,6 @@
 superfly:
-    icon: bone_meal{CustomModelData:5}
-    icon_disabled: bone_meal{CustomModelData:6}
+    icon: bone_meal{CustomModelData:18005}
+    icon_disabled: bone_meal{CustomModelData:18006}
     legacy_icon: spell_icon:174
     legacy_icon_disabled: spell_icon_disabled:174
     hidden: true

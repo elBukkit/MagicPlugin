@@ -4,11 +4,11 @@
     "layer0": "minecraft:item/diamond_sword"
   },
     "overrides": [
-        {"predicate": { "custom_model_data": 1}, "model": "item/custom/emerald_sword"},
-        {"predicate": { "custom_model_data": 2}, "model": "item/spells/wound"},
-        {"predicate": { "custom_model_data": 3}, "model": "item/spells_disabled/wound"},
-        {"predicate": { "custom_model_data": 4}, "model": "item/spells/sharpen_sword"},
-        {"predicate": { "custom_model_data": 5}, "model": "item/spells_disabled/sharpen_sword"},
-        {"predicate": { "custom_model_data": 6}, "model": "item/upgrades/mode_sword"}
+        {"predicate": { "custom_model_data": 18001}, "model": "item/custom/emerald_sword"},
+        {"predicate": { "custom_model_data": 18002}, "model": "item/spells/wound"},
+        {"predicate": { "custom_model_data": 18003}, "model": "item/spells_disabled/wound"},
+        {"predicate": { "custom_model_data": 18004}, "model": "item/spells/sharpen_sword"},
+        {"predicate": { "custom_model_data": 18005}, "model": "item/spells_disabled/sharpen_sword"},
+        {"predicate": { "custom_model_data": 18006}, "model": "item/upgrades/mode_sword"}
     ]
 }

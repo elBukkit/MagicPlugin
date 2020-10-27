@@ -5,7 +5,7 @@ minister:
     active_spell: broom
     migrate_icon: gold_spade
     legacy_icon: wand_icon:29
-    icon: birch_sapling{CustomModelData:1}
+    icon: birch_sapling{CustomModelData:18001}
     indestructible: true
     locked: true
     keep: true

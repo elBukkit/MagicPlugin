@@ -1,6 +1,6 @@
 heal:
-    icon: apple{CustomModelData:1}
-    icon_disabled: apple{CustomModelData:2}
+    icon: apple{CustomModelData:18001}
+    icon_disabled: apple{CustomModelData:18002}
     legacy_icon: spell_icon:45
     legacy_icon_disabled: spell_icon_disabled:45
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc

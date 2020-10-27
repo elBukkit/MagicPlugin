@@ -1,6 +1,6 @@
 wandbuffshop:
-  icon: shield{CustomModelData:10}
-  icon_disabled: shield{CustomModelData:11}
+  icon: shield{CustomModelData:18010}
+  icon_disabled: shield{CustomModelData:18011}
   legacy_legacy_icon: spell_icon:234
   legacy_legacy_icon_disabled: spell_icon_disabled:234
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
@@ -72,8 +72,8 @@ wandbuffshop:
             max: 5
 
 add_protection:
-  icon: shield{CustomModelData:10}
-  icon_disabled: shield{CustomModelData:11}
+  icon: shield{CustomModelData:18010}
+  icon_disabled: shield{CustomModelData:18011}
   legacy_icon: spell_icon:234
   legacy_icon_disabled: spell_icon_disabled:234
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
@@ -91,8 +91,8 @@ add_protection:
       max: 1
 
 add_explosion_protection:
-  icon: shield{CustomModelData:12}
-  icon_disabled: shield{CustomModelData:13}
+  icon: shield{CustomModelData:18012}
+  icon_disabled: shield{CustomModelData:18013}
   legacy_icon: spell_icon:235
   legacy_icon_disabled: spell_icon_disabled:235
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
@@ -110,8 +110,8 @@ add_explosion_protection:
       max: 1
 
 add_fall_protection:
-  icon: shield{CustomModelData:14}
-  icon_disabled: shield{CustomModelData:15}
+  icon: shield{CustomModelData:18014}
+  icon_disabled: shield{CustomModelData:18015}
   legacy_icon: spell_icon:236
   legacy_icon_disabled: spell_icon_disabled:236
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
@@ -129,8 +129,8 @@ add_fall_protection:
       max: 1
 
 add_fire_protection:
-  icon: shield{CustomModelData:16}
-  icon_disabled: shield{CustomModelData:17}
+  icon: shield{CustomModelData:18016}
+  icon_disabled: shield{CustomModelData:18017}
   legacy_icon: spell_icon:237
   legacy_icon_disabled: spell_icon_disabled:237
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
@@ -148,8 +148,8 @@ add_fire_protection:
       max: 1
 
 add_physical_protection:
-  icon: shield{CustomModelData:18}
-  icon_disabled: shield{CustomModelData:19}
+  icon: shield{CustomModelData:18018}
+  icon_disabled: shield{CustomModelData:18019}
   legacy_icon: spell_icon:238
   legacy_icon_disabled: spell_icon_disabled:238
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
@@ -167,8 +167,8 @@ add_physical_protection:
       max: 1
 
 add_projectile_protection:
-  icon: shield{CustomModelData:20}
-  icon_disabled: shield{CustomModelData:21}
+  icon: shield{CustomModelData:18020}
+  icon_disabled: shield{CustomModelData:18021}
   legacy_icon: spell_icon:239
   legacy_icon_disabled: spell_icon_disabled:239
   icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
@@ -186,8 +186,8 @@ add_projectile_protection:
       max: 1
 
 add_damage:
-  icon: diamond_sword{CustomModelData:2}
-  icon_disabled: diamond_sword{CustomModelData:3}
+  icon: diamond_sword{CustomModelData:18002}
+  icon_disabled: diamond_sword{CustomModelData:18003}
   legacy_icon: spell_icon:178
   legacy_icon_disabled: spell_icon_disabled:178
   icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
@@ -205,8 +205,8 @@ add_damage:
       max: 10
 
 add_sharpness:
-  icon: diamond_sword{CustomModelData:4}
-  icon_disabled: diamond_sword{CustomModelData:5}
+  icon: diamond_sword{CustomModelData:18004}
+  icon_disabled: diamond_sword{CustomModelData:18005}
   legacy_icon: spell_icon:240
   legacy_icon_disabled: spell_icon_disabled:240
   icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a

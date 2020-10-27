@@ -1,6 +1,6 @@
 stun:
-    icon: light_blue_dye{CustomModelData:1}
-    icon_disabled: light_blue_dye{CustomModelData:2}
+    icon: light_blue_dye{CustomModelData:18001}
+    icon_disabled: light_blue_dye{CustomModelData:18002}
     legacy_icon: spell_icon:179
     legacy_icon_disabled: spell_icon_disabled:179
     upgrade_required_path: student

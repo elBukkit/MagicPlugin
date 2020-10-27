@@ -1,6 +1,6 @@
 unspeakable:
     inherit: base_wand
-    icon: stick{CustomModelData:24}
+    icon: stick{CustomModelData:18024}
     legacy_icon: wand_icon:24
     migrate_icon: wand_icon
     path: graduate

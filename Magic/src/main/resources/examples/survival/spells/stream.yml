@@ -1,6 +1,6 @@
 stream:
-    icon: lapis_lazuli{CustomModelData:1}
-    icon_disabled: lapis_lazuli{CustomModelData:2}
+    icon: lapis_lazuli{CustomModelData:18001}
+    icon_disabled: lapis_lazuli{CustomModelData:18002}
     legacy_icon: spell_icon:140
     legacy_icon_disabled: spell_icon_disabled:140
     icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced

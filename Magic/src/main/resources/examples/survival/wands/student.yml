@@ -5,7 +5,7 @@ student:
     inherit: base_wand
     active_spell: missile
     legacy_icon: wand_icon:2
-    icon: stick{CustomModelData:2}
+    icon: stick{CustomModelData:18002}
     migrate_icon: wand_icon
     effect_color: '00FF00'
     mana_regeneration: 30

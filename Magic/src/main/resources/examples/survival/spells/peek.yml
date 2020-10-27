@@ -1,6 +1,6 @@
 peek:
-    icon: glass_pane{CustomModelData:1}
-    icon_disabled: glass_pane{CustomModelData:2}
+    icon: glass_pane{CustomModelData:18001}
+    icon_disabled: glass_pane{CustomModelData:18002}
     legacy_icon: spell_icon:121
     legacy_icon_disabled: spell_icon_disabled:121
     icon_url: http://textures.minecraft.net/texture/42fe4273a62118f32881159ab3d6eded9fac90748deedbdb16204d107f843

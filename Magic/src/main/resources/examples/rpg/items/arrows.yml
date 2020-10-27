@@ -63,7 +63,7 @@ arrow_ice:
 arrow_light:
   locked: true
   worth: 100
-  item: spectral_arrow{CustomModelData:7}
+  item: spectral_arrow{CustomModelData:18007}
   name: Light Arrow
   lore:
     - A blast of pure energy

@@ -47,23 +47,23 @@
         "model": "item/bow_pulling_2"
     },
 
-    {"predicate": {"custom_model_data": 1}, "model": "item/custom/bow/egypt"},
-    {"predicate": {"custom_model_data": 2}, "model": "item/custom/bow2/bow"},
-    {"predicate": {"custom_model_data": 3}, "model": "item/custom/longbow/longbow_standby"},
+    {"predicate": {"custom_model_data": 18001}, "model": "item/custom/bow/egypt"},
+    {"predicate": {"custom_model_data": 18002}, "model": "item/custom/bow2/bow"},
+    {"predicate": {"custom_model_data": 18003}, "model": "item/custom/longbow/longbow_standby"},
 
-    {"predicate": {"pulling": 1, "custom_model_data": 1}, "model": "item/custom/bow/egypt_pulling_0"},
-    {"predicate": {"pulling": 1, "pull": 0.65, "custom_model_data": 1}, "model": "item/custom/bow/egypt_pulling_1"},
-    {"predicate": {"pulling": 1, "pull": 0.9, "custom_model_data": 1}, "model": "item/custom/bow/egypt_pulling_2"},
+    {"predicate": {"pulling": 1, "custom_model_data": 18001}, "model": "item/custom/bow/egypt_pulling_0"},
+    {"predicate": {"pulling": 1, "pull": 0.65, "custom_model_data": 18001}, "model": "item/custom/bow/egypt_pulling_1"},
+    {"predicate": {"pulling": 1, "pull": 0.9, "custom_model_data": 18001}, "model": "item/custom/bow/egypt_pulling_2"},
 
-    {"predicate": {"pulling": 1, "custom_model_data": 2}, "model": "item/custom/bow2/bow_pulling_0"},
-    {"predicate": {"pulling": 1, "pull": 0.65, "custom_model_data": 2}, "model": "item/custom/bow2/bow_pulling_1"},
-    {"predicate": {"pulling": 1, "pull": 0.9, "custom_model_data": 2}, "model": "item/custom/bow2/bow_pulling_2"},
+    {"predicate": {"pulling": 1, "custom_model_data": 18002}, "model": "item/custom/bow2/bow_pulling_0"},
+    {"predicate": {"pulling": 1, "pull": 0.65, "custom_model_data": 18002}, "model": "item/custom/bow2/bow_pulling_1"},
+    {"predicate": {"pulling": 1, "pull": 0.9, "custom_model_data": 18002}, "model": "item/custom/bow2/bow_pulling_2"},
 
-    {"predicate": {"pulling": 1, "custom_model_data": 3}, "model": "item/custom/longbow/longbow_pulling_0"},
-    {"predicate": {"pulling": 1, "pull": 0.65, "custom_model_data": 3}, "model": "item/custom/longbow/longbow_pulling_1"},
-    {"predicate": {"pulling": 1, "pull": 0.9, "custom_model_data": 3}, "model": "item/custom/longbow/longbow_pulling_2"},
+    {"predicate": {"pulling": 1, "custom_model_data": 18003}, "model": "item/custom/longbow/longbow_pulling_0"},
+    {"predicate": {"pulling": 1, "pull": 0.65, "custom_model_data": 18003}, "model": "item/custom/longbow/longbow_pulling_1"},
+    {"predicate": {"pulling": 1, "pull": 0.9, "custom_model_data": 18003}, "model": "item/custom/longbow/longbow_pulling_2"},
 
-    {"predicate": {"custom_model_data": 10}, "model": "item/spells/bow"},
-    {"predicate": {"custom_model_data": 11}, "model": "item/spells_disabled/bow"}
+    {"predicate": {"custom_model_data": 18010}, "model": "item/spells/bow"},
+    {"predicate": {"custom_model_data": 18011}, "model": "item/spells_disabled/bow"}
   ]
 }

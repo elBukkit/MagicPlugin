@@ -3,7 +3,7 @@ gauntlet:
   bound: false
   undroppable: false
   legacy_icon: wand_icon:43
-  icon: stick{CustomModelData:43}
+  icon: stick{CustomModelData:18043}
   alternate_spell: powerstone
   mode: cast
   right_click: cast

@@ -1,6 +1,6 @@
 aqualung:
-  icon: glass_bottle{CustomModelData:1}
-  icon_disabled: glass_bottle{CustomModelData:2}
+  icon: glass_bottle{CustomModelData:18001}
+  icon_disabled: glass_bottle{CustomModelData:18002}
   inherit: base_passive
   legacy_icon: spell_icon:76
   legacy_icon_disabled: spell_icon_disabled:76

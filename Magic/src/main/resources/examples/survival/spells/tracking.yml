@@ -1,6 +1,6 @@
 tracking:
-    icon: ender_eye{CustomModelData:1}
-    icon_disabled: ender_eye{CustomModelData:2}
+    icon: ender_eye{CustomModelData:18001}
+    icon_disabled: ender_eye{CustomModelData:18002}
     legacy_icon: spell_icon:189
     legacy_icon_disabled: spell_icon_disabled:189
     upgrade_required_path: student

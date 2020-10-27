@@ -20,8 +20,8 @@
 # DRAGON_BREATH
 
 damage:
-    icon: red_dye{CustomModelData:1}
-    icon_disabled: red_dye{CustomModelData:2}
+    icon: red_dye{CustomModelData:18001}
+    icon_disabled: red_dye{CustomModelData:18002}
     legacy_icon: spell_icon:172
     legacy_icon_disabled: spell_icon_disabled:172
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c

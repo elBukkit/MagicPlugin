@@ -4,7 +4,7 @@
     "layer0": "minecraft:item/scute"
   },
   "overrides": [
-    {"predicate": {"custom_model_data": 1}, "model": "item/spells/shell"},
-    {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/shell"}
+    {"predicate": {"custom_model_data": 18001}, "model": "item/spells/shell"},
+    {"predicate": {"custom_model_data": 18002}, "model": "item/spells_disabled/shell"}
   ]
 }

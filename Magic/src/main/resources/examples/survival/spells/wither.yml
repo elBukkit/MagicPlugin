@@ -1,6 +1,6 @@
 wither:
-    icon: wither_skeleton_skull{CustomModelData:1}
-    icon_disabled: wither_skeleton_skull{CustomModelData:2}
+    icon: wither_skeleton_skull{CustomModelData:18001}
+    icon_disabled: wither_skeleton_skull{CustomModelData:18002}
     legacy_icon: spell_icon:53
     legacy_icon_disabled: spell_icon_disabled:53
     upgrade_required_path: apprentice

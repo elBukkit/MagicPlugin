@@ -5,9 +5,9 @@
   },
 
   "overrides": [
-    {"predicate": { "custom_model_data": 1}, "model": "item/spells/torch"},
-    {"predicate": { "custom_model_data": 2}, "model": "item/spells_disabled/supertorch"},
-    {"predicate": { "custom_model_data": 3}, "model": "item/spells/torch"},
-    {"predicate": { "custom_model_data": 4}, "model": "item/spells_disabled/supertorch"}
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/torch"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/supertorch"},
+    {"predicate": { "custom_model_data": 18003}, "model": "item/spells/torch"},
+    {"predicate": { "custom_model_data": 18004}, "model": "item/spells_disabled/supertorch"}
   ]
 }

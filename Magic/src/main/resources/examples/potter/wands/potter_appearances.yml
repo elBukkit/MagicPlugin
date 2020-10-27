@@ -3,22 +3,22 @@ skinny_upgrade:
     upgrade: true
     legacy_icon: wand_icon:24
     legacy_upgrade_icon: wand_icon:24
-    icon: stick{CustomModelData:24}
-    upgrade_icon: stick{CustomModelData:24}
+    icon: stick{CustomModelData:18024}
+    upgrade_icon: stick{CustomModelData:18024}
 
 black_upgrade:
     name: Black Wand Appearance
     upgrade: true
     legacy_icon: wand_icon:25
     legacy_upgrade_icon: wand_icon:25
-    icon: stick{CustomModelData:25}
-    upgrade_icon: stick{CustomModelData:25}
+    icon: stick{CustomModelData:18025}
+    upgrade_icon: stick{CustomModelData:18025}
 
 brown_upgrade:
     name: Brown Wand Appearance
     upgrade: true
     legacy_icon: wand_icon:26
     legacy_upgrade_icon: wand_icon:26
-    icon: stick{CustomModelData:26}
-    upgrade_icon: stick{CustomModelData:26}
+    icon: stick{CustomModelData:18026}
+    upgrade_icon: stick{CustomModelData:18026}
 

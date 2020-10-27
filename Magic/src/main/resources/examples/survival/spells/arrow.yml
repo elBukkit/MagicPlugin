@@ -1,6 +1,6 @@
 arrow:
-    icon: arrow{CustomModelData:1}
-    icon_disabled: arrow{CustomModelData:2}
+    icon: arrow{CustomModelData:18001}
+    icon_disabled: arrow{CustomModelData:18002}
     legacy_icon: spell_icon:57
     legacy_icon_disabled: spell_icon_disabled:57
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094

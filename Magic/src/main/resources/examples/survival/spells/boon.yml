@@ -1,6 +1,6 @@
 boon:
-    icon: golden_apple{CustomModelData:1}
-    icon_disabled: golden_apple{CustomModelData:2}
+    icon: golden_apple{CustomModelData:18001}
+    icon_disabled: golden_apple{CustomModelData:18002}
     legacy_icon: spell_icon:11
     legacy_icon_disabled: spell_icon_disabled:11
     icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c

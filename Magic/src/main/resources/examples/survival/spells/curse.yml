@@ -1,6 +1,6 @@
 curse:
-    icon: rotten_flesh{CustomModelData:1}
-    icon_disabled: rotten_flesh{CustomModelData:2}
+    icon: rotten_flesh{CustomModelData:18001}
+    icon_disabled: rotten_flesh{CustomModelData:18002}
     legacy_icon: spell_icon:9
     legacy_icon_disabled: spell_icon_disabled:9
     icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d

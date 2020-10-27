@@ -1,6 +1,6 @@
 arrow_light:
-    icon: spectral_arrow{CustomModelData:10}
-    icon_disabled: spectral_arrow{CustomModelData:11}
+    icon: spectral_arrow{CustomModelData:18010}
+    icon_disabled: spectral_arrow{CustomModelData:18011}
     legacy_icon: spell_icon:242
     legacy_icon_disabled: spell_icon_disabled:242
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094

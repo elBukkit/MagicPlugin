@@ -1,7 +1,7 @@
 superalter:
     inherit: alter
-    icon: orange_dye{CustomModelData:1}
-    icon_disabled: orange_dye{CustomModelData:2}
+    icon: orange_dye{CustomModelData:18001}
+    icon_disabled: orange_dye{CustomModelData:18002}
     legacy_icon: spell_icon:126
     legacy_icon_disabled: spell_icon_disabled:126
     icon_url: http://textures.minecraft.net/texture/b5ccb1a5547f7d1beb4896c6fad4fedbb17ebced53a86b7e96e417114a0cae4

@@ -1,6 +1,6 @@
 debugger:
-    icon: warped_sign{CustomModelData:3}
-    icon_disabled: warped_sign{CustomModelData:3}
+    icon: warped_sign{CustomModelData:18003}
+    icon_disabled: warped_sign{CustomModelData:18003}
     legacy_icon: spell_icon:7
     legacy_disabled_icon: spell_icon_disabled:7
     hidden: true

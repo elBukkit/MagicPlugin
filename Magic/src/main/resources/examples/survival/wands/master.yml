@@ -1,7 +1,7 @@
 master:
     inherit: apprentice
     legacy_icon: wand_icon:4
-    icon: stick{CustomModelData:4}
+    icon: stick{CustomModelData:18004}
     migrate_icon: gold_axe
     mana_regeneration: 50
     mana_max: 250

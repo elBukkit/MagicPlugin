@@ -1,5 +1,5 @@
 master:
-    icon: stick{CustomModelData:4}
+    icon: stick{CustomModelData:18004}
     legacy_icon: wood_hoe:4
     legacy_migrate_icon: gold_axe
     upgrade: engineer

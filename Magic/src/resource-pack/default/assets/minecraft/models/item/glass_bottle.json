@@ -4,7 +4,7 @@
     "layer0": "minecraft:item/glass_bottle"
   },
   "overrides": [
-    {"predicate": {"custom_model_data": 1}, "model": "item/spells/bubble"},
-    {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/bubble"}
+    {"predicate": {"custom_model_data": 18001}, "model": "item/spells/bubble"},
+    {"predicate": {"custom_model_data": 18002}, "model": "item/spells_disabled/bubble"}
   ]
 }

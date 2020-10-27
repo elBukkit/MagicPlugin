@@ -1,6 +1,6 @@
 ocarina:
     legacy_icon: wand_icon:18
-    icon: stick{CustomModelData:18}
+    icon: stick{CustomModelData:18018}
     locked: true
     keep: false
     quick_cast: true

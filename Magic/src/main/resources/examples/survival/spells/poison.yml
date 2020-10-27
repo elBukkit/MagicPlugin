@@ -1,6 +1,6 @@
 poison:
-    icon: fermented_spider_eye{CustomModelData:1}
-    icon_disabled: fermented_spider_eye{CustomModelData:2}
+    icon: fermented_spider_eye{CustomModelData:18001}
+    icon_disabled: fermented_spider_eye{CustomModelData:18002}
     legacy_icon: spell_icon:180
     legacy_icon_disabled: spell_icon_disabled:180
     icon_url: http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a

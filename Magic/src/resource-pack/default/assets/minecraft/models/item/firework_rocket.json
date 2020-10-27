@@ -4,7 +4,7 @@
     "layer0": "minecraft:item/firework_rocket"
   },
   "overrides": [
-    {"predicate": {"custom_model_data": 1}, "model": "item/spells/rocket"},
-    {"predicate": {"custom_model_data": 2}, "model": "item/spells_disabled/rocket"}
+    {"predicate": {"custom_model_data": 18001}, "model": "item/spells/rocket"},
+    {"predicate": {"custom_model_data": 18002}, "model": "item/spells_disabled/rocket"}
   ]
 }

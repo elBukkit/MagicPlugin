@@ -10,7 +10,7 @@
             },
             "model": "item/fishing_rod_cast"
         },
-        {"predicate": { "custom_model_data": 1}, "model": "item/spells/pull"},
-        {"predicate": { "custom_model_data": 2}, "model": "item/spells_disabled/pull"}
+        {"predicate": { "custom_model_data": 18001}, "model": "item/spells/pull"},
+        {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/pull"}
     ]
 }

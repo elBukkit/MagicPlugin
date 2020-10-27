@@ -1,7 +1,7 @@
 developer:
     inherit: conduit
     legacy_icon: wand_icon:10
-    icon: stick{CustomModelData:10}
+    icon: stick{CustomModelData:18010}
     migrate_icon: monster_eggs:4
     cost_reduction: 2
     cooldown_reduction: 2

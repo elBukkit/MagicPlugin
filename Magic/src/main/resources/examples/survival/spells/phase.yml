@@ -1,6 +1,6 @@
 phase:
-    icon: crimson_door{CustomModelData:1}
-    icon_disabled: crimson_door{CustomModelData:2}
+    icon: crimson_door{CustomModelData:18001}
+    icon_disabled: crimson_door{CustomModelData:18002}
     legacy_icon: spell_icon:72
     legacy_icon_disabled: spell_icon_disabled:72
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d

@@ -1,7 +1,7 @@
 purger:
   inherit: base_wand
   legacy_icon: wand_icon:3
-  icon: stick{CustomModelData:3}
+  icon: stick{CustomModelData:18003}
   path: apprentice
   spell_levels:
     missile: 3

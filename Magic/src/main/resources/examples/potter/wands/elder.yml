@@ -2,7 +2,7 @@ elder:
     inherit: base_wand
     migrate_icon: iron_hoe
     legacy_icon: wand_icon:27
-    icon: stick{CustomModelData:27}
+    icon: stick{CustomModelData:18027}
     path: graduate
     organize: true
     cost_reduction: 2

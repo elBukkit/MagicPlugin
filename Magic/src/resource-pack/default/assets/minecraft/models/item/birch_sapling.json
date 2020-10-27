@@ -4,6 +4,6 @@
     "layer0": "minecraft:block/birch_sapling"
   },
   "overrides": [
-    {"predicate": {"custom_model_data": 1}, "model": "item/custom/broomstick2"}
+    {"predicate": {"custom_model_data": 18001}, "model": "item/custom/broomstick2"}
   ]
 }

@@ -1,6 +1,6 @@
 empty:
     inherit: base_wand
-    icon: stick{CustomModelData:1}
+    icon: stick{CustomModelData:18001}
     effect_color: random
     tags:
     - buffable

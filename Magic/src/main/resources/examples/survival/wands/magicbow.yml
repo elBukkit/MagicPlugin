@@ -4,13 +4,13 @@
 magicbow:
   inherit: base_bow
   class: archer_mage
-  icon: bow{CustomModelData:1}
+  icon: bow{CustomModelData:18001}
   legacy_icon: bow_icon:1
   migrate_legacy_icons:
-    "bow_icon:1": bow{CustomModelData:1}
-    "bow_icon:2": bow{CustomModelData:2}
-    "bow_icon:3": bow{CustomModelData:3}
-    "bow_icon:4": bow{CustomModelData:4}
+    "bow_icon:1": bow{CustomModelData:18001}
+    "bow_icon:2": bow{CustomModelData:18002}
+    "bow_icon:3": bow{CustomModelData:18003}
+    "bow_icon:4": bow{CustomModelData:18004}
   # This can be used to force the bow to always cast a normal arrow under some amount of pull
   # cast_min_bowpull: 0.5
   protection:

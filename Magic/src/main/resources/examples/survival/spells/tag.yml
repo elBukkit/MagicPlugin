@@ -1,6 +1,6 @@
 tag:
-    icon: oak_sign{CustomModelData:3}
-    icon_disabled: oak_sign{CustomModelData:4}
+    icon: oak_sign{CustomModelData:18003}
+    icon_disabled: oak_sign{CustomModelData:18004}
     legacy_icon: spell_icon:29
     legacy_icon_disabled: spell_icon_disabled:29
     icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e

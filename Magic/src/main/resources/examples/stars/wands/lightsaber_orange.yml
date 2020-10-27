@@ -1,6 +1,6 @@
 lightsaber_orange:
     inherit: base_lightsaber
     class: jedi
-    icon: shield{CustomModelData:5}
+    icon: shield{CustomModelData:18005}
     effect_color: 'FF00FF'
 
