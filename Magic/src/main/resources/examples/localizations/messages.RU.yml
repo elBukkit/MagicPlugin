@@ -637,6 +637,7 @@ spells:
     deactivate: Метла успокаивается.
     crash: АВАРИЯ!
     fail: Недостаточно места!
+    creative_fail: Нельзя использовать метлу в креативе!
     cursed: Ты слишком сильно ударился, чтобы лететь!
     upgrade_description: Увеличена продолжительность, скорость и управляемость
     nospace: "&cНужно свободное место для того чтобы взлететь!"
@@ -673,12 +674,14 @@ spells:
     name: Лошадь
     description: Призывает лошадь
     cast: Иго-го!
+    nospace: "&cНужно свободное место для лошади!"
   tame:
     name: Приручение
     description: Приручает твою цель
     cast: Ты приручил $target
   platform:
     name: Платформа
+    cast_finish: Заполнено $count блоков $material
     description: Создает платформу из блоков
   platform|2:
     upgrade_description: Увеличен размер
@@ -976,6 +979,7 @@ spells:
     name: Монстр
     description: Призывает монстра на твою сторону
     deactivate: Ты освободил своего монстра
+    cast: Ты призвал монстра
   mob:
     name: Орда
     description: Призывает орду монстров
@@ -1078,6 +1082,7 @@ spells:
     name: Яростный удар
     description: Сражает вашу цель наповал
     cast: Ты поразил $target
+    upgrade_description: "Увеличен урон и радиус взрыва"
   nuke:
     name: Ядерный Взрыв
     description: Создает большой взрыв
@@ -1329,6 +1334,10 @@ spells:
     upgrade_description: Добывает больше руды
   mine|4:
     upgrade_description: Теперь добывает всю руду
+  mine|5:
+    upgrade_description: "Дает бонусную руду"
+  mine|6:
+    upgrade_description: "Дает больше бонусной руды"
   chop:
     name: Срубить
     description: Рубит дерево
@@ -1612,7 +1621,7 @@ spells:
     cast_wand: Перемещение к потеряной палочке
     cast_warp: Перемещение к $name
     cast_town: Перемещение в город
-    cast_field: Перемещение в защищенную территорию
+    cast_regions: Перемещение в защищенную территорию
     cast_friend: Перемещение к $name
     no_target_death: Нету точки смерти
     no_target_wand: Нету потерянных палочек
@@ -1621,7 +1630,7 @@ spells:
     no_target_marker: Нет установленных маркеров
     no_target_spawn: Нельзя телепортироваться на спавн
     no_target_town: Ты не находишься в городе
-    no_target_fields: У тебя нет друзей
+    no_target_regions: У тебя нет друзей
     no_target_friend: Неправильное имя $name
     title_move_marker: Переместить маркер в текущую точку
     description_move_marker: Перемещает маркер
@@ -1646,15 +1655,22 @@ spells:
     unlock_warp: '&bТы разблокировал &5$name &bкак &6Направление &bдля Телепортации!'
     add_friend: '&bТы добавил друга &5$name &bкак &6Направление &bдля Телепортации!'
     remove_friend: '&cТы удалил &5$name &cкак &4Направление &cдля Телепортации!'
+    invalid_description: "\n&cНеправильная локация"
+    unavailable_description: "\n&eДоступно при повышении уровня"
+    unavailable_warp_description: "\n&eНайди это место, чтобы разблокировать!"
+    unavailable_name: "&c$name"
   recall|2:
     upgrade_description: Разблокирована точка последней смерти
   recall|3:
     upgrade_description: Разблокирован маркер, наведи курсор вниз, чтобы поставить.
     usage: Имеет пятисекундную подготовку. Наведи курсор вниз, чтобы поставить маркер
+  recall|4:
+    upgrade_description: "Разблокирован второй маркер"
+  recall|5:
+    upgrade_description: "Разблокирован третий маркер"
   warpunlock:
     name: Разблокировать варп
-    description: Useful in command blocks or region commands to unlock Recall waypoints
-      when a player discovers an area
+    description: Полезно для использования в командных блоках, чтобы разблокировать местность
     cooldown: ''
   warpmenu:
     name: Меню варпов
@@ -1665,6 +1681,8 @@ spells:
     cast: Ты чувствуешь легкость
     cancel: Ты чувствуешь тяжесть
     upgrade_description: Увеличена скорость и высота полета, уменьшена перезарядка
+  levitate|6:
+    upgrade_description: "Неограниченная высота, облако исчезает для лучшей видимости"
   boom:
     name: Бум
     description: Создает взрыв
@@ -2866,6 +2884,9 @@ wands:
   talisman:
     name: Талисман маны
     description: Дает тебе бонус, когда держишь его в руке
+  magicheart:
+    name: Сердце Магии
+    description: Нужно для крафта магических предметов
   skillbook:
     name: Книга заклинаний
     description: ПКМ, чтобы открыть меню способностей. Перетаскивай их в хотбар, чтобы использовать.
@@ -2920,10 +2941,16 @@ wands:
     name: Посох "Сфера"
     description: "Посох с магической сферой на конце"
   appearance_magma:
-        name: Магмовый посох
-        description: Посох, содержащий эссенцию чистой магмы
+    name: Магмовый посох
+    description: Посох, содержащий эссенцию чистой магмы
+  glow_upgrade:
+    name: Включить свечение
+    description: Делает палочку блестящей
+  noglow_upgrade:
+    name: Выключить свечение
+    description: Делает палочку не блестящей
   uberwand:
-        name: "Überwand"
+        name: "Uberwand"
         description: Величайшая палочка
   extinguisher:
         name: Огнетушитель
