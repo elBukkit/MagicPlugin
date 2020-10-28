@@ -65,6 +65,12 @@ public class TextUtils
                 + ChatColor.BLUE + formatter.format(location.getZ());
     }
 
+    public static String printBlockLocation(Location location) {
+        return "" + ChatColor.BLUE + location.getBlockX() + ChatColor.GRAY + ","
+                + ChatColor.BLUE + location.getBlockY() + ChatColor.GRAY + ","
+                + ChatColor.BLUE + location.getBlockZ();
+    }
+
     public static String printVector(Vector vector) {
         return printVector(vector, 3);
     }
