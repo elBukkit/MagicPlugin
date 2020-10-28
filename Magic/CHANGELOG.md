@@ -39,6 +39,7 @@
  - Allow numbers (0 - 1) in reset_mana_on_activate wand property, to reset to a fixed number
  - Improvements to LightAPI integration (magictorch)
  - Add "cast_interval_cost_free" parameter to wands, interval ("aura") casts are no longer cost-free by default
+ - Add vault.enabled config property to turn off Vault integration
 
 # 7.11.1
 

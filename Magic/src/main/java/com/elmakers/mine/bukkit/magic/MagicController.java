@@ -1086,12 +1086,16 @@ public class MagicController implements MageController {
         }
 
         // Vault integration
-        Plugin vaultPlugin = pluginManager.getPlugin("Vault");
-        if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
-            getLogger().info("Vault not found, 'currency' cost types unavailable");
+        if (!vaultEnabled) {
+            getLogger().info("Vault integration disabled");
         } else {
-            if (!VaultController.initialize(plugin, vaultPlugin)) {
-                getLogger().warning("Vault integration failed");
+            Plugin vaultPlugin = pluginManager.getPlugin("Vault");
+            if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
+                getLogger().info("Vault not found, 'currency' cost types unavailable");
+            } else {
+                if (!VaultController.initialize(plugin, vaultPlugin)) {
+                    getLogger().warning("Vault integration failed");
+                }
             }
         }
     }
@@ -2900,6 +2904,7 @@ public class MagicController implements MageController {
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
         skriptEnabled = properties.getBoolean("skript_enabled", skriptEnabled);
+        vaultEnabled = properties.getConfigurationSection("vault").getBoolean("enabled");
         citadelConfiguration = properties.getConfigurationSection("citadel");
         mobArenaConfiguration = properties.getConfigurationSection("mobarena");
         residenceConfiguration = properties.getConfigurationSection("residence");
@@ -6976,6 +6981,7 @@ public class MagicController implements MageController {
     private boolean                             placeholdersEnabled         = true;
     private boolean                             lightAPIEnabled                = true;
     private boolean                             skriptEnabled                = true;
+    private boolean                             vaultEnabled                = true;
     private ConfigurationSection                residenceConfiguration        = null;
     private ConfigurationSection                redProtectConfiguration     = null;
     private ConfigurationSection                citadelConfiguration        = null;
