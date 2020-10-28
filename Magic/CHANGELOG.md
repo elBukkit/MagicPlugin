@@ -39,6 +39,10 @@
  - Allow numbers (0 - 1) in reset_mana_on_activate wand property, to reset to a fixed number
  - Improvements to LightAPI integration (magictorch)
 
+# 7.11.1
+
+ - Fix /castp command when used on mobs (MythicMobs psuedo-integration)
+
 # 7.11
 
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)
