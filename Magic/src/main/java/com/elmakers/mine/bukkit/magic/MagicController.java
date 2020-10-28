@@ -3822,7 +3822,7 @@ public class MagicController implements MageController {
         // Reach into internals a bit here.
         if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-            if (sender instanceof BlockCommandSender)
+            if (sender != null && sender instanceof BlockCommandSender)
             {
                 mage.setCostFree(override ? castCommandCostFree : false);
                 mage.setCooldownFree(override ? castCommandCooldownFree : false);

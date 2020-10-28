@@ -160,8 +160,8 @@ public class CastCommandExecutor extends MagicTabExecutor {
         }
 
         String spellName = castParameters[0];
-        if (!controller.hasPermission(sender, "Magic.cast_via_command." + spellName, true)) {
-            if (sender != null) sender.sendMessage("You do not have permission to do that");
+        if (sender != null && !controller.hasPermission(sender, "Magic.cast_via_command." + spellName, true)) {
+            sender.sendMessage("You do not have permission to do that");
             return true;
         }
 
@@ -171,7 +171,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
             return false;
         }
 
-        if (sender.hasPermission("Magic.commands.cast.parameters")) {
+        if (sender == null || sender.hasPermission("Magic.commands.cast.parameters")) {
             castParameters = Arrays.copyOfRange(castParameters, 1, castParameters.length);
         } else {
             castParameters = null;

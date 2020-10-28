@@ -17,6 +17,10 @@
    - Brush inventory reorganized, wills how block data variants
    - Better tab-completion for /wand(or mage) remove brush <some long brush key>
 
+# 7.11.1
+
+ - Fix /castp command when used on mobs (MythicMobs psuedo-integration)
+
 # 7.11
 
  - Fix resource_pack_default_auto config option (won't change anything except for new players though)
