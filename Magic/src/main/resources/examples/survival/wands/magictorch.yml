@@ -2,7 +2,7 @@ magictorch:
     icon: torch
     locked: true
     cast_spell: magictorch
-    cast_interval: 500
+    cast_interval: 200
     lore:
     - $description
 

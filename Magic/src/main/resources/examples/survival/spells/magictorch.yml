@@ -5,7 +5,7 @@ magictorch:
     category: specialty
     actions:
         cast:
-        -  class: Light
+        - class: Light
     effects:
         cast:
         -  class: EffectSingle
@@ -14,4 +14,5 @@ magictorch:
     parameters:
         target: self
         async: false
-        undo: 1000
+        undo: 500
+        undo_previous: false

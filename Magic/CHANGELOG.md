@@ -37,6 +37,7 @@
  - Add a third alt-cast spell to wands, for a total of 4 possible fixed spells
  - Add SuperWalls spells to default configs
  - Allow numbers (0 - 1) in reset_mana_on_activate wand property, to reset to a fixed number
+ - Improvements to LightAPI integration (magictorch)
 
 # 7.11
 
