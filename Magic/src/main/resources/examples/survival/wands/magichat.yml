@@ -1,8 +1,8 @@
 magichat:
     mode: cast
     active_spell: magichat
-    icon: wand_icon:17
-    migrate_icon: ender_portal_frame
+    icon: lectern{CustomModelData:18017}
+    legacy_icon: wand_icon:17
     indestructible: true
     locked: true
     keep: true

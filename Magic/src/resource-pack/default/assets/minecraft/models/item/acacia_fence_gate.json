@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/acacia_fence_gate",
+
+  "overrides": [
+    {"predicate": {"custom_model_data": 18017}, "model": "item/custom/hat_eye"}
+  ]
+}

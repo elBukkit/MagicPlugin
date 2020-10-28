@@ -1,6 +1,6 @@
 goggles:
-    icon: wand_icon:16
-    migrate_icon: monster_eggs:1
+    icon: acacia_fence_gate{CustomModelData:18017}
+    legacy_icon: wand_icon:16
     indestructible: true
     locked: true
     keep: true
