@@ -15,9 +15,11 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MageParameters;
 import com.elmakers.mine.bukkit.magic.TemplateProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -69,9 +71,28 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
             if (migrateLegacyConfig != null) {
                 migrateConfig = migrateLegacyConfig;
             }
+            String legacyIcon = node.getString("legacy_icon");
+            if (legacyIcon != null && !legacyIcon.isEmpty() && icon != null) {
+                migrateIcons = new HashMap<>();
+                migrateIcons.put(legacyIcon, icon);
+                // This is unfortunately needed to handle aliases like wand_icon being converted to their
+                // base item
+                ItemData converted = controller.getItem(legacyIcon);
+                if (converted != null) {
+                    MaterialAndData convertedItem = new MaterialAndData(converted.getItemStack());
+                    String convertedIcon = convertedItem.getKey();
+                    if (!convertedIcon.equals(legacyIcon)) {
+                        migrateIcons.put(convertedIcon, icon);
+                    }
+                }
+            }
+        } else {
+            icon = node.getString("legacy_icon", icon);
         }
         if (migrateConfig != null) {
-            migrateIcons = new HashMap<>();
+            if (migrateIcons == null) {
+                migrateIcons = new HashMap<>();
+            }
             Set<String> keys = migrateConfig.getKeys(false);
             for (String migrateKey : keys) {
                 migrateIcons.put(migrateKey, migrateConfig.getString(migrateKey));
