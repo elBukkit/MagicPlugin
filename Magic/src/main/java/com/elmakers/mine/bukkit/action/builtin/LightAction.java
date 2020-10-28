@@ -12,6 +12,7 @@ public class LightAction extends BaseSpellAction {
     private int level;
     private boolean async;
     private boolean update;
+    private boolean forceUndo;
     private MageController controller;
 
     private class LightUndoAction implements Runnable
@@ -27,9 +28,9 @@ public class LightAction extends BaseSpellAction {
         @Override
         public void run() {
             if (location != null) {
-                controller.deleteLight(location, async);
-                if (update) {
-                    controller.updateLight(location);
+                boolean removed = controller.deleteLight(location, async);
+                if (update && removed) {
+                    controller.updateLight(location, false);
                 }
             }
         }
@@ -43,19 +44,23 @@ public class LightAction extends BaseSpellAction {
         async = parameters.getBoolean("async", false);
         update = parameters.getBoolean("update", true);
         level = parameters.getInt("level", 15);
+        forceUndo = parameters.getBoolean("undo_previous", false);
     }
 
     @Override
     public SpellResult perform(CastContext context)
     {
-        Location location = context.getTargetLocation();
-        context.addWork(5);
-        if (!controller.createLight(location, level, async)) {
+        if (!context.getController().isLightingAvailable()) {
             return SpellResult.FAIL;
         }
-        if (update) {
+        Location location = context.getTargetLocation();
+        context.addWork(5);
+        if (controller.createLight(location, level, async) && update) {
             controller.updateLight(location);
             context.addWork(10);
+        }
+        if (forceUndo) {
+            context.getMage().undoScheduled(context.getSpell().getSpellKey().getBaseKey());
         }
         context.registerForUndo(new LightUndoAction(location, update));
         return SpellResult.CAST;
