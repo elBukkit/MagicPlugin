@@ -40,6 +40,5 @@ grab:
         radius: 8
         repeat: 4
         bypass_undo: true
-    costs:
-        mana: 50
+        cooldown: 1000
 

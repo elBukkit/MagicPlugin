@@ -3934,18 +3934,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     lastSpellCast = now;
                     Spell spell = mage.getSpell(castSpell);
                     if (spell != null) {
+                        boolean costFree = getBoolean("cast_interval_cost_free", false);
                         if (castParameters == null) {
                             castParameters = new MemoryConfiguration();
                         }
                         castParameters.set("passive", true);
-                        mage.setCostFree(true);
+                        if (costFree) {
+                            mage.setCostFree(true);
+                        }
                         mage.setQuiet(true);
                         try {
                             spell.cast(castParameters);
                         } catch (Exception ex) {
                             controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
                         }
-                        mage.setCostFree(false);
+                        if (costFree) {
+                            mage.setCostFree(false);
+                        }
                         mage.setQuiet(false);
                     }
                 }

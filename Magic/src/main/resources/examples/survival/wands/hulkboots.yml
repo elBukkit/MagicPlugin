@@ -8,7 +8,7 @@ hulkboots:
     glow: true
     protection:
       fall: 1
-    cast_spell: fling
+    cast_spell: hulkleap
     cast_parameters: min_speed 5 max_speed 5
     cast_interval: 5000
     cast_min_velocity: 0.5

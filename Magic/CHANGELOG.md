@@ -10,8 +10,8 @@
    - All icons and models now use CustomModelData instead of damage predicates
    - Spells and magical items are represented by recognizable vanilla items
    - Wands should now be much easier to use without a resource pack
-   - Combining Magic's RP with other RPs may now be somewhat more complicated, I will work on a script to help in the future.
- - Rebalance
+   - Combining Magic's RP with other RPs may now be somewhat more complicated,
+     so we have created a tool to do the work for you at https://merge.elmakers.com/
    - Most magic crafting recipes have changed
    - Now requires an intermediate item, the "Heart of Magic" - crafted with 8 emeralds and a diamond
    - Wizard gear buffed a bit
@@ -38,6 +38,7 @@
  - Add SuperWalls spells to default configs
  - Allow numbers (0 - 1) in reset_mana_on_activate wand property, to reset to a fixed number
  - Improvements to LightAPI integration (magictorch)
+ - Add "cast_interval_cost_free" parameter to wands, interval ("aura") casts are no longer cost-free by default
 
 # 7.11.1
 

@@ -19,6 +19,8 @@
  - The `allow_passthrough` parameter of the Teleport action is now false by default. You may need to tweak any
    custom spell configs using that action accordingly.
 
+ - Wands with interval casts are no longer cost-free, set cast_interval_cost_free: true to put this back.
+
 # 7.9.7
 
  - Engineering magic has been moved out of the survival configs and into a separate example. 

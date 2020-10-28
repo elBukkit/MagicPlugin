@@ -1,0 +1,48 @@
+hulkleap:
+    icon: feather{CustomModelData:18001}
+    icon_disabled: feather{CustomModelData:18002}
+    legacy_icon: spell_icon:60
+    legacy_icon_disabled: spell_icon_disabled:60
+    icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
+    category: utility
+    tags: nojail
+    actions:
+        cast:
+        - class: Velocity
+        - class: FallProtection
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_ender_dragon_flap
+           sound_volume: 1
+           effectlib:
+             class: Trace
+             iterations: 30
+             particle_offset_x: 1
+             particle_offset_y: 1
+             particle_offset_z: 1
+             particle_count: 2
+             speed: 2
+             particle: spell
+        land:
+        -  sound: block_stone_step
+           sound_pitch: 0.7
+        -  class: EffectRing
+           particle: block_crack
+           source_location: feet
+           period: 4
+           particle_count: 80
+           radius: 4
+           particle_offset_x: 0.9
+           particle_offset_z: 0.9
+           particle_offset_y: 0.1
+    parameters:
+        duration: 20000
+        target: self
+        min_speed: 1.5
+        max_speed: 2.0
+        bypass_confusion: true
+        cooldown: 5000
+    costs:
+        mana: 50
+
