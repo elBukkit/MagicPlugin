@@ -40,6 +40,7 @@
  - Improvements to LightAPI integration (magictorch)
  - Add "cast_interval_cost_free" parameter to wands, interval ("aura") casts are no longer cost-free by default
  - Add vault.enabled config property to turn off Vault integration
+ - Add appearance swapping for magic sword
 
 # 7.11.1
 

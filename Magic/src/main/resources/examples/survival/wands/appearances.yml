@@ -130,3 +130,52 @@ noglow_upgrade:
   upgrade: true
   force: true
   glow: false
+
+appearance_valk:
+    upgrade: true
+    legacy_icon: sword_icon:8
+    legacy_upgrade_icon: sword_icon:8
+    icon: netherite_sword{CustomModelData:18009}
+    upgrade_icon: netherite_sword{CustomModelData:1180098010}
+
+appearance_whitedagger:
+    upgrade: true
+    legacy_icon: sword_icon:9
+    legacy_upgrade_icon: sword_icon:9
+    icon: netherite_sword{CustomModelData:18010}
+    upgrade_icon: netherite_sword{CustomModelData:18010}
+
+appearance_demon:
+    upgrade: true
+    legacy_icon: sword_icon:10
+    legacy_upgrade_icon: sword_icon:10
+    icon: netherite_sword{CustomModelData:18011}
+    upgrade_icon: netherite_sword{CustomModelData:18011}
+
+appearance_felm:
+    upgrade: true
+    legacy_icon: sword_icon:11
+    legacy_upgrade_icon: sword_icon:11
+    icon: netherite_sword{CustomModelData:18012}
+    upgrade_icon: netherite_sword{CustomModelData:18012}
+
+appearance_riven:
+    upgrade: true
+    legacy_icon: sword_icon:12
+    legacy_upgrade_icon: sword_icon:12
+    icon: netherite_sword{CustomModelData:18013}
+    upgrade_icon: netherite_sword{CustomModelData:18013}
+
+appearance_silver:
+    upgrade: true
+    legacy_icon: sword_icon:13
+    legacy_upgrade_icon: sword_icon:13
+    icon: netherite_sword{CustomModelData:18014}
+    upgrade_icon: netherite_sword{CustomModelData:18014}
+
+appearance_lava:
+    upgrade: true
+    legacy_icon: sword_icon:14
+    legacy_upgrade_icon: sword_icon:14
+    icon: netherite_sword{CustomModelData:18015}
+    upgrade_icon: netherite_sword{CustomModelData:18015}

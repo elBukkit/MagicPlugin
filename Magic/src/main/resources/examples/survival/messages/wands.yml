@@ -340,6 +340,20 @@ wands:
     appearance_magma:
         name: Magma Staff Appearance
         description: A staff containing the essence of pure magma
+    appearance_valk:
+        name: Valkyrie Sword Appearance
+    appearance_whitedagger:
+        name: Dagger Sword Appearance
+    appearance_demon:
+        name: Demon Sword Appearance
+    appearance_felm:
+        name: Fire Sword Appearance
+    appearance_riven:
+        name: Riven Sword Appearance
+    appearance_silver:
+        name: Silver Hammer Appearance
+    appearance_lava:
+        name: Lava Sword Appearance
     glow_upgrade:
         name: Glowing
         description: Make your wand shimmer

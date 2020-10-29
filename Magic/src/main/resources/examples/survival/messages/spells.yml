@@ -1093,6 +1093,13 @@ spells:
         selected: "You changed to $item"
         not_applicable: "Your bow already looks like $item"
         no_template: "&cYou may not modify the appearance of $wand&c."
+    swordappearanceshop:
+        name: Sword Appearances
+        description: Change the look of your sword
+        title: "Sword Appearance ($balance&0)"
+        selected: "You changed to $item"
+        not_applicable: "Your sword already looks like $item"
+        no_template: "&cYou may not modify the appearance of $wand&c."
     controlsmenu:
         name: Wand Controls
         description: Change how your wand works

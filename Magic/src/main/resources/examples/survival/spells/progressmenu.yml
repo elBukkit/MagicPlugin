@@ -20,6 +20,7 @@ progressmenu:
       - wand_tags: transformable
       cast_for_tags:
         transformablebow: bowappearanceshop
+        transformablesword: swordappearanceshop
     - cast_spell: colorshop
       requirements:
       - holding_wand: true

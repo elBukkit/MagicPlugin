@@ -1,0 +1,46 @@
+swordappearanceshop:
+    icon: netherite_sword{CustomModelData:18009}
+    icon_disabled: netherite_sword{CustomModelData:18009}
+    legacy_icon: sword_icon:8
+    legacy_icon_disabled: sword_icon:8
+    icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
+    hidden: true
+    actions:
+        cast:
+        -  class: Selector
+    parameters:
+        auto_close: true
+        confirm_filler: stained_glass:3
+        show_unavailable: true
+        requirements:
+        - wand_tags: transformablesword
+        unlock_section: sword_appearances
+        apply_to_wand: true
+        cost_type: sp
+        options:
+        - item: none
+        - item: appearance_valk
+        - item: appearance_whitedagger
+          unlock: whitedagger
+          confirm: true
+          cost: 2000
+        - item: appearance_demon
+          unlock: demon
+          confirm: true
+          cost: 4000
+        - item: appearance_felm
+          unlock: felm
+          confirm: true
+          cost: 5000
+        - item: appearance_riven
+          unlock: riven
+          confirm: true
+          cost: 6000
+        - item: appearance_silver
+          unlock: silver
+          confirm: true
+          cost: 7000
+        - item: appearance_lava
+          unlock: lava
+          confirm: true
+          cost: 9000
