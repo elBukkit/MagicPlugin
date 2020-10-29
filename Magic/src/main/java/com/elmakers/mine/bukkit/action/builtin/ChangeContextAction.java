@@ -59,6 +59,9 @@ public class ChangeContextAction extends CompoundAction {
     private boolean sourceUseMovementDirection;
     private boolean targetUseMovementDirection;
 
+    // Communication between source and target modifications
+    protected Vector direction;
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
@@ -119,6 +122,176 @@ public class ChangeContextAction extends CompoundAction {
         }
     }
 
+    protected Location modifySource(Location sourceLocation, CastContext context, Entity targetEntity) {
+        boolean updateDirection = false;
+        if (sourceDirectionIsTarget && targetEntity != null && sourceLocation != null)
+        {
+            sourceLocation.setDirection(targetEntity.getLocation().getDirection());
+        }
+        if (sourceUseMovementDirection && sourceLocation != null) {
+            sourceLocation.setDirection(context.getMage().getVelocity());
+        }
+        if (sourceDirection != null && sourceLocation != null)
+        {
+            sourceLocation.setDirection(sourceDirection);
+            updateDirection = true;
+        }
+        if (sourcePitch != null && sourceLocation != null)
+        {
+            sourceLocation.setPitch((float)(double)sourcePitch);
+            updateDirection = true;
+        }
+        if (sourceYawOffset != 0 && sourceLocation != null)
+        {
+            sourceLocation.setYaw(sourceLocation.getYaw() + sourceYawOffset);
+            updateDirection = true;
+        }
+        if (sourcePitchOffset != 0 && sourceLocation != null)
+        {
+            sourceLocation.setPitch(sourceLocation.getPitch() + sourcePitchOffset);
+            updateDirection = true;
+        }
+        if (sourceLocation != null && sourceLocation.getPitch() > sourcePitchMin)
+        {
+            sourceLocation.setPitch(sourcePitchMin);
+            updateDirection = true;
+        }
+        else if (sourceLocation != null && sourceLocation.getPitch() < sourcePitchMax)
+        {
+            sourceLocation.setPitch(sourcePitchMax);
+            updateDirection = true;
+        }
+        if (sourceLocation != null && sourceOffset != null)
+        {
+            sourceLocation = sourceLocation.add(sourceOffset);
+        }
+        if (relativeSourceOffset != null && sourceLocation != null)
+        {
+            Location relativeSource;
+            if (persistCaster) {
+                relativeSource = context.getMage().getEyeLocation();
+            } else {
+                relativeSource = sourceLocation;
+            }
+
+            if (relativeSource != null) {
+                if (!orientPitch) {
+                    relativeSource.setPitch(0);
+                }
+
+                //If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may
+                Vector offset = VectorUtils.rotateVector(relativeSourceOffset, relativeSource);
+                sourceLocation.add(offset);
+            }
+        }
+        if (randomSourceOffset != null && sourceLocation != null)
+        {
+            sourceLocation = RandomUtils.randomizeLocation(sourceLocation, randomSourceOffset);
+        }
+
+        // Given a yaw and pitch, this adjusts the source direction after rotating it.
+        if ((relativeSourceDirectionYawOffset != 0  || relativeSourceDirectionPitchOffset != 0) && sourceLocation != null)
+        {
+            Vector relativeDirection = sourceLocation.getDirection();
+            relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeSourceDirectionYawOffset, relativeSourceDirectionPitchOffset);
+            sourceLocation.setDirection(relativeDirection);
+            updateDirection = true;
+        }
+
+        // This direction is used in modifyTarget, so update it if we've changed it in any way
+        if (updateDirection && sourceLocation != null) {
+            direction = sourceLocation.getDirection();
+        }
+        if (sourceDirectionOffset != null && sourceLocation != null)
+        {
+            sourceLocation.setDirection(direction.add(sourceDirectionOffset));
+        }
+        if (sourceDirectionSpeed != null && sourceLocation != null)
+        {
+            sourceLocation = sourceLocation.add(direction.clone().multiply(sourceDirectionSpeed));
+        }
+        return sourceLocation;
+    }
+
+    protected Location modifyTarget(Location targetLocation, CastContext context, Entity targetEntity) {
+        if (snapTargetToSize > 0 && targetLocation != null)
+        {
+            // This is kind of specific to how Towny does things... :\
+            int x = targetLocation.getBlockX();
+            int z = targetLocation.getBlockZ();
+            int xresult = x / snapTargetToSize;
+            int zresult = z / snapTargetToSize;
+            boolean xneedfix = x % snapTargetToSize != 0;
+            boolean zneedfix = z % snapTargetToSize != 0;
+            targetLocation.setX(snapTargetToSize * (xresult - (x < 0 && xneedfix ? 1 : 0)));
+            targetLocation.setZ(snapTargetToSize * (zresult - (z < 0 && zneedfix ? 1 : 0)));
+        }
+        if (targetOffset != null && targetLocation != null)
+        {
+            targetLocation = targetLocation.add(targetOffset);
+        }
+        if (relativeTargetOffset != null && targetLocation != null)
+        {
+            Location relativeTarget;
+
+            if (persistCaster) {
+                relativeTarget = context.getMage().getEyeLocation();
+            } else {
+                relativeTarget = targetLocation;
+            }
+
+            if (!orientPitch) {
+                relativeTarget.setPitch(0);
+            }
+
+            Vector offset = VectorUtils.rotateVector(relativeTargetOffset, relativeTarget);
+            targetLocation.add(offset);
+        }
+        if (randomTargetOffset != null && targetLocation != null)
+        {
+            targetLocation = RandomUtils.randomizeLocation(targetLocation, randomTargetOffset);
+        }
+        if (targetUseMovementDirection && targetLocation != null) {
+            Mage targetMage = context.getController().getRegisteredMage(targetEntity);
+            if (targetMage != null) {
+                targetLocation.setDirection(targetMage.getVelocity());
+            } else if (targetEntity != null) {
+                targetLocation.setDirection(targetEntity.getVelocity());
+            }
+        }
+
+        if (targetDirection != null && targetLocation != null)
+        {
+            targetLocation.setDirection(targetDirection);
+        }
+        if (targetLocation != null && targetYawOffset != 0)
+        {
+            targetLocation.setYaw(targetLocation.getYaw() + targetYawOffset);
+        }
+        if (targetLocation != null && targetPitchOffset != 0)
+        {
+            targetLocation.setPitch(targetLocation.getPitch() + targetPitchOffset);
+        }
+
+        // Given a yaw and pitch, this adjusts the target direction after rotating it.
+        if (targetLocation != null && (relativeTargetDirectionYawOffset != 0  || relativeTargetDirectionPitchOffset != 0))
+        {
+            Vector relativeDirection = targetLocation.getDirection();
+            relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeTargetDirectionYawOffset, relativeTargetDirectionPitchOffset);
+            targetLocation.setDirection(relativeDirection);
+        }
+
+        if (targetDirectionOffset != null && targetLocation != null)
+        {
+            targetLocation.setDirection(targetLocation.getDirection().add(targetDirectionOffset));
+        }
+        if (targetDirectionSpeed != null && targetLocation != null)
+        {
+            targetLocation = targetLocation.add(direction.clone().multiply(targetDirectionSpeed));
+        }
+        return targetLocation;
+    }
+
     @Override
     public SpellResult step(CastContext context) {
         Entity sourceEntity = context.getEntity();
@@ -171,7 +344,7 @@ public class ChangeContextAction extends CompoundAction {
             sourceLocation = swapLocation;
         }
 
-        Vector direction = context.getDirection().normalize();
+        direction = context.getDirection().normalize();
         if (targetCaster)
         {
             targetEntity = sourceEntity;
@@ -191,160 +364,19 @@ public class ChangeContextAction extends CompoundAction {
                 previousBlock = context.getPreviousPreviousBlock();
             }
         }
-        if (sourceDirectionIsTarget && targetEntity != null && sourceLocation != null)
-        {
-            sourceLocation.setDirection(targetEntity.getLocation().getDirection());
-        }
-        if (sourcePitch != null && sourceLocation != null)
-        {
-            sourceLocation.setPitch((float)(double)sourcePitch);
-        }
-        if (sourceLocation != null && sourceLocation.getPitch() > sourcePitchMin)
-        {
-            sourceLocation.setPitch(sourcePitchMin);
-        }
-        else if (sourceLocation != null && sourceLocation.getPitch() < sourcePitchMax)
-        {
-            sourceLocation.setPitch(sourcePitchMax);
-        }
-        if (sourceLocation != null && sourceOffset != null)
-        {
-            sourceLocation = sourceLocation.add(sourceOffset);
-        }
-        if (relativeSourceOffset != null && sourceLocation != null)
-        {
-            Location relativeSource;
-            if (persistCaster) {
-                relativeSource = context.getMage().getEyeLocation();
-            } else {
-                relativeSource = sourceLocation;
-            }
 
-            if (relativeSource != null) {
-                if (!orientPitch) {
-                    relativeSource.setPitch(0);
-                }
+        // Apply offsets and other transformations
+        sourceLocation = modifySource(sourceLocation, context, targetEntity);
+        targetLocation = modifyTarget(targetLocation, context, targetEntity);
 
-                //If persistCaster is true, it makes the vector relative to the caster and not what the sourceLocation may
-                Vector offset = VectorUtils.rotateVector(relativeSourceOffset, relativeSource);
-                sourceLocation.add(offset);
-            }
-        }
-        if (snapTargetToSize > 0 && targetLocation != null)
-        {
-            // This is kind of specific to how Towny does things... :\
-            int x = targetLocation.getBlockX();
-            int z = targetLocation.getBlockZ();
-            int xresult = x / snapTargetToSize;
-            int zresult = z / snapTargetToSize;
-            boolean xneedfix = x % snapTargetToSize != 0;
-            boolean zneedfix = z % snapTargetToSize != 0;
-            targetLocation.setX(snapTargetToSize * (xresult - (x < 0 && xneedfix ? 1 : 0)));
-            targetLocation.setZ(snapTargetToSize * (zresult - (z < 0 && zneedfix ? 1 : 0)));
-        }
-        if (targetOffset != null && targetLocation != null)
-        {
-            targetLocation = targetLocation.add(targetOffset);
-        }
-        if (relativeTargetOffset != null && targetLocation != null)
-        {
-            Location relativeTarget;
 
-            if (persistCaster) {
-                relativeTarget = context.getMage().getEyeLocation();
-            } else {
-                relativeTarget = targetLocation;
-            }
-
-            if (!orientPitch) {
-                relativeTarget.setPitch(0);
-            }
-
-            Vector offset = VectorUtils.rotateVector(relativeTargetOffset, relativeTarget);
-            targetLocation.add(offset);
-        }
-        if (randomSourceOffset != null && sourceLocation != null)
-        {
-            sourceLocation = RandomUtils.randomizeLocation(sourceLocation, randomSourceOffset);
-        }
-        if (randomTargetOffset != null && targetLocation != null)
-        {
-            targetLocation = RandomUtils.randomizeLocation(targetLocation, randomTargetOffset);
-        }
-        // Apply movement direction
-        if (sourceUseMovementDirection && sourceLocation != null) {
-            sourceLocation.setDirection(context.getMage().getVelocity());
-        }
-        if (targetUseMovementDirection && targetLocation != null) {
-            Mage targetMage = context.getController().getRegisteredMage(targetEntity);
-            if (targetMage != null) {
-                targetLocation.setDirection(targetMage.getVelocity());
-            } else if (targetEntity != null) {
-                targetLocation.setDirection(targetEntity.getVelocity());
-            }
-        }
-
-        // Given a yaw and pitch, this adjusts the source direction after rotating it.
-        if ((relativeSourceDirectionYawOffset != 0  || relativeSourceDirectionPitchOffset != 0) && sourceLocation != null)
-        {
-            Vector relativeDirection = sourceLocation.getDirection();
-            relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeSourceDirectionYawOffset, relativeSourceDirectionPitchOffset);
-            sourceLocation.setDirection(relativeDirection);
-        }
-        // Same thing but with a Target's location.
-        if (targetLocation != null && (relativeTargetDirectionYawOffset != 0  || relativeTargetDirectionPitchOffset != 0))
-        {
-            Vector relativeDirection = targetLocation.getDirection();
-            relativeDirection = VectorUtils.rotateVector(relativeDirection, relativeTargetDirectionYawOffset, relativeTargetDirectionPitchOffset);
-            targetLocation.setDirection(relativeDirection);
-        }
-        if (sourceYawOffset != 0 && sourceLocation != null)
-        {
-            sourceLocation.setYaw(sourceLocation.getYaw() + sourceYawOffset);
-        }
-        if (sourcePitchOffset != 0 && sourceLocation != null)
-        {
-            sourceLocation.setPitch(sourceLocation.getPitch() + sourcePitchOffset);
-        }
-        if (targetLocation != null && targetYawOffset != 0)
-        {
-            targetLocation.setYaw(targetLocation.getYaw() + targetYawOffset);
-        }
-        if (targetLocation != null && targetPitchOffset != 0)
-        {
-            targetLocation.setPitch(targetLocation.getPitch() + targetPitchOffset);
-        }
-        if (targetDirection != null && targetLocation != null)
-        {
-            targetLocation.setDirection(targetDirection);
-        }
-        if (sourceDirection != null && sourceLocation != null)
-        {
-            sourceLocation.setDirection(sourceDirection);
-            direction = sourceDirection.clone();
-        }
-        if (targetDirectionOffset != null && targetLocation != null)
-        {
-            targetLocation.setDirection(targetLocation.getDirection().add(targetDirectionOffset));
-        }
-        if (sourceDirectionOffset != null && sourceLocation != null)
-        {
-            sourceLocation.setDirection(direction.add(sourceDirectionOffset));
-        }
-        if (sourceDirectionSpeed != null && sourceLocation != null)
-        {
-            sourceLocation = sourceLocation.add(direction.clone().multiply(sourceDirectionSpeed));
-        }
-        if (targetDirectionSpeed != null && targetLocation != null)
-        {
-            targetLocation = targetLocation.add(direction.clone().multiply(targetDirectionSpeed));
-        }
         if (sourceAtTarget && targetLocation != null && sourceLocation != null)
         {
             sourceLocation.setX(targetLocation.getX());
             sourceLocation.setY(targetLocation.getY());
             sourceLocation.setZ(targetLocation.getZ());
             sourceLocation.setWorld(targetLocation.getWorld());
+            sourceLocation = modifySource(sourceLocation, context, targetEntity);
         }
         if (persistTarget)
         {
