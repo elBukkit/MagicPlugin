@@ -2275,4 +2275,27 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return false;
     }
+
+    public static int getPhantomSize(Entity entity) {
+        if (class_Phantom == null || entity == null) return 0;
+        try {
+            if (!class_Phantom.isAssignableFrom(entity.getClass())) return 0;
+            return (int)class_Phantom_getSizeMethod.invoke(entity);
+         } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static boolean setPhantomSize(Entity entity, int size) {
+        if (class_Phantom == null || entity == null) return false;
+        try {
+            if (!class_Phantom.isAssignableFrom(entity.getClass())) return false;
+            class_Phantom_setSizeMethod.invoke(entity, size);
+            return true;
+         } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

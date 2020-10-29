@@ -192,6 +192,7 @@ public class NMSUtils {
     protected static Enum<?> enum_EnumHand_MAIN_HAND;
     protected static Class<?> class_MovingObjectPositionBlock;
     protected static Class<?> class_Vec3D;
+    protected static Class<?> class_Phantom;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -319,6 +320,8 @@ public class NMSUtils {
     protected static Method class_MovingObjectPositionBlock_createMethod;
     protected static Method class_CraftBlock_setTypeAndDataMethod;
     protected static Method class_nms_Block_getBlockDataMethod;
+    protected static Method class_Phantom_getSizeMethod;
+    protected static Method class_Phantom_setSizeMethod;
 
     protected static boolean legacyMaps;
 
@@ -714,6 +717,15 @@ public class NMSUtils {
                 logger.warning("Could not bind to chunk ticket API, chunk locking will not work");
                 class_Chunk_addPluginChunkTicketMethod = null;
                 class_Chunk_removePluginChunkTicketMethod = null;
+            }
+
+            try {
+                class_Phantom = Class.forName("org.bukkit.entity.Phantom");
+                class_Phantom_getSizeMethod = class_Phantom.getMethod("getSize");
+                class_Phantom_setSizeMethod = class_Phantom.getMethod("setSize", Integer.TYPE);
+            } catch (Throwable ex) {
+                logger.warning("No phantoms on this version");
+                class_Phantom = null;
             }
 
             // Particularly volatile methods that we can live without

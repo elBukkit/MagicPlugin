@@ -2869,6 +2869,8 @@ public class MagicController implements MageController {
             castConsoleCooldownFree = properties.getBoolean("cast_console_cooldown_free", castConsoleCooldownFree);
         }
 
+        castConsoleFeedback = properties.getBoolean("cast_console_feedback", false);
+
         castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
         castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
 
@@ -6744,6 +6746,11 @@ public class MagicController implements MageController {
         return isResourcePackEnabledByDefault;
     }
 
+    @Override
+    public boolean showConsoleCastFeedback() {
+        return castConsoleFeedback;
+    }
+
     /*
      * Private data
      */
@@ -6997,6 +7004,7 @@ public class MagicController implements MageController {
     private long                                resourcePackDelay           = 0;
     private boolean                             isResourcePackEnabledByDefault = true;
     private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
+    private boolean                             castConsoleFeedback         = false;
 
     private boolean                             hasShopkeepers              = false;
     private FactionsManager                        factionsManager                = new FactionsManager();

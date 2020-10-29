@@ -278,6 +278,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityEnderDragonData(entity);
         } else if (CompatibilityUtils.isFox(entity)) {
             extraData = new EntityFoxData(entity);
+        } else if (entity.getType().name().equals("PHANTOM")) {
+            extraData = new EntityPhantomData(entity);
         }
     }
 
@@ -500,6 +502,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 extraData = new EntityEnderDragonData(parameters, controller);
             } else if (type != null && type.name().equals("FOX")) {
                 extraData = new EntityFoxData(parameters, controller);
+            } else if (type != null && type.name().equals("PHANTOM")) {
+                EntityPhantomData phantomData = new EntityPhantomData();
+                extraData = phantomData;
+                phantomData.size = parameters.getInt("size", 1);
             }
 
         } catch (Exception ex) {

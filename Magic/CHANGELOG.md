@@ -44,6 +44,10 @@
  - Add appearance swapping for magic sword
  - Add `show_name` parameter for mobs
  - Improved combining various location transforms within a single ChangeContext action
+ - Add cast_console_feedback config option, /cast and /castp from console now will not print feedback
+   by default. This is to reduce log spam when using automated console casting from other plugins.
+ - Add support for phantom size
+ - Add support for using JSON to spawn mobs, e.g. `/mmob spawn slime{size:5}`
 
 # 7.11.1
 
