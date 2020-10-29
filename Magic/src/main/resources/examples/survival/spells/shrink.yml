@@ -1,6 +1,8 @@
 shrink:
-    icon: spell_icon:146
-    icon_disabled: spell_icon_disabled:146
+    icon: red_mushroom{CustomModelData:18001}
+    icon_disabled: red_mushroom{CustomModelData:18002}
+    legacy_icon: spell_icon:146
+    legacy_icon_disabled: spell_icon_disabled:146
     icon_url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
     category: combat
     worth: 750

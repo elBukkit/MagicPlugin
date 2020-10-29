@@ -1,0 +1,11 @@
+{
+    "parent": "item/chest",
+    "textures": {
+        "particle": "block/obsidian"
+    },
+
+    "overrides": [
+        {"predicate": { "custom_model_data": 18001}, "model": "item/spells/stash"},
+        {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/stash"}
+    ]
+}

@@ -1,6 +1,8 @@
 stash:
-    icon: spell_icon:106
-    icon_disabled: spell_icon_disabled:106
+    icon: ender_chest{CustomModelData:18001}
+    icon_disabled: ender_chest{CustomModelData:18002}
+    legacy_icon: spell_icon:106
+    legacy_icon_disabled: spell_icon_disabled:106
     icon_url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067
     category: utility
     worth: 2000

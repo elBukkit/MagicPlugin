@@ -1,6 +1,8 @@
 fury:
-    icon: spell_icon:162
-    icon_disabled: spell_icon_disabled:162
+    icon: seagrass{CustomModelData:18001}
+    icon_disabled: seagrass{CustomModelData:18002}
+    legacy_icon: spell_icon:162
+    legacy_icon_disabled: spell_icon_disabled:162
     icon_url: http://textures.minecraft.net/texture/c64f6eeb78485e49b219f40a9d6a8131c539fef932f1cbb5f379adfebdd8c31
     upgrade_required_path: master
     upgrade_required_casts: 50

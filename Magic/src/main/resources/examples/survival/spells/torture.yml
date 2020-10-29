@@ -1,6 +1,8 @@
 torture:
-    icon: spell_icon:172
-    icon_disabled: spell_icon_disabled:172
+    icon: beetroot{CustomModelData:18001}
+    icon_disabled: beetroot{CustomModelData:18002}
+    legacy_icon: spell_icon:172
+    legacy_icon_disabled: spell_icon_disabled:172
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627

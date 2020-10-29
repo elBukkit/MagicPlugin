@@ -6,6 +6,8 @@
 
   "overrides": [
     {"predicate": { "custom_model_data": 18001}, "model": "item/spells/horse"},
-    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/horse"}
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/horse"},
+    {"predicate": { "custom_model_data": 18003}, "model": "item/spells/mount"},
+    {"predicate": { "custom_model_data": 18004}, "model": "item/spells_disabled/mount"}
   ]
 }

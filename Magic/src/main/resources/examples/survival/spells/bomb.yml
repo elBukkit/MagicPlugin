@@ -1,7 +1,8 @@
 bomb:
-    inherit: false
-    icon: spell_icon:93
-    icon_disabled: spell_icon_disabled:93
+    icon: black_carpet{CustomModelData:18001}
+    icon_disabled: black_carpet{CustomModelData:18002}
+    legacy_icon: spell_icon:93
+    legacy_icon_disabled: spell_icon_disabled:93
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     category: demolition
     pvp_restricted: true

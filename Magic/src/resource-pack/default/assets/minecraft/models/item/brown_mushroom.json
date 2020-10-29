@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:block/brown_mushroom"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/nuke"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/nuke"}
+  ]
+}

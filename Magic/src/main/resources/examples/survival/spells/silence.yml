@@ -1,6 +1,8 @@
 silence:
-    icon: spell_icon:8
-    icon_disabled: spell_icon_disabled:8
+    icon: music_disc_11{CustomModelData:18002}
+    icon_disabled: music_disc_11{CustomModelData:18003}
+    legacy_icon: spell_icon:8
+    legacy_icon_disabled: spell_icon_disabled:8
     icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     category: dark
     worth: 750

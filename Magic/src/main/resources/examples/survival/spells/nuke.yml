@@ -1,7 +1,8 @@
 nuke:
-    inherit: false
-    icon: spell_icon:36
-    icon_disabled: spell_icon_disabled:36
+    icon: brown_mushroom{CustomModelData:18001}
+    icon_disabled: brown_mushroom{CustomModelData:18002}
+    legacy_icon: spell_icon:36
+    legacy_icon_disabled: spell_icon_disabled:36
     icon_url: http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2
     example_thumbnail: https://thumbs.gfycat.com/QuerulousWealthyAmericanavocet-size_restricted.gif
     example_link: https://gfycat.com/gifs/detail/QuerulousWealthyAmericanavocet

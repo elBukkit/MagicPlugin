@@ -1,4 +1,6 @@
 petrify:
+    legacy_icon: iron_bars{CustomModelData:18001}
+    legacy_icon_disabled: iron_bars{CustomModelData:18002}
     icon: spell_icon:175
     icon_disabled: spell_icon_disabled:175
     icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188

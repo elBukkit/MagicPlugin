@@ -4,7 +4,7 @@
     "layer0": "minecraft:item/golden_apple"
   },
   "overrides": [
-    {"predicate": {"custom_model_data": 18001}, "model": "item/spells/boon"},
-    {"predicate": {"custom_model_data": 18002}, "model": "item/spells_disabled/boon"}
+    {"predicate": {"custom_model_data": 18001}, "model": "item/spells/invincible"},
+    {"predicate": {"custom_model_data": 18002}, "model": "item/spells_disabled/invincible"}
   ]
 }

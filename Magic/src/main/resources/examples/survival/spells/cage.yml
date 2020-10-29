@@ -1,6 +1,8 @@
 cage:
-    icon: spell_icon:157
-    icon_disabled: spell_icon_disabled:157
+    icon: iron_bars{CustomModelData:18001}
+    icon_disabled: iron_bars{CustomModelData:18002}
+    legacy_icon: spell_icon:157
+    legacy_icon_disabled: spell_icon_disabled:157
     icon_url: http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943
     category: master
     class: ConstructSpell

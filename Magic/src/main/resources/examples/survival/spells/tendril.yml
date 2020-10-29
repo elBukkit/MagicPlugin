@@ -1,6 +1,8 @@
 tendril:
-    icon: spell_icon:129
-    icon_disabled: spell_icon_disabled:129
+    icon: cooked_mutton{CustomModelData:18001}
+    icon_disabled: cooked_mutton{CustomModelData:18002}
+    legacy_icon: spell_icon:129
+    legacy_icon_disabled: spell_icon_disabled:129
     icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
     category: combat
     worth: 400

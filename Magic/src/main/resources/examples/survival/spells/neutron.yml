@@ -1,6 +1,8 @@
 neutron:
-    icon: spell_icon:52
-    icon_disabled: spell_icon_disabled:52
+    icon: phantom_membrane{CustomModelData:18001}
+    icon_disabled: phantom_membrane{CustomModelData:18002}
+    legacy_icon: spell_icon:52
+    legacy_icon_disabled: spell_icon_disabled:52
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
