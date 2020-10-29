@@ -5,6 +5,7 @@ import org.bukkit.entity.Slime;
 
 public class EntitySlimeData extends EntityExtraData {
     public int size;
+    public boolean splittable;
 
     public EntitySlimeData() {
 
@@ -12,6 +13,7 @@ public class EntitySlimeData extends EntityExtraData {
 
     public EntitySlimeData(Slime slime) {
        size = slime.getSize();
+       splittable = true;
     }
 
     @Override

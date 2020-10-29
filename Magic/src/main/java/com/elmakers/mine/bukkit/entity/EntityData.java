@@ -97,7 +97,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean hasMoved = false;
     protected boolean hasChangedHealth = false;
     protected boolean isTemporary = false;
-    protected boolean isSplittable = false;
     private boolean respawn = false;
     protected String name = null;
     protected Art art;
@@ -365,7 +364,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isAngry = parameters.getBoolean("angry", false);
         hasAI = parameters.getBoolean("ai", true);
         hasGravity = parameters.getBoolean("gravity", true);
-        isSplittable = parameters.getBoolean("split", true);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -492,6 +490,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             } else if (type == EntityType.SLIME || type == EntityType.MAGMA_CUBE) {
                 EntitySlimeData slimeData = new EntitySlimeData();
                 slimeData.size = parameters.getInt("size", 16);
+                slimeData.splittable = parameters.getBoolean("split", true);
                 extraData = slimeData;
             } else if (type == EntityType.FALLING_BLOCK) {
                 extraData = new EntityFallingBlockData(parameters);
@@ -1328,7 +1327,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public boolean isSplittable() {
-        return isSplittable;
+        return extraData != null
+                && extraData instanceof EntitySlimeData
+                && ((EntitySlimeData)extraData).splittable;
     }
 
     @Override
