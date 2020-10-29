@@ -1,6 +1,8 @@
 shuriken:
-    icon: spell_icon:194
-    icon_disabled: spell_icon_disabled:194
+    icon: emerald{CustomModelData:18002}
+    icon_disabled: emerald{CustomModelData:18003}
+    legacy_icon: spell_icon:194
+    legacy_icon_disabled: spell_icon_disabled:194
     icon_url: http://textures.minecraft.net/texture/c79a5d6fbb1fe7435edbb9e72cb1d02f6e91597eb4b79d818ae583cda21f
     category: combat
     upgrade_required_path: master

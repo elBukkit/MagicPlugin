@@ -1,6 +1,8 @@
 chainlightning:
-    icon: spell_icon:164
-    icon_disabled: spell_icon_disabled:164
+    icon: sweet_berries{CustomModelData:18001}
+    icon_disabled: sweet_berries{CustomModelData:18002}
+    legacy_icon: spell_icon:164
+    legacy_icon_disabled: spell_icon_disabled:164
     icon_url: http://textures.minecraft.net/texture/1e5b76818c576079939b5a4b033ddfb5c2364fc9f764e573c59508b811e365
     upgrade_required_path: apprentice
     upgrade_required_casts: 50

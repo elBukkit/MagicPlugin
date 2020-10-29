@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/green_dye"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/lift"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/lift"}
+  ]
+}

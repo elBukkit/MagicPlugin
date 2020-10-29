@@ -1,6 +1,8 @@
 disintegrate:
-    icon: spell_icon:133
-    icon_disabled: spell_icon_disabled:133
+    icon: cocoa_beans{CustomModelData:18001}
+    icon_disabled: cocoa_beans{CustomModelData:18002}
+    legacy_icon: spell_icon:133
+    legacy_icon_disabled: spell_icon_disabled:133
     icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
     category: combat
     worth: 300

@@ -10,6 +10,8 @@
     {"predicate": { "custom_model_data": 18003}, "model": "item/spells/levitate"},
     {"predicate": { "custom_model_data": 18004}, "model": "item/spells_disabled/levitate"},
     {"predicate": { "custom_model_data": 18005}, "model": "item/spells/superfly"},
-    {"predicate": { "custom_model_data": 18006}, "model": "item/spells_disabled/superfly"}
+    {"predicate": { "custom_model_data": 18006}, "model": "item/spells_disabled/superfly"},
+    {"predicate": { "custom_model_data": 18007}, "model": "item/spells/growth"},
+    {"predicate": { "custom_model_data": 18008}, "model": "item/spells_disabled/growth"}
   ]
 }

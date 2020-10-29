@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/handheld_rod",
+  "textures": {
+    "layer0": "minecraft:item/warped_fungus_on_a_stick"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/disarm"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/disarm"}
+  ]
+}

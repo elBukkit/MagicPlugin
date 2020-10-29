@@ -1,6 +1,8 @@
 smite:
-    icon: spell_icon:40
-    icon_disabled: spell_icon_disabled:40
+    icon: sea_pickle{CustomModelData:18001}
+    icon_disabled: sea_pickle{CustomModelData:18002}
+    legacy_icon: spell_icon:40
+    legacy_icon_disabled: spell_icon_disabled:40
     icon_url: http://textures.minecraft.net/texture/a31cc0ffb1e814e1c82301067ea318356befa65dc1a027afbfd498709cad58
     category: elemental
     worth: 500

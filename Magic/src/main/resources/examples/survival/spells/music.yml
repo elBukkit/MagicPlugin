@@ -1,6 +1,8 @@
 music:
-    icon: spell_icon:47
-    icon_disabled: spell_icon_disabled:47
+    icon: music_disc_mellohi{CustomModelData:18001}
+    icon_disabled: music_disc_mellohi{CustomModelData:18002}
+    legacy_icon: spell_icon:47
+    legacy_icon_disabled: spell_icon_disabled:47
     icon_url: http://textures.minecraft.net/texture/a2ea21c79fa115b9a63625a2c9c5ec3dd92e1d1a7024162790237da9d98ee28
     category: music
     worth: 30

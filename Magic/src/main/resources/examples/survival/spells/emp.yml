@@ -1,6 +1,8 @@
 emp:
-    icon: spell_icon:131
-    icon_disabled: spell_icon_disabled:131
+    icon: redstone_torch{CustomModelData:18001}
+    icon_disabled: redstone_torch{CustomModelData:18002}
+    legacy_icon: spell_icon:131
+    legacy_icon_disabled: spell_icon_disabled:131
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
     category: electrical
     worth: 150

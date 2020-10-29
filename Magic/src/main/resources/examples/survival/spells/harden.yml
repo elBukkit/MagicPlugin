@@ -1,6 +1,8 @@
 harden:
-    icon: spell_icon:185
-    icon_disabled: spell_icon_disabled:185
+    icon: obsidian{CustomModelData:18001}
+    icon_disabled: obsidian{CustomModelData:18002}
+    legacy_icon: spell_icon:185
+    legacy_icon_disabled: spell_icon_disabled:185
     icon_url: http://textures.minecraft.net/texture/25147d8c6addc07635b183ae1c4459f173bdfde239d949f56ce56d2728911e2
     category: utility
     worth: 150

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/blue_dye"
+  },
+  "overrides": [
+    {"predicate": {"custom_model_data": 18001}, "model": "item/spells/stun"},
+    {"predicate": {"custom_model_data": 18002}, "model": "item/spells_disabled/stun"}
+  ]
+}

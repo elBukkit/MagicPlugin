@@ -1,0 +1,12 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "item/leather_helmet",
+        "layer1": "item/leather_helmet_overlay"
+    },
+
+    "overrides": [
+        {"predicate": { "custom_model_data": 18001}, "model": "item/spells/hat"},
+        {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/hat"}
+    ]
+}

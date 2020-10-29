@@ -1,6 +1,8 @@
 platform:
-    icon: spell_icon:24
-    icon_disabled: spell_icon_disabled:24
+    icon: magenta_dye{CustomModelData:18001}
+    icon_disabled: magenta_dye{CustomModelData:18002}
+    legacy_icon: spell_icon:24
+    legacy_icon_disabled: spell_icon_disabled:24
     icon_url: http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a
     alias: disc
     upgrade_required_path: apprentice

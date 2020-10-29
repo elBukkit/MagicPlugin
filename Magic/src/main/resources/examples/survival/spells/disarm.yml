@@ -1,6 +1,8 @@
 disarm:
-    icon: spell_icon:43
-    icon_disabled: spell_icon_disabled:43
+    icon: warped_fungus_on_a_stick{CustomModelData:18001}
+    icon_disabled: warped_fungus_on_a_stick{CustomModelData:18002}
+    legacy_icon: spell_icon:43
+    legacy_icon_disabled: spell_icon_disabled:43
     icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
     category: light
     worth: 200
@@ -15,8 +17,8 @@ disarm:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_endermen_teleport
            sound: magic.crack
+        -  sound: entity_endermen_teleport
            sound_pitch: 0.3
            sound_volume: 0.5
         tick:

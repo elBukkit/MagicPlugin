@@ -1,6 +1,8 @@
 horse:
-    icon: spell_icon:49
-    icon_disabled: spell_icon_disabled:49
+    icon: saddle{CustomModelData:18001}
+    icon_disabled: saddle{CustomModelData:18002}
+    legacy_icon: spell_icon:49
+    legacy_icon_disabled: spell_icon_disabled:49
     icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
     category: elemental
     cast_on_no_target: false

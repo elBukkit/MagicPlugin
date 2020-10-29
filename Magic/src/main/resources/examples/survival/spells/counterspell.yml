@@ -1,6 +1,8 @@
 counterspell:
-    icon: spell_icon:119
-    icon_disabled: spell_icon_disabled:119
+    icon: music_disc_pigstep{CustomModelData:18001}
+    icon_disabled: music_disc_pigstep{CustomModelData:18002}
+    legacy_icon: spell_icon:119
+    legacy_icon_disabled: spell_icon_disabled:119
     icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
     category: combat
     worth: 600

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slime_block",
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/rubberize"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/rubberize"}
+  ]
+}

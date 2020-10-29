@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/bamboo"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/laser"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/laser"}
+  ]
+}

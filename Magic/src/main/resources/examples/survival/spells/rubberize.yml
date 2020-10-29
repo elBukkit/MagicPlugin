@@ -1,6 +1,8 @@
 rubberize:
-    icon: spell_icon:173
-    icon_disabled: spell_icon_disabled:173
+    icon: slime_block{CustomModelData:18001}
+    icon_disabled: slime_block{CustomModelData:18002}
+    legacy_icon: spell_icon:173
+    legacy_icon_disabled: spell_icon_disabled:173
     icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
     category: utility
     cancellable: false
