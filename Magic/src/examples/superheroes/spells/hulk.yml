@@ -1,0 +1,148 @@
+toss_block:
+ actions: 
+  cast: 
+  - class: ThrowBlock
+    actions:
+    - class: AreaOfEffect
+      actions:
+      - class: PotionEffect
+      - class: Damage
+    - class: PlayEffects
+      effect: land
+ effects: 
+  cast:
+  - location: origin
+    relative_offset: 1,0.5,0
+    sound: entity_player_attack_sweep
+    sound_pitch: 0.5
+    particle: sweep_attack
+  land: 
+  - sound: block_stone_step
+    sound_pitch: 0.7
+  - class: EffectRing
+    particle: block_crack
+    period: 4
+    particle_count: 20
+    radius: $radius
+    particle_offset_x: 0.9
+    particle_offset_z: 0.9
+    particle_offset_y: 0.1
+  undo: 
+  - location: target
+    sound: block_stone_fall
+    particle: block_crack
+    particle_count: 25
+    particle_offset_x: 1
+    particle_offset_y: 1
+    particle_offset_z: 1
+ parameters:
+  cooldown: 10000
+  speed_max: 2
+  speed_min: 1
+  undo: 100
+  brush: stone
+  add_effects: 
+   slow: 10
+  duration: 2000
+  radius: 2
+  damage: 5
+  target: other
+  damage_max_distance: 5
+ 
+hulk_smash:
+ actions: 
+  cast:
+  - class: ChangeContext
+    target_offset: 0,-2,0
+    target_caster: true
+    actions:
+    - class: Parallel
+      actions:
+      - class: Disc
+        actions:
+        - class: Skip
+          actions:
+          - class: Delay
+        - class: Cover
+          actions:
+          - class: PlayEffects
+            effect: break
+          - class: ModifyBlock
+      - class: Repeat
+        actions:
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+          - class: Velocity
+        - class: Delay
+ effects: 
+  cast:
+  - location: origin
+    sound: entity_generic_explode
+  break:
+  - location: target
+    sound: block_stone_step
+    sound_volume: 0.5
+    particle: block_crack
+    particle_count: 25
+    particle_offset_x: 1
+    particle_offset_y: 1
+    particle_offset_z: 1
+ parameters:
+  cooldown: 15000
+  range: 2
+  target: other
+  target_self: false
+  radius: 5
+  y_radius: 2
+  skip: 10
+  delay: 100
+  brush: air
+  falling: true
+  repeat: 6
+  damage: 5
+  direction: 0,1,0
+  speed: 0.5
+  push: 1
+  undo: 8000
+  undo_speed: 0.5
+
+hulk_leap:
+ actions:
+  cast:
+  - class: Velocity
+  - class: FallProtection
+ effects:
+  cast:
+  - class: EffectSingle
+    sound: entity_ender_dragon_flap
+    sound_volume: 1
+    effectlib:
+     class: Trace
+     iterations: 30
+     particle_offset_x: 1
+     particle_offset_y: 1
+     particle_offset_z: 1
+     particle_count: 2
+     speed: 2
+     particle: spell
+  land:
+  - sound: block_stone_step
+    sound_pitch: 0.7
+  - class: EffectRing
+    particle: block_crack
+    source_location: feet
+    period: 4
+    particle_count: 80
+    radius: 4
+    particle_offset_x: 0.9
+    particle_offset_z: 0.9
+    particle_offset_y: 0.1
+ parameters:
+  cooldown: 7000
+  duration: 20000
+  target: self
+  min_speed: 3
+  max_speed: 5
+  bypass_confusion: true
+  cooldown: 5000

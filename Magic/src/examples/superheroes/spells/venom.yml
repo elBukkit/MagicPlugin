@@ -1,0 +1,65 @@
+symbiote_protection:
+ passive: true
+ triggers:
+ - trigger: damage
+   damage_type: physical
+ actions:
+  cast:
+  - class: AreaOfEffect
+    actions:
+    - class: Damage
+    - class: PlayEffects
+      effect: hit
+ effects:
+  cast:
+  - location: origin
+    sound: magic.zap
+    sound_volume: 0.5
+    sound_pitch: 2
+    source_location: body
+    effectlib: 
+     class: AnimatedBall
+     particle: redstone
+     color: "000000"
+     y_factor: 1
+     x_factor: 0.6
+     z_factor: 0.6
+     duration: 500
+     iterations: 2
+  - location: origin
+    source_location: body
+    effectlib: 
+     class: Sphere
+     particle: redstone
+     color: "000000"
+     radius: 1
+     particles: 25
+     duration: 500
+     iterations: 2
+  hit:
+  - location: target
+    target_location: hit
+    source_location: body
+    effectlib:
+     class: Line
+     duration: 500
+     is_zig_zag: true
+     zig_zags: 2
+     zig_zag_offset: 0,0.01,0
+     particle_size: 0.5
+     particle: redstone
+     color: "000000"
+     update_directions: false
+     update_locations: false
+ parameters:
+  damage: 2
+  radius: 3
+  y_radius: 2
+  target_type: Damageable
+  track_target: true
+  velocity: 100
+  range: 5
+  allow_max_range: true
+  target_count: -1
+  target: self
+  target_self: false

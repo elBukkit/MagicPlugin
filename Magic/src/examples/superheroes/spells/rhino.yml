@@ -1,0 +1,60 @@
+rush:
+ cancel_effects: true
+ actions:
+  cast:
+  - class: Repeat
+    actions:
+    - class: Parallel
+      actions:
+        - class: PlaySound
+          sound: block_stone_step
+          volume: 0.5
+        - class: Retarget
+          range: 1
+          actions:
+          - class: CheckBlock
+            allowed: solid
+            actions:
+            - class: ChangeContext
+              target_caster: true
+              actions:
+              - class: Damage
+            - class: Stop
+        - class: ChangeContext
+          target_caster: true
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: Velocity
+              push: 1
+            - class: Damage
+          - class: Velocity
+            velocity: 2
+    - class: Delay
+ effects:
+  cast:
+  - location: origin
+    source_location: body
+    effectlib: 
+     class: Trace
+     particle: spell
+     particle_count: 5
+     particle_offset_x: 1.5
+     particle_offset_y: 1.5
+     particle_offset_z: 1.5
+ parameters:
+  target: none
+  target_self: false
+  target_type: Damageable
+  range: 3
+  hitbox: false
+  radius: 2
+  source_pitch_min: 90
+  source_pitch_max: 0
+  damage: 3
+  target_breakables: 1
+  cooldown: 5000
+  magic_damage: false
+  instant_block_effects: true
+  repeat: 60
+  delay: 100
