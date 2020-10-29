@@ -9,9 +9,6 @@ regular_bomb:
     fail:
     - class: CustomProjectile
       actions:
-      - class: PlayEffects
-        effects: explode
-        ignore_result: true
       - class: AreaOfEffect
         actions:
         - class: Damage
@@ -27,9 +24,6 @@ regular_bomb:
         first:
          spread: 0
         actions:
-        - class: PlayEffects
-          effects: explode
-          ignore_result: true
         - class: AreaOfEffect
           actions:
           - class: Damage
@@ -60,25 +54,6 @@ regular_bomb:
      particles: 10
   hit:
   - location: target
-    sound: magic.zap
-    sound_volume: 0.3
-    effectlib:
-     class: Modified
-     duration: $attach_duration
-     parameters:
-      radius: "sin(t/8) * 0.5"
-     effect:
-      class: SphereEffect
-      particle: redstone
-      particle_size: 0.5
-      color: "ff7518"
-      particles: 10
-      particle_count: 4
-      particle_offset_x: 0.01
-      particle_offset_y: 0.01
-      particle_offset_z: 0.01
-  explode:
-  - location: target
     particle: explosion_huge
     sound: entity_generic_explode
  parameters:
@@ -93,7 +68,6 @@ regular_bomb:
   target_breakables: 0
   cooldown: 5000
   target_self_timeout: 2000
-  attach_duration: 750
   radius: 1.5
   speed: 1.2
   falling: true
@@ -189,89 +163,13 @@ sticky_bomb:
   damage_max_distance: 3
 
 reflective_bomb:
- actions:
-  cast:
-  - class: CustomProjectile
-    actions:
-    - class: PlayEffects
-      effects: explode
-      ignore_result: true
-    - class: AreaOfEffect
-      actions:
-      - class: Damage
-    - class: Sphere
-      actions:
-      - class: BreakBlock
- effects:
-  cast:
-  - class: EffectSingle
-    sound: magic.zap_crack
-    location: origin
-  tick:
-  - particle: redstone
-    color: "ff7518"
-    location: target
-    particle_size: 0.5
-    particle_offset_x: 0.1
-    particle_offset_y: 0.1
-    particle_offset_z: 0.1
-  projectile:
-  - effectlib:
-     class: SphereEffect
-     particle: redstone
-     particle_size: 0.5
-     color: "ff7518"
-     iterations: 30
-     radius: 0.2
-     particles: 10
-  hit:
-  - location: target
-    sound: magic.zap
-    sound_volume: 0.3
-    effectlib:
-     class: Modified
-     duration: $attach_duration
-     parameters:
-      radius: "sin(t/8) * 0.5"
-     effect:
-      class: SphereEffect
-      particle: redstone
-      particle_size: 0.5
-      color: "ff7518"
-      particles: 10
-      particle_count: 4
-      particle_offset_x: 0.01
-      particle_offset_y: 0.01
-      particle_offset_z: 0.01
-  explode:
-  - location: target
-    particle: explosion_huge
-    sound: entity_generic_explode
+ inherit: sticky_bomb
  parameters:
-  target: other
-  hitbox: true
-  allow_max_range: true
-  velocity: 30
-  gravity: 0.05
-  range: 120
-  target_type: Damageable
   damage: 8
-  target_breakables: 0
   cooldown: 5000
-  target_self_timeout: 2000
   attach_duration: 750
   reflective: solid
   reflect_count: 2
-  radius: 1.5
-  speed: 1.2
-  falling: true
-  direction: 0,0.5,0
-  undo: 10000
-  destructible_durability: 200
-  break_durability: 50
-  radius: 2
-  durability_max_distance: 4
-  damage_max_distance: 3
 
 poison_bomb:
  actions:
@@ -356,6 +254,7 @@ goblin_glider:
  world_border_restricted: true
  creative_restricted: true
  cast_on_no_target: false
+ cancel_effects: true
  actions:
   cast:
   - class: ChangeContext
@@ -391,10 +290,13 @@ goblin_glider:
     sound: entity_enderdragon_flap
     sound_volume: 1.1
   - class: EffectSingle
+    location: origin
+    source_location: feet
     effectlib:
      class: TraceEffect
-     iterations: 30
-     particle: spell
+     duration: $duration
+     particle: cloud
+     relative_offset: -0.2,0.5,0
   crash:
   - class: EffectSingle
     location: origin
@@ -431,7 +333,7 @@ goblin_glider:
   liftoff_thrust: 1.5
   steer_speed: 0.75
   fall_protection: 8000
-  duration: -1
+  duration: 60000
   cooldown: 30000
   cancel_on_no_permission: true
   sound: magic.flying
@@ -440,6 +342,7 @@ goblin_glider:
   sound_min_volume: 0.9
   sound_max_pitch: 2
   sound_min_pitch: 0.5
+  armor_stand_pitch: 0.6
   controllable: true
   strafe_controllable: 0.75
   jump_controllable: 0.75
