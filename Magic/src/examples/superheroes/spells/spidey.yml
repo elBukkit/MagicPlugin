@@ -56,7 +56,7 @@ web_pad:
   destructible: destructible_replace
   check_destructible: true
   undo: 10000
-  cooldown: 3000
+  cooldown: 5000
 
 spider_wall_climb:
  passive: true
@@ -84,39 +84,25 @@ web_string:
   cast:
   - class: CustomProjectile
     actions:
-    - class: CheckBlock
+    - class: ChangeContext
+      swap_source_and_target: true
       actions:
-      - class: ChangeContext
-        target_caster: true
-        actions:
-        - class: FallProtection
-          duration: 10000
-        - class: Repeat
-          repeat: 3
-          actions:
-          - class: Velocity
-            speed: 1
-            push: -0.5
-        - class: Velocity
-          speed: 3
-      fail:
-      - class: Velocity
-        push: -1
-        speed: 2
-      - class: ChangeContext
-        target_caster: true
+      - class: FallProtection
+        duration: 8000
+      - class: Repeat
+        repeat: 5
         actions:
         - class: Velocity
-          speed: 2
+          push: -1
         - class: Delay
-          delay: 500
-        - class: AreaOfEffect
-          radius: 3
-          target_count: 1
-          y_radius: 2
-          actions:
-          - class: Damage
-            damage: 5
+          delay: 100
+      - class: Velocity
+        push: -3
+      - class: Delay
+        delay: 500
+      - class: AreaOfEffect
+        actions:
+        - class: Damage
  effects:
   tick:
   - location: target
@@ -132,9 +118,13 @@ web_string:
     sound_volume: 0.1
     location: origin
  parameters:
+  radius: 2
+  y_radius: 2
+  damage: 6
+  cooldown: 1000
   velocity: 500
   undo: 2000
-  range: 32
+  range: 64
   allow_max_range: true
   target_self: false
   target: other
@@ -213,7 +203,25 @@ web_hang:
   range: 16
 
 web_ball:
- actions: 
+ actions:
+  alternate_sneak:
+  - class: CustomProjectile
+    tick_effects: big
+    actions:
+    - class: CheckBlock
+      actions:
+      - class: ChangeContext
+        target_attachment: true
+        actions:
+        - class: ModifyBlock
+    - class: AreaOfEffect
+      actions:
+      - class: PlayEffects
+        effects: hit_entity
+      - class: Damage
+      - class: Velocity
+        push: 1.5
+      - class: PotionEffect
   cast: 
   - class: CustomProjectile
     actions:
@@ -225,9 +233,18 @@ web_ball:
         - class: ModifyBlock
     - class: Damage
     - class: Velocity
-      speed: 0.5
+      push: 0.75
     - class: PotionEffect
  effects:
+  big:
+  - location: target
+    particle: item_crack
+    material: cobweb
+    particle_count: 15
+    particle_data: 0.05
+    particle_offset_x: 0.5
+    particle_offset_z: 0.5
+    particle_offset_y: 0.5
   cast:
   - location: origin
     sound: magic.zap_crack
@@ -283,18 +300,24 @@ web_ball:
  headshot_parameters:
   add_effects:
    blindness: 1
-   slow: 1
+ alternate_sneak_parameters:
+  radius: 2
+  cooldown: 5000
+  damage: 5
+  add_effects:
+   slow: 10
  parameters:
+  speed: 0.2
+  cooldown: 250
   brush: cobweb
   transparent: transparent_to_construction,plants,snow
   check_destructible: false
   alow_max_range: true
   range: 32
-  cooldown: 1000
   damage: 1
   add_effects:
    slow: 1
-  speed: 8
+  velocity: 50
   duration: 5000
   undo: 2000
   push: 1
