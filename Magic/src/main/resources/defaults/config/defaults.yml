@@ -142,6 +142,9 @@ cast_console_cooldown_free: false
 cast_command_power_multiplier: 0.0
 cast_console_power_multiplier: 0.0
 
+# Whether to give feedback to console senders using cast and castp
+cast_console_feedback: false
+
 # Set this to 0 to disable BStats metrics collection
 metrics_level: 5
 

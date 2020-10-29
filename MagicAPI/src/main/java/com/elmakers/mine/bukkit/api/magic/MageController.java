@@ -230,6 +230,7 @@ public interface MageController {
     Mage getAutomaton(@Nonnull String id, @Nonnull String name);
     @Nonnull
     Mage getConsoleMage();
+    boolean showConsoleCastFeedback();
 
     Collection<String> getBrushKeys();
 

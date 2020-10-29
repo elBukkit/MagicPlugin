@@ -135,6 +135,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
             String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
             for (Mage mage : mages) {
                 if (mage != null && !mage.isLoading()) {
+                    // TODO: Need a way to disable these messsages .. maybe by default?
                     processCastCommand(sender, mage, castParameters, sourceLocation, " as " + mage.getName());
                 }
             }
@@ -184,10 +185,12 @@ public class CastCommandExecutor extends MagicTabExecutor {
             result = false;
             controller.getLogger().log(Level.SEVERE, "Error casting spell via command", ex);
         }
+        boolean showCast = sender != null && (sender instanceof Player || controller.showConsoleCastFeedback());
+        messageSuffix = messageSuffix == null ? "" : messageSuffix;
         if (result) {
-            if (sender != null && messageSuffix != null) sender.sendMessage("Cast " + spell.getName() + messageSuffix);
+            if (showCast && !messageSuffix.isEmpty()) sender.sendMessage("Cast " + spell.getName() + messageSuffix);
         } else {
-            if (sender != null) sender.sendMessage("Failed to cast " + spell.getName() + messageSuffix);
+            if (showCast) sender.sendMessage("Failed to cast " + spell.getName() + messageSuffix);
         }
         ((MagicController)controller).toggleCastCommandOverrides(mage, sender, false);
         return true;
