@@ -120,6 +120,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean transformable;
     protected boolean preventProjectiles;
     protected boolean preventMelee;
+    protected boolean nameVisible;
     protected Boolean persist = null;
     protected int fireTicks;
 
@@ -184,6 +185,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.persist = CompatibilityUtils.isPersist(entity);
         this.canPickupItems = (entity instanceof Creature) ? ((Creature)entity).getCanPickupItems() : false;
         name = entity.getCustomName();
+        nameVisible = entity.isCustomNameVisible();
         tags = CompatibilityUtils.getTags(entity);
 
         // This can sometimes throw an exception on an invalid
@@ -312,6 +314,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (name != null) {
             name = ChatColor.translateAlternateColorCodes('&', name);
         }
+        nameVisible = parameters.getBoolean("show_name");
         if (parameters.contains("health")) {
             health = parameters.getDouble("health", 1);
             maxHealth = health;
@@ -897,6 +900,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (!isPlayer && name != null && name.length() > 0) {
             entity.setCustomName(name);
+        }
+        if (!isPlayer) {
+            entity.setCustomNameVisible(nameVisible);
         }
         if (controller != null) {
             attach(controller, entity);

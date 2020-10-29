@@ -41,6 +41,7 @@
  - Add "cast_interval_cost_free" parameter to wands, interval ("aura") casts are no longer cost-free by default
  - Add vault.enabled config property to turn off Vault integration
  - Add appearance swapping for magic sword
+ - Add `show_name` parameter for mobs
 
 # 7.11.1
 
