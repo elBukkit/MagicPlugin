@@ -1,6 +1,8 @@
 decoy:
-  icon: spell_icon:65
-  icon_disabled: spell_icon_disabled:65
+  icon: totem_of_undying{CustomModelData:18001}
+  icon_disabled: totem_of_undying{CustomModelData:18002}
+  legacy_icon: spell_icon:65
+  legacy_icon_disabled: spell_icon_disabled:65
   toggle: undo
   disable_mana_regeneration: true
   quick_cast: true

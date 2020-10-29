@@ -1,6 +1,8 @@
 wolf:
-    icon: spell_icon:69
-    icon_disabled: spell_icon_disabled:69
+    icon: beef{CustomModelData:18001}
+    icon_disabled: beef{CustomModelData:18002}
+    legacy_icon: spell_icon:69
+    legacy_icon_disabled: spell_icon_disabled:69
     icon_url: http://textures.minecraft.net/texture/f73d8d925fd45eee331437cc496403f96516a5d35a8e62189990d8beee6a14
     category: elemental
     class: WolfSpell

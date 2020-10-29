@@ -1,6 +1,8 @@
 gasp:
-    icon: spell_icon:186
-    icon_disabled: spell_icon_disabled:186
+    icon: glass_bottle{CustomModelData:18001}
+    icon_disabled: glass_bottle{CustomModelData:18002}
+    legacy_icon: spell_icon:186
+    legacy_icon_disabled: spell_icon_disabled:186
     icon_url: http://textures.minecraft.net/texture/c28bdd34810f866527daaf283da71826a8378286b2a43a626615fa1b3639e
     category: utility
     worth: 20

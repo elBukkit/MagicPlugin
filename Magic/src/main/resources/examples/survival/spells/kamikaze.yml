@@ -1,6 +1,8 @@
 kamikaze:
-    icon: spell_icon:66
-    icon_disabled: spell_icon_disabled:66
+    icon: pufferfish{CustomModelData:18001}
+    icon_disabled: pufferfish{CustomModelData:18002}
+    legacy_icon: spell_icon:66
+    legacy_icon_disabled: spell_icon_disabled:66
     icon_url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
     category: elemental
     pvp_restricted: true

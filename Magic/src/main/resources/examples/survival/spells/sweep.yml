@@ -1,6 +1,8 @@
 sweep:
-    icon: spell_icon:178
-    icon_disabled: spell_icon_disabled:178
+    icon: dried_kelp{CustomModelData:18001}
+    icon_disabled: dried_kelp{CustomModelData:18002}
+    legacy_icon: spell_icon:178
+    legacy_icon_disabled: spell_icon_disabled:178
     icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
     category: combat
     worth: 100

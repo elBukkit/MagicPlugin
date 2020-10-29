@@ -1,6 +1,8 @@
 polymorph:
-    icon: spell_icon:176
-    icon_disabled: spell_icon_disabled:176
+    icon: pufferfish_bucket{CustomModelData:18001}
+    icon_disabled: pufferfish_bucket{CustomModelData:18002}
+    legacy_icon: spell_icon:176
+    legacy_icon_disabled: spell_icon_disabled:176
     icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188
     category: combat
     worth: 300

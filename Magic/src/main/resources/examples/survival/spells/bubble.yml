@@ -1,6 +1,8 @@
 bubble:
-    icon: spell_icon:76
-    icon_disabled: spell_icon_disabled:76
+    icon: cyan_dye{CustomModelData:18001}
+    icon_disabled: cyan_dye{CustomModelData:18002}
+    legacy_icon: spell_icon:76
+    legacy_icon_disabled: spell_icon_disabled:76
     alias: cushion
     icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
     category: utility

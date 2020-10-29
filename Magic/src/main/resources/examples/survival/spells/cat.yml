@@ -1,6 +1,8 @@
 cat:
-    icon: spell_icon:70
-    icon_disabled: spell_icon_disabled:70
+    icon: cod{CustomModelData:18001}
+    icon_disabled: cod{CustomModelData:18002}
+    legacy_icon: spell_icon:70
+    legacy_icon_disabled: spell_icon_disabled:70
     icon_url: http://textures.minecraft.net/texture/c87fd886605b6aaf6af2b2ea5b205bcdcb60b453b0353ceece0861cfc67ada4
     category: elemental
     worth: 150
