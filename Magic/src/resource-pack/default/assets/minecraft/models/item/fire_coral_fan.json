@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:block/fire_coral_fan"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/convert"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/convert"}
+  ]
+}

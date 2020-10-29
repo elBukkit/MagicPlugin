@@ -1,6 +1,8 @@
 toss:
-    icon: spell_icon:30
-    icon_disabled: spell_icon_disabled:30
+    icon: black_dye{CustomModelData:18003}
+    icon_disabled: black_dye{CustomModelData:18004}
+    legacy_icon: spell_icon:30
+    legacy_icon_disabled: spell_icon_disabled:30
     icon_url: http://textures.minecraft.net/texture/44471f5f9792fd21dd1e652f2ac5f47e49eeebd4fb289f4174ec20dc7b57e6
     category: engineering
     tags: noduel

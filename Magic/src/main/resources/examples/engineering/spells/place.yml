@@ -1,6 +1,8 @@
 place:
-    icon: spell_icon:89
-    icon_disabled: spell_icon_disabled:89
+    icon: kelp{CustomModelData:18001}
+    icon_disabled: kelp{CustomModelData:18002}
+    legacy_icon: spell_icon:89
+    legacy_icon_disabled: spell_icon_disabled:89
     icon_url: http://textures.minecraft.net/texture/c79136be2c1ed4c89e21bfc7846486c516d9b4d32965edfd5877fafa8aeb6
     category: engineering
     tags: noduel

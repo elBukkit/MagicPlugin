@@ -1,6 +1,8 @@
 raise:
-  icon: spell_icon:88
-  icon_disabled: spell_icon_disabled:88
+  icon: flint{CustomModelData:18001}
+  icon_disabled: flint{CustomModelData:18002}
+  legacy_icon: spell_icon:88
+  legacy_icon_disabled: spell_icon_disabled:88
   icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
   example_thumbnail: https://thumbs.gfycat.com/ClassicUnhappyElephantbeetle-size_restricted.gif
   example_link: https://gfycat.com/gifs/detail/ClassicUnhappyElephantbeetle

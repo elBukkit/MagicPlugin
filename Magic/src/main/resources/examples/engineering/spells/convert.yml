@@ -1,6 +1,8 @@
 convert:
-    icon: spell_icon:112
-    icon_disabled: spell_icon_disabled:112
+    icon: fire_coral_fan{CustomModelData:18001}
+    icon_disabled: fire_coral_fan{CustomModelData:18002}
+    legacy_icon: spell_icon:112
+    legacy_icon_disabled: spell_icon_disabled:112
     icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
     category: engineering
     tags: noduel

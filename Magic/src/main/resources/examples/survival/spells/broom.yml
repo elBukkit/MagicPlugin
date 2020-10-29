@@ -1,6 +1,8 @@
 broom:
-    icon: spell_icon:168
-    icon_disabled: spell_icon_disabled:168
+    icon: acacia_sapling{CustomModelData:18002}
+    icon_disabled: acacia_sapling{CustomModelData:18003}
+    legacy_icon: spell_icon:168
+    legacy_icon_disabled: spell_icon_disabled:168
     hidden: true
     icon_url: http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
     category: specialty

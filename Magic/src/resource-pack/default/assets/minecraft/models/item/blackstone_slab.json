@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/blackstone_slab",
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/bridge"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/bridge"}
+  ]
+}

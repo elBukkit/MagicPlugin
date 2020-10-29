@@ -1,6 +1,6 @@
 supertorch:
-    icon: torch{CustomModelData:18003}
-    icon_disabled: torch{CustomModelData:18004}
+    icon: lantern{CustomModelData:18001}
+    icon_disabled: lantern{CustomModelData:18002}
     legacy_icon: spell_icon:61
     legacy_icon_disabled: spell_icon_disabled:61
     icon_url: http://textures.minecraft.net/texture/15f098d4bc88ca9b11ddb6b3acb08dad7a3fc62929ec27adcedb667c61faa3

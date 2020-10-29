@@ -1,6 +1,8 @@
 brushselect:
-    icon: spell_icon:188
-    icon_disabled: spell_icon_disabled:188
+    icon: jungle_sign{CustomModelData:18001}
+    icon_disabled: jungle_sign{CustomModelData:18002}
+    legacy_icon: spell_icon:188
+    legacy_icon_disabled: spell_icon_disabled:188
     icon_url: http://textures.minecraft.net/texture/a653c2daf990459d641e5b8f6e62ef8af24b1a2da49c9ce8d9f68ab682905112
     category: specialty
     hidden: true

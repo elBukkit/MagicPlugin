@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:block/jungle_sapling"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/tree"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/tree"}
+  ]
+}
