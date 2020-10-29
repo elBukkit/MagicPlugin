@@ -41,7 +41,7 @@ lightning:
         allow_max_range: true
         range: 32
         radius: 8
-        cooldown: 10000
+        cooldown: 45000
         undo: 8000
     costs:
         mana: 80

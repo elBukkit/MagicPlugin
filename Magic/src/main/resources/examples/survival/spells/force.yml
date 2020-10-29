@@ -53,10 +53,11 @@ force:
         target_type: LivingEntity
         target_breakables: 1
         target: other_entity
-        range: 24
+        range: 12
         item_force: 1
         entity_force: 4
         bypass_backfire: true
+        cooldown: 3000
     costs:
         mana: 100
 

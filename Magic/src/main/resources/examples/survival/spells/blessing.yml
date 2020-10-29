@@ -57,5 +57,6 @@ blessing:
         only_friendly: true
         gravity: 0.05
         velocity: 15
+        range: 8
     costs:
         mana: 200

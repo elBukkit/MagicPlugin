@@ -49,7 +49,7 @@ smite:
         range: 32
         radius: 1.5
         damage_max_distance: 4
-        cooldown: 15000
+        cooldown: 45000
         effect_only: true
         damage: 3
         duration: 5000

@@ -64,7 +64,7 @@ tornado:
         push: -1
         y_offset: 1
         velocity: 3
-        cooldown: 10000
+        cooldown: 30000
         lifetime: 3000
         interval: 4
         damage: 1
