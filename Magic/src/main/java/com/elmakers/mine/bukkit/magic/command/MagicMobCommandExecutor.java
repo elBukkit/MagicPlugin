@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -31,8 +34,12 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 public class MagicMobCommandExecutor extends MagicTabExecutor {
+    protected static Gson gson;
+
     public MagicMobCommandExecutor(MagicAPI api) {
         super(api, "mmob");
     }
@@ -162,9 +169,35 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         MageController controller = api.getController();
         Entity spawned = null;
+        EntityData entityData = null;
+
+        int jsonStart = mobKey.indexOf('{');
+        if (jsonStart > 0) {
+            String fullKey = mobKey;
+            mobKey = fullKey.substring(0, jsonStart);
+            String json = fullKey.substring(jsonStart);
+            try {
+                JsonReader reader = new JsonReader(new StringReader(json));
+                reader.setLenient(true);
+                Map<String, Object> tags = getGson().fromJson(reader, Map.class);
+                InventoryUtils.convertIntegers(tags);
+                ConfigurationSection mobConfig = new MemoryConfiguration();
+                mobConfig.set("type", mobKey);
+                for (Map.Entry<String, Object> entry : tags.entrySet()) {
+                    mobConfig.set(entry.getKey(), entry.getValue());
+                }
+                entityData = controller.getMob(mobConfig);
+            } catch (Throwable ex) {
+                controller.getLogger().warning("[Magic] Error parsing mob json: " + json + " : " + ex.getMessage());
+            }
+        }
 
         for (int i = 0; i < count; i++) {
-            spawned = controller.spawnMob(mobKey, targetLocation);
+            if (entityData == null) {
+                spawned = controller.spawnMob(mobKey, targetLocation);
+            } else {
+                spawned = entityData.spawn(targetLocation);
+            }
         }
         if (spawned == null) {
             sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobKey);
@@ -177,6 +210,13 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
         sender.sendMessage(ChatColor.AQUA + "Spawned mob: " + ChatColor.LIGHT_PURPLE + name);
         return true;
+    }
+
+    private static Gson getGson() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        return gson;
     }
 
     protected void onListMobs(CommandSender sender, boolean all) {
