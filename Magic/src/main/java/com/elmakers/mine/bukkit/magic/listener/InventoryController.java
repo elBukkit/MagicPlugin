@@ -251,7 +251,8 @@ public class InventoryController implements Listener {
             controller.onArmorUpdated(mage);
         }
 
-        if (clickedWand && action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+        boolean tryingToWear = action == InventoryAction.MOVE_TO_OTHER_INVENTORY && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING);
+        if (clickedWand && tryingToWear) {
             int slot = event.getSlot();
             Wand wand = null;
             if (slot == player.getInventory().getHeldItemSlot()) {
@@ -277,7 +278,7 @@ public class InventoryController implements Listener {
         // Another check for wearing spells
         boolean clickedSpell = Wand.isSpell(clickedItem);
         boolean clickedWearable = controller.isWearable(clickedItem);
-        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedSpell && clickedWearable)
+        if (tryingToWear && clickedSpell && clickedWearable)
         {
             event.setCancelled(true);
             return;
@@ -425,7 +426,7 @@ public class InventoryController implements Listener {
         }
 
         // Check for armor changing
-        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
+        if (tryingToWear && clickedItem != null)
         {
             if (clickedWearable) {
                 controller.onArmorUpdated(mage);
