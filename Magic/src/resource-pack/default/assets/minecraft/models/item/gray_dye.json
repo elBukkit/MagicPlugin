@@ -5,7 +5,7 @@
   },
 
   "overrides": [
-    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/homing"},
-    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/homing"}
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/night"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/night"}
   ]
 }

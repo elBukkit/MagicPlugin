@@ -7,6 +7,8 @@
   "overrides": [
     {"predicate": { "custom_model_data": 18001}, "model": "item/upgrades/alphabetizer"},
     {"predicate": { "custom_model_data": 18002}, "model": "item/upgrades/quickcast_enable"},
-    {"predicate": { "custom_model_data": 18003}, "model": "item/brushes/default"}
+    {"predicate": { "custom_model_data": 18003}, "model": "item/brushes/default"},
+    {"predicate": { "custom_model_data": 18004}, "model": "item/spells/superbackup"},
+    {"predicate": { "custom_model_data": 18005}, "model": "item/spells_disabled/superbackup"}
   ]
 }

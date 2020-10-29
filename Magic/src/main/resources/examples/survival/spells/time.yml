@@ -1,6 +1,8 @@
 time:
-    icon: spell_icon:86
-    icon_disabled: spell_icon_disabled:86
+    icon: pumpkin_pie{CustomModelData:18001}
+    icon_disabled: pumpkin_pie{CustomModelData:18002}
+    legacy_icon: spell_icon:86
+    legacy_icon_disabled: spell_icon_disabled:86
     hidden: true
     icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
     category: master

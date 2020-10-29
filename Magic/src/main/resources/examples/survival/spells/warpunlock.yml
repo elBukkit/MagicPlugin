@@ -19,4 +19,5 @@ warpunlock:
   parameters:
       cooldown: 5000
       allow_marker: false
+  costs: []
 

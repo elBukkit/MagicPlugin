@@ -1,6 +1,8 @@
 superbackup:
-    icon: spell_icon:102
-    icon_disabled: spell_icon_disabled:102
+    icon: warped_sign{CustomModelData:18004}
+    icon_disabled: warped_sign{CustomModelData:18005}
+    legacy_icon: spell_icon:102
+    legacy_icon_disabled: spell_icon_disabled:102
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     category: engineering
     tags: noduel

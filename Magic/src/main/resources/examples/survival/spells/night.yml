@@ -1,6 +1,8 @@
 night:
-    icon: spell_icon:85
-    icon_disabled: spell_icon_disabled:85
+    icon: gray_dye{CustomModelData:18001}
+    icon_disabled: gray_dye{CustomModelData:18002}
+    legacy_icon: spell_icon:85
+    legacy_icon_disabled: spell_icon_disabled:85
     icon_url: http://textures.minecraft.net/texture/15f1fe5d5cc447e215243b4cf0b4eb56331f1b4f40909bb91a2963929ef1c2
     example_thumbnail: https://thumbs.gfycat.com/VillainousInfantileEmeraldtreeskink-size_restricted.gif
     example_link: https://thumbs.gfycat.com/VillainousInfantileEmeraldtreeskink

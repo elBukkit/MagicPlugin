@@ -1,6 +1,6 @@
 homing:
-    icon: gray_dye{CustomModelData:18001}
-    icon_disabled: gray_dye{CustomModelData:18002}
+    icon: lime_dye{CustomModelData:18001}
+    icon_disabled: lime_dye{CustomModelData:18002}
     legacy_icon: spell_icon:163
     legacy_icon_disabled: spell_icon_disabled:163
     icon_url: http://textures.minecraft.net/texture/e3152dba6ee22b6e89e88878acc5a01f5964946b8938e9a1470dfabbeeca

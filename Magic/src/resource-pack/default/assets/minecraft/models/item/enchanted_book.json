@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/enchanted_book"
+  },
+  "overrides": [
+    {"predicate": {"custom_model_data": 18001}, "model": "item/custom/enchantedbook"}
+  ]
+}

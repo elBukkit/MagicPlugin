@@ -1,6 +1,8 @@
 superrepair:
-    icon: spell_icon:104
-    icon_disabled: spell_icon_disabled:104
+    icon: golden_pickaxe{CustomModelData:18001}
+    icon_disabled: golden_pickaxe{CustomModelData:18002}
+    legacy_icon: spell_icon:104
+    legacy_icon_disabled: spell_icon_disabled:104
     icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
     category: engineering
     tags: noduel

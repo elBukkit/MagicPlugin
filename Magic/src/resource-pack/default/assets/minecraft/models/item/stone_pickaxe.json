@@ -5,7 +5,7 @@
   },
 
   "overrides": [
-    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/tunnel"},
-    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/tunnel"}
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/repair"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/repair"}
   ]
 }

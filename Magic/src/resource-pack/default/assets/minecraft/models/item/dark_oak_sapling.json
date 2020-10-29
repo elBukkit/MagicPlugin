@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:block/dark_oak_sapling"
+  },
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/forest"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/forest"}
+  ]
+}

@@ -1,6 +1,8 @@
 weather:
-    icon: spell_icon:59
-    icon_disabled: spell_icon_disabled:59
+    icon: cyan_dye{CustomModelData:18001}
+    icon_disabled: cyan_dye{CustomModelData:18002}
+    legacy_icon: spell_icon:59
+    legacy_icon_disabled: spell_icon_disabled:59
     icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
     category: elemental
     worth: 500

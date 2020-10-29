@@ -1,6 +1,8 @@
 portal:
-    icon: spell_icon:71
-    icon_disabled: spell_icon_disabled:71
+    icon: crying_obsidian{CustomModelData:18001}
+    icon_disabled: crying_obsidian{CustomModelData:18002}
+    legacy_icon: spell_icon:71
+    legacy_icon_disabled: spell_icon_disabled:71
     icon_url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
     category: master
     tags: noduel

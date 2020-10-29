@@ -1,6 +1,8 @@
 pickpocket:
-    icon: spell_icon:107
-    icon_disabled: spell_icon_disabled:107
+    icon: rabbit_stew{CustomModelData:18001}
+    icon_disabled: rabbit_stew{CustomModelData:18002}
+    legacy_icon: spell_icon:107
+    legacy_icon_disabled: spell_icon_disabled:107
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     hidden: true
     category: staff

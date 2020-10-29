@@ -5,7 +5,7 @@
   },
 
   "overrides": [
-    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/familiar"},
-    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/familiar"}
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/capture"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/capture"}
   ]
 }

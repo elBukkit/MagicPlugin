@@ -1,6 +1,8 @@
 repair:
-    icon: spell_icon:103
-    icon_disabled: spell_icon_disabled:103
+    icon: stone_pickaxe{CustomModelData:18001}
+    icon_disabled: stone_pickaxe{CustomModelData:18002}
+    legacy_icon: spell_icon:103
+    legacy_icon_disabled: spell_icon_disabled:103
     icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
     category: engineering
     tags: noduel
