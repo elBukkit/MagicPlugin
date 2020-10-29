@@ -1,6 +1,8 @@
 supercube:
-    icon: spell_icon:100
-    icon_disabled: spell_icon_disabled:100
+    icon: gold_ingot{CustomModelData:18001}
+    icon_disabled: gold_ingot{CustomModelData:18002}
+    legacy_icon: spell_icon:100
+    legacy_icon_disabled: spell_icon_disabled:100
     icon_url: http://textures.minecraft.net/texture/b02fa9c938deafc7777eefefc6b614a68423e1c4a899a993f78ef7817517f9
     category: engineering
     tags: noduel

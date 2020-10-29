@@ -1,6 +1,8 @@
 absorb:
-    icon: spell_icon:135
-    icon_disabled: spell_icon_disabled:135
+    icon: shears{CustomModelData:18001}
+    icon_disabled: shears{CustomModelData:18002}
+    legacy_icon: spell_icon:135
+    legacy_icon_disabled: spell_icon_disabled:135
     icon_url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
     category: engineering
     tags: noduel

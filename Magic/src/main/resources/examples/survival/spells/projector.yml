@@ -1,6 +1,8 @@
 projector:
-  icon: spell_icon:169
-  icon_disabled: spell_icon_disabled:169
+  icon: white_stained_glass{CustomModelData:18001}
+  icon_disabled: white_stained_glass{CustomModelData:18002}
+  legacy_icon: spell_icon:169
+  legacy_icon_disabled: spell_icon_disabled:169
   icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
   category: engineering
   effects:

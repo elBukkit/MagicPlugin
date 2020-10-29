@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/white_stained_glass",
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/paste"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/paste"}
+  ]
+}

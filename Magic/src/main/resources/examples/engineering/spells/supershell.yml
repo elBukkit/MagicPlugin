@@ -1,6 +1,8 @@
 supershell:
-    icon: spell_icon:27
-    icon_disabled: spell_icon_disabled:27
+    icon: bowl{CustomModelData:18001}
+    icon_disabled: bowl{CustomModelData:18002}
+    legacy_icon: spell_icon:27
+    legacy_icon_disabled: spell_icon_disabled:27
     icon_url: http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
     category: engineering
     tags: noduel

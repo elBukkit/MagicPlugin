@@ -1,6 +1,8 @@
 superblast:
-    icon: spell_icon:111
-    icon_disabled: spell_icon_disabled:111
+    icon: glowstone_dust{CustomModelData:18001}
+    icon_disabled: glowstone_dust{CustomModelData:18002}
+    legacy_icon: spell_icon:111
+    legacy_icon_disabled: spell_icon_disabled:111
     icon_url: http://textures.minecraft.net/texture/eab81081362ed39651bb47e8650dc6bbc3d8a1db56827c186267e546df0743f
     category: engineering
     tags: noduel

@@ -1,6 +1,8 @@
 floodfill:
-    icon: spell_icon:82
-    icon_disabled: spell_icon_disabled:82
+    icon: water_bucket{CustomModelData:18001}
+    icon_disabled: water_bucket{CustomModelData:18002}
+    legacy_icon: spell_icon:82
+    legacy_icon_disabled: spell_icon_disabled:82
     icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
     category: engineering
     tags: noduel

@@ -1,6 +1,8 @@
 superpyramid:
-    icon: spell_icon:96
-    icon_disabled: spell_icon_disabled:96
+    icon: sugar{CustomModelData:18001}
+    icon_disabled: sugar{CustomModelData:18002}
+    legacy_icon: spell_icon:96
+    legacy_icon_disabled: spell_icon_disabled:96
     icon_url: http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6
     category: engineering
     tags: noduel

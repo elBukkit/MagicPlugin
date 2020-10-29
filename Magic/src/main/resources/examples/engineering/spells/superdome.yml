@@ -1,6 +1,8 @@
 superdome:
-    icon: spell_icon:28
-    icon_disabled: spell_icon_disabled:28
+    icon: mushroom_stew{CustomModelData:18001}
+    icon_disabled: mushroom_stew{CustomModelData:18002}
+    legacy_icon: spell_icon:28
+    legacy_icon_disabled: spell_icon_disabled:28
     icon_url: http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d
     category: engineering
     tags: noduel

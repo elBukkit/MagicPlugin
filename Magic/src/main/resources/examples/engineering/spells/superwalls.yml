@@ -1,4 +1,6 @@
 superwalls:
     inherit: supercylinder
+    icon: flower_pot{CustomModelData:18001}
+    icon_disabled: flower_pot{CustomModelData:18002}
     parameters:
         orient_dimension_max: 16
