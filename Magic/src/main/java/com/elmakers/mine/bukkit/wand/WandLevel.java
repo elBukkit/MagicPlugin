@@ -29,7 +29,6 @@ public class WandLevel {
     private Deque<WeightedPair<String>> spellProbability = new ArrayDeque<>();
     private Deque<WeightedPair<String>> materialProbability = new ArrayDeque<>();
     private Deque<WeightedPair<Integer>> useProbability = new ArrayDeque<>();
-    private Deque<WeightedPair<Integer>> addUseProbability = new ArrayDeque<>();
 
     private Deque<WeightedPair<Integer>> propertyCountProbability = new ArrayDeque<>();
     private Map<String, Deque<WeightedPair<Float>>> propertiesProbability = new HashMap<>();
@@ -67,7 +66,6 @@ public class WandLevel {
 
         // Fetch uses
         RandomUtils.populateIntegerProbabilityMap(useProbability, template, "uses", levelIndex, nextLevelIndex, distance);
-        RandomUtils.populateIntegerProbabilityMap(addUseProbability, template, "add_uses", levelIndex, nextLevelIndex, distance);
 
         // Fetch property count probability
         RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template, "property_count", levelIndex, nextLevelIndex, distance);
@@ -95,7 +93,6 @@ public class WandLevel {
         this.materialCountProbability = materialCountProbability.isEmpty() ? other.materialCountProbability : materialCountProbability;
         this.spellCountProbability = spellCountProbability.isEmpty() ? other.spellCountProbability : spellCountProbability;
         this.useProbability = useProbability.isEmpty() ? other.useProbability : useProbability;
-        this.addUseProbability = addUseProbability.isEmpty() ? other.addUseProbability : addUseProbability;
         this.propertyCountProbability = propertyCountProbability.isEmpty() ? other.propertyCountProbability : propertyCountProbability;
         for (Map.Entry<String, Deque<WeightedPair<Float>>> entry : other.propertiesProbability.entrySet()) {
             Deque<WeightedPair<Float>> thisOne = propertiesProbability.get(entry.getKey());
@@ -158,7 +155,7 @@ public class WandLevel {
         return remainingMaterials;
     }
 
-    public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade, boolean addSpells) {
+    public boolean randomizeWand(Mage mage, Wand wand, boolean hasUpgrade, boolean addSpells) {
         // Add random spells to the wand
         Mage activeMage = wand.getActiveMage();
         if (mage == null) {
@@ -311,15 +308,12 @@ public class WandLevel {
         }
 
         // Add or set uses to the wand
-        if (additive) {
-            // Only add uses to a wand if it already has some.
+        if (!useProbability.isEmpty()) {
             int wandUses = wand.getRemainingUses();
-            if (wandUses > 0 && wandUses < path.getMaxUses() && addUseProbability.size() > 0) {
-                wandProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(addUseProbability)));
+            if (wandUses < path.getMaxUses() && useProbability.size() > 0) {
+                wandProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(useProbability)));
                 addedProperties = true;
             }
-        } else if (useProbability.size() > 0) {
-            wandProperties.set("uses", Math.min(path.getMaxUses(), RandomUtils.weightedRandom(useProbability)));
         }
 
         // Set properties.

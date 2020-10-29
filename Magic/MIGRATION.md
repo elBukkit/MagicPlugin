@@ -20,6 +20,7 @@
    custom spell configs using that action accordingly.
 
  - Wands with interval casts are no longer cost-free, set cast_interval_cost_free: true to put this back.
+ - Removed `add_uses` path parameter. You can use `uses` to add uses to an object via a path.
 
 # 7.9.7
 

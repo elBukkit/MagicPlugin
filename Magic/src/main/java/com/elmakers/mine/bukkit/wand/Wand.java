@@ -395,7 +395,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             // Account for randomized locked wands
             boolean wasLocked = locked;
             locked = false;
-            randomize(level, false, null, true);
+            randomize(level, null, true);
             locked = wasLocked;
         }
 
@@ -3244,20 +3244,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage, boolean addSpells) {
-        return randomize(totalLevels, true, mage, addSpells);
+        return randomize(totalLevels, mage, addSpells);
     }
 
     @Override
     public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage) {
-        return randomize(totalLevels, true, mage, true);
+        return randomize(totalLevels, mage, true);
     }
 
     @Override
     public int enchant(int totalLevels) {
-        return randomize(totalLevels, true, null, true);
+        return randomize(totalLevels, null, true);
     }
 
-    protected int randomize(int totalLevels, boolean additive, com.elmakers.mine.bukkit.api.magic.Mage enchanter, boolean addSpells) {
+    protected int randomize(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage enchanter, boolean addSpells) {
         if (enchanter == null && mage != null) {
             enchanter = mage;
         }
@@ -3314,7 +3314,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
 
-            modified = level.randomizeWand(enchanter, this, additive, hasUpgrade, addSpells);
+            modified = level.randomizeWand(enchanter, this, hasUpgrade, addSpells);
             totalLevels -= maxLevel;
             if (modified) {
                 if (enchanter != null) {
@@ -3343,7 +3343,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 enchanter.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
             }
             addLevels = Math.min(totalLevels, maxLevel);
-            additive = true;
         }
 
         if (levels > 0) {

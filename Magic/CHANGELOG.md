@@ -5,18 +5,21 @@
  - See MIGRATION.md for important information!
 
  - Minecraft 1.16 will now use a new resource pack:
-   - (WIP)
    - If you want or need to turn this off, you can still update. Just put `example: 7` in your config.yml
    - All icons and models now use CustomModelData instead of damage predicates
    - Spells and magical items are represented by recognizable vanilla items
    - Wands should now be much easier to use without a resource pack
    - Combining Magic's RP with other RPs may now be somewhat more complicated,
      so we have created a tool to do the work for you at https://merge.elmakers.com/
-   - Most magic crafting recipes have changed
+ - Most magic crafting recipes have changed
    - Now requires an intermediate item, the "Heart of Magic" - crafted with 8 emeralds and a diamond
+ - General Rebalancing
    - Wizard gear buffed a bit
    - Mana Talisman given some protection buffs
    - Mana progression changed, slowed down and lowered cap
+   - Cooldowns tweaked on some spells
+ - Removed `add_uses` path parameter. You can use `uses` to add uses to an object via a path
+   (I really doubt anyone was using this, please let me know if I am wrong)
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data
