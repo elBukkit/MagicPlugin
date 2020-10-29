@@ -79,6 +79,7 @@ lockpick:
         allow_max_range: true
         check_destructible: true
         destructible: containers
+        indestructible: ""
         cooldown: 10000
     costs:
         mana: 100

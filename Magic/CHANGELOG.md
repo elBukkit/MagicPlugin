@@ -33,6 +33,7 @@
    - `/mwarp configure icon diamond` to add a warp to the recall spell
  - Add `/mwarp describe` command
  - Fix warps getting corrupted if the target world is not loaded at server start
+ - Fix secure/lockpick spells when non-opped
  - The `/mwarp go` and `/send` commands will try to load the target world if it is not loaded
  - Add a third alt-cast spell to wands, for a total of 4 possible fixed spells
  - Add SuperWalls spells to default configs

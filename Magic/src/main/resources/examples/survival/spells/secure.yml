@@ -119,6 +119,7 @@ secure:
         transparent: air,attachable_wall
         check_destructible: true
         destructible: chest,trapped_chest
+        indestructible: ""
         cooldown: 5000
         ignore_region_overrides: true
         key_icon: "skull:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
