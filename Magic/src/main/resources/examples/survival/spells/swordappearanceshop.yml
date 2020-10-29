@@ -1,6 +1,6 @@
 swordappearanceshop:
-    icon: netherite_sword{CustomModelData:18009}
-    icon_disabled: netherite_sword{CustomModelData:18009}
+    icon: diamond_sword{CustomModelData:18102}
+    icon_disabled: diamond_sword{CustomModelData:18103}
     legacy_icon: sword_icon:8
     legacy_icon_disabled: sword_icon:8
     icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
