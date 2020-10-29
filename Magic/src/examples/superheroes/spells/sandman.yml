@@ -1,5 +1,6 @@
 sandman_teleport:
- actions: 
+ cast_on_no_target: false
+ actions:
   cast:
     - class: CheckBlock
       actions:
@@ -11,6 +12,8 @@ sandman_teleport:
         - class: FallProtection
       - class: Teleport
  effects:
+  no_target: fail
+  no_action: fail
   teleport:
   - location: target
     sound: block_sand_break
@@ -33,7 +36,7 @@ sandman_teleport:
      duration: 1000
      radius: 0.5
      rings: 12
-  precast:
+  cast:
   - location: origin    
     sound: block_sand_break
     source_location: body
