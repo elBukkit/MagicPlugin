@@ -741,7 +741,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             }
 
             if (icon == null && castSpell != null && !castSpell.isEmpty()) {
-                SpellTemplate spellTemplate = context.getController().getSpellTemplate(castSpell);
+                String spellToCast = getCastSpell(context.getWand());
+                SpellTemplate spellTemplate = context.getController().getSpellTemplate(spellToCast);
                 if (spellTemplate != null) {
                     if (unavailable && spellTemplate.getDisabledIcon() != null) {
                         icon = spellTemplate.getDisabledIcon().getItemStack(1);
