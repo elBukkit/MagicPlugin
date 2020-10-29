@@ -3,7 +3,8 @@
 #
 mastersword:
     inherit: base_bound
-    icon: sword_icon:1
+    icon: diamond_sword{CustomModelData:18002}
+    legacy_icon: sword_icon:1
     effect_color: '11FF88'
     hide_flags: 62
     alternate_spell: masterattack

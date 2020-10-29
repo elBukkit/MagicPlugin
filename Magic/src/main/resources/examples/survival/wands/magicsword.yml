@@ -4,8 +4,8 @@
 magicsword:
     inherit: base_sword
     class: battle_mage
-    icon: sword_icon:8
-    migrate_icon: sword_icon
+    icon: netherite_sword{CustomModelData:18009}
+    legacy_icon: sword_icon:8
     effect_color: '11FF11'
     hide_flags: 62
     active_spell: missile

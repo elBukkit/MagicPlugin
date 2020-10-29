@@ -186,8 +186,8 @@ add_projectile_protection:
       max: 1
 
 add_damage:
-  icon: diamond_sword{CustomModelData:18002}
-  icon_disabled: diamond_sword{CustomModelData:18003}
+  icon: diamond_sword{CustomModelData:18102}
+  icon_disabled: diamond_sword{CustomModelData:18103}
   legacy_icon: spell_icon:178
   legacy_icon_disabled: spell_icon_disabled:178
   icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
@@ -205,8 +205,8 @@ add_damage:
       max: 10
 
 add_sharpness:
-  icon: diamond_sword{CustomModelData:18004}
-  icon_disabled: diamond_sword{CustomModelData:18005}
+  icon: diamond_sword{CustomModelData:18104}
+  icon_disabled: diamond_sword{CustomModelData:18105}
   legacy_icon: spell_icon:240
   legacy_icon_disabled: spell_icon_disabled:240
   icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a

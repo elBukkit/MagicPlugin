@@ -1,6 +1,8 @@
 wound:
-    icon: spell_icon:178
-    icon_disabled: spell_icon_disabled:178
+    icon: diamond_sword{CustomModelData:18102}
+    icon_disabled: diamond_sword{CustomModelData:18103}
+    legacy_icon: spell_icon:178
+    legacy_icon_disabled: spell_icon_disabled:178
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a

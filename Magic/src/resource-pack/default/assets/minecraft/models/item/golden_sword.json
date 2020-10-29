@@ -22,6 +22,20 @@
 
         {"predicate": {"damaged": 1, "damage": 0}, "model": "item/golden_sword"},
 
-        {"predicate": { "custom_model_data": 18001}, "model": "item/custom/emerald_sword"}
+        {"predicate": {"custom_model_data": 18001}, "model": "item/custom/emerald_sword"},
+        {"predicate": {"custom_model_data": 18002}, "model": "item/custom/sword_master"},
+        {"predicate": {"custom_model_data": 18003}, "model": "item/saber/lightsaber_green"},
+        {"predicate": {"custom_model_data": 18004}, "model": "item/saber/lightsaber_blue"},
+        {"predicate": {"custom_model_data": 18005}, "model": "item/saber/lightsaber_red"},
+        {"predicate": {"custom_model_data": 18006}, "model": "item/saber/lightsaber_orange"},
+        {"predicate": {"custom_model_data": 18007}, "model": "item/saber/lightsaber_purple"},
+        {"predicate": {"custom_model_data": 18008}, "model": "item/custom/emerald_sword"},
+        {"predicate": {"custom_model_data": 18009}, "model": "item/custom/valkglow"},
+        {"predicate": {"custom_model_data": 18010}, "model": "item/custom/whitedagger"},
+        {"predicate": {"custom_model_data": 18011}, "model": "item/custom/demon_sword"},
+        {"predicate": {"custom_model_data": 18012}, "model": "item/custom/felmglow"},
+        {"predicate": {"custom_model_data": 18013}, "model": "item/custom/rivenglow"},
+        {"predicate": {"custom_model_data": 18014}, "model": "item/custom/silver"},
+        {"predicate": {"custom_model_data": 18015}, "model": "item/custom/lavad"}
     ]
 }

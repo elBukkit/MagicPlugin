@@ -1,8 +1,8 @@
 {
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "minecraft:item/diamond_sword"
-  },
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "item/netherite_sword"
+    },
     "overrides": [
         {"predicate": {"custom_model_data": 18001}, "model": "item/custom/emerald_sword"},
         {"predicate": {"custom_model_data": 18002}, "model": "item/custom/sword_master"},
@@ -18,12 +18,6 @@
         {"predicate": {"custom_model_data": 18012}, "model": "item/custom/felmglow"},
         {"predicate": {"custom_model_data": 18013}, "model": "item/custom/rivenglow"},
         {"predicate": {"custom_model_data": 18014}, "model": "item/custom/silver"},
-        {"predicate": {"custom_model_data": 18015}, "model": "item/custom/lavad"},
-
-        {"predicate": { "custom_model_data": 18102}, "model": "item/spells/wound"},
-        {"predicate": { "custom_model_data": 18103}, "model": "item/spells_disabled/wound"},
-        {"predicate": { "custom_model_data": 18104}, "model": "item/spells/sharpen_sword"},
-        {"predicate": { "custom_model_data": 18105}, "model": "item/spells_disabled/sharpen_sword"},
-        {"predicate": { "custom_model_data": 18106}, "model": "item/upgrades/mode_sword"}
+        {"predicate": {"custom_model_data": 18015}, "model": "item/custom/lavad"}
     ]
 }

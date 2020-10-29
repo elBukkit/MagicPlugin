@@ -44,7 +44,7 @@ mode_rightclick:
     swap: none
     quick_cast: false
 mode_sword:
-    icon: diamond_sword{CustomModelData:18006}
+    icon: diamond_sword{CustomModelData:18106}
     legacy_icon: diamond_axe:212
     upgrade: true
     force: true
