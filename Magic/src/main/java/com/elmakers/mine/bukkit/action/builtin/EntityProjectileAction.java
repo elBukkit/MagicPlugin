@@ -3,15 +3,10 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Collection;
 import javax.annotation.Nonnull;
 
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Slime;
-import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -93,52 +88,6 @@ public class EntityProjectileAction extends CustomProjectileAction {
         if (entity instanceof LivingEntity) {
             CompatibilityUtils.setMaxHealth(((LivingEntity) entity), 1000.0);
             ((LivingEntity) entity).setHealth(1000.0);
-        }
-        if (entity instanceof Slime) {
-            ((Slime)entity).setSize(1);
-        }
-
-        // Variant name still used here for backwards compatibility
-        if (entity instanceof Ocelot) {
-            Ocelot ocelot = (Ocelot) entity;
-            Ocelot.Type variant = Ocelot.Type.WILD_OCELOT;
-            if (variantName != null) {
-                try {
-                    variant = Ocelot.Type.valueOf(variantName.toUpperCase());
-                } catch (Exception ignored) {
-                }
-            } else {
-                variant = Ocelot.Type.WILD_OCELOT;
-            }
-
-            ocelot.setCatType(variant);
-
-        }
-        if (entity instanceof Sheep) {
-            Sheep sheep = (Sheep) entity;
-            DyeColor color = DyeColor.WHITE;
-            if (variantName != null) {
-                try {
-                    color = DyeColor.valueOf(variantName.toUpperCase());
-                } catch (Exception ignored) {
-
-                }
-            }
-            sheep.setColor(color);
-        }
-        if (entity instanceof Wolf) {
-            Wolf wolf = (Wolf) entity;
-            if (variantName != null) {
-                // Only set collar color if a variant is set..
-                // this makes it a dog, versus a wolf. Technically.
-                DyeColor color = DyeColor.RED;
-                try {
-                    color = DyeColor.valueOf(variantName.toUpperCase());
-                    wolf.setTamed(true);
-                } catch (Exception ignored) {
-                }
-                wolf.setCollarColor(color);
-            }
         }
 
         if (projectileEffects != null && entity instanceof LivingEntity) {
