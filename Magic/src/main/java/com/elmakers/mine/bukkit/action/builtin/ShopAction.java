@@ -174,7 +174,11 @@ public class ShopAction extends SelectorAction {
                          itemConfigs.add(ConfigurationUtils.toConfigurationSection((Map<?, ?>)object));
                     } else if (object instanceof String) {
                         ConfigurationSection itemConfig = new MemoryConfiguration();
-                        itemConfig.set("item", object);
+                        if (object.equals("none")) {
+                            itemConfig.set("placeholder", true);
+                        } else {
+                            itemConfig.set("item", object);
+                        }
                         itemConfigs.add(itemConfig);
                     } else {
                         context.getLogger().warning("Invalid item in shop config: " + object);
