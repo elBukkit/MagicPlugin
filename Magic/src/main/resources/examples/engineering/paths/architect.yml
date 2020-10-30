@@ -1,6 +1,7 @@
 architect:
-    icon: wood_hoe:5
-    migrate_icon: gold_pickaxe
+    icon: blaze_rod{CustomModelData:18039}
+    legacy_icon: wood_hoe:5
+    legacy_migrate_icon: gold_pickaxe
     inherit: engineer
     # The conduitshop is required for Conduit
     # This is generally not recommended as a player-obtainable rank, except maybe on creative servers.

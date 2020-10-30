@@ -1,12 +1,10 @@
-#
-# Super powered wands
-#
 conduit:
     inherit: architect
     path: conduit
     consume_reduction: 1
-    icon: wand_icon:6
-    migrate_icon: gold_pickaxe
+    icon: blaze_rod{CustomModelData:18006}
+    legacy_icon: wand_icon:6
+    legacy_migrate_icon: gold_pickaxe
     effect_color: '8B008B'
     mana_max: 600
     mana: 600

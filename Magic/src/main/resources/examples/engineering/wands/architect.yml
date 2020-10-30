@@ -1,8 +1,9 @@
 architect:
     inherit: engineer
     path: architect
-    icon: wand_icon:5
-    migrate_icon: gold_pickaxe
+    icon: blaze_rod{CustomModelData:18039}
+    legacy_icon: wand_icon:5
+    legacy_migrate_icon: gold_pickaxe
     effect_color: '8B008B'
     mana_max: 500
     mana: 500

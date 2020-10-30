@@ -1,4 +1,7 @@
 staff:
+  icon: blaze_rod{CustomModelData:18006}
+  legacy_icon: wand_icon:6
+  legacy_migrate_icon: gold_pickaxe
   inherit: base_wand
   path: staff
   hotbar_count: 2
@@ -6,8 +9,6 @@ staff:
   cost_reduction: 2
   effect_color: 00FFAA
   protected: true
-  icon: wand_icon:6
-  migrate_icon: gold_pickaxe
   sp_multiplier: 0
   spells:
     - blink|6

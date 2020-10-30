@@ -7,8 +7,9 @@ architectstaff:
   powered: true
   cost_reduction: 2
   effect_color: 8af553b2025f,0,8af553b2025f
-  icon: wand_icon:6
-  migrate_icon: gold_pickaxe
+  icon: blaze_rod{CustomModelData:18039}
+  legacy_icon: wand_icon:6
+  legacy_migrate_icon: gold_pickaxe
   sp_multiplier: 0
   spells:
     - absorb@8

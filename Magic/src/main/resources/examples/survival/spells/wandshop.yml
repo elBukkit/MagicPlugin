@@ -1,5 +1,8 @@
 wandshop:
-    icon: wood_hoe
+    icon: blaze_rod{CustomModelData:18045}
+    icon_disabled: blaze_rod{CustomModelData:18046}
+    legacy_icon: spell_icon:233
+    legacy_icon_disabled: spell_icon_disabled:233
     category: npc
     hidden: true
     inherit: buyshop

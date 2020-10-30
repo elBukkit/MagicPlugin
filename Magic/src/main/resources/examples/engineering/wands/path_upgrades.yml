@@ -1,5 +1,6 @@
 engineer_upgrade:
-    icon: wand_icon:5
+    icon: blaze_rod{CustomModelData:18005}
+    legacy_icon: wand_icon:5
     upgrade: true
     hidden: true
     indestructible: false
@@ -11,7 +12,8 @@ engineer_upgrade:
     - cobblestone
 
 architect_upgrade:
-    icon: wand_icon:5
+    icon: blaze_rod{CustomModelData:18039}
+    legacy_icon: wand_icon:5
     upgrade: true
     hidden: true
     indestructible: false
@@ -19,7 +21,8 @@ architect_upgrade:
     - absorb
 
 conduit_upgrade:
-    icon: wand_icon:6
+    icon: blaze_rod{CustomModelData:18006}
+    legacy_icon: wand_icon:6
     upgrade: true
     hidden: true
     indestructible: false

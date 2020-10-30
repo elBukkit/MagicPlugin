@@ -5,8 +5,9 @@ engineer:
     inherit: master
     effect_color: '00FF00'
     path: engineer
-    icon: wand_icon:5
-    migrate_icon: gold_axe
+    icon: blaze_rod{CustomModelData:18005}
+    legacy_icon: wand_icon:5
+    legacy_migrate_icon: gold_axe
     mana_regeneration: 90
     mana_max: 400
     mana: 400

@@ -9,8 +9,9 @@
 # engineering spells first.
 #
 engineer:
-    icon: wood_hoe:5
-    migrate_icon: gold_axe
+    icon: blaze_rod{CustomModelData:18005}
+    legacy_icon: wood_hoe:5
+    legacy_migrate_icon: gold_axe
     upgrade: architect
     upgrade_item: architect_upgrade
     inherit: master
