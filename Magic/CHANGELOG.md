@@ -20,6 +20,7 @@
    - Cooldowns tweaked on some spells
  - Removed `add_uses` path parameter. You can use `uses` to add uses to an object via a path
    (I really doubt anyone was using this, please let me know if I am wrong)
+ - Resource pack sending is now off by default. Players will be prompted on join about how to configure the resource pack.
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data

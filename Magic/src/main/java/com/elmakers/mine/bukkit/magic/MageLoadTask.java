@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.event.MageLoadEvent;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class MageLoadTask implements Runnable {
     private final Mage mage;
@@ -19,8 +20,11 @@ public class MageLoadTask implements Runnable {
         try {
             mage.onLoad(data);
             mage.setLoading(false);
+            MageController controller = mage.getController();
             if (mage.isPlayer() && mage.isResourcePackEnabled()) {
-                mage.getController().promptResourcePack(mage.getPlayer());
+                controller.promptResourcePack(mage.getPlayer());
+            } else if (!mage.isResourcePackEnabledSet()) {
+                controller.promptNoResourcePack(mage.getPlayer());
             }
             MageLoadEvent event = new MageLoadEvent(mage, data == null);
             Bukkit.getPluginManager().callEvent(event);

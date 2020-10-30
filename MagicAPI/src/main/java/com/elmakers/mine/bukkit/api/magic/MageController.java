@@ -483,6 +483,7 @@ public interface MageController {
     boolean sendResourcePackToAllPlayers(CommandSender sender);
     boolean sendResourcePack(Player player);
     boolean promptResourcePack(Player player);
+    boolean promptNoResourcePack(Player player);
     @Nullable
     String getResourcePackURL();
     boolean isResourcePackEnabledByDefault();

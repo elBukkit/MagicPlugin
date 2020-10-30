@@ -11,6 +11,9 @@ enable_resource_pack: true
 # Set this to 0 to set resource packs immediately on join.
 resource_pack_delay: 200
 
+# Delay the RP login prompt so players can see it
+resource_pack_prompt_delay: 2000
+
 # Set this to true to turn on the player skull-based spell icons
 # This may be needed if you have disabled the RP, spell icons are in the RP.
 url_icons_enabled: false
@@ -36,4 +39,4 @@ resource_pack_prompt: false
 # Similar to the above command, this turns automatic resource packs off by default
 # Players can turn it back on using `/getrp auto`
 # They will not be prompted at login so it is up to the server to communicate how to get the RP if this is turned off
-resource_pack_default_auto: true
+resource_pack_default_auto: false

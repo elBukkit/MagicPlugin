@@ -2714,6 +2714,7 @@ public class MagicController implements MageController {
         resourcePackPrompt = properties.getBoolean("resource_pack_prompt", false);
         enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
         resourcePackCheckInterval = properties.getInt("resource_pack_check_interval", 0);
+        resourcePackPromptDelay = properties.getInt("resource_pack_prompt_delay", 0);
         defaultResourcePack = properties.getString("resource_pack", null);
         // For legacy configs
         defaultResourcePack = properties.getString("default_resource_pack", defaultResourcePack);
@@ -5916,12 +5917,43 @@ public class MagicController implements MageController {
         if (resourcePackPrompt) {
             String message = messages.get("resource_pack.prompt");
             if (message != null && !message.isEmpty()) {
-                com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
+                if (resourcePackPromptDelay <= 0) {
+                    com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
+                } else {
+                    plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
+                        }
+                    }, resourcePackPromptDelay / 50);
+                }
             }
             return false;
         }
 
         return sendResourcePack(player);
+    }
+
+    @Override
+    public boolean promptNoResourcePack(final Player player) {
+        if (resourcePack == null || resourcePackHash == null) {
+            return false;
+        }
+
+        String message = messages.get("resource_pack.off_prompt");
+        if (message != null && !message.isEmpty()) {
+            if (resourcePackPromptDelay <= 0) {
+                com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
+            } else {
+                plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
+                    }
+                }, resourcePackPromptDelay / 50);
+            }
+        }
+        return true;
     }
 
     @Override
@@ -6994,6 +7026,7 @@ public class MagicController implements MageController {
     private ConfigurationSection                citadelConfiguration        = null;
     private ConfigurationSection                mobArenaConfiguration       = null;
     private boolean                             enableResourcePackCheck     = true;
+    private int                                 resourcePackPromptDelay     = 0;
     private boolean                             resourcePackPrompt          = false;
     private int                                 resourcePackCheckInterval   = 0;
     private int                                 resourcePackCheckTimer      = 0;

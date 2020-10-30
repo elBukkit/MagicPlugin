@@ -110,5 +110,4 @@ spells:
     unavailable_warp_description: "\n&eFind this location to unlock!\nSee http://map.elmakers.com if you want a hint."
 
 resource_pack:
-#  prompt: "Use /getrp to download the resource pack. It is STRONGLY recommended!"
-  sending: "t:&bSending Resource Pack\n&3please wait"
+    off_prompt: "&6This server is best experienced with resource packs enabled!\n&eUse &b/getrp &eto download the resource pack.\nMake sure you have added this server to your server list and have resource packs enabled.\n&6Use &b/getrp off&e to disable this message."

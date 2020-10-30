@@ -26,6 +26,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
         if (args.length == 1) {
             options.add("auto");
             options.add("manual");
+            options.add("off");
             options.add("url");
         }
         return options;
@@ -48,6 +49,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
         }
 
         if (subCommand.isEmpty()) {
+            sender.sendMessage(controller.getMessages().get("commands.getrp.sending"));
             controller.sendResourcePack((Player)sender);
             return true;
         }
@@ -60,7 +62,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("manual")) {
+        if (subCommand.equalsIgnoreCase("manual") || subCommand.equalsIgnoreCase("off")) {
             mage.setResourcePackEnabled(false);
             sender.sendMessage(controller.getMessages().get("commands.getrp.manual"));
             return true;
