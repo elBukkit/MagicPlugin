@@ -53,6 +53,8 @@
  - Add support for using JSON to spawn mobs, e.g. `/mmob spawn slime{size:5}`
  - Add `/mage promote` command for easily moving a player up a path
  - Add mega_phantom mob to survival
+ - Add "slimefun" example, which will add RP items from this RP:
+   https://www.planetminecraft.com/texture-pack/slimefun-texture-by-raulh22/
 
 # 7.11.1
 
