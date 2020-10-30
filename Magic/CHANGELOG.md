@@ -22,6 +22,8 @@
    (I really doubt anyone was using this, please let me know if I am wrong)
  - Resource pack sending is now off by default. Players will be prompted on join about how to configure the resource pack.
  - All players' resource pack preferences will be reset and stick to the defaults until they use the /getrp command
+ - Light spell added to architect path
+ - Magic torch crafting recipe enabled by default
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data

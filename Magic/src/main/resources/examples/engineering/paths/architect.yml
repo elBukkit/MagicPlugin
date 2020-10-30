@@ -34,6 +34,7 @@ architect:
       - volley
       - floodfill
       - tunnel
+      - light
     material_count:
       7:  100
       10:  60

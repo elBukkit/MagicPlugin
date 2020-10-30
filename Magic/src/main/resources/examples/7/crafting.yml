@@ -89,6 +89,7 @@ magichat:
     i: leather_helmet
 
 magictorch:
+  enabled: false
   materials:
     o: nether_star
     i: torch
@@ -164,15 +165,3 @@ wizardleggings:
   row_1: iii
   row_2: i i
   row_3: ioi
-
-
-
-
-
-
-
-
-
-
-
-
