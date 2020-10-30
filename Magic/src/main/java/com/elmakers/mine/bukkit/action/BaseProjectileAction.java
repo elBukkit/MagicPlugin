@@ -29,6 +29,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
     private String projectileEffectsKey;
     private boolean projectileEffectsUseTarget;
     private String hitEffectsKey;
+    private boolean hasTickActions;
 
     protected boolean track = false;
 
@@ -45,6 +46,9 @@ public abstract class BaseProjectileAction extends CompoundAction {
         projectileEffectsKey = parameters.getString("projectile_effects", "projectile");
         projectileEffectsUseTarget = parameters.getBoolean("projectile_effects_use_target", false);
         hitEffectsKey = parameters.getString("hit_effects", "hit");
+
+        ActionHandler handler = getHandler("tick");
+        hasTickActions = handler != null && handler.size() > 0;
     }
 
     @Override
@@ -89,8 +93,10 @@ public abstract class BaseProjectileAction extends CompoundAction {
             }
         }
 
+        Entity trackingEntity = null;
         for (Entity entity : tracking)
         {
+            trackingEntity = entity;
             if (!entity.isValid() || entity.hasMetadata("hit"))
             {
                 tracking.remove(entity);
@@ -172,6 +178,13 @@ public abstract class BaseProjectileAction extends CompoundAction {
                 context.addResult(result);
                 return result;
             }
+        }
+
+        if (hasTickActions) {
+            if (trackingEntity != null) {
+                createActionContext(context, context.getMage().getEntity(), context.getMage().getEntity().getLocation(), trackingEntity, trackingEntity.getLocation());
+            }
+            return startActions("tick");
         }
 
         return SpellResult.PENDING;
