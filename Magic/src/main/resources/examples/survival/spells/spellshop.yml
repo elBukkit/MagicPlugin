@@ -18,7 +18,7 @@ spellshop:
           delay: 2000
         - class: UpgradePath
           # This is here for path configs that upgrades mana or other properties on each spell purchase.
-          # This is not really used by the default configs anymore.
+          # It is important for engineer/architect ranks since this is how they get brushes
           upgrade_levels: 1
     effects:
       selected:

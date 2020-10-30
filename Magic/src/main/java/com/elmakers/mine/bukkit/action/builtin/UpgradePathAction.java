@@ -28,14 +28,12 @@ public class UpgradePathAction extends BaseSpellAction {
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
-
-        // TODO: Support randomizing classes?
-        if (upgradeLevels > 0 && wand != null) {
-            if (wand.enchant(upgradeLevels, mage, false) > 0) {
+        CasterProperties caster = mage.getActiveProperties();
+        if (upgradeLevels > 0) {
+            if (caster.randomize(upgradeLevels, false) > 0) {
                 return SpellResult.CAST;
             }
         }
-        CasterProperties caster = mage.getActiveProperties();
         ProgressionPath path = caster.getPath();
         ProgressionPath nextPath = path != null ? path.getNextPath() : null;
         if (nextPath != null && path.checkUpgradeRequirements(caster, true) && !path.canProgress(caster)) {
