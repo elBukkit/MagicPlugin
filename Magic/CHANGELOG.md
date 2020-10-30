@@ -52,6 +52,7 @@
  - Add support for phantom size
  - Add support for using JSON to spawn mobs, e.g. `/mmob spawn slime{size:5}`
  - Add `/mage promote` command for easily moving a player up a path
+ - Add mega_phantom mob to survival
 
 # 7.11.1
 

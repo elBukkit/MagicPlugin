@@ -1,0 +1,32 @@
+mega_phantom:
+    name: "&cMega &4Phantom"
+    type: phantom
+    size: 100
+    interval: 5000
+    health: 150
+    interval_requires_target: false
+    protection:
+      fire: 100
+    triggers:
+        death:
+          effects:
+            - particle: smoke_large
+              particle_count: 50
+              particle_data: 1
+              particle_offset_x: 3
+              particle_offset_y: 3
+              particle_offset_z: 3
+        spawn:
+            effects:
+              - effectlib:
+                  class: Smoke
+                  disappear_with_origin_entity: true
+                  particle_count: 5
+                  particle_offset_x: 2
+                  particle_offset_y: 2
+                  particle_offset_z: 2
+        interval:
+          cast:
+            fury: 100
+            neutron: 100
+            none: 200
