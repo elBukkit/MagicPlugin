@@ -206,6 +206,10 @@ public class MobController implements Listener {
         return mobs.keySet();
     }
 
+    public Collection<EntityData> getMobs() {
+        return mobs.values();
+    }
+
     public EntityData get(String key) {
         return mobs.get(key);
     }

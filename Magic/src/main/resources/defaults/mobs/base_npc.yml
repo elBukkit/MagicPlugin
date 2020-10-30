@@ -1,4 +1,6 @@
 base_npc:
+  hidden: true
+  npc: true
   type: villager
   ai: false
   invulnerable: true

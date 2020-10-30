@@ -32,6 +32,7 @@ public interface MagicNPC extends Locatable {
     UUID getUUID();
     void teleport(@Nonnull Location location);
     boolean setType(@Nonnull String mobKey);
+    boolean setTemplate(@Nonnull String mobKey);
     void remove();
     void describe(CommandSender sender);
     @Nullable

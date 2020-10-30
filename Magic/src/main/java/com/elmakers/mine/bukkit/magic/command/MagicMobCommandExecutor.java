@@ -191,16 +191,23 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 controller.getLogger().warning("[Magic] Error parsing mob json: " + json + " : " + ex.getMessage());
             }
         }
+        if (entityData == null) {
+            entityData = controller.getMob(mobKey);
+        }
+        if (entityData == null) {
+            sender.sendMessage(ChatColor.RED + "Unknown mob type " + ChatColor.YELLOW + mobKey);
+            return true;
+        }
+        if (entityData.isNPC()) {
+            sender.sendMessage(ChatColor.YELLOW + "Mob type " + ChatColor.GOLD + mobKey + ChatColor.YELLOW + " is meant to be an NPC");
+            sender.sendMessage("  Spawning as a normal mob, use " + ChatColor.AQUA + "/mnpc add " + mobKey + ChatColor.WHITE + " to create as an NPC");
+        }
 
         for (int i = 0; i < count; i++) {
-            if (entityData == null) {
-                spawned = controller.spawnMob(mobKey, targetLocation);
-            } else {
-                spawned = entityData.spawn(targetLocation);
-            }
+            spawned = entityData.spawn(targetLocation);
         }
         if (spawned == null) {
-            sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobKey);
+            sender.sendMessage(ChatColor.RED + "Failed to spawn mob of type " + ChatColor.YELLOW + mobKey);
             return true;
         }
 

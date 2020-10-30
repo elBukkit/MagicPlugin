@@ -20,6 +20,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
@@ -89,6 +90,14 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
 
         if (npc == null) {
             sender.sendMessage(ChatColor.RED + "Select an NPC first using /mnpc select");
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("template")) {
+            if (parameters.length == 0) {
+                sender.sendMessage(ChatColor.RED + "Usage: mnpc template <name>");
+                return true;
+            }
+            onChangeNPCTemplate(mage, npc, StringUtils.join(parameters, " "));
             return true;
         }
 
@@ -193,6 +202,24 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         MagicNPC npc = controller.addNPC(mage, name);
         selections.setSelection(mage.getCommandSender(), npc);
         mage.sendMessage(ChatColor.GREEN + "Created npc: " + ChatColor.GOLD + npc.getName());
+    }
+
+    protected void onChangeNPCTemplate(Mage mage, MagicNPC npc, String templateKey) {
+        EntityData template = controller.getMob(templateKey);
+        if (template == null) {
+            mage.sendMessage(ChatColor.RED + "Unknown mob template: " + ChatColor.YELLOW + " templateKey");
+            return;
+        }
+        if (!template.isNPC()) {
+            mage.sendMessage(ChatColor.YELLOW + "Mob template " + ChatColor.WHITE + templateKey
+                + ChatColor.YELLOW + " is not meant to be an NPC. Setting it anyway!");
+        }
+        if (npc.setTemplate(templateKey)) {
+            mage.sendMessage(ChatColor.GREEN + "Changed template of npc " + ChatColor.GOLD + npc.getName()
+                + ChatColor.GREEN + " to " + ChatColor.YELLOW + templateKey);
+        } else {
+            mage.sendMessage(ChatColor.RED + "Unknown mob type: " + ChatColor.YELLOW + templateKey);
+        }
     }
 
     protected void onRenameNPC(Mage mage, MagicNPC npc, String name) {
@@ -482,6 +509,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("costs");
             options.add("player");
             options.add("dialog");
+            options.add("parent");
         } else if (args.length == 2 && args[0].equals("type")) {
             options.addAll(controller.getMobKeys());
             for (EntityType entityType : EntityType.values()) {
@@ -489,6 +517,8 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
                     options.add(entityType.name().toLowerCase());
                 }
             }
+        } else if (args.length == 2 && (args[0].equals("add") || args[0].equals("template"))) {
+            options.addAll(controller.getNPCKeys());
         } else if (args.length == 2 && args[0].equals("select")) {
             for (MagicNPC npc : controller.getNPCs()) {
                 options.add(npc.getName());

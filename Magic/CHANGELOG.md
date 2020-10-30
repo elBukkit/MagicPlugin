@@ -31,6 +31,10 @@
    - Brush inventory reorganized, wills how block data variants
    - Better tab-completion for /wand(or mage) remove brush <some long brush key>
 
+ - Add NPC template system via mob configs
+   - Potter configs now have `ollivander` and `year1` through `year7` templates
+   - Can be spawned simply with `/mnpc add ollivander` and it's ready to go
+
  - Fix using the replicate and clone brushes with the Place spell
  - Fix pasting schematics with torches or other wall attachables
 
