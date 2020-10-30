@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/shroomlight",
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/spells/light"},
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/light"}
+  ]
+}

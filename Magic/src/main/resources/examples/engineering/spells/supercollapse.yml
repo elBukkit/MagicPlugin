@@ -1,6 +1,8 @@
 supercollapse:
-    icon: spell_icon:115
-    icon_disabled: spell_icon_disabled:115
+    icon: crimson_roots{CustomModelData:18001}
+    icon_disabled: crimson_roots{CustomModelData:18002}
+    legacy_icon: spell_icon:115
+    legacy_icon_disabled: spell_icon_disabled:115
     icon_url: http://textures.minecraft.net/texture/a4cdbaa4de8eecc6363d760442688762daf588238f83a9da624eaa51e82bbb
     category: engineering
     tags: noduel
