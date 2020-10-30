@@ -28,6 +28,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
             options.add("manual");
             options.add("off");
             options.add("url");
+            options.add("download");
         }
         return options;
     }
@@ -39,7 +40,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
             return true;
         }
         String subCommand = args.length > 0 ? args[0] : "";
-        if (subCommand.equalsIgnoreCase("url")) {
+        if (subCommand.equalsIgnoreCase("url") || subCommand.equalsIgnoreCase("download")) {
             sender.sendMessage(controller.getResourcePackURL());
             return true;
         }
