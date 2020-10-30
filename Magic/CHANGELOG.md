@@ -24,6 +24,7 @@
  - All players' resource pack preferences will be reset and stick to the defaults until they use the /getrp command
  - Light spell added to architect path
  - Magic torch crafting recipe enabled by default
+ - Magic torch can be thrown to provide a light source
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data

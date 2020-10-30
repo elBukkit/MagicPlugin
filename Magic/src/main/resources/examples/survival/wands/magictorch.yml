@@ -4,6 +4,9 @@ magictorch:
     cast_spell: magictorch
     cast_interval: 200
     required: LightAPI
+    undroppable: true
+    drop: alt_cast
+    alternate_spell: throwmagictorch
     lore:
     - $description
 

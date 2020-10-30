@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
@@ -16,6 +18,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -30,6 +33,8 @@ public class ThrowItemAction extends BaseProjectileAction {
     private boolean unbreakable;
     private SourceLocation sourceLocation;
     private ItemData item;
+    private boolean throwWand;
+    private boolean temporary;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -40,6 +45,8 @@ public class ThrowItemAction extends BaseProjectileAction {
         itemSpeedMax = parameters.getDouble("speed_max", itemSpeed);
         ageItems = parameters.getInt("age_items", 5500);
         unbreakable = parameters.getBoolean("unbreakable", false);
+        throwWand = parameters.getBoolean("throw_wand", false);
+        temporary = parameters.getBoolean("temporary", true);
         sourceLocation = new SourceLocation(parameters);
 
         String itemName = parameters.getString("item");
@@ -57,7 +64,24 @@ public class ThrowItemAction extends BaseProjectileAction {
             return SpellResult.NO_TARGET;
         }
         ItemStack itemStack = null;
-        if (item != null) {
+        if (throwWand) {
+            Wand wand = context.getWand();
+            if (wand == null) {
+                return SpellResult.NO_TARGET;
+            }
+            wand.deactivate();
+
+            itemStack = wand.getItem();
+            if (CompatibilityUtils.isEmpty(itemStack))
+            {
+                return SpellResult.FAIL;
+            }
+            int slotNumber = wand.getHeldSlot();
+            Player player = context.getMage().getPlayer();
+            if (player != null) {
+                player.getInventory().setItem(slotNumber, new ItemStack(Material.AIR));
+            }
+        } else if (item != null) {
             itemStack = item.getItemStack(1);
         } else {
             MaterialAndData material = context.getBrush();
@@ -72,15 +96,17 @@ public class ThrowItemAction extends BaseProjectileAction {
         }
         double itemSpeed = context.getRandom().nextDouble() * (itemSpeedMax - itemSpeedMin) + itemSpeedMin;
         Vector velocity = spawnLocation.getDirection().normalize().multiply(itemSpeed);
-        String removedMessage = context.getMessage("removed");
-        if (removedMessage != null) {
-            String name = context.getController().describeItem(itemStack);
-            if (name == null) {
-                name = "";
+        if (temporary) {
+            String removedMessage = context.getMessage("removed");
+            if (removedMessage != null) {
+                String name = context.getController().describeItem(itemStack);
+                if (name == null) {
+                    name = "";
+                }
+                removedMessage = removedMessage.replace("$material", name);
             }
-            removedMessage = removedMessage.replace("$material", name);
+            NMSUtils.makeTemporary(itemStack, removedMessage);
         }
-        NMSUtils.makeTemporary(itemStack, removedMessage);
         if (unbreakable) {
             itemStack = InventoryUtils.makeReal(itemStack);
             InventoryUtils.makeUnbreakable(itemStack);
@@ -95,8 +121,12 @@ public class ThrowItemAction extends BaseProjectileAction {
             context.getMage().sendDebugMessage("Failed to spawn item of type " + itemStack.getType());
             return SpellResult.FAIL;
         }
-        droppedItem.setMetadata("temporary", new FixedMetadataValue(context.getController().getPlugin(), true));
-        CompatibilityUtils.ageItem(droppedItem, ageItems);
+        if (temporary) {
+            droppedItem.setMetadata("temporary", new FixedMetadataValue(context.getController().getPlugin(), true));
+        }
+        if (ageItems > 0) {
+            CompatibilityUtils.ageItem(droppedItem, ageItems);
+        }
         SafetyUtils.setVelocity(droppedItem, velocity);
 
         track(context, droppedItem);
