@@ -162,55 +162,68 @@ public class BaseMagicProperties implements MagicProperties {
         return getProperty(key);
     }
 
+    @Override
     public double getDouble(String key, double defaultValue) {
         return getPropertyConfiguration(key).getDouble(key, defaultValue);
     }
 
+    @Override
     public double getDouble(String key) {
         return getDouble(key, 0.0);
     }
 
+    @Override
     public float getFloat(String key, float defaultValue) {
         return (float)getPropertyConfiguration(key).getDouble(key, defaultValue);
     }
 
+    @Override
     public float getFloat(String key) {
         return getFloat(key, 0.0f);
     }
 
+    @Override
     public int getInt(String key, int defaultValue) {
         return getPropertyConfiguration(key).getInt(key, defaultValue);
     }
 
+    @Override
     public int getInt(String key) {
         return getInt(key, 0);
     }
 
+    @Override
     public long getLong(String key, long defaultValue) {
         return getPropertyConfiguration(key).getLong(key, defaultValue);
     }
 
+    @Override
     public long getLong(String key) {
         return getLong(key, 0L);
     }
 
+    @Override
     public boolean getBoolean(String key, boolean defaultValue) {
         return getPropertyConfiguration(key).getBoolean(key, defaultValue);
     }
 
+    @Override
     public boolean getBoolean(String key) {
         return getBoolean(key, false);
     }
 
+    @Override
     public String getString(String key, String defaultValue) {
         Object value = getProperty(key);
         return value == null ? defaultValue : value.toString();
     }
 
+    @Override
     public String getString(String key) {
         return getString(key, null);
     }
 
+    @Override
     @Nullable
     public List<String> getStringList(String key) {
         Object value = getProperty(key);

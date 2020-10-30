@@ -12,9 +12,11 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 public interface CasterProperties extends MagicConfigurable {
     MageController getController();
     boolean hasSpell(String spellKey);
+    boolean hasBrush(String brushKey);
     Collection<String> getSpells();
     Collection<String> getBrushes();
     boolean addSpell(String spellKey);
+    boolean addBrush(String key);
     boolean setSpelLLevel(String spellKey, int level);
     int getSpellLevel(String spellKey);
     Mage getMage();
@@ -68,4 +70,9 @@ public interface CasterProperties extends MagicConfigurable {
      * @return false if the player is blocked based on a path requirement
      */
     boolean checkAndUpgrade(boolean quiet);
+
+    boolean isCostFree();
+    boolean isConsumeFree();
+    boolean isCooldownFree();
+    int randomize(int totalLevels, boolean addSpells);
 }

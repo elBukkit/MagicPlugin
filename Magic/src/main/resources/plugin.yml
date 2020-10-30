@@ -452,6 +452,7 @@ commands:
         /mage lock        Lock a class for a player
         /mage switch      Switch classes for a player
         /mage upgrade     Upgrade properties of a mage
+        /mage promote     Promote a mage to the next path
         /mage setdata     Modify Mage data
         /mage getdata     Describe Mage data
         /mage attribute   Set or check mage attributes
@@ -506,6 +507,14 @@ commands:
        /mage upgrade xp_max 500
        /mage upgrade xp_regeneration 50
     permission: Magic.commands.mage.upgrade
+  "mage promote":
+    description: Promote a mage to the next path
+    usage: |
+
+      /mage promote [path]
+      /mage promote
+      /mage promote apprentice
+    permission: Magic.commands.mage.promote
   "mage setdata":
     description: Configure Mage player data or spell cast counts
     permission: Magic.commands.mage.setdata
@@ -1459,6 +1468,7 @@ permissions:
     - Magic.commands.mage.remove
     - Magic.commands.mage.modifier
     - Magic.commands.mage.upgrade
+    - Magic.commands.mage.promote
     - Magic.commands.mage.describe
     - Magic.commands.mage.getdata
     - Magic.commands.mage.setdata
@@ -1494,6 +1504,10 @@ permissions:
     default: op
   Magic.commands.mage.upgrade:
     description: Player may upgrade Mage properties
+    type: boolean
+    default: op
+  Magic.commands.mage.promote:
+    description: Player may promote players
     type: boolean
     default: op
   Magic.commands.mage.describe:

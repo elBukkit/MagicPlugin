@@ -51,6 +51,7 @@
    by default. This is to reduce log spam when using automated console casting from other plugins.
  - Add support for phantom size
  - Add support for using JSON to spawn mobs, e.g. `/mmob spawn slime{size:5}`
+ - Add `/mage promote` command for easily moving a player up a path
 
 # 7.11.1
 

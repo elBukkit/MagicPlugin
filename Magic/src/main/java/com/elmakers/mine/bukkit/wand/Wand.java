@@ -3258,92 +3258,25 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected int randomize(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage enchanter, boolean addSpells) {
-        if (enchanter == null && mage != null) {
-            enchanter = mage;
+        Mage activeMage = this.mage;
+        if (enchanter instanceof Mage && this.mage == null) {
+            this.mage = (Mage)enchanter;
         }
+        int levels = randomize(totalLevels, addSpells);
+        this.mage = activeMage;
+        return levels;
+    }
 
+    @Override
+    public int randomize(int totalLevels, boolean addSpells) {
         if (maxEnchantCount > 0 && enchantCount >= maxEnchantCount) {
-            if (enchanter != null && addSpells) {
-                enchanter.sendMessage(getMessage("max_enchanted").replace("$wand", getName()));
+            if (mage != null && addSpells) {
+                mage.sendMessage(getMessage("max_enchanted").replace("$wand", getName()));
             }
             return 0;
         }
 
-        WandUpgradePath path = getPath();
-        if (path == null) {
-            if (enchanter != null && addSpells) {
-                enchanter.sendMessage(getMessage("no_path").replace("$wand", getName()));
-            }
-            return 0;
-        }
-
-        int minLevel = path.getMinLevel();
-        if (totalLevels < minLevel) {
-            if (enchanter != null && addSpells) {
-                String levelMessage = getMessage("need_more_levels");
-                levelMessage = levelMessage.replace("$levels", Integer.toString(minLevel));
-                enchanter.sendMessage(levelMessage);
-            }
-            return 0;
-        }
-
-        // Just a hard-coded sanity check
-        int maxLevel = path.getMaxLevel();
-        totalLevels = Math.min(totalLevels, maxLevel * 50);
-
-        int addLevels = Math.min(totalLevels, maxLevel);
-        int levels = 0;
-        boolean modified = true;
-        while (addLevels >= minLevel && modified) {
-            boolean hasUpgrade = path.hasUpgrade();
-            WandLevel level = path.getLevel(addLevels);
-
-            if (!path.canEnchant(this) && (path.hasSpells() || path.hasMaterials())) {
-                // Check for level up
-                WandUpgradePath nextPath = path.getUpgrade();
-                if (nextPath != null) {
-                    if (path.checkUpgradeRequirements(this, addSpells ? enchanter : null)) {
-                        path.upgrade(this, enchanter);
-                    }
-                    break;
-                } else {
-                    if (enchanter != null && addSpells) {
-                        enchanter.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
-                    }
-                    break;
-                }
-            }
-
-            modified = level.randomizeWand(enchanter, this, hasUpgrade, addSpells);
-            totalLevels -= maxLevel;
-            if (modified) {
-                if (enchanter != null) {
-                    path.enchanted(enchanter);
-                }
-                levels += addLevels;
-
-                // Check for level up
-                WandUpgradePath nextPath = path.getUpgrade();
-                if (nextPath != null && path.checkUpgradeRequirements(this, null) && !path.canEnchant(this)) {
-                    path.upgrade(this, enchanter);
-                    path = nextPath;
-                }
-            } else if (path.canEnchant(this)) {
-                if (enchanter != null && levels == 0 && addSpells)
-                {
-                    String message = getMessage("require_more_levels");
-                    enchanter.sendMessage(message);
-                }
-            } else if (hasUpgrade) {
-                if (path.checkUpgradeRequirements(this, addSpells ? enchanter : null)) {
-                    path.upgrade(this, enchanter);
-                    levels += addLevels;
-                }
-            } else if (enchanter != null && addSpells) {
-                enchanter.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
-            }
-            addLevels = Math.min(totalLevels, maxLevel);
-        }
+        int levels = super.randomize(totalLevels, addSpells);
 
         if (levels > 0) {
             enchantCount++;

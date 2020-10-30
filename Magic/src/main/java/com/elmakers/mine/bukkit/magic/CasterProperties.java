@@ -32,6 +32,8 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.wand.WandLevel;
+import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 
 public abstract class CasterProperties extends BaseMagicConfigurable implements com.elmakers.mine.bukkit.api.magic.CasterProperties {
     // This is used for property migration, if the stored data's version property is too low
@@ -124,12 +126,19 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getFloat("mana_max_boost", getFloat("xp_max_boost"));
     }
 
+    @Override
     public boolean isCostFree() {
         return getFloat("cost_reduction") > 1;
     }
 
+    @Override
     public boolean isCooldownFree() {
         return getFloat("cooldown_reduction") > 1;
+    }
+
+    @Override
+    public boolean isConsumeFree() {
+        return getFloat("consume_reduction") > 1;
     }
 
     @Override
@@ -396,6 +405,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     public void updateMana() {
 
+    }
+
+    @Override
+    public boolean hasBrush(String key) {
+        return !getBrushes().contains(key);
     }
 
     @Override
@@ -739,5 +753,94 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
         path.upgrade(getMage(), getWand());
         return true;
+    }
+
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public int randomize(int totalLevels, boolean addSpells) {
+        Mage mage = getMage();
+        Wand wand = (this instanceof Wand) ? (Wand)this : (mage == null ? null : mage.getActiveWand());
+        ProgressionPath checkPath = getPath();
+        if (checkPath == null || !(checkPath instanceof WandUpgradePath)) {
+            if (mage != null && addSpells) {
+                mage.sendMessage(getMessage("no_path").replace("$wand", getName()));
+            }
+            return 0;
+        }
+        WandUpgradePath path = (WandUpgradePath)checkPath;
+
+        int minLevel = path.getMinLevel();
+        if (totalLevels < minLevel) {
+            if (mage != null && addSpells) {
+                String levelMessage = getMessage("need_more_levels");
+                levelMessage = levelMessage.replace("$levels", Integer.toString(minLevel));
+                mage.sendMessage(levelMessage);
+            }
+            return 0;
+        }
+
+        // Just a hard-coded sanity check
+        int maxLevel = path.getMaxLevel();
+        totalLevels = Math.min(totalLevels, maxLevel * 50);
+
+        int addLevels = Math.min(totalLevels, maxLevel);
+        int levels = 0;
+        boolean modified = true;
+        while (addLevels >= minLevel && modified) {
+            boolean hasUpgrade = path.hasUpgrade();
+            WandLevel level = path.getLevel(addLevels);
+
+            if (!path.canProgress(this) && (path.hasSpells() || path.hasMaterials())) {
+                // Check for level up
+                WandUpgradePath nextPath = path.getUpgrade();
+                if (nextPath != null) {
+                    if (path.checkUpgradeRequirements(this, !addSpells) && (wand != null || mage != null)) {
+                        path.upgrade(wand, mage);
+                    }
+                    break;
+                } else {
+                    if (mage != null && addSpells) {
+                        mage.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
+                    }
+                    break;
+                }
+            }
+
+            modified = level.randomize(mage, this, hasUpgrade, addSpells);
+            totalLevels -= maxLevel;
+            if (modified) {
+                if (mage != null) {
+                    path.enchanted(mage);
+                }
+                levels += addLevels;
+
+                // Check for level up
+                WandUpgradePath nextPath = path.getUpgrade();
+                if (nextPath != null && path.checkUpgradeRequirements(this, true) && !path.canProgress(this)) {
+                    path.upgrade(wand, mage);
+                    path = nextPath;
+                }
+            } else if (path.canProgress(this)) {
+                if (mage != null && levels == 0 && addSpells)
+                {
+                    String message = getMessage("require_more_levels");
+                    mage.sendMessage(message);
+                }
+            } else if (hasUpgrade) {
+                if (path.checkUpgradeRequirements(this, !addSpells)) {
+                    if (wand != null || mage != null) {
+                        path.upgrade(wand, mage);
+                    }
+                    levels += addLevels;
+                }
+            } else if (mage != null && addSpells) {
+                mage.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
+            }
+            addLevels = Math.min(totalLevels, maxLevel);
+        }
+        return levels;
     }
 }

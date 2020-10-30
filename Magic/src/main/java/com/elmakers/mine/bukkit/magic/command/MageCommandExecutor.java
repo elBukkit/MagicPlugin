@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -139,6 +140,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageConfigure(sender, player, args2, true);
         }
+        if (subCommand.equalsIgnoreCase("promote"))
+        {
+            return onMagePromote(sender, player, args2);
+        }
         if (subCommand.equalsIgnoreCase("describe"))
         {
             return onMageDescribe(sender, player, args2);
@@ -212,6 +217,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
             addIfPermissible(sender, options, "Magic.commands.mage.", "attribute");
             addIfPermissible(sender, options, "Magic.commands.mage.", "bypass");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "promote");
         } else if (args.length == 2 && sender.hasPermission("Magic.commands.mage.others")) {
             options.addAll(api.getPlayerNames());
         }
@@ -244,6 +250,18 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                         for (Spell spell : spells) {
                             options.add(spell.getKey());
                         }
+                    }
+                }
+            }
+
+            if (subCommand.equalsIgnoreCase("promote")) {
+                if (target != null) {
+                    Mage mage = controller.getMage(target);
+                    ProgressionPath path = mage.getActiveProperties().getPath();
+                    ProgressionPath next = path.getNextPath();
+                    while (next != null) {
+                        options.add(next.getKey());
+                        next = next.getNextPath();
                     }
                 }
             }
@@ -699,6 +717,59 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         if (sender != player) {
             sender.sendMessage(api.getMessages().getParameterized("wand.player_unboundall", "$name", player.getName()));
         }
+        return true;
+    }
+
+    public boolean onMagePromote(CommandSender sender, Player player, String[] parameters)
+    {
+        Mage mage = controller.getMage(player);
+        CasterProperties activeProperties = mage.getActiveProperties();
+        ProgressionPath currentPath = activeProperties.getPath();
+        if (currentPath == null) {
+            sender.sendMessage(ChatColor.RED + "Player " + ChatColor.YELLOW + player.getName()
+                + ChatColor.RED + " is not currently on a path");
+            return true;
+        }
+        ProgressionPath nextPath = currentPath.getNextPath();
+        String targetPath = null;
+        if (parameters.length > 0) {
+            targetPath = parameters[0];
+            boolean foundPath = false;
+            while (nextPath != null && !foundPath) {
+                foundPath = nextPath.getKey().equalsIgnoreCase(targetPath);
+                nextPath = nextPath.getNextPath();
+            }
+            if (!foundPath) {
+                sender.sendMessage(ChatColor.RED + "Player " + ChatColor.YELLOW + player.getName()
+                + ChatColor.RED + " is not on a path that leads to " + ChatColor.GOLD + targetPath);
+                return true;
+            }
+        } else {
+            if (nextPath != null) {
+                targetPath = nextPath.getKey();
+            }
+        }
+        int totalLevels = 0;
+        int iterations = 0;
+        while (targetPath == null || !targetPath.equals(currentPath.getKey())) {
+            int levels = activeProperties.randomize(1, true);
+            if (levels == 0) {
+                break;
+            }
+            totalLevels += levels;
+            currentPath = activeProperties.getPath();
+            iterations++;
+            if (iterations > 10000) {
+                controller.getLogger().warning("Something went wrong with the mage promote command, it got stuck in a loop");
+            }
+        }
+
+        if (totalLevels == 0) {
+            sender.sendMessage(ChatColor.YELLOW + "Could not promote player " + ChatColor.GOLD + player.getName());
+        } else {
+            sender.sendMessage(ChatColor.GREEN + "Promoted player " + ChatColor.GOLD + player.getName());
+        }
+
         return true;
     }
 

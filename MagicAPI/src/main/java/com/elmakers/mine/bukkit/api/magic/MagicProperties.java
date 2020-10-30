@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.magic;
 
+import java.util.List;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -73,4 +74,19 @@ public interface MagicProperties {
      * @return False if there are any keys set on this property holder directly.
      */
     boolean isEmpty();
+
+    double getDouble(String key, double defaultValue);
+    double getDouble(String key);
+    float getFloat(String key, float defaultValue);
+    float getFloat(String key);
+    int getInt(String key, int defaultValue);
+    int getInt(String key);
+    long getLong(String key, long defaultValue);
+    long getLong(String key);
+    boolean getBoolean(String key, boolean defaultValue);
+    boolean getBoolean(String key);
+    String getString(String key, String defaultValue);
+    String getString(String key);
+    @Nullable
+    List<String> getStringList(String key);
 }

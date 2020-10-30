@@ -7,7 +7,6 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -140,14 +139,14 @@ public class WandLevel {
         return remainingSpells;
     }
 
-    public Deque<WeightedPair<String>> getRemainingMaterials(Wand wand) {
+    public Deque<WeightedPair<String>> getRemainingMaterials(CasterProperties properties) {
         Deque<WeightedPair<String>> remainingMaterials = new ArrayDeque<>();
         for (WeightedPair<String> material : materialProbability) {
             String materialKey = material.getValue();
             // Fixup |'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
             // TODO: escape the keys as strings with '', which is probably the right way to do it.
             materialKey = materialKey.replace("|", ":");
-            if (!wand.hasBrush(materialKey) && MaterialBrush.isValidMaterial(materialKey, false)) {
+            if (!properties.hasBrush(materialKey) && MaterialBrush.isValidMaterial(materialKey, false)) {
                 remainingMaterials.add(material);
             }
         }
@@ -162,8 +161,14 @@ public class WandLevel {
             mage = activeMage;
         }
         wand.setActiveMage(mage);
+        boolean result = randomize(mage, wand, hasUpgrade, addSpells);
+        wand.setActiveMage(activeMage);
+        return result;
+    }
+
+    public boolean randomize(Mage mage, CasterProperties caster, boolean hasUpgrade, boolean addSpells) {
         boolean addedSpells = false;
-        Deque<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
+        Deque<WeightedPair<String>> remainingSpells = getRemainingSpells(caster);
 
         if (addSpells) {
             if (remainingSpells.size() > 0) {
@@ -173,7 +178,7 @@ public class WandLevel {
                 }
                 for (int i = 0; i < spellCount; i++) {
                     String spellKey = RandomUtils.weightedRandom(remainingSpells);
-                    boolean added = wand.addSpell(spellKey);
+                    boolean added = caster.addSpell(spellKey);
                     if (mage != null) {
                         mage.sendDebugMessage("Trying to add spell: " + spellKey + " ? " + added);
                     }
@@ -188,9 +193,9 @@ public class WandLevel {
         // Also look for any material-using spells
         boolean needsMaterials = false;
         int maxManaCost = 0;
-        Set<String> spells = wand.getSpells();
+        Collection<String> spells = caster.getSpells();
         for (String spellName : spells) {
-            SpellTemplate spell = wand.getController().getSpellTemplate(spellName);
+            SpellTemplate spell = caster.getController().getSpellTemplate(spellName);
             if (spell != null) {
                 needsMaterials = needsMaterials || spell.usesBrush();
                 Collection<CastingCost> costs = spell.getCosts();
@@ -204,9 +209,9 @@ public class WandLevel {
 
         // Add random materials
         boolean addedMaterials = false;
-        Deque<WeightedPair<String>> remainingMaterials = getRemainingMaterials(wand);
+        Deque<WeightedPair<String>> remainingMaterials = getRemainingMaterials(caster);
         if (needsMaterials && remainingMaterials.size() > 0) {
-            int currentMaterialCount = wand.getBrushes().size();
+            int currentMaterialCount = caster.getBrushes().size();
             Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
 
             // Make sure the wand has at least one material.
@@ -220,7 +225,7 @@ public class WandLevel {
             for (int i = 0; i < materialCount; i++) {
                 String materialKey = RandomUtils.weightedRandom(remainingMaterials);
                 materialKey = materialKey.replace("|", ":");
-                if (!wand.addBrush(materialKey)) {
+                if (!caster.addBrush(materialKey)) {
                     // Try again up to a certain number if we picked one the wand already had.
                     if (retries-- > 0) i--;
                 } else {
@@ -239,20 +244,19 @@ public class WandLevel {
                 mage.sendDebugMessage("Spells in list: " + spellProbability.size());
                 mage.sendDebugMessage("Added brushes: " +  addedMaterials + ", needed: " + needsMaterials);
             }
-            wand.setActiveMage(activeMage);
             return false;
         }
 
         // Add random wand properties
         boolean addedProperties = false;
         Integer propertyCount = propertyCountProbability.size() == 0 ? Integer.valueOf(0) : RandomUtils.weightedRandom(propertyCountProbability);
-        ConfigurationSection wandProperties = new MemoryConfiguration();
+        ConfigurationSection upgradeProperties = new MemoryConfiguration();
 
         List<String> propertyKeys = new ArrayList<>(propertiesProbability.keySet());
         List<String> propertiesAvailable = new ArrayList<>();
 
         for (String propertyKey : propertyKeys) {
-            double currentValue = wand.getDouble(propertyKey);
+            double currentValue = caster.getDouble(propertyKey);
             double maxValue = path.getMaxProperty(propertyKey);
             if (currentValue < maxValue) {
                 propertiesAvailable.add(propertyKey);
@@ -269,56 +273,56 @@ public class WandLevel {
             int randomPropertyIndex = (int)(Math.random() * propertiesAvailable.size());
             String randomProperty = propertiesAvailable.get(randomPropertyIndex);
             Deque<WeightedPair<Float>> probabilities = propertiesProbability.get(randomProperty);
-            double current = wand.getDouble(randomProperty);
+            double current = caster.getDouble(randomProperty);
             double maxValue = path.getMaxProperty(randomProperty);
             if (probabilities.size() > 0 && current < maxValue) {
                 addedProperties = true;
                 current = Math.min(maxValue, current + RandomUtils.weightedRandom(probabilities));
-                wandProperties.set(randomProperty, current);
+                upgradeProperties.set(randomProperty, current);
             }
         }
 
         // The mana system is considered separate from other properties
 
-        if (wand.isCostFree()) {
+        if (caster.isCostFree()) {
             // Cost-Free wands don't need mana.
-            wandProperties.set("mana_regeneration", 0);
-            wandProperties.set("mana_max", 0);
-            wandProperties.set("mana", 0);
+            upgradeProperties.set("mana_regeneration", 0);
+            upgradeProperties.set("mana_max", 0);
+            upgradeProperties.set("mana", 0);
         } else {
-            int manaRegeneration = wand.getManaRegeneration();
+            int manaRegeneration = caster.getManaRegeneration();
             if (manaRegenerationProbability.size() > 0 && manaRegeneration < path.getMaxManaRegeneration()) {
                 addedProperties = true;
                 manaRegeneration = Math.min(path.getMaxManaRegeneration(), manaRegeneration + RandomUtils.weightedRandom(manaRegenerationProbability));
-                wandProperties.set("mana_regeneration", manaRegeneration);
+                upgradeProperties.set("mana_regeneration", manaRegeneration);
             }
-            int manaMax = wand.getManaMax();
+            int manaMax = caster.getManaMax();
             if (manaMaxProbability.size() > 0 && manaMax < path.getMaxMaxMana()) {
                 manaMax = Math.min(path.getMaxMaxMana(), manaMax + RandomUtils.weightedRandom(manaMaxProbability));
                 if (path.getMatchSpellMana()) {
                     // Make sure the wand has at least enough mana to cast the highest costing spell it has.
                     manaMax = Math.max(maxManaCost, manaMax);
                 }
-                wandProperties.set("mana_max", manaMax);
+                upgradeProperties.set("mana_max", manaMax);
                 addedProperties = true;
             }
 
             // Refill the wand's mana, why not
-            wandProperties.set("mana", manaMax);
+            upgradeProperties.set("mana", manaMax);
         }
 
-        // Add or set uses to the wand
-        if (!useProbability.isEmpty()) {
+        // Add or set uses to wands
+        if (!useProbability.isEmpty() && caster instanceof Wand) {
+            Wand wand = (Wand)caster;
             int wandUses = wand.getRemainingUses();
             if (wandUses < path.getMaxUses() && useProbability.size() > 0) {
-                wandProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(useProbability)));
+                upgradeProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(useProbability)));
                 addedProperties = true;
             }
         }
 
         // Set properties.
-        wand.upgrade(wandProperties);
-        wand.setActiveMage(activeMage);
+        caster.upgrade(upgradeProperties);
         return addedMaterials || addedSpells || addedProperties;
     }
 

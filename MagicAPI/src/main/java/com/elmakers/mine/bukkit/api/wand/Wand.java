@@ -77,6 +77,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     @Override
     boolean hasSpell(String key);
     boolean hasSpell(SpellKey spellKey);
+    @Override
     boolean hasBrush(String key);
     boolean isLocked();
     boolean canUse(Player player);
@@ -88,6 +89,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean addItem(ItemStack item);
     @Override
     boolean removeProperty(String key);
+    @Override
     boolean addBrush(String key);
     @Override
     boolean addSpell(String key);
@@ -116,7 +118,9 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
 
     boolean isSuperProtected();
     boolean isSuperPowered();
+    @Override
     boolean isCostFree();
+    @Override
     boolean isConsumeFree();
     @Override
     boolean isCooldownFree();
