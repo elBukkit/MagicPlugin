@@ -132,6 +132,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String ownerId = "";
     private String template = "";
     private String path = "";
+    private String inventoryOpenLore = "";
     private List<String> mageClassKeys = null;
     private boolean superProtected = false;
     private boolean superPowered = false;
@@ -1615,6 +1616,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         cooldownReduction = getFloat("cooldown_reduction");
         costReduction = getFloat("cost_reduction");
         power = getFloat("power");
+        inventoryOpenLore = getMessage("inventory_open", "");
 
         ConfigurationSection protectionConfig = getConfigurationSection("protection");
         if (protectionConfig == null && hasProperty("protection")) {
@@ -2625,6 +2627,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             addOwnerDescription(lore);
         }
 
+        if (isInventoryOpen() && inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
+            lore.add(inventoryOpenLore);
+        }
+
         SpellTemplate spell = mage == null ? controller.getSpellTemplate(getActiveSpellKey()) : mage.getSpell(getActiveSpellKey());
         Messages messages = controller.getMessages();
 
@@ -3611,6 +3617,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 updateInventory();
                 updateHotbarStatus();
+                if (inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
+                    updateLore();
+                }
             }
         }
     }
@@ -3645,6 +3654,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (mode == WandMode.INVENTORY) {
                     restoreInventory();
                     showActiveIcon(false);
+                    if (inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
+                        updateLore();
+                    }
                 } else if (closePlayerInventory) {
                     mage.getPlayer().closeInventory();
                 }
