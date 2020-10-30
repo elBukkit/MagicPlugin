@@ -97,6 +97,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean hasMoved = false;
     protected boolean hasChangedHealth = false;
     protected boolean isTemporary = false;
+    protected boolean magicSpawned = false;
     private boolean respawn = false;
     protected String name = null;
     protected Art art;
@@ -174,7 +175,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public EntityData(Entity entity) {
         setEntity(entity);
         this.location = CompatibilityUtils.getHangingLocation(entity);
-        this.isTemporary = entity.hasMetadata("temporary");
+        this.magicSpawned = entity.hasMetadata("magicspawned");
+        this.respawn = !entity.hasMetadata("norespawn");
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
@@ -747,7 +749,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         Entity entity = this.getEntity();
 
         // Re-spawn if dead or missing
-        if (respawn && !isTemporary && uuid != null && (entity == null || !entity.isValid() || entity.isDead()) && !(entity instanceof Player)) {
+        if (respawn && !isTemporary && !magicSpawned && uuid != null && (entity == null || !entity.isValid() || entity.isDead()) && !(entity instanceof Player)) {
             // Avoid re-re-spawning an entity
             WeakReference<Entity> respawnedEntity = respawned.get(uuid);
             if (respawnedEntity != null) {

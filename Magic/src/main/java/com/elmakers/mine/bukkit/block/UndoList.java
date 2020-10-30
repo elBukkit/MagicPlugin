@@ -265,7 +265,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         entities.add(entity);
         if (this.isScheduled()) {
-            entity.setMetadata("temporary", new FixedMetadataValue(plugin, true));
+            entity.setMetadata("magicspawned", new FixedMetadataValue(plugin, true));
         }
         watch(entity);
         contain(entity.getLocation().toVector());
