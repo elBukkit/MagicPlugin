@@ -437,6 +437,7 @@ public interface MageController {
     @Nullable
     String getSpellArgs(ItemStack item);
 
+    Set<String> getNPCKeys();
     Set<String> getMobKeys();
     @Nullable
     Entity spawnMob(String key, Location location);

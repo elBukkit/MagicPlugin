@@ -5673,6 +5673,17 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public Set<String> getNPCKeys() {
+        Set<String> keys = new HashSet<>();
+        for (EntityData mob : mobs.getMobs()) {
+            if (mob.isNPC() && !mob.isHidden()) {
+                keys.add(mob.getKey());
+            }
+        }
+        return keys;
+    }
+
+    @Override
     public Set<String> getMobKeys() {
         return mobs.getKeys();
     }
@@ -6670,7 +6681,13 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public MagicNPC addNPC(com.elmakers.mine.bukkit.api.magic.Mage creator, String name) {
-        MagicNPC npc = new MagicNPC(this, creator, creator.getLocation(), name);
+        EntityData template = mobs.get(name);
+        MagicNPC npc;
+        if (template != null && template instanceof com.elmakers.mine.bukkit.entity.EntityData) {
+            npc = new MagicNPC(this, creator, creator.getLocation(), (com.elmakers.mine.bukkit.entity.EntityData)template);
+        } else {
+            npc = new MagicNPC(this, creator, creator.getLocation(), name);
+        }
         if (!registerNPC(npc)) {
             return null;
         }

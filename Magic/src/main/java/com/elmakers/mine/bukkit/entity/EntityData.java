@@ -121,6 +121,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean preventProjectiles;
     protected boolean preventMelee;
     protected boolean nameVisible;
+    protected boolean isNPC;
+    protected boolean isHidden;
     protected Boolean persist = null;
     protected int fireTicks;
 
@@ -317,6 +319,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (name != null) {
             name = ChatColor.translateAlternateColorCodes('&', name);
         }
+        isNPC = parameters.getBoolean("npc");
+        isHidden = parameters.getBoolean("hidden");
         nameVisible = parameters.getBoolean("show_name");
         if (parameters.contains("health")) {
             health = parameters.getDouble("health", 1);
@@ -1348,5 +1352,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public boolean isPreventMelee() {
         return preventMelee;
+    }
+
+    @Override
+    public boolean isNPC() {
+        return isNPC;
+    }
+
+    @Override
+    public boolean isHidden() {
+        return isHidden;
     }
 }
