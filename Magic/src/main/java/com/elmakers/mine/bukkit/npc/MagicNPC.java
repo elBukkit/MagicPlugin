@@ -51,7 +51,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Nonnull
     private ConfigurationSection parameters;
 
-    public MagicNPC(MagicController controller) {
+    private MagicNPC(MagicController controller) {
         this.controller = controller;
     }
 
@@ -127,14 +127,14 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         }
 
         parameters = ConfigurationUtils.getConfigurationSection(configuration, "parameters");
-        if (parameters == null) {
-            parameters = new MemoryConfiguration();
-        }
-
         createEntityData();
     }
 
     protected void createEntityData() {
+        // Kind of hacky to have this here, but it's a common initialization point
+        if (parameters == null) {
+            parameters = new MemoryConfiguration();
+        }
         boolean hasMobKey = mobKey != null && !mobKey.isEmpty();
         EntityData entity = hasMobKey ? controller.getMob(mobKey) : null;
         if (entity == null) {

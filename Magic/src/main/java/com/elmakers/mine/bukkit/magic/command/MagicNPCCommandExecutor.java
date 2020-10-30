@@ -509,7 +509,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("costs");
             options.add("player");
             options.add("dialog");
-            options.add("parent");
+            options.add("template");
         } else if (args.length == 2 && args[0].equals("type")) {
             options.addAll(controller.getMobKeys());
             for (EntityType entityType : EntityType.values()) {
