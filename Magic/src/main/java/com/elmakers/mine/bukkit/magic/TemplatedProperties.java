@@ -78,6 +78,7 @@ public abstract class TemplatedProperties extends CasterProperties {
     }
 
     @Nullable
+    @Override
     public String getName() {
         TemplateProperties template = getTemplate();
         return template == null ? "?" : template.getName();
