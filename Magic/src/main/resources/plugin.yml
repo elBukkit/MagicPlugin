@@ -694,6 +694,7 @@ commands:
         /mnpc list                        List all NPCs
         /mnpc remove                      Remove the selected NPC
         /mnpc type                        Change the mob type for the selected NPC
+        /mnpc template                    Change the magic mob NPC template for this NPC
         /mnpc configure                   Configure an NPC
         /mnpc describe                    Describe an NPC
         /mnpc dialog                      Add some text for the NPC to say to nearby players

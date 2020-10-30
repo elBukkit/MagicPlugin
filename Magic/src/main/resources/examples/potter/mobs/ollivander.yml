@@ -1,0 +1,10 @@
+ollivander:
+  inherit: base_npc
+  name: Ollivander
+  interact_spell: ollivander
+  helmet: skull_ollivander
+  villager_profession: librarian
+  dialog:
+    - Hello there, child!
+    - I sense an aura of magic around you.
+    - Let's see if we can find you a wand!
