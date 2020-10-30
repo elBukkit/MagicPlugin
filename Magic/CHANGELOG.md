@@ -34,6 +34,7 @@
  - Add NPC template system via mob configs
    - Potter configs now have `ollivander` and `year1` through `year7` templates
    - Can be spawned simply with `/mnpc add ollivander` and it's ready to go
+   - Added spellshop and healer NPC templates to survival configs
 
  - Fix using the replicate and clone brushes with the Place spell
  - Fix pasting schematics with torches or other wall attachables

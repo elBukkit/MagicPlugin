@@ -1,0 +1,9 @@
+spellshop:
+  inherit: base_npc
+  name: Spell Teacher
+  interact_spell: spellshop
+  villager_profession: librarian
+  disguise:
+    player: NathanWolf
+  dialog:
+    - Want to learn some new spells?

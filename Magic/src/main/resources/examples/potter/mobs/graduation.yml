@@ -1,0 +1,79 @@
+spellshop:
+  disguise: {}
+
+year1:
+  inherit: base_npc
+  name: Year 1 Exams
+  interact_spell: addspell
+  interact_spell_parameters:
+    spell: alohomora
+    path_end: year1
+  villager_profession: cleric
+  dialog:
+    - Are you ready for your first year exams?
+
+year2:
+  inherit: base_npc
+  name: Year 2 Exams
+  interact_spell: addspell
+  interact_spell_parameters:
+    spell: glacius
+    path_end: year2
+  villager_profession: cleric
+  dialog:
+    - Are you ready for your second year exams?
+
+year3:
+  inherit: base_npc
+  name: Year 3 Exams
+  interact_spell: addspell
+  interact_spell_parameters:
+    spell: deprimo
+    path_end: year3
+  villager_profession: cleric
+  dialog:
+    - Are you ready for your third year exams?
+
+year4:
+  inherit: base_npc
+  name: Year 4 Exams
+  interact_spell: addspell
+  interact_spell_parameters:
+    spell: ascendio
+    path_end: year4
+  villager_profession: cleric
+  dialog:
+    - Are you ready for your fourth year exams?
+
+year5:
+  inherit: base_npc
+  name: Year 5 Exams
+  interact_spell: addspell
+  interact_spell_parameters:
+    spell: reducto
+    path_end: year5
+  villager_profession: cleric
+  dialog:
+    - Are you ready for your fifth year exams?
+
+year6:
+  inherit: base_npc
+  name: Year 6 Exams
+  interact_spell: addspell
+  interact_spell_parameters:
+    spell: apparate
+    path_end: year6
+  villager_profession: cleric
+  dialog:
+    - Are you ready for your sixth year exams?
+
+year7:
+  inherit: base_npc
+  name: Year 7 Exams
+  interact_spell: addspell
+  interact_spell_parameters:
+    spell: piertotum
+    path_end: year7
+  villager_profession: librarian
+  dialog:
+    - Are you ready to graduate?
