@@ -421,7 +421,9 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         }
         data.setOpenWand(saveFile.getBoolean("open_wand", false));
         data.setGaveWelcomeWand(saveFile.getBoolean("gave_welcome_wand", false));
-        data.setResourcePackEnabled(saveFile.getBoolean("resource_pack_enabled", controller.isResourcePackEnabledByDefault()));
+        if (saveFile.contains("resource_pack_enabled")) {
+            data.setResourcePackEnabled(saveFile.getBoolean("resource_pack_enabled"));
+        }
         data.setHealth(saveFile.getDouble("health"));
 
         return data;

@@ -40,7 +40,7 @@ public class MageData {
     private Integer storedLevel;
     private boolean openWand;
     private boolean gaveWelcomeWand;
-    private boolean resourcePackEnabled;
+    private Boolean resourcePackEnabled;
     private long created;
     private double health;
 
@@ -228,11 +228,11 @@ public class MageData {
         this.gaveWelcomeWand = gaveWelcomeWand;
     }
 
-    public boolean getResourcePackEnabled() {
+    public Boolean getResourcePackEnabled() {
         return resourcePackEnabled;
     }
 
-    public void setResourcePackEnabled(boolean resourcePackEnabled) {
+    public void setResourcePackEnabled(Boolean resourcePackEnabled) {
         this.resourcePackEnabled = resourcePackEnabled;
     }
 

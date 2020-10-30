@@ -217,7 +217,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private boolean costFree = false;
     private boolean cooldownFree = false;
-    private boolean resourcePackEnabled = true;
+    private Boolean resourcePackEnabled = null;
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
@@ -1174,7 +1174,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean load(MageData data) {
         try {
-            resourcePackEnabled = controller.isResourcePackEnabledByDefault();
             if (data == null) {
                 finishLoad(data);
                 return true;
@@ -4959,7 +4958,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public boolean isResourcePackEnabled() {
-        return resourcePackEnabled;
+        return resourcePackEnabled == null ? controller.isResourcePackEnabledByDefault() : resourcePackEnabled;
     }
 
     public void setResourcePackEnabled(boolean enable) {
