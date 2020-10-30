@@ -52,6 +52,11 @@ public abstract class BaseProjectileAction extends CompoundAction {
     }
 
     @Override
+    public boolean hasActions() {
+        return hasActions("actions") || hasActions("tick");
+    }
+
+    @Override
     public void reset(CastContext context) {
         super.reset(context);
         expiration = System.currentTimeMillis() + lifetime;
@@ -63,6 +68,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
         super.addHandlers(spell, parameters);
         addHandler(spell, "start");
+        addHandler(spell, "tick");
     }
 
     @Override
