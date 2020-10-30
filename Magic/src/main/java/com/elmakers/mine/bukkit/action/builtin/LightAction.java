@@ -12,13 +12,16 @@ public class LightAction extends BaseSpellAction {
     private int level;
     private boolean async;
     private boolean update;
-    private boolean forceUndo;
+    private boolean undoPrevious;
     private MageController controller;
+    private LightUndoAction previous;
+    private double minDistanceSquared;
 
     private class LightUndoAction implements Runnable
     {
         private final Location location;
         private final boolean update;
+        private boolean undone;
 
         public LightUndoAction(Location location, boolean update) {
             this.location = location;
@@ -27,12 +30,17 @@ public class LightAction extends BaseSpellAction {
 
         @Override
         public void run() {
-            if (location != null) {
+            if (location != null && !undone) {
                 boolean removed = controller.deleteLight(location, async);
                 if (update && removed) {
                     controller.updateLight(location, false);
                 }
+                undone = true;
             }
+        }
+
+        public Location getLocation() {
+            return location;
         }
     }
 
@@ -44,7 +52,9 @@ public class LightAction extends BaseSpellAction {
         async = parameters.getBoolean("async", false);
         update = parameters.getBoolean("update", true);
         level = parameters.getInt("level", 15);
-        forceUndo = parameters.getBoolean("undo_previous", false);
+        undoPrevious = parameters.getBoolean("undo_previous", false);
+        minDistanceSquared = parameters.getDouble("min_distance");
+        minDistanceSquared = minDistanceSquared * minDistanceSquared;
     }
 
     @Override
@@ -54,15 +64,21 @@ public class LightAction extends BaseSpellAction {
             return SpellResult.FAIL;
         }
         Location location = context.getTargetLocation();
+        if (minDistanceSquared > 0 && previous != null) {
+            if (previous.getLocation().getWorld().equals(location.getWorld()) && previous.getLocation().distanceSquared(location) < minDistanceSquared) {
+                return SpellResult.NO_TARGET;
+            }
+        }
         context.addWork(5);
         if (controller.createLight(location, level, async) && update) {
             controller.updateLight(location);
             context.addWork(10);
         }
-        if (forceUndo) {
-            context.getMage().undoScheduled(context.getSpell().getSpellKey().getBaseKey());
+        if (undoPrevious && previous != null) {
+            previous.run();
         }
-        context.registerForUndo(new LightUndoAction(location, update));
+        previous = new LightUndoAction(location, update);
+        context.registerForUndo(previous);
         return SpellResult.CAST;
     }
 
