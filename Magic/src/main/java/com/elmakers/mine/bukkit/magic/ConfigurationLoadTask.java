@@ -492,7 +492,7 @@ public class ConfigurationLoadTask implements Runnable {
             if (key.equals("default") || key.equals("override")) continue;
 
             ConfigurationSection spellNode = getSpellConfig(key, spellConfiguration);
-            if (spellNode == null || !spellNode.getBoolean("enabled", true)) {
+            if (!ConfigurationUtils.isEnabled(spellNode)) {
                 continue;
             }
 

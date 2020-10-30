@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MobController implements Listener {
     private MageController controller;
@@ -55,7 +56,7 @@ public class MobController implements Listener {
     }
 
     public void load(String mobKey, ConfigurationSection mobConfiguration) {
-        if (!mobConfiguration.getBoolean("enabled", true)) {
+        if (!ConfigurationUtils.isEnabled(mobConfiguration)) {
             return;
         }
         EntityData mob = new EntityData(controller, mobKey, mobConfiguration);

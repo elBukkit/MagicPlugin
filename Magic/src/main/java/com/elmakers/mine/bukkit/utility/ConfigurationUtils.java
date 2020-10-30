@@ -1170,4 +1170,16 @@ public class ConfigurationUtils extends ConfigUtils {
         }
         return node.getString(iconKey);
     }
+
+    public static boolean isEnabled(ConfigurationSection configuration) {
+         if (configuration == null) return false;
+         if (!configuration.getBoolean("enabled", true)) return false;
+         String required = configuration.getString("required");
+         if (required != null && !required.isEmpty()) {
+             if (!Bukkit.getPluginManager().isPluginEnabled(required)) {
+                 return false;
+             }
+         }
+         return true;
+    }
 }

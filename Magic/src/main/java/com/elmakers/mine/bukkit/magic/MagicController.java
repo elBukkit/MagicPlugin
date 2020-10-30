@@ -1869,7 +1869,7 @@ public class MagicController implements MageController {
         automatonTemplates.clear();
         for (String key : keys) {
             ConfigurationSection config = resolveConfiguration(key, automataConfiguration, templateConfigurations);
-            if (!config.getBoolean("enabled", true)) continue;
+            if (!ConfigurationUtils.isEnabled(config)) continue;
 
             AutomatonTemplate template = new AutomatonTemplate(this, key, config);
             automatonTemplates.put(key, template);
@@ -4527,14 +4527,14 @@ public class MagicController implements MageController {
     }
 
     public void loadMageClassTemplate(String key, ConfigurationSection classNode) {
-        if (classNode.getBoolean("enabled", true)) {
+        if (ConfigurationUtils.isEnabled(classNode)) {
             mageClasses.put(key, new MageClassTemplate(this, key, classNode));
         }
     }
 
-    public void loadModifierTemplate(String key, ConfigurationSection classNode) {
-        if (classNode.getBoolean("enabled", true)) {
-            modifiers.put(key, new ModifierTemplate(this, key, classNode));
+    public void loadModifierTemplate(String key, ConfigurationSection modifierNode) {
+        if (ConfigurationUtils.isEnabled(modifierNode)) {
+            modifiers.put(key, new ModifierTemplate(this, key, modifierNode));
         }
     }
 
@@ -4578,7 +4578,7 @@ public class MagicController implements MageController {
 
     @Override
     public void loadWandTemplate(String key, ConfigurationSection wandNode) {
-        if (wandNode.getBoolean("enabled", true)) {
+        if (ConfigurationUtils.isEnabled(wandNode)) {
             wandTemplates.put(key, new com.elmakers.mine.bukkit.wand.WandTemplate(this, key, wandNode));
         }
     }
