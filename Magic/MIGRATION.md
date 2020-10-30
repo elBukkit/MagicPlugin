@@ -7,8 +7,9 @@
    to your plugins/Magic/config.yml file.
 
  - Default survival crafting recipes changed dramatically
- - Resource pack sending is now off by default. Set this in config.yml to re-enale:
+ - Resource pack sending is now off by default. Set this in config.yml to re-enable:
    resource_pack_default_auto: true
+ - All players' resource pack preferences will be reset and stick to the defaults until they use the /getrp command
 
  - There is a new resource pack structure that uses custom model data instead of damage values.
    - If you need to use a resource pack with damage values but are using the builtin configs, you can

@@ -21,6 +21,7 @@
  - Removed `add_uses` path parameter. You can use `uses` to add uses to an object via a path
    (I really doubt anyone was using this, please let me know if I am wrong)
  - Resource pack sending is now off by default. Players will be prompted on join about how to configure the resource pack.
+ - All players' resource pack preferences will be reset and stick to the defaults until they use the /getrp command
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data
