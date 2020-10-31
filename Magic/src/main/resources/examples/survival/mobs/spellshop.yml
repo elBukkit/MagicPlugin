@@ -4,6 +4,7 @@ spellshop:
   interact_spell: spellshop
   villager_profession: librarian
   disguise:
-    player: NathanWolf
+    type: player
+    skin: NathanWolf
   dialog:
     - Want to learn some new spells?
