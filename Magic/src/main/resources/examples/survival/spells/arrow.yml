@@ -27,6 +27,9 @@ arrow:
              lengthGrow: 1
              particle: smoke_normal
         hit:
+        -  sound: entity_player_attack_strong
+           sound_pitch: 1.75
+           location: target
         -  class: EffectSingle
            location: origin
            color: CC9933

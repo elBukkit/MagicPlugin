@@ -51,6 +51,7 @@ projectile:
         hit:
         -  sound: entity_player_attack_knockback
            sound_pitch: 2
+           location: target
         -  class: EffectSingle
            sound: magic.zap
            sound_volume: .3

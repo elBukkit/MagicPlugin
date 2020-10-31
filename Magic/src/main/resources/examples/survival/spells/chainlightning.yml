@@ -75,6 +75,7 @@ chainlightning:
         hit:
         -  sound: entity_guardian_attack
            sound_pitch: 2
+           location: target
         -  class: EffectSingle
            sound: magic.zap_crack
            sound_volume: 0.5

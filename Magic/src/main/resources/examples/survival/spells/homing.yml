@@ -59,7 +59,6 @@ homing:
           particle_offset_y: 0.3
           particle_offset_z: 0.3
           location: target
-        - sound:
         projectile:
         - class: EffectSingle
           effectlib:
@@ -77,6 +76,7 @@ homing:
         hit:
         -  sound: entity_elder_guardian_curse
            sound_pitch: 1.5
+           location: target
         -  class: EffectSingle
            sound: magic.zap
            sound_volume: .3

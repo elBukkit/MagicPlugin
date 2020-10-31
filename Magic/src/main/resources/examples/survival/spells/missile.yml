@@ -74,6 +74,7 @@ missile:
         hit:
         -  sound: entity_player_attack_knockback
            sound_pitch: 2
+           location: target
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
@@ -87,6 +88,7 @@ missile:
         headshot:
         -  sound: entity_player_attack_knockback
            sound_pitch: 2
+           location: target
         -  class: EffectSingle
            location: target
            particle: fireworks_spark

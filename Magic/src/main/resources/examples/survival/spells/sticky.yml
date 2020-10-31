@@ -45,6 +45,7 @@ sticky:
         hit:
         -  sound: block_honey_block_slide
            sound_pitch: 1.7
+           location: target
         -  class: EffectSingle
            sound: magic.zap
            sound_volume: .3

@@ -32,6 +32,7 @@ whip:
         hit:
         -  sound: block_ender_chest_open
            sound_pitch: 1.5
+           location: target
         -  class: EffectSingle
            sound: magic.zap_crack
            sound_volume: .3
