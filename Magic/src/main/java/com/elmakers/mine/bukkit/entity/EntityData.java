@@ -663,6 +663,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                         spawned = CompatibilityUtils.createItemFrame(location, facing, rotation, item);
                         break;
                     case DROPPED_ITEM:
+                        if (CompatibilityUtils.isEmpty(item)) return null;
                         spawned = location.getWorld().dropItem(location, item);
                         addedToWorld = true;
                         break;
