@@ -11,6 +11,7 @@
    - Wands should now be much easier to use without a resource pack
    - Combining Magic's RP with other RPs may now be somewhat more complicated,
      so we have created a tool to do the work for you at https://merge.elmakers.com/
+   - Spells and wands now use a mix of vanilla and custom sounds
  - Most magic crafting recipes have changed
    - Now requires an intermediate item, the "Heart of Magic" - crafted with 8 emeralds and a diamond
  - General Rebalancing
@@ -18,6 +19,7 @@
    - Mana Talisman given some protection buffs
    - Mana progression changed, slowed down and lowered cap
    - Cooldowns tweaked on some spells
+
  - Removed `add_uses` path parameter. You can use `uses` to add uses to an object via a path
    (I really doubt anyone was using this, please let me know if I am wrong)
  - Resource pack sending is now off by default. Players will be prompted on join about how to configure the resource pack.
@@ -64,6 +66,7 @@
  - Add support for using JSON to spawn mobs, e.g. `/mmob spawn slime{size:5}`
  - Add `/mage promote` command for easily moving a player up a path
  - Add mega_phantom mob to survival
+ - Add "random" option for villager_profession
  - Add "slimefun" example, which will add RP items from this RP:
    https://www.planetminecraft.com/texture-pack/slimefun-texture-by-raulh22/
 
