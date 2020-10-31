@@ -154,7 +154,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Nullable
     protected ConfigurationSection getTemplateParameters() {
-        if (templateKey == null || !templateKey.isEmpty()) {
+        if (templateKey == null || templateKey.isEmpty()) {
             return null;
         }
 
