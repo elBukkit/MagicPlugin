@@ -16,6 +16,22 @@ base_bound:
   undroppable: true
   unstashable: false
   indestructible: true
+  effects:
+    open:
+      - sound: magic.wandup
+      - sound: block_chest_open
+        sound_pitch: 1.5
+        sound_volume: 0.7
+    close:
+      - sound: magic.wanddown
+      - sound: block_chest_close
+        sound_pitch: 1.5
+        sound_volume: 0.7
+    cycle:
+      - sound: magic.paperturn
+      - sound: item_book_page_turn
+        sound_pitch: 1.5
+        sound_volume: 0.7
 
 static_wand:
   hidden: true

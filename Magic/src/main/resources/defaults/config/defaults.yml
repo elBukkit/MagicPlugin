@@ -292,6 +292,7 @@ close_wand_on_world_change: false
 # This is incompatible with prevent_melee_damage: true!
 use_magic_damage: true
 
+# These default sounds are overridden by base_bound
 wand_inventory_open_sound: magic.wandup,1,1
 wand_inventory_cycle_sound: magic.paperturn,1,1
 wand_inventory_close_sound: magic.wanddown,1,1
