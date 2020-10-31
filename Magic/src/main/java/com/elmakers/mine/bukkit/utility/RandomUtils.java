@@ -224,6 +224,10 @@ public class RandomUtils {
         return origin;
     }
 
+    public static <T> T getRandom(List<T> list, int startIndex) {
+        return list.get(startIndex + random.nextInt(list.size() - 1));
+    }
+
     public static <T> T getRandom(List<T> list) {
         return list.get(random.nextInt(list.size()));
     }

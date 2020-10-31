@@ -42,12 +42,7 @@ public class EntityVillagerData extends EntityExtraData {
         if (!(entity instanceof Villager)) return;
         Villager villager = (Villager) entity;
         if (randomProfession) {
-            Villager.Profession profession = null;
-            int retries = 100;
-            while ((profession == null || profession.name().equals("NONE")) && retries > 0) {
-                profession = RandomUtils.getRandom(Arrays.asList(Villager.Profession.values()));
-                retries--;
-            }
+            Villager.Profession profession = RandomUtils.getRandom(Arrays.asList(Villager.Profession.values()), 1);
             villager.setProfession(profession);
         } else if (profession != null) {
             villager.setProfession(profession);
