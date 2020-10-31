@@ -294,7 +294,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                         Mage mage = controller.getMage(target);
                         CasterProperties mageClass = mage.getActiveProperties();
                         if (mageClass != null) {
-                            options.addAll(mageClass.getBrushes());
+                            options.addAll(mageClass.getSpells());
                         }
                     }
                     options.add("brush");
@@ -305,7 +305,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
                     CasterProperties mageClass = mage.getActiveProperties();
                     if (mageClass != null) {
-                        options.addAll(mageClass.getSpells());
+                        options.addAll(mageClass.getBrushes());
                     }
                 }
 
