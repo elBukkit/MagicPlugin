@@ -36,7 +36,7 @@ rocket:
                     - class: Stop
     effects:
         cast:
-        -  sound: entity_firework_launch
+        -  sound: entity_firework_rocket_launch
            sound_pitch: 0.1
            sound_volume: 1.2
         -  sound: entity_generic_explode

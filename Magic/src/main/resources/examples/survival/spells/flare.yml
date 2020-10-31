@@ -19,7 +19,7 @@ flare:
           - class: Firework
     effects:
         cast:
-        - sound: entity_firework_launch
+        - sound: entity_firework_rocket_launch
         tick:
         - location: target
           particle: fireworks_spark

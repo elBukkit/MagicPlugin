@@ -66,7 +66,7 @@ nuke:
           sound_volume: 2
         cast:
         -  class: EffectSingle
-           sound: entity_firework_launch
+           sound: entity_firework_rocket_launch
            location: both
         tick:
         -  location: target

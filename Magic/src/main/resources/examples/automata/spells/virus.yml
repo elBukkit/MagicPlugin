@@ -160,7 +160,7 @@ virus_death:
           particle: explosion_huge
         target:
         -  class: EffectSingle
-           sound: entity_firework_launch
+           sound: entity_firework_rocket_launch
            sound_volume: 0.5
            location: source
            particle: fireworks_spark

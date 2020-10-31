@@ -73,6 +73,8 @@ chainlightning:
           particle_offset_z: 0.2
           location: target
         hit:
+        -  sound: entity_guardian_attack
+           sound_pitch: 2
         -  class: EffectSingle
            sound: magic.zap_crack
            sound_volume: 0.5
@@ -82,7 +84,6 @@ chainlightning:
            particle_offset_x: 1
            particle_offset_y: 1
            particle_offset_z: 1
-           location: target
     parameters:
         tick_size: 5
         target: other

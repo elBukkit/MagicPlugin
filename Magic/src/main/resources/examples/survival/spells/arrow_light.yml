@@ -31,6 +31,8 @@ arrow_light:
                 delay: 300
     effects:
         cast:
+        -  sound: entity_arrow_shoot
+           sound_pitch: 2
         -  class: EffectSingle
            sound: magic.zap_crack
            sound_pitch: 1.5

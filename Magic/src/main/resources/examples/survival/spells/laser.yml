@@ -52,6 +52,8 @@ laser:
                 -  class: Damage
     effects:
         beam:
+        -  sound: entity_guardian_attack
+           sound_pitch: 1.5
         -  class: EffectSingle
            sound: magic.zap
            location: origin
@@ -71,6 +73,8 @@ laser:
           particle_offset_z: 0.1
           target_offset: 0.5,0.5,0.5
         cast:
+        -  sound: entity_guardian_attack
+           sound_pitch: 1.5
         -  class: EffectSingle
            sound: magic.zap_crack
            location: origin
@@ -92,10 +96,9 @@ laser:
         destructible: solid
         destructible_durability: 100
         break_durability: 4
-        undo: 30000
+        undo: 20000
         transparent: air
         radius: 0
-        undo: 15000
         cooldown: 10000
         delay: 100
         repeat: 12

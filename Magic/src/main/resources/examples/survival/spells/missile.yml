@@ -19,6 +19,10 @@ missile:
             ignore_result: true
     effects:
         cast:
+        -  sound: entity_arrow_shoot
+           sound_pitch: 2
+        -  sound: entity_guardian_attack
+           sound_pitch: 1.5
         -  class: EffectSingle
            sound: magic.zap_crack
            location: origin
@@ -68,6 +72,8 @@ missile:
            particle_offset_y: 0.2
            particle_offset_z: 0.2
         hit:
+        -  sound: entity_player_attack_knockback
+           sound_pitch: 2
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
@@ -79,6 +85,8 @@ missile:
            sound_volume: .3
            particle_data: 0.1
         headshot:
+        -  sound: entity_player_attack_knockback
+           sound_pitch: 2
         -  class: EffectSingle
            location: target
            particle: fireworks_spark

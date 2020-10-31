@@ -21,6 +21,8 @@ fury:
               - class: Damage
     effects:
         cast:
+        -  sound: entity_firework_rocket_launch
+           sound_pitch: 0.1
         -  class: EffectSingle
            sound: magic.zap_crack
            location: origin
@@ -47,7 +49,7 @@ fury:
            firework: burst
         target:
         -  class: EffectSingle
-           sound: entity_firework_launch
+           sound: entity_firework_rocket_launch
            sound_volume: 0.5
            location: source
            particle: fireworks_spark

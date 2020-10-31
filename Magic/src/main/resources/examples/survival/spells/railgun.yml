@@ -19,6 +19,10 @@ railgun:
             ignore_result: true
     effects:
         cast:
+        -  sound: entity_arrow_shoot
+           sound_pitch: 1.5
+        -  sound: entity_guardian_attack
+           sound_pitch: 2
         -  class: EffectSingle
            sound: magic.zap_crack
            sound_pitch: 1.5
@@ -56,6 +60,8 @@ railgun:
            particle_offset_y: 0.3
            particle_offset_z: 0.3
         hit:
+        -  sound: entity_player_attack_knockback
+           sound_pitch: 2
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
@@ -79,6 +85,8 @@ railgun:
            particle_offset_y: 1
            particle_offset_z: 0.8
         headshot:
+        -  sound: entity_player_attack_knockback
+           sound_pitch: 2
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
