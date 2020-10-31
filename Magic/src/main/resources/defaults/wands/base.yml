@@ -6,16 +6,8 @@
 # Their use is optional, but using them is a quick way to make wands work in an intuitive way,
 # and also ensures your wands will update properly when the plugin updates.
 #
-base_bound:
+base_magic:
   hidden: true
-  bound: true
-  keep: true
-  invulnerable: true
-  immortal: true
-  track: true
-  undroppable: true
-  unstashable: false
-  indestructible: true
   effects:
     open:
       - sound: magic.wandup
@@ -33,7 +25,28 @@ base_bound:
         sound_pitch: 1.5
         sound_volume: 0.7
 
+base_undroppable:
+  inherit: base_magic
+  hidden: true
+  undroppable: true
+  unstashable: false
+  indestructible: true
+
+base_keep:
+  inherit: base_undroppable
+  hidden: true
+  keep: true
+  invulnerable: true
+
+base_bound:
+  inherit: base_keep
+  hidden: true
+  bound: true
+  immortal: true
+  track: true
+
 static_wand:
+  inherit: base_undroppable
   hidden: true
   mode: inventory
   drop: cycle_hotbar
