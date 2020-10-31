@@ -3445,6 +3445,7 @@ public class MagicController implements MageController {
 
     protected void clear()
     {
+        loaded = false;
         Collection<Mage> saveMages = new ArrayList<>(mages.values());
         for (Mage mage : saveMages)
         {
@@ -3456,7 +3457,6 @@ public class MagicController implements MageController {
         vanished.clear();
         pendingConstruction.clear();
         spells.clear();
-        loaded = false;
     }
 
     protected void unregisterPhysicsHandler(Listener listener)
