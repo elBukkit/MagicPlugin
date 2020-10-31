@@ -1,4 +1,5 @@
 staff:
+    inherit: base_bound
     icon: nether_star
     upgrade: true
     upgrade_path: graduate
