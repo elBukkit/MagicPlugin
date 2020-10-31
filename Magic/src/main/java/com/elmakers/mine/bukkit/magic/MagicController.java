@@ -2474,7 +2474,7 @@ public class MagicController implements MageController {
 
     public void save(boolean asynchronous)
     {
-        if (!loaded || !dataLoaded || !loaded) return;
+        if (!loaded || !dataLoaded) return;
         maps.save(asynchronous);
 
         final List<YamlDataFile> saveData = new ArrayList<>();
@@ -3445,6 +3445,9 @@ public class MagicController implements MageController {
 
     protected void clear()
     {
+        if (!loaded) {
+            return;
+        }
         loaded = false;
         Collection<Mage> saveMages = new ArrayList<>(mages.values());
         for (Mage mage : saveMages)
