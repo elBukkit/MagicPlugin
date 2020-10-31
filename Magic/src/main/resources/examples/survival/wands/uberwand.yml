@@ -2,7 +2,6 @@ uberwand:
   inherit: master
   path: staff
   hotbar_count: 3
-  fill: true
   protected: true
   cost_reduction: 2.0
   cooldown_reduction: 2.0
