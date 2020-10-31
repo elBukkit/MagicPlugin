@@ -93,4 +93,4 @@ base_bow:
     right_click: none
     swap: cycle_hotbar
     quiet: 1
-    cast_location: 0,0,0
+    cast_location: 0,0,0.35
