@@ -19,10 +19,15 @@ railgun:
             ignore_result: true
     effects:
         cast:
+        -  sound: block_beacon_power_select
+           sound_pitch: 2
+           sound_volume: 0.9
         -  sound: entity_arrow_shoot
            sound_pitch: 1.5
+           sound_volume: 0.2
         -  sound: entity_guardian_attack
-           sound_pitch: 2
+           sound_pitch: 1.5
+           sound_volume: 0.5
         -  class: EffectSingle
            sound: magic.zap_crack
            sound_pitch: 1.5

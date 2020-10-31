@@ -10,6 +10,9 @@ force:
     worth: 1000
     effects:
       cast:
+      - sound: block_bubble_column_whirlpool_inside
+        sound_pitch: 1.3
+        location: both
       - class: EffectSingle
         sound: magic.zap_big
         location: origin
@@ -21,11 +24,16 @@ force:
            particle_base1: spell_mob
            particle_base2: spell_mob
            iterations: 10
-      target_selected:
       - class: EffectSingle
-        location: origin
+        location: both
         sound: magic.hit
         sound_volume: 0.5
+      - sound: entity_generic_small_fall
+        sound_pitch: 0.2
+        location: both
+      - sound: entity_item_pickup
+        sound_pitch: 0.2
+        location: both
       - class: EffectSingle
         location: target
         use_hit_location: false
@@ -62,4 +70,3 @@ force:
         cooldown: 3000
     costs:
         mana: 100
-

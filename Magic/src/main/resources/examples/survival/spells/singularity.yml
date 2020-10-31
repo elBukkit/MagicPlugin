@@ -64,6 +64,8 @@ singularity:
               - class: Damage
     effects:
         cast:
+        -  sound: entity_wither_shoot
+           sound_pitch: 0.4
         -  class: EffectSingle
            sound: magic.bonk
            sound_pitch: 0.2
@@ -84,12 +86,18 @@ singularity:
           particle_offset_y: 0.6
           particle_offset_z: 0.6
         hit:
+        -  sound: entity_bee_loop
+           sound_pitch: 2
+           location: target
+        -  sound: entity_wither_death
+           sound_pitch: 0.5
+           location: target
         -  class: EffectSingle
            location: target
            sound: magic.hit
            effectlib:
              class: SphereEffect
-             duration: 2500
+             duration: $duration
              particle: redstone
              color: 010101
              radius: 1
@@ -98,7 +106,7 @@ singularity:
            material: obsidian
            effectlib:
              class: Modified
-             duration: 2500
+             duration: $duration
              parameters:
                radius: "sin(t/50)*5"
              effect:
@@ -116,8 +124,9 @@ singularity:
       gravity: 0.02
       hitbox_size: 2
       undo: 15000
-      repeat: 10
+      repeat: 15
       delay: 250
+      duration: 7000
       damage: 3
       target_self_timeout: 2000
       speed: 0.5

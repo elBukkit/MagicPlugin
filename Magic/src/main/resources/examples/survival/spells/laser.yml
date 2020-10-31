@@ -53,7 +53,8 @@ laser:
     effects:
         beam:
         -  sound: entity_guardian_attack
-           sound_pitch: 1.5
+           sound_pitch: 1.75
+           sound_volume: 0.75
         -  class: EffectSingle
            sound: magic.zap
            location: origin
@@ -74,7 +75,8 @@ laser:
           target_offset: 0.5,0.5,0.5
         cast:
         -  sound: entity_guardian_attack
-           sound_pitch: 1.5
+           sound_pitch: 0.5
+           sound_volume: 0.5
         -  class: EffectSingle
            sound: magic.zap_crack
            location: origin

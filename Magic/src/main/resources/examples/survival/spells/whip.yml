@@ -16,7 +16,8 @@ whip:
     effects:
         cast:
         -  sound: entity_guardian_attack
-           sound_pitch: 0.5
+           sound_pitch: 1.5
+           sound_volume: 0.75
         -  sound: entity_witch_throw
            sound_pitch: 0.75
         -  class: EffectSingle

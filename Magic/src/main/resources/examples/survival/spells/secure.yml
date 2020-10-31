@@ -16,6 +16,9 @@ secure:
        - class: Lock
     effects:
         cast:
+        - sound: block_iron_trapdoor_close
+          sound_pitch: 0.8
+          location: target
         - class: EffectSingle
           sound: magic.shimmer
           location: origin
@@ -45,6 +48,9 @@ secure:
              enable_rotation: false
              offset: 0.5,0.5,0.5
         no_target:
+        - sound: block_note_block_bass
+          sound_pitch: 1.5
+          sound_volume: 0.75
         - class: EffectSingle
           sound: magic.shimmer
           location: origin
@@ -67,6 +73,8 @@ secure:
            enable_rotation: false
            offset: 0.5,0.5,0.5
         alternate_up:
+        - sound: block_end_portal_frame_fill
+          sound_pitch: 0.2
         - class: EffectSingle
           sound: magic.shimmer
           location: origin
@@ -80,6 +88,9 @@ secure:
              particle: redstone
              color: "C0C0C0"
         alternate_sneak:
+        - sound: block_iron_trapdoor_open
+          sound_pitch: 0.8
+          location: target
         - class: EffectSingle
           sound: magic.shimmer
           location: origin
