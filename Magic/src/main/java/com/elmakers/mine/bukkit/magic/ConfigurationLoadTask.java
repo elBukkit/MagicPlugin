@@ -628,6 +628,7 @@ public class ConfigurationLoadTask implements Runnable {
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading config.yml", ex);
             success = false;
+            mainConfiguration = new MemoryConfiguration();
         }
 
         // Load other configurations

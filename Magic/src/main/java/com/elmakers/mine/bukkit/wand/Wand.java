@@ -4677,7 +4677,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Since these wands can't be opened we will just show them as open when held
         // We have to delay this 1 tick so it happens after the Mage has accepted the Wand
-        if ((getMode() != WandMode.INVENTORY || offhand) && controller.isInitialized()) {
+        if ((getMode() != WandMode.INVENTORY || offhand) && controller.isLoaded()) {
             Plugin plugin = controller.getPlugin();
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override

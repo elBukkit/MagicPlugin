@@ -164,6 +164,7 @@ import com.elmakers.mine.bukkit.magic.listener.BlockController;
 import com.elmakers.mine.bukkit.magic.listener.CraftingController;
 import com.elmakers.mine.bukkit.magic.listener.EnchantingController;
 import com.elmakers.mine.bukkit.magic.listener.EntityController;
+import com.elmakers.mine.bukkit.magic.listener.ErrorNotifier;
 import com.elmakers.mine.bukkit.magic.listener.ExplosionController;
 import com.elmakers.mine.bukkit.magic.listener.HangingController;
 import com.elmakers.mine.bukkit.magic.listener.InventoryController;
@@ -1645,10 +1646,17 @@ public class MagicController implements MageController {
 
             // Check for initial load failure on startup
             if (!loaded) {
-                getLogger().warning("*** An error occurred while loading configurations ***");
-                getLogger().warning("***         Magic is temporarily disabled          ***");
-                getLogger().warning("***   Please check the errors above, fix configs   ***");
-                getLogger().warning("***    And '/magic load' or restart the server     ***");
+                getLogger().severe("*** An error occurred while loading configurations ***");
+                getLogger().severe("*** Magic will be disabled until the next restart  ***");
+                getLogger().severe("***   Please check the errors above, fix configs   ***");
+                getLogger().severe("***             And restart the server             ***");
+                getLogger().warning("");
+                getLogger().warning("Note that if you start the server with working configs and");
+                getLogger().warning("Then use /magic load to test changes, Magic won't break");
+                getLogger().warning("if there are config issues.");
+
+                PluginManager pm = plugin.getServer().getPluginManager();
+                pm.registerEvents(new ErrorNotifier(), plugin);
             }
 
             return;
@@ -1667,7 +1675,7 @@ public class MagicController implements MageController {
         // Main configuration
         loadProperties(loader.getMainConfiguration());
 
-        if (!initialized) {
+        if (!loaded) {
             finalizeIntegrationPreSpells();
         }
 
@@ -1714,7 +1722,7 @@ public class MagicController implements MageController {
         getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
 
         // Finalize integrations, we only do this one time at startup.
-        if (!initialized) {
+        if (!loaded) {
             finalizeIntegration();
         }
 
@@ -1813,12 +1821,11 @@ public class MagicController implements MageController {
         };
 
         // Delay loading generic integration by one tick since we can't add depends: for these plugins
-        if (!initialized) {
+        if (!loaded) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, genericIntegrationTask, 1);
         } else {
             genericIntegrationTask.run();
         }
-        initialized = true;
 
         // Register crafting recipes
         crafting.register(this, plugin);
@@ -1979,12 +1986,16 @@ public class MagicController implements MageController {
     }
 
     public void loadConfiguration(CommandSender sender) {
+        if (sender != null && !loaded) {
+            getLogger().warning("Can't reload configuration, Magic did not start up properly. Please restart your server.");
+            return;
+        }
         loadConfiguration(sender, false);
     }
 
     public void loadConfiguration(CommandSender sender, boolean forceSynchronous) {
         ConfigurationLoadTask loadTask = new ConfigurationLoadTask(this, sender);
-        if (initialized && !forceSynchronous) {
+        if (loaded && !forceSynchronous) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, loadTask);
         } else {
             loadTask.runNow();
@@ -2017,11 +2028,19 @@ public class MagicController implements MageController {
 
     public void load() {
         loadConfiguration();
-        loadSpellData();
+        loadData();
+    }
 
+    protected void loadData() {
+        loadSpellData();
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {
+                if (!loaded) {
+                    getLogger().info("Magic did not load properly, skipping data load");
+                    return;
+                }
+                loadSpellData();
                 loadLostWands();
                 loadAutomata();
                 loadNPCs();
@@ -2455,7 +2474,7 @@ public class MagicController implements MageController {
 
     public void save(boolean asynchronous)
     {
-        if (!initialized || !dataLoaded) return;
+        if (!loaded || !dataLoaded || !loaded) return;
         maps.save(asynchronous);
 
         final List<YamlDataFile> saveData = new ArrayList<>();
@@ -3426,7 +3445,6 @@ public class MagicController implements MageController {
 
     protected void clear()
     {
-        initialized = false;
         Collection<Mage> saveMages = new ArrayList<>(mages.values());
         for (Mage mage : saveMages)
         {
@@ -3438,10 +3456,7 @@ public class MagicController implements MageController {
         vanished.clear();
         pendingConstruction.clear();
         spells.clear();
-    }
-
-    public boolean isInitialized() {
-        return initialized;
+        loaded = false;
     }
 
     protected void unregisterPhysicsHandler(Listener listener)
@@ -3678,7 +3693,7 @@ public class MagicController implements MageController {
         // Delay removal one tick to avoid issues with plugins that kill
         // players on logout (CombatTagPlus, etc)
         // Don't delay on shutdown, though.
-        if (initialized && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+        if (loaded && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             final com.elmakers.mine.bukkit.magic.Mage quitMage = (com.elmakers.mine.bukkit.magic.Mage)mage;
             quitMage.setUnloading(true);
             plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -3703,7 +3718,7 @@ public class MagicController implements MageController {
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
             // Save synchronously on shutdown
-            saveMage(mage, initialized, callback, isOpen, true);
+            saveMage(mage, loaded, callback, isOpen, true);
         }
         else if (callback != null)
         {
@@ -6988,7 +7003,6 @@ public class MagicController implements MageController {
 
     private String                              exampleDefaults             = null;
     private Collection<String>                  addExamples                 = null;
-    private boolean                             initialized                 = false;
     private boolean                             loaded                      = false;
     private boolean                             dataLoaded                  = false;
     private String                              defaultSkillIcon            = "stick";

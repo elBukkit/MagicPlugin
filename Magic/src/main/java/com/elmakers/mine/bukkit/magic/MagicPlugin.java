@@ -216,7 +216,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public void onDisable() {
-        if (controller != null) {
+        if (controller != null && controller.isLoaded()) {
             // Safety fallback in case we've missed some pending batches from logged out mages
             controller.onShutdown();
             controller.undoScheduled();
