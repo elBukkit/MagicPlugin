@@ -5,7 +5,9 @@ import javax.annotation.Nullable;
 
 import org.bukkit.entity.Player;
 
-public interface AttributeProvider {
+import com.elmakers.mine.bukkit.api.magic.MagicProvider;
+
+public interface AttributeProvider extends MagicProvider {
     Set<String> getAllAttributes();
 
     @Nullable

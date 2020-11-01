@@ -6,9 +6,13 @@ import javax.annotation.Nullable;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 
-public interface Currency {
+/**
+ * Register via PreLoadEvent.register
+ */
+public interface Currency extends MagicProvider {
     /**
      * Each currency must have a unique key name, used to register.
      * This will be the key used in all configs and /mgive commands.

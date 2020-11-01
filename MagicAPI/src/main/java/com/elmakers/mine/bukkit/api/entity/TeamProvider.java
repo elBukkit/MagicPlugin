@@ -2,7 +2,12 @@ package com.elmakers.mine.bukkit.api.entity;
 
 import org.bukkit.entity.Entity;
 
-public interface TeamProvider {
+import com.elmakers.mine.bukkit.api.magic.MagicProvider;
+
+/**
+ * Register via PreLoadEvent.register()
+ */
+public interface TeamProvider extends MagicProvider {
     /**
      * Check to see if one entity is friendly (on a team with) another entity.
      *

@@ -5,9 +5,13 @@ import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
-public interface CastPermissionManager {
+/**
+ * Register via PreLoadEvent.register()
+ */
+public interface CastPermissionManager extends MagicProvider {
     /**
      * This will perform cast permission checks for a specific location.
      *

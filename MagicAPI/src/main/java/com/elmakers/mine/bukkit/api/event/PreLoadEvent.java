@@ -13,12 +13,16 @@ import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
+import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarpProvider;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
+import com.elmakers.mine.bukkit.api.requirements.RequirementsProvider;
 
 /**
  * A custom event that fires whenever Magic loads or reloads configurations.
@@ -26,13 +30,14 @@ import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 public class PreLoadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private MageController controller;
+    private List<Currency> currencies = new ArrayList<>();
     private List<AttributeProvider> attributeProviders = new ArrayList<>();
     private List<TeamProvider> teamProviders = new ArrayList<>();
-    private List<Currency> currencies = new ArrayList<>();
     private List<BlockBreakManager> blockBreakManagers = new ArrayList<>();
     private List<BlockBuildManager> blockBuildManager = new ArrayList<>();
     private List<PVPManager> pvpManagers = new ArrayList<>();
-    private List<CastPermissionManager> castmanagers = new ArrayList<>();
+    private List<CastPermissionManager> castManagers = new ArrayList<>();
+    private List<EntityTargetingManager> targetingManagers = new ArrayList<>();
     private Map<String, RequirementsProcessor> requirementProcessors = new HashMap<>();
     private Map<String, PlayerWarpManager> warpManagers = new HashMap<>();
 
@@ -51,6 +56,40 @@ public class PreLoadEvent extends Event {
 
     public MageController getController() {
         return controller;
+    }
+
+    /**
+     * Register any MagicProvider. This replaces most of the below methods.
+     * @param provider The provider to add
+     * @return true if registration was successful, false for an unknown provider type.
+     */
+    public boolean register(MagicProvider provider) {
+        if (provider instanceof EntityTargetingManager) {
+            targetingManagers.add((EntityTargetingManager)provider);
+        } else if (provider instanceof AttributeProvider) {
+            attributeProviders.add((AttributeProvider)provider);
+        } else if (provider instanceof TeamProvider) {
+            teamProviders.add((TeamProvider)provider);
+        } else if (provider instanceof Currency) {
+            currencies.add((Currency)provider);
+        } else if (provider instanceof RequirementsProvider) {
+            RequirementsProvider requirements = (RequirementsProvider)provider;
+            registerRequirementsProcessor(requirements.getKey(), requirements);
+        } else if (provider instanceof PlayerWarpProvider) {
+            PlayerWarpProvider warp = (PlayerWarpProvider)provider;
+            registerPlayerWarpManager(warp.getKey(), warp);
+        } else if (provider instanceof BlockBreakManager) {
+            blockBreakManagers.add((BlockBreakManager)provider);
+        } else if (provider instanceof PVPManager) {
+            pvpManagers.add((PVPManager)provider);
+        } else if (provider instanceof BlockBuildManager) {
+            blockBuildManager.add((BlockBuildManager)provider);
+        } else if (provider instanceof CastPermissionManager) {
+            castManagers.add((CastPermissionManager)provider);
+        } else {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -142,7 +181,7 @@ public class PreLoadEvent extends Event {
      * @param manager The manager to add.
      */
     public void registerCastPermissionManager(CastPermissionManager manager) {
-        castmanagers.add(manager);
+        castManagers.add(manager);
     }
 
     /**
@@ -190,6 +229,10 @@ public class PreLoadEvent extends Event {
     }
 
     public Collection<CastPermissionManager> getCastManagers() {
-        return castmanagers;
+        return castManagers;
+    }
+
+    public Collection<EntityTargetingManager> getTargetingManagers() {
+        return targetingManagers;
     }
 }

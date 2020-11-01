@@ -3375,6 +3375,7 @@ public class MagicController implements MageController {
         pvpManagers.clear();
         castManagers.clear();
         playerWarpManagers.clear();
+        targetingProviders.clear();
 
         PreLoadEvent loadEvent = new PreLoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
@@ -3385,6 +3386,7 @@ public class MagicController implements MageController {
         attributeProviders.addAll(loadEvent.getAttributeProviders());
         teamProviders.addAll(loadEvent.getTeamProviders());
         castManagers.addAll(loadEvent.getCastManagers());
+        targetingProviders.addAll(loadEvent.getTargetingManagers());
 
         // Load builtin default currencies
         addCurrency(new ItemCurrency(this, getWorthItem(), getWorthItemAmount(), currencyItem.getName(), currencyItem.getPluralName()));

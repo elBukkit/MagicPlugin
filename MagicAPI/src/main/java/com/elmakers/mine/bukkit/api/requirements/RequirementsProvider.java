@@ -4,12 +4,20 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 
 /**
- * Implement this and register in PreLoadEvent to provide custom requirements.
- * Use RequirementsProvider instead for simpler registration.
+ * Replaces RequirementsProcessor for easier registration.
  */
-public interface RequirementsProcessor {
+public interface RequirementsProvider extends RequirementsProcessor, MagicProvider {
+    /**
+     * Used in CheckRequirements and other configurations for specifying different requirements types.
+     * Must be a unique key.
+     * @return
+     */
+    @Nonnull
+    String getKey();
+
     /**
      * Check if a player fulfills the target requirement. Requirements are defined ad-hoc on spell configurations,
      * Selector configurations and perhaps other configurations in the future.
