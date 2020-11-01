@@ -30,6 +30,7 @@ railgun:
            sound_volume: 0.5
         -  class: EffectSingle
            sound: magic.zap_crack
+           sound_volume: 0.8
            sound_pitch: 1.5
            location: origin
            color_override: color

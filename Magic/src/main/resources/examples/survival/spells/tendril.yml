@@ -16,12 +16,42 @@ tendril:
             actions:
             - class: Delay
           - class: ModifyBlock
+          - class: CheckBlock
+            allowed: "!all_air"
+            actions:
+            - class: PlayEffects
+              effects: build
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.shield
+        -  sound: entity_ender_dragon_hurt
+           sound_pitch: 1.6
+           sound_volume: 0.8
+        -  sound: block_beacon_activate
+           sound_pitch: 1.8
+           sound_volume: 0.8
         -  class: EffectTrail
            particle: drip_lava
+        build:
+        - sound: block_slime_block_place
+          sound_pitch: 0.1
+          sound_volume: 0.8
+          location: target
+          particle: block_crack
+          particle_count: 4
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+        - location: target
+          particle: drip_lava
+          particle_count: 5
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+          sound: block_stone_place
+          sound_pitch: 0.2
+          sound_volume: 1.2
     parameters:
         target: block
         allow_max_range: true

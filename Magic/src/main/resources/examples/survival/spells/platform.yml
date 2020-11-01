@@ -22,6 +22,9 @@ platform:
         -  class: EffectSingle
            sound: magic.shield
         -  class: EffectTrail
+           sound: block_stone_place
+           sound_pitch: 0.2
+           sound_volume: 1.7
            particle: block_crack
            particle_count: 20
            particle_offset_x: 0.2

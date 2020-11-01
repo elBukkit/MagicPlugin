@@ -24,10 +24,14 @@ fire:
         cast:
         -  class: EffectSingle
            sound: magic.burn
-           sound_volume: 1
+           sound_volume: 0.6
            location: origin
         -  sound: block_conduit_activate
            sound_pitch: 1.8
+           sound_volume: 0.4
+        -  sound: entity_ghast_shoot
+           sound_pitch: 0.5
+           sound_volume: 0.8
         tick:
         -  class: EffectSingle
            location: target

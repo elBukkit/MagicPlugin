@@ -22,8 +22,14 @@ blast:
             - class: BreakBlock
     effects:
         cast:
+        -  sound: entity_ender_dragon_hurt
+           sound_pitch: 2
+           sound_volume: 1.2
+           location: origin
         -  class: EffectSingle
            sound: entity_generic_explode
+           sound_pitch: 1.8
+           sound_volume: 0.8
            location: origin
            effectlib:
              class: ConeEffect
@@ -41,6 +47,9 @@ blast:
            color: FACC2E
            firework: burst
            particle: explosion_large
+           sound: entity_generic_explode
+           sound_pitch: 0.6
+           sound_volume: 1.2
         undo:
         -  class: EffectSingle
            sound: magic.shimmer

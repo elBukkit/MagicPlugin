@@ -21,6 +21,12 @@ shell:
         cast:
         -  class: EffectSingle
            sound: magic.shield
+        -  sound: block_stone_place
+           sound_pitch: 1.2
+           sound_volume: 1.7
+        -  sound: entity_ender_dragon_hurt
+           sound_pitch: 1.9
+           sound_volume: 0.8
         tick:
         -  location: target
            particle: block_crack
@@ -29,7 +35,14 @@ shell:
            particle_offset_y: 0.2
            particle_offset_z: 0.2
         hit:
+        -  sound: block_stone_place
+           sound_pitch: 0.1
+           sound_volume: 1.7
+           location: target
         -  location: target
+           sound: entity_ender_dragon_hurt
+           sound_pitch: 1.2
+           sound_volume: 0.8
            effectlib:
              class: SphereEffect
              particle: block_crack

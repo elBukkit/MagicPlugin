@@ -12,17 +12,23 @@ walls:
         - class: Cylinder
           actions:
           - class: ModifyBlock
+          - class: PlayEffects
+            effects: column
           - class: Skip
             skip: 4
             actions:
-            - class: PlayEffects
-              effects: column
             - class: Delay
               delay: 10
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.shield
+        -  sound: block_stone_place
+           sound_pitch: 1.2
+           sound_volume: 1.7
+        -  sound: entity_ender_dragon_hurt
+           sound_pitch: 1.9
+           sound_volume: 0.8
         -  class: EffectTrail
            particle: block_crack
            particle_count: 20
@@ -32,11 +38,14 @@ walls:
         column:
         -  location: target
            particle: block_crack
-           particle_count: 100
+           particle_count: 20
            particle_offset_x: 0.2
            particle_offset_y: 5
            particle_offset_z: 0.2
            offset: 0,-2,0
+           sound: block_stone_place
+           sound_pitch: 0.2
+           sound_volume: 1.2
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -51,6 +60,8 @@ walls:
         breakable: 3
         destructible: destructible_replace
         volume_type: xzy
+        center_y: false
+        oty: -2
     costs:
         mana: 75
 

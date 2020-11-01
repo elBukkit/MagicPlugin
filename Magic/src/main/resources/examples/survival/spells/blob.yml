@@ -20,6 +20,12 @@ blob:
         cast:
         -  class: EffectSingle
            sound: magic.shield
+        -  sound: block_slime_block_hit
+           sound_pitch: 1.5
+           sound_volume: 1.2
+        -  sound: block_stone_place
+           sound_pitch: 0.2
+           sound_volume: 1.7
         tick:
         -  location: target
            particle: block_crack
@@ -28,6 +34,14 @@ blob:
            particle_offset_y: 0.2
            particle_offset_z: 0.2
         hit:
+        -  sound: block_slime_block_place
+           sound_pitch: 0.2
+           sound_volume: 1.5
+           location: target
+        -  sound: block_stone_place
+           sound_pitch: 0.2
+           sound_volume: 1.7
+           location: target
         -  location: target
            effectlib:
              class: SphereEffect

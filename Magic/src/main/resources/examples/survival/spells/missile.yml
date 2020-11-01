@@ -30,6 +30,7 @@ missile:
            sound_volume: 0.2
         -  class: EffectSingle
            sound: magic.zap_crack
+           sound_volume: 0.75
            location: origin
            color_override: color
            effectlib:

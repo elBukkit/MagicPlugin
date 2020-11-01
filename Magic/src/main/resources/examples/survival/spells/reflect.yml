@@ -18,8 +18,15 @@ reflect:
         cast:
         -  class: EffectSingle
            sound: magic.shield_boom
+           sound_volume: 0.5
            location: origin
+        -  sound: block_beacon_activate
+           sound_pitch: 2
+           sound_volume: 0.8
         -  location: target
+           sound: block_glass_break
+           sound_pitch: 2
+           sound_volume: 0.3
            target_location: block
            effectlib:
              class: SphereEffect

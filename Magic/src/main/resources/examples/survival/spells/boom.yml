@@ -21,9 +21,13 @@ boom:
         -  class: EffectSingle
            sound: entity_ender_dragon_hurt
            location: origin
-        -  class: EffectSingle
-           sound: entity_generic_explode
+        -  sound: entity_generic_explode
            sound_pitch: 2
+           sound_volume: 0.2
+           location: origin
+        -  sound: entity_ender_dragon_hurt
+           sound_pitch: 2
+           sound_volume: 1.5
            location: origin
         tick:
         - particle: redstone
@@ -36,6 +40,10 @@ boom:
           particle_offset_y: 0.5
           particle_offset_z: 0.5
         hit:
+        -  class: EffectSingle
+           sound: entity_generic_explode
+           sound_pitch: 0.3
+           location: target
         -  class: EffectSingle
            custom_sound: magic.shield_boom
            sound_pitch: 2
