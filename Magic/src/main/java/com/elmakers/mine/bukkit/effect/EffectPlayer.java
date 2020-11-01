@@ -118,6 +118,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected boolean requireEntity = false;
     protected boolean requireTargetEntity = false;
+    protected boolean noTargetEntity = false;
     protected boolean sampleTarget = false;
     protected SourceLocation sourceLocation = null;
     protected SourceLocation targetLocation = null;
@@ -269,6 +270,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         setLocationType(configuration.getString("location", "origin"));
         requireEntity = configuration.getBoolean("requires_entity", false);
         requireTargetEntity = configuration.getBoolean("requires_entity_target", false);
+        noTargetEntity = configuration.getBoolean("requires_no_entity_target", false);
         sourceLocation = new SourceLocation(configuration);
         targetLocation = new SourceLocation(configuration, "target_location", false);
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
@@ -376,6 +378,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected void playEffect(DynamicLocation origin, DynamicLocation target) {
         if (requireTargetEntity && (target == null || target.getEntity() == null)) {
+            return;
+        }
+        if (noTargetEntity && (target != null && target.getEntity() != null)) {
             return;
         }
         if (playAtOrigin && origin != null) {
