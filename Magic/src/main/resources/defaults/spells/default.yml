@@ -27,12 +27,15 @@ default:
        - class: EffectTrail
          particle: spell_mob
        deactivate:
-       - sound: block_fire_extinguish
-         sound_pitch: 2
-         sound_volume: 0.5
-       - sound: block_note_block_didgeridoo
-         sound_pitch: 1.5
-         sound_volume: 0.75
+        - sound: block_fire_extinguish
+          sound_pitch: 2
+          sound_volume: 0.3
+        - sound: block_note_block_didgeridoo
+          sound_pitch: 1.75
+          sound_volume: 0.15
+        - sound: block_beacon_deactivate
+          sound_pitch: 1.75
+          sound_volume: 0.6
        fail:
        - class: EffectSingle
          location: origin
@@ -91,18 +94,18 @@ default:
        - class: EffectSingle
          location: origin
          sound: entity_player_levelup
-         sound_volume: 0.6
+         sound_volume: 0.1
          sound_pitch: 0.75
        - class: EffectSingle
          location: origin
          sound: entity_experience_orb_pickup
-         sound_volume: 0.4
-         sound_pitch: 1.5
+         sound_volume: 0.05
+         sound_pitch: 0.5
        earn_scaled_sp:
        - class: EffectSingle
          location: origin
          sound: entity_experience_orb_pickup
-         sound_volume: 0.6
+         sound_volume: 0.05
          sound_pitch: 1.5
        reflect:
        - class: EffectSingle

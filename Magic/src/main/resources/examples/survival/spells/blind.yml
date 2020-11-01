@@ -16,6 +16,9 @@ blind:
           - class: PotionEffect
     effects:
         cast:
+        -  sound: block_beacon_power_select
+           sound_pitch: 1.75
+           sound_volume: 0.9
         -  class: EffectSingle
            sound: magic.zap
            effectlib:
@@ -36,6 +39,9 @@ blind:
           particle_offset_y: 0.1
           particle_offset_z: 0.1
         hit:
+        -  sound: block_honey_block_slide
+           sound_pitch: 0.8
+           location: target
         -  class: EffectSingle
            location: target
            use_hit_location: false
@@ -54,7 +60,7 @@ blind:
     headshot_parameters:
       duration_multiplier: 3
     parameters:
-        velocity: 120
+        velocity: 100
         range: 32
         target_type: LivingEntity
         target_breakables: 0

@@ -39,6 +39,8 @@ chainlightning:
         -  class: EffectSingle
            sound: magic.zap
            location: origin
+        -  sound: block_conduit_activate
+           sound_pitch: 1.75
         projectile:
         - class: EffectSingle
           effectlib:
@@ -86,6 +88,8 @@ chainlightning:
            particle_offset_x: 1
            particle_offset_y: 1
            particle_offset_z: 1
+        -  sound: block_conduit_activate
+           sound_pitch: 1.8
     parameters:
         tick_size: 5
         target: other

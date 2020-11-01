@@ -26,6 +26,8 @@ fire:
            sound: magic.burn
            sound_volume: 1
            location: origin
+        -  sound: block_conduit_activate
+           sound_pitch: 1.8
         tick:
         -  class: EffectSingle
            location: target
@@ -39,6 +41,8 @@ fire:
            location: target
            color: FE642E
            firework: ball
+           sound: entity_ghast_shoot
+           sound_pitch: 0.8
     parameters:
         velocity: 80
         target_type: LivingEntity

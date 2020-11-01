@@ -46,6 +46,10 @@ arrow_ice:
              particle: snowball
              disappear_with_origin_entity: true
         hit:
+        - location: target
+          sound: block_snow_fall
+          sound_pitch: 0.75
+          sound_volume: 2
         - class: EffectSingle
           location: target
           target_offset: 0,0.2,0

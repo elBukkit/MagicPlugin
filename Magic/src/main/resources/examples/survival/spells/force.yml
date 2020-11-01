@@ -24,6 +24,7 @@ force:
            particle_base1: spell_mob
            particle_base2: spell_mob
            iterations: 10
+      target_selected:
       - class: EffectSingle
         location: both
         sound: magic.hit

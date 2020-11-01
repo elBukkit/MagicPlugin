@@ -29,6 +29,12 @@ gatling:
             delay: 10
     effects:
         cast:
+        -  sound: block_grindstone_use
+           sound_pitch: 0.2
+        -  sound: block_end_portal_frame_fill
+           sound_pitch: 0.1
+        -  sound: block_beacon_activate
+           sound_pitch: 1.1
         -  class: EffectSingle
            sound: magic.electrify
            sound_pitch: 0.1
@@ -76,6 +82,9 @@ gatling:
            particle_offset_y: 0.2
            particle_offset_z: 0.2
         hit:
+        -  sound: entity_player_attack
+           sound_pitch: 0.8
+           location: target
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
@@ -86,6 +95,10 @@ gatling:
            sound: magic.zap
            sound_volume: .3
            particle_data: 0.1
+        -  sound: block_conduit_attack_target
+           sound_pitch: 1.8
+           sound_volume: 1.5
+           location: target
     parameters:
       target: other
       target_type: LivingEntity

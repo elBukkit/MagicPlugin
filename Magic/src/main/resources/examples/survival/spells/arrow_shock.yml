@@ -24,10 +24,6 @@ arrow_shock:
             - class: PlayEffects
               effects: zap
     effects:
-        zap:
-        - sound: magic.zap
-          sound_pitch: 1.5
-          sound_volume: 1.1
         cast:
         - sound: entity_arrow_shoot
           sound_pitch: 0.9
@@ -36,6 +32,8 @@ arrow_shock:
           sound: magic.zap_crack
           sound_pitch: 1.5
           location: origin
+        - sound: block_conduit_activate
+          sound_pitch: 2
         projectile:
         - location: origin
           effectlib:
@@ -59,6 +57,8 @@ arrow_shock:
              particle: fireworks_spark
              disappear_with_origin_entity: true
         hit:
+        - sound: block_conduit_activate
+          sound_pitch: 1.4
         - class: EffectSingle
           location: target
           particle: fireworks_spark

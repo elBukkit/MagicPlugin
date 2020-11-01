@@ -54,6 +54,10 @@ lift:
              particle: spell
              radius: 0.8
         cast:
+        -  sound: block_fire_extinguish
+           sound_volume: 1
+           sound_pitch: 0.1
+           location: both
         -  class: EffectSingle
            location: origin
            sound: magic.zap_up

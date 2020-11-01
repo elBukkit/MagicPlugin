@@ -26,6 +26,13 @@ kill:
           - class: Damage
     effects:
         cast:
+        - sound: block_conduit_activate
+          sound_pitch: 0.2
+          sound_volume: 1.75
+        - sound: block_end_portal_frame_fill
+          sound_pitch: 0.1
+        - sound: block_beacon_activate
+          sound_pitch: 0.75
         - class: EffectSingle
           sound: magic.electrify
           sound_volume: 5
@@ -40,10 +47,18 @@ kill:
              iterations: 16
              radius: 5
         launch:
-        -  class: EffectSingle
-           custom_sound: magic.zap_big
-           sound_volume: 1
-           location: origin
+        - sound: block_beacon_power_select
+          sound_pitch: 0.6
+          sound_volume: 1.2
+        - sound: entity_wither_shoot
+          sound_pitch: 0.2
+          sound_volume: 0.8
+        - sound: entity_guardian_attack
+          sound_pitch: 1.5
+          sound_volume: 0.1
+        - custom_sound: magic.zap_big
+          sound_volume: 1
+          location: origin
         tick:
         - location: target
           particle: smoke_large
@@ -67,7 +82,9 @@ kill:
           color: "00FF00"
           firework: ball_large
         hit_entity:
-        - class: EffectSingle
+        - sound: entity_wither_death
+          sound_pitch: 1.6
+          sound_volume: 0.8
           location: target
           target_offset: 0,3,0
           orient: true

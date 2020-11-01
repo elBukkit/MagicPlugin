@@ -27,6 +27,9 @@ frost:
             - class: ModifyBreakable
     effects:
         cast:
+        -  sound: entity_player_breath
+           sound_pitch: 2
+           sound_volume: 0.5
         -  class: EffectSingle
            sound: magic.zap
         tick:
@@ -37,10 +40,25 @@ frost:
           particle_offset_y: 0.01
           particle_offset_z: 0.01
         hit:
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: ball
+        - location: target
+          sound: block_snow_fall
+          sound_pitch: 0.75
+          sound_volume: 2
+          effectlib:
+            class: Modified
+            duration: 500
+            parameters:
+              size: "(t/i) * 2"
+            effect:
+              class: AnimatedBall
+              particles: 20
+              particle_count: 10
+              particle_offset_x: 1
+              particle_offset_y: 1
+              particle_offset_z: 1
+              particle: snowball
+              size: 1
+              y_factor: 0.3
         - class: EffectSingle
           location: target
           target_offset: 0,0.2,0
@@ -52,7 +70,7 @@ frost:
              radius: $radius
     parameters:
         target_type: Damageable
-        velocity: 175
+        velocity: 50
         target: other
         allow_max_range: false
         range: 48

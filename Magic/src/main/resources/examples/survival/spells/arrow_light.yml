@@ -31,6 +31,8 @@ arrow_light:
                 delay: 300
     effects:
         cast:
+        -  sound: block_conduit_activate
+           sound_pitch: 1.2
         -  sound: entity_arrow_shoot
            sound_pitch: 2
         -  class: EffectSingle

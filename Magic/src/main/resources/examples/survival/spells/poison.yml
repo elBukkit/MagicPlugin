@@ -16,6 +16,12 @@ poison:
           - class: PotionEffect
     effects:
         cast:
+        -  sound: block_fire_extinguish
+           sound_volume: 0.05
+           sound_pitch: 1.8
+        -  sound: block_honey_block_slide
+           sound_pitch: 1.5
+           sound_volume: 2
         -  class: EffectSingle
            sound: magic.zap
         tick:
@@ -27,6 +33,9 @@ poison:
           particle_offset_y: 0.5
         hit:
         -  class: EffectSingle
+           sound: block_honey_block_slide
+           sound_pitch: 0.2
+           sound_volume: 2
            location: target
            requires_entity_target: true
            target_location: body

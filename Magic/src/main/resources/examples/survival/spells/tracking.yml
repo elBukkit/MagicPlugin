@@ -18,6 +18,7 @@ tracking:
         -  class: EffectSingle
            sound: magic.zap
            location: origin
+           sound_volume: 0.1
         -  class: EffectSingle
            effectlib:
              class: LineEffect
@@ -26,6 +27,12 @@ tracking:
              particle_offset_x: 0.1
              particle_offset_y: 0.1
              particle_offset_z: 0.1
+        - requires_entity_target: true
+          sound: entity_villager_yes
+          sound_pitch: 1.25
+        - requires_no_entity_target: true
+          sound: entity_villager_no
+          sound_pitch: 0.9
     parameters:
         range: 32
         fov: 3

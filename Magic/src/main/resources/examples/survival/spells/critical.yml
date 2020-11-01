@@ -34,6 +34,9 @@ critical:
         particle_data: 0.1
         sound: magic.zap
         sound_volume: 0.1
+      - sound: block_conduit_activate
+        sound_pitch: 2
+        sound_volume: 0.2
       - sound: entity_player_attack_crit
         sound_pitch: 1.8
         location: target

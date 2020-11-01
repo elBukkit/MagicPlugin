@@ -68,6 +68,9 @@ railgun:
         -  sound: entity_player_attack_knockback
            sound_pitch: 2
            location: target
+        -  sound: block_beacon_deactivate
+           sound_pitch: 1.75
+           location: target
         -  class: EffectSingle
            location: target
            particle: fireworks_spark

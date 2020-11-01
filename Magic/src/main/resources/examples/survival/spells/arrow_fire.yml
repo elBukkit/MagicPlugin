@@ -25,6 +25,8 @@ arrow_fire:
         - sound: magic.burn
           sound_volume: 0.9
           sound_pitch: 1.1
+        - sound: block_conduit_activate
+          sound_pitch: 2
         projectile:
         - location: origin
           effectlib:
@@ -39,6 +41,13 @@ arrow_fire:
              particle: smoke_large
              disappear_with_origin_entity: true
         hit:
+        - sound: entity_ghast_shoot
+          sound_pitch: 0.8
+          location: target
+        - sound: magic.burn
+          sound_volume: 0.9
+          sound_pitch: 1.1
+          location: target
         - location: target
           particle: lava
           particle_count: 20

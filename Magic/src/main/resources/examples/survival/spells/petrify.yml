@@ -15,6 +15,9 @@ petrify:
         - class: FallProtection
     effects:
         cast:
+        -  sound: block_beacon_power_select
+           sound_pitch: 0.8
+           sound_volume: 0.6
         -  class: EffectSingle
            sound: magic.zap_big
         -  class: EffectSingle
@@ -33,11 +36,15 @@ petrify:
           particle_offset_x: 0.02
           particle_offset_y: 0.02
           particle_offset_z: 0.02
-        hit:
-        - class: EffectSingle
+        hit_entity:
+        - sound: block_stone_place
+          sound_pitch: 0.1
+          sound_volume: 1.5
           location: target
-          color: F5EFFB
-          firework: ball
+        - sound: block_chain_place
+          sound_pitch: 0.1
+          sound_volume: 1.75
+          location: target
         - class: EffectSingle
           sound: block_stone_hit
           location: target

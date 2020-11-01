@@ -7,6 +7,7 @@ polymorph:
     category: combat
     worth: 300
     earns_sp: 8
+    requires: LibsDisguises
     actions:
       cast:
       - class: CustomProjectile
@@ -15,6 +16,9 @@ polymorph:
         - class: PotionEffect
     effects:
         cast:
+        -  sound: block_beacon_power_select
+           sound_pitch: 1.8
+           sound_volume: 0.6
         -  class: EffectSingle
            sound: magic.zap_big
         -  class: EffectSingle
@@ -23,16 +27,18 @@ polymorph:
         - location: target
           particle: fireworks_spark
           particle_count: 3
-          particle_offset_x: 0.01
-          particle_offset_y: 0.01
-          particle_offset_z: 0.01
+          particle_offset_x: 0.11
+          particle_offset_y: 0.11
+          particle_offset_z: 0.11
         hit:
         - class: EffectSingle
           location: target
           color: F5EFFB
           firework: ball
         - class: EffectSingle
-          sound: entity_experience_orb_pickup
+          sound: block_note_block_chime
+          sound_pitch: 0.2
+          sound_volume: 2
           location: target
           requires_entity_target: true
           particle_override: particle_orbital

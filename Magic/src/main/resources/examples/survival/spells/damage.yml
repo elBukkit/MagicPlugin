@@ -34,6 +34,8 @@ damage:
         - class: Damage
     effects:
         cast:
+        - sound: block_conduit_activate
+          sound_pitch: 1.8
         - sound: magic.zap_big
           sound_volume: 1
           location: origin

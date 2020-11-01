@@ -24,6 +24,17 @@ boon:
     effects:
         cast:
         - sound: entity_experience_orb_pickup
+          sound_pitch: 0.2
+          sound_volume: 0.8
+        - sound: entity_generic_drink
+          sound_pitch: 1.75
+          sound_volume: 0.6
+        - sound: entity_generic_drink
+          sound_pitch: 1.75
+          sound_volume: 0.6
+        - sound: block_beacon_activate
+          sound_pitch: 1.5
+          sound_volume: 0.75
         - location: origin
           source_location: body
           color_override: color

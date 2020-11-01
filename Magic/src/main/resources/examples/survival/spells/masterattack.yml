@@ -42,6 +42,14 @@ masterattack:
            particle_offset_y: 0.2
            particle_offset_z: 0.2
         hit:
+        -  sound: entity_player_attack_knockback
+           sound_pitch: 2
+           location: target
+           sound_volume: 0.6
+        -  sound: block_beacon_deactivate
+           sound_pitch: 1.8
+           sound_volume: 0.9
+           location: target
         -  class: EffectSingle
            location: target
            particle: fireworks_spark

@@ -13,9 +13,9 @@ snoop:
         - class: Inventory
     effects:
         cast:
-        - sound: block_iron_trapdoor_open
-          sound_pitch: 0.5
-          location: source
+         - sound: block_iron_trapdoor_open
+           sound_pitch: 0.5
+           location: source
          - class: EffectSingle
            location: origin
            sound: magic.hit

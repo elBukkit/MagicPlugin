@@ -65,8 +65,8 @@ nuke:
           sound: entity_generic_explode
           sound_volume: 2
         cast:
-        - sound: entity_wither_shoot
-          sound_pitch: 0.1
+        -  sound: entity_wither_shoot
+           sound_pitch: 0.1
         -  class: EffectSingle
            sound: entity_firework_rocket_launch
            location: both

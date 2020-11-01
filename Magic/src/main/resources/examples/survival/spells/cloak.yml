@@ -10,34 +10,59 @@ cloak:
     earns_sp: 5
     toggle: undo
     disable_mana_regeneration: true
+    quick_cast: true
     actions:
         cast:
         - class: PotionEffect
         - class: Wear
-          item: nothing
+          item: pumpkin_seeds
           armor_slot: 0
         - class: Wear
-          item: nothing
+          item: pumpkin_seeds
           armor_slot: 1
         - class: Wear
-          item: nothing
+          item: pumpkin_seeds
           armor_slot: 2
         - class: Wear
-          item: nothing
+          item: pumpkin_seeds
           armor_slot: 3
     effects:
         cast:
         - class: EffectSingle
           sound: magic.vanish
-        - class: EffectRing
-          particle: smoke_normal
-          location: target
-        undo:
+        - sound: entity.enderman.teleport
+          sound_pitch: 0.3
+          effectlib:
+            class: Modified
+            duration: 500
+            parameters:
+              radius: "(t/i) * 1.5"
+            effect:
+              class: Shield
+              particles: 15
+              particle_count: 10
+              particle_offset_x: 0.75
+              particle_offset_y: 0.75
+              particle_offset_z: 0.75
+              particle: smoke_large
+        deactivate:
         - class: EffectSingle
           sound: magic.vanish
-        - class: EffectRing
-          particle: smoke_normal
-          location: target
+        - sound: entity.enderman.teleport
+          sound_pitch: 0.3
+          effectlib:
+            class: Modified
+            duration: 500
+            parameters:
+              radius: "1.5 - ((t/i) * 1.5)"
+            effect:
+              class: Shield
+              particles: 15
+              particle_count: 10
+              particle_offset_x: 0.5
+              particle_offset_y: 0.5
+              particle_offset_z: 0.5
+              particle: smoke_large
     parameters:
       target: self
       duration: 3600000

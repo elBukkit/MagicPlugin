@@ -11,6 +11,12 @@ superkill:
       - class: Kill
     effects:
         cast:
+        - sound: entity_wither_shoot
+          sound_pitch: 0.2
+          sound_volume: 0.3
+        - sound: entity_guardian_attack
+          sound_pitch: 1.5
+          sound_volume: 0.2
         - class: EffectSingle
           sound: magic.electrify
           sound_volume: 5
@@ -38,6 +44,9 @@ superkill:
           location: targets
           color: "00FF00"
           firework: ball_large
+          sound: entity_wither_death
+          sound_pitch: 1.6
+          sound_volume: 0.8
     parameters:
         target: other
         target_type: Damageable

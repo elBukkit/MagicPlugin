@@ -23,6 +23,9 @@ fury:
         cast:
         -  sound: entity_firework_rocket_launch
            sound_pitch: 0.1
+        -  sound: block_conduit_activate
+           sound_pitch: 1.8
+           sound_volume: 0.5
         -  class: EffectSingle
            sound: magic.zap_crack
            location: origin
@@ -41,6 +44,10 @@ fury:
           particle_offset_z: 0.05
           location: target
         hit:
+        -  sound: block_conduit_attack_target
+           sound_pitch: 1.8
+           sound_volume: 1.5
+           location: target
         -  class: EffectSingle
            sound: magic.zap
            sound_volume: .3
