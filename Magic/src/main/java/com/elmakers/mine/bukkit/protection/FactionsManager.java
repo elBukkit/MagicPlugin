@@ -59,6 +59,16 @@ public class FactionsManager implements BlockBuildManager, BlockBreakManager, PV
             if (factionsPlugin != null)
             {
                 try {
+                    Class<?> handler = Class.forName("com.massivecraft.factions.integration.Magic");
+                    if (handler != null) {
+                        plugin.getLogger().info("Modern Factions found, skipping integration and letting Factions handle it. (Thanks, mbaxter!)");
+                        factionsManager = null;
+                        return;
+                    }
+                } catch (Exception ignore) {
+                }
+
+                try {
                     Class<?> psClass = Class.forName("com.massivecraft.massivecore.ps.PS");
                     factionsManager = Class.forName("com.massivecraft.factions.engine.EngineMain");
                     factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Object.class, psClass, Boolean.TYPE);
