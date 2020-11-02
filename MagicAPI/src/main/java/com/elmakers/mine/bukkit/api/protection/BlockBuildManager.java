@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 
 /**
- * Register via PreLoadEvent.register()
+ * Register via MageController.register()
  */
 public interface BlockBuildManager extends MagicProvider {
     boolean hasBuildPermission(Player player, Block block);

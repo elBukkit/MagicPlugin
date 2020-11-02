@@ -643,4 +643,11 @@ public interface MageController {
     Set<String> getPlayerWarpProviderKeys();
     @Nullable
     Collection<PlayerWarp> getPlayerWarps(Player player, String key);
+
+    /**
+     * Register an implementation of one or more MageProvider interfaces.
+     * @param provider The provider to register
+     * @return false if none of the implemented interfaces were recognized
+     */
+    boolean register(MagicProvider provider);
 }

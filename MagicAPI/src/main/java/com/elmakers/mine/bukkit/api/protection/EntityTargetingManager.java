@@ -5,7 +5,7 @@ import org.bukkit.entity.Entity;
 import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 
 /**
- * Register via PreLoadEvent.register()
+ * Register via MageController.register()
  */
 public interface EntityTargetingManager extends MagicProvider {
     boolean canTarget(Entity source, Entity target);

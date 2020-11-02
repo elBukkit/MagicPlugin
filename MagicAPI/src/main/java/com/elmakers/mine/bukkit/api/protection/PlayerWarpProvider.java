@@ -5,7 +5,8 @@ import javax.annotation.Nonnull;
 import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 
 /**
- * Register via PreLoadEvent.register()
+ * This replaces PlayerWarpManager for easier registration.
+ * Register via MageController.register()
  */
 public interface PlayerWarpProvider extends PlayerWarpManager, MagicProvider {
     /**

@@ -7,7 +7,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 
 /**
- * Replaces RequirementsProcessor for easier registration.
+ * Replaces RequirementsProcessor for easier registration via MageController.register()
  */
 public interface RequirementsProvider extends RequirementsProcessor, MagicProvider {
     /**

@@ -13,19 +13,18 @@ import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
-import com.elmakers.mine.bukkit.api.protection.PlayerWarpProvider;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
-import com.elmakers.mine.bukkit.api.requirements.RequirementsProvider;
 
 /**
  * A custom event that fires whenever Magic loads or reloads configurations.
+ * Note that this event is sent during Magic's onEnable, so you may need to put Magic
+ * in your load-before list if you want to catch the initial load event.
  */
 public class PreLoadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
@@ -56,40 +55,6 @@ public class PreLoadEvent extends Event {
 
     public MageController getController() {
         return controller;
-    }
-
-    /**
-     * Register any MagicProvider. This replaces most of the below methods.
-     * @param provider The provider to add
-     * @return true if registration was successful, false for an unknown provider type.
-     */
-    public boolean register(MagicProvider provider) {
-        if (provider instanceof EntityTargetingManager) {
-            targetingManagers.add((EntityTargetingManager)provider);
-        } else if (provider instanceof AttributeProvider) {
-            attributeProviders.add((AttributeProvider)provider);
-        } else if (provider instanceof TeamProvider) {
-            teamProviders.add((TeamProvider)provider);
-        } else if (provider instanceof Currency) {
-            currencies.add((Currency)provider);
-        } else if (provider instanceof RequirementsProvider) {
-            RequirementsProvider requirements = (RequirementsProvider)provider;
-            registerRequirementsProcessor(requirements.getKey(), requirements);
-        } else if (provider instanceof PlayerWarpProvider) {
-            PlayerWarpProvider warp = (PlayerWarpProvider)provider;
-            registerPlayerWarpManager(warp.getKey(), warp);
-        } else if (provider instanceof BlockBreakManager) {
-            blockBreakManagers.add((BlockBreakManager)provider);
-        } else if (provider instanceof PVPManager) {
-            pvpManagers.add((PVPManager)provider);
-        } else if (provider instanceof BlockBuildManager) {
-            blockBuildManager.add((BlockBuildManager)provider);
-        } else if (provider instanceof CastPermissionManager) {
-            castManagers.add((CastPermissionManager)provider);
-        } else {
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -182,6 +147,15 @@ public class PreLoadEvent extends Event {
      */
     public void registerCastPermissionManager(CastPermissionManager manager) {
         castManagers.add(manager);
+    }
+
+    /**
+     * Register an EntityTargetingProvider, for determining when one entity may target another with spells.
+     *
+     * @param manager The manager to add.
+     */
+    public void registerEntityTargetingManager(EntityTargetingManager manager) {
+        targetingManagers.add(manager);
     }
 
     /**

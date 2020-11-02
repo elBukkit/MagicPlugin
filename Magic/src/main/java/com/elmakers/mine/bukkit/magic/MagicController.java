@@ -103,6 +103,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
+import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
@@ -112,8 +113,10 @@ import com.elmakers.mine.bukkit.api.protection.EntityTargetingManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarpProvider;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
+import com.elmakers.mine.bukkit.api.requirements.RequirementsProvider;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -1661,6 +1664,7 @@ public class MagicController implements MageController {
 
             return;
         }
+
 
         // Clear some cache stuff... mainly this is for debugging/testing.
         schematics.clear();
@@ -3363,6 +3367,12 @@ public class MagicController implements MageController {
     }
 
     protected void registerPreLoad() {
+        // This could be set earlier on, but currently the only thing that cares about this is the
+        // register() method, which could be called below during the PreLoadEvent, and is also called
+        // below to re-register.
+        // For now it's better to make sure it get unset.
+        loading = true;
+
         // Setup custom providers
         currencies.clear();
         attributeProviders.clear();
@@ -3376,6 +3386,7 @@ public class MagicController implements MageController {
         castManagers.clear();
         playerWarpManagers.clear();
         targetingProviders.clear();
+        registeredAttributes.clear();
 
         PreLoadEvent loadEvent = new PreLoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
@@ -3424,13 +3435,16 @@ public class MagicController implements MageController {
         if (skillAPIManager != null) {
             requirementProcessors.put("skillapi", skillAPIManager);
         }
-        if (requirementProcessors.containsKey(Requirement.DEFAULT_TYPE)) {
-            getLogger().warning("Something tried to register requirements for the " + Requirement.DEFAULT_TYPE + " type, but that is Magic's job.");
+
+        // Re-register any providers previously registered by external plugins via register()
+        for (MagicProvider provider : externalProviders) {
+            register(provider);
         }
-        requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
+
+        // Don't allow overriding Magic requirements
+        checkMagicRequirements();
 
         // Register attributes
-        registeredAttributes.clear();
         registeredAttributes.addAll(builtinAttributes);
         registeredAttributes.addAll(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {
@@ -3443,6 +3457,77 @@ public class MagicController implements MageController {
         MageParameters.initializeAttributes(registeredAttributes);
         MageParameters.setLogger(getLogger());
         getLogger().info("Registered attributes: " + registeredAttributes);
+
+        loading = false;
+    }
+
+    private void checkMagicRequirements() {
+        if (requirementProcessors.containsKey(Requirement.DEFAULT_TYPE)) {
+            getLogger().warning("Something tried to register requirements for the " + Requirement.DEFAULT_TYPE + " type, but that is Magic's job.");
+        }
+        requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
+    }
+
+    public boolean register(MagicProvider provider) {
+        boolean added = false;
+        if (provider instanceof EntityTargetingManager) {
+            added = true;
+            targetingProviders.add((EntityTargetingManager)provider);
+        }
+        if (provider instanceof AttributeProvider) {
+            added = true;
+            AttributeProvider attributes = (AttributeProvider)provider;
+            attributeProviders.add(attributes);
+            if (!loading) {
+                Set<String> providerAttributes = attributes.getAllAttributes();
+                if (providerAttributes != null) {
+                    registeredAttributes.addAll(providerAttributes);
+                    MageParameters.initializeAttributes(registeredAttributes);
+                    getLogger().info("Registered additional attributes: " + providerAttributes);
+                }
+            }
+        }
+        if (provider instanceof TeamProvider) {
+            added = true;
+            teamProviders.add((TeamProvider)provider);
+        }
+        if (provider instanceof Currency) {
+            added = true;
+            addCurrency((Currency)provider);
+        }
+        if (provider instanceof RequirementsProvider) {
+            added = true;
+            RequirementsProvider requirements = (RequirementsProvider)provider;
+            requirementProcessors.put(requirements.getKey(), requirements);
+            if (!loading) {
+                checkMagicRequirements();
+            }
+        }
+        if (provider instanceof PlayerWarpProvider) {
+            added = true;
+            PlayerWarpProvider warp = (PlayerWarpProvider)provider;
+            playerWarpManagers.put(warp.getKey(), warp);
+        }
+        if (provider instanceof BlockBreakManager) {
+            added = true;
+            blockBreakManagers.add((BlockBreakManager)provider);
+        }
+        if (provider instanceof PVPManager) {
+            added = true;
+            pvpManagers.add((PVPManager)provider);
+        }
+        if (provider instanceof BlockBuildManager) {
+            added = true;
+            blockBuildManagers.add((BlockBuildManager)provider);
+        }
+        if (provider instanceof CastPermissionManager) {
+            added = true;
+            castManagers.add((CastPermissionManager)provider);
+        }
+        if (added && !loading) {
+            externalProviders.add(provider);
+        }
+        return added;
     }
 
     protected void clear()
@@ -7100,6 +7185,8 @@ public class MagicController implements MageController {
     private LogBlockManager                     logBlockManager             = null;
     private EssentialsController                essentialsController        = null;
 
+    private boolean                             loading                     = false;
+    private Set<MagicProvider>                  externalProviders           = new HashSet<>();
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
     private List<PVPManager>                    pvpManagers                 = new ArrayList<>();

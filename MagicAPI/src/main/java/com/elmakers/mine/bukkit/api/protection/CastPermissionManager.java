@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 
 /**
- * Register via PreLoadEvent.register()
+ * Register via MageController.register()
  */
 public interface CastPermissionManager extends MagicProvider {
     /**

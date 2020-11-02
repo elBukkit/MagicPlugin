@@ -16,15 +16,7 @@ auto_rollback_explosions:
 - primed_tnt
 
 # We are mixing in all of the configs here to show them off.
-examples:
-- automata
-- engineering
-- stars
-- potter
-- bending
-- war
-- arenas
-- robes
+examples: engineering
 
 # Testing custom currencies
 custom_currency:

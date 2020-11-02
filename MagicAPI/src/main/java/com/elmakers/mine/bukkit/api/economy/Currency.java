@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicProvider;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 
 /**
- * Register via PreLoadEvent.register
+ * Register via MageController.register()
  */
 public interface Currency extends MagicProvider {
     /**
