@@ -25,6 +25,8 @@ import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
  * A custom event that fires whenever Magic loads or reloads configurations.
  * Note that this event is sent during Magic's onEnable, so you may need to put Magic
  * in your load-before list if you want to catch the initial load event.
+ * Also note that registering MagicProvider classes here is no longer advised, it is better to use
+ * MageController.register
  */
 public class PreLoadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
