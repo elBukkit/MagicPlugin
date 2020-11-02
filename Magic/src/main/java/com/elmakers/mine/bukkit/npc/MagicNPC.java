@@ -197,6 +197,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         return true;
     }
 
+    @Override
     public boolean setTemplate(String templateKey) {
         EntityData newTemplate = controller.getMob(templateKey);
         if (newTemplate == null) {
