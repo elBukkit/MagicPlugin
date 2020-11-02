@@ -28,7 +28,7 @@ fire:
            location: origin
         -  sound: block_conduit_activate
            sound_pitch: 1.8
-           sound_volume: 0.4
+           sound_volume: 0.6
         -  sound: entity_ghast_shoot
            sound_pitch: 0.5
            sound_volume: 0.8

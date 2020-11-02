@@ -18,8 +18,13 @@ curse:
           - class: Deactivate
     effects:
         cast:
+        -  sound: entity_elder_guardian_curse
+           sound_pitch: 1.8
+           sound_volume: 0.8
         -  class: EffectSingle
-           sound: entity_irongolem_death
+           sound: entity_iron_golem_death
+           sound_pitch: 1.5
+           sound_volume: 0.7
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -55,6 +60,9 @@ curse:
         hit_entity:
         -  location: target
            source_location: body
+           sound: entity_elder_guardian_curse
+           sound_pitch: 0.6
+           sound_volume: 1.1
            effectlib:
              class: Modified
              duration: $duration

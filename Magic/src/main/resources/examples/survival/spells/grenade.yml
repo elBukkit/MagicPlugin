@@ -18,6 +18,8 @@ grenade:
         cast:
         - class: EffectSingle
           sound: block_lava_pop
+          sound_pitch: 0.3
+          sound_volume: 1.6
         projectile:
         - location: origin
           effectlib:

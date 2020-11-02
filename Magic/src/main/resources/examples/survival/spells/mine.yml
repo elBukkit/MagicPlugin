@@ -17,26 +17,40 @@ mine:
         - class: Delay
         - class: Recurse
           actions:
+          - class: PlayEffects
+            effects: drop
+          - class: Delay
           - class: Drop
     effects:
         cast:
         -  class: EffectSingle
-           sound: vanish,1,0.5
+           sound: magic.vanish
+           sound_volume: 0.5
+           sound_pitch: 0.8
         -  class: EffectSingle
-           sound: entity_item_break,0.8
+           sound: entity_item_break
+           sound_pitch: 0.2
+           sound_volume: 0.9
            effectlib:
               class: LineEffect
               particle: block_crack
-              duration: 1000
-              particles: 15
+              iterations: 2
+              particles: 10
               period: 1
-              particle_count: 4
+              particle_count: 2
               particle_offset_x: 0.1
               particle_offset_y: 0.1
               particle_offset_z: 0.1
-        no_target:
-        -  class: EffectSingle
-           sound: vanish,1,0.5
+        drop:
+        -  sound: block_stone_break
+           sound_pitch: 0.7
+           sound_volume: 0.3
+           particle: block_crack
+           particle_count: 30
+           particle_offset_x: 0.8
+           particle_offset_y: 0.8
+           particle_offset_z: 0.8
+           location: target
     parameters:
         faces: all
         allow_max_range: false
@@ -46,6 +60,7 @@ mine:
         destructible: ores
         cooldown: 10000
         bypass_undo: true
+        delay: 100
     costs:
         mana: 10
 

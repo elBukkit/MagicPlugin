@@ -15,6 +15,9 @@ fireball:
         -  class: Projectile
     effects:
         cast:
+        - sound: entity_ghast_shoot
+          sound_pitch: 0.9
+          sound_volume: 0.8
         - sound: magic.burn
           sound_volume: 1
           sound_pitch: -.25
