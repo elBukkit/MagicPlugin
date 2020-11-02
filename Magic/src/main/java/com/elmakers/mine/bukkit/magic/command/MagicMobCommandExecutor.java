@@ -204,7 +204,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
 
         for (int i = 0; i < count; i++) {
-            spawned = entityData.spawn(targetLocation);
+            spawned = entityData.spawn(controller, targetLocation);
         }
         if (spawned == null) {
             sender.sendMessage(ChatColor.RED + "Failed to spawn mob of type " + ChatColor.YELLOW + mobKey);
