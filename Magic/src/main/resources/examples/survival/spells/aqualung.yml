@@ -21,8 +21,9 @@ aqualung:
           particle_offset_x: 0.5
           particle_offset_y: 0.5
           particle_offset_z: 0.5
-        - sound: entity_generic_drink
-          sound_pitch: 0.8
+        - sound: entity_player_breath
+          sound_pitch: 1.3
+          sound_volume: 1.5
           location: origin
           effectlib:
             class: Modified

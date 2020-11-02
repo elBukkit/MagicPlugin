@@ -11,44 +11,60 @@ cure:
     earns_sp: 20
     actions:
         cast:
-        - class: PotionEffect
+        - class: AreaOfEffect
+          actions:
+          - class: PotionEffect
     effects:
         cast:
+        - sound: entity_generic_drink
+          sound_pitch: 0.1
+          sound_volume: 0.4
+        - sound: block_beacon_activate
+          sound_pitch: 0.1
+          sound_volume: 1.4
+        - sound: entity_generic_drink
+          sound_pitch: 0.3
+          sound_volume: 0.2
+          location: targets
+          source_location: body
+          effectlib:
+            class: Warp
+            radius: 1
+            rings: 8
+            grow: 0.1
+            particle: end_rod
         - class: EffectSingle
           sound: magic.shimmer
-          location: target
           source_location: body
+          location: source
           effectlib:
              class: Modified
              iterations: 40
              period: 2
              parameters:
-                 radius: "(t/i) * 3 + 0.5"
-                 radius_nucleus: "(t/i) * 0.5 + 0.4"
+                 radius: "(t/i) * 5 + 0.5"
+                 radius_nucleus: "(t/i) * 8 + 2"
              effect:
                  class: AtomEffect
                  particle_nucleus: heart
                  particle_orbital: crit
-                 particles_nucleus: 1
+                 particles_nucleus: 4
                  particles_orbital: 30
     parameters:
-        bypass_mage_cooldown: true
-        target_type: LivingEntity
-        target: any_entity
-        allow_max_range: false
-        range: 5
-        bypass_confusion: true
-        cooldown: 20000
-        bypass_pvp: true
-        bypass_friendly_fire: true
-        only_friendly: true
-        cancel_on_damage: 0.5
-        cancel_on_cast_other: true
-        remove_effects:
-        - confusion
-        - poison
-        - slow
-        - slow_digging
+      target: self
+      bypass_mage_cooldown: true
+      target_type: LivingEntity
+      radius: 5
+      bypass_confusion: true
+      cooldown: 20000
+      bypass_pvp: true
+      bypass_friendly_fire: true
+      only_friendly: true
+      remove_effects:
+      - confusion
+      - poison
+      - slow
+      - slow_digging
     costs:
         mana: 30
 

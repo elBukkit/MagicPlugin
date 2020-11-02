@@ -18,6 +18,12 @@ collapse:
              - class: ModifyBlock
     effects:
         cast:
+        -  sound: block_beacon_deactivate
+           sound_pitch: 1.8
+           sound_volume: 0.9
+        -  sound: entity_generic_explode
+           sound_pitch: 2
+           sound_volume: 0.3]4
         -  class: EffectSingle
            sound: magic.ignite
            sound_volume: 1
@@ -27,23 +33,39 @@ collapse:
              iterations: 10
              particle: spell_witch
              lengthGrow: 0.4
+             particle_count: 6
+             particle_offset_x: 0.1
+             particle_offset_y: 0.1
+             particle_offset_z: 0.1
+
         tick:
         - particle: falling_dust
           location: target
           material: obsidian
+          particle_count: 4
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
         hit:
+        -  sound: entity_generic_explode
+           sound_pitch: 0.1
+           sound_volume: 0.3
+           location: target
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFF00
-           firework: burst
+           particle: fireworks_spark
+           particle_count: 25
+           particle_offset_x: $radius
+           particle_offset_y: $radius
+           particle_offset_z: $radius
         -  class: EffectSingle
            location: target
            target_offset: 0,0.5,0
            effectlib:
              class: HelixEffect
              iterations: 1
-             radius: 4
+             radius: $radius
              particle: falling_dust
              particle_count: 2
              particle_offset_x: 0.1
