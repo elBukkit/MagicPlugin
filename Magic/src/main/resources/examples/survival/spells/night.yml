@@ -32,8 +32,8 @@ night:
               class: Sphere
               radius: 3
               particle: smoke_large
-              particle_count: 20
-              particles: 15
+              particle_count: 10
+              particles: 10
               particle_offset_x: 0.2
               particle_offset_y: 0.2
               particle_offset_z: 0.2
@@ -53,8 +53,8 @@ night:
               class: Sphere
               radius: 3
               particle: water_drop
-              particle_count: 20
-              particles: 10
+              particle_count: 10
+              particles: 5
               particle_offset_x: 0.2
               particle_offset_y: 0.2
               particle_offset_z: 0.2
