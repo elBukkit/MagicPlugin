@@ -474,7 +474,13 @@ public class VolumeAction extends CompoundAction
 
     protected boolean containsPoint(CastContext context, int y, int z, int x)
     {
-        return thickness == 0 || x > radius - thickness || y > radius - thickness || z > radius - thickness;
+        return thickness == 0
+                || (x > 0 && x > radius - thickness)
+                || (y > 0 && y > radius - thickness)
+                || (z > 0 && z > radius - thickness)
+                || (x < 0 && x < thickness - radius)
+                || (y < 0 && y < thickness - radius)
+                || (z < 0 && z < thickness - radius);
     }
 
     @Override
