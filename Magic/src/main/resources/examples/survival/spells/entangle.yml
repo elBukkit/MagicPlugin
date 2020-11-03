@@ -5,12 +5,38 @@ entangle:
     legacy_icon_disabled: spell_icon_disabled:177
     icon_url: http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5
     category: combat
-    class: ConstructSpell
     worth: 150
     earns_sp: 3
     pvp_restricted: true
-    effects:
+    actions:
         cast:
+          - class: CustomProjectile
+            actions:
+              - class: ChangeContext
+                target_entity: true
+                actions:
+                - class: Volume
+                  actions:
+                    - class: Cover
+                      actions:
+                      - class: ModifyBlock
+    effects:
+        tick:
+          - location: target
+            particle: block_crack
+            particle_count: 3
+            particle_offset_x: 0.05
+            particle_offset_y: 0.05
+            particle_offset_z: 0.05
+        cast:
+        -  sound: item_axe_strip
+           sound_pitch: 0.7
+           sound_volume: 1.5
+           location: both
+        -  sound: entity_fox_spit
+           sound_pitch: 0.7
+           sound_volume: 1.5
+           location: both
         -  class: EffectSingle
            sound: magic.crack
         -  class: EffectTrail
@@ -28,33 +54,31 @@ entangle:
              effect:
                class: AnimatedBall
                particle: block_crack
-               particles: 50
+               particles: 20
                particle_count: 5
                particle_offset_x: 0.05
                particle_offset_y: 0.05
                particle_offset_z: 0.05
                y_factor: 0.2
-
+               size: 0.5
     parameters:
         target: other
         target_type: LivingEntity
         allow_max_range: true
-        range: 32
-        fov: .1
+        range: 24
+        hitbox_size: 1.5
         radius: 1
-        type: cuboid
-        brush: birch_fence
+        brush: birch_fence?birch_fence[east=true,north=true,south=true,waterlogged=false,west=true]
         thickness: 1
-        orient_dimension_max: 0
-        orient_dimension_min: 0
-        orient: false
-        transparent: transparent_to_construction
-        check_destructible: true
+        y_size: 0
+        transparent: destructible_replace,transparent
         destructible: destructible_replace
         undo: 5000
         breakable: 1
         cooldown: 8000
-        instant_block_effects: true
+        auto_block_state: false
+        vertical_range: 4
+        target_above: true
     costs:
         mana: 70
 
