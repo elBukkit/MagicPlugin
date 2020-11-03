@@ -16,17 +16,23 @@ arrowrain:
         -  class: Projectile
     effects:
         cast:
+        -  sound: entity_generic_splash
+           sound_pitch: 0.8
+           sound_volume: 0.8
         -  class: EffectSingle
            sound: entity_arrow_shoot
-           pitch: 0.8
+           sound_pitch: 0.8
         -  class: EffectSingle
            sound: entity_arrow_shoot
-           pitch: 0.5
+           sound_pitch: 0.5
         -  class: EffectSingle
            sound: entity_arrow_shoot
-           pitch: 1.2
+           sound_pitch: 1.2
         hit:
         - location: target
+          sound: entity_generic_splash
+          sound_pitch: 1.8
+          sound_volume: 0.8
           effectlib:
             class: Modified
             period: 2

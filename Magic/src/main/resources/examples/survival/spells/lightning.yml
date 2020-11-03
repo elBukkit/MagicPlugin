@@ -18,8 +18,12 @@ lightning:
            -  class: Lightning
     effects:
         cast:
+        -  sound: block_conduit_activate
+           sound_pitch: 1.8
+           sound_volume: 1.9
         -  class: EffectSingle
            sound: entity_firework_large_blast
+           location: target
         -  class: EffectTrail
            particle: smoke_normal
            particle_count: 30
@@ -32,6 +36,7 @@ lightning:
              class: HelixEffect
              particle: smoke_large
              iterations: 1
+             particles: 30
              particle_count: 10
              particle_offset_x: 1
              particle_offset_y: 0.1

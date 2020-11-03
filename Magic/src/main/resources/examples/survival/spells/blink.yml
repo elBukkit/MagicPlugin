@@ -21,6 +21,9 @@ blink:
         - class: Teleport
     effects:
         teleport:
+        - sound: entity_enderman_teleport
+          sound_pitch: 1.2
+          location: origin
         - class: EffectSingle
           sound: magic.teleport
           location: target
@@ -33,9 +36,11 @@ blink:
              particle_orbital: redstone
              iterations: 16
              offset: 0,-1,0
-             particlesNucleus: 8
-             particlesOrbital: 5
+             particles_nucleus: 8
+             particles_orbital: 5
              orient: true
+             rotation: 45
+             angular_velocity: 0.2
         - class: EffectSingle
           location: target
           source_location: body
@@ -45,10 +50,15 @@ blink:
              particle_nucleus: redstone
              particle_orbital: fireworks_spark
              iterations: 8
-             particlesNucleus: 8
-             particlesOrbital: 5
+             particles_nucleus: 8
+             particles_orbital: 5
              orient: true
+             rotation: 45
+             angular_velocity: 0.2
         precast:
+         - sound: entity_enderman_teleport
+           sound_pitch: 1.3
+           location: origin
          - class: EffectSingle
            sound: magic.teleport
            location: origin
@@ -64,6 +74,7 @@ blink:
                particles_nucleus: 8
                particles_orbital: 5
                orient: true
+               rotation: 45
          - class: EffectSingle
            location: origin
            source_location: body
@@ -77,6 +88,7 @@ blink:
                particles_nucleus: 8
                particles_orbital: 5
                orient: true
+               rotation: 45
          - class: EffectSingle
            color_override: color
            effectlib:

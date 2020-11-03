@@ -21,28 +21,43 @@ smite:
            actions:
            -  class: ModifyBlock
     effects:
-        cast:
-        -  class: EffectSingle
-           sound: entity_firework_large_blast
-        -  class: EffectTrail
-           particle: smoke_normal
-           particle_count: 20
-           particle_offset_x: 0.2
-           particle_offset_y: 0.2
-           particle_offset_z: 0.2
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: HelixEffect
-             particle: smoke_large
-             particle_count: 5
-             particle_offset_x: 0.2
-             particle_offset_y: 4
-             particle_offset_z: 0.2
-             iterations: 1
-             particles: 10
-             radius: 4
-             offset: 0,2,0
+      cast:
+      - sound: block_conduit_activate
+        sound_pitch: 2
+        sound_volume: 2
+      - class: EffectSingle
+        sound: entity_firework_large_blast
+        location: target
+      - class: EffectTrail
+        particle: end_rod
+        particle_count: 30
+        particle_offset_x: 0.3
+        particle_offset_y: 0.3
+        particle_offset_z: 0.3
+      - class: EffectSingle
+        location: target
+        effectlib:
+          class: HelixEffect
+          particle: smoke_large
+          iterations: 1
+          particles: 10
+          particle_count: 4
+          particle_offset_x: 1
+          particle_offset_y: 0.1
+          particle_offset_z: 1
+          offset: 0,2,0
+      - class: EffectSingle
+        location: target
+        effectlib:
+           class: HelixEffect
+           particle: end_rod
+           iterations: 1
+           particles: 30
+           particle_count: 10
+           particle_offset_x: 1
+           particle_offset_y: 0.1
+           particle_offset_z: 1
+           offset: 0,2,0
     parameters:
         target_type: Damageable
         allow_max_range: true

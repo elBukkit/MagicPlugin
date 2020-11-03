@@ -21,19 +21,23 @@ flamethrower:
         cast:
         -  class: EffectSingle
            sound: magic.burn
+           origin_offset: 0,-0.5,0
            effectlib:
              class: DragonEffect
              iterations: 10
              length: $size
-             stepsPerIteration: 1
-             particles: 10
-             particle_count: 20
-             particle_offset_x: 0.3
-             particle_offset_y: 0.3
-             particle_offset_z: 0.3
-             relativeOffset: 2,0,0
+             steps_per_iteration: 1
+             particles: 8
+             particle_count: 10
+             particle_offset_x: 0.2
+             particle_offset_y: 0.2
+             particle_offset_z: 0.2
+             relative_offset: 2,0,0
         iterate:
-        - location: target
+        - sound: entity_ghast_shoot
+          sound_pitch: 0.75
+          sound_volume: 0.5
+          location: target
           particle: lava
           particle_count: 8
           particle_offset_x: 0.5
