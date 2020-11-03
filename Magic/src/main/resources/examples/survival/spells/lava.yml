@@ -19,8 +19,16 @@ lava:
         - class: Delay
     effects:
         cast:
+        - sound: block_lava_pop
+          sound_pitch: 0.1
+          sound_volume: 1.1
+        - sound: entity_ghast_shoot
+          sound_pitch: 0.1
+          sound_volume: 0.2
         - class: EffectSingle
           sound: block_lava_ambient
+          sound_pitch: 2
+          sound_volume: 2
         iterate:
         - location: target
           particle: lava

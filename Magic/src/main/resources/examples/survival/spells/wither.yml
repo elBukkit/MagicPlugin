@@ -21,7 +21,7 @@ wither:
     effects:
         cast:
         - sound: entity_wither_shoot
-          sound_pitch: 0.9
+          sound_pitch: 0.8
           sound_volume: 0.4
         projectile:
         - class: EffectSingle

@@ -14,15 +14,22 @@ chop:
     upgrade_required_casts: 30
     actions:
         cast:
-        - class: ArmorStandProjectile
+        - class: ChangeContext
+          source_offset: 0,-0.7,0
           actions:
-          - class: Recurse
+          - class: ArmorStandProjectile
             actions:
-            - class: Drop
+            - class: Recurse
+              actions:
+              - class: Drop
     effects:
         cast:
         -  class: EffectSingle
            sound: block_wood_step
+           sound_volume: 1.7
+        -  class: EffectSingle
+           sound: entity_drowned_shoot
+           sound_pitch: 0.4
         projectile:
         - location: origin
           material: log
@@ -36,6 +43,16 @@ chop:
              particle_offset_x: 0.1
              particle_offset_y: 0.1
              particle_offset_z: 0.1
+        hit:
+          - location: target
+            particle: fireworks_spark
+            particle_count: 16
+            particle_offset_x: 1
+            particle_offset_y: 1
+            particle_offset_z: 1
+            sound: block_wood_break
+            sound_pitch: 0.2
+            sound_volume: 2
     parameters:
         velocity: 10
         right_arm_item: iron_axe
