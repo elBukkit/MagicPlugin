@@ -12,6 +12,7 @@ public interface MageClass extends CasterProperties, CostReducer, CooldownReduce
     Collection<String> getSpells();
     @Override
     boolean addSpell(String spellKey);
+    @Override
     boolean addBrush(String brushKey);
     boolean removeSpell(String spellKey);
     boolean removeBrush(String brushKey);
