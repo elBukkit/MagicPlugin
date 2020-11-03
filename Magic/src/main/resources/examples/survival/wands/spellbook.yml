@@ -3,6 +3,7 @@ spellbook:
     icon: enchanted_book{CustomModelData:18001}
     legacy_icon: wand_icon:31
     indestructible: true
+    drop: toggle
     right_click: toggle
     undroppable: true
     keep: true
