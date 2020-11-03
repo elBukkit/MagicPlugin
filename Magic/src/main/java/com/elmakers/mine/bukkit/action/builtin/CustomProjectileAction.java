@@ -159,6 +159,7 @@ public class CustomProjectileAction extends CompoundAction
         super.addHandlers(spell, parameters);
         addHandler(spell, "headshot");
         addHandler(spell, "miss");
+        addHandler(spell, "tick");
     }
 
     public void modifyParameters(ConfigurationSection parameters) {
