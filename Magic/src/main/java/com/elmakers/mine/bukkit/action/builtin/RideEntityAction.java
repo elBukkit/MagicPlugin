@@ -247,8 +247,8 @@ public class RideEntityAction extends BaseSpellAction
                 double backwardSpeed = Math.abs(speed);
                 speedRatio = backwardSpeed / maxBackwardSpeed;
             }
-            sound.setPitch((float)((soundMaxPitch - soundMinPitch) * speedRatio));
-            sound.setVolume((float)((soundMaxVolume - soundMinVolume) * speedRatio));
+            sound.setPitch((float)((soundMaxPitch - soundMinPitch) * speedRatio) + soundMinPitch);
+            sound.setVolume((float)((soundMaxVolume - soundMinVolume) * speedRatio) + soundMinVolume);
             sound.play(context.getPlugin(), mounted);
         }
 
