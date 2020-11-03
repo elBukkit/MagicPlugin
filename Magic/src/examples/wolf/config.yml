@@ -90,7 +90,12 @@ auto_rollback_explosions:
 - creeper
 
 examples:
+- automata
+- engineering
 - stars
+- bending
+- war
+- robes
 
 # resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-aj.zip"
 
