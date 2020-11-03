@@ -38,7 +38,7 @@ sponge:
       cast:
       - sound: magic.shimmer
       - sound: entity_generic_drink
-        sound_pitch: 0.8
+        sound_pitch: 0.4
       - class: EffectTrail
         reverse: true
         particle: block_crack
@@ -52,10 +52,10 @@ sponge:
         effectlib:
           class: Line
           particle: block_crack
-          duration: 4000
+          duration: 1000
           particles: 5
           period: 1
-          particle_count: 10
+          particle_count: 6
           particle_offset_x: 0.01
           particle_offset_y: 0.01
           particle_offset_z: 0.01

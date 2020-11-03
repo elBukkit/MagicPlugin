@@ -14,9 +14,8 @@ grow:
         - class: GrowEntity
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_endermen_teleport
-           sound_pitch: 1.5
+        -  sound: entity_enderman_teleport
+           sound_pitch: 1.9
            sound_volume: 0.5
            location: origin
            effectlib:
@@ -29,9 +28,13 @@ grow:
              particle_offset_y: 0.2
              particle_offset_z: 0.2
         hit:
+        - sound: block_beacon_activate
+          sound_pitch: 0.3
+          sound_volume: 0.9
+          location: both
         - class: EffectSingle
           location: target
-          sound: entity_endermen_teleport
+          sound: entity_enderman_teleport
           sound_pitch: 1.4
           sound_volume: 0.8
           effectlib:

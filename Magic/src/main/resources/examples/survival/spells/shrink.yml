@@ -14,8 +14,7 @@ shrink:
         - class: ShrinkEntity
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_endermen_teleport
+        -  sound: entity_enderman_teleport
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -29,6 +28,10 @@ shrink:
              particle_offset_y: 0.2
              particle_offset_z: 0.2
         hit:
+        - sound: block_beacon_deactivate
+          sound_pitch: 1.9
+          sound_volume: 0.9
+          location: both
         - class: EffectSingle
           location: target
           sound: entity_endermen_teleport

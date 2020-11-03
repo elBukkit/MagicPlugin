@@ -14,7 +14,13 @@ wound:
         -  class: Damage
     effects:
         cast:
+        -  sound: block_beacon_power_select
+           sound_pitch: 1.9
+           sound_volume: 0.2
         -  class: EffectSingle
+           sound: entity_player_attack_knockback
+           sound_pitch: 0.3
+           sound_volume: 1.2
            requires_entity_target: true
            location: target
            color: 8A0829
@@ -34,6 +40,9 @@ wound:
            particle_offset_z: 0.2
            relative_offset: 2,0,0
         -  requires_entity_target: true
+           sound: entity_player_attack_crit
+           sound_pitch: 0.6
+           sound_volume: 1.2
            effectlib:
              class: Equation
              iterations: 50
@@ -59,13 +68,30 @@ wound:
              particle: item_crack
              material: redstone
              size: 0.3
+        -  requires_no_entity_target: true
+           sound: entity_player_attack_nodamage
+           sound_pitch: 0.6
+           sound_volume: 1.1
         -  location: source
            material: redstone_block
+           requires_entity_target: true
            effectlib:
              class: Equation
              iterations: 50
              particles: 20
              particle: block_crack
+             xEquation: "1.2"
+             yEquation: "-t/20 + 0.5"
+             zEquation: "-t/20 + 0.5"
+             updateLocations: false
+             updateDirections: false
+        -  location: source
+           effectlib:
+             class: Equation
+             iterations: 10
+             particles: 4
+             period: 1
+             particle: fireworks_spark
              xEquation: "1.2"
              yEquation: "-t/20 + 0.5"
              zEquation: "-t/20 + 0.5"

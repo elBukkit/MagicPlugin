@@ -16,6 +16,15 @@ harden:
           - class: ModifyBlock
     effects:
         cast:
+        - sound: block_beacon_deactivate
+          sound_pitch: 1.9
+          sound_volume: 0.2
+        - sound: entity_evoker_cast_spell
+          sound_pitch: 1.75
+          sound_volume: 0.8
+        - sound: block_smithing_table_use
+          sound_pitch: 1.7
+          sound_volume: 0.3
         - sound: magic.shimmer
         - class: EffectTrail
           particle: block_crack

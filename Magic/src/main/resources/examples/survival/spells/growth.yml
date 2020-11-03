@@ -21,10 +21,14 @@ growth:
         cast:
         - sound: magic.shimmer
           location: source
+        - sound: entity_evoker_prepare_attack
+          sound_pitch: 0.1
+          sound_volume: 0.7
         hit:
         - sound: entity_generic_splash
-          sound_volume: 0.2
-          location: source
+          sound_volume: 0.8
+          sound_pitch: 0.3
+          location: target
           effectlib:
               class: AtomEffect
               particle_nucleus: water_drop

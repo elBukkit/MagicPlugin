@@ -28,6 +28,15 @@ stream:
       cast:
       - class: EffectSingle
         sound: block_water_ambient
+        sound_volume: 2
+      - class: EffectSingle
+        sound: entity_generic_splash
+        sound_pitch: 0.2
+        sound_volume: 0.8
+      tick:
+        - sound: entity_generic_splash
+          sound_pitch: 1.8
+          sound_volume: 0.5
       projectile:
        - location: origin
          effectlib:
@@ -44,7 +53,7 @@ stream:
       lifetime: 5000
       range: 32
       duration: 10000
-      brush: stationary_water
+      brush: water
       increment_data: true
       player_damage: 0.25
       entity_damage: 0.5
@@ -52,6 +61,7 @@ stream:
       destructible: destructible_replace
       undo: 50
       undo_to: 3
+      tick_size: 5
     costs:
         mana: 30
 

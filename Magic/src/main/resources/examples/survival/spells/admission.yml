@@ -14,15 +14,28 @@ admission:
         - class: Door
     effects:
         cast:
+        - sound: block_beacon_activate
+          sound_volume: 0.8
+          sound_pitch: 1.6
+        - sound: block_wooden_door_open
+          sound_volume: 1.5
+          sound_pitch: 0.4
+          location: target
         - sound: magic.shimmer
         - class: EffectTrail
           particle: redstone
           color: false
           particle_data: 2
+          particle_count: 15
+          particle_offset_x: 0.15
+          particle_offset_y: 0.15
+          particle_offset_z: 0.15
+        - class: EffectTrail
+          particle: redstone
           particle_count: 20
-          particle_offset_x: 0.2
-          particle_offset_y: 0.2
-          particle_offset_z: 0.2
+          particle_offset_x: 0.25
+          particle_offset_y: 0.25
+          particle_offset_z: 0.25
         - class: EffectSingle
           location: target
           sound: magic.bonk
@@ -42,6 +55,9 @@ admission:
              enable_rotation: false
              offset: 0.5,0.5,0.5
         no_target:
+        - sound: block_beacon_activate
+          sound_volume: 0.8
+          sound_pitch: 1.6
         - sound: magic.shimmer
         - class: EffectTrail
           particle: redstone

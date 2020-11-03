@@ -11,8 +11,12 @@ tag:
     earns_sp: 1
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_fire_extinguish
+        -  sound: block_wood_place
+           sound_pitch: 0.1
+           sound_volume: 2
+           location: target
+        -  sound: block_fire_extinguish
+           sound_pitch: 0.3
         -  class: EffectTrail
            particle: crit
            particle_count: 20

@@ -51,10 +51,26 @@ laser:
                 actions:
                 -  class: Damage
     effects:
+        cast:
+          - sound: entity_guardian_attack
+            sound_pitch: 0.5
+            sound_volume: 0.5
+          - sound: magic.zap_crack
+            location: origin
+          - sound: block_beacon_activate
+            sound_pitch: 0.8
+            sound_volume: 0.4
+          - sound: block_conduit_activate
+            sound_pitch: 0.5
+            sound_volume: 0.9
         beam:
         -  sound: entity_guardian_attack
-           sound_pitch: 1.75
-           sound_volume: 0.75
+           sound_pitch: 2
+           sound_volume: 2
+        -  sound: entity_guardian_attack
+           sound_pitch: 1.5
+           sound_volume: 1.6
+           location: target
         -  class: EffectSingle
            sound: magic.zap
            location: origin
@@ -65,6 +81,15 @@ laser:
              particle: redstone
              iterations: 2
              color: ff0000
+             particle_offset_x: 0.05
+             particle_offset_y: 0.05
+             particle_offset_z: 0.05
+        -  location: origin
+           effectlib:
+              class: LineEffect
+              particle: redstone
+              iterations: 2
+              color: ff0000
         burn:
         - location: target
           particle: smoke_large
@@ -73,13 +98,6 @@ laser:
           particle_offset_y: 0.1
           particle_offset_z: 0.1
           target_offset: 0.5,0.5,0.5
-        cast:
-        -  sound: entity_guardian_attack
-           sound_pitch: 0.5
-           sound_volume: 0.5
-        -  class: EffectSingle
-           sound: magic.zap_crack
-           location: origin
     parameters:
         target: block
         target_type: Damageable

@@ -31,6 +31,11 @@ wave:
            - class: Delay
     effects:
         cast:
+        -  sound: block_conduit_deactivate
+           sound_pitch: 0.3
+           sound_volume: 0.5
+        -  sound: entity_generic_splash
+           sound_pitch: 0.15
         -  class: EffectSingle
            sound: magic.shimmer_quiet
            sound_volume: 1

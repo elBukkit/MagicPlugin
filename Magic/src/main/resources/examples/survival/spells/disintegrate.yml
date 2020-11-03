@@ -19,8 +19,15 @@ disintegrate:
             ignore_result: true
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_magma_cube_jump
+        -  sound: magic.zap
+           sound_pitch: 1.9
+           sound_volume: 0.6
+        -  sound: entity_magma_cube_jump
+           sound_pitch: 1.7
+           sound_volume: 0.7
+        -  sound: entity_evoker_prepare_summon
+           sound_pitch: 1.6
+           sound_volume: 0.5
         tick:
         -  location: target
            particle: drip_lava
@@ -37,6 +44,9 @@ disintegrate:
            particle_offset_z: 0.05
         hit:
         -  location: target
+           sound: block_conduit_deactivate
+           sound_pitch: 2
+           sound_volume: 0.8
            particle: smoke_large
            particle_count: 5
            particle_offset_x: 0.5

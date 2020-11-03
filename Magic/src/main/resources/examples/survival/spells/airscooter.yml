@@ -54,6 +54,10 @@ airscooter:
         direction_y: 0.5
         duration: 120000
         armor_stand_marker: false
+        sound: block_fire_extinguish
+        sound_volume: 0.4
+        sound_interval: 200
+        sound_pitch: 0.5
     costs:
         mana: 20
     active_costs:
