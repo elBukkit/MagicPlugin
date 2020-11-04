@@ -4,6 +4,8 @@
 
  - See MIGRATION.md for important information!
 
+ Note that some of the changes below may only apply to modern (1.16+) versions of Spigot.
+
  ## Important Notes
 
  - Minecraft 1.16 will now use a new resource pack:
@@ -50,6 +52,7 @@
 
  - Fix using the replicate and clone brushes with the Place spell
  - Fix pasting schematics with torches or other wall attachables
+ - Fix hotloading recipe changes, and optimize recipe loading
 
  - The `/mconfig clean` command has been disabled (hopefully temporarily)
  - Add ignore_damage option for crafting recipes

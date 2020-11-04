@@ -150,15 +150,19 @@ public class MagicRecipe {
             }
         }
         // Add our custom recipe if crafting is enabled
+        boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
         if (recipe != null)
         {
             if (!FIRST_REGISTER) {
-               List<Recipe> existing = plugin.getServer().getRecipesFor(craft());
-                if (existing.size() > 0) {
-                    return;
+                if (canRemoveRecipes) {
+                    CompatibilityUtils.removeRecipe(plugin, key);
+                } else {
+                    List<Recipe> existing = plugin.getServer().getRecipesFor(craft());
+                    if (existing.size() > 0) {
+                        return;
+                    }
                 }
             }
-
             controller.info("Adding crafting recipe for " + outputKey);
             try {
                 plugin.getServer().addRecipe(recipe);

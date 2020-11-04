@@ -322,6 +322,7 @@ public class NMSUtils {
     protected static Method class_nms_Block_getBlockDataMethod;
     protected static Method class_Phantom_getSizeMethod;
     protected static Method class_Phantom_setSizeMethod;
+    protected static Method class_Server_removeRecipeMethod;
 
     protected static boolean legacyMaps;
 
@@ -1081,6 +1082,15 @@ public class NMSUtils {
                 class_NamespacedKey_constructor = null;
                 class_ShapedRecipe_constructor = null;
                 logger.info("Couldn't find NamespacedKey for registering recipes. This is normal for legacy Minecraft versions.");
+            }
+
+            if (class_NamespacedKey != null) {
+                try {
+                    class_Server_removeRecipeMethod = Server.class.getMethod("removeRecipe", class_NamespacedKey);
+                } catch (Throwable ex) {
+                    class_Server_removeRecipeMethod = null;
+                    logger.info("Couldn't find recipe removal method, this is odd since we ddi find NamespacedKey");
+                }
             }
 
             if (class_NamespacedKey != null) {

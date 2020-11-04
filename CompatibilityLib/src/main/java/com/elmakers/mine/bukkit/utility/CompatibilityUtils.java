@@ -1493,6 +1493,24 @@ public class CompatibilityUtils extends NMSUtils {
         return null;
     }
 
+    public static boolean canRemoveRecipes() {
+        return class_Server_removeRecipeMethod != null;
+    }
+
+    public static boolean removeRecipe(Plugin plugin, String key) {
+        if (class_NamespacedKey == null || class_Server_removeRecipeMethod == null) {
+            return false;
+        }
+
+        try {
+            Object namespacedKey = class_NamespacedKey_constructor.newInstance(plugin, key.toLowerCase());
+            return (boolean)class_Server_removeRecipeMethod.invoke(plugin.getServer(), namespacedKey);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     public static ShapedRecipe createShapedRecipe(Plugin plugin, String key, ItemStack item) {
         if (class_NamespacedKey == null) {
             return new ShapedRecipe(item);
