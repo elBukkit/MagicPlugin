@@ -1,0 +1,224 @@
+ironman_repulsor:
+ actions:
+  alternate_sneak:
+  - class: ChangeContext
+    source_location: body
+    relative_source_offset: 0,-0.5,0
+    source_pitch: 0
+    orient_pitch: false
+    actions:
+    - class: CustomProjectile
+      tick_effects: big
+      use_target_location: false
+      actions:
+      - class: Damage
+      - class: BreakBlock
+        ignore_result: true
+  cast: 
+  - class: CustomProjectile
+    actions:
+    - class: Damage
+    - class: BreakBlock
+      ignore_result: true
+ effects:
+  alternate_down: []
+  alternate_sneak:
+  - location: origin
+    source_location: body
+    sound: magic.zap
+    effectlib:
+     class: Sphere
+     radius: 0.3
+     iterations: 10
+     particles: 25
+     duration: 250
+     particle: redstone
+     color: "00ffff"
+     update_locations: false
+     update_directions: false
+     orientPitch: false
+  big:
+  - location: target
+    particle: redstone
+    color: "00ffff"
+    particle_size: 2
+    particle_count: 5
+    particle_offset_x: 0.05
+    particle_offset_y: 0.05
+    particle_offset_z: 0.05
+  cast:
+  - location: origin
+    sound: magic.zap
+    effectlib:
+     class: Sphere
+     radius: 0.15
+     iterations: 10
+     particles: 25
+     duration: 250
+     particle: redstone
+     color: "00ffff"
+     update_locations: false
+     update_directions: false
+  tick:
+  - location: target
+    particle: redstone
+    color: "00ffff"
+    particle_count: 5
+    particle_offset_x: 0.05
+    particle_offset_y: 0.05
+    particle_offset_z: 0.05
+  hit:
+  - location: target
+    particle: fireworks_spark
+    particle_count: 5
+    particle_data: 0.1
+    particle_offset_x: 0.1
+    particle_offset_y: 0.1
+    particle_offset_z: 0.1
+ alternate_sneak_parameters:
+  cooldown: 15000
+  damage: 10
+  range: 32
+  break_durability: 2000
+ parameters:
+  cooldown: 2000
+  undo: 5000
+  range: 16
+  velocity: 500
+  damage: 5
+  target: other
+  break_durability: 500
+  check_destructible: false
+  transparent: all_air,all_water,all_lava,plants,snow
+
+ironman_rockets:
+ cast_on_no_target: false
+ actions: 
+  cast: 
+  - class: AreaOfEffect
+    actions:
+    - class: Asynchronous
+      actions:
+      - class: PlayEffects
+        effects: launch
+      - class: CustomProjectile
+        target: other
+        actions:
+        - class: Damage
+  alternate_sneak:  
+  - class: AreaOfEffect
+    actions:
+    - class: Asynchronous
+      actions:
+      - class: PlayEffects
+        effects: launch
+      - class: CustomProjectile
+        target: other
+        actions:
+        - class: Damage
+ effects: 
+  launch:
+  - location: origin
+    sound: entity_firework_rocket_launch
+    sound_pitch: 1.3
+  hit:
+  - location: target
+    particle: explosion_large
+    sound: entity_firework_rocket_large_blast
+  tick:
+  - location: target
+    particle: redstone
+    color: "#464650"
+    particle_count: 5
+    particle_size: 1.5
+    particle_offset_x: 0.01
+    particle_offset_y: 0.01
+    particle_offset_z: 0.01
+  - location: target
+    particle: end_rod
+    particle_count: 1
+    particle_offset_x: 0.01
+    particle_offset_y: 0.01
+    particle_offset_z: 0.01
+ alternate_sneak_parameters:
+  target_count: 8
+  damage: 3
+ parameters:
+  target: self
+  target_self_timeout: 3000
+  target_self: false
+  target_source: false
+  target_count: 1
+  target_type: Damageable
+  radius: 16
+  y_radius: 16
+  damage: 10
+  range: 64
+  track_speed: 0.5
+  track_target: true
+  velocity_transform: 
+   orient: true
+   x: rand(0,10)
+   y: rand(0,20)
+   z: rand(0,10)
+  plan:
+  - time: 500
+    velocity_transform: ""
+    velocity: 30
+    track_speed: 0.5
+
+ironman_fly:
+ cancel_effects: true
+ actions:
+  cast: 
+  - class: Velocity
+    direction: 0,1,0
+    additive: true
+    speed: 2
+  - class: Delay
+    delay: 100
+  - class: Fly
+  - class: FallProtection
+    duration: 10000
+ effects:
+  cast:
+  - location: origin
+    source_location: feet
+    effectlib: 
+     class: Sphere
+     particle: cloud
+     radius: 0.2
+     duration: $duration
+     particles: 5
+     particle_offset_x: 0
+     particle_offset_y: 0
+     particle_offset_z: 0
+  - location: origin
+    source_location: feet
+    effectlib:
+     class: Cylinder
+     solid: true
+     radius: 0.2
+     height: 1.5
+     particle: fireworks_spark
+     particles: 10
+     duration: $duration
+  land:
+  - sound: block_stone_step
+    sound_pitch: 0.7
+  - class: EffectRing
+    particle: block_crack
+    source_location: feet
+    period: 4
+    particle_count: 80
+    particle_offset_x: 0.9
+    particle_offset_z: 0.9
+    particle_offset_y: 0.1
+    radius: 4
+ parameters:
+  target: self
+  max_height: 255
+  speed: 0.8
+  cooldown: 30000
+  duration: 60000
+  
