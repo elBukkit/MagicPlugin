@@ -29,7 +29,7 @@ rush:
               push: 1
             - class: Damage
           - class: Velocity
-            velocity: 2
+            speed: 2
     - class: Delay
  effects:
   cast:
