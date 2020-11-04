@@ -205,11 +205,11 @@ public class ChangeContextAction extends CompoundAction {
         if (updateDirection && sourceLocation != null) {
             direction = sourceLocation.getDirection();
         }
-        if (sourceDirectionOffset != null && sourceLocation != null)
+        if (sourceDirectionOffset != null && sourceLocation != null && direction != null)
         {
             sourceLocation.setDirection(direction.add(sourceDirectionOffset));
         }
-        if (sourceDirectionSpeed != null && sourceLocation != null)
+        if (sourceDirectionSpeed != null && sourceLocation != null && direction != null)
         {
             sourceLocation = sourceLocation.add(direction.clone().multiply(sourceDirectionSpeed));
         }
@@ -347,7 +347,10 @@ public class ChangeContextAction extends CompoundAction {
             sourceLocation = swapLocation;
         }
 
-        direction = context.getDirection().normalize();
+        direction = context.getDirection();
+        if (direction != null) {
+            direction.normalize();
+        }
         if (targetCaster)
         {
             targetEntity = sourceEntity;
