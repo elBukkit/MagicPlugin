@@ -28,6 +28,7 @@ public class ChangeContextAction extends CompoundAction {
     private boolean targetEntityLocation;
     private boolean sourceAtTarget;
     private boolean sourceIsTarget;
+    private boolean sourceDirectionAtTarget;
     private boolean sourceDirectionIsTarget;
     private Double sourcePitch;
     private Vector randomSourceOffset;
@@ -74,6 +75,7 @@ public class ChangeContextAction extends CompoundAction {
         sourceUseMovementDirection = parameters.getBoolean("source_use_movement_direction", false);
         targetUseMovementDirection = parameters.getBoolean("target_use_movement_direction", false);
         sourceDirectionIsTarget = parameters.getBoolean("source_direction_is_target", false);
+        sourceDirectionAtTarget = parameters.getBoolean("source_direction_at_target", false);
         sourcePitch = ConfigurationUtils.getDouble(parameters, "source_pitch", null);
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
         relativeSourceOffset = ConfigurationUtils.getVector(parameters, "relative_source_offset");
@@ -124,6 +126,7 @@ public class ChangeContextAction extends CompoundAction {
 
     protected Location modifySource(Location sourceLocation, CastContext context, Entity targetEntity) {
         boolean updateDirection = false;
+        Location target = context.getTargetLocation();
         if (sourceDirectionIsTarget && targetEntity != null && sourceLocation != null)
         {
             sourceLocation.setDirection(targetEntity.getLocation().getDirection());
@@ -369,7 +372,10 @@ public class ChangeContextAction extends CompoundAction {
         sourceLocation = modifySource(sourceLocation, context, targetEntity);
         targetLocation = modifyTarget(targetLocation, context, targetEntity);
 
-
+        if (sourceDirectionAtTarget && targetLocation != null && sourceLocation != null)
+        {
+            sourceLocation.setDirection(targetLocation.toVector().subtract(sourceLocation.toVector()));
+        }
         if (sourceAtTarget && targetLocation != null && sourceLocation != null)
         {
             sourceLocation.setX(targetLocation.getX());
