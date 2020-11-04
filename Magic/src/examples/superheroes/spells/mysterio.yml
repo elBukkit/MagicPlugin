@@ -1,0 +1,130 @@
+mysterio_clone:
+ cast_on_no_target: false
+ actions:
+  cast:
+  - class: AreaOfEffect
+    actions:
+    - class: ChangeContext
+      swap_source_and_target: true
+      target_offset: 0,-2,0
+      actions:
+      - class: PotionEffect
+        add_effects:
+         invisibility: 2
+      - class: Wear
+        item: nothing
+        armor_slot: 0
+      - class: Wear
+        item: nothing
+        armor_slot: 1
+      - class: Wear
+        item: nothing
+        armor_slot: 2
+      - class: Wear
+        item: nothing
+        armor_slot: 3
+      - class: SpawnEntity
+        potion_effects: 
+         weakness: 10
+        set_target: true
+      - class: Aggro
+ effects:
+  cast:
+  - location: origin
+    sound: magic.vanish
+    sound_volume: 0.1
+  undo:
+  - class: EffectSingle
+    sound: magic.vanish
+    sound_volume: 0.1
+  - class: EffectRing
+    particle: smoke_normal
+    location: origin
+ parameters:
+  target_self: false
+  target: self
+  target_count: 1
+  undo: 10000
+  type: husk
+  duration: 10000
+  radius: 16
+  y_radius: 5
+  health: 1
+  max_health: 1
+  default_drops: false
+  drop_xp: 0
+  silent: true
+  disguise_target: self
+
+mysterio_gas:
+ actions: 
+  cast: 
+  - class: ConeOfEffect
+    actions:
+    - class: PotionEffect
+    - class: PlayEffects
+      effects: hit_entity
+ effects:
+  cast:
+  - location: origin
+    sound: block_fire_extinguish
+    sound_pitch: 0.5
+    effectlib: 
+     class: Dragon
+     arcs: 50
+     particles: 5
+     length: $range
+     duration: 750
+     particle: redstone
+     color: "40fd14"
+     particle_size: 2
+  hit_entity:
+  - location: target
+    target_location: head
+    effectlib:
+     class: Sphere
+     radius: 0.5
+     particles: 15
+     duration: $duration
+     particle: redstone
+     color: "40fd14"
+     particle_size: 2
+ parameters:
+  target: other_entity
+  fov: 0.5
+  add_effects:
+   slow: 1
+   blindness: 2
+  duration: 5000
+  range: 8
+  remove_effects: 
+   - speed
+
+mysterio_evade:
+ passive: true
+ triggers: 
+ - trigger: damage
+   damage_type: physical
+ actions:
+  cast:
+  - class: ChangeContext
+    random_target_offset: 5,2,5
+    actions:
+    - class: Teleport
+ effects:
+  teleport:
+  - location: target
+    target_location: body
+    sound: magic.shimmer_quiet
+    particle: smoke_large
+    particle_count: 15
+    particle_offset_x: 1
+    particle_offset_y: 1.5
+    particle_offset_z: 1
+ parameters:
+  target: block
+  allow_max_range: true
+  range: 5
+  cooldown: 5000
+  prevent_passthrough: nopassthrough
+  bypass_confusion: true
