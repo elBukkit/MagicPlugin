@@ -2,6 +2,9 @@ package com.elmakers.mine.bukkit.magic.command;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -302,23 +305,41 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         newSession.setMinecraftVersion(CompatibilityUtils.getServerVersion());
 
         if (parameters.length > 1) {
-            File pluginFolder = api.getPlugin().getDataFolder();
             String targetItem = parameters[1];
             newSession.setKey(targetItem);
-            File defaultsFile = new File(pluginFolder, "defaults/" + editorType + ".defaults.yml");
 
-            YamlConfiguration defaultConfig = null;
-            try {
-                defaultConfig = new YamlConfiguration();
-                defaultConfig.load(defaultsFile);
-            } catch (Exception ex) {
-                sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
-                magic.getLogger().log(Level.WARNING, "Error loading default " + editorType + " file", ex);
-                return;
+            File pluginFolder = api.getPlugin().getDataFolder();
+            File customFolder = new File(pluginFolder, editorType);
+            File customFile = new File(customFolder, targetItem + ".yml");
+            String existingConfig = null;
+            if (customFile.exists()) {
+                try {
+                    existingConfig = new String(Files.readAllBytes(Paths.get(customFile.getAbsolutePath())), StandardCharsets.UTF_8);
+                } catch (Exception ex) {
+                    sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
+                    magic.getLogger().log(Level.WARNING, "Error loading customized file: " + customFile.getAbsolutePath(), ex);
+                    return;
+                }
+            } else {
+                File defaultsFile = new File(pluginFolder, "defaults/" + editorType + ".defaults.yml");
+                YamlConfiguration defaultConfig = null;
+                try {
+                    defaultConfig = new YamlConfiguration();
+                    defaultConfig.load(defaultsFile);
+                } catch (Exception ex) {
+                    sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
+                    magic.getLogger().log(Level.WARNING, "Error loading default " + editorType + " file", ex);
+                    return;
+                }
+
+                ConfigurationSection targetConfig = defaultConfig.getConfigurationSection(targetItem);
+                if (targetConfig != null) {
+                    YamlConfiguration yaml = new YamlConfiguration();
+                    yaml.set(targetItem, targetConfig);
+                    existingConfig = yaml.saveToString();
+                }
             }
-
-            ConfigurationSection targetConfig = defaultConfig.getConfigurationSection(targetItem);
-            if (targetConfig == null) {
+            if (existingConfig == null) {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.new_item")
                     .replace("$type", editorType)
                     .replace("$item", targetItem));
@@ -326,9 +347,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.edit_item")
                     .replace("$type", editorType)
                     .replace("$item", targetItem));
-                YamlConfiguration yaml = new YamlConfiguration();
-                yaml.set(targetItem, targetConfig);
-                newSession.setContents(yaml.saveToString());
+                newSession.setContents(existingConfig);
             }
         }
 
