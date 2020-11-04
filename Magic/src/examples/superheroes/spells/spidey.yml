@@ -1,9 +1,13 @@
 web_pad:
  actions:
   cast:
+  - class: Delay
+    delay: 500
   - class: Disc
     actions:
     - class: ModifyBlock
+    - class: PlayEffects
+      effects: web
  effects:
   cast:
   - location: origin
@@ -27,27 +31,30 @@ web_pad:
      particles: 10
      duration: 1000
      angular_velocity: 0.5
+  web:
   - location: target
+    sound: block_wool_place
+    sound_volume: .2
     target_location: block
-    effectlib:
-     class: SphereEffect
-     particle: block_crack
-     radius: $radius
-     duration: 500
-     offset: 0.5,0.5,0.5
+    particle: block_crack
+    material: cobweb
+    particle_count: 25
+    particle_offset_x: 0.5
+    particle_offset_y: 0.5
+    particle_offset_z: 0.5
   undo:
   - location: target
     sound: block_wool_break
     particle: block_crack
     material: cobweb
-    particle_count: 25
-    particle_offset_x: 1.5
-    particle_offset_y: 1.5
-    particle_offset_z: 1.5
+    particle_count: 50
+    particle_offset_x: 2.5
+    particle_offset_y: 2.5
+    particle_offset_z: 2.5
  parameters:
   allow_max_range: true
   range: 10
-  radius: 2.5
+  radius: 2
   axis: z
   brush: cobweb
   orient: true
@@ -238,6 +245,7 @@ web_ball:
  effects:
   big:
   - location: target
+    source_location: body
     particle: item_crack
     material: cobweb
     particle_count: 15
@@ -294,19 +302,21 @@ web_ball:
     particle: block_crack
     material: cobweb
     particle_count: 25
-    particle_offset_x: 1.5
-    particle_offset_y: 1.5
-    particle_offset_z: 1.5
+    particle_offset_x: .5
+    particle_offset_y: .5
+    particle_offset_z: .5
  headshot_parameters:
   add_effects:
    blindness: 1
  alternate_sneak_parameters:
   radius: 2
+  hitbox_size: 0.5
   cooldown: 5000
   damage: 5
   add_effects:
    slow: 10
  parameters:
+  hitbox_size: 0.1
   speed: 0.2
   cooldown: 250
   brush: cobweb
