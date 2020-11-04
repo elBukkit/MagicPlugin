@@ -26,7 +26,9 @@ public class GetSessionRunnable extends HttpRequest {
                 return;
             }
 
-            successCallback.success(session);
+            if (successCallback != null) {
+                successCallback.success(session);
+            }
         }
     }
 }

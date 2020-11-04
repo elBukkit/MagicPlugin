@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
@@ -28,6 +30,7 @@ import com.elmakers.mine.bukkit.magic.command.config.ApplySessionCallback;
 import com.elmakers.mine.bukkit.magic.command.config.AsyncProcessor;
 import com.elmakers.mine.bukkit.magic.command.config.GetSessionRequest;
 import com.elmakers.mine.bukkit.magic.command.config.GetSessionRunnable;
+import com.elmakers.mine.bukkit.magic.command.config.NewSessionCallback;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionRequest;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.Session;
@@ -58,6 +61,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
     private final MagicController magic;
     private Gson gson;
+    private final Map<String, String> sessions = new HashMap<>();
 
     public MagicConfigCommandExecutor(MagicAPI api, MagicController controller) {
         super(api, "mconfig");
@@ -331,14 +335,36 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         // Send request
         sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.wait"));
         final Plugin plugin = magic.getPlugin();
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new NewSessionRunnable(magic, getGson(), sender, newSession));
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new NewSessionRunnable(magic, getGson(), sender,
+                newSession, new NewSessionCallback() {
+            @Override
+            public void success(String session) {
+                setSession(sender, session);
+            }
+        }));
+    }
+
+    /**
+     * Note that this gets called asynchronously
+     */
+    protected void setSession(CommandSender sender, String session) {
+        final Plugin plugin = magic.getPlugin();
+        plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                Mage mage = controller.getMage(sender);
+                sessions.put(mage.getId(), session);
+            }
+        });
     }
 
     protected void onApplyEdits(CommandSender sender, String[] parameters, String command, boolean load) {
-        // TODO: Remember session id per-user
         String sessionId = null;
         if (parameters.length > 0) {
             sessionId = parameters[0];
+        } else {
+            Mage mage = controller.getMage(sender);
+            sessionId = sessions.get(mage.getId());
         }
         if (sessionId == null) {
             sender.sendMessage(magic.getMessages().get("commands.mconfig." + command + ".usage"));
@@ -351,10 +377,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         // Send request
         sender.sendMessage(magic.getMessages().get("commands.mconfig." + command + ".wait"));
         final Plugin plugin = magic.getPlugin();
+        final String finalSessionId = sessionId;
         ApplySessionCallback callback = new ApplySessionCallback() {
             @Override
             public void success(Session session) {
-                applySession(session, sender, command, load);
+                applySession(finalSessionId, session, sender, command, load);
             }
         };
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new GetSessionRunnable(magic, getGson(), sender, getSession, callback));
@@ -363,7 +390,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     /**
      * Note that this gets called asynchronously
      */
-    protected void applySession(Session session, CommandSender sender, String command, boolean load) {
+    protected void applySession(String sessionId, Session session, CommandSender sender, String command, boolean load) {
         String key = session.getKey();
         String missingMessage = magic.getMessages().get("commands.mconfig." + command + ".missing");
         if (key == null || key.isEmpty()) {
@@ -421,6 +448,15 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             } else {
                 AsyncProcessor.success(controller, sender, magic.getMessages().get("commands.mconfig." + command + ".load_prompt"));
             }
+
+            final Plugin plugin = magic.getPlugin();
+            plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    Mage mage = controller.getMage(sender);
+                    sessions.put(mage.getId(), sessionId);
+                }
+            });
         } catch (Exception ex) {
             String message = magic.getMessages().get("commands.mconfig." + command + ".error_saving");
             AsyncProcessor.fail(controller, sender, message.replace("$file", file.getName()),

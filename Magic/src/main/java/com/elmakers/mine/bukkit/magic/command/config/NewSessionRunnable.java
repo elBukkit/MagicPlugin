@@ -6,9 +6,11 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.google.gson.Gson;
 
 public class NewSessionRunnable extends HttpRequest {
+    private final NewSessionCallback callback;
 
-    public NewSessionRunnable(MagicController controller, Gson gson, CommandSender sender, NewSessionRequest request) {
+    public NewSessionRunnable(MagicController controller, Gson gson, CommandSender sender, NewSessionRequest request, NewSessionCallback callback) {
         super(controller, gson, sender, gson.toJson(request),controller.getEditorURL() + "/session/new");
+        this.callback = callback;
     }
 
     @Override
@@ -19,8 +21,13 @@ public class NewSessionRunnable extends HttpRequest {
                     .replace("$message", newSessionResponse.getMessage()));
         } else {
             String message = controller.getMessages().get("commands.mconfig.editor.new_session");
-            message = message.replace("$url", controller.getEditorURL() + "/" + newSessionResponse.getSession());
+            String session = newSessionResponse.getSession();
+            message = message.replace("$url", controller.getEditorURL() + "/" + session);
             success(message);
+
+            if (callback != null) {
+                callback.success(session);
+            }
         }
     }
 }
