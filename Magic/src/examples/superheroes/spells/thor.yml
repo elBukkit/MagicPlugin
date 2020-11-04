@@ -1,6 +1,24 @@
 mjolnir_throw:
  creative_restricted: true
  actions:
+  alternate_sneak: 
+  - class: ArmorStandProjectile
+    location_offset: 0,-1.5,0
+    baby: true
+    tick:
+    - class: ChangeContext
+      swap_source_and_target: true
+      actions:
+      - class: Velocity
+  - class: ChangeContext
+    target_caster: true
+    actions:
+    - class: GiveItem
+      item: mjolnir
+      item_count: 1
+    - class: PlaySound
+      sound: entity_item_pickup
+    - class: FallProtection
   cast:
   - class: ArmorStandProjectile
     location_offset: 0,-1.5,0
@@ -12,26 +30,32 @@ mjolnir_throw:
       - class: Velocity
     actions:
     - class: Lightning
-    - class: Delay
-      delay: 1000
-    - class: ChangeContext
-      target_caster: true
-      actions:
-      - class: GiveItem
-        item: mjolnir
-      - class: PlaySound
-        sound: entity_item_pickup
-    miss:
-    - class: Delay
-      delay: 1000
-    - class: ChangeContext
-      target_caster: true
-      actions:
-      - class: GiveItem
-        item: mjolnir
-      - class: PlaySound
-        sound: entity_item_pickup
+  - class: Delay
+    delay: 1000
+  - class: ChangeContext
+    target_caster: true
+    actions:
+    - class: GiveItem
+      item: mjolnir
+    - class: PlaySound
+      sound: entity_item_pickup
  effects:
+  land:
+  - sound: block_stone_step
+    sound_pitch: 0.7
+  - class: EffectRing
+    particle: block_crack
+    source_location: feet
+    period: 4
+    particle_count: 80
+    particle_offset_x: 0.9
+    particle_offset_z: 0.9
+    particle_offset_y: 0.1
+    radius: 4
+  alternate_sneak:
+  - location: origin
+    sound: entity_player_attack_sweep
+    particle: sweep_attack
   cast:
   - location: origin
     sound: entity_player_attack_sweep
@@ -53,14 +77,19 @@ mjolnir_throw:
     particle_offset_x: 0.5
     particle_offset_y: 0.5
     particle_offset_z: 0.5
+ alternate_sneak_parameters:
+  push: -1
+  speed: 1.15
+  target: none
+  target_self: false
+  duration: 5000
  parameters:
-  cooldown: 5000
   undo: 10000
   push: 0.2
   helmet_item: mjolnir
   orient_head: true
   armor_stand_invisible: true
-  range: 16
+  range: 32
   target: other
   target_type: Damageable
   target_self: false
