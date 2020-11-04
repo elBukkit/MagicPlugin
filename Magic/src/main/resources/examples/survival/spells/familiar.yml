@@ -11,8 +11,13 @@ familiar:
       - class: SpawnEntity
     effects:
         cast:
+        -  sound: block_beacon_power_select
+           sound_pitch: 0.3
+           sound_volume: 0.3
         -  class: EffectSingle
            sound: entity_villager_yes
+           sound_pitch: 0.8
+           sound_volume: 0.5
            effectlib:
              class: Modified
              iterations: 40
@@ -23,7 +28,7 @@ familiar:
                grow: 0.1
                particles_helix: 5
                length: 50
-               particle_helix: drip_water
+               particle_helix: end_rod
                particle_base1: drip_water
                particle_base2: drip_water
         -  class: EffectSingle
@@ -35,10 +40,13 @@ familiar:
                 radius: "(t / i) * 4 + 1"
               effect:
                class: AtomEffect
-               particle_nucleus: drip_water
+               particle_nucleus: end_rod
                particle_orbital: drip_water
         undo_entity:
         - location: target
+          sound: block_fire_extinguish
+          sound_volume: 1.7
+          sound_pitch: 0.2
           effectlib:
             class: Smoke
             duration: 1000

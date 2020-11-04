@@ -14,6 +14,9 @@ emp:
            -  class: PowerBlock
     effects:
         cast:
+        -  sound: block_beacon_deactivate
+           sound_pitch: 1.8
+           sound_volume: 1.2
         -  class: EffectSingle
            sound: magic.electrify
         -  class: EffectTrail

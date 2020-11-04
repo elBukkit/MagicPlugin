@@ -39,6 +39,8 @@ horse:
         spawned:
         -  class: EffectSingle
            sound: entity_horse_angry
+           sound_pitch: 1.2
+           sound_volume: 1.1
            effectlib:
              class: DnaEffect
              particle_helix: drip_lava
@@ -50,6 +52,18 @@ horse:
              class: AtomEffect
              iterations: 32
              particle_nucleus: drip_water
+        undo_entity:
+           - location: target
+             sound: block_fire_extinguish
+             sound_volume: 1.7
+             sound_pitch: 0.4
+             effectlib:
+               class: Smoke
+               duration: 1000
+               particle_count: 40
+               particle_offset_x: 1.5
+               particle_offset_y: 1.5
+               particle_offset_z: 1.5
     parameters:
         target: block
         set_target: true

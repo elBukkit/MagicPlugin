@@ -46,6 +46,19 @@ critical:
         particle_offset_x: 0.25
         particle_offset_z: 0.25
         particle_data: 0.5
+      - location: target
+        material: redstone_block
+        requires_entity_target: true
+        effectlib:
+           class: Equation
+           iterations: 30
+           particles: 15
+           particle: block_crack
+           xEquation: "1.2"
+           yEquation: "-t/75 + 0.2"
+           zEquation: "-t/75 + 0.2"
+           updateLocations: false
+           updateDirections: false
   parameters:
     delay: 100
     target: damage_target
