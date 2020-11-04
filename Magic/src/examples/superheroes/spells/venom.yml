@@ -24,33 +24,27 @@ symbiote_protection:
      y_factor: 1
      x_factor: 0.6
      z_factor: 0.6
-     duration: 500
-     iterations: 2
-  - location: origin
-    source_location: body
-    effectlib: 
-     class: Sphere
-     particle: redstone
-     color: "000000"
-     radius: 1
-     particles: 25
-     duration: 500
-     iterations: 2
+     duration: 750
+     iterations: 10
   hit:
   - location: target
     target_location: hit
     source_location: body
     effectlib:
-     class: Line
+     class: Modified
+     iterations: 2
+     period: 100
      duration: 500
-     is_zig_zag: true
-     zig_zags: 2
-     zig_zag_offset: 0,0.01,0
-     particle_size: 0.5
-     particle: redstone
-     color: "000000"
-     update_directions: false
-     update_locations: false
+     parameters:
+      height: rand(-1,1)
+     effect:
+      class: Arc
+      iterations: 10
+      particles: 25
+      particle: redstone
+      color: "000000"
+      update_directions: false
+      update_locations: false
  parameters:
   damage: 2
   radius: 3
@@ -63,3 +57,126 @@ symbiote_protection:
   target_count: -1
   target: self
   target_self: false
+
+venom_strike:
+ cast_on_no_target: false
+ cancel_effects: true
+ actions: 
+  cast:
+  - class: CheckEntity
+    actions:
+      - class: ChangeContext
+        swap_source_and_target: true
+        actions:
+        - class: Repeat
+          actions:
+          - class: Velocity
+            push: -0.5
+          - class: Delay
+        - class: FallProtection
+  - class: Damage
+ effects:
+  no_target: []
+  no_action: []
+  cast: 
+  - location: origin
+    sound: entity_wither_shoot
+    sound_pitch: 0.5
+    source_location: body
+    effectlib: 
+     class: Trace
+     particle: redstone
+     particle_size: 0.5
+     particle_count: 20
+     color: "000000"
+     particle_offset_x: 1
+     particle_offset_y: 1
+     particle_offset_z: 1
+  cast_finish:
+  - location: origin
+    sound: entity_player_attack_crit
+    sound_pitch: 1.5
+    relative_offset: 1.5,0.5,0
+    particle: sweep_attack
+    particle_offset_y: 0.2
+    particle_count: 3
+ parameters:
+  duration: 8000
+  max_speed: 2
+  min_speed: 1
+  target: other_entity
+  repeat: 8
+  delay: 100
+  damage: 10
+  cooldown: 30000
+  range: 16
+
+venom_pull:
+ actions: 
+  cast: 
+  - class: CustomProjectile
+    actions:
+    - class: Velocity
+    - class: Delay
+    - class: Damage
+ effects:
+  cast_finish:
+  - location: origin
+    effectlib:
+     class: Cone
+     particle: redstone
+     color: "000000"
+     particle_size: 0.5
+     radius_grow: 0.006
+     length_grow: 0.02
+     iterations: 10
+  cast:
+  - location: origin
+    sound: magic.crack
+    sound_pitch: 1.5
+    particle: redstone
+    color: "000000"
+    particle_size: 0.5
+    particle_count: 5
+    particle_offset_x: 0.2
+    particle_offset_y: 0.2
+    particle_offset_z: 0.2
+    effectlib:
+     class: Cone
+     particle: redstone
+     color: "000000"
+     particle_size: 0.5
+     radius_grow: 0.003
+     length_grow: 0.05
+     iterations: 10
+     update_locations: false
+     update_directions: false
+  tick:
+  - location: target
+    particle: redstone
+    particle_size: 1.5
+    color: "000000"
+    particle_offset_x: 0
+    particle_offset_y: 0
+    particle_offset_z: 0
+  hit_entity:
+  - location: target
+    target_location: body
+    effectlib:
+     class: AnimatedBall
+     disappear_with_target_entity: true
+     duration: 1000
+     iterations: 20
+     particle: redstone
+     color: "000000"
+     y_factor: 1
+     x_factor: 0.6
+     z_factor: 0.6
+ parameters:
+  delay: 1000
+  velocity: 100
+  range: 16
+  target: other
+  push: -3
+  damage: 5
+  cooldown: 10000
