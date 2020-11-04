@@ -1989,6 +1989,7 @@ public class MagicController implements MageController {
         loadConfiguration(null);
     }
 
+    @Override
     public void loadConfiguration(CommandSender sender) {
         if (sender != null && !loaded) {
             getLogger().warning("Can't reload configuration, Magic did not start up properly. Please restart your server.");

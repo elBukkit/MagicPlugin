@@ -650,4 +650,5 @@ public interface MageController {
      * @return false if none of the implemented interfaces were recognized
      */
     boolean register(MagicProvider provider);
+    void loadConfiguration(CommandSender sender);
 }
