@@ -4,6 +4,8 @@
 
  - See MIGRATION.md for important information!
 
+ ## Important Notes
+
  - Minecraft 1.16 will now use a new resource pack:
    - If you want or need to turn this off, you can still update. Just put `example: 7` in your config.yml
    - All icons and models now use CustomModelData instead of damage predicates
@@ -28,6 +30,12 @@
  - Magic torch crafting recipe enabled by default
  - Magic torch can be thrown to provide a light source
 
+ ## Improvements
+
+ - Web editor (beta)
+   - Use `/mconfig editor spell blink` to open an editor session for a specific spell
+   - Currently only spells are well supported
+
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data
    - Brush inventory reorganized, wills how block data variants
@@ -37,6 +45,8 @@
    - Potter configs now have `ollivander` and `year1` through `year7` templates
    - Can be spawned simply with `/mnpc add ollivander` and it's ready to go
    - Added spellshop and healer NPC templates to survival configs
+
+ ## Other Changes
 
  - Fix using the replicate and clone brushes with the Place spell
  - Fix pasting schematics with torches or other wall attachables

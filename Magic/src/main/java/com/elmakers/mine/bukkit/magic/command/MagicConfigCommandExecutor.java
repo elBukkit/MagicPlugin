@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -22,8 +24,13 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.command.config.ApplySessionCallback;
+import com.elmakers.mine.bukkit.magic.command.config.AsyncProcessor;
+import com.elmakers.mine.bukkit.magic.command.config.GetSessionRequest;
+import com.elmakers.mine.bukkit.magic.command.config.GetSessionRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionRequest;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionRunnable;
+import com.elmakers.mine.bukkit.magic.command.config.Session;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.collect.ImmutableMap;
@@ -182,11 +189,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             return true;
         }
         if (subCommand.equals("load")) {
-            sender.sendMessage("Not yet implemented, sorry!");
+            onApplyEdits(sender, parameters, "load", true);
             return true;
         }
         if (subCommand.equals("apply")) {
-            sender.sendMessage("Not yet implemented, sorry!");
+            onApplyEdits(sender, parameters, "apply", false);
             return true;
         }
         return false;
@@ -284,7 +291,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         // Build session request
         NewSessionRequest newSession = new NewSessionRequest(editorType);
         if (sender instanceof Player) {
-            newSession.setPlayer((Player)sender);
+            newSession.setBukkitPlayer((Player)sender);
         }
         newSession.setLegacyIcons(magic.isLegacyIconsEnabled());
         newSession.setMagicVersion(getMagicVersion());
@@ -293,6 +300,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         if (parameters.length > 1) {
             File pluginFolder = api.getPlugin().getDataFolder();
             String targetItem = parameters[1];
+            newSession.setKey(targetItem);
             File defaultsFile = new File(pluginFolder, "defaults/" + editorType + ".defaults.yml");
 
             YamlConfiguration defaultConfig = null;
@@ -310,7 +318,6 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.new_item")
                     .replace("$type", editorType)
                     .replace("$item", targetItem));
-                newSession.setName(targetItem);
             } else {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.edit_item")
                     .replace("$type", editorType)
@@ -325,6 +332,100 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.wait"));
         final Plugin plugin = magic.getPlugin();
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new NewSessionRunnable(magic, getGson(), sender, newSession));
+    }
+
+    protected void onApplyEdits(CommandSender sender, String[] parameters, String command, boolean load) {
+        // TODO: Remember session id per-user
+        String sessionId = null;
+        if (parameters.length > 0) {
+            sessionId = parameters[0];
+        }
+        if (sessionId == null) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig." + command + ".usage"));
+            return;
+        }
+
+        // Build session request
+        GetSessionRequest getSession = new GetSessionRequest(sessionId);
+
+        // Send request
+        sender.sendMessage(magic.getMessages().get("commands.mconfig." + command + ".wait"));
+        final Plugin plugin = magic.getPlugin();
+        ApplySessionCallback callback = new ApplySessionCallback() {
+            @Override
+            public void success(Session session) {
+                applySession(session, sender, command, load);
+            }
+        };
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new GetSessionRunnable(magic, getGson(), sender, getSession, callback));
+    }
+
+    /**
+     * Note that this gets called asynchronously
+     */
+    protected void applySession(Session session, CommandSender sender, String command, boolean load) {
+        String key = session.getKey();
+        String missingMessage = magic.getMessages().get("commands.mconfig." + command + ".missing");
+        if (key == null || key.isEmpty()) {
+            missingMessage = missingMessage.replace("$field", "key");
+            AsyncProcessor.fail(controller, sender, missingMessage);
+            return;
+        }
+        String type = session.getType();
+        if (type == null || type.isEmpty()) {
+            missingMessage = missingMessage.replace("$field", "type");
+            AsyncProcessor.fail(controller, sender, missingMessage);
+            return;
+        }
+        String contents = session.getContents();
+        if (contents == null || contents.isEmpty()) {
+            missingMessage = missingMessage.replace("$field", "contents");
+            AsyncProcessor.fail(controller, sender, missingMessage);
+            return;
+        }
+        YamlConfiguration testLoad = new YamlConfiguration();
+        try {
+            testLoad.loadFromString(contents);
+        } catch (InvalidConfigurationException e) {
+            String message = magic.getMessages().get("commands.mconfig." + command + ".invalid");
+            AsyncProcessor.fail(controller, sender, message);
+            return;
+        }
+
+        String filename = key + ".yml";
+        File typeFolder = new File(magic.getPlugin().getDataFolder(), type);
+        if (!typeFolder.exists()) {
+            typeFolder.mkdir();
+        }
+        File file = new File(typeFolder,  filename);
+        if (file.exists()) {
+            String message = magic.getMessages().get("commands.mconfig." + command + ".overwrote");
+            AsyncProcessor.success(controller, sender, message.replace("$file", file.getName()));
+        } else {
+            String message = magic.getMessages().get("commands.mconfig." + command + ".created");
+            AsyncProcessor.success(controller, sender, message.replace("$file", file.getName()));
+        }
+
+        try {
+            PrintWriter out = new PrintWriter(file, "UTF-8");
+            out.print(contents);
+            out.close();
+            if (load) {
+                Plugin plugin = controller.getPlugin();
+                plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        controller.loadConfiguration(sender);
+                    }
+                });
+            } else {
+                AsyncProcessor.success(controller, sender, magic.getMessages().get("commands.mconfig." + command + ".load_prompt"));
+            }
+        } catch (Exception ex) {
+            String message = magic.getMessages().get("commands.mconfig." + command + ".error_saving");
+            AsyncProcessor.fail(controller, sender, message.replace("$file", file.getName()),
+        "Error writing config file " + file.getAbsolutePath(), ex);
+        }
     }
 
     protected void onMagicConfigure(CommandSender sender, String[] parameters) {
