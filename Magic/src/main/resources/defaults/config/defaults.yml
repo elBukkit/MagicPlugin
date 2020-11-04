@@ -586,6 +586,9 @@ max_velocity: 10
 # Commands like /mgive and /wand will bind wands to players
 bind_on_give: false
 
+# Change this if you're hosting your own spell editor
+editor_url: https://editor.elmakers.com
+
 # This can be used for a server that is hooked up with a live editor
 # The editor will update Magic/data/updated.yml, and the server will automatically
 # reload configurations when the configs have changed.

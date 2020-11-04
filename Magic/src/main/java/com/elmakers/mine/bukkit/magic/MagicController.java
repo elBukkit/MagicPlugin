@@ -2894,6 +2894,7 @@ public class MagicController implements MageController {
         }
 
         castConsoleFeedback = properties.getBoolean("cast_console_feedback", false);
+        editorURL = properties.getString("editor_url");
 
         castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
         castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
@@ -3468,6 +3469,7 @@ public class MagicController implements MageController {
         requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
     }
 
+    @Override
     public boolean register(MagicProvider provider) {
         boolean added = false;
         if (provider instanceof EntityTargetingManager) {
@@ -6905,6 +6907,10 @@ public class MagicController implements MageController {
         return castConsoleFeedback;
     }
 
+    public String getEditorURL() {
+        return editorURL;
+    }
+
     /*
      * Private data
      */
@@ -7159,6 +7165,7 @@ public class MagicController implements MageController {
     private boolean                             isResourcePackEnabledByDefault = true;
     private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
     private boolean                             castConsoleFeedback         = false;
+    private String                              editorURL                   = null;
 
     private boolean                             hasShopkeepers              = false;
     private FactionsManager                        factionsManager                = new FactionsManager();

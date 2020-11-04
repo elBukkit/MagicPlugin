@@ -329,10 +329,32 @@ commands:
     permission: Magic.commands.mconfig
     usage: |
         Use /help mconfig [subcommand] for more information
+        /mconfig editor    Launch a web editor
+        /mconfig apply     Apply changes from the web editor
+        /mconfig load      Apply changes from the web editor and reload configs
         /mconfig disable   Disable a specific wand, spell, item, mob or recipe
         /mconfig enable    Enable a specific wand, spell, item, mob or recipe
         /mconfig configure Change parameters for a spell, wand or other config
         /mconfig clean     Clean your custom configs, removing default values
+  "mconfig editor":
+     description: Launch a web editor to edit or create a new spell, wand, item, mob or recipe
+     permission: Magic.commands.mconfig.editor
+     usage: |
+         /mconfig editor spell
+         /mconfig editor spell blink
+         /mconfig editor mob warlock
+  "mconfig apply":
+     description: Apply changes made remotely in the web editor
+     permission: Magic.commands.mconfig.apply
+     usage: |
+         /mconfig apply
+         /mconfig apply abcdefg
+  "mconfig load":
+     description: Apply changes from the web editor and reload configs
+     permission: Magic.commands.mconfig.load
+     usage: |
+         /mconfig load
+         /mconfig load abcdefg
   "mconfig clean":
     description: This will override your configs in plugins/Magic with collapsed versions.
     permission: Magic.commands.mconfig.clean
@@ -1305,8 +1327,23 @@ permissions:
     - Magic.commands.mconfig.disable
     - Magic.commands.mconfig.enable
     - Magic.commands.mconfig.configure
+    - Magic.commands.mconfig.editor
+    - Magic.commands.mconfig.load
+    - Magic.commands.mconfig.apply
   Magic.commands.mconfig.clean:
     description: Player may auto-clean configs
+    type: boolean
+    default: op
+  Magic.commands.mconfig.editor:
+    description: Player may use the web editor
+    type: boolean
+    default: op
+  Magic.commands.mconfig.load:
+    description: Player may load remote configs from the editor
+    type: boolean
+    default: op
+  Magic.commands.mconfig.apply:
+    description: Player may apply remote configs from the editor
     type: boolean
     default: op
   Magic.commands.mconfig.disable:

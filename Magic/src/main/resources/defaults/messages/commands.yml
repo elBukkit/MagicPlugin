@@ -5,17 +5,25 @@ commands:
     mconfig:
       write_failed: "&cCould not write to file $file"
       disable:
-        usage: "&cUsage: /mconfig disable [$types] [key]"
+        usage: "&cUsage: /mconfig disable [$options] [key]"
         nokey: "&cInvalid type: $type, options: $options"
         success: "Disabled $type $key, use '/magic load' to apply pending changes"
       enable:
-        usage: "&cUsage: /mconfig enable [$types] [key]"
+        usage: "&cUsage: /mconfig enable [$options] [key]"
         nokey: "&cInvalid type: $type, options: $options"
         success: "Enabled $type $key, use '/magic load' to apply pending changes"
       configure:
-        usage: "&cUsage: /mconfig configure [$types] [key] [property] [value]"
+        usage: "&cUsage: /mconfig configure [$options] [key] [property] [value]"
         nokey: "&cInvalid type: $type, options: $options"
         success: "Changed $type $key, use '/magic load' to apply pending changes"
+      editor:
+        usage: "&cUsage: /mconfig editor [$options]"
+        error: "&cSomething went wrong, please check logs"
+        wait: "&bPlease wait, starting new session..."
+        server_error: "&cSomething went wrong, server says: &e$message"
+        new_session: "&3Please go to &b$url"
+        new_item: "&3Creating new &2$type.&b$item"
+        edit_item: "&3Editing &2$type.&b$item"
     modifier:
       usage: "Use: /mage modifier <add|remove> <modifier> [duration]"
       add:
