@@ -1,9 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,23 +11,18 @@ import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.io.Files;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
@@ -267,6 +259,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onMagicClean(CommandSender sender, String configName) {
+        sender.sendMessage("This command is (temporarily?) disabled until it can be fixed.");
+        return;
+        /*
         List<String> configFiles = new ArrayList<>();
         if (!configName.isEmpty()) {
             configFiles.add(configName);
@@ -359,8 +354,8 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "An error occurred, please check logs!");
                 ex.printStackTrace();
             }
-
         }
+        */
     }
 
     @SuppressWarnings("unchecked")
