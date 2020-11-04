@@ -56,6 +56,7 @@ public interface CastContext extends WandEffectContext {
     void setTargetCenterLocation(Location location);
     @Nullable
     Location getTargetSourceLocation();
+    @Nullable
     Vector getDirection();
     BlockFace getFacingDirection();
     void setDirection(Vector direction);

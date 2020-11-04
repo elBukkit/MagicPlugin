@@ -288,12 +288,17 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         return targetEntity;
     }
 
+    @Nullable
     @Override
     public Vector getDirection() {
         if (direction != null) {
             return direction.clone();
         }
-        return getLocation().getDirection();
+        Location location = getLocation();
+        if (location == null) {
+            return null;
+        }
+        return location.getDirection();
     }
 
     @Override
