@@ -77,14 +77,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- OkHttpClient, shaded -->
-        <dependency>
-          <groupId>com.squareup.okhttp3</groupId>
-          <artifactId>okhttp</artifactId>
-          <version>4.9.0</version>
-          <scope>compile</scope>
-        </dependency>
-
         <!--
             Third party plugin integrations. We have added exclusions here to
             avoid leaking dependencies and improve build times.
@@ -356,10 +348,6 @@
         <repository>
             <id>dynmap</id>
             <url>http://repo.mikeprimm.com/</url>
-        </repository>
-        <repository>
-            <id>Sonatype Central</id>
-            <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
         <repository>
             <id>MultiverseCore</id>
@@ -915,22 +903,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.0.0</version>
                 <configuration>
                     <minimizeJar>false</minimizeJar>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.elmakers.mine.bukkit.shaded.bstats</shadedPattern>
+                            <shadedPattern>com.elmakers.mine.bukkit.bstats</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>de.slikey</pattern>
-                            <shadedPattern>com.elmakers.mine.bukkit.shaded.slikey</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>okhttp3</pattern>
-                            <shadedPattern>com.elmakers.mine.bukkit.shaded.okhttp3</shadedPattern>
+                            <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

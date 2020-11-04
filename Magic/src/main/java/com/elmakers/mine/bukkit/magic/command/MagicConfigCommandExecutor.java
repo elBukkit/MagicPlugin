@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -24,21 +23,12 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionRequest;
-import com.elmakers.mine.bukkit.magic.command.config.NewSessionResponse;
+import com.elmakers.mine.bukkit.magic.command.config.NewSessionRunnable;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
@@ -59,14 +49,12 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         .put("attribute", "attributes")
         .build();
 
-    private final MagicController controller;
-    private OkHttpClient httpClient;
+    private final MagicController magic;
     private Gson gson;
-    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     public MagicConfigCommandExecutor(MagicAPI api, MagicController controller) {
         super(api, "mconfig");
-        this.controller = controller;
+        this.magic = controller;
     }
 
     @Override
@@ -224,24 +212,24 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     @Nullable
     protected File getConfigFile(CommandSender sender, String command, String[] parameters) {
         if (parameters.length < 2) {
-            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig." + command + ".usage"), "", "", '|'));
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".usage"), "", "", '|'));
             return null;
         }
         String fileKey = getFileParameter(parameters[0]);
         if (fileKey == null) {
-            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig." + command + ".nokey"), fileKey, "", ','));
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".nokey"), fileKey, "", ','));
             return null;
         }
-        return new File(controller.getPlugin().getDataFolder() + File.separator + fileKey, CUSTOM_FILE_NAME);
+        return new File(magic.getPlugin().getDataFolder() + File.separator + fileKey, CUSTOM_FILE_NAME);
     }
 
     protected void trySave(String command, CommandSender sender, File configFile, YamlConfiguration configuration, String fileKey, String key) {
         try {
             configuration.save(configFile);
-            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig." + command + ".success"), fileKey, key));
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".success"), fileKey, key));
         } catch (Exception ex) {
-            sender.sendMessage(controller.getMessages().get("commands.mconfig.write_failed").replace("$file", configFile.getName()));
-            controller.getLogger().log(Level.SEVERE, "Could not write to file " + configFile.getAbsoluteFile(), ex);
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.write_failed").replace("$file", configFile.getName()));
+            magic.getLogger().log(Level.SEVERE, "Could not write to file " + configFile.getAbsoluteFile(), ex);
         }
     }
 
@@ -275,13 +263,6 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         trySave("enable", sender, configFile, configuration, parameters[0], key);
     }
 
-    protected OkHttpClient getHttpClient() {
-        if (httpClient == null) {
-            httpClient = new OkHttpClient();
-        }
-        return httpClient;
-    }
-
     protected Gson getGson() {
         if (gson == null) {
             gson = new Gson();
@@ -296,7 +277,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         editorType = getFileParameter(editorType);
         if (editorType == null) {
-            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig.editor.usage"), "", "", '|'));
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig.editor.usage"), "", "", '|'));
             return;
         }
 
@@ -305,7 +286,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         if (sender instanceof Player) {
             newSession.setPlayer((Player)sender);
         }
-        newSession.setLegacyIcons(controller.isLegacyIconsEnabled());
+        newSession.setLegacyIcons(magic.isLegacyIconsEnabled());
         newSession.setMagicVersion(getMagicVersion());
         newSession.setMinecraftVersion(CompatibilityUtils.getServerVersion());
 
@@ -319,19 +300,19 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 defaultConfig = new YamlConfiguration();
                 defaultConfig.load(defaultsFile);
             } catch (Exception ex) {
-                sender.sendMessage(controller.getMessages().get("commands.mconfig.editor.error"));
-                controller.getLogger().log(Level.WARNING, "Error loading default " + editorType + " file", ex);
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
+                magic.getLogger().log(Level.WARNING, "Error loading default " + editorType + " file", ex);
                 return;
             }
 
             ConfigurationSection targetConfig = defaultConfig.getConfigurationSection(targetItem);
             if (targetConfig == null) {
-                sender.sendMessage(controller.getMessages().get("commands.mconfig.editor.new_item")
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.new_item")
                     .replace("$type", editorType)
                     .replace("$item", targetItem));
                 newSession.setName(targetItem);
             } else {
-                sender.sendMessage(controller.getMessages().get("commands.mconfig.editor.edit_item")
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.edit_item")
                     .replace("$type", editorType)
                     .replace("$item", targetItem));
                 YamlConfiguration yaml = new YamlConfiguration();
@@ -341,57 +322,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         // Send request
-        Gson gson = getGson();
-        String newSessionRequest = gson.toJson(newSession);
-        sender.sendMessage(controller.getMessages().get("commands.mconfig.editor.wait"));
-        OkHttpClient client = getHttpClient();
-        RequestBody body = RequestBody.create(newSessionRequest, JSON);
-        String url = controller.getEditorURL() + "/session/new";
-        Request request = new Request.Builder()
-          .url(url)
-          .post(body)
-          .build();
-
-        // Process response asynchronously, but make sure to switch back to the main thread
-        final Plugin plugin = controller.getPlugin();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException ex) {
-                plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        sender.sendMessage(controller.getMessages().get("commands.mconfig.editor.error"));
-                        controller.getLogger().log(Level.WARNING, "Error sending HTTP request", ex);
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) {
-                plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        try (ResponseBody responseBody = response.body()) {
-                            if (!response.isSuccessful()) {
-                                throw new IOException("Unexpected HTTP response code " + response);
-                            }
-                            NewSessionResponse newSessionResponse = gson.fromJson(responseBody.string(), NewSessionResponse.class);
-                            if (!newSessionResponse.isSuccess()) {
-                                sender.sendMessage(controller.getMessages().get("commands.mconfig.editor.server_error")
-                                        .replace("$message", newSessionResponse.getMessage()));
-                            } else {
-                                String message = controller.getMessages().get("commands.mconfig.editor.new_session");
-                                message = message.replace("$url", controller.getEditorURL() + "/" + newSessionResponse.getSession());
-                                sender.sendMessage(message);
-                            }
-                        } catch (Exception ex) {
-                            sender.sendMessage(controller.getMessages().get("commands.mconfig.editor.error"));
-                            controller.getLogger().log(Level.WARNING, "Error processing HTTP response", ex);
-                        }
-                    }
-                });
-            }
-        });
+        sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.wait"));
+        final Plugin plugin = magic.getPlugin();
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new NewSessionRunnable(magic, getGson(), sender, newSession));
     }
 
     protected void onMagicConfigure(CommandSender sender, String[] parameters) {
@@ -400,7 +333,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             return;
         }
         if (parameters.length < 3) {
-            sender.sendMessage(escapeMessage(controller.getMessages().get("commands.mconfig.configure.usage"), "", "", '|'));
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig.configure.usage"), "", "", '|'));
             return;
         }
         String key = parameters[1];
