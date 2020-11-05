@@ -4,6 +4,24 @@ commands:
     unknown_command: "&cUnknown command: &f$command"
     mconfig:
       write_failed: "&cCould not write to file $file"
+      example:
+        usage: "&cUsage: /mconfig example [$actions]"
+        list:
+          base: "&bBase example: &34example"
+          header: "&bExamples:"
+          item: "  &f- &3$example"
+        add:
+          usage: "&cUsage: /mconfig example add <example>"
+          duplicate: "&cThe example &2$example &cis already loaded"
+          success: "&bAdded example &2$example"
+        remove:
+          usage: "&cUsage: /mconfig example remove <example>"
+          missing: "&cThe example &2$example &cis not loaded"
+          all: "&bRemoved all examples, including the base example. Use &f/mconfig example set survival&b if you did not mean to remove the base survival configs."
+          success: "&bRemoved example &2$example"
+        set:
+          success: "&bSet base example to &2$example"
+          clear: "&bCleared base example"
       disable:
         usage: "&cUsage: /mconfig disable [$options] [key]"
         nokey: "&cInvalid type: $type, options: $options"

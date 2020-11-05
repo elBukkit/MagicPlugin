@@ -330,8 +330,9 @@ commands:
     usage: |
         Use /help mconfig [subcommand] for more information
         /mconfig editor    Launch a web editor
-        /mconfig apply     Apply changes from the web editor
         /mconfig load      Apply changes from the web editor and reload configs
+        /mconfig apply     Apply changes from the web editor
+        /mconfig example   Enable or disable builtin examples
         /mconfig disable   Disable a specific wand, spell, item, mob or recipe
         /mconfig enable    Enable a specific wand, spell, item, mob or recipe
         /mconfig configure Change parameters for a spell, wand or other config
@@ -355,6 +356,14 @@ commands:
      usage: |
          /mconfig load
          /mconfig load abcdefg
+  "mconfig example":
+     description: Enable or disable builtin examples
+     permission: Magic.commands.mconfig.example
+     usage: |
+         /mconfig example add potter
+         /mconfig example remove survival
+         /mconfig example set survival
+         /mconfig example list
   "mconfig clean":
     description: This will override your configs in plugins/Magic with collapsed versions.
     permission: Magic.commands.mconfig.clean
@@ -1329,6 +1338,7 @@ permissions:
     - Magic.commands.mconfig.configure
     - Magic.commands.mconfig.editor
     - Magic.commands.mconfig.load
+    - Magic.commands.mconfig.example
     - Magic.commands.mconfig.apply
   Magic.commands.mconfig.clean:
     description: Player may auto-clean configs
@@ -1340,6 +1350,10 @@ permissions:
     default: op
   Magic.commands.mconfig.load:
     description: Player may load remote configs from the editor
+    type: boolean
+    default: op
+  Magic.commands.mconfig.example:
+    description: Player may add or remove builtin examples
     type: boolean
     default: op
   Magic.commands.mconfig.apply:

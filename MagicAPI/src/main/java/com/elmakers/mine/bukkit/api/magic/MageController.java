@@ -571,6 +571,22 @@ public interface MageController {
     @Nonnull
     Collection<String> getLoadedExamples();
 
+    /**
+     * Get the primary example loaded via "example: ..." in config.yml
+     *
+     * @return the primary example, or null if none is enabled
+     */
+    @Nullable
+    String getExample();
+
+    /**
+     * Return all example configs that are available built into the plugin
+     *
+     * @return A list of all builtin examples
+     */
+    @Nonnull
+    Collection<String> getExamples();
+
     double getBlockDurability(@Nonnull Block block);
 
     /**
@@ -650,5 +666,5 @@ public interface MageController {
      * @return false if none of the implemented interfaces were recognized
      */
     boolean register(MagicProvider provider);
-    void loadConfiguration(CommandSender sender);
+    void loadConfigurationQuietly(CommandSender sender);
 }

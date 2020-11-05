@@ -50,6 +50,8 @@ import com.google.gson.Gson;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
+    private static final String EXAMPLES_FILE_NAME = "_examples.yml";
+    private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list");
     private static Set<String> availableFiles = ImmutableSet.of(
             "spells", "wands", "automata", "classes", "config", "crafting", "effects",
             "items", "materials", "mobs", "paths", "attributes");
@@ -89,10 +91,23 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "editor");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "load");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "apply");
+            addIfPermissible(sender, options, "Magic.commands.mconfig.", "example");
         }
         String subCommand = args[0];
         if (args.length == 2 && (subCommand.equals("disable") || subCommand.equals("enable") || subCommand.equals("configure") || subCommand.equals("editor"))) {
             options.addAll(availableFileMap.keySet());
+        }
+        if (args.length == 2 && subCommand.equals("example")) {
+            options.addAll(exampleActions);
+        }
+        if (args.length == 3 && subCommand.equals("example")) {
+            String operation = args[1];
+            if (operation.equals("remove")) {
+                options.addAll(controller.getLoadedExamples());
+                options.add("all");
+            } else if (operation.equals("add") || operation.equals("set")) {
+                options.addAll(controller.getExamples());
+            }
         }
         if (args.length == 3 && (subCommand.equals("disable") ||  subCommand.equals("configure") ||  subCommand.equals("editor"))) {
             String fileType = getFileParameter(args[1]);
@@ -206,6 +221,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         if (subCommand.equals("apply")) {
             onApplyEdits(sender, parameters, "apply", false);
+            return true;
+        }
+        if (subCommand.equals("example")) {
+            onExample(sender, parameters);
             return true;
         }
         return false;
@@ -536,7 +555,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        controller.loadConfiguration(sender);
+                        controller.loadConfigurationQuietly(sender);
                     }
                 });
             } else {
@@ -556,6 +575,129 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             AsyncProcessor.fail(controller, sender, message.replace("$file", file.getName()),
         "Error writing config file " + file.getAbsolutePath(), ex);
         }
+    }
+
+    protected void onExample(CommandSender sender, String[] parameters) {
+        String action = parameters.length == 0 ? null : parameters[0];
+        if (action == null || !exampleActions.contains(action)) {
+            String message = magic.getMessages().get("commands.mconfig.example.usage");
+            message = message.replace("$actions", StringUtils.join(exampleActions, '|'));
+            sender.sendMessage(message);
+            return;
+        }
+
+        parameters = Arrays.copyOfRange(parameters, 1, parameters.length);
+        if (action.equals("add")) {
+            onAddExample(sender, parameters);
+        } else if (action.equals("remove")) {
+            onRemoveExample(sender, parameters);
+        } else if (action.equals("set")) {
+            onSetExample(sender, parameters);
+        } else if (action.equals("list")) {
+            onListExamples(sender);
+        } else {
+            controller.getLogger().warning("Did not handle an example action that is in the set: " + action);
+        }
+    }
+
+    protected void onListExamples(CommandSender sender) {
+        String baseExample = controller.getExample();
+        Set<String> examples = new HashSet<>(controller.getLoadedExamples());
+        if (baseExample != null && !baseExample.isEmpty()) {
+            examples.remove(baseExample);
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.list.base").replace("$example", baseExample));
+        }
+        sender.sendMessage(magic.getMessages().get("commands.mconfig.example.list.header"));
+        for (String example : examples) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.list.item").replace("$example", example));
+        }
+    }
+
+    protected void onAddExample(CommandSender sender, String[] parameters) {
+        if (parameters.length == 0) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.usage"));
+            return;
+        }
+        String example = parameters[0];
+        Set<String> examples = new HashSet<>(controller.getLoadedExamples());
+        if (examples.contains(example)) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.duplicate").replace("$example", example));
+            return;
+        }
+        examples.add(example);
+        if (configureExamples(sender, examples, controller.getExample())) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.success").replace("$example", example));
+        }
+    }
+
+    protected void onRemoveExample(CommandSender sender, String[] parameters) {
+        if (parameters.length == 0) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.remove.usage"));
+            return;
+        }
+        String example = parameters[0];
+        if (example.equalsIgnoreCase("all")) {
+            if (configureExamples(sender, new HashSet<>(), null)) {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.example.remove.all"));
+            }
+            return;
+        }
+        Set<String> examples = new HashSet<>(controller.getLoadedExamples());
+        if (!examples.contains(example)) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.remove.missing").replace("$example", example));
+            return;
+        }
+        String currentExample = controller.getExample();
+        examples.remove(example);
+        if (currentExample != null && currentExample.equals(example)) {
+            currentExample = null;
+        }
+        if (configureExamples(sender, examples, currentExample)) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.remove.success").replace("$example", example));
+        }
+    }
+
+    protected void onSetExample(CommandSender sender, String[] parameters) {
+        Set<String> loadedExamples = new HashSet<>(controller.getLoadedExamples());
+        if (parameters.length == 0) {
+            if (configureExamples(sender, loadedExamples, null)) {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.example.set.clear"));
+            }
+            return;
+        }
+        String example = parameters[0];
+        if (configureExamples(sender, new HashSet<>(controller.getLoadedExamples()), example)) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.set.success").replace("$example", example));
+        }
+    }
+
+    protected boolean configureExamples(CommandSender sender, Set<String> examples, String example) {
+        if (example == null) {
+            example = "";
+        }
+        examples.remove(example);
+        String currentExample = controller.getExample();
+        if (currentExample != null) {
+            examples.remove(currentExample);
+        }
+
+        File exampleFile = new File(magic.getPlugin().getDataFolder() + File.separator + "config", EXAMPLES_FILE_NAME);
+        try {
+            YamlConfiguration exampleConfig = new YamlConfiguration();
+            if (exampleFile.exists()) {
+                exampleConfig.load(exampleFile);
+            }
+            exampleConfig.set("example", example);
+            exampleConfig.set("examples", new ArrayList<>(examples));
+            exampleConfig.save(exampleFile);
+            controller.loadConfigurationQuietly(sender);
+        } catch (Exception ex) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.write_failed").replace("$file", exampleFile.getName()));
+            magic.getLogger().log(Level.SEVERE, "Could not write to file " + exampleFile.getAbsoluteFile(), ex);
+            return false;
+        }
+
+        return true;
     }
 
     protected void onMagicConfigure(CommandSender sender, String[] parameters) {
@@ -618,7 +760,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                     InputStream input = plugin.getResource(examplesFileName);
                     if (input != null)
                     {
-                        ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                        ConfigurationSection exampleConfig = CompatibilityUtils.loadConfigurationQuietly(input);
                         ConfigurationUtils.addConfigurations(defaultConfig, exampleConfig, false);
                     }
                 }

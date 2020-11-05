@@ -37,6 +37,7 @@
  - Web editor (beta)
    - Use `/mconfig editor spell blink` to open an editor session for a specific spell
    - Currently only spells are well supported
+ - Added ``/mconfig example` command to easily add/remove example configs
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data
