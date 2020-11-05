@@ -490,6 +490,9 @@ public class InventoryController implements Listener {
                             // gets put back in the player inventory, and this can cause strange side effects with
                             // spells levelling up, or spells with GUIs or other inventories.
                             final Wand castWand = activeWand;
+                            // This will also fire an arm swing animation event which we want to ignore
+                            // Sadly this didn't work because the animation event arrives first
+                            mage.checkLastClick(0);
                             controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(),
                                 new Runnable() {
                                     @Override
