@@ -27,6 +27,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -69,6 +70,7 @@ import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.item.ArmorSlot;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
+import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MageParameters;
@@ -5917,5 +5919,39 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
         return false;
+    }
+
+    public static void addParameterKeys(MageController controller, Collection<String> options) {
+        for (String key : BaseMagicProperties.PROPERTY_KEYS) {
+            options.add(key);
+        }
+
+        for (String damageType : controller.getDamageTypes()) {
+            options.add("protection." + damageType);
+            options.add("strength." + damageType);
+            options.add("weakness." + damageType);
+        }
+    }
+
+    public static void addParameterValues(MageController controller, String key, Collection<String> options) {
+        if (key.equals("effect_sound")) {
+            Sound[] sounds = Sound.values();
+            for (Sound sound : sounds) {
+                options.add(sound.name().toLowerCase());
+            }
+        } else if (key.equals("effect_particle")) {
+            for (Particle particleType : Particle.values()) {
+                options.add(particleType.name().toLowerCase());
+            }
+        } else if (key.equals("mode")) {
+            for (WandMode mode : WandMode.values()) {
+                options.add(mode.name().toLowerCase());
+            }
+        } else if (key.equals("left_click") || key.equals("right_click")
+                || key.equals("drop") || key.equals("swap")) {
+            for (WandAction action : WandAction.values()) {
+                options.add(action.name().toLowerCase());
+            }
+        }
     }
 }

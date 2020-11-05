@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -242,6 +243,8 @@ public class ActionSpell extends BrushSpell
         for (ActionHandler handler : actions.values()) {
             handler.getParameterNames(this, parameters);
         }
+        parameters.add("require_break");
+        parameters.add("require_build");
     }
 
     @Override
@@ -249,6 +252,9 @@ public class ActionSpell extends BrushSpell
         super.getParameterOptions(examples, parameterKey);
         for (ActionHandler handler : actions.values()) {
             handler.getParameterOptions(this, parameterKey, examples);
+        }
+        if (parameterKey.equals("require_break") || parameterKey.equals("require_build")) {
+            examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
         }
     }
 

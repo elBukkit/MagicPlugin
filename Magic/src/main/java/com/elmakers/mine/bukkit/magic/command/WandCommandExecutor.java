@@ -12,8 +12,6 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,7 +26,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
@@ -37,7 +34,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.elmakers.mine.bukkit.wand.WandMode;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
     private final WandPaginator wandPaginator;
@@ -189,15 +185,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             }
 
             if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
-                for (String key : BaseMagicProperties.PROPERTY_KEYS) {
-                    options.add(key);
-                }
-
-                for (String damageType : api.getController().getDamageTypes()) {
-                    options.add("protection." + damageType);
-                    options.add("strength." + damageType);
-                    options.add("weakness." + damageType);
-                }
+                com.elmakers.mine.bukkit.wand.Wand.addParameterKeys(api.getController(), options);
             }
 
             if (subCommand.equalsIgnoreCase("override")) {
@@ -294,25 +282,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             }
 
             if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("upgrade")) {
-                if (subCommand2.equals("effect_sound")) {
-                    Sound[] sounds = Sound.values();
-                    for (Sound sound : sounds) {
-                        options.add(sound.name().toLowerCase());
-                    }
-                } else if (subCommand2.equals("effect_particle")) {
-                    for (Particle particleType : Particle.values()) {
-                        options.add(particleType.name().toLowerCase());
-                    }
-                } else if (subCommand2.equals("mode")) {
-                    for (WandMode mode : WandMode.values()) {
-                        options.add(mode.name().toLowerCase());
-                    }
-                } else if (subCommand2.equals("left_click") || subCommand2.equals("right_click")
-                        || subCommand2.equals("drop") || subCommand2.equals("swap")) {
-                    for (WandAction action : WandAction.values()) {
-                        options.add(action.name().toLowerCase());
-                    }
-                }
+                com.elmakers.mine.bukkit.wand.Wand.addParameterValues(api.getController(), subCommand2, options);
             }
 
             String subCommandPNode = "Magic.commands." + permissionKey + "." + subCommand + "." + subCommand2;

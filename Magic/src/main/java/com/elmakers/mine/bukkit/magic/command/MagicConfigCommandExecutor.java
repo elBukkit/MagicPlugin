@@ -45,6 +45,7 @@ import com.elmakers.mine.bukkit.magic.command.config.Session;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
@@ -116,6 +117,26 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 options.add("all");
             } else if (operation.equals("add") || operation.equals("set")) {
                 options.addAll(controller.getExamples());
+            }
+        }
+        if ((args.length == 4 || args.length == 5) && subCommand.equals("configure")) {
+            String fileType = getFileParameter(args[1]);
+            if (fileType.equals("spells")) {
+                String spellName = args[2];
+                SpellTemplate spell = api.getSpellTemplate(spellName);
+                if (spell != null) {
+                    if (args.length == 4) {
+                        spell.getParameters(options);
+                    } else {
+                        spell.getParameterOptions(options, args[args.length - 2]);
+                    }
+                }
+            }
+            if (fileType.equals("wands") && args.length == 4) {
+                Wand.addParameterKeys(api.getController(), options);
+            }
+            if (fileType.equals("wands") && args.length == 5) {
+                Wand.addParameterValues(api.getController(), args[4], options);
             }
         }
         if (args.length == 3 && (subCommand.equals("disable") || subCommand.equals("configure") ||  subCommand.equals("editor") ||  subCommand.equals("reset"))) {
