@@ -32,6 +32,7 @@ public class ConfigurationLoadTask implements Runnable {
     private final File configFolder;
     private final Plugin plugin;
     private final CommandSender sender;
+    private boolean verboseLogging;
 
     private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
             "classes", "wands", "items", "crafting", "mobs", "automata", "modifiers"};
@@ -84,7 +85,13 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private void info(String message) {
-        controller.info(message);
+        if (verboseLogging) {
+            controller.info(message);
+        }
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verboseLogging = verbose;
     }
 
     private ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {

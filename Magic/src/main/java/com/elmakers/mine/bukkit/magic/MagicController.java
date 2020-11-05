@@ -7,6 +7,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -491,6 +492,11 @@ public class MagicController implements MageController {
         return getMage(plugin.getServer().getConsoleSender());
     }
 
+    public void log(String message)
+    {
+        info(message, 0);
+    }
+
     @Override
     public void info(String message)
     {
@@ -499,6 +505,9 @@ public class MagicController implements MageController {
 
     public void info(String message, int verbosity)
     {
+        if (loading && !reloadVerboseLogging) {
+            return;
+        }
         if (logVerbosity >= verbosity)
         {
             getLogger().info(message);
@@ -1661,6 +1670,7 @@ public class MagicController implements MageController {
                 PluginManager pm = plugin.getServer().getPluginManager();
                 pm.registerEvents(new ErrorNotifier(), plugin);
             }
+            loading = false;
 
             return;
         }
@@ -1688,42 +1698,42 @@ public class MagicController implements MageController {
         loadMaterials(loader.getMaterials());
 
         loadAttributes(loader.getAttributes());
-        getLogger().info("Loaded " + attributes.size() + " attributes");
+        log("Loaded " + attributes.size() + " attributes");
 
         // Register currencies and other preload integrations
         registerPreLoad();
 
-        getLogger().info("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
+        log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
         loadEffects(loader.getEffects());
-        getLogger().info("Loaded " + effects.size() + " effect lists");
+        log("Loaded " + effects.size() + " effect lists");
 
         items.load(loader.getItems());
-        getLogger().info("Loaded " + items.getCount() + " items");
+        log("Loaded " + items.getCount() + " items");
 
         loadWandTemplates(loader.getWands());
-        getLogger().info("Loaded " + getWandTemplates().size() + " wands");
+        log("Loaded " + getWandTemplates().size() + " wands");
 
         loadSpells(loader.getSpells());
-        getLogger().info("Loaded " + spells.size() + " spells");
+        log("Loaded " + spells.size() + " spells");
 
         loadMageClasses(loader.getClasses());
-        getLogger().info("Loaded " + mageClasses.size() + " classes");
+        log("Loaded " + mageClasses.size() + " classes");
 
         loadModifiers(loader.getModifiers());
-        getLogger().info("Loaded " + modifiers.size() + " classes");
+        log("Loaded " + modifiers.size() + " classes");
 
         loadPaths(loader.getPaths());
-        getLogger().info("Loaded " + getPathCount() + " progression paths");
+        log("Loaded " + getPathCount() + " progression paths");
 
         loadMobs(loader.getMobs());
-        getLogger().info("Loaded " + mobs.getCount() + " mob templates");
+        log("Loaded " + mobs.getCount() + " mob templates");
 
         loadAutomatonTemplates(loader.getAutomata());
-        getLogger().info("Loaded " + automatonTemplates.size() + " automata templates");
+        log("Loaded " + automatonTemplates.size() + " automata templates");
 
         crafting.load(loader.getCrafting());
-        getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
+        log("Loaded " + crafting.getCount() + " crafting recipes");
 
         // Finalize integrations, we only do this one time at startup.
         if (!loaded) {
@@ -1840,6 +1850,7 @@ public class MagicController implements MageController {
         Bukkit.getPluginManager().callEvent(loadEvent);
 
         loaded = true;
+        loading = false;
 
         // Activate/load any active player Mages
         Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
@@ -1985,11 +1996,15 @@ public class MagicController implements MageController {
         return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey, getLogger(), logContext);
     }
 
+    @Override
+    public void loadConfigurationQuietly(CommandSender sender) {
+        loadConfiguration(sender, false, false);
+    }
+
     public void loadConfiguration() {
         loadConfiguration(null);
     }
 
-    @Override
     public void loadConfiguration(CommandSender sender) {
         if (sender != null && !loaded) {
             getLogger().warning("Can't reload configuration, Magic did not start up properly. Please restart your server.");
@@ -1999,7 +2014,14 @@ public class MagicController implements MageController {
     }
 
     public void loadConfiguration(CommandSender sender, boolean forceSynchronous) {
+        loadConfiguration(sender, forceSynchronous, true);
+    }
+
+    public void loadConfiguration(CommandSender sender, boolean forceSynchronous, boolean verboseLogging) {
+        reloadVerboseLogging = verboseLogging;
+        loading = true;
         ConfigurationLoadTask loadTask = new ConfigurationLoadTask(this, sender);
+        loadTask.setVerbose(verboseLogging);
         if (loaded && !forceSynchronous) {
             plugin.getServer().getScheduler().runTaskAsynchronously(plugin, loadTask);
         } else {
@@ -3173,27 +3195,27 @@ public class MagicController implements MageController {
         // Load sub-controllers
         enchanting.setEnabled(properties.getBoolean("enable_enchanting", enchanting.isEnabled()));
         if (enchanting.isEnabled()) {
-            getLogger().info("Wand enchanting is enabled");
+            log("Wand enchanting is enabled");
         }
         crafting.loadMainConfiguration(properties);
         if (crafting.isEnabled()) {
-            getLogger().info("Wand crafting is enabled");
+            log("Wand crafting is enabled");
         }
         anvil.load(properties);
         if (anvil.isCombiningEnabled()) {
-            getLogger().info("Wand anvil combining is enabled");
+            log("Wand anvil combining is enabled");
         }
         if (anvil.isOrganizingEnabled()) {
-            getLogger().info("Wand anvil organizing is enabled");
+            log("Wand anvil organizing is enabled");
         }
         if (isUrlIconsEnabled()) {
-            getLogger().info("Skin-based spell icons enabled");
+            log("Skin-based spell icons enabled");
         } else {
-            getLogger().info("Skin-based spell icons disabled");
+            log("Skin-based spell icons disabled");
         }
         int configUpdateInterval = properties.getInt("config_update_interval");
         if (configUpdateInterval > 0) {
-            getLogger().info("Sandbox enabled, will check for updates from the web UI");
+            log("Sandbox enabled, will check for updates from the web UI");
             final ConfigCheckTask configCheck = new ConfigCheckTask(this);
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
@@ -3369,12 +3391,6 @@ public class MagicController implements MageController {
     }
 
     protected void registerPreLoad() {
-        // This could be set earlier on, but currently the only thing that cares about this is the
-        // register() method, which could be called below during the PreLoadEvent, and is also called
-        // below to re-register.
-        // For now it's better to make sure it get unset.
-        loading = true;
-
         // Setup custom providers
         currencies.clear();
         attributeProviders.clear();
@@ -3458,9 +3474,7 @@ public class MagicController implements MageController {
 
         MageParameters.initializeAttributes(registeredAttributes);
         MageParameters.setLogger(getLogger());
-        getLogger().info("Registered attributes: " + registeredAttributes);
-
-        loading = false;
+        log("Registered attributes: " + registeredAttributes);
     }
 
     private void checkMagicRequirements() {
@@ -3486,7 +3500,7 @@ public class MagicController implements MageController {
                 if (providerAttributes != null) {
                     registeredAttributes.addAll(providerAttributes);
                     MageParameters.initializeAttributes(registeredAttributes);
-                    getLogger().info("Registered additional attributes: " + providerAttributes);
+                    log("Registered additional attributes: " + providerAttributes);
                 }
             }
         }
@@ -6657,8 +6671,40 @@ public class MagicController implements MageController {
     @Override
     public @Nonnull Collection<String> getLoadedExamples() {
         List<String> examples = new ArrayList<>();
-        if (exampleDefaults != null) examples.add(exampleDefaults);
+        if (exampleDefaults != null && !exampleDefaults.isEmpty()) examples.add(exampleDefaults);
         if (addExamples != null) examples.addAll(addExamples);
+        return examples;
+    }
+
+    @Nullable
+    @Override
+    public String getExample() {
+        return exampleDefaults != null && exampleDefaults.isEmpty() ? null : exampleDefaults;
+    }
+
+    @Override
+    public @Nonnull Collection<String> getExamples() {
+        List<String> examples = new ArrayList<>();
+        try {
+            CodeSource src = MagicController.class.getProtectionDomain().getCodeSource();
+            if (src != null) {
+                URL jar = src.getLocation();
+                try (InputStream is = jar.openStream();
+                    ZipInputStream zip = new ZipInputStream(is)) {
+                    while (true) {
+                        ZipEntry e = zip.getNextEntry();
+                        if (e == null)
+                            break;
+                        String name = e.getName();
+                        if (name.startsWith("examples/") && name.endsWith("/")) {
+                            examples.add(name.replace("examples/", "").replace("/", ""));
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            plugin.getLogger().log(Level.WARNING, "Error scanning example files", ex);
+        }
         return examples;
     }
 
@@ -7167,6 +7213,7 @@ public class MagicController implements MageController {
     private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
     private boolean                             castConsoleFeedback         = false;
     private String                              editorURL                   = null;
+    private boolean                             reloadVerboseLogging        = true;
 
     private boolean                             hasShopkeepers              = false;
     private FactionsManager                        factionsManager                = new FactionsManager();
