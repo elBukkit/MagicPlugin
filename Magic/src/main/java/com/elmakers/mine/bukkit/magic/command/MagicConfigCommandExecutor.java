@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -13,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -332,11 +336,51 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                     return;
                 }
 
+                Plugin plugin = controller.getPlugin();
                 ConfigurationSection targetConfig = defaultConfig.getConfigurationSection(targetItem);
                 if (targetConfig != null) {
                     YamlConfiguration yaml = new YamlConfiguration();
                     yaml.set(targetItem, targetConfig);
-                    existingConfig = yaml.saveToString();
+
+                    // Special case here to keep the comments on builtin example files
+                    Collection<String> examples = controller.getLoadedExamples();
+                    for (String example : examples) {
+                        try {
+                            InputStream resource = plugin.getResource("examples/" + example + "/" + editorType + ".yml");
+                            List<String> fullConfig = new BufferedReader(
+                                  new InputStreamReader(resource, StandardCharsets.UTF_8))
+                                    .lines()
+                                    .collect(Collectors.toList());
+                            StringBuilder testConfig = null;
+                            for (String line : fullConfig) {
+                                if (testConfig == null) {
+                                    if (line.equals(targetItem + ":")) {
+                                        testConfig = new StringBuilder(line);
+                                    }
+                                } else if (!line.isEmpty() && line.charAt(0) != ' ') {
+                                    break;
+                                } else {
+                                    testConfig.append('\n');
+                                    testConfig.append(line);
+                                }
+                            }
+                            if (testConfig != null) {
+                                String testConfigString = testConfig.toString();
+                                YamlConfiguration testMatch = new YamlConfiguration();
+                                testMatch.loadFromString(testConfigString);
+                                if (testMatch.saveToString().equals(yaml.saveToString())) {
+                                    existingConfig = testConfigString;
+                                    break;
+                                }
+                            }
+                        } catch (Exception ignore) {
+
+                        }
+                    }
+                    if (existingConfig == null) {
+                        // targetConfig.put("inherit", false);
+                        existingConfig = yaml.saveToString();
+                    }
                 }
             }
             if (existingConfig == null) {

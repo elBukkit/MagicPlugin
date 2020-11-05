@@ -2,6 +2,9 @@
 # This is the same as setting all of the following "load_default_*" to false.
 load_default_configs: true
 
+# This is used by example configs to extend survival but disable the survival configs
+disable_inherited: []
+
 # Set to false to skip loading defaults/spells.defaults.yml entirely.
 # Use this if you want a completely customized configuration.
 # You will only have your custom spells, and will not get any new spells when you update.
