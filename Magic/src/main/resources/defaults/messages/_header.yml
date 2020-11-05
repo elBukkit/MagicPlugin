@@ -1,9 +1,15 @@
 # .
-# !! IMPORTANT !!
-# .
-# If you wish to customize this plugin, edit the "messages.yml" file instead.
-# .
 # This file is merged from the files in the following folder:
 # .
 # https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/messages
+# .
+# To edit this configuration with the web editor, use
+# /mconfig editor messages
+# .
+# Use
+# /mconfig configure message costs.sp Super Points
+# to customize individual messages
+# .
+# NOTE: Any changes made with the mconfig configure or example commands
+# will override any edits made to this file.
 # .

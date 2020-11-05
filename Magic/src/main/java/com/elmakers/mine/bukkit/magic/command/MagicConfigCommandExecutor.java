@@ -50,12 +50,13 @@ import com.google.gson.Gson;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String CONFIG_FILE_NAME = "_config.yml";
+    private static final String MESSAGES_FILE_NAME = "_config.yml";
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
     private static final String EXAMPLES_FILE_NAME = "_examples.yml";
     private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list");
     private static Set<String> availableFiles = ImmutableSet.of(
             "spells", "wands", "automata", "classes", "config", "crafting", "effects",
-            "items", "materials", "mobs", "paths", "attributes");
+            "items", "materials", "mobs", "paths", "attributes", "messages");
     private static final Map<String, String> availableFileMap = ImmutableMap.<String, String>builder()
         .put("spell", "spells")
         .put("wand", "wands")
@@ -68,6 +69,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         .put("mob", "mobs")
         .put("path", "paths")
         .put("attribute", "attributes")
+        .put("message", "messages")
         .build();
 
     private final MagicController magic;
@@ -99,6 +101,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             options.addAll(availableFileMap.keySet());
             if (subCommand.equals("configure")) {
                 options.add("config");
+            } else if (!subCommand.equals("editor")) {
+                options.remove("message");
+                options.add("messages");
             }
         }
         if (args.length == 2 && subCommand.equals("example")) {
@@ -126,6 +131,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                         options.addAll(defaultConfig.getKeys(false));
                     } catch (Exception ignore) {
                     }
+                }
+
+                if (subCommand.equals("configure") && fileType.equals("messages")) {
+                    options.addAll(controller.getMessages().getAllKeys());
                 }
                 if (fileType.equals("spells")) {
                     Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
@@ -343,10 +352,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         newSession.setMagicVersion(getMagicVersion());
         newSession.setMinecraftVersion(CompatibilityUtils.getServerVersion());
 
-        if (editorType.equals("config")) {
+        if (editorType.equals("config") || editorType.equals("messages")) {
             File pluginFolder = api.getPlugin().getDataFolder();
             File customFolder = new File(pluginFolder, editorType);
-            File targetFile = new File(customFolder, CONFIG_FILE_NAME);
+            String fileName = editorType.equals("messages") ? MESSAGES_FILE_NAME : CONFIG_FILE_NAME;
+            File targetFile = new File(customFolder, fileName);
             String defaultConfig = null;
             if (!targetFile.exists()) {
                 targetFile = new File(pluginFolder, "defaults/" + editorType + ".defaults.yml");
@@ -544,8 +554,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         boolean isMainConfiguration = type.equals("config");
+        boolean isMessagesConfiguration = type.equals("messages");
         String key = session.getKey();
-        if (!isMainConfiguration && (key == null || key.isEmpty())) {
+        if (!isMainConfiguration && !isMessagesConfiguration && (key == null || key.isEmpty())) {
             missingMessage = missingMessage.replace("$field", "key");
             AsyncProcessor.fail(controller, sender, missingMessage);
             return;
@@ -565,7 +576,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        String filename = isMainConfiguration ? CONFIG_FILE_NAME : key + ".yml";
+        String filename = isMainConfiguration ? CONFIG_FILE_NAME : (isMessagesConfiguration ? MESSAGES_FILE_NAME : key + ".yml");
         File typeFolder = new File(magic.getPlugin().getDataFolder(), type);
         if (!typeFolder.exists()) {
             typeFolder.mkdir();
@@ -738,12 +749,12 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         if (configFile == null) {
             return;
         }
-        if (parameters.length < 3) {
+        String fileType = parameters.length == 0 ? null : getFileParameter(parameters[0]);
+        if (parameters.length < 3 || fileType == null) {
             sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig.configure.usage"), "", "", '|'));
             return;
         }
-        String fileType = parameters[0];
-        if (fileType.equals("config")) {
+        if (fileType.equals("config") || fileType.equals("messages")) {
             String path = parameters[1];
             String value = "";
             if (parameters.length > 2) {

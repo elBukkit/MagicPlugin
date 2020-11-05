@@ -389,6 +389,7 @@ commands:
         /mconfig configure spell missile parameters.damage_multiplier 2
         /mconfig configure wand wolf icon coal
         /mconfig configure config sp_enabled false
+        /mconfig configure message costs.sp Super Points
   magic:
     description: Administer the Magic plugin
     permission: Magic.commands.magic

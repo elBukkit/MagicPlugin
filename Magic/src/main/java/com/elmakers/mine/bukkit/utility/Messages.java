@@ -70,6 +70,13 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         return configuration.getStringList(path);
     }
 
+    @Override
+    @Nonnull
+    public Collection<String> getAllKeys() {
+        if (configuration == null) return new ArrayList<>();
+        return configuration.getKeys(true);
+    }
+
     public void reset() {
         messageMap.clear();
     }
