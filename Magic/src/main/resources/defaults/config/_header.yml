@@ -1,21 +1,19 @@
 # .
-# !! IMPORTANT !!
-# .
-# If you wish to customize this plugin, edit the "config.yml" file instead.
-# .
-# DO NOT JUST COPY THIS WHOLE FILE INTO YOUR config.yml !!!!
-# If you do this, updating the plugin in the future may not work as expected.
-# .
 # This file is merged from the files in the following folder:
 # .
 # https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/config
 # .
+# To edit this configuration with the web editor, use
+# /mconfig editor
 # .
 # This turns on the survival configs by default.
 # .
-# Set
-# example: ""
-# in your config.yml to turn this off.
+# Use
+# /mconfig example set
+# to turn them off.
+# .
+# NOTE: Any changes made with the mconfig configure or example commands
+# will override any edits made to this file.
 # .
 
 example: survival

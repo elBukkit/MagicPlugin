@@ -49,6 +49,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
+    private static final String CONFIG_FILE_NAME = "_config.yml";
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
     private static final String EXAMPLES_FILE_NAME = "_examples.yml";
     private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list");
@@ -323,7 +324,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onStartEditor(CommandSender sender, String[] parameters) {
-        String editorType = "spell";
+        String editorType = "config";
         if (parameters.length > 0) {
             editorType = parameters[0];
         }
@@ -342,7 +343,23 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         newSession.setMagicVersion(getMagicVersion());
         newSession.setMinecraftVersion(CompatibilityUtils.getServerVersion());
 
-        if (parameters.length > 1) {
+        if (editorType.equals("config")) {
+            File pluginFolder = api.getPlugin().getDataFolder();
+            File customFolder = new File(pluginFolder, editorType);
+            File targetFile = new File(customFolder, CONFIG_FILE_NAME);
+            String defaultConfig = null;
+            if (!targetFile.exists()) {
+                targetFile = new File(pluginFolder, "defaults/" + editorType + ".defaults.yml");
+            }
+            try {
+                defaultConfig = new String(Files.readAllBytes(Paths.get(targetFile.getAbsolutePath())), StandardCharsets.UTF_8);
+            } catch (Exception ex) {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
+                magic.getLogger().log(Level.WARNING, "Error loading customized file: " + targetFile.getAbsolutePath(), ex);
+                return;
+            }
+            newSession.setContents(defaultConfig);
+        } else if (parameters.length > 1) {
             String targetItem = parameters[1];
             newSession.setKey(targetItem);
 
@@ -518,16 +535,18 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
      * Note that this gets called asynchronously
      */
     protected void applySession(String sessionId, Session session, CommandSender sender, String command, boolean load) {
-        String key = session.getKey();
         String missingMessage = magic.getMessages().get("commands.mconfig." + command + ".missing");
-        if (key == null || key.isEmpty()) {
-            missingMessage = missingMessage.replace("$field", "key");
-            AsyncProcessor.fail(controller, sender, missingMessage);
-            return;
-        }
         String type = session.getType();
         if (type == null || type.isEmpty()) {
             missingMessage = missingMessage.replace("$field", "type");
+            AsyncProcessor.fail(controller, sender, missingMessage);
+            return;
+        }
+
+        boolean isMainConfiguration = type.equals("config");
+        String key = session.getKey();
+        if (!isMainConfiguration && (key == null || key.isEmpty())) {
+            missingMessage = missingMessage.replace("$field", "key");
             AsyncProcessor.fail(controller, sender, missingMessage);
             return;
         }
@@ -546,7 +565,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        String filename = key + ".yml";
+        String filename = isMainConfiguration ? CONFIG_FILE_NAME : key + ".yml";
         File typeFolder = new File(magic.getPlugin().getDataFolder(), type);
         if (!typeFolder.exists()) {
             typeFolder.mkdir();
