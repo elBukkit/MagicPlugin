@@ -1,0 +1,139 @@
+# Make sure spells can't build or break blocks.
+default:
+  parameters:
+    deny_build: true
+    deny_break: true
+
+# Disable any spells that won't really be useful without being able to build or break
+collapse:
+  enabled: false
+
+bubble:
+  enabled: false
+
+torch:
+  enabled: false
+
+reflect:
+  enabled: false
+
+fire:
+  enabled: false
+
+secure:
+  enabled: false
+
+admission:
+  enabled: false
+
+tag:
+  enabled: false
+
+lava:
+  enabled: false
+
+stream:
+  enabled: false
+
+flamethrower:
+  enabled: false
+
+mine:
+  enabled: false
+
+chop:
+  enabled: false
+
+shell:
+  enabled: false
+
+blob:
+  enabled: false
+
+entangle:
+  enabled: false
+
+emp:
+  enabled: false
+
+breach:
+  enabled: false
+
+sandblast:
+  enabled: false
+
+platform:
+  enabled: false
+
+rubberize:
+  enabled: false
+
+harden:
+  enabled: false
+
+sponge:
+  enabled: false
+
+walls:
+  enabled: false
+
+wave:
+  enabled: false
+
+growth:
+  enabled: false
+
+cage:
+  enabled: false
+
+tent:
+  enabled: false
+
+pollinate:
+  enabled: false
+
+tendril:
+  enabled: false
+
+earthquake:
+  require_break: false
+  require_build: false
+
+meteor:
+  require_break: false
+  require_build: false
+
+fireball:
+  require_break: false
+
+grenade:
+  enabled: false
+
+cluster:
+  enabled: false
+
+bomb:
+  enabled: false
+
+boom:
+  enabled: false
+
+frost:
+  enabled: false
+
+lightning:
+  enabled: false
+
+smite:
+  enabled: false
+
+disintegrate:
+  enabled: false
+
+singularity:
+  require_break: false
+  require_build: false
+
+tornado:
+  require_break: false
+  require_build: false

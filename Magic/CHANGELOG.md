@@ -39,6 +39,7 @@
    - Currently only spells are well supported
  - Added `/mconfig example` command to easily add/remove example configs
  - Added `/mconfig reset` command to reset customized configs to the defaults (deletes your custom file, keeps a backup)
+ - The `/mconfig clean` command has been disabled (hopefully temporarily)
 
  - Brush improvements (engineering configs)
    - The Absorb spell now copies block data
@@ -50,23 +51,24 @@
    - Can be spawned simply with `/mnpc add ollivander` and it's ready to go
    - Added spellshop and healer NPC templates to survival configs
 
- ## Other Changes
+ ## Fixes
 
  - Fix using the replicate and clone brushes with the Place spell
  - Fix pasting schematics with torches or other wall attachables
  - Fix hotloading recipe changes, and optimize recipe loading
+ - Fix warps getting corrupted if the target world is not loaded at server start
+ - Fix secure/lockpick spells when non-opped
+ - Fix having multiple crafting recipes with similar ingredients
+ - Fix using `thickness` parameter with Volume action
 
- - The `/mconfig clean` command has been disabled (hopefully temporarily)
+ ## Other Changes
+
  - Add ignore_damage option for crafting recipes
  - Add auto_block_state for ModifyBlock, used by Place spell, attempts to place a block as if a player placed it
  - Add `/mwarp configure` command, used for Dynmap and Recall integration
    - `/mwarp configure marker_icon portal` To add a warp to dynmap with the specified (built in to dynmap icon)
    - `/mwarp configure icon diamond` to add a warp to the recall spell
  - Add `/mwarp describe` command
- - Fix warps getting corrupted if the target world is not loaded at server start
- - Fix secure/lockpick spells when non-opped
- - Fix having multiple crafting recipes with similar ingredients
- - Fix using `thickness` parameter with Volume action
  - The `/mwarp go` and `/send` commands will try to load the target world if it is not loaded
  - Add a third alt-cast spell to wands, for a total of 4 possible fixed spells
  - Add SuperWalls spells to default configs
@@ -86,6 +88,7 @@
  - Add "random" option for villager_profession
  - Add "slimefun" example, which will add RP items from this RP:
    https://www.planetminecraft.com/texture-pack/slimefun-texture-by-raulh22/
+ - Add "safe" example, which modifies the survival configs to avoid all world changes
 
 # 7.11.1
 
