@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -338,6 +339,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
                 Plugin plugin = controller.getPlugin();
                 ConfigurationSection targetConfig = defaultConfig.getConfigurationSection(targetItem);
+                boolean isInheritSet = false;
                 if (targetConfig != null) {
                     YamlConfiguration yaml = new YamlConfiguration();
                     yaml.set(targetItem, targetConfig);
@@ -368,6 +370,8 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                                 String testConfigString = testConfig.toString();
                                 YamlConfiguration testMatch = new YamlConfiguration();
                                 testMatch.loadFromString(testConfigString);
+                                ConfigurationSection mainSection = testMatch.getConfigurationSection(targetItem);
+                                isInheritSet = mainSection != null && mainSection.contains("inherit");
                                 if (testMatch.saveToString().equals(yaml.saveToString())) {
                                     existingConfig = testConfigString;
                                     break;
@@ -378,8 +382,35 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                         }
                     }
                     if (existingConfig == null) {
-                        // targetConfig.put("inherit", false);
+                        ConfigurationSection mainSection = yaml.getConfigurationSection(targetItem);
+                        isInheritSet = mainSection != null && mainSection.contains("inherit");
                         existingConfig = yaml.saveToString();
+                    }
+                    if (!isInheritSet) {
+                        List<String> newLines = new ArrayList<>();
+                        String[] lines = StringUtils.split(existingConfig, "\n");
+                        for (int i = 0; i < lines.length; i++) {
+                            String line = lines[i];
+                            newLines.add(line);
+                            if (isInheritSet) continue;
+                            if (!line.isEmpty() && line.charAt(0) != ' ' && line.charAt(0) != '#') {
+                                for (int j = i + 1; j < lines.length; j++) {
+                                    String nextLine = lines[j];
+                                    if (nextLine.isEmpty() || nextLine.charAt(0) == '#') continue;
+                                    char[] characters = nextLine.toCharArray();
+                                    int indent = 0;
+                                    for (char character : characters) {
+                                        if (character != ' ') break;
+                                        indent++;
+                                    }
+                                    newLines.add(nextLine.substring(0, indent) + "# This has been added automatically so that anything you remove here does not get inherited back in from the default configs");
+                                    newLines.add(nextLine.substring(0, indent) + "inherit: false");
+                                    isInheritSet = true;
+                                    break;
+                                }
+                            }
+                        }
+                        existingConfig = StringUtils.join(newLines, "\n");
                     }
                 }
             }
