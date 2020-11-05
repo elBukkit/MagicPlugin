@@ -27,6 +27,20 @@ savior:
       - class: AreaOfEffect
         actions:
           - class: Velocity
+  effects:
+     cast:
+       - sound: block_beacon_activate
+         sound_pitch: 1.75
+       - class: EffectRing
+         source_location: eyes
+         offset: 0,0.5,0
+         particle: end_rod
+         iterations: 20
+         period: 4
+         radius: 0.4
+         particle_offset_x: 0
+         particle_offset_y: 0
+         particle_offset_z: 0
   parameters:
     target: self
     push: 1
