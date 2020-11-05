@@ -1,6 +1,5 @@
 admin:
-    inherit: conduit
-    path: staff
+    inherit: staff
     legacy_icon: wand_icon:6
     icon: stick{CustomModelData:18006}
     migrate_icon: monster_eggs:2
