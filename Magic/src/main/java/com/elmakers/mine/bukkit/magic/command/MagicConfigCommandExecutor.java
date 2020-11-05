@@ -758,6 +758,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             }
             exampleConfig.set("example", example);
             exampleConfig.set("examples", new ArrayList<>(examples));
+            exampleConfig.set("add_examples", new ArrayList<>());
             exampleConfig.save(exampleFile);
             controller.loadConfigurationQuietly(sender);
         } catch (Exception ex) {
