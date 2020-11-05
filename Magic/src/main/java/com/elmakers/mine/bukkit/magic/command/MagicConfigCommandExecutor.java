@@ -91,17 +91,18 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "disable");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "enable");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "configure");
+            addIfPermissible(sender, options, "Magic.commands.mconfig.", "reset");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "editor");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "load");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "apply");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "example");
         }
         String subCommand = args[0];
-        if (args.length == 2 && (subCommand.equals("disable") || subCommand.equals("enable") || subCommand.equals("configure") || subCommand.equals("editor"))) {
+        if (args.length == 2 && (subCommand.equals("disable") || subCommand.equals("enable") || subCommand.equals("configure") || subCommand.equals("editor") || subCommand.equals("reset"))) {
             options.addAll(availableFileMap.keySet());
-            if (subCommand.equals("configure")) {
+            if (subCommand.equals("configure") || subCommand.equals("reset")) {
                 options.add("config");
-            } else if (!subCommand.equals("editor")) {
+            } else if (!subCommand.equals("editor") || subCommand.equals("reset")) {
                 options.remove("message");
                 options.add("messages");
             }
@@ -118,7 +119,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 options.addAll(controller.getExamples());
             }
         }
-        if (args.length == 3 && (subCommand.equals("disable") || subCommand.equals("configure") ||  subCommand.equals("editor"))) {
+        if (args.length == 3 && (subCommand.equals("disable") || subCommand.equals("configure") ||  subCommand.equals("editor") ||  subCommand.equals("reset"))) {
             String fileType = getFileParameter(args[1]);
             if (fileType != null) {
                 if (subCommand.equals("configure") && fileType.equals("config")) {
@@ -235,6 +236,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             onMagicConfigure(sender, parameters);
             return true;
         }
+        if (subCommand.equals("reset")) {
+            onReset(sender, parameters);
+            return true;
+        }
         if (subCommand.equals("editor")) {
             onStartEditor(sender, parameters);
             return true;
@@ -266,20 +271,26 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     }
 
     protected String escapeMessage(String message, String type, String key, char delimiter) {
+        Set<String> options = new HashSet<>(availableFileMap.keySet());
+        options.add("config");
         return message.replace("$type", type)
                 .replace("$key", key)
-                .replace("$options", StringUtils.join(availableFileMap.keySet(), delimiter));
+                .replace("$options", StringUtils.join(options, delimiter));
     }
 
     @Nullable
     protected File getConfigFile(CommandSender sender, String command, String[] parameters) {
-        if (parameters.length < 2) {
+        if (parameters.length < 1) {
             sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".usage"), "", "", '|'));
             return null;
         }
         String fileKey = getFileParameter(parameters[0]);
         if (fileKey == null) {
             sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".nokey"), fileKey, "", ','));
+            return null;
+        }
+        if (!fileKey.equals("config") && !fileKey.equals("messages") && parameters.length < 2) {
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".usage"), "", "", '|'));
             return null;
         }
         return new File(magic.getPlugin().getDataFolder() + File.separator + fileKey, CUSTOM_FILE_NAME);
@@ -756,6 +767,83 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         return true;
+    }
+
+    protected void onReset(CommandSender sender, String[] parameters) {
+        String fileType = parameters.length == 0 ? null : getFileParameter(parameters[0]);
+        if (fileType == null) {
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig.reset.usage"), "", "", '|'));
+            return;
+        }
+
+        if (fileType.equals("config") || fileType.equals("messages")) {
+            File configFile = getConfigFile(sender, "reset", parameters);
+            if (configFile == null) {
+                return;
+            }
+            if (!configFile.exists()) {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.missing").replace("$file", configFile.getName()));
+                return;
+            }
+            if (backupAndDelete(sender, configFile)) {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.load_prompt"));
+            }
+            return;
+        }
+
+        if (parameters.length < 2) {
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig.reset.usage"), "", "", '|'));
+            return;
+        }
+        String key = parameters[1];
+        File pluginFolder = api.getPlugin().getDataFolder();
+        File customFolder = new File(pluginFolder, fileType);
+        File customFile = new File(customFolder, key + ".yml");
+        boolean deleted = false;
+        boolean removed = false;
+        if (customFile.exists()) {
+            backupAndDelete(sender, customFile);
+            deleted = true;
+        }
+        File configFile = getConfigFile(sender, "reset", parameters);
+        if (configFile != null && configFile.exists()) {
+            YamlConfiguration customizations = new YamlConfiguration();
+            try {
+                customizations.load(configFile);
+                if (customizations.contains(key)) {
+                    customizations.set(key, null);
+                    customizations.save(configFile);
+                    sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.removed").replace("$key", key));
+                    removed = true;
+                }
+            } catch (Exception ex) {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.write_failed").replace("$file", configFile.getName()));
+                magic.getLogger().log(Level.SEVERE, "Could not write to file " + configFile.getAbsoluteFile(), ex);
+            }
+        }
+        if (deleted || removed) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.load_prompt"));
+        } else {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.nothing").replace("$file", customFile.getName()).replace("$key", key));
+        }
+    }
+
+    protected boolean backupAndDelete(CommandSender sender, File configFile) {
+        File backupFile = new File(configFile.getAbsolutePath() + ".bak");
+        boolean success = false;
+        try {
+            success = configFile.renameTo(backupFile);
+        } catch (Exception ex) {
+            success = false;
+            magic.getLogger().log(Level.SEVERE, "Could not write to file " + backupFile.getAbsoluteFile(), ex);
+        }
+        if (!success) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.write_failed").replace("$file", backupFile.getName()));
+            return false;
+        }
+        sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.success").replace("$file", configFile.getName()));
+        sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.backup").replace("$backup", backupFile.getName()));
+        return success;
     }
 
     protected void onMagicConfigure(CommandSender sender, String[] parameters) {

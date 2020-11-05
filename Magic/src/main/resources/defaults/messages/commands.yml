@@ -25,15 +25,24 @@ commands:
       disable:
         usage: "&cUsage: /mconfig disable [$options] [key]"
         nokey: "&cInvalid type: $type, options: $options"
-        success: "Disabled $type $key, use '/magic load' to apply pending changes"
+        success: "&bDisabled &3$type.$key&b, use &f/magic load &bto apply pending changes"
       enable:
         usage: "&cUsage: /mconfig enable [$options] [key]"
         nokey: "&cInvalid type: $type, options: $options"
-        success: "Enabled $type $key, use '/magic load' to apply pending changes"
+        success: "&bEnabled &3$type.$key&b, use &f/magic load &bto apply pending changes"
       configure:
         usage: "&cUsage: /mconfig configure [$options] [key] [property] [value]"
         nokey: "&cInvalid type: $type, options: $options"
-        success: "Changed $type $key, use '/magic load' to apply pending changes"
+        success: "&bChanged &3$type.$key&b, use &f/magic load &bto apply pending changes"
+      reset:
+        usage: "&cUsage: /mconfig reset [$options] [key] "
+        nokey: "&cInvalid type: $type, options: $options"
+        missing: "&cFile &f$file &cdoes not exist, not resetting"
+        nothing: "&cFile &f$file &cdoes not exist, and &f$key &cwas not found in the customization file"
+        removed: "&bRemoved &3$key &bfrom customizations file"
+        success: "&bDeleted &3$file"
+        backup: "&7Backup file saved to &f$backup &7in case you want to undo this change"
+        load_prompt: "&7Use &f/magic load &7to apply pending changes"
       apply:
         usage: "&cUsage: /mconfig apply [session id]"
         wait: "&bPlease wait, fetching configuration..."

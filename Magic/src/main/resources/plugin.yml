@@ -335,6 +335,7 @@ commands:
         /mconfig example   Enable or disable builtin examples
         /mconfig disable   Disable a specific wand, spell, item, mob or recipe
         /mconfig enable    Enable a specific wand, spell, item, mob or recipe
+        /mconfig reset     Delete a customized file, resetting to the builtin version
         /mconfig configure Change parameters for a spell, wand or other config
         /mconfig clean     Clean your custom configs, removing default values
   "mconfig editor":
@@ -342,8 +343,14 @@ commands:
      permission: Magic.commands.mconfig.editor
      usage: |
          /mconfig editor spell
-         /mconfig editor spell blink
+         /mconfig editor spell missile
          /mconfig editor mob warlock
+  "mconfig reset":
+     description: Reset a customized config
+     permission: Magic.commands.mconfig.reset
+     usage: |
+         /mconfig reset spell missile
+         /mconfig reset wand wand
   "mconfig apply":
      description: Apply changes made remotely in the web editor
      permission: Magic.commands.mconfig.apply
@@ -1339,6 +1346,7 @@ permissions:
     - Magic.commands.mconfig.enable
     - Magic.commands.mconfig.configure
     - Magic.commands.mconfig.editor
+    - Magic.commands.mconfig.reset
     - Magic.commands.mconfig.load
     - Magic.commands.mconfig.example
     - Magic.commands.mconfig.apply
@@ -1348,6 +1356,10 @@ permissions:
     default: op
   Magic.commands.mconfig.editor:
     description: Player may use the web editor
+    type: boolean
+    default: op
+  Magic.commands.mconfig.reset:
+    description: Player may reset customized configs
     type: boolean
     default: op
   Magic.commands.mconfig.load:
