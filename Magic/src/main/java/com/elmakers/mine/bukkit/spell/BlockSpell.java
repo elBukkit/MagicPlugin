@@ -21,15 +21,18 @@ public class BlockSpell extends UndoableSpell {
     private MaterialSet     destructible;
     private MaterialSet     destructibleOverride;
     protected boolean       checkDestructible       = true;
+    protected boolean       checkIndestructible       = true;
     protected float         destructibleDurability  = 0.0f;
 
     public static final String[] BLOCK_PARAMETERS = {
-        "indestructible", "destructible", "check_destructible", "bypass_undo", "undo", "destructible_durability"
+        "indestructible", "destructible", "check_destructible", "bypass_undo", "undo", "destructible_durability",
+        "check_indestructible"
     };
 
     @Override
     public boolean isIndestructible(Block block)
     {
+        if (!checkIndestructible) return false;
         if (mage.isSuperPowered()) return false;
         if (controller.hasBypassPermission(mage.getPlayer())) return false;
         if (controller.isLocked(block)) return true;
@@ -110,6 +113,7 @@ public class BlockSpell extends UndoableSpell {
 
         checkDestructible = parameters.getBoolean("check_destructible", true);
         checkDestructible = parameters.getBoolean("cd", checkDestructible);
+        checkIndestructible = parameters.getBoolean("check_indestructible", true);
         destructibleDurability = (float)parameters.getDouble("destructible_durability", 0.0);
     }
 
