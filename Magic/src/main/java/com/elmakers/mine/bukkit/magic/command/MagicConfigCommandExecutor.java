@@ -43,6 +43,7 @@ import com.elmakers.mine.bukkit.magic.command.config.NewSessionRequest;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.Session;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -878,7 +879,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 value = StringUtils.join(Arrays.copyOfRange(parameters, 2, parameters.length), ' ');
             }
             YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
-            setPath(configuration, path, value);
+            setPath(configuration, path, ConfigurationUtils.convertProperty(value));
             trySave("configure", sender, configFile, configuration, fileType, path);
             return;
         }
@@ -889,7 +890,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             value = StringUtils.join(Arrays.copyOfRange(parameters, 3, parameters.length), ' ');
         }
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
-        setPath(configuration, path, value);
+        setPath(configuration, path, ConfigurationUtils.convertProperty(value));
         trySave("configure", sender, configFile, configuration, fileType, key);
     }
 
