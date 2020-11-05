@@ -141,10 +141,12 @@ public class Automaton implements Locatable {
     public void activate() {
         isActive = true;
 
-        Collection<EffectPlayer> effects = template.getEffects();
-        if (effects != null) {
-            for (EffectPlayer player : effects) {
-                player.start(getEffectContext());
+        if (template != null) {
+            Collection<EffectPlayer> effects = template.getEffects();
+            if (effects != null) {
+                for (EffectPlayer player : effects) {
+                    player.start(getEffectContext());
+                }
             }
         }
     }
@@ -168,10 +170,12 @@ public class Automaton implements Locatable {
             effectContext.cancelEffects();
             effectContext = null;
         }
-        Collection<EffectPlayer> effects = template.getEffects();
-        if (effects != null) {
-            for (EffectPlayer player : effects) {
-                player.cancel();
+        if (template != null) {
+            Collection<EffectPlayer> effects = template.getEffects();
+            if (effects != null) {
+                for (EffectPlayer player : effects) {
+                    player.cancel();
+                }
             }
         }
 
@@ -204,6 +208,7 @@ public class Automaton implements Locatable {
     }
 
     public void track(List<Entity> entities) {
+        if (template == null) return;
         Spawner spawner = template.getSpawner();
         if (spawner == null || !spawner.isTracked()) return;
         if (spawned == null) {
@@ -216,7 +221,7 @@ public class Automaton implements Locatable {
     }
 
     public void checkEntities() {
-        if (spawned == null) return;
+        if (spawned == null || template == null) return;
         Spawner spawner = template.getSpawner();
         double leashRangeSquared = spawner == null || !spawner.isLeashed() ? 0 : spawner.getLimitRange();
         if (leashRangeSquared > 0) {
@@ -241,6 +246,7 @@ public class Automaton implements Locatable {
     }
 
     public void spawn() {
+        if (template == null) return;
         Spawner spawner = template.getSpawner();
         if (spawner == null) return;
         List<Entity> entities = spawner.spawn(this);
@@ -260,10 +266,11 @@ public class Automaton implements Locatable {
     }
 
     public boolean hasSpawner() {
-        return template.getSpawner() != null;
+        return template != null && template.getSpawner() != null;
     }
 
     public long getTimeToNextSpawn() {
+        if (template == null) return 0;
         Spawner spawner = template.getSpawner();
         if (spawner == null) return 0;
         int spawnInterval = spawner.getInterval();
@@ -272,11 +279,13 @@ public class Automaton implements Locatable {
     }
 
     public int getSpawnLimit() {
+        if (template == null) return 0;
         Spawner spawner = template.getSpawner();
         return spawner == null ? 0 : spawner.getLimit();
     }
 
     public int getSpawnMinPlayers() {
+        if (template == null) return 0;
         Spawner spawner = template.getSpawner();
         return spawner == null ? 0 : spawner.getMinPlayers();
     }
@@ -298,7 +307,6 @@ public class Automaton implements Locatable {
     public AutomatonTemplate getTemplate() {
         return template;
     }
-
 
     @Nonnull
     private EffectContext getEffectContext() {
@@ -326,7 +334,7 @@ public class Automaton implements Locatable {
     public Mage getMage() {
         if (mage == null) {
             String automatonId = UUID.randomUUID().toString();
-            mage = controller.getAutomaton(automatonId, template.getName());
+            mage = controller.getAutomaton(automatonId, template == null ? "?" : template.getName());
             mage.setLocation(location);
         }
 
@@ -339,6 +347,7 @@ public class Automaton implements Locatable {
 
     @Nullable
     public Nearby getNearby() {
+        if (template == null) return null;
         Spawner spawner = template.getSpawner();
         Nearby nearby = null;
         if (spawner != null) {
