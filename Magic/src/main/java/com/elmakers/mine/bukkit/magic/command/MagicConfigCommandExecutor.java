@@ -472,6 +472,12 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                         }
                         existingConfig = StringUtils.join(newLines, "\n");
                     }
+                } else {
+                    // Effect configurations are a list.
+                    List<?> listConfig = defaultConfig.getList(targetItem);
+                    YamlConfiguration yaml = new YamlConfiguration();
+                    yaml.set(targetItem, listConfig);
+                    existingConfig = yaml.saveToString();
                 }
             }
             if (existingConfig == null) {
