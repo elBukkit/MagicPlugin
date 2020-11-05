@@ -102,7 +102,8 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             options.addAll(availableFileMap.keySet());
             if (subCommand.equals("configure") || subCommand.equals("reset")) {
                 options.add("config");
-            } else if (subCommand.equals("editor") || subCommand.equals("reset")) {
+            }
+            if (subCommand.equals("editor") || subCommand.equals("reset")) {
                 options.remove("message");
                 options.add("messages");
             }
@@ -814,10 +815,8 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         if (fileType.equals("config") || fileType.equals("messages")) {
-            File configFile = getConfigFile(sender, "reset", parameters);
-            if (configFile == null) {
-                return;
-            }
+            File pluginFolder = api.getPlugin().getDataFolder();
+            File configFile = new File(pluginFolder, fileType + ".yml");
             if (!configFile.exists()) {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.missing").replace("$file", configFile.getName()));
                 return;
