@@ -1,23 +1,72 @@
+# This is a basic projectile damage spell that players will start with in the survival configs
+# It is castable as soon as the player has crafted a wand
 missile:
+    # This will determine the icon used to represent the spell.
+    # Try to use a vanilla item that will be recognizable so players not using the RP can still find the spell.
     icon: prismarine_shard{CustomModelData:18001}
+    # This icon is used when the spell can't be cast due to cooldown, mana or permissions
+    # This generally doesn't change unless the player is using the resource pack.
     icon_disabled: prismarine_shard{CustomModelData:18002}
+    # Legacy icons are used in MC versions prior to 1.16, where the resource pack still uses damage predicates
     legacy_icon: spell_icon:160
     legacy_icon_disabled: spell_icon_disabled:160
+    # Some setups use players skulls as icons instead of items.
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    # Some spells have levels and will upgrade themselves automatically when used.
+    # This can be gated by a specific progression path, meaning a player has to advance overall before the spell
+    # will level up.
+    # In this case, magic missile is available to level up right away, as the beginner path is the first path.
+    # Note that if you are editing a spell you will note see the levels. Use
+    # /mconfig editor missile|2
+    # To edit Magic Missile level 2.
     upgrade_required_path: beginner
+    # This spell will level up after 20 successful casts.
+    # A cast is only considered successful if it does what it was intended to do.
+    # In this case, that is hitting and damaging a mob or player
     upgrade_required_casts: 20
+    # Categories aren't used for much, but can group spells in reference books
     category: combat
+    # How many Spell Points this spell costs to purchase.
+    # This is kind of irrelevant for missile in the default configs since you start with it.
     worth: 150
+    # How many Spell Points this spell earns on a successful cast.
     earns_sp: 7
+    # How often the player may earn SP from casting this spell.
+    # Magic Missile is the only spell in the default configs that overrides this value, so that a player
+    # May progress more quickly at the beginning.
+    # Once this spell levels up it will revert to the default cooldown and so not be able to earn SP as quickly.
+    # This is important to keep in mind if you remove the levelled up versions of this spell, or don't allow
+    # spell levelling!
     earns_cooldown: 10000
+    # Actions determine what a spell does when cast.
+    # An action is like an atomic unit of logic or behavior
+    # Actions can be mixed together to create completely unique mechanics without any custom coding.
     actions:
+        # Most spells will run actions on cast, though there are some exceptions and other options.
         cast:
+        # The CustomProjectile action is a common base for spells.
+        # It provides a fully customizable particle projectile that uses accurate targeting and can detect
+        # headshots, reflect off surfaces and other interesting behaviors.
         - class: CustomProjectile
+          # Some actions are "compound" actions, meaning they group together a set of "sub-actions".
+          # The sub-actions are triggered by the "parent" action (in this case the projectile)
+          # when something happens, in this case when the projectile hits something.
           actions:
+          # This action damages the target entity, if one was hit
           - class: Damage
+          # This action is used to break blocks incrementally. It can apply block break effects as well
+          # as actually break the block (replace it with air) after hitting several times
           - class: BreakBlock
+            # We don't count this as a successful cast unless the Damage action succeeds.
+            # So BreakBlock here does not count as success.
+            # Note that actions can have parameters embedded in them like this, which would override any
+            # parameters in the main parameters block below.
             ignore_result: true
+    # Effects are visual or sound effects that go along with a spells actions
+    # Some are triggered automatically as part of a spell cast
+    # Others can be added and invoked specifically using the PlayEffects action
     effects:
+        # Much like actions, most spells have effects that are triggered on cast
         cast:
         -  sound: block_beacon_power_select
            sound_pitch: 1.8
@@ -28,11 +77,11 @@ missile:
         -  sound: entity_guardian_attack
            sound_pitch: 1.5
            sound_volume: 0.2
-        -  class: EffectSingle
-           sound: magic.zap_crack
+        -  sound: magic.zap_crack
            sound_volume: 0.75
            location: origin
            color_override: color
+           # Effects can use effectlib effects
            effectlib:
              class: ConeEffect
              iterations: 10
@@ -45,14 +94,23 @@ missile:
              particle_offset_y: 0.1
              particle_offset_x: 0.1
              particle_offset_z: 0.1
+        # Tick effects are specific to CustomProjectile.
+        # These effects will be spawned at regular intervals along the projectile path.
+        # This is determined by the tick_size parameter, which defaults to every 1/2 (0.5) blocks.
         tick:
         - particle: redstone
+          # It is important to set the location here to target so that it spawns at the projectile's current location
           location: target
+          # Note that increasing the particle_count is "free" in terms of packets, but may cause
+          # clients to lag if used too much
           particle_count: 4
+          # Using a combination of particle_count and particle_offset you can make some nice-looking randomized
+          # clouds using only a single packet to each player viewing the effect
           particle_offset_y: 0.2
           particle_offset_x: 0.2
           particle_offset_z: 0.2
           particle_size: 1
+        # These effects are activated by the BreakBlock action when it *fully* breaks a block
         break:
         -  class: EffectSingle
            location: target
@@ -61,6 +119,7 @@ missile:
            particle_offset_x: 0.6
            particle_offset_y: 0.6
            particle_offset_z: 0.6
+        # CustomProjectile effects that happen only when hitting a block
         hit_block:
         -  class: EffectSingle
            location: target
@@ -69,6 +128,7 @@ missile:
            particle_offset_x: 0.2
            particle_offset_y: 1
            particle_offset_z: 0.2
+        # CustomProjectile effects that happen only when hitting a mob or player
         hit_entity:
         -  class: EffectSingle
            location: target
@@ -77,6 +137,9 @@ missile:
            particle_offset_x: 0.2
            particle_offset_y: 0.2
            particle_offset_z: 0.2
+        # CustomProjectile effects that happen only when hitting anything
+        # There is also a "miss" effect handler for when the projectile expires after reaching
+        # max range or lifetime without hitting a solid block or entity
         hit:
         -  sound: entity_player_attack_knockback
            sound_pitch: 2
@@ -91,6 +154,8 @@ missile:
            sound: magic.zap
            sound_volume: .3
            particle_data: 0.1
+        # CustomProjectile can detect when you hit the head of an entity.
+        # In this case, special effects can be used.
         headshot:
         -  sound: entity_player_attack_knockback
            sound_pitch: 2
@@ -114,29 +179,73 @@ missile:
            particle_offset_x: 1
            particle_offset_z: 1
            particle_data: 0.5
+    # Headshots can invoke a separate action tree, or more often can simply tweak some parameters while
+    # using the same action structure.
     headshot_parameters:
+      # This is used by the Damage action to scale up damage dealt.
+      # It is better to use it this way, rather than override player_damage, damage or entity_damage
+      # This way headshots scale up as the spell levels up and its base damage grows.
       damage_multiplier: 1.5
+    # Parameters are where you configure actions for the spell.
+    # It is a good idea ot put all parameters here rather than in the action tree.
+    # This helps readability, but also allows for more flexibility when testing.
+    # You can override parameters in-game using the cast command, e.g.
+    # /cast missile range 24
+    # Or with wand overrides, e.g.
+    # /wand override missile.range 24
+    # Parameters embedded in the action tree cannot be overridden in this way.
     parameters:
+        # This lets the spell fire even if it is not aiming at anything
         allow_max_range: true
+        # The speed of the custom projectile
         velocity: 200
+        # The max range of the projectile before it expires
         range: 24
+        # Use hitbox targeting. This is the default, unless you provide an "fov" parameter to use field of view (cone)
+        # targeting
         hitbox: true
+        # Which types of entities can be targeted.
+        # This parameter uses Bukkit classes rather than entity type so that you can specify a group of types easily,
+        # such as here we are targeting any mob type that can take damage.
         target_type: Damageable
+        # The Damage action can specify different damage values to apply to mobs versus players, which is
+        # helpful for balancing PvP
         player_damage: 2
         entity_damage: 4
+        # This makes a CustomProjectile able to break magic "breakable" blocks. These are blocks created by other spells
+        # such as shell or reflect, which are meant to be temporary barriers or shields.
+        # Most spells are able to break such blocks
         target_breakables: 1
+        # How long the player must wait, in milliseconds, before this spell can be cast again.
         cooldown: 1000
+        # Don't let the player steer the projectile mid-flight. This is the default
         reorient: false
+        # Specify what types of blocks the BreakBlock action can affect.
+        # This can be a comma-separate list of materials or material lists as defined in materials.yml
         destructible: solid
+        # This lets BreakBlock only break blocks that have less than a certain block durability (blast resistance)
         destructible_durability: 50
+        # How much block durability to take off with each hit. Once a block's durability has been reduced to zero,
+        # it will be replaced with air
         break_durability: 2
+        # All spells in Magic's default configs that break blocks will undo those changes automatically.
+        # This is how long, in milliseconds, before the blocks are restored.
+        # Effects done to entities are not undone unless undo_entity_effects is set to true.
         undo: 10000
+    # Casting costs can be assigned to spells.
+    # Most spells in the survival configs have mana costs associated with them.
+    # The combination of mana and cooldown prevents spamming spells and encourages using a variety of spells in combat.
+    # Other cost types are available, such as health, hunger, currency or items.
+    # Custom cost types can also be created.
     costs:
         mana: 15
 
+# This is Magic Missile level 2
+# Spell level configs override the parameters of the base spell
 missile|2:
     upgrade_required_path: student
     upgrade_required_casts: 50
+    # We are gradually restoring earns_cooldown to the default value
     earns_cooldown: 600000
     parameters:
         range: 32
@@ -150,6 +259,7 @@ missile|2:
 missile|3:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    # The PS earn cooldown is now back to the default value
     earns_cooldown: 900000
     parameters:
         range: 48
