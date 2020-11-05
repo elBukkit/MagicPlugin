@@ -1,0 +1,73 @@
+scorpion_poison:
+ actions: 
+  cast:
+  - class: CustomProjectile
+    actions:
+    - class: AreaOfEffectCloud
+ effects:
+  cast:
+  - location: origin
+    sound: magic.zap
+    sound_pitch: 2
+  tick:
+  - location: target
+    particle: block_crack
+    material: lime_concrete
+    particle_count: 25
+    particle_offset_x: 0.5
+    particle_offset_y: 0.5
+    particle_offset_z: 0.5
+  hit:
+  - location: target
+    sound: entity_slime_jump
+    sound_pitch: 1.5
+    particle: block_crack
+    material: lime_concrete
+    particle_count: 25
+    particle_offset_x: 1
+    particle_offset_y: 1
+    particle_offset_z: 1
+ parameters:
+  range: 32
+  cooldown: 5000
+  target_self: false
+  target: other
+  velocity: 30
+  gravity: 0.02
+  duration: 3000
+  radius: 1.5
+  radius_per_tick: 0.02
+  potion_effects:
+  - type: poison
+    duration: 3000
+    amplifier: 2
+
+scorpion_tail:
+ actions: 
+  cast:
+  - class: GiveItem
+    item: scorpion_tail_attack
+  - class: AreaOfEffect
+    actions:
+    - class: Damage
+  - class: Delay
+    delay: 500
+  - class: GiveItem
+    item: scorpion_tail
+ effects:
+  cast: 
+  - location: origin
+    sound: entity_player_attack_sweep
+    sound_pitch: 0.5
+    effectlib: 
+     class: Turn
+     iterations: 1
+     step: 36
+     duration: 500
+ parameters:
+  undo: 500
+  radius: 3
+  target: self
+  cooldown: 8000
+  target_self: false
+  damage: 5
