@@ -49,8 +49,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
-    private static final String CONFIG_FILE_NAME = "_config.yml";
-    private static final String MESSAGES_FILE_NAME = "_config.yml";
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
     private static final String EXAMPLES_FILE_NAME = "_examples.yml";
     private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list");
@@ -102,7 +100,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             options.addAll(availableFileMap.keySet());
             if (subCommand.equals("configure") || subCommand.equals("reset")) {
                 options.add("config");
-            } else if (!subCommand.equals("editor") || subCommand.equals("reset")) {
+            } else if (subCommand.equals("editor") || subCommand.equals("reset")) {
                 options.remove("message");
                 options.add("messages");
             }
@@ -365,11 +363,22 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
         if (editorType.equals("config") || editorType.equals("messages")) {
             File pluginFolder = api.getPlugin().getDataFolder();
-            File customFolder = new File(pluginFolder, editorType);
-            String fileName = editorType.equals("messages") ? MESSAGES_FILE_NAME : CONFIG_FILE_NAME;
-            File targetFile = new File(customFolder, fileName);
+            File targetFile = new File(pluginFolder, editorType + ".yml");
+            if (targetFile.exists()) {
+                YamlConfiguration testConfig = new YamlConfiguration();
+                try {
+                    testConfig.load(targetFile);
+                    if (testConfig.getKeys(false).isEmpty()) {
+                        targetFile = null;
+                    }
+                } catch (Exception ex) {
+                    sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
+                    magic.getLogger().log(Level.WARNING, "Error loading customized file: " + targetFile.getAbsolutePath(), ex);
+                    return;
+                }
+            }
             String defaultConfig = null;
-            if (!targetFile.exists()) {
+            if (targetFile == null || !targetFile.exists()) {
                 targetFile = new File(pluginFolder, "defaults/" + editorType + ".defaults.yml");
             }
             try {
@@ -601,12 +610,17 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        String filename = isMainConfiguration ? CONFIG_FILE_NAME : (isMessagesConfiguration ? MESSAGES_FILE_NAME : key + ".yml");
-        File typeFolder = new File(magic.getPlugin().getDataFolder(), type);
-        if (!typeFolder.exists()) {
-            typeFolder.mkdir();
+        File file;
+        if (isMainConfiguration || isMessagesConfiguration) {
+            file = new File(magic.getPlugin().getDataFolder(), type + ".yml");
+        } else {
+            String filename = key + ".yml";
+            File typeFolder = new File(magic.getPlugin().getDataFolder(), type);
+            if (!typeFolder.exists()) {
+                typeFolder.mkdir();
+            }
+            file = new File(typeFolder, filename);
         }
-        File file = new File(typeFolder,  filename);
         if (file.exists()) {
             String message = magic.getMessages().get("commands.mconfig." + command + ".overwrote");
             AsyncProcessor.success(controller, sender, message.replace("$file", file.getName()));

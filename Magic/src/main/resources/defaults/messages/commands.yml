@@ -7,7 +7,7 @@ commands:
       example:
         usage: "&cUsage: /mconfig example [$actions]"
         list:
-          base: "&bBase example: &34example"
+          base: "&bBase example: &3$example"
           header: "&bExamples:"
           item: "  &f- &3$example"
         add:
