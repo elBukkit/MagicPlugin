@@ -39,6 +39,7 @@ commands:
         nokey: "&cInvalid type: $type, options: $options"
         missing: "&cFile &f$file &cdoes not exist, not resetting"
         nothing: "&cFile &f$file &cdoes not exist, and &f$key &cwas not found in the customization file"
+        none: "&cNo customizations were found to reset"
         removed: "&bRemoved &3$key &bfrom customizations file"
         success: "&bDeleted &3$file"
         backup: "&7Backup file saved to &f$backup &7in case you want to undo this change"

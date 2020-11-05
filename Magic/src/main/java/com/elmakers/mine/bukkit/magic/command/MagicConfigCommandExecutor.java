@@ -817,12 +817,43 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         if (fileType.equals("config") || fileType.equals("messages")) {
             File pluginFolder = api.getPlugin().getDataFolder();
             File configFile = new File(pluginFolder, fileType + ".yml");
-            if (!configFile.exists()) {
-                sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.missing").replace("$file", configFile.getName()));
-                return;
+            boolean resetAny = false;
+            if (configFile.exists()) {
+                // This file should always exist unless it was just deleted without reloading.
+                // So let's see if it's actually been edited
+                boolean isEmpty = false;
+                try {
+                    YamlConfiguration configuration = new YamlConfiguration();
+                    configuration.load(configFile);
+                    isEmpty = configuration.getKeys(false).isEmpty();
+                } catch (Exception ignore) {
+                }
+                if (!isEmpty) {
+                    if (backupAndDelete(sender, configFile)) {
+                        resetAny = true;
+                    }
+                }
             }
-            if (backupAndDelete(sender, configFile)) {
+            configFile = new File(pluginFolder, fileType);
+            configFile = new File(configFile, CUSTOM_FILE_NAME);
+            if (configFile.exists()) {
+                if (backupAndDelete(sender, configFile)) {
+                    resetAny = true;
+                }
+            }
+            if (fileType.equals("config")) {
+                configFile = new File(pluginFolder, fileType);
+                configFile = new File(configFile, EXAMPLES_FILE_NAME);
+                if (configFile.exists()) {
+                    if (backupAndDelete(sender, configFile)) {
+                        resetAny = true;
+                    }
+                }
+            }
+            if (resetAny) {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.load_prompt"));
+            } else {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.none"));
             }
             return;
         }
