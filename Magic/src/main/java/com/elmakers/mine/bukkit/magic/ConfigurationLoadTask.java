@@ -192,13 +192,12 @@ public class ConfigurationLoadTask implements Runnable {
         // Apply version-specific configs
         addVersionConfigs(config, fileName);
 
-        // Apply file overrides
+        // Apply overrides after loading defaults and examples
+        ConfigurationUtils.addConfigurations(config, overrides);
+
+        // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
         loadConfigFolder(config, configSubFolder, false);
-
-        // Apply overrides after loading defaults and examples
-        // These now override configs in the config folder
-        ConfigurationUtils.addConfigurations(config, overrides);
 
         // Save default configs for inspection
         if (saveDefaultConfigs) {
