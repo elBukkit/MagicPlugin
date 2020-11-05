@@ -414,10 +414,17 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                                     .lines()
                                     .collect(Collectors.toList());
                             StringBuilder testConfig = null;
+                            StringBuilder header = new StringBuilder();
                             for (String line : fullConfig) {
                                 if (testConfig == null) {
                                     if (line.equals(targetItem + ":")) {
-                                        testConfig = new StringBuilder(line);
+                                        testConfig = header;
+                                        testConfig.append(line);
+                                    } else if (line.startsWith("#")) {
+                                        header.append(line);
+                                        header.append("\n");
+                                    } else {
+                                        header.setLength(0);
                                     }
                                 } else if (!line.isEmpty() && line.charAt(0) != ' ') {
                                     break;
@@ -430,6 +437,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                                 String testConfigString = testConfig.toString();
                                 YamlConfiguration testMatch = new YamlConfiguration();
                                 testMatch.loadFromString(testConfigString);
+                                testMatch.options().header(null);
                                 ConfigurationSection mainSection = testMatch.getConfigurationSection(targetItem);
                                 isInheritSet = mainSection != null && mainSection.contains("inherit");
                                 if (testMatch.saveToString().equals(yaml.saveToString())) {
