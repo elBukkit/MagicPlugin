@@ -222,6 +222,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassPvpRestriction        = false;
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
+    protected boolean denyBreakPermission       = false;
+    protected boolean denyBuildPermission       = false;
     protected boolean bypassProtection          = false;
     protected boolean bypassConfusion           = true;
     protected boolean bypassWeakness            = true;
@@ -1495,6 +1497,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean hasBreakPermission(Block block) {
+        if (denyBreakPermission) return false;
         // Cast permissions bypass
         if (bypassBuildRestriction || bypassRegionPermission || bypassAll) return true;
         if (!ignoreRegionOverrides) {
@@ -1511,6 +1514,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean hasBuildPermission(Block block) {
+        if (denyBuildPermission) return false;
         // Cast permissions bypass
         if (bypassBuildRestriction || bypassRegionPermission || bypassAll) return true;
         if (!ignoreRegionOverrides) {
@@ -1834,6 +1838,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
         ignoreRegionOverrides = parameters.getBoolean("ignore_region_overrides", false);
         bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
+        denyBuildPermission = parameters.getBoolean("deny_build", false);
+        denyBreakPermission = parameters.getBoolean("deny_break", false);
         bypassProtection = parameters.getBoolean("bypass_protection", false);
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
         bypassAll = parameters.getBoolean("bypass", false);
