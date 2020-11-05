@@ -95,26 +95,6 @@ use_scoreboard_teams: false
 # This does not affect targeting with normal (damaging, etc) spells.
 default_friendly: true
 
-# Which mobs types should be considered friendly by default.
-# these mobs can still be targeted by damaging spells, but they can also be targeted by friendly healing or perk spells.
-friendly_entity_types:
-- chicken
-- cow
-- donkey
-- villager
-- horse
-- iron_golem
-- llama
-- mule
-- ocelot
-- parrot
-- pig
-- polar_bear
-- rabbit
-- sheep
-- snowman
-- wolf
-
 ### Heroes/Skills configuration
 
 # Show Heroes skills in the /mskills menu, if Heroes is present
@@ -173,7 +153,6 @@ logblock_enabled: true
 residence:
   # Set to false to disable Residence integration
   enabled : true
-
 
 # RedProtect integration
 redprotect:

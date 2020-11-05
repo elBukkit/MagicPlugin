@@ -1,0 +1,36 @@
+# Which mobs types should be considered friendly by default.
+# these mobs can still be targeted by damaging spells, but they can also be targeted by friendly healing or perk spells.
+friendly_entity_types:
+- chicken
+- cow
+- donkey
+- villager
+- horse
+- iron_golem
+- llama
+- mule
+- ocelot
+- parrot
+- pig
+- polar_bear
+- rabbit
+- sheep
+- snowman
+- wolf
+
+# What entity types to always undo when auto-undoing a spell.
+# A spell that is countered or manually undone will undo all entity types.
+entity_undo_types:
+- item_frame
+- painting
+- fireball
+- small_fireball
+- wither_skull
+- arrow
+- snowball
+- egg
+- firework
+- primed_tnt
+- falling_block
+- armor_stand
+- dropped_item

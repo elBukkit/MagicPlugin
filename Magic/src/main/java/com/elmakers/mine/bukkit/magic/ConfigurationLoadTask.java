@@ -132,6 +132,17 @@ public class ConfigurationLoadTask implements Runnable {
         }
         info(" Based on defaults " + defaultsFileName);
 
+        // Load lists
+        String listsFilename = "defaults/lists.defaults.yml";
+        try {
+            YamlConfiguration listConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(listsFilename));
+            ConfigurationUtils.addConfigurations(config, listConfig);
+        } catch (Exception ex) {
+            getLogger().severe("Error loading file: " + listsFilename);
+            throw ex;
+        }
+        info(" Added lists from " + listsFilename);
+
         // Load an example if one is specified
         if (usingExample) {
             InputStream input = plugin.getResource(examplesFileName);

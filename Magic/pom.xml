@@ -502,6 +502,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/defaults/lists.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/lists">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/defaults/crafting.defaults.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/defaults/crafting">
                                         <include name="**/*.yml"/>
