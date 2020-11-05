@@ -96,6 +96,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         String subCommand = args[0];
         if (args.length == 2 && (subCommand.equals("disable") || subCommand.equals("enable") || subCommand.equals("configure") || subCommand.equals("editor"))) {
             options.addAll(availableFileMap.keySet());
+            if (subCommand.equals("configure")) {
+                options.add("config");
+            }
         }
         if (args.length == 2 && subCommand.equals("example")) {
             options.addAll(exampleActions);
@@ -109,9 +112,20 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 options.addAll(controller.getExamples());
             }
         }
-        if (args.length == 3 && (subCommand.equals("disable") ||  subCommand.equals("configure") ||  subCommand.equals("editor"))) {
+        if (args.length == 3 && (subCommand.equals("disable") || subCommand.equals("configure") ||  subCommand.equals("editor"))) {
             String fileType = getFileParameter(args[1]);
             if (fileType != null) {
+                if (subCommand.equals("configure") && fileType.equals("config")) {
+                    File pluginFolder = api.getPlugin().getDataFolder();
+                    File defaultsFile = new File(pluginFolder, "defaults/config.defaults.yml");
+                    YamlConfiguration defaultConfig = null;
+                    try {
+                        defaultConfig = new YamlConfiguration();
+                        defaultConfig.load(defaultsFile);
+                        options.addAll(defaultConfig.getKeys(false));
+                    } catch (Exception ignore) {
+                    }
+                }
                 if (fileType.equals("spells")) {
                     Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
                     for (SpellTemplate spell : spellList) {
@@ -709,6 +723,18 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig.configure.usage"), "", "", '|'));
             return;
         }
+        String fileType = parameters[0];
+        if (fileType.equals("config")) {
+            String path = parameters[1];
+            String value = "";
+            if (parameters.length > 2) {
+                value = StringUtils.join(Arrays.copyOfRange(parameters, 2, parameters.length), ' ');
+            }
+            YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+            setPath(configuration, path, value);
+            trySave("configure", sender, configFile, configuration, fileType, path);
+            return;
+        }
         String key = parameters[1];
         String path = key + "." + parameters[2];
         String value = "";
@@ -717,7 +743,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
         setPath(configuration, path, value);
-        trySave("configure", sender, configFile, configuration, parameters[0], key);
+        trySave("configure", sender, configFile, configuration, fileType, key);
     }
 
     protected void onMagicClean(CommandSender sender, String configName) {

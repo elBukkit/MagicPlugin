@@ -388,6 +388,7 @@ commands:
      usage: |
         /mconfig configure spell missile parameters.damage_multiplier 2
         /mconfig configure wand wolf icon coal
+        /mconfig configure config sp_enabled false
   magic:
     description: Administer the Magic plugin
     permission: Magic.commands.magic
