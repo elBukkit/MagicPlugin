@@ -1855,6 +1855,12 @@ public class CompatibilityUtils extends NMSUtils {
         return class_Block_getBlockDataMethod != null;
     }
 
+    public static boolean isTopBlock(Block block) {
+        // Yes this is an ugly way to do it.
+        String blockData = getBlockData(block);
+        return blockData != null && blockData.contains("type=top");
+    }
+
     public static String getBlockData(Block block) {
         if (class_Block_getBlockDataMethod == null) return null;
         try {

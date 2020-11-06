@@ -518,8 +518,10 @@ public class BaseSpell implements MageSpell, Cloneable {
         Block downBlock = location.getBlock().getRelative(BlockFace.DOWN);
         Material material = downBlock.getType();
         if (isHalfBlock(material)) {
-            // Drop down to half-steps
-            location.setY(location.getY() - 0.5);
+            if (!CompatibilityUtils.isTopBlock(downBlock)) {
+                // Drop down to half-steps
+                location.setY(location.getY() - 0.5);
+            }
         }
 
         return location;
