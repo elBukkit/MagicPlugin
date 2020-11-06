@@ -243,7 +243,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean showUndoable              = true;
     protected boolean cancellable               = true;
     protected boolean quickCast                 = false;
-    protected boolean cancelEffects = false;
+    protected boolean cancelEffects             = false;
+    protected boolean deactivateEffects         = true;
     protected boolean commandBlockAllowed       = true;
     protected int verticalSearchDistance        = 8;
     protected Set<String> hideMessages          = null;
@@ -1051,6 +1052,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
         cancelEffects = node.getBoolean("cancel_effects", false);
+        deactivateEffects = node.getBoolean("deactivate_effects", true);
         disableManaRegeneration = node.getBoolean("disable_mana_regeneration", false);
 
         String toggleString = node.getString("toggle", "NONE");
@@ -1584,6 +1586,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 updateCooldown();
             }
         }
+        // Need some way to clear selected target here
         if (success && toggle != ToggleType.NONE) {
             activate();
         }
@@ -1592,7 +1595,12 @@ public class BaseSpell implements MageSpell, Cloneable {
         Bukkit.getPluginManager().callEvent(castEvent);
 
         sendCastMessage(result, " (" + success + ")");
+        onFinalizeCast(result);
         return success;
+    }
+
+    protected void onFinalizeCast(SpellResult result) {
+
     }
 
     protected void updateCooldown() {
@@ -2495,7 +2503,9 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
             if (currentCast != null) {
                 currentCast.addResult(SpellResult.DEACTIVATE);
-                currentCast.cancelEffects();
+                if (deactivateEffects) {
+                    currentCast.cancelEffects();
+                }
                 if ((toggle == ToggleType.UNDO || toggle == ToggleType.UNDO_IF_ACTIVE) && toggleUndo != null && !toggleUndo.isUndone() && isActive()) {
                     toggleUndo.undo();
                 }
