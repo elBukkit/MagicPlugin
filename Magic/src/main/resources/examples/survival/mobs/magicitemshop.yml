@@ -1,0 +1,7 @@
+magicitemshop:
+  inherit: base_npc
+  name: Magical Items
+  interact_spell: magicitemshop
+  villager_profession: librarian
+  dialog:
+    - Get your magic items here!
