@@ -5,7 +5,7 @@ wand:
     i: blaze_rod
   row_1: o
   row_2: i
-  row_3:
+  row_3: ""
 
 magicheart:
   enabled: false
@@ -125,7 +125,7 @@ rabbitboots:
   materials:
     i: rabbit_hide
     r: rabbit_foot
-  row_1:
+  row_1: ""
   row_2: i i
   row_3: r r
 
@@ -142,6 +142,7 @@ spellbook:
     i: book
 
 talisman:
+  override: true
   materials:
     o: nether_star
     i: gold_nugget
@@ -150,10 +151,11 @@ talisman:
   row_3: " i "
 
 wizardboots:
+  override: true
   materials:
     o: nether_star
     i: wool
-  row_1:
+  row_1: ""
   row_2: i i
   row_3: ioi
 
@@ -166,12 +168,13 @@ wizardchestplate:
   row_3: iii
 
 wizardhelmet:
+  override: true
   materials:
     o: nether_star
     i: wool
   row_1: iii
   row_2: ioi
-  row_3:
+  row_3: ""
 
 wizardleggings:
   materials:
