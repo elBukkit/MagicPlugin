@@ -87,7 +87,12 @@ public class PlayerController implements Listener {
     public void loadProperties(ConfigurationSection properties) {
         logoutDelay = properties.getInt("logout_delay", 0);
         clickCooldown = properties.getInt("click_cooldown", 0);
-        enchantBlockMaterial = new MaterialAndData(properties.getString("enchant_block", "enchantment_table"));
+        String enchantBlockKey = properties.getString("enchant_block", "enchantment_table");
+        if (enchantBlockKey.isEmpty()) {
+            enchantBlockMaterial = null;
+        } else {
+            enchantBlockMaterial = new MaterialAndData(enchantBlockKey);
+        }
         enchantClickSpell = properties.getString("enchant_click");
         enchantSneakClickSpell = properties.getString("enchant_sneak_click");
         cancelInteractOnLeftClick = properties.getBoolean("cancel_interact_on_left_click", true);
