@@ -57,6 +57,7 @@ public class SpawnEntityAction extends CompoundAction
     private boolean repeatRandomize = true;
     private boolean tamed = false;
     private boolean setOwner = true;
+    private boolean onBlock = true;
 
     private Vector direction = null;
     private double speed;
@@ -81,6 +82,7 @@ public class SpawnEntityAction extends CompoundAction
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
+        onBlock = parameters.getBoolean("on_block", true);
 
         String disguiseTarget = parameters.getString("disguise_target");
         if (disguiseTarget != null) {
@@ -174,7 +176,9 @@ public class SpawnEntityAction extends CompoundAction
 
         if (hasSpawnActions && !spawnedActionsRun) {
             spawnedActionsRun = true;
-            return startTargetedActions("spawn", spawned, context);
+            // We always need to return pending here, even if the spawn actions finish
+            // This is to make sure we wait to run the death actions.
+            startTargetedActions("spawn", spawned, context);
         }
 
         return SpellResult.PENDING;
@@ -193,11 +197,12 @@ public class SpawnEntityAction extends CompoundAction
     }
 
     private SpellResult spawn(CastContext context) {
-        Block targetBlock = context.getTargetBlock();
-
-        targetBlock = targetBlock.getRelative(BlockFace.UP);
-
-        Location spawnLocation = targetBlock.getLocation();
+        Location spawnLocation = context.getTargetLocation();
+        if (spawnLocation == null || onBlock) {
+            Block targetBlock = context.getTargetBlock();
+            targetBlock = targetBlock.getRelative(BlockFace.UP);
+            spawnLocation = targetBlock.getLocation();
+        }
         Location sourceLocation = context.getLocation();
         spawnLocation.setPitch(sourceLocation.getPitch());
         spawnLocation.setYaw(sourceLocation.getYaw());
