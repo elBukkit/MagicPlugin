@@ -15,6 +15,7 @@ apprentice:
       - glide
       - horse
       - critical
+      - decoy
     spells:
       - breach
       - disintegrate

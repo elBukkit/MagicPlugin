@@ -3,21 +3,33 @@ decoy:
   icon_disabled: totem_of_undying{CustomModelData:18002}
   legacy_icon: spell_icon:65
   legacy_icon_disabled: spell_icon_disabled:65
-  toggle: undo
+  toggle: undo_if_active
   disable_mana_regeneration: true
   quick_cast: true
   worth: 300
+  requires: LibsDisguises
   actions:
     cast:
     - class: Vanish
-    - class: SpawnEntity
-      set_target: true
-      spawn:
-      - class: AreaOfEffect
-        actions:
-          - class: Aggro
+    - class: ChangeContext
+      target_entity: true
       actions:
-      - class: Undo
+      - class: SpawnEntity
+        set_target: true
+        spawn:
+        - class: AreaOfEffect
+          actions:
+            - class: Aggro
+        actions:
+        - class: Undo
+  effects:
+    cast:
+      - sound: magic.vanish
+        sound_pitch: 1.5
+        sound_volume: 0.5
+      - sound: block_fire_extinguish
+        sound_pitch: 0.2
+        sound_volume: 0.6
   parameters:
     target: self
     cooldown: 30000
@@ -28,5 +40,6 @@ decoy:
     disguise_target: self
     max_health: 20
     radius: 32
+    on_block: false
   costs:
     mana: 100
