@@ -38,6 +38,9 @@ magicsword:
   row_3: i
 
 broomstick:
+  inherit: false
+  output: broomstick
+  output_type: wand
   materials:
     i: stick
     o: nether_star
@@ -53,6 +56,9 @@ camera:
     d: daylight_detector
 
 divinghelmet:
+  inherit: false
+  output: divinghelmet
+  output_type: wand
   materials:
     o: nether_star
     i: stained_glass
@@ -76,6 +82,9 @@ goggles:
   row_3: d d
 
 magicbow:
+  inherit: false
+  output: magicbow
+  output_type: wand
   materials:
     o: nether_star
     i: bow

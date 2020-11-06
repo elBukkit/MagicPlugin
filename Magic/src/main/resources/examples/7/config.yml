@@ -1,3 +1,6 @@
+# This is a modifier to the survival configs
+inherit: survival
+
 # Use legacy icons for backwards-compatibility with combined resource packs
 legacy_icons_enabled: true
 
