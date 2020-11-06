@@ -125,7 +125,7 @@ public class UndoAction extends BaseSpellAction
         {
             Mage targetMage = controller.getMage(targetEntity);
             mage.sendDebugMessage(ChatColor.AQUA + "Undo checking last spell of "
-                    + ChatColor.GOLD + targetMage + ChatColor.AQUA + " with timeout of "
+                    + ChatColor.GOLD + targetMage.getName() + ChatColor.AQUA + " with timeout of "
                     + ChatColor.YELLOW + timeout + ChatColor.AQUA + " for target spellKey"
                     + ChatColor.BLUE + targetSpellKey, 2);
 
