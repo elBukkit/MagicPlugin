@@ -8,9 +8,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
@@ -26,11 +28,11 @@ import me.libraryaddict.disguise.utilities.DisguiseUtilities;
 
 public class LibsDisguiseManager {
     private final Plugin disguisePlugin;
-    private final Plugin owningPlugin;
+    private final MageController controller;
 
-    public LibsDisguiseManager(Plugin owningPlugin, Plugin disguisePlugin) {
+    public LibsDisguiseManager(MageController controller, Plugin disguisePlugin) {
         this.disguisePlugin = disguisePlugin;
-        this.owningPlugin = owningPlugin;
+        this.controller = controller;
     }
 
     public boolean initialize() {
@@ -58,7 +60,7 @@ public class LibsDisguiseManager {
                 case PLAYER:
                     String name = configuration.getString("name", entity.getCustomName());
                     if (name == null || name.isEmpty()) {
-                        owningPlugin.getLogger().warning("Missing disguise name in player disguise");
+                        controller.getLogger().warning("Missing disguise name in player disguise");
                         return false;
                     }
                     PlayerDisguise playerDisguise = new PlayerDisguise(name);
@@ -106,7 +108,7 @@ public class LibsDisguiseManager {
                             VillagerWatcher villager = (VillagerWatcher)disguise.getWatcher();
                             villager.setProfession(profession);
                         } catch (Exception ex) {
-                            owningPlugin.getLogger().warning("Invalid villager profession in disguise config: " + professionName);
+                            controller.getLogger().warning("Invalid villager profession in disguise config: " + professionName);
                         }
                     }
                     break;
@@ -121,6 +123,30 @@ public class LibsDisguiseManager {
                 watcher.setCustomName(customName);
                 watcher.setCustomNameVisible(configuration.getBoolean("custom_name_visible", true));
             }
+            ItemStack helmet = controller.createItem(configuration.getString("helmet"));
+            if (helmet != null) {
+                watcher.setHelmet(helmet);
+            }
+            ItemStack boots = controller.createItem(configuration.getString("boots"));
+            if (boots != null) {
+                watcher.setBoots(boots);
+            }
+            ItemStack leggings = controller.createItem(configuration.getString("leggings"));
+            if (leggings != null) {
+                watcher.setLeggings(leggings);
+            }
+            ItemStack chestplate = controller.createItem(configuration.getString("chestplate"));
+            if (chestplate != null) {
+                watcher.setChestplate(chestplate);
+            }
+            ItemStack mainhand = controller.createItem(configuration.getString("mainhand"));
+            if (mainhand != null) {
+                watcher.setItemInMainHand(mainhand);
+            }
+            ItemStack offhand = controller.createItem(configuration.getString("offhand"));
+            if (offhand != null) {
+                watcher.setItemInOffHand(offhand);
+            }
             watcher.setInvisible(configuration.getBoolean("invisible", false));
             watcher.setBurning(configuration.getBoolean("burning", false));
             watcher.setGlowing(configuration.getBoolean("glowing", false));
@@ -132,7 +158,7 @@ public class LibsDisguiseManager {
             watcher.setRightClicking(configuration.getBoolean("right_clicking", false));
             DisguiseAPI.disguiseEntity(entity, disguise);
         } catch (Exception ex) {
-            owningPlugin.getLogger().log(Level.WARNING, "Error creating disguise", ex);
+            controller.getLogger().log(Level.WARNING, "Error creating disguise", ex);
             return false;
         }
         return true;
