@@ -4644,8 +4644,15 @@ public class MagicController implements MageController {
         return mageClasses.keySet();
     }
 
+    @Nonnull
     public MageClassTemplate getMageClass(String key) {
-        return mageClasses.get(key);
+        MageClassTemplate template = mageClasses.get(key);
+        if (template == null) {
+            MemoryConfiguration configuration = new MemoryConfiguration();
+            template = new MageClassTemplate(this, key, configuration);
+            mageClasses.put(key, template);
+        }
+        return template;
     }
 
     public void loadMageClassTemplate(String key, ConfigurationSection classNode) {

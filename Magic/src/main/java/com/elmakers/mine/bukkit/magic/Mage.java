@@ -1203,14 +1203,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this.classes.clear();
             Map<String, ConfigurationSection> classProperties = data.getClassProperties();
             for (Map.Entry<String, ConfigurationSection> entry : classProperties.entrySet()) {
-                // ... what to do if missing templates? Don't want to lose data. Will need to think about this.
                 String mageClassKey = entry.getKey();
                 MageClassTemplate classTemplate = controller.getMageClass(mageClassKey);
-                if (classTemplate != null) {
-                    MageClass newClass = new MageClass(this, classTemplate);
-                    newClass.load(entry.getValue());
-                    classes.put(mageClassKey, newClass);
-                }
+                MageClass newClass = new MageClass(this, classTemplate);
+                newClass.load(entry.getValue());
+                classes.put(mageClassKey, newClass);
             }
 
             this.modifiers.clear();
@@ -1473,7 +1470,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         MageClass mageClass = classes.get(key);
         if (mageClass == null) {
             MageClassTemplate template = controller.getMageClass(key);
-            if (template != null && (unlock || !template.isLocked())) {
+            if (unlock || !template.isLocked()) {
                 mageClass = new MageClass(this, template);
                 assignParent(mageClass);
                 classes.put(key, mageClass);
