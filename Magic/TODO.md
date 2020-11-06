@@ -2,9 +2,7 @@
 
 ## Hot Issues
 
- - Undo entity effects before blocks
- - Rollback not undoing levitate would be really nice
-
+ - Get items when using erase brush? ... this would be really hard, undo would require having all of the blocks.
  - Support custom prefixes for spells, used by NPCs to put their name in front of everything
 
  - airship schematic, paintings and item frames didn't undo

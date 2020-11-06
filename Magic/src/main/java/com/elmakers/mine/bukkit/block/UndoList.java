@@ -528,6 +528,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             return;
         }
 
+        // This will happen again when the batch is finished, but doing it first as well prevents
+        // hanging entities from breaking
+        undoEntityEffects();
+
         // Block changes will be performed in a batch
         UndoBatch batch = new UndoBatch(this);
         if (blocking) {
