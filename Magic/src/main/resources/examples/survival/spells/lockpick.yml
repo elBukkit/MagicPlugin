@@ -11,6 +11,9 @@ lockpick:
        - class: Lock
     effects:
         cast:
+        - sound: block_iron_trapdoor_open
+          sound_pitch: 1.5
+          location: target
         - class: EffectSingle
           sound: magic.shimmer
           location: origin
@@ -40,6 +43,9 @@ lockpick:
              enable_rotation: false
              offset: 0.5,0.5,0.5
         no_target:
+        - sound: block_note_block_bass
+          sound_pitch: 1.5
+          sound_volume: 0.75
         - class: EffectSingle
           sound: magic.shimmer
           location: origin
@@ -51,6 +57,9 @@ lockpick:
           particle_offset_y: 0.4
           particle_offset_z: 0.2
         fail:
+        - sound: block_note_block_bass
+          sound_pitch: 1.5
+          sound_volume: 0.75
         - class: EffectSingle
           sound: magic.shimmer
           location: origin
@@ -81,7 +90,7 @@ lockpick:
         allow_max_range: true
         check_destructible: true
         destructible: containers
-        indestructible: ""
+        check_indestructible: false
         cooldown: 10000
     costs:
         mana: 100

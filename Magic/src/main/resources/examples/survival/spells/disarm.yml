@@ -16,11 +16,11 @@ disarm:
           - class: Disarm
     effects:
         cast:
+        -  sound: entity_evoker_cast_spell
+           sound_pitch: 1.3
+           sound_volume: 0.8
         -  class: EffectSingle
            sound: magic.crack
-        -  sound: entity_endermen_teleport
-           sound_pitch: 0.3
-           sound_volume: 0.5
         tick:
         -  class: EffectSingle
            location: target
@@ -35,16 +35,20 @@ disarm:
            location: target
            color: DF0101
            firework: star
+        -  sound: entity_parrot_fly
+           sound_pitch: 0.4
+           sound_volume: 1.5
+           location: target
         backfire:
         -  class: EffectSingle
-           sound: entity_player_hurt
+           sound: entity_generic_explode
         -  class: EffectRing
            particle: spell_mob
            color: FF0000
            location: self
         fizzle:
         -  class: EffectSingle
-           sound: entity_generic_explode
+           sound: entity_player_hurt
         -  class: EffectRing
            particle: redstone
            color: FF0000

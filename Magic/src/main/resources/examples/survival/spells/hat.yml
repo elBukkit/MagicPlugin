@@ -14,8 +14,12 @@ hat:
         -  class: Hat
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_generic_drink
+        -  sound: entity_generic_drink
+           sound_pitch: 1.8
+           sound_volume: 0.2
+        -  sound: item_armor_equip_leather
+           sound_volume: 1.2
+           sound_pitch: 1.1
         -  class: EffectTrail
            particle: block_crack
            particle_count: 20

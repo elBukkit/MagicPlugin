@@ -19,7 +19,7 @@ phase:
         cast:
         -  class: EffectSingle
            sound: block_portal_travel
-           sound_volume: 0.5
+           sound_volume: 0.2
            sound_pitch: 0.4
            location: source
            source_location: eyes

@@ -15,6 +15,8 @@ rubberize:
           - class: ModifyBlock
     effects:
         cast:
+        -  sound: block_slime_block_step
+           sound_pitch: 0.3
         -  sound: magic.shimmer
         -  class: EffectTrail
            particle: block_crack

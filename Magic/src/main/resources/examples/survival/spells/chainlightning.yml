@@ -90,6 +90,7 @@ chainlightning:
            particle_offset_z: 1
         -  sound: block_conduit_activate
            sound_pitch: 1.8
+           location: target
     parameters:
         tick_size: 5
         target: other

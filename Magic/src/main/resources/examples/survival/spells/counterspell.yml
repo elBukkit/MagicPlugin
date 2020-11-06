@@ -14,6 +14,10 @@ counterspell:
         -  class: Undo
     effects:
         cast:
+        - sound: block_conduit_deactivate
+          sound_pitch: 1.3
+          sound_volume: 1.5
+          location: both
         - sound: magic.shimmer
           sound_volume: 1
           location: both
@@ -50,6 +54,10 @@ counterspell:
         - location: target
           firework: star
         no_target:
+        - sound: block_conduit_attack_target
+          sound_pitch: 1.3
+          sound_volume: 1.5
+          location: both
         - sound: magic.shimmer
           sound_volume: 1
           location: source

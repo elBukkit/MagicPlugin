@@ -53,6 +53,8 @@ flashbang:
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
+        -  sound: item.trident.throw
+           sound_pitch: 0.8
         tick:
         - location: target
           particle_count: 10
@@ -88,6 +90,10 @@ flashbang:
                particle_offset_y: 0.5
                particle_offset_z: 0.5
         reflect:
+        - sound: item.trident.throw
+          sound_pitch: 1.3
+          sound_volume: 0.5
+          location: target
         - class: EffectSingle
           location: target
           particle: fireworks_spark
