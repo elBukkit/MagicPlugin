@@ -1,4 +1,5 @@
 wand:
+  discover: []
   materials:
     o: nether_star
     i: blaze_rod
@@ -10,21 +11,25 @@ magicheart:
   enabled: false
 
 apprenticeboots:
+  discover: []
   materials:
     o: emerald
     i: wool
 
 apprenticechestplate:
+  discover: []
   materials:
     o: emerald
     i: wool
 
 apprenticehelmet:
+  discover: []
   materials:
     o: emerald
     i: wool
 
 apprenticeleggings:
+  discover: []
   materials:
     o: emerald
     i: wool
@@ -131,6 +136,7 @@ rocketboots:
     f: firework
 
 spellbook:
+  discover: []
   materials:
     o: nether_star
     i: book
@@ -174,3 +180,21 @@ wizardleggings:
   row_1: iii
   row_2: i i
   row_3: ioi
+
+coal_ink:
+  auto_discover: false
+
+elytra:
+  auto_discover: false
+
+emeraldsword:
+  auto_discover: false
+
+name_tag:
+  auto_discover: false
+
+saddle:
+  auto_discover: false
+
+zombie_leather:
+  auto_discover: false

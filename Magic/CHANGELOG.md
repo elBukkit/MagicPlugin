@@ -67,6 +67,7 @@
  - Disabled spell inventory quick-casting (using the drop button) by default
    You can turn this back on with `allow_inventory_casting: true` but it is not recommended on modern MC versions,
    since you'll also get a cast of the main spell.
+ - Fix blinking on top of the top half of slabs
 
  ## Other Changes
 
