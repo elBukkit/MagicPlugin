@@ -6,7 +6,6 @@ superpyramid:
     icon_url: http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6
     category: engineering
     tags: noduel
-    cancellable: false
     class: ConstructSpell
     worth: 3000
     effects:

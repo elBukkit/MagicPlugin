@@ -5,7 +5,6 @@ superregenerate:
     category: engineering
     tags: noduel
     class: RegenerateSpell
-    cancellable: false
     worth: 1500
     effects:
         cast:

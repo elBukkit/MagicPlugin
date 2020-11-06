@@ -6,7 +6,6 @@ tunnel:
     icon_url: http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e
     category: engineering
     tags: noduel
-    cancellable: false
     class: TunnelSpell
     worth: 200
     effects:

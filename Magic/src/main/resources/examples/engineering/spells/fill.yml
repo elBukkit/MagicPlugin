@@ -7,7 +7,6 @@ fill:
     category: engineering
     tags: noduel
     class: FillSpell
-    cancellable: false
     worth: 5000
     effects:
         cast:

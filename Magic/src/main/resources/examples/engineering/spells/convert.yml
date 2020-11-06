@@ -6,7 +6,6 @@ convert:
     icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
     category: engineering
     tags: noduel
-    cancellable: false
     worth: 250
     actions:
         cast:

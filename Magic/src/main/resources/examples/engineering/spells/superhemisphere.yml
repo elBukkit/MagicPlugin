@@ -7,7 +7,6 @@ superhemisphere:
     class: ConstructSpell
     worth: 800
     earns_sp: 2
-    cancellable: false
     effects:
         cast:
         -  class: EffectSingle

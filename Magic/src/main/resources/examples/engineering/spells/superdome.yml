@@ -7,7 +7,6 @@ superdome:
     category: engineering
     tags: noduel
     class: ConstructSpell
-    cancellable: false
     worth: 3000
     effects:
         cast:

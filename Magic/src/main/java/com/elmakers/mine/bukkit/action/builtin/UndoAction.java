@@ -129,7 +129,7 @@ public class UndoAction extends BaseSpellAction
                     + ChatColor.YELLOW + timeout + ChatColor.AQUA + " for target spellKey"
                     + ChatColor.BLUE + targetSpellKey, 2);
 
-            Batch batch = targetMage.cancelPending(targetSpellKey);
+            Batch batch = targetMage.cancelPending(targetSpellKey, false);
             if (batch != null) {
                 undoListName = batch.getName();
                 if (cancel)

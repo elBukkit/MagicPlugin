@@ -6,7 +6,6 @@ supercylinder:
     icon_url: http://textures.minecraft.net/texture/86b54c2be72abec1bb595f3acea2e1ef3dffb94f7d316212ced492b72a164cb2
     category: engineering
     tags: noduel
-    cancellable: false
     class: ConstructSpell
     worth: 3000
     effects:

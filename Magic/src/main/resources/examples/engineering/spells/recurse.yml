@@ -6,7 +6,6 @@ recurse:
     icon_url: http://textures.minecraft.net/texture/d5b284f190a8d48c60481e2a1cd2b2557eeeaccfb02ef183affd6e02de8c51
     category: engineering
     tags: noduel
-    cancellable: false
     worth: 4000
     earns_sp: 15
     actions:

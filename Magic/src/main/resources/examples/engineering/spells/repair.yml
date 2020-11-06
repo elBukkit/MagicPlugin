@@ -6,7 +6,6 @@ repair:
     icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
     category: engineering
     tags: noduel
-    cancellable: false
     class: ConstructSpell
     worth: 300
     effects:

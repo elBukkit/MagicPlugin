@@ -7,7 +7,6 @@ superalter:
     icon_url: http://textures.minecraft.net/texture/b5ccb1a5547f7d1beb4896c6fad4fedbb17ebced53a86b7e96e417114a0cae4
     category: engineering
     tags: noduel
-    cancellable: false
     worth: 2000
     actions:
       cast:

@@ -9,7 +9,6 @@ superblob:
     class: ConstructSpell
     worth: 4500
     earns_sp: 2
-    cancellable: false
     effects:
         cast:
         -  class: EffectSingle

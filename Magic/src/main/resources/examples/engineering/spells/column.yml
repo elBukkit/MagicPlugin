@@ -5,7 +5,6 @@ column:
     icon_url: http://textures.minecraft.net/texture/58c328c062df8bb125e7bb2cca6dce38c24236733a9f95ca75b04c162c64cb8
     category: engineering
     tags: noduel
-    cancellable: false
     worth: 400
     actions:
         cast:

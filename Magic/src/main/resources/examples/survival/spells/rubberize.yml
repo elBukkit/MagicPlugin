@@ -5,7 +5,6 @@ rubberize:
     legacy_icon_disabled: spell_icon_disabled:173
     icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
     category: utility
-    cancellable: false
     worth: 150
     earns_sp: 2
     actions:

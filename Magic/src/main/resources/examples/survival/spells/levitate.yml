@@ -14,6 +14,7 @@ levitate:
     quick_cast: true
     disable_mana_regeneration: true
     toggle: cancel
+    cancellable: false
     actions:
        cast:
        - class: Velocity

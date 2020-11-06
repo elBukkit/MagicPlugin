@@ -5,7 +5,6 @@ wolfhouse_base:
     icon_url: http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
     category: engineering
     worth: 1000
-    cancellable: false
     cast_on_no_target: false
     effects:
         cast:
@@ -74,7 +73,6 @@ wolfhouse:
 wolfhouse_build:
   inherit: wolfhouse_base
   class: ConstructSpell
-  cancellable: false
   parameters:
       target: none
       undo: 0

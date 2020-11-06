@@ -7,7 +7,6 @@ superring:
     category: engineering
     tags: noduel
     class: ConstructSpell
-    cancellable: false
     worth: 4000
     effects:
         cast:

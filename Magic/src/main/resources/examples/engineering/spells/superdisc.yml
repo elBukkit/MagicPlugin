@@ -7,7 +7,6 @@ superdisc:
     category: engineering
     tags: noduel
     class: ConstructSpell
-    cancellable: false
     worth: 2500
     effects:
         cast:

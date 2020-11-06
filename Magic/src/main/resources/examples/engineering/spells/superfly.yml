@@ -9,6 +9,7 @@ superfly:
     category: staff
     worth: 1500
     toggle: cancel
+    cancellable: false
     actions:
        cast:
        - class: Velocity

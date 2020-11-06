@@ -4,7 +4,6 @@ reparifarge:
     icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
     category: staff
     tags: noduel
-    cancellable: false
     worth: 9999
     actions:
         cast:

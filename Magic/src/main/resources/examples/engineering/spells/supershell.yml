@@ -7,7 +7,6 @@ supershell:
     category: engineering
     tags: noduel
     class: ConstructSpell
-    cancellable: false
     worth: 3500
     effects:
         cast:

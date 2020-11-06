@@ -12,6 +12,7 @@ broom:
     world_border_restricted: true
     creative_restricted: true
     cast_on_no_target: false
+    cancellable: false
     actions:
       cast:
         - class: ChangeContext

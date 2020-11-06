@@ -6,7 +6,6 @@ superbackup:
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     category: engineering
     tags: noduel
-    cancellable: false
     class: ConstructSpell
     worth: 1000
     effects:

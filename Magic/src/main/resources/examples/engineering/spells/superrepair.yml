@@ -6,7 +6,6 @@ superrepair:
     icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
     category: engineering
     tags: noduel
-    cancellable: false
     class: ConstructSpell
     worth: 500
     effects:

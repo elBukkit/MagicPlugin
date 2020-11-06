@@ -6,7 +6,6 @@ floodfill:
     icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
     category: engineering
     tags: noduel
-    cancellable: false
     worth: 6000
     actions:
         cast:

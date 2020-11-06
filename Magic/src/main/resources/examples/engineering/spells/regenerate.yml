@@ -5,7 +5,6 @@ regenerate:
     category: engineering
     tags: noduel
     class: RegenerateSpell
-    cancellable: false
     worth: 1000
     effects:
         cast:
