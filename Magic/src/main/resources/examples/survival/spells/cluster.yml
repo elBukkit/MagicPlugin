@@ -27,13 +27,25 @@ cluster:
                  pitch_max: 45
                  yaw_max: 360
                  actions:
+                 - class: PlayEffects
+                   effects: split
                  - class: TNT
                    size: 2
                    projectile_effects: "little"
     effects:
         cast:
-        - class: EffectSingle
-          sound: entity_creeper_primed
+        -  sound: entity_witch_throw
+           sound_pitch: 0.6
+           sound_volume: 2
+        -  class: EffectSingle
+           sound: entity_creeper_primed
+           sound_pitch: 0.1
+           sound_volume: 2
+        split:
+          - location: origin
+            sound: entity_witch_throw
+            sound_pitch: 1.7
+            sound_volume: 2
         big:
         - location: origin
           effectlib:

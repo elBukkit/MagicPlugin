@@ -11,7 +11,9 @@ cage:
     effects:
         cast:
         -  class: EffectSingle
-           sound: block_anvil_use
+           sound: block_chain_place
+           sound_pitch: 0.2
+           sound_volume: 2
         -  class: EffectTrail
            particle: block_crack
     parameters:

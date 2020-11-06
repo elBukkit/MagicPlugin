@@ -12,8 +12,14 @@ invincible:
         -  class: PotionEffect
     effects:
         cast:
-        - class: EffectSingle
-          sound: block_fire_extinguish
+        - sound: item.trident.return
+          sound_pitch: 0.3
+          sound_volume: 2
+        - sound: item.trident.riptide_1
+          sound_pitch: 0.4
+          sound_volume: 2
+        - sound: block_fire_extinguish
+          sound_volume: 0.2
           location: target
           effectlib:
              class: Modified

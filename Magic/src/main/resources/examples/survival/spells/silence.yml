@@ -15,6 +15,10 @@ silence:
           - class: Deactivate
     effects:
         cast:
+        -  sound: item_trident_throw
+           sound_pitch: 0.2
+        -  sound: block_fire_extinguish
+           sound_pitch: 0.3
         -  class: EffectSingle
            sound: magic.shimmer_big
            effectlib:
@@ -27,6 +31,9 @@ silence:
         - location: target
           particle: villager_angry
         hit:
+        -  sound: block_conduit_deactivate
+           sound_pitch: 1.6
+           sound_volume: 1.2
         -  class: EffectSingle
            location: target
            color: 380B61

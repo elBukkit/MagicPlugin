@@ -11,7 +11,7 @@ capture:
   effects:
       cast:
       - class: EffectSingle
-        sound: entity_endermen_teleport
+        sound: entity_enderman_teleport
         sound_pitch: 0.1
         sound_volume: 0.5
         location: origin
@@ -26,7 +26,7 @@ capture:
         firework: star
       - class: EffectSingle
         location: target
-        sound: entity_endermen_teleport
+        sound: entity_enderman_teleport
         sound_pitch: 0.2
         sound_volume: 0.8
         effectlib:

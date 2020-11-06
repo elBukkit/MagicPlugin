@@ -14,13 +14,17 @@ tame:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_irongolem_hurt
+           sound: entity_cat_ambient
+           sound_pitch: 0.2
+           sound_volume: 0.8
            effectlib:
              class: ConeEffect
              iterations: 20
              particle: heart
         -  class: EffectSingle
-           sound: entity_irongolem_hurt
+           sound: entity_cat_ambient
+           sound_pitch: 0.2
+           sound_volume: 0.8
            location: target
            effectlib:
              class: SphereEffect
@@ -28,7 +32,9 @@ tame:
              particle: heart
         no_target:
         -  class: EffectSingle
-           sound: entity_creeper_primed
+           sound: block_note_block_bass
+           sound_pitch: 1.5
+           sound_volume: 0.75
            effectlib:
              class: ConeEffect
              iterations: 20
@@ -40,4 +46,3 @@ tame:
         cooldown: 30000
     costs:
         mana: 100
-

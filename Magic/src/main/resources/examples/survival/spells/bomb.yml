@@ -25,8 +25,18 @@ bomb:
               - class: TNT
     effects:
         cast:
+        -  sound: ambient_nether_wastes_mood
+           sound_pitch: 0.8
+           sound_volume: 2
+           location: target
+        -  sound: entity_witch_throw
+           sound_pitch: 0.2
+           sound_volume: 2
         -  class: EffectSingle
            sound: entity_creeper_primed
+           sound_pitch: 0.1
+           sound_volume: 2
+           location: both
         -  location: target
            effectlib:
              class: Modified

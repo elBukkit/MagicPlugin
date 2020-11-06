@@ -16,7 +16,10 @@ blessing:
               -  class: PotionEffect
     effects:
         cast:
-        - sound: entity_villager_yes
+        - sound: block_beacon_activate
+          sound_pitch: 1.2
+          sound_volume: 1.2
+          location: both
         tick:
         - location: target
           particle: end_rod
@@ -25,9 +28,11 @@ blessing:
           particle_offset_y: 0.1
           particle_offset_z: 0.1
         hit:
-        - class: EffectSingle
-          sound: entity_villager_yes
-          location: target
+        - sound: block_beacon_deactivate
+          sound_pitch: 1.8
+          sound_volume: 1.2
+          location: both
+        - location: target
           effectlib:
              class: HelixEffect
              particle: end_rod
@@ -41,6 +46,9 @@ blessing:
              radius: $radius
         cast_finish:
         - location: targets
+          sound: block_beacon_deactivate
+          sound_pitch: 0.8
+          sound_volume: 0.8
           effectlib:
              class: Love
              iterations: 20

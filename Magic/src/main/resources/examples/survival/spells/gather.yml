@@ -21,7 +21,7 @@ gather:
            sound: entity_player_levelup
         player_selected:
         -  class: EffectSingle
-           sound: entity_endermen_ambient
+           sound: entity_enderman_ambient
         -  class: EffectTrail
            particle: portal
            particle_count: 4

@@ -33,13 +33,15 @@ pollinate:
                    -  class: ThrowItem
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.shimmer
-           location: source
+        - sound: entity_witch_throw
+          sound_pitch: 1.4
+          sound_volume: 2
+        - sound: magic.shimmer
         splash:
         -  class: EffectSingle
            sound: entity_generic_splash
-           sound_volume: 0.2
+           sound_volume: 0.9
+           sound_pitch: 1.2
            location: source
            effectlib:
               class: AtomEffect

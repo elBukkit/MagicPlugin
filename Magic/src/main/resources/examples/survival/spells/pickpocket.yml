@@ -14,7 +14,7 @@ pickpocket:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_endermen_hurt
+           sound: entity_enderman_hurt
         -  class: EffectTrail
            particle: block_crack
            material: obsidian

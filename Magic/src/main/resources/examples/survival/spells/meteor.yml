@@ -28,6 +28,13 @@ meteor:
                  -  class: ModifyBlock
     effects:
         cast:
+        -  sound: ambient_nether_wastes_mood
+           sound_pitch: 1.2
+           sound_volume: 2
+           location: target
+        -  sound: entity_shulker_shoot
+           sound_pitch: 0.3
+           sound_volume: 2
         -  class: EffectSingle
            custom_sound: magic.burn
            location: both
@@ -115,4 +122,3 @@ meteor:
         undo_speed: 2
     costs:
         mana: 200
-

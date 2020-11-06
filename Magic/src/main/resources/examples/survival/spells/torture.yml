@@ -22,9 +22,10 @@ torture:
           - class: Damage
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.electrify
-           sound_volume: .5
+        - sound: entity_wither_hurt
+          sound_pitch: 0.7
+        - sound: magic.electrify
+          sound_volume: 0.5
         projectile:
         - location: origin
           effectlib:
@@ -45,8 +46,6 @@ torture:
         hit:
         -  class: EffectSingle
            location: target
-           color: 19070B
-           firework: ball
            target_location: feet
            effectlib:
              class: Modified
@@ -61,7 +60,8 @@ torture:
         -  class: EffectSingle
            requires_entity_target: true
            location: target
-           sound: entity_irongolem_death
+           sound: entity_iron_golem_death
+           sound_pitch: 0.8
            sound_volume: 1
            effectlib:
              class: BleedEffect

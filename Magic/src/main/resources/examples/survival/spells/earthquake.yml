@@ -52,11 +52,16 @@ earthquake:
                 actions:
                 - class: Delay
                   delay: 500
+              - class: PlayEffects
+                effects: quake
               - class: Cover
                 actions:
                 - class: ModifyBlock
     effects:
         cast:
+        -  sound: block_conduit_deactivate
+           sound_pitch: 0.7
+           sound_volume: 0.5
         -  class: EffectSingle
            sound: magic.ignite
            sound_volume: 1
@@ -75,6 +80,9 @@ earthquake:
            location: target
            target_offset: 0,0.5,0
            material: dirt
+           sound: block_conduit_deactivate
+           sound_pitch: 0.1
+           sound_volume: 1.2
            effectlib:
              class: Modified
              iterations: 30
@@ -100,6 +108,17 @@ earthquake:
           particle_offset_x: 0.2
           particle_offset_y: 0.2
           particle_offset_z: 0.2
+        quake:
+          - location: target
+            particle: block_crack
+            material: dirt
+            particle_count: 10
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
+            sound: block_stone_break
+            sound_pitch: 0.1
+            sound_volume: 2
     parameters:
         target: other
         velocity: 25

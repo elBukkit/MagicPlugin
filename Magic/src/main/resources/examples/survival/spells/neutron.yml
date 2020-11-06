@@ -15,11 +15,19 @@ neutron:
            - class: AreaOfEffectCloud
     effects:
         cast:
+        -  sound: entity_witch_throw
+           sound_pitch: 0.6
+           sound_volume: 1.4
         -  class: EffectSingle
-           sound: entity_creeper_primed
+           sound: item_trident_throw
+           sound_pitch: 0.2
+           sound_volume: 2
         hit:
         -  class: EffectSingle
            location: target
+           sound: entity_evoker_prepare_summon
+           sound_pitch: 0.5
+           sound_volume: 1.8
            effectlib:
              class: HelixEffect
              particle: flame

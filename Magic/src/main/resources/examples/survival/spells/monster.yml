@@ -53,6 +53,9 @@ monster:
                particle_orbital: drip_lava
         undo_entity:
         - location: target
+          sound: block_fire_extinguish
+          sound_volume: 1.7
+          sound_pitch: 0.2
           effectlib:
             class: Smoke
             duration: 1000

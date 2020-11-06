@@ -29,12 +29,19 @@ tornado:
               - class: Velocity
                 ignore_result: true
               - class: Damage
+           - class: Skip
+             skip: 10
+             actions:
+              - class: PlayEffects
+                effects: whirl
     effects:
+        whirl:
+          - location: target
+            sound: block_fire_extinguish
+            sound_volume: 0.2
+            sound_pitch: 0.3
         projectile:
         -  class: EffectSingle
-           sound: block_fire_extinguish
-           sound_volume: 0.2
-           sound_pitch: 0.3
            effectlib:
              class: TornadoEffect
              duration: $lifetime

@@ -15,37 +15,41 @@ farm:
             - class: SpawnEntity
             - class: PlayEffects
               effects: spawned
+            - class: Delay
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_sheep_ambient
+        -  sound: block_beacon_power_select
+           sound_pitch: 1.2
+           sound_volume: 0.8
+        -  sound: entity_sheep_ambient
+           location: target
            effectlib:
              class: Modified
+             offset: 0,0.2,0
              iterations: 60
              parameters:
-               radius: "(t / i) * 5 + 0.1"
+               radius: "(t / i) * 16 + 0.1"
              effect:
-               class: DnaEffect
-               grow: 0.1
-               particles_helix: 5
-               length: 50
-               particle_helix: drip_water
-               particle_base1: drip_water
-               particle_base2: drip_water
+               class: HelixEffect
+               particle: drip_water
         spawned:
         -  class: EffectSingle
            location: target
+           sound: entity_sheep_ambient
+           sound_pitch: 1.4
            effectlib:
-              class: Modified
-              iterations: 32
-              parameters:
-                radius: "(t / i) * 4 + 1"
-              effect:
-               class: AtomEffect
-               particle_nucleus: drip_water
-               particle_orbital: drip_water
+             class: Smoke
+             duration: 100
+             particle: end_rod
+             particle_count: 5
+             particle_offset_x: 0.5
+             particle_offset_y: 0.5
+             particle_offset_z: 0.5
         undo_entity:
         - location: target
+          sound: block_fire_extinguish
+          sound_volume: 0.8
+          sound_pitch: 0.2
           effectlib:
             class: Smoke
             duration: 500
@@ -61,12 +65,16 @@ farm:
         cooldown: 45000
         undo: 30000
         radius: 24
+        delay: 500
         entity_types:
             chicken: 30
             cow: 100
             pig: 100
-            mushroom_cow: 15
+            mushroom_cow: 5
             horse: 5
+            ocelot: 10
+            parrot: 5
+            wolf: 10
     costs:
         mana: 50
 

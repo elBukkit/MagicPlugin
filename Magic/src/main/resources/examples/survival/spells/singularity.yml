@@ -86,6 +86,9 @@ singularity:
           particle_offset_y: 0.6
           particle_offset_z: 0.6
         hit:
+        - sound: block_conduit_deactivate
+          sound_pitch: 0.7
+          sound_volume: 0.5
         -  sound: entity_bee_loop
            sound_pitch: 2
            location: target
