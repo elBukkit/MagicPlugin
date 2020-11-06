@@ -94,15 +94,21 @@ public class FillSpell extends BrushSpell
                 return SpellResult.FAIL;
             }
             boolean success = mage.addBatch(batch);
-
-            deactivate();
             return success ? SpellResult.CAST : SpellResult.FAIL;
         }
         else
         {
+            setSelectedLocation(targetBlock.getLocation());
             this.targetBlock = targetBlock;
             activate();
             return SpellResult.TARGET_SELECTED;
+        }
+    }
+
+    @Override
+    protected void onFinalizeCast(SpellResult result) {
+        if (result != SpellResult.TARGET_SELECTED) {
+            deactivate();
         }
     }
 
@@ -128,5 +134,6 @@ public class FillSpell extends BrushSpell
     @Override
     public void onDeactivate() {
         targetBlock = null;
+        setSelectedLocation(null);
     }
 }

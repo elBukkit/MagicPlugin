@@ -36,6 +36,7 @@ public class EffectVariable extends com.elmakers.mine.bukkit.effect.EffectPlayer
         playAtOrigin = false;
         playAtTarget = false;
         playAtAllTargets = false;
+        playAtSelection = false;
         ConfigurationSection brightness = ConfigurationUtils.getConfigurationSection(configuration, "brightness");
         Collection<String> keys = brightness.getKeys(false);
         for (String key : keys) {
@@ -47,6 +48,7 @@ public class EffectVariable extends com.elmakers.mine.bukkit.effect.EffectPlayer
                     playAtOrigin |= childPlayer.playsAtOrigin();
                     playAtAllTargets |= childPlayer.playsAtAllTargets();
                     playAtTarget |= childPlayer.playsAtTarget();
+                    playAtSelection |= childPlayer.playsAtSelection();
                 }
 
             } catch (Exception ignored) {

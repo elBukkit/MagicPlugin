@@ -52,7 +52,8 @@ public class TargetingSpell extends BaseSpell {
     private Targeting                           targeting               = new Targeting();
 
     private Location                            targetLocation          = null;
-    protected Location                          targetLocation2         = null;
+    protected Location                          targetLocation2          = null;
+    private Location                            selectedLocation        = null;
     private Entity                                targetEntity            = null;
 
     private boolean                                targetNPCs                = false;
@@ -720,6 +721,15 @@ public class TargetingSpell extends BaseSpell {
     @Override
     protected void onBackfire() {
         targeting.setTargetType(TargetType.SELF);
+    }
+
+    @Nullable
+    public Location getSelectedLocation() {
+        return selectedLocation;
+    }
+
+    public void setSelectedLocation(Location location) {
+        this.selectedLocation = location;
     }
 
     @Override

@@ -42,6 +42,9 @@ public interface EffectPlayer {
     boolean playsAtOrigin();
     boolean playsAtTarget();
     boolean playsAtAllTargets();
+    boolean playsAtSelection();
+
+    void setSelection(Location location);
 
     void start(EffectContext context);
     void start(Location origin, Location target);

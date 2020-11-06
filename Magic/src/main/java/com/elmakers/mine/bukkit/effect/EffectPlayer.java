@@ -68,6 +68,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     private DynamicLocation origin;
     private DynamicLocation target;
+    private DynamicLocation selection;
     private Vector originOffset;
     private Vector targetOffset;
     private Vector originRelativeOffset;
@@ -77,6 +78,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
     protected boolean playAtTarget = false;
+    protected boolean playAtSelection = false;
     protected boolean playAtAllTargets = false;
 
     protected Color color = null;
@@ -109,6 +111,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected Particle particleOverride = null;
     protected String useParticleOverride = null;
     protected String useColorOverride = null;
+    protected String radiusOverride = null;
     protected float particleData = 0f;
     protected float particleXOffset = 0.3f;
     protected float particleYOffset = 0.3f;
@@ -172,6 +175,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         broadcastSound = configuration.getBoolean("sound_broadcast", true);
         useParticleOverride = configuration.getString("particle_override", null);
         useColorOverride = configuration.getString("color_override", null);
+        radiusOverride = configuration.getString("radius_override", null);
         originOffset = ConfigurationUtils.getVector(configuration, "origin_offset",  ConfigurationUtils.getVector(configuration, "offset", null, logger, logContext), logger, logContext);
         targetOffset = ConfigurationUtils.getVector(configuration, "target_offset", null, logger, logContext);
         originRelativeOffset = ConfigurationUtils.getVector(configuration, "relative_offset", null, logger, logContext);
@@ -277,6 +281,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void setLocationType(String locationType) {
+        playAtSelection = false;
         if (locationType.equals("target")) {
             playAtOrigin = false;
             playAtTarget = true;
@@ -293,6 +298,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             playAtTarget = true;
             playAtOrigin = false;
             playAtAllTargets = true;
+        } else if (locationType.equals("selection")) {
+            playAtTarget = false;
+            playAtOrigin = false;
+            playAtAllTargets = false;
+            playAtSelection = true;
         }
     }
 
@@ -389,6 +399,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (playAtTarget && target != null) {
             performEffects(target, origin);
         }
+        if (playAtSelection && selection != null) {
+            performEffects(selection, target);
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -455,6 +468,20 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     public String getColorOverrideName() {
         return useColorOverride;
+    }
+
+    public String getRadiusOverrideName() {
+        return radiusOverride;
+    }
+
+    public double getRadius() {
+        if (target == null) return 0;
+        if (playAtSelection) {
+            if (selection == null) return 0;
+            return selection.getLocation().distance(target.getLocation());
+        }
+        if (origin == null) return 0;
+        return origin.getLocation().distance(target.getLocation());
     }
 
     public void setParticleData(float effectData) {
@@ -668,6 +695,22 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
+    @Override
+    public void setSelection(Location location) {
+        if (location == null) {
+            selection = null;
+            return;
+        }
+        if (selection == null) {
+            selection = new DynamicLocation(location);
+        } else {
+            Location selectedLocation = selection.getLocation();
+            selectedLocation.setX(location.getX());
+            selectedLocation.setY(location.getY());
+            selectedLocation.setZ(location.getZ());
+        }
+    }
+
     @Nullable
     public Entity getOriginEntity() {
         return origin == null ? null : origin.getEntity();
@@ -778,6 +821,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Override
     public boolean playsAtAllTargets() {
         return playAtAllTargets;
+    }
+
+    @Override
+    public boolean playsAtSelection() {
+        return playAtSelection;
     }
 
     public Visibility getVisibility() {

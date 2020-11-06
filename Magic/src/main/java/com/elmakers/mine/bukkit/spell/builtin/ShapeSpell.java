@@ -53,6 +53,7 @@ public class ShapeSpell extends BrushSpell
 
                 return SpellResult.TARGET_SELECTED;
             } else {
+                setSelectedLocation(targetBlock.getLocation());
                 radius = (int)targetBlock.getLocation().distance(target.getLocation());
                 orientTo = target.getLocation();
                 target = targetBlock;
@@ -102,8 +103,14 @@ public class ShapeSpell extends BrushSpell
         }
 
         boolean success = mage.addBatch(batch);
-        deactivate();
         return success ? SpellResult.CAST : SpellResult.FAIL;
+    }
+
+    @Override
+    protected void onFinalizeCast(SpellResult result) {
+        if (result != SpellResult.TARGET_SELECTED) {
+            deactivate();
+        }
     }
 
     @Override
@@ -114,6 +121,7 @@ public class ShapeSpell extends BrushSpell
     @Override
     public void onDeactivate() {
         targetBlock = null;
+        setSelectedLocation(null);
     }
 
     @Override

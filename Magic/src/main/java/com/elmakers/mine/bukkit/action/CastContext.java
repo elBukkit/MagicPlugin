@@ -262,6 +262,14 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     }
 
     @Nullable
+    public Location getSelectedLocation() {
+        if (targetingSpell == null) {
+            return null;
+        }
+        return targetingSpell.getSelectedLocation();
+    }
+
+    @Nullable
     @Override
     public Location getTargetLocation() {
         return targetLocation;
@@ -638,6 +646,8 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             {
                 // Set scale
                 player.setScale(scale);
+                // Set selected location
+                player.setSelection(getSelectedLocation());
 
                 Mage mage = getMage();
                 Location source = sourceLocation;

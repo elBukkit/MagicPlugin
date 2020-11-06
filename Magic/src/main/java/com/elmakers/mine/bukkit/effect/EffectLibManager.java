@@ -113,9 +113,13 @@ public class EffectLibManager {
         if (effectOverride != null && effectOverride.isEmpty()) effectOverride = null;
         String colorOverrideName = player.getColorOverrideName();
         if (colorOverrideName != null && colorOverrideName.isEmpty()) colorOverrideName = null;
+        String radiusOverrideName = player.getRadiusOverrideName();
+        if (radiusOverrideName != null && radiusOverrideName.isEmpty()) radiusOverrideName = null;
         ConfigurationSection parameters = configuration;
         Color colorOverride = player.getColor1();
-        if ((colorOverrideName != null && colorOverride != null) || (effectOverride != null && particleEffect != null))
+        if ((colorOverrideName != null && colorOverride != null)
+        || (effectOverride != null && particleEffect != null)
+        || radiusOverrideName != null)
         {
             parameters = new MemoryConfiguration();
             Collection<String> keys = configuration.getKeys(false);
@@ -125,6 +129,10 @@ public class EffectLibManager {
             if (effectOverride != null && particleEffect != null)
             {
                 parameters.set(effectOverride, particleEffect.name());
+            }
+            if (radiusOverrideName != null)
+            {
+                parameters.set(radiusOverrideName, player.getRadius());
             }
             if (colorOverride != null && colorOverrideName != null)
             {

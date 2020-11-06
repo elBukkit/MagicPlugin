@@ -83,6 +83,7 @@ public class ConstructSpell extends BrushSpell
             if (targetBlock == null || !targetBlock.getWorld().equals(target.getWorld())) {
                 targetBlock = target;
                 activate();
+                setSelectedLocation(targetBlock.getLocation());
                 return SpellResult.TARGET_SELECTED;
             } else {
                 radius = (int)targetBlock.getLocation().distance(target.getLocation());
@@ -215,8 +216,14 @@ public class ConstructSpell extends BrushSpell
             batch.setPower(true);
         }
         boolean success = mage.addBatch(batch);
-        deactivate();
         return success ? SpellResult.CAST : SpellResult.FAIL;
+    }
+
+    @Override
+    protected void onFinalizeCast(SpellResult result) {
+        if (result != SpellResult.TARGET_SELECTED) {
+            deactivate();
+        }
     }
 
     @Override
@@ -227,6 +234,7 @@ public class ConstructSpell extends BrushSpell
     @Override
     public void onDeactivate() {
         targetBlock = null;
+        setSelectedLocation(null);
     }
 
     @Override

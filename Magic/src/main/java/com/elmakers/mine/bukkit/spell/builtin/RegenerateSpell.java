@@ -48,15 +48,21 @@ public class RegenerateSpell extends BlockSpell
             batch.setExpand(parameters.getBoolean("expand", false));
 
             boolean success = mage.addBatch(batch);
-
-            deactivate();
             return success ? SpellResult.CAST : SpellResult.FAIL;
         }
         else
         {
+            setSelectedLocation(targetBlock.getLocation());
             this.targetBlock = targetBlock;
             activate();
             return SpellResult.TARGET_SELECTED;
+        }
+    }
+
+    @Override
+    protected void onFinalizeCast(SpellResult result) {
+        if (result != SpellResult.TARGET_SELECTED) {
+            deactivate();
         }
     }
 
@@ -80,5 +86,6 @@ public class RegenerateSpell extends BlockSpell
     @Override
     public void onDeactivate() {
         targetBlock = null;
+        setSelectedLocation(null);
     }
 }
