@@ -24,6 +24,8 @@ import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
@@ -87,9 +89,35 @@ public class SpawnEntityAction extends CompoundAction
                 ConfigurationSection disguiseConfig = parameters.createSection("disguise");
                 disguiseConfig.set("type", targetEntity.getType().name().toLowerCase());
                 if (targetEntity instanceof Player) {
+                    MageController controller = context.getController();
                     Player targetPlayer = (Player)targetEntity;
                     disguiseConfig.set("name", targetPlayer.getName());
                     disguiseConfig.set("skin", targetPlayer.getName());
+                    PlayerInventory inventory = targetPlayer.getInventory();
+                    ItemStack helmet = inventory.getHelmet();
+                    if (!CompatibilityUtils.isEmpty(helmet)) {
+                        disguiseConfig.set("helmet", controller.getItemKey(helmet));
+                    }
+                    ItemStack chestplate = inventory.getChestplate();
+                    if (!CompatibilityUtils.isEmpty(chestplate)) {
+                        disguiseConfig.set("chestplate", controller.getItemKey(chestplate));
+                    }
+                    ItemStack leggings = inventory.getLeggings();
+                    if (!CompatibilityUtils.isEmpty(leggings)) {
+                        disguiseConfig.set("leggings", controller.getItemKey(leggings));
+                    }
+                    ItemStack boots = inventory.getBoots();
+                    if (!CompatibilityUtils.isEmpty(boots)) {
+                        disguiseConfig.set("boots", controller.getItemKey(boots));
+                    }
+                    ItemStack mainhand = inventory.getItemInMainHand();
+                    if (!CompatibilityUtils.isEmpty(mainhand)) {
+                        disguiseConfig.set("mainhand", controller.getItemKey(mainhand));
+                    }
+                    ItemStack offhand = inventory.getItemInOffHand();
+                    if (!CompatibilityUtils.isEmpty(offhand)) {
+                        disguiseConfig.set("offhand", controller.getItemKey(offhand));
+                    }
                 }
             }
         }

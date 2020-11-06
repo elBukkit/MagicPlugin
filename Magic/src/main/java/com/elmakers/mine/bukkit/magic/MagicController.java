@@ -1128,7 +1128,7 @@ public class MagicController implements MageController {
         if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
             getLogger().info("LibsDisguises not found, magic mob disguises will not be available");
         } else if (libsDisguiseEnabled) {
-            libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
+            libsDisguiseManager = new LibsDisguiseManager(this, libsDisguisePlugin);
             if (libsDisguiseManager.initialize()) {
                 getLogger().info("LibsDisguises found, mob disguises and disguise_restricted features enabled");
             } else {
