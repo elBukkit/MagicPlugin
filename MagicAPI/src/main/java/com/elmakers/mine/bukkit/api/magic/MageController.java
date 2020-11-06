@@ -153,6 +153,7 @@ public interface MageController {
     Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
     Collection<String> getAutomatonTemplateKeys();
     Collection<String> getRecipeKeys();
+    Collection<String> getAutoDiscoverRecipeKeys();
     @Nullable
     SpellTemplate getSpellTemplate(String key);
     Set<String> getWandPathKeys();

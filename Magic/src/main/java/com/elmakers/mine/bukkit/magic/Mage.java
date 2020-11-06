@@ -1107,6 +1107,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // Load player-specific data
             Player player = getPlayer();
             if (player != null) {
+                for (String recipeKey : controller.getAutoDiscoverRecipeKeys()) {
+                    CompatibilityUtils.discoverRecipe(player, controller.getPlugin(), recipeKey);
+                }
                 if (controller.isInventoryBackupEnabled()) {
                     if (restoreInventory != null) {
                         controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");

@@ -6774,6 +6774,11 @@ public class MagicController implements MageController {
         return crafting.getRecipeKeys();
     }
 
+    @Override
+    public Collection<String> getAutoDiscoverRecipeKeys() {
+        return crafting.getAutoDiscoverRecipeKeys();
+    }
+
     public void setVanished(Mage mage, boolean isVanished) {
         if (isVanished) {
             vanished.put(mage.getId(), mage);

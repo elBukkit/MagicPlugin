@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -39,6 +41,8 @@ public class MagicRecipe {
     private Map<Character, ItemData> ingredients = new HashMap<>();
     private final MagicController controller;
     private final String key;
+    private boolean autoDiscover = false;
+    private List<String> discover = null;
 
     public static boolean FIRST_REGISTER = true;
 
@@ -58,6 +62,8 @@ public class MagicRecipe {
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
         group = configuration.getString("group", "Magic");
         ignoreDamage = configuration.getBoolean("ignore_damage", false);
+        autoDiscover = configuration.getBoolean("auto_discover", false);
+        discover = ConfigurationUtils.getStringList(configuration, "discover");
 
         if (disableDefaultRecipe) {
             controller.getLogger().warning("Recipe " + key + " has disable_default: true, ignoring because trying to remove a recipe now throws an error.");
@@ -295,7 +301,18 @@ public class MagicRecipe {
         return MatchType.MATCH;
     }
 
+    public void crafted(HumanEntity entity, MageController controller) {
+        if (discover == null) return;
+        for (String key : discover) {
+            CompatibilityUtils.discoverRecipe(entity, controller.getPlugin(), key);
+        }
+    }
+
     public String getKey() {
         return key;
+    }
+
+    public boolean isAutoDiscover() {
+        return autoDiscover;
     }
 }

@@ -35,6 +35,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Hanging;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
@@ -1523,6 +1524,20 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
             return new ShapedRecipe(item);
         }
+    }
+
+    public static boolean discoverRecipe(HumanEntity entity, Plugin plugin, String key) {
+        if (class_NamespacedKey == null || class_HumanEntity_discoverRecipeMethod == null) {
+            return false;
+        }
+
+        try {
+            Object namespacedKey = class_NamespacedKey_constructor.newInstance(plugin, key.toLowerCase());
+            return (boolean)class_HumanEntity_discoverRecipeMethod.invoke(entity, namespacedKey);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     public static double getMaxHealth(Damageable li) {

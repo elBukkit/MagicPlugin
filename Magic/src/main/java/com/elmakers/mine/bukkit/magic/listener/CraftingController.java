@@ -39,6 +39,7 @@ public class CraftingController implements Listener {
     private boolean allowWandsAsIngredients = true;
     private Map<Material, List<MagicRecipe>> recipes = new HashMap<>();
     private Set<String> recipeKeys = new HashSet<>();
+    private Set<String> autoDiscoverRecipeKeys = new HashSet<>();
 
     public CraftingController(MagicController controller) {
         this.controller = controller;
@@ -47,6 +48,7 @@ public class CraftingController implements Listener {
     public void load(ConfigurationSection configuration) {
         recipes.clear();
         recipeKeys.clear();
+        autoDiscoverRecipeKeys.clear();
         if (!craftingEnabled) {
             return;
         }
@@ -74,6 +76,9 @@ public class CraftingController implements Listener {
             }
             similar.add(recipe);
             this.recipeKeys.add(recipe.getKey());
+            if (recipe.isAutoDiscover()) {
+                autoDiscoverRecipeKeys.add(recipe.getKey());
+            }
         }
     }
 
@@ -150,6 +155,9 @@ public class CraftingController implements Listener {
                 } else if (matchType == MagicRecipe.MatchType.MATCH) {
                     ItemStack crafted = candidate.craft();
                     inventory.setResult(crafted);
+                    for (HumanEntity human : event.getViewers()) {
+                        candidate.crafted(human, controller);
+                    }
                 }
                 break;
             } else if (substitute != null) {
@@ -214,12 +222,10 @@ public class CraftingController implements Listener {
     }
 
     public List<String> getRecipeKeys() {
-        List<String> keys = new ArrayList<>();
-        for (List<MagicRecipe> recipeList : recipes.values()) {
-            for (MagicRecipe recipe : recipeList) {
-                keys.add(recipe.getKey());
-            }
-        }
-        return keys;
+        return new ArrayList<>(recipeKeys);
+    }
+
+    public List<String> getAutoDiscoverRecipeKeys() {
+        return new ArrayList<>(autoDiscoverRecipeKeys);
     }
 }

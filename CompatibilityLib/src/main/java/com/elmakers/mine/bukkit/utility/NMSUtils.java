@@ -24,6 +24,7 @@ import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -323,6 +324,7 @@ public class NMSUtils {
     protected static Method class_Phantom_getSizeMethod;
     protected static Method class_Phantom_setSizeMethod;
     protected static Method class_Server_removeRecipeMethod;
+    protected static Method class_HumanEntity_discoverRecipeMethod;
 
     protected static boolean legacyMaps;
 
@@ -1090,6 +1092,12 @@ public class NMSUtils {
                 } catch (Throwable ex) {
                     class_Server_removeRecipeMethod = null;
                     logger.info("Couldn't find recipe removal method, this is odd since we ddi find NamespacedKey");
+                }
+                try {
+                    class_HumanEntity_discoverRecipeMethod = HumanEntity.class.getMethod("discoverRecipe", class_NamespacedKey);
+                } catch (Throwable ex) {
+                    class_HumanEntity_discoverRecipeMethod = null;
+                    logger.info("Couldn't find recipe discover method, this is odd since we ddi find NamespacedKey");
                 }
             }
 

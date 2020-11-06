@@ -51,6 +51,10 @@
    - Can be spawned simply with `/mnpc add ollivander` and it's ready to go
    - Added spellshop and healer NPC templates to survival configs
 
+ - Crafting recipes can be set to `auto_discover: true`
+   - They can also contain a list of other recipes that the player will discover once they craft a certain recipe
+   - Survival recipes are now automatically discovered as appropriate
+
  ## Fixes
 
  - Fix using the replicate and clone brushes with the Place spell
