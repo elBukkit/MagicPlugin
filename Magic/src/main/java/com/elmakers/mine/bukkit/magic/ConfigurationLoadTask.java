@@ -149,7 +149,6 @@ public class ConfigurationLoadTask implements Runnable {
             if (input != null)  {
                 try {
                     ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
-                    ConfigurationUtils.addConfigurations(config, exampleConfig);
                     info(" Using " + examplesFileName);
                     List<String> inherits = ConfigurationUtils.getStringList(exampleConfig, "inherit");
                     if (inherits != null) {
@@ -158,11 +157,12 @@ public class ConfigurationLoadTask implements Runnable {
                             InputStream inheritInput = plugin.getResource(inheritFileName);
                             if (inheritInput != null) {
                                 ConfigurationSection inheritedConfig = CompatibilityUtils.loadConfiguration(inheritInput);
-                                ConfigurationUtils.addConfigurations(config, inheritedConfig, false);
+                                ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
                                 info("  Inheriting from " + inheritFrom);
                             }
                         }
                     }
+                    ConfigurationUtils.addConfigurations(config, exampleConfig);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + examplesFileName);
                     throw ex;
