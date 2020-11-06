@@ -66,6 +66,7 @@
 
  ## Other Changes
 
+ - Add "spawn" actions on SpawnEntity action, to run some actions after spawning the entity ("actions" runs on entity death)
  - Add ignore_damage option for crafting recipes
  - Add auto_block_state for ModifyBlock, used by Place spell, attempts to place a block as if a player placed it
  - Add `/mwarp configure` command, used for Dynmap and Recall integration

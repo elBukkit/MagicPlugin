@@ -62,6 +62,8 @@ public class SpawnEntityAction extends CompoundAction
 
     private EntityData entityData;
     private WeakReference<Entity> entity;
+    private boolean spawnedActionsRun = false;
+    private boolean hasSpawnActions = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -106,6 +108,15 @@ public class SpawnEntityAction extends CompoundAction
                 spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
             }
         }
+
+        ActionHandler handler = getHandler("spawn");
+        hasSpawnActions = handler != null && handler.size() > 0;
+    }
+
+    @Override
+    protected void addHandlers(Spell spell, ConfigurationSection parameters) {
+        super.addHandlers(spell, parameters);
+        addHandler(spell, "spawn");
     }
 
     @Override
@@ -130,18 +141,27 @@ public class SpawnEntityAction extends CompoundAction
         }
         Entity spawned = entity.get();
         if (spawned == null || spawned.isDead() || !spawned.isValid() || !waitForDeath) {
-            if ((setTarget || setSource) && spawned != null) {
-                Entity sourceEntity = setSource ? spawned : context.getEntity();
-                if (setTarget) {
-                    createActionContext(context, sourceEntity, sourceEntity.getLocation(), spawned, spawned.getLocation());
-                } else {
-                    createActionContext(context, sourceEntity, sourceEntity.getLocation());
-                }
-            }
-            return startActions();
+            return startTargetedActions("actions", spawned, context);
+        }
+
+        if (hasSpawnActions && !spawnedActionsRun) {
+            spawnedActionsRun = true;
+            return startTargetedActions("spawn", spawned, context);
         }
 
         return SpellResult.PENDING;
+    }
+
+    private SpellResult startTargetedActions(String actionKey, Entity spawned, CastContext context) {
+        if ((setTarget || setSource) && spawned != null) {
+            Entity sourceEntity = setSource ? spawned : context.getEntity();
+            if (setTarget) {
+                createActionContext(context, sourceEntity, sourceEntity.getLocation(), spawned, spawned.getLocation());
+            } else {
+                createActionContext(context, sourceEntity, sourceEntity.getLocation());
+            }
+        }
+        return startActions(actionKey);
     }
 
     private SpellResult spawn(CastContext context) {

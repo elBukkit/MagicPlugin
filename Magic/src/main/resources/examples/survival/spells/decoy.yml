@@ -11,6 +11,11 @@ decoy:
     cast:
     - class: Vanish
     - class: SpawnEntity
+      set_target: true
+      spawn:
+      - class: AreaOfEffect
+        actions:
+          - class: Aggro
       actions:
       - class: Undo
   parameters:
@@ -18,9 +23,10 @@ decoy:
     cooldown: 30000
     cancel_on_damage: 0.5
     cancel_on_cast_other: true
-    type: pig_zombie
+    type: husk
     silent: true
     disguise_target: self
     max_health: 20
+    radius: 32
   costs:
     mana: 100
