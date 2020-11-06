@@ -1,6 +1,10 @@
 spellbook:
   output: spellbook
   output_type: wand
+  discover:
+    - magicbow
+    - magicsword
+    - talisman
 
   materials:
     o: magicheart

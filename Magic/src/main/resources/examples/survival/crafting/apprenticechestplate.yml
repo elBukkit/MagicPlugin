@@ -2,6 +2,8 @@ apprenticechestplate:
   enabled: false
   output: apprenticechestplate
   output_type: wand
+  discover:
+    - wizardchestplate
   materials:
     o: magicheart
     i: white_wool

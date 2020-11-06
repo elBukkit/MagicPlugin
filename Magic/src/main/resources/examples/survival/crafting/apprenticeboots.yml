@@ -2,6 +2,8 @@ apprenticeboots:
   enabled: false
   output: apprenticeboots
   output_type: wand
+  discover:
+    - wizardboots
   materials:
     o: magicheart
     i: white_wool

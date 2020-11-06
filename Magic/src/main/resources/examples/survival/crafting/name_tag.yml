@@ -1,5 +1,7 @@
 name_tag:
   enabled: false
+  auto_discover: true
+  group: ""
   output: name_tag
   output_type: item
   materials:

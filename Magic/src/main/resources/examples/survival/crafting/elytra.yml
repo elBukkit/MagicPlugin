@@ -1,5 +1,7 @@
 elytra:
   enabled: false
+  auto_discover: true
+  group: ""
   output: elytra
   output_type: item
   materials:

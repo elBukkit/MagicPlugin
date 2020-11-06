@@ -2,6 +2,8 @@ apprenticeleggings:
   enabled: false
   output: apprenticeleggings
   output_type: wand
+  discover:
+    - wizardleggings
   materials:
     o: magicheart
     i: white_wool

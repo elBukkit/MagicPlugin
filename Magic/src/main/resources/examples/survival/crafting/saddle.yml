@@ -1,5 +1,7 @@
 saddle:
   enabled: false
+  auto_discover: true
+  group: ""
   output: saddle
   output_type: item
   materials:

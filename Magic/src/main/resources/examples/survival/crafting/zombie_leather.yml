@@ -2,6 +2,8 @@
 # for animal lovers <3
 zombie_leather:
   enabled: false
+  auto_discover: true
+  group: ""
   output: leather
   output_type: item
   materials:

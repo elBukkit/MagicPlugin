@@ -1,6 +1,24 @@
 magicheart:
   output: magicheart
   output_type: wand
+  auto_discover: true
+  discover:
+    - apprenticeboots
+    - apprenticechestplate
+    - apprenticeleggings
+    - apprenticehelmet
+    - broomstick
+    - camera
+    - divinghelmet
+    - flashboots
+    - goggles
+    - magichat
+    - magictorch
+    - mastersword
+    - mirrorshield
+    - rabbitboots
+    - rocketboots
+    - spellbook
   materials:
     o: emerald
     O: diamond

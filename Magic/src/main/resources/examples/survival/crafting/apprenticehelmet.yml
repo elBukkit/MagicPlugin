@@ -2,6 +2,8 @@ apprenticehelmet:
   enabled: false
   output: apprenticehelmet
   output_type: wand
+  discover:
+    - wizardhelmet
   materials:
     o: magicheart
     i: white_wool

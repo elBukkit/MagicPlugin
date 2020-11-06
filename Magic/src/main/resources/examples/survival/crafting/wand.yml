@@ -14,6 +14,12 @@ wand:
   # Don't disable the default recipe
   disable_default: false
 
+  # Recipes that will be discovered when crafting this one
+  discover:
+    - magicbow
+    - magicsword
+    - talisman
+
   # This defines the materials that will be required to craft this wand
   materials:
     o: magicheart
