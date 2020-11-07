@@ -42,6 +42,8 @@ public class BlockSearchAction extends CompoundAction
 
         while (context.isTargetable(targetBlock) && distance <= MAX_SEARCH_DISTANCE)
         {
+            actionContext.setTargetLocation(targetBlock.getLocation());
+            actionContext.playEffects("search");
             distance++;
             attachBlock = targetBlock;
             targetBlock = attachBlock.getRelative(direction);

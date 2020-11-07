@@ -99,6 +99,7 @@
  - Add "slimefun" example, which will add RP items from this RP:
    https://www.planetminecraft.com/texture-pack/slimefun-texture-by-raulh22/
  - Add "safe" example, which modifies the survival configs to avoid all world changes
+ - Add "search" effects to BlockSearch action, played for each step of the search
 
 # 7.11.1
 
