@@ -22,4 +22,4 @@ emerald_sword:
       ==: ItemMeta
       meta-type: UNSPECIFIC
       display-name: Emerald Sword
-      custom-model-data: 1
+      custom-model-data: 18001
