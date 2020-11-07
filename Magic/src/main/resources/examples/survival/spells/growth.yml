@@ -51,7 +51,7 @@ growth:
         radius: 2
         vertical_range: 4
         cooldown: 3000
-        transparent: air
+        transparent: all_air
         destructible: plants
         bypass_undo: true
         ignore_region_overrides: true

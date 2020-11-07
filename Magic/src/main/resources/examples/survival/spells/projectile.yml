@@ -127,6 +127,6 @@ projectile:
         target_breakables: 1
         reorient: false
         reflective: iron_block
-        transparent: air
+        transparent: all_air
         undo: 5000
 

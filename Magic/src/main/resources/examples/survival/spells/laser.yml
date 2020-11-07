@@ -117,7 +117,7 @@ laser:
         destructible_durability: 100
         break_durability: 4
         undo: 20000
-        transparent: air
+        transparent: all_air
         radius: 0
         cooldown: 10000
         delay: 100

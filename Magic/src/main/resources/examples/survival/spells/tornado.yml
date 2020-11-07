@@ -62,7 +62,7 @@ tornado:
     parameters:
         target: none
         ignore_targeting: true
-        transparent: air,destructible
+        transparent: all_air,destructible
         target_type: Entity
         radius: 2
         target_count: 16
@@ -89,7 +89,7 @@ tornado:
 tornado|2:
     parameters:
         destructible: destructible,destructible2,destructible3
-        transparent: air,destructible,destructible2,destructible3
+        transparent: all_air,destructible,destructible2,destructible3
         target_offset: 0,5,0
         x_size: 1
         z_size: 1

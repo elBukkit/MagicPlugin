@@ -127,7 +127,7 @@ secure:
         range: 8
         loud: true
         allow_max_range: true
-        transparent: air,attachable_wall
+        transparent: all_air,attachable_wall
         check_destructible: true
         destructible: chest,trapped_chest
         check_indestructible: false

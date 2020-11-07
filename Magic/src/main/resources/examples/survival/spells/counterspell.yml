@@ -78,7 +78,7 @@ counterspell:
             particles: 20
     parameters:
         hitbox: false
-        transparent: air
+        transparent: all_air
         allow_max_range: true
         target: other
         target_type: LivingEntity

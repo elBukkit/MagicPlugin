@@ -140,6 +140,6 @@ arrow_light:
           slow: 10
         undo: 5000
         brush: air
-        transparent: air,water,stationary_water
+        transparent: all_air,water,stationary_water
     costs:
       arrow: 1

@@ -136,7 +136,7 @@ railgun:
         cooldown: 10000
         reorient: false
         undo: 5000
-        transparent: air,water,stationary_water
+        transparent: all_air,water,stationary_water
     costs:
         mana: 150
 

@@ -92,7 +92,7 @@ superlaser:
         increment_data: false
         check_destructible: true
         destructible: destructible
-        transparent: air
+        transparent: all_air
         brush: air
         radius: 1.5
         cooldown: 10000
