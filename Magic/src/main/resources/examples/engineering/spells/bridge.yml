@@ -18,14 +18,34 @@ bridge:
             - class: PlayEffects
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_stone_break
+          - sound: entity_illusioner_cast_spell
+            sound_pitch: 1.3
+            sound_volume: 0.1
+          - sound: block_stone_place
+            location: both
+        search:
+         - particle: block_crack
+           location: target
+           target_location: block_center
+           particle_count: 8
+           particle_offset_x: 0.75
+           particle_offset_y: 0.75
+           particle_offset_z: 0.75
+         - particle: end_rod
+           location: target
+           target_location: block_center
+           particle_count: 4
+           particle_offset_x: 0.55
+           particle_offset_y: 0.55
+           particle_offset_z: 0.55
         built:
         -  class: EffectSingle
            effect: step_sound
            location: target
+           target_location: block_center
         -  class: EffectSingle
            sound: block_stone_break
+           target_location: block_center
            effectlib:
              class: LineEffect
              particle: block_crack

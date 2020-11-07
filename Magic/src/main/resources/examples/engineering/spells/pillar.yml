@@ -16,16 +16,42 @@ pillar:
           - class: PlayEffects
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_stone_break
-           location: origin
+        -  sound: entity_illusioner_cast_spell
+           sound_pitch: 1.5
+           sound_volume: 0.1
+        -  sound: block_stone_place
+           location: both
         -  class: EffectTrail
            particle: block_crack
            particle_count: 4
+           particle_offset_x: 0.05
+           particle_offset_y: 0.05
+           particle_offset_z: 0.05
+        search:
+         - particle: block_crack
+           target_location: block_center
+           location: target
+           particle_count: 8
+           particle_offset_x: 0.75
+           particle_offset_y: 0.75
+           particle_offset_z: 0.75
+         - particle: end_rod
+           target_location: block_center
+           location: target
+           particle_count: 4
+           particle_offset_x: 0.55
+           particle_offset_y: 0.55
+           particle_offset_z: 0.55
         built:
         -  class: EffectSingle
            effect: step_sound
+           target_location: block_center
            location: target
+           particle: block_crack
+           particle_count: 16
+           particle_offset_x: 1.5
+           particle_offset_y: 1.5
+           particle_offset_z: 1.5
     parameters:
         effects: built
         allow_max_range: false

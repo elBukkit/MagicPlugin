@@ -13,6 +13,9 @@ supertorch:
         -  class: Torch
     effects:
         cast:
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 0.7
+          sound_volume: 0.6
         -  class: EffectSingle
            sound: item_firecharge_use
         -  class: EffectTrail

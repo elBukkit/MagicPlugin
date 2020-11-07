@@ -24,7 +24,6 @@ torch:
            particle_offset_x: 0.2
            particle_offset_y: 0.2
            particle_offset_z: 0.2
-           material: glowstone
     parameters:
         allow_max_range: false
         range: 32
