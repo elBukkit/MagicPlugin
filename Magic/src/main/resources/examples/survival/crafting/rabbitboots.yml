@@ -6,7 +6,7 @@ rabbitboots:
     i: rabbit_hide
     r: rabbit_foot
     o: magicheart
-  row_1:
+  row_1: ""
   row_2: i i
   row_3: ror
 

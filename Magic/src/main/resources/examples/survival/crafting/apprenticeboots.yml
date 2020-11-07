@@ -7,7 +7,7 @@ apprenticeboots:
   materials:
     o: magicheart
     i: white_wool
-  row_1:
+  row_1: ""
   row_2: i i
   row_3: ioi
 

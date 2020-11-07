@@ -6,7 +6,7 @@ flashboots:
     o: magicheart
     i: wool
     f: feather
-  row_1:
+  row_1: ""
   row_2: i i
   row_3: fof
 

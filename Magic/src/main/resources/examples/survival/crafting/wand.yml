@@ -29,6 +29,4 @@ wand:
   # have up to 3 characters that map to the materials listed above.
   row_1: o
   row_2: i
-  row_3:
-
-
+  row_3: ""

@@ -4,7 +4,7 @@ magicsword:
   materials:
     o: magicheart
     i: netherite_sword
-  row_1:
+  row_1: ""
   row_2: o
   row_3: i
 
