@@ -108,7 +108,7 @@ public class FillSpell extends BrushSpell
     @Override
     protected void onFinalizeCast(SpellResult result) {
         if (result != SpellResult.TARGET_SELECTED) {
-            deactivate();
+            onDeactivate();
         }
     }
 
