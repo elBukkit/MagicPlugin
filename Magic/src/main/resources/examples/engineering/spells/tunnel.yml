@@ -10,10 +10,15 @@ tunnel:
     worth: 200
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_generic_explode
-        -  class: EffectTrail
-           particle: explosion_large
+        - sound: entity_generic_explode
+          sound_volume: 0.2
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 1.5
+          sound_volume: 0.7
+        - class: EffectTrail
+          length: 16
+          iterations: 10
+          particle: explosion_large
     parameters:
         allow_max_range: false
         range: 32

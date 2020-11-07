@@ -10,11 +10,50 @@ superblob:
     worth: 4500
     earns_sp: 2
     effects:
-        cast:
-        -  class: EffectSingle
-           sound: entity_player_levelup
-        -  class: EffectTrail
-           particle: block_crack
+      cast:
+        - sound: magic.shield
+          sound_volume: 0.3
+        - sound: block_slime_block_hit
+          sound_pitch: 1.5
+          sound_volume: 1.2
+        - sound: block_stone_place
+          sound_pitch: 0.2
+          sound_volume: 1.7
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 0.3
+        - class: EffectTrail
+          location: origin_to_selection
+          particle: block_crack
+          particle_count: 6
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
+        - location: selection_to_target
+          radius_override: variable_a
+          effectlib:
+            class: Modified
+            duration: 1500
+            parameters:
+              radius: "(t / i) * a + 0.5"
+            effect:
+              class: Sphere
+              particle: block_crack
+              particles: 15
+              particle_count: 10
+              particle_offset_x: 0.5
+              particle_offset_y: 0.5
+              particle_offset_z: 0.5
+        - location: selection_to_target
+          radius_override: radius
+          effectlib:
+            class: Sphere
+            duration: 1500
+            particle: end_rod
+            particles: 25
+            particle_count: 3
+            particle_offset_x: 0.05
+            particle_offset_y: 0.05
+            particle_offset_z: 0.05
     parameters:
         allow_max_range: true
         check_destructible: false

@@ -10,14 +10,33 @@ superblast:
     worth: 3000
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_generic_explode
+        -  sound: entity_generic_explode
+           location: both
+           sound_pitch: 0.8
+        -  sound: block_conduit_deactivate
+           sound_pitch: 0.4
+           sound_volume: 0.5
         -  class: EffectTrail
-           particle: explosion_huge
+           particle: explosion_normal
+           particle_count: 3
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+        -  particle: explosion_huge
+           location: target
+           particle_count: 6
+           particle_offset_x: 4
+           particle_offset_y: 4
+           particle_offset_z: 4
+        -  particle: explosion_large
+           location: target
+           particle_count: 12
+           particle_offset_x: 5
+           particle_offset_y: 5
+           particle_offset_z: 5
     parameters:
         allow_max_range: true
         range: 32
-        speed: 3
         brush: air
         radius: 5
         type: sphere
@@ -29,4 +48,3 @@ superblast:
         ignore_region_overrides: true
     costs:
         mana: 100
-

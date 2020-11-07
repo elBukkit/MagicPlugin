@@ -10,10 +10,15 @@ supercylinder:
     worth: 3000
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_player_levelup
-        -  class: EffectTrail
-           particle: block_crack
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 0.3
+        - class: EffectTrail
+          location: origin_to_selection
+          particle: block_crack
+          particle_count: 6
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
     parameters:
         allow_max_range: true
         range: 32

@@ -19,8 +19,10 @@ flatten:
           effects: lower
   effects:
     cast:
+    - sound: entity_illusioner_cast_spell
+      sound_pitch: 0.5
     - sound: block_stone_break
-      location: origin
+      location: both
     - class: EffectTrail
       reverse: true
       particle: block_crack
@@ -35,8 +37,8 @@ flatten:
       particle_offset_z: 0.5
   parameters:
     range: 32
-    radius: 16
-    vertical_range: 32
+    radius: 8
+    vertical_range: 8
     volume_type: reverse_spiral
     ignore_region_overrides: true
     faces:
@@ -51,3 +53,11 @@ flatten:
     - north_west
   costs:
     mana: 50
+
+flatten|2:
+  parameters:
+    radius: 12
+
+flatten|3:
+  parameters:
+    radius: 16

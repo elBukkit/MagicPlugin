@@ -21,8 +21,10 @@ raise:
           effects: raise
   effects:
     cast:
+    - sound: entity_illusioner_cast_spell
+      sound_pitch: 0.5
     - sound: block_stone_break
-      location: origin
+      location: both
     - class: EffectTrail
       particle: block_crack
       particle_count: 4
@@ -36,7 +38,7 @@ raise:
       particle_offset_z: 0.5
   parameters:
     range: 64
-    radius: 16
+    radius: 8
     vertical_range: 32
     consume: true
     destructible: "!earth"
@@ -57,3 +59,11 @@ raise:
     - north_west
   costs:
     mana: 50
+
+raise|2:
+  parameters:
+    radius: 12
+
+raise|3:
+  parameters:
+    radius: 16

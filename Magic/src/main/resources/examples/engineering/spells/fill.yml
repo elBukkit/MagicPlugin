@@ -13,7 +13,7 @@ fill:
         cast:
           - sound: entity_illusioner_cast_spell
             sound_pitch: 0.3
-          - location: selection
+          - location: selection_to_target
             effectlib:
               class: Cuboid
               duration: 1500
@@ -25,7 +25,7 @@ fill:
               particle_offset_x: 0.02
               particle_offset_y: 0.02
               particle_offset_z: 0.02
-          - location: selection
+          - location: selection_to_target
             effectlib:
                padding: 0.2
                block_snap: true

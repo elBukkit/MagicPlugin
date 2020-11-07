@@ -15,6 +15,7 @@ spells:
         description: Convert a spherical area of blocks
         usage: Does not fill air
         cast_finish: Converted $count blocks to $material
+        upgrade_description: "Increased radius"
     superconvert:
         name: SuperConvert
         description: Convert a large sphere of blocks
@@ -208,10 +209,12 @@ spells:
         name: Raise
         description: Raises the ground up to form a nice slope
         cast: You raise up the ground
+        upgrade_description: "Increased radius"
     flatten:
         name: Flatten
         description: Lower the ground to flatten it to the lowest point in the area
         cast: You flatten the hills
+        upgrade_description: "Increased radius"
     place:
         name: Place
         description: Place a block at your target
@@ -251,6 +254,7 @@ spells:
         name: Recurse
         description: Recursively fill blocks
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased recursion depth and build speed"
     floodfill:
         name: Flood Fill
         description: Fill up a hole

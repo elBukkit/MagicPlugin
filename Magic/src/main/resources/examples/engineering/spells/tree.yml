@@ -12,11 +12,27 @@ tree:
         - class: Tree
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_generic_splash
-        -  class: EffectTrail
-           particle: block_crack
-           material: log
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 1.3
+          sound_volume: 0.1
+        - sound: entity_generic_splash
+        - class: EffectTrail
+          particle: block_crack
+          material: log
+          particle_count: 4
+          particle_offset_x: 0.05
+          particle_offset_y: 0.05
+          particle_offset_z: 0.05
+        - location: target
+          effectlib:
+            class: Shield
+            particle: water_splash
+            radius: 3
+            duration: 2000
+            particle_count: 3
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
     parameters:
         allow_max_range: false
         range: 64

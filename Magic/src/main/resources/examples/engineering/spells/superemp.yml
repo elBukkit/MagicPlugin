@@ -9,15 +9,34 @@ superemp:
     worth: 800
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.electrify
-        -  class: EffectTrail
-           particle: redstone
-           particle_count: 5
-        -  class: EffectRing
-           particle: redstone
-           particle_count: 6
-           location: target
+          - sound: block_beacon_activate
+            sound_pitch: 1.8
+            sound_volume: 1.2
+          - class: EffectSingle
+            sound: magic.electrify
+          - class: EffectTrail
+            particle: redstone
+            location: origin_to_selection
+            color: false
+            particle_offset_x: 0.2
+            particle_offset_y: 0.2
+            particle_offset_z: 0.2
+            particle_count: 10
+          - class: EffectRing
+            location: target_to_selection
+            size: 6
+            radius: 0
+            radius_override: variable_a
+            effectlib:
+             class: Modified
+             duration: 2000
+             parameters:
+               y_factor: "(t/i)*0.75"
+               size: "(t/i)*a/5 + 0.5"
+             effect:
+               class: AnimatedBall
+               particle: redstone
+               y_offset: 1
     parameters:
         target: select
         allow_max_range: false
@@ -31,4 +50,3 @@ superemp:
         entity_undo_types: ""
     costs:
         mana: 200
-

@@ -13,6 +13,7 @@ architect:
     mana_max: 300
     extra_spells:
       - projector
+      - superemp
     spells:
       - absorb
       - superalter
@@ -23,7 +24,6 @@ architect:
       - superpyramid
       - superblob
       - fill
-      - superemp
       - superdisc
       - superlaser
       - superring

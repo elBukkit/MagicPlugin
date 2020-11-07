@@ -2,6 +2,7 @@
 
 ## Hot Issues
 
+ - Reactivate levitate on login
  - Get items when using erase brush? ... this would be really hard, undo would require having all of the blocks.
  - Support custom prefixes for spells, used by NPCs to put their name in front of everything
 

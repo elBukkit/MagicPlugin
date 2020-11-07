@@ -37,7 +37,7 @@ convert:
         allow_max_range: false
         range: 32
         check_destructible: false
-        radius: 3
+        radius: 2
         replace: true
         transparent: transparent_to_construction
         consume: true
@@ -45,3 +45,10 @@ convert:
     costs:
         mana: 100
 
+convert|2:
+  parameters:
+    radius: 3
+
+convert|3:
+  parameters:
+    radius: 4

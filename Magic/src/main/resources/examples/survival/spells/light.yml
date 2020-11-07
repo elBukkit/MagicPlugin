@@ -13,11 +13,16 @@ light:
         -  class: Light
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_firework_large_blast
-        -  class: EffectTrail
-           particle: smoke_normal
-           particle_count: 10
+        - sound: block_beacon_activate
+          sound_pitch: 1.8
+        - sound: item_firecharge_use
+          sound_pitch: 1.7
+        - class: EffectTrail
+          particle: smoke_normal
+          particle_count: 10
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
     parameters:
         target: block
         allow_max_range: true

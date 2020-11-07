@@ -14,12 +14,13 @@ superconvert:
         - sound: entity_illusioner_cast_spell
           sound_pitch: 0.3
         - class: EffectTrail
+          location: origin_to_selection
           particle: block_crack
           particle_count: 6
           particle_offset_x: 0.01
           particle_offset_y: 0.01
           particle_offset_z: 0.01
-        - location: selection
+        - location: selection_to_target
           radius_override: variable_a
           effectlib:
             class: Modified
@@ -34,7 +35,7 @@ superconvert:
                particle_offset_x: 0.5
                particle_offset_y: 0.5
                particle_offset_z: 0.5
-        - location: selection
+        - location: selection_to_target
           radius_override: radius
           effectlib:
             class: Sphere

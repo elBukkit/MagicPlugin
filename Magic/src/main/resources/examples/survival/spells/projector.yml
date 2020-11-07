@@ -7,20 +7,111 @@ projector:
   category: engineering
   effects:
       cast:
-      -  class: EffectSingle
-         sound: entity_player_levelup
       -  class: EffectTrail
-         particle: block_crack
+         particle: fireworks_spark
+         particle_count: 10
+         particle_offset_x: 1.2
+         particle_offset_y: 1.2
+         particle_offset_z: 1.2
   actions:
     cast:
-    - class: Repeat
+    - class: Parallel
       actions:
-      - class: Brush
+      - class: Repeat
         actions:
-        - class: Plane
+        - class: Brush
           actions:
-          - class: ModifyBlock
-      - class: Delay
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+      - class: ChangeContext
+        target_caster: true
+        actions:
+        - class: Delay
+          delay: 2000
+
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 0.793701 # 8
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1.781797 # 22
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1 # 12
+
+        - class: Delay
+          delay: 200 # 1 redstone tick = 2 ticks = 100 ms
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 0.793701 # 8
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1.781797 # 22
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1 # 12
+
+        - class: Delay
+          delay: 400
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 0.793701 # 8
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1.781797 # 22
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1 # 12
+
+        - class: Delay
+          delay: 400
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 0.793701 # 8
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1.414214 # 18
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1 # 12
+
+        - class: Delay
+          delay: 100
+        - class: Delay
+          delay: 100
+
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 0.793701 # 8
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1.781797 # 22
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1 # 12
+
+        - class: Delay
+          delay: 300
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1.334840 # 17
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1.059463 # 13
+
+        - class: Delay
+          delay: 400
+        - class: Delay
+          delay: 400
+
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 0.529732 # 1
+        - class: PlaySound
+          sound: block_note_block_bit
+          pitch: 1.059463 # 13
+
   parameters:
     target: block
     range: 32

@@ -19,6 +19,9 @@ rollback:
            target_down: true
     effects:
         no_target:
+        - sound: block_note_block_bass
+          sound_volume: 0.7
+          sound_pitch: 1.8
         - class: EffectSingle
           sound: magic.bonk
           sound_volume: 1
@@ -37,9 +40,13 @@ rollback:
             updateDirections: false
             particles: 20
         alternate_up:
+        - sound: block_beacon_deactivate
+          sound_pitch: 0.3
+          sound_volume: 1.2
+          location: both
         - class: EffectSingle
           sound: magic.shimmer
-          sound_volume: 1
+          sound_volume: 0.6
           location: both
           particle_override: particle_nucleus
           color_override: colorOrbital
@@ -49,6 +56,10 @@ rollback:
                particle_orbital: redstone
                iterations: 8
         cast:
+        - sound: block_beacon_deactivate
+          sound_pitch: 0.8
+          sound_volume: 1.2
+          location: both
         - sound: magic.shimmer
           sound_volume: 1
           location: both
@@ -83,7 +94,12 @@ rollback:
             updateDirections: false
             particles: 20
         - location: target
-          firework: star
+          effectlib:
+            class: Star
+            particle: falling_obsidian_tear
+            iterations: 1
+            particles: 30
+            spike_height: 1.5
     parameters:
         target: block
         allow_max_range: true

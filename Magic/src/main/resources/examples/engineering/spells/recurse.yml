@@ -13,11 +13,22 @@ recurse:
         - class: Recurse
           actions:
           - class: ModifyBlock
+          - class: Skip
+            skip: 4
+            actions:
+            - class: PlayEffects
+              effects: changed
+          - class: Skip
+            actions:
+            - class: Delay
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_stone_break
-           effectlib:
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 0.5
+        - sound: block_stone_break
+          sound_pitch: 0.7
+          sound_volume: 2
+          effectlib:
              class: ConeEffect
              iterations: 10
              particle: block_crack
@@ -25,14 +36,34 @@ recurse:
              particle_offset_x: 0.8
              particle_offset_y: 0.8
              particle_offset_z: 0.8
-             lengthGrow: 0.2
-             radiusGrow: 0.004
-             updateLocations: false
-             updateDirections: false
+             length_grow: 0.2
+             radius_grow: 0.004
+             update_locations: false
+             update_directions: false
+        changed:
+          - sound: block_stone_break
+            sound_pitch: 1.5
+            sound_volume: 0.2
+            target_location: block_center
+            particle: block_crack
+            particle_count: 12
+            particle_offset_x: 0.8
+            particle_offset_y: 0.8
+            particle_offset_z: 0.8
+            location: target
+          - particle: end_rod
+            particle_count: 8
+            particle_offset_x: 0.6
+            particle_offset_y: 0.6
+            particle_offset_z: 0.6
+            location: target
+            target_location: block_center
     parameters:
         allow_max_range: false
         range: 32
-        depth: 10
+        depth: 3
+        delay: 150
+        skip: 1
         check_destructible: false
         transparent: transparent_to_construction
         cooldown: 500
@@ -42,3 +73,20 @@ recurse:
     costs:
         mana: 30
 
+recurse|2:
+  parameters:
+    depth: 5
+    delay: 50
+    skip: 2
+
+recurse|3:
+  parameters:
+    depth: 10
+    delay: 25
+    skip: 5
+
+recurse|4:
+  parameters:
+    depth: 12
+    delay: 1
+    skip: 100
