@@ -15,10 +15,31 @@ volley:
               actions:
               -  class: ThrowBlock
     effects:
+        cast:
+          - sound: item_trident_throw
+            sound_pitch: 0.6
+        projectile:
+          - effectlib:
+              class: Cube
+              disappear_with_origin_entity: true
+              period: 8
+              edge_length: 0.5
+              particle: block_crack
+              particle_count: 2
+              particles: 2
+              particle_offset_x: 0.01
+              particle_offset_y: 0.01
+              particle_offset_z: 0.01
         hit:
-        -  class: EffectSingle
-           particle: block_crack
-           location: origin
+          - location: target
+            particle: block_crack
+            particle_count: 32
+            particle_offset_x: 0.6
+            particle_offset_y: 0.6
+            particle_offset_z: 0.6
+            sound: block_stone_place
+            sound_volume: 1.8
+            sound_pitch: 0.3
     parameters:
       speed: 1.5
       multiply: 8

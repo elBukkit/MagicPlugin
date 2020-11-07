@@ -8,12 +8,43 @@ superconvert:
     tags: noduel
     class: ConstructSpell
     worth: 4000
+    deactivate_effects: false
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_player_levelup
-        -  class: EffectTrail
-           particle: block_crack
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 0.3
+        - class: EffectTrail
+          particle: block_crack
+          particle_count: 6
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
+        - location: selection
+          radius_override: variable_a
+          effectlib:
+            class: Modified
+            duration: 1500
+            parameters:
+              radius: "(t / i) * a + 0.5"
+            effect:
+               class: Sphere
+               particle: block_crack
+               particles: 15
+               particle_count: 10
+               particle_offset_x: 0.5
+               particle_offset_y: 0.5
+               particle_offset_z: 0.5
+        - location: selection
+          radius_override: radius
+          effectlib:
+            class: Sphere
+            duration: 1500
+            particle: end_rod
+            particles: 25
+            particle_count: 3
+            particle_offset_x: 0.05
+            particle_offset_y: 0.05
+            particle_offset_z: 0.05
     parameters:
         allow_max_range: false
         range: 32
@@ -28,4 +59,3 @@ superconvert:
         match_data: false
     costs:
         mana: 300
-

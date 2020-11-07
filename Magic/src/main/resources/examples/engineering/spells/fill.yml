@@ -8,10 +8,35 @@ fill:
     tags: noduel
     class: FillSpell
     worth: 5000
+    deactivate_effects: false
     effects:
         cast:
-        -  class: EffectTrail
-           particle: block_crack
+          - sound: entity_illusioner_cast_spell
+            sound_pitch: 0.3
+          - location: selection
+            effectlib:
+              class: Cuboid
+              duration: 1500
+              particle: end_rod
+              block_snap: true
+              padding: 0.1
+              particles: 10
+              particle_count: 4
+              particle_offset_x: 0.02
+              particle_offset_y: 0.02
+              particle_offset_z: 0.02
+          - location: selection
+            effectlib:
+               padding: 0.2
+               block_snap: true
+               class: Cuboid
+               duration: 1500
+               particle: block_crack
+               particles: 10
+               particle_count: 4
+               particle_offset_x: 0.01
+               particle_offset_y: 0.01
+               particle_offset_z: 0.01
     parameters:
         select_self: false
         allow_max_range: false

@@ -8,24 +8,32 @@ default:
     world_border_restricted: false
     effects:
        target_selected:
-       - class: EffectSingle
-         location: origin
-         sound: magic.hit
-         sound_volume: 0.5
-       - class: EffectSingle
-         location: target
-         use_block_location: true
-         color_override: color
-         effectlib:
-           class: CubeEffect
-           iterations: 15
-           particle: redstone
-           color: "00FFAA"
-           edge_length: 1.2
-           enable_rotation: false
-           offset: 0.5,0.5,0.5
-       - class: EffectTrail
-         particle: spell_mob
+        - location: origin
+          sound: magic.hit
+          sound_volume: 0.5
+        - location: both
+          sound: entity_illusioner_prepare_mirror
+          sound_volume: 0.5
+          sound_pitch: 1.6
+        - location: target
+          use_block_location: true
+          color_override: color
+          effectlib:
+            class: CubeEffect
+            duration: 1000
+            particle: redstone
+            color: "00FFAA"
+            edge_length: 1.2
+            enable_rotation: false
+            offset: 0.5,0.5,0.5
+        - class: EffectTrail
+          particle: spell_mob
+        - class: EffectTrail
+          particle: spell_instant
+          particle_count: 8
+          particle_offset_x: 0.05
+          particle_offset_y: 0.05
+          particle_offset_z: 0.05
        deactivate:
         - sound: block_fire_extinguish
           sound_pitch: 2
