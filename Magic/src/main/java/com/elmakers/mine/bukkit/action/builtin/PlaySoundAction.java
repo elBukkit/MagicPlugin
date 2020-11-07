@@ -46,7 +46,9 @@ public class PlaySoundAction extends BaseSpellAction
         super.prepare(context, parameters);
         sound = new SoundEffect(parameters.getString("sound"));
         sound.setPitch((float)parameters.getDouble("pitch", sound.getPitch()));
+        sound.setPitch((float)parameters.getDouble("sound_pitch", sound.getPitch()));
         sound.setVolume((float)parameters.getDouble("volume", sound.getVolume()));
+        sound.setVolume((float)parameters.getDouble("sound_volume", sound.getVolume()));
         radius = parameters.getInt("radius", 32);
     }
 }
