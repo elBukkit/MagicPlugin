@@ -78,7 +78,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
     protected boolean playAtTarget = false;
-    protected boolean playAtSelection = false;
+    protected boolean targetIsSelection = false;
+    protected boolean originIsSelection = false;
     protected boolean playAtAllTargets = false;
 
     protected Color color = null;
@@ -281,28 +282,31 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void setLocationType(String locationType) {
-        playAtSelection = false;
+        originIsSelection = false;
+        playAtAllTargets = false;
+        playAtOrigin = false;
+        playAtTarget = false;
         if (locationType.equals("target")) {
-            playAtOrigin = false;
             playAtTarget = true;
-            playAtAllTargets = false;
         } else if (locationType.equals("origin")) {
-            playAtTarget = false;
             playAtOrigin = true;
-            playAtAllTargets = false;
         } else if (locationType.equals("both")) {
             playAtTarget = true;
             playAtOrigin = true;
-            playAtAllTargets = false;
         } else if (locationType.equals("targets")) {
-            playAtTarget = true;
-            playAtOrigin = false;
             playAtAllTargets = true;
-        } else if (locationType.equals("selection")) {
-            playAtTarget = false;
-            playAtOrigin = false;
-            playAtAllTargets = false;
-            playAtSelection = true;
+        } else if (locationType.equals("selection") || locationType.equals("selection_to_origin")) {
+            playAtTarget = true;
+            targetIsSelection = true;
+        } else if (locationType.equals("origin_to_selection")) {
+            playAtOrigin = true;
+            targetIsSelection = true;
+        } else if (locationType.equals("target_to_selection")) {
+            playAtTarget = true;
+            originIsSelection = true;
+        } else if (locationType.equals("selection_to_target")) {
+            playAtOrigin = true;
+            originIsSelection = true;
         }
     }
 
@@ -383,7 +387,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     protected void playEffect() {
-        playEffect(origin, target);
+        playEffect(getDynamicOrigin(), getDynamicTarget());
     }
 
     protected void playEffect(DynamicLocation origin, DynamicLocation target) {
@@ -398,9 +402,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (playAtTarget && target != null) {
             performEffects(target, origin);
-        }
-        if (playAtSelection && selection != null) {
-            performEffects(selection, target);
         }
     }
 
@@ -475,12 +476,16 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public double getRadius() {
-        if (target == null) return 0;
-        if (playAtSelection) {
+        if (targetIsSelection || originIsSelection) {
             if (selection == null) return 0;
-            return selection.getLocation().distance(target.getLocation());
+            if (originIsSelection) {
+                if (target == null) return 0;
+                return selection.getLocation().distance(target.getLocation());
+            }
+            if (origin == null) return 0;
+            return selection.getLocation().distance(origin.getLocation());
         }
-        if (origin == null) return 0;
+        if (origin == null || target == null) return 0;
         return origin.getLocation().distance(target.getLocation());
     }
 
@@ -665,12 +670,33 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @Nullable
     public Location getOrigin() {
+        DynamicLocation origin = getDynamicOrigin();
         return origin == null ? null : origin.getLocation();
     }
 
     @Nullable
     public Location getTarget() {
+        DynamicLocation target = getDynamicTarget();
         return target == null ? null : target.getLocation();
+    }
+
+    public DynamicLocation getDynamicTarget() {
+        if (targetIsSelection) {
+            return selection;
+        }
+        return target;
+    }
+
+    public DynamicLocation getDynamicOrigin() {
+        if (originIsSelection) {
+            return selection;
+        }
+        return origin;
+    }
+
+    @Nullable
+    public Location getSelection() {
+        return selection == null ? null : selection.getLocation();
     }
 
     public void setOrigin(Location location) {
@@ -824,8 +850,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     @Override
-    public boolean playsAtSelection() {
-        return playAtSelection;
+    public boolean originIsSelection() {
+        return originIsSelection;
+    }
+
+    @Override
+    public boolean targetIsSelection() {
+        return targetIsSelection;
     }
 
     public Visibility getVisibility() {

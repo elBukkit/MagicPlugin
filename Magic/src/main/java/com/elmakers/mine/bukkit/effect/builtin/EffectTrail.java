@@ -82,6 +82,7 @@ public class EffectTrail extends EffectRepeating {
             Vector delta = origin.getDirection().clone().normalize();
             target = origin.clone();
             target.add(delta.multiply(size + 1));
+            setTarget(target);
         }
         super.checkLocations();
     }

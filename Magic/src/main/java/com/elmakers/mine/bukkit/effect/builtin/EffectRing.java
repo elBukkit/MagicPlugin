@@ -14,6 +14,8 @@ public class EffectRing extends EffectRepeating {
     protected int size = 8;
     protected float radius = 1;
 
+    private float useRadius;
+
     public EffectRing() {
 
     }
@@ -39,10 +41,20 @@ public class EffectRing extends EffectRepeating {
     }
 
     @Override
+    public void run() {
+        if (radius == 0) {
+            useRadius = (float)getRadius();
+        } else {
+            useRadius = radius;
+        }
+        super.run();
+    }
+
+    @Override
     public void iterate() {
         Location origin = getOrigin();
         if (origin == null) return;
-        float currentRadius = scale(radius * scale);
+        float currentRadius = scale(useRadius * useRadius);
 
         // Randomization
         double startRadians = Math.random() * Math.PI * 2;
