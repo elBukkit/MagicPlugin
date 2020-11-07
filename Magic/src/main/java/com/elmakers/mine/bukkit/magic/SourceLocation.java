@@ -27,7 +27,8 @@ public class SourceLocation {
         WAND,
         BODY,
         HIT,
-        BLOCK
+        BLOCK,
+        BLOCK_CENTER
     }
 
     public SourceLocation(ConfigurationSection configuration) {
@@ -95,11 +96,14 @@ public class SourceLocation {
         Mage mage;
         Location eyeLocation;
         Location feetLocation;
+        Location blockLocation;
         if (isSource) {
             mage = context instanceof MageEffectContext ? ((MageEffectContext)context).getMage() : null;
             eyeLocation = context.getEyeLocation();
             feetLocation = context.getLocation();
+            blockLocation = context.getLocation();
         } else {
+            blockLocation = context.getTargetLocation();
             Entity targetEntity = context.getTargetEntity();
             if (targetEntity == null) {
                 mage = null;
@@ -147,8 +151,13 @@ public class SourceLocation {
                 location = context.getTargetLocation();
                 break;
             case BLOCK:
-                if (feetLocation != null) {
-                    location = feetLocation.getBlock().getLocation();
+                if (blockLocation != null) {
+                    location = blockLocation.getBlock().getLocation();
+                }
+                break;
+            case BLOCK_CENTER:
+                if (blockLocation != null) {
+                    location = blockLocation.getBlock().getLocation().add(0.5, 0.5, 0.5);
                 }
                 break;
         }
