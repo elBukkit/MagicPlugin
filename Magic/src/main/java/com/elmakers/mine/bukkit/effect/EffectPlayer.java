@@ -583,8 +583,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (targetLocation != null && originLocation != null && !originLocation.getWorld().equals(targetLocation.getWorld())) {
             targetLocation.setWorld(originLocation.getWorld());
         }
-        this.origin = origin;
-        this.target = target;
+        this.origin = origin == null || origin.getLocation() == null ? null : origin;
+        this.target = target == null || target.getLocation() == null ? null : target;
 
         if (originRelativeOffset != null && this.origin != null) {
             this.origin.addRelativeOffset(originRelativeOffset);
@@ -738,14 +738,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             selection = null;
             return;
         }
-        if (selection == null) {
-            selection = new DynamicLocation(location);
-        } else {
-            Location selectedLocation = selection.getLocation();
-            selectedLocation.setX(location.getX());
-            selectedLocation.setY(location.getY());
-            selectedLocation.setZ(location.getZ());
-        }
+        selection = new DynamicLocation(location);
     }
 
     @Nullable
