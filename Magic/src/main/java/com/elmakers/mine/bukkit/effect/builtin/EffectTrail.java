@@ -76,13 +76,15 @@ public class EffectTrail extends EffectRepeating {
 
     @Override
     protected void checkLocations() {
-        Location target = getTarget();
-        Location origin = getOrigin();
-        if (target == null && origin != null) {
-            Vector delta = origin.getDirection().clone().normalize();
-            target = origin.clone();
-            target.add(delta.multiply(size + 1));
-            setTarget(target);
+        if (length == null) {
+            Location target = getTarget();
+            Location origin = getOrigin();
+            if (target == null && origin != null) {
+                Vector delta = origin.getDirection().clone().normalize();
+                target = origin.clone();
+                target.add(delta.multiply(size + 1));
+                setTarget(target);
+            }
         }
         super.checkLocations();
     }

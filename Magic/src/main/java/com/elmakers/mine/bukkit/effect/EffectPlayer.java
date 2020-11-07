@@ -700,6 +700,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void setOrigin(Location location) {
+        if (location == null) {
+            origin = null;
+            return;
+        }
         if (origin == null) {
             origin = new DynamicLocation(location);
         } else {
@@ -711,6 +715,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void setTarget(Location location) {
+        if (location == null) {
+            target = null;
+            return;
+        }
         if (target == null) {
             target = new DynamicLocation(location);
         } else {
