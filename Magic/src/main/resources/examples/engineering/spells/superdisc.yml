@@ -1,55 +1,53 @@
-superring:
-    icon: music_disc_strad{CustomModelData:18001}
-    icon_disabled: music_disc_strad{CustomModelData:18002}
-    legacy_icon: spell_icon:26
-    legacy_icon_disabled: spell_icon_disabled:26
-    icon_url: http://textures.minecraft.net/texture/94d8a4b21f84bb65fb9f3a656d4518f0662fcabc44d01c1e435787ca542a9dd
+superdisc:
+    icon: purple_dye{CustomModelData:18001}
+    icon_disabled: purple_dye{CustomModelData:18002}
+    legacy_icon: spell_icon:25
+    legacy_icon_disabled: spell_icon_disabled:25
+    icon_url: http://textures.minecraft.net/texture/89791581eeeb253cd59a2bda0615d78da15f218e475b192bbffc8bb16bd8f
     category: engineering
     tags: noduel
     class: ConstructSpell
-    worth: 4000
+    worth: 2500
     upgrade_required_casts: 50
     effects:
         cast:
-        - sound: entity_illusioner_cast_spell
-          sound_pitch: 0.3
-        - class: EffectTrail
-          location: origin_to_selection
-          particle: block_crack
-          particle_count: 6
-          particle_offset_x: 0.01
-          particle_offset_y: 0.01
-          particle_offset_z: 0.01
-        - location: selection_to_target
-          radius_override: radius
-          effectlib:
-            class: Circle
-            particle: end_rod
-            particle_count: 3
-            particle_offset: 0.2
-            angular_velocity_x: 0
-            angular_velocity_y: 0
-            angular_velocity_z: 0
-            particles: 30
-            whole_circle: true
-            duration: 1000
-        - location: selection_to_target
-          radius_override: variable_a
-          effectlib:
-            class: Modified
-            duration: 1500
-            parameters:
-              radius: "a * (t/i) * 0.9"
-            effect:
-              class: Circle
-              particle: block_crack
+          - sound: entity_illusioner_cast_spell
+            sound_pitch: 0.3
+          - class: EffectTrail
+            location: origin_to_selection
+            particle: block_crack
+            particle_count: 6
+            particle_offset_x: 0.01
+            particle_offset_y: 0.01
+            particle_offset_z: 0.01
+          - location: selection_to_target
+            radius_override: variable_a
+            effectlib:
+              class: Modified
+              duration: 1500
+              parameters:
+                radius: "(t / i) * a + 0.5"
+              effect:
+                class: Helix
+                particle: block_crack
+                particles: 10
+                particle_count: 5
+                particle_offset_x: 0.5
+                particle_offset_y: 0.5
+                particle_offset_z: 0.5
+                offset: 0,1.2,0
+          - location: selection_to_target
+            radius_override: radius
+            effectlib:
+              class: Helix
+              duration: 1500
+              particle: end_rod
+              particles: 25
               particle_count: 3
-              particle_offset: 0.2
-              angular_velocity_x: 0
-              angular_velocity_y: 0
-              angular_velocity_z: 0
-              particles: 20
-              whole_circle: true
+              particle_offset_x: 0.05
+              particle_offset_y: 0.05
+              particle_offset_z: 0.05
+              offset: 0,1,0
     parameters:
         allow_max_range: true
         range: 64
@@ -62,7 +60,6 @@ superring:
         destructible: destructible_replace
         orient: true
         consume: true
-        thickness: 1
         ignore_region_overrides: true
     costs:
         mana: 200
