@@ -13,6 +13,8 @@ broom:
     creative_restricted: true
     cast_on_no_target: false
     cancellable: false
+    show_undoable: false
+    undoable: false
     actions:
       cast:
         - class: ChangeContext

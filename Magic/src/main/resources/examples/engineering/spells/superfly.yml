@@ -10,6 +10,8 @@ superfly:
     worth: 1500
     toggle: cancel
     cancellable: false
+    show_undoable: false
+    undoable: false
     actions:
        cast:
        - class: Velocity

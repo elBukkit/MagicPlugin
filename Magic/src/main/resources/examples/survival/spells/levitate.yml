@@ -10,11 +10,12 @@ levitate:
     category: master
     tags: noduel
     worth: 5000
-    show_undoable: false
     quick_cast: true
     disable_mana_regeneration: true
     toggle: cancel
     cancellable: false
+    undoable: false
+    show_undoable: false
     actions:
        cast:
        - class: Velocity
@@ -82,6 +83,7 @@ levitate:
         max_height: 260
         speed: 0.2
         cooldown: 30000
+        bypass_undo: true
     costs:
         mana: 20
     active_costs:
