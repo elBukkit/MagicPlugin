@@ -422,7 +422,7 @@ auto_rollback_explosions:
 # The largest thing we'll persist in the undo queue (to a file)
 # This is specifically large enough to hold a Wolf House cast
 # But most likely not a Wolf House self-destruct, or anything using overpowered Architect spells.
-undo_max_persist_size: 65536
+undo_max_persist_size: 200000
 
 # How often to process batched spells.
 # Anything higher than "1" in here may cause noticable delays for
