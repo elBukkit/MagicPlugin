@@ -8,12 +8,48 @@ superpyramid:
     tags: noduel
     class: ConstructSpell
     worth: 3000
+    upgrade_required_casts: 50
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_player_levelup
-        -  class: EffectTrail
-           particle: block_crack
+          - sound: entity_illusioner_cast_spell
+            sound_pitch: 0.4
+          - class: EffectTrail
+            location: origin_to_selection
+            particle: block_crack
+            particle_count: 6
+            particle_offset_x: 0.01
+            particle_offset_y: 0.01
+            particle_offset_z: 0.01
+          - location: selection_to_target
+            target_location: block_center
+            source_location: block_center
+            radius_override: variable_a
+            effectlib:
+              class: Modified
+              duration: 1000
+              parameters:
+                radius: "a + 1"
+              effect:
+                class: Pyramid
+                particle: end_rod
+                particle_count: 3
+                particle_offset: 0.2
+                particles: 30
+          - location: selection_to_target
+            target_location: block_center
+            source_location: block_center
+            radius_override: variable_a
+            effectlib:
+              class: Modified
+              duration: 1000
+              parameters:
+                radius: "a + 0.25"
+              effect:
+                class: Pyramid
+                particle: block_crack
+                particle_count: 3
+                particle_offset: 0.2
+                particles: 20
     parameters:
         allow_max_range: true
         range: 32
@@ -28,3 +64,10 @@ superpyramid:
     costs:
         mana: 400
 
+superpyramid|2:
+  parameters:
+    max_dimension: 24
+
+superpyramid|3:
+  parameters:
+    max_dimension: 32

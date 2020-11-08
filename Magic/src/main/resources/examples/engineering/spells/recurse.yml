@@ -8,6 +8,7 @@ recurse:
     tags: noduel
     worth: 4000
     earns_sp: 15
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: Recurse

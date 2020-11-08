@@ -8,6 +8,7 @@ supershell:
     tags: noduel
     class: ConstructSpell
     worth: 3500
+    upgrade_required_casts: 50
     effects:
       cast:
         - sound: entity_illusioner_cast_spell
@@ -59,3 +60,10 @@ supershell:
     costs:
         mana: 250
 
+supershell|2:
+  parameters:
+    max_dimension: 24
+
+supershell|3:
+  parameters:
+    max_dimension: 32

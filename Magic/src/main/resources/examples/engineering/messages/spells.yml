@@ -24,6 +24,7 @@ spells:
         target_selected: Cast again to convert $target
         fail: Too large!
         cast_finish: Converted $count blocks to $material
+        upgrade_description: "Increased max radius"
     supercollapse:
         name: SuperCollapse
         description: Collapse a large sphere of blocks
@@ -40,6 +41,7 @@ spells:
         target_selected: Cast again to build sphere
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superhemisphere:
         name: SuperHemisphere
         description: Create a large solid half-sphere
@@ -48,6 +50,7 @@ spells:
         target_selected: Cast again to build hemisphere
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     supercylinder:
         name: SuperCylinder
         description: Create a large cylinder
@@ -56,6 +59,7 @@ spells:
         target_selected: Cast again to build cylinder
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superwalls:
         name: SuperWalls
         description: Create a high walls around your area
@@ -64,6 +68,7 @@ spells:
         target_selected: Cast again to build walls
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superrepair:
         name: SuperRepair
         description: Repairs a large area saved with Backup
@@ -144,6 +149,7 @@ spells:
         target_selected: Cast again to build shell
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superdisc:
         name: SuperDisc
         description: Create a large circular disc
@@ -152,6 +158,7 @@ spells:
         target_selected: Cast again to build disc
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superring:
         name: SuperRing
         description: Create a large circular ring
@@ -160,6 +167,7 @@ spells:
         target_selected: Cast again to build ring
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superdome:
         name: SuperDome
         description: Create a very large dome
@@ -168,6 +176,7 @@ spells:
         target_selected: Cast again to build dome
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superpyramid:
         name: SuperPyramid
         description: Create a large hollow pyramid
@@ -176,6 +185,7 @@ spells:
         target_selected: Cast again to build pyramid
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superbox:
         name: SuperBox
         description: Create a large hollow box
@@ -184,6 +194,7 @@ spells:
         target_selected: Cast again to build box
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     supercube:
         name: SuperCube
         description: Create a large solid cube
@@ -192,6 +203,7 @@ spells:
         target_selected: Cast again to build cube
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+        upgrade_description: "Increased max radius"
     superblast:
         name: SuperBlast
         description: Mine out a very large area

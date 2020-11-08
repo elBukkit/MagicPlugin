@@ -9,6 +9,7 @@ superconvert:
     class: ConstructSpell
     worth: 4000
     deactivate_effects: false
+    upgrade_required_casts: 50
     effects:
         cast:
         - sound: entity_illusioner_cast_spell
@@ -60,3 +61,11 @@ superconvert:
         match_data: false
     costs:
         mana: 300
+
+superconvert|2:
+  parameters:
+    max_dimension: 24
+
+superconvert|3:
+  parameters:
+    max_dimension: 32

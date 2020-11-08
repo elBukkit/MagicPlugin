@@ -9,7 +9,7 @@ superlaser:
     worth: 450
     earns_sp: 8
     upgrade_required_path: architect
-    upgrade_required_casts: 20
+    upgrade_required_casts: 30
     actions:
         cast:
         - class: Line

@@ -2,5 +2,15 @@ superwalls:
     inherit: supercylinder
     icon: flower_pot{CustomModelData:18001}
     icon_disabled: flower_pot{CustomModelData:18002}
+    upgrade_required_casts: 50
     parameters:
+        max_dimension: 16
         orient_dimension_max: 16
+
+superwalls|2:
+  parameters:
+    max_dimension: 24
+
+superwalls|3:
+  parameters:
+    max_dimension: 32

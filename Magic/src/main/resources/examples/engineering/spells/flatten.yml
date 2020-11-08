@@ -8,6 +8,7 @@ flatten:
   tags: noduel
   worth: 1000
   earns_sp: 10
+  upgrade_required_casts: 30
   actions:
     cast:
     - class: Disc

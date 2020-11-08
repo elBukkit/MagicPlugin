@@ -8,6 +8,7 @@ convert:
     tags: noduel
     cancellable: false
     worth: 250
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: Sphere

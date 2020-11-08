@@ -9,6 +9,7 @@ superblob:
     class: ConstructSpell
     worth: 4500
     earns_sp: 2
+    upgrade_required_casts: 50
     effects:
       cast:
         - sound: magic.shield
@@ -67,3 +68,10 @@ superblob:
     costs:
         mana: 400
 
+superblob|2:
+  parameters:
+    max_dimension: 24
+
+superblob|3:
+  parameters:
+    max_dimension: 32

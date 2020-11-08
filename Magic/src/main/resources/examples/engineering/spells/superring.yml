@@ -8,6 +8,7 @@ superring:
     tags: noduel
     class: ConstructSpell
     worth: 4000
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -31,3 +32,10 @@ superring:
     costs:
         mana: 200
 
+superdisc|2:
+  parameters:
+    max_dimension: 24
+
+superdisc|3:
+  parameters:
+    max_dimension: 32
