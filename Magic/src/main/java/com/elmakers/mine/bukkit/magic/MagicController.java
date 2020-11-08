@@ -35,6 +35,7 @@ import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -70,6 +71,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -224,6 +226,7 @@ import de.slikey.effectlib.math.EquationStore;
 
 public class MagicController implements MageController {
     private static String DEFAULT_DATASTORE_PACKAGE = "com.elmakers.mine.bukkit.data";
+    private static long MAGE_CACHE_EXPIRY = 10000;
 
     // Special constructor used for interrogation
     public MagicController() {
@@ -344,24 +347,6 @@ public class MagicController implements MageController {
         return getMage(mageId, commandSender, null);
     }
 
-    /**
-     * Exception that is thrown when an operation did not succeed because the
-     *  plugin was not loaded yet.
-     */
-    private static class PluginNotLoadedException extends RuntimeException {
-    }
-
-    /**
-     * Exception that is thrown when a mage could not be found nor loaded for a
-     *  given entity or command sender.
-     */
-    // TODO: Move to API
-    private static class NoSuchMageException extends RuntimeException {
-        public NoSuchMageException(String mageId) {
-            super("Failed to locate mage with id: " + mageId);
-        }
-    }
-
     @Nonnull
     protected com.elmakers.mine.bukkit.magic.Mage getMage(
             @Nonnull String mageId, @Nullable String mageName,
@@ -456,32 +441,70 @@ public class MagicController implements MageController {
     }
 
     private void doLoadData(Mage mage) {
+        getMageData(mage.getId(), new MageDataCallback() {
+            @Override
+            public void run(MageData data) {
+                mage.load(data);
+            }
+        });
+    }
+
+    public void onPreLogin(AsyncPlayerPreLoginEvent event) {
+        String id = mageIdentifier.fromPreLogin(event);
+        Iterator<Map.Entry<String, MageData>> it = mageDataPreCache.entrySet().iterator();
+        while (it.hasNext()) {
+            MageData data = it.next().getValue();
+            if (data.getId().equals(id)) continue;
+            if (data.getCachedTimestamp() < System.currentTimeMillis() - MAGE_CACHE_EXPIRY) {
+                it.remove();
+                info("Removed expired pre-login mage data cache for id " + data.getId());
+            }
+        }
+
+        if (mageDataPreCache.containsKey(id)) return;
+        getMageData(id, new MageDataCallback() {
+            @Override
+            public void run(MageData data) {
+                info("Cached preloaded mage data cache for id " + data.getId());
+                mageDataPreCache.put(id, data);
+            }
+        });
+    }
+
+    private void getMageData(String id, MageDataCallback callback) {
         synchronized (saveLock) {
+            MageData cached = mageDataPreCache.get(id);
+            if (cached != null) {
+                info("Loaded preloaded mage data from cache for id " + id);
+                mageDataPreCache.remove(id);
+                callback.run(cached);
+                return;
+            }
             try {
-                mageDataStore.load(mage.getId(), new MageDataCallback() {
+                mageDataStore.load(id, new MageDataCallback() {
                     @Override
                     public void run(MageData data) {
                         if (data == null && migrateDataStore != null) {
-                            info(" Checking migration data store for mage data for " + mage.getName() + " (" + mage.getId() + ")");
-                            migrateDataStore.load(mage.getId(), new MageDataCallback() {
+                            info(" Checking migration data store for mage data for " + id);
+                            migrateDataStore.load(id, new MageDataCallback() {
                                 @Override
                                 public void run(MageData data) {
                                     if (data != null) {
-                                        migrateDataStore.migrate(mage.getId());
-                                        info(" Auto-migrated mage data for " + mage.getId() + " on load");
+                                        migrateDataStore.migrate(id);
+                                        info(" Auto-migrated mage data for " + id + " on load");
                                     }
-                                    mage.load(data);
-                                    info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ") from migration store at " + System.currentTimeMillis());
+                                    callback.run(data);
+                                    info(" Finished Loading mage data for " + id + " from migration store at " + System.currentTimeMillis());
                                 }
                             });
                         } else {
-                            mage.load(data);
-                            info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
+                            callback.run(data);
+                            info(" Finished Loading mage data for " + id + " at " + System.currentTimeMillis());
                         }
                     }
                 });
             } catch (Exception ex) {
-                getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
+                getLogger().warning("Failed to load mage data for " + id);
                 ex.printStackTrace();
             }
         }
@@ -7230,6 +7253,7 @@ public class MagicController implements MageController {
     private boolean                             castConsoleFeedback         = false;
     private String                              editorURL                   = null;
     private boolean                             reloadVerboseLogging        = true;
+    private Map<String, MageData>               mageDataPreCache            = new ConcurrentHashMap<>();
 
     private boolean                             hasShopkeepers              = false;
     private FactionsManager                        factionsManager                = new FactionsManager();

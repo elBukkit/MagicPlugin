@@ -44,8 +44,12 @@ public class MageData {
     private long created;
     private double health;
 
+    // Transient
+    private long cachedTimestamp;
+
     public MageData(String id) {
         this.id = id;
+        this.cachedTimestamp = System.currentTimeMillis();
     }
 
     public String getId() {
@@ -304,5 +308,9 @@ public class MageData {
 
     public void setVariables(ConfigurationSection variables) {
         this.variables = variables;
+    }
+
+    public long getCachedTimestamp() {
+        return cachedTimestamp;
     }
 }

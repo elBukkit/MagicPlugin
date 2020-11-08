@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
 import com.google.common.base.Preconditions;
 
@@ -13,6 +14,11 @@ import com.google.common.base.Preconditions;
 public class MageIdentifier {
     public String fromEntity(Entity entity) {
         return entity.getUniqueId().toString();
+    }
+
+    public String fromPreLogin(AsyncPlayerPreLoginEvent event) {
+        // Make sure this aligns with what fromEntity returns for a Player
+        return event.getUniqueId().toString();
     }
 
     public String fromCommandSender(CommandSender commandSender) {

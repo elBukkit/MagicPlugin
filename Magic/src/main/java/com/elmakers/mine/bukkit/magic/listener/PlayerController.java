@@ -23,6 +23,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -867,6 +868,15 @@ public class PlayerController implements Listener {
                 mage.checkWand();
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+            return;
+        }
+
+        controller.onPreLogin(event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
