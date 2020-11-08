@@ -457,10 +457,10 @@ public class ConfigurationLoadTask implements Runnable {
             File[] files = configSubFolder.listFiles();
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
-                if (!file.getName().endsWith(".yml")) continue;
                 if (file.isDirectory()) {
                     config = loadConfigFolder(config, file, setEnabled);
                 } else {
+                    if (!file.getName().endsWith(".yml")) continue;
                     if (file.getName().startsWith("_")) {
                         priorityFiles.add(file);
                         continue;
