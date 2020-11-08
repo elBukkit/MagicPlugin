@@ -297,6 +297,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             playAtTarget = true;
             playAtOrigin = true;
         } else if (locationType.equals("targets")) {
+            playAtTarget = true;
             playAtAllTargets = true;
         } else if (locationType.equals("selection") || locationType.equals("selection_to_origin")) {
             playAtTarget = true;
