@@ -478,18 +478,28 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return radiusOverride;
     }
 
+    public double getDistance(Location location1, Location location2) {
+        // This makes cross-world trails (e.g. Repair, Backup) work
+        if (location1 == null || location2 == null) return 0;
+        if (!location1.getWorld().equals(location2.getWorld())) {
+            location1 = location1.clone();
+            location1.setWorld(location2.getWorld());
+        }
+        return location1.distance(location2);
+    }
+
     public double getRadius() {
         if (targetIsSelection || originIsSelection) {
             if (selection == null) return 0;
             if (originIsSelection) {
                 if (target == null) return 0;
-                return selection.getLocation().distance(target.getLocation());
+                return getDistance(selection.getLocation(), target.getLocation());
             }
             if (origin == null) return 0;
-            return selection.getLocation().distance(origin.getLocation());
+            return getDistance(selection.getLocation(), origin.getLocation());
         }
         if (origin == null || target == null) return 0;
-        return origin.getLocation().distance(target.getLocation());
+        return getDistance(origin.getLocation(), target.getLocation());
     }
 
     public void setParticleData(float effectData) {
