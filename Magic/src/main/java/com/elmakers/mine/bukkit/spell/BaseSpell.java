@@ -2452,6 +2452,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     {
         if (isActive()) {
             sendMessageKey("cancel");
+            deactivate();
         }
         if (currentCast != null) {
             currentCast.cancelEffects();
@@ -2482,16 +2483,20 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean deactivate() {
-        if (currentCast == null || !currentCast.getResult().isFree()) {
-            updateCooldown();
-        }
         return deactivate(false, false);
     }
 
     @Override
     public boolean deactivate(boolean force, boolean quiet) {
+        return deactivate(force, quiet, true);
+    }
+
+    public boolean deactivate(boolean force, boolean quiet, boolean effects) {
         if (!force && bypassDeactivate) {
             return false;
+        }
+        if (currentCast == null || !currentCast.getResult().isFree()) {
+            updateCooldown();
         }
         if (spellData.isActive()) {
             spellData.setIsActive(false);
@@ -2514,7 +2519,9 @@ public class BaseSpell implements MageSpell, Cloneable {
             if (toggle != ToggleType.NONE) {
                 mage.cancelPending(getSpellKey().getBaseKey(), true);
             }
-            playEffects("deactivate");
+            if (effects) {
+                playEffects("deactivate");
+            }
         }
 
         return true;

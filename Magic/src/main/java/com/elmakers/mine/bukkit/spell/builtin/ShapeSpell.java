@@ -109,7 +109,7 @@ public class ShapeSpell extends BrushSpell
     @Override
     protected void onFinalizeCast(SpellResult result) {
         if (result != SpellResult.TARGET_SELECTED) {
-            onDeactivate();
+            deactivate(false, true, false);
         }
     }
 
@@ -127,13 +127,7 @@ public class ShapeSpell extends BrushSpell
     @Override
     public boolean onCancelSelection()
     {
-        if (targetBlock != null)
-        {
-            deactivate();
-            return true;
-        }
-
-        return false;
+        return targetBlock != null;
     }
 
     @Override

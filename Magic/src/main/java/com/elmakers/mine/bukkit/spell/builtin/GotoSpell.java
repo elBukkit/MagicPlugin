@@ -183,15 +183,13 @@ public class GotoSpell extends UndoableSpell
     }
 
     @Override
+    public void onDeactivate() {
+        releaseTarget();
+    }
+
+    @Override
     public boolean onCancelSelection()
     {
-        if (targetEntity != null)
-        {
-            releaseTarget();
-            deactivate();
-            return true;
-        }
-
-        return false;
+        return targetEntity != null;
     }
 }

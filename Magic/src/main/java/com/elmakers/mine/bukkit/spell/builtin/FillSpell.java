@@ -108,7 +108,7 @@ public class FillSpell extends BrushSpell
     @Override
     protected void onFinalizeCast(SpellResult result) {
         if (result != SpellResult.TARGET_SELECTED) {
-            onDeactivate();
+            deactivate(false, true, false);
         }
     }
 
@@ -120,15 +120,7 @@ public class FillSpell extends BrushSpell
     @Override
     public boolean onCancelSelection()
     {
-        if (targetBlock != null)
-        {
-            // Extra set here, just in case we're not in sync with active state.
-            targetBlock = null;
-            deactivate();
-            return true;
-        }
-
-        return false;
+        return targetBlock != null;
     }
 
     @Override
