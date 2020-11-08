@@ -4070,7 +4070,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         setCurrency(type, newValue);
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
             if (firstEarn && currency != null) {
+                startInstructions();
                 sendMessage(activeWand.getMessage("earn_instructions").replace("$currency", currency.getName(controller.getMessages())));
+                endInstructions();
             }
 
             activeWand.updateMana();
@@ -4102,6 +4104,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int getSkillPoints() {
         if (!data.contains(SKILL_POINT_KEY)) {
+            if (DEFAULT_SP == 0) {
+                return 0;
+            }
             data.set(SKILL_POINT_KEY, DEFAULT_SP);
         }
         // .. I thought Configuration section would auto-convert? I guess not!
@@ -4140,7 +4145,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesSP()) {
             if (firstEarn) {
+                startInstructions();
                 sendMessage(activeWand.getMessage("sp_instructions"));
+                endInstructions();
             }
             activeWand.updateMana();
         }
@@ -4967,5 +4974,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setResourcePackEnabled(boolean enable) {
         resourcePackEnabled = enable;
+    }
+
+    protected void startInstructions() {
+        String message = controller.getMessages().get("mage.instructions_header", "");
+        sendMessage(message);
+    }
+
+    protected void endInstructions() {
+        String message = controller.getMessages().get("mage.instructions_footer", "");
+        sendMessage(message);
     }
 }

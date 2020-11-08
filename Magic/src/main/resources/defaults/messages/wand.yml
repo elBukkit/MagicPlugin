@@ -204,18 +204,57 @@ wand:
     description_lore: "&o&a$description"
     path_lore: ""
     #path_lore: "&o$path"
-    hotbar_count_usage: "&ePress $cycle_hotbar while your $wand &eis active to cycle hotbars"
-    inventory_instructions: "&r&eYour $wand &enow has more than one spell. Press $toggle to open/close the spell inventory. Use the hotbar buttons to select a spell."
-    chest_instructions: "&r&eYour $wand &enow has more than one spell. Press $toggle to open/close the spell inventory, click a spell to cast."
-    skills_instructions: "&r&eYour $wand &enow has more than one spell. Press $toggle to open/close the spell inventory, drag a spell to the hotbar to cast."
-    cycle_instructions: "&r&eYour $wand &enow has more than one spell. Press $cycle to cycle between spells."
-    page_instructions: "&r&eYour $wand &enow has more than one page of spells. Click outside the spell inventory to change pages."
-    bound_instructions: "&r&3Your $wand &3is bound to you, and is undroppable."
-    spell_instructions: "&r&bSwing your $wand &bto cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
-    enchant_instructions: "&r&bUpgrade your $wand &bat an enchanting table to add spells and abilities."
-    brush_instructions: "&r&eMaterial brushes have been added to your $wand&e. Shift+$toggle to select a brush."
-    sp_instructions: "&r&6You have earned some Spell Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"
-    earn_instructions: "&r&6You have earned some $currency! This is displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn less, try mixing it up once you have more spells!"
+
+    wand_instructions_header: |-
+      &8 ----------------------------------------------------
+      &8|
+      &8|   &b&lWAND INSTRUCTIONS
+      &8|
+    wand_instructions_footer: |-
+      &8|
+      &8 ----------------------------------------------------
+    sp_instructions: |-
+      &8| &7> &fYou have earned some &6Spell Points!
+      &8| &7> &fYour &6SP &fis displayed above your mana bar
+      &8| &7> &6SP &fmay be spent at an &eenchanting table &fto learn new spells
+      &8| &7> &fRepeat casts of the same spell earn less &6SP&f
+      &8| &7> &fTry &dmixing up your casts &fonce you have more spells!
+    currency_instructions: |-
+      &8| &7> &fYou have earned some &6$currency!
+      &8| &7> &fYour &6$currency &fis displayed above your mana bar
+      &8| &7> &6$currency &fmay be spent at an &enchanting table &fto learn new spells
+      &8| &7> Repeat casts of the same spell earn less, try mixing it up!
+    bound_instructions: |-
+      &8| &7> &fYour &a$wand &fis &9bound &fto you, and is &9undroppable
+    spell_instructions: |-
+      &8| &7> &6Swing &fyour &a$wand &fto cast &d$spell
+    mana_instructions: |-
+      &8| &7> &fSpells required &6mana &fto cast, shown in the &5XP bar
+    enchant_instructions: |-
+      &8| &7> &fEarn &6Spell Points &fby casting spells
+      &8| &7> &fLearn new spells by using &6SP &fat an &eenchanting table
+    page_instructions: |-
+      &8| &7> &eYour &a$wand&8 &fhas more than one page of spells
+      &8| &7> $6Click &foutside the inventory window to change pages
+    hotbar_count_usage: |-
+      &8| &7> &eYou now have more than one hotbar
+      &8| &7> &6$cycler &fto swap between your hotbars
+    inventory_instructions: |-
+      &8| &7> &6$toggle &fto open and close the &espell inventory
+      &8| &7> &6Open your inventory (E) &fto manage hotbar spells
+      &8| &7> &fUse &6number keys &fto select the desired spell
+    chest_instructions: |-
+      &8| &7> &6$toggle &fto open and close the &espell inventory
+      &8| &7> &6Click &fon a spell to activate it
+    skills_instructions: |-
+      &8| &7> &6$toggle &fto open and close the &espell inventory
+      &8| &7> &6Drag &fa spell to your hotbar to activate it
+      &8| &7> &fUse &6number keys &fto cast the desired spell
+    cycle_instructions: |-
+      &8| &7> &6$cycle &fto switch your active spell
+    brush_instructions: |-
+      &8| &7> &6Material brushes &fhave been added to your &a$wand
+      &8| &7> &6Shift+$toggle &fto select a brush.
     hotbar_changed: ""
     spell_activated: "$spell"
     upgrade_prefix: "&6"

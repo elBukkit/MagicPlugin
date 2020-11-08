@@ -890,13 +890,25 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if ((ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
+            startWandInstructions();
             mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
             String spellKey = getActiveSpellKey();
             SpellTemplate spellTemplate = spellKey != null && !spellKey.isEmpty() ? controller.getSpellTemplate(spellKey) : null;
             if (spellTemplate != null)
             {
-                String message = getMessage("spell_instructions", "").replace("$wand", getName());
-                mage.sendMessage(message.replace("$spell", spellTemplate.getName()));
+                String controlKey = getInventoryKey("right_click");
+                controlKey = controller.getMessages().get("controls." + controlKey);
+                String message = getMessage("spell_instructions", "")
+                        .replace("$wand", getName())
+                        .replace("$toggle", controlKey)
+                        .replace("$spell", spellTemplate.getName());
+                mage.sendMessage(message);
+                if (usesMana()) {
+                    message = getMessage("mana_instructions", "")
+                        .replace("$wand", getName())
+                        .replace("$spell", spellTemplate.getName());
+                    mage.sendMessage(message);
+                }
             }
             if (spells.size() > 1)
             {
@@ -908,11 +920,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
             com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
-            if (path != null)
+            if (path != null && usesSP())
             {
                 String message = getMessage("enchant_instructions", "").replace("$wand", getName());
                 mage.sendMessage(message);
             }
+            endWandInstructions();
         }
         owner = ChatColor.stripColor(player.getDisplayName());
         ownerId = mage.getId();
@@ -920,6 +933,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         setProperty("owner_id", ownerId);
         updateLore();
         saveState();
+    }
+
+    private void startWandInstructions() {
+        if (mage == null) return;
+        String message = getMessage("wand_instructions_header", "").replace("$wand", getName());
+        mage.sendMessage(message);
+    }
+
+    private void endWandInstructions() {
+        if (mage == null) return;
+        String message = getMessage("wand_instructions_footer", "").replace("$wand", getName());
+        mage.sendMessage(message);
     }
 
     @Nullable
@@ -5011,39 +5036,28 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (mage != null)
         {
             if (spells.size() != spellCount) {
+                boolean sentHeader = false;
                 if (spellCount == 0)
                 {
                     if (leftClickAction == WandAction.CAST) {
-                        String message = getMessage("spell_instructions", "").replace("$wand", getName());
-                        mage.sendMessage(message.replace("$spell", template.getName()));
+                        if (!sentHeader) startWandInstructions();
+                        sentHeader = true;
+                        String controlKey = getInventoryKey("right_click");
+                        controlKey = controller.getMessages().get("controls." + controlKey);
+                        String message = getMessage("spell_instructions", "")
+                                .replace("$wand", getName())
+                                .replace("$toggle", controlKey)
+                                .replace("$spell", template.getName());
+                        mage.sendMessage(message);
                     }
                 }
                 else
                 if (spellCount == 1)
                 {
-                    String controlKey = getControlKey(WandAction.TOGGLE);
-                    String inventoryMessage = null;
-                    switch (getMode()) {
-                    case INVENTORY:
-                        inventoryMessage = "inventory_instructions";
-                        break;
-                    case CHEST:
-                        inventoryMessage = "chest_instructions";
-                        break;
-                    case SKILLS:
-                        inventoryMessage = "skills_instructions";
-                        break;
-                    case CYCLE:
-                        inventoryMessage = "cycle_instructions";
-                        if (controlKey == null) {
-                            controlKey = getControlKey(WandAction.CYCLE);
-                        }
-                        break;
-                    case CAST:
-                    case NONE:
-                        // Ignore
-                        break;
-                    }
+                    if (!sentHeader) startWandInstructions();
+                    sentHeader = true;
+                    String controlKey = getInventoryKey();
+                    String inventoryMessage = getControlMessage();
                     if (controlKey != null && inventoryMessage != null) {
                         controlKey = controller.getMessages().get("controls." + controlKey);
                         mage.sendMessage(getMessage(inventoryMessage, "")
@@ -5052,12 +5066,56 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 if (inventoryCount == 1 && inventories.size() > 1)
                 {
+                    if (!sentHeader) startWandInstructions();
+                    sentHeader = true;
                     mage.sendMessage(getMessage("page_instructions", "").replace("$wand", getName()));
                 }
+                if (sentHeader) endWandInstructions();
             }
         }
 
         return true;
+    }
+
+    @Nonnull
+    public String getInventoryKey(String def) {
+        String key = getInventoryKey();
+        return key == null ? def : key;
+    }
+
+    @Nullable
+    private String getInventoryKey() {
+        switch (getMode()) {
+            case CYCLE:
+                return getControlKey(WandAction.CYCLE);
+            default:
+                return getControlKey(WandAction.TOGGLE);
+        }
+    }
+
+    @Nullable
+    private String getControlMessage() {
+
+        String inventoryMessage = null;
+        switch (getMode()) {
+        case INVENTORY:
+            inventoryMessage = "inventory_instructions";
+            break;
+        case CHEST:
+            inventoryMessage = "chest_instructions";
+            break;
+        case SKILLS:
+            inventoryMessage = "skills_instructions";
+            break;
+        case CYCLE:
+            inventoryMessage = "cycle_instructions";
+            break;
+        case CAST:
+        case NONE:
+            // Ignore
+            break;
+        }
+        return inventoryMessage;
     }
 
     /**
@@ -5189,10 +5247,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if (mage != null)
         {
+            boolean sentHeader = false;
             if (brushCount == 0)
             {
                 String controlKey = getControlKey(WandAction.TOGGLE);
                 if (controlKey != null) {
+                    if (!sentHeader) startWandInstructions();
+                    sentHeader = true;
                     controlKey = controller.getMessages().get("controls." + controlKey);
                     mage.sendMessage(getMessage("brush_instructions")
                             .replace("$wand", getName()).replace("$toggle", controlKey));
@@ -5200,8 +5261,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             if (inventoryCount == 1 && inventories.size() > 1)
             {
+                if (!sentHeader) startWandInstructions();
+                sentHeader = true;
                 mage.sendMessage(getMessage("page_instructions").replace("$wand", getName()));
             }
+            if (sentHeader) endWandInstructions();
         }
 
         return true;

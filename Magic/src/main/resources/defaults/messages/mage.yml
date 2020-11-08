@@ -16,3 +16,11 @@ mage:
     spell_upgraded: "Your &r&6$name &d&ospell has been upgraded to &3$level"
     spell_added: "You have learned the &r&6$name &d&ospell"
     brush_added: "You have acquired the &r&7$name &d&obrush"
+    instructions_header: |-
+      &8 ----------------------------------------------------
+      &8|
+      &8|   &b&lMAGIC INSTRUCTIONS
+      &8|
+    instructions_footer: |-
+      &8|
+      &8 ----------------------------------------------------
