@@ -291,7 +291,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         playAtTarget = false;
         if (locationType.equals("target")) {
             playAtTarget = true;
-        } else if (locationType.equals("origin")) {
+        } else if (locationType.equals("origin") || locationType.equals("source")) {
             playAtOrigin = true;
         } else if (locationType.equals("both")) {
             playAtTarget = true;
@@ -302,7 +302,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         } else if (locationType.equals("selection") || locationType.equals("selection_to_origin")) {
             playAtTarget = true;
             targetIsSelection = true;
-        } else if (locationType.equals("origin_to_selection")) {
+        } else if (locationType.equals("origin_to_selection") || locationType.equals("source_to_selection")) {
             playAtOrigin = true;
             targetIsSelection = true;
         } else if (locationType.equals("target_to_selection")) {
