@@ -11,6 +11,20 @@ superconvert:
     deactivate_effects: false
     upgrade_required_casts: 50
     effects:
+        no_target:
+          - sound: block_note_block_didgeridoo
+            sound_pitch: 1.75
+            sound_volume: 0.15
+          - location: both
+          - class: EffectTrail
+            particle: spell_mob
+          - class: EffectTrail
+            particle: redstone
+            color: "#880000"
+            particle_count: 8
+            particle_offset_x: 0.05
+            particle_offset_y: 0.05
+            particle_offset_z: 0.05
         cast:
         - sound: entity_illusioner_cast_spell
           sound_pitch: 0.3
