@@ -21,9 +21,30 @@ anvil:
             - class: Damage
     worth: 100
     effects:
+        cast:
+          - sound: entity_illusioner_cast_spell
+            sound_pitch: 1.9
+            sound_volume: 0.3
+          - sound: block.anvil.use
+            sound_pitch: 1.5
+            sound_volume: 0.3
+          - class: EffectSingle
+            particle: block_crack
+            location: target
+            particle_count: 30
+            particle_offset_x: 0.1
+            particle_offset_y: 0.1
+            particle_offset_z: 0.1
+            material: anvil
+            sound: item.trident.throw
+            sound_pitch: 0.4
+            sound_volume: 2
         land:
         - sound: block_stone_step
           sound_pitch: 0.7
+        - sound: block_anvil_land
+          sound_pitch: 0.6
+          sound_volume: 2
         - class: EffectRing
           particle: block_crack
           period: 4
@@ -33,15 +54,6 @@ anvil:
           particle_offset_z: 0.9
           particle_offset_y: 0.1
           material: anvil
-        cast:
-        -  class: EffectSingle
-           particle: block_crack
-           location: target
-           particle_count: 30
-           particle_offset_x: 0.1
-           particle_offset_y: 0.1
-           particle_offset_z: 0.1
-           material: anvil
     parameters:
         target: other
         target_type: LivingEntity

@@ -15,8 +15,20 @@ day:
         - class: Delay
         - class: Time
         - class: Weather
+        - class: PlayEffects
+          effects: done
     effects:
+        done:
+        - sound: block_beacon_activate
+          sound_pitch: 0.1
+          sound_volume: 1.3
         cast:
+        -  sound: block_beacon_activate
+           sound_pitch: 1.5
+           sound_volume: 1.8
+        -  sound: block_beacon_activate
+           sound_pitch: 0.4
+           sound_volume: 1.3
         -  class: EffectSingle
            sound: magic.shimmer
            location: source

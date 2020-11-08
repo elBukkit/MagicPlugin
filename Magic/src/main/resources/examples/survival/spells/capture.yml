@@ -10,6 +10,12 @@ capture:
     - class: Capture
   effects:
       cast:
+      - sound: entity_illusioner_prepare_mirror
+        sound_pitch: 1.6
+        sound_volume: 1.2
+      - sound: entity_illusioner_mirror_move
+        sound_pitch: 0.3
+        sound_volume: 1.2
       - class: EffectSingle
         sound: entity_enderman_teleport
         sound_pitch: 0.1
@@ -24,11 +30,13 @@ capture:
         location: target
         color: "81F7D8"
         firework: star
+        requires_entity_target: true
       - class: EffectSingle
         location: target
         sound: entity_enderman_teleport
         sound_pitch: 0.2
         sound_volume: 0.8
+        requires_entity_target: true
         effectlib:
          class: Modified
          iterations: 30

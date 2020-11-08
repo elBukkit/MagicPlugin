@@ -285,8 +285,8 @@ spells:
         cast: A bridge of $material extends
     brushselect:
         name: Brush Selector
-        descriptions: Chooses your active brush
-        usage: Brushes are used by engineering spells
+        descriptions: Chooses your active brush, for use with engineering spells
+        usage: You can also shift+activate with your wand to show the brush selector
         fail: You must be holding a wand!
         variant_name: "&b$variant &3+Variants"
         variant_description: "Choose a type of $variant"

@@ -10,10 +10,17 @@ paste:
     worth: 850
     effects:
         cast:
-        -  class: EffectSingle
-           sound: entity_player_levelup
-        -  class: EffectTrail
-           particle: block_crack
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 0.3
+          sound_volume: 1.2
+        - sound: block_beacon_activate
+          sound_pitch: 0.4
+          sound_volume: 0.8
+        - class: EffectTrail
+          particle: end_rod
+          particle_count: 3
+          particle_offset: 0.1
+          iterations: 16
     parameters:
         allow_max_range: true
         check_destructible: false

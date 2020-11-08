@@ -10,10 +10,33 @@ commit:
     worth: 400
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.vanish
+        - sound: magic.vanish
+          sound_volume: 0.3
+        - sound: block_bell_resonate
+          sound_volume: 2.0
+          sound_pitch: 0.2
+        - sound: block_bell_use
+          sound_volume: 1.2
+          sound_pitch: 0.1
+        - sound: block_conduit_deactivate
+          sound_volume: 0.3
+          sound_pitch: 0.2
+        - effectlib:
+            class: Grid
+            particle: end_rod
+            rotation_x: 1.5707 # pi / 2
+            width_cell: 8
+            height_cell: 8
+            rows: 8
+            columns: 8
+            particles_width: 4
+            particles_height: 4
+            particle_count: 2
+            particle_offset: 0.1
+            offset: 0,8,0
+            update_locations: false
+            center: true
     parameters:
-        target: none
         target: self
         bypass_backfire: true
         loud: true

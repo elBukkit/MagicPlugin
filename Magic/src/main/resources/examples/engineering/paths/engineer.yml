@@ -17,6 +17,8 @@ engineer:
     inherit: master
     mana_regeneration: 45
     mana_max: 250
+    extra_spells:
+      - brushselect
     spells:
       - rollback
       - alter
@@ -31,7 +33,6 @@ engineer:
       - supertorch
       - raise
       - flatten
-      - brushselect
     # Engineer wands can gain material brushes, they get some number of them per spell purchase as below
     material_count:
       2: 100

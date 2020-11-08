@@ -11,5 +11,10 @@ brushselect:
     quick_cast: true
     actions:
         cast:
-        -  class: BrushSelect
+        - class: BrushSelect
+    effects:
+        cast:
+          sound: block_ender_chest_open
+          sound_pitch: 1.5
+          sound_volume: 1.1
 

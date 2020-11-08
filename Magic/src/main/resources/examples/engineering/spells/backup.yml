@@ -10,10 +10,22 @@ backup:
     worth: 9999
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_piston_contract
-        -  class: EffectTrail
-           effect: ender_signal
+        - class: EffectSingle
+          sound: block_piston_contract
+          sound_volume: 0.2
+          sound_pitch: 0.5
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 1.8
+        - class: EffectRing
+          location: target
+          effect: ender_signal
+          radius: 3
+          size: 12
+          target_offset: 0,2,0
+        - class: EffectTrail
+          particle: falling_obsidian_tear
+          particle_count: 4
+          particle_offset: 0.2
     parameters:
         allow_max_range: true
         range: 32

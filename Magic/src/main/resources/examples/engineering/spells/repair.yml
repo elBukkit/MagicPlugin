@@ -9,11 +9,40 @@ repair:
     class: ConstructSpell
     worth: 300
     effects:
-        cast:
-        -  class: EffectSingle
-           sound: block_piston_extend
-        -  class: EffectTrail
-           effect: ender_signal
+      cast:
+        - class: EffectSingle
+          sound: block_piston_extend
+          sound_volume: 0.2
+          sound_pitch: 0.5
+        - sound: entity_illusioner_cast_spell
+          sound_pitch: 1.8
+        - location: target
+          target_offset: 0,1,0
+          effectlib:
+            class: Helix
+            particle: crimson_spore
+            duration: 1000
+            radius: 2
+            particles: 8
+            particle_count: 4
+            particle_offset: 0.05
+        - class: EffectTrail
+          particle: dripping_honey
+          particle_count: 4
+          particle_offset: 0.2
+        - location: target
+          effectlib:
+            class: Star
+            particle: end_rod
+            duration: 1000
+            spike_height: 4
+            particles: 10
+            particle_count: 4
+            particle_offset: 0.05
+        - class: EffectTrail
+          particle: dripping_honey
+          particle_count: 4
+          particle_offset: 0.2
     parameters:
         target: block
         allow_max_range: false

@@ -7,26 +7,39 @@ weather:
     category: elemental
     worth: 500
     earns_sp: 5
+    quick_cast: true
     actions:
         cast:
         -  class: Weather
     effects:
         cast:
-        -  class: EffectSingle
-           sound: weather_rain
+        - sound: weather_rain
+          sound_pitch: 0.4
+        - sound: block_conduit_activate
+          sound_pitch: 1.3
+          sound_volume: 1.8
+        -  class: EffectRing
+           size: 4
+           radius: 6
            effectlib:
-             offset: 0,4,0
+             offset: 0,10,0
              class: HelixEffect
              iterations: 1
              particle: drip_water
+             radius: 4
         alternate:
-        -  class: EffectSingle
-           sound: entity_lightning_thunder
+         - sound: block_conduit_deactivate
+           sound_pitch: 1.3
+           sound_volume: 1.8
+         - class: EffectRing
+           size: 4
+           radius: 6
            effectlib:
-             offset: 0,4,0
-             class: HelixEffect
-             iterations: 1
-             particle: drip_water
+               offset: 0,10,0
+               class: HelixEffect
+               iterations: 1
+               particle: end_rod
+               radius: 4
     parameters:
         target: none
         cooldown: 900000

@@ -12,6 +12,7 @@ superbackup:
         cast:
         - class: EffectSingle
           sound: block_piston_contract
+          sound_volume: 0.2
           sound_pitch: 0.5
         - sound: entity_illusioner_cast_spell
           sound_pitch: 1.8
