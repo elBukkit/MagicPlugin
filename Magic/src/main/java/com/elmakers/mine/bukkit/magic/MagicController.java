@@ -56,6 +56,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -1858,6 +1859,9 @@ public class MagicController implements MageController {
             getMage(player);
         }
 
+        if (!(sender instanceof ConsoleCommandSender)) {
+            getLogger().info("Finished reloading configuration");
+        }
         notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
 
         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
