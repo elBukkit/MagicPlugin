@@ -15,7 +15,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class AbsorbAction extends BaseSpellAction
 {
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context)
     {

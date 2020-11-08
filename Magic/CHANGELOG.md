@@ -100,6 +100,7 @@
    https://www.planetminecraft.com/texture-pack/slimefun-texture-by-raulh22/
  - Add "safe" example, which modifies the survival configs to avoid all world changes
  - Add "search" effects to BlockSearch action, played for each step of the search
+ - The Absorb spell can now absorb most block types (changed from whitelist to blacklist)
 
 # 7.11.1
 
