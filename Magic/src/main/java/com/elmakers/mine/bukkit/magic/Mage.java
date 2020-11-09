@@ -1156,6 +1156,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         }
                     }
                 }
+
+                // Just in case something weird happened and we have items pending for respawn
+                if (!player.isDead()) {
+                    restoreRespawnInventories();
+                }
             }
 
             loading = false;
@@ -3561,44 +3566,71 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player == null) {
             return;
         }
+        boolean updated = false;
         PlayerInventory inventory = player.getInventory();
+        List<ItemStack> addToInventory = null;
         if (respawnArmor != null) {
             ItemStack[] armor = inventory.getArmorContents();
             for (Map.Entry<Integer, ItemStack> entry : respawnArmor.entrySet()) {
-                armor[entry.getKey()] = entry.getValue();
+                ItemStack item = entry.getValue();
+                if (!CompatibilityUtils.isEmpty(item)) {
+                    updated = true;
+                    int index = entry.getKey();
+                    if (!CompatibilityUtils.isEmpty(armor[index])) {
+                        if (addToInventory == null) {
+                            addToInventory.add(armor[index]);
+                        }
+                    }
+                    armor[index] = item;
+                }
             }
-            player.getInventory().setArmorContents(armor);
+            if (updated) {
+                player.getInventory().setArmorContents(armor);
+            }
         }
         if (respawnInventory != null) {
-            List<ItemStack> addToInventory = null;
             for (Map.Entry<Integer, ItemStack> entry : respawnInventory.entrySet()) {
                 int slot = entry.getKey();
                 ItemStack item = entry.getValue();
+                if (CompatibilityUtils.isEmpty(item)) {
+                    continue;
+                }
+                updated = true;
                 if (slot >= 0) {
-                    inventory.setItem(entry.getKey(), item);
-                } else {
+                    int index = entry.getKey();
+                    ItemStack existing = inventory.getItem(index);
+                    inventory.setItem(index, item);
+                    if (!CompatibilityUtils.isEmpty(existing)) {
+                        item = existing;
+                    } else {
+                        item = null;
+                    }
+                }
+                if (item != null) {
                     if (addToInventory == null) {
                         addToInventory = new ArrayList<>();
                     }
                     addToInventory.add(item);
                 }
             }
-            if (addToInventory != null) {
-                for (ItemStack item : addToInventory) {
-                    Map<Integer, ItemStack> returned = inventory.addItem(item);
-                    if (!returned.isEmpty()) {
-                        player.getWorld().dropItem(player.getLocation(), item);
-                    }
+        }
+        if (addToInventory != null) {
+            for (ItemStack item : addToInventory) {
+                Map<Integer, ItemStack> returned = inventory.addItem(item);
+                if (!returned.isEmpty()) {
+                    player.getWorld().dropItem(player.getLocation(), item);
                 }
             }
         }
         clearRespawnInventories();
-        controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                armorUpdated();
-            }
-        }, 1);
+        if (updated) {
+            controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
+                @Override
+                public void run() {
+                    armorUpdated();
+                }
+            }, 1);
+        }
     }
 
 
