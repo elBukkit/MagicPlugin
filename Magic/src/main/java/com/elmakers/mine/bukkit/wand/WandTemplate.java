@@ -40,6 +40,7 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
     private ConfigurationSection attributes;
     private String attributeSlot;
     private String parentKey;
+    private Map<String, String> messageKeys = new HashMap<>();
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         super(controller, key, node);
@@ -303,5 +304,19 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
             return controller.getWandTemplate(parentKey);
         }
         return null;
+    }
+
+    public String getMessageKey(String key, MageController controller) {
+        if (!messageKeys.containsKey(key)) {
+            String wandKey = "wands." + this.getKey() + "." + key;
+            if (controller.getMessages().containsKey(wandKey)) {
+                messageKeys.put(key, wandKey);
+            } else {
+                WandTemplate parent = parentKey == null || parentKey.isEmpty() ? null : (WandTemplate)controller.getWandTemplate(parentKey);
+                String parentMessageKey = parent == null ? null : parent.getMessageKey(key, controller);
+                messageKeys.put(key, parentMessageKey);
+            }
+        }
+        return messageKeys.get(key);
     }
 }

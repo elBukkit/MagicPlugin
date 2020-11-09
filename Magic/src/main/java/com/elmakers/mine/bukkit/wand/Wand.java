@@ -5172,9 +5172,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     protected String getMessageKey(String key) {
-        String wandKey = "wands." + template + "." + key;
-        if (template != null && !template.isEmpty() && controller.getMessages().containsKey(wandKey)) {
-            return wandKey;
+        WandTemplate template = getTemplate();
+        String templateKey = template == null ? null : template.getMessageKey(key, controller);
+        if (templateKey != null) {
+            return templateKey;
         }
         return "wand." + key;
     }
