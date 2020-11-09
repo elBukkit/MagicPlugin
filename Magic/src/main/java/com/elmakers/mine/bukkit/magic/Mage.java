@@ -2162,7 +2162,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             List<Batch> batches = new ArrayList<>();
             batches.addAll(pendingBatches);
             for (Batch batch : batches) {
-                if (spellKey != null || !force) {
+                if (spellKey != null || !force || fromDeactivate) {
                     if (!(batch instanceof SpellBatch)) {
                         continue;
                     }
@@ -2329,7 +2329,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
-        cancelPending(null, false, true, exceptSpellKey, true);
+        cancelPending(null, true, true, exceptSpellKey, true);
     }
 
     @Override
