@@ -49,7 +49,7 @@ superrepair:
           effectlib:
             class: Star
             particle: end_rod
-            duration: 1000
+            duration: 500
             particles: 10
             particle_count: 4
             particle_offset: 0.05

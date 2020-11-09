@@ -54,7 +54,7 @@ superconvert:
           radius_override: radius
           effectlib:
             class: Sphere
-            duration: 1500
+            duration: 100
             particle: end_rod
             particles: 25
             particle_count: 3

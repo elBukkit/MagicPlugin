@@ -40,7 +40,7 @@ superpyramid:
             radius_override: variable_a
             effectlib:
               class: Modified
-              duration: 1000
+              duration: 500
               parameters:
                 radius: "a + 1"
               effect:

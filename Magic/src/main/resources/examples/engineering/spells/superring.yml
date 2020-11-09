@@ -46,7 +46,7 @@ superring:
             angular_velocity_z: 0
             particles: 30
             whole_circle: true
-            duration: 1000
+            duration: 500
         - location: selection_to_target
           radius_override: variable_a
           effectlib:

@@ -53,7 +53,7 @@ superdome:
           radius_override: radius
           effectlib:
             class: Sphere
-            duration: 1500
+            duration: 500
             particle: end_rod
             particles: 25
             particle_count: 3

@@ -16,7 +16,7 @@ fill:
           - location: selection_to_target
             effectlib:
               class: Cuboid
-              duration: 1500
+              duration: 500
               particle: end_rod
               block_snap: true
               padding: 0.1

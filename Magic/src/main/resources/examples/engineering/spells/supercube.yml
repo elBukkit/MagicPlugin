@@ -58,7 +58,7 @@ supercube:
             radius_override: variable_a
             effectlib:
               class: Modified
-              duration: 1000
+              duration: 500
               parameters:
                 edge_length: "a * 2 + 0.5"
               effect:
