@@ -19,6 +19,21 @@ wand:
     - magicbow
     - magicsword
     - talisman
+    - apprenticeboots
+    - apprenticechestplate
+    - apprenticeleggings
+    - apprenticehelmet
+    - broomstick
+    - camera
+    - divinghelmet
+    - flashboots
+    - goggles
+    - magichat
+    - magictorch
+    - mastersword
+    - mirrorshield
+    - rabbitboots
+    - rocketboots
 
   # This defines the materials that will be required to craft this wand
   materials:

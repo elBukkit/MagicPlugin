@@ -5,6 +5,21 @@ spellbook:
     - magicbow
     - magicsword
     - talisman
+    - apprenticeboots
+    - apprenticechestplate
+    - apprenticeleggings
+    - apprenticehelmet
+    - broomstick
+    - camera
+    - divinghelmet
+    - flashboots
+    - goggles
+    - magichat
+    - magictorch
+    - mastersword
+    - mirrorshield
+    - rabbitboots
+    - rocketboots
 
   materials:
     o: magicheart
