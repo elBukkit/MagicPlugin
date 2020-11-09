@@ -4,6 +4,7 @@ broomstick:
     mode: cast
     keep: true
     locked: true
+    bound: true
     locked_allow_upgrades: true
     indestructible: true
     active_spell: broom

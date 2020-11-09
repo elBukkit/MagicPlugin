@@ -72,6 +72,7 @@
 
  ## Other Changes
 
+ - Broomsticks are bound again, mainly so they can show instructions on first hold
  - Add "reactivate" spell property, for spells that should reactivate on login.
    Used for Levitate and broomsticks so you don't fall and die and relog
  - Wand instructions updated to be more flexible, this may require some localization updates if you're customized
