@@ -127,9 +127,32 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 SpellTemplate spell = api.getSpellTemplate(spellName);
                 if (spell != null) {
                     if (args.length == 4) {
-                        spell.getParameters(options);
+                        Collection<String> parameters = new ArrayList<>();
+                        spell.getParameters(parameters);
+                        for (String parameter : parameters) {
+                            options.add("parameters." + parameter);
+                        }
+                        options.add("icon");
+                        options.add("upgrade_required_path");
+                        options.add("upgrade_required_casts");
+                        options.add("icon_disabled");
+                        options.add("color");
+                        options.add("costs");
+                        options.add("worth");
+                        options.add("earns_sp");
+                        options.add("earns_cooldown");
+                        options.add("require_health_percentage");
+                        options.add("quick_cast");
+                        options.add("pvp_restricted");
+                        options.add("passive");
+                        options.add("cast_on_no_target");
+                        options.add("undoable");
                     } else {
-                        spell.getParameterOptions(options, args[args.length - 2]);
+                        String parameter = args[args.length - 2];
+                        String prefix = "parameters.";
+                        if (parameter.startsWith(prefix)) {
+                            spell.getParameterOptions(options, parameter.substring(prefix.length()));
+                        }
                     }
                 }
             }
