@@ -16,7 +16,12 @@ levitate:
     cancellable: false
     undoable: false
     show_undoable: false
+    reactivate: true
     actions:
+       reactivate:
+       - class: Fly
+       - class: FallProtection
+         duration: 10000
        cast:
        - class: Velocity
          direction: 0,1,0

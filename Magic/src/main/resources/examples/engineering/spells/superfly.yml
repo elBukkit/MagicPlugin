@@ -12,7 +12,12 @@ superfly:
     cancellable: false
     show_undoable: false
     undoable: false
+    reactivate: true
     actions:
+       reactivate:
+        - class: Fly
+        - class: FallProtection
+          duration: 10000
        cast:
        - class: Velocity
          direction: 0,1,0

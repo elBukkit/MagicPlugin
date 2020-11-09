@@ -780,6 +780,7 @@ spells:
         cast: You feel lighter
         cancel: You feel heavier
         upgrade_description: "Fly faster and higher, reduced cooldown"
+        reactivate: Reactivating Levitate
     levitate|6:
         upgrade_description: "Unlimited height, cloud vanishes for visibility"
     boom:
@@ -937,6 +938,7 @@ spells:
         description: For videographers
         cast: You feel lighter
         cost_free: You feel heavier
+        reactivate: Reactivating SuperFly
     petrify:
         name: Petrify
         description: Immobilize your target
