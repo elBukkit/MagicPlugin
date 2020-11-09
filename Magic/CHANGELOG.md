@@ -68,6 +68,7 @@
    You can turn this back on with `allow_inventory_casting: true` but it is not recommended on modern MC versions,
    since you'll also get a cast of the main spell.
  - Fix blinking on top of the top half of slabs
+ - Fix wands not auto-opening on login if they were open on logout
 
  ## Other Changes
 

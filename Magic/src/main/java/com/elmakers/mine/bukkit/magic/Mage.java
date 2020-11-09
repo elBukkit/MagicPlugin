@@ -1156,15 +1156,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         }
                     }
                 }
-
-                if (activeWand != null && restoreOpenWand && !activeWand.isInventoryOpen())
-                {
-                    activeWand.openInventory();
-                }
-                restoreOpenWand = false;
             }
 
             loading = false;
+
+
+            // Re-activate wand if it was active on logout
+            checkWand();
+            if (activeWand != null && restoreOpenWand && !activeWand.isInventoryOpen())
+            {
+                activeWand.openInventory();
+            }
+            restoreOpenWand = false;
 
             // Force-add default class
             getActiveClass();
@@ -1566,7 +1569,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             data.setRespawnArmor(respawnArmor);
             data.setRespawnInventory(respawnInventory);
-            data.setOpenWand(false);
+            data.setOpenWand(restoreOpenWand);
             if (activeWand != null) {
                 if (activeWand.hasStoredInventory()) {
                     data.setStoredInventory(Arrays.asList(activeWand.getStoredInventory().getContents()));
@@ -3959,6 +3962,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void flagForReactivation() {
+        restoreOpenWand = activeWand != null && activeWand.isInventoryOpen();
         for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
             Batch batch = iterator.next();
             if (!(batch instanceof SpellBatch)) continue;
