@@ -1448,20 +1448,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             Player player = mage.getPlayer();
             if (player != null) {
                 ItemStack itemInHand = player.getInventory().getItemInMainHand();
-                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item) && itemInHand.equals(item)) {
+                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item)
+                    && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
                     isInOffhand = false;
                     return true;
                 }
                 itemInHand = player.getInventory().getItemInOffHand();
-                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item) && itemInHand.equals(item)) {
+                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item)
+                    && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
                     isInOffhand = true;
                     return true;
                 }
 
                 itemInHand = player.getInventory().getItem(heldSlot);
-                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item) && itemInHand.equals(item)) {
+                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item)
+                    && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
                     isInOffhand = true;
                     return true;

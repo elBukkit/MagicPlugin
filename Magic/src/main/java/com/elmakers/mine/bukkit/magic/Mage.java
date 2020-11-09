@@ -1651,7 +1651,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         if ((itemInHand != null && activeWandItem == null)
                 || (activeWandItem != null && itemInHand == null)
-                || (activeWandItem != null && itemInHand != null && !itemInHand.equals(activeWandItem))
+                || (activeWandItem != null && itemInHand != null && !controller.isSameItem(activeWandItem, itemInHand))
                 )
         {
             if (activeWand != null) {

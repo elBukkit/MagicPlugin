@@ -5500,6 +5500,14 @@ public class MagicController implements MageController {
         return Wand.createBrushItem(brushKey, this, null, true);
     }
 
+    public boolean isSameItem(ItemStack first, ItemStack second) {
+        if (first.getType() != second.getType()) return false;
+        if (first.getDurability() != second.getDurability()) return false;
+        if (first.hasItemMeta() != second.hasItemMeta()) return false;
+        if (!first.hasItemMeta()) return true;
+        return first.getItemMeta().equals(second.getItemMeta());
+    }
+
     @Override
     public boolean itemsAreEqual(ItemStack first, ItemStack second) {
         if (first == null || second == null) return false;
