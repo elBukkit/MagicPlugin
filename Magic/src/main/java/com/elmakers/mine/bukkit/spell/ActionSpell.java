@@ -127,10 +127,10 @@ public class ActionSpell extends BrushSpell
             result = SpellResult.ALTERNATE_JUMPING;
             currentHandler = jumpHandler;
         }
-        return startCast(result);
+        return startCast(result, parameters);
     }
 
-    protected SpellResult startCast(SpellResult result) {
+    protected SpellResult startCast(SpellResult result, ConfigurationSection parameters) {
         if (isUndoable())
         {
             getMage().prepareForUndo(getUndoList());
@@ -323,6 +323,6 @@ public class ActionSpell extends BrushSpell
         if (currentHandler == null) {
             currentHandler = actions.get("cast");
         }
-        return startCast(SpellResult.REACTIVATE).isSuccess();
+        return startCast(SpellResult.REACTIVATE, getCurrentCast().getWorkingParameters()).isSuccess();
     }
 }
