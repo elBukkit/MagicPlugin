@@ -2152,6 +2152,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Nullable
     public Batch cancelPending(String spellKey, boolean force, boolean nonBatched, String exceptSpellKey) {
+        return cancelPending(spellKey, force, nonBatched, exceptSpellKey, false);
+    }
+
+    @Nullable
+    public Batch cancelPending(String spellKey, boolean force, boolean nonBatched, String exceptSpellKey, boolean fromDeactivate) {
         Batch stoppedPending = null;
         if (!pendingBatches.isEmpty()) {
             List<Batch> batches = new ArrayList<>();
@@ -2164,6 +2169,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     SpellBatch spellBatch = (SpellBatch)batch;
                     Spell spell = spellBatch.getSpell();
                     if (spell == null) {
+                        continue;
+                    }
+                    if (fromDeactivate && !spell.cancelOnDeactivate()) {
                         continue;
                     }
                     if (!force && !spell.isCancellable()) {
@@ -2321,10 +2329,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
-        // This is mainly here to prevent multi-wand spamming and for
-        // Disarm to be more powerful.. because Disarm needs to be more
-        // powerful :|
-        cancelPending(null, false, true, exceptSpellKey);
+        cancelPending(null, false, true, exceptSpellKey, true);
     }
 
     @Override

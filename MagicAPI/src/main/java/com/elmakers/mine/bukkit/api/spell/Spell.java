@@ -80,6 +80,7 @@ public interface Spell extends SpellTemplate {
     double cancelOnDamage();
     boolean cancelOnCastOther();
     boolean cancelOnDeath();
+    boolean cancelOnDeactivate();
     String getMessage(String messageKey);
     boolean hasHandlerParameters(String handlerKey);
     @Nullable
