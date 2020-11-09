@@ -127,7 +127,10 @@ public class ActionSpell extends BrushSpell
             result = SpellResult.ALTERNATE_JUMPING;
             currentHandler = jumpHandler;
         }
+        return startCast(result);
+    }
 
+    protected SpellResult startCast(SpellResult result) {
         if (isUndoable())
         {
             getMage().prepareForUndo(getUndoList());
@@ -303,5 +306,16 @@ public class ActionSpell extends BrushSpell
             }
         }
         return false;
+    }
+
+    protected boolean onReactivate() {
+        if (!prepareCast()) {
+            return false;
+        }
+        currentHandler = actions.get("reactivate");
+        if (currentHandler == null) {
+            currentHandler = actions.get("cast");
+        }
+        return startCast(SpellResult.REACTIVATE).isSuccess();
     }
 }

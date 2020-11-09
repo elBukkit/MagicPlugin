@@ -341,6 +341,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 spellData.setLastCast(Math.max(spellData.getLastCast(), node.getLong("last_cast", 0)));
                 spellData.setLastEarn(Math.max(spellData.getLastEarn(), node.getLong("last_earn", 0)));
                 spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), node.getLong("cooldown_expiration", 0)));
+                spellData.setIsActive(node.getBoolean("active"));
                 node.set("cast_count", null);
                 node.set("last_cast", null);
                 node.set("last_earn", null);

@@ -3819,6 +3819,11 @@ public class MagicController implements MageController {
     protected void mageQuit(final Mage mage, final MageDataCallback callback) {
         com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
         final boolean isOpen = wand != null && wand.isInventoryOpen();
+        com.elmakers.mine.bukkit.magic.Mage implementation = null;
+        if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+            implementation = (com.elmakers.mine.bukkit.magic.Mage)mage;
+            implementation.flagForReactivation();
+        }
         mage.deactivate();
         mage.undoScheduled();
         mage.deactivateClasses();
@@ -3827,8 +3832,8 @@ public class MagicController implements MageController {
         // Delay removal one tick to avoid issues with plugins that kill
         // players on logout (CombatTagPlus, etc)
         // Don't delay on shutdown, though.
-        if (loaded && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            final com.elmakers.mine.bukkit.magic.Mage quitMage = (com.elmakers.mine.bukkit.magic.Mage)mage;
+        if (loaded && implementation != null) {
+            final com.elmakers.mine.bukkit.magic.Mage quitMage = implementation;
             quitMage.setUnloading(true);
             plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
@@ -3903,7 +3908,7 @@ public class MagicController implements MageController {
     }
 
     public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback) {
-        saveMage(mage, asynchronous, null, false, false);
+        saveMage(mage, asynchronous, callback, false, false);
     }
 
     public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback, boolean wandInventoryOpen, boolean releaseLock)

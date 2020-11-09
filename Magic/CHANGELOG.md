@@ -71,6 +71,7 @@
 
  ## Other Changes
 
+ - Add "reactivate" spell property, for spells that should reactivate on login. Use for Levitate so you don't fall and die.
  - Wand instructions updated to be more flexible, this may require some localization updates if you're customized
  - Add "spawn" actions on SpawnEntity action, to run some actions after spawning the entity ("actions" runs on entity death)
  - Decoy improved, added to apprentice path

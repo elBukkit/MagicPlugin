@@ -1097,9 +1097,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected void onLoad(MageData data) {
         try {
+            // Save spell data, used when creating a spell on first cast
+            List<SpellData> activeSpells = new ArrayList<>();
             Collection<SpellData> spellDataList = data == null ? null : data.getSpellData();
             if (spellDataList != null) {
                 for (SpellData spellData : spellDataList) {
+                    if (spellData.isActive()) {
+                        activeSpells.add(spellData);
+                    }
                     this.spellData.put(spellData.getKey().getKey(), spellData);
                 }
             }
@@ -1160,12 +1165,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             loading = false;
+
             // Force-add default class
             getActiveClass();
             armorUpdated();
+
+            // Re-activate any active spells
+            for (SpellData activeData : activeSpells) {
+                Spell spell = getSpell(activeData.getKey().getKey());
+                if (spell != null) {
+                    spell.reactivate();
+                }
+            }
+
             trigger("join");
         } catch (Exception ex) {
-            controller.getLogger().warning("Error finalizing player data for " + playerName + ": " + ex.getMessage());
+            controller.getLogger().log(Level.WARNING, "Error finalizing player data for " + playerName, ex);
         }
     }
 
@@ -3941,6 +3956,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Collection<Wand> getActiveArmor()
     {
         return activeArmor.values();
+    }
+
+    public void flagForReactivation() {
+        for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
+            Batch batch = iterator.next();
+            if (!(batch instanceof SpellBatch)) continue;
+            SpellBatch spellBatch = (SpellBatch)batch;
+            Spell spell = spellBatch.getSpell();
+            if (spell instanceof BaseSpell) {
+                ((BaseSpell)spell).flagForReactivation();
+            }
+        }
+        for (MageSpell spell : activeSpells) {
+            if (spell instanceof BaseSpell) {
+                ((BaseSpell)spell).flagForReactivation();
+            }
+        }
     }
 
     @Override

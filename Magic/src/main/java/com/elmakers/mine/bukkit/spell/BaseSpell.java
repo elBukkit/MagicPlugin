@@ -253,6 +253,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     private boolean hidden                      = false;
     private boolean passive                     = false;
     private boolean toggleable                  = true;
+    private boolean reactivate                  = false;
+    private boolean isActive                    = false;
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
@@ -1039,6 +1041,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         pvpRestricted = node.getBoolean("pvp_restricted", false);
         quickCast = node.getBoolean("quick_cast", false);
         passive = node.getBoolean("passive", false);
+        reactivate = node.getBoolean("reactivate", false);
         toggleable = node.getBoolean("toggleable", true);
         disguiseRestricted = node.getBoolean("disguise_restricted", false);
         creativeRestricted = node.getBoolean("creative_restricted", false);
@@ -1163,30 +1166,17 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         backfired = false;
 
-        if (!this.spellData.isActive())
+        if (!isActive())
         {
             this.currentCast = null;
         }
     }
 
-    @Override
-    public boolean cast(@Nullable String[] extraParameters, @Nullable Location defaultLocation) {
-        ConfigurationSection parameters = null;
-        if (extraParameters != null && extraParameters.length > 0) {
-            parameters = new MemoryConfiguration();
-            ConfigurationUtils.addParameters(extraParameters, parameters);
-        }
-        return cast(parameters, defaultLocation);
+    protected boolean prepareCast() {
+        return prepareCast(null, null);
     }
 
-    @Override
-    public boolean cast(@Nullable ConfigurationSection parameters)
-    {
-        return cast(parameters, null);
-    }
-
-    @Override
-    public boolean cast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation)
+    protected boolean prepareCast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation)
     {
         if (mage.isPlayer() && mage.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             if (mage.getDebugLevel() > 0 && extraParameters != null) {
@@ -1314,6 +1304,30 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         this.preCast();
+        return true;
+    }
+
+    @Override
+    public boolean cast(@Nullable String[] extraParameters, @Nullable Location defaultLocation) {
+        ConfigurationSection parameters = null;
+        if (extraParameters != null && extraParameters.length > 0) {
+            parameters = new MemoryConfiguration();
+            ConfigurationUtils.addParameters(extraParameters, parameters);
+        }
+        return cast(parameters, defaultLocation);
+    }
+
+    @Override
+    public boolean cast(@Nullable ConfigurationSection parameters)
+    {
+        return cast(parameters, null);
+    }
+
+    @Override
+    public boolean cast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation) {
+        if (!prepareCast(extraParameters, defaultLocation)) {
+            return false;
+        }
 
         // PVP override settings
         bypassPvpRestriction = workingParameters.getBoolean("bypass_pvp", false);
@@ -2364,7 +2378,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (!mage.isCostFree() && (mageClass == null || !mageClass.isCostFree()))
         {
             CasterProperties caster = mageClass != null ? mageClass : getCurrentCast().getWand();
-            if (costs != null && !spellData.isActive())
+            if (costs != null && !isActive())
             {
                 for (CastingCost cost : costs)
                 {
@@ -2462,18 +2476,18 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void setActive(boolean active) {
-        if (active && !spellData.isActive()) {
+        if (active && !isActive()) {
             onActivate();
-        } else if (!active && spellData.isActive()) {
+        } else if (!active && isActive()) {
             onDeactivate();
         }
-        spellData.setIsActive(active);
+        isActive = active;
         lastActiveCost = System.currentTimeMillis();
     }
 
     @Override
     public void activate() {
-        if (!spellData.isActive()) {
+        if (!isActive()) {
             mage.activateSpell(this);
         }
         if (currentCast != null) {
@@ -2498,8 +2512,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (currentCast == null || !currentCast.getResult().isFree()) {
             updateCooldown();
         }
-        if (spellData.isActive()) {
-            spellData.setIsActive(false);
+        if (isActive) {
+            isActive = false;
             onDeactivate();
 
             mage.deactivateSpell(this);
@@ -2558,7 +2572,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean isActive()
     {
-         return spellData.isActive();
+         return isActive;
     }
 
     @Override
@@ -3155,5 +3169,31 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Nullable
     public Collection<Trigger> getTriggers() {
         return triggers;
+    }
+
+    public void flagForReactivation() {
+        if (isActive() && reactivate) {
+            spellData.setIsActive(true);
+        } else {
+            spellData.setIsActive(false);
+        }
+    }
+
+    @Override
+    public boolean reactivate() {
+        if (spellData.isActive() && reactivate) {
+            if (onReactivate()) {
+                sendMessage(getMessage("reactivate").replace("$name", getName()));
+                mage.activateSpell(this);
+                spellData.setIsActive(false);
+                return true;
+            }
+        }
+        spellData.setIsActive(false);
+        return false;
+    }
+
+    protected boolean onReactivate() {
+        return false;
     }
 }

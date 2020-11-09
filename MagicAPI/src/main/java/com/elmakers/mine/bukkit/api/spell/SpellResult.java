@@ -25,6 +25,9 @@ public enum SpellResult {
     ALTERNATE_SNEAK(true, false, false, true),
     ALTERNATE_JUMPING(true, false, false, true),
 
+    // Reactivated on reload
+    REACTIVATE(true, false, true),
+
     // The spell cast fizzled. Actions generally should not return this.
     FIZZLE(false, true, false),
     // The spell cast backfired. Actions generally should not return this.
