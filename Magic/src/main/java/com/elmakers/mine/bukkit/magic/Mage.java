@@ -5045,7 +5045,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return resourcePackEnabled != null;
     }
 
-    public void setResourcePackEnabled(boolean enable) {
+    public void setResourcePackEnabled(Boolean enable) {
         resourcePackEnabled = enable;
     }
 

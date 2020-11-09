@@ -63,8 +63,14 @@ public class RPCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("manual") || subCommand.equalsIgnoreCase("off")) {
+        if (subCommand.equalsIgnoreCase("off")) {
             mage.setResourcePackEnabled(false);
+            sender.sendMessage(controller.getMessages().get("commands.getrp.off"));
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("manual") || subCommand.equalsIgnoreCase("default")) {
+            mage.setResourcePackEnabled(null);
             sender.sendMessage(controller.getMessages().get("commands.getrp.manual"));
             return true;
         }
