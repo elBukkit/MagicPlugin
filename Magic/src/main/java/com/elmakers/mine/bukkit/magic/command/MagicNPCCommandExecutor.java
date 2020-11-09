@@ -538,6 +538,8 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("boots");
             options.add("leggings");
             options.add("villager_profession");
+            options.add("dialog_range");
+            options.add("dialog_interval");
         } else if ((args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell"))
                || (args.length == 2 && args[0].equals("cast"))
                || (args.length == 2 && args[0].equals("spell"))) {
