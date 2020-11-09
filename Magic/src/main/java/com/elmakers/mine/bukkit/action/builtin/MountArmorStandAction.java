@@ -30,6 +30,7 @@ public class MountArmorStandAction extends RideEntityAction
     private boolean armorStandMarker;
     private boolean armorStandGravity;
     private boolean mountWand;
+    private boolean findWand;
     private double armorStandPitch = 0;
     private double armorStandRoll = 0;
     private double armorStandHealth = 0;
@@ -65,6 +66,7 @@ public class MountArmorStandAction extends RideEntityAction
         armorStandRoll = parameters.getDouble("armor_stand_roll", 0.0);
         armorStandHealth = parameters.getDouble("armor_stand_health", 0.1);
         mountWand = parameters.getBoolean("mount_wand", false);
+        findWand = parameters.getBoolean("find_wand", false);
         mountName = parameters.getString("mount_name", null);
         if (parameters.contains("armor_stand_reason")) {
             String reasonText = parameters.getString("armor_stand_reason").toUpperCase();
@@ -132,7 +134,23 @@ public class MountArmorStandAction extends RideEntityAction
         item = null;
         if (mountWand) {
             Wand wand = context.getWand();
-
+            if (findWand) {
+                wand = null;
+                MageController controller = context.getController();
+                ItemStack[] items = player.getInventory().getContents();
+                for (int i = 0; i < items.length; i++) {
+                    ItemStack candidateItem = items[i];
+                    if (controller.isWand(candidateItem)) {
+                        Wand candidateWand = controller.getWand(candidateItem);
+                        String spellKey = candidateWand.getActiveSpellKey();
+                        if (spellKey != null && spellKey.equals(context.getSpell().getSpellKey().getBaseKey())) {
+                            wand = candidateWand;
+                            wand.setHeldSlot(i);
+                            break;
+                        }
+                    }
+                }
+            }
             if (wand == null) {
                 return SpellResult.NO_TARGET;
             }

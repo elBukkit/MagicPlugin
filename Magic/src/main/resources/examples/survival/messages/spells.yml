@@ -57,12 +57,14 @@ spells:
         cursed: You are too stunned to fly!
         upgrade_description: "Increased duration, speed and handling"
         nospace: "&cFind a clear space to mount your broom"
+        reactivate: "Reactivating your broomstick"
     superbroom:
         name: SuperBroom
         cast: Your wand springs to life!
         deactivate: Your wand quiets down.
         crash: CRASH!
         fail: Not enough room to take off!
+        reactivate: "Reactivating your flying enchantment"
     boon:
         name: Boon
         description: Makes you temporarily superpowered

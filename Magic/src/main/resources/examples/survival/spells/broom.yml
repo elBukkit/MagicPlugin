@@ -15,7 +15,11 @@ broom:
     cancellable: false
     show_undoable: false
     undoable: false
+    reactivate: true
     actions:
+      reactivate:
+        - class: MountArmorStand
+          find_wand: true
       cast:
         - class: ChangeContext
           target_offset: 0,1,0
