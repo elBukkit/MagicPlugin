@@ -5496,10 +5496,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return remainder.size() == 0;
     }
 
-    public void setHeldSlot(int slot) {
-        this.heldSlot = slot;
-    }
-
     public boolean storeInventory() {
         if (storedInventory != null) {
             if (mage != null) {
@@ -5867,6 +5863,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public int getHeldSlot() {
         return heldSlot;
+    }
+
+    @Override
+    public void setHeldSlot(int slot) {
+        this.heldSlot = slot;
     }
 
     @Nullable

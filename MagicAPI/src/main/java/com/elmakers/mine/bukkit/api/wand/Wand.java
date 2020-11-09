@@ -250,6 +250,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     String getMageClassKey();
     boolean hasInventory();
     int getHeldSlot();
+    void setHeldSlot(int slot);
     boolean isInOffhand();
 
     /**
