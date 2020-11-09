@@ -42,6 +42,38 @@ wands:
             &8|
         spell_instructions: |-
             &8| &7> &6Loose an arrow &fto cast &d$spell
+    broomstick:
+        name: Broomstick
+        description: "&r&bUse your broom to fly through the air.\n&bDive to speed up, and don't fly too long!"
+        enchant_instructions: ""
+        wand_instructions_header: |-
+            &8 ----------------------------------------------------
+            &8|
+            &8|   &b&lBROOMSTICK INSTRUCTIONS
+            &8|
+        spell_instructions: |-
+            &8| &7> &fUse your broom to fly through the air!
+            &8| &7> &fDive to speed up, but don't fly too long!
+            &8| &7> &fYour &6broom skill &fwill improve with use. keep practicing!
+        bound_instructions: |-
+            &8| &7> &fYour &a$wand &fis &9bound &fto you
+    spellbook:
+        name: Spell Book
+        description: "$path &rSpellbook"
+        wand_instructions_header: |-
+            &8 ----------------------------------------------------
+            &8|
+            &8|   &b&lSPELL BOOK INSTRUCTIONS
+            &8|
+        spell_instructions: |-
+            &8| &7> &f&bUse the &6number keys &fto cast &d$spell
+        inventory_instructions: |-
+          &8| &7> &6$toggle &fto open and close the &espell inventory
+          &8| &7> &6Open your inventory (E) &fto manage hotbar spells
+          &8| &7> &fUse &6number keys &fto cast the desired spell
+    skillbook:
+        name: Skill Book
+        description: Right-click to view skills, drag skill to hotbar to use
     magicbow:
         name: Magic Bow
         description: "$path &rMagic Bow"
@@ -264,11 +296,6 @@ wands:
     cursedmeat:
         name: Cursed Meat
         description: Don't even touch it!
-    broomstick:
-        name: Broomstick
-        description: "&r&bUse your broom to fly through the air.\n&bDive to speed up, and don't fly too long!"
-        enchant_instructions: ""
-        spell_instructions: "&r&bUse your broom to fly through the air. Dive to speed up, and don't fly too long!"
     crackedbroomstick:
         name: Cracked Broomstick
         description: Good while it lasts!
@@ -303,14 +330,6 @@ wands:
     magicheart:
         name: Heart of Magic
         description: Used for crafting magic items
-    skillbook:
-        name: Skill Book
-        description: Right-click to view skills, drag skill to hotbar to use
-    spellbook:
-        name: Spell Book
-        description: "$path &rSpellbook"
-        spell_instructions: "&r&bUse the hotbar button to cast spells that you have put on your hotbar."
-        inventory_instructions: "&r&bRight-click to open the spell inventory and drag spells to your hotbar to cast them."
     appearance_beginner:
         name: Beginner Wand Appearance
         description: A good starter wand
