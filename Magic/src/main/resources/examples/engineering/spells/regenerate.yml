@@ -18,6 +18,7 @@ regenerate:
         max_dimension: 32
         transparent: transparent_to_construction
         ignore_region_overrides: true
+        cancel_on_deactivate: false
     costs:
         mana: 400
 

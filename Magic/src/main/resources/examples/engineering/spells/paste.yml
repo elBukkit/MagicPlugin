@@ -30,6 +30,7 @@ paste:
         type: cuboid
         transparent: transparent_to_construction
         ignore_region_overrides: true
+        cancel_on_deactivate: false
     casts:
         mana: 300
 

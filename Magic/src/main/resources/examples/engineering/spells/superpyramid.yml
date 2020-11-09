@@ -75,6 +75,7 @@ superpyramid:
         destructible: destructible_replace
         consume: true
         ignore_region_overrides: true
+        cancel_on_deactivate: false
     costs:
         mana: 400
 

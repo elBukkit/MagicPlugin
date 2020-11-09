@@ -62,5 +62,6 @@ superemp:
         cooldown: 5000
         undo: 3000
         entity_undo_types: ""
+        cancel_on_deactivate: false
     costs:
         mana: 200

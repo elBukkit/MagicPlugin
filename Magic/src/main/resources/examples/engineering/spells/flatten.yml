@@ -42,6 +42,7 @@ flatten:
     vertical_range: 8
     volume_type: reverse_spiral
     ignore_region_overrides: true
+    cancel_on_deactivate: false
     faces:
     - down
     - north

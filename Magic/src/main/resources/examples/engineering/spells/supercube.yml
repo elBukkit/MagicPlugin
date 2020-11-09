@@ -81,6 +81,7 @@ supercube:
         orient_dimension_min: 0
         consume: true
         ignore_region_overrides: true
+        cancel_on_deactivate: false
     costs:
         mana: 400
 

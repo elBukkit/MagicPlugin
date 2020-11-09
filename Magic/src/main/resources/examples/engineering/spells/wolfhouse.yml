@@ -13,6 +13,7 @@ wolfhouse_base:
         -  class: EffectTrail
            particle: block_crack
     parameters:
+      cancel_on_deactivate: false
       target: other
       ignore_region_overrides: true
       target_type: LivingEntity

@@ -44,6 +44,7 @@ raise:
     consume: true
     destructible: "!earth"
     transparent: "!earth"
+    cancel_on_deactivate: false
     slopes:
       1: 100
       2: 50

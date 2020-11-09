@@ -39,6 +39,7 @@ floodfill:
         consume: true
         priority_faces: down
         ignore_region_overrides: true
+        cancel_on_deactivate: false
         faces:
         - down
         - north

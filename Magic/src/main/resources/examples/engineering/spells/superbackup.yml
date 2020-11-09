@@ -55,6 +55,7 @@ superbackup:
         brushtarget: true
         bypass_undo: true
         ignore_region_overrides: true
+        cancel_on_deactivate: false
     costs:
         mana: 400
 

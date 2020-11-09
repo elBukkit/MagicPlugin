@@ -61,6 +61,8 @@ superconvert:
             particle_offset_x: 0.05
             particle_offset_y: 0.05
             particle_offset_z: 0.05
+    alternate_sneak_parameters:
+      match_data: true
     parameters:
         allow_max_range: false
         range: 32
@@ -72,6 +74,7 @@ superconvert:
         transparent: transparent_to_construction
         consume: true
         ignore_region_overrides: true
+        cancel_on_deactivate: false
         match_data: false
     costs:
         mana: 300
