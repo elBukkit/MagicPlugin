@@ -1,4 +1,45 @@
 wands:
+    base_lightsaber:
+        wand_instructions_header: |-
+            &8 ----------------------------------------------------
+            &8|
+            &8|   &b&lSABER INSTRUCTIONS
+            &8|
+        # This is blank because we start with a spell inventory, and so inventory_instructions is shown right away
+        spell_instructions: ""
+        currency_instructions: |-
+          &8| &7> &fYou have earned some &6$currency!
+          &8| &7> &fYour &6$currency &fis displayed above your mana bar
+          &8| &7> &6$currency &fmay be spent at an &enchanting table &fto learn new powers
+          &8| &7> Repeat uses of the same force powers earn less &6SP&f
+          &8| &7> &fTry &dmixing up your powers &fonce you have more of them!
+        sp_instructions: |-
+          &8| &7> &fYou have earned some &6Skill Points!
+          &8| &7> &fYour &6SP &fis displayed above your energy bar
+          &8| &7> &6SP &fmay be spent at an &eenchanting table &fto learn new powers
+          &8| &7> &fRepeat uses of the same powers earn less &6SP&f
+          &8| &7> &fTry &dmixing up your powers &fonce you have more of them!
+        mana_instructions: |-
+          &8| &7> &fThe force requires &6energy &fto use, shown in the &5XP bar
+        enchant_instructions: |-
+          &8| &7> &fEarn &6Skill Points &fby using the force
+          &8| &7> &fLearn new powers by using &6SP &fat an &eenchanting table
+        page_instructions: |-
+          &8| &7> &eYour &a$wand&8 &fhas more than one page of powers
+          &8| &7> $6Click &foutside the inventory window to change pages
+        inventory_instructions: |-
+          &8| &7> &6$toggle &fto open and close your &eforce powers
+          &8| &7> &6Open your inventory (E) &fto manage hotbar powers
+          &8| &7> &fUse &6number keys &fto use the desired power
+        chest_instructions: |-
+          &8| &7> &6$toggle &fto open and close your &eforce powers
+          &8| &7> &6Click &fon a power to use it
+        skills_instructions: |-
+          &8| &7> &6$toggle &fto open and close your &eforce powers
+          &8| &7> &6Drag &fa power to your hotbar to activate it
+          &8| &7> &fUse &6number keys &fto use the desired power
+        cycle_instructions: |-
+          &8| &7> &6$cycle &fto switch your active force power
     blaster:
         name: Blaster
     blaster_red:

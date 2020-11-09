@@ -1,20 +1,57 @@
 wands:
+    base_bending:
+        wand_instructions_header: |-
+            &8 ----------------------------------------------------
+            &8|
+            &8|   &b&lBENDING INSTRUCTIONS
+            &8|
+        # This is blank because we start with a spell inventory, and so inventory_instructions is shown right away
+        spell_instructions: ""
+        currency_instructions: |-
+            &8| &7> &fYou have earned some &6$currency!
+            &8| &7> &fYour &6$currency &fis displayed above your mana bar
+            &8| &7> &6$currency &fmay be spent at an &enchanting table &fto learn new moves
+            &8| &7> Repeat uses of the same bending moves earn less &6SP&f
+            &8| &7> &fTry &dmixing up your moves &fonce you have more of them!
+        sp_instructions: |-
+            &8| &7> &fYou have earned some &6Skill Points!
+            &8| &7> &fYour &6SP &fis displayed above your energy bar
+            &8| &7> &6SP &fmay be spent at an &eenchanting table &fto learn new moves
+            &8| &7> &fRepeat uses of the same bending moves earn less &6SP&f
+            &8| &7> &fTry &dmixing up your moves &fonce you have more of them!
+        mana_instructions: |-
+            &8| &7> &fBending requires &6energy &fto use, shown in the &5XP bar
+        enchant_instructions: |-
+            &8| &7> &fEarn &6Skill Points &fby using bending moves
+            &8| &7> &fLearn new moves by using &6SP &fat an &eenchanting table
+        page_instructions: |-
+            &8| &7> &eYour &a$wand&8 &fhas more than one page of moves
+            &8| &7> $6Click &foutside the inventory window to change pages
+        inventory_instructions: |-
+            &8| &7> &6$toggle &fto open and close your &ebending moves
+            &8| &7> &6Open your inventory (E) &fto manage hotbar moves
+            &8| &7> &fUse &6number keys &fto use the desired moves
+        chest_instructions: |-
+            &8| &7> &6$toggle &fto open and close your &ebending moves
+            &8| &7> &6Click &fon a moves to use it
+        skills_instructions: |-
+            &8| &7> &6$toggle &fto open and close your &ebending moves
+            &8| &7> &6Drag &fa moves to your hotbar to activate it
+            &8| &7> &fUse &6number keys &fto use the desired move
+        cycle_instructions: |-
+            &8| &7> &6$cycle &fto switch your active bending move
     airstaff:
         name: Air Staff
-        description: "Use drop button to glide\n&7Right-click to view bending moves, drag icon to hotbar to use"
+        description: "Use drop button to glide"
     airbending:
         name: Airbending
-        description: Right-click to view bending moves, drag icon to hotbar to use
     waterbending:
         name: Waterbending
-        description: Right-click to view bending moves, drag icon to hotbar to use
     earthbending:
         name: Earthbending
-        description: Right-click to view bending moves, drag icon to hotbar to use
     firebending:
         name: Firebending
-        description: Right-click to view bending moves, drag icon to hotbar to use
     avatar:
         name: Avatar Powers
-        description: "Master of all four elements\n&7Right-click to view bending moves, drag icon to hotbar to use"
+        description: "Master of all four elements"
 

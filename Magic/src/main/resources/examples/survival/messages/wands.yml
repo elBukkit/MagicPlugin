@@ -23,18 +23,28 @@ wands:
     rage:
         name: Rage Sword
         description: Gathers energy when hitting an enemy
-        spell_instructions: "&r&bUse the hotbar buttons to cast spells. Spells require mana, shown in the XP bar."
-        inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
+    base_sword:
+        wand_instructions_header: |-
+            &8 ----------------------------------------------------
+            &8|
+            &8|   &b&lSWORD INSTRUCTIONS
+            &8|
+        spell_instructions: |-
+            &8| &7> &fUse the &6number keys &fto cast &d$spell
     magicsword:
         name: Magic Sword
         description: "$path &rMagic Sword"
-        spell_instructions: "&r&bUse the hotbar buttons to cast spells. Spells require mana, shown in the XP bar."
-        inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
+    base_bow:
+        wand_instructions_header: |-
+            &8 ----------------------------------------------------
+            &8|
+            &8|   &b&lBOW INSTRUCTIONS
+            &8|
+        spell_instructions: |-
+            &8| &7> &6Loose an arrow &fto cast &d$spell
     magicbow:
         name: Magic Bow
         description: "$path &rMagic Bow"
-        spell_instructions: ""
-        inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
     mastersword:
         name: Master Sword
         description: The legendary sword that seals the darkness
