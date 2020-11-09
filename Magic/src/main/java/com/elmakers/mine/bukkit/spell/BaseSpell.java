@@ -3194,7 +3194,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (spellData.isActive() && reactivate) {
             if (onReactivate()) {
                 sendMessage(getMessage("reactivate").replace("$name", getName()));
-                mage.activateSpell(this);
                 spellData.setIsActive(false);
                 return true;
             }
