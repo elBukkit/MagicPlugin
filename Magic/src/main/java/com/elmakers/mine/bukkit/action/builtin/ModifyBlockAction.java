@@ -111,10 +111,6 @@ public class ModifyBlockAction extends BaseSpellAction {
         Mage mage = context.getMage();
         brush.update(mage, context.getTargetSourceLocation());
 
-        if (!brush.isDifferent(block)) {
-            return SpellResult.NO_TARGET;
-        }
-
         if (!brush.isReady()) {
             brush.prepare();
             return SpellResult.PENDING;
@@ -122,6 +118,10 @@ public class ModifyBlockAction extends BaseSpellAction {
 
         if (!brush.isValid()) {
             return SpellResult.FAIL;
+        }
+
+        if (!brush.isDifferent(block)) {
+            return SpellResult.NO_TARGET;
         }
 
         if (consumeBlocks && !context.isConsumeFree() && !brush.isErase()) {
