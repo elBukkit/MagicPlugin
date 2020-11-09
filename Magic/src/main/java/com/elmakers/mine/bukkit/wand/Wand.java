@@ -1959,9 +1959,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setIcon(new MaterialAndData(DefaultWandMaterial));
         }
 
-        // Add vanilla attributes
-        InventoryUtils.applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
-
         // Add unstashable and unmoveable tags
         if (getBoolean("unstashable") || (undroppable && Unstashable)) {
             InventoryUtils.setMetaBoolean(item, "unstashable", true);
@@ -4695,6 +4692,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // This double-load here is not really ideal.
         // Seems hard to prevent without merging Wand construction and activation, though.
         loadProperties();
+
+        // Add vanilla attributes
+        // This is done here instead of in the Wand constructor because it will modify the ItemStack
+        InventoryUtils.applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
 
         mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
 
