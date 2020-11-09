@@ -295,6 +295,9 @@ public class ActionSpell extends BrushSpell
     public boolean isActive()
     {
         if (mage == null) return false;
+        if (super.isActive()) {
+            return true;
+        }
         if (toggle == ToggleType.UNDO && toggleUndo != null && !toggleUndo.isUndone()) {
             return true;
         }
@@ -309,7 +312,11 @@ public class ActionSpell extends BrushSpell
     }
 
     protected boolean onReactivate() {
-        if (!prepareCast()) {
+        if (isActive()) {
+            return false;
+        }
+        Boolean prepared = prepareCast();
+        if (prepared != null && !prepared) {
             return false;
         }
         currentHandler = actions.get("reactivate");

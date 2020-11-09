@@ -1166,17 +1166,19 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         backfired = false;
 
-        if (!isActive())
+        if (!isActive)
         {
             this.currentCast = null;
         }
     }
 
-    protected boolean prepareCast() {
+    @Nullable
+    protected Boolean prepareCast() {
         return prepareCast(null, null);
     }
 
-    protected boolean prepareCast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation)
+    @Nullable
+    protected Boolean prepareCast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation)
     {
         if (mage.isPlayer() && mage.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             if (mage.getDebugLevel() > 0 && extraParameters != null) {
@@ -1304,7 +1306,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         this.preCast();
-        return true;
+        return null;
     }
 
     @Override
@@ -1325,8 +1327,9 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean cast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation) {
-        if (!prepareCast(extraParameters, defaultLocation)) {
-            return false;
+        Boolean prepared = prepareCast(extraParameters, defaultLocation);
+        if (prepared != null) {
+            return prepared;
         }
 
         // PVP override settings
@@ -2378,7 +2381,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (!mage.isCostFree() && (mageClass == null || !mageClass.isCostFree()))
         {
             CasterProperties caster = mageClass != null ? mageClass : getCurrentCast().getWand();
-            if (costs != null && !isActive())
+            if (costs != null && isActive)
             {
                 for (CastingCost cost : costs)
                 {
@@ -2476,9 +2479,9 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void setActive(boolean active) {
-        if (active && !isActive()) {
+        if (active && !isActive) {
             onActivate();
-        } else if (!active && isActive()) {
+        } else if (!active && isActive) {
             onDeactivate();
         }
         isActive = active;
@@ -2487,7 +2490,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void activate() {
-        if (!isActive()) {
+        if (!isActive) {
             mage.activateSpell(this);
         }
         if (currentCast != null) {
