@@ -23,9 +23,9 @@
    custom spell configs using that action accordingly.
 
  - Wands with interval casts are no longer cost-free, set cast_interval_cost_free: true to put this back.
- - Removed `add_uses` path parameter. You can use `uses` to add uses to an object via a path.
+ - Removed `add_uses` path parameter. You can use `uses` to add uses to a wand via a path.
 
- - Disabled spell inventory quick-casting (using the drop button) by default
+ - Disabled spell inventory quick-casting (using the drop button) by default.
    You can turn this back on with `allow_inventory_casting: true` but it is not recommended on modern MC versions,
    since you'll also get a cast of the main spell.
 
