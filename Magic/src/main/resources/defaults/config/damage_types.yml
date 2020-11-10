@@ -26,29 +26,29 @@
 damage_types:
   overall:
     max_reduction: 0.2
-    max_strength: 5
-    max_weakness: 10
+    max_strength: 2
+    max_weakness: 2
   explosion:
     max_reduction: 0.2
-    max_strength: 5
-    max_weakness: 10
+    max_strength: 2
+    max_weakness: 2
   fall:
     max_reduction: 1.0
-    max_strength: 5
-    max_weakness: 10
+    max_strength: 2
+    max_weakness: 2
   fire:
     max_reduction: 0.5
-    max_strength: 5
-    max_weakness: 10
+    max_strength: 2
+    max_weakness: 2
   physical:
     max_reduction: 0.6
-    max_strength: 5
-    max_weakness: 10
+    max_strength: 2
+    max_weakness: 2
   projectile:
     max_reduction: 0.2
-    max_strength: 5
-    max_weakness: 10
+    max_strength: 2
+    max_weakness: 2
   magic:
     max_reduction: 0.5
-    max_strength: 5
-    max_weakness: 10
+    max_strength: 2
+    max_weakness: 2
