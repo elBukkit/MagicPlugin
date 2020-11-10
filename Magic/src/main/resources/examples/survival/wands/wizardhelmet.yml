@@ -11,3 +11,7 @@ wizardhelmet:
     protection:
       magic: 0.1
       drowning: 0.2
+    tags:
+    - buffablehelmet
+    - buffable
+    
