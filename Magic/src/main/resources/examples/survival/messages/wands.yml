@@ -348,6 +348,9 @@ wands:
     appearance_moon:
         name: Moon Wand Appearance
         description: A wand that may have been used by an ancient sailor
+    appearance_book:
+        name: Book Wand Appearance
+        description: A wand that is cleverly disguised as a book
     appearance_green:
         name: Green Wand Appearance
         description: A dangerous looking poison wand

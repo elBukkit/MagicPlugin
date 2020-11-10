@@ -89,6 +89,11 @@ appearance_green:
     icon: stick{CustomModelData:18041}
     upgrade_icon: stick{CustomModelData:18041}
 
+appearance_book:
+  upgrade: true
+  icon: enchanted_book{CustomModelData:18001}
+  upgrade_icon: enchanted_book{CustomModelData:18001}
+
 appearance_magma:
     upgrade: true
     legacy_icon: wand_icon:44
