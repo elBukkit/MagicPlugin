@@ -233,7 +233,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private int effectSoundInterval = 0;
 
     private int quietLevel = 0;
-    private Map<String, String> castOverrides = null;
 
     // Transient state
 
@@ -2058,42 +2057,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             updateSpellInventory();
         }
 
-        castOverrides = null;
-        if (hasProperty("overrides")) {
-            castOverrides = null;
-            Object overridesGeneric = getObject("overrides");
-            if (overridesGeneric != null) {
-                castOverrides = new HashMap<>();
-                if (overridesGeneric instanceof String) {
-                    String overrides = (String) overridesGeneric;
-                    if (!overrides.isEmpty()) {
-                        // Support YML-List-As-String format
-                        // May not really need this anymore.
-                        overrides = overrides.replaceAll("[\\]\\[]", "");
-                        String[] pairs = StringUtils.split(overrides, ',');
-                        for (String override : pairs) {
-                            parseOverride(override);
-                        }
-                    }
-                } else if (overridesGeneric instanceof List) {
-                    @SuppressWarnings("unchecked")
-                    List<String> overrideList = (List<String>)overridesGeneric;
-                    for (String override : overrideList) {
-                        parseOverride(override);
-                    }
-                } else if (overridesGeneric instanceof ConfigurationSection) {
-                    ConfigurationSection overridesSection = (ConfigurationSection)overridesGeneric;
-                    Set<String> keys = overridesSection.getKeys(true);
-                    for (String key : keys) {
-                        Object leaf = overridesSection.get(key);
-                        if (!(leaf instanceof ConfigurationSection) && !(leaf instanceof Map)) {
-                            castOverrides.put(key, leaf.toString());
-                        }
-                    }
-                }
-            }
-        }
-
         potionEffects.clear();
         if (hasProperty("potion_effects")) {
             addPotionEffects(potionEffects, getString("potion_effects", null));
@@ -2112,16 +2075,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         checkActiveMaterial();
-    }
-
-    private void parseOverride(String override) {
-        // Unescape commas
-        override = override.replace("\\|", ",");
-        String[] keyValue = StringUtils.split(override, " ", 2);
-        if (keyValue.length > 0) {
-            String value = keyValue.length > 1 ? keyValue[1] : "";
-            castOverrides.put(keyValue[0], value);
-        }
     }
 
     @Override
@@ -4216,6 +4169,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
         Collection<String> castParameters = null;
+        Map<String, String> castOverrides = this.getOverrides();
         if (castOverrides != null && castOverrides.size() > 0) {
             castParameters = new ArrayList<>();
             for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
@@ -5412,76 +5366,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateLore();
 
         return true;
-    }
-
-    @Override
-    public Map<String, String> getOverrides()
-    {
-        return castOverrides == null ? new HashMap<>() : new HashMap<>(castOverrides);
-    }
-
-    @Override
-    public void setOverrides(Map<String, String> overrides)
-    {
-        if (overrides == null) {
-            this.castOverrides = null;
-        } else {
-            this.castOverrides = new HashMap<>(overrides);
-        }
-        updateOverrides();
-    }
-
-    @Override
-    public void removeOverride(String key)
-    {
-        if (castOverrides != null) {
-            castOverrides.remove(key);
-            updateOverrides();
-        }
-    }
-
-    @Override
-    public void setOverride(String key, String value)
-    {
-        if (castOverrides == null) {
-            castOverrides = new HashMap<>();
-        }
-        if (value == null || value.length() == 0) {
-            castOverrides.remove(key);
-        } else {
-            castOverrides.put(key, value);
-        }
-        updateOverrides();
-    }
-
-    @Override
-    public boolean addOverride(String key, String value)
-    {
-        if (castOverrides == null) {
-            castOverrides = new HashMap<>();
-        }
-        boolean modified = false;
-        if (value == null || value.length() == 0) {
-            modified = castOverrides.containsKey(key);
-            castOverrides.remove(key);
-        } else {
-            String current = castOverrides.get(key);
-            modified = current == null || !current.equals(value);
-            castOverrides.put(key, value);
-        }
-        if (modified) {
-            updateOverrides();
-        }
-
-        return modified;
-    }
-
-    protected void updateOverrides() {
-        if (castOverrides != null && !castOverrides.isEmpty()) {
-            setProperty("overrides", castOverrides);
-        } else {
-            setProperty("overrides", null);
-        }
     }
 
     public boolean hasStoredInventory() {

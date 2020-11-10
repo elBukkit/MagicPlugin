@@ -82,6 +82,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
+import com.elmakers.mine.bukkit.api.spell.CastParameter;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -207,6 +208,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Map<String, Double> protection = new HashMap<>();
     private Map<String, Double> weakness = new HashMap<>();
     private Map<String, Double> strength = new HashMap<>();
+    private Map<String, List<CastParameter>> castOverrides = new HashMap<>();
     private float costReduction = 0;
     private float cooldownReduction = 0;
     private float consumeReduction = 0;
@@ -3861,6 +3863,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
+        // Collect spell overrides
+        Map<String, String> overrides = properties.getOverrides();
+        if (overrides != null) {
+            for (Map.Entry<String, String> entry : overrides.entrySet()) {
+                String[] path = StringUtils.split(entry.getKey(), ".", 2);
+                if (path.length == 0) continue;
+                String key = path.length == 1 ? path[0] : path[1];
+                String spell = "";
+                CastParameter parameter = new CastParameter(key, entry.getValue());
+                if (path.length > 1 && !path[1].equals("default")) {
+                    spell = path[0];
+                }
+                List<CastParameter> spellParameters = castOverrides.get(spell);
+                if (spellParameters == null) {
+                    spellParameters = new ArrayList<>();
+                    castOverrides.put(spell, spellParameters);
+                }
+                spellParameters.add(parameter);
+            }
+        }
+
         // Iterate over all spells and compile triggers
         for (String spellKey : properties.getSpells()) {
             if (triggeredSpells.contains(spellKey)) continue;
@@ -3920,6 +3943,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         protection.clear();
         strength.clear();
         weakness.clear();
+        castOverrides.clear();
 
         // Try to avoid constantly re-creating these, don't clear the whole map
         for (List<TriggeredSpell> triggerList : triggers.values()) {
@@ -5057,5 +5081,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected void endInstructions() {
         String message = controller.getMessages().get("mage.instructions_footer", "");
         sendMessage(message);
+    }
+
+    @Nullable
+    @Override
+    public List<CastParameter> getOverrides(String spellKey) {
+        List<CastParameter> overrides = castOverrides.get("");
+        List<CastParameter> spellOverrides = castOverrides.get(spellKey);
+        if (overrides == null) {
+            overrides = spellOverrides;
+        } else if (spellOverrides != null) {
+            overrides = new ArrayList<>(overrides);
+            overrides.addAll(spellOverrides);
+        }
+        return overrides;
     }
 }
