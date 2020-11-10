@@ -540,6 +540,10 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("villager_profession");
             options.add("dialog_range");
             options.add("dialog_interval");
+            if (controller.hasDisguises()) {
+                options.add("disguise.type");
+                options.add("disguise.skin");
+            }
         } else if ((args.length == 3 && args[0].equals("configure") && args[1].equals("interact_spell"))
                || (args.length == 2 && args[0].equals("cast"))
                || (args.length == 2 && args[0].equals("spell"))) {
@@ -557,6 +561,10 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         } else if (args.length == 3 && args[0].equals("configure") && args[1].equals("villager_profession")) {
             for (Villager.Profession profession : Villager.Profession.values()) {
                 options.add(profession.name().toLowerCase());
+            }
+        } else if (args.length == 3 && args[0].equals("configure") && args[1].equals("disguise.type")) {
+            for (EntityType entityType : EntityType.values()) {
+                options.add(entityType.name().toLowerCase());
             }
         } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_source") || args[1].equals("cast_source")
                 || args[1].equals("interact_command_source") || args[1].equals("command_source"))) {
@@ -585,10 +593,14 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             for (Player player : controller.getPlugin().getServer().getOnlinePlayers()) {
                 options.add(player.getName());
             }
-        } else if (args.length == 2 && args[0].equals("costs")) {
+        } else if (args.length == 2 && (args[0].equals("costs") || args[0].equals("dialog_range"))) {
             options.add("1");
             options.add("10");
             options.add("100");
+        } else if (args.length == 2 && args[0].equals("dialog_interval")) {
+            options.add("1000");
+            options.add("2000");
+            options.add("5000");
         } else if (args.length == 3 && args[0].equals("costs")) {
             for (String currency : controller.getCurrencyKeys()) {
                 options.add(currency);
