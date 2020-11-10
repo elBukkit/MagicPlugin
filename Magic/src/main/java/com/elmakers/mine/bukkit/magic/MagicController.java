@@ -465,8 +465,10 @@ public class MagicController implements MageController {
         getMageData(id, new MageDataCallback() {
             @Override
             public void run(MageData data) {
-                info("Cached preloaded mage data cache for id " + data.getId());
-                mageDataPreCache.put(id, data);
+                if (data != null) {
+                    info("Cached preloaded mage data cache for id " + data.getId());
+                    mageDataPreCache.put(id, data);
+                }
             }
         });
     }
