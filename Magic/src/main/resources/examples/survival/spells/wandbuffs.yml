@@ -26,6 +26,7 @@ wandbuffshop:
           type: wand
           property: protection.overall
       requirements:
+        - wand_tags: buffablehelmet
         - wand_properties:
           - property: protection.overall
             max: 1
@@ -36,6 +37,7 @@ wandbuffshop:
           type: wand
           property: protection.physical
       requirements:
+        - wand_tags: buffablechestplate
         - wand_properties:
           - property: protection.physical
             max: 1
@@ -46,6 +48,7 @@ wandbuffshop:
           type: wand
           property: protection.fall
       requirements:
+        - wand_tags: buffableboots
         - wand_properties:
           - property: protection.fall
             max: 1
@@ -56,6 +59,7 @@ wandbuffshop:
           type: wand
           property: protection.fire
       requirements:
+        - wand_tags: buffableleggings
         - wand_properties:
           - property: protection.fire
             max: 1
@@ -70,6 +74,17 @@ wandbuffshop:
         - wand_properties:
           - property: enchantments.DAMAGE_ALL
             max: 5
+    - cast_spell: add_magic_strength
+      cost: 1000
+      cost_modifiers:
+        - scale: "1 + 9 * ((x / 5) ^ 3)"
+          type: wand
+          property: strength.magic
+      requirements:
+        - wand_tags: buffablewand
+        - wand_properties:
+          - property: strength.magic
+            max: 1
 
 add_protection:
   icon: shield{CustomModelData:18010}
@@ -222,3 +237,22 @@ add_sharpness:
     - property: "enchantments.DAMAGE_ALL"
       value: "x + 1"
       max: 5
+
+add_magic_strength:
+  icon: diamond_sword{CustomModelData:18102}
+  icon_disabled: diamond_sword{CustomModelData:18103}
+  legacy_icon: spell_icon:178
+  legacy_icon_disabled: spell_icon_disabled:178
+  icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
+  hidden: true
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - property: "strength.magic"
+      value: "x + 0.2"
+      max: 1
