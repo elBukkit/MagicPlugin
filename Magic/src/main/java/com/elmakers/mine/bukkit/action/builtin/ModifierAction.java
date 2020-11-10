@@ -27,7 +27,7 @@ public class ModifierAction extends BaseSpellAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
 
-        removeModifiers = parameters.getStringList("remove_modifiers");
+        removeModifiers = ConfigurationUtils.getStringList(parameters, "remove_modifiers");
         ConfigurationSection addSection = parameters.getConfigurationSection("add_modifiers");
         if (addSection == null) {
             List<String> addList = ConfigurationUtils.getStringList(parameters, "add_modifiers");
