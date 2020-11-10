@@ -308,6 +308,7 @@ public class ActionSpell extends BrushSpell
         return false;
     }
 
+    @Override
     protected boolean onReactivate() {
         if (isActive()) {
             return false;
