@@ -10,4 +10,6 @@ wizardleggings:
       protection_fire: 2
     protection:
       magic: 0.1
-
+    tags:
+    - buffableleggings
+    - buffable
