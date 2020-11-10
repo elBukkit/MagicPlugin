@@ -33,6 +33,7 @@ public class InventoryUtils extends NMSUtils
 {
     public static int MAX_LORE_LENGTH = 24;
     public static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
+    private static UUID SKULL_UUID = UUID.fromString("3f599490-ca3e-49b5-8e75-78181ebf4232");
 
     public static boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
     {
@@ -402,7 +403,8 @@ public class InventoryUtils extends NMSUtils
 
     public static ItemStack setSkullURL(ItemStack itemStack, String url) {
         try {
-            return setSkullURL(itemStack, new URL(url), UUID.randomUUID());
+            // Using a fixed non-random UUID here so skulls of the same type can stack
+            return setSkullURL(itemStack, new URL(url), SKULL_UUID);
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
