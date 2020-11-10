@@ -11,4 +11,6 @@ wizardchestplate:
       protection_environmental: 1
     protection:
       magic: 0.1
-
+    tags:
+    - buffablechestplate
+    - buffable
