@@ -78,9 +78,36 @@ public class MobController implements Listener {
     @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         // Special check for mobs spawned internally
+        // These should already have their mob data assigned
         if (EntityData.isSpawning) return;
 
+        // Ignore players spawns
         final Entity entity = event.getEntity();
+        if (entity.getType() == EntityType.PLAYER) {
+            return;
+        }
+
+        // Check for default mob overrides
+        Plugin plugin = controller.getPlugin();
+        String customName = entity.getCustomName();
+        final EntityData customMob = defaultMobs.get(entity.getType());
+        if (customName == null && customMob != null) {
+            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    customMob.modify(controller, entity);
+                }
+            }, 1);
+            return;
+        }
+
+        // Now only named mobs will be tagged
+        if (customName == null || customName.isEmpty()) {
+            return;
+        }
+
+        // Only want non-natural spawns here
+        // We assume mobs won't naturally spawn with a name.
         SpawnReason reason = event.getSpawnReason();
         if (reason != SpawnReason.SPAWNER
             && reason != SpawnReason.SPAWNER_EGG
@@ -89,22 +116,17 @@ public class MobController implements Listener {
             return;
         }
 
-        Plugin plugin = controller.getPlugin();
+        // Check for named custom mobs
+        // This is to allow attaching data to mobs spawned by spawners, eggs or other plugins
+        final EntityData namedMob = mobsByName.get(customName);
+        if (namedMob == null) {
+            return;
+        }
+
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {
-                String customName = entity.getCustomName();
-                if (customName != null) {
-                    EntityData customMob = mobsByName.get(customName);
-                    if (customMob != null) {
-                        customMob.modify(controller, entity);
-                    }
-                } else if (entity.getType() != EntityType.PLAYER) {
-                    EntityData customMob = defaultMobs.get(entity.getType());
-                    if (customMob != null) {
-                        customMob.modify(controller, entity);
-                    }
-                }
+                namedMob.modify(controller, entity);
             }
         }, 1);
     }
@@ -176,9 +198,6 @@ public class MobController implements Listener {
 
         EntityData mob = activeMobs.get(entity);
         boolean isMagicMob = mob != null;
-        if (mob == null) {
-            mob = defaultMobs.get(entity.getType());
-        }
         if (mob == null) {
             return;
         }
@@ -263,5 +282,14 @@ public class MobController implements Listener {
                 entity.remove();
             }
         }
+    }
+
+    @Nonnull
+    public EntityData getDefaultMob(EntityType entityType) {
+        EntityData defaultMob = defaultMobs.get(entityType);
+        if (defaultMob == null) {
+            defaultMob = new com.elmakers.mine.bukkit.entity.EntityData(entityType);
+        }
+        return defaultMob;
     }
 }

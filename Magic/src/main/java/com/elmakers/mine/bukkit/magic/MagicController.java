@@ -5885,7 +5885,7 @@ public class MagicController implements MageController {
         if (mob == null) {
             EntityType entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(key);
             if (entityType != null) {
-                mob = new com.elmakers.mine.bukkit.entity.EntityData(entityType);
+                mob = mobs.getDefaultMob(entityType);
             }
         }
 
