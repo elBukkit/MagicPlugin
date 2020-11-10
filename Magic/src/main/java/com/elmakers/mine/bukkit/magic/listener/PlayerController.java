@@ -223,6 +223,8 @@ public class PlayerController implements Listener {
 
             event.setCancelled(true);
         } else if (isWand || activeWand != null) {
+            // Clear the last activated slot so we show invalid wand messages again
+            mage.setLastActivatedSlot(event.getPreviousSlot());
             // Check to see if we've switched to/from a wand
             mage.checkWandNextTick();
         }
