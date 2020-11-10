@@ -10,3 +10,6 @@ wizardboots:
       protection_fall: 5
     protection:
       magic: 0.1
+    tags:
+    - buffableboots
+    - buffable
