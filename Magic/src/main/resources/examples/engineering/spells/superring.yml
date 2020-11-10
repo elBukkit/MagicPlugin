@@ -72,8 +72,7 @@ superring:
         type: sphere
         orient_dimension_max: 0
         orient_dimension_min: 0
-        transparent: transparent_to_construction
-        destructible: destructible_replace
+        check_destructible: false
         orient: true
         consume: true
         thickness: 1
