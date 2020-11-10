@@ -33,7 +33,7 @@ public class InventoryUtils extends NMSUtils
 {
     public static int MAX_LORE_LENGTH = 24;
     public static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
-    private static UUID SKULL_UUID = UUID.fromString("3f599490-ca3e-49b5-8e75-78181ebf4232");
+    public static UUID SKULL_UUID = UUID.fromString("3f599490-ca3e-49b5-8e75-78181ebf4232");
 
     public static boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
     {

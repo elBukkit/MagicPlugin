@@ -72,6 +72,7 @@
 
  ## Other Changes
 
+ - SP items are stackable, as are custom skulls
  - SuperConvert will now ignore block data (replace all leaves, water, etc without hassle) shift+cast to match data.
  - Broomsticks are bound again, mainly so they can show instructions on first hold
  - Add "reactivate" spell property, for spells that should reactivate on login.
