@@ -324,20 +324,6 @@ public class InventoryController implements Listener {
 
         if (isWandInventoryOpen)
         {
-            // Don't allow the offhand slot to be messed with while the spell inventory is open
-            if (event.getRawSlot() == 45)
-            {
-                event.setCancelled(true);
-                return;
-            }
-
-            // Don't allow putting spells in a crafting slot
-            if (slotType == InventoryType.SlotType.CRAFTING && heldSpell)
-            {
-                event.setCancelled(true);
-                return;
-            }
-
             if (clickedSpell && clickedItem.getAmount() != 1)
             {
                 clickedItem.setAmount(1);
@@ -345,6 +331,19 @@ public class InventoryController implements Listener {
 
             // Check for page/hotbar cycling by clicking the active wand
             if (activeWand.getMode() == WandMode.INVENTORY) {
+                // Don't allow the offhand slot to be messed with while the spell inventory is open
+                if (event.getRawSlot() == 45)
+                {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                // Don't allow putting spells in a crafting slot
+                if (slotType == InventoryType.SlotType.CRAFTING && heldSpell)
+                {
+                    event.setCancelled(true);
+                    return;
+                }
                 if (clickedWand) {
                     event.setCancelled(true);
                     if ((dropChangesPages && isDrop) || isRightClick) {
