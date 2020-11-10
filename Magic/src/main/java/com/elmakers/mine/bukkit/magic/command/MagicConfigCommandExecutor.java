@@ -122,45 +122,47 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         if ((args.length == 4 || args.length == 5) && subCommand.equals("configure")) {
             String fileType = getFileParameter(args[1]);
-            if (fileType.equals("spells")) {
-                String spellName = args[2];
-                SpellTemplate spell = api.getSpellTemplate(spellName);
-                if (spell != null) {
-                    if (args.length == 4) {
-                        Collection<String> parameters = new ArrayList<>();
-                        spell.getParameters(parameters);
-                        for (String parameter : parameters) {
-                            options.add("parameters." + parameter);
-                        }
-                        options.add("icon");
-                        options.add("upgrade_required_path");
-                        options.add("upgrade_required_casts");
-                        options.add("icon_disabled");
-                        options.add("color");
-                        options.add("costs");
-                        options.add("worth");
-                        options.add("earns_sp");
-                        options.add("earns_cooldown");
-                        options.add("require_health_percentage");
-                        options.add("quick_cast");
-                        options.add("pvp_restricted");
-                        options.add("passive");
-                        options.add("cast_on_no_target");
-                        options.add("undoable");
-                    } else {
-                        String parameter = args[args.length - 2];
-                        String prefix = "parameters.";
-                        if (parameter.startsWith(prefix)) {
-                            spell.getParameterOptions(options, parameter.substring(prefix.length()));
+            if (fileType != null) {
+                if (fileType.equals("spells")) {
+                    String spellName = args[2];
+                    SpellTemplate spell = api.getSpellTemplate(spellName);
+                    if (spell != null) {
+                        if (args.length == 4) {
+                            Collection<String> parameters = new ArrayList<>();
+                            spell.getParameters(parameters);
+                            for (String parameter : parameters) {
+                                options.add("parameters." + parameter);
+                            }
+                            options.add("icon");
+                            options.add("upgrade_required_path");
+                            options.add("upgrade_required_casts");
+                            options.add("icon_disabled");
+                            options.add("color");
+                            options.add("costs");
+                            options.add("worth");
+                            options.add("earns_sp");
+                            options.add("earns_cooldown");
+                            options.add("require_health_percentage");
+                            options.add("quick_cast");
+                            options.add("pvp_restricted");
+                            options.add("passive");
+                            options.add("cast_on_no_target");
+                            options.add("undoable");
+                        } else {
+                            String parameter = args[args.length - 2];
+                            String prefix = "parameters.";
+                            if (parameter.startsWith(prefix)) {
+                                spell.getParameterOptions(options, parameter.substring(prefix.length()));
+                            }
                         }
                     }
                 }
-            }
-            if (fileType.equals("wands") && args.length == 4) {
-                Wand.addParameterKeys(api.getController(), options);
-            }
-            if (fileType.equals("wands") && args.length == 5) {
-                Wand.addParameterValues(api.getController(), args[4], options);
+                if (fileType.equals("wands") && args.length == 4) {
+                    Wand.addParameterKeys(api.getController(), options);
+                }
+                if (fileType.equals("wands") && args.length == 5) {
+                    Wand.addParameterValues(api.getController(), args[4], options);
+                }
             }
         }
         if (args.length == 3 && (subCommand.equals("disable") || subCommand.equals("configure") ||  subCommand.equals("editor") ||  subCommand.equals("reset"))) {
@@ -330,7 +332,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         String fileKey = getFileParameter(parameters[0]);
         if (fileKey == null) {
-            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".nokey"), fileKey, "", ','));
+            sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".nokey"), "", "", ','));
             return null;
         }
         if (!fileKey.equals("config") && !fileKey.equals("messages") && parameters.length < 2) {
