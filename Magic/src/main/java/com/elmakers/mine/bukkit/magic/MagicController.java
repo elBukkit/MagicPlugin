@@ -5306,10 +5306,18 @@ public class MagicController implements MageController {
                     }
                 }
             } else if (skillPointItemsEnabled && magicItemKey.startsWith("sp:")) {
-                String spAmount = magicItemKey.substring(3);
+                String spAmountString = magicItemKey.substring(3);
+                int spAmount = 0;
+                try {
+                    spAmount = Integer.parseInt(spAmountString);
+                } catch (Exception ex) {
+                    if (mage != null) {
+                        mage.sendMessage(ChatColor.RED + "SP amount should be a number");
+                    }
+                }
                 itemStack = getURLSkull(skillPointIcon);
                 ItemMeta meta = itemStack.getItemMeta();
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messages.get("sp.name")).replace("$amount", spAmount));
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messages.get("sp.name")).replace("$amount", Integer.toString(spAmount)));
                 String spDescription = messages.get("sp.description");
                 if (spDescription.length() > 0)
                 {
@@ -5318,7 +5326,7 @@ public class MagicController implements MageController {
                     meta.setLore(lore);
                 }
                 itemStack.setItemMeta(meta);
-                InventoryUtils.setMeta(itemStack, "sp", spAmount);
+                InventoryUtils.setMetaInt(itemStack, "sp", spAmount);
             } else if (magicItemKey.startsWith("spell:")) {
                 // Fix delimiter replaced above, to handle spell levels
                 magicItemKey = magicItemKey.replace(":", "|");

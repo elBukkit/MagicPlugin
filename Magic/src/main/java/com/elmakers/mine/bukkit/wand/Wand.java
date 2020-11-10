@@ -2781,8 +2781,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Nullable
     public static Integer getSP(ItemStack item) {
         if (InventoryUtils.isEmpty(item)) return null;
+        int spAmount = InventoryUtils.getMetaInt(item, "sp", 0);
+        if (spAmount > 0) {
+            return spAmount;
+        }
         String spNode = InventoryUtils.getMetaString(item, "sp");
-        if (spNode == null) return null;
+        if (spNode == null) {
+            return null;
+        }
         Integer sp = null;
         try {
             sp = Integer.parseInt(spNode);
