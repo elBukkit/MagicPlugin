@@ -2,13 +2,10 @@ package com.elmakers.mine.bukkit.batch;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Chunk;
@@ -57,7 +54,8 @@ public class ConstructBatch extends BrushBatch {
     private final @Nonnull MaterialSet attachablesDouble;
     private final @Nonnull MaterialSet delayed;
     private final @Nonnull MaterialSet deferredTypes;
-    private Set<String> replace;
+    private MaterialAndData replace;
+    private Material replaceType;
 
     private boolean finishedNonAttached = false;
     private boolean finishedAttached = false;
@@ -441,12 +439,11 @@ public class ConstructBatch extends BrushBatch {
             return true;
         }
 
-        if (replace != null && replace.size() > 0)
-        {
-            com.elmakers.mine.bukkit.block.MaterialAndData check = new com.elmakers.mine.bukkit.block.MaterialAndData(block);
-            if (!replace.contains(check.getKey()) && !replace.contains(check.getWildDataKey())) {
-                return true;
-            }
+        if (replace != null && replace.isDifferent(block)) {
+            return true;
+        }
+        if (replaceType != null && replaceType != block.getType()) {
+            return true;
         }
 
         // Prepare material brush, it may update
@@ -594,11 +591,12 @@ public class ConstructBatch extends BrushBatch {
         }
     }
 
-    public void setReplace(Collection<MaterialAndData> replace) {
-        this.replace = new HashSet<>();
-        for (MaterialAndData material : replace) {
-            this.replace.add(material.getKey());
-        }
+    public void setReplace(MaterialAndData replace) {
+        this.replace = replace;
+    }
+
+    public void setReplaceType(Material replace) {
+        this.replaceType = replace;
     }
 
     public void setDeferPhysics(boolean defer) {

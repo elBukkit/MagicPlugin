@@ -72,6 +72,7 @@
 
  ## Other Changes
 
+ - SuperConvert will now ignore block data (replace all leaves, water, etc without hassle) shift+cast to match data.
  - Broomsticks are bound again, mainly so they can show instructions on first hold
  - Add "reactivate" spell property, for spells that should reactivate on login.
    Used for Levitate and broomsticks so you don't fall and die and relog

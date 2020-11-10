@@ -1,12 +1,9 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,7 +15,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.batch.ConstructBatch;
 import com.elmakers.mine.bukkit.block.ConstructionType;
-import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -161,19 +157,15 @@ public class ConstructSpell extends BrushSpell
         }
 
         if (parameters.getBoolean("replace", false)) {
-            List<com.elmakers.mine.bukkit.api.block.MaterialAndData> replaceMaterials = new ArrayList<>();
-            MaterialAndData wildReplace = new MaterialAndData(target);
-            if (!parameters.getBoolean("match_data", true)) {
-                wildReplace.setData(null);
+            boolean matchData = parameters.getBoolean("match_data", true);
+            if (mage.isSneaking()) {
+                matchData = parameters.getBoolean("sneak_match_data", matchData);
             }
-            // Hacky, but generally desired - maybe abstract to a parameterized list?
-            Material targetMaterial = target.getType();
-            if (DefaultMaterials.isWater(targetMaterial) || DefaultMaterials.isLava(targetMaterial))
-            {
-                wildReplace.setData(null);
+            if (matchData) {
+                batch.setReplace(new MaterialAndData(target));
+            } else {
+                batch.setReplaceType(target.getType());
             }
-            replaceMaterials.add(wildReplace);
-            batch.setReplace(replaceMaterials);
         }
 
         // Check for command block overrides
