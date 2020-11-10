@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -170,9 +171,10 @@ public class InventoryController implements Listener {
 
         Player player = (Player)event.getWhoClicked();
         final Mage mage = controller.getMage(player);
+        InventoryType.SlotType slotType = event.getSlotType();
 
         if (mage.getDebugLevel() >= 10) {
-            mage.sendDebugMessage("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in " + event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+            mage.sendDebugMessage("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + slotType + " in " + event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
         }
 
         GUIAction gui = mage.getActiveGUI();
@@ -222,7 +224,7 @@ public class InventoryController implements Listener {
         boolean heldWand = Wand.isWand(heldItem);
         boolean heldSpell = Wand.isSpell(heldItem);
         boolean clickedWand = Wand.isWand(clickedItem);
-        if (event.getSlotType() == InventoryType.SlotType.ARMOR)
+        if (slotType == InventoryType.SlotType.ARMOR)
         {
             if (heldSpell) {
                 event.setCancelled(true);
@@ -289,7 +291,7 @@ public class InventoryController implements Listener {
         // I'm not sure why or how this happens, but sometimes we can get a hotbar event without a slot number?
         if (isHotbar && event.getHotbarButton() < 0) return;
 
-        if (isHotbar && event.getSlotType() == InventoryType.SlotType.ARMOR)
+        if (isHotbar && slotType == InventoryType.SlotType.ARMOR)
         {
             int slot = event.getHotbarButton();
             ItemStack item =  mage.getPlayer().getInventory().getItem(slot);
@@ -330,7 +332,7 @@ public class InventoryController implements Listener {
             }
 
             // Don't allow putting spells in a crafting slot
-            if (event.getSlotType() == InventoryType.SlotType.CRAFTING && heldSpell)
+            if (slotType == InventoryType.SlotType.CRAFTING && heldSpell)
             {
                 event.setCancelled(true);
                 return;
@@ -340,37 +342,45 @@ public class InventoryController implements Listener {
             {
                 clickedItem.setAmount(1);
             }
-            if (clickedWand)
-            {
-                event.setCancelled(true);
-                if ((dropChangesPages && isDrop) || isRightClick) {
-                    activeWand.cycleInventory();
-                } else {
-                    activeWand.cycleHotbar(1);
 
-                    // There doesn't seem to be any other way to allow cycling in creative
-                    if (player.getGameMode() == GameMode.CREATIVE) {
+            // Check for page/hotbar cycling by clicking the active wand
+            if (activeWand.getMode() == WandMode.INVENTORY) {
+                if (clickedWand) {
+                    event.setCancelled(true);
+                    if ((dropChangesPages && isDrop) || isRightClick) {
                         activeWand.cycleInventory();
+                    } else {
+                        activeWand.cycleHotbar(1);
+
+                        // There doesn't seem to be any other way to allow cycling in creative
+                        if (player.getGameMode() == GameMode.CREATIVE) {
+                            activeWand.cycleInventory();
+                        }
                     }
+                    return;
                 }
-                return;
-            }
 
-            // So many ways to try and move the wand around, that we have to watch for!
-            if (isHotbar && Wand.isWand(player.getInventory().getItem(event.getHotbarButton())))
-            {
-                event.setCancelled(true);
-                return;
-            }
 
-            // Safety check for something that ought not to be possible
-            // but perhaps happens with lag?
-            if (Wand.isWand(event.getCursor()))
-            {
-                activeWand.closeInventory();
-                event.setCursor(null);
-                event.setCancelled(true);
-                return;
+                // So many ways to try and move the wand around, that we have to watch for!
+                if (isHotbar && Wand.isWand(player.getInventory().getItem(event.getHotbarButton()))) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                // Safety check for something that ought not to be possible
+                // but perhaps happens with lag?
+                if (Wand.isWand(event.getCursor())) {
+                    activeWand.closeInventory();
+                    event.setCursor(null);
+                    event.setCancelled(true);
+                    return;
+                }
+            } else {
+                // Prevent moving items into the skill inventory via the hotbar buttons
+                if (isHotbar && isContainerSlot && !CompatibilityUtils.isEmpty(player.getInventory().getItem(event.getHotbarButton()))) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
         } else if (activeWand != null) {
             // Check for changes that could have been made to the active wand
@@ -447,8 +457,7 @@ public class InventoryController implements Listener {
                 }
                 return;
             }
-            if (activeWand != null && activeWand.isInventoryOpen()) {
-
+            if (isWandInventoryOpen) {
                 ItemStack droppedItem = clickedItem;
 
                 if (!Wand.isSpell(droppedItem)) {
@@ -553,8 +562,9 @@ public class InventoryController implements Listener {
                         event.setCancelled(true);
                     }
 
-                    // Prevent clicking any non-skill item when a skill inventory is open
-                    if (wandMode == WandMode.SKILLS && clickedItem != null && clickedItem.getType() != Material.AIR && !Wand.isSkill(clickedItem)) {
+                    // Prevent putting any non-skill item back into a skill inventory
+                    if (wandMode == WandMode.SKILLS && isContainerSlot
+                        && !CompatibilityUtils.isEmpty(heldItem) && !Wand.isSkill(heldItem)) {
                         event.setCancelled(true);
                     }
                 }
@@ -562,7 +572,7 @@ public class InventoryController implements Listener {
         }
 
         // Check for dropping upgrades onto a wand
-        if (clickedWand && (Wand.isUpgrade(heldItem)
+        if (!isWandInventoryOpen && clickedWand && (Wand.isUpgrade(heldItem)
             || Wand.isSpell(heldItem) || Wand.isSP(heldItem) || Wand.isBrush(heldItem))) {
             if (activeWand != null) {
                 activeWand.deactivate();
