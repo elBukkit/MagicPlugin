@@ -2610,19 +2610,28 @@ wands:
     spell_instructions: '&r&bUse the hotbar buttons to cast spells. Spells require
       mana, shown in the XP bar.'
     inventory_instructions: '&r&bUse the drop (Q) button to open/close the spell inventory.'
+  base_sword:
+    wand_instructions_header: |-
+      &8 ----------------------------------------------------
+      &8|
+      &8|   &b&lКАК ПОЛЬЗОВАТЬСЯ МЕЧОМ
+      &8|
+    spell_instructions: |-
+      &8| &7> &fИспользуй &6цифры на клавиатуре&f, чтобы применить заклинание &d$spell
   magicsword:
     name: Магический меч
     description: Меч ранга $path
-    spell_instructions: '&r&bЧтобы использовать заклинание, нажимай кнопки на клавиатуре
-      (1-9). Заклинания потребляют ману, она показана в виде полосы над инвентарем.'
-    inventory_instructions: '&r&bИспользуй кнопку <выбросить> (Q) чтобы открывать/закрывать
-      инвентарь заклинаний.'
+  base_bow:
+    wand_instructions_header: |-
+        &8 ----------------------------------------------------
+        &8|
+        &8|   &b&lКАК ПОЛЬЗОВАТЬСЯ ЛУКОМ
+        &8|
+    spell_instructions: |-
+        &8| &7> &6Выпусти стрелу&f, чтобы применить заклинание &d$spell
   magicbow:
     name: Магический лук
     description: Лук ранга $path
-    spell_instructions: ''
-    inventory_instructions: '&r&bИспользуй кнопку <выбросить> (Q) чтобы открывать/закрывать
-      инвентарь заклинаний.'
   mastersword:
     name: Master Sword
     description: The legendary sword that seals the darkness
@@ -2904,10 +2913,17 @@ wands:
     description: |-
       &r&bИспользуй метлу, чтобы быстро перемещаться.
       &bПикируй вниз, чтобы набрать скорость. Не летай слишком долго!
-    enchant_instructions: ''
+    wand_instructions_header: |-
+        &8 ----------------------------------------------------
+        &8|
+        &8|   &b&lКАК ПОЛЬЗОВАТЬСЯ МЕТЛОЙ
+        &8|
     spell_instructions: |-
-      &r&bИспользуй метлу, чтобы быстро перемещаться.
-      &bПикируй вниз, чтобы набрать скорость. Не летай слишком долго!
+        &8| &7> &fИспользуй метлу, чтобы быстро перемещаться!
+        &8| &7> &fПикируй вниз, чтобы набрать скорость. Не летай слишком долго!
+        &8| &7> &fТвои способности летать на &6метле &fможно улучшить. Практикуйся!
+    bound_instructions: |-
+        &8| &7> &fТвоя &a$wand &9привязана &fк тебе
   crackedbroomstick:
     name: Поломанная метла
     description: Хороша, пока целая!
@@ -2948,8 +2964,17 @@ wands:
   spellbook:
     name: Книга заклинаний
     description: "&rКнига заклинаний ранга $path"
-    spell_instructions: '&r&bИспользуй кнопки хотбара 1-9, чтобы применить заклинания.'
-    inventory_instructions: '&r&bПКМ, чтобы открыть меню заклинаний. Перетаскивай их в хотбар, чтобы использовать.'
+    wand_instructions_header: |-
+        &8 ----------------------------------------------------
+        &8|
+        &8|   &b&lКАК ПОЛЬЗОВАТЬСЯ КНИГОЙ ЗАКЛИНАНИЙ
+        &8|
+    spell_instructions: |-
+        &8| &7> &fИспользуй &6цифры на клавиатуре&f, чтобы применить заклинание &d$spell
+    inventory_instructions: |-
+        &8| &7> &fНажми &6$toggle, &fчтобы открыть/закрыть &eинвентарь заклинаний
+        &8| &7> &6Открой свой инвентарь (E)&f, чтобы перетаскивать заклинания
+        &8| &7> &fИспользуй &6цифры на клавиатуре &fдля выбора нужного заклинания
   appearance_beginner:
     name: Палочка новичка
     description: Хорошая начальная палочка
