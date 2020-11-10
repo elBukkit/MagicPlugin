@@ -95,6 +95,13 @@ public class InventoryController implements Listener {
             return;
         }
 
+        // We're not going to mess around with this event.
+        Wand activeWand = mage.getActiveWand();
+        if (activeWand != null && activeWand.isInventoryOpen()) {
+            event.setCancelled(true);
+            return;
+        }
+
         // Only check if clicking an armor slot or the held item slot
         Set<Integer> slots = event.getInventorySlots();
         boolean isArmorSlot = !Collections.disjoint(slots, armorSlots);
