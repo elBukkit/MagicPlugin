@@ -26,6 +26,7 @@ wand:
     active_spell: missile
     tags:
     - buffable
+    - buffablewand
     - transformable
     - effectable
     - tweakable
