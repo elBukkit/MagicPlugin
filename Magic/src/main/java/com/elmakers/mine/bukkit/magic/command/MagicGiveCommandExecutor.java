@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.item.ItemData;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
@@ -120,7 +121,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             } else {
                 final Mage mage = controller.getMage(player);
                 final int itemCount = count;
-                itemName = itemName.replace("minecraft", "");
+                itemName = ItemData.cleanMinecraftItemName(itemName);
                 final String itemKey = itemName;
                 api.getController().createItem(itemName, mage, false, new ItemUpdatedCallback() {
                     @Override

@@ -23,6 +23,8 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableSet;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
+    public static final String MINECRAFT_ITEM_PREFIX = "minecraft:";
+
     private String key;
     private ItemStack item;
     private double worth;
@@ -63,13 +65,20 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         }
     }
 
+    public static String cleanMinecraftItemName(String materialKey) {
+        if (materialKey.startsWith(MINECRAFT_ITEM_PREFIX)) {
+            materialKey = materialKey.substring(MINECRAFT_ITEM_PREFIX.length());
+        }
+        return materialKey;
+    }
+
     public ItemData(String key, ConfigurationSection configuration) throws Exception {
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");
         } else if (configuration.isConfigurationSection("item")) {
             ConfigurationSection itemConfiguration = configuration.getConfigurationSection("item");
             String materialKey = itemConfiguration.getString("type", key);
-            materialKey = materialKey.replace("minecraft:", "");
+            materialKey = cleanMinecraftItemName(materialKey);
             MaterialAndData material = new MaterialAndData(materialKey);
             if (material.isValid()) {
                 item = material.getItemStack(1);
@@ -85,7 +94,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             }
         } else {
             String materialKey = configuration.getString("item", key);
-            materialKey = materialKey.replace("minecraft:", "");
+            materialKey = cleanMinecraftItemName(materialKey);
             MaterialAndData material = new MaterialAndData(materialKey);
             if (material.isValid()) {
                 item = material.getItemStack(1);
