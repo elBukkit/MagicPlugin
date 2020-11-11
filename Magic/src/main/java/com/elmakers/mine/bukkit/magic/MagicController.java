@@ -6093,12 +6093,18 @@ public class MagicController implements MageController {
             return false;
         }
         int sent = 0;
+        int skipped = 0;
         for (Player player : Bukkit.getOnlinePlayers()) {
+            Mage mage = getRegisteredMage(player);
+            if (mage != null && !mage.isResourcePackEnabled()) {
+                skipped++;
+                continue;
+            }
             sendResourcePack(player);
             sent++;
         }
         if (sender != null) {
-            sender.sendMessage(ChatColor.AQUA + "Sent current RP to " + sent + " players");
+            sender.sendMessage(ChatColor.AQUA + "Sent current RP to " + sent + " players, skipped " + skipped + " players");
         }
 
         return true;

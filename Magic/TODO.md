@@ -3,7 +3,6 @@
 ## Hot Issues
 
  - CHECK BACKWARDS COMPAT
- - Potter RP disbled icons are broken
  - New inventory pages not getting added until it's completely full?
 
  - Reactivate levitate on login

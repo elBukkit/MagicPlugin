@@ -769,4 +769,5 @@ public interface Mage extends CostReducer, CooldownReducer {
     void setBypassEnabled(boolean enable);
     @Nullable
     List<CastParameter> getOverrides(String spellKey);
+    boolean isResourcePackEnabled();
 }

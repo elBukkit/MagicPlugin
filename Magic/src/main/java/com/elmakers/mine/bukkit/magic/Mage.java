@@ -5061,6 +5061,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return 1.0f + manaRegenerationBoost;
     }
 
+    @Override
     public boolean isResourcePackEnabled() {
         return resourcePackEnabled == null ? controller.isResourcePackEnabledByDefault() : resourcePackEnabled;
     }
