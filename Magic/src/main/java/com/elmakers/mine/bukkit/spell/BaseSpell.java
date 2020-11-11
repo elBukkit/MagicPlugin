@@ -65,6 +65,7 @@ import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.spell.CastParameter;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -1238,6 +1239,12 @@ public class BaseSpell implements MageSpell, Cloneable {
         workingParameters = new SpellParameters(this, currentCast);
         ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
         ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
+        List<CastParameter> overrides = mage.getOverrides(getSpellKey().getBaseKey());
+        if (overrides != null) {
+            for (CastParameter parameter : overrides) {
+                workingParameters.set(parameter.getParameter(), parameter.getValue());
+            }
+        }
         currentCast.setWorkingParameters(workingParameters);
         initializeVariables((SpellParameters)workingParameters);
         processParameters(workingParameters);

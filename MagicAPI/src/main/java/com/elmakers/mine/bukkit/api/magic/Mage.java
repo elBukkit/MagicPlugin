@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.effect.MageEffectContext;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.spell.CastParameter;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -766,4 +767,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     MageModifier getModifier(String key);
     boolean isBypassEnabled();
     void setBypassEnabled(boolean enable);
+    @Nullable
+    List<CastParameter> getOverrides(String spellKey);
 }

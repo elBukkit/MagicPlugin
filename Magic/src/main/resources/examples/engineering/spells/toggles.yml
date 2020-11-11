@@ -1,0 +1,14 @@
+ignoreair_on:
+  actions:
+    cast:
+      - class: Modifier
+  parameters:
+    add_modifiers: ignoreair
+
+ignoreair_off:
+  actions:
+    cast:
+      - class: Modifier
+  parameters:
+    remove_modifiers:
+    - ignoreair

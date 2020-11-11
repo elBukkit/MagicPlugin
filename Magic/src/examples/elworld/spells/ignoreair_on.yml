@@ -1,0 +1,9 @@
+ignoreair_on:
+  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
+  inherit: false
+  actions:
+    cast:
+      - class: Modifier
+  parameters:
+    add_modifiers: ignoreair
+    target: self

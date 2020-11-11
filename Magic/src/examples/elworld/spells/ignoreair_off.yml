@@ -1,0 +1,10 @@
+ignoreair_off:
+  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
+  inherit: false
+  actions:
+    cast:
+      - class: Modifier
+  parameters:
+    remove_modifiers: 
+    - ignoreair
+    target: self

@@ -1,0 +1,4 @@
+ignoreair:
+  overrides:
+    "fill.check_destructible": true
+    "fill.destructible": "!air"

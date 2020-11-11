@@ -843,4 +843,108 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
         return levels;
     }
+
+    @Nullable
+    public Map<String, String> getOverrides() {
+        Map<String, String> castOverrides = null;
+        if (hasProperty("overrides")) {
+            Object overridesGeneric = getObject("overrides");
+            if (overridesGeneric != null) {
+                castOverrides = new HashMap<>();
+                if (overridesGeneric instanceof String) {
+                    String overrides = (String) overridesGeneric;
+                    if (!overrides.isEmpty()) {
+                        // Support YML-List-As-String format
+                        // May not really need this anymore.
+                        overrides = overrides.replaceAll("[\\]\\[]", "");
+                        String[] pairs = StringUtils.split(overrides, ',');
+                        for (String override : pairs) {
+                            parseOverride(override, castOverrides);
+                        }
+                    }
+                } else if (overridesGeneric instanceof List) {
+                    @SuppressWarnings("unchecked")
+                    List<String> overrideList = (List<String>)overridesGeneric;
+                    for (String override : overrideList) {
+                        parseOverride(override, castOverrides);
+                    }
+                } else if (overridesGeneric instanceof ConfigurationSection) {
+                    ConfigurationSection overridesSection = (ConfigurationSection)overridesGeneric;
+                    Set<String> keys = overridesSection.getKeys(true);
+                    for (String key : keys) {
+                        Object leaf = overridesSection.get(key);
+                        if (!(leaf instanceof ConfigurationSection) && !(leaf instanceof Map)) {
+                            castOverrides.put(key, leaf.toString());
+                        }
+                    }
+                } else if (overridesGeneric instanceof  Map) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, String> cast = (Map<String, String>)overridesGeneric;
+                    castOverrides.putAll(cast);
+                }
+            }
+        }
+        return castOverrides;
+    }
+
+    private void parseOverride(String override, Map<String, String> castOverrides) {
+        // Unescape commas
+        override = override.replace("\\|", ",");
+        String[] keyValue = StringUtils.split(override, " ", 2);
+        if (keyValue.length > 0) {
+            String value = keyValue.length > 1 ? keyValue[1] : "";
+            castOverrides.put(keyValue[0], value);
+        }
+    }
+
+    public void setOverrides(Map<String, String> overrides)
+    {
+        overrides = overrides != null && overrides.isEmpty() ? null : overrides;
+        setProperty("overrides", overrides);
+    }
+
+    public void removeOverride(String key)
+    {
+        Map<String, String> castOverrides = getOverrides();
+        if (castOverrides != null) {
+            castOverrides.remove(key);
+            setOverrides(castOverrides);
+        }
+    }
+
+    public void setOverride(String key, String value)
+    {
+        Map<String, String> castOverrides = getOverrides();
+        if (castOverrides == null) {
+            castOverrides = new HashMap<>();
+        }
+        if (value == null || value.length() == 0) {
+            castOverrides.remove(key);
+        } else {
+            castOverrides.put(key, value);
+        }
+        setOverrides(castOverrides);
+    }
+
+    public boolean addOverride(String key, String value)
+    {
+        Map<String, String> castOverrides = getOverrides();
+        if (castOverrides == null) {
+            castOverrides = new HashMap<>();
+        }
+        boolean modified = false;
+        if (value == null || value.length() == 0) {
+            modified = castOverrides.containsKey(key);
+            castOverrides.remove(key);
+        } else {
+            String current = castOverrides.get(key);
+            modified = current == null || !current.equals(value);
+            castOverrides.put(key, value);
+        }
+        if (modified) {
+           setOverrides(castOverrides);
+        }
+
+        return modified;
+    }
 }
