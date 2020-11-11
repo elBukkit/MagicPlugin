@@ -236,7 +236,7 @@ public class WandOrganizer {
     }
 
     protected int getNextSlot() {
-        return getNextSlot(wand.getInventorySize() - Wand.INVENTORY_ORGANIZE_BUFFER);
+        return getNextSlot(wand.getInventorySize() - wand.getOrganizeBuffer());
     }
 
     protected int getNextSlot(int nextPageSize) {

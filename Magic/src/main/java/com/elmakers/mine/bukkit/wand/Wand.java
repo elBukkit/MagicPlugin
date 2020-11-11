@@ -1068,13 +1068,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         List<WandInventory> checkInventories = getAllInventories();
         boolean added = false;
 
+        int organizeBuffer = getOrganizeBuffer();
         WandMode mode = getMode();
         int fullSlot = 0;
         for (WandInventory inventory : checkInventories) {
             int inventorySize = inventory.getSize();
             Integer slot = null;
             int freeSpace = 0;
-            for (int i = 0; i < inventorySize && freeSpace < INVENTORY_ORGANIZE_BUFFER; i++) {
+            for (int i = 0; i < inventorySize && freeSpace < organizeBuffer; i++) {
                 ItemStack existing = inventory.getItem(i);
                 if (InventoryUtils.isEmpty(existing)) {
                     if (slot == null) {
@@ -1085,7 +1086,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
 
             // Don't leave free space in hotbars
-            if (slot != null && (freeSpace >= INVENTORY_ORGANIZE_BUFFER || inventorySize == HOTBAR_INVENTORY_SIZE || mode == WandMode.CHEST)) {
+            if (slot != null && (freeSpace >= organizeBuffer || inventorySize == HOTBAR_INVENTORY_SIZE || mode == WandMode.CHEST)) {
                 added = true;
                 inventory.setItem(slot, itemStack);
                 fullSlot += slot;
@@ -5913,5 +5914,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 options.add(action.name().toLowerCase());
             }
         }
+    }
+
+    public int getOrganizeBuffer() {
+        return getInt("page_free_space", INVENTORY_ORGANIZE_BUFFER);
     }
 }

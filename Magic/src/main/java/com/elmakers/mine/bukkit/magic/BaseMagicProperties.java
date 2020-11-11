@@ -63,7 +63,8 @@ public class BaseMagicProperties implements MagicProperties {
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
             "earn_multiplier", "class", "classes",
-            "consume_spell", "stack", "unstashable", "unmoveable", "attributes", "tags"
+            "consume_spell", "stack", "unstashable", "unmoveable", "attributes", "tags",
+            "page_free_space"
     );
 
     public static final ImmutableSet<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(

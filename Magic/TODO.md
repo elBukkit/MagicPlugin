@@ -2,15 +2,9 @@
 
 ## Hot Issues
 
- - CHECK BACKWARDS COMPAT
  - New inventory pages not getting added until it's completely full?
 
- - Reactivate levitate on login
  - Get items when using erase brush? ... this would be really hard, undo would require having all of the blocks.
- - Support custom prefixes for spells, used by NPCs to put their name in front of everything
-
- - airship schematic, paintings and item frames didn't undo
- - breaking schematic builds drops dirt
 
  - Can fly through glass panes on a broomstick
 

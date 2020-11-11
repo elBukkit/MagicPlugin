@@ -111,6 +111,7 @@
  - Add "safe" example, which modifies the survival configs to avoid all world changes
  - Add "search" effects to BlockSearch action, played for each step of the search
  - The Absorb spell can now absorb most block types (changed from whitelist to blacklist)
+ - Added `page_free_space` wand property, if you want your wands to keep more space free when adding new pages
 
 # 7.11.1
 
