@@ -1,14 +1,14 @@
 wand:
-  # This defines the recipe output- a template wand will be created, and
-  # then upgraded based on its enchanting path and the # of levels in parenthesis
+  # This defines the recipe output
   output: wand
+  # This makes sure you get the wand version, in case of name collisions
+  # Probably not necessary
   output_type: wand
 
   # Used as a substitute item when the wand item is naturally crafted
   # This is mainly for the resource pack, so players don't craft a wood hoe
   # and get some weird non-wand but wand-looking item.
   # This means that, by default, crafting a wood hoe will get you an iron hoe.
-  # If you don't want this behavior, just empty out this field.
   # substitute: iron_hoe
 
   # Don't disable the default recipe
