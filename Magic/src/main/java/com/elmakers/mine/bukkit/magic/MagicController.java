@@ -1033,6 +1033,8 @@ public class MagicController implements MageController {
         if (NMSUtils.isCurrentVersion()) {
             mobs2 = new MobController2(this);
         }
+        File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
+        examplesFolder.mkdirs();
 
         File urlMapFile = getDataFile(URL_MAPS_FILE);
         File imageCache = new File(dataFolder, "imagemapcache");
@@ -6761,6 +6763,13 @@ public class MagicController implements MageController {
         } catch (IOException ex) {
             plugin.getLogger().log(Level.WARNING, "Error scanning example files", ex);
         }
+        File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
+        if (examplesFolder.exists()) {
+            for (File file : examplesFolder.listFiles()) {
+                examples.add(file.getName());
+            }
+        }
+
         return examples;
     }
 
