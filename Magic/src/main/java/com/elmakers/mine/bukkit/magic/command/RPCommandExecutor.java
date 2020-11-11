@@ -63,7 +63,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("off")) {
+        if (subCommand.equalsIgnoreCase("turnoff")) {
             mage.setResourcePackEnabled(false);
             sender.sendMessage(controller.getMessages().get("commands.getrp.off"));
             return true;

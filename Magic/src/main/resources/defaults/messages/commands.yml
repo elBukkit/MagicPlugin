@@ -90,5 +90,5 @@ commands:
     getrp:
       auto: "You will now receive the resource pack automatically at login"
       manual: "RP preference cleared, you will be prompted again at next login."
-      off: "You will no longer receive the resource pack automatically at login nor be prompted.\nUse &b/getrp&f if you want to get it.\nIf you'd prefer to download the RP, you can use &b/getrp url&f to get the URL"
+      turnoff: "You will no longer receive the resource pack automatically at login nor be prompted.\nUse &b/getrp&f if you want to get it.\nIf you'd prefer to download the RP, you can use &b/getrp url&f to get the URL"
       sending: "Use &b/getrp auto&f to get the resource pack automatically.\nOr use &b/getrp off&f to turn off the login prompt."
