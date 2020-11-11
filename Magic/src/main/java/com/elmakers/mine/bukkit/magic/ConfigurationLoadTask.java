@@ -156,6 +156,11 @@ public class ConfigurationLoadTask implements Runnable {
     private ConfigurationSection loadMainConfiguration(String fileName) throws InvalidConfigurationException, IOException {
         ConfigurationSection overrides = loadOverrides(fileName);
 
+        // hack to make overriding the RP less confusing
+        if (overrides != null && !overrides.contains("add_resource_pack")) {
+            overrides.set("add_resource_pack", overrides.get("resource_pack"));
+        }
+
         boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
         String examplesFilePrefix = usingExample ? "examples/" + exampleDefaults + "/" + fileName : null;
         String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
