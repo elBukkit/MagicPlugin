@@ -10,6 +10,12 @@ commands:
           base: "&bBase example: &3$example"
           header: "&bExamples:"
           item: "  &f- &3$example"
+        fetch:
+          usage: "&cUsage: /mconfig example fetch <example name> <url>"
+          fail: "&cCould not retrieve url &e$url"
+          error: "&cSomething went wrong, please check logs"
+          wait: "&bPlease wait, downloading &b$url..."
+          success: "&bDownloaded example &2$example\n&fUse &6mconfig add $example&f to mix this in with your current configs\nUse &6mconfig set $example&f to set this as your base configuration"
         add:
           usage: "&cUsage: /mconfig example add <example>"
           duplicate: "&cThe example &2$example &cis already loaded"
@@ -17,7 +23,7 @@ commands:
         remove:
           usage: "&cUsage: /mconfig example remove <example>"
           missing: "&cThe example &2$example &cis not loaded"
-          all: "&bRemoved all examples, including the base example. Use &f/mconfig example set survival&b if you did not mean to remove the base survival configs."
+          all: "&bRemoved all examples, including the base example.\nUse &f/mconfig example set survival&b if you did not mean to remove the base survival configs."
           success: "&bRemoved example &2$example"
         set:
           success: "&bSet base example to &2$example"

@@ -371,6 +371,7 @@ commands:
          /mconfig example remove survival
          /mconfig example set survival
          /mconfig example list
+         /mconfig example fetch betterpotter https://github.com/grisstyl/BetterPotter/archive/master.zip
   "mconfig clean":
     description: This will override your configs in plugins/Magic with collapsed versions.
     permission: Magic.commands.mconfig.clean
