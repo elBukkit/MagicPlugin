@@ -26,7 +26,7 @@ public class EntityVillagerData extends EntityExtraData {
                 try {
                     profession = Villager.Profession.valueOf(professionKey);
                 } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid vilalger_profession: " + professionKey);
+                    controller.getLogger().warning("Invalid villager_profession: " + professionKey);
                 }
             }
         }
