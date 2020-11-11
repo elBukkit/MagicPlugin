@@ -12,14 +12,14 @@ import org.bukkit.command.CommandSender;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.google.gson.Gson;
 
-public abstract class HttpRequest extends AsyncProcessor implements Runnable {
+public abstract class HttpPost extends AsyncProcessor implements Runnable {
     private final String requestBody;
     private final String url;
     protected final MagicController controller;
     protected final CommandSender sender;
     protected final Gson gson;
 
-    public HttpRequest(MagicController controller, Gson gson, CommandSender sender, String requestBody, String url) {
+    public HttpPost(MagicController controller, Gson gson, CommandSender sender, String requestBody, String url) {
         this.controller = controller;
         this.gson = gson;
         this.sender = sender;

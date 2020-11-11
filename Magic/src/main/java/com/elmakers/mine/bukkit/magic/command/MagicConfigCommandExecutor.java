@@ -36,6 +36,7 @@ import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.command.config.ApplySessionCallback;
 import com.elmakers.mine.bukkit.magic.command.config.AsyncProcessor;
+import com.elmakers.mine.bukkit.magic.command.config.FetchExampleRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.GetSessionRequest;
 import com.elmakers.mine.bukkit.magic.command.config.GetSessionRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionCallback;
@@ -53,7 +54,7 @@ import com.google.gson.Gson;
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
     private static final String EXAMPLES_FILE_NAME = "_examples.yml";
-    private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list");
+    private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list", "fetch");
     private static Set<String> availableFiles = ImmutableSet.of(
             "spells", "wands", "automata", "classes", "config", "crafting", "effects",
             "items", "materials", "mobs", "paths", "attributes", "messages", "modifiers");
@@ -731,6 +732,8 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             onRemoveExample(sender, parameters);
         } else if (action.equals("set")) {
             onSetExample(sender, parameters);
+        } else if (action.equals("fetch")) {
+            onFetchExample(sender, parameters);
         } else if (action.equals("list")) {
             onListExamples(sender);
         } else {
@@ -793,6 +796,19 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         if (configureExamples(sender, examples, currentExample)) {
             sender.sendMessage(magic.getMessages().get("commands.mconfig.example.remove.success").replace("$example", example));
         }
+    }
+
+    protected void onFetchExample(CommandSender sender, String[] parameters) {
+        if (parameters.length < 2) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.usage"));
+            return;
+        }
+        String exampleKey = parameters[0];
+        String url = parameters[1];
+
+        sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.wait").replace("$url", url));
+        final Plugin plugin = magic.getPlugin();
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new FetchExampleRunnable(magic, sender, exampleKey, url));
     }
 
     protected void onSetExample(CommandSender sender, String[] parameters) {

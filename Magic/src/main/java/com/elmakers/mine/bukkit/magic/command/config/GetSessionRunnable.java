@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.google.gson.Gson;
 
-public class GetSessionRunnable extends HttpRequest {
+public class GetSessionRunnable extends HttpPost {
     private final ApplySessionCallback successCallback;
 
     public GetSessionRunnable(MagicController controller, Gson gson, CommandSender sender, GetSessionRequest request, ApplySessionCallback successCallback) {

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -39,6 +40,7 @@ public class ConfigurationLoadTask implements Runnable {
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
 
     private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
+    private final Map<String, ConfigurationSection> mainConfigurations = new HashMap<>();
 
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
@@ -94,6 +96,42 @@ public class ConfigurationLoadTask implements Runnable {
         this.verboseLogging = verbose;
     }
 
+    @Nullable
+    private ConfigurationSection loadExampleConfiguration(String examplesPrefix) {
+        String examplesFileName = examplesPrefix + ".yml";
+        File externalFolder = new File(plugin.getDataFolder(), examplesPrefix);
+        File externalFile = new File(plugin.getDataFolder(), examplesFileName);
+        ConfigurationSection exampleConfig = null;
+        if (externalFile.exists()) {
+            try {
+                exampleConfig = CompatibilityUtils.loadConfiguration(externalFile);
+            } catch (Exception ex) {
+                getLogger().severe("Error loading: " + examplesFileName);
+            }
+        }
+        if (externalFolder.exists()) {
+            try {
+                if (exampleConfig == null) {
+                    exampleConfig = new MemoryConfiguration();
+                }
+                exampleConfig = loadConfigFolder(exampleConfig, externalFolder, false);
+            } catch (Exception ex) {
+                getLogger().severe("Error loading: " + examplesFileName);
+            }
+        }
+        if (exampleConfig == null) {
+            InputStream input = plugin.getResource(examplesFileName);
+            if (input != null)  {
+                try {
+                    exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                } catch (Exception ex) {
+                    getLogger().severe("Error loading: " + examplesFileName + " from builtin resources");
+                }
+            }
+        }
+        return exampleConfig;
+    }
+
     private ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
         ConfigurationSection configuration = loadMainConfiguration("config");
         loadInitialProperties(configuration);
@@ -119,7 +157,7 @@ public class ConfigurationLoadTask implements Runnable {
         ConfigurationSection overrides = loadOverrides(fileName);
 
         boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
-        String examplesFileName = usingExample ? "examples/" + exampleDefaults + "/" + fileName + ".yml" : null;
+        String examplesFilePrefix = usingExample ? "examples/" + exampleDefaults + "/" + fileName : null;
         String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 
         // Start with default configs
@@ -145,44 +183,33 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load an example if one is specified
         if (usingExample) {
-            InputStream input = plugin.getResource(examplesFileName);
-            if (input != null)  {
+            ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix);
+            if (exampleConfig != null)  {
                 try {
-                    ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
-                    info(" Using " + examplesFileName);
-                    List<String> inherits = ConfigurationUtils.getStringList(exampleConfig, "inherit");
-                    if (inherits != null) {
-                        for (String inheritFrom : inherits) {
-                            String inheritFileName = "examples/" + inheritFrom + "/" + fileName + ".yml";
-                            InputStream inheritInput = plugin.getResource(inheritFileName);
-                            if (inheritInput != null) {
-                                ConfigurationSection inheritedConfig = CompatibilityUtils.loadConfiguration(inheritInput);
-                                ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
-                                info("  Inheriting from " + inheritFrom);
-                            }
-                        }
-                    }
+                    info(" Using " + examplesFilePrefix);
+                    processInheritance(exampleConfig, fileName, exampleConfig);
+                    mainConfigurations.put(exampleDefaults, exampleConfig);
                     ConfigurationUtils.addConfigurations(config, exampleConfig);
                 } catch (Exception ex) {
-                    getLogger().severe("Error loading: " + examplesFileName);
+                    getLogger().severe("Error loading: " + examplesFilePrefix);
                     throw ex;
                 }
             }
         }
-        // Add in examples
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
-                examplesFileName = "examples/" + example + "/" + fileName + ".yml";
-                InputStream input = plugin.getResource(examplesFileName);
-                if (input != null)
+                examplesFilePrefix = "examples/" + example + "/" + fileName;
+                ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix);
+                if (exampleConfig != null)
                 {
                     try {
-                        ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                         boolean override = exampleConfig.getBoolean("example_override", false);
+                        processInheritance(exampleConfig, fileName, exampleConfig);
+                        mainConfigurations.put(example, exampleConfig);
                         ConfigurationUtils.addConfigurations(config, exampleConfig, override);
-                        info(" Added " + examplesFileName + (override ? ", allowing overrides" : ""));
+                        info(" Added " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
                     } catch (Exception ex) {
-                        getLogger().severe("Error loading: " + examplesFileName);
+                        getLogger().severe("Error loading: " + examplesFilePrefix);
                         throw ex;
                     }
                 }
@@ -213,6 +240,57 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         return config;
+    }
+
+    private void processInheritance(ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration) {
+        // This lets a configuration be dropped into the plugins/Magic folder, or plugins/Magic/examples
+        // and behave the same way.
+        if (mainConfiguration.contains("example")) {
+            mainConfiguration.set("inherit", mainConfiguration.get("example"));
+            mainConfiguration.set("example", null);
+        }
+        List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
+        if (inherits != null) {
+            List<String> skip = ConfigurationUtils.getStringList(mainConfiguration, "skip_inherited");
+            if (skip == null || !skip.contains(fileName)) {
+                for (String inheritFrom : inherits) {
+                    String inheritFilePrefix = "examples/" + inheritFrom + "/" + fileName;
+                    ConfigurationSection inheritedConfig = loadExampleConfiguration(inheritFilePrefix);
+                    if (inheritedConfig != null) {
+                        if (fileName.equals("config")) {
+                            mainConfigurations.put(inheritFrom, ConfigurationUtils.cloneConfiguration(inheritedConfig));
+
+                            // These should not be inherited
+                            inheritedConfig.set("disable_inherited", null);
+                            inheritedConfig.set("skip_inherited", null);
+                            inheritedConfig.set("example", null);
+                            inheritedConfig.set("inherit", null);
+                        }
+                        try {
+                            List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
+                            processInheritance(inheritedConfig, fileName, getMainConfiguration(inheritFrom));
+                            if (disable != null && disable.contains(fileName)) {
+                                removeAllNotIn(inheritedConfig, exampleConfig);
+                            }
+                            ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
+                            info(" Inheriting from " + inheritFrom);
+                        } catch (Exception ex) {
+                            getLogger().severe("Error loading file: " + inheritFilePrefix);
+                            throw ex;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void removeAllNotIn(ConfigurationSection removeFrom, ConfigurationSection ifNotIn) {
+        Set<String> keys = removeFrom.getKeys(false);
+        for (String key : keys) {
+            if (!ifNotIn.contains(key)) {
+                removeFrom.set(key, null);
+            }
+        }
     }
 
     private ConfigurationSection loadOverrides(String fileName) throws IOException, InvalidConfigurationException {
@@ -250,7 +328,7 @@ public class ConfigurationLoadTask implements Runnable {
         ConfigurationSection overrides = loadOverrides(fileName);
         boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
 
-        String examplesFileName = usingExample ? "examples/" + exampleDefaults + "/" + fileName + ".yml" : null;
+        String examplesFilePrefix = usingExample ? "examples/" + exampleDefaults + "/" + fileName : null;
         String defaultsFileName = "defaults/" + fileName + ".defaults.yml";
 
         YamlConfiguration config = new YamlConfiguration();
@@ -274,50 +352,18 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Load example
-        boolean disableInherited = false;
         if (usingExample && loadDefaults) {
-            // Load inherited configs first
-            List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
-            if (inherits != null) {
-                List<String> skip = ConfigurationUtils.getStringList(mainConfiguration, "skip_inherited");
-                if (skip == null || !skip.contains(fileName)) {
-                    for (String inheritFrom : inherits) {
-                        String inheritFileName = "examples/" + inheritFrom + "/" + fileName + ".yml";
-                        InputStream input = plugin.getResource(inheritFileName);
-                        if (input != null) {
-                            try {
-                                List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
-                                ConfigurationSection inheritedConfig = CompatibilityUtils.loadConfiguration(input);
-
-                                if (disable != null && disable.contains(fileName)) {
-                                    disableInherited = true;
-                                    disableAll(inheritedConfig);
-                                }
-
-                                ConfigurationUtils.addConfigurations(config, inheritedConfig);
-                                info(" Inheriting from " + inheritFrom);
-                            } catch (Exception ex) {
-                                getLogger().severe("Error loading file: " + inheritFileName);
-                                throw ex;
-                            }
-                        }
-                    }
-                }
-            }
-
-            InputStream input = plugin.getResource(examplesFileName);
-            if (input != null) {
+            ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix);
+            if (exampleConfig != null) {
                 try {
-                    ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
                     if (disableDefaults) {
                         disableAll(exampleConfig);
-                    } else if (disableInherited) {
-                        enableAll(exampleConfig);
                     }
+                    processInheritance(exampleConfig, fileName, getMainConfiguration(exampleDefaults));
                     ConfigurationUtils.addConfigurations(config, exampleConfig);
-                    info(" Using " + examplesFileName);
+                    info(" Using " + examplesFilePrefix);
                 } catch (Exception ex) {
-                    getLogger().severe("Error loading file: " + examplesFileName);
+                    getLogger().severe("Error loading file: " + examplesFilePrefix);
                     throw ex;
                 }
             }
@@ -329,26 +375,26 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Re-enable anything we are overriding
-        if (disableDefaults || disableInherited) {
+        if (disableDefaults) {
             enableAll(overrides);
         }
 
         // Add in examples
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
-                examplesFileName = "examples/" + example + "/" + fileName + ".yml";
-                InputStream input = plugin.getResource(examplesFileName);
-                if (input != null)
+                examplesFilePrefix = "examples/" + example + "/" + fileName;
+                ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix);
+                if (exampleConfig != null)
                 {
                     try {
-                        ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
-                        if (disableDefaults || disableInherited) {
+                        if (disableDefaults) {
                             enableAll(exampleConfig);
                         }
+                        processInheritance(exampleConfig, fileName, getMainConfiguration(example));
                         ConfigurationUtils.addConfigurations(config, exampleConfig, false);
-                        info(" Added " + examplesFileName);
+                        info(" Added " + examplesFilePrefix);
                     } catch (Exception ex) {
-                        getLogger().severe("Error loading file: " + examplesFileName);
+                        getLogger().severe("Error loading file: " + examplesFilePrefix);
                         throw ex;
                     }
                 }
@@ -360,15 +406,14 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Apply language overrides, but only to the messages config
         if (fileName.equals("messages") && languageOverride != null) {
-            String languageFileName = "examples/localizations/messages." + languageOverride + ".yml";
-            InputStream input = plugin.getResource(languageFileName);
-            if (input != null) {
+            String languageFilePrefix = "examples/localizations/messages." + languageOverride;
+            ConfigurationSection languageConfig = loadExampleConfiguration(examplesFilePrefix);
+            if (languageConfig != null) {
                 try {
-                    ConfigurationSection languageConfig = CompatibilityUtils.loadConfiguration(input);
                     ConfigurationUtils.addConfigurations(config, languageConfig);
-                    info(" Using " + languageFileName);
+                    info(" Using " + languageFilePrefix);
                 } catch (Exception ex) {
-                    getLogger().severe("Error loading file: " + languageFileName);
+                    getLogger().severe("Error loading file: " + languageFilePrefix);
                     throw ex;
                 }
             }
@@ -379,7 +424,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        loadConfigFolder(config, configSubFolder, disableDefaults || disableInherited);
+        loadConfigFolder(config, configSubFolder, disableDefaults);
 
         // Save defaults
         File savedDefaults = new File(configFolder, defaultsFileName);
@@ -649,6 +694,7 @@ public class ConfigurationLoadTask implements Runnable {
             success = false;
             mainConfiguration = new MemoryConfiguration();
         }
+        mainConfigurations.put("", mainConfiguration);
 
         // Load other configurations
         loadedConfigurations.clear();
@@ -699,6 +745,16 @@ public class ConfigurationLoadTask implements Runnable {
 
     public ConfigurationSection getMainConfiguration() {
         return mainConfiguration;
+    }
+
+    @Nonnull
+    public ConfigurationSection getMainConfiguration(String exampleKey) {
+        ConfigurationSection mainConfig = mainConfigurations.get(exampleKey);
+        if (mainConfig == null) {
+            mainConfig = new MemoryConfiguration();
+            mainConfigurations.put(exampleKey, mainConfig);
+        }
+        return mainConfig;
     }
 
     public ConfigurationSection getMessages() {
