@@ -45,8 +45,8 @@ base_bound:
   immortal: true
   track: true
 
-static_wand:
-  inherit: base_undroppable
+basic_wand:
+  inherit: base_magic
   hidden: true
   mode: inventory
   drop: cycle_hotbar
