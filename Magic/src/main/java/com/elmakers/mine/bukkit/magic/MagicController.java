@@ -1715,10 +1715,14 @@ public class MagicController implements MageController {
         addExamples = loader.getAddExamples();
 
         // Main configuration
+
+        String currentResourcePack = defaultResourcePack;
         loadProperties(loader.getMainConfiguration());
 
         if (!loaded) {
             finalizeIntegrationPreSpells();
+        } else if (resourcePack != null && !defaultResourcePack.equals(currentResourcePack)) {
+            checkResourcePack(sender, false, false, true);
         }
 
         // Sub-configurations
@@ -6179,6 +6183,10 @@ public class MagicController implements MageController {
     }
 
     public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force) {
+        return checkResourcePack(sender, quiet, force, false);
+    }
+
+    public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force, final boolean filenameChanged) {
         final Server server = plugin.getServer();
         if (!plugin.isEnabled()) return false;
         resourcePack = null;
@@ -6258,7 +6266,9 @@ public class MagicController implements MageController {
                         final Date modifiedDate = tryParseDate;
                         if (modifiedDate.getTime() > modifiedTimestamp || resourcePackHash == null || (force && !hasModifiedTime)) {
                             final boolean isUnset = (resourcePackHash == null);
-                            if (modifiedTimestamp <= 0) {
+                            if (filenameChanged) {
+                               responses.add(ChatColor.YELLOW + "Resource pack changed, checking for updated hash");
+                            } else if (modifiedTimestamp <= 0) {
                                 responses.add(ChatColor.YELLOW + "Checking resource pack for the first time");
                             } else if (isUnset) {
                                 responses.add(ChatColor.YELLOW + "Resource pack hash format changed, downloading for one-time update");
@@ -6291,9 +6301,14 @@ public class MagicController implements MageController {
 
                             rpSection.set("sha1", newResourcePackHash);
                             rpSection.set("modified", modifiedDate.getTime());
+                            rpSection.set("filename", resourcePack);
                             rpConfig.save(rpFile);
                         } else {
-                            responses.add(ChatColor.GREEN + "Resource pack has not changed, using hash " + newResourcePackHash +  " (" + modifiedDate.getTime() + " <= " + modifiedTimestamp + ")");
+                            if (filenameChanged) {
+                                responses.add(ChatColor.YELLOW + "Resource pack changed, use " + ChatColor.AQUA + "/magic rpsend" + ChatColor.YELLOW + " to update connected players");
+                            } else {
+                                responses.add(ChatColor.GREEN + "Resource pack has not changed, using hash " + newResourcePackHash +  " (" + modifiedDate.getTime() + " <= " + modifiedTimestamp + ")");
+                            }
                         }
                     }
                     else
