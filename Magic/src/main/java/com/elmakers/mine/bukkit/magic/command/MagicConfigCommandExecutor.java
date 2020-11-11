@@ -56,7 +56,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list");
     private static Set<String> availableFiles = ImmutableSet.of(
             "spells", "wands", "automata", "classes", "config", "crafting", "effects",
-            "items", "materials", "mobs", "paths", "attributes", "messages");
+            "items", "materials", "mobs", "paths", "attributes", "messages", "modifiers");
     private static final Map<String, String> availableFileMap = ImmutableMap.<String, String>builder()
         .put("spell", "spells")
         .put("wand", "wands")
@@ -70,6 +70,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         .put("path", "paths")
         .put("attribute", "attributes")
         .put("message", "messages")
+        .put("modifier", "modifiers")
         .build();
 
     private final MagicController magic;
@@ -199,6 +200,12 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                     Collection<String> pathList = api.getController().getWandPathKeys();
                     for (String path : pathList) {
                         options.add(path);
+                    }
+                }
+                if (fileType.equals("modifiers")) {
+                    Collection<String> modifierList = api.getController().getModifierTemplateKeys();
+                    for (String modifier : modifierList) {
+                        options.add(modifier);
                     }
                 }
                 if (fileType.equals("crafting")) {
