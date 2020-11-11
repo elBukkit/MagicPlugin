@@ -1035,13 +1035,13 @@ public class NMSUtils {
                 class_PotionMeta_getColorMethod = PotionMeta.class.getMethod("getColor");
                 class_PotionMeta_setColorMethod = PotionMeta.class.getMethod("setColor", Color.class);
             } catch (Throwable ex) {
-                 logger.info("Could not bind to PotionMeta color methods, Custom colored potions will not work.");
+                 logger.warning("Could not bind to PotionMeta color methods, Custom colored potions will not work.");
             }
             try {
                 class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
             } catch (Throwable ex) {
                 if (!isModernVersion) {
-                    logger.info("Could not bind to setTypeIdAndData, Magic will have issues modifying blocks");
+                    logger.warning("Could not bind to setTypeIdAndData, Magic will have issues modifying blocks");
                 }
             }
             try {
@@ -1071,7 +1071,7 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 class_Chunk_isReadyMethod = null;
                 if (!isCurrentVersion) {
-                    logger.info("Couldn't bind to Chunk.isReady, building in ungenerated chunks may be glitchy.");
+                    logger.warning("Couldn't bind to Chunk.isReady, building in ungenerated chunks may be glitchy.");
                 }
             }
 
@@ -1083,7 +1083,7 @@ public class NMSUtils {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;
                 class_ShapedRecipe_constructor = null;
-                logger.info("Couldn't find NamespacedKey for registering recipes. This is normal for legacy Minecraft versions.");
+                logger.warning("Couldn't find NamespacedKey for registering recipes. This is normal for legacy Minecraft versions.");
             }
 
             if (class_NamespacedKey != null) {
@@ -1117,13 +1117,13 @@ public class NMSUtils {
                 class_Server_getEntityMethod = Server.class.getMethod("getEntity", UUID.class);
             } catch (Throwable ex) {
                 class_Server_getEntityMethod = null;
-                logger.info("Could not register Server.getEntity, entity lookups will be slightly less optimal");
+                logger.warning("Could not register Server.getEntity, entity lookups will be slightly less optimal");
             }
             try {
                 class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");
             } catch (Throwable ex) {
                 class_ProjectileHitEvent_getHitBlockMethod = null;
-                logger.info("Could not register ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy");
+                logger.warning("Could not register ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy");
             }
             try {
                 class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.AbstractArrow$PickupStatus");
@@ -1136,7 +1136,7 @@ public class NMSUtils {
                 } catch (Throwable ex) {
                     class_PickupStatus = null;
                     class_Arrow_setPickupStatusMethod = null;
-                    logger.info("Could not register Arrow.PickupStatus, arrows can not be made to be picked up");
+                    logger.warning("Could not register Arrow.PickupStatus, arrows can not be made to be picked up");
                 }
             }
             try {
@@ -1647,7 +1647,7 @@ public class NMSUtils {
                 class_nms_Block_getBlockDataMethod = class_Block.getMethod("getBlockData");
             } catch (Throwable ex) {
                 class_CraftBlock = null;
-                logger.log(Level.WARNING, "Could not bind to auto block state methods", ex);
+                logger.log(Level.WARNING, "Could not bind to auto block state methods");
             }
         }
         catch (Throwable ex) {
