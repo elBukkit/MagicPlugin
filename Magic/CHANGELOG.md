@@ -38,6 +38,7 @@
    - Use `/mconfig editor spell blink` to open an editor session for a specific spell
    - Currently only spells are well supported
  - Added `/mconfig example` command to easily add/remove example configs
+   - Can use `/mconfig fetch` to load remote configs such as BetterPotter
  - Added `/mconfig reset` command to reset customized configs to the defaults (deletes your custom file, keeps a backup)
  - The `/mconfig clean` command has been disabled (hopefully temporarily)
 
@@ -54,6 +55,8 @@
  - Crafting recipes can be set to `auto_discover: true`
    - They can also contain a list of other recipes that the player will discover once they craft a certain recipe
    - Survival recipes are now automatically discovered as appropriate
+
+ - Classes and modifiers can now use `overrides` to modify spell behavior
 
  ## Fixes
 
