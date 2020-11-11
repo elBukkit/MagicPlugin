@@ -1063,7 +1063,7 @@ public class NMSUtils {
                 class_ParrotVariant = null;
                 class_Parrot_getVariantMethod = null;
                 class_Parrot_setVariantMethod = null;
-                logger.info("No parrots available on your server.");
+                logger.warning("No parrots available on your server.");
             }
 
             try {
