@@ -4,6 +4,7 @@
 wand:
     inherit: base_wand
     class: mage
+    legacy_icon: wand_icon:1
     icon: stick{CustomModelData:18001}
     migrate_legacy_icons:
         "wand_icon:1": stick{CustomModelData:18001}
