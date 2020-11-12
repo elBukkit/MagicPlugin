@@ -1,5 +1,10 @@
 spellshop:
-  disguise: {}
+  inherit: base_npc
+  name: Professor
+  interact_spell: spellshop
+  villager_profession: librarian
+  dialog:
+    - Want to learn some new spells?
 
 year1:
   inherit: base_npc
