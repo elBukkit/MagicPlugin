@@ -6,17 +6,42 @@ toggleair:
   worth: 500
   actions:
     cast:
+      # If we have applied the ignoreair modifiers
       - class: CheckModifiers
         required: ignoreair
         actions:
-        - class: Modifier
-          remove_modifiers: ignoreair
-        - class: Message
-          message_key: turnoff
+        - class: CheckModifiers
+          required: onlyair
+          # If we have applied both...
+          # This is here just in case, but we shouldn't really get to this branch
+          actions:
+          - class: Modifier
+            remove_modifiers: ignoreair,onlyair
+          - class: Message
+            message_key: normal
+          fail:
+          # Otherwise, swap ignoreair for onlyair
+          - class: Modifier
+            remove_modifiers: ignoreair
+            add_modifiers: onlyair
+          - class: Message
+            message_key: onlyair
         fail:
-        - class: Modifier
-          add_modifiers: ignoreair
-        - class: Message
-          message_key: turnon
+        # We don't have ignoreair, do we have onlyair?
+        - class: CheckModifiers
+          required: onlyair
+          actions:
+          - class: Modifier
+            # Remove them both, just in case
+            remove_modifiers: ignoreair,onlyair
+          - class: Message
+            message_key: normal
+          fail:
+          # add ignoreair since we dont't have it
+          - class: Modifier
+            add_modifiers: ignoreair
+          - class: Message
+            message_key: ignoreair
   parameters:
     target: self
+    message_type: action_bar

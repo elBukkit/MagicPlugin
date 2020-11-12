@@ -311,7 +311,8 @@ spells:
         no_target: You need to be standing on something!
         cast: Tunneled through $count blocks
     toggleair:
-        name: Toggle Ignore Air
-        description: Will change several spells (Fill, SuperBlob, etc) to ignore air, replacing only solid blocks
-        turnon: "&fAir &cwill not be &breplaced by Architect spells"
-        turnoff: "&fAir &awill be &breplaced by Architect spells"
+        name: Cycle Construction Modifiers
+        description: Will change several spells (Fill, SuperBlob, etc) behavior by changing what types of blocks they will replace
+        ignoreair: "&fAir &cwill not be &breplaced by Architect spells"
+        onlyair: "&fOnly air &awill be &breplaced by Architect spells"
+        normal: "&fAll block types &awill be &breplaced by Architect spells"
