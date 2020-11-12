@@ -458,6 +458,7 @@ public class ConfigurationUtils extends ConfigUtils {
             }
             if (value instanceof ConfigurationSection && (existingValue == null || existingValue instanceof ConfigurationSection)) {
                 ConfigurationSection addChild = (ConfigurationSection)value;
+                if (existingValue != null && !((ConfigurationSection)existingValue).getBoolean("inherit", true)) continue;
                 if (existingValue == null || !addChild.getBoolean("inherit", true)) {
                     ConfigurationSection newChild = first.createSection(key);
                     addConfigurations(newChild, addChild, override);
