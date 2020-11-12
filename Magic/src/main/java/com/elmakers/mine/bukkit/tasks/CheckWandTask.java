@@ -1,4 +1,6 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.tasks;
+
+import com.elmakers.mine.bukkit.magic.Mage;
 
 public class CheckWandTask implements Runnable {
     private final Mage mage;

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.tasks;
 
 import java.util.Collection;
 
@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
+import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class MigrateDataTask implements Runnable {
     private final MagicController controller;

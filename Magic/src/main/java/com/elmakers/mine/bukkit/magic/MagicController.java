@@ -154,7 +154,6 @@ import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.entity.PermissionsTeamProvider;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.EssentialsController;
-import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BattleArenaManager;
@@ -201,6 +200,26 @@ import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.requirements.RequirementsController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
+import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
+import com.elmakers.mine.bukkit.tasks.AutoSaveTask;
+import com.elmakers.mine.bukkit.tasks.AutomataUpdateTask;
+import com.elmakers.mine.bukkit.tasks.BatchUpdateTask;
+import com.elmakers.mine.bukkit.tasks.ChangeServerTask;
+import com.elmakers.mine.bukkit.tasks.ConfigCheckTask;
+import com.elmakers.mine.bukkit.tasks.ConfigurationLoadTask;
+import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
+import com.elmakers.mine.bukkit.tasks.EssentialsItemIntegrationTask;
+import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
+import com.elmakers.mine.bukkit.tasks.LoadDataTask;
+import com.elmakers.mine.bukkit.tasks.MageQuitTask;
+import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
+import com.elmakers.mine.bukkit.tasks.MigrateDataTask;
+import com.elmakers.mine.bukkit.tasks.MigrationTask;
+import com.elmakers.mine.bukkit.tasks.RPCheckTask;
+import com.elmakers.mine.bukkit.tasks.SaveDataTask;
+import com.elmakers.mine.bukkit.tasks.SaveMageDataTask;
+import com.elmakers.mine.bukkit.tasks.SaveMageTask;
+import com.elmakers.mine.bukkit.tasks.UndoUpdateTask;
 import com.elmakers.mine.bukkit.utility.ColoredLogger;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -399,15 +418,7 @@ public class MagicController implements MageController {
             if (savePlayerData && mageDataStore != null) {
                 if (isPlayer) {
                     mage.setLoading(true);
-                    plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            synchronized (saveLock) {
-                                info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
-                                doLoadData(mage);
-                            }
-                        }
-                    }, fileLoadDelay * 20 / 1000);
+                    plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new DoMageLoadTask(this, mage), fileLoadDelay * 20 / 1000);
                 } else if (saveNonPlayerMages) {
                     info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") synchronously");
                     doLoadData(mage);
@@ -441,6 +452,13 @@ public class MagicController implements MageController {
             throw new NoSuchMageException(mageId);
         }
         return apiMage;
+    }
+
+    public void doSynchronizedLoadData(Mage mage) {
+        synchronized (saveLock) {
+            info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") at " + System.currentTimeMillis());
+            doLoadData(mage);
+        }
     }
 
     private void doLoadData(Mage mage) {
@@ -1224,25 +1242,7 @@ public class MagicController implements MageController {
 
         if (essentialsSignsEnabled) {
             final MagicController me = this;
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Object essentials = me.plugin.getServer().getPluginManager().getPlugin("Essentials");
-                        if (essentials != null) {
-                            Class<?> essentialsClass = essentials.getClass();
-                            essentialsClass.getMethod("getItemDb");
-                            if (MagicItemDb.register(me, (Plugin)essentials)) {
-                                getLogger().info("Essentials found, hooked up custom item handler");
-                            } else {
-                                getLogger().warning("Essentials found, but something went wrong hooking up the custom item handler");
-                            }
-                        }
-                    } catch (Throwable ex) {
-                        getLogger().warning("Essentials found, but is not up to date. Magic item integration will not work with this version of Magic. Please upgrade EssentialsX or downgrade Magic to 7.6.19");
-                    }
-                }
-            }, 5);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new EssentialsItemIntegrationTask(this), 5);
         }
 
         // Try to link to CommandBook
@@ -1458,7 +1458,7 @@ public class MagicController implements MageController {
         registerListeners();
     }
 
-    protected void processUndo()
+    public void processUndo()
     {
         long now = System.currentTimeMillis();
         while (scheduledUndo.size() > 0) {
@@ -1471,7 +1471,7 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void processPendingBatches()
+    public void processPendingBatches()
     {
         int remainingWork = workPerUpdate;
         if (pendingConstruction.isEmpty()) return;
@@ -1683,7 +1683,7 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void finalizeLoad(ConfigurationLoadTask loader, CommandSender sender) {
+    public void finalizeLoad(ConfigurationLoadTask loader, CommandSender sender) {
         if (!loader.isSuccessful()) {
             notify(sender, ChatColor.RED + "An error occurred reloading configurations, please check server logs!");
 
@@ -1858,16 +1858,7 @@ public class MagicController implements MageController {
             playerWarpManagers.put("residence", residenceManager);
         }
 
-        Runnable genericIntegrationTask = new Runnable() {
-            @Override
-            public void run() {
-                protectionManager.check();
-                if (protectionManager.isEnabled()) {
-                    blockBreakManagers.add(protectionManager);
-                    blockBuildManagers.add(protectionManager);
-                }
-            }
-        };
+        Runnable genericIntegrationTask = new FinishGenericIntegrationTask(this);
 
         // Delay loading generic integration by one tick since we can't add depends: for these plugins
         if (!loaded) {
@@ -1898,12 +1889,25 @@ public class MagicController implements MageController {
         }
         notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
 
-        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                checkForMigration(plugin.getServer().getConsoleSender());
+        if (reloadingMage != null) {
+            Player player = reloadingMage.getPlayer();
+            if (!player.hasPermission("Magic.notify")) {
+                player.sendMessage(ChatColor.AQUA + "Spells reloaded.");
             }
-        }, 20 * 5);
+            reloadingMage.deactivate();
+            reloadingMage.checkWand();
+            reloadingMage = null;
+        }
+
+        Bukkit.getScheduler().runTaskLater(plugin, new MigrationTask(this), 20 * 5);
+    }
+
+    public void finishGenericIntegration() {
+        protectionManager.check();
+        if (protectionManager.isEnabled()) {
+            blockBreakManagers.add(protectionManager);
+            blockBuildManagers.add(protectionManager);
+        }
     }
 
     private int getPathCount() {
@@ -2099,36 +2103,35 @@ public class MagicController implements MageController {
 
     protected void loadData() {
         loadSpellData();
-        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                if (!loaded) {
-                    getLogger().info("Magic did not load properly, skipping data load");
-                    return;
-                }
-                loadSpellData();
-                loadLostWands();
-                loadAutomata();
-                loadNPCs();
+        Bukkit.getScheduler().runTaskLater(plugin, new LoadDataTask(this), 10);
+    }
 
-                // Load URL Map Data
-                try {
-                    maps.resetAll();
-                    maps.loadConfiguration();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+    public void finishLoadData() {
+        if (!loaded) {
+            getLogger().info("Magic did not load properly, skipping data load");
+            return;
+        }
+        loadSpellData();
+        loadLostWands();
+        loadAutomata();
+        loadNPCs();
 
-                ConfigurationSection warps = loadDataFile(WARPS_FILE);
-                if (warps != null) {
-                    warpController.load(warps);
-                    info("Loaded " + warpController.getCustomWarps().size() + " warps");
-                }
+        // Load URL Map Data
+        try {
+            maps.resetAll();
+            maps.loadConfiguration();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-                getLogger().info("Finished loading data.");
-                dataLoaded = true;
-            }
-        }, 10);
+        ConfigurationSection warps = loadDataFile(WARPS_FILE);
+        if (warps != null) {
+            warpController.load(warps);
+            info("Loaded " + warpController.getCustomWarps().size() + " warps");
+        }
+
+        getLogger().info("Finished loading data.");
+        dataLoaded = true;
     }
 
     public void migratePlayerData(CommandSender sender) {
@@ -2146,6 +2149,10 @@ public class MagicController implements MageController {
 
     public void finishMigratingPlayerData() {
         migrateDataTask = null;
+    }
+
+    public void checkForMigration() {
+        checkForMigration(plugin.getServer().getConsoleSender());
     }
 
     public void checkForMigration(CommandSender sender) {
@@ -2510,7 +2517,7 @@ public class MagicController implements MageController {
         return defaultWandPath;
     }
 
-    protected void savePlayerData(Collection<MageData> stores) {
+    protected void saveMageData(Collection<MageData> stores) {
         try {
             for (Entry<String, ? extends Mage> mageEntry : mages.entrySet()) {
                 Mage mage = mageEntry.getValue();
@@ -2546,7 +2553,7 @@ public class MagicController implements MageController {
         final List<YamlDataFile> saveData = new ArrayList<>();
         final List<MageData> saveMages = new ArrayList<>();
         if (savePlayerData && mageDataStore != null) {
-            savePlayerData(saveMages);
+            saveMageData(saveMages);
         }
         info("Saving " + saveMages.size() + " players");
         saveSpellData(saveData);
@@ -2557,48 +2564,37 @@ public class MagicController implements MageController {
 
         if (mageDataStore != null) {
             if (asynchronous) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (saveLock) {
-                            for (MageData mageData : saveMages) {
-                                mageDataStore.save(mageData, null, false);
-                            }
-                        }
-                    }
-                });
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, new SaveMageDataTask(this, saveMages));
             } else {
-                synchronized (saveLock) {
-                    for (MageData mageData : saveMages) {
-                        mageDataStore.save(mageData, null, false);
-                    }
-                }
+                persistMageData(saveMages);
             }
         }
 
         if (asynchronous) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (saveLock) {
-                        for (YamlDataFile config : saveData) {
-                            config.save();
-                        }
-                        info("Finished saving");
-                    }
-                }
-            });
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, new SaveDataTask(this, saveData));
         } else {
-            synchronized (saveLock) {
-                for (YamlDataFile config : saveData) {
-                    config.save();
-                }
-                info("Finished saving");
-            }
+            saveData(saveData);
         }
 
         SaveEvent saveEvent = new SaveEvent(asynchronous);
         Bukkit.getPluginManager().callEvent(saveEvent);
+    }
+
+    public void saveData(Collection<YamlDataFile> saveData) {
+        synchronized (saveLock) {
+            for (YamlDataFile config : saveData) {
+                config.save();
+            }
+            info("Finished saving");
+        }
+    }
+
+    public void persistMageData(Collection<MageData> saveMages) {
+        synchronized (saveLock) {
+            for (MageData mageData : saveMages) {
+                mageDataStore.save(mageData, null, false);
+            }
+        }
     }
 
     protected void loadSpells(ConfigurationSection spellConfigs)
@@ -3854,21 +3850,13 @@ public class MagicController implements MageController {
         if (loaded && implementation != null) {
             final com.elmakers.mine.bukkit.magic.Mage quitMage = implementation;
             quitMage.setUnloading(true);
-            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    // Just in case the player relogged in that one tick..
-                    if (quitMage.isUnloading()) {
-                        finalizeMageQuit(quitMage, callback, isOpen);
-                    }
-                }
-            }, 1);
+            plugin.getServer().getScheduler().runTaskLater(plugin, new MageQuitTask(this, quitMage, callback, isOpen), 1);
         } else {
             finalizeMageQuit(mage, callback, isOpen);
         }
     }
 
-    protected void finalizeMageQuit(final Mage mage, final MageDataCallback callback, final boolean isOpen) {
+    public void finalizeMageQuit(final Mage mage, final MageDataCallback callback, final boolean isOpen) {
         // Unregister
         if (!externalPlayerData || !mage.isPlayer()) {
             removeMage(mage);
@@ -3946,30 +3934,23 @@ public class MagicController implements MageController {
                 mageData.setOpenWand(true);
             }
             if (asynchronous) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (saveLock) {
-                            try {
-                                mageDataStore.save(mageData, callback, releaseLock);
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    }
-                });
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, new SaveMageTask(this, mageData, callback, releaseLock));
             } else {
-                synchronized (saveLock) {
-                    try {
-                        mageDataStore.save(mageData, callback, releaseLock);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                doSaveMage(mageData, callback, releaseLock);
             }
         } else if (releaseLock && mageDataStore != null) {
             getLogger().warning("Player logging out, but data never loaded. Force-releasing lock");
             mageDataStore.releaseLock(mageData);
+        }
+    }
+
+    public void doSaveMage(MageData mageData, MageDataCallback callback, boolean releaseLock) {
+        synchronized (saveLock) {
+            try {
+                mageDataStore.save(mageData, callback, releaseLock);
+            } catch (Exception ex) {
+                getLogger().log(Level.SEVERE, "Error saving mage data for mage " + mageData.getId(), ex);
+            }
         }
     }
 
@@ -3999,12 +3980,7 @@ public class MagicController implements MageController {
     }
 
     public void onArmorUpdated(final com.elmakers.mine.bukkit.magic.Mage mage) {
-        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                mage.armorUpdated();
-            }
-        }, 1);
+        plugin.getServer().getScheduler().runTaskLater(plugin, new ArmorUpdatedTask(mage), 1);
     }
 
     @Override
@@ -7096,6 +7072,10 @@ public class MagicController implements MageController {
         return editorURL;
     }
 
+    public void setReloadingMage(Mage mage) {
+        this.reloadingMage = mage;
+    }
+
     /*
      * Private data
      */
@@ -7298,6 +7278,7 @@ public class MagicController implements MageController {
     private String                              skillsSpell                 = "";
     private boolean                             isFileLockingEnabled        = false;
     private int                                 fileLoadDelay               = 0;
+    private Mage                                reloadingMage               = null;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();

@@ -40,7 +40,6 @@ import org.bukkit.entity.Horse;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -68,6 +67,7 @@ import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -915,12 +915,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             int redisguise = disguise.getString("type", "").equalsIgnoreCase("player") ? 2 : 0;
             redisguise = disguise.getInt("redisguise", redisguise);
             if (redisguise > 0) {
-                Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        tryDisguise(controller, entity, disguise);
-                    }
-                }, redisguise);
+                Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new DisguiseTask(controller, entity, disguise), redisguise);
             }
         }
 

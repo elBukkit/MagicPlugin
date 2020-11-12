@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.tasks.WandCastTask;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -494,12 +495,7 @@ public class InventoryController implements Listener {
                             // Sadly this didn't work because the animation event arrives first
                             mage.checkLastClick(0);
                             controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(),
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        castWand.cast(spell);
-                                    }
-                                }, 1);
+                                new WandCastTask(castWand, spell), 1);
                         }
                     }
                     event.setCancelled(true);

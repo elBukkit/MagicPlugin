@@ -1,13 +1,15 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.tasks;
 
 import java.io.File;
 import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import com.elmakers.mine.bukkit.magic.Mage;
+import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class ConfigCheckTask implements Runnable {
     private final MagicController controller;
@@ -42,27 +44,11 @@ public class ConfigCheckTask implements Runnable {
                 // Don't reload if the modifying player is not online
                 if (player != null || modifiedUserId == null) {
                     controller.getLogger().info("Config check file modified, reloading configuration");
-                    Bukkit.getScheduler().runTask(controller.getPlugin(), new Runnable() {
-                        @Override
-                        public void run() {
-                            controller.loadConfiguration(Bukkit.getConsoleSender(), true);
-                        }
-                    });
-
-                    // The updating player should get their new spells
                     final Mage mage = player == null ? null : controller.getRegisteredMage(player);
                     if (mage != null) {
-                        Bukkit.getScheduler().runTask(controller.getPlugin(), new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!player.hasPermission("Magic.notify")) {
-                                    player.sendMessage(ChatColor.AQUA + "Spells reloaded.");
-                                }
-                                mage.deactivate();
-                                mage.checkWand();
-                            }
-                        });
+                        controller.setReloadingMage(mage);
                     }
+                    Bukkit.getScheduler().runTask(controller.getPlugin(), new ReloadConfigurationTask(controller));
                 }
             }
             lastModified = modified;

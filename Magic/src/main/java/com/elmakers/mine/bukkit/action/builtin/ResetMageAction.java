@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.tasks.DeleteMageTask;
 
 public class ResetMageAction extends BaseSpellAction
 {
@@ -17,13 +18,7 @@ public class ResetMageAction extends BaseSpellAction
         final Mage mage = context.getMage();
         final MageController controller = context.getController();
         Plugin plugin = controller.getPlugin();
-        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                controller.deleteMage(mage.getId());
-            }
-        }, 1);
-
+        plugin.getServer().getScheduler().runTaskLater(plugin, new DeleteMageTask(mage), 1);
         return SpellResult.CAST;
     }
 

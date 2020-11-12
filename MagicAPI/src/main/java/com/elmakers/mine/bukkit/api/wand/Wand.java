@@ -158,6 +158,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean playEffects(String key);
     boolean cast();
     boolean cast(String[] parameters);
+    boolean cast(Spell spell);
     boolean isBound();
     boolean isUndroppable();
     boolean isQuickCastDisabled();

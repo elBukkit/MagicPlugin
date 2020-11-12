@@ -107,6 +107,9 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.TriggeredSpell;
+import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
+import com.elmakers.mine.bukkit.tasks.CheckWandTask;
+import com.elmakers.mine.bukkit.tasks.MageLoadTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -1097,7 +1100,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    protected void onLoad(MageData data) {
+    public void onLoad(MageData data) {
         try {
             // Save spell data, used when creating a spell on first cast
             List<SpellData> activeSpells = new ArrayList<>();
@@ -3626,12 +3629,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         clearRespawnInventories();
         if (updated) {
-            controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-                @Override
-                public void run() {
-                    armorUpdated();
-                }
-            }, 1);
+            controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(), new ArmorUpdatedTask(this), 1);
         }
     }
 

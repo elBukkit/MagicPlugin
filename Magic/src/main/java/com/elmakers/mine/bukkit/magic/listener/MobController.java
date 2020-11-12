@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MobController implements Listener {
@@ -90,14 +91,9 @@ public class MobController implements Listener {
         // Check for default mob overrides
         Plugin plugin = controller.getPlugin();
         String customName = entity.getCustomName();
-        final EntityData customMob = defaultMobs.get(entity.getType());
+        EntityData customMob = defaultMobs.get(entity.getType());
         if (customName == null && customMob != null) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    customMob.modify(controller, entity);
-                }
-            }, 1);
+            plugin.getServer().getScheduler().runTaskLater(plugin, new ModifyEntityTask(controller, customMob, entity), 1);
             return;
         }
 
@@ -123,12 +119,7 @@ public class MobController implements Listener {
             return;
         }
 
-        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                namedMob.modify(controller, entity);
-            }
-        }, 1);
+        plugin.getServer().getScheduler().runTaskLater(plugin, new ModifyEntityTask(controller, namedMob, entity), 1);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

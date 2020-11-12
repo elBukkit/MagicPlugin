@@ -66,6 +66,99 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     protected Set<String> sentToPlayers = new HashSet<>();
     protected Integer priority;
 
+    private class GetImageTask implements Runnable {
+        @Override
+        public void run() {
+            try {
+                final Plugin plugin = controller.getPlugin();
+                final File cacheFolder = controller.getCacheFolder();
+                animated = url.endsWith(".gif");
+                Collection<BufferedImage> images = null;
+                if (!url.startsWith("http"))
+                {
+                    File fileName;
+                    if (!url.startsWith("/")) {
+                        File baseFolder = plugin.getDataFolder().getParentFile().getParentFile();
+                        fileName = new File(baseFolder, url);
+                    } else {
+                        fileName = new File(url);
+                    }
+                    controller.info("Loading map file: " + fileName.getName());
+                    images = loadImages(ImageIO.createImageInputStream(fileName));
+                }
+                else
+                {
+                    String cacheFileName = URLEncoder.encode(url, "UTF-8");
+                    File cacheFile = cacheFolder != null ? new File(cacheFolder, cacheFileName) : null;
+                    if (cacheFile != null) {
+                        if (cacheFile.exists()) {
+                            controller.info("Loading from cache: " + cacheFile.getName());
+                            images = loadImages(ImageIO.createImageInputStream(cacheFile));
+                        } else {
+                            controller.info("Loading " + url);
+                            URL imageUrl = new URL(url);
+                            HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
+                            conn.setConnectTimeout(30000);
+                            conn.setReadTimeout(30000);
+                            conn.setInstanceFollowRedirects(true);
+                            try (InputStream in = conn.getInputStream();
+                                    OutputStream out = new FileOutputStream(cacheFile)) {
+                                byte[] buffer = new byte[10 * 1024];
+                                int len;
+
+                                while ((len = in.read(buffer)) != -1) {
+                                    out.write(buffer, 0, len);
+                                }
+                            }
+
+                            images = loadImages(ImageIO.createImageInputStream(cacheFile));
+                        }
+                    } else {
+                        controller.info("Loading " + url);
+                        URL imageUrl = new URL(url);
+                        images = loadImages(ImageIO.createImageInputStream(imageUrl));
+                    }
+                }
+
+                if (images.size() == 0)
+                {
+                    enabled = false;
+                    controller.warning("Failed to load map " + url);
+                }
+                for (BufferedImage rawImage : images)
+                {
+                    int imageWidth = width <= 0 ? rawImage.getWidth() + width : width;
+                    int imageHeight = height <= 0 ? rawImage.getHeight() + height : height;
+                    if (imageWidth > rawImage.getWidth()) {
+                        imageWidth = rawImage.getWidth();
+                    }
+                    if (imageHeight > rawImage.getHeight()) {
+                        imageHeight = rawImage.getHeight();
+                    }
+                    int imageX = x + rawImage.getMinX();
+                    int imageY = y + rawImage.getMinY();
+
+                    BufferedImage croppedImage = rawImage.getSubimage(imageX, imageY, imageWidth, imageHeight);
+                    BufferedImage image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D graphics = image.createGraphics();
+
+                    AffineTransform transform = AffineTransform.getScaleInstance((float)128 / imageWidth, (float)128 / imageHeight);
+                    graphics.drawRenderedImage(croppedImage, transform);
+
+                    if (xOverlay != null && yOverlay != null) {
+                        BufferedImage croppedOverlay = rawImage.getSubimage(xOverlay, yOverlay, imageWidth, imageHeight);
+                        graphics.drawRenderedImage(croppedOverlay, transform);
+                    }
+
+                    frames.add(image);
+                }
+                loading = false;
+            } catch (Exception ex) {
+                controller.warning("Failed to load map " + url + ": " + ex.getMessage());
+            }
+        }
+    }
+
     protected URLMap(MapController controller, String world, int mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
         this.controller = controller;
         this.world = world;
@@ -377,98 +470,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
             frames = new ArrayList<>();
             final Plugin plugin = controller.getPlugin();
             if (plugin == null) return null;
-            final File cacheFolder = controller.getCacheFolder();
-
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        animated = url.endsWith(".gif");
-                        Collection<BufferedImage> images = null;
-                        if (!url.startsWith("http"))
-                        {
-                            File fileName;
-                            if (!url.startsWith("/")) {
-                                File baseFolder = plugin.getDataFolder().getParentFile().getParentFile();
-                                fileName = new File(baseFolder, url);
-                            } else {
-                                fileName = new File(url);
-                            }
-                            controller.info("Loading map file: " + fileName.getName());
-                            images = loadImages(ImageIO.createImageInputStream(fileName));
-                        }
-                        else
-                        {
-                            String cacheFileName = URLEncoder.encode(url, "UTF-8");
-                            File cacheFile = cacheFolder != null ? new File(cacheFolder, cacheFileName) : null;
-                            if (cacheFile != null) {
-                                if (cacheFile.exists()) {
-                                    controller.info("Loading from cache: " + cacheFile.getName());
-                                    images = loadImages(ImageIO.createImageInputStream(cacheFile));
-                                } else {
-                                    controller.info("Loading " + url);
-                                    URL imageUrl = new URL(url);
-                                    HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
-                                    conn.setConnectTimeout(30000);
-                                    conn.setReadTimeout(30000);
-                                    conn.setInstanceFollowRedirects(true);
-                                    try (InputStream in = conn.getInputStream();
-                                            OutputStream out = new FileOutputStream(cacheFile)) {
-                                        byte[] buffer = new byte[10 * 1024];
-                                        int len;
-
-                                        while ((len = in.read(buffer)) != -1) {
-                                            out.write(buffer, 0, len);
-                                        }
-                                    }
-
-                                    images = loadImages(ImageIO.createImageInputStream(cacheFile));
-                                }
-                            } else {
-                                controller.info("Loading " + url);
-                                URL imageUrl = new URL(url);
-                                images = loadImages(ImageIO.createImageInputStream(imageUrl));
-                            }
-                        }
-
-                        if (images.size() == 0)
-                        {
-                            enabled = false;
-                            controller.warning("Failed to load map " + url);
-                        }
-                        for (BufferedImage rawImage : images)
-                        {
-                            int imageWidth = width <= 0 ? rawImage.getWidth() + width : width;
-                            int imageHeight = height <= 0 ? rawImage.getHeight() + height : height;
-                            if (imageWidth > rawImage.getWidth()) {
-                                imageWidth = rawImage.getWidth();
-                            }
-                            if (imageHeight > rawImage.getHeight()) {
-                                imageHeight = rawImage.getHeight();
-                            }
-                            int imageX = x + rawImage.getMinX();
-                            int imageY = y + rawImage.getMinY();
-
-                            BufferedImage croppedImage = rawImage.getSubimage(imageX, imageY, imageWidth, imageHeight);
-                            BufferedImage image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
-                            Graphics2D graphics = image.createGraphics();
-
-                            AffineTransform transform = AffineTransform.getScaleInstance((float)128 / imageWidth, (float)128 / imageHeight);
-                            graphics.drawRenderedImage(croppedImage, transform);
-
-                            if (xOverlay != null && yOverlay != null) {
-                                BufferedImage croppedOverlay = rawImage.getSubimage(xOverlay, yOverlay, imageWidth, imageHeight);
-                                graphics.drawRenderedImage(croppedOverlay, transform);
-                            }
-
-                            frames.add(image);
-                        }
-                        loading = false;
-                    } catch (Exception ex) {
-                        controller.warning("Failed to load map " + url + ": " + ex.getMessage());
-                    }
-                }
-            });
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, new GetImageTask());
             return null;
         }
         return frames.get(frame);

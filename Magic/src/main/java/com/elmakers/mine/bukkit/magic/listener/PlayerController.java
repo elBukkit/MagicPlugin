@@ -59,9 +59,10 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.magic.DropActionTask;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.tasks.DropActionTask;
+import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -912,12 +913,9 @@ public class PlayerController implements Listener {
             mage.onPlayerQuit(event);
 
             if (logoutDelay > 0) {
-                Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        controller.playerQuit(mage);
-                    }
-                }, (int)Math.ceil((double)logoutDelay * 20 / 1000));
+                Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
+                    new PlayerQuitTask(controller, mage),
+                    (int)Math.ceil((double)logoutDelay * 20 / 1000));
             } else {
                 controller.playerQuit(mage);
             }

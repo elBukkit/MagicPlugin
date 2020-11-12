@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.tasks.CancelEffectsTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
@@ -847,14 +848,7 @@ public class CustomProjectileAction extends CompoundAction
                     play.cancel();
                 }
             } else {
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                    for (EffectPlay play : cancelEffects) {
-                        play.cancel();
-                    }
-                    }
-                }, 1L);
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new CancelEffectsTask(cancelEffects), 1L);
             }
         }
     }

@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
+import com.elmakers.mine.bukkit.tasks.PlayEffectTask;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import de.slikey.effectlib.util.DynamicLocation;
@@ -612,13 +613,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
         // Should I let EffectLib handle delay?
         if (delayTicks > 0 && plugin != null) {
-            final EffectPlayer player = this;
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    player.startPlay();
-                }
-            }, delayTicks);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PlayEffectTask(this), delayTicks);
         } else {
             startPlay();
         }
@@ -637,7 +632,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
-    protected void startPlay() {
+    public void startPlay() {
         // Generate a target location for compatibility if none exists.
         checkLocations();
         play();

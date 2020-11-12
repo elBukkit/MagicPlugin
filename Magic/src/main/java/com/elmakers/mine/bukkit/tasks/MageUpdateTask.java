@@ -1,10 +1,11 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.tasks;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class MageUpdateTask implements Runnable {
     private final MagicController controller;

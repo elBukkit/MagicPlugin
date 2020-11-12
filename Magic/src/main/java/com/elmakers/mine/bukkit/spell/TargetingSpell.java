@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
+import com.elmakers.mine.bukkit.tasks.PlaySpellEffectsTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -251,17 +252,7 @@ public class TargetingSpell extends BaseSpell {
                 backfire();
                 final Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects("cast");
                 if (effects.size() > 0) {
-                    Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects) {
-                                    player.setMaterial(getEffectMaterial());
-                                    player.setColor(mage.getEffectColor());
-                                    player.start(originLocation, null, location, mageEntity);
-                                }
-                            }
-                        }, 5L);
+                    Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new PlaySpellEffectsTask(effects, originLocation, this, mage), 5L);
                 }
                 target = new Target(getEyeLocation(), mageEntity);
             }

@@ -75,6 +75,9 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MageParameters;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.tasks.ApplyWandIconTask;
+import com.elmakers.mine.bukkit.tasks.CancelEffectsContextTask;
+import com.elmakers.mine.bukkit.tasks.OpenWandTask;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -4040,13 +4043,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 effectContext.cancelEffects();
             } else {
                 Plugin plugin = controller.getPlugin();
-                final WandEffectContext context = effectContext;
-                plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        context.cancelEffects();
-                    }
-                }, cancelDelay * 20 / 1000);
+                plugin.getServer().getScheduler().runTaskLater(plugin, new CancelEffectsContextTask(effectContext), cancelDelay * 20 / 1000);
             }
         }
 
@@ -4155,6 +4152,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return cast(getActiveSpell(), parameters);
     }
 
+    @Override
     public boolean cast(Spell spell) {
         return cast(spell, null);
     }
@@ -4535,7 +4533,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return new LostWand(this, location);
     }
 
-    protected void showActiveIcon(boolean show) {
+    public void applyIcon() {
+        findItem();
+        icon.applyToItem(item);
+    }
+
+    public void showActiveIcon(boolean show) {
         if (this.icon == null || this.inactiveIcon == null || this.inactiveIcon.getMaterial() == Material.AIR || this.inactiveIcon.getMaterial() == null) return;
         if (this.icon.getMaterial() == Material.AIR || this.icon.getMaterial() == null) {
             this.icon.setMaterial(DefaultWandMaterial);
@@ -4543,13 +4546,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (show) {
             if (inactiveIconDelay > 0) {
                 Plugin plugin = controller.getPlugin();
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        findItem();
-                        icon.applyToItem(item);
-                    }
-                }, inactiveIconDelay * 20 / 1000);
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ApplyWandIconTask(this), inactiveIconDelay * 20 / 1000);
             } else {
                 findItem();
                 icon.applyToItem(item);
@@ -4671,13 +4668,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // We have to delay this 1 tick so it happens after the Mage has accepted the Wand
         if ((getMode() != WandMode.INVENTORY || offhand) && controller.isLoaded()) {
             Plugin plugin = controller.getPlugin();
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    showActiveIcon(true);
-                    playPassiveEffects("open");
-                }
-            }, 1);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new OpenWandTask(this), 1);
         }
 
         // Check for an empty wand and auto-fill

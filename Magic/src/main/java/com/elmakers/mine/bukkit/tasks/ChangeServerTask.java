@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.tasks;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
