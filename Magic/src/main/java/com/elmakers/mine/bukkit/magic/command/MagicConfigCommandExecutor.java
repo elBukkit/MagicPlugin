@@ -816,21 +816,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             return;
         }
         String exampleKey = parameters[0];
-        String url = null;
+        String url;
         if (parameters.length < 2) {
-            File exampleFolder = new File(controller.getPlugin().getDataFolder(), "examples");
-            exampleFolder = new File(exampleFolder, exampleKey);
-            File urlFile = new File(exampleFolder, "url.txt");
-            if (urlFile.exists()) {
-                try {
-                    url = new String(Files.readAllBytes(Paths.get(urlFile.getAbsolutePath())), StandardCharsets.UTF_8);
-                } catch (Exception ex) {
-                    sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
-                    magic.getLogger().log(Level.WARNING, "Error loading example url from file: " + urlFile.getAbsolutePath(), ex);
-                    return;
-                }
-            }
-
+            url = controller.getExternalExampleURL(exampleKey);
             if (url == null || url.isEmpty()) {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.unknown").replace("$example", exampleKey));
                 return;

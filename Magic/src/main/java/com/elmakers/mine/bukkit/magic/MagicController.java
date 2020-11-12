@@ -13,6 +13,9 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.CodeSource;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
@@ -3069,6 +3072,13 @@ public class MagicController implements MageController {
             } catch (Exception ex) {
                 getLogger().warning("Invalid material in auto_wands config: " + autoWandKey);
             }
+        }
+
+        ConfigurationSection builtinExampleConfigs = properties.getConfigurationSection("external_examples");
+        Set<String> exampleKeys = builtinExampleConfigs.getKeys(false);
+        builtinExternalExamples.clear();
+        for (String exampleKey : exampleKeys) {
+            builtinExternalExamples.put(exampleKey, builtinExampleConfigs.getString(exampleKey));
         }
 
         Wand.regenWhileInactive = properties.getBoolean("regenerate_while_inactive", Wand.regenWhileInactive);
@@ -6762,8 +6772,9 @@ public class MagicController implements MageController {
         return exampleDefaults != null && exampleDefaults.isEmpty() ? null : exampleDefaults;
     }
 
+    @Nonnull
     @Override
-    public @Nonnull Collection<String> getExamples() {
+    public Collection<String> getExamples() {
         List<String> examples = new ArrayList<>();
         try {
             CodeSource src = MagicController.class.getProtectionDomain().getCodeSource();
@@ -6796,9 +6807,10 @@ public class MagicController implements MageController {
         return examples;
     }
 
+    @Nonnull
     @Override
-    public @Nonnull Collection<String> getExternalExamples() {
-        List<String> examples = new ArrayList<>();
+    public Collection<String> getExternalExamples() {
+        List<String> examples = new ArrayList<>(builtinExternalExamples.keySet());
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         if (examplesFolder.exists()) {
             for (File file : examplesFolder.listFiles()) {
@@ -6806,8 +6818,27 @@ public class MagicController implements MageController {
                 examples.add(file.getName());
             }
         }
-
         return examples;
+    }
+
+    @Nullable
+    @Override
+    public String getExternalExampleURL(String exampleKey) {
+        String url = null;
+        File exampleFolder = new File(getPlugin().getDataFolder(), "examples");
+        exampleFolder = new File(exampleFolder, exampleKey);
+        File urlFile = new File(exampleFolder, "url.txt");
+        if (urlFile.exists()) {
+            try {
+                url = new String(Files.readAllBytes(Paths.get(urlFile.getAbsolutePath())), StandardCharsets.UTF_8);
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error loading example url from file: " + urlFile.getAbsolutePath(), ex);
+            }
+        }
+        if (url == null) {
+            url = builtinExternalExamples.get(exampleKey);
+        }
+        return url;
     }
 
     @Override
@@ -7361,4 +7392,5 @@ public class MagicController implements MageController {
     private Map<String, RequirementsProcessor>  requirementProcessors       = new HashMap<>();
     private Map<String, PlayerWarpManager>      playerWarpManagers          = new HashMap<>();
     private Map<Material, String>               autoWands                   = new HashMap<>();
+    private Map<String, String>                 builtinExternalExamples     = new HashMap<>();
 }

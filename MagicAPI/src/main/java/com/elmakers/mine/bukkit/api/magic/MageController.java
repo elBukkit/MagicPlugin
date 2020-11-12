@@ -595,6 +595,13 @@ public interface MageController {
     @Nonnull
     Collection<String> getExternalExamples();
 
+    /**
+     * Return the URL for an existing loaded example
+     * This may be from the builtin configs, or one that was previously fetched via the mconfig command
+     */
+    @Nullable
+    String getExternalExampleURL(String exampleKey);
+
     double getBlockDurability(@Nonnull Block block);
 
     /**
