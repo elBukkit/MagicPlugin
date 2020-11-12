@@ -15,9 +15,12 @@ commands:
           fail: "&cCould not retrieve url &e$url"
           error: "&cSomething went wrong, please check logs"
           wait: "&bPlease wait, downloading &b$url..."
-          success: "&bDownloaded example &2$example&f\nUse &6mconfig example add $example&f to mix this in with your current configs\nUse &6mconfig example set $example&f to set this as your base configuration"
+          success: "&bDownloaded example &2$example&f\n&rUse &6mconfig example add $example&f to mix this in with your current configs\n&rUse &6mconfig example set $example&f to set this as your base configuration"
           backup: "&eExample exists, &3backing up to &f$backup"
           overwrite_backup: "&eExample and backup exist, &coverwriting &f$backup"
+          url_write: "&bYou can update this example in the future with $6mconfig example fetch $example"
+          url_write_failed: "&cSomething went wrong writing the url file, please check logs"
+          url_exists: "&eExample has a builtin URL file, not overwriting.\n&r&fThis may be a redirect to an updated version.\n&r&&bfYou might want to try &6/mconfig example fetch $example &bto update it"
         add:
           usage: "&cUsage: /mconfig example add <example>"
           duplicate: "&cThe example &2$example &cis already loaded"
@@ -25,11 +28,13 @@ commands:
         remove:
           usage: "&cUsage: /mconfig example remove <example>"
           missing: "&cThe example &2$example &cis not loaded"
-          all: "&bRemoved all examples, including the base example.\n&bUse &6/mconfig example set survival none&b if you did not mean to remove the base survival configs.\n&bOtherwise use &6/magic load&b to apply the changes"
+          all: "&bRemoved all examples, including the base example.\n&r&bUse &6/mconfig example set survival none&b if you did not mean to remove the base survival configs.\n&r&bOtherwise use &6/magic load&b to apply the changes"
           success: "&bRemoved example &2$example"
         set:
           success: "&bSet base example to &2$example"
-          clear: "&bCleared base example.\n&bUse &g/mconfig example remove all&b if you have other added examples you want to remove"
+          multiple: "&bSet base example to &2$example&f\n&r&bSet added examples to &2$examples"
+          clear_added: "&bSet base example to &2$example&f\n&r&bCleared added examples"
+          clear: "&bCleared base example.&f\n&r&bUse &g/mconfig example remove all&b if you have added examples you want to remove"
       disable:
         usage: "&cUsage: /mconfig disable [$options] [key]"
         nokey: "&cInvalid type: $type, options: $options"
@@ -92,5 +97,5 @@ commands:
     getrp:
       auto: "You will now receive the resource pack automatically at login"
       manual: "RP preference cleared, you will be prompted again at next login."
-      turnoff: "You will no longer receive the resource pack automatically at login nor be prompted.\nUse &b/getrp&f if you want to get it.\nIf you'd prefer to download the RP, you can use &b/getrp url&f to get the URL"
-      sending: "Use &b/getrp auto&f to get the resource pack automatically.\nOr use &b/getrp off&f to turn off the login prompt."
+      turnoff: "You will no longer receive the resource pack automatically at login nor be prompted.\n&rUse &b/getrp&f if you want to get it.\n&rIf you'd prefer to download the RP, you can use &b/getrp url&f to get the URL"
+      sending: "Use &b/getrp auto&f to get the resource pack automatically.\n&rOr use &b/getrp off&f to turn off the login prompt."

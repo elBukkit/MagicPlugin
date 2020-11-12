@@ -119,8 +119,17 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 options.addAll(controller.getLoadedExamples());
                 options.add("all");
             } else if (operation.equals("add") || operation.equals("set")) {
+                if (operation.equals("set")) {
+                    options.add("none");
+                }
                 options.addAll(controller.getExamples());
             }
+        }
+        if (args.length > 3 && subCommand.equals("example") && args[1].equals("set") && !args[2].equals("none")) {
+            if (args.length == 4) {
+                options.add("none");
+            }
+            options.addAll(controller.getExamples());
         }
         if ((args.length == 4 || args.length == 5) && subCommand.equals("configure")) {
             String fileType = getFileParameter(args[1]);
@@ -813,7 +822,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
     protected void onSetExample(CommandSender sender, String[] parameters) {
         Set<String> loadedExamples = new HashSet<>(controller.getLoadedExamples());
-        if (parameters.length == 0) {
+        if (parameters.length == 0 || parameters[0].equals("none")) {
             if (configureExamples(sender, loadedExamples, null)) {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.example.set.clear"));
             }
@@ -821,9 +830,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         String example = parameters[0];
         Set<String> examples;
+        boolean setExamples = false;
         if (parameters.length == 1) {
             examples = new HashSet<>(controller.getLoadedExamples());
         } else {
+            setExamples = true;
             examples = new HashSet<>();
             if (parameters.length > 2 || !parameters[1].equalsIgnoreCase("none")) {
                 for (int i = 1; i < parameters.length; i++) {
@@ -832,7 +843,18 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             }
         }
         if (configureExamples(sender, examples, example)) {
-            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.set.success").replace("$example", example));
+            if (setExamples) {
+                if (examples.isEmpty()) {
+                    sender.sendMessage(magic.getMessages().get("commands.mconfig.example.set.clear_added")
+                        .replace("$example", example));
+                } else {
+                    sender.sendMessage(magic.getMessages().get("commands.mconfig.example.set.multiple")
+                        .replace("$examples", StringUtils.join(examples, ","))
+                        .replace("$example", example));
+                }
+            } else {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.example.set.success").replace("$example", example));
+            }
         }
     }
 
