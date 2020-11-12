@@ -15,7 +15,9 @@ commands:
           fail: "&cCould not retrieve url &e$url"
           error: "&cSomething went wrong, please check logs"
           wait: "&bPlease wait, downloading &b$url..."
-          success: "&bDownloaded example &2$example\n&fUse &6mconfig add $example&f to mix this in with your current configs\nUse &6mconfig set $example&f to set this as your base configuration"
+          success: "&bDownloaded example &2$example&f\nUse &6mconfig example add $example&f to mix this in with your current configs\nUse &6mconfig example set $example&f to set this as your base configuration"
+          backup: "&eExample exists, &3backing up to &f$backup"
+          overwrite_backup: "&eExample and backup exist, &coverwriting &f$backup"
         add:
           usage: "&cUsage: /mconfig example add <example>"
           duplicate: "&cThe example &2$example &cis already loaded"

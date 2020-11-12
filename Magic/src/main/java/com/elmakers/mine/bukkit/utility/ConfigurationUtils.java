@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1182,5 +1183,15 @@ public class ConfigurationUtils extends ConfigUtils {
              }
          }
          return true;
+    }
+
+    public static boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
     }
 }

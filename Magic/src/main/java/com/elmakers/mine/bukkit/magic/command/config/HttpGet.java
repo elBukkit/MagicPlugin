@@ -2,8 +2,10 @@ package com.elmakers.mine.bukkit.magic.command.config;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -41,12 +43,22 @@ public abstract class HttpGet extends AsyncProcessor implements Runnable {
 
     protected abstract void processResponse(InputStream response);
 
+    protected void success(List<String> messages, String message) {
+        messages.add(message);
+        success(controller, sender, StringUtils.join(messages, "\n"));
+    }
+
     protected void success(String message) {
         success(controller, sender, message);
     }
 
     protected void fail(String message) {
         fail(controller, sender, message);
+    }
+
+    protected void fail(List<String> messages, String message, String errorMessage, Exception ex) {
+        messages.add(message);
+        fail(controller, sender, StringUtils.join(messages, "\n"), errorMessage, ex);
     }
 
     protected void fail(String message, String errorMessage, Exception ex) {

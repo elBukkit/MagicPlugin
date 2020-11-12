@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -12,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class FetchExampleRunnable extends HttpGet {
     private final String exampleKey;
@@ -26,6 +29,25 @@ public class FetchExampleRunnable extends HttpGet {
         byte[] buffer = new byte[2048];
         File examplesFolder = new File(controller.getPlugin().getDataFolder(), "examples");
         examplesFolder = new File(examplesFolder, exampleKey);
+        List<String> messages = new ArrayList<>();
+
+        if (examplesFolder.exists()) {
+            File backupFolder = new File(examplesFolder.getPath() + ".bak");
+            if (backupFolder.exists()) {
+                messages.add(controller.getMessages().get("commands.mconfig.example.fetch.overwrite_backup").replace("$backup", backupFolder.getName()));
+                ConfigurationUtils.deleteDirectory(backupFolder);
+                examplesFolder.renameTo(backupFolder);
+            } else {
+                messages.add(controller.getMessages().get("commands.mconfig.example.fetch.backup").replace("$backup", backupFolder.getName()));
+                examplesFolder.renameTo(backupFolder);
+            }
+        }
+
+        // TODO: If this folder exists we need to rename it to .bak
+        // If .bak exists, delete it recursively
+
+        // Tell the user about both of these things
+
         try (ZipInputStream zip = new ZipInputStream(response)) {
             ZipEntry entry;
             boolean empty = true;
@@ -61,7 +83,7 @@ public class FetchExampleRunnable extends HttpGet {
                 throw new IllegalArgumentException("Empty zip file");
             }
         } catch (Exception ex) {
-            fail(controller.getMessages().get("commands.mconfig.example.fetch.error"), "Error reading zip file", ex);
+            fail(messages, controller.getMessages().get("commands.mconfig.example.fetch.error"), "Error reading zip file", ex);
             ex.printStackTrace();
             return;
         }
@@ -72,6 +94,6 @@ public class FetchExampleRunnable extends HttpGet {
         }
         String message = controller.getMessages().get("commands.mconfig.example.fetch.success");
         message = message.replace("$url", url).replace("$example", exampleKey);
-        success(message);
+        success(messages, message);
     }
 }
