@@ -778,7 +778,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         String example = parameters[0];
         if (example.equalsIgnoreCase("all")) {
-            if (configureExamples(sender, new HashSet<>(), null)) {
+            if (configureExamples(sender, new HashSet<>(), null, false)) {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.example.remove.all"));
             }
             return;
@@ -826,6 +826,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     }
 
     protected boolean configureExamples(CommandSender sender, Set<String> examples, String example) {
+        return configureExamples(sender, examples, example, true);
+    }
+
+    protected boolean configureExamples(CommandSender sender, Set<String> examples, String example, boolean reload) {
         if (example == null) {
             example = "";
         }
@@ -845,7 +849,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             exampleConfig.set("examples", new ArrayList<>(examples));
             exampleConfig.set("add_examples", new ArrayList<>());
             exampleConfig.save(exampleFile);
-            controller.loadConfigurationQuietly(sender);
+            if (reload) {
+                controller.loadConfigurationQuietly(sender);
+            }
         } catch (Exception ex) {
             sender.sendMessage(magic.getMessages().get("commands.mconfig.write_failed").replace("$file", exampleFile.getName()));
             magic.getLogger().log(Level.SEVERE, "Could not write to file " + exampleFile.getAbsoluteFile(), ex);
