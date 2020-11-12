@@ -868,7 +868,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        if (fileType.equals("config") || fileType.equals("messages")) {
+        if ((fileType.equals("config") || fileType.equals("messages")) && parameters.length == 1) {
             File pluginFolder = api.getPlugin().getDataFolder();
             File configFile = new File(pluginFolder, fileType + ".yml");
             boolean resetAny = false;
