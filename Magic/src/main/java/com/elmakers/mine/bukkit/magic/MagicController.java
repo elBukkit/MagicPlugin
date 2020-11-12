@@ -2053,6 +2053,7 @@ public class MagicController implements MageController {
     }
 
     public void loadConfiguration(CommandSender sender, boolean forceSynchronous, boolean verboseLogging) {
+        if (!plugin.isEnabled()) return;
         reloadVerboseLogging = verboseLogging;
         loading = true;
         ConfigurationLoadTask loadTask = new ConfigurationLoadTask(this, sender);
