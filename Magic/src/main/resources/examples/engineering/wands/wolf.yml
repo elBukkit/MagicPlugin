@@ -129,6 +129,7 @@ wolf:
     - wolfhouse@122
     - worm@55
     - wound@28
+    - ignoreair@20
   brushes:
     - bedrock
     - clone@19
@@ -148,7 +149,6 @@ wolf:
     - lava
     - leaves
     - log
-    - ignoreair@20
     - map:128
     - map@21
     - mycel
