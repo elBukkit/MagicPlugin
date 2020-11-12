@@ -121,12 +121,13 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             if (operation.equals("remove")) {
                 options.addAll(controller.getLoadedExamples());
                 options.add("all");
-            } else if (operation.equals("add") || operation.equals("set")) {
-                if (operation.equals("set")) {
-                    options.add("none");
-                }
+            } else if (operation.equals("set")) {
+                options.add("none");
                 options.addAll(controller.getExamples());
             }
+        }
+        if (args.length >= 3 && subCommand.equals("example") && args[1].equals("add")) {
+            options.addAll(controller.getExamples());
         }
         if (args.length > 3 && subCommand.equals("example") && args[1].equals("set") && !args[2].equals("none")) {
             if (args.length == 4) {
@@ -771,15 +772,18 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.usage"));
             return;
         }
-        String example = parameters[0];
         Set<String> examples = new HashSet<>(controller.getLoadedExamples());
-        if (examples.contains(example)) {
-            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.duplicate").replace("$example", example));
+        List<String> addExamples = new ArrayList<>();
+        for (int i = 0; i < parameters.length; i++) {
+            addExamples.add(parameters[i]);
+        }
+        if (examples.containsAll(addExamples)) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.duplicate").replace("$examples", StringUtils.join(addExamples, ",")));
             return;
         }
-        examples.add(example);
+        examples.addAll(addExamples);
         if (configureExamples(sender, examples, controller.getExample())) {
-            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.success").replace("$example", example));
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.success").replace("$examples", StringUtils.join(addExamples, ",")));
         }
     }
 

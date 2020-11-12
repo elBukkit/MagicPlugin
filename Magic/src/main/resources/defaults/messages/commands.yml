@@ -24,8 +24,8 @@ commands:
           url_exists: "&eExample has a builtin URL file, not overwriting.\n&r&fThis may be a redirect to an updated version.\n&r&&bfYou might want to try &6/mconfig example fetch $example &bto update it"
         add:
           usage: "&cUsage: /mconfig example add <example>"
-          duplicate: "&cThe example &2$example &cis already loaded"
-          success: "&bAdded example &2$example"
+          duplicate: "&cThe examples &2$examples &care already loaded"
+          success: "&bAdded examples &2$examples"
         remove:
           usage: "&cUsage: /mconfig example remove <example>"
           missing: "&cThe example &2$example &cis not loaded"
