@@ -14,9 +14,9 @@ wand:
     clone_material_description: Copies blocks from a target
     replicate_material_name: Replicate
     replicate_material_description: Replicates the clone target
-    clone_material_activated: Clone source selected
-    replicate_material_activated: Replicate source selected
-    erase_modifier_activated: Erase modifier active
+    clone_material_activated: "a:Clone source selected"
+    replicate_material_activated: "a:Replicate source selected"
+    erase_modifier_activated: "a:Erase modifier active"
     map_material_name: "Map $id"
     map_material_name_scaled: "Map $id ($sizex$size)"
     map_material_description: Creates pixel art from last held map
