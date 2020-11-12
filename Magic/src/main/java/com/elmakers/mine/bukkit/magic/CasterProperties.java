@@ -926,6 +926,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         setOverrides(castOverrides);
     }
 
+    @Override
     public boolean addOverride(String key, String value)
     {
         Map<String, String> castOverrides = getOverrides();

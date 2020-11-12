@@ -4972,6 +4972,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return modifiers.get(key);
     }
 
+    @Override
+    public boolean hasModifier(String key) {
+        return modifiers.containsKey(key);
+    }
+
     /**
      * Get the item slot of the arrow that will be fired from a bow.
      * -1 : Main hand
