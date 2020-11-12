@@ -3002,6 +3002,9 @@ wands:
   appearance_moon:
     name: Палочка "Луна"
     description: Палочка, которой, возможно, пользовалась Сейлор Мун
+  appearance_book:
+    name: Книга
+    description: Палочка, хитро замаскированная под книгу
   appearance_green:
     name: Зеленая палочка
     description: Палочка ядовитого цвета
