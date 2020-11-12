@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,7 @@ public class ConfigurationLoadTask implements Runnable {
     private String exampleDefaults = null;
     private String languageOverride = null;
     private Collection<String> addExamples = null;
+    private Set<String> allExamples = new HashSet<>();
 
     private ConfigurationSection mainConfiguration;
 
@@ -137,10 +139,12 @@ public class ConfigurationLoadTask implements Runnable {
         loadInitialProperties(configuration);
         boolean reloadConfig = false;
         if (addExamples != null && addExamples.size() > 0) {
+            allExamples.addAll(addExamples);
             info("Adding examples: " + StringUtils.join(addExamples, ","));
             reloadConfig = true;
         }
         if (exampleDefaults != null && exampleDefaults.length() > 0) {
+            allExamples.add(exampleDefaults);
             info("Overriding configuration with example: " + exampleDefaults);
             reloadConfig = true;
         }
@@ -247,11 +251,11 @@ public class ConfigurationLoadTask implements Runnable {
         return config;
     }
 
-    private void processInheritance(String exampleKey, ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration) {
-        processInheritance(exampleKey, exampleConfig, fileName, mainConfiguration, null);
+    private boolean processInheritance(String exampleKey, ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration) {
+        return processInheritance(exampleKey, exampleConfig, fileName, mainConfiguration, null);
     }
 
-    private void processInheritance(String exampleKey, ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration, Set<String> inherited) {
+    private boolean processInheritance(String exampleKey, ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration, Set<String> inherited) {
         // This lets a configuration be dropped into the plugins/Magic folder, or plugins/Magic/examples
         // and behave the same way.
         if (mainConfiguration.contains("example")) {
@@ -266,6 +270,8 @@ public class ConfigurationLoadTask implements Runnable {
         } else {
             inherited = new LinkedHashSet<>(inherited);
         }
+        boolean disabledInherited = false;
+        boolean isMainConfig = fileName.equals("config");
         inherited.add(exampleKey);
         List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
         if (inherits != null) {
@@ -275,7 +281,7 @@ public class ConfigurationLoadTask implements Runnable {
                     String inheritFilePrefix = "examples/" + inheritFrom + "/" + fileName;
                     ConfigurationSection inheritedConfig = loadExampleConfiguration(inheritFilePrefix);
                     if (inheritedConfig != null) {
-                        if (fileName.equals("config")) {
+                        if (isMainConfig) {
                             mainConfigurations.put(inheritFrom, ConfigurationUtils.cloneConfiguration(inheritedConfig));
 
                             // These should not be inherited
@@ -289,10 +295,15 @@ public class ConfigurationLoadTask implements Runnable {
                             if (inherited.contains(inheritFrom)) {
                                 getLogger().log(Level.WARNING, "Circular dependency detected in configuration inheritance: " + StringUtils.join(inherited, " -> ") + " -> " + inheritFrom);
                             } else {
-                                processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited);
+                                if (processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited)) {
+                                    disabledInherited = true;
+                                }
                             }
-                            if (disable != null && disable.contains(fileName)) {
+                            if (!isMainConfig && disable != null && disable.contains(fileName) && !allExamples.contains(inheritFrom)) {
                                 disableAll(inheritedConfig);
+                                disabledInherited = true;
+                            }
+                            if (disabledInherited) {
                                 enableAll(exampleConfig);
                             }
                             ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
@@ -305,6 +316,7 @@ public class ConfigurationLoadTask implements Runnable {
                 }
             }
         }
+        return disabledInherited;
     }
 
     private ConfigurationSection loadOverrides(String fileName) throws IOException, InvalidConfigurationException {
