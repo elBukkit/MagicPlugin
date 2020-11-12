@@ -258,9 +258,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Wolf wolf = (Wolf)entity;
             dyeColor = wolf.getCollarColor();
             isAngry = wolf.isAngry();
-        } else if (entity instanceof Ocelot) {
-            Ocelot ocelot = (Ocelot)entity;
-            ocelotType = ocelot.getCatType();
         } else if (entity instanceof Rabbit) {
             Rabbit rabbit = (Rabbit)entity;
             rabbitType = rabbit.getRabbitType();
@@ -845,9 +842,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 wolf.setCollarColor(dyeColor);
             }
             wolf.setAngry(isAngry);
-        } else if (entity instanceof Ocelot && ocelotType != null) {
-            Ocelot ocelot = (Ocelot)entity;
-            ocelot.setCatType(ocelotType);
         } else if (entity instanceof Rabbit && rabbitType != null) {
             Rabbit rabbit = (Rabbit)entity;
             rabbit.setRabbitType(rabbitType);
