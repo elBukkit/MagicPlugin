@@ -2390,7 +2390,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (!mage.isCostFree() && (mageClass == null || !mageClass.isCostFree()))
         {
             CasterProperties caster = mageClass != null ? mageClass : getCurrentCast().getWand();
-            if (costs != null && isActive)
+            if (costs != null && !isActive)
             {
                 for (CastingCost cost : costs)
                 {
