@@ -460,6 +460,10 @@ public class ConfigurationLoadTask implements Runnable {
                 // Version patches will never add to configs, the top-level nodes they are modifying must exist.
                 // This allows them to tweak things from example configs but get safely ignored if not loading
                 // those examples.
+                if (fileName.equals("config")) {
+                    mainConfigurations.put(versionExample, versionConfig);
+                }
+                processInheritance(versionConfig, fileName, getMainConfiguration(versionExample));
                 ConfigurationUtils.addConfigurations(config, versionConfig, true, true);
                 getLogger().info(" Using compatibility configs: " + versionFileName);
             } catch (Exception ex) {
