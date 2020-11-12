@@ -127,7 +127,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected int fireTicks;
 
     protected DyeColor dyeColor;
-    protected Ocelot.Type ocelotType;
     protected Rabbit.Type rabbitType = null;
 
     protected Collection<PotionEffect> potionEffects = null;
@@ -478,9 +477,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             else if (type == EntityType.AREA_EFFECT_CLOUD) {
                 extraData = new EntityAreaEffectCloudData(parameters, controller);
-            }
-            else if (type == EntityType.OCELOT && parameters.contains("ocelot_type")) {
-                ocelotType = Ocelot.Type.valueOf(parameters.getString("ocelot_type").toUpperCase());
             }
             else if (type == EntityType.RABBIT && parameters.contains("rabbit_type")) {
                 rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
@@ -1161,9 +1157,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (type == null) return "Unknown";
 
         String name = type.name();
-        if (ocelotType != null) {
-            name += ":" + ocelotType;
-        } else if (rabbitType != null) {
+        if (rabbitType != null) {
             name += ":" + rabbitType;
         }
         return name;
