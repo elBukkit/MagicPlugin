@@ -5307,7 +5307,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         suspendUpdate = true;
-        if (!removeBrush(materialKey)) {
+        if (!super.removeBrush(materialKey)) {
             suspendUpdate = false;
             return false;
         }
