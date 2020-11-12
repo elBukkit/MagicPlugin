@@ -29,6 +29,9 @@
    You can turn this back on with `allow_inventory_casting: true` but it is not recommended on modern MC versions,
    since you'll also get a cast of the main spell.
 
+ - Configuration files will now be read out of `plugins/Magic/examples`, please take care if you have files in that
+   folder for some reason.
+
 # 7.9.7
 
  - Engineering magic has been moved out of the survival configs and into a separate example. 
