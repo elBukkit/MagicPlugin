@@ -588,6 +588,13 @@ public interface MageController {
     @Nonnull
     Collection<String> getExamples();
 
+    /**
+     * Return all external example configs that are referenced by the builtin configs
+     * or have been loaded with the mconfig command
+     */
+    @Nonnull
+    Collection<String> getExternalExamples();
+
     double getBlockDurability(@Nonnull Block block);
 
     /**

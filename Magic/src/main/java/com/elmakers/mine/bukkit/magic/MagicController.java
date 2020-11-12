@@ -6788,6 +6788,21 @@ public class MagicController implements MageController {
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         if (examplesFolder.exists()) {
             for (File file : examplesFolder.listFiles()) {
+                if (!file.isDirectory() || file.getName().startsWith(".")) continue;
+                examples.add(file.getName());
+            }
+        }
+
+        return examples;
+    }
+
+    @Override
+    public @Nonnull Collection<String> getExternalExamples() {
+        List<String> examples = new ArrayList<>();
+        File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
+        if (examplesFolder.exists()) {
+            for (File file : examplesFolder.listFiles()) {
+                 if (!file.isDirectory() || file.getName().startsWith(".") || file.getName().endsWith(".bak")) continue;
                 examples.add(file.getName());
             }
         }

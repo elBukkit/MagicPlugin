@@ -5,8 +5,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -42,11 +45,6 @@ public class FetchExampleRunnable extends HttpGet {
                 examplesFolder.renameTo(backupFolder);
             }
         }
-
-        // TODO: If this folder exists we need to rename it to .bak
-        // If .bak exists, delete it recursively
-
-        // Tell the user about both of these things
 
         try (ZipInputStream zip = new ZipInputStream(response)) {
             ZipEntry entry;
@@ -89,9 +87,24 @@ public class FetchExampleRunnable extends HttpGet {
         }
         try {
             response.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            controller.getLogger().log(Level.WARNING, "Error closing http connection", ex);
         }
+
+        File urlFile = new File(examplesFolder, "url.txt");
+        if (urlFile.exists()) {
+            messages.add(controller.getMessages().get("commands.mconfig.example.fetch.url_exists").replace("$example", exampleKey));
+        } else {
+            try (OutputStreamWriter writer =
+             new OutputStreamWriter(new FileOutputStream(urlFile), StandardCharsets.UTF_8)) {
+                writer.write(url);
+                messages.add(controller.getMessages().get("commands.mconfig.example.fetch.url_write").replace("$example", exampleKey));
+            } catch (IOException ex) {
+                messages.add(controller.getMessages().get("commands.mconfig.example.fetch.url_write_failed").replace("$example", exampleKey));
+                controller.getLogger().log(Level.WARNING, "Error writing url file to example " + urlFile.getAbsolutePath(), ex);
+            }
+        }
+
         String message = controller.getMessages().get("commands.mconfig.example.fetch.success");
         message = message.replace("$url", url).replace("$example", exampleKey);
         success(messages, message);

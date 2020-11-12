@@ -100,6 +100,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "example");
         }
         String subCommand = args[0];
+        if (args.length == 3 && subCommand.equals("example") && args[1].equals("fetch")) {
+            options.addAll(controller.getExternalExamples());
+        }
         if (args.length == 2 && (subCommand.equals("disable") || subCommand.equals("enable") || subCommand.equals("configure") || subCommand.equals("editor") || subCommand.equals("reset"))) {
             options.addAll(availableFileMap.keySet());
             if (subCommand.equals("configure") || subCommand.equals("reset")) {
@@ -808,12 +811,33 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onFetchExample(CommandSender sender, String[] parameters) {
-        if (parameters.length < 2) {
+        if (parameters.length < 1) {
             sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.usage"));
             return;
         }
         String exampleKey = parameters[0];
-        String url = parameters[1];
+        String url = null;
+        if (parameters.length < 2) {
+            File exampleFolder = new File(controller.getPlugin().getDataFolder(), "examples");
+            exampleFolder = new File(exampleFolder, exampleKey);
+            File urlFile = new File(exampleFolder, "url.txt");
+            if (urlFile.exists()) {
+                try {
+                    url = new String(Files.readAllBytes(Paths.get(urlFile.getAbsolutePath())), StandardCharsets.UTF_8);
+                } catch (Exception ex) {
+                    sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
+                    magic.getLogger().log(Level.WARNING, "Error loading example url from file: " + urlFile.getAbsolutePath(), ex);
+                    return;
+                }
+            }
+
+            if (url == null || url.isEmpty()) {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.unknown").replace("$example", exampleKey));
+                return;
+            }
+        } else {
+            url = parameters[1];
+        }
 
         sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.wait").replace("$url", url));
         final Plugin plugin = magic.getPlugin();
