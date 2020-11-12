@@ -820,7 +820,18 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             return;
         }
         String example = parameters[0];
-        if (configureExamples(sender, new HashSet<>(controller.getLoadedExamples()), example)) {
+        Set<String> examples;
+        if (parameters.length == 1) {
+            examples = new HashSet<>(controller.getLoadedExamples());
+        } else {
+            examples = new HashSet<>();
+            if (parameters.length > 2 || !parameters[1].equalsIgnoreCase("none")) {
+                for (int i = 1; i < parameters.length; i++) {
+                    examples.add(parameters[i]);
+                }
+            }
+        }
+        if (configureExamples(sender, examples, example)) {
             sender.sendMessage(magic.getMessages().get("commands.mconfig.example.set.success").replace("$example", example));
         }
     }

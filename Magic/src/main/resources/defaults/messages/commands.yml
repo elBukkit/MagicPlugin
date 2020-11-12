@@ -25,11 +25,11 @@ commands:
         remove:
           usage: "&cUsage: /mconfig example remove <example>"
           missing: "&cThe example &2$example &cis not loaded"
-          all: "&bRemoved all examples, including the base example.\n&bUse &f/mconfig example set survival&b if you did not mean to remove the base survival configs.\n&bOtherwise use &f/magic load&b to apply the changes"
+          all: "&bRemoved all examples, including the base example.\n&bUse &6/mconfig example set survival none&b if you did not mean to remove the base survival configs.\n&bOtherwise use &6/magic load&b to apply the changes"
           success: "&bRemoved example &2$example"
         set:
           success: "&bSet base example to &2$example"
-          clear: "&bCleared base example"
+          clear: "&bCleared base example.\n&bUse &g/mconfig example remove all&b if you have other added examples you want to remove"
       disable:
         usage: "&cUsage: /mconfig disable [$options] [key]"
         nokey: "&cInvalid type: $type, options: $options"
