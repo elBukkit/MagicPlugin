@@ -129,7 +129,7 @@ wolf:
     - wolfhouse@122
     - worm@55
     - wound@28
-    - ignoreair@20
+    - toggleair@20
   brushes:
     - bedrock
     - clone@19
