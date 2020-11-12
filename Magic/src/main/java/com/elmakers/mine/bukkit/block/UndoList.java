@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -581,7 +582,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                         context.playEffects("undo_entity", 1.0f, null, null, entity.getLocation(), entity, null);
                     }
 
-                    data.undo();
+                    try {
+                        data.undo();
+                    } catch (Exception ex) {
+                        context.getLogger().log(Level.WARNING, "Error restoring entity on undo", ex);
+                    }
 
                     // Check for playing effects on resurrected entities
                     if (entity == null && context != null) {
