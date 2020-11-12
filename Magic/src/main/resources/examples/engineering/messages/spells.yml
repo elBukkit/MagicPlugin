@@ -310,3 +310,8 @@ spells:
         description: Mine out a tunnel in front of you
         no_target: You need to be standing on something!
         cast: Tunneled through $count blocks
+    toggleair:
+        name: Toggle Ignore Air
+        description: Will change several spells (Fill, SuperBlob, etc) to ignore air, replacing only solid blocks
+        turnon: "&fAir &cwill not be &breplaced by Architect spells"
+        turnoff: "&fAir &awill be &breplaced by Architect spells"

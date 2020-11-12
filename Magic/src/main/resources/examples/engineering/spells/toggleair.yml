@@ -1,0 +1,22 @@
+toggleair:
+  icon: birch_door{CustomModelData:18001}
+  icon_disabled: birch_door{CustomModelData:18002}
+  quick_cast: true
+  category: engineering
+  worth: 500
+  actions:
+    cast:
+      - class: CheckModifiers
+        required: ignoreair
+        actions:
+        - class: Modifier
+          remove_modifiers: ignoreair
+        - class: Message
+          message_key: turnoff
+        fail:
+        - class: Modifier
+          add_modifiers: ignoreair
+        - class: Message
+          message_key: turnon
+  parameters:
+    target: self

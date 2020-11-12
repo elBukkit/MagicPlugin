@@ -112,6 +112,8 @@
  - Add "search" effects to BlockSearch action, played for each step of the search
  - The Absorb spell can now absorb most block types (changed from whitelist to blacklist)
  - Added `page_free_space` wand property, if you want your wands to keep more space free when adding new pages
+ - Added CheckModifiers action
+ - Added "ignoreair" modifier to architect path, toggles air replacement on/off for several architect spells
 
 # 7.11.1
 

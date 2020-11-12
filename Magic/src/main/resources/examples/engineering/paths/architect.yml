@@ -35,6 +35,7 @@ architect:
       - floodfill
       - tunnel
       - light
+      - toggleair
     material_count:
       7:  100
       10:  60
