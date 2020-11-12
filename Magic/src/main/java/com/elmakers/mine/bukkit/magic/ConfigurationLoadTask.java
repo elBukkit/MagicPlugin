@@ -292,7 +292,8 @@ public class ConfigurationLoadTask implements Runnable {
                                 processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited);
                             }
                             if (disable != null && disable.contains(fileName)) {
-                                removeAllNotIn(inheritedConfig, exampleConfig);
+                                disableAll(inheritedConfig);
+                                enableAll(exampleConfig);
                             }
                             ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
                             info(" Inheriting from " + inheritFrom);
@@ -302,15 +303,6 @@ public class ConfigurationLoadTask implements Runnable {
                         }
                     }
                 }
-            }
-        }
-    }
-
-    private void removeAllNotIn(ConfigurationSection removeFrom, ConfigurationSection ifNotIn) {
-        Set<String> keys = removeFrom.getKeys(false);
-        for (String key : keys) {
-            if (!ifNotIn.contains(key)) {
-                removeFrom.set(key, null);
             }
         }
     }
