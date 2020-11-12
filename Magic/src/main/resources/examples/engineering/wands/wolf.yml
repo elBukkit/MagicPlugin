@@ -148,8 +148,9 @@ wolf:
     - lava
     - leaves
     - log
-    - map:128@21
-    - map@20
+    - ignoreair@20
+    - map:128
+    - map@21
     - mycel
     - obsidian
     - packed_ice
