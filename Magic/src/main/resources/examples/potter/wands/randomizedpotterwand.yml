@@ -1,7 +1,8 @@
 randomizedpotterwand:
   hidden: true
   inherit: potterwand
-  randomize_icon: wood_step
+  legacy_randomize_icon: wood_step
+  randomize_icon: birch_slab{CustomModelData:18001}
   effects:
     randomize:
     -  class: EffectSingle
