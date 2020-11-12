@@ -27,3 +27,8 @@ wearable:
 - netherite_chestplate
 - netherite_leggings
 - netherite_boots
+
+# Not strictly wearable, but will go to the offhand slot with a shift_click, which we do not want
+- map
+- filled_map
+- empty_map
