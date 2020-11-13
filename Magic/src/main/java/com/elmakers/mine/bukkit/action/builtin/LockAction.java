@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class LockAction extends BaseSpellAction
 {
@@ -143,6 +144,9 @@ public class LockAction extends BaseSpellAction
             }
             keyItem.setItemMeta(meta);
             keyItem = CompatibilityUtils.makeReal(keyItem);
+            if (!NMSUtils.isLegacy()) {
+                CompatibilityUtils.setDisplayNameRaw(keyItem, "{\"text\":\"" + keyName + "\"}");
+            }
             CompatibilityUtils.makeUnplaceable(keyItem);
             InventoryUtils.makeKeep(keyItem);
             mage.giveItem(keyItem);
