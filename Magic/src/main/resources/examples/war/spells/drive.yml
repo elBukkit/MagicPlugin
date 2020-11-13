@@ -113,8 +113,10 @@ drive:
         crash_into: LivingEntity
         crash_dismount_speed: 0.75
         armor_stand_pitch: 0.2
-        # This is in block per second
-        gravity: 20
+        # This is in blocks per second per second
+        gravity: 9.8
+        # This is in blocks per second
+        terminal_velocity: 50
         air_controllable: false
         height_check_radius: 1
         crash_effects:

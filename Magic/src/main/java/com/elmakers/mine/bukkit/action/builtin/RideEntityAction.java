@@ -51,6 +51,7 @@ public class RideEntityAction extends BaseSpellAction
     private int maxHeight;
     private int exemptionDuration;
     private double gravity;
+    private double terminalVelocity;
     private boolean airControllable = false;
     private boolean controllable = false;
     private boolean pitchControllable = true;
@@ -92,6 +93,7 @@ public class RideEntityAction extends BaseSpellAction
     private boolean isPassenger;
     private Spell jumpSpell;
     private String[] jumpSpellParameters;
+    private Vector gravityVelocity = new Vector();
 
     protected Vector direction;
     protected Entity mount;
@@ -149,6 +151,7 @@ public class RideEntityAction extends BaseSpellAction
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", -1);
         heightCheckRadius = parameters.getInt("height_check_radius", 0);
         gravity = parameters.getDouble("gravity", 0);
+        terminalVelocity = parameters.getDouble("terminal_velocity", 0);
         maxAscend = parameters.getInt("max_ascend", 0);
         duration = parameters.getInt("duration", 0);
         durationWarning = parameters.getInt("duration_warning", 0);
@@ -488,17 +491,30 @@ public class RideEntityAction extends BaseSpellAction
                 velocity.add(strafeVector).normalize();
             }
         }
-
         // Apply thrust or gravity as appropriate
         if (isInAir && gravity > 0) {
-            Vector gravityVector = new Vector(0, -gravity / 20, 0);
-            if (speed != 0 && airControllable) {
-                gravityVector.add(velocity.multiply(speed));
+            // This updates every tick, and also velocity is in ticks so we have to
+            // convert to seconds *twice*
+            double gravitySpeed = Math.abs(gravityVelocity.getY()) + gravity / 20 / 20;
+            if (terminalVelocity > 0) {
+                double terminalSpeed = terminalVelocity / 20;
+                if (gravitySpeed > terminalSpeed) {
+                    gravitySpeed = terminalSpeed;
+                }
             }
-            SafetyUtils.setVelocity(getMount(context), gravityVector);
-        } else if (speed != 0) {
-            velocity = velocity.multiply(speed);
-            SafetyUtils.setVelocity(getMount(context), velocity);
+            gravityVelocity.setY(-gravitySpeed);
+            Vector totalVelocity = gravityVelocity;
+            if (speed != 0 && airControllable) {
+                totalVelocity = totalVelocity.clone();
+                totalVelocity.add(velocity.multiply(speed));
+            }
+            SafetyUtils.setVelocity(getMount(context), totalVelocity);
+        } else {
+            gravityVelocity.setY(0);
+            if (speed != 0) {
+                velocity = velocity.multiply(speed);
+                SafetyUtils.setVelocity(getMount(context), velocity);
+            }
         }
     }
 
