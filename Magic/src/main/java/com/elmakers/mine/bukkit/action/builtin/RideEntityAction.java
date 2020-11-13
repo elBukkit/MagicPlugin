@@ -47,8 +47,11 @@ public class RideEntityAction extends BaseSpellAction
     private int liftoffDuration = 0;
     private int maxAscend;
     private int maxHeightAboveGround;
+    private int heightCheckRadius;
     private int maxHeight;
     private int exemptionDuration;
+    private double gravity;
+    private boolean airControllable = false;
     private boolean controllable = false;
     private boolean pitchControllable = true;
     private double strafeControllable = 0;
@@ -94,6 +97,7 @@ public class RideEntityAction extends BaseSpellAction
     protected Entity mount;
     protected Location targetLocation;
     private boolean isAscending;
+    private boolean isInAir;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -143,6 +147,8 @@ public class RideEntityAction extends BaseSpellAction
         crashSpeed = parameters.getDouble("crash_speed", 0);
         maxHeight = parameters.getInt("max_height", 0);
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", -1);
+        heightCheckRadius = parameters.getInt("height_check_radius", 0);
+        gravity = parameters.getDouble("gravity", 0);
         maxAscend = parameters.getInt("max_ascend", 0);
         duration = parameters.getInt("duration", 0);
         durationWarning = parameters.getInt("duration_warning", 0);
@@ -152,6 +158,7 @@ public class RideEntityAction extends BaseSpellAction
         noTargetPlayer = parameters.getBoolean("rider_untargetable", false);
         controllable = parameters.getBoolean("controllable", false);
         pitchControllable = parameters.getBoolean("pitch_controllable", true);
+        airControllable = parameters.getBoolean("air_controllable", true);
         strafeControllable = parameters.getDouble("strafe_controllable", 0.0);
         jumpControllable = parameters.getDouble("jump_controllable", 0.0);
         braking = parameters.getDouble("braking", 0.0);
@@ -299,7 +306,9 @@ public class RideEntityAction extends BaseSpellAction
             context.getController().addFlightExemption((Player)mounted, exemptionDuration);
         }
 
-        adjustHeading(context);
+        if (!isInAir || airControllable) {
+            adjustHeading(context);
+        }
         if (System.currentTimeMillis() > liftoffTime + liftoffDuration) {
             applyThrust(context);
         }
@@ -430,15 +439,27 @@ public class RideEntityAction extends BaseSpellAction
 
         // Check for max height
         double blocksAbove = 0;
+        boolean first = true;
         Location currentLocation = mountedEntity.getLocation();
         if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
             blocksAbove = currentLocation.getY() - maxHeight + 1;
         } else if (maxHeightAboveGround >= 0) {
-            Block block = currentLocation.getBlock();
-            while (blocksAbove < maxHeightAboveGround + 5 && context.isPassthrough(block))
-            {
-                block = block.getRelative(BlockFace.DOWN);
-                blocksAbove++;
+            for (int x = -heightCheckRadius; x <= heightCheckRadius && (first || blocksAbove > 0); x++) {
+                for (int z = -heightCheckRadius; z <= heightCheckRadius && (first || blocksAbove > 0); z++) {
+                    int thisBlocksAbove = 0;
+                    Block block = currentLocation.getBlock().getRelative(x, 0, z);
+                    while (thisBlocksAbove < maxHeightAboveGround + 5 && context.isPassthrough(block))
+                    {
+                        block = block.getRelative(BlockFace.DOWN);
+                        thisBlocksAbove++;
+                    }
+                    if (first) {
+                        first = false;
+                        blocksAbove = thisBlocksAbove;
+                    } else {
+                        blocksAbove = Math.min(thisBlocksAbove, blocksAbove);
+                    }
+                }
             }
             blocksAbove = blocksAbove - maxHeightAboveGround - 1;
         }
@@ -448,6 +469,7 @@ public class RideEntityAction extends BaseSpellAction
         }
 
         int multiplier = speed < 0 ? -1 : 1;
+        isInAir = blocksAbove > 1;
         if (blocksAbove > 0 && multiplier * direction.getY() >= 0) {
             if (blocksAbove > 1) {
                 direction.setY(multiplier * -blocksAbove / 5).normalize();
@@ -456,19 +478,27 @@ public class RideEntityAction extends BaseSpellAction
             }
         }
 
-        // Apply thrust
-        if (speed != 0) {
-            Vector velocity = direction.clone();
-            if (strafeControllable != 0) {
-                double strafeDirection = context.getMage().getVehicleStrafeDirection();
-                if (strafeDirection != 0) {
-                    Vector strafeVector = new Vector(0, 0, -strafeDirection * strafeControllable);
-                    strafeVector = VectorUtils.rotateVector(strafeVector, mountedEntity.getLocation());
-                    velocity.add(strafeVector).normalize();
-                }
+        // Apply strafe movement
+        Vector velocity = direction.clone();
+        if (strafeControllable != 0) {
+            double strafeDirection = context.getMage().getVehicleStrafeDirection();
+            if (strafeDirection != 0) {
+                Vector strafeVector = new Vector(0, 0, -strafeDirection * strafeControllable);
+                strafeVector = VectorUtils.rotateVector(strafeVector, mountedEntity.getLocation());
+                velocity.add(strafeVector).normalize();
             }
+        }
 
-            SafetyUtils.setVelocity(getMount(context), velocity.multiply(speed));
+        // Apply thrust or gravity as appropriate
+        if (isInAir && gravity > 0) {
+            Vector gravityVector = new Vector(0, -gravity / 20, 0);
+            if (speed != 0 && airControllable) {
+                gravityVector.add(velocity.multiply(speed));
+            }
+            SafetyUtils.setVelocity(getMount(context), gravityVector);
+        } else if (speed != 0) {
+            velocity = velocity.multiply(speed);
+            SafetyUtils.setVelocity(getMount(context), velocity);
         }
     }
 
@@ -624,6 +654,9 @@ public class RideEntityAction extends BaseSpellAction
         parameters.add("strafe_controllable");
         parameters.add("pitch_controllable");
         parameters.add("jump_controllable");
+        parameters.add("gravity");
+        parameters.add("air_controllable");
+        parameters.add("height_check_radius");
     }
 
     @Override
@@ -631,6 +664,7 @@ public class RideEntityAction extends BaseSpellAction
     {
         if (parameterKey.equals("crash_distance")
                 || parameterKey.equals("max_height")
+                || parameterKey.equals("height_check_radius")
                 || parameterKey.equals("max_height_above_ground")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("steer_speed")
@@ -642,12 +676,19 @@ public class RideEntityAction extends BaseSpellAction
                 || parameterKey.equals("braking")
                 || parameterKey.equals("pitch_offset")
                 || parameterKey.equals("yaw_offset")
-                || parameterKey.equals("liftoff_thrust")) {
+                || parameterKey.equals("gravity")
+                || parameterKey.equals("liftoff_thrust")
+                || parameterKey.equals("jump_controllable")
+                || parameterKey.equals("strafe_controllable")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_VECTOR_COMPONENTS));
         } else if (parameterKey.equals("liftoff_duration")
                 || parameterKey.equals("duration")
                 || parameterKey.equals("duration_warning")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
+        } else if (parameterKey.equals("air_controllable")
+                || parameterKey.equals("controllable")
+                || parameterKey.equals("pitch_controllable")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

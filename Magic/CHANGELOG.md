@@ -113,7 +113,8 @@
  - The Absorb spell can now absorb most block types (changed from whitelist to blacklist)
  - Added `page_free_space` wand property, if you want your wands to keep more space free when adding new pages
  - Added CheckModifiers action
- - Added "ignoreair" modifier to architect path, toggles air replacement on/off for several architect spells
+ - Added "toggleair" modifier to architect path, toggles air replacement on/off for several architect spells
+ - Cars fall down go boom
 
 # 7.11.1
 
