@@ -5885,7 +5885,7 @@ public class MagicController implements MageController {
     public com.elmakers.mine.bukkit.entity.EntityData getMob(String key) {
         // This null check is hopefully temporary, but deals with actions that look up a mob during interrogation.
         com.elmakers.mine.bukkit.entity.EntityData mob = mobs == null ? null : mobs.get(key);
-        if (mob == null) {
+        if (mob == null && mobs != null) {
             EntityType entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(key);
             if (entityType != null) {
                 mob = mobs.getDefaultMob(entityType);
