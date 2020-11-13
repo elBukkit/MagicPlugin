@@ -52,6 +52,18 @@ commands:
           base: "&bБазовая конфигурация: &3$example"
           header: "&bДоступные конфигурации:"
           item: "  &f- &3$example"
+        fetch:
+          usage: "&cИспользование: /mconfig example fetch <название> <ссылка>"
+          unknown: "&cНеизвестная конфигурация: &e$example, &cиспользуй команду, чтобы загрузить конфигурацию.&r\n&cИспользование: /mconfig example fetch <название> <ссылка>"
+          fail: "&cНеверно указана ссылка - &e$url"
+          error: "&cЧто-то пошло не так, проверь логи"
+          wait: "&bПодождите, идет скачивание &b$url..."
+          success: "&bСкачивание завершено - &2$example&f\n&rИспользуй &6/mconfig example add $example&f, чтобы совместить конфигурацию с текущей \n&rИспользуй &6/mconfig example set $example&f, чтобы установить как базовую конфигурацию"
+          backup: "&eКонфигурация найдена, &3создаю бэкап - &f$backup"
+          overwrite_backup: "&eКонфигурация и бэкап найдены, &cперезаписываю &f$backup"
+          url_write: "&bТы сможешь обновить конфигурацию в будущем, используя команду &6/mconfig example fetch $example&r"
+          url_write_failed: "&cЧто-то пошло не так в ходе записи файла с ссылкой, проверь логи"
+          url_exists: "&eКонфигурация уже имеет загруженный файл с ссылкой.\n&r&fВозможно, вышло обновление для конфигурации.\n&r&&bfИспользуй команду &6/mconfig example fetch $example&b, чтобы обновить"
         add:
           usage: "&cИспользование: /mconfig example add <example>"
           duplicate: "&cКонфигурация &2$example &cуже загружена"
@@ -2324,9 +2336,9 @@ wand:
     clone_material_description: Копирует блоки
     replicate_material_name: Репликация
     replicate_material_description: Реплицирует клонируемую цель
-    clone_material_activated: Клонирование выбрано
-    replicate_material_activated: Репликация выбрано
-    erase_modifier_activated: Стереть выбрано
+    clone_material_activated: "a:Клонирование выбрано"
+    replicate_material_activated: "a:Репликация выбрано"
+    erase_modifier_activated: "a:Стереть выбрано"
     map_material_name: "Карта $id"
     map_material_name_scaled: "Карта $id ($sizex$size)"
     map_material_description: Создает пиксель-арт из последней карты, которую ты держал в руке
