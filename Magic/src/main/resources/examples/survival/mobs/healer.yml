@@ -4,6 +4,6 @@ healer:
   interact_spell: heal
   interact_spell_source: npc
   interact_spell_target: player
-  villager_profession: cleric
+  villager_profession: librarian
   dialog:
     - Are you hurt?
