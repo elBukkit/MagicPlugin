@@ -26,7 +26,7 @@ public class SpellKey {
             String[] pieces = StringUtils.split(key, "|");
             this.baseKey = pieces[0];
             int parsedLevel = 1;
-            if (pieces.length > 1) {;
+            if (pieces.length > 1) {
                 try {
                     parsedLevel = Integer.parseInt(pieces[1]);
                 } catch (Exception ex) {
