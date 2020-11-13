@@ -148,7 +148,11 @@ public class RandomUtils {
                 if (pieces != null && pieces.length > 1) {
                     weight = lerp(pieces, levelIndex, nextLevelIndex, distance);
                 } else {
-                    weight = Float.parseFloat(value);
+                    try {
+                        weight = Float.parseFloat(value);
+                    } catch (Exception ex) {
+                        weight = 1;
+                    }
                 }
                 currentThreshold += weight;
                 probabilityMap.add(new WeightedPair<>(currentThreshold, weight, key, valueClass));
