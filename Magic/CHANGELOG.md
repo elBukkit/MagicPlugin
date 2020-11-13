@@ -1,5 +1,11 @@
 # CHANGELOG
 
+# 8.0.1
+
+ - Fix Secure spell
+   - Previously secured containers should be unlockable if you summon a new key
+   - Aim up and cast Secure
+
 # 8.0
 
  - See MIGRATION.md for important information!
@@ -17,7 +23,7 @@
      so we have created a tool to do the work for you at https://merge.elmakers.com/
    - Spells and wands now use a mix of vanilla and custom sounds
  - Most magic crafting recipes have changed
-   - Now requires an intermediate item, the "Heart of Magic" - crafted with 8 emeralds and a diamond
+   - Now requires an intermediate item, the "Heart of Magic" - crafted with 4 emeralds and a diamond
  - General Rebalancing
    - Wizard gear buffed a bit
    - Mana Talisman given some protection buffs

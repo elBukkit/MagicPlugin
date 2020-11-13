@@ -141,6 +141,18 @@ public class CompatibilityUtils extends NMSUtils {
         return applyEffect;
     }
 
+    public static boolean setDisplayNameRaw(ItemStack itemStack, String displayName) {
+        Object handle = getHandle(itemStack);
+        if (handle == null) return false;
+        Object tag = getTag(handle);
+        if (tag == null) return false;
+
+        Object displayNode = createNode(tag, "display");
+        if (displayNode == null) return false;
+        setMeta(displayNode, "Name", displayName);
+        return true;
+    }
+
     public static boolean setDisplayName(ItemStack itemStack, String displayName) {
         ItemMeta meta = itemStack.getItemMeta();
         meta.setDisplayName(displayName);
