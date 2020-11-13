@@ -1091,13 +1091,13 @@ public class NMSUtils {
                     class_Server_removeRecipeMethod = Server.class.getMethod("removeRecipe", class_NamespacedKey);
                 } catch (Throwable ex) {
                     class_Server_removeRecipeMethod = null;
-                    logger.info("Couldn't find recipe removal method, this is odd since we ddi find NamespacedKey");
+                    logger.warning("Couldn't find recipe removal method, this is odd since we did find NamespacedKey");
                 }
                 try {
                     class_HumanEntity_discoverRecipeMethod = HumanEntity.class.getMethod("discoverRecipe", class_NamespacedKey);
                 } catch (Throwable ex) {
                     class_HumanEntity_discoverRecipeMethod = null;
-                    logger.info("Couldn't find recipe discover method, this is odd since we ddi find NamespacedKey");
+                    logger.warning("Couldn't find recipe discover method, this is odd since we did find NamespacedKey");
                 }
             }
 
@@ -1109,7 +1109,7 @@ public class NMSUtils {
                 } catch (Throwable ex) {
                     class_KnowledgeBookMeta = null;
                     class_KnowledgeBookMeta_addRecipeMethod = null;
-                    logger.info("Couldn't register knowledge book methods, recipe books unavailable. This is normal for pre-1.13 Minecraft versions.");
+                    logger.warning("Couldn't register knowledge book methods, recipe books unavailable. This is normal for pre-1.13 Minecraft versions.");
                 }
             }
 
