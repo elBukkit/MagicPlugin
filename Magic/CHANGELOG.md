@@ -5,6 +5,7 @@
  - Fix Secure spell
    - Previously secured containers should be unlockable if you summon a new key
    - Aim up and cast Secure
+ - Fix "language" config option
 
 # 8.0
 

@@ -434,7 +434,7 @@ public class ConfigurationLoadTask implements Runnable {
         // Apply language overrides, but only to the messages config
         if (fileName.equals("messages") && languageOverride != null) {
             String languageFilePrefix = "examples/localizations/messages." + languageOverride;
-            ConfigurationSection languageConfig = loadExampleConfiguration(examplesFilePrefix);
+            ConfigurationSection languageConfig = loadExampleConfiguration(languageFilePrefix);
             if (languageConfig != null) {
                 try {
                     ConfigurationUtils.addConfigurations(config, languageConfig);
