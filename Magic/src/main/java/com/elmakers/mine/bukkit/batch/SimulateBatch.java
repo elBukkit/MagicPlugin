@@ -155,9 +155,12 @@ public class SimulateBatch extends SpellBatch {
     }
 
     protected void die() {
-        String message = spell.getMessage("death_broadcast").replace("$name", automataName);
-        if (message.length() > 0) {
-            controller.sendToMages(message, center);
+        String message = spell.getMessage("death_broadcast");
+        if (message != null && automataName != null) {
+            message = message.replace("$name", automataName);
+            if (message.length() > 0) {
+                controller.sendToMages(message, center);
+            }
         }
 
         // Drop item
