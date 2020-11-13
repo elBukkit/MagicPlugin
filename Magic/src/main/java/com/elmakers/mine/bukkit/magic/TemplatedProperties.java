@@ -107,4 +107,27 @@ public abstract class TemplatedProperties extends CasterProperties {
         super.clear();
         template = null;
     }
+
+    @Override
+    @Nullable
+    public String getIcon(boolean legacy, String iconKey) {
+        if (super.hasOwnProperty(iconKey)) {
+            return getString(iconKey);
+        }
+        if (legacy) {
+            return getString("legacy_" + iconKey, getString(iconKey));
+        }
+        return getString(iconKey);
+    }
+
+    @Override
+    public boolean hasIcon(boolean legacy, String iconKey) {
+        if (super.hasOwnProperty(iconKey)) {
+            return true;
+        }
+        if (legacy) {
+            return hasProperty("legacy_" + iconKey) || hasProperty(iconKey);
+        }
+        return hasProperty(iconKey);
+    }
 }
