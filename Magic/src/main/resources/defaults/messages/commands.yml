@@ -16,10 +16,10 @@ commands:
           fail: "&cCould not retrieve url &e$url"
           error: "&cSomething went wrong, please check logs"
           wait: "&bPlease wait, downloading &b$url..."
-          success: "&bDownloaded example &2$example&f\n&rUse &6mconfig example add $example&f to mix this in with your current configs\n&rUse &6mconfig example set $example&f to set this as your base configuration"
+          success: "&bDownloaded example &2$example&f\n&rUse &6/mconfig example add $example&f to mix this in with your current configs\n&rUse &6/mconfig example set $example&f to set this as your base configuration"
           backup: "&eExample exists, &3backing up to &f$backup"
           overwrite_backup: "&eExample and backup exist, &coverwriting &f$backup"
-          url_write: "&bYou can update this example in the future with &6mconfig example fetch $example&r"
+          url_write: "&bYou can update this example in the future with &6/mconfig example fetch $example&r"
           url_write_failed: "&cSomething went wrong writing the url file, please check logs"
           url_exists: "&eExample has a builtin URL file, not overwriting.\n&r&fThis may be a redirect to an updated version.\n&r&&bfYou might want to try &6/mconfig example fetch $example &bto update it"
         add:
