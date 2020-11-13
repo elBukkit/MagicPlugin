@@ -234,7 +234,17 @@ public class MobController implements Listener {
 
     @Nullable
     public EntityData getEntityData(Entity entity) {
-        return activeMobs.get(entity);
+        EntityData entityData = activeMobs.get(entity);
+        if (entityData == null) {
+            String customName = entity.getCustomName();
+            if (customName != null) {
+                entityData = mobsByName.get(customName);
+            }
+            if (entityData == null) {
+                entityData = defaultMobs.get(entity.getType());
+            }
+        }
+        return entityData;
     }
 
     @Nonnull
