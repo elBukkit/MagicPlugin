@@ -13,7 +13,7 @@ year1:
   interact_spell_parameters:
     spell: alohomora
     path_end: year1
-  villager_profession: cleric
+  villager_profession: librarian
   dialog:
     - Are you ready for your first year exams?
 
@@ -24,7 +24,7 @@ year2:
   interact_spell_parameters:
     spell: glacius
     path_end: year2
-  villager_profession: cleric
+  villager_profession: librarian
   dialog:
     - Are you ready for your second year exams?
 
@@ -35,7 +35,7 @@ year3:
   interact_spell_parameters:
     spell: deprimo
     path_end: year3
-  villager_profession: cleric
+  villager_profession: librarian
   dialog:
     - Are you ready for your third year exams?
 
@@ -46,7 +46,7 @@ year4:
   interact_spell_parameters:
     spell: ascendio
     path_end: year4
-  villager_profession: cleric
+  villager_profession: librarian
   dialog:
     - Are you ready for your fourth year exams?
 
@@ -57,7 +57,7 @@ year5:
   interact_spell_parameters:
     spell: reducto
     path_end: year5
-  villager_profession: cleric
+  villager_profession: librarian
   dialog:
     - Are you ready for your fifth year exams?
 
@@ -68,7 +68,7 @@ year6:
   interact_spell_parameters:
     spell: apparate
     path_end: year6
-  villager_profession: cleric
+  villager_profession: librarian
   dialog:
     - Are you ready for your sixth year exams?
 
