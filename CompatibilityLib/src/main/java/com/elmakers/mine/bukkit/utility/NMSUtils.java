@@ -85,6 +85,8 @@ public class NMSUtils {
     protected static int WITHER_SKULL_TYPE = 66;
     protected static int FIREWORK_TYPE = 76;
 
+    private static Logger logger;
+
     protected static Class<?> class_Block;
     protected static Class<?> class_BlockBase;
     protected static Class<?> class_ItemStack;
@@ -429,6 +431,7 @@ public class NMSUtils {
     protected static boolean chatPacketHasUUID = false;
 
     public static boolean initialize(Logger logger) {
+        NMSUtils.logger = logger;
         // Find classes Bukkit hides from us. :-D
         // Much thanks to @DPOHVAR for sharing the PowerNBT code that powers the reflection approach.
         String className = Bukkit.getServer().getClass().getName();
@@ -2776,7 +2779,9 @@ public class NMSUtils {
         try {
             return (List<Entity>)class_Bukkit_selectEntitiesMethod.invoke(null, sender, selector);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            if (logger != null) {
+                logger.warning("Invalid selector: " + ex.getMessage());
+            }
         }
         return null;
     }
