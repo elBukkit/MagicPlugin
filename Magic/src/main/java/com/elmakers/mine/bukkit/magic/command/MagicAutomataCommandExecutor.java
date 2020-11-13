@@ -330,7 +330,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         String key = args[0];
         ConfigurationSection parameters = automaton.getParameters();
         if (args.length == 1 && (parameters == null || !parameters.contains(key))) {
-            sender.sendMessage(ChatColor.RED + "Automata does not have a " + ChatColor.WHITE + key + ChatColor.RED + "parameter");
+            sender.sendMessage(ChatColor.RED + "Automata does not have a " + ChatColor.WHITE + key + ChatColor.RED + " parameter");
             return;
         }
 
