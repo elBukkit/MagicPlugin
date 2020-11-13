@@ -1643,6 +1643,9 @@ public class NMSUtils {
                 class_BlockActionContext_constructor = class_BlockActionContext.getDeclaredConstructor(class_World, class_EntityHuman, class_EnumHand, class_ItemStack, class_MovingObjectPositionBlock);
                 class_BlockActionContext_constructor.setAccessible(true);
                 class_MovingObjectPositionBlock_createMethod = class_MovingObjectPositionBlock.getMethod("a", class_Vec3D, class_EnumDirection, class_BlockPosition);
+                if (!class_MovingObjectPositionBlock_createMethod.getReturnType().isAssignableFrom(class_MovingObjectPositionBlock)) {
+                    throw new Exception("MovingObjectPositionBlock factory returns wrong type");
+                }
                 class_CraftBlock_setTypeAndDataMethod = class_CraftBlock.getMethod("setTypeAndData", class_IBlockData, Boolean.TYPE);
                 class_nms_Block_getBlockDataMethod = class_Block.getMethod("getBlockData");
             } catch (Throwable ex) {
