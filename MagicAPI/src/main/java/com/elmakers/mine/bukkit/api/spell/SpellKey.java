@@ -25,12 +25,14 @@ public class SpellKey {
         if (key.contains("|")) {
             String[] pieces = StringUtils.split(key, "|");
             this.baseKey = pieces[0];
-            int parsedLevel;
-            try {
-                parsedLevel = Integer.parseInt(pieces[1]);
-            } catch (Exception ex) {
-                parsedLevel = 1;
-                ex.printStackTrace();
+            int parsedLevel = 1;
+            if (pieces.length > 1) {;
+                try {
+                    parsedLevel = Integer.parseInt(pieces[1]);
+                } catch (Exception ex) {
+                    parsedLevel = 1;
+                    ex.printStackTrace();
+                }
             }
             level = parsedLevel;
             isVariant = true;
