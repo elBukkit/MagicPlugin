@@ -120,9 +120,14 @@ public class MagicRecipe {
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
                     ItemData ingredient = controller.getOrCreateItemOrWand(materialKey);
+                    if (ingredient == null) {
+                        outputType = null;
+                        controller.getLogger().warning("Invalid recipe ingredient " + materialKey);
+                        return false;
+                    }
                     if (!CompatibilityUtils.setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1), ignoreDamage)) {
                         outputType = null;
-                        controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
+                        controller.getLogger().warning("Unable to set recipe ingredient " + materialKey);
                         return false;
                     }
                     ingredients.put(key.charAt(0), ingredient);
