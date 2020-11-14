@@ -82,7 +82,7 @@ public class ProjectileAction  extends BaseProjectileAction
         projectileTypeName = parameters.getString("projectile", "TippedArrow");
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
-        pickupStatus = parameters.getString("pickup");
+        pickupStatus = parameters.getString("pickup", "disallowed");
         color = parameters.getString("color");
         sourceLocation = new SourceLocation(parameters);
     }
