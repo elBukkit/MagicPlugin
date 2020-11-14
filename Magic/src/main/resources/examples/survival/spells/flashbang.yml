@@ -63,6 +63,7 @@ flashbang:
           particle_offset_y: 0.1
           particle_offset_z: 0.1
         hit:
+        -  particle: flash
         -  class: EffectSingle
            location: target
            color: CC9933
