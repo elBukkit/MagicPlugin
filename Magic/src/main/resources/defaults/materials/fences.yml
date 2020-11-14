@@ -8,3 +8,5 @@ fences:
 - nether_fence
 - nether_brick_fence
 - iron_fence
+- warped_fence
+- crimson_fence
