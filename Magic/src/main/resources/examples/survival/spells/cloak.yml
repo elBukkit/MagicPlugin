@@ -69,6 +69,6 @@ cloak:
       cooldown: 30000
       effect_invisibility: 5
     costs:
-      mana: 50
+      mana: 10
     active_costs:
       mana: 5
