@@ -142,6 +142,7 @@ public class ActionSpell extends BrushSpell
         {
             currentHandler = (ActionHandler)currentHandler.clone();
             currentCast.setRootHandler(currentHandler);
+            currentCast.setAlternateResult(result);
             try {
                 currentCast.setInitialResult(result);
                 result = currentHandler.start(currentCast, parameters);

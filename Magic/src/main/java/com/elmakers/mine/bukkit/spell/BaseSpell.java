@@ -1664,12 +1664,8 @@ public class BaseSpell implements MageSpell, Cloneable {
                 + ChatColor.DARK_AQUA + message);
     }
 
-    @Override
-    public String getMessage(String messageKey) {
-        return getMessage(messageKey, "");
-    }
-
-    public String getMessage(String messageKey, String def) {
+    @Nonnull
+    protected String getMessageRaw(String messageKey, String def) {
         String message = controller.getMessages().get("spells.default." + messageKey, def);
         if (inheritKey != null && !inheritKey.isEmpty()) {
             message = controller.getMessages().get("spells." + inheritKey + "." + messageKey, message);
@@ -1679,7 +1675,20 @@ public class BaseSpell implements MageSpell, Cloneable {
             message = controller.getMessages().get("spells." + spellKey.getKey() + "." + messageKey, message);
         }
         if (message == null) message = "";
-        else if (!message.isEmpty()) {
+        return message;
+    }
+
+    @Override
+    public String getMessage(String messageKey) {
+        return getMessage(messageKey, "");
+    }
+
+    public String getMessage(String messageKey, String def) {
+        String message = getMessageRaw(messageKey, def);
+        if (currentCast != null && currentCast.getAlternateResult().isAlternate()) {
+            message = getMessageRaw(currentCast.getAlternateResult().toString().toLowerCase() + "_" + messageKey, message);
+        }
+        if (!message.isEmpty()) {
             // Escape some common parameters
             String playerName = mage.getName();
             message = message.replace("$player", playerName);

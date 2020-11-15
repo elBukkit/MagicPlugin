@@ -74,6 +74,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private String targetName = null;
     private SpellResult result = SpellResult.NO_ACTION;
     private SpellResult initialResult = SpellResult.CAST;
+    private SpellResult alternateResult = SpellResult.CAST;
     private Vector direction = null;
     private Boolean targetCaster = null;
     private long startTime;
@@ -160,6 +161,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             this.variables = ((CastContext)copy).variables;
             this.base = ((CastContext)copy).base;
             this.initialResult = ((CastContext)copy).initialResult;
+            this.alternateResult = ((CastContext)copy).alternateResult;
             this.direction = ((CastContext)copy).direction;
             this.messageParameters = ((CastContext)copy).messageParameters;
             this.targetCaster = ((CastContext)copy).targetCaster;
@@ -1245,6 +1247,14 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
     public SpellResult getInitialResult() {
         return initialResult;
+    }
+
+    public void setAlternateResult(SpellResult result) {
+        alternateResult = result;
+    }
+
+    public SpellResult getAlternateResult() {
+        return alternateResult;
     }
 
     @Override
