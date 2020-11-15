@@ -76,6 +76,7 @@ superpyramid:
         consume: true
         ignore_region_overrides: true
         cancel_on_deactivate: false
+        orient_dimension_min: 0
     costs:
         mana: 400
 

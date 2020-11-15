@@ -19,7 +19,7 @@ spells:
     superconvert:
         name: SuperConvert
         description: Convert a large sphere of blocks
-        usage: Cast twice to convert
+        usage: Cast twice to convert, shift-cast to match specific block data
         cancel: SuperConvert cancelled
         target_selected: Cast again to convert $target
         fail: Too large!
