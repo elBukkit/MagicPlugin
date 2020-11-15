@@ -1468,6 +1468,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
     @Override
     public SpellResult step(CastContext context) {
+        this.context = context;
         if (isActive) {
             return SpellResult.PENDING;
         }
