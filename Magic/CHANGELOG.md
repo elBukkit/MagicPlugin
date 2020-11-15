@@ -6,6 +6,9 @@
    - Previously secured containers should be unlockable if you summon a new key
    - Aim up and cast Secure
  - Fix "language" config option
+ - Fix loading inherited examples directly (e.g. `/mconfig example set 7`)
+ - Fix Cloak instantly turning off at beginner rank
+ - Fix arrows from Arrow spell being able to be picked up
 
 # 8.0
 
