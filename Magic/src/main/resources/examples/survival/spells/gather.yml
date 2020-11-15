@@ -139,6 +139,9 @@ gather:
     bypass_pvp: true
     loud: true
 
+    # Player Select, to exclude friends
+    ignore_key: recall_friends
+
     # Selector parameters
     auto_close: true
 

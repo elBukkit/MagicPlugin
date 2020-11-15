@@ -7,9 +7,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -36,6 +39,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     private boolean allowCrossWorld;
     private boolean active = false;
     private WeakReference<Player> target = null;
+    private String ignorePlayersKey;
 
     @Override
     public void deactivated() {
@@ -81,6 +85,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         allowCrossWorld = parameters.getBoolean("cross_world", true);
+        ignorePlayersKey = parameters.getString("ignore_key");
     }
 
     @Override
@@ -122,10 +127,19 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             }
         });
 
+        Set<String> ignorePlayers = null;
+        if (ignorePlayersKey != null && !ignorePlayersKey.isEmpty()) {
+            ConfigurationSection mageData = mage.getData();
+            String friendString = mageData.getString(ignorePlayersKey);
+            if (friendString != null && !friendString.isEmpty()) {
+                ignorePlayers = new HashSet<>(Arrays.asList(StringUtils.split(friendString, ',')));
+            }
+        }
         int index = 0;
         for (Player targetPlayer : allPlayers) {
             if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
             if (!context.canTarget(targetPlayer)) continue;
+            if (ignorePlayers != null && ignorePlayers.contains(targetPlayer.getUniqueId().toString())) continue;
             players.put(index++, new WeakReference<>(targetPlayer));
         }
         if (players.size() == 0) return SpellResult.NO_TARGET;
