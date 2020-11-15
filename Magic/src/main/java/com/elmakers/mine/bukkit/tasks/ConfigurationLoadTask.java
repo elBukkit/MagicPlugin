@@ -99,7 +99,7 @@ public class ConfigurationLoadTask implements Runnable {
         this.verboseLogging = verbose;
     }
 
-    @Nullable
+    @Nonnull
     private ConfigurationSection loadExampleConfiguration(String examplesPrefix) {
         String examplesFileName = examplesPrefix + ".yml";
         File externalFolder = new File(plugin.getDataFolder(), examplesPrefix);
@@ -131,6 +131,9 @@ public class ConfigurationLoadTask implements Runnable {
                     getLogger().severe("Error loading: " + examplesFileName + " from builtin resources");
                 }
             }
+        }
+        if (exampleConfig == null) {
+            exampleConfig = new MemoryConfiguration();
         }
         return exampleConfig;
     }
