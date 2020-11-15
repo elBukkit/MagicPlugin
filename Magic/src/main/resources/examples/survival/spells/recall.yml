@@ -124,6 +124,7 @@ recall:
       allow_cross_world: true
       allow_town: true
       allow_fields: true
+      allow_friends: false
       icon_death: skull_item
       icon_field: wood_door
       icon_wand: wand_icon

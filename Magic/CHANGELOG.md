@@ -8,6 +8,7 @@
  - Fix "language" config option
  - Fix arrows from arrow spells being able to be picked up
 
+ - Re-worked Gather, added to beginner path as an optional spell
  - Add use_target_mage parameter to ChangeContext action
    Useful for actions such as Selector and CheckRequirement that only use the mage context and not the target
 

@@ -1,46 +1,160 @@
 gather:
-    icon: soul_lantern{CustomModelData:18001}
-    icon_disabled: soul_lantern{CustomModelData:18002}
-    legacy_icon: spell_icon:48
-    legacy_icon_disabled: spell_icon_disabled:48
-    icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
-    category: master
-    tags: noduel,nojail
-    worth: 15
-    show_undoable: false
-    upgrade_required_path: student
-    upgrade_required_casts: 20
-    actions:
-        cast:
-        -  class: PlayerSelect
-           actions:
-           -  class: Command
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: entity_player_levelup
-        player_selected:
-        -  class: EffectSingle
-           sound: entity_enderman_ambient
-        -  class: EffectTrail
-           particle: portal
-           particle_count: 4
-        -  class: EffectSingle
-           location: both
-           effectlib:
-             class: WarpEffect
-             particle: portal
-    parameters:
-        target: none
-        command: tpa @tn
-        target_self: false
-        cooldown: 30000
-        bypass_friendly_fire: true
-        bypass_pvp: true
-    costs:
-        mana: 50
+  icon: soul_lantern{CustomModelData:18001}
+  icon_disabled: soul_lantern{CustomModelData:18002}
+  legacy_icon: spell_icon:48
+  legacy_icon_disabled: spell_icon_disabled:48
+  icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
+  category: master
+  tags: noduel,nojail
+  worth: 20
+  show_undoable: false
+  actions:
+    cast:
+      - class: Delay
+      - class: PlayEffects
+        effects: menu
+      - class: Recall
+    alternate_down:
+      - class: PlayerSelect
+        actions:
+          - class: ChangeContext
+            use_target_mage: true
+            swap_source_and_target: true
+            actions:
+              - class: Selector
+                title: "@tn wants to be friends"
+                friends:
+                  - class: Recall
+                    addfriend: target
+                  - class: ChangeContext
+                    swap_source_and_target: true
+                    use_target_mage: true
+                    actions:
+                    - class: Recall
+                      addfriend: target
+                nofriends:
+                  - class: Message
+                    message_target: true
+                    message: "@pn said no ;("
+                options:
+                  - placeholder: true
+                  - placeholder: true
+                  - placeholder: true
+                  - name: Ok!
+                    icon: lime_wool
+                    actions: friends
+                  - name: Nope!
+                    icon: red_wool
+                    actions: nofriends
+  effects:
+    no_action: []
+    no_target: []
+    cast:
+    -  sound: block_beacon_activate
+       sound_pitch: 0.75
+       sound_volume: 0.8
+    -  sound: entity_enderman_teleport
+       sound_pitch: 0.25
+       sound_volume: 0.5
+    -  class: EffectSingle
+       sound: magic.teleport
+       sound_volume: 0.8
+       sound_pitch: 0.3
+       source_location: eyes
+       color_override: color
+       effectlib:
+          class: WarpEffect
+          duration: $warmup
+          period: 1
+          particle: redstone
+          particle_offset_x: 0.9
+          particle_offset_y: 0.1
+          particle_offset_z: 0.9
+          radius: 1
+          offset: 0,-1,0
+    -  class: EffectSingle
+       source_location: eyes
+       effectlib:
+          class: WarpEffect
+          duration: $warmup
+          period: 2
+          particle: portal
+          particle_count: 10
+          particle_offset_x: 0.9
+          particle_offset_y: 0.1
+          particle_offset_z: 0.9
+          radius: 1
+          offset: 0,-1,0
+    menu:
+      - sound: entity_enderman_teleport
+        sound_pitch: 1.5
+        sound_volume: 0.75
+    teleport:
+    -  sound: entity_enderman_teleport
+       sound_pitch: 0.75
+       sound_volume: 0.75
+       location: both
+    -  class: EffectSingle
+       location: both
+       source_location: eyes
+       color_override: color
+       effectlib:
+         class: WarpEffect
+         particle: redstone
+         particle_offset_x: 0.9
+         particle_offset_y: 0.1
+         particle_offset_z: 0.9
+         offset: 0,-1,0
+         period: 2
+    -  class: EffectSingle
+       sound: magic.teleport
+       sound_pitch: 1.2
+       location: both
+       source_location: eyes
+       effectlib:
+         class: WarpEffect
+         period: 1
+         particle: portal
+         particle_count: 10
+         particle_offset_x: 0.9
+         particle_offset_y: 0.1
+         particle_offset_z: 0.9
+         offset: 0,-1,0
+    player_selected:
+      - class: EffectSingle
+        sound: entity_enderman_ambient
+      - class: EffectTrail
+        particle: portal
+        particle_count: 4
+      - class: EffectSingle
+        location: both
+        effectlib:
+          class: WarpEffect
+          particle: portal
+  parameters:
+    target: none
+    target_self: false
+    cooldown: 15000
+    bypass_friendly_fire: true
+    bypass_pvp: true
+    loud: true
 
-gather|2:
-    alternate_down_parameters:
-        command: tpahere @tn
+    # Selector parameters
+    auto_close: true
+
+    # Recall parameters
+    allow_friends: true
+    allow_cross_world: true
+    allow_spawn: false
+    allow_marker: false
+    allow_death: false
+    allow_wand: false
+    allow_home: false
+    allow_town: false
+    allow_fields: false
+    allow_warps: false
+    protection_duration: 5000
+
+  costs:
+    mana: 50
 

@@ -17,6 +17,7 @@ beginner:
       - stun
       - workbench
       - aqualung
+      - gather
     # These spells appear in the spell shop and are required to progress to the next path.
     spells:
       - missile

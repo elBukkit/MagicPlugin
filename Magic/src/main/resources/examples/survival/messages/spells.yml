@@ -254,15 +254,6 @@ spells:
         name: Air Strike
         description: Take out a nearby entity
         cast_player_message: "a:&d&o$player &r&5called in an air strike on you"
-    gather:
-        name: Gather
-        description: Teleport you to other players
-        cast_to_player: Teleporting you to $target
-        cast_entity: Teleporting $target to your target
-        cast_player_message: "a:&d&o$player &r&5folded space"
-        target_selected: You captured $target
-        cancel: Released target
-        upgrade_description: "Aim down and cast to gather players to you"
     supergather:
         name: SuperGather
         description: Capture players and teleport them
@@ -705,6 +696,21 @@ spells:
         name: Respawn
         description: Return to spawn
         cast: You teleport back to safety
+    gather:
+        name: Gather
+        description: Teleport you to other players
+        no_target: |2-
+
+          &4No one is around to teleport to
+          &3Aim down and cast to send friend requests!
+        cast_to_player: Teleporting you to $target
+        cast_entity: Teleporting $target to your target
+        cast_player_message: "a:&d&o$player &r&5folded space"
+        cast_friend: Warping you to $name
+        no_target_friend: Invalid friend $name
+        title_friend: $name
+        add_friend: "&bYou have added &5$name &bas a &6Friend!"
+        remove_friend: "&cYou have removed &5$name &cas a &6Friend!"
     recall:
         name: Recall
         cancel: Recall interrupted!
