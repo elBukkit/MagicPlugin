@@ -1129,4 +1129,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         parameters.add("warp");
         parameters.add("type");
     }
+
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("addfriend") || parameterKey.equals("removefriend")) {
+            examples.addAll(spell.getController().getPlayerNames());
+        }
+    }
 }
