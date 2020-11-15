@@ -665,6 +665,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             AsyncProcessor.fail(controller, sender, missingMessage);
             return;
         }
+        if (key != null && !key.isEmpty()) {
+            isMainConfiguration = false;
+            isMessagesConfiguration = false;
+        }
         String contents = session.getContents();
         if (contents == null || contents.isEmpty()) {
             missingMessage = missingMessage.replace("$field", "contents");
