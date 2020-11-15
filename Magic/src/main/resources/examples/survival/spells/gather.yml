@@ -8,6 +8,7 @@ gather:
   tags: noduel,nojail
   worth: 20
   show_undoable: false
+  quick_cast: true
   actions:
     cast:
       - class: PlayEffects
@@ -103,7 +104,7 @@ gather:
           class: WarpEffect
           duration: $warmup
           period: 2
-          particle: end_rod
+          particle: portal
           particle_count: 10
           particle_offset_x: 0.9
           particle_offset_y: 0.1
@@ -140,7 +141,7 @@ gather:
        effectlib:
          class: WarpEffect
          period: 1
-         particle: end_rod
+         particle: portal
          particle_count: 10
          particle_offset_x: 0.9
          particle_offset_y: 0.1
@@ -157,7 +158,7 @@ gather:
         location: both
         effectlib:
           class: WarpEffect
-          particle: end_rod
+          particle: portal
   parameters:
     target: none
     target_self: false
@@ -187,6 +188,9 @@ gather:
     allow_fields: false
     allow_warps: false
     protection_duration: 5000
+
+    # Teleport parameters
+    direct: true
 
   costs:
     mana: 50

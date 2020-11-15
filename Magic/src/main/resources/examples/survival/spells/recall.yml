@@ -166,6 +166,7 @@ recall:
       cooldown: 15000
       protection_duration: 5000
       target: none
+      direct: true
 
 recall|2:
     upgrade_required_path: student
