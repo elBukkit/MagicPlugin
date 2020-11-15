@@ -424,7 +424,8 @@ public class ConfigurationUtils extends ConfigUtils {
     private static Object replaceParameter(String value, ConfigurationSection parameters)
     {
         if (value.length() < 2 || value.charAt(0) != '$') return value;
-        return parameters.get(value.substring(1));
+        Object replaced = parameters.get(value.substring(1));
+        return replaced == null ? value : replaced;
     }
 
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
