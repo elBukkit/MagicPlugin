@@ -5,6 +5,7 @@
  - If you would like to upgrade, but keep things mostly the same as in previous versions of Magic, add
    `example: 7`
    to your plugins/Magic/config.yml file.
+   If you're already using an example, add `7` to your `examples` list instead.
 
  - Default survival crafting recipes changed dramatically
  - Resource pack sending is now off by default. Set this in config.yml to re-enable:
