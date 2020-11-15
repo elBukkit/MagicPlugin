@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -772,7 +773,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(magic.getMessages().get("commands.mconfig.example.add.usage"));
             return;
         }
-        Set<String> examples = new HashSet<>(controller.getLoadedExamples());
+        Set<String> examples = new LinkedHashSet<>(controller.getLoadedExamples());
         List<String> addExamples = new ArrayList<>();
         for (int i = 0; i < parameters.length; i++) {
             addExamples.add(parameters[i]);
@@ -799,7 +800,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             }
             return;
         }
-        Set<String> examples = new HashSet<>(controller.getLoadedExamples());
+        Set<String> examples = new LinkedHashSet<>(controller.getLoadedExamples());
         if (!examples.contains(example)) {
             sender.sendMessage(magic.getMessages().get("commands.mconfig.example.remove.missing").replace("$example", example));
             return;
@@ -848,10 +849,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         Set<String> examples;
         boolean setExamples = false;
         if (parameters.length == 1) {
-            examples = new HashSet<>(controller.getLoadedExamples());
+            examples = new LinkedHashSet<>(controller.getLoadedExamples());
         } else {
             setExamples = true;
-            examples = new HashSet<>();
+            examples = new LinkedHashSet<>();
             if (parameters.length > 2 || !parameters[1].equalsIgnoreCase("none")) {
                 for (int i = 1; i < parameters.length; i++) {
                     examples.add(parameters[i]);
