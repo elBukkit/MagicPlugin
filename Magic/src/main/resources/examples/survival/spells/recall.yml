@@ -15,13 +15,38 @@ recall:
     quick_cast: true
     actions:
         cast:
-        -  class: Delay
-        -  class: PlayEffects
-           effects: menu
-        -  class: Recall
+          - class: PlayEffects
+            ignore_result: true
+            effects: menu
+          - class: Recall
+            teleport: false
+          - class: PlayEffects
+            ignore_result: true
+            effects: wait
+          - class: Delay
+          - class: PlayEffects
+            ignore_result: true
+            effects: teleporting
+          - class: Teleport
     effects:
         no_action: []
         no_target: []
+        wait:
+        -  source_location: eyes
+           color_override: color
+           sound: block_note_block_bit
+           sound_pitch: 0.2
+           sound_volume: 0.3
+           effectlib:
+              class: WarpEffect
+              duration: $warmup
+              period: 1
+              particle: redstone
+              particle_offset_x: 0.9
+              particle_offset_y: 0.1
+              particle_offset_z: 0.9
+              radius: 1
+              offset: 0,-1,0
         cast:
         -  sound: block_beacon_activate
            sound_pitch: 0.75
@@ -62,7 +87,7 @@ recall:
           - sound: entity_enderman_teleport
             sound_pitch: 1.5
             sound_volume: 0.75
-        teleport:
+        teleporting:
         -  sound: entity_enderman_teleport
            sound_pitch: 0.75
            sound_volume: 0.75
@@ -79,6 +104,7 @@ recall:
              particle_offset_z: 0.9
              offset: 0,-1,0
              period: 2
+             update_locations: false
         -  class: EffectSingle
            sound: magic.teleport
            sound_pitch: 1.2
@@ -93,6 +119,7 @@ recall:
              particle_offset_y: 0.1
              particle_offset_z: 0.9
              offset: 0,-1,0
+             update_locations: false
     parameters:
       options:
         - type: home
@@ -138,7 +165,7 @@ recall:
       loud: true
       cooldown: 15000
       protection_duration: 5000
-      target: self
+      target: none
 
 recall|2:
     upgrade_required_path: student
