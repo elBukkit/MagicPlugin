@@ -959,12 +959,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         for (String line : messages) {
+            if (line.trim().isEmpty()) continue;
             boolean lineIsActionBar = isActionBar;
             if (line.startsWith("a:")) {
                 lineIsActionBar = true;
                 line = line.substring(2);
             }
 
+            isActionBar = false;
             String fullMessage = prefix + line;
             if (lineIsActionBar && player != null) {
                 CompatibilityUtils.sendActionBar(player, fullMessage);
