@@ -19,6 +19,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -577,7 +578,21 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 return SpellResult.NO_ACTION;
             }
 
-            Player online = DeprecatedUtils.getPlayer(friendName);
+
+            Player online = null;
+            if (friendName.equals("target")) {
+                Entity targetEntity = context.getTargetEntity();
+                if (targetEntity != null && targetEntity instanceof Player) {
+                    online = (Player)targetEntity;
+                }
+            } else if (friendName.equals("source")) {
+                Entity sourceEntity = context.getEntity();
+                if (sourceEntity != null && sourceEntity instanceof Player) {
+                    online = (Player)sourceEntity;
+                }
+            } else {
+               online = DeprecatedUtils.getPlayer(friendName);
+            }
             if (online == null)
             {
                 return SpellResult.FAIL;
