@@ -1388,6 +1388,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         String inventoryTitle = getInventoryTitle();
         String balanceDescription = getBalanceDescription(context);
         inventoryTitle = inventoryTitle.replace("$balance", balanceDescription);
+        inventoryTitle = context.parameterize(inventoryTitle);
 
         ProgressionPath path = context.getMage().getActiveProperties().getPath();
         String pathName = (path == null ? null : path.getName());
