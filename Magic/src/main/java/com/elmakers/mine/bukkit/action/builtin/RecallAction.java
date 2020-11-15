@@ -62,6 +62,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private int markerCount = 1;
     private boolean teleport = true;
 
+    private boolean isActive = false;
+
     private static class UndoMarkerMove implements Runnable
     {
         private final Location location;
@@ -450,6 +452,13 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     @Override
     public SpellResult perform(CastContext context) {
+        if (isActive) {
+            if (context.getMage().getActiveGUI() != this) {
+                isActive = false;
+                return SpellResult.CAST;
+            }
+            return SpellResult.PENDING;
+        }
         this.context = context;
         enabledTypes.clear();
         options.clear();
@@ -898,6 +907,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
         mage.activateGUI(this, displayInventory);
 
+        if (!teleport) {
+            isActive = true;
+            return SpellResult.PENDING;
+        }
         return SpellResult.CAST;
     }
 
