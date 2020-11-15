@@ -544,7 +544,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                         isInheritSet = mainSection != null && mainSection.contains("inherit");
                         existingConfig = yaml.saveToString();
                     }
-                    if (!isInheritSet) {
+                    if (!isInheritSet && !editorType.equals("config") && !editorType.equals("messages")) {
                         List<String> newLines = new ArrayList<>();
                         String[] lines = StringUtils.split(existingConfig, "\n");
                         for (int i = 0; i < lines.length; i++) {
