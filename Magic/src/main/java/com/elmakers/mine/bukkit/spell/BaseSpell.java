@@ -614,8 +614,11 @@ public class BaseSpell implements MageSpell, Cloneable {
      * @param message The message to send
      */
     @Override
-    public void sendMessage(String message)
-    {
+    public void sendMessage(String message) {
+        sendMessage(mage, message);
+    }
+
+    public void sendMessage(Mage mage, String message) {
         Wand activeWand = mage.getActiveWand();
 
         // First check wand
@@ -634,9 +637,13 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void sendMessageKey(String key, String message) {
+        sendMessageKey(mage, key, message);
+    }
+
+    public void sendMessageKey(Mage mage, String key, String message) {
         if (hideMessages != null && hideMessages.contains(key.toLowerCase())) return;
         if (message == null) message = getMessage(key);
-        sendMessage(message);
+        sendMessage(mage, message);
     }
 
     public void castMessageKey(String key) {

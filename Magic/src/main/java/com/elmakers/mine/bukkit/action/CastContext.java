@@ -768,7 +768,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public void sendMessageKey(String key, String message) {
         if (baseSpell != null) {
-            baseSpell.sendMessageKey(key, message);
+            baseSpell.sendMessageKey(mage, key, message);
         }
     }
 
@@ -803,7 +803,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     {
         if (baseSpell != null)
         {
-            baseSpell.sendMessage(message);
+            baseSpell.sendMessage(mage, message);
         }
     }
 
