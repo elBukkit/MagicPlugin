@@ -6,6 +6,10 @@
    - Previously secured containers should be unlockable if you summon a new key
    - Aim up and cast Secure
  - Fix "language" config option
+ - Fix arrows from arrow spells being able to be picked up
+
+ - Add use_target_mage parameter to ChangeContext action
+   Useful for actions such as Selector and CheckRequirement that only use the mage context and not the target
 
 # 8.0
 

@@ -13,6 +13,7 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.google.common.base.Preconditions;
@@ -304,6 +305,16 @@ public abstract class CompoundAction extends BaseSpellAction
 
     public void createActionContext(CastContext context, Entity sourceEntity, Location sourceLocation, Entity targetEntity, Location targetLocation) {
         actionContext = new com.elmakers.mine.bukkit.action.CastContext(context, sourceEntity, sourceLocation);
+        actionContext.setTargetEntity(targetEntity);
+        actionContext.setTargetLocation(targetLocation);
+    }
+
+    public void createActionContext(CastContext context, Mage sourceMage, Entity sourceEntity, Location sourceLocation, Entity targetEntity, Location targetLocation) {
+        if (sourceMage != null) {
+            actionContext = new com.elmakers.mine.bukkit.action.CastContext(context, sourceMage, sourceEntity, sourceLocation);
+        } else {
+            actionContext = new com.elmakers.mine.bukkit.action.CastContext(context, sourceEntity, sourceLocation);
+        }
         actionContext.setTargetEntity(targetEntity);
         actionContext.setTargetLocation(targetLocation);
     }

@@ -59,6 +59,7 @@ public class ChangeContextAction extends CompoundAction {
     private boolean swapSourceAndTarget;
     private boolean sourceUseMovementDirection;
     private boolean targetUseMovementDirection;
+    private boolean useTargetMage;
 
     // Communication between source and target modifications
     protected Vector direction;
@@ -66,6 +67,7 @@ public class ChangeContextAction extends CompoundAction {
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        useTargetMage = parameters.getBoolean("use_target_mage", false);
         targetEntityLocation = parameters.getBoolean("target_entity", false);
         targetCaster = parameters.getBoolean("target_caster", false);
         sourceIsCaster = parameters.getBoolean("source_is_caster", false);
@@ -126,7 +128,6 @@ public class ChangeContextAction extends CompoundAction {
 
     protected Location modifySource(Location sourceLocation, CastContext context, Entity targetEntity) {
         boolean updateDirection = false;
-        Location target = context.getTargetLocation();
         if (sourceDirectionIsTarget && targetEntity != null && sourceLocation != null)
         {
             sourceLocation.setDirection(targetEntity.getLocation().getDirection());
@@ -297,8 +298,14 @@ public class ChangeContextAction extends CompoundAction {
 
     @Override
     public SpellResult step(CastContext context) {
+        Mage sourceMage = null;
         Entity sourceEntity = context.getEntity();
         Location sourceLocation = context.getEyeLocation();
+        Entity targetEntity = context.getTargetEntity();
+        Location targetLocation = context.getTargetLocation();
+        if (useTargetMage) {
+            sourceMage = context.getController().getMage(targetEntity);
+        }
         if (sourceLocation != null) {
             sourceLocation = sourceLocation.clone();
         }
@@ -322,8 +329,6 @@ public class ChangeContextAction extends CompoundAction {
         }
         Block targetBlock = null;
         Block previousBlock = null;
-        Entity targetEntity = context.getTargetEntity();
-        Location targetLocation = context.getTargetLocation();
         if (targetLocation != null) {
             targetLocation = targetLocation.clone();
             if (this.targetLocation != null && !this.targetLocation.isEmpty()) {
@@ -411,7 +416,7 @@ public class ChangeContextAction extends CompoundAction {
             sourceEntity = context.getMage().getEntity();
             sourceLocation = null;
         }
-        createActionContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
+        createActionContext(context, sourceMage, sourceEntity, sourceLocation, targetEntity, targetLocation);
         if (targetSelf != null)
         {
             actionContext.setTargetsCaster(targetSelf);

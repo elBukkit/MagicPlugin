@@ -76,7 +76,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private SpellResult initialResult = SpellResult.CAST;
     private Vector direction = null;
     private Boolean targetCaster = null;
-    private final long startTime;
+    private long startTime;
     private ConfigurationSection workingParameters;
     private Map<String, Object> castData;
 
@@ -119,10 +119,21 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         this(copy, copy.getEntity(), copy instanceof CastContext ? ((CastContext) copy).location : null);
     }
 
+    public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Mage sourceMage, Entity sourceEntity, Location sourceLocation) {
+        super(sourceMage, sourceMage.getActiveWand());
+        this.location = sourceLocation == null ? null : sourceLocation.clone();
+        this.entity = sourceEntity;
+        copyFrom(copy);
+    }
+
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity, Location sourceLocation) {
         super(copy.getMage(), copy.getWand());
         this.location = sourceLocation == null ? null : sourceLocation.clone();
         this.entity = sourceEntity;
+        copyFrom(copy);
+    }
+
+    protected void copyFrom(com.elmakers.mine.bukkit.api.action.CastContext copy) {
         this.spell = setSpell((MageSpell)copy.getSpell());
         this.targetEntity = copy.getTargetEntity();
         this.targetLocation = copy.getTargetLocation();
