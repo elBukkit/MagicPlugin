@@ -2,6 +2,8 @@
 
 ## Hot Issues
 
+ - Offhand wands don't keep on death sometimes ?
+ - Ignore tamed mobs ?
  - Get items when using erase brush? ... this would be really hard, undo would require having all of the blocks.
 
  - Can fly through glass panes on a broomstick
