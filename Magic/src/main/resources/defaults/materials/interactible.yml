@@ -12,8 +12,7 @@ interactible:
 - lever
 - daylight_detector
 - daylight_detector_inverted
-- trap_door
-- iron_trap_door
+- trap_doors
 - doors
 - commands
 - beds

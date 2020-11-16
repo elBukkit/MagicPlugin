@@ -32,8 +32,7 @@ attachable:
 - detector_rail
 - portal
 - ender_portal
-- trap_door
-- iron_trap_door
+- trap_doors
 - fire
 - grass_path
 - carpets

@@ -18,7 +18,6 @@ attachable_wall:
 - redstone_wall_torch
 - cocoa
 - cactus
-- bed_block
-- trap_door
-- iron_trap_door
+- beds
+- trap_doors
 - pistons
