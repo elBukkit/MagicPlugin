@@ -262,6 +262,50 @@ public class EntityController implements Listener {
         }
     }
 
+    /**
+     * This handler gives other plugins a chance to set the keep inventory flag
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        if (event.getKeepInventory()) return;
+
+        Player player = event.getEntity();
+        String rule = player.getWorld().getGameRuleValue("keepInventory");
+        if (rule.equals("true")) return;
+
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
+
+        List<ItemStack> drops = event.getDrops();
+        List<ItemStack> removeDrops = new ArrayList<>();
+        PlayerInventory inventory = player.getInventory();
+        ItemStack[] contents = inventory.getContents();
+        for (int index = 0; index < contents.length; index++)
+        {
+            ItemStack itemStack = contents[index];
+            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
+            if (NMSUtils.isTemporary(itemStack)) {
+                removeDrops.add(itemStack);
+                continue;
+            }
+            boolean keepItem = InventoryUtils.getMetaBoolean(itemStack, "keep", false);
+            if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
+            if (keepItem)
+            {
+                mage.addToRespawnInventory(index, itemStack);
+                removeDrops.add(itemStack);
+            } else if (Wand.isSkill(itemStack)) {
+                removeDrops.add(itemStack);
+            }
+        }
+
+        drops.removeAll(removeDrops);
+    }
+
+    /**
+     * This death handler fires right away to close the wand inventory before other plugin
+     * see the drops.
+     */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeath(EntityDeathEvent event)
     {
@@ -310,11 +354,6 @@ public class EntityController implements Listener {
             return;
         }
         final Player player = (Player)entity;
-
-        if (event instanceof PlayerDeathEvent && ((PlayerDeathEvent)event).getKeepInventory()) return;
-        String rule = entity.getWorld().getGameRuleValue("keepInventory");
-        if (rule.equals("true")) return;
-
         List<ItemStack> drops = event.getDrops();
         Wand wand = mage.getActiveWand();
         if (wand != null) {
@@ -337,47 +376,6 @@ public class EntityController implements Listener {
                 wand.deactivate();
             }
         }
-
-        List<ItemStack> removeDrops = new ArrayList<>();
-        PlayerInventory inventory = player.getInventory();
-        ItemStack[] contents = inventory.getStorageContents();
-        for (int index = 0; index < contents.length; index++)
-        {
-            ItemStack itemStack = contents[index];
-            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-            if (NMSUtils.isTemporary(itemStack)) {
-                removeDrops.add(itemStack);
-                continue;
-            }
-            boolean keepItem = InventoryUtils.getMetaBoolean(itemStack, "keep", false);
-            if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
-            if (keepItem)
-            {
-                mage.addToRespawnInventory(index, itemStack);
-                removeDrops.add(itemStack);
-            } else if (Wand.isSkill(itemStack)) {
-                removeDrops.add(itemStack);
-            }
-        }
-        ItemStack[] armor = player.getInventory().getArmorContents();
-        for (int index = 0; index < armor.length; index++)
-        {
-            ItemStack itemStack = armor[index];
-            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-            if (NMSUtils.isTemporary(itemStack) || Wand.isSkill(itemStack)) {
-                removeDrops.add(itemStack);
-                continue;
-            }
-            boolean keepItem = InventoryUtils.getMetaBoolean(itemStack, "keep", false);
-            if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
-            if (keepItem)
-            {
-                mage.addToRespawnArmor(index, itemStack);
-                removeDrops.add(itemStack);
-            }
-        }
-
-        drops.removeAll(removeDrops);
     }
 
     @EventHandler
