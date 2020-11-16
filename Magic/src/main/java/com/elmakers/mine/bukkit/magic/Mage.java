@@ -1654,6 +1654,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         ItemStack activeWandItem = activeWand != null ? activeWand.getItem() : null;
         if (InventoryUtils.isSameInstance(activeWandItem, itemInHand)) return activeWand;
 
+        // Allow moving the spell book around while the inventory is open
+        if (activeWand != null && activeWand.getMode() == WandMode.SKILLS && activeWand.isInventoryOpen()) {
+            return activeWand;
+        }
+
         if (!Wand.isWand(itemInHand)) itemInHand = null;
 
         if ((itemInHand != null && activeWandItem == null)
