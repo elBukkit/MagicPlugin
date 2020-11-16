@@ -15,6 +15,7 @@ gather:
         ignore_result: true
         effects: menu
       - class: Recall
+        title: "Teleport To:"
         teleport: false
       - class: PlayEffects
         ignore_result: true
@@ -191,6 +192,7 @@ gather:
 
     # Teleport parameters
     direct: true
+    safe: false
 
   costs:
     mana: 50

@@ -163,6 +163,7 @@ recall:
       show_unavailable: true
       unavailable_icon: skull:http://textures.minecraft.net/texture/d34e063cafb467a5c8de43ec78619399f369f4a52434da8017a983cdd92516a0
       loud: true
+      safe: false
       cooldown: 15000
       protection_duration: 5000
       target: none
