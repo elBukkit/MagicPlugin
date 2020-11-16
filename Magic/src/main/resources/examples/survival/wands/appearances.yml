@@ -119,7 +119,7 @@ appearance_longbow:
     upgrade: true
     legacy_icon: bow_icon:3
     legacy_upgrade_icon: bow_icon:3
-    icon: bow{CustomModelData:3}
+    icon: bow{CustomModelData:18003}
     upgrade_icon: bow{CustomModelData:18003}
 
 glow_upgrade:
