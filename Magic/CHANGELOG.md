@@ -10,6 +10,7 @@
  - Improved spellbook inventory behavior
  - Add "Magic.allowed_spell_categories" permission list, of spell categories a player may cast
  - The Blind spell now makes mobs confused and lose track of their targets. Added upgrade levels to Blind.
+ - Poison now damages a little bit even if you're immune to poison
 
 # 8.0.2
 

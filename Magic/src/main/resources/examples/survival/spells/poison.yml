@@ -14,6 +14,13 @@ poison:
         - class: CustomProjectile
           actions:
           - class: PotionEffect
+          - class: Repeat
+            actions:
+              - class: Delay
+              - class: CheckHealth
+                min_health: 2
+                actions:
+                - class: Damage
     effects:
         cast:
         -  sound: block_fire_extinguish
@@ -57,6 +64,9 @@ poison:
     costs:
         mana: 50
     parameters:
+        damage: 1
+        delay: 1000
+        repeat: 2
         velocity: 100
         hitbox: true
         range: 48
@@ -75,6 +85,7 @@ poison|2:
     upgrade_required_casts: 50
     parameters:
         range: 16
+        repeat: 3
         duration: 3000
         add_effects:
           - type: poison
