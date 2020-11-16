@@ -141,7 +141,7 @@ appearance_valk:
     legacy_icon: sword_icon:8
     legacy_upgrade_icon: sword_icon:8
     icon: netherite_sword{CustomModelData:18009}
-    upgrade_icon: netherite_sword{CustomModelData:1180098010}
+    upgrade_icon: netherite_sword{CustomModelData:18009}
 
 appearance_whitedagger:
     upgrade: true
