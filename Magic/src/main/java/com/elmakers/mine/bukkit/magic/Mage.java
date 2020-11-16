@@ -4723,7 +4723,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean trigger(String trigger) {
         if (!trigger.equals("interval")) {
-            sendDebugMessage("Processing trigger: " + trigger, 5);
+            sendDebugMessage("Processing trigger: " + trigger, 50);
         }
         lastTriggers.put(trigger, System.currentTimeMillis());
         if (entityData != null) {
