@@ -1,6 +1,6 @@
 arrow_bomb:
-    icon: tipped_arrow{CustomModelData:20,Potion:healing}
-    icon_disabled: tipped_arrow{CustomModelData:21,Potion:healing}
+    icon: tipped_arrow{CustomModelData:18020,Potion:healing}
+    icon_disabled: tipped_arrow{CustomModelData:18021,Potion:healing}
     legacy_icon: spell_icon:247
     legacy_icon_disabled: spell_icon_disabled:247
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094

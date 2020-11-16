@@ -1,6 +1,6 @@
 arrow_poison:
-    icon: tipped_arrow{CustomModelData:16,Potion:poison}
-    icon_disabled: tipped_arrow{CustomModelData:17,Potion:poison}
+    icon: tipped_arrow{CustomModelData:18016,Potion:poison}
+    icon_disabled: tipped_arrow{CustomModelData:18017,Potion:poison}
     legacy_icon: spell_icon:245
     legacy_icon_disabled: spell_icon_disabled:245
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
