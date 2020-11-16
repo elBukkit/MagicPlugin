@@ -1837,6 +1837,13 @@ permissions:
     description: A player may cast any spell
     type: boolean
     default: true
+  Magic.allowed_spell_categories:
+    description: The spell categories a player may cast
+    type: list
+  Magic.allowed_spell_categories.*:
+    description: A player may cast all spell categories
+    type: boolean
+    default: true
   Magic.castp:
     description: The spells a player may cast on behalf of another player
     type: list

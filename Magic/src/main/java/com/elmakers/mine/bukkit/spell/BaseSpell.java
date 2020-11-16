@@ -1983,6 +1983,15 @@ public class BaseSpell implements MageSpell, Cloneable {
         return "Magic.cast." + spellKey.getBaseKey();
     }
 
+    @Override
+    @Nullable
+    public String getCategoryPermissionNode() {
+        if (category == null) {
+            return null;
+        }
+        return "Magic.allowed_spell_categories." + category.getKey();
+    }
+
     /**
      * Called when a material selection spell is cancelled mid-selection.
      */

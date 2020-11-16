@@ -11,6 +11,7 @@
 
  - Fix magic sword "valk" appearance
  - Fix XP exploit putting magic armor in a grindstone
+ - Add Magic.allowed_spell_categories permission list
 
 # 8.0.1
 

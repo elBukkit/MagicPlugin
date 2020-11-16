@@ -3656,6 +3656,10 @@ public class MagicController implements MageController {
         if (hasBypassPermission(sender)) {
             return true;
         }
+        String categoryPermission = spell.getCategoryPermissionNode();
+        if (categoryPermission != null && !hasPermission(sender, categoryPermission)) {
+            return false;
+        }
         return hasPermission(sender, spell.getPermissionNode());
     }
 
