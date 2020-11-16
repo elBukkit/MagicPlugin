@@ -88,6 +88,43 @@ commands:
         usage: "&cИспользование: /mconfig configure [$types] [название] [свойство] [значение]"
         nokey: "&cНеизвестный тип: $type, возможные варианты: $options"
         success: "Изменен $type $key, введи команду '/magic load', чтобы изменения вступили в силу"
+      reset:
+        usage: "&cИспользование: /mconfig reset [$options] [значение] "
+        nokey: "&cНеизвестный тип: $type, возможные варианты: $options"
+        missing: "&cФайл &f$file &cне существует, сброс настроек невозможен"
+        nothing: "&cФайл &f$file &cне существует, и &f$key &cне было найдено"
+        none: "&cНе было найдено настроек для сбрасывания"
+        removed: "&bУбрано &3$key &bиз файла настроек"
+        success: "&bУдалено &3$file"
+        backup: "&7Бэкап файл был сохранен &f$backup&7, используй его если захочешь отменить изменения"
+        load_prompt: "&7Используй &f/magic load &7to apply pending changes"
+      apply:
+        usage: "&cИспользование: /mconfig apply [id сессии]"
+        wait: "&bПодождите, загружаю конфигурацию..."
+        error: "&cЧто-то пошло не так, проверь логи"
+        error_saving: "&cНевозможно записать файл $file"
+        overwrote: "&eПерезаписан &bфайл &a$file"
+        created: "&bСоздан файл &a$file"
+        missing: "&cПоле $field отсустствует в ответе сервера"
+        load_prompt: "&7Используй &f/magic load&7, чтобы изменения вступили в силу"
+        invalid: "&cНайдены ошибки в твоем файле. Исправь их и попробуй снова."
+      load:
+        usage: "&cИспользование: /mconfig load [id сессии]"
+        wait: "&bПодождите, загружаю конфигурацию..."
+        error: "&cЧто-то пошло не так, проверь логи"
+        missing: "&cПоле $field отсустствует в ответе сервера"
+        error_saving: "&cНевозможно записать файл $file"
+        overwrote: "&eПерезаписан &bфайл &a$file"
+        created: "&bСоздан файл &a$file"
+        invalid: "&cНайдены ошибки в твоем файле. Исправь их и попробуй снова."
+      editor:
+        usage: "&cИспользование: /mconfig editor [$options]"
+        error: "&cЧто-то пошло не так, проверь логи"
+        wait: "&bПодождите, создаю новую сессию..."
+        server_error: "&cЧто-то пошло не так: &e$message"
+        new_session: "&3Открой эту ссылку &f$url &3в своем браузере, чтобы начать редактировать"
+        new_item: "&3Сюздаю &2$type.&b$item"
+        edit_item: "&3Редактирую &2$type.&b$item"
     modifier:
       usage: "Использование: /mage modifier <add|remove> <модификатор> [длительность]"
       add:
@@ -99,8 +136,9 @@ commands:
         success: "Убран модификатор &3$name &fу игрока &6$player"
         fail: "&cНевозможно убрать модификатор &3$name &fу игрока &6$player, &fтак как он его не имеет"
     getrp:
+      manual: "При следующем входе на сервер ты получишь предложение загрузить ресурс-пак."
       auto: "Теперь ты будешь получать ресурс-пак при подключении к серверу"
-      manual: "Теперь ты больше не будешь получать ресурс-пак при подключении к серверу, введи команду &b/getrp&f если хочешь его получить.\nЕсли хочешь скачать ресурс-пак, введи команду &b/getrp url&f, чтобы получить ссылку на скачивание"
+      turnoff: "Теперь ты больше не будешь получать ресурс-пак при подключении к серверу, введи команду &b/getrp&f если хочешь его получить.\nЕсли хочешь скачать ресурс-пак, введи команду &b/getrp url&f, чтобы получить ссылку на скачивание"
       sending: "Используй &b/getrp auto&f, чтобы загружать ресурс-пак автоматически.\nИли используй &b/getrp off&f, чтобы не получать ресурс-пак при входе."
 costs:
     sp_amount: $amount ОЗ
@@ -242,9 +280,8 @@ skills:
 resource_pack:
     # This will be sent to players on join if resource_pack_prompt is set to true in config.yml.
     prompt: "Введи команду /getrp, чтобы скачать ресурс-пак."
-    sending: ""
-    # Use this if you'd like players to receive a message before getting the resource pack
-    # sending: "Sending resource pack, please wait"
+    off_prompt: "a:&eВведи команду &4/getrp&e, чтобы скачать ресурс-пак."
+    sending: "t:&bИдет установка ресурс-пака\n&3подождите"
 
 controls:
   drop: Выбросить (Q)
@@ -2050,16 +2087,23 @@ spells:
         name: Внешний вид
         description: Измени палочку по своему вкусу!
         title: Внешний вид ($balance&0)
-        selected: Изменено на $item
+        selected: Выбран внешний вид - $item
         not_applicable: Твоя палочка уже выглядит как $item
-        no_template: '&cНельзя изменить вид у этого.'
+        no_template: '&cНельзя изменить вид $wand&c.'
   bowappearanceshop:
         name: Внешний вид лука
         description: Измени лук по своему вкусу!
-        title: "Внешний вид ($balance&0)"
-        selected: "Изменено на $item"
+        title: "Внешний вид лука ($balance&0)"
+        selected: "Выбран внешний вид - $item"
         not_applicable: "Твой лук уже выглядит как $item"
-        no_template: "&cНельзя изменить вид у $wand&c."
+        no_template: "&cНельзя изменить вид $wand&c."
+  swordappearanceshop:
+        name: Внешний вид меча
+        description: Измени меч по своему вкусу!
+        title: "Внешний вид меча ($balance&0)"
+        selected: "Выбран внешний вид - $item"
+        not_applicable: "Твой меч уже выглядит как $item"
+        no_template: "&cНельзя изменить вид $wand&c."
   controlsmenu:
         name: Управление
         description: Изменить управление палочкой
@@ -2355,7 +2399,7 @@ wand:
     enchantment_level_4: IV
     enchantment_level_5: V
     enchantment_level_max: X
-    spell_count: Изучено $count Заклинаний
+    spell_count: "Изучено Заклинаний: $count"
     material_count: Имеет $count Материалов
     upgrade_spell_count: Добавляет $count Заклинаний
     upgrade_material_count: Добавляет $count Материалов
@@ -2643,19 +2687,19 @@ wands:
         &8| &7> &6Выпусти стрелу&f, чтобы применить заклинание &d$spell
   magicbow:
     name: Магический лук
-    description: Лук ранга $path
+    description: &rЛук ранга $path
   mastersword:
-    name: Master Sword
-    description: The legendary sword that seals the darkness
+    name: Меч мастера
+    description: Легендарный меч борца с тьмой
   engineer:
-    name: Engineering Wand
-    description: $path &rMagic Wand
+    name: Посох инженера
+    description: &rПосох ранга $path
   architect:
-    name: Architect Wand
-    description: $path &rMagic Wand
+    name: Посох архитектора
+    description: &rПосох ранга $path
   conduit:
-    name: Conduit Wand
-    description: $path &rПалочка ранга
+    name: Посох магистра
+    description: &rПосох ранга $path
   architectstaff:
     name: Архитектор
     description: С великой силой приходит великая ответственность
@@ -3038,6 +3082,20 @@ wands:
   appearance_magma:
     name: Магмовый посох
     description: Посох, содержащий эссенцию чистой магмы
+  appearance_valk:
+    name: Меч Валькирии
+  appearance_whitedagger:
+    name: Кинжал
+  appearance_demon:
+    name: Демонический меч
+  appearance_felm:
+    name: Огненный меч
+  appearance_riven:
+    name: Расколотый меч
+  appearance_silver:
+    name: Серебрянный молот
+  appearance_lava:
+    name: Лавовый меч
   glow_upgrade:
     name: Включить свечение
     description: Делает палочку блестящей
