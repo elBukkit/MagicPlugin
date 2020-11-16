@@ -71,6 +71,8 @@ import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
+    private static final int DEBUG_LEVEL = 199;
+
     private final MagicController controller;
     private int clickCooldown = 150;
     private MaterialAndData enchantBlockMaterial;
@@ -154,8 +156,8 @@ public class PlayerController implements Listener {
         ItemStack next = inventory.getItem(event.getNewSlot());
 
         Mage mage = controller.getMage(player);
-        if (mage.getDebugLevel() >= 10) {
-            mage.sendDebugMessage("EQUIP " + event.getNewSlot() + " from " + event.getPreviousSlot(), 10);
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
+            mage.sendDebugMessage("EQUIP " + event.getNewSlot() + " from " + event.getPreviousSlot(), DEBUG_LEVEL);
         }
 
         // Check for self-destructing and temporary items
@@ -244,11 +246,11 @@ public class PlayerController implements Listener {
         final Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
-        if (mage.getDebugLevel() >= 10) {
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             ItemStack main = event.getMainHandItem();
             ItemStack offhand = event.getOffHandItem();
             mage.sendDebugMessage("SWAP ITEM: " + (main == null ? "(Nothing)" : main.getType().name())
-                + " with " + (offhand == null ? "(Nothing)" : offhand.getType().name()), 10);
+                + " with " + (offhand == null ? "(Nothing)" : offhand.getType().name()), DEBUG_LEVEL);
         }
         final Wand activeWand = mage.getActiveWand();
         final Wand offhandWand = mage.getOffhandWand();
@@ -296,10 +298,10 @@ public class PlayerController implements Listener {
         final Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
-        if (mage.getDebugLevel() >= 10) {
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             Item item = event.getItemDrop();
             ItemStack itemStack = item == null ? null : item.getItemStack();
-            mage.sendDebugMessage("DROP ITEM: " + (itemStack == null ? "(Nothing)" : itemStack.getType().name()));
+            mage.sendDebugMessage("DROP ITEM: " + (itemStack == null ? "(Nothing)" : itemStack.getType().name()), DEBUG_LEVEL);
         }
 
         // As of 1.15 we will get an animation event right after the drop event.
@@ -404,9 +406,9 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
-        if (mage.getDebugLevel() >= 10) {
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             ItemStack playerItem = event.getPlayerItem();
-            mage.sendDebugMessage("ENTITY ARMOR STAND with: " + event.getHand() + " at " + event.getRightClicked() + " with " + (playerItem == null ? "(Nothing)" : playerItem.getType().name()));
+            mage.sendDebugMessage("ENTITY ARMOR STAND with: " + event.getHand() + " at " + event.getRightClicked() + " with " + (playerItem == null ? "(Nothing)" : playerItem.getType().name()), DEBUG_LEVEL);
         }
         com.elmakers.mine.bukkit.api.wand.Wand wand = mage.checkWand();
         if (wand != null) {
@@ -451,8 +453,8 @@ public class PlayerController implements Listener {
         String permission = mob.getInteractPermission();
         Mage playerMage = controller.getMage(player);
         playerMage.checkLastClick(0);
-        if (playerMage.getDebugLevel() >= 10) {
-            playerMage.sendDebugMessage("ENTITY AT INTERACT with: " + event.getHand() + " at " + entity + " : " + TextUtils.printVector(event.getClickedPosition()));
+        if (playerMage.getDebugLevel() >= DEBUG_LEVEL) {
+            playerMage.sendDebugMessage("ENTITY AT INTERACT with: " + event.getHand() + " at " + entity + " : " + TextUtils.printVector(event.getClickedPosition()), DEBUG_LEVEL);
         }
         if (permission != null && !permission.isEmpty() && !player.hasPermission(permission)) {
             String message = controller.getMessages().get("npc.no_permission");
@@ -577,8 +579,8 @@ public class PlayerController implements Listener {
 
         // Check for a player placing a wand in an item frame
 
-        if (mage.getDebugLevel() >= 10) {
-            mage.sendDebugMessage("ENTITY INTERACT with: " + event.getHand() + " at " + clickedEntity);
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
+            mage.sendDebugMessage("ENTITY INTERACT with: " + event.getHand() + " at " + clickedEntity, DEBUG_LEVEL);
         }
 
         // Don't think this ever fires for ArmorStand - see above
@@ -631,8 +633,8 @@ public class PlayerController implements Listener {
 
         Mage mage = controller.getMage(player);
         mage.trigger("left_click");
-        if (mage.getDebugLevel() >= 10) {
-            mage.sendDebugMessage("ANIMATE: " + event.getAnimationType());
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
+            mage.sendDebugMessage("ANIMATE: " + event.getAnimationType(), DEBUG_LEVEL);
         }
 
         Wand wand = mage.checkWand();
@@ -684,11 +686,11 @@ public class PlayerController implements Listener {
 
         // Check for locked items
         Mage mage = controller.getMage(player);
-        if (mage.getDebugLevel() >= 10) {
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             ItemStack item = event.getItem();
             Block block = event.getClickedBlock();
             mage.sendDebugMessage("INTERACT " + event.getAction()  + " with " + event.getHand() + " using: " + (item == null ? "(Nothing)" : item.getType().name())
-                + ", block: " + (block == null ? "(Nothing)" : block.getType().name()));
+                + ", block: " + (block == null ? "(Nothing)" : block.getType().name()), DEBUG_LEVEL);
         }
         if (!mage.canUse(itemInHand)) {
             mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));

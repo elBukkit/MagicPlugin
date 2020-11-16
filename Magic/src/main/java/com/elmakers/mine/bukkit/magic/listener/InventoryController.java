@@ -45,6 +45,8 @@ import com.elmakers.mine.bukkit.wand.WandInventory;
 import com.elmakers.mine.bukkit.wand.WandMode;
 
 public class InventoryController implements Listener {
+    private static final int DEBUG_LEVEL = 80;
+
     private final MagicController controller;
     private boolean enableItemHacks = true;
     private boolean dropChangesPages = false;
@@ -74,7 +76,7 @@ public class InventoryController implements Listener {
         HumanEntity clicked = event.getWhoClicked();
         Mage mage = controller.getRegisteredMage(clicked);
         if (mage == null) return;
-        if (mage.getDebugLevel() >= 10) {
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             ItemStack cursor = event.getCursor();
             ItemStack current = event.getCurrentItem();
             mage.sendDebugMessage("CREATIVE: " + event.getAction()  + " of " + event.getClick() + " cursor: "
@@ -88,7 +90,7 @@ public class InventoryController implements Listener {
     public void onInventoryDrag(InventoryDragEvent event) {
         HumanEntity clicked = event.getWhoClicked();
         Mage mage = controller.getMage(clicked);
-        if (mage.getDebugLevel() >= 10) {
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             mage.sendDebugMessage("DRAG: " + event.getType()  + " in " + event.getInventory().getType() + " slots: " + StringUtils.join(event.getInventorySlots(), ",") +  " raw: " + StringUtils.join(event.getRawSlots(), ","));
         }
         GUIAction activeGUI = mage.getActiveGUI();
@@ -196,7 +198,7 @@ public class InventoryController implements Listener {
         final Mage mage = controller.getMage(player);
         InventoryType.SlotType slotType = event.getSlotType();
 
-        if (mage.getDebugLevel() >= 10) {
+        if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             mage.sendDebugMessage("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + slotType + " in " + event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
         }
 
