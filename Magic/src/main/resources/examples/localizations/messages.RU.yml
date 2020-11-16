@@ -2180,9 +2180,9 @@ spells:
         name: Продажа
         title: "Продажа ($balance&0)"
         description: Продать Продать Продать!
-        insufficient: "&cRequires &4$cost"
-        confirm_title: "Sell $item"
-        deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$earn"
+        insufficient: "&cТребуется &4$cost"
+        confirm_title: "Продать $item"
+        deducted: "&d&oТы продал &r&6$item &r&d&oза &r&a$earn"
   fxdemo:
         name: Демонстрация визуальных эффектов
         description: Показывает различные эффекты
@@ -2411,7 +2411,7 @@ wand:
     mana_regeneration_boosted: "&eВосстановление маны: $amount &f(&b$mana&f)&d/сек."
     mana_boost: "&eУвеличение маны: $percent%"
     mana_regeneration_boost: "&eУвеличение восстановления маны: $percent%"
-    sp_multiplier: "&6Увеличение полученных ОЗ: $percent%"
+    earn_multiplier: "&6Увеличение полученных ОЗ: $percent%"
     block_chance: "&bШанс блока $roman"
     reflect_chance: "&bШанс отразить $roman"
     cost_reduction: "&6Снижение стоимости $roman"
@@ -3103,23 +3103,23 @@ wands:
     name: Выключить свечение
     description: Делает палочку не блестящей
   uberwand:
-        name: "Uberwand"
-        description: Величайшая палочка
+    name: "Uberwand"
+    description: Величайшая палочка
   extinguisher:
-        name: Огнетушитель
-        description: Убирает огонь
+    name: Огнетушитель
+    description: Убирает огонь
   science:
-        name: Во имя науки!
-        description: Для тестирования автоматонов
+    name: Во имя науки!
+    description: Для тестирования автоматонов
   potion_sp100:
-        name: Зелье ОЗ
-        description: Выпей, чтобы получить 100 ОЗ
+    name: Зелье ОЗ
+    description: Выпей, чтобы получить 100 ОЗ
   purger:
-        name: Очиститель
-        description: Для битвы с автоматонами
+    name: Очиститель
+    description: Для битвы с автоматонами
   magictorch:
-      name: Волшебный факел
-      description: Излучает свет, когда находится в руке
+    name: Волшебный факел
+    description: Излучает свет, когда находится в руке
   gauntlet:
-      name: Перчатка Бесконечности
-      description: В ней сосредоточена вся мощь Вселенной
+    name: Перчатка Бесконечности
+    description: В ней сосредоточена вся мощь Вселенной
