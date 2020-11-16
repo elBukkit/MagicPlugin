@@ -2,16 +2,24 @@
 
 # 8.1
 
- - Fix Secure spell
-   - Previously secured containers should be unlockable if you summon a new key
-   - Aim up and cast Secure
- - Fix "language" config option
- - Fix arrows from arrow spells being able to be picked up
-
  - Re-worked Gather, added to beginner path as an optional spell
  - Allow using a damaged elytra for broomstick crafting
  - Add use_target_mage parameter to ChangeContext action
    Useful for actions such as Selector and CheckRequirement that only use the mage context and not the target
+
+# 8.0.2
+
+ - Fix magic sword "valk" appearance
+
+# 8.0.1
+
+ - Fix Secure spell
+   - Previously secured containers should be unlockable if you summon a new key
+   - Aim up and cast Secure
+ - Fix "language" config option
+ - Fix loading inherited examples directly (e.g. `/mconfig example set 7`)
+ - Fix Cloak instantly turning off at beginner rank
+ - Fix arrows from Arrow spell being able to be picked up
 
 # 8.0
 
