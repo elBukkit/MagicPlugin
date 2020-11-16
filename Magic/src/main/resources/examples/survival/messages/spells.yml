@@ -897,6 +897,7 @@ spells:
         name: Blind
         description: Blind your target
         cast: You blind $target
+        upgrade_description: "Blinds for longer"
     pollinate:
         name: Pollinate
         description: Plant some flowers!

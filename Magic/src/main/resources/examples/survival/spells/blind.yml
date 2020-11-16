@@ -9,6 +9,8 @@ blind:
     category: combat
     worth: 70
     earns_sp: 6
+    upgrade_required_path: beginner
+    upgrade_required_casts: 25
     actions:
         cast:
         - class: CustomProjectile
@@ -76,3 +78,11 @@ blind:
     costs:
         mana: 45
 
+blind|2:
+  upgrade_required_path: student
+  parameters:
+    duration: 3000
+
+blind|3:
+  parameters:
+    duration: 4000

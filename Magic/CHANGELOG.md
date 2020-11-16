@@ -9,7 +9,7 @@
  - Add "enchantable" wand property, allowing it to be vanilla enchanted
  - Improved spellbook inventory behavior
  - Add "Magic.allowed_spell_categories" permission list, of spell categories a player may cast
- - The Blind spell now makes mobs confused and lose track of their targets
+ - The Blind spell now makes mobs confused and lose track of their targets. Added upgrade levels to Blind.
 
 # 8.0.2
 
