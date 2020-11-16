@@ -4,7 +4,6 @@
 
  - wand can only be crafted from bottom row?
  - Change talisman and broomstick recipes 
- - Make blind actually prevent mobs from targeting
  - Make poison work on mobs
  - Gather title = Recall
  - Mnpc select can't target underwater

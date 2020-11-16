@@ -14,6 +14,10 @@ blind:
         - class: CustomProjectile
           actions:
           - class: PotionEffect
+          - class: Interval
+            actions:
+            - class: Aggro
+              clear_target: true
     effects:
         cast:
         -  sound: block_beacon_power_select
@@ -66,7 +70,7 @@ blind:
         target_breakables: 0
         target: other
         duration: 2000
-        cooldown: 10000
+        cooldown: 20000
         effect_blindness: 5
         hitbox: true
     costs:
