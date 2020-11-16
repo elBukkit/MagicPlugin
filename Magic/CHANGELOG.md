@@ -7,6 +7,8 @@
  - Add use_target_mage parameter to ChangeContext action
    Useful for actions such as Selector and CheckRequirement that only use the mage context and not the target
  - Add "enchantable" wand property, allowing it to be vanilla enchanted
+ - Improved spellbook inventory behavior
+ - Add "Magic.allowed_spell_categories" permission list, of spell categories a player may cast
 
 # 8.0.2
 

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,8 +33,8 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.tasks.WandCastTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -88,7 +89,7 @@ public class InventoryController implements Listener {
         HumanEntity clicked = event.getWhoClicked();
         Mage mage = controller.getMage(clicked);
         if (mage.getDebugLevel() >= 10) {
-            mage.sendDebugMessage("DRAG: " + event.getType()  + " in " + event.getInventory().getType() + " slots: " + event.getInventorySlots());
+            mage.sendDebugMessage("DRAG: " + event.getType()  + " in " + event.getInventory().getType() + " slots: " + StringUtils.join(event.getInventorySlots(), ",") +  " raw: " + StringUtils.join(event.getRawSlots(), ","));
         }
         GUIAction activeGUI = mage.getActiveGUI();
         if (activeGUI != null) {
@@ -96,10 +97,24 @@ public class InventoryController implements Listener {
             return;
         }
 
-        // We're not going to mess around with this event.
         Wand activeWand = mage.getActiveWand();
-        if (activeWand != null && activeWand.isInventoryOpen()) {
-            event.setCancelled(true);
+        boolean isSkillInventory = activeWand != null && activeWand.isInventoryOpen() && activeWand.getMode() == WandMode.SKILLS;
+        if (isSkillInventory) {
+            // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
+            ItemStack oldCursor = event.getOldCursor();
+            oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
+            boolean isSpell = Wand.isSpell(oldCursor);
+            boolean isSpellInventory = false;
+            Set<Integer> slots = event.getRawSlots();
+            int spellInventoryStart = event.getInventory().getSize();
+            for (int slot : slots) {
+                if (slot < spellInventoryStart) {
+                    isSpellInventory = true;
+                }
+            }
+            if (!isSpell && isSpellInventory) {
+                event.setCancelled(true);
+            }
             return;
         }
 
@@ -109,7 +124,7 @@ public class InventoryController implements Listener {
         boolean isOffhandSlot = slots.contains(OFFHAND_SLOT);
         boolean isHeldSlot = slots.contains(clicked.getInventory().getHeldItemSlot());
         if (isArmorSlot || isOffhandSlot || isHeldSlot) {
-            // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
+            // This is intentionally copied from above to avoid doing it if we don't need to
             ItemStack oldCursor = event.getOldCursor();
             oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
 

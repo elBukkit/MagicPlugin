@@ -2,7 +2,6 @@
 
 ## List is too long
 
- - Modifier icon is broken
  - wand can only be crafted from bottom row?
  - Change talisman and broomstick recipes 
  - Make blind actually prevent mobs from targeting
@@ -10,11 +9,18 @@
  - Gather title = Recall
  - Mnpc select can't target underwater
  - Can we make pets?
+ - Make "untame" spell
+ - EntityData improvements:
+   - cat type
+   - sitting, other poses
+   - tamed, owner
+   - llama/donkey properties, inventory
+ - Some kind of pets?
+ - Spells ignore tamed mobs of friends ?
 
 ## Hot Issues
 
  - Offhand wands don't keep on death sometimes ?
- - Ignore tamed mobs ?
  - Get items when using erase brush? ... this would be really hard, undo would require having all of the blocks.
 
  - Can fly through glass panes on a broomstick
