@@ -15,10 +15,12 @@
    - llama/donkey properties, inventory
  - Some kind of pets?
  - Spells ignore tamed mobs of friends ?
+ - Mage add brush tab-completion is dumb (or does this command not exist?)
+ - Absorb should allow you to bypass restricted materials when you have bypass perms
+ - Recall gives SP even when failing
 
 ## Hot Issues
 
- - Offhand wands don't keep on death sometimes ?
  - Get items when using erase brush? ... this would be really hard, undo would require having all of the blocks.
 
  - Can fly through glass panes on a broomstick
