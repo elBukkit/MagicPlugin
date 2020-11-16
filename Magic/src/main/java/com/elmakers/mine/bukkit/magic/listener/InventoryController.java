@@ -218,9 +218,17 @@ public class InventoryController implements Listener {
             return;
         }
 
-        // Check for wearing spells or wands
+        // Look at the wand in hand
         ItemStack heldItem = event.getCursor();
         boolean heldWand = Wand.isWand(heldItem);
+
+        // Check for putting wands in a grindstone since they will re-apply their enchantments
+        if (inventoryType.name().equals("GRINDSTONE") && heldWand) {
+            event.setCancelled(true);
+            return;
+        }
+
+        // Check for wearing spells or wands
         boolean heldSpell = Wand.isSpell(heldItem);
         boolean clickedWand = Wand.isWand(clickedItem);
         if (event.getSlotType() == InventoryType.SlotType.ARMOR)
@@ -268,12 +276,6 @@ public class InventoryController implements Listener {
                 mage.checkWand();
                 return;
             }
-        }
-
-        // Check for putting wands in a grindstone since they will re-apply their enchantments
-        if (inventoryType.name().equals("GRINDSTONE") && heldWand) {
-            event.setCancelled(true);
-            return;
         }
 
         // Another check for wearing spells
