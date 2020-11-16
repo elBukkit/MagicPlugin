@@ -2,6 +2,8 @@
 
 # 8.0.2
 
+ - Fix magic sword "valk" appearance
+
 # 8.0.1
 
  - Fix Secure spell
