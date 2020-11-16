@@ -2,6 +2,7 @@
 
 # 8.0.2
 
+ - Fix icons for magic bow arrow spells and longbow appearance
  - Fix magic sword "valk" appearance
  - Fix XP exploit putting magic armor in a grindstone
 

@@ -1,6 +1,6 @@
 arrow_grapple:
-    icon: tipped_arrow{CustomModelData:12,Potion:invisibility}
-    icon_disabled: tipped_arrow{CustomModelData:13,Potion:invisibility}
+    icon: tipped_arrow{CustomModelData:18012,Potion:invisibility}
+    icon_disabled: tipped_arrow{CustomModelData:18013,Potion:invisibility}
     legacy_icon: spell_icon:243
     legacy_icon_disabled: spell_icon_disabled:243
     category: combat

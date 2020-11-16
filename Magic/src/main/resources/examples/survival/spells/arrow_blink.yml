@@ -1,6 +1,6 @@
 arrow_blink:
-    icon: tipped_arrow{CustomModelData:22,Potion:regeneration}
-    icon_disabled: tipped_arrow{CustomModelData:23,Potion:regeneration}
+    icon: tipped_arrow{CustomModelData:18022,Potion:regeneration}
+    icon_disabled: tipped_arrow{CustomModelData:18023,Potion:regeneration}
     legacy_icon: spell_icon:248
     legacy_icon_disabled: spell_icon_disabled:248
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
