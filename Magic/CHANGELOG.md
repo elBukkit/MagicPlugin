@@ -3,6 +3,7 @@
 # 8.0.2
 
  - Fix magic sword "valk" appearance
+ - Fix XP exploit putting magic armor in a grindstone
 
 # 8.0.1
 
