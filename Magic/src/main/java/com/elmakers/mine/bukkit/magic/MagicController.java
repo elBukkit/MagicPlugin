@@ -4519,6 +4519,15 @@ public class MagicController implements MageController {
         return citizens;
     }
 
+    @Nullable
+    @Override
+    public Wand getIfWand(ItemStack itemStack) {
+        if (Wand.isWand(itemStack)) {
+            return getWand(itemStack);
+        }
+        return null;
+    }
+
     @Override
     public Wand getWand(ItemStack itemStack) {
         @SuppressWarnings("deprecation")

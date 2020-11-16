@@ -9,6 +9,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -272,4 +273,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean performAction(WandAction action);
     @Nonnull
     WandEffectContext getEffectContext();
+    boolean isEnchantable();
+    void setEnchantments(Map<Enchantment, Integer> enchants);
 }

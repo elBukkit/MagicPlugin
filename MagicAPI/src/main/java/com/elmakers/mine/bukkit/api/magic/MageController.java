@@ -125,6 +125,12 @@ public interface MageController {
     ItemStack createBrushItem(String brushKey);
 
     /**
+     * Only returns a Wand instance of the item is already a wand.
+     */
+    @Nullable
+    Wand getIfWand(ItemStack item);
+
+    /**
      * Obtains a wand from an item stack. (No copying is done)
      *
      * @param item The item to get a wand of.

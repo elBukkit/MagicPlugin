@@ -39,8 +39,10 @@ default_wand_path:
 save_default_configs: true
 
 # Whether wands can be upgraded on an enchanting table
-# This does not affect spellshop-based progression, but rather wands being enchanted via vanilla
-# mechanics, something that no longer works.
+# This does not affect spellshop-based progression, but rather wands progressing via vanilla
+# enchantment mechanics, something that no longer works.
+# This does note effect the "enchanting" property of wands, which lets them be enchanted
+# just like a vanilla item.
 enable_enchanting: false
 
 # Whether wands can be combined on an anvil

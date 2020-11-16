@@ -6,6 +6,7 @@
  - Allow using a damaged elytra for broomstick crafting
  - Add use_target_mage parameter to ChangeContext action
    Useful for actions such as Selector and CheckRequirement that only use the mage context and not the target
+ - Add "enchantable" wand property, allowing it to be vanilla enchanted
 
 # 8.0.2
 

@@ -1779,6 +1779,10 @@ permissions:
     description: The player may enchant a wand
     default: true
     type: boolean
+  Magic.wand.enchant_vanilla:
+    description: The player may vanilla enchant an enchantable wand
+    default: true
+    type: boolean
   Magic.wand.craft:
     description: The player may craft a wand
     default: true

@@ -29,6 +29,7 @@ public class BaseMagicProperties implements MagicProperties {
     protected final @Nonnull MagicController controller;
     protected ConfigurationSection configuration = new MemoryConfiguration();
 
+    // TODO: Separate these out into wand vs class properties
     public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(
             "active_spell", "active_brush", "alternate_spell", "alternate_spell2",
             "path", "template", "worn",
@@ -64,7 +65,7 @@ public class BaseMagicProperties implements MagicProperties {
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
             "earn_multiplier", "class", "classes",
             "consume_spell", "stack", "unstashable", "unmoveable", "attributes", "tags",
-            "page_free_space"
+            "page_free_space", "enchantable", "hide_flags"
     );
 
     public static final ImmutableSet<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(

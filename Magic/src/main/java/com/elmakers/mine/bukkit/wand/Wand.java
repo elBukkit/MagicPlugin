@@ -32,6 +32,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -5909,5 +5910,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public int getOrganizeBuffer() {
         return getInt("page_free_space", INVENTORY_ORGANIZE_BUFFER);
+    }
+
+    @Override
+    public boolean isEnchantable() {
+        return getBoolean("enchantable");
+    }
+
+    @Override
+    public void setEnchantments(Map<Enchantment, Integer> enchants) {
+        if (enchants == null) {
+            setProperty("enchantments", null);
+        } else {
+            ConfigurationSection enchantments = new MemoryConfiguration();
+            for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+                enchantments.set(entry.getKey().getName().toLowerCase(), entry.getValue());
+            }
+            setProperty("enchantments", enchantments);
+        }
     }
 }
