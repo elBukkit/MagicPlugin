@@ -185,7 +185,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
             result = false;
             controller.getLogger().log(Level.SEVERE, "Error casting spell via command", ex);
         }
-        boolean showCast = sender != null && (sender instanceof Player || controller.showConsoleCastFeedback());
+        boolean showCast = sender != null && !(sender instanceof Player) && controller.showConsoleCastFeedback();
         messageSuffix = messageSuffix == null ? "" : messageSuffix;
         if (result) {
             if (showCast && !messageSuffix.isEmpty()) sender.sendMessage("Cast " + spell.getName() + messageSuffix);
