@@ -108,7 +108,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Double maxHealth;
     protected Double health;
     protected Integer airLevel;
-    protected boolean isAngry;
     protected boolean isBaby;
     protected boolean isSilent;
     protected boolean isTamed;
@@ -254,9 +253,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Villager) {
             extraData = new EntityVillagerData((Villager)entity);
         } else if (entity instanceof Wolf) {
-            Wolf wolf = (Wolf)entity;
-            dyeColor = wolf.getCollarColor();
-            isAngry = wolf.isAngry();
+            extraData = new EntityWolfData(entity);
         } else if (entity instanceof Rabbit) {
             Rabbit rabbit = (Rabbit)entity;
             rabbitType = rabbit.getRabbitType();
@@ -278,6 +275,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityEnderDragonData(entity);
         } else if (entity.getType().name().equals("FOX")) {
             extraData = new EntityFoxData(entity);
+        } else if (entity.getType().name().equals("CAT")) {
+            extraData = new EntityCatData(entity);
         } else if (entity.getType().name().equals("PHANTOM")) {
             extraData = new EntityPhantomData(entity);
         }
@@ -372,7 +371,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isSitting = parameters.getBoolean("sitting", false);
         isInvulnerable = parameters.getBoolean("invulnerable", false);
         isBaby = parameters.getBoolean("baby", false);
-        isAngry = parameters.getBoolean("angry", false);
         hasAI = parameters.getBoolean("ai", true);
         hasGravity = parameters.getBoolean("gravity", true);
 
@@ -508,6 +506,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 extraData = new EntityEnderDragonData(parameters, controller);
             } else if (type != null && type.name().equals("FOX")) {
                 extraData = new EntityFoxData(parameters, controller);
+            } else if (type != null && type.name().equals("CAT")) {
+                extraData = new EntityCatData(parameters, controller);
+            } else if (type == EntityType.WOLF) {
+                extraData = new EntityWolfData(parameters, controller);
             } else if (type != null && type.name().equals("PHANTOM")) {
                 EntityPhantomData phantomData = new EntityPhantomData();
                 extraData = phantomData;
@@ -839,12 +841,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             droppedItem.setItemStack(item);
-        } else if (entity instanceof Wolf) {
-            Wolf wolf = (Wolf)entity;
-            if (dyeColor != null) {
-                wolf.setCollarColor(dyeColor);
-            }
-            wolf.setAngry(isAngry);
         } else if (entity instanceof Rabbit && rabbitType != null) {
             Rabbit rabbit = (Rabbit)entity;
             rabbit.setRabbitType(rabbitType);

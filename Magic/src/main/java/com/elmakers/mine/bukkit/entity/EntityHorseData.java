@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public class EntityHorseData extends EntityExtraData {
+public class EntityHorseData extends EntityAnimalData {
     public Horse.Color color;
     public Horse.Style style;
     public ItemData saddle;
@@ -20,13 +20,13 @@ public class EntityHorseData extends EntityExtraData {
     public Integer domestication;
     public Integer maxDomestication;
     public Double jumpStrength;
-    public Boolean tamed;
 
     public EntityHorseData() {
 
     }
 
     public EntityHorseData(ConfigurationSection parameters, MageController controller) {
+        super(parameters, controller);
         Logger log = controller.getLogger();
         if (parameters.contains("horse_color")) {
             try {
@@ -50,15 +50,12 @@ public class EntityHorseData extends EntityExtraData {
             jumpStrength = parameters.getDouble("horse_jump_strength");
         }
 
-        if (parameters.contains("tamed")) {
-            tamed = parameters.getBoolean("tamed");
-        }
-
         saddle = controller.getOrCreateItemOrWand(parameters.getString("saddle"));
         armor = controller.getOrCreateItemOrWand(parameters.getString("armor"));
     }
 
     public EntityHorseData(Horse horse) {
+        super(horse);
         color = horse.getColor();
         style = horse.getStyle();
         saddle = getItem(horse.getInventory().getSaddle());
@@ -66,7 +63,6 @@ public class EntityHorseData extends EntityExtraData {
         domestication = horse.getDomestication();
         maxDomestication = horse.getMaxDomestication();
         jumpStrength = horse.getJumpStrength();
-        tamed = horse.isTamed();
     }
 
     @Nullable
@@ -76,6 +72,7 @@ public class EntityHorseData extends EntityExtraData {
 
     @Override
     public void apply(Entity entity) {
+        super.apply(entity);
         if (!(entity instanceof Horse)) return;
         Horse horse = (Horse)entity;
 
@@ -95,9 +92,6 @@ public class EntityHorseData extends EntityExtraData {
         }
         if (jumpStrength != null) {
             horse.setJumpStrength(jumpStrength);
-        }
-        if (tamed != null) {
-            horse.setTamed(tamed);
         }
     }
 }

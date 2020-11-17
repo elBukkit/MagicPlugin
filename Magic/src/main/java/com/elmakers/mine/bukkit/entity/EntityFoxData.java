@@ -14,16 +14,18 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public class EntityFoxData extends EntityExtraData {
+public class EntityFoxData extends EntityAnimalData {
     private Fox.Type type;
     private UUID firstTrusted;
     private UUID secondTrusted;
+    private boolean crouching;
 
     public EntityFoxData() {
 
     }
 
     public EntityFoxData(ConfigurationSection parameters, MageController controller) {
+        super(parameters, controller);
         Logger log = controller.getLogger();
         String typeString = parameters.getString("fox_type");
         if (typeString != null && !typeString.isEmpty()) {
@@ -49,9 +51,11 @@ public class EntityFoxData extends EntityExtraData {
                 log.log(Level.WARNING, "Invalid trusted UUID: " + secondTrusted, ex);
             }
         }
+        crouching = parameters.getBoolean("crouching");
     }
 
     public EntityFoxData(Entity entity) {
+        super(entity);
         if (entity instanceof Fox) {
             Fox fox = (Fox)entity;
             type = fox.getFoxType();
@@ -63,11 +67,13 @@ public class EntityFoxData extends EntityExtraData {
             if (second != null) {
                 secondTrusted = second.getUniqueId();
             }
+            crouching = fox.isCrouching();
         }
     }
 
     @Override
     public void apply(Entity entity) {
+        super.apply(entity);
         if (entity instanceof Fox) {
             Fox fox = (Fox)entity;
             if (type != null) {
@@ -85,6 +91,7 @@ public class EntityFoxData extends EntityExtraData {
                     fox.setSecondTrustedPlayer(trusted);
                 }
             }
+            fox.setCrouching(crouching);
         }
     }
 

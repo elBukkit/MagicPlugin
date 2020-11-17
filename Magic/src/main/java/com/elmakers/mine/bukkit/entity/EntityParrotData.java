@@ -8,7 +8,7 @@ import org.bukkit.entity.Parrot;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public class EntityParrotData extends EntityExtraData {
+public class EntityParrotData extends EntityAnimalData {
     public Parrot.Variant variant;
 
     public EntityParrotData() {
@@ -16,6 +16,7 @@ public class EntityParrotData extends EntityExtraData {
     }
 
     public EntityParrotData(ConfigurationSection parameters, MageController controller) {
+        super(parameters, controller);
         Logger log = controller.getLogger();
         String variantName = parameters.getString("parrot_variant");
         if (variantName != null && !variantName.isEmpty()) {
@@ -28,6 +29,7 @@ public class EntityParrotData extends EntityExtraData {
     }
 
     public EntityParrotData(Entity entity) {
+        super(entity);
         if (entity instanceof Parrot) {
             Parrot parrot = (Parrot)entity;
             variant = parrot.getVariant();
@@ -36,6 +38,7 @@ public class EntityParrotData extends EntityExtraData {
 
     @Override
     public void apply(Entity entity) {
+        super.apply(entity);
         if (entity instanceof Parrot) {
             Parrot parrot = (Parrot)entity;
             if (variant != null) {
