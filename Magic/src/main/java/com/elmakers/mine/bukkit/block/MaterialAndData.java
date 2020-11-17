@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -291,11 +292,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     StringUtils.split(dataString, ',');
                     for (String piece : pieces) {
                         if (piece.startsWith("#")) {
-                            try {
-                                Color color = Color.fromRGB(Integer.parseInt(piece.substring(1), 16));
+                            Color color = ConfigurationUtils.toColor(piece);
+                            if (color != null) {
                                 extraData = new LeatherArmorData(color);
-                            } catch (Exception ex) {
-                                extraData = null;
                             }
                         } else {
                             try {
