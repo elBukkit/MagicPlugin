@@ -456,7 +456,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             if (context.getMage().getActiveGUI() != this) {
                 isActive = false;
                 if (context.getTargetLocation() == null) {
-                    return SpellResult.STOP;
+                    return SpellResult.NO_TARGET;
                 }
                 return SpellResult.CAST;
             }
