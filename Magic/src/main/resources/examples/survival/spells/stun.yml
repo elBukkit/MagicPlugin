@@ -8,7 +8,7 @@ stun:
     icon_url: http://textures.minecraft.net/texture/a4b47e6847d71c60d0a6453313435d61f15b1523abd9741de36366deec1f38d6
     category: combat
     worth: 80
-    earns_sp: 15
+    earns_sp: 10
     actions:
         cast:
         - class: Firework
