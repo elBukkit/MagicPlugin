@@ -3873,13 +3873,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         if (castParameters == null) {
                             castParameters = new MemoryConfiguration();
                         }
-                        castParameters.set("passive", true);
+                        castParameters.set("aura", true);
                         if (costFree) {
                             mage.setCostFree(true);
                         }
                         mage.setQuiet(true);
                         try {
-                            spell.cast(castParameters);
+                            doCast(spell, castParameters);
                         } catch (Exception ex) {
                             controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
                         }
@@ -4158,7 +4158,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return cast(spell, null);
     }
 
-    public boolean cast(Spell spell, String[] parameters) {
+    public boolean cast(Spell spell, String[] parameterArguments) {
+        ConfigurationSection parameters = null;
+        if (parameterArguments != null && parameterArguments.length > 0) {
+            parameters = new MemoryConfiguration();
+            ConfigurationUtils.addParameters(parameterArguments, parameters);
+        }
+        return doCast(spell, parameters);
+    }
+
+    public boolean doCast(Spell spell, ConfigurationSection parameters) {
         if (spell == null) {
             return false;
         }
@@ -4174,29 +4183,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return false;
             }
         }
-        Collection<String> castParameters = null;
+        ConfigurationSection castParameters = null;
         Map<String, String> castOverrides = this.getOverrides();
         if (castOverrides != null && castOverrides.size() > 0) {
-            castParameters = new ArrayList<>();
+            castParameters = new MemoryConfiguration();
             for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
                 String[] key = StringUtils.split(entry.getKey(), ".", 2);
                 if (key.length == 0) continue;
                 if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spell.getSpellKey().getBaseKey()) && !key[0].equals(spell.getSpellKey().getKey())) {
                     continue;
                 }
-                castParameters.add(key.length == 2 ? key[1] : key[0]);
-                castParameters.add(entry.getValue());
+                castParameters.set(key.length == 2 ? key[1] : key[0], entry.getValue());
             }
         }
         if (parameters != null) {
             if (castParameters == null) {
-                castParameters = new ArrayList<>();
+                castParameters = new MemoryConfiguration();
             }
-            for (String parameter : parameters) {
-                castParameters.add(parameter);
-            }
+            ConfigurationUtils.addConfigurations(castParameters, parameters, true);
         }
-        if (spell.cast(castParameters == null ? null : castParameters.toArray(EMPTY_PARAMETERS))) {
+        if (spell.cast(this, castParameters)) {
             Color spellColor = spell.getColor();
             if (useMode != WandUseMode.PRECAST) {
                 use();

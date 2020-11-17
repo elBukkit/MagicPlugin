@@ -254,6 +254,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private boolean backfired                   = false;
     private boolean hidden                      = false;
     private boolean passive                     = false;
+    private boolean aura                        = false;
     private boolean toggleable                  = true;
     private boolean reactivate                  = false;
     private boolean isActive                    = false;
@@ -1183,11 +1184,11 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Nullable
     protected Boolean prepareCast() {
-        return prepareCast(null, null);
+        return prepareCast(null, null, null);
     }
 
     @Nullable
-    protected Boolean prepareCast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation)
+    protected Boolean prepareCast(@Nullable Wand wand, @Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation)
     {
         if (mage.isPlayer() && mage.getPlayer().getGameMode() == GameMode.SPECTATOR) {
             if (mage.getDebugLevel() > 0 && extraParameters != null) {
@@ -1238,7 +1239,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         if (this.currentCast == null) {
-            getCurrentCast();
+            getCurrentCast(wand);
         }
 
         this.location = defaultLocation;
@@ -1341,8 +1342,17 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public boolean cast(@Nullable Wand wand, @Nullable ConfigurationSection parameters) {
+        return cast(wand, parameters, null);
+    }
+
+    @Override
     public boolean cast(@Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation) {
-        Boolean prepared = prepareCast(extraParameters, defaultLocation);
+        return cast(null, extraParameters, defaultLocation);
+    }
+
+    public boolean cast(@Nullable Wand wand, @Nullable ConfigurationSection extraParameters, @Nullable Location defaultLocation) {
+        Boolean prepared = prepareCast(wand, extraParameters, defaultLocation);
         if (prepared != null) {
             return prepared;
         }
@@ -1408,7 +1418,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Check for cancel-on-cast-other spells, after we have determined that this spell can really be cast.
-        if (!passive) {
+        if (!aura && !passive) {
             for (Iterator<Batch> iterator = mage.getPendingBatches().iterator(); iterator.hasNext();) {
                 Batch batch = iterator.next();
                 if (!(batch instanceof SpellBatch)) continue;
@@ -1924,6 +1934,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         cancelOnNoWand = parameters.getBoolean("cancel_on_no_wand", false);
         commandBlockAllowed = parameters.getBoolean("command_block_allowed", true);
         passive = parameters.getBoolean("passive", passive);
+        aura = parameters.getBoolean("aura", aura);
 
         MaterialSetManager materials = controller.getMaterialSetManager();
         preventPassThroughMaterials = materials.getMaterialSetEmpty("indestructible");
@@ -2719,8 +2730,16 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public com.elmakers.mine.bukkit.api.action.CastContext getCurrentCast() {
+        return getCurrentCast(null);
+    }
+
+    public CastContext getCurrentCast(@Nullable Wand wand) {
         if (currentCast == null) {
-            currentCast = new CastContext(this);
+            if (wand != null) {
+                currentCast = new CastContext(this, wand);
+            } else {
+                currentCast = new CastContext(this);
+            }
             currentCast.initialize();
         }
         return currentCast;

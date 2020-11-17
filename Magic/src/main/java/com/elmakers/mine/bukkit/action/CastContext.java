@@ -49,6 +49,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.effect.WandEffectContext;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
@@ -104,8 +105,8 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private int actionsPerformed;
     private boolean finished = false;
 
-    public CastContext(@Nonnull MageSpell spell) {
-        super(spell.getMage(), spell.getMage().getActiveWand());
+    public CastContext(@Nonnull MageSpell spell, @Nullable Wand wand) {
+        super(spell.getMage(), wand);
         this.spell = setSpell(spell);
         this.location = null;
         this.entity = null;
@@ -114,6 +115,10 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         this.startTime = System.currentTimeMillis();
         targetMessagesSent = new HashSet<>();
         messageParameters = new HashMap<>();
+    }
+
+    public CastContext(@Nonnull MageSpell spell) {
+        this(spell, spell.getMage().getActiveWand());
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {

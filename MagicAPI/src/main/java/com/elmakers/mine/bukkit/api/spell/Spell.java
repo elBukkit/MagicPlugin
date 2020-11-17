@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 /**
  * Represents a Spell that may be cast by a Mage.
@@ -33,6 +34,7 @@ public interface Spell extends SpellTemplate {
     boolean cast(@Nullable String[] parameters, @Nullable Location defaultLocation);
     boolean cast(@Nullable ConfigurationSection parameters, @Nullable Location defaultLocation);
     boolean cast(@Nullable ConfigurationSection parameters);
+    boolean cast(@Nullable Wand wand, @Nullable ConfigurationSection parameters);
     @Nullable
     Location getLocation();
     Entity getEntity();
