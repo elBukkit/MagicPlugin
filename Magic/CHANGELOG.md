@@ -12,6 +12,7 @@
  - The Blind spell now makes mobs confused and lose track of their targets. Added upgrade levels to Blind.
  - Poison now damages a little bit even if you're immune to poison
  - PlayEffects and PlaySound no longer give cast credit. Use `effects_count_as_cast: true` to change this back
+ - Add allowed_entity_classes and denied_entity_classes parameters to CheckEntity action
 
 # 8.0.2
 

@@ -3,7 +3,9 @@
 ## List is too long
 
  - wand can only be crafted from bottom row?
- - Change talisman and broomstick recipes 
+ - Change talisman and broomstick recipes
+ - Re-work wizard armor
+ - Re-work wand protection
  - Gather title = Recall
  - Mnpc select can't target underwater
  - Can we make pets?
@@ -13,7 +15,6 @@
    - sitting, other poses
    - tamed, owner
    - llama/donkey properties, inventory
- - Some kind of pets?
  - Spells ignore tamed mobs of friends ?
  - Mage add brush tab-completion is dumb (or does this command not exist?)
  - Absorb should allow you to bypass restricted materials when you have bypass perms
