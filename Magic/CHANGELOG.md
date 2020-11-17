@@ -16,6 +16,7 @@
  - Add delay and warmup parameters and "wait", "teleporting" and "menu" effects to Recall
  - Added "active_wand" target to ModifyProperties, won't switch wands by default
  - Add rainbow/technicolor armor set
+ - Add Magic.allowed_spell_categories permission list
  - Reworked broomstick:
    - Crafting now requires a phantom membrane instead of an elytra
    - Brooms start out slightly faster
@@ -37,7 +38,6 @@
  - Fix magic sword "valk" appearance
  - Fix XP exploit putting magic armor in a grindstone
  - Fix armor wands not activating when right-clicked to wear
- - Add Magic.allowed_spell_categories permission list
 
 # 8.0.1
 
