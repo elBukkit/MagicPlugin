@@ -43,11 +43,4 @@ public class EntityParrotData extends EntityExtraData {
             }
         }
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntityParrotData copy = new EntityParrotData();
-        copy.variant = variant;
-        return copy;
-    }
 }

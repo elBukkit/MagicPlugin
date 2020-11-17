@@ -48,13 +48,4 @@ public class EntityVillagerData extends EntityExtraData {
             villager.setProfession(profession);
         }
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntityVillagerData copy = new EntityVillagerData();
-        copy.profession = profession;
-        copy.randomProfession = randomProfession;
-
-        return copy;
-    }
 }

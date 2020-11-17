@@ -92,28 +92,4 @@ public class EntityArmorStandData extends EntityExtraData {
         armorStand.setMarker(isMarker);
         CompatibilityUtils.setDisabledSlots(armorStand, disabledSlots);
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntityArmorStandData copy = new EntityArmorStandData();
-        copy.itemInHand = itemInHand == null ? null : itemInHand.clone();
-        copy.boots = boots == null ? null : boots.clone();
-        copy.leggings = leggings == null ? null : leggings.clone();
-        copy.chestplate = chestplate == null ? null : chestplate.clone();
-        copy.helmet = helmet == null ? null : helmet.clone();
-        copy.bodyPose = bodyPose == null ? null : new EulerAngle(bodyPose.getX(), bodyPose.getY(), bodyPose.getZ());
-        copy.leftArmPose = leftArmPose == null ? null : new EulerAngle(leftArmPose.getX(), leftArmPose.getY(), leftArmPose.getZ());
-        copy.rightArmPose = rightArmPose == null ? null : new EulerAngle(rightArmPose.getX(), rightArmPose.getY(), rightArmPose.getZ());
-        copy.leftLegPose = leftLegPose == null ? null : new EulerAngle(leftLegPose.getX(), leftLegPose.getY(), leftLegPose.getZ());
-        copy.rightLegPose = rightLegPose == null ? null : new EulerAngle(rightLegPose.getX(), rightLegPose.getY(), rightLegPose.getZ());
-        copy.headPose = headPose == null ? null : new EulerAngle(headPose.getX(), headPose.getY(), headPose.getZ());
-        copy.hasGravity = hasGravity;
-        copy.isVisible = isVisible;
-        copy.hasArms = hasArms;
-        copy.isSmall = isSmall;
-        copy.hasBasePlate = hasBasePlate;
-        copy.isMarker = isMarker;
-        copy.disabledSlots = disabledSlots;
-        return copy;
-    }
 }

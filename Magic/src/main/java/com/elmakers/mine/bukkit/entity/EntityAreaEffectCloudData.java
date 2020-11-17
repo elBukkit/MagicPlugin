@@ -101,21 +101,4 @@ public class EntityAreaEffectCloudData extends EntityExtraData {
             cloud.setReapplicationDelay(reapplicationDelay);
         }
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntityAreaEffectCloudData copy = new EntityAreaEffectCloudData();
-        copy.color = color;
-        copy.basePotionData = basePotionData;
-        copy.potionEffects = potionEffects;
-        copy.duration = duration;
-        copy.durationOnUse = durationOnUse;
-        copy.particle = particle;
-        copy.radius = radius;
-        copy.radiusOnUse = radiusOnUse;
-        copy.radiusPerTick = radiusPerTick;
-        copy.waitTime = waitTime;
-        copy.reapplicationDelay = reapplicationDelay;
-        return copy;
-    }
 }

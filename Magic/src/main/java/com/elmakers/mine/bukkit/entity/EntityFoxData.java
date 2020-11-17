@@ -88,15 +88,6 @@ public class EntityFoxData extends EntityExtraData {
         }
     }
 
-    @Override
-    public EntityExtraData clone() {
-        EntityFoxData copy = new EntityFoxData();
-        copy.type = type;
-        copy.firstTrusted = firstTrusted;
-        copy.secondTrusted = secondTrusted;
-        return copy;
-    }
-
     public static boolean tame(Player tamer, Entity entity) {
         if (!(entity instanceof Fox)) return false;
         if (tamer == null) return false;

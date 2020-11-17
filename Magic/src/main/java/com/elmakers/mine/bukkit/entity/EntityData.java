@@ -79,7 +79,7 @@ import com.elmakers.mine.bukkit.utility.WeightedPair;
  * This class stores information about an Entity.
  *
  */
-public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData, Cloneable {
+public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData {
     protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<>();
 
     public static boolean isSpawning = false;
@@ -1100,7 +1100,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return name;
     }
 
-    @Nullable
     @Override
     public EntityData clone() {
         try {
@@ -1109,7 +1108,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             e.printStackTrace();
         }
 
-        return null;
+        // I feel like this should never happen, so instead of breaking the @Nonnull contract we'll return a reference
+        return this;
     }
 
     public boolean isRespawn() {

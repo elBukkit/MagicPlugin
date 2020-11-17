@@ -22,11 +22,4 @@ public class EntitySlimeData extends EntityExtraData {
         Slime slime = (Slime)entity;
         slime.setSize(size);
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntitySlimeData copy = new EntitySlimeData();
-        copy.size = size;
-        return copy;
-    }
 }

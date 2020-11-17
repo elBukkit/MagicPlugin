@@ -40,11 +40,4 @@ public class EntityEnderDragonData extends EntityExtraData {
             ((EnderDragon)entity).setPhase(phase);
         }
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntityEnderDragonData copy = new EntityEnderDragonData();
-        copy.phase = phase;
-        return copy;
-    }
 }

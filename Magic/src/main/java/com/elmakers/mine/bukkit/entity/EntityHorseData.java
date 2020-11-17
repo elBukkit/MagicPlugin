@@ -100,18 +100,4 @@ public class EntityHorseData extends EntityExtraData {
             horse.setTamed(tamed);
         }
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntityHorseData copy = new EntityHorseData();
-        copy.saddle = saddle;
-        copy.armor = armor;
-        copy.color = color;
-        copy.domestication = domestication;
-        copy.style = style;
-        copy.maxDomestication = maxDomestication;
-        copy.jumpStrength = jumpStrength;
-        copy.tamed = tamed;
-        return copy;
-    }
 }

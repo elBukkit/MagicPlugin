@@ -19,11 +19,4 @@ public class EntityPhantomData extends EntityExtraData {
     public void apply(Entity entity) {
         CompatibilityUtils.setPhantomSize(entity, size);
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntityPhantomData copy = new EntityPhantomData();
-        copy.size = size;
-        return copy;
-    }
 }

@@ -20,11 +20,4 @@ public class EntityZombieData extends EntityExtraData {
         Zombie zombie = (Zombie)entity;
         zombie.setBaby(isBaby);
     }
-
-    @Override
-    public EntityExtraData clone() {
-        EntityZombieData copy = new EntityZombieData();
-        copy.isBaby = isBaby;
-        return copy;
-    }
 }

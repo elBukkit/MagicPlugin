@@ -40,12 +40,6 @@ public class EntityFallingBlockData extends EntityExtraData {
         // Can't change a falling block after the fact.
     }
 
-    @Override
-    public EntityExtraData clone() {
-        EntityFallingBlockData copy = new EntityFallingBlockData(this.material);
-        return copy;
-    }
-
     public void setMaterialAndData(@Nonnull MaterialAndData material) {
         this.material = material;
     }
