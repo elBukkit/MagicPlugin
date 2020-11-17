@@ -6,6 +6,7 @@ wizardboots:
     mana_regeneration_boost: 0.05
     passive: true
     enchantable: true
+    hide_flags: 0
     potion_effects:
         speed: 0
     protection:

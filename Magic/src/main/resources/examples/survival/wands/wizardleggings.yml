@@ -6,6 +6,7 @@ wizardleggings:
     mana_regeneration_boost: 0.05
     passive: true
     enchantable: true
+    hide_flags: 0
     protection:
       magic: 0.1
 
