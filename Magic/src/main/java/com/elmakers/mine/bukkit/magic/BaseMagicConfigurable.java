@@ -176,8 +176,25 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         return true;
     }
 
+    protected void addPotionEffects(Map<PotionEffectType, Integer> effects, Object effectsObject) {
+        if (effectsObject instanceof String) {
+            addPotionEffects(effects, (String)effectsObject);
+        }
+        if (effectsObject instanceof ConfigurationSection) {
+            ConfigurationSection effectsConfig = (ConfigurationSection)effectsObject;
+            Set<String> keys = effectsConfig.getKeys(false);
+            for (String key : keys) {
+                try {
+                        PotionEffectType type = PotionEffectType.getByName(key.toUpperCase());
+                        effects.put(type, effectsConfig.getInt(key));
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Invalid potion effect: " + key);
+                }
+            }
+        }
+    }
+
     protected void addPotionEffects(Map<PotionEffectType, Integer> effects, String effectsString) {
-        // TODO: Support configuration section here ... ?
         if (effectsString == null || effectsString.isEmpty()) {
             return;
         }
@@ -210,13 +227,12 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     protected boolean upgradePotionEffects(String key, Object value) {
-        if (!(value instanceof String)) return false;
         boolean modified = false;
-        String currentValue = getProperty(key, "");
+        Object currentValue = getProperty(key);
         Map<PotionEffectType, Integer> currentEffects = new HashMap<>();
         Map<PotionEffectType, Integer> newEffects = new HashMap<>();
         addPotionEffects(currentEffects, currentValue);
-        addPotionEffects(newEffects, (String)value);
+        addPotionEffects(newEffects, value);
 
         for (Map.Entry<PotionEffectType, Integer> otherEffects : newEffects.entrySet()) {
             Integer current = currentEffects.get(otherEffects.getKey());

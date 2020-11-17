@@ -2065,7 +2065,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         potionEffects.clear();
         if (hasProperty("potion_effects")) {
-            addPotionEffects(potionEffects, getString("potion_effects", null));
+            addPotionEffects(potionEffects, getProperty("potion_effects"));
         }
 
         // Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
