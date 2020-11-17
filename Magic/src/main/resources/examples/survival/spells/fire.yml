@@ -48,6 +48,7 @@ fire:
            sound: entity_ghast_shoot
            sound_pitch: 0.8
     parameters:
+        target: other
         velocity: 80
         target_type: LivingEntity
         allow_max_range: true
