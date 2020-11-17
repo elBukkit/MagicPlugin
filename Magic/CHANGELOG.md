@@ -14,6 +14,7 @@
  - PlayEffects and PlaySound no longer give cast credit. Use `effects_count_as_cast: true` to change this back
  - Add allowed_entity_classes and denied_entity_classes parameters to CheckEntity action
  - Add delay and warmup parameters and "wait", "teleporting" and "menu" effects to Recall
+ - Added "active_wand" target to ModifyProperties, won't switch wands by default
 
 # 8.0.2
 

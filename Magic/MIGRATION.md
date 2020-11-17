@@ -3,6 +3,7 @@
 # 8.1
 
  - PlayEffects and PlaySound no longer give cast credit. Use `effects_count_as_cast: true` to change this back
+ - Added "active_wand" target to ModifyProperties, won't switch wands by default
 
 # 8.0
 
