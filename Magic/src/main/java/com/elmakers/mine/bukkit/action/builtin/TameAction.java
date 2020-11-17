@@ -7,7 +7,7 @@ import org.bukkit.entity.Tameable;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.entity.EntityFoxData;
 
 public class TameAction extends BaseSpellAction
 {
@@ -17,19 +17,12 @@ public class TameAction extends BaseSpellAction
         Entity entity = context.getTargetEntity();
         if (!(entity instanceof Tameable))
         {
-            if (CompatibilityUtils.isFox(entity)) {
+            if (entity.getType().name().equals("FOX")) {
                 Player tamer = context.getMage().getPlayer();
-                if (tamer != null) {
-                    if (CompatibilityUtils.isFirstTrustedPlayer(entity, tamer)) {
-                        return SpellResult.NO_TARGET;
-                    }
-                    if (CompatibilityUtils.setFirstTrustedPlayer(entity, tamer)) {
-                        return SpellResult.CAST;
-                    }
-                    return SpellResult.FAIL;
-                }
+                boolean result = EntityFoxData.tame(tamer, entity);
+                return result ? SpellResult.CAST : SpellResult.NO_TARGET;
             }
-            return SpellResult.NO_TARGET;
+            return SpellResult.PLAYER_REQUIRED;
         }
 
         Tameable tameable = (Tameable)entity;

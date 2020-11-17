@@ -1711,40 +1711,6 @@ public class CompatibilityUtils extends NMSUtils {
         return materialKey;
     }
 
-    public static Enum<?> getParrotVariant(Entity entity) {
-        if (class_Parrot == null) return null;
-        Enum<?> variant = null;
-        try {
-            variant = (Enum<?>)class_Parrot_getVariantMethod.invoke(entity);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return variant;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Enum<?> getParrotVariant(String variantName) {
-        if (class_ParrotVariant == null) return null;
-        Enum<?> variant = null;
-        try {
-            variant = Enum.valueOf(class_ParrotVariant, variantName.toUpperCase());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return variant;
-    }
-
-    public static boolean setParrotVariant(Entity entity, Enum<?> variant) {
-        if (class_Parrot == null || variant == null) return false;
-        try {
-            class_Parrot_setVariantMethod.invoke(entity, variant);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
     private static boolean checkSingleChunk(Chunk chunk, boolean load) {
         if (!chunk.isLoaded()) {
             if (load) {
@@ -2136,69 +2102,6 @@ public class CompatibilityUtils extends NMSUtils {
         if (class_Chunk_removePluginChunkTicketMethod == null) return false;
         try {
             class_Chunk_removePluginChunkTicketMethod.invoke(chunk, plugin);
-            return true;
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    public static boolean setFirstTrustedPlayer(Entity entity, AnimalTamer player) {
-        if (class_Fox_setFirstTrustedPlayerMethod == null) return false;
-        try {
-            class_Fox_setFirstTrustedPlayerMethod.invoke(entity, player);
-            return true;
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    public static Object getFirstTrustedPlayer(Entity entity) {
-        if (class_Fox_getFirstTrustedPlayerMethod == null) return null;
-        try {
-            Object trusted = class_Fox_getFirstTrustedPlayerMethod.invoke(entity);
-            return trusted;
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public static boolean isFirstTrustedPlayer(Entity entity, Player player) {
-        return getFirstTrustedPlayer(entity) == player;
-    }
-
-    public static boolean isFox(Entity entity) {
-        if (class_Fox == null) return false;
-        return class_Fox.isAssignableFrom(entity.getClass());
-    }
-
-    public static Object getFoxType(Entity entity) {
-        if (class_Fox_getTypeMethod == null) return null;
-        try {
-            return class_Fox_getTypeMethod.invoke(entity);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Object getFoxType(String typeKey) {
-        if (enum_Fox_Type == null) return null;
-        try {
-            return Enum.valueOf(enum_Fox_Type, typeKey);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public static boolean setFoxType(Entity entity, Object type) {
-        if (class_Fox_setTypeMethod == null) return false;
-        try {
-            class_Fox_setTypeMethod.invoke(entity, type);
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();

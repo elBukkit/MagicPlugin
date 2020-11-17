@@ -176,8 +176,6 @@ public class NMSUtils {
     protected static Class<?> class_ChatComponentText;
     protected static Class<?> class_IChatBaseComponent;
     protected static Class<?> class_NamespacedKey;
-    protected static Class<?> class_Parrot;
-    protected static Class<Enum> class_ParrotVariant;
     protected static Class<?> class_KnowledgeBookMeta;
     protected static Class<?> class_entityTypes;
     protected static Class<?> class_Powerable;
@@ -187,8 +185,6 @@ public class NMSUtils {
     protected static Enum<?> enum_BisectedHalf_TOP;
     protected static Class<?> class_Sittable;
     protected static Class<?> class_Lootable;
-    protected static Class<?> class_Fox;
-    protected static Class<Enum> enum_Fox_Type;
     protected static Class<?> class_RecipeChoice_ExactChoice;
     protected static Class<?> class_BlockActionContext;
     protected static Class<Enum> class_EnumHand;
@@ -281,8 +277,6 @@ public class NMSUtils {
     protected static Method class_UnsafeValues_fromLegacyMethod;
     protected static Method class_Material_isLegacyMethod;
     protected static Method class_Material_getLegacyMethod;
-    protected static Method class_Parrot_getVariantMethod;
-    protected static Method class_Parrot_setVariantMethod;
     protected static Method class_Block_setTypeIdAndDataMethod;
     protected static Method class_Chunk_isReadyMethod;
     protected static Method class_ItemDye_bonemealMethod;
@@ -308,10 +302,6 @@ public class NMSUtils {
     protected static Method class_Chunk_addPluginChunkTicketMethod;
     protected static Method class_Chunk_removePluginChunkTicketMethod;
     protected static Method class_Lootable_setLootTableMethod;
-    protected static Method class_Fox_setFirstTrustedPlayerMethod;
-    protected static Method class_Fox_getFirstTrustedPlayerMethod;
-    protected static Method class_Fox_setTypeMethod;
-    protected static Method class_Fox_getTypeMethod;
     protected static Method class_CraftArt_NotchToBukkitMethod;
     protected static Method class_BlockPosition_getXMethod;
     protected static Method class_BlockPosition_getYMethod;
@@ -667,22 +657,6 @@ public class NMSUtils {
 
             // We don't want to consider new-ish builds as "legacy" and print a warning, so keep a separate flag
             boolean current = true;
-
-            try {
-                class_Fox = Class.forName("org.bukkit.entity.Fox");
-                enum_Fox_Type = (Class<Enum>)Class.forName("org.bukkit.entity.Fox$Type");
-                class_Fox_setFirstTrustedPlayerMethod = class_Fox.getMethod("setFirstTrustedPlayer", AnimalTamer.class);
-                class_Fox_getFirstTrustedPlayerMethod = class_Fox.getMethod("getFirstTrustedPlayer");
-                class_Fox_setTypeMethod = class_Fox.getMethod("setFoxType", enum_Fox_Type);
-                class_Fox_getTypeMethod = class_Fox.getMethod("getFoxType");
-            } catch (Throwable ex) {
-                class_Fox = null;
-                enum_Fox_Type = null;
-                class_Fox_setTypeMethod = null;
-                class_Fox_getTypeMethod = null;
-                class_Fox_setFirstTrustedPlayerMethod = null;
-                class_Fox_getFirstTrustedPlayerMethod = null;
-            }
 
             try {
                 Class<?> class_RecipeChoice = Class.forName("org.bukkit.inventory.RecipeChoice");
@@ -1055,18 +1029,6 @@ public class NMSUtils {
                 if (!isModernVersion) {
                     logger.log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work.");
                 }
-            }
-            try {
-                class_Parrot = Class.forName("org.bukkit.entity.Parrot");
-                class_ParrotVariant = (Class<Enum>)Class.forName("org.bukkit.entity.Parrot$Variant");
-                class_Parrot_getVariantMethod = class_Parrot.getMethod("getVariant");
-                class_Parrot_setVariantMethod = class_Parrot.getMethod("setVariant", class_ParrotVariant);
-            } catch (Throwable ex) {
-                class_Parrot = null;
-                class_ParrotVariant = null;
-                class_Parrot_getVariantMethod = null;
-                class_Parrot_setVariantMethod = null;
-                logger.warning("No parrots available on your server.");
             }
 
             try {

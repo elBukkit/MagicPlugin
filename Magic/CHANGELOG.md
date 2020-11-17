@@ -16,7 +16,7 @@
  - Add delay and warmup parameters and "wait", "teleporting" and "menu" effects to Recall
  - Added "active_wand" target to ModifyProperties, won't switch wands by default
  - Add rainbow/technicolor armor set
- - Add Magic.allowed_spell_categories permission list
+ - Add Magic.allowed_spell_categories permission listexc
  - Reworked broomstick:
    - Crafting now requires a phantom membrane instead of an elytra
    - Brooms start out slightly faster

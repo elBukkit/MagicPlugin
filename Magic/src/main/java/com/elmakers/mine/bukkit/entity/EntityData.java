@@ -276,7 +276,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityParrotData(entity);
         } else if (entity instanceof EnderDragon) {
             extraData = new EntityEnderDragonData(entity);
-        } else if (CompatibilityUtils.isFox(entity)) {
+        } else if (entity.getType().name().equals("FOX")) {
             extraData = new EntityFoxData(entity);
         } else if (entity.getType().name().equals("PHANTOM")) {
             extraData = new EntityPhantomData(entity);
@@ -338,7 +338,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entityName != null && !entityName.isEmpty()) {
             type = parseEntityType(entityName);
             if (type == null) {
-                controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName + " in mob config for " + key + ", did you forget the 'type' parameter?");
+                String message = " Invalid entity type: " + entityName + " in mob config";
+                if (key != null) {
+                    message = message + " " + key;
+                }
+                if (key != null && entityName.equals(key)) {
+                    message = message + ", did you forget the 'type' parameter?";
+                }
+                controller.getLogger().log(Level.WARNING, message);
                 return;
             }
         }

@@ -7,15 +7,17 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fox;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class EntityFoxData extends EntityExtraData {
-    private Object type;
+    private Fox.Type type;
     private UUID firstTrusted;
+    private UUID secondTrusted;
 
     public EntityFoxData() {
 
@@ -26,9 +28,9 @@ public class EntityFoxData extends EntityExtraData {
         String typeString = parameters.getString("fox_type");
         if (typeString != null && !typeString.isEmpty()) {
             try {
-                type = CompatibilityUtils.getFoxType(typeString.toUpperCase());
+                type = Fox.Type.valueOf(typeString.toUpperCase());
             } catch (Exception ex) {
-                log.log(Level.WARNING, "Invalid fox_type: " + parameters.getString("fox_type"), ex);
+                log.log(Level.WARNING, "Invalid fox_type: " + typeString, ex);
             }
         }
         String trusted = parameters.getString("trusted");
@@ -36,31 +38,51 @@ public class EntityFoxData extends EntityExtraData {
             try {
                 firstTrusted = UUID.fromString(trusted);
             } catch (Exception ex) {
-                log.log(Level.WARNING, "Invalid trusted UUID: " + parameters.getString("trusted"), ex);
+                log.log(Level.WARNING, "Invalid trusted UUID: " + trusted, ex);
+            }
+        }
+        String secondTrusted = parameters.getString("second_trusted");
+        if (secondTrusted != null && !secondTrusted.isEmpty()) {
+            try {
+                this.secondTrusted = UUID.fromString(secondTrusted);
+            } catch (Exception ex) {
+                log.log(Level.WARNING, "Invalid trusted UUID: " + secondTrusted, ex);
             }
         }
     }
 
-    public EntityFoxData(Entity fox) {
-        if (CompatibilityUtils.isFox(fox)) {
-            type = CompatibilityUtils.getFoxType(fox);
-            Object trusted = CompatibilityUtils.getFirstTrustedPlayer(fox);
-            if (trusted != null && trusted instanceof Player) {
-                firstTrusted = ((Player)trusted).getUniqueId();
+    public EntityFoxData(Entity entity) {
+        if (entity instanceof Fox) {
+            Fox fox = (Fox)entity;
+            type = fox.getFoxType();
+            AnimalTamer trusted = fox.getFirstTrustedPlayer();
+            if (trusted != null) {
+                firstTrusted = trusted.getUniqueId();
+            }
+            AnimalTamer second = fox.getSecondTrustedPlayer();
+            if (second != null) {
+                secondTrusted = second.getUniqueId();
             }
         }
     }
 
     @Override
     public void apply(Entity entity) {
-        if (CompatibilityUtils.isFox(entity)) {
+        if (entity instanceof Fox) {
+            Fox fox = (Fox)entity;
             if (type != null) {
-                CompatibilityUtils.setFoxType(entity, type);
+                fox.setFoxType(type);
             }
             if (firstTrusted != null) {
                 OfflinePlayer trusted = Bukkit.getOfflinePlayer(firstTrusted);
                 if (trusted != null) {
-                    CompatibilityUtils.setFirstTrustedPlayer(entity, trusted);
+                    fox.setFirstTrustedPlayer(trusted);
+                }
+            }
+            if (secondTrusted != null) {
+                OfflinePlayer trusted = Bukkit.getOfflinePlayer(secondTrusted);
+                if (trusted != null) {
+                    fox.setSecondTrustedPlayer(trusted);
                 }
             }
         }
@@ -70,6 +92,18 @@ public class EntityFoxData extends EntityExtraData {
     public EntityExtraData clone() {
         EntityFoxData copy = new EntityFoxData();
         copy.type = type;
+        copy.firstTrusted = firstTrusted;
+        copy.secondTrusted = secondTrusted;
         return copy;
+    }
+
+    public static boolean tame(Player tamer, Entity entity) {
+        if (!(entity instanceof Fox)) return false;
+        if (tamer == null) return false;
+        Fox fox = (Fox)entity;
+        AnimalTamer current = fox.getFirstTrustedPlayer();
+        if (current != null && current.getUniqueId().equals(tamer.getUniqueId())) return false;
+        fox.setFirstTrustedPlayer(tamer);
+        return true;
     }
 }

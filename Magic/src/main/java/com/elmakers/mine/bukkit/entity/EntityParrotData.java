@@ -4,12 +4,12 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Parrot;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class EntityParrotData extends EntityExtraData {
-    public Enum<?> variant;
+    public Parrot.Variant variant;
 
     public EntityParrotData() {
 
@@ -19,21 +19,28 @@ public class EntityParrotData extends EntityExtraData {
         Logger log = controller.getLogger();
         String variantName = parameters.getString("parrot_variant");
         if (variantName != null && !variantName.isEmpty()) {
-            variant = CompatibilityUtils.getParrotVariant(variantName);
-            if (variant == null) {
+            try {
+                variant = Parrot.Variant.valueOf(variantName.toUpperCase());
+            } catch (Exception ex) {
                 log.warning("Invalid parrot variant: " + variantName);
             }
         }
     }
 
     public EntityParrotData(Entity entity) {
-       variant = CompatibilityUtils.getParrotVariant(entity);
+        if (entity instanceof Parrot) {
+            Parrot parrot = (Parrot)entity;
+            variant = parrot.getVariant();
+        }
     }
 
     @Override
     public void apply(Entity entity) {
-        if (variant != null) {
-            CompatibilityUtils.setParrotVariant(entity, variant);
+        if (entity instanceof Parrot) {
+            Parrot parrot = (Parrot)entity;
+            if (variant != null) {
+                parrot.setVariant(variant);
+            }
         }
     }
 
