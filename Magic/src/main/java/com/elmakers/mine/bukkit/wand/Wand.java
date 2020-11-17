@@ -1631,12 +1631,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return null;
         }
 
-        ItemData itemData = controller.getOrCreateItem(key);
-        if (itemData == null) {
-            return null;
+        com.elmakers.mine.bukkit.api.block.MaterialAndData materialData = null;
+        ItemData itemData = controller.getItem(key);
+        if (itemData != null) {
+            materialData = itemData.getMaterialAndData();
+        } else {
+            materialData = new MaterialAndData(key);
         }
-
-        com.elmakers.mine.bukkit.api.block.MaterialAndData materialData = itemData.getMaterialAndData();
         return materialData instanceof MaterialAndData ? (MaterialAndData)materialData : null;
     }
 
