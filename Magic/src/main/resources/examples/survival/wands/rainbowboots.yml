@@ -1,0 +1,9 @@
+rainbowboots:
+    icon: "leather_boots:#random"
+    indestructible: false
+    locked: true
+    keep: true
+    cast_spell: rainbowboots
+    cast_interval: 100
+    passive: true
+

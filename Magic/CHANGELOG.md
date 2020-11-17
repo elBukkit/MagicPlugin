@@ -15,6 +15,7 @@
  - Add allowed_entity_classes and denied_entity_classes parameters to CheckEntity action
  - Add delay and warmup parameters and "wait", "teleporting" and "menu" effects to Recall
  - Added "active_wand" target to ModifyProperties, won't switch wands by default
+ - Add rainbow/technicolor armor set
 
 # 8.0.2
 

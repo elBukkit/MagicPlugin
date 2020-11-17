@@ -1,0 +1,9 @@
+rainbowhelmet:
+    icon: "leather_helmet:#random"
+    indestructible: false
+    locked: true
+    keep: true
+    cast_spell: rainbowhelmet
+    cast_interval: 100
+    passive: true
+

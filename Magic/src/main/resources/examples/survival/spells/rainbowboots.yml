@@ -1,0 +1,11 @@
+rainbowboots:
+    icon: "leather_boots:#random"
+    hidden: true
+    actions:
+        cast:
+        - class: ModifyProperties
+    parameters:
+        target: self
+        modify_target: wand
+        modify:
+          icon: "leather_boots:#random"

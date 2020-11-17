@@ -413,3 +413,15 @@ wands:
     gauntlet:
       name: Infinity Gauntlet
       description: Harness all of the powers of the Universe
+    rainbowhelmet:
+      name: Technicolor Helmet
+      spell_aura: ""
+    rainbowchestplate:
+      name: Technicolor Chestplate
+      spell_aura: ""
+    rainbowleggings:
+      name: Technicolor Leggings
+      spell_aura: ""
+    rainbowboots:
+      name: Technicolor Boots
+      spell_aura: ""

@@ -1,0 +1,9 @@
+rainbowleggings:
+    icon: "leather_leggings:#random"
+    indestructible: false
+    locked: true
+    keep: true
+    cast_spell: rainbowleggings
+    cast_interval: 100
+    passive: true
+

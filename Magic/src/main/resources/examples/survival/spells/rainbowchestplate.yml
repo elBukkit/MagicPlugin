@@ -1,0 +1,11 @@
+rainbowchestplate:
+    icon: "leather_chestplate:#random"
+    hidden: true
+    actions:
+        cast:
+        - class: ModifyProperties
+    parameters:
+        target: self
+        modify_target: wand
+        modify:
+          icon: "leather_chestplate:#random"
