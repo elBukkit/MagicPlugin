@@ -21,6 +21,14 @@
    - Brooms start out slightly faster
    - The broom skill now only increases duration and handling
    - TODO: A system to upgrade broom speed
+ - Reworked magic armor:
+   - Retired apprentice gear
+   - Apprentice gear crafting recipes no longer enabled by robes example
+   - Items and recipes will stay in case you want them or players have them already
+   - Wizard gear recipes changed to apprentice gear recipes
+   - Wizard gear no longer indestructible
+   - Wizard gear can be enchanted, does not come with enchantments
+   - Wizard boots cost 2x magic hearts, grant speed boost
 
 # 8.0.2
 

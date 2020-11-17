@@ -1,12 +1,12 @@
 wizardboots:
     icon: chainmail_boots
-    indestructible: true
     locked: true
     keep: true
     mana_max_boost: 0.1
     mana_regeneration_boost: 0.05
     passive: true
-    enchantments:
-      protection_fall: 5
+    enchantable: true
+    potion_effects:
+        speed: 1
     protection:
       magic: 0.1

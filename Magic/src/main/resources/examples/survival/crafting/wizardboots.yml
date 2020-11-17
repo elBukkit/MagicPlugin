@@ -2,11 +2,10 @@ wizardboots:
   enabled: false
   output: wizardboots
   output_type: wand
-  ignore_damage: true
   materials:
-    o: nether_star
-    i: apprenticeboots
-  row_1: o
-  row_2: i
-  row_3: ""
+    o: magicheart
+    i: white_wool
+  row_1: ""
+  row_2: o o
+  row_3: i i
 

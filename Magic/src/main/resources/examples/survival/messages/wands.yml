@@ -97,16 +97,12 @@ wands:
         description: A true wizard's hat! Look straight up and right-click to wear it.
     wizardhelmet:
         name: Wizard's Scarf
-        description: Indestructible!
     wizardchestplate:
         name: Wizard's Robes
-        description: Indestructible!
     wizardleggings:
         name: Wizard's Pants
-        description: Indestructible!
     wizardboots:
         name: Wizard's Boots
-        description: Indestructible!
     apprenticehelmet:
         name: Apprentice Helmet
         description: For new wizards

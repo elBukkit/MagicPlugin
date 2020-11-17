@@ -1,13 +1,11 @@
 wizardleggings:
     icon: chainmail_leggings
-    indestructible: true
     locked: true
     keep: true
     mana_max_boost: 0.1
     mana_regeneration_boost: 0.05
     passive: true
-    enchantments:
-      protection_fire: 2
+    enchantable: true
     protection:
       magic: 0.1
 

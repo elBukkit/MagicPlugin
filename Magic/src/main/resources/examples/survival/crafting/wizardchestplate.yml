@@ -2,10 +2,10 @@ wizardchestplate:
   enabled: false
   output: wizardchestplate
   output_type: wand
-  ignore_damage: true
   materials:
-    o: nether_star
-    i: apprenticechestplate
-  row_1: o
-  row_2: i
-  row_3: ""
+    o: magicheart
+    i: white_wool
+  row_1: i i
+  row_2: ioi
+  row_3: iii
+
