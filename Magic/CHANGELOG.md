@@ -6,6 +6,7 @@
  - Fix icons for magic bow arrow spells and longbow appearance
  - Fix magic sword "valk" appearance
  - Fix XP exploit putting magic armor in a grindstone
+ - Fix armor wands not activating when right-clicked to wear
 
 # 8.0.1
 
