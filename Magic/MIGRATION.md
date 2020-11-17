@@ -1,5 +1,9 @@
 # Migration Notes
 
+# 8.1
+
+ - PlayEffects and PlaySound no longer give cast credit. Use `effects_count_as_cast: true` to change this back
+
 # 8.0
 
  - If you would like to upgrade, but keep things mostly the same as in previous versions of Magic, add

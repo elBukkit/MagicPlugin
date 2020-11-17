@@ -14,6 +14,7 @@ public class PlaySoundAction extends BaseSpellAction
 {
     private SoundEffect sound;
     private int radius;
+    private boolean countAsCast;
 
     @Override
     public SpellResult perform(CastContext context)
@@ -28,7 +29,7 @@ public class PlaySoundAction extends BaseSpellAction
                 return SpellResult.NO_TARGET;
             }
             sound.play(context.getPlugin(), entity);
-            return SpellResult.CAST;
+            return countAsCast ? SpellResult.CAST : SpellResult.NO_ACTION;
         }
         Location location = context.getTargetLocation();
         if (location == null) {
@@ -38,7 +39,7 @@ public class PlaySoundAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
         sound.play(context.getPlugin(), location);
-        return SpellResult.CAST;
+        return countAsCast ? SpellResult.CAST : SpellResult.NO_ACTION;
     }
 
     @Override
@@ -50,5 +51,7 @@ public class PlaySoundAction extends BaseSpellAction
         sound.setVolume((float)parameters.getDouble("volume", sound.getVolume()));
         sound.setVolume((float)parameters.getDouble("sound_volume", sound.getVolume()));
         radius = parameters.getInt("radius", 32);
+        countAsCast = parameters.getBoolean("effects_count_as_cast", false);
+        countAsCast = parameters.getBoolean("sounds_count_as_cast", countAsCast);
     }
 }

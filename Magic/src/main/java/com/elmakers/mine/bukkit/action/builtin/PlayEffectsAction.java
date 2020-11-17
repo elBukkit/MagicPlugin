@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 public class PlayEffectsAction extends BaseSpellAction
 {
     private String effectKey;
+    private boolean countAsCast;
 
     @Override
     public SpellResult perform(CastContext context)
@@ -21,7 +22,7 @@ public class PlayEffectsAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
         context.playEffects(effectKey, 1.0f, context.getTargetBlock());
-        return SpellResult.CAST;
+        return countAsCast ? SpellResult.CAST : SpellResult.NO_ACTION;
     }
 
     @Override
@@ -29,6 +30,7 @@ public class PlayEffectsAction extends BaseSpellAction
         super.prepare(context, parameters);
         effectKey = parameters.getString("effect");
         effectKey = parameters.getString("effects", effectKey);
+        countAsCast = parameters.getBoolean("effects_count_as_cast", false);
     }
 
     @Override
