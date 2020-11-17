@@ -7,6 +7,6 @@ wizardboots:
     passive: true
     enchantable: true
     potion_effects:
-        speed: 1
+        speed: 0
     protection:
       magic: 0.1
