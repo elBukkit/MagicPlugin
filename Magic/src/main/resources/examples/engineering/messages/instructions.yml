@@ -1,0 +1,9 @@
+examples:
+  engineering:
+    instructions: |-
+      &8| &3&nENGINEERING &r
+      &8|   &fRank up to &bEngineer &fafter mastering the &bWizard &frank &r
+      &8|   &fUse &6/mgive wolf &ffor NathanWolf's personal OP staff &r
+      &8|   &fUse &6/mnpc add conduitshop &fif you want players to be able &r
+      &8|   &fto rank up to &bConduit&f, for cost-free building &r
+

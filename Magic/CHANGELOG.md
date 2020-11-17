@@ -30,6 +30,7 @@
    - Wizard gear no longer indestructible
    - Wizard gear can be enchanted, does not come with enchantments
    - Wizard boots cost 2x magic hearts, grant speed boost
+ - Add instructions to builtin examples
 
 # 8.0.2
 

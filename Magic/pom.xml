@@ -675,6 +675,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/engineering/mobs.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/engineering/mobs">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
 
                                 <!-- Potter configs -->
 
@@ -806,6 +811,11 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/stars/wands.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/stars/wands">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/mobs.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/mobs">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

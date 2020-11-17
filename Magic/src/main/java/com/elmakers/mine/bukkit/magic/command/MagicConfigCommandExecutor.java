@@ -55,7 +55,7 @@ import com.google.gson.Gson;
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
     private static final String EXAMPLES_FILE_NAME = "_examples.yml";
-    private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list", "fetch");
+    private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list", "fetch", "help");
     private static Set<String> availableFiles = ImmutableSet.of(
             "spells", "wands", "automata", "classes", "config", "crafting", "effects",
             "items", "materials", "mobs", "paths", "attributes", "messages", "modifiers");
@@ -754,9 +754,15 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             onFetchExample(sender, parameters);
         } else if (action.equals("list")) {
             onListExamples(sender);
+        } else if (action.equals("help")) {
+            onExampleHelp(sender);
         } else {
             controller.getLogger().warning("Did not handle an example action that is in the set: " + action);
         }
+    }
+
+    protected void onExampleHelp(CommandSender sender) {
+        magic.showExampleInstructions(sender);
     }
 
     protected void onListExamples(CommandSender sender) {
@@ -904,7 +910,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             exampleConfig.set("add_examples", new ArrayList<>());
             exampleConfig.save(exampleFile);
             if (reload) {
-                controller.loadConfigurationQuietly(sender);
+                magic.loadConfigurationExamples(sender);
             }
         } catch (Exception ex) {
             sender.sendMessage(magic.getMessages().get("commands.mconfig.write_failed").replace("$file", exampleFile.getName()));

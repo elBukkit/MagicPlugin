@@ -1,0 +1,10 @@
+examples:
+  potter:
+    instructions: |-
+      &8| &3&nPOTTER &r
+      &8|   &fSet up &bOllivander &fwith &6/mnpc add ollivander &r
+      &8|   &fPlayers will get a &bTicket from Ollivander&f on join &r
+      &8|   &fUse &6/mgive ticket&f to get another one &r
+      &8|   &fSet up &bExams &fwith &6/mnpc add year1&f through &6year7 &r
+
+

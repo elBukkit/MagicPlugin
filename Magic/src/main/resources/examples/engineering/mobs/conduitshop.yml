@@ -1,0 +1,10 @@
+conduitshop:
+  inherit: base_npc
+  name: Conduit
+  interact_spell: conduitshop
+  villager_profession: librarian
+  disguise:
+    type: player
+    skin: TheBugWhisperer
+  dialog:
+    - Are you ready to become a master builder?

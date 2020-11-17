@@ -1,0 +1,7 @@
+examples:
+  stars:
+    instructions: |-
+      &8| &3&nSTARS&r
+      &8|   &fUse &6/mnpc add starshop &fto allow &r
+      &8|   &fplayers to choose between &bJedi&f or &cSith &r
+

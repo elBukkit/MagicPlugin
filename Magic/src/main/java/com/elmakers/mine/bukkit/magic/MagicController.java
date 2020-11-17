@@ -1899,6 +1899,11 @@ public class MagicController implements MageController {
             reloadingMage = null;
         }
 
+        if (showExampleInstructions) {
+            showExampleInstructions = false;
+            showExampleInstructions(sender);
+        }
+
         Bukkit.getScheduler().runTaskLater(plugin, new MigrationTask(this), 20 * 5);
     }
 
@@ -1907,6 +1912,24 @@ public class MagicController implements MageController {
         if (protectionManager.isEnabled()) {
             blockBreakManagers.add(protectionManager);
             blockBuildManagers.add(protectionManager);
+        }
+    }
+
+    public void showExampleInstructions(CommandSender sender) {
+        Mage mage = getMage(sender);
+        List<String> instructions = new ArrayList<>();
+        for (String example : getLoadedExamples()) {
+            String exampleInstructions = messages.get("examples." + example + ".instructions", "");
+            if (exampleInstructions != null && !exampleInstructions.isEmpty()) {
+                instructions.add(exampleInstructions);
+            }
+        }
+        if (!instructions.isEmpty()) {
+            mage.sendMessage(messages.get("examples.instructions_header"));
+            for (String exampleInstructions : instructions) {
+                mage.sendMessage(exampleInstructions);
+            }
+            mage.sendMessage(messages.get("examples.instructions_footer"));
         }
     }
 
@@ -2070,6 +2093,11 @@ public class MagicController implements MageController {
         } else {
             loadTask.runNow();
         }
+    }
+
+    public void loadConfigurationExamples(CommandSender sender) {
+        showExampleInstructions = true;
+        loadConfiguration(sender, false, false);
     }
 
     protected void loadSpellData() {
@@ -7387,4 +7415,5 @@ public class MagicController implements MageController {
     private Map<String, PlayerWarpManager>      playerWarpManagers          = new HashMap<>();
     private Map<Material, String>               autoWands                   = new HashMap<>();
     private Map<String, String>                 builtinExternalExamples     = new HashMap<>();
+    private boolean                             showExampleInstructions     = false;
 }

@@ -1,0 +1,10 @@
+starshop:
+  inherit: base_npc
+  name: Sith Lord
+  interact_spell: starshop
+  villager_profession: librarian
+  disguise:
+    type: player
+    skin: DarthVader
+  dialog:
+    - Join me on the dark side!

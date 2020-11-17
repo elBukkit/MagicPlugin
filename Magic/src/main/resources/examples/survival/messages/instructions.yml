@@ -1,0 +1,6 @@
+examples:
+  survival:
+    instructions: |-
+      &8| &3&nSURVIVAL &r
+      &8|   &fCheck for new crafting recipes, or use &6/mgive wand &r
+      &8|   &fUse &6/mgive uberwand &ffor an OP testing wand &r

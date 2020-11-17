@@ -1,0 +1,10 @@
+bendingshop:
+  inherit: base_npc
+  name: The Avatar
+  interact_spell: bendingshop
+  villager_profession: librarian
+  disguise:
+    type: player
+    skin: Aang
+  dialog:
+    - Are you ready to hone your bending skills?
