@@ -15,19 +15,7 @@ recall:
     quick_cast: true
     actions:
         cast:
-          - class: PlayEffects
-            ignore_result: true
-            effects: menu
           - class: Recall
-            teleport: false
-          - class: PlayEffects
-            ignore_result: true
-            effects: wait
-          - class: Delay
-          - class: PlayEffects
-            ignore_result: true
-            effects: teleporting
-          - class: Teleport
     effects:
         no_action: []
         no_target: []
@@ -42,6 +30,19 @@ recall:
               duration: $warmup
               period: 1
               particle: redstone
+              particle_offset_x: 0.9
+              particle_offset_y: 0.1
+              particle_offset_z: 0.9
+              radius: 1
+              offset: 0,-1,0
+        -  class: EffectSingle
+           source_location: eyes
+           effectlib:
+              class: WarpEffect
+              duration: 1000
+              period: 2
+              particle: portal
+              particle_count: 10
               particle_offset_x: 0.9
               particle_offset_y: 0.1
               particle_offset_z: 0.9
@@ -62,22 +63,9 @@ recall:
            color_override: color
            effectlib:
               class: WarpEffect
-              duration: $warmup
+              duration: 1000
               period: 1
               particle: redstone
-              particle_offset_x: 0.9
-              particle_offset_y: 0.1
-              particle_offset_z: 0.9
-              radius: 1
-              offset: 0,-1,0
-        -  class: EffectSingle
-           source_location: eyes
-           effectlib:
-              class: WarpEffect
-              duration: $warmup
-              period: 2
-              particle: portal
-              particle_count: 10
               particle_offset_x: 0.9
               particle_offset_y: 0.1
               particle_offset_z: 0.9
@@ -163,11 +151,9 @@ recall:
       show_unavailable: true
       unavailable_icon: skull:http://textures.minecraft.net/texture/d34e063cafb467a5c8de43ec78619399f369f4a52434da8017a983cdd92516a0
       loud: true
-      safe: false
       cooldown: 15000
       protection_duration: 5000
       target: none
-      direct: true
 
 recall|2:
     upgrade_required_path: student
@@ -192,4 +178,5 @@ recall|4:
 recall|5:
   parameters:
     marker_count: 3
+
 

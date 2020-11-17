@@ -11,20 +11,8 @@ gather:
   quick_cast: true
   actions:
     cast:
-      - class: PlayEffects
-        ignore_result: true
-        effects: menu
       - class: Recall
         title: "Teleport To:"
-        teleport: false
-      - class: PlayEffects
-        ignore_result: true
-        effects: wait
-      - class: Delay
-      - class: PlayEffects
-        ignore_result: true
-        effects: teleporting
-      - class: Teleport
     alternate_down:
       - class: PlayerSelect
         actions:
@@ -64,13 +52,26 @@ gather:
     -  source_location: eyes
        color_override: color
        sound: block_note_block_bit
-       sound_pitch: 0.7
+       sound_pitch: 0.2
        sound_volume: 0.3
        effectlib:
           class: WarpEffect
           duration: $warmup
           period: 1
           particle: redstone
+          particle_offset_x: 0.9
+          particle_offset_y: 0.1
+          particle_offset_z: 0.9
+          radius: 1
+          offset: 0,-1,0
+    -  class: EffectSingle
+       source_location: eyes
+       effectlib:
+          class: WarpEffect
+          duration: 1000
+          period: 2
+          particle: portal
+          particle_count: 10
           particle_offset_x: 0.9
           particle_offset_y: 0.1
           particle_offset_z: 0.9
@@ -91,22 +92,9 @@ gather:
        color_override: color
        effectlib:
           class: WarpEffect
-          duration: $warmup
+          duration: 1000
           period: 1
           particle: redstone
-          particle_offset_x: 0.9
-          particle_offset_y: 0.1
-          particle_offset_z: 0.9
-          radius: 1
-          offset: 0,-1,0
-    -  class: EffectSingle
-       source_location: eyes
-       effectlib:
-          class: WarpEffect
-          duration: $warmup
-          period: 2
-          particle: portal
-          particle_count: 10
           particle_offset_x: 0.9
           particle_offset_y: 0.1
           particle_offset_z: 0.9
@@ -189,10 +177,6 @@ gather:
     allow_fields: false
     allow_warps: false
     protection_duration: 5000
-
-    # Teleport parameters
-    direct: true
-    safe: false
 
   costs:
     mana: 50

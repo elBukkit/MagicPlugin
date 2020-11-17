@@ -60,9 +60,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private String unlockKey = "recall_warps";
     private String friendKey = "recall_friends";
     private int markerCount = 1;
+    private int delay = 0;
     private boolean teleport = true;
 
     private boolean isActive = false;
+    private long delayExpiration = 0;
+    private Waypoint selectedWaypoint;
 
     private static class UndoMarkerMove implements Runnable
     {
@@ -446,6 +449,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.protectionTime = parameters.getInt("protection_duration", 0);
         this.markerCount = parameters.getInt("marker_count", 1);
         this.teleport = parameters.getBoolean("teleport", true);
+        this.delay = parameters.getInt("delay", 0);
+        this.delay = parameters.getInt("warmup", this.delay);
 
         allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
     }
@@ -454,9 +459,21 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     public SpellResult perform(CastContext context) {
         if (isActive) {
             if (context.getMage().getActiveGUI() != this) {
-                isActive = false;
                 if (context.getTargetLocation() == null) {
+                    isActive = false;
                     return SpellResult.NO_TARGET;
+                }
+                if (delayExpiration > 0 && System.currentTimeMillis() < delayExpiration) {
+                    return SpellResult.PENDING;
+                }
+                if (delayExpiration == 0 && delay > 0) {
+                    context.playEffects("wait");
+                    delayExpiration = System.currentTimeMillis() + delay;
+                    return SpellResult.PENDING;
+                }
+                isActive = false;
+                if (teleport) {
+                    return doTeleport() ? SpellResult.CAST : SpellResult.FAIL;
                 }
                 return SpellResult.CAST;
             }
@@ -908,13 +925,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             displayInventory.setItem(index, waypointItem);
             index++;
         }
+        context.playEffects("menu");
         mage.activateGUI(this, displayInventory);
-
-        if (!teleport) {
-            isActive = true;
-            return SpellResult.PENDING;
-        }
-        return SpellResult.CAST;
+        isActive = true;
+        return SpellResult.PENDING;
     }
 
     protected void showMarkerConfirm(CastContext context)
@@ -1092,14 +1106,21 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             targetLocation.setPitch(playerLocation.getPitch());
         }
         mage.enableSuperProtection(protectionTime);
-        if (!teleport) {
-            context.setTargetLocation(targetLocation);
-            return true;
-        }
-        if (context.teleport(player, targetLocation, verticalSearchDistance, waypoint.safe, waypoint.safe)) {
-            context.castMessageKey("teleport", waypoint.message);
+        context.setTargetLocation(targetLocation);
+        selectedWaypoint = waypoint;
+        return true;
+    }
+
+    protected boolean doTeleport() {
+        Mage mage = context.getMage();
+        Player player = mage.getPlayer();
+        Location targetLocation = context.getTargetLocation();
+        context.playEffects("teleporting");
+        if (context.teleport(player, targetLocation, verticalSearchDistance, selectedWaypoint.safe, selectedWaypoint.safe)) {
+            context.castMessageKey("teleport", selectedWaypoint.message);
         } else {
-            context.sendMessageKey("teleport_failed", waypoint.failMessage);
+            context.sendMessageKey("teleport_failed", selectedWaypoint.failMessage);
+            return false;
         }
         return true;
     }
@@ -1151,5 +1172,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         if (parameterKey.equals("addfriend") || parameterKey.equals("removefriend")) {
             examples.addAll(spell.getController().getPlayerNames());
         }
+    }
+
+    @Override
+    public void reset(CastContext context) {
+        delayExpiration = 0;
+        selectedWaypoint = null;
+        isActive = false;
     }
 }
