@@ -16,6 +16,11 @@
  - Add delay and warmup parameters and "wait", "teleporting" and "menu" effects to Recall
  - Added "active_wand" target to ModifyProperties, won't switch wands by default
  - Add rainbow/technicolor armor set
+ - Reworked broomstick:
+   - Crafting now requires a phantom membrane instead of an elytra
+   - Brooms start out slightly faster
+   - The broom skill now only increases duration and handling
+   - TODO: A system to upgrade broom speed
 
 # 8.0.2
 

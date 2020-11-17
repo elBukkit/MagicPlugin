@@ -9,7 +9,6 @@ crudbroom:
     locked: true
     uses: 10
     effect_color: '000088'
-    overrides: broom.mount_boost 0.5, broom.mount_boost_ticks 120, broom.mount_health 8, broom.steer_speed 0.2, broom.slow_ticks 5, broom.slow_steer_speed 0.1
     spells:
-        - broom
+        - crudbroom
 

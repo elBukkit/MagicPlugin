@@ -55,7 +55,7 @@ spells:
         fail: Not enough room to take off!
         creative_fail: You can't use broomsticks in creative mode!
         cursed: You are too stunned to fly!
-        upgrade_description: "Increased duration, speed and handling"
+        upgrade_description: "Increased flight duration and improved handling"
         nospace: "&cFind a clear space to mount your broom"
         reactivate: "Reactivating your broomstick"
     superbroom:

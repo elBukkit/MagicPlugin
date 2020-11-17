@@ -1,10 +1,9 @@
 broomstick:
   output: broomstick
   output_type: wand
-  ignore_damage: true
   materials:
     i: stick
-    o: elytra
+    o: phantom_membrane
     w: wheat
     h: magicheart
   row_1: " i "
