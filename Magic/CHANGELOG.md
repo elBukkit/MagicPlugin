@@ -36,6 +36,7 @@
  - Fix icons for magic bow arrow spells and longbow appearance
  - Fix magic sword "valk" appearance
  - Fix XP exploit putting magic armor in a grindstone
+ - Fix armor wands not activating when right-clicked to wear
  - Add Magic.allowed_spell_categories permission list
 
 # 8.0.1

@@ -872,6 +872,8 @@ public class PlayerController implements Listener {
                 event.setCancelled(true);
                 player.getInventory().setItemInMainHand(null);
                 mage.checkWand();
+            } else {
+                controller.onArmorUpdated(mage);
             }
         }
     }
