@@ -2,6 +2,9 @@
 
 ## List is too long
 
+ - Switch back to interact event for casting?
+ - Allow per-player skull icons?
+
  - wand can only be crafted from bottom row?
  - Change talisman and broomstick recipes
  - Re-work wizard armor
