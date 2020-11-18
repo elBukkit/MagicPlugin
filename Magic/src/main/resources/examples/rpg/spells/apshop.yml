@@ -1,0 +1,8 @@
+apshop:
+  inherit: buyshop
+  parameters:
+    title: "AP ($balance)"
+    cost_type: xp
+    items:
+    - item: ap:1
+      cost: 500
