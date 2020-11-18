@@ -2,5 +2,5 @@
 # These are examples that can be fetched via the `/mconfig fetch` command
 #
 external_examples:
-  potterplus: "https://github.com/grisstyl/BetterPotter/archive/master.zip"
+  potterplus: "https://github.com/grisstyl/PotterPlus/archive/master.zip"
   superheroes: "https://github.com/elBukkit/Magic-Superheroes/archive/main.zip"
