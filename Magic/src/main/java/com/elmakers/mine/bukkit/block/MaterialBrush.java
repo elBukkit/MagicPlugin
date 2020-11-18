@@ -813,6 +813,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Nullable
     public ItemStack getItem(MageController controller, boolean isItem) {
         Messages messages = controller.getMessages();
+        boolean urlIcons = mage == null ? controller.isUrlIconsEnabled() : mage.isUrlIconsEnabled();
         MaterialAndData icon = new MaterialAndData(this.getMaterial(), this.getData());
         String extraLore = null;
         String customName = getName(messages);
@@ -820,37 +821,37 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
         if (mode == BrushMode.ERASE) {
             icon = MaterialBrush.EraseMaterial;
-            if (EraseCustomIcon != null && !EraseCustomIcon.isEmpty() && mage.isUrlIconsEnabled()) {
+            if (EraseCustomIcon != null && !EraseCustomIcon.isEmpty() && urlIcons) {
                 itemStack = controller.getURLSkull(EraseCustomIcon);
             }
             extraLore = messages.get("wand.erase_material_description");
         } else if (mode == BrushMode.COPY) {
             icon = MaterialBrush.CopyMaterial;
-            if (CopyCustomIcon != null && !CopyCustomIcon.isEmpty() && mage.isUrlIconsEnabled()) {
+            if (CopyCustomIcon != null && !CopyCustomIcon.isEmpty() && urlIcons) {
                 itemStack = controller.getURLSkull(CopyCustomIcon);
             }
             extraLore = messages.get("wand.copy_material_description");
         } else if (mode == BrushMode.CLONE) {
             icon = MaterialBrush.CloneMaterial;
-            if (CloneCustomIcon != null && !CloneCustomIcon.isEmpty() && mage.isUrlIconsEnabled()) {
+            if (CloneCustomIcon != null && !CloneCustomIcon.isEmpty() && urlIcons) {
                 itemStack = controller.getURLSkull(CloneCustomIcon);
             }
             extraLore = messages.get("wand.clone_material_description");
         } else if (mode == BrushMode.REPLICATE) {
             icon = MaterialBrush.ReplicateMaterial;
-            if (ReplicateCustomIcon != null && !ReplicateCustomIcon.isEmpty() && mage.isUrlIconsEnabled()) {
+            if (ReplicateCustomIcon != null && !ReplicateCustomIcon.isEmpty() && urlIcons) {
                 itemStack = controller.getURLSkull(ReplicateCustomIcon);
             }
             extraLore = messages.get("wand.replicate_material_description");
         } else if (mode == BrushMode.MAP) {
             icon = MaterialBrush.MapMaterial;
-            if (MapCustomIcon != null && !MapCustomIcon.isEmpty() && mage.isUrlIconsEnabled()) {
+            if (MapCustomIcon != null && !MapCustomIcon.isEmpty() && urlIcons) {
                 itemStack = controller.getURLSkull(MapCustomIcon);
             }
             extraLore = messages.get("wand.map_material_description");
         } else if (mode == BrushMode.SCHEMATIC) {
             icon = MaterialBrush.SchematicMaterial;
-            if (SchematicCustomIcon != null && !SchematicCustomIcon.isEmpty() && mage.isUrlIconsEnabled()) {
+            if (SchematicCustomIcon != null && !SchematicCustomIcon.isEmpty() && urlIcons) {
                 itemStack = controller.getURLSkull(SchematicCustomIcon);
             }
             extraLore = messages.get("wand.schematic_material_description").replace("$schematic", schematicName);
@@ -866,7 +867,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             itemStack = icon.getItemStack(1);
             itemStack = InventoryUtils.makeReal(itemStack);
             if (itemStack == null) {
-                if (DefaultBrushCustomIcon != null && !DefaultBrushCustomIcon.isEmpty() && mage.isUrlIconsEnabled()) {
+                if (DefaultBrushCustomIcon != null && !DefaultBrushCustomIcon.isEmpty() && urlIcons) {
                     itemStack = controller.getURLSkull(DefaultBrushCustomIcon);
                 }
                 if (itemStack == null) {
