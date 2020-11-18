@@ -55,6 +55,16 @@ find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-painterly-RP-8-1.16.zip *
 cd ..
 
+echo "** BUILDING LOW-RES **"
+
+mkdir lowres
+cd lowres
+cp -R ../../default/* .
+cp -R ../../lowres/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-lowres-RP-8-1.16.zip *
+cd ..
+
 echo "** BUILDING POTTER **"
 
 mkdir potter 

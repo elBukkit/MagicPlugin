@@ -1,0 +1,7 @@
+# This is a modifier on the default survival configs
+inherit: survival
+
+# This config only changes the RP
+resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-lowres-RP-8-1.16.zip"
+add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-lowres-RP-8-1.16.zip"
+
