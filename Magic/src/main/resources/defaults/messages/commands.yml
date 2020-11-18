@@ -102,4 +102,4 @@ commands:
       sending: "Use &6/getrp auto&f to get the resource pack automatically.\n&rOr use &6/getrp off&f to turn off the login prompt."
       preference: "RP reference set to &3$pack&f\nUse &6/getrp default&f to change back."
       noauto: "Use &6/getrp auto &fto get this pack automatically at login"
-      defaukt: "RP preference set back to default"
+      default: "RP preference set back to default"
