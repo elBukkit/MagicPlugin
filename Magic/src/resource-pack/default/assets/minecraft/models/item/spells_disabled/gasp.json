@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon",
+    "textures": {
+        "particle": "item/spells_disabled/gasp",
+        "texture": "item/spells_disabled/gasp"
+    }
+}
