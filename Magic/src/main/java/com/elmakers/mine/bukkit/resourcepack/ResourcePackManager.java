@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.resourcepack;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -9,8 +9,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -23,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.google.common.io.BaseEncoding;
@@ -42,6 +46,8 @@ public class ResourcePackManager {
     private byte[] resourcePackHash = null;
     private long resourcePackDelay = 0;
     private boolean isResourcePackEnabledByDefault = true;
+    private final Map<String, ResourcePack> resourcePacks = new HashMap<>();
+    private boolean resourcePackConfigurationLoaded = false;
 
     public ResourcePackManager(MagicController controller) {
         this.controller = controller;
@@ -146,7 +152,11 @@ public class ResourcePackManager {
     }
 
     public boolean sendResourcePack(final Player player) {
-        if (resourcePack == null || resourcePackHash == null) {
+        return sendResourcePack(player, resourcePack, resourcePackHash);
+    }
+
+    public boolean sendResourcePack(final Player player, String url, byte[] hash) {
+        if (url == null || hash == null) {
             return false;
         }
         String message = controller.getMessages().get("resource_pack.sending");
@@ -158,11 +168,63 @@ public class ResourcePackManager {
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
             @Override
             public void run() {
-                CompatibilityUtils.setResourcePack(player, resourcePack, resourcePackHash);
+                CompatibilityUtils.setResourcePack(player, url, hash);
             }
         }, resourcePackDelay * 20 / 1000);
 
         return true;
+    }
+
+    protected Map<String, ResourcePack> getResourcePacks() {
+        synchronized (resourcePacks) {
+            if (!resourcePackConfigurationLoaded) {
+                resourcePackConfigurationLoaded = true;
+                final File rpFile = new File(controller.getPlugin().getDataFolder(), "data/" + RP_FILE + ".yml");
+                if (rpFile.exists()) {
+                    try {
+                        YamlConfiguration resourcePackConfiguration = new YamlConfiguration();
+                        resourcePackConfiguration.load(rpFile);
+                        Set<String> keys = resourcePackConfiguration.getKeys(false);
+                        for (String key : keys) {
+                            resourcePacks.put(key, new ResourcePack(key, resourcePackConfiguration.getConfigurationSection(key)));
+                        }
+                    } catch (Exception ex) {
+                        controller.getLogger().log(Level.WARNING, "Error loading resource pack save file", ex);
+                    }
+                }
+            }
+        }
+        return resourcePacks;
+    }
+
+    protected ResourcePack getResourcePack(String url) {
+        return getResourcePacks().get(url);
+    }
+
+    protected void updateResourcePack(String url, byte[] hash, Date modified) {
+        Map<String, ResourcePack> packs = getResourcePacks();
+        synchronized (resourcePacks) {
+            ResourcePack newPack = new ResourcePack(url, hash, modified);
+            packs.put(newPack.getKey(), newPack);
+        }
+        saveResourcePacks();
+    }
+
+    protected void saveResourcePacks() {
+        Map<String, ResourcePack> packs = getResourcePacks();
+        synchronized (resourcePacks) {
+            try {
+                final File rpFile = new File(controller.getPlugin().getDataFolder(), "data/" + RP_FILE + ".yml");
+                YamlConfiguration resourcePackConfiguration = new YamlConfiguration();
+                for (Map.Entry<String, ResourcePack> entry : packs.entrySet()) {
+                    ConfigurationSection save = resourcePackConfiguration.createSection(entry.getKey());
+                    entry.getValue().save(save);
+                }
+                resourcePackConfiguration.save(rpFile);
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error saving resource pack save file", ex);
+            }
+        }
     }
 
     public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force, final boolean filenameChanged) {
@@ -192,24 +254,10 @@ public class ResourcePackManager {
 
         long modifiedTime = 0;
         String currentSHA = null;
-        final YamlConfiguration rpConfig = new YamlConfiguration();
-        final File rpFile = new File(plugin.getDataFolder(), "data/" + RP_FILE + ".yml");
-        final String rpKey = resourcePack.replace(".", "_");
-        if (rpFile.exists()) {
-            try {
-                rpConfig.load(rpFile);
-                ConfigurationSection rpSection = rpConfig.getConfigurationSection(rpKey);
-                if (rpSection != null) {
-                    currentSHA = rpSection.getString("sha1");
-                    modifiedTime = rpSection.getLong("modified");
-
-                    // Ignore old encoding, we will need to update
-                    if (currentSHA != null && currentSHA.length() < 40) {
-                        resourcePackHash = BaseEncoding.base64().decode(currentSHA);
-                    }
-                }
-            } catch (Exception ignored) {
-            }
+        ResourcePack resourcePackInfo = getResourcePack(resourcePack);
+        if (resourcePackInfo != null) {
+            resourcePackHash = resourcePackInfo.getHash();
+            modifiedTime = resourcePackInfo.getModified().getTime();
         }
 
         final String finalResourcePack = resourcePack;
@@ -277,12 +325,7 @@ public class ResourcePackManager {
                                 responses.add(ChatColor.YELLOW + "Resource pack hash changed, use " + ChatColor.AQUA + "/magic rpsend" + ChatColor.YELLOW + " to update connected players");
                             }
 
-                            ConfigurationSection rpSection = rpConfig.createSection(rpKey);
-
-                            rpSection.set("sha1", newResourcePackHash);
-                            rpSection.set("modified", modifiedDate.getTime());
-                            rpSection.set("filename", resourcePack);
-                            rpConfig.save(rpFile);
+                            updateResourcePack(resourcePack, resourcePackHash, modifiedDate);
                         } else {
                             if (filenameChanged) {
                                 responses.add(ChatColor.YELLOW + "Resource pack changed, use " + ChatColor.AQUA + "/magic rpsend" + ChatColor.YELLOW + " to update connected players");

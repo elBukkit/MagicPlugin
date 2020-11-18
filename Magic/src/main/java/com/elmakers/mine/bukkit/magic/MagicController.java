@@ -190,6 +190,7 @@ import com.elmakers.mine.bukkit.protection.ResidenceManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.requirements.RequirementsController;
+import com.elmakers.mine.bukkit.resourcepack.ResourcePackManager;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
