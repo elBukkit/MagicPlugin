@@ -374,7 +374,7 @@ commands:
          /mconfig example list
          /mconfig example help
          /mconfig example fetch superheroes
-         /mconfig example fetch betterpotter https://github.com/grisstyl/BetterPotter/archive/master.zip
+         /mconfig example fetch potterplus https://github.com/grisstyl/BetterPotter/archive/master.zip
   "mconfig clean":
     description: This will override your configs in plugins/Magic with collapsed versions.
     permission: Magic.commands.mconfig.clean
