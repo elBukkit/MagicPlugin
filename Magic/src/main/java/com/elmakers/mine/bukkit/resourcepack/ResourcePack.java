@@ -1,19 +1,29 @@
 package com.elmakers.mine.bukkit.resourcepack;
 
 import java.util.Date;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.google.common.io.BaseEncoding;
 
 public class ResourcePack {
-    private final String key;
-    private final String url;
-    private final byte[] hash;
-    private final Date modified;
+    private final @Nonnull String key;
+    private final @Nonnull String url;
+    private @Nonnull Date modified;
+    private @Nullable byte[] hash;
+    private boolean checked = false;
+
+    public ResourcePack(String url) {
+        this.key = getKey(url);
+        this.url = url;
+        this.modified = new Date(0L);
+        this.hash = null;
+    }
 
     public ResourcePack(String url, byte[] hash, Date modified) {
-        this.key = url.replace(".", "_");
+        this.key = getKey(url);
         this.url = url;
         this.hash = hash;
         this.modified = modified;
@@ -34,18 +44,32 @@ public class ResourcePack {
         this.modified =  new Date(modifiedEpoch);
     }
 
+    @Nonnull
     public String getUrl() {
         return url;
     }
 
+    @Nullable
     public byte[] getHash() {
         return hash;
     }
 
+    @Nullable
+    public String getHashString() {
+        return hash == null ? null : BaseEncoding.base64().encode(hash);
+    }
+
+    @Nonnull
     public Date getModified() {
         return modified;
     }
 
+    @Nonnull
+    public static String getKey(String url) {
+        return url.replace(".", "_");
+    }
+
+    @Nonnull
     public String getKey() {
         return key;
     }
@@ -54,8 +78,20 @@ public class ResourcePack {
         configuration.set("url", url);
         configuration.set("modified", modified.getTime());
         if (hash != null) {
-            String resourcePackHash = BaseEncoding.base64().encode(hash);
-            configuration.set("sha1", resourcePackHash);
+            configuration.set("sha1", getHashString());
         }
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public void update(byte[] hash, Date modified) {
+        this.hash = hash;
+        this.modified = modified;
     }
 }

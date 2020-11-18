@@ -1,17 +1,8 @@
 package com.elmakers.mine.bukkit.resourcepack;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -29,7 +20,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.google.common.io.BaseEncoding;
 
 public class ResourcePackManager {
     private static final String RP_FILE = "resourcepack";
@@ -41,7 +31,6 @@ public class ResourcePackManager {
     private int resourcePackCheckInterval = 0;
     private int resourcePackCheckTimer = 0;
     private String defaultResourcePack = null;
-    private boolean checkedResourcePack = false;
     private String resourcePack = null;
     private byte[] resourcePackHash = null;
     private long resourcePackDelay = 0;
@@ -198,19 +187,21 @@ public class ResourcePackManager {
     }
 
     protected ResourcePack getResourcePack(String url) {
-        return getResourcePacks().get(url);
+        return getResourcePacks().get(ResourcePack.getKey(url));
     }
 
-    protected void updateResourcePack(String url, byte[] hash, Date modified) {
-        Map<String, ResourcePack> packs = getResourcePacks();
-        synchronized (resourcePacks) {
-            ResourcePack newPack = new ResourcePack(url, hash, modified);
-            packs.put(newPack.getKey(), newPack);
+    protected ResourcePack createResourcePack(String url) {
+        ResourcePack pack = getResourcePack(url);
+        if (pack == null) {
+            synchronized (resourcePacks) {
+                pack = new ResourcePack(url);
+                resourcePacks.put(pack.getKey(), pack);
+            }
         }
-        saveResourcePacks();
+        return pack;
     }
 
-    protected void saveResourcePacks() {
+    public void saveResourcePacks() {
         Map<String, ResourcePack> packs = getResourcePacks();
         synchronized (resourcePacks) {
             try {
@@ -233,7 +224,6 @@ public class ResourcePackManager {
         final Server server = plugin.getServer();
         resourcePack = null;
         resourcePackHash = null;
-        final boolean initialLoad = !checkedResourcePack;
 
         if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
             if (!quiet) sender.sendMessage("Resource pack in config.yml has been disabled, Magic skipping RP check");
@@ -248,117 +238,29 @@ public class ResourcePackManager {
             return false;
         }
         resourcePack = defaultResourcePack;
-
-        checkedResourcePack = true;
         if (!quiet) sender.sendMessage("Magic checking resource pack for updates: " + ChatColor.GRAY + resourcePack);
-
-        long modifiedTime = 0;
-        String currentSHA = null;
-        ResourcePack resourcePackInfo = getResourcePack(resourcePack);
-        if (resourcePackInfo != null) {
-            resourcePackHash = resourcePackInfo.getHash();
-            modifiedTime = resourcePackInfo.getModified().getTime();
-        }
-
-        final String finalResourcePack = resourcePack;
-        final long modifiedTimestamp = modifiedTime;
-        final String currentHash = currentSHA;
-        server.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+        ResourcePack resourcePackInfo = createResourcePack(resourcePack);
+        updateResourcePackHash(resourcePackInfo, force, filenameChanged, new ResourcePackResponse() {
             @Override
-            public void run() {
-                final List<String> responses = new ArrayList<>();
-                String newResourcePackHash = currentHash;
-                try {
-                    URL rpURL = new URL(finalResourcePack);
-                    HttpURLConnection connection = (HttpURLConnection)rpURL.openConnection();
-                    connection.setInstanceFollowRedirects(true);
-                    connection.setRequestMethod("HEAD");
-                    if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
-                    {
-                        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-                        Date tryParseDate = new Date(1L);
-                        boolean hasModifiedTime = false;
-                        final String lastModified = connection.getHeaderField("Last-Modified");
-                        if (lastModified == null || lastModified.isEmpty()) {
-                            responses.add(ChatColor.YELLOW + "Server did not return a Last-Modified field, cancelling checks until restart");
-                            cancelResourcePackChecks();
-                        } else {
-                            try {
-                                tryParseDate = format.parse(lastModified);
-                                hasModifiedTime = true;
-                            } catch (ParseException dateFormat) {
-                                cancelResourcePackChecks();
-                                responses.add("Error parsing resource pack modified time, cancelling checks until restart: " + lastModified);
-                            }
-                        }
-                        final Date modifiedDate = tryParseDate;
-                        if (modifiedDate.getTime() > modifiedTimestamp || resourcePackHash == null || (force && !hasModifiedTime)) {
-                            final boolean isUnset = (resourcePackHash == null);
-                            if (filenameChanged) {
-                               responses.add(ChatColor.YELLOW + "Resource pack changed, checking for updated hash");
-                            } else if (modifiedTimestamp <= 0) {
-                                responses.add(ChatColor.YELLOW + "Checking resource pack for the first time");
-                            } else if (isUnset) {
-                                responses.add(ChatColor.YELLOW + "Resource pack hash format changed, downloading for one-time update");
-                            } else if (!hasModifiedTime && force) {
-                                responses.add(ChatColor.YELLOW + "Forcing resource pack check with missing modified time, redownloading");
-                            } else {
-                                responses.add(ChatColor.YELLOW + "Resource pack modified, redownloading (" + modifiedDate.getTime() + " > " + modifiedTimestamp + ")");
-                            }
-
-                            MessageDigest digest = MessageDigest.getInstance("SHA1");
-                            try (BufferedInputStream in = new BufferedInputStream(rpURL.openStream())) {
-                                final byte[] data = new byte[1024];
-                                int count;
-                                while ((count = in.read(data, 0, 1024)) != -1) {
-                                    digest.update(data, 0, count);
-                                }
-                            }
-                            resourcePackHash = digest.digest();
-                            newResourcePackHash = BaseEncoding.base64().encode(resourcePackHash);
-
-                            if (initialLoad) {
-                                responses.add(ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newResourcePackHash);
-                            } else if (currentHash != null && currentHash.equals(newResourcePackHash))  {
-                                responses.add(ChatColor.GREEN + "Resource pack hash has not changed");
-                            } else {
-                                responses.add(ChatColor.YELLOW + "Resource pack hash changed, use " + ChatColor.AQUA + "/magic rpsend" + ChatColor.YELLOW + " to update connected players");
-                            }
-
-                            updateResourcePack(resourcePack, resourcePackHash, modifiedDate);
-                        } else {
-                            if (filenameChanged) {
-                                responses.add(ChatColor.YELLOW + "Resource pack changed, use " + ChatColor.AQUA + "/magic rpsend" + ChatColor.YELLOW + " to update connected players");
-                            } else {
-                                responses.add(ChatColor.GREEN + "Resource pack has not changed, using hash " + newResourcePackHash +  " (" + modifiedDate.getTime() + " <= " + modifiedTimestamp + ")");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        responses.add(ChatColor.RED + "Could not find resource pack at: " + ChatColor.DARK_RED + finalResourcePack);
-                        cancelResourcePackChecks();
-                    }
-                }
-                catch (Exception ex) {
+            public void finished(boolean success, List<String> responses, ResourcePack pack) {
+                if (!success) {
                     cancelResourcePackChecks();
-                    responses.add("An unexpected error occurred while checking your resource pack, cancelling checks until restart (see logs): " + ChatColor.DARK_RED + finalResourcePack);
-                    controller.getLogger().log(Level.WARNING,"Error checking resource pack: " + ex.getMessage());
                 }
-
                 if (!quiet && plugin.isEnabled()) {
-                    server.getScheduler().runTask(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            for (String response : responses) {
-                                sender.sendMessage(response);
-                            }
-                        }
-                    });
+                    for (String response : responses) {
+                        sender.sendMessage(response);
+                    }
                 }
             }
         });
         return true;
+    }
+
+    public void updateResourcePackHash(ResourcePack resourcePack, final boolean force, final boolean filenameChanged, ResourcePackResponse callback) {
+        final Plugin plugin = controller.getPlugin();
+        if (!plugin.isEnabled()) return;
+        final Server server = plugin.getServer();
+        server.getScheduler().runTaskAsynchronously(plugin, new ResourcePackUpdateRunnable(this, resourcePack, callback, force, filenameChanged));
     }
 
     protected void cancelResourcePackChecks() {
@@ -381,5 +283,9 @@ public class ResourcePackManager {
 
     public boolean isResourcePackEnabledByDefault() {
         return isResourcePackEnabledByDefault;
+    }
+
+    public MagicController getController() {
+        return controller;
     }
 }

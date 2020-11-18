@@ -6110,11 +6110,7 @@ public class MagicController implements MageController {
     }
 
     public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force) {
-        return checkResourcePack(sender, quiet, force, false);
-    }
-
-    public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force, final boolean filenameChanged) {
-        return resourcePacks.checkResourcePack(sender, quiet, force, filenameChanged);
+        return resourcePacks.checkResourcePack(sender, quiet, force, false);
     }
 
     @Nullable
