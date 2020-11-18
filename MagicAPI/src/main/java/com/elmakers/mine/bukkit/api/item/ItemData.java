@@ -12,6 +12,8 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 public interface ItemData {
     String getKey();
     double getWorth();
+    double getEarns();
+    boolean hasCustomEarns();
     @Nullable
     ItemStack getItemStack(int amount);
     @Nullable

@@ -2873,6 +2873,7 @@ public class MagicController implements MageController {
         skillPointItemsEnabled = properties.getBoolean("sp_items_enabled", true);
         worthBase = properties.getDouble("worth_base", 1);
         worthXP = properties.getDouble("worth_xp", 1);
+        com.elmakers.mine.bukkit.item.ItemData.EARN_SCALE = properties.getDouble("default_earn_scale", 0.5);
         ConfigurationSection currencies = properties.getConfigurationSection("currency");
         if (currencies != null)
         {
@@ -6052,6 +6053,20 @@ public class MagicController implements MageController {
         }
 
         return configuredItem.getWorth() * amount;
+    }
+
+    @Nullable
+    @Override
+    public Double getEarns(ItemStack item) {
+        int amount = item.getAmount();
+        item.setAmount(1);
+        ItemData configuredItem = items.get(item);
+        item.setAmount(amount);
+        if (configuredItem == null) {
+            return null;
+        }
+
+        return configuredItem.getEarns() * amount;
     }
 
     public boolean isInventoryBackupEnabled() {

@@ -1,7 +1,6 @@
 lootshop:
     inherit: sellshop
     parameters:
-        scale: 0.5
         items:
           - spider_eye@4
           - string@2

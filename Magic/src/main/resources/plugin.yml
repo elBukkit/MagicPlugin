@@ -222,6 +222,7 @@ commands:
         /mitem save       Save an item as a new template
         /mitem delete     Delete a saved item
         /mitem worth      Show the value of an item
+        /mitem earns      Show the value of an item when sold
         /mitem type       Change the type of an item
         /mitem damage     Change the damage state of an item
         /mitem export     Export all items, names and worth a CSV file
@@ -253,7 +254,7 @@ commands:
   "mitem save":
     description: Save an item to a template
     usage: |
-       /mitem save <key> [worth]
+       /mitem save <key> [worth] [earns]
        /mitem save mycustomitem
        /mitem save mycustomitem 1000
   "mitem export":
@@ -318,6 +319,10 @@ commands:
     description: Show the value of an item
     usage: /mitem worth
     permission: Magic.commands.mitem.worth
+  "mitem earns":
+    description: Show the value of an item when sold
+    usage: /mitem earns
+    permission: Magic.commands.mitem.earns
   "mitem spawn":
     description: Spawn an item at a specific location
     usage: |
@@ -1268,6 +1273,7 @@ permissions:
     - Magic.commands.mitem.describe
     - Magic.commands.mitem.configure
     - Magic.commands.mitem.worth
+    - Magic.commands.mitem.earns
     - Magic.commands.mitem.type
     - Magic.commands.mitem.damage
     - Magic.commands.mitem.skull
@@ -1318,6 +1324,10 @@ permissions:
     default: op
   Magic.commands.mitem.worth:
     description: Player may show the value of an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.earns:
+    description: Player may show the value of an item when sold
     type: boolean
     default: op
   Magic.commands.mitem.type:

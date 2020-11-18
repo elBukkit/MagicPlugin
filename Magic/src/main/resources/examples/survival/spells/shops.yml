@@ -235,7 +235,6 @@ saplingshop:
 naturesellshop:
     inherit: sellshop
     parameters:
-        scale: 0.5
         items:
         - sapling@8
         - sapling|1@8
@@ -259,7 +258,6 @@ naturesellshop:
 miningsellshop:
     inherit: sellshop
     parameters:
-        scale: 0.5
         items:
         - coal@4
         - iron_ore@2
@@ -391,7 +389,6 @@ redstoneshop:
 redstonesellshop:
     inherit: sellshop
     parameters:
-        scale: 0.5
         items:
         - redstone@16
         - redstone@64
@@ -554,7 +551,6 @@ appraiser:
     category: npc
     hidden: true
     parameters:
-        scale: 0.9
         items:
           - iron_ingot@10
           - iron_block@10

@@ -24,10 +24,12 @@ import com.google.common.collect.ImmutableSet;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     public static final String MINECRAFT_ITEM_PREFIX = "minecraft:";
+    public static double EARN_SCALE = 0.5;
 
     private String key;
     private ItemStack item;
     private double worth;
+    private Double earns;
     private Set<String> categories = ImmutableSet.of();
     private String creatorId;
     private String creator;
@@ -108,6 +110,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         }
         this.key = key;
         worth = configuration.getDouble("worth", 0);
+        if (configuration.contains("earns")) {
+            earns = configuration.getDouble("earns");
+        } else {
+            earns = null;
+        }
         creator = configuration.getString("creator");
         creatorId = configuration.getString("creator_id");
 
@@ -204,6 +211,16 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Override
     public double getWorth() {
         return worth;
+    }
+
+    @Override
+    public double getEarns() {
+        return earns == null ? worth * EARN_SCALE : earns;
+    }
+
+    @Override
+    public boolean hasCustomEarns() {
+        return earns != null;
     }
 
     @Override

@@ -32,6 +32,9 @@ worth_damage_reduction_projectiles: 6000
 worth_cost_reduction: 100000
 worth_cooldown_reduction: 100000
 
+# This can be used to change how selling items works, by default you get 50% of the item's worth for selling.
+default_earn_scale: 0.5
+
 # A wand may have additional value for each brush it contains
 # Brushes are currently not able to have specific values, though this may be a future addition.
 # Some brushes, like copy and clone, are tremendously more powerful than others, like dirt, and hence

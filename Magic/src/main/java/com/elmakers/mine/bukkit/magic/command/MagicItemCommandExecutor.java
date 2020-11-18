@@ -118,6 +118,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mitem.", "destroy");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "clean");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "worth");
+            addIfPermissible(sender, options, "Magic.commands.mitem.", "earns");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "type");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "damage");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "skull");
@@ -281,6 +282,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         {
             return onItemWorth(player, item);
         }
+        else if (subCommand.equalsIgnoreCase("earns"))
+        {
+            return onItemEarns(player, item);
+        }
         else if (subCommand.equalsIgnoreCase("type"))
         {
             return onItemType(player, item, args);
@@ -394,7 +399,12 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 player.sendMessage(ChatColor.AQUA + "Give with: " + ChatColor.GRAY + "/mgive " + ChatColor.YELLOW + itemData.getKey());
                 double worth = itemData.getWorth();
                 if (worth > 0) {
-                    player.sendMessage(ChatColor.AQUA + " Worth " + ChatColor.GREEN + worth);
+                    double earns = itemData.getEarns();
+                    String message = ChatColor.AQUA + " Worth " + ChatColor.GREEN + worth;
+                    if (earns != worth) {
+                        message = message + " " + ChatColor.GRAY + "(" + ChatColor.DARK_GREEN + earns + ChatColor.DARK_AQUA + " when selling" + ChatColor.GRAY + ")";
+                    }
+                    player.sendMessage(message);
                 }
             }
         }
@@ -437,12 +447,14 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         File file = new File(api.getPlugin().getDataFolder(), parameters[0] + ".csv");
         try (Writer output = new OutputStreamWriter(new FileOutputStream(file), "UTF-8")) {
-            output.append("Name,Key,Cost\n");
+            output.append("Name,Key,Cost,Earns\n");
 
             for (MaterialAndData material : items.values()) {
                 Double worth = api.getController().getWorth(material.getItemStack(1));
                 String worthString = worth == null ? "" : worth.toString();
-                output.append(material.getName() + "," + material.getKey() + "," + worthString + "\n");
+                Double earns = api.getController().getEarns(material.getItemStack(1));
+                String earnsString = earns == null ? "" : earns.toString();
+                output.append(material.getName() + "," + material.getKey() + "," + worthString + "," + earnsString + "\n");
             }
         } catch (Exception ex) {
             player.sendMessage(ChatColor.RED + "Error exporting data: " + ex.getMessage());
@@ -486,6 +498,35 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
 
         player.sendMessage("That item is worth " + ChatColor.GOLD + worthDescription);
+        return true;
+    }
+
+    public boolean onItemEarns(Player player, ItemStack item) {
+        MageController controller = api.getController();
+        Double earns = controller.getEarns(item);
+        if (earns == null) {
+            player.sendMessage(ChatColor.RED + "No earns defined for that item");
+            return true;
+        }
+        String earnsDescription = null;
+        int amount = item.getAmount();
+        double totalWorth = earns * amount;
+        if (VaultController.hasEconomy()) {
+            VaultController vault = VaultController.getInstance();
+            earnsDescription = vault.format(totalWorth);
+            if (amount > 1) {
+                earnsDescription = earnsDescription + ChatColor.WHITE
+                        + " (" + ChatColor.GOLD + vault.format(earns) + ChatColor.WHITE + " each)";
+            }
+        } else {
+            earnsDescription = Double.toString(totalWorth);
+            if (amount > 1) {
+                earnsDescription = earnsDescription + ChatColor.WHITE
+                        + " (" + ChatColor.GOLD + Double.toString(earns) + ChatColor.WHITE + " each)";
+            }
+        }
+
+        player.sendMessage("That item can be sold for " + ChatColor.GOLD + earnsDescription);
         return true;
     }
 
@@ -655,7 +696,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
     public boolean onItemSave(Player player, ItemStack item, String[] parameters)
     {
         if (parameters.length < 1) {
-            player.sendMessage("Use: /mitem save <filename> [worth]");
+            player.sendMessage("Use: /mitem save <filename> [worth] [earns]");
             return true;
         }
 
@@ -676,6 +717,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             try {
                 worth = Double.parseDouble(parameters[1]);
             } catch (Exception ex) {
+                player.sendMessage("Invalid worth, expecting a number but got: " + parameters[1]);
                 player.sendMessage("Use: /mitem save <filename> [worth]");
                 return true;
             }
@@ -691,6 +733,21 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         itemSection.set("creator_id", player.getUniqueId().toString());
         itemSection.set("creator", player.getName());
         itemSection.set("worth", worth);
+
+        Double earns = null;
+        if (parameters.length > 2) {
+            try {
+                earns = Double.parseDouble(parameters[2]);
+                itemSection.set("earns", earns);
+            } catch (Exception ex) {
+                player.sendMessage("Invalid earns, expecting a number but got: " + parameters[2]);
+                player.sendMessage("Use: /mitem save <filename> [worth] [earns]");
+                return true;
+            }
+        } else if (existing != null && existing.hasCustomEarns()) {
+            itemSection.set("earns", existing.getEarns());
+        }
+
         itemSection.set("item", item);
 
         File itemFolder = new File(controller.getConfigFolder(), "items");
@@ -704,9 +761,17 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
         controller.loadItemTemplate(template, itemSection);
-        player.sendMessage(ChatColor.WHITE + "Item saved as " + ChatColor.GOLD + template + " worth " + ChatColor.GREEN + worth);
+        String message = ChatColor.WHITE + "Item saved as " + ChatColor.GOLD + template + " worth " + ChatColor.GREEN + worth;
+        if (earns != null) {
+            message = message + " " + ChatColor.GRAY + "(" + ChatColor.DARK_GREEN + earns + ChatColor.DARK_AQUA + " when selling" + ChatColor.GRAY + ")";
+        }
+        player.sendMessage(message);
         if (existing != null) {
-            player.sendMessage(ChatColor.YELLOW + " Replaced Worth " + ChatColor.DARK_GREEN + existing.getWorth());
+            message = ChatColor.YELLOW + " Replaced Worth " + ChatColor.DARK_GREEN + existing.getWorth();
+            if (existing.hasCustomEarns()) {
+                message = message + " " + ChatColor.GRAY + "(" + ChatColor.DARK_GREEN + existing.getEarns() + ChatColor.DARK_AQUA + " when selling" + ChatColor.GRAY + ")";
+            }
+            player.sendMessage(message);
         }
         return true;
     }

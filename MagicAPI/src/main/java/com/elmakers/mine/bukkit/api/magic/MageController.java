@@ -513,6 +513,8 @@ public interface MageController {
     void loadItemTemplate(String key, ConfigurationSection itemNode);
     @Nullable
     Double getWorth(ItemStack item);
+    @Nullable
+    Double getEarns(ItemStack item);
     boolean disguise(Entity entity, ConfigurationSection configuration);
     void managePlayerData(boolean external, boolean backupInventories);
     String getDefaultWandTemplate();
