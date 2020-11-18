@@ -241,6 +241,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     // Slot system
     private List<Wand> slotted = null;
+    private ConfigurationSection slottedConfiguration = null;
 
     // Transient state
 
@@ -1702,6 +1703,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Wand slottedWand = controller.createWand(slottedKey);
                 if (slottedWand != null) {
                     slotted.add(slottedWand);
+                    updateSlotted(slottedWand);
                 }
             }
         }
@@ -3842,6 +3844,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return addSlotted(upgradeWand);
             }
         }
+
         return super.addItem(item);
     }
 
@@ -3868,13 +3871,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 slottedKeys.add(upgradeWand.getKey());
                 setProperty("slotted", slottedKeys);
                 slotted.add(upgradeWand);
-                saveState();
-                updateLore();
+                updateSlotted(upgradeWand);
+                updated();
                 return true;
             }
         }
 
         return false;
+    }
+
+    protected void updateSlotted(Wand addSlot) {
+        if (slottedConfiguration == null) {
+            slottedConfiguration = new MemoryConfiguration();
+        }
+
+        ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(addSlot.getEffectiveConfiguration());
+        cleanUpgradeConfig(upgradeConfig);
+        ConfigurationUtils.addConfigurations(slottedConfiguration, upgradeConfig);
     }
 
 
@@ -6028,5 +6041,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             setProperty("enchantments", enchantments);
         }
+    }
+
+
+    @Override
+    public boolean hasProperty(String key) {
+        if (slottedConfiguration != null && slottedConfiguration.contains(key)) {
+            return true;
+        }
+        return hasOwnProperty(key);
+    }
+
+    @Override
+    @Nullable
+    public Object getProperty(String key) {
+        if (slottedConfiguration != null) {
+            Object slottedOverride = slottedConfiguration.get(key);
+            if (slottedOverride != null) {
+                return slottedOverride;
+            }
+        }
+        return getPropertyConfiguration(key).get(key);
     }
 }
