@@ -1387,7 +1387,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String iconURL = spell.getIconURL();
 
         ItemStack itemStack = null;
-        if (iconURL != null && (controller.isUrlIconsEnabled() || spell.getIcon() == null || !spell.getIcon().isValid() || spell.getIcon().getMaterial() == Material.AIR))
+        boolean urlIcons = mage == null ? controller.isUrlIconsEnabled() : mage.isUrlIconsEnabled();
+        if (iconURL != null && (urlIcons || spell.getIcon() == null || !spell.getIcon().isValid() || spell.getIcon().getMaterial() == Material.AIR))
         {
             itemStack = controller.getURLSkull(iconURL);
         }

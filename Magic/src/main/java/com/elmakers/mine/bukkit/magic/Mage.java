@@ -4354,7 +4354,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         MaterialAndData spellIcon = spell.getIcon();
                         String urlIcon = spell.getIconURL();
                         String disabledUrlIcon = spell.getDisabledIconURL();
-                        boolean usingURLIcon = (controller.isUrlIconsEnabled() || spellIcon == null || spellIcon.getMaterial() == Material.AIR) && urlIcon != null && !urlIcon.isEmpty();
+                        boolean usingURLIcon = (isUrlIconsEnabled() || spellIcon == null || spellIcon.getMaterial() == Material.AIR) && urlIcon != null && !urlIcon.isEmpty();
                         if (disabledIcon != null && spellIcon != null && !usingURLIcon) {
                             if (!canCast || !spell.isEnabled()) {
                                 if (disabledIcon.isValid() && disabledIcon.isDifferent(spellItem)) {
@@ -5095,7 +5095,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public boolean useSkullIcons() {
+    public boolean isUrlIconsEnabled() {
         if (preferredResourcePack == null) {
             return controller.isUrlIconsEnabled();
         }

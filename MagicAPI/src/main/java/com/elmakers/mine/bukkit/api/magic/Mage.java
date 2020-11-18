@@ -773,5 +773,5 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isResourcePackEnabled();
     @Nullable
     String getPreferredResourcePack();
-    boolean useSkullIcons();
+    boolean isUrlIconsEnabled();
 }
