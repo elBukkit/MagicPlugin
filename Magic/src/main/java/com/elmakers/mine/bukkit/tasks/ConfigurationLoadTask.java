@@ -389,7 +389,9 @@ public class ConfigurationLoadTask implements Runnable {
                     if (disableDefaults) {
                         disableAll(exampleConfig);
                     }
-                    processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
+                    if (processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults))) {
+                        disableDefaults = true;
+                    }
                     ConfigurationUtils.addConfigurations(config, exampleConfig);
                     info(" Using " + examplesFilePrefix);
                 } catch (Exception ex) {
