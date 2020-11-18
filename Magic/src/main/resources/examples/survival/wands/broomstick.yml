@@ -15,6 +15,8 @@ broomstick:
         "wand_icon:11": acacia_sapling{CustomModelData:18001}
         "wand_icon:29": birch_sapling{CustomModelData:18001}
     effect_color: '880088'
+    slots:
+        - broom_upgrade
     spells:
         - broom
 

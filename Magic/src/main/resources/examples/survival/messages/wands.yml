@@ -42,6 +42,9 @@ wands:
             &8|
         spell_instructions: |-
             &8| &7> &6Loose an arrow &fto cast &d$spell
+    broom_booster:
+        name: Broom Booster
+        description: Drop on your broom to make it go faster
     broomstick:
         name: Broomstick
         description: "&r&bUse your broom to fly through the air.\n&bDive to speed up, and don't fly too long!"

@@ -1,0 +1,7 @@
+broom_booster:
+    upgrade: true
+    locked: true
+    slot: broom_upgrade
+    class: broomrider
+    icon: diamond
+
