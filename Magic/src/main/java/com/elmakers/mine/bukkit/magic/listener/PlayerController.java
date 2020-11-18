@@ -626,8 +626,10 @@ public class PlayerController implements Listener {
     public void onPlayerAnimate(PlayerAnimationEvent event)
     {
         Player player = event.getPlayer();
-        if (event.getAnimationType() != PlayerAnimationType.ARM_SWING)
-        {
+        if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) {
+            return;
+        }
+        if (!controller.useAnimationEvents(player)) {
             return;
         }
 
@@ -854,11 +856,6 @@ public class PlayerController implements Listener {
             return;
         }
 
-        if (isLeftClick && !wand.isUpgrade() && wand.getLeftClickAction() != WandAction.NONE && cancelInteractOnLeftClick)
-        {
-            event.setCancelled(true);
-        }
-
         if (isRightClick && wand.performAction(wand.getRightClickAction()))
         {
             if (cancelInteractOnRightClick) {
@@ -874,6 +871,19 @@ public class PlayerController implements Listener {
                 mage.checkWand();
             } else {
                 controller.onArmorUpdated(mage);
+            }
+        }
+
+        if (isLeftClick) {
+            if (!controller.useAnimationEvents(player)) {
+                wand.playEffects("swing");
+                if (!wand.isUpgrade()) {
+                    if (wand.performAction(wand.getLeftClickAction()) && cancelInteractOnLeftClick) {
+                        event.setCancelled(true);
+                    }
+                }
+            } else if (!wand.isUpgrade() && wand.getLeftClickAction() != WandAction.NONE && cancelInteractOnLeftClick) {
+                event.setCancelled(true);
             }
         }
     }

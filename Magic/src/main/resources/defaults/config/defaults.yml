@@ -611,3 +611,10 @@ save_player_data_asynchronously: true
 
 # This can be used to load one of the built-in localizations found in examples/localizations
 # language: ES
+
+# This can be used to change how wands interpret a "left click" or swing.
+# This was an attempt to work around the recent MC behavior of triggering an arm swing event
+# when dropping items, but it turns out interact events fire as well.
+# So it did not work out, but if you want to try changing it you can.
+# Options: animate, interact, animate_if_adventure
+left_click_type: animate

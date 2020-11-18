@@ -44,6 +44,7 @@ import org.bstats.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -2985,6 +2986,12 @@ public class MagicController implements MageController {
         redProtectConfiguration = properties.getConfigurationSection("redprotect");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);
+        }
+        String swingTypeString = properties.getString("left_click_type");
+        try {
+            swingType = SwingType.valueOf(swingTypeString.toUpperCase());
+        } catch (Exception ex) {
+            getLogger().warning("Invalid left_click_type: " + swingTypeString);
         }
 
         List<? extends Object> permissionTeams = properties.getList("permission_teams");
@@ -6853,6 +6860,12 @@ public class MagicController implements MageController {
         this.reloadingMage = mage;
     }
 
+    public boolean useAnimationEvents(Player player) {
+        if (swingType == SwingType.ANIMATE) return true;
+        if (swingType == SwingType.INTERACT) return false;
+        return player.getGameMode() == GameMode.ADVENTURE;
+    }
+
     /*
      * Private data
      */
@@ -7141,4 +7154,5 @@ public class MagicController implements MageController {
     private Map<Material, String>               autoWands                   = new HashMap<>();
     private Map<String, String>                 builtinExternalExamples     = new HashMap<>();
     private boolean                             showExampleInstructions     = false;
+    private SwingType                           swingType                   = SwingType.ANIMATE_IF_ADVENTURE;
 }
