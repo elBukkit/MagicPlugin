@@ -40,3 +40,16 @@ resource_pack_prompt: false
 # Players can turn it back on using `/getrp auto`
 # They will not be prompted at login so it is up to the server to communicate how to get the RP if this is turned off
 resource_pack_default_auto: false
+
+
+# Alternate resource packs can be accessed with /getrp <pack>
+alternate_resource_packs:
+  borders:
+    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-potter-RP-8-1.16.zip"
+  painterly:
+    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-8-1.16.zip"
+  lowres:
+    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-lowres-RP-8-1.16.zip"
+  skulls:
+    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-8-1.16.zip"
+    url_icons_enabled: true

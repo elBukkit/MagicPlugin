@@ -771,4 +771,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     List<CastParameter> getOverrides(String spellKey);
     boolean isResourcePackEnabled();
+    @Nullable
+    String getPreferredResourcePack();
+    boolean useSkullIcons();
 }

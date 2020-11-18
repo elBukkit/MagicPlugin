@@ -57,3 +57,7 @@ custom_currency:
   max: 9999
   default: 0
   icon: skull:http://textures.minecraft.net/texture/82d8ccac4d982bf3199761c1c74b9aa18e312ff5ca0a6e51b77a87abad610b
+
+alternate_resource_packs:
+  potter:
+    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-potter-RP-8-1.16.zip"

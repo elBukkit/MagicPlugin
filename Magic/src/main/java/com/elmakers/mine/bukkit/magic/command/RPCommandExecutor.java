@@ -25,10 +25,12 @@ public class RPCommandExecutor extends MagicTabExecutor {
         }
         if (args.length == 1) {
             options.add("auto");
+            options.add("default");
             options.add("manual");
             options.add("off");
             options.add("url");
             options.add("download");
+            options.addAll(controller.getAlternateResourcePacks());
         }
         return options;
     }
@@ -69,9 +71,26 @@ public class RPCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("manual") || subCommand.equalsIgnoreCase("default")) {
+        if (subCommand.equalsIgnoreCase("manual")) {
             mage.setResourcePackEnabled(null);
             sender.sendMessage(controller.getMessages().get("commands.getrp.manual"));
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("default")) {
+            sender.sendMessage(controller.getMessages().get("commands.getrp.default"));
+            mage.setPreferredResourcePack(null);
+            controller.sendResourcePack((Player)sender);
+            return true;
+        }
+
+        if (controller.getAlternateResourcePacks().contains(subCommand)) {
+            sender.sendMessage(controller.getMessages().get("commands.getrp.preference").replace("$pack", subCommand));
+            if (!mage.isResourcePackEnabledSet()) {
+                sender.sendMessage(controller.getMessages().get("commands.getrp.noauto"));
+            }
+            mage.setPreferredResourcePack(subCommand);
+            controller.sendResourcePack((Player)sender);
             return true;
         }
 

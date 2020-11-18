@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.resourcepack;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,6 +39,7 @@ public class ResourcePackManager {
     private boolean isResourcePackEnabledByDefault = true;
     private final Map<String, ResourcePack> resourcePacks = new HashMap<>();
     private boolean resourcePackConfigurationLoaded = false;
+    private ConfigurationSection alternateResourcePacks = null;
 
     public ResourcePackManager(MagicController controller) {
         this.controller = controller;
@@ -69,6 +72,7 @@ public class ResourcePackManager {
         }
 
         resourcePackDelay = properties.getLong("resource_pack_delay", 0);
+        alternateResourcePacks = properties.getConfigurationSection("alternate_resource_packs");
 
         if (!firstLoad && resourcePack != null && !defaultResourcePack.equals(currentResourcePack)) {
             checkResourcePack(sender, false, false, true);
@@ -90,7 +94,7 @@ public class ResourcePackManager {
                 skipped++;
                 continue;
             }
-            sendResourcePack(player);
+            sendResourcePack(mage);
             sent++;
         }
         if (sender != null) {
@@ -140,14 +144,46 @@ public class ResourcePackManager {
         return promptResourcePack(player, message);
     }
 
-    public boolean sendResourcePack(final Player player) {
-        return sendResourcePack(player, resourcePack, resourcePackHash);
+    public boolean sendResourcePack(final Mage mage) {
+        String url = getResourcePackUrl(mage.getPreferredResourcePack());
+        if (url == null) {
+            url = resourcePack;
+        }
+        ResourcePack rp = createResourcePack(url);
+        if (!rp.isChecked()) {
+            updateResourcePackHash(rp, false, false, new ResourcePackResponse() {
+                @Override
+                public void finished(boolean success, List<String> responses, ResourcePack pack) {
+                    Plugin plugin = controller.getPlugin();
+                    CommandSender sender = Bukkit.getConsoleSender();
+                    if (plugin.isEnabled()) {
+                        for (String response : responses) {
+                            sender.sendMessage(response);
+                        }
+                    }
+                    if (success) {
+                        sendResourcePack(mage, rp);
+                    }
+                }
+            });
+            return true;
+        }
+        return sendResourcePack(mage, rp);
     }
 
-    public boolean sendResourcePack(final Player player, String url, byte[] hash) {
+    public boolean sendResourcePack(final Player player) {
+        return sendResourcePack(controller.getMage(player));
+    }
+
+    public boolean sendResourcePack(final Mage mage, ResourcePack pack) {
+        return sendResourcePack(mage, pack.getUrl(), pack.getHash());
+    }
+
+    public boolean sendResourcePack(final Mage mage, String url, byte[] hash) {
         if (url == null || hash == null) {
             return false;
         }
+        Player player = mage.getPlayer();
         String message = controller.getMessages().get("resource_pack.sending");
         if (message != null && !message.isEmpty()) {
             com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, controller.getMessagePrefix(), message);
@@ -198,6 +234,7 @@ public class ResourcePackManager {
                 resourcePacks.put(pack.getKey(), pack);
             }
         }
+        pack.setUrl(url);
         return pack;
     }
 
@@ -243,13 +280,18 @@ public class ResourcePackManager {
         updateResourcePackHash(resourcePackInfo, force, filenameChanged, new ResourcePackResponse() {
             @Override
             public void finished(boolean success, List<String> responses, ResourcePack pack) {
-                if (!success) {
-                    cancelResourcePackChecks();
-                }
                 if (!quiet && plugin.isEnabled()) {
                     for (String response : responses) {
                         sender.sendMessage(response);
                     }
+                }
+                if (!success) {
+                    cancelResourcePackChecks();
+                    if (!quiet) {
+                        sender.sendMessage("Cancelling automatic RP checks until next restart");
+                    }
+                } else {
+                    resourcePackHash = pack.getHash();
                 }
             }
         });
@@ -287,5 +329,30 @@ public class ResourcePackManager {
 
     public MagicController getController() {
         return controller;
+    }
+
+    public void clearChecked() {
+        synchronized (resourcePacks) {
+            for (ResourcePack pack : resourcePacks.values()) {
+                pack.setChecked(false);
+            }
+        }
+    }
+
+    @Nullable
+    public Boolean resourcePackUsesSkulls(String packType) {
+        ConfigurationSection packConfig = alternateResourcePacks.getConfigurationSection(packType);
+        return packConfig == null || !packConfig.contains("url_icons_enabled") ? null : packConfig.getBoolean("url_icons_enabled");
+    }
+
+    @Nullable
+    public String getResourcePackUrl(String packType) {
+        if (packType == null) return null;
+        ConfigurationSection packConfig = alternateResourcePacks.getConfigurationSection(packType);
+        return packConfig == null ? null : packConfig.getString("url");
+    }
+
+    public Collection<String> getAlternateResourcePacks() {
+        return alternateResourcePacks.getKeys(false);
     }
 }

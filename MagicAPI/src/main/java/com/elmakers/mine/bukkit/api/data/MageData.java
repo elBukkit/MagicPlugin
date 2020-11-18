@@ -41,6 +41,7 @@ public class MageData {
     private boolean openWand;
     private boolean gaveWelcomeWand;
     private Boolean resourcePackEnabled;
+    private String preferredResourcePack;
     private long created;
     private double health;
 
@@ -238,6 +239,14 @@ public class MageData {
 
     public void setResourcePackEnabled(Boolean resourcePackEnabled) {
         this.resourcePackEnabled = resourcePackEnabled;
+    }
+
+    public String getPreferredResourcePack() {
+        return preferredResourcePack;
+    }
+
+    public void setPreferredResourcePack(String preferredResourcePack) {
+        this.preferredResourcePack = preferredResourcePack;
     }
 
     public ConfigurationSection getProperties() {

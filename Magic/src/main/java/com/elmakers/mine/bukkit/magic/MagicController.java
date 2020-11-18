@@ -5101,16 +5101,6 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public boolean isUrlIconsEnabled() {
-        return urlIconsEnabled;
-    }
-
-    @Override
-    public boolean isLegacyIconsEnabled() {
-        return legacyIconsEnabled;
-    }
-
-    @Override
     public Set<EntityType> getUndoEntityTypes() {
         return undoEntityTypes;
     }
@@ -6102,6 +6092,7 @@ public class MagicController implements MageController {
 
     @Override
     public void checkResourcePack(CommandSender sender) {
+        resourcePacks.clearChecked();
         checkResourcePack(sender, false, true);
     }
 
@@ -6836,6 +6827,26 @@ public class MagicController implements MageController {
     @Nullable
     public String getResourcePackURL() {
         return resourcePacks.getDefaultResourcePackURL();
+    }
+
+    @Override
+    public boolean isUrlIconsEnabled() {
+        return urlIconsEnabled;
+    }
+
+    @Override
+    public boolean isLegacyIconsEnabled() {
+        return legacyIconsEnabled;
+    }
+
+    public boolean resourcePackUsesSkulls(String pack) {
+        Boolean packOverride = resourcePacks.resourcePackUsesSkulls(pack);
+        return packOverride == null ? urlIconsEnabled : packOverride;
+    }
+
+    @Override
+    public Collection<String> getAlternateResourcePacks() {
+        return resourcePacks.getAlternateResourcePacks();
     }
 
     @Override

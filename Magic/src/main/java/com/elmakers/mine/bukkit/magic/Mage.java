@@ -222,6 +222,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean costFree = false;
     private boolean cooldownFree = false;
     private Boolean resourcePackEnabled = null;
+    private String preferredResourcePack = null;
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
@@ -1293,6 +1294,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             resourcePackEnabled = data.getResourcePackEnabled();
+            preferredResourcePack = data.getPreferredResourcePack();
             gaveWelcomeWand = data.getGaveWelcomeWand();
             playerName = data.getName();
             lastDeathLocation = data.getLastDeathLocation();
@@ -1591,6 +1593,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             data.setGaveWelcomeWand(gaveWelcomeWand);
             data.setResourcePackEnabled(resourcePackEnabled);
+            data.setPreferredResourcePack(preferredResourcePack);
             data.setExtraData(this.data);
             data.setProperties(properties.getConfiguration());
             data.setVariables(variables);
@@ -5079,6 +5082,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setResourcePackEnabled(Boolean enable) {
         resourcePackEnabled = enable;
+    }
+
+    public void setPreferredResourcePack(String pack) {
+        preferredResourcePack = pack;
+    }
+
+    @Override
+    @Nullable
+    public String getPreferredResourcePack() {
+        return preferredResourcePack;
+    }
+
+    @Override
+    public boolean useSkullIcons() {
+        if (preferredResourcePack == null) {
+            return controller.isUrlIconsEnabled();
+        }
+        return controller.resourcePackUsesSkulls(preferredResourcePack);
     }
 
     protected void startInstructions() {

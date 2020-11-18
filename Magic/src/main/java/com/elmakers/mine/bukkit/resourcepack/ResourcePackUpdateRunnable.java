@@ -59,7 +59,7 @@ public class ResourcePackUpdateRunnable implements Runnable {
                 boolean hasModifiedTime = false;
                 final String lastModified = connection.getHeaderField("Last-Modified");
                 if (lastModified == null || lastModified.isEmpty()) {
-                    responses.add(ChatColor.YELLOW + "Server did not return a Last-Modified field, cancelling checks until restart");
+                    responses.add(ChatColor.YELLOW + "Server did not return a Last-Modified field");
                     success = false;
                 } else {
                     try {
@@ -67,7 +67,7 @@ public class ResourcePackUpdateRunnable implements Runnable {
                         hasModifiedTime = true;
                     } catch (ParseException dateFormat) {
                         success = false;
-                        responses.add("Error parsing resource pack modified time, cancelling checks until restart: " + lastModified);
+                        responses.add("Error parsing resource pack modified time: " + lastModified);
                     }
                 }
                 final Date modifiedDate = tryParseDate;
@@ -120,8 +120,8 @@ public class ResourcePackUpdateRunnable implements Runnable {
         }
         catch (Exception ex) {
             success = false;
-            responses.add("An unexpected error occurred while checking your resource pack, cancelling checks until restart (see logs): " + ChatColor.DARK_RED + finalResourcePack);
-            controller.getLogger().log(Level.WARNING,"Error checking resource pack: " + ex.getMessage());
+            responses.add("An unexpected error occurred while checking your resource pack (see logs): " + ChatColor.DARK_RED + finalResourcePack);
+            controller.getLogger().log(Level.WARNING,"Error checking resource pack", ex);
         }
 
         if (plugin.isEnabled() && callback != null) {

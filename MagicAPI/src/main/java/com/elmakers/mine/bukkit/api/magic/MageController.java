@@ -495,6 +495,7 @@ public interface MageController {
     @Nullable
     String getResourcePackURL();
     boolean isResourcePackEnabledByDefault();
+    Collection<String> getAlternateResourcePacks();
     boolean commitOnQuit();
 
     Set<String> getItemKeys();

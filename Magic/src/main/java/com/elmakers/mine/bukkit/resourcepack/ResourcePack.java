@@ -10,7 +10,7 @@ import com.google.common.io.BaseEncoding;
 
 public class ResourcePack {
     private final @Nonnull String key;
-    private final @Nonnull String url;
+    private @Nonnull String url;
     private @Nonnull Date modified;
     private @Nullable byte[] hash;
     private boolean checked = false;
@@ -47,6 +47,10 @@ public class ResourcePack {
     @Nonnull
     public String getUrl() {
         return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Nullable
