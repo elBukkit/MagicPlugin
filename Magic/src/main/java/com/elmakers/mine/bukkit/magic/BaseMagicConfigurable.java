@@ -180,6 +180,11 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         if (effectsObject instanceof String) {
             addPotionEffects(effects, (String)effectsObject);
         }
+        if (effectsObject instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<String> effectList = (List<String>)effectsObject;
+            addPotionEffects(effects, effectList);
+        }
         if (effectsObject instanceof ConfigurationSection) {
             ConfigurationSection effectsConfig = (ConfigurationSection)effectsObject;
             Set<String> keys = effectsConfig.getKeys(false);
@@ -194,13 +199,12 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         }
     }
 
-    protected void addPotionEffects(Map<PotionEffectType, Integer> effects, String effectsString) {
-        if (effectsString == null || effectsString.isEmpty()) {
-            return;
-        }
-        effectsString = effectsString.replaceAll("[\\]\\[]", "");
-        String[] effectStrings = StringUtils.split(effectsString, ',');
-        for (String effectString : effectStrings) {
+    protected void addPotionEffects(Map<PotionEffectType, Integer> effects, String[] effectList) {
+        addPotionEffects(effects, Arrays.asList(effectList));
+    }
+
+    protected void addPotionEffects(Map<PotionEffectType, Integer> effects, Collection<String> effectList) {
+        for (String effectString : effectList) {
             try {
                 effectString = effectString.trim();
                 PotionEffectType type;
@@ -224,6 +228,15 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                 controller.getLogger().log(Level.WARNING, "Invalid potion effect: " + effectString);
             }
         }
+    }
+
+    protected void addPotionEffects(Map<PotionEffectType, Integer> effects, String effectsString) {
+        if (effectsString == null || effectsString.isEmpty()) {
+            return;
+        }
+        effectsString = effectsString.replaceAll("[\\]\\[]", "");
+        String[] effectStrings = StringUtils.split(effectsString, ',');
+        addPotionEffects(effects, effectStrings);
     }
 
     protected boolean upgradePotionEffects(String key, Object value) {
