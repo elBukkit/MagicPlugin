@@ -58,7 +58,7 @@ wand:
     property_value: "$property"
     property_value_negative: "&c$property"
     upgrade_slot: "&6Goes in slot&7: &3$slot"
-    slots_header: "&6Slots&7:"
+    slots_header: "&6Upgrades&7:"
     empty_slot: " &8- &7(&2Empty &6$slot &2slot&7)"
     slotted: " &8- &7$slotted"
     item_attributes:

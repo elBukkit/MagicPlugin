@@ -4,4 +4,7 @@ broom_booster:
     slot: broom_upgrade
     class: broomrider
     icon: diamond
-
+    overrides:
+        broom:
+            max_speed: 1.5
+            max_acceleration: 0.02
