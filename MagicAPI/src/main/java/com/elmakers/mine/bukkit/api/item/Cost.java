@@ -50,6 +50,15 @@ public interface Cost {
      * Whether or not a mage has the required costs.
      *
      * @param mage The mage to check for costs
+     * @param wand A optional wand, to be used for mana costs
+     * @return True if the mage has these costs.
+     */
+    boolean has(Mage mage, Wand wand);
+
+    /**
+     * Whether or not a mage has the required costs.
+     *
+     * @param mage The mage to check for costs
      * @return True if the mage has these costs.
      */
     boolean has(Mage mage);
@@ -62,6 +71,14 @@ public interface Cost {
      * @param reducer An optional scale for costs
      */
     void deduct(Mage mage, CasterProperties caster, CostReducer reducer);
+
+    /**
+     * Deduct these costs from the specified Mage
+     *
+     * @param mage The mage to check for costs
+     * @param wand A optional wand, to be used for mana costs
+     */
+    void deduct(Mage mage, Wand wand);
 
     /**
      * Deduct these costs from the specified Mage

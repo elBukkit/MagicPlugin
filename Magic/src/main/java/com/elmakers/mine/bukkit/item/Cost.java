@@ -95,6 +95,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     }
 
     @Override
+    public boolean has(Mage mage, Wand wand) {
+        return has(mage, (CasterProperties)wand, null);
+    }
+
+    @Override
     public boolean has(Mage mage, Wand wand, CostReducer reducer) {
         return has(mage, (CasterProperties)wand, reducer);
     }
@@ -123,6 +128,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         if (currency != null) {
             currency.deduct(mage, caster, getAmount(reducer));
         }
+    }
+
+    @Override
+    public void deduct(Mage mage, Wand wand) {
+        deduct(mage, (CasterProperties)wand, null);
     }
 
     @Override
