@@ -31,6 +31,7 @@
    - Wizard gear can be enchanted, does not come with enchantments
    - Wizard boots cost 2x magic hearts, grant speed boost
  - Add instructions to builtin examples
+ - Add alternate resource packs, available with the `/getrp` command
 
 # 8.0.2
 

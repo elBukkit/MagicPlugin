@@ -1,5 +1,6 @@
 {
   "parent": "item/template_skull",
+  "gui_light": "front",
 
   "display": {
     "gui": {
