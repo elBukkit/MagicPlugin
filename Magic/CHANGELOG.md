@@ -32,6 +32,7 @@
    - Wizard boots cost 2x magic hearts, grant speed boost
  - Add instructions to builtin examples
  - Add alternate resource packs, available with the `/getrp` command
+ - Add "not_permission" requirement
 
 # 8.0.2
 

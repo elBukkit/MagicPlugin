@@ -30,6 +30,7 @@ public class MagicRequirement {
 
     private @Nonnull final MageController controller;
     private @Nullable String permissionNode = null;
+    private @Nullable String notPermissionNode = null;
     private @Nullable String requiredPath = null;
     private @Nullable String requiredTemplate = null;
     private @Nullable Set<String> requiredTemplates = null;
@@ -58,6 +59,7 @@ public class MagicRequirement {
         ConfigurationSection configuration = requirement.getConfiguration();
 
         permissionNode = configuration.getString("permission");
+        notPermissionNode = configuration.getString("not_permission");
         requiredPath = configuration.getString("path");
         exactPath = configuration.getString("path_exact");
         requiresCompletedPath = configuration.getString("path_end");
@@ -131,6 +133,9 @@ public class MagicRequirement {
         Player player = mage.getPlayer();
 
         if (permissionNode != null && (player == null || !player.hasPermission(permissionNode))) {
+            return false;
+        }
+        if (notPermissionNode != null && player != null && player.hasPermission(notPermissionNode)) {
             return false;
         }
         Wand wand = context.getWand();
@@ -344,6 +349,10 @@ public class MagicRequirement {
         Player player = mage.getPlayer();
 
         if (permissionNode != null && (player == null || !player.hasPermission(permissionNode))) {
+            return context.getMessage(SpellResult.INSUFFICIENT_PERMISSION.name().toLowerCase());
+        }
+
+        if (notPermissionNode != null && player != null && player.hasPermission(notPermissionNode)) {
             return context.getMessage(SpellResult.INSUFFICIENT_PERMISSION.name().toLowerCase());
         }
         Wand wand = context.getWand();
