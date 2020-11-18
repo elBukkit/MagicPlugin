@@ -94,8 +94,8 @@ broom:
         cancel_on_no_permission: true
         sound: magic.flying
         sound_interval: 500
-        sound_max_volume: 4
-        sound_min_volume: 0.9
+        sound_max_volume: 0.5
+        sound_min_volume: 0.1
         sound_max_pitch: 2
         sound_min_pitch: 0.5
         armor_stand_pitch: 0.3
