@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
-import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -48,11 +47,9 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
 
-public class SelectorAction extends CompoundAction implements GUIAction, CostReducer
+public class SelectorAction extends CompoundAction implements GUIAction
 {
     private static final int MAX_INVENTORY_SLOTS = 6 * 9;
-    protected double costScale = 1;
-    protected double earnScale = 1;
     protected boolean autoClose = true;
     protected SelectorConfiguration defaultConfiguration;
     protected ItemData confirmFillMaterial;
@@ -192,6 +189,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected boolean applyNameToItem = false;
         protected boolean nameIcon = true;
         protected boolean allowDroppedItems = true;
+        protected double costScale = 1;
+        protected double earnScale = 1;
 
         protected int limit = 0;
 
@@ -245,6 +244,12 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 commands.add(command);
             }
             free = configuration.getBoolean("free", free);
+            costScale = configuration.getDouble("scale", costScale);
+            if (configuration.contains("earn_scale")) {
+                earnScale = configuration.getDouble("earn_scale", earnScale);
+            } else if (configuration.contains("scale")) {
+                earnScale = costScale;
+            }
             effects = configuration.getString("effects", effects);
             applyLoreToItem = configuration.getBoolean("apply_lore_to_item", applyLoreToItem);
             applyNameToItem = configuration.getBoolean("apply_name_to_item", applyNameToItem);
@@ -317,6 +322,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                     }
                     optionCost.checkSupported(controller, costTypeFallback);
                     optionCost.scale(controller.getWorthBase());
+                    optionCost.scale(costScale);
                     costs.add(optionCost);
                 } else if (configuration.isString("cost")) {
                     if (costs == null) {
@@ -347,6 +353,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                                 itemCost.checkSupported(controller, costType, costTypeFallback);
                             }
                             itemCost.scale(controller.getWorthBase());
+                            itemCost.scale(costScale);
                             costs.add(itemCost);
                         }
                     }
@@ -477,7 +484,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         protected SelectorConfiguration defaults;
         protected Double startingAttributeValue;
 
-        public SelectorOption(SelectorConfiguration defaults, ConfigurationSection configuration, CastContext context, CostReducer reducer) {
+        public SelectorOption(SelectorConfiguration defaults, ConfigurationSection configuration, CastContext context) {
             super();
 
             this.defaults = defaults;
@@ -485,6 +492,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             this.selectedFreeMessage = defaults.selectedFreeMessage;
             this.items = defaults.items;
             this.costs = defaults.costs;
+            this.earnScale = defaults.earnScale;
+            this.costScale = defaults.costScale;
             this.castSpell = defaults.castSpell;
             this.applyToWand = defaults.applyToWand;
             this.applyToCaster = defaults.applyToCaster;
@@ -624,10 +633,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 }
             }
 
-            updateIcon(context, reducer);
+            updateIcon(context);
         }
 
-        public void updateIcon(CastContext context, CostReducer reducer) {
+        public void updateIcon(CastContext context) {
             MageController controller = context.getController();
 
             unavailable = false;
@@ -690,8 +699,8 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         }
                     }
 
-                    String costDescription = cost.has(context.getMage(), context.getWand(), reducer) ? costString : requiredCostString;
-                    costDescription = costDescription.replace("$cost", cost.getFullDescription(context.getController().getMessages(), reducer));
+                    String costDescription = cost.has(context.getMage(), context.getWand()) ? costString : requiredCostString;
+                    costDescription = costDescription.replace("$cost", cost.getFullDescription(context.getController().getMessages()));
                     InventoryUtils.wrapText(costDescription, lore);
                 }
             } else if (unlockKey != null && !unlockKey.isEmpty() && !unlocked) {
@@ -714,7 +723,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
 
                 String earnString = getMessage("earn_lore");
                 for (Cost earn : earns) {
-                    earnString = earnString.replace("$earn", earn.getFullDescription(context.getController().getMessages(), reducer));
+                    earnString = earnString.replace("$earn", earn.getFullDescription(context.getController().getMessages()));
                     InventoryUtils.wrapText(earnString, lore);
                 }
             }
@@ -898,14 +907,14 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         }
 
         @Nullable
-        protected Cost takeCosts(CostReducer reducer, CastContext context) {
-            Cost required = getRequiredCost(reducer, context);
+        protected Cost takeCosts(CastContext context) {
+            Cost required = getRequiredCost(context);
             if (required != null) {
                 return required;
             }
             if (costs != null) {
                 for (Cost cost : costs) {
-                    cost.deduct(context.getMage(), context.getWand(), reducer);
+                    cost.deduct(context.getMage(), context.getWand());
                 }
             }
 
@@ -913,10 +922,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         }
 
         @Nullable
-        public Cost getRequiredCost(CostReducer reducer, CastContext context) {
+        public Cost getRequiredCost(CastContext context) {
             if (costs != null) {
                 for (Cost cost : costs) {
-                    if (!cost.has(context.getMage(), context.getWand(), reducer)) {
+                    if (!cost.has(context.getMage(), context.getWand())) {
                         return cost;
                     }
                 }
@@ -925,7 +934,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             return null;
         }
 
-        public SpellResult give(CostReducer reducer, CastContext context) {
+        public SpellResult give(CastContext context) {
             Mage mage = context.getMage();
             Wand wand = context.getWand();
 
@@ -988,7 +997,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                             SelectorOption option = entry.getValue();
                             if (option.isPlaceholder()) continue;
 
-                            option.updateIcon(context, reducer);
+                            option.updateIcon(context);
                             ItemStack icon = option.getIcon();
                             InventoryUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
                             displayInventory.setItem(entry.getKey(), icon);
@@ -1020,7 +1029,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 ConfigurationSection unlocks = mage.getData().getConfigurationSection(unlockSection);
                 if (unlocks != null && !unlocks.getBoolean(unlockKey)) {
                     String unlockMessage = getMessage("unlocked");
-                    context.showMessage(getCostsMessage(reducer, unlockMessage));
+                    context.showMessage(getCostsMessage(unlockMessage));
                 }
                 if (unlocks == null) {
                     unlocks = mage.getData().createSection(unlockSection);
@@ -1067,10 +1076,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 startActions(actions);
             }
 
-            Cost required = takeCosts(reducer, context);
+            Cost required = takeCosts(context);
             if (required != null) {
                 String baseMessage = getMessage("insufficient");
-                String costDescription = required.getFullDescription(controller.getMessages(), reducer);
+                String costDescription = required.getFullDescription(controller.getMessages());
                 costDescription = baseMessage.replace("$cost", costDescription);
                 context.showMessage(costDescription);
                 return SpellResult.INSUFFICIENT_RESOURCES;
@@ -1124,7 +1133,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             return name;
         }
 
-        public String getSelectedMessage(CostReducer reducer) {
+        public String getSelectedMessage() {
             String message = selectedMessage;
             if (costs == null) {
                 if (selectedFreeMessage != null) {
@@ -1135,10 +1144,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             } else if (message == null) {
                 message = getMessage("selected");
             }
-            return getCostsMessage(reducer, message);
+            return getCostsMessage(message);
         }
 
-        public String getCostsMessage(CostReducer reducer, String baseMessage) {
+        public String getCostsMessage(String baseMessage) {
             String costString = "";
 
             if (costs != null) {
@@ -1147,7 +1156,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                         costString += ", ";
                     }
 
-                    costString += cost.getFullDescription(context.getController().getMessages(), reducer);
+                    costString += cost.getFullDescription(context.getController().getMessages());
                 }
             }
 
@@ -1228,10 +1237,10 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             return;
         }
 
-        Cost required = option.getRequiredCost(this, context);
+        Cost required = option.getRequiredCost(context);
         if (required != null) {
             String baseMessage = getMessage("insufficient");
-            String costDescription = required.getFullDescription(controller.getMessages(), this);
+            String costDescription = required.getFullDescription(controller.getMessages());
             costDescription = baseMessage.replace("$cost", costDescription);
             context.showMessage(costDescription);
         } else {
@@ -1264,9 +1273,9 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
                 return;
             }
 
-            finalResult = option.give(this, context);
+            finalResult = option.give(context);
             if (finalResult.isSuccess() && finalResult != SpellResult.NO_TARGET) {
-                context.showMessage(option.getSelectedMessage(this));
+                context.showMessage(option.getSelectedMessage());
             }
         }
         if (autoClose || finalResult != SpellResult.CAST) {
@@ -1289,8 +1298,6 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
             confirmFillMaterial = context.getController().getItem(fillerKey);
         }
         autoClose = parameters.getBoolean("auto_close", true);
-        costScale = parameters.getDouble("scale", 1);
-        earnScale = parameters.getDouble("earn_scale", costScale);
         title = parameters.getString("title");
         confirmTitle = parameters.getString("confirm_title");
         confirmUnlockTitle = parameters.getString("unlock_confirm_title");
@@ -1314,7 +1321,7 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
         List<SelectorOption> options = new ArrayList<>();
 
         for (ConfigurationSection option : optionConfigs) {
-            SelectorOption newOption = new SelectorOption(defaultConfiguration, option, context, this);
+            SelectorOption newOption = new SelectorOption(defaultConfiguration, option, context);
             if (newOption.hasLimit() && newOption.has(context)) {
                 has++;
             }
@@ -1488,21 +1495,6 @@ public class SelectorAction extends CompoundAction implements GUIAction, CostRed
            context.getLogger().warning("Failed to create item in selector: " + itemKey);
         }
         return item;
-    }
-
-    @Override
-    public float getCostReduction() {
-        return 0;
-    }
-
-    @Override
-    public float getConsumeReduction() {
-        return 0;
-    }
-
-    @Override
-    public float getCostScale() {
-        return (float)costScale;
     }
 
     protected int getNumSlots() {
