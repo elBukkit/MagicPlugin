@@ -82,6 +82,7 @@ public class CustomProjectileAction extends CompoundAction
     private int reflectLimit;
     private int pitchMin;
     private int pitchMax;
+    private boolean ignoreHitEntities;
     private boolean ignoreTargeting;
     private boolean reflectReorient;
     private boolean reflectResetDistanceTraveled;
@@ -252,6 +253,7 @@ public class CustomProjectileAction extends CompoundAction
         int hitLimit = parameters.getInt("hit_count", 1);
         entityHitLimit = parameters.getInt("entity_hit_count", hitLimit);
         blockHitLimit = parameters.getInt("block_hit_count", hitLimit);
+        ignoreHitEntities = parameters.getBoolean("ignore_hit_entities", true);
         reflectLimit = parameters.getInt("reflect_count", -1);
         pitchMin = parameters.getInt("pitch_min", 90);
         pitchMax = parameters.getInt("pitch_max", -90);
@@ -818,7 +820,7 @@ public class CustomProjectileAction extends CompoundAction
         }
 
         entityHitCount++;
-        if (hitEntity != null && entityHitLimit > 1) {
+        if (hitEntity != null && entityHitLimit > 1 && ignoreHitEntities) {
             targeting.ignoreEntity(hitEntity);
         }
         if (hitEntity != null) {
