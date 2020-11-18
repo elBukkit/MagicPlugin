@@ -33,6 +33,7 @@
  - Add instructions to builtin examples
  - Add alternate resource packs, available with the `/getrp` command
  - Add "not_permission" requirement
+ - Add earns_cooldown_scale parameter, use in missile to make reducing or changing the overall sp cooldown easier
 
 # 8.0.2
 

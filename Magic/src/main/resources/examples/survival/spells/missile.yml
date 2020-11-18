@@ -23,7 +23,7 @@ missile:
     # This spell will level up after 20 successful casts.
     # A cast is only considered successful if it does what it was intended to do.
     # In this case, that is hitting and damaging a mob or player
-    upgrade_required_casts: 20
+    upgrade_required_casts: 30
     # Categories aren't used for much, but can group spells in reference books
     category: combat
     # How many Spell Points this spell costs to purchase.
@@ -37,7 +37,7 @@ missile:
     # Once this spell levels up it will revert to the default cooldown and so not be able to earn SP as quickly.
     # This is important to keep in mind if you remove the levelled up versions of this spell, or don't allow
     # spell levelling!
-    earns_cooldown: 10000
+    earns_cooldown_scale: 0.05
     # Actions determine what a spell does when cast.
     # An action is like an atomic unit of logic or behavior
     # Actions can be mixed together to create completely unique mechanics without any custom coding.
@@ -243,34 +243,45 @@ missile:
 # This is Magic Missile level 2
 # Spell level configs override the parameters of the base spell
 missile|2:
-    upgrade_required_path: student
     upgrade_required_casts: 50
     # We are gradually restoring earns_cooldown to the default value
-    earns_cooldown: 600000
+    earns_cooldown_scale: 0.1
     parameters:
         range: 32
-        player_damage: 3
-        entity_damage: 6
+        player_damage: 2.5
+        entity_damage: 5
         target_breakables: 1
         break_durability: 3
     costs:
         mana: 20
 
 missile|3:
-    upgrade_required_path: apprentice
+    upgrade_required_path: student
     upgrade_required_casts: 50
     # The PS earn cooldown is now back to the default value
-    earns_cooldown: 900000
+    earns_cooldown_scale: 1
     parameters:
         range: 48
-        player_damage: 4
-        entity_damage: 8
+        player_damage: 3
+        entity_damage: 6
         target_breakables: 2
         break_durability: 4
     costs:
         mana: 30
 
 missile|4:
+    upgrade_required_path: apprentice
+    parameters:
+        range: 64
+        player_damage: 4
+        entity_damage: 8
+        target_breakables: 3
+        break_durability: 5
+    costs:
+        mana: 40
+
+missile|5:
+    upgrade_required_path: apprentice
     parameters:
         range: 64
         player_damage: 4
