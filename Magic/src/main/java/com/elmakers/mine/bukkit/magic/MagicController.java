@@ -3,34 +3,27 @@ package com.elmakers.mine.bukkit.magic;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.CodeSource;
-import java.security.MessageDigest;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -53,7 +46,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -215,7 +207,6 @@ import com.elmakers.mine.bukkit.tasks.MageQuitTask;
 import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MigrateDataTask;
 import com.elmakers.mine.bukkit.tasks.MigrationTask;
-import com.elmakers.mine.bukkit.tasks.RPCheckTask;
 import com.elmakers.mine.bukkit.tasks.SaveDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageTask;
@@ -242,7 +233,6 @@ import com.elmakers.mine.bukkit.warp.WarpController;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
-import com.google.common.io.BaseEncoding;
 
 import de.slikey.effectlib.math.EquationStore;
 
@@ -261,6 +251,7 @@ public class MagicController implements MageController {
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
         this.logger = new ColoredLogger(plugin.getLogger());
+        resourcePacks = new ResourcePackManager(this);
 
         SkinUtils.initialize(plugin);
 
@@ -1082,17 +1073,7 @@ public class MagicController implements MageController {
             legacyPathConfig.renameTo(pathConfig);
         }
         load();
-        if (checkResourcePack(Bukkit.getConsoleSender(), false) && resourcePackCheckInterval > 0 && enableResourcePackCheck) {
-            int intervalTicks = resourcePackCheckInterval * 60 * 20;
-            resourcePackCheckTimer = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new RPCheckTask(this), intervalTicks, intervalTicks);
-        }
-    }
-
-    protected void cancelResourcePackChecks() {
-        if (resourcePackCheckTimer != 0) {
-            Bukkit.getScheduler().cancelTask(resourcePackCheckTimer);
-            resourcePackCheckTimer = 0;
-        }
+        resourcePacks.startResourcePackChecks();
     }
 
     protected void finalizeIntegrationPreSpells() {
@@ -1718,14 +1699,10 @@ public class MagicController implements MageController {
         addExamples = loader.getAddExamples();
 
         // Main configuration
-
-        String currentResourcePack = defaultResourcePack;
-        loadProperties(loader.getMainConfiguration());
+        loadProperties(sender, loader.getMainConfiguration());
 
         if (!loaded) {
             finalizeIntegrationPreSpells();
-        } else if (resourcePack != null && !defaultResourcePack.equals(currentResourcePack)) {
-            checkResourcePack(sender, false, false, true);
         }
 
         // Sub-configurations
@@ -2796,9 +2773,16 @@ public class MagicController implements MageController {
                 .getMaterialSetEmpty("attachable_double");
     }
 
-    protected void loadProperties(ConfigurationSection properties)
+    public boolean hasAddedExamples() {
+        return addExamples != null && addExamples.size() > 0;
+    }
+
+    protected void loadProperties(CommandSender sender, ConfigurationSection properties)
     {
         if (properties == null) return;
+
+        // Delegate to resource pack handler
+        resourcePacks.load(properties, sender, !loaded);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
         if (logger instanceof ColoredLogger) {
@@ -2819,30 +2803,6 @@ public class MagicController implements MageController {
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
-        isResourcePackEnabledByDefault = properties.getBoolean("resource_pack_default_auto", true);
-        resourcePackPrompt = properties.getBoolean("resource_pack_prompt", false);
-        enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
-        resourcePackCheckInterval = properties.getInt("resource_pack_check_interval", 0);
-        resourcePackPromptDelay = properties.getInt("resource_pack_prompt_delay", 0);
-        defaultResourcePack = properties.getString("resource_pack", null);
-        // For legacy configs
-        defaultResourcePack = properties.getString("default_resource_pack", defaultResourcePack);
-        // For combined configs
-        if (addExamples != null && addExamples.size() > 0 && !defaultResourcePack.isEmpty())
-        {
-            defaultResourcePack = properties.getString("add_resource_pack", defaultResourcePack);
-        }
-        if (!properties.getBoolean("enable_resource_pack")) {
-            defaultResourcePack = null;
-        }
-
-        // For reloading after disabling the RP
-        if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
-            resourcePack = null;
-            resourcePackHash = null;
-        }
-
-        resourcePackDelay = properties.getLong("resource_pack_delay", 0);
         showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
         showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
         castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
@@ -6114,97 +6074,22 @@ public class MagicController implements MageController {
 
     @Override
     public boolean sendResourcePackToAllPlayers(CommandSender sender) {
-        if (resourcePack == null || resourcePackHash == null) {
-            if (sender != null) {
-                sender.sendMessage(ChatColor.RED + "No RP set or RP already set in server.properties, not sending.");
-            }
-            return false;
-        }
-        int sent = 0;
-        int skipped = 0;
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Mage mage = getRegisteredMage(player);
-            if (mage != null && !mage.isResourcePackEnabled()) {
-                skipped++;
-                continue;
-            }
-            sendResourcePack(player);
-            sent++;
-        }
-        if (sender != null) {
-            sender.sendMessage(ChatColor.AQUA + "Sent current RP to " + sent + " players, skipped " + skipped + " players");
-        }
-
-        return true;
+        return resourcePacks.sendResourcePackToAllPlayers(sender);
     }
 
     @Override
     public boolean promptResourcePack(final Player player) {
-        if (resourcePack == null || resourcePackHash == null) {
-            return false;
-        }
-
-        if (resourcePackPrompt) {
-            String message = messages.get("resource_pack.prompt");
-            if (message != null && !message.isEmpty()) {
-                if (resourcePackPromptDelay <= 0) {
-                    com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
-                } else {
-                    plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
-                        }
-                    }, resourcePackPromptDelay / 50);
-                }
-            }
-            return false;
-        }
-
-        return sendResourcePack(player);
+        return resourcePacks.promptResourcePack(player);
     }
 
     @Override
     public boolean promptNoResourcePack(final Player player) {
-        if (resourcePack == null || resourcePackHash == null) {
-            return false;
-        }
-
-        String message = messages.get("resource_pack.off_prompt");
-        if (message != null && !message.isEmpty()) {
-            if (resourcePackPromptDelay <= 0) {
-                com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
-            } else {
-                plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
-                    }
-                }, resourcePackPromptDelay / 50);
-            }
-        }
-        return true;
+        return resourcePacks.promptNoResourcePack(player);
     }
 
     @Override
     public boolean sendResourcePack(final Player player) {
-        if (resourcePack == null || resourcePackHash == null) {
-            return false;
-        }
-        String message = messages.get("resource_pack.sending");
-        if (message != null && !message.isEmpty()) {
-            com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, getMessagePrefix(), message);
-        }
-
-        // Give them some time to read the message
-        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                CompatibilityUtils.setResourcePack(player, resourcePack, resourcePackHash);
-            }
-        }, resourcePackDelay * 20 / 1000);
-
-        return true;
+        return resourcePacks.sendResourcePack(player);
     }
 
     @Override
@@ -6221,157 +6106,7 @@ public class MagicController implements MageController {
     }
 
     public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force, final boolean filenameChanged) {
-        final Server server = plugin.getServer();
-        if (!plugin.isEnabled()) return false;
-        resourcePack = null;
-        resourcePackHash = null;
-        final boolean initialLoad = !checkedResourcePack;
-
-        if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
-            if (!quiet) sender.sendMessage("Resource pack in config.yml has been disabled, Magic skipping RP check");
-            return false;
-        }
-
-        String serverResourcePack = CompatibilityUtils.getResourcePack(server);
-        if (serverResourcePack != null) serverResourcePack = serverResourcePack.trim();
-
-        if (serverResourcePack != null && !serverResourcePack.isEmpty()) {
-            if (!quiet) sender.sendMessage("Resource pack configured in server.properties, Magic not using RP from config.yml");
-            return false;
-        }
-        resourcePack = defaultResourcePack;
-
-        checkedResourcePack = true;
-        if (!quiet) sender.sendMessage("Magic checking resource pack for updates: " + ChatColor.GRAY + resourcePack);
-
-        long modifiedTime = 0;
-        String currentSHA = null;
-        final YamlConfiguration rpConfig = new YamlConfiguration();
-        final File rpFile = new File(plugin.getDataFolder(), "data/" + RP_FILE + ".yml");
-        final String rpKey = resourcePack.replace(".", "_");
-        if (rpFile.exists()) {
-            try {
-                rpConfig.load(rpFile);
-                ConfigurationSection rpSection = rpConfig.getConfigurationSection(rpKey);
-                if (rpSection != null) {
-                    currentSHA = rpSection.getString("sha1");
-                    modifiedTime = rpSection.getLong("modified");
-
-                    // Ignore old encoding, we will need to update
-                    if (currentSHA != null && currentSHA.length() < 40) {
-                        resourcePackHash = BaseEncoding.base64().decode(currentSHA);
-                    }
-                }
-            } catch (Exception ignored) {
-            }
-        }
-
-        final String finalResourcePack = resourcePack;
-        final long modifiedTimestamp = modifiedTime;
-        final String currentHash = currentSHA;
-        server.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
-                final List<String> responses = new ArrayList<>();
-                String newResourcePackHash = currentHash;
-                try {
-                    URL rpURL = new URL(finalResourcePack);
-                    HttpURLConnection connection = (HttpURLConnection)rpURL.openConnection();
-                    connection.setInstanceFollowRedirects(true);
-                    connection.setRequestMethod("HEAD");
-                    if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
-                    {
-                        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-                        Date tryParseDate = new Date(1L);
-                        boolean hasModifiedTime = false;
-                        final String lastModified = connection.getHeaderField("Last-Modified");
-                        if (lastModified == null || lastModified.isEmpty()) {
-                            responses.add(ChatColor.YELLOW + "Server did not return a Last-Modified field, cancelling checks until restart");
-                            cancelResourcePackChecks();
-                        } else {
-                            try {
-                                tryParseDate = format.parse(lastModified);
-                                hasModifiedTime = true;
-                            } catch (ParseException dateFormat) {
-                                cancelResourcePackChecks();
-                                responses.add("Error parsing resource pack modified time, cancelling checks until restart: " + lastModified);
-                            }
-                        }
-                        final Date modifiedDate = tryParseDate;
-                        if (modifiedDate.getTime() > modifiedTimestamp || resourcePackHash == null || (force && !hasModifiedTime)) {
-                            final boolean isUnset = (resourcePackHash == null);
-                            if (filenameChanged) {
-                               responses.add(ChatColor.YELLOW + "Resource pack changed, checking for updated hash");
-                            } else if (modifiedTimestamp <= 0) {
-                                responses.add(ChatColor.YELLOW + "Checking resource pack for the first time");
-                            } else if (isUnset) {
-                                responses.add(ChatColor.YELLOW + "Resource pack hash format changed, downloading for one-time update");
-                            } else if (!hasModifiedTime && force) {
-                                responses.add(ChatColor.YELLOW + "Forcing resource pack check with missing modified time, redownloading");
-                            } else {
-                                responses.add(ChatColor.YELLOW + "Resource pack modified, redownloading (" + modifiedDate.getTime() + " > " + modifiedTimestamp + ")");
-                            }
-
-                            MessageDigest digest = MessageDigest.getInstance("SHA1");
-                            try (BufferedInputStream in = new BufferedInputStream(rpURL.openStream())) {
-                                final byte[] data = new byte[1024];
-                                int count;
-                                while ((count = in.read(data, 0, 1024)) != -1) {
-                                    digest.update(data, 0, count);
-                                }
-                            }
-                            resourcePackHash = digest.digest();
-                            newResourcePackHash = BaseEncoding.base64().encode(resourcePackHash);
-
-                            if (initialLoad) {
-                                responses.add(ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newResourcePackHash);
-                            } else if (currentHash != null && currentHash.equals(newResourcePackHash))  {
-                                responses.add(ChatColor.GREEN + "Resource pack hash has not changed");
-                            } else {
-                                responses.add(ChatColor.YELLOW + "Resource pack hash changed, use " + ChatColor.AQUA + "/magic rpsend" + ChatColor.YELLOW + " to update connected players");
-                            }
-
-                            ConfigurationSection rpSection = rpConfig.createSection(rpKey);
-
-                            rpSection.set("sha1", newResourcePackHash);
-                            rpSection.set("modified", modifiedDate.getTime());
-                            rpSection.set("filename", resourcePack);
-                            rpConfig.save(rpFile);
-                        } else {
-                            if (filenameChanged) {
-                                responses.add(ChatColor.YELLOW + "Resource pack changed, use " + ChatColor.AQUA + "/magic rpsend" + ChatColor.YELLOW + " to update connected players");
-                            } else {
-                                responses.add(ChatColor.GREEN + "Resource pack has not changed, using hash " + newResourcePackHash +  " (" + modifiedDate.getTime() + " <= " + modifiedTimestamp + ")");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        responses.add(ChatColor.RED + "Could not find resource pack at: " + ChatColor.DARK_RED + finalResourcePack);
-                        cancelResourcePackChecks();
-                    }
-                }
-                catch (Exception e) {
-                    cancelResourcePackChecks();
-                    responses.add("An unexpected error occurred while checking your resource pack, cancelling checks until restart (see logs): " + ChatColor.DARK_RED + finalResourcePack);
-                    if (logVerbosity > 2) {
-                        e.printStackTrace();
-                    }
-                }
-
-                if (!quiet && plugin.isEnabled()) {
-                    server.getScheduler().runTask(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            for (String response : responses) {
-                                sender.sendMessage(response);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-        return true;
+        return resourcePacks.checkResourcePack(sender, quiet, force, filenameChanged);
     }
 
     @Nullable
@@ -7096,12 +6831,12 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public String getResourcePackURL() {
-        return resourcePack;
+        return resourcePacks.getDefaultResourcePackURL();
     }
 
     @Override
     public boolean isResourcePackEnabledByDefault() {
-        return isResourcePackEnabledByDefault;
+        return resourcePacks.isResourcePackEnabledByDefault();
     }
 
     @Override
@@ -7122,7 +6857,6 @@ public class MagicController implements MageController {
      */
     private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
 
-    private static final String RP_FILE             = "resourcepack";
     private static final String LOST_WANDS_FILE     = "lostwands";
     private static final String WARPS_FILE          = "warps";
     private static final String SPELLS_DATA_FILE    = "spells";
@@ -7320,6 +7054,7 @@ public class MagicController implements MageController {
     private boolean                             isFileLockingEnabled        = false;
     private int                                 fileLoadDelay               = 0;
     private Mage                                reloadingMage               = null;
+    private ResourcePackManager                 resourcePacks               = null;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();
@@ -7359,17 +7094,6 @@ public class MagicController implements MageController {
     private ConfigurationSection                redProtectConfiguration     = null;
     private ConfigurationSection                citadelConfiguration        = null;
     private ConfigurationSection                mobArenaConfiguration       = null;
-    private boolean                             enableResourcePackCheck     = true;
-    private int                                 resourcePackPromptDelay     = 0;
-    private boolean                             resourcePackPrompt          = false;
-    private int                                 resourcePackCheckInterval   = 0;
-    private int                                 resourcePackCheckTimer      = 0;
-    private String                              defaultResourcePack         = null;
-    private boolean                             checkedResourcePack         = false;
-    private String                              resourcePack                = null;
-    private byte[]                              resourcePackHash            = null;
-    private long                                resourcePackDelay           = 0;
-    private boolean                             isResourcePackEnabledByDefault = true;
     private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
     private boolean                             castConsoleFeedback         = false;
     private String                              editorURL                   = null;
