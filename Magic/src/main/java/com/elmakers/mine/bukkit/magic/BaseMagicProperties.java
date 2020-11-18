@@ -65,7 +65,7 @@ public class BaseMagicProperties implements MagicProperties {
             "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
             "earn_multiplier", "class", "classes",
             "consume_spell", "stack", "unstashable", "unmoveable", "attributes", "tags",
-            "page_free_space", "enchantable", "hide_flags"
+            "page_free_space", "enchantable", "hide_flags", "slot", "slots", "slotted"
     );
 
     public static final ImmutableSet<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(

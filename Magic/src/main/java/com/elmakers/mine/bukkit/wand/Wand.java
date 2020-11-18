@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -237,6 +238,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private int effectSoundInterval = 0;
 
     private int quietLevel = 0;
+
+    // Slot system
+    private List<Wand> slotted = null;
 
     // Transient state
 
@@ -1690,6 +1694,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             mageClassKeys = getStringList("classes");
         }
 
+        // Load slotted wands
+        List<String> slottedKeys = getStringList("slotted");
+        if (slottedKeys != null && !slottedKeys.isEmpty()) {
+            slotted = new ArrayList<>();
+            for (String slottedKey : slottedKeys) {
+                Wand slottedWand = controller.createWand(slottedKey);
+                if (slottedWand != null) {
+                    slotted.add(slottedWand);
+                }
+            }
+        }
+
         // Check for single-use wands
         uses = getInt("uses");
         hasUses = uses > 0;
@@ -2656,8 +2672,44 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         addPropertyLore(lore, isSingleSpell);
         if (isUpgrade) {
             ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_item_description"), lore);
+            String slot = getString("slot");
+            if (slot != null && !slot.isEmpty()) {
+                String slotName = controller.getMessages().get("slots." + slot + ".name", slot);
+                ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_slot").replace("$slot", slotName), lore);
+            }
+        } else {
+            List<String> slots = getStringList("slots");
+            if (slots != null && !slots.isEmpty()) {
+                List<Wand> remaining = new ArrayList<>();
+                if (slotted != null) {
+                    remaining.addAll(slotted);
+                }
+                ConfigurationUtils.addIfNotEmpty(getMessage("slots_header").replace("$count", Integer.toString(slots.size())), lore);
+                for (String slot : slots) {
+                    Wand slottedWand = null;
+                    Iterator<Wand> it = remaining.iterator();
+                    while (it.hasNext()) {
+                        Wand testSlot = it.next();
+                        if (testSlot.getSlot().equals(slot)) {
+                            it.remove();
+                            slottedWand = testSlot;
+                            break;
+                        }
+                    }
+                    if (slottedWand == null) {
+                        String slotName = controller.getMessages().get("slots." + slot + ".name", slot);
+                        ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
+                    } else {
+                        ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slottedWand.getName()), lore);
+                    }
+                }
+            }
         }
         return lore;
+    }
+
+    public String getSlot() {
+        return getString("slot");
     }
 
     protected void addUseLore(List<String> lore) {
@@ -3781,9 +3833,50 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean addItem(ItemStack item) {
         if (isUpgrade) return false;
         Integer sp = getSP(item);
-        if (!isModifiable() && !isUpgrade(item) && sp == null) return false;
+        boolean isUpgrade = isUpgrade(item);
+        if (!isModifiable() && !isUpgrade && sp == null) return false;
+        if (isUpgrade) {
+            Wand upgradeWand = controller.createWand(item);
+            String slot = upgradeWand.getSlot();
+            if (slot != null && !slot.isEmpty()) {
+                return addSlotted(upgradeWand);
+            }
+        }
         return super.addItem(item);
     }
+
+    public boolean addSlotted(Wand upgradeWand) {
+        List<String> slots = getStringList("slots");
+        if (slots == null || slots.isEmpty()) {
+            return false;
+        }
+
+        slots = new ArrayList<>(slots);
+        if (slotted == null) {
+             slotted = new ArrayList<>();
+        }
+        for (Wand wand : slotted) {
+            slots.remove(wand.getSlot());
+        }
+        String slot = upgradeWand.getSlot();
+        for (String remaining : slots) {
+            if (remaining.equals(slot)) {
+                List<String> slottedKeys = getStringList("slotted");
+                if (slottedKeys == null) {
+                    slottedKeys = new ArrayList<>();
+                }
+                slottedKeys.add(upgradeWand.getKey());
+                setProperty("slotted", slottedKeys);
+                slotted.add(upgradeWand);
+                saveState();
+                updateLore();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     protected void updateEffects() {
         updateEffects(mage);
