@@ -184,6 +184,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         {
             return onMageClear(sender, player, args2);
         }
+        if (subCommand.equalsIgnoreCase("forget"))
+        {
+            return onMageForget(sender, player, args2);
+        }
         if (subCommand.equalsIgnoreCase("skin"))
         {
             return onMageSkin(sender, player);
@@ -218,6 +222,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "attribute");
             addIfPermissible(sender, options, "Magic.commands.mage.", "bypass");
             addIfPermissible(sender, options, "Magic.commands.mage.", "promote");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "forget");
         } else if (args.length == 2 && sender.hasPermission("Magic.commands.mage.others")) {
             options.addAll(api.getPlayerNames());
         }
@@ -377,6 +382,19 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             return true;
         }
         sender.sendMessage(skinBlock);
+        return true;
+    }
+
+    public boolean onMageForget(CommandSender sender, Player player, String[] parameters)
+    {
+        int count = 0;
+        for (String recipeKey : controller.getRecipeKeys()) {
+            if (CompatibilityUtils.undiscoverRecipe(player, controller.getPlugin(), recipeKey)) {
+                count++;
+            }
+        }
+        sender.sendMessage(ChatColor.AQUA + "Removed knowledge of " + ChatColor.DARK_AQUA + count + ChatColor.AQUA + " crafting recipes from "
+            + ChatColor.GOLD + player.getName());
         return true;
     }
 

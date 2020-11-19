@@ -514,6 +514,7 @@ commands:
         /mage levelspells Level up all spells for a mage
         /mage deactivate  Close the player's wand inventory
         /mage skin        Dump to chat a player's skin for use in a disguise
+        /mage forget      Clear knowledge of crafting recipes
   "mage configure":
     description: Configure mage properties, configures the active class
     usage: |
@@ -650,6 +651,13 @@ commands:
         /mage clear NathanWolf
         /mage clear NathanWolf all
         /mage clear NathanWolf all
+  "mage forget":
+    description: Remove magic crafting recipes from a player
+    permission: Magic.commands.mage.forget
+    usage: |
+
+        /mage forget <Player>
+        /mage forget NathanWolf
   "mage bypass":
     description: Toggle on/off bypass for pvp, build, break and other checks
     permission: Magic.commands.mage.bypass
@@ -1566,6 +1574,7 @@ permissions:
     - Magic.commands.mage.levelspells
     - Magic.commands.mage.others
     - Magic.commands.mage.skin
+    - Magic.commands.mage.forget
   Magic.commands.mage.configure:
     description: Player may configure Mage properties
     type: boolean
@@ -1638,8 +1647,12 @@ permissions:
     description: Player may delete player data
     type: boolean
     default: op
-  Magic.commands.mage.clear:
-    description: Player may clear player inventories
+  Magic.commands.mage.forget:
+    description: Player may reset player recipe knowledge
+    type: boolean
+    default: op
+  Magic.commands.mage.check:
+    description: Player may check permissions
     type: boolean
     default: op
   Magic.commands.mage.unbind:

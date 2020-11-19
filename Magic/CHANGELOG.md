@@ -35,6 +35,7 @@
  - Add "not_permission" requirement
  - Add earns_cooldown_scale parameter, use in missile to make reducing or changing the overall sp cooldown easier
  - Add buysellshop template for a combo buy/sell shop
+ - Add /mage forget command, to make a player forget crafting recipes
 
 # 8.0.2
 

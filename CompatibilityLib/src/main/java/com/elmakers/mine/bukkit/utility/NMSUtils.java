@@ -317,6 +317,7 @@ public class NMSUtils {
     protected static Method class_Phantom_setSizeMethod;
     protected static Method class_Server_removeRecipeMethod;
     protected static Method class_HumanEntity_discoverRecipeMethod;
+    protected static Method class_HumanEntity_undiscoverRecipeMethod;
 
     protected static boolean legacyMaps;
 
@@ -1060,8 +1061,10 @@ public class NMSUtils {
                 }
                 try {
                     class_HumanEntity_discoverRecipeMethod = HumanEntity.class.getMethod("discoverRecipe", class_NamespacedKey);
+                    class_HumanEntity_undiscoverRecipeMethod = HumanEntity.class.getMethod("undiscoverRecipe", class_NamespacedKey);
                 } catch (Throwable ex) {
                     class_HumanEntity_discoverRecipeMethod = null;
+                    class_HumanEntity_undiscoverRecipeMethod = null;
                     logger.warning("Couldn't find recipe discover method, this is odd since we did find NamespacedKey");
                 }
             }

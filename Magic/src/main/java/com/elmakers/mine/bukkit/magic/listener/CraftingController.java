@@ -174,7 +174,6 @@ public class CraftingController implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // The only purpose of this handler is to prevent crafting with wands, so skip if we're allowed to do that.
         if (!(event.getWhoClicked() instanceof Player)) return;
         if (event.isCancelled()) return;
 

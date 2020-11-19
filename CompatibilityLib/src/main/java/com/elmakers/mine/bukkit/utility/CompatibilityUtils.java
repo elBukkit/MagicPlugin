@@ -1552,6 +1552,20 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
+    public static boolean undiscoverRecipe(HumanEntity entity, Plugin plugin, String key) {
+        if (class_NamespacedKey == null || class_HumanEntity_undiscoverRecipeMethod == null) {
+            return false;
+        }
+
+        try {
+            Object namespacedKey = class_NamespacedKey_constructor.newInstance(plugin, key.toLowerCase());
+            return (boolean)class_HumanEntity_undiscoverRecipeMethod.invoke(entity, namespacedKey);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     public static double getMaxHealth(Damageable li) {
         // return li.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         return li.getMaxHealth();
@@ -2153,6 +2167,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage) {
+        if (ingredient == null) return false;
         if (class_RecipeChoice_ExactChoice == null) {
             if (isLegacy()) {
                 @SuppressWarnings("deprecation")
