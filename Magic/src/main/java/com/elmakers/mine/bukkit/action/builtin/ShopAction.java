@@ -32,6 +32,7 @@ public class ShopAction extends SelectorAction {
         boolean showExtra = parameters.getBoolean("show_extra_spells", false);
         boolean showRequired = parameters.getBoolean("show_required_spells", false);
         boolean showFree = parameters.getBoolean("show_free", false);
+        boolean addSellShop = parameters.getBoolean("add_sell_shop", false);
         showNoPermission = parameters.getBoolean("show_no_permission", false);
 
         // Don't load items as defaults
@@ -39,7 +40,8 @@ public class ShopAction extends SelectorAction {
         parameters.set("items", null);
 
         // Sell shop overrides
-        if (parameters.getBoolean("sell")) {
+        boolean isSellShop = parameters.getBoolean("sell");
+        if (isSellShop) {
             // Support scale parameter
             parameters.set("earn_scale", parameters.get("scale"));
             parameters.set("scale", null);
@@ -86,6 +88,30 @@ public class ShopAction extends SelectorAction {
             if (showExtra) {
                 loadSpells(context, currentPath.getExtraSpells(), showFree, true);
             }
+        }
+
+        if (addSellShop) {
+            int startNextLine = ((int)Math.floor(getNumSlots() / 9)) * 9;
+            int buttonSlot = startNextLine + 8;
+            ConfigurationSection sellShopConfig = new MemoryConfiguration();
+            sellShopConfig.set("slot", buttonSlot);
+            sellShopConfig.set("auto_close", true);
+            sellShopConfig.set("selected", "");
+            sellShopConfig.set("cast_spell", context.getSpell().getSpellKey().getKey());
+            if (!isSellShop) {
+                ConfigurationSection spellParameters = sellShopConfig.createSection("cast_spell_parameters");
+                spellParameters.set("sell", true);
+                spellParameters.set("title", getMessage("sell_title"));
+                sellShopConfig.set("name", getMessage("sell_icon_name"));
+                sellShopConfig.set("icon", parameters.getString("sell_icon", "yellow_wool"));
+            } else {
+                sellShopConfig.set("name", getMessage("buy_icon_name"));
+                sellShopConfig.set("icon", parameters.getString("buy_icon", "green_wool"));
+            }
+
+            List<ConfigurationSection> buttonConfigs = new ArrayList<>();
+            buttonConfigs.add(sellShopConfig);
+            loadOptions(buttonConfigs);
         }
     }
 

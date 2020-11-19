@@ -2,6 +2,7 @@
 
 ## List is too long
 
+ - Add potion effects to classes and modifiers
  - Mobs that get hit by their own spells start attacking themselves
  - Archer mob is broken
 

@@ -364,11 +364,13 @@ fishshop:
         - raw_fish|3@1
 
 redstoneshop:
-    inherit: buyshop
+    inherit: buysellshop
     parameters:
         items:
         - slime_ball@1
         - redstone@8
+        - redstone@16
+        - redstone@64
         - redstone_torch@2
         - redstone_block
         - redstone_lamp_off@4

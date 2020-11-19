@@ -1,0 +1,15 @@
+buysellshop:
+    icon: sulphur
+    category: shop
+    hidden: true
+    actions:
+        cast:
+        - class: Shop
+    parameters:
+        confirm: false
+        auto_close: false
+        confirm_filler: stained_glass_pane
+        add_sell_shop: true
+        sell_icon: yellow_wool{CustomModelData:18001}
+        buy_icon: green_wool{CustomModelData:18001}
+
