@@ -127,8 +127,9 @@ public class EnchantingController implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.isCancelled()) return;
-
         InventoryType inventoryType = event.getInventory().getType();
+        if (inventoryType != InventoryType.ENCHANTING) return;
+
         SlotType slotType = event.getSlotType();
         ItemStack current = event.getCurrentItem();
         Wand currentWand = controller.getIfWand(current);
@@ -139,7 +140,7 @@ public class EnchantingController implements Listener {
             return;
         }
 
-        if (enchantingEnabled && inventoryType == InventoryType.ENCHANTING)
+        if (enchantingEnabled)
         {
             if (slotType == SlotType.CRAFTING) {
                 HumanEntity clicker = event.getWhoClicked();
