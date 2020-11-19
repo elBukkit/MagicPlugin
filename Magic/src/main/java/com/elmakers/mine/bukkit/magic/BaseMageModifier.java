@@ -53,6 +53,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
 
     @Override
     public void updated() {
+        super.updated();
         Mage mage = getMage();
         if (mage == null) return;
         updateMaxMana(mage);
