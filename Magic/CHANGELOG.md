@@ -37,6 +37,8 @@
  - Add buysellshop template for a combo buy/sell shop
  - Add /mage forget command, to make a player forget crafting recipes
 
+# 8.0.3
+
 # 8.0.2
 
  - Fix wands in offhand slot being lost on death
