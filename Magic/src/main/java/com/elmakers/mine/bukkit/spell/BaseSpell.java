@@ -1038,7 +1038,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         earnCooldown = node.getInt("earns_cooldown", 0);
         double earnCooldownScale = node.getDouble("earns_cooldown_scale", 1);
-        earnCooldown *= earnCooldownScale;
+        earnCooldown = (int)Math.ceil(earnCooldownScale * earnCooldown);
         category = controller.getCategory(node.getString("category"));
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
         if (tagList != null) {
