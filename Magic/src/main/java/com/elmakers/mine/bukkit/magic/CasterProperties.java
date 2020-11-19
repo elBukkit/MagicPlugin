@@ -986,14 +986,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public void setEffectColor(String hexColor) {
-        // Annoying config conversion issue :\
-        if (hexColor.contains(".")) {
-            hexColor = hexColor.substring(0, hexColor.indexOf('.'));
-        }
-
         if (hexColor == null || hexColor.length() == 0 || hexColor.equals("none")) {
             effectColor = null;
             return;
+        }
+        // Annoying config conversion issue :\
+        if (hexColor.contains(".")) {
+            hexColor = hexColor.substring(0, hexColor.indexOf('.'));
         }
         effectColor = new ColorHD(hexColor);
         if (hexColor.equals("random")) {
