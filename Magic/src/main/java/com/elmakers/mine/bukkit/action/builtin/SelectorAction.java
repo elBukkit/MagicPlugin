@@ -192,6 +192,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected boolean allowDroppedItems = true;
         protected double costScale = 1;
         protected double earnScale = 1;
+        protected boolean autoClose = true;
 
         protected int limit = 0;
 
@@ -213,6 +214,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             unlockClass = configuration.getString("unlock_class", unlockClass);
             lockClass = configuration.getString("lock_class", lockClass);
             nameIcon = configuration.getBoolean("apply_name_to_icon", nameIcon);
+            autoClose = configuration.getBoolean("auto_close", true);
             allowAttributeReduction = configuration.getBoolean("allow_attribute_reduction", allowAttributeReduction);
             if (configuration.contains("switch_class")) {
                 switchClass = true;
@@ -530,6 +532,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.iconKey = defaults.iconKey;
             this.iconPlaceholderKey = defaults.iconPlaceholderKey;
             this.iconDisabledKey = defaults.iconDisabledKey;
+            this.autoClose = defaults.autoClose;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
@@ -1235,7 +1238,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         String unpurchasableMessage = InventoryUtils.getMetaString(item, "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
-            if (autoClose) {
+            if (autoClose || option.autoClose) {
                 mage.deactivateGUI();
             }
             return;
@@ -1282,7 +1285,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 context.showMessage(option.getSelectedMessage());
             }
         }
-        if (autoClose || finalResult != SpellResult.CAST) {
+        if (autoClose || option.autoClose || finalResult != SpellResult.CAST) {
             if (isActive) {
                 mage.deactivateGUI();
             }
