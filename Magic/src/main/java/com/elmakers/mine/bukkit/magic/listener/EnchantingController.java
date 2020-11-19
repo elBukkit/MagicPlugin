@@ -27,13 +27,14 @@ public class EnchantingController implements Listener {
     @EventHandler
     public void onEnchantItem(EnchantItemEvent event) {
         Wand wand = controller.getIfWand(event.getItem());
+        if (wand == null) return;
         if (wand.isEnchantable()) {
             Player player = event.getEnchanter();
             if (player == null || !controller.hasPermission(player, "Magic.wand.enchant_vanilla")) {
                 event.setCancelled(true);
                 return;
             }
-        } else if (enchantingEnabled && wand != null) {
+        } else if (enchantingEnabled) {
             Player player = event.getEnchanter();
             if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
                 event.setCancelled(true);
@@ -64,16 +65,17 @@ public class EnchantingController implements Listener {
     @EventHandler
     public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
         Wand wand = controller.getIfWand(event.getItem());
+        if (wand == null) return;
+
         // In this context we do not want to do anything special for enchantable wands
         // The non-enchantable ones might go through the old enchanting progression system though.
-        if (wand != null && wand.isEnchantable()) {
+        if (wand.isEnchantable()) {
             Player player = event.getEnchanter();
             if (player == null || !controller.hasPermission(player, "Magic.wand.enchant_vanilla")) {
                 event.setCancelled(true);
                 return;
             }
-        }
-        else if (wand != null) {
+        } else {
             if (!enchantingEnabled) {
                 event.setCancelled(true);
                 return;
