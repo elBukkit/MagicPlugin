@@ -1718,21 +1718,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             useMode = parseUseMode(getString("use_mode"), preuse ? WandUseMode.PRECAST : WandUseMode.SUCCESS);
         }
 
-        // Convert some legacy properties to potion effects
-        float healthRegeneration = getFloat("health_regeneration", 0);
-        float hungerRegeneration = getFloat("hunger_regeneration", 0);
-        float speedIncrease = getFloat("haste", 0);
-
-        if (speedIncrease > 0) {
-            potionEffects.put(PotionEffectType.SPEED, 1);
-        }
-        if (healthRegeneration > 0) {
-            potionEffects.put(PotionEffectType.REGENERATION, 1);
-        }
-        if (hungerRegeneration > 0) {
-            potionEffects.put(PotionEffectType.SATURATION, 1);
-        }
-
         // This overrides the value loaded in CasterProperties
         if (!regenWhileInactive) {
             setProperty("mana_timestamp", System.currentTimeMillis());

@@ -4,6 +4,9 @@
 
  - PlayEffects and PlaySound no longer give cast credit. Use `effects_count_as_cast: true` to change this back
  - Added "active_wand" target to ModifyProperties, won't switch wands by default
+ - The following wand properties were removed, and had been broken for a while- use `potion_effects` instead:
+   health_regeneration, hunger_regeneration, haste
+
 
 # 8.0
 
