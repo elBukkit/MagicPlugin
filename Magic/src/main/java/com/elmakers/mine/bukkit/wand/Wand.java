@@ -80,7 +80,6 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.ApplyWandIconTask;
 import com.elmakers.mine.bukkit.tasks.CancelEffectsContextTask;
 import com.elmakers.mine.bukkit.tasks.OpenWandTask;
-import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -94,7 +93,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static final int INVENTORY_ORGANIZE_BUFFER = 4;
     public static final int HOTBAR_SIZE = 9;
     public static final int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
-    public static final float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
     public static boolean FILL_CREATOR = false;
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0, 0, 0.5);
     public static String DEFAULT_WAND_TEMPLATE = "default";
@@ -213,8 +211,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private float manaPerDamage = 0;
 
-    private ColorHD effectColor = null;
-    private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
     private Particle effectParticle = null;
     private float effectParticleData = 0;
     private int effectParticleCount = 0;
@@ -1600,22 +1596,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-    public void setEffectColor(String hexColor) {
-        // Annoying config conversion issue :\
-        if (hexColor.contains(".")) {
-            hexColor = hexColor.substring(0, hexColor.indexOf('.'));
-        }
-
-        if (hexColor == null || hexColor.length() == 0 || hexColor.equals("none")) {
-            effectColor = null;
-            return;
-        }
-        effectColor = new ColorHD(hexColor);
-        if (hexColor.equals("random")) {
-            setProperty("effect_color", effectColor.toString());
-        }
-    }
-
     private void migrateProtection(String legacy, String migrateTo) {
         if (hasProperty(legacy)) {
             double protection = getDouble(legacy);
@@ -1714,10 +1694,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // This overrides the value loaded in CasterProperties
         if (!regenWhileInactive) {
             setProperty("mana_timestamp", System.currentTimeMillis());
-        }
-
-        if (hasProperty("effect_color")) {
-            setEffectColor(getString("effect_color"));
         }
 
         id = getString("id");
@@ -3875,13 +3851,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (player == null) return;
 
         // Update Bubble effects effects
+        Color effectColor = getEffectColor();
         if (effectBubbles && effectColor != null) {
             Location potionEffectLocation = player.getLocation();
             potionEffectLocation.setX(potionEffectLocation.getX() + random.nextDouble() - 0.5);
             potionEffectLocation.setY(potionEffectLocation.getY() + random.nextDouble() * player.getEyeHeight());
             potionEffectLocation.setZ(potionEffectLocation.getZ() + random.nextDouble() - 0.5);
             EffectPlayer.displayParticle(Particle.SPELL_MOB, potionEffectLocation, 0, 0, 0,
-            0, 0, 1, effectColor.getColor(), null, (byte)0, 24);
+            0, 0, 1, effectColor, null, (byte)0, 24);
         }
 
         Location location = mage.getLocation();
@@ -3910,7 +3887,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 effectPlayer.setMaterial(location.getBlock().getRelative(BlockFace.DOWN));
                 if (effectParticleData == 0)
                 {
-                    effectPlayer.setColor(getEffectColor());
+                    effectPlayer.setColor(effectColor);
                 }
                 else
                 {
@@ -4284,19 +4261,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             ConfigurationUtils.addConfigurations(castParameters, parameters, true);
         }
         if (spell.cast(this, castParameters)) {
-            Color spellColor = spell.getColor();
             if (useMode != WandUseMode.PRECAST) {
                 use();
             }
-            if (spellColor != null && this.effectColor != null) {
-                this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
-                setProperty("effect_color", effectColor.toString());
-                // Note that we don't save this change.
-                // The hope is that the wand will get saved at some point later
-                // And we don't want to trigger NBT writes every spell cast.
-                // And the effect color morphing isn't all that important if a few
-                // casts get lost.
-            }
+            onCast(spell);
             updateHotbarStatus();
             return true;
         }
@@ -4497,12 +4465,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             this.mage = (Mage)mage;
             passiveEffectsUpdated();
         }
-    }
-
-    @Nullable
-    @Override
-    public Color getEffectColor() {
-        return effectColor == null ? null : effectColor.getColor();
     }
 
     public Particle getEffectParticle() {

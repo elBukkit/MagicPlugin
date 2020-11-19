@@ -239,8 +239,10 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     @Deprecated
     void activate(Mage mage);
 
+    @Override
     @Nullable
     Color getEffectColor();
+    @Override
     String getEffectParticleName();
     @Nullable
     Location getLocation();

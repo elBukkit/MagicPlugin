@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
@@ -29,6 +30,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -41,10 +43,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     // then we migrate.
     protected static int LEGACY_VERSION = 6;
     protected static int CURRENT_VERSION = 7;
+    public static final float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
+    private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
 
     protected int effectiveManaMax = 0;
     protected int effectiveManaRegeneration = 0;
     private Map<PotionEffectType, Integer> potionEffects = new HashMap<>();
+    private ColorHD effectColor = null;
 
     public static void setLegacyVersion() {
         CURRENT_VERSION = LEGACY_VERSION;
@@ -965,9 +970,53 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (hasProperty("potion_effects")) {
             addPotionEffects(potionEffects, getProperty("potion_effects"));
         }
+        if (hasProperty("effect_color")) {
+            setEffectColor(getString("effect_color"));
+        }
     }
 
     public Map<PotionEffectType, Integer> getPotionEffects() {
         return potionEffects;
+    }
+
+    @Override
+    @Nullable
+    public String getEffectParticleName() {
+        return getString("effect_particle");
+    }
+
+    public void setEffectColor(String hexColor) {
+        // Annoying config conversion issue :\
+        if (hexColor.contains(".")) {
+            hexColor = hexColor.substring(0, hexColor.indexOf('.'));
+        }
+
+        if (hexColor == null || hexColor.length() == 0 || hexColor.equals("none")) {
+            effectColor = null;
+            return;
+        }
+        effectColor = new ColorHD(hexColor);
+        if (hexColor.equals("random")) {
+            setProperty("effect_color", effectColor.toString());
+        }
+    }
+
+    @Nullable
+    @Override
+    public Color getEffectColor() {
+        return effectColor == null ? null : effectColor.getColor();
+    }
+
+    protected void onCast(SpellTemplate spell) {
+        Color spellColor = spell.getColor();
+        if (spellColor != null && this.effectColor != null) {
+            this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
+            setProperty("effect_color", effectColor.toString());
+            // Note that we don't save this change.
+            // The hope is that the wand will get saved at some point later
+            // And we don't want to trigger NBT writes every spell cast.
+            // And the effect color morphing isn't all that important if a few
+            // casts get lost.
+        }
     }
 }

@@ -4,6 +4,7 @@ caster:
   mana: 50
   mana_max: 50
   mana_regeneration: 5
+  effect_color: random
   spells:
   - missile
 

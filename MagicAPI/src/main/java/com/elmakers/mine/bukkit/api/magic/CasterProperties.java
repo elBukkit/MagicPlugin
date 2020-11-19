@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.magic;
 import java.util.Collection;
 import javax.annotation.Nullable;
 
+import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -78,4 +79,8 @@ public interface CasterProperties extends MagicConfigurable {
     boolean isConsumeFree();
     boolean isCooldownFree();
     int randomize(int totalLevels, boolean addSpells);
+    @Nullable
+    Color getEffectColor();
+    @Nullable
+    String getEffectParticleName();
 }
