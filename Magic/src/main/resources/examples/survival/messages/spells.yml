@@ -712,6 +712,10 @@ spells:
         title_friend: $name
         add_friend: "&bYou have added &5$name &bas a &6Friend!"
         remove_friend: "&cYou have removed &5$name &cas a &6Friend!"
+        recall_title: "Teleport To:"
+        friend_request_title: "@tn wants to be friends"
+        reject: "@pn said no ;("
+        send_request_title: "Send Friend Request"
     recall:
         name: Recall
         cancel: Recall interrupted!

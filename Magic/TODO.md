@@ -4,7 +4,6 @@
 
  - Archer mob is broken ... ?
  - Re-work wand protection
- - Gather title = Recall, shows warps?
  - Mnpc select can't target underwater
  - Can we make pets?
  - Make "untame" spell

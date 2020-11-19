@@ -12,16 +12,17 @@ gather:
   actions:
     cast:
       - class: Recall
-        title: "Teleport To:"
+        title_key: "recall_title"
     alternate_down:
       - class: PlayerSelect
+        title_key: "send_request_title"
         actions:
           - class: ChangeContext
             use_target_mage: true
             swap_source_and_target: true
             actions:
               - class: Selector
-                title: "@tn wants to be friends"
+                title_key: "friend_request_title"
                 friends:
                   - class: Recall
                     addfriend: target
@@ -34,7 +35,7 @@ gather:
                 nofriends:
                   - class: Message
                     message_target: true
-                    message: "@pn said no ;("
+                    message_key: reject
                 options:
                   - placeholder: true
                   - placeholder: true
@@ -175,7 +176,8 @@ gather:
     allow_home: false
     allow_town: false
     allow_fields: false
-    allow_warps: false
+    allow_warp: false
+    allow_regions: false
     protection_duration: 5000
 
   costs:
