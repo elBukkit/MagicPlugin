@@ -62,6 +62,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private int markerCount = 1;
     private int delay = 0;
     private boolean teleport = true;
+    private String titleKey = null;
 
     private boolean isActive = false;
     private long delayExpiration = 0;
@@ -451,6 +452,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.teleport = parameters.getBoolean("teleport", true);
         this.delay = parameters.getInt("delay", 0);
         this.delay = parameters.getInt("warmup", this.delay);
+        titleKey = parameters.getString("title_key", "title");
 
         allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
     }
@@ -826,7 +828,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return SpellResult.NO_TARGET;
         }
 
-        String inventoryTitle = context.getMessage("title", "Recall");
+        String inventoryTitle = context.getMessage(titleKey, "Recall");
         int invSize = (int)Math.ceil(options.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         int index = 0;

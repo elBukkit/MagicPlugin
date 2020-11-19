@@ -61,6 +61,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
     private String title;
     private String confirmTitle;
     private String confirmUnlockTitle;
+    private String titleKey;
+    private String confirmTitleKey;
+    private String confirmUnlockTitleKey;
 
     // State
     private boolean isActive = false;
@@ -1308,6 +1311,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
         title = parameters.getString("title");
         confirmTitle = parameters.getString("confirm_title");
         confirmUnlockTitle = parameters.getString("unlock_confirm_title");
+        titleKey = parameters.getString("title_key", "title");
+        confirmTitleKey = parameters.getString("confirm_title_key", "confirm_title");
+        confirmUnlockTitleKey = parameters.getString("unlock_confirm_title_key", "unlock_confirm_title");
         finalResult = null;
         isActive = false;
 
@@ -1368,7 +1374,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         if (title != null && !title.isEmpty()) {
             return title;
         }
-        return getMessage("title");
+        return getMessage(titleKey);
     }
 
     protected String getConfirmTitle(SelectorOption option)
@@ -1377,12 +1383,12 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (confirmUnlockTitle != null && !confirmUnlockTitle.isEmpty()) {
                 return confirmUnlockTitle;
             }
-            return getMessage("unlock_confirm_title");
+            return getMessage(confirmUnlockTitleKey);
         }
         if (confirmTitle != null && !confirmTitle.isEmpty()) {
             return confirmTitle;
         }
-        return getMessage("confirm_title");
+        return getMessage(confirmTitleKey);
     }
 
     protected String getBalanceDescription(CastContext context) {

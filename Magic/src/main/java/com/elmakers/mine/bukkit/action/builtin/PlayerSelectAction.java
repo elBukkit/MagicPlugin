@@ -40,6 +40,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     private boolean active = false;
     private WeakReference<Player> target = null;
     private String ignorePlayersKey;
+    private String titleKey;
 
     @Override
     public void deactivated() {
@@ -86,6 +87,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
         super.prepare(context, parameters);
         allowCrossWorld = parameters.getBoolean("cross_world", true);
         ignorePlayersKey = parameters.getString("ignore_key");
+        titleKey = parameters.getString(titleKey, "title");
     }
 
     @Override
