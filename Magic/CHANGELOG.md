@@ -8,6 +8,7 @@
  - Fix XP exploit putting magic armor in a grindstone
  - Fix armor wands not activating when right-clicked to wear
  - Fix `/getrp off` command
+ - Fix `/wand list` command
 
 # 8.0.1
 
