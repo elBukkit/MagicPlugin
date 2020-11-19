@@ -221,7 +221,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
+    @Deprecated
     public boolean setSpelLLevel(String spellKey, int level) {
+        return setSpellLevel(spellKey, level);
+    }
+
+    @Override
+    public boolean setSpellLevel(String spellKey, int level) {
         BaseMagicConfigurable storage = getStorage("spell_levels");
         if (storage != this && storage != null && storage instanceof com.elmakers.mine.bukkit.api.magic.CasterProperties) {
             return ((com.elmakers.mine.bukkit.api.magic.CasterProperties)storage).setSpelLLevel(spellKey, level);
