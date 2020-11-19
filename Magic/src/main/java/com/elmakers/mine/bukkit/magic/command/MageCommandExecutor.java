@@ -259,11 +259,11 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
             }
 
-            if (subCommand.equalsIgnoreCase("promote")) {
+            if (subCommand.equalsIgnoreCase("promote") && args.length <= 1) {
                 if (target != null) {
                     Mage mage = controller.getMage(target);
                     ProgressionPath path = mage.getActiveProperties().getPath();
-                    ProgressionPath next = path.getNextPath();
+                    ProgressionPath next = path == null ? null : path.getNextPath();
                     while (next != null) {
                         options.add(next.getKey());
                         next = next.getNextPath();
