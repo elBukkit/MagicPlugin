@@ -2,25 +2,15 @@
 
 ## List is too long
 
- - Add potion effects to classes and modifiers
  - Mobs that get hit by their own spells start attacking themselves
  - Archer mob is broken
 
- - Switch back to interact event for casting?
- - Allow per-player skull icons?
-
- - wand can only be crafted from bottom row?
- - Change talisman and broomstick recipes
- - Re-work wizard armor
  - Re-work wand protection
  - Gather title = Recall, shows warps?
  - Mnpc select can't target underwater
  - Can we make pets?
  - Make "untame" spell
  - EntityData improvements:
-   - cat type
-   - sitting, other poses
-   - tamed, owner
    - llama/donkey properties, inventory
  - Spells ignore tamed mobs of friends ?
  - Mage add brush tab-completion is dumb (or does this command not exist?)

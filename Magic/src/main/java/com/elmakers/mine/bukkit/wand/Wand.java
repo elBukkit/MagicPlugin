@@ -232,8 +232,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String castSpell = null;
     private ConfigurationSection castParameters = null;
 
-    private Map<PotionEffectType, Integer> potionEffects = new HashMap<>();
-
     private SoundEffect effectSound = null;
     private int effectSoundInterval = 0;
 
@@ -1534,11 +1532,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-    @Nullable
-    protected String getPotionEffectString() {
-        return getPotionEffectString(potionEffects);
-    }
-
     @Override
     public void save(ConfigurationSection node, boolean filtered) {
         ConfigurationUtils.addConfigurations(node, getConfiguration());
@@ -2067,11 +2060,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             updateSpellInventory();
         }
 
-        potionEffects.clear();
-        if (hasProperty("potion_effects")) {
-            addPotionEffects(potionEffects, getProperty("potion_effects"));
-        }
-
         // Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
         // so try to keep defaults as 0/0.0/false.
         if (effectSound == null) {
@@ -2319,7 +2307,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 ConfigurationUtils.addIfNotEmpty(getMessage("spell_aura").replace("$spell", spell.getName()), lore);
             }
         }
-        for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
+        for (Map.Entry<PotionEffectType, Integer> effect : getPotionEffects().entrySet()) {
             ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
         }
 
@@ -5591,19 +5579,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return new HashMap<>(brushInventory);
     }
 
-    public Map<PotionEffectType, Integer> getPotionEffects() {
-        return potionEffects;
-    }
-
     @Override
     public float getHealthRegeneration() {
-        Integer level = potionEffects.get(PotionEffectType.REGENERATION);
+        Integer level = getPotionEffects().get(PotionEffectType.REGENERATION);
         return level != null && level > 0 ? (float)level : 0;
     }
 
     @Override
     public float getHungerRegeneration()  {
-        Integer level = potionEffects.get(PotionEffectType.SATURATION);
+        Integer level = getPotionEffects().get(PotionEffectType.SATURATION);
         return level != null && level > 0 ? (float)level : 0;
     }
 

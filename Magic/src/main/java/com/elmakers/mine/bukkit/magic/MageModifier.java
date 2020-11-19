@@ -52,6 +52,7 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
         if (configuration != null) {
             ConfigurationUtils.addConfigurations(this.configuration, configuration);
         }
+        this.loadProperties();
     }
 
     public void reset(int duration) {

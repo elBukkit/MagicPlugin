@@ -16,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
@@ -43,6 +44,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     protected int effectiveManaMax = 0;
     protected int effectiveManaRegeneration = 0;
+    private Map<PotionEffectType, Integer> potionEffects = new HashMap<>();
 
     public static void setLegacyVersion() {
         CURRENT_VERSION = LEGACY_VERSION;
@@ -947,5 +949,19 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
 
         return modified;
+    }
+
+    @Override
+    public void loadProperties() {
+        super.loadProperties();
+
+        potionEffects.clear();
+        if (hasProperty("potion_effects")) {
+            addPotionEffects(potionEffects, getProperty("potion_effects"));
+        }
+    }
+
+    public Map<PotionEffectType, Integer> getPotionEffects() {
+        return potionEffects;
     }
 }

@@ -36,6 +36,7 @@
  - Add earns_cooldown_scale parameter, use in missile to make reducing or changing the overall sp cooldown easier
  - Add buysellshop template for a combo buy/sell shop
  - Add /mage forget command, to make a player forget crafting recipes
+ - Allow potion_effects lists on classes and modifiers
 
 # 8.0.3
 

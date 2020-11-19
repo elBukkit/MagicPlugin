@@ -1361,10 +1361,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return false;
         }
         activeClass = targetClass;
-
-        // TODO: Is this the best place to do this?
-        activeClass.loadProperties();
-        updatePassiveEffects();
+        if (!loading) {
+            updatePassiveEffects();
+        }
         return true;
     }
 
@@ -1480,6 +1479,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         checkWand();
         checkOffhandWand();
+        updatePassiveEffects();
         return true;
     }
 
@@ -1502,21 +1502,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private @Nullable MageClass getClass(@Nonnull String key, boolean unlock) {
         MageClass mageClass = classes.get(key);
+        boolean updated = false;
         if (mageClass == null) {
             MageClassTemplate template = controller.getMageClass(key);
             if (unlock || !template.isLocked()) {
                 mageClass = new MageClass(this, template);
                 assignParent(mageClass);
+                mageClass.loadProperties();
                 classes.put(key, mageClass);
                 mageClass.onUnlocked();
+                updated = true;
             }
         }
         if (mageClass != null && mageClass.isLocked()) {
             if (unlock) {
                 mageClass.unlock();
+                updated = true;
             } else {
                 mageClass = null;
             }
+        }
+        if (updated) {
+            updatePassiveEffects();
         }
         return mageClass;
     }
@@ -3870,6 +3877,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
+        // Add potion effects
+        effectivePotionEffects.putAll(properties.getPotionEffects());
+
         // Collect spell overrides
         Map<String, String> overrides = properties.getOverrides();
         if (overrides != null) {
@@ -3985,19 +3995,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (activeWand != null && !activeWand.isWorn())
         {
             addPassiveEffects(activeWand, false);
-            effectivePotionEffects.putAll(activeWand.getPotionEffects());
         }
         // Don't add these together so things stay balanced!
         if (offhandWand != null && !offhandWand.isWorn())
         {
             addPassiveEffects(offhandWand, false);
-            effectivePotionEffects.putAll(offhandWand.getPotionEffects());
         }
         for (Wand armorWand : activeArmor.values())
         {
             if (armorWand != null) {
                 addPassiveEffects(armorWand, false);
-                effectivePotionEffects.putAll(armorWand.getPotionEffects());
             }
         }
 

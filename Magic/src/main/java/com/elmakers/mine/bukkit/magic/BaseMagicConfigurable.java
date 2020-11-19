@@ -546,7 +546,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     public void updated() {
-
+        loadProperties();
     }
 
     @Override

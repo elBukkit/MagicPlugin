@@ -82,6 +82,7 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
         if (configuration != null) {
             ConfigurationUtils.addConfigurations(this.configuration, configuration);
         }
+        this.loadProperties();
     }
 
     @Override
