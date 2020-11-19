@@ -160,6 +160,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable String costOverride = null;
         protected @Nonnull String costTypeFallback = "item";
         protected @Nullable String castSpell = null;
+        protected @Nullable ConfigurationSection castSpellParameters = null;
         protected @Nullable String unlockClass = null;
         protected @Nullable String lockClass = null;
         protected @Nullable String selectedMessage = null;
@@ -207,6 +208,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
             applyToClass = configuration.getString("apply_to_class", applyToClass);
             putInHand = configuration.getBoolean("put_in_hand", putInHand);
             castSpell = configuration.getString("cast_spell", castSpell);
+            castSpellParameters = configuration.isConfigurationSection("cast_spell_parameters")
+                ? configuration.getConfigurationSection("cast_spell_parameters") : castSpellParameters;
             unlockClass = configuration.getString("unlock_class", unlockClass);
             lockClass = configuration.getString("lock_class", lockClass);
             nameIcon = configuration.getBoolean("apply_name_to_icon", nameIcon);
@@ -495,6 +498,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.earnScale = defaults.earnScale;
             this.costScale = defaults.costScale;
             this.castSpell = defaults.castSpell;
+            this.castSpellParameters = defaults.castSpellParameters;
             this.applyToWand = defaults.applyToWand;
             this.applyToCaster = defaults.applyToCaster;
             this.applyTo = defaults.applyTo;
@@ -1019,7 +1023,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     mage.deactivateGUI();
                 }
 
-                if (spell == null || !spell.cast()) {
+                if (spell == null || !spell.cast(castSpellParameters)) {
                     context.showMessage("cast_fail", getDefaultMessage(context, "cast_fail"));
                     return SpellResult.NO_TARGET;
                 }
