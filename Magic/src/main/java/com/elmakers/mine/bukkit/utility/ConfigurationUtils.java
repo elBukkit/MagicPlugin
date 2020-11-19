@@ -488,15 +488,8 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static ConfigurationSection overlayConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
-        if (second == null) return first;
-        Map<String, Object> map = NMSUtils.getMap(second);
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (!first.contains(entry.getKey())) {
-                first.set(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return first;
+        // This used to avoid combining sections but I can't remember why. Look at this more if something gets weird
+        return addConfigurations(first, second, false);
     }
 
     protected static double parseDouble(String s) throws NumberFormatException
