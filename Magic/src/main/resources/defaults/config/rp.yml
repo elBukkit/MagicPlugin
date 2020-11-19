@@ -34,13 +34,15 @@ enable_resource_pack_check: true
 resource_pack_check_interval: 5
 
 # Set this to true, and resource packs will not be sent to payers on join, instead they will be prompted
+# It is not really recommended to use this anymore, the default behavior will prompt players and allow them
+# to control their own RP behaviors.
 resource_pack_prompt: false
 
 # Similar to the above command, this turns automatic resource packs off by default
 # Players can turn it back on using `/getrp auto`
-# They will not be prompted at login so it is up to the server to communicate how to get the RP if this is turned off
+# They will be prompted at login with the "resource_pack.off_prompt" message, which by default
+# Goes to the action bar and will tell them to use `/getrp`
 resource_pack_default_auto: false
-
 
 # Alternate resource packs can be accessed with /getrp <pack>
 alternate_resource_packs:
