@@ -49,7 +49,9 @@ public class WandPaginator extends Paginator<WandTemplate> {
         String name = controller.getMessages().get("wands." + key + ".name", controller.getMessages().get("wand.default_name"));
         String description = controller.getMessages().get("wands." + key + ".description", "");
         String[] pieces = StringUtils.split(description, "\n");
-        description = pieces[0];
+        if (pieces.length > 0) {
+            description = pieces[0];
+        }
         if (description.length() > 30) {
             description = description.substring(0, 27) + "...";
         }
