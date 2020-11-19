@@ -1511,7 +1511,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (unlock || !template.isLocked()) {
                 mageClass = new MageClass(this, template);
                 assignParent(mageClass);
-                mageClass.loadProperties();
                 classes.put(key, mageClass);
                 mageClass.onUnlocked();
                 updated = true;
@@ -4795,6 +4794,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void activateClasses() {
         for (MageClass mageClass : classes.values()) {
+            mageClass.loadProperties();
             if (!mageClass.isLocked()) {
                 mageClass.activateAttributes();
             }
