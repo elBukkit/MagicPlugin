@@ -49,6 +49,22 @@ public abstract class WandProperties extends TemplatedProperties {
         return value;
     }
 
+    @Nullable
+    @Override
+    public ConfigurationSection getConfigurationSection(String key) {
+        ConfigurationSection own = super.getConfigurationSection(key);
+        ConfigurationSection fromClass = mageClass == null ? null : mageClass.getConfigurationSection(key);
+
+        if (own == null) {
+            return fromClass;
+        }
+        if (fromClass != null) {
+            own = ConfigurationUtils.cloneConfiguration(own);
+            own = ConfigurationUtils.overlayConfigurations(own, fromClass);
+        }
+        return own;
+    }
+
     public ConfigurationSection getEffectiveConfiguration() {
         ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(getConfiguration());
         if (wandTemplate != null) {

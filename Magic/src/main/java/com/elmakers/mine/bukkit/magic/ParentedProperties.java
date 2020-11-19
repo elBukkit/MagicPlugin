@@ -34,6 +34,22 @@ public abstract class ParentedProperties extends TemplatedProperties {
         this.parent = parent;
     }
 
+    @Nullable
+    @Override
+    public ConfigurationSection getConfigurationSection(String key) {
+        ConfigurationSection own = super.getConfigurationSection(key);
+        ConfigurationSection fromParent = parent == null ? null : parent.getConfigurationSection(key);
+
+        if (own == null) {
+            return fromParent;
+        }
+        if (fromParent != null) {
+            own = ConfigurationUtils.cloneConfiguration(own);
+            own = ConfigurationUtils.overlayConfigurations(own, fromParent);
+        }
+        return own;
+    }
+
     @Override
     @Nullable
     public Object getInheritedProperty(String key) {
