@@ -1,6 +1,7 @@
 mage:
   parent: caster
   locked: false
+  effect_color: random
   path: beginner
   spells:
   - missile

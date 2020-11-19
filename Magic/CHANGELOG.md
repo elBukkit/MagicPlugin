@@ -37,6 +37,7 @@
  - Add buysellshop template for a combo buy/sell shop
  - Add /mage forget command, to make a player forget crafting recipes
  - Allow potion_effects lists on classes and modifiers
+ - When selecting an effect color on the spellbook, it will apply to skill items when cast (it goes to the mage class)
 
 # 8.0.3
 

@@ -9,6 +9,9 @@ spellbook:
     keep: true
     bound: true
     class: mage
+    # This is so you can use the colorshop with a spellbook and have it effect your mage class color
+    storage:
+        effect_color: subclass
     skills:
       # Set this to false if you want skills to be held and right-clicked to cast
       # quick_cast: false
