@@ -533,6 +533,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!(damager instanceof Player)) return;
         Player damagingPlayer = (Player)damager;
 
+        // Don't attack yourself, silly mob!
+        if (damager == getEntity()) return;
+
         lastDamager = damagedBy.get(damagingPlayer.getUniqueId());
         if (lastDamager == null) {
             lastDamager = new DamagedBy(damagingPlayer, damage);

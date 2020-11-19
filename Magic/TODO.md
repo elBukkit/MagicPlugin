@@ -2,9 +2,7 @@
 
 ## List is too long
 
- - Mobs that get hit by their own spells start attacking themselves
- - Archer mob is broken
-
+ - Archer mob is broken ... ?
  - Re-work wand protection
  - Gather title = Recall, shows warps?
  - Mnpc select can't target underwater
