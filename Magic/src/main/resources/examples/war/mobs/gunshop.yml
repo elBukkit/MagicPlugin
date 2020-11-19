@@ -1,0 +1,10 @@
+gunshop:
+  inherit: base_npc
+  name: Murica
+  interact_spell: gunshop
+  villager_profession: librarian
+  disguise:
+    type: player
+    skin: Murica
+  dialog:
+    - Use these only for self-defense, of course!

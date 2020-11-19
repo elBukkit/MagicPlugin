@@ -1,0 +1,10 @@
+carshop:
+  inherit: base_npc
+  name: Smilin' Bob
+  interact_spell: carshop
+  villager_profession: librarian
+  disguise:
+    type: player
+    skin: Bob
+  dialog:
+    - Welcome to Smilin' Bob's Used Car Emporium!
