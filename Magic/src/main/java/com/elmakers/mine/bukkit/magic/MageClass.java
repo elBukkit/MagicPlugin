@@ -13,8 +13,10 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.google.common.collect.ImmutableSet;
 
 public class MageClass extends BaseMageModifier implements com.elmakers.mine.bukkit.api.magic.MageClass  {
+    public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of("class_items");
 
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
         super(mage, template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, template);

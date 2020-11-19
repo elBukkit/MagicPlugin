@@ -7,8 +7,10 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.collect.ImmutableSet;
 
 public class MageModifier extends BaseMageModifier implements Comparable<MageModifier>, com.elmakers.mine.bukkit.api.magic.MageModifier {
+    public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of("items", "duration");
 
     public MageModifier(@Nonnull Mage mage, @Nonnull ModifierTemplate template) {
         super(mage, MagicPropertyType.MODIFIER, template);
