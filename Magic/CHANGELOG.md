@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 8.0.3
+
 # 8.0.2
 
  - Fix wands in offhand slot being lost on death
