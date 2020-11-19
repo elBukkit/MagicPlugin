@@ -14,20 +14,10 @@ import com.elmakers.mine.bukkit.wand.Wand;
 
 public class MageProperties extends CasterProperties {
     private final Mage mage;
-    private ColorHD effectColor = null;
 
     public MageProperties(Mage mage) {
         super(MagicPropertyType.MAGE, mage.getController());
         this.mage = mage;
-    }
-
-    @Override
-    public void loadProperties() {
-        super.loadProperties();
-
-        if (hasProperty("effect_color")) {
-            setEffectColor(getString("effect_color"));
-        }
     }
 
     @Override
@@ -38,18 +28,6 @@ public class MageProperties extends CasterProperties {
             activeWand.updated();
         }
         mage.updatePassiveEffects();
-    }
-
-    public void setEffectColor(String hexColor) {
-        // TODO: Move to CasterProperties?
-        if (hexColor == null || hexColor.length() == 0 || hexColor.equals("none")) {
-            effectColor = null;
-            return;
-        }
-        effectColor = new ColorHD(hexColor);
-        if (hexColor.equals("random")) {
-            setProperty("effect_color", effectColor.toString());
-        }
     }
 
     @Override
@@ -79,11 +57,6 @@ public class MageProperties extends CasterProperties {
     @Override
     public Mage getMage() {
         return mage;
-    }
-
-    @Nullable
-    public Color getEffectColor() {
-       return effectColor == null ? null : effectColor.getColor();
     }
 
     @Nullable
