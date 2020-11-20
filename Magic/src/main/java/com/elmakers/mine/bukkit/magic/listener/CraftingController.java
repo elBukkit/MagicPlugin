@@ -206,6 +206,7 @@ public class CraftingController implements Listener {
 
         ItemStack currentItem = event.getCurrentItem();
         if (Wand.isWand(currentItem)) {
+            currentItem = currentItem.clone();
             CraftWandEvent castEvent = new CraftWandEvent(mage, controller.getWand(currentItem));
             Bukkit.getPluginManager().callEvent(castEvent);
         }
