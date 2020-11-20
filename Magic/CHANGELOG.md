@@ -41,6 +41,8 @@
 
 # 8.0.3
 
+ - Another tweak to death handling to work better with keep-inv plugins (Dead Souls this time)
+
 # 8.0.2
 
  - Fix wands in offhand slot being lost on death
