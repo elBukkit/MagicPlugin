@@ -131,6 +131,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final String warpName;
         public final String serverName;
         public final int markerNumber;
+        public boolean unavailable = false;
 
         // Ok so I got sick of making these final with the zillion different constructors :|
         // These only work with the new-stype "options"
@@ -429,7 +430,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         if (event.getSlotType() == InventoryType.SlotType.CONTAINER)
         {
             Waypoint waypoint = slot < 0 || slot >= options.size() ? null : options.get(slot);
-            if (waypoint != null)
+            if (waypoint != null && !waypoint.unavailable)
             {
                 Mage mage = context.getMage();
                 Player player = mage.getPlayer();
@@ -853,6 +854,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 isUnavailable = true;
             }
             if (isUnavailable && !waypoint.showUnavailable) {
+                waypoint.unavailable = true;
                 isPlaceholder = true;
             }
 
@@ -977,7 +979,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String title = context.getMessage("title_friend", "$name").replace("$name", playerName);
         String iconURL = SkinUtils.getOnlineSkinURL(onlinePlayer);
 
-        return new Waypoint(RecallType.WARP, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
+        return new Waypoint(RecallType.FRIENDS, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
     }
 
     @Nullable
