@@ -142,7 +142,7 @@ heal:
         target: any_entity
         allow_max_range: false
         range: 8
-        cooldown: 20000
+        cooldown: 60000
         bypass_pvp: true
         bypass_friendly_fire: true
         only_friendly: true
@@ -156,9 +156,9 @@ heal|2:
     upgrade_required_casts: 50
     parameters:
         range: 32
-        cooldown: 15000
+        cooldown: 45000
 
 heal|3:
     parameters:
-        cooldown: 10000
+        cooldown: 30000
 
