@@ -41,6 +41,10 @@ attributes:
     name: Максимальная мана
     description: Максимальное количество маны игрока
 
+slots:
+  broom_upgrade:
+    name: Улучшение
+
 examples:
   instructions_header: |-
       &8 ----------------------------------------------------
@@ -156,6 +160,9 @@ commands:
       auto: "Теперь ты будешь получать ресурс-пак при подключении к серверу"
       turnoff: "Теперь ты больше не будешь получать ресурс-пак при подключении к серверу, введи команду &b/getrp&f если хочешь его получить.\nЕсли хочешь скачать ресурс-пак, введи команду &b/getrp url&f, чтобы получить ссылку на скачивание"
       sending: "Используй &b/getrp auto&f, чтобы загружать ресурс-пак автоматически.\nИли используй &b/getrp off&f, чтобы не получать ресурс-пак при входе."
+      preference: "Выбран ресурс-пак &3$pack&f\nИспользуй команду &6/getrp default&f для выбора базового ресурспака."
+      noauto: "Введи &6/getrp auto&f, чтобы получать ресурс-пак при входе"
+      default: "Выбран базовый ресурс-пак"
 costs:
     sp_amount: $amount ОЗ
     xp_amount: $amount Опыта
@@ -240,7 +247,7 @@ mage:
     spell_added: "Заклинание &r&6$name &d&oбыло добавлено"
     brush_added: "Кисть &r&7$name &d&oбыла добавлена"
 general:
-    locked_chest: Этот сундук заперт, и ты можешь его сломать.
+    locked_chest: Этот сундук заперт, и ты не можешь его сломать.
     spawn_egg_title: "Яйцо призыва $entity"
 
 books:
@@ -297,7 +304,7 @@ resource_pack:
     # This will be sent to players on join if resource_pack_prompt is set to true in config.yml.
     prompt: "Введи команду /getrp, чтобы скачать ресурс-пак."
     off_prompt: "a:&eВведи команду &4/getrp&e, чтобы скачать ресурс-пак."
-    sending: "t:&bИдет установка ресурс-пака\n&3подождите"
+    sending: "t:&3Подождите\n&bИдет установка ресурс-пака"
 
 controls:
   drop: Выбросить (Q)
@@ -362,6 +369,9 @@ shops:
   cast_fail: "&cИзвините, попробуйте позже!"
   no_items: "Тебе нечего покупать здесь"
   title: "Магазин ($balance)"
+  sell_title: "Продать ($balance&0)"
+  sell_icon_name: "&6Продать предметы"
+  buy_icon_name: "&aКупить предметы"
   extra_spell: "&aНе требуется"
   no_upgrade: "Тебе больше нечего изучать здесь."
   upgrade_name_change: "&r&4Улучшения: &r$name"
@@ -659,7 +669,7 @@ spells:
     indirect_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
     insufficient_resources: Недостаточно $cost
     insufficient: "&cТребуется &4$cost"
-    cooldown: Подожди $time.
+    cooldown: "Перезарядка: $time."
     cancelled: Твое заклинание было отменено
     entity_required: Требуется сущность.
     living_entity_required: Требуется живая сущность.
@@ -932,12 +942,22 @@ spells:
   gather:
     name: Телепорт
     description: Отправляет заявку на телепорт
+    alternate_down_no_target: "&4Никого нет рядом"
+    no_target: |-
+      &4Не найдено игроков для телепортации
+      &3Наведи прицел вниз и используй заклинание для телепортации к Друзьям!
     cast_to_player: Телепортирую тебя к $target
     cast_entity: Телепортирую $target к цели
     cast_player_message: a:&d&o$player &r&5разрывает пространство
-    target_selected: Ты выбрал $target
-    cancel: Цель убрана
-    upgrade_description: Наведи вниз, чтобы телепортировать игроков к себе
+    cast_friend: Телепортирую к $name
+    no_target_friend: Неизвестное имя $name
+    title_friend: $name
+    add_friend: "&5$name &bбыл добавлен в &6Друзья!"
+    remove_friend: "&5$name &cбыл убран из &6Друзей!"
+    recall_title: "Телепортироваться к:"
+    friend_request_title: "@tn отправил тебе запрос дружбы"
+    reject: "@pn отклонил запрос ☹️"
+    send_request_title: "Отправить Запрос Дружбы"
   supergather:
     name: СуперТелепорт
     description: Телепортироваться к любому игроку
@@ -1716,8 +1736,8 @@ spells:
     no_target_friend: Неправильное имя $name
     title_move_marker: Переместить маркер в текущую точку
     description_move_marker: Перемещает маркер
-    title_marker: Маркер
-    description_marker: Наведи курсор вниз чтобы переместить маркер
+    title_marker: "Маркер #$number"
+    description_marker: Наведи курсор вниз, чтобы переместить маркер
     title_death: Последняя смерть
     description_death: Место твоей последней смерти
     title_friend: $name
@@ -1730,7 +1750,7 @@ spells:
     description_wand: Твоя палочка, лежащая на земле
     title_town: Город
     description_town: Центр города
-    description_field: Защищенная территория
+    description_regions: Защищенная территория
     cross_world_disallowed: Нельзя телепортироваться в другое измерение
     title: Выбрать направление
     move_marker_title: Подвинуть маркер
@@ -2448,6 +2468,10 @@ wand:
     property_stack_negative: "&c$property"
     property_value: "$property"
     property_value_negative: "&c$property"
+    upgrade_slot: "&6Вставляется в слот&7: &3$slot"
+    slots_header: "&6Слоты&7:"
+    empty_slot: " &8- &7(&2Пустой &2слот: &6$slot&7)"
+    slotted: " &8- &7$slotted"
     item_attributes:
       GENERIC_ATTACK_DAMAGE: "Урон от атаки"
     protection:
@@ -2518,9 +2542,9 @@ wand:
     spell_aura: "&bАура: &6$spell"
     costs_description: Потребляет $description
     active_costs_description: Потребляет $description в секунду
-    range_description: "&9Дальность: &6$range &9метров"
+    range_description: "&9Дальность: &6$range &9м."
     owner_description: "&2&oПалочка $name"
-    bound_description: "&3&oПринадлежит $name"
+    bound_description: "&3&oВладелец: $name"
     unmodifiable: Эта палочка не может быть модифицирована
     player_unmodifiable: Палочка игрока $name не может быть модифицирована
     bound_to_other: Эта палочка тебе не принадлежит
@@ -2530,10 +2554,10 @@ wand:
     player_spell_upgraded: "&d&oЗаклинание &r&6$name &d&oигрока $players улучшено до &3$level"
     spell_upgraded: "&r&6$name &d&oбыло улучшено до &3$level"
     spell_override_upgraded: "&r&6$name &d&oбыло улучшено"
-    upgraded_property: "&r&dТы был улучшен до &r&b$name"
+    upgraded_property: "&r&dТы получил улучшение &r&b$name"
     spell_progression: "&r&6$name &d&oуровня &3$level&d&o/&3$max_level"
     mana_added: "&r&dДобавлено $value маны"
-    hotbar_count: "$amount хотбаров"
+    hotbar_count: "$amount хотбар(а)"
     player_upgraded: Палочка игрока $name была улучшена
     player_not_upgraded: Палочка игрока $name не была улучшена
     player_spells_levelled: "Улучшено $count заклинаний игрока $name"
@@ -2615,7 +2639,7 @@ wand:
       &8| &7> &6$currency &fможно потратить в &eстоле зачарования &fдля изучения новых заклинаний
       &8| &7> &fПовторное использование заклинания дает меньше, попробуй комбинировать заклинания!
     bound_instructions: |-
-      &8| &7> &a$wand &9привязана &fк тебе, и его(ее) &9нельзя выбросить
+      &8| &7> &a$wand &9привязан(а) &fк тебе, и его(ее) &9нельзя выбросить
     spell_instructions: |-
       &8| &7> &6Взмахни &fсвоей &aпалочкой &fдля использования заклинания &d$spell
     mana_instructions: |-
@@ -2628,7 +2652,7 @@ wand:
       &8| &7> $6Нажми &fза пределами рамки инвентаря, чтобы листать страницы
     hotbar_count_usage: |-
       &8| &7> &eУ тебя появился дополнительный хотбар!
-      &8| &7> &fНажми &6$cycle, &fчтобы менять хотбары
+      &8| &7> &fНажми &6$cycler, &fчтобы менять хотбары
     inventory_instructions: |-
       &8| &7> &fНажми &6$toggle, &fчтобы открыть/закрыть &eинвентарь заклинаний
       &8| &7> &6Открой свой инвентарь (E)&f, чтобы перетаскивать заклинания
@@ -2641,7 +2665,7 @@ wand:
       &8| &7> &6Перетаскивай &fзаклинания в хотбар, чтобы их активировать
       &8| &7> &fИспользуй &6цифры на клавиатуре &fдля выбора нужного заклинания
     cycle_instructions: |-
-      &8| &7> &fНажми &6$cycle&f, чтобы поменять активное заклинание
+      &8| &7> &fНажми &6$cycler&f, чтобы поменять активное заклинание
     brush_instructions: |-
       &8| &7> &6Кисти материи &fбыли добавлены к &a$wand
       &8| &7> &6Шифт+$toggle&f, чтобы выбрать кисть.
@@ -2989,6 +3013,9 @@ wands:
   cursedmeat:
     name: Зараженное мясо
     description: Даже не трогай это!
+  broom_booster:
+    name: Ускоритель для метлы
+    description: Нажми в инвентаре ЛКМ этим предметом по своей метле, чтобы улучшить ее
   broomstick:
     name: Метла
     description: |-
