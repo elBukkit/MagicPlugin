@@ -11,7 +11,7 @@ deatheater:
   cast_interval: 1000
   cast:
     stupefy: 100
-    vermillios: 100
+    vermillious: 100
     crucio: 10
     accio: 20
     flipendo: 150
