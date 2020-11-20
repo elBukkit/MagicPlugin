@@ -86,9 +86,11 @@ public class DropAction extends BaseSpellAction {
             falling.setDropItem(false);
         }
 
-        context.registerForUndo(block);
-        context.clearAttachables(block);
         UndoList undoList = context.getUndoList();
+        if (!undoList.isBypass()) {
+            context.registerForUndo(block);
+            context.clearAttachables(block);
+        }
         BlockState prior = block.getState();
         block.setType(Material.AIR);
         if (undoList != null && !undoList.isScheduled()) {
