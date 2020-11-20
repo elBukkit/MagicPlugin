@@ -573,10 +573,30 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 } else {
                     // Effect configurations are a list.
                     List<?> listConfig = defaultConfig.getList(targetItem);
-                    YamlConfiguration yaml = new YamlConfiguration();
-                    yaml.set(targetItem, listConfig);
-                    existingConfig = yaml.saveToString();
+                    if (listConfig != null) {
+                        YamlConfiguration yaml = new YamlConfiguration();
+                        yaml.set(targetItem, listConfig);
+                        existingConfig = yaml.saveToString();
+                    }
                 }
+            }
+            if (existingConfig == null && editorType.equals("config")) {
+                // Lists are saved in a separate file to avoid editing them when using `/mconfig editor config`, but
+                // if asking for a specific key, we should allow it.
+                File defaultsFile = new File(pluginFolder, "defaults/lists.defaults.yml");
+                YamlConfiguration defaultConfig = null;
+                try {
+                    defaultConfig = new YamlConfiguration();
+                    defaultConfig.load(defaultsFile);
+                } catch (Exception ex) {
+                    sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.error"));
+                    magic.getLogger().log(Level.WARNING, "Error loading default config lists file", ex);
+                    return;
+                }
+                List<?> listConfig = defaultConfig.getList(targetItem);
+                YamlConfiguration yaml = new YamlConfiguration();
+                yaml.set(targetItem, listConfig);
+                existingConfig = yaml.saveToString();
             }
             if (existingConfig == null) {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.editor.new_item")

@@ -185,8 +185,9 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load lists
         String listsFilename = "defaults/lists.defaults.yml";
+        YamlConfiguration listConfig = null;
         try {
-            YamlConfiguration listConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(listsFilename));
+            listConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(listsFilename));
             ConfigurationUtils.addConfigurations(config, listConfig);
         } catch (Exception ex) {
             getLogger().severe("Error loading file: " + listsFilename);
@@ -245,6 +246,7 @@ public class ConfigurationLoadTask implements Runnable {
                 // For the main config file we just save the defaults directly, it has a
                 // lot of comments that are useful to see.
                 plugin.saveResource(defaultsFileName, true);
+                plugin.saveResource(listsFilename, true);
             } catch (Exception ex) {
                 getLogger().warning("Couldn't write defaults file: " + defaultsFileName);
             }
