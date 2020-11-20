@@ -378,11 +378,14 @@ spells:
     gather:
         name: Gather
         description: Apparates you to other players
-        cast_to_player: You apparate to $target
+        no_target: |2-
+
+          &4No one is around to apparate to
+          &3Aim down and cast to send friend requests!
+        cast_to_player: Apparating you to $target
         cast_entity: Apparating $target to your target
-        cast_player_message: "&d&o$player &r&5apparated"
-        target_selected: You captured $target
-        cancel: Released target
+        cast_player_message: "a:&d&o$player &r&5apparated"
+        cast_friend: Apparating to $name
     reparomaxima:
         name: Reparo Maxima
         description: Repairs a large area preserved with Salvio Hexia
