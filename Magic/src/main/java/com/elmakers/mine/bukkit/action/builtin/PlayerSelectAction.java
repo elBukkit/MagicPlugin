@@ -87,7 +87,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
         super.prepare(context, parameters);
         allowCrossWorld = parameters.getBoolean("cross_world", true);
         ignorePlayersKey = parameters.getString("ignore_key");
-        titleKey = parameters.getString(titleKey, "title");
+        titleKey = parameters.getString("title_key", "title");
     }
 
     @Override
