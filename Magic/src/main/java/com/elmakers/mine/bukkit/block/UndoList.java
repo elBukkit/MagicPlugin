@@ -857,6 +857,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    public boolean isBypass() {
+        return this.bypass;
+    }
+
+    @Override
     public long getCreatedTime()
     {
         return this.createdTime;

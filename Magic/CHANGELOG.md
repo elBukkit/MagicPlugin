@@ -3,6 +3,7 @@
 # 8.0.3
 
  - Another tweak to death handling to work better with keep-inv plugins (Dead Souls this time)
+ - Fix torches next to ore getting eaten by Mine spell
 
 # 8.0.2
 
