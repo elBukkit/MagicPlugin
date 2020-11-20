@@ -2496,16 +2496,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (path != null) {
             pathName = path.getName();
         } else if (mageClassKeys != null && !mageClassKeys.isEmpty()) {
-            MageClassTemplate classTemplate = controller.getMageClassTemplate(mageClassKeys.get(0));
-            if (classTemplate != null) {
-                String pathKey = classTemplate.getProperty("path", "");
-                if (!pathKey.isEmpty()) {
-                    path = controller.getPath(pathKey);
-                }
-                if (path != null) {
-                    pathName = path.getName();
-                } else {
-                    pathName = classTemplate.getName();
+            for (String classKey : mageClassKeys) {
+                MageClassTemplate classTemplate = controller.getMageClassTemplate(classKey);
+                if (classTemplate != null) {
+                    String pathKey = classTemplate.getProperty("path", "");
+                    if (!pathKey.isEmpty()) {
+                        path = controller.getPath(pathKey);
+                    }
+                    if (path != null) {
+                        pathName = path.getName();
+                    } else {
+                        pathName = classTemplate.getName();
+                    }
+                    break;
                 }
             }
         }
