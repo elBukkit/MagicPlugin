@@ -1,9 +1,0 @@
-# Which materials are always completely off-limits.
-# Any spells not on this list can not be copied, cloned, replicated
-# or otherwise built with using a Wand brush.
-# Note that ender_portal blocks can horribly lag the server and client, keep that one on here.
-# Mob spawners seem gitchy on removal and leave a perma-effect
-# Copying command blocks can be dangerous and cause unintended effects
-# It's a good idea to put any indestructibles in here, since they can't be removed.
-restricted: []
-
