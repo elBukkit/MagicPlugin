@@ -1,14 +1,9 @@
 interactible:
-- chest
+- containers
 - ender_chest
 - anvil
-- brewing_stand
 - enchantment_table
 - workbench
-- furnace
-- burning_furnace
-- dispenser
-- hopper
 - lever
 - daylight_detector
 - daylight_detector_inverted
@@ -20,5 +15,6 @@ interactible:
 - gates
 - buttons
 - crafting_table
+- grindstone
 
 
