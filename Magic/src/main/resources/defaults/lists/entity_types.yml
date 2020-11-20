@@ -17,6 +17,9 @@ friendly_entity_types:
 - sheep
 - snowman
 - wolf
+- fox
+- cat
+- strider
 
 # What entity types to always undo when auto-undoing a spell.
 # A spell that is countered or manually undone will undo all entity types.
