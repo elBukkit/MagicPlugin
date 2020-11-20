@@ -2,6 +2,7 @@
 
 ## List is too long
 
+ - Wizard armor + book in anvil = wasted XP
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties
