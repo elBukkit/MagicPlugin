@@ -4,6 +4,7 @@
 
  - Another tweak to death handling to work better with keep-inv plugins (Dead Souls this time)
  - Fix torches next to ore getting eaten by Mine spell
+ - Fix crafting issues on Bedrock
 
 # 8.0.2
 
