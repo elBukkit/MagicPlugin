@@ -264,8 +264,9 @@ public class EntityController implements Listener {
 
     /**
      * This handler gives other plugins a chance to set the keep inventory flag
+     * Hopefully those plugins work at priority LOW or lower.
      */
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (event.getKeepInventory()) return;
 
