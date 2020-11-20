@@ -4,12 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
 
-import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
-import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class MageProperties extends CasterProperties {
