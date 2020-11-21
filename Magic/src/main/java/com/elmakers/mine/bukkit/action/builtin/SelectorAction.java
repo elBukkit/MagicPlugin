@@ -49,6 +49,8 @@ import de.slikey.effectlib.math.EquationTransform;
 
 public class SelectorAction extends CompoundAction implements GUIAction
 {
+    private static final String[] _DEFAULT_COST_FALLBACKS = {"currency", "item"};
+    private static final List<String> DEFAULT_COST_FALLBACKS = Arrays.asList(_DEFAULT_COST_FALLBACKS);
     private static final int MAX_INVENTORY_SLOTS = 6 * 9;
     protected boolean autoClose = true;
     protected SelectorConfiguration defaultConfiguration;
@@ -161,7 +163,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nonnull String costType = "currency";
         protected @Nonnull String earnType = "currency";
         protected @Nullable String costOverride = null;
-        protected @Nonnull String costTypeFallback = "item";
+        protected @Nonnull List<String> costTypeFallbacks = DEFAULT_COST_FALLBACKS;
         protected @Nullable String castSpell = null;
         protected @Nullable ConfigurationSection castSpellParameters = null;
         protected @Nullable String unlockClass = null;
@@ -198,6 +200,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected boolean autoClose = true;
 
         protected int limit = 0;
+
+        protected @Nonnull String[] allCostTypes = null;
+        protected @Nonnull String[] fallbackCostTypes = null;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
             parse(configuration);
@@ -242,7 +247,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
             costType = configuration.getString("cost_type", costType);
             costOverride = configuration.getString("cost_override", costOverride);
             earnType = configuration.getString("earn_type", earnType);
-            costTypeFallback = configuration.getString("cost_type_fallback", costTypeFallback);
+            // Legacy option was singular
+            allCostTypes = null;
+            costTypeFallbacks = ConfigurationUtils.getStringList(configuration, "cost_type_fallback", costTypeFallbacks);
+            costTypeFallbacks = ConfigurationUtils.getStringList(configuration, "cost_type_fallbacks", costTypeFallbacks);
             actions = configuration.getString("actions", actions);
             showUnavailable = configuration.getBoolean("show_unavailable", showUnavailable);
             commands = ConfigurationUtils.getStringList(configuration, "commands");
@@ -328,7 +336,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     if (costOverride != null) {
                         optionCost.convert(controller, costOverride);
                     }
-                    optionCost.checkSupported(controller, costTypeFallback);
+                    optionCost.checkSupported(controller, getCostTypeFallbacks());
                     optionCost.scale(controller.getWorthBase());
                     optionCost.scale(costScale);
                     costs.add(optionCost);
@@ -356,9 +364,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
                         if (itemCost != null) {
                             if (costOverride != null) {
                                 itemCost.convert(controller, costOverride);
-                                itemCost.checkSupported(controller, costTypeFallback);
+                                itemCost.checkSupported(controller, getCostTypeFallbacks());
                             } else {
-                                itemCost.checkSupported(controller, costType, costTypeFallback);
+                                itemCost.checkSupported(controller, getAllCostTypes());
                             }
                             itemCost.scale(controller.getWorthBase());
                             itemCost.scale(costScale);
@@ -395,7 +403,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
 
                 Cost earnCost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), earnType, earn);
-                earnCost.checkSupported(controller, costType, costTypeFallback);
+                earnCost.checkSupported(controller, getAllCostTypes());
                 earnCost.scale(controller.getWorthBase());
                 earnCost.scale(earnScale);
                 earns.add(earnCost);
@@ -429,8 +437,23 @@ public class SelectorAction extends CompoundAction implements GUIAction
             return costType;
         }
 
-        public String getCostTypeFallback() {
-            return costTypeFallback;
+        public String[] getAllCostTypes() {
+            if (allCostTypes == null) {
+                allCostTypes = new String[costTypeFallbacks.size() + 1];
+                for (int i = 0; i < costTypeFallbacks.size(); i++) {
+                    allCostTypes[i + 1] = costTypeFallbacks.get(i);
+                }
+            }
+            allCostTypes[0] = costType;
+            return allCostTypes;
+        }
+
+        public String[] getCostTypeFallbacks() {
+            if (fallbackCostTypes == null) {
+                fallbackCostTypes = new String[costTypeFallbacks.size()];
+                fallbackCostTypes = costTypeFallbacks.toArray(fallbackCostTypes);
+            }
+            return fallbackCostTypes;
         }
 
         public boolean has(CastContext context) {
@@ -520,7 +543,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.unlockSection = defaults.unlockSection;
             this.showConfirmation = defaults.showConfirmation;
             this.costType = defaults.costType;
-            this.costTypeFallback = defaults.costTypeFallback;
+            this.costTypeFallbacks = defaults.costTypeFallbacks;
             this.earnType = defaults.earnType;
             this.showUnavailable = defaults.showUnavailable;
             this.commands = defaults.commands;
@@ -1398,7 +1421,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         }
         String costType = defaultConfiguration.getCostType();
         com.elmakers.mine.bukkit.item.Cost cost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, 1);
-        cost.checkSupported(context.getController(), defaultConfiguration.getCostTypeFallback());
+        cost.checkSupported(context.getController(), defaultConfiguration.getCostTypeFallbacks());
         cost.setAmount(cost.getBalance(mage, context.getWand()));
         return cost.getFullDescription(context.getController().getMessages());
     }
