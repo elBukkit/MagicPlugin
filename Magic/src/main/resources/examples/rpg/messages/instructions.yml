@@ -1,0 +1,10 @@
+examples:
+  rpg:
+    instructions: |-
+      &8| &3&nRPG &r
+      &8|   &cPLEASE NOTE &r
+      &8|   &f&eThese configs are not yet fully functional &r
+      &8|   &fYou will need to do a lot of work to make them useable &r
+      &8|   &fOr wait for Magic 8.2 (Maybe) &r
+      &8|   &fUse &6/cast classselector &fto test classes &r
+      &8|   &fUse &6/cast raceselector &fto test races &r
