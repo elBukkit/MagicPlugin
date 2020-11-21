@@ -240,10 +240,10 @@ wand:
       &8| &7> &fLearn new spells by using &6SP &fat an &eenchanting table
     page_instructions: |-
       &8| &7> &eYour &a$wand&8 &fhas more than one page of spells
-      &8| &7> $6Click &foutside the inventory window to change pages
+      &8| &7> &6Click &foutside the inventory window to change pages
     hotbar_count_usage: |-
-      &8| &7> &eYou now have more than one hotbar
-      &8| &7> &6$cycler &fto swap between your hotbars
+      &8| &7> &eYou have gained another hotbar
+      &8| &7> &6$cycle_hotbar &fto swap between your hotbars
     inventory_instructions: |-
       &8| &7> &6$toggle &fto open and close the &espell inventory
       &8| &7> &6Open your inventory (E) &fto manage hotbar spells
