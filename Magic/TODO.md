@@ -2,7 +2,6 @@
 
 ## List is too long
 
- - Workbench show_undoable: false
  - Diving helmet should only gives night vision underwater
 
  - Spell config enable/disable inherited, can this be done just for spells, and only when resolving inheritance?
@@ -16,8 +15,10 @@
    - Handle overrides as a special separate case
  - wand property migration
    swap out protection for something else
-    - magic strength
-    - ??
+    - magic strength (or damage increase using attributes)
+    - range - use attributes
+    - larger radius ?
+    - longer DOT durations ?
  - Need icons for shop button
  - Broomstick upgrades + recipes
 

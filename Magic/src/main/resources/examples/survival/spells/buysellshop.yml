@@ -11,5 +11,5 @@ buysellshop:
         confirm_filler: stained_glass_pane
         add_sell_shop: true
         sell_icon: yellow_wool{CustomModelData:18001}
-        buy_icon: green_wool{CustomModelData:18001}
+        buy_icon: lime_wool{CustomModelData:18001}
 

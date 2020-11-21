@@ -8,6 +8,7 @@ workbench:
     tags: noduel
     quick_cast: true
     worth: 80
+    show_undoable: false
     actions:
         cast:
         - class: Inventory
