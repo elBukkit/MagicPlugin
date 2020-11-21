@@ -1,4 +1,9 @@
-recall:
+# This is kept here as an example of how to manually add warps to the Recall spell
+# But it is no longer used on this dev sever.
+# It is preferred to use `/mwarp` to manage recall warps.
+# Normally this would be `recall`, so make sure to change that if you copy+paste from here.
+oldrecall:
+  enabled: false
   parameters:
     warps:
       mansion:
