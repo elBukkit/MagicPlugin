@@ -16,5 +16,16 @@ interactible:
 - buttons
 - crafting_table
 - grindstone
-
+- loom
+- composter
+- cartography_table
+- fletching_table
+- smithing_table
+- stonecutter
+- bell
+- campfire
+- soul_campfire
+- lodestone
+- respawn_anchor
+- lectern
 
