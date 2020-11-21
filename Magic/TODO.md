@@ -2,6 +2,12 @@
 
 ## List is too long
 
+ - Workbench show_undoable: false
+ - Diving helmet should only gives night vision underwater
+
+ - Spell config enable/disable inherited, can this be done just for spells, and only when resolving inheritance?
+   Make sure to not copy the "disabled" property, not have to add it?
+
  - Wizard armor + book in anvil = wasted XP
  - Modifiers
    - Allow variables in modifiers

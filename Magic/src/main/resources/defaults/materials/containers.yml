@@ -1,7 +1,6 @@
 containers:
 - chest
 - furnaces
-- burning_furnace
 - brewing_stand
 - dispenser
 - hopper
