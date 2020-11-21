@@ -1597,6 +1597,7 @@ public class MagicController implements MageController {
     }
 
     public boolean addMarker(String id, String icon, String group, String title, Location location, String description) {
+        if (location == null) return false;
         return addMarker(id, icon, group, title, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), description);
     }
 

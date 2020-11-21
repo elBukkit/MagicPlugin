@@ -110,6 +110,11 @@ public class MagicWarp {
         return markerSet != null ? markerSet : "magic";
     }
 
+    @Nullable
+    public String getMarkerIcon() {
+        return markerIcon;
+    }
+
     public void setIcon(String icon) {
         this.icon = icon;
     }

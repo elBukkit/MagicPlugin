@@ -52,6 +52,15 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (subCommand.equalsIgnoreCase("map")) {
+            if (args.length <= 1) {
+                sender.sendMessage(ChatColor.RED + "Usage: mwarp map <marker icon>");
+                return true;
+            }
+            onMapWarps(sender, args[1]);
+            return true;
+        }
+
         if (subCommand.equalsIgnoreCase("list")) {
             int pageNumber = 1;
             if (args.length > 1) {
@@ -315,8 +324,13 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         }
     }
 
+    private void onMapWarps(CommandSender sender, String markerIcon) {
+        int mapped = magicController.getWarps().mapWarps(markerIcon);
+        sender.sendMessage(ChatColor.AQUA + "Added " + ChatColor.DARK_AQUA + mapped + ChatColor.AQUA + " warps to dynmap");
+    }
+
     private void onImportWarps(CommandSender sender) {
-        int imported = magicController.getWarps().importWarps();
+        int imported = magicController.getWarps().importWarps(sender);
         sender.sendMessage(ChatColor.AQUA + "Imported " + ChatColor.DARK_AQUA + imported + ChatColor.AQUA + " warps");
     }
 
@@ -334,12 +348,18 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "import");
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "list");
             addIfPermissible(sender, options, "Magic.commands.mwarp.", "configure");
+            addIfPermissible(sender, options, "Magic.commands.mwarp.", "map");
         } else if (args.length == 2) {
             String subCommand = args[0];
             if (subCommand.equals("remove") || subCommand.equals("go") || subCommand.equals("replace") || subCommand.equals("configure")) {
                 options.addAll(magicController.getWarps().getCustomWarps());
             } else if (subCommand.equals("send")) {
                 options.addAll(api.getPlayerNames());
+            } else if (subCommand.equals("map")) {
+                Collection<String> icons = magic.getMarkerIcons();
+                if (icons != null) {
+                    options.addAll(icons);
+                }
             }
         } else if (args.length == 3) {
             String subCommand = args[0];

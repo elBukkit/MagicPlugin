@@ -8,10 +8,13 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class WarpController {
@@ -62,7 +65,23 @@ public class WarpController {
         return warps.remove(warpName) != null;
     }
 
-    public int importWarps() {
+    public int mapWarps(String markerIcon) {
+        int count = 0;
+        for (MagicWarp warp : warps.values()) {
+            // Only do this for warps that show up in Recall
+            String baseIcon = warp.getIcon();
+            if (baseIcon == null || baseIcon.isEmpty()) continue;
+            String existingIcon = warp.getMarkerIcon();
+            if (existingIcon == null || existingIcon.isEmpty()) {
+                warp.setMarkerIcon(markerIcon);
+                warp.checkMarker(controller);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int importWarps(CommandSender sender) {
         if (commandBook != null) {
             for (Map.Entry<String, Location> warpEntry : commandBook.getWarps().entrySet()) {
                 String key = warpEntry.getKey();
@@ -73,6 +92,39 @@ public class WarpController {
             for (Map.Entry<String, Location> warpEntry : essentials.getWarps().entrySet()) {
                 String key = warpEntry.getKey();
                 warps.put(key, new MagicWarp(key, warpEntry.getValue()));
+            }
+        }
+        SpellTemplate recallSpell = controller.getSpellTemplate("recall");
+        ConfigurationSection parameters = recallSpell.getConfiguration().getConfigurationSection("parameters");
+        ConfigurationSection recallWarps = parameters == null ? null : parameters.getConfigurationSection("warps");
+        if (recallWarps != null) {
+            boolean imported = false;
+            for (String key : recallWarps.getKeys(false)) {
+                MagicWarp warp = warps.get(key);
+                if (warp != null) {
+                    ConfigurationSection warpConfig = recallWarps.getConfigurationSection(key);
+                    warp.setName(warpConfig.getString("name", warp.getName()));
+                    warp.setDescription(warpConfig.getString("description", warp.getDescription()));
+                    String icon = warpConfig.getString("icon");
+                    if (icon == null || icon.isEmpty()) {
+                        String iconUrl = warpConfig.getString("icon_url");
+                        if (iconUrl != null && !iconUrl.isEmpty()) {
+                            icon = "skull:" + iconUrl;
+                        }
+                    }
+                    if (icon != null && !icon.isEmpty()) {
+                        String currentIcon = warp.getIcon();
+                        if (currentIcon == null || currentIcon.isEmpty()) {
+                            imported = true;
+                        }
+                        warp.setIcon(icon);
+                    }
+                }
+            }
+            if (imported && sender != null) {
+                sender.sendMessage(ChatColor.YELLOW + "Imported Recall Warps" + ChatColor.WHITE
+                    + ", you may want to remove your Recall customizations with "
+                    + ChatColor.GOLD + "/mconfig reset recall");
             }
         }
         return warps.size();

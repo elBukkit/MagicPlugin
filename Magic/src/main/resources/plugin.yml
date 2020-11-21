@@ -869,6 +869,7 @@ commands:
         /mwarp configure  Configure warps for Recall or Dynmap
         /mwarp describe   Show warp parameters
         /mwarp import     Import warps from Essentials or CommandBook
+        /mwarp map        Add all Recall warps to Dynmap
     permission: Magic.commands.mwarp
   "mwarp add":
     description: Add a new warp
@@ -928,6 +929,12 @@ commands:
     usage: |
 
        /mwarp import
+  "mwarp map":
+      description: Add all Recall warps to the map
+      permission: Magic.commands.mwarp.map
+      usage: |
+
+         /mwarp map <marker icon>
 permissions:
   Magic.commands.*:
     description: Player may use all Magic commands

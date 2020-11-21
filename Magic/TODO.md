@@ -8,9 +8,6 @@
    - Inputs are all of the target wand's properties
    - they can stack, process sequentially in updateModifiers
    - Handle overrides as a special separate case
- - effect_color on mages
-   - look into geyser colored redstone?
-   - passthrough effect_color from spellbook
  - wand property migration
    swap out protection for something else
     - magic strength

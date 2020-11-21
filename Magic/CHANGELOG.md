@@ -38,6 +38,9 @@
  - Add /mage forget command, to make a player forget crafting recipes
  - Allow potion_effects lists on classes and modifiers
  - When selecting an effect color on the spellbook, it will apply to skill items when cast (it goes to the mage class)
+ - The `/mwarp import` command will now import name, description and icon from your Recall configuration
+   After using this command, you can remove the `warps` section from `recall` because they will be added automatically.
+ - Added the `/mwarp map` command, to add all of your Recall warps to Dynmap
 
 # 8.0.3
 
