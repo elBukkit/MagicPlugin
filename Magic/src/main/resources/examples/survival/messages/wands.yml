@@ -363,7 +363,7 @@ wands:
         name: Spire Wand Appearance
         description: A wizard tower you can hold in your hand
     appearance_claw:
-        name: Claw Wand Appearance
+        name: Claw Staff Appearance
         description: A menacingly dark claw holding powerful magical orbs
     appearance_orb:
         name: Orb Wand Appearance

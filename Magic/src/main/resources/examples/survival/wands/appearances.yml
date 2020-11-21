@@ -65,8 +65,8 @@ appearance_claw:
     upgrade: true
     legacy_icon: wand_icon:36
     legacy_upgrade_icon: wand_icon:36
-    icon: stick{CustomModelData:18036}
-    upgrade_icon: stick{CustomModelData:18036}
+    icon: blaze_rod{CustomModelData:18036}
+    upgrade_icon: blaze_rod{CustomModelData:18036}
 
 appearance_orb:
     upgrade: true
