@@ -914,11 +914,6 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             example = "";
         }
         examples.remove(example);
-        String currentExample = controller.getExample();
-        if (currentExample != null) {
-            examples.remove(currentExample);
-        }
-
         File exampleFile = new File(magic.getPlugin().getDataFolder() + File.separator + "config", EXAMPLES_FILE_NAME);
         try {
             YamlConfiguration exampleConfig = new YamlConfiguration();
