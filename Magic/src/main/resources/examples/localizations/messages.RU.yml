@@ -2414,9 +2414,11 @@ spells:
 wand:
     default_name: Палочка
     upgrade_default_description: Улучшит твою палочку.
-    upgrade_item_description: "&eБудет поглощено твоей палочкой"
-    spell_item_description: "&eБудет поглощено твоей палочкой"
-    brush_item_description: "&eБудет поглощено твоей палочкой"
+    upgrade_item_description: "&eНажми в инвентаре ЛКМ этим предметом по своей палочке, чтобы изменить ее"
+    spell_item_description: ""
+    brush_item_description: ""
+    #spell_item_description: "&eБудет поглощено твоей палочкой"
+    #brush_item_description: "&eБудет поглощено твоей палочкой"
     copy_material_name: Копия
     copy_material_description: Заполняет выбранным материалом
     erase_material_name: Стереть
@@ -2477,12 +2479,12 @@ wand:
     protection:
       overall: "&2Защита $roman"
       physical: "&2Физ. защита $roman"
-      projectile: "&2Зашита от снарядов $roman"
+      projectile: "&2Защита от снарядов $roman"
       fall: "&2Невесомость $roman"
       fire: "&2Огнеупорность $roman"
       explosion: "&2Взрывоустойчивость $roman"
       magic: "&2Защита от магии $roman"
-      unknown: "&2$type Защита $roman"
+      unknown: "&2Защита от $type $roman"
     strength:
       overall: '&2+Урон $roman'
       physical: '&2+Физ. урон $roman'
@@ -2649,10 +2651,10 @@ wand:
       &8| &7> &fИзучай новые заклинания на &eстоле зачарования &fиспользуя &6ОЗ
     page_instructions: |-
       &8| &7> &a$wand&8 &fтеперь имеет несколько страниц заклинаний!
-      &8| &7> $6Нажми &fза пределами рамки инвентаря, чтобы листать страницы
+      &8| &7> &6Нажми &fза пределами рамки инвентаря, чтобы листать страницы
     hotbar_count_usage: |-
       &8| &7> &eУ тебя появился дополнительный хотбар!
-      &8| &7> &fНажми &6$cycler, &fчтобы менять хотбары
+      &8| &7> &fНажми &6$cycle_hotbar, &fчтобы менять хотбары
     inventory_instructions: |-
       &8| &7> &fНажми &6$toggle, &fчтобы открыть/закрыть &eинвентарь заклинаний
       &8| &7> &6Открой свой инвентарь (E)&f, чтобы перетаскивать заклинания
@@ -2665,7 +2667,7 @@ wand:
       &8| &7> &6Перетаскивай &fзаклинания в хотбар, чтобы их активировать
       &8| &7> &fИспользуй &6цифры на клавиатуре &fдля выбора нужного заклинания
     cycle_instructions: |-
-      &8| &7> &fНажми &6$cycler&f, чтобы поменять активное заклинание
+      &8| &7> &fНажми &6$cycle&f, чтобы поменять активное заклинание
     brush_instructions: |-
       &8| &7> &6Кисти материи &fбыли добавлены к &a$wand
       &8| &7> &6Шифт+$toggle&f, чтобы выбрать кисть.
@@ -2690,10 +2692,10 @@ wands:
     description: Пустая палочка для тестирования заклинаний.
   default:
     name: Палочка
-    description: '&rПалочка ранга $path'
+    description: 'Палочка ранга $path'
   wand:
     name: Палочка
-    description: '&rПалочка ранга $path'
+    description: 'Палочка ранга $path'
   starter:
     name: Начальная палочка
     description: Палочка с ограниченным потенциалом
@@ -2736,19 +2738,19 @@ wands:
         &8| &7> &6Выпусти стрелу&f, чтобы применить заклинание &d$spell
   magicbow:
     name: Магический лук
-    description: &rЛук ранга $path
+    description: Лук ранга $path
   mastersword:
     name: Меч мастера
     description: Легендарный меч борца с тьмой
   engineer:
     name: Посох инженера
-    description: &rПосох ранга $path
+    description: Посох ранга $path
   architect:
     name: Посох архитектора
-    description: &rПосох ранга $path
+    description: Посох ранга $path
   conduit:
     name: Посох магистра
-    description: &rПосох ранга $path
+    description: Посох ранга $path
   architectstaff:
     name: Архитектор
     description: С великой силой приходит великая ответственность
@@ -3071,7 +3073,7 @@ wands:
     description: ПКМ, чтобы открыть меню способностей. Перетаскивай их в хотбар, чтобы использовать.
   spellbook:
     name: Книга заклинаний
-    description: "&rКнига заклинаний ранга $path"
+    description: "Книга заклинаний ранга $path"
     wand_instructions_header: |-
         &8 ----------------------------------------------------
         &8|
