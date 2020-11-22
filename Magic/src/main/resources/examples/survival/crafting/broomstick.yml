@@ -1,6 +1,7 @@
 broomstick:
   output: broomstick
   output_type: wand
+  group: "Broomsticks"
   materials:
     i: stick
     o: phantom_membrane

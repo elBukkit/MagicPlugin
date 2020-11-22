@@ -4,6 +4,7 @@ wand:
   # This makes sure you get the wand version, in case of name collisions
   # Probably not necessary
   output_type: wand
+  group: "Wands"
 
   # Used as a substitute item when the wand item is naturally crafted
   # This is mainly for the resource pack, so players don't craft a wood hoe

@@ -1,6 +1,7 @@
 magicbow:
   output: magicbow
   output_type: wand
+  group: "Wands"
   materials:
     o: nether_star
     i: bow

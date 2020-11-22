@@ -1,6 +1,7 @@
 spellbook:
   output: spellbook
   output_type: wand
+  group: "Wands"
 
   materials:
     o: magicheart

@@ -1,6 +1,7 @@
 magicsword:
   output: magicsword
   output_type: wand
+  group: "Wands"
   materials:
     o: magicheart
     i: netherite_sword
