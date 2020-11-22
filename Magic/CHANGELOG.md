@@ -41,6 +41,7 @@
  - The `/mwarp import` command will now import name, description and icon from your Recall configuration
    After using this command, you can remove the `warps` section from `recall` because they will be added automatically.
  - Added the `/mwarp map` command, to add all of your Recall warps to Dynmap
+ - Added `/mnpc command` command toe easily setup command NPCs
 
 # 8.0.3
 

@@ -2,6 +2,8 @@
 
 ## List is too long
 
+ - Re-arrange spells, then cast a spell, lost re-arrangement
+
  - Diving helmet should only gives night vision underwater
 
  - Spell config enable/disable inherited, can this be done just for spells, and only when resolving inheritance?
