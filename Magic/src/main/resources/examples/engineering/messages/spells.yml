@@ -316,3 +316,5 @@ spells:
         ignoreair: "&fAir &cwill not be &breplaced by Architect spells"
         onlyair: "&fOnly air &awill be &breplaced by Architect spells"
         normal: "&fAll block types &awill be &breplaced by Architect spells"
+    fling|5:
+        upgrade_description: "Faster, Can now be used while gliding with an elytra"

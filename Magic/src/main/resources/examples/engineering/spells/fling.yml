@@ -1,0 +1,9 @@
+fling|4:
+    upgrade_required_path: conduit
+
+fling|5:
+  glide_restricted: false
+  parameters:
+    min_speed: 4
+    max_speed: 6
+    cooldown: 0
