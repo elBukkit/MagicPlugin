@@ -2,26 +2,15 @@
 
 # 8.1
 
- - Re-worked Gather, added to beginner path as an optional spell
- - Allow using a damaged elytra for broomstick crafting
- - Add use_target_mage parameter to ChangeContext action
-   Useful for actions such as Selector and CheckRequirement that only use the mage context and not the target
- - Add "enchantable" wand property, allowing it to be vanilla enchanted
- - Improved spellbook inventory behavior
- - Add "Magic.allowed_spell_categories" permission list, of spell categories a player may cast
- - The Blind spell now makes mobs confused and lose track of their targets. Added upgrade levels to Blind.
- - Poison now damages a little bit even if you're immune to poison
- - PlayEffects and PlaySound no longer give cast credit. Use `effects_count_as_cast: true` to change this back
- - Add allowed_entity_classes and denied_entity_classes parameters to CheckEntity action
- - Add delay and warmup parameters and "wait", "teleporting" and "menu" effects to Recall
- - Added "active_wand" target to ModifyProperties, won't switch wands by default
- - Add rainbow/technicolor armor set
- - Add Magic.allowed_spell_categories permission listexc
+## Major Changes
+
  - Reworked broomstick:
    - Crafting now requires a phantom membrane instead of an elytra
    - Brooms start out slightly faster
    - The broom skill now only increases duration and handling
-   - TODO: A system to upgrade broom speed
+   - Add crafting recipes for two different upgrades, players must choose which one:
+     - Broom Booster, increases speed to previously levelled amounts
+     - Broom Glider, allows for infinite flight
  - Reworked magic armor:
    - Retired apprentice gear
    - Apprentice gear crafting recipes no longer enabled by robes example
@@ -30,20 +19,42 @@
    - Wizard gear no longer indestructible
    - Wizard gear can be enchanted, does not come with enchantments
    - Wizard boots cost 2x magic hearts, grant speed boost
- - Add instructions to builtin examples
+ - Reworking wand buffs
+   - TODO: Remove protection, replace with ... something?
+
+## Other Changes of Note
+
+ - Re-worked Gather, added to beginner path as an optional spell
+ - Fling is no longer allowed while gliding (OP)
+ - Add "enchantable" wand property, allowing it to be vanilla enchanted
+ - Add instructions to builtin examples, will show how to use them when added
  - Add alternate resource packs, available with the `/getrp` command
+ - Add buysellshop template for a combo buy/sell shop
+ - Allow potion_effects lists on classes and modifiers
+ - Added `/mnpc command` command to easily setup command NPCs
+
+## Miscellaneous Changes
+
+ - Add use_target_mage parameter to ChangeContext action
+   Useful for actions such as Selector and CheckRequirement that only use the mage context and not the target
+ - Improved spellbook inventory behavior
+ - Add "Magic.allowed_spell_categories" permission list, of spell categories a player may cast
+ - The Blind spell now makes mobs confused and lose track of their targets. Added upgrade levels to Blind.
+ - Poison now damages a little bit even if you're immune to poison
+ - PlayEffects and PlaySound no longer give cast credit. Use `effects_count_as_cast: true` to change this back
+ - Add allowed_entity_classes and denied_entity_classes parameters to CheckEntity action
+ - Add delay and warmup parameters and "wait", "teleporting" and "menu" effects to Recall
+ - Added "active_wand" target to ModifyProperties, won't switch wands by default
+ - Add rainbow/technicolor armor set (not craftable)
+ - Add Magic.allowed_spell_categories permission list
  - Add "not_permission" requirement
  - Add earns_cooldown_scale parameter, use in missile to make reducing or changing the overall sp cooldown easier
- - Add buysellshop template for a combo buy/sell shop
  - Add /mage forget command, to make a player forget crafting recipes
- - Allow potion_effects lists on classes and modifiers
  - When selecting an effect color on the spellbook, it will apply to skill items when cast (it goes to the mage class)
  - The `/mwarp import` command will now import name, description and icon from your Recall configuration
    After using this command, you can remove the `warps` section from `recall` because they will be added automatically.
  - Added the `/mwarp map` command, to add all of your Recall warps to Dynmap
- - Added `/mnpc command` command toe easily setup command NPCs
  - Fix using SkillAPI and Heroes attributes
- - Fling is no longer allowed while gliding (OP)
 
 # 8.0.3
 

@@ -128,30 +128,39 @@ broom|2:
 broom|3:
   upgrade_required_casts: 40
   parameters:
+    crash_effects:
+      confusion: 90,2
     steer_speed: 0.07
     # TODO: Add to upgrade item
     # max_speed: 1.5
     # max_acceleration: 0.02
     duration: 90000
+    duration_warning: 15000
     cooldown: 10000
 
 broom|4:
   upgrade_required_casts: 50
   parameters:
+    crash_effects:
+      confusion: 60,2
     steer_speed: 0.1
     # TODO: Add to upgrade item
     # max_speed: 1.75
     # max_acceleration: 0.03
-    duration: 100000
-    cooldown: 9000
+    duration: 130000
+    duration_warning: 20000
+    cooldown: 5000
 
 broom|5:
   upgrade_required_casts: 50
   parameters:
+    crash_effects:
+      confusion: 40,1
     steer_speed: 0.5
     # TODO: Add to upgrade item
     # max_speed: 2
     # max_acceleration: 0.04
-    duration: 120000
-    cooldown: 8000
+    duration_warning: 30000
+    duration: 300000
+    cooldown: 2000
 

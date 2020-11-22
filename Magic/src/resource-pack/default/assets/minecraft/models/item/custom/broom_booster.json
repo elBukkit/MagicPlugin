@@ -1,0 +1,7 @@
+{
+    "parent" : "item/custom/icon",
+    "textures": {
+        "particle": "item/flat/broom_booster",
+        "texture": "item/flat/broom_booster"
+    }
+}

@@ -11,6 +11,9 @@ broomstick:
     migrate_icon: gold_spade
     legacy_icon: wand_icon:11
     icon: acacia_sapling{CustomModelData:18001}
+    discover_recipes:
+    - broom_booster
+    - broom_glider
     migrate_legacy_icons:
         "wand_icon:11": acacia_sapling{CustomModelData:18001}
         "wand_icon:29": birch_sapling{CustomModelData:18001}

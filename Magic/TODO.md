@@ -16,7 +16,6 @@
     - range - use attributes
     - larger radius ?
     - longer DOT durations ?
- - Broomstick upgrades + recipes
 
  - Archer mob is broken ... ?
  - Re-work wand protection

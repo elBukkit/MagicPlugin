@@ -1,8 +1,9 @@
-broom_booster:
-  output: broom_booster
+broom_glider:
+  output: broom_glider
   output_type: wand
+  ignore_damage: true
   materials:
-    i: nether_star
+    i: elytra
     h: magicheart
   row_1: " h "
   row_2: " i "
