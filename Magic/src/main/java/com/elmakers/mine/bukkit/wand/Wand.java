@@ -2540,6 +2540,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int spellCount = getSpells().size();
         int materialCount = getBrushes().size();
 
+        if (isUpgrade) {
+            String slot = getString("slot");
+            if (slot != null && !slot.isEmpty()) {
+                String slotName = controller.getMessages().get("slots." + slot + ".name", slot);
+                ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_slot").replace("$slot", slotName), lore);
+            }
+        }
+
         String pathName = getPathName();
         if (description.length() > 0) {
             if (randomizeOnActivate) {
