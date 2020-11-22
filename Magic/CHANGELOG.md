@@ -43,6 +43,7 @@
  - Added the `/mwarp map` command, to add all of your Recall warps to Dynmap
  - Added `/mnpc command` command toe easily setup command NPCs
  - Fix using SkillAPI and Heroes attributes
+ - Fling is no longer allowed while gliding (OP)
 
 # 8.0.3
 
