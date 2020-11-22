@@ -2,6 +2,7 @@
 
 # 8.0.3
 
+ - Fix NPE in legacy minecraft versions using ModifyBlock
  - Another tweak to death handling to work better with keep-inv plugins (Dead Souls this time)
  - Fix torches next to ore getting eaten by Mine spell
  - Fix crafting issues on Bedrock
