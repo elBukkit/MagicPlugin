@@ -533,12 +533,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 if (extendedBlockData != null) {
                     if (currentMaterial != material) {
                         String currentBlockData =  CompatibilityUtils.getBlockData(block);
-                        // Hacky, yes... is there a better way?
-                        // Is this going to cause some real strange behavior?
-                        String[] currentData = StringUtils.split(currentBlockData, "[", 2);
-                        String[] newData = StringUtils.split(extendedBlockData, "[", 2);
-                        if (newData.length > 1) {
-                            extendedBlockData = currentData[0] + "[" + newData[1];
+                        if (currentBlockData != null) {
+                            // Hacky, yes... is there a better way?
+                            // Is this going to cause some real strange behavior?
+                            String[] currentData = StringUtils.split(currentBlockData, "[", 2);
+                            String[] newData = StringUtils.split(extendedBlockData, "[", 2);
+                            if (newData.length > 1) {
+                                extendedBlockData = currentData[0] + "[" + newData[1];
+                            }
                         }
                     }
 
