@@ -2,8 +2,6 @@
 
 ## List is too long
 
- - Re-arrange spells, then cast a spell, lost re-arrangement
-
  - Spell config enable/disable inherited, can this be done just for spells, and only when resolving inheritance?
    Make sure to not copy the "disabled" property, not have to add it?
 

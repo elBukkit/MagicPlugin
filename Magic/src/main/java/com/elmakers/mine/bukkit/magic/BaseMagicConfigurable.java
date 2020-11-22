@@ -110,7 +110,6 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             BaseMagicConfigurable storage = getStorage(propertyType);
             if (storage != null) {
                 storage.configuration.set(key, value);
-                storage.updated();
             } else {
                 controller.getLogger().warning("Attempt to set property " + key + " on " + type + " which routes to unavailable storage " + propertyType);
             }
