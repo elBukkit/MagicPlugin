@@ -1886,7 +1886,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         processTemplateParameters(parameters);
     }
 
-    protected void processTemplateParameters(ConfigurationSection parameters) {
+    public void processTemplateParameters(ConfigurationSection parameters) {
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         bypassCooldown = parameters.getBoolean("bypass_cooldown", false);
         warmup = parameters.getInt("warmup", 0);

@@ -77,6 +77,7 @@ import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MageParameters;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.tasks.ApplyWandIconTask;
 import com.elmakers.mine.bukkit.tasks.CancelEffectsContextTask;
 import com.elmakers.mine.bukkit.tasks.OpenWandTask;
@@ -2635,11 +2636,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         addPropertyLore(lore, isSingleSpell);
         if (isUpgrade) {
             ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_item_description"), lore);
-            String slot = getString("slot");
-            if (slot != null && !slot.isEmpty()) {
-                String slotName = controller.getMessages().get("slots." + slot + ".name", slot);
-                ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_slot").replace("$slot", slotName), lore);
-            }
         } else {
             List<String> slots = getStringList("slots");
             if (slots != null && !slots.isEmpty()) {
@@ -3117,6 +3113,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected static void addSpellLore(Messages messages, SpellTemplate spell, List<String> lore, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand) {
+        if (wand != null && spell instanceof BaseSpell) {
+            BaseSpell baseSpell = (BaseSpell)spell;
+            Map<String, String> overrides = wand.getOverrides();
+            ConfigurationSection parameters = baseSpell.getWorkingParameters();
+            if (parameters != null && overrides != null && !overrides.isEmpty()) {
+                parameters = ConfigurationUtils.cloneConfiguration(parameters);
+                for (Map.Entry<String, String> entry : overrides.entrySet()) {
+                    parameters.set(entry.getKey(), entry.getValue());
+                }
+                baseSpell.processTemplateParameters(parameters);
+            }
+        }
         spell.addLore(messages, mage, wand, lore);
     }
 

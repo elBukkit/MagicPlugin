@@ -526,7 +526,7 @@ public class TargetingSpell extends BaseSpell {
     }
 
     @Override
-    protected void processTemplateParameters(ConfigurationSection parameters) {
+    public void processTemplateParameters(ConfigurationSection parameters) {
         super.processTemplateParameters(parameters);
         range = parameters.getDouble("range", 0);
         boolean hasTargeting = parameters.contains("target");
