@@ -294,6 +294,7 @@ public class EntityController implements Listener {
             if (keepItem)
             {
                 mage.addToRespawnInventory(index, itemStack);
+                inventory.setItem(index, null);
                 removeDrops.add(itemStack);
             } else if (Wand.isSkill(itemStack)) {
                 removeDrops.add(itemStack);
