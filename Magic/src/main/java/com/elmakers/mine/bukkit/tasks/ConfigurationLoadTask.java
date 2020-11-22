@@ -519,8 +519,8 @@ public class ConfigurationLoadTask implements Runnable {
         for (String key : keys)
         {
             ConfigurationSection section = rootSection.getConfigurationSection(key);
-            if (!section.isSet("enabled")) {
-                section.set("enabled", enabled);
+            if (section.isSet("enabled") && !section.getBoolean("enabled")) {
+                section.set("enabled", null);
             }
         }
     }
@@ -680,7 +680,9 @@ public class ConfigurationLoadTask implements Runnable {
                 ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config, true, resolving);
                 if (inheritConfig != null)
                 {
+                    Boolean enabled = spellNode.contains("enabled") ? spellNode.getBoolean("enabled") : null;
                     spellNode = ConfigurationUtils.addConfigurations(spellNode, inheritConfig, false);
+                    spellNode.set("enabled", enabled);
                 }
                 else
                 {

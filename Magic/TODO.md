@@ -2,9 +2,6 @@
 
 ## List is too long
 
- - Spell config enable/disable inherited, can this be done just for spells, and only when resolving inheritance?
-   Make sure to not copy the "disabled" property, not have to add it?
-
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties
@@ -27,7 +24,6 @@
  - Spells ignore tamed mobs of friends ?
  - Mage add brush tab-completion is dumb (or does this command not exist?)
  - Absorb should allow you to bypass restricted materials when you have bypass perms
- - Recall gives SP even when failing
 
 ## Hot Issues
 
