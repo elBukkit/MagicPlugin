@@ -275,6 +275,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityEnderDragonData(entity);
         } else if (entity.getType().name().equals("FOX")) {
             extraData = new EntityFoxData(entity);
+        } else if (entity.getType().name().equals("LLAMA")) {
+            extraData = new EntityLlamaData(entity);
+        } else if (entity.getType().name().equals("MULE")) {
+            extraData = new EntityMuleData(entity);
         } else if (entity.getType().name().equals("CAT")) {
             extraData = new EntityCatData(entity);
         } else if (entity.getType().name().equals("PHANTOM")) {
@@ -506,6 +510,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 extraData = new EntityEnderDragonData(parameters, controller);
             } else if (type != null && type.name().equals("FOX")) {
                 extraData = new EntityFoxData(parameters, controller);
+            } else if (type != null && type.name().equals("LLAMA")) {
+                extraData = new EntityLlamaData(parameters, controller);
+            } else if (type != null && type.name().equals("MULE")) {
+                extraData = new EntityMuleData(parameters, controller);
             } else if (type != null && type.name().equals("CAT")) {
                 extraData = new EntityCatData(parameters, controller);
             } else if (type == EntityType.WOLF) {
@@ -691,14 +699,18 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
         if (spawned != null) {
-            modifyPreSpawn(controller, spawned);
-            if (!addedToWorld) {
-                isSpawning = true;
-                reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
-                CompatibilityUtils.addToWorld(location.getWorld(), spawned, reason);
-                isSpawning = false;
+            try {
+                modifyPreSpawn(controller, spawned);
+                if (!addedToWorld) {
+                    isSpawning = true;
+                    reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
+                    CompatibilityUtils.addToWorld(location.getWorld(), spawned, reason);
+                    isSpawning = false;
+                }
+                modifyPostSpawn(controller, spawned);
+            } catch (Exception ex) {
+                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity properties for] " + getType() + " at " + getLocation(), ex);
             }
-            modifyPostSpawn(controller, spawned);
         }
         return spawned;
     }
