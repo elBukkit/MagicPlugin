@@ -2,3 +2,6 @@ magicheart:
   icon: heart_of_the_sea{CustomModelData:18001}
   legacy_icon: wand_icon:30
   indestructible: true
+  discover:
+    - spellbook
+    - wand

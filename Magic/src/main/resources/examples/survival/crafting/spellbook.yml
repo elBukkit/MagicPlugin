@@ -1,25 +1,6 @@
 spellbook:
   output: spellbook
   output_type: wand
-  discover:
-    - magicbow
-    - magicsword
-    - talisman
-    - wizardboots
-    - wizardchestplate
-    - wizardleggings
-    - wizardhelmet
-    - broomstick
-    - camera
-    - divinghelmet
-    - flashboots
-    - goggles
-    - magichat
-    - magictorch
-    - mastersword
-    - mirrorshield
-    - rabbitboots
-    - rocketboots
 
   materials:
     o: magicheart

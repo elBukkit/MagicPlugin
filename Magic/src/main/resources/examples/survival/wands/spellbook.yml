@@ -21,3 +21,24 @@ spellbook:
 
       # Make skill items undroppable
       # undroppable: true
+    # Recipes that will be discovered when getting one of these items
+    discover_recipes:
+      - magicbow
+      - magicsword
+      - talisman
+      - wizardboots
+      - wizardchestplate
+      - wizardleggings
+      - wizardhelmet
+      - broomstick
+      - camera
+      - divinghelmet
+      - flashboots
+      - goggles
+      - magichat
+      - magictorch
+      - mastersword
+      - mirrorshield
+      - rabbitboots
+      - rocketboots
+

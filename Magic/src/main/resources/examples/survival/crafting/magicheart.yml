@@ -2,9 +2,6 @@ magicheart:
   output: magicheart
   output_type: wand
   auto_discover: true
-  discover:
-    - spellbook
-    - wand
   materials:
     o: emerald
     O: diamond
