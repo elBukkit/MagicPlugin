@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -93,7 +95,15 @@ public class AnvilController implements Listener {
             ItemStack firstItem = anvilInventory.getItem(0);
             ItemStack secondItem = anvilInventory.getItem(1);
 
-            //org.bukkit.Bukkit.getLogger().info("cursor? " + Wand.isWand(cursor) + " current?" + Wand.isWand(current) + " action: " + action + " slot: " + slotType + " first: " + firstItem + ", second: " + secondItem);
+            mage.sendDebugMessage(ChatColor.AQUA + "ANVIL CLICK: "
+                + ChatColor.WHITE + "cursor wand? " + ChatColor.GOLD + Wand.isWand(cursor)
+                + ChatColor.WHITE + " current wand?" + ChatColor.GOLD + Wand.isWand(current)
+                + ChatColor.WHITE + " action: " + ChatColor.GOLD + action
+                + ChatColor.WHITE + " slot: " + ChatColor.GOLD + slotType
+                + ChatColor.WHITE + " first: " + ChatColor.YELLOW + (firstItem == null ? "null" : firstItem.getType().name())
+                + ChatColor.WHITE + ", second: " + ChatColor.YELLOW + (secondItem == null ? "null" : secondItem.getType().name()),
+                80
+            );
 
             // Handle direct movement
             if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
@@ -119,6 +129,10 @@ public class AnvilController implements Listener {
                     if (!wand.canUse(player)) {
                         event.setCancelled(true);
                         mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
+                        return;
+                    }
+                    if (!CompatibilityUtils.isEmpty(secondItem)) {
+                        event.setCancelled(true);
                         return;
                     }
                     wand.setName(newName);

@@ -4,12 +4,9 @@
 
  - Re-arrange spells, then cast a spell, lost re-arrangement
 
- - Diving helmet should only gives night vision underwater
-
  - Spell config enable/disable inherited, can this be done just for spells, and only when resolving inheritance?
    Make sure to not copy the "disabled" property, not have to add it?
 
- - Wizard armor + book in anvil = wasted XP
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties
@@ -21,7 +18,6 @@
     - range - use attributes
     - larger radius ?
     - longer DOT durations ?
- - Need icons for shop button
  - Broomstick upgrades + recipes
 
  - Archer mob is broken ... ?
