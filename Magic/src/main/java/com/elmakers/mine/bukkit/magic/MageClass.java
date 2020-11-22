@@ -68,6 +68,7 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
     @Override
     public void onUnlocked() {
         activateAttributes();
+        discoverRecipes("discover_recipes");
         giveItems("class_items");
         trigger("unlock");
     }

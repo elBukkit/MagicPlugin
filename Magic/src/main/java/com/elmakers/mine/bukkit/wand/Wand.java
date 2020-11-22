@@ -4682,6 +4682,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         this.isInOffhand = offhand;
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
 
+        discoverRecipes("discover_recipes");
+
         if (mageClassKeys != null && !mageClassKeys.isEmpty()) {
             MageClass mageClass = null;
 
