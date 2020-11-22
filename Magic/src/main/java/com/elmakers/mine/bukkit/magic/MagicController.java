@@ -1706,6 +1706,10 @@ public class MagicController implements MageController {
         // Main configuration
         loadProperties(sender, loader.getMainConfiguration());
 
+        // Configurations that don't rely on any external integrations
+        messages.load(loader.getMessages());
+        loadMaterials(loader.getMaterials());
+
         // Finalize integrations, we only do this one time at startup.
         if (!loaded) {
             finalizeIntegration();
@@ -1713,18 +1717,14 @@ public class MagicController implements MageController {
 
         // Register currencies and other preload integrations
         registerPreLoad();
+        log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
-        // Do this before spell loading in case of attribute or requirement providers
-        registerManagers();
-
-        // Sub-configurations
-        messages.load(loader.getMessages());
-        loadMaterials(loader.getMaterials());
-
+        // Load custom attributes, do this prior to loadAttributes
         loadAttributes(loader.getAttributes());
         log("Loaded " + attributes.size() + " attributes");
 
-        log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
+        // Do this before spell loading in case of attribute or requirement providers
+        registerManagers();
 
         loadEffects(loader.getEffects());
         log("Loaded " + effects.size() + " effect lists");
