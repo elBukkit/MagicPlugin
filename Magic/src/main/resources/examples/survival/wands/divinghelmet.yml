@@ -1,5 +1,6 @@
 divinghelmet:
-    icon: stained_glass:3
+    icon: light_blue_stained_glass{CustomModelData:18001}
+    legacy_icon: stained_glass:3
     indestructible: true
     locked: true
     keep: true
