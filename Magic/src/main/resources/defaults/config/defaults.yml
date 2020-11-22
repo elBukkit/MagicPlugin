@@ -361,7 +361,7 @@ sp_items_enabled: true
 sp_item_icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
 
 # Cap SP- mainly so the UI doesn't get broken. 0 to disable and allow unlimited SP.
-sp_max: 99999
+sp_max: 9999
 
 # The amount of SP that new players start with
 sp_default: 0

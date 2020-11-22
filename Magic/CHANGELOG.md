@@ -32,7 +32,6 @@
  - Add buysellshop template for a combo buy/sell shop
  - Allow potion_effects lists on classes and modifiers
  - Added `/mnpc command` command to easily setup command NPCs
- - SP cap raised to 99999
 
 ## Miscellaneous Changes
 
