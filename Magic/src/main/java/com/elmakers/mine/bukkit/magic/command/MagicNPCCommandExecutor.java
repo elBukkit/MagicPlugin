@@ -124,6 +124,11 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (subCommand.equalsIgnoreCase("command")) {
+            onChangeNPCCommand(mage, npc, parameters);
+            return true;
+        }
+
         if (subCommand.equalsIgnoreCase("tp")) {
             onTPNPC(mage, npc);
             return true;
@@ -268,6 +273,25 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
                     mage.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
                 }
             }
+        }
+        npc.update();
+    }
+
+    protected void onChangeNPCCommand(Mage mage, MagicNPC npc, String[] parameters) {
+        ConfigurationSection currentParameters = npc.getParameters();
+        if (parameters.length == 0) {
+            String previousCommand = currentParameters.getString("interact_commands");
+            if (previousCommand == null || previousCommand.isEmpty()) {
+                mage.sendMessage(ChatColor.DARK_AQUA + "NPC has no commands set: " + ChatColor.GOLD);
+                return;
+            }
+            npc.configure("interact_commands", null);
+            mage.sendMessage(ChatColor.DARK_AQUA + "Cleared commands for npc " + ChatColor.GOLD);
+            mage.sendMessage(ChatColor.AQUA + "Was: " + ChatColor.WHITE + previousCommand);
+        } else {
+            currentParameters.set("interact_commands", parameters[0]);
+            mage.sendMessage(ChatColor.GREEN + "Changed npc " + ChatColor.GOLD + npc.getName()
+                + ChatColor.GREEN + " to commands " + ChatColor.YELLOW + parameters[0]);
         }
         npc.update();
     }
@@ -566,10 +590,13 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             for (EntityType entityType : EntityType.values()) {
                 options.add(entityType.name().toLowerCase());
             }
-        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_source") || args[1].equals("cast_source")
-                || args[1].equals("interact_command_source") || args[1].equals("command_source"))) {
+        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_source") || args[1].equals("cast_source"))) {
             options.add("npc");
             options.add("player");
+        } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_command_source") || args[1].equals("command_source"))) {
+            options.add("player");
+            options.add("console");
+            options.add("opped_player");
         } else if (args.length == 3 && args[0].equals("configure")
                && (args[1].equals("helmet") || args[1].equals("item") || args[1].equals("offhand")
                     || args[1].equals("chestplate") || args[1].equals("boots") || args[1].equals("leggings"))
