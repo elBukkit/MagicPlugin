@@ -1078,7 +1078,7 @@ public class MagicController implements MageController {
         resourcePacks.startResourcePackChecks();
     }
 
-    protected void finalizeIntegrationPreSpells() {
+    protected void finalizeIntegration() {
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         // Check for SkillAPI
@@ -1143,10 +1143,6 @@ public class MagicController implements MageController {
                 }
             }
         }
-    }
-
-    protected void finalizeIntegration() {
-        final PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         // Check for Minigames
         Plugin minigamesPlugin = pluginManager.getPlugin("Minigames");
@@ -1441,6 +1437,12 @@ public class MagicController implements MageController {
         registerListeners();
     }
 
+    protected void postLoadIntegration() {
+        if (mobArenaManager != null) {
+            mobArenaManager.loaded();
+        }
+    }
+
     public void processUndo()
     {
         long now = System.currentTimeMillis();
@@ -1704,9 +1706,16 @@ public class MagicController implements MageController {
         // Main configuration
         loadProperties(sender, loader.getMainConfiguration());
 
+        // Finalize integrations, we only do this one time at startup.
         if (!loaded) {
-            finalizeIntegrationPreSpells();
+            finalizeIntegration();
         }
+
+        // Register currencies and other preload integrations
+        registerPreLoad();
+
+        // Do this before spell loading in case of attribute or requirement providers
+        registerManagers();
 
         // Sub-configurations
         messages.load(loader.getMessages());
@@ -1714,9 +1723,6 @@ public class MagicController implements MageController {
 
         loadAttributes(loader.getAttributes());
         log("Loaded " + attributes.size() + " attributes");
-
-        // Register currencies and other preload integrations
-        registerPreLoad();
 
         log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
@@ -1750,11 +1756,50 @@ public class MagicController implements MageController {
         crafting.load(loader.getCrafting());
         log("Loaded " + crafting.getCount() + " crafting recipes");
 
-        // Finalize integrations, we only do this one time at startup.
+        // Register crafting recipes
+        crafting.register(this, plugin);
+        MagicRecipe.FIRST_REGISTER = false;
+
         if (!loaded) {
-            finalizeIntegration();
+            postLoadIntegration();
         }
 
+        // Notify plugins that we've finished loading.
+        LoadEvent loadEvent = new LoadEvent(this);
+        Bukkit.getPluginManager().callEvent(loadEvent);
+        loaded = true;
+        loading = false;
+
+        // Activate/load any active player Mages
+        Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
+        for (Player player : allPlayers) {
+            getMage(player);
+        }
+
+        if (!(sender instanceof ConsoleCommandSender)) {
+            getLogger().info("Finished reloading configuration");
+        }
+        notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
+
+        if (reloadingMage != null) {
+            Player player = reloadingMage.getPlayer();
+            if (!player.hasPermission("Magic.notify")) {
+                player.sendMessage(ChatColor.AQUA + "Spells reloaded.");
+            }
+            reloadingMage.deactivate();
+            reloadingMage.checkWand();
+            reloadingMage = null;
+        }
+
+        if (showExampleInstructions) {
+            showExampleInstructions = false;
+            showExampleInstructions(sender);
+        }
+
+        Bukkit.getScheduler().runTaskLater(plugin, new MigrationTask(this), 20 * 5);
+    }
+
+    private void registerManagers() {
         // Cast Managers
         if (worldGuardManager.isEnabled()) castManagers.add(worldGuardManager);
         if (preciousStonesManager.isEnabled()) castManagers.add(preciousStonesManager);
@@ -1807,6 +1852,9 @@ public class MagicController implements MageController {
             attributeProviders.add(heroesManager);
         }
 
+        // We should be done adding attributes now
+        finalizeAttributes();
+
         // Team providers
         if (heroesManager != null && useHeroesParties) {
             teamProviders.add(heroesManager);
@@ -1846,45 +1894,6 @@ public class MagicController implements MageController {
         } else {
             genericIntegrationTask.run();
         }
-
-        // Register crafting recipes
-        crafting.register(this, plugin);
-        MagicRecipe.FIRST_REGISTER = false;
-
-        // Notify plugins that we've finished loading.
-        LoadEvent loadEvent = new LoadEvent(this);
-        Bukkit.getPluginManager().callEvent(loadEvent);
-
-        loaded = true;
-        loading = false;
-
-        // Activate/load any active player Mages
-        Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
-        for (Player player : allPlayers) {
-            getMage(player);
-        }
-
-        if (!(sender instanceof ConsoleCommandSender)) {
-            getLogger().info("Finished reloading configuration");
-        }
-        notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
-
-        if (reloadingMage != null) {
-            Player player = reloadingMage.getPlayer();
-            if (!player.hasPermission("Magic.notify")) {
-                player.sendMessage(ChatColor.AQUA + "Spells reloaded.");
-            }
-            reloadingMage.deactivate();
-            reloadingMage.checkWand();
-            reloadingMage = null;
-        }
-
-        if (showExampleInstructions) {
-            showExampleInstructions = false;
-            showExampleInstructions(sender);
-        }
-
-        Bukkit.getScheduler().runTaskLater(plugin, new MigrationTask(this), 20 * 5);
     }
 
     public void finishGenericIntegration() {
@@ -3501,8 +3510,9 @@ public class MagicController implements MageController {
 
         // Don't allow overriding Magic requirements
         checkMagicRequirements();
+    }
 
-        // Register attributes
+    private void finalizeAttributes() {
         registeredAttributes.addAll(builtinAttributes);
         registeredAttributes.addAll(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {

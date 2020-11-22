@@ -30,6 +30,17 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
 
     public MobArenaManager(MageController controller, Plugin plugin, ConfigurationSection configuration) {
         this.controller = controller;
+        configure(configuration);
+        if (plugin instanceof MobArena) {
+            mobArena = (MobArena)plugin;
+        }
+    }
+
+    public void loaded() {
+        if (mobArena == null) {
+             controller.getLogger().log(Level.WARNING, "Error integrating with MobArena. Could not find main MobArena class");
+             return;
+        }
 
         Set<String> magicMobKeys = controller.getMobKeys();
         for (String mob : magicMobKeys) {
@@ -37,16 +48,11 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
             String mobKey = mob.toLowerCase().replaceAll("[-_\\.]", "");
             new MagicCreature(controller, mobKey, controller.getMob(mob));
         }
-
-        if (plugin instanceof MobArena) {
-            mobArena = (MobArena)plugin;
-            try {
-                mobArena.getThingManager().register(new MagicItemStackParser(controller));
-            } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "Error integrating with MobArena. You may need to update MobArena for Magic wands and items to work in MobArena configs!", ex);
-            }
+        try {
+            mobArena.getThingManager().register(new MagicItemStackParser(controller));
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.WARNING, "Error integrating with MobArena. You may need to update MobArena for Magic wands and items to work in MobArena configs!", ex);
         }
-        configure(configuration);
 
         Bukkit.getPluginManager().registerEvents(this, controller.getPlugin());
     }
