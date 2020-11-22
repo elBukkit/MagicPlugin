@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/light_blue_stained_glass",
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/custom/divinghelmet"}
+  ]
+}
