@@ -731,12 +731,14 @@ spells:
         cast_spawn: Returning you to spawn
         cast_home: Returning you home
         cast_wand: Returning you to your lost wand
+        cast_soul: Returning you to your lost soul
         cast_warp: Warping you to $name
         cast_town: Warping you to your home town
         cast_regions: Warping you to a protected area
         cast_friend: Warping you to $name
         no_target_death: No recorded death location
         no_target_wand: No recorded lost wands
+        no_target_soul: No recorded lost souls
         no_target_home: No home set
         no_target_warp: Invalid warp $name
         no_target_marker: No marker set
@@ -760,6 +762,8 @@ spells:
         description_wand: A wand you've dropped on the ground
         title_town: Town Square
         description_town: The center of your home town
+        title_soul: Lost Soul
+        description_soul: "A soul of yours from a previous life\n&fContains &d$items &fitems and &b$xp&f experience"
         description_regions: A protected area
         cross_world_disallowed: You are not allowed to Recall to another world
         title: Choose Destination

@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.magic;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -691,4 +692,6 @@ public interface MageController {
      */
     boolean register(MagicProvider provider);
     void loadConfigurationQuietly(CommandSender sender);
+    @Nullable
+    List<DeathLocation> getDeathLocations(Player player);
 }

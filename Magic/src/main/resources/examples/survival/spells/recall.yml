@@ -134,6 +134,7 @@ recall:
       allow_spawn: false
       allow_marker: false
       allow_death: false
+      allow_souls: false
       allow_wand: true
       allow_home: true
       allow_cross_world: true
@@ -141,8 +142,9 @@ recall:
       allow_fields: true
       allow_friends: false
       icon_death: skull_item
+      icon_soul: skeleton_skull
       icon_field: wood_door
-      icon_wand: wand_icon
+      icon_wand: stick{CustomModelData:18001}
       icon_spawn: wood_door
       icon_home: bed
       icon_town: iron_door
@@ -160,6 +162,7 @@ recall|2:
     upgrade_required_casts: 30
     parameters:
         allow_death: true
+        allow_souls: true
 
 recall|3:
   upgrade_required_path: apprentice

@@ -55,6 +55,8 @@
    After using this command, you can remove the `warps` section from `recall` because they will be added automatically.
  - Added the `/mwarp map` command, to add all of your Recall warps to Dynmap
  - Fix using SkillAPI and Heroes attributes
+ - Add DeadSouls integration in Recall, also avoids items getting lost when picking up a soul with the wand inventory open
+   https://www.spigotmc.org/resources/dead-souls.69409/
 
 # 8.0.3
 

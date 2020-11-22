@@ -31,6 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.BaseTeleportAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.magic.DeathLocation;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
@@ -92,6 +93,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     {
         REGIONS,
         DEATH,
+        SOULS,
         SPAWN,
         TOWN,
         HOME,
@@ -118,7 +120,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     {
         public final RecallType type;
         public final String name;
-        public final String description;
         public final Location location;
         public final String message;
         public final String failMessage;
@@ -135,6 +136,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         // Ok so I got sick of making these final with the zillion different constructors :|
         // These only work with the new-stype "options"
+        public String description;
         public boolean showUnavailable;
         public String unavailableMessage;
         public MaterialAndData unavailableIcon;
@@ -721,9 +723,23 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                         break;
                     case WAND:
                         List<LostWand> lostWands = mage.getLostWands();
-                        for (int i = 0; i < lostWands.size(); i++) {
-                            Waypoint targetLocation = getWaypoint(player, testType, i, parameters, context);
+                        for (LostWand lostWand : lostWands) {
+                            Waypoint targetLocation = getWaypoint(player, testType, lostWand.getLocation(), parameters, context);
                             if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
+                                options.add(targetLocation);
+                            }
+                        }
+                        break;
+                    case SOULS:
+                        List<DeathLocation> deathLocations = controller.getDeathLocations(player);
+                        for (DeathLocation death : deathLocations) {
+                            Waypoint targetLocation = getWaypoint(player, testType, death.getLocation(), parameters, context);
+                            if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
+                                ItemStack[] items = death.getItems();
+                                int itemCount = items == null ? 0 : items.length;
+                                targetLocation.description = targetLocation.description
+                                        .replace("$items", Integer.toString(itemCount))
+                                        .replace("$xp", Integer.toString(death.getExperiencePoints()));
                                 options.add(targetLocation);
                             }
                         }
@@ -763,7 +779,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                         }
                         break;
                     default:
-                        Waypoint targetLocation = getWaypoint(player, testType, 0, parameters, context);
+                        Waypoint targetLocation = getWaypoint(player, testType, null, parameters, context);
                         if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                             options.add(targetLocation);
                         }
@@ -818,7 +834,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
             RecallType recallType = RecallType.valueOf(typeString.toUpperCase());
 
-            Waypoint location = getWaypoint(player, recallType, 0, parameters, context);
+            Waypoint location = getWaypoint(player, recallType, null, parameters, context);
             if (tryTeleport(player, location)) {
                 return SpellResult.CAST;
             }
@@ -993,12 +1009,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     }
 
     @Nullable
-    protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters, CastContext context) {
+    protected Waypoint getWaypoint(Player player, RecallType type, Location location, ConfigurationSection parameters, CastContext context) {
         Mage mage = context.getMage();
         MageController controller = context.getController();
         switch (type) {
         case MARKER:
-            Location location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
+            location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
             return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker", "Market"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), getIcon(context, parameters, "icon_marker"), true);
         case DEATH:
             Waypoint death = new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death", "Last Death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), getIcon(context, parameters, "icon_death"), true);
@@ -1018,9 +1034,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             bedLocation.setY(bedLocation.getY() + 1);
             return new Waypoint(type, bedLocation, context.getMessage("title_home", "Home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), getIcon(context, parameters, "icon_home"), false);
         case WAND:
-            List<LostWand> lostWands = mage.getLostWands();
-            if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
-            return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand", "Lost Wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
+            return new Waypoint(type, location, context.getMessage("title_wand", "Lost Wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
+        case SOULS:
+            return new Waypoint(type, location, context.getMessage("title_soul", "Lost Soul"), context.getMessage("cast_soul"), context.getMessage("no_target_soul"), context.getMessage("description_soul", ""), getIcon(context, parameters, "icon_soul"), false);
         default:
             return null;
         }

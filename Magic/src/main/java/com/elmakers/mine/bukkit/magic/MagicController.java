@@ -99,6 +99,7 @@ import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
+import com.elmakers.mine.bukkit.api.magic.DeathLocation;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -178,6 +179,7 @@ import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.npc.MagicNPC;
 import com.elmakers.mine.bukkit.protection.CitadelManager;
+import com.elmakers.mine.bukkit.protection.DeadSoulsManager;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
@@ -1251,6 +1253,18 @@ public class MagicController implements MageController {
 
         // Link to Multiverse
         multiverseManager.initialize(plugin);
+
+        // Link to DeadSouls
+        Plugin deadSoulsPlugin = plugin.getServer().getPluginManager().getPlugin("DeadSouls");
+        if (deadSoulsPlugin != null) {
+            try {
+                deadSoulsController = new DeadSoulsManager(this);
+                plugin.getLogger().info("DeadSouls found, souls available in Recall level 2");
+                plugin.getServer().getPluginManager().registerEvents(deadSoulsController, plugin);
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error integrating with DeadSouls, is it up to date? Version 1.6 or higher required.", ex);
+            }
+        }
 
         // Link to PreciousStones
         preciousStonesManager.initialize(plugin);
@@ -6899,6 +6913,17 @@ public class MagicController implements MageController {
         return player.getGameMode() == GameMode.ADVENTURE;
     }
 
+    @Override
+    @Nullable
+    public List<DeathLocation> getDeathLocations(Player player) {
+        List<DeathLocation> locations = null;
+        if (deadSoulsController != null) {
+            locations = new ArrayList<>();
+            deadSoulsController.getSoulLocations(player, locations);
+        }
+        return locations;
+    }
+
     /*
      * Private data
      */
@@ -7171,6 +7196,7 @@ public class MagicController implements MageController {
     private MobArenaManager                     mobArenaManager             = null;
     private LogBlockManager                     logBlockManager             = null;
     private EssentialsController                essentialsController        = null;
+    private DeadSoulsManager                    deadSoulsController         = null;
 
     private boolean                             loading                     = false;
     private Set<MagicProvider>                  externalProviders           = new HashSet<>();

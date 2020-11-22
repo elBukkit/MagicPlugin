@@ -95,6 +95,18 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.github.Darkyenus</groupId>
+            <artifactId>DeadSouls</artifactId>
+            <version>1.6</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>org.dynmap</groupId>
             <artifactId>dynmap-api</artifactId>
             <version>0.80</version>
@@ -378,16 +390,8 @@
             <url>http://repo.onarandombox.com/content/groups/public/</url>
         </repository>
         <repository>
-            <id>Essentials</id>
-            <url>http://repo.ess3.net/content/groups/essentials</url>
-        </repository>
-        <repository>
             <id>md5</id>
             <url>http://repo.md-5.net/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>bstats-repo</id>
-            <url>http://repo.bstats.org/content/repositories/releases/</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
@@ -401,11 +405,23 @@
             <id>redprotect-repo</id>
             <url>https://raw.githubusercontent.com/FabioZumbi12/RedProtect/mvn-repo/</url>
         </repository>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
         <!--
             All of the following repositories seem to be offline.
             If the elmakers repo ever goes down, you could try re-enabling these, but you may be out of luck.
         -->
 <!-- -#->
+        <repository>
+            <id>Essentials</id>
+            <url>http://repo.ess3.net/content/groups/essentials</url>
+        </repository>
+        <repository>
+            <id>bstats-repo</id>
+            <url>http://repo.bstats.org/content/repositories/releases/</url>
+        </repository>
         <repository>
             <id>Heroes</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>

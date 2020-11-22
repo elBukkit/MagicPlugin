@@ -33,6 +33,7 @@ softdepend:
   - RedProtect
   - LogBlock
   - LightAPI
+  - DeadSouls
 loadbefore:
   - Scavenger
   - SilkSpawners
