@@ -60,7 +60,7 @@ public class MagicRecipe {
 
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
-        group = configuration.getString("group", "Magic");
+        group = configuration.getString("group", "");
         ignoreDamage = configuration.getBoolean("ignore_damage", false);
         autoDiscover = configuration.getBoolean("auto_discover", false);
         discover = ConfigurationUtils.getStringList(configuration, "discover");
