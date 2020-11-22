@@ -360,6 +360,17 @@ public class EntityController implements Listener {
         if (wand != null) {
             // Retrieve stored inventory before deactivating the wand
             if (mage.hasStoredInventory()) {
+                boolean isKeepInventory = false;
+                if (event instanceof PlayerDeathEvent) {
+                    PlayerDeathEvent playerDeath = (PlayerDeathEvent)event;
+                    if (playerDeath.getKeepInventory()) {
+                        isKeepInventory = true;
+                    }
+                }
+                String rule = player.getWorld().getGameRuleValue("keepInventory");
+                if (rule.equals("true")) {
+                    isKeepInventory = true;
+                }
                 // Remove the wand inventory from drops
                 drops.removeAll(Arrays.asList(player.getInventory().getContents()));
 
@@ -367,10 +378,12 @@ public class EntityController implements Listener {
                 wand.deactivate();
 
                 // Add restored inventory back to drops
-                ItemStack[] stored = player.getInventory().getContents();
-                for (ItemStack stack : stored) {
-                    if (stack != null) {
-                        drops.add(stack);
+                if (!isKeepInventory) {
+                    ItemStack[] stored = player.getInventory().getContents();
+                    for (ItemStack stack : stored) {
+                        if (stack != null) {
+                            drops.add(stack);
+                        }
                     }
                 }
             } else {
