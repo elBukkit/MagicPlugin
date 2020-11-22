@@ -1,0 +1,10 @@
+broom_booster:
+  output: broom_booster
+  output_type: wand
+  ignore_damage: true
+  materials:
+    i: elytra
+    h: magicheart
+  row_1: " h "
+  row_2: " i "
+  row_3: ""
