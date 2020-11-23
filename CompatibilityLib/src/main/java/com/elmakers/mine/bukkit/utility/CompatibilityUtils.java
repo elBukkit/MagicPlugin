@@ -669,7 +669,7 @@ public class CompatibilityUtils extends NMSUtils {
         } catch (FileNotFoundException fileNotFound) {
 
         } catch (Throwable ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
+            getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
             throw ex;
         }
         return configuration;
@@ -682,7 +682,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object sourceHandle = getHandle(source);
             class_EntityTNTPrimed_source.set(tntHandle, sourceHandle);
         } catch (Exception ex) {
-            Bukkit.getLogger().log(Level.WARNING, "Unable to set TNT source", ex);
+            getLogger().log(Level.WARNING, "Unable to set TNT source", ex);
         }
     }
 
@@ -823,7 +823,7 @@ public class CompatibilityUtils extends NMSUtils {
                 World.Environment worldType = World.Environment.valueOf(key.toUpperCase());
                 maxHeights.put(worldType, config.getInt(key));
             } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid environment type: " + key, ex);
+                getLogger().log(Level.WARNING, "Invalid environment type: " + key, ex);
             }
         }
     }
@@ -966,7 +966,7 @@ public class CompatibilityUtils extends NMSUtils {
                 nmsProjectile = entityType == null ? constructor.newInstance(nmsWorld) : constructor.newInstance(entityType, nmsWorld);
             } catch (Exception ex) {
                 nmsProjectile = null;
-                Bukkit.getLogger().log(Level.WARNING, "Error spawning projectile of class " + projectileType.getName(), ex);
+                getLogger().log(Level.WARNING, "Error spawning projectile of class " + projectileType.getName(), ex);
             }
 
             if (nmsProjectile == null) {
@@ -1155,7 +1155,7 @@ public class CompatibilityUtils extends NMSUtils {
                 try {
                      operation = AttributeModifier.Operation.values()[attributeOperation];
                 } catch (Throwable ex) {
-                    Bukkit.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
+                    getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
                     return false;
                 }
                 ItemMeta meta = item.getItemMeta();
@@ -1172,7 +1172,7 @@ public class CompatibilityUtils extends NMSUtils {
                             equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase());
                         }
                     } catch (Throwable ex) {
-                        Bukkit.getLogger().warning("[Magic] invalid attribute slot: " + slot);
+                        getLogger().warning("[Magic] invalid attribute slot: " + slot);
                         return false;
                     }
 
@@ -2222,7 +2222,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object movingObject = class_MovingObjectPositionBlock_createMethod.invoke(null, vec3D, directionEnum, blockPosition);
             Object actionContext = class_BlockActionContext_constructor.newInstance(world, originatorHandle, enum_EnumHand_MAIN_HAND, item, movingObject);
             Object placedState = class_Block_getPlacedStateMethod.invoke(nmsBlock, actionContext);
-            // Bukkit.getLogger().info("Placed from " + facing + ": " + placedState);
+            // getLogger().info("Placed from " + facing + ": " + placedState);
             if (placedState == null) return false;
             class_CraftBlock_setTypeAndDataMethod.invoke(block, placedState, physics);
             // class_World_setTypeAndDataMethod.invoke(world, blockPosition, placedState, 11);
@@ -2240,7 +2240,7 @@ public class CompatibilityUtils extends NMSUtils {
             Object blockData = class_nms_Block_getBlockDataMethod.invoke(nmsBlock);
             Object world = getHandle(block.getWorld());
             Object blockPosition = class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
-            Bukkit.getLogger().info("   Updating " + nmsBlock + " to " + blockData);
+            getLogger().info("   Updating " + nmsBlock + " to " + blockData);
             class_World_setTypeAndDataMethod.invoke(world, blockPosition, blockData, 11);
             return true;
          } catch (Throwable e) {

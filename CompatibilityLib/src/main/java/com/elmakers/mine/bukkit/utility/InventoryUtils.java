@@ -99,11 +99,11 @@ public class InventoryUtils extends NMSUtils
     public static boolean addTagsToNBT(Map<String, Object> tags, Object node)
     {
         if (node == null) {
-            Bukkit.getLogger().warning("Trying to save tags to a null node");
+            getLogger().warning("Trying to save tags to a null node");
             return false;
         }
         if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            Bukkit.getLogger().warning("Trying to save tags to a non-CompoundTag");
+            getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
 
@@ -114,7 +114,7 @@ public class InventoryUtils extends NMSUtils
                 if (wrappedTag == null) continue;
                 class_NBTTagCompound_setMethod.invoke(node, tag.getKey(), wrappedTag);
             } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error saving item data tag " + tag.getKey(), ex);
+                getLogger().log(Level.WARNING, "Error saving item data tag " + tag.getKey(), ex);
             }
         }
 
@@ -124,11 +124,11 @@ public class InventoryUtils extends NMSUtils
     public static boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
     {
         if (node == null) {
-            Bukkit.getLogger().warning("Trying to save tags to a null node");
+            getLogger().warning("Trying to save tags to a null node");
             return false;
         }
         if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            Bukkit.getLogger().warning("Trying to save tags to a non-CompoundTag");
+            getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
         
@@ -154,7 +154,7 @@ public class InventoryUtils extends NMSUtils
                 if (wrappedTag == null) continue;
                 class_NBTTagCompound_setMethod.invoke(node, tagName, wrappedTag);
             } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error saving item data tag " + tagName, ex);
+                getLogger().log(Level.WARNING, "Error saving item data tag " + tagName, ex);
             }
         }
 
@@ -406,7 +406,7 @@ public class InventoryUtils extends NMSUtils
             // Using a fixed non-random UUID here so skulls of the same type can stack
             return setSkullURL(itemStack, new URL(url), SKULL_UUID);
         } catch (MalformedURLException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
+            getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
         return itemStack;
     }
@@ -599,10 +599,10 @@ public class InventoryUtils extends NMSUtils
                 Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                 double value = attributeConfig.getDouble(attributeKey);
                 if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot)) {
-                    Bukkit.getLogger().warning("Failed to set attribute: " + attributeKey);
+                    getLogger().warning("Failed to set attribute: " + attributeKey);
                 }
             } catch (Exception ex) {
-                Bukkit.getLogger().warning("Invalid attribute: " + attributeKey);
+                getLogger().warning("Invalid attribute: " + attributeKey);
             }
         }
     }
@@ -616,7 +616,7 @@ public class InventoryUtils extends NMSUtils
                 Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
                 item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
             } catch (Exception ex) {
-                Bukkit.getLogger().warning("Invalid enchantment: " + enchantKey);
+                getLogger().warning("Invalid enchantment: " + enchantKey);
             }
         }
     }

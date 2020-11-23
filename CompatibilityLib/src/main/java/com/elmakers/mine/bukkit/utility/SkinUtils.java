@@ -79,7 +79,7 @@ public class SkinUtils extends NMSUtils {
                     }
                     profileObject.add("properties", propertiesArray);
                 } catch (Exception ex) {
-                    plugin.getLogger().log(Level.WARNING, "Error serializing profile for " + onlinePlayer.getName(), ex);
+                    getLogger().log(Level.WARNING, "Error serializing profile for " + onlinePlayer.getName(), ex);
                 }
             }
 
@@ -131,11 +131,11 @@ public class SkinUtils extends NMSUtils {
                     }
                 }
             } catch (Exception ex) {
-                plugin.getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
+                getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
             }
             if (DEBUG) {
-                plugin.getLogger().info("Got profile: " + gameProfile);
-                plugin.getLogger().info(getProfileURL(gameProfile));
+                getLogger().info("Got profile: " + gameProfile);
+                getLogger().info(getProfileURL(gameProfile));
             }
             return gameProfile;
         }
@@ -295,7 +295,7 @@ public class SkinUtils extends NMSUtils {
                             config.set("uuid", uuid.toString());
                             config.save(playerCache);
                         } catch (IOException ex) {
-                            plugin.getLogger().log(Level.WARNING, "Error saving to player UUID cache", ex);
+                            getLogger().log(Level.WARNING, "Error saving to player UUID cache", ex);
                         }
                     }
                 });
@@ -347,7 +347,7 @@ public class SkinUtils extends NMSUtils {
                             String uuidJSON = fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
                             if (uuidJSON.isEmpty()) {
                                 engageHoldoff();
-                                if (DEBUG) plugin.getLogger().warning("Got empty UUID JSON for " + playerName);
+                                if (DEBUG) getLogger().warning("Got empty UUID JSON for " + playerName);
                                 synchronizeCallbackUUID(callback, null);
                                 return;
                             }
@@ -359,11 +359,11 @@ public class SkinUtils extends NMSUtils {
                             }
                             if (uuidString == null) {
                                 engageHoldoff();
-                                if (DEBUG) plugin.getLogger().warning("Failed to parse UUID JSON for " + playerName);
+                                if (DEBUG) getLogger().warning("Failed to parse UUID JSON for " + playerName);
                                 synchronizeCallbackUUID(callback, null);
                                 return;
                             }
-                            if (DEBUG) plugin.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
+                            if (DEBUG) getLogger().info("Got UUID: " + uuidString + " for " + playerName);
                             uuid = UUID.fromString(addDashes(uuidString));
 
                             YamlConfiguration config = new YamlConfiguration();
@@ -376,9 +376,9 @@ public class SkinUtils extends NMSUtils {
                         }
                     } catch (Exception ex) {
                         if (DEBUG) {
-                            plugin.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName, ex);
+                            getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName, ex);
                         } else {
-                            plugin.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName);
+                            getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName);
                         }
                         engageHoldoff();
                         uuid = null;
@@ -436,7 +436,7 @@ public class SkinUtils extends NMSUtils {
                             response.save(config);
                             config.save(playerCache);
                         } catch (IOException ex) {
-                            plugin.getLogger().log(Level.WARNING, "Error saving to player profile cache", ex);
+                            getLogger().log(Level.WARNING, "Error saving to player profile cache", ex);
                         }
                     }
                 });
@@ -489,22 +489,22 @@ public class SkinUtils extends NMSUtils {
                     }
 
                     if (DEBUG) {
-                        plugin.getLogger().info("Fetching profile for " + uuid);
+                        getLogger().info("Fetching profile for " + uuid);
                     }
                     try {
                         String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
                         if (profileJSON.isEmpty()) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) plugin.getLogger().warning("Failed to fetch profile JSON for " + uuid);
+                            if (DEBUG) getLogger().warning("Failed to fetch profile JSON for " + uuid);
                             return;
                         }
-                        if (DEBUG) plugin.getLogger().info("Got profile: " + profileJSON);
+                        if (DEBUG) getLogger().info("Got profile: " + profileJSON);
                         JsonElement element = new JsonParser().parse(profileJSON);
                         if (element == null || !element.isJsonObject()) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) plugin.getLogger().warning("Failed to parse profile JSON for " + uuid);
+                            if (DEBUG) getLogger().warning("Failed to parse profile JSON for " + uuid);
                             return;
                         }
 
@@ -527,15 +527,15 @@ public class SkinUtils extends NMSUtils {
                         if (encodedTextures == null) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) plugin.getLogger().warning("Failed to find textures in profile JSON");
+                            if (DEBUG) getLogger().warning("Failed to find textures in profile JSON");
                             return;
                         }
                         String decodedTextures = Base64Coder.decodeString(encodedTextures);
-                        if (DEBUG) plugin.getLogger().info("Decoded textures: " + decodedTextures);
+                        if (DEBUG) getLogger().info("Decoded textures: " + decodedTextures);
                         String skinURL = getTextureURL(decodedTextures);
 
                         // A null skin URL here is normal if the player has no skin.
-                        if (DEBUG) plugin.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
+                        if (DEBUG) getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
                         ProfileResponse response = new ProfileResponse(uuid, profileJson.get("name").getAsString(), skinURL, profileJSON);
                         synchronized (responseCache) {
                             responseCache.put(uuid, response);
@@ -547,9 +547,9 @@ public class SkinUtils extends NMSUtils {
                         holdoff = 0;
                     } catch (Exception ex) {
                         if (DEBUG) {
-                            plugin.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid, ex);
+                            getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid, ex);
                         } else {
-                            plugin.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid);
+                            getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid);
                         }
                         engageHoldoff();
                         synchronizeCallbackProfile(callback, null);
