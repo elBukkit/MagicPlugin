@@ -163,7 +163,7 @@ dragonbreath:
         break_blocks: false
 
 creeperize:
-  icon: creeper_skull
+  icon: creeper_head
   icon_disabled: creeper_head
   quick_cast: true
   actions:
