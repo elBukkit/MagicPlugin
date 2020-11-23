@@ -48,7 +48,7 @@ permafrost:
         ice: ice
         cooldown: 30000
         freeze_lava: true
-        biome: mutated_ice_flats
+        biome: ice_spikes
         weather: storm
         ignore_region_overrides: true
         cancel_on_deactivate: false
