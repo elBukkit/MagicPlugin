@@ -30,13 +30,12 @@ drainlife:
         duration: 3000
         type: repeating
         particle: redstone
-        color: red
+        color: FF0000
   costs:
       mana: 50
   parameters:
       allow_max_range: true
       velocity: 200
-      damage: 0.5
       range: 30
       hitbox: true
       target: other
