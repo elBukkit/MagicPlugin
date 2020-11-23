@@ -20,7 +20,6 @@ spells:
         name: SuperConvert
         description: Convert a large sphere of blocks
         usage: Cast twice to convert, shift-cast to match specific block data
-        cancel: SuperConvert cancelled
         target_selected: Cast again to convert $target
         fail: Too large!
         cast_finish: Converted $count blocks to $material
@@ -29,7 +28,6 @@ spells:
         name: SuperCollapse
         description: Collapse a large sphere of blocks
         usage: Cast twice to collapse
-        cancel: SuperCollapse cancelled
         target_selected: Cast again to collapse
         fail: Too large!
         cast_finish: Collapsed $count blocks
@@ -37,7 +35,6 @@ spells:
         name: SuperBlob
         description: Create a large solid sphere
         usage: Cast twice to construct
-        cancel: SuperBlob cancelled
         target_selected: Cast again to build sphere
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -46,7 +43,6 @@ spells:
         name: SuperHemisphere
         description: Create a large solid half-sphere
         usage: Cast twice to construct
-        cancel: SuperHemisphere cancelled
         target_selected: Cast again to build hemisphere
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -55,7 +51,6 @@ spells:
         name: SuperCylinder
         description: Create a large cylinder
         usage: Cast twice to construct
-        cancel: SuperCylinder cancelled
         target_selected: Cast again to build cylinder
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -64,7 +59,6 @@ spells:
         name: SuperWalls
         description: Create a high walls around your area
         usage: Cast twice to construct
-        cancel: SuperWalls cancelled
         target_selected: Cast again to build walls
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -73,7 +67,6 @@ spells:
         name: SuperRepair
         description: Repairs a large area saved with Backup
         usage: Cast twice to repair
-        cancel: SuperRepair cancelled
         target_selected: Cast again to repair
         fail: Too large!
         cast_finish: Repaired $count blocks
@@ -129,7 +122,6 @@ spells:
         name: SuperBackup
         description: Save a large target area for Repair
         usage: Cast twice to save
-        cancel: SuperBackup cancelled
         fail: Too large!
         cast_finish: Backed up the selected area
         target_selected: Cast again to backup
@@ -137,7 +129,6 @@ spells:
         name: SuperEMP
         description: Electrify a large area
         usage: Cast twice to electrify
-        cancel: SuperEMP cancelled
         fail: Too large!
         cast_finish: Electrified $count blocks
         target_selected: Cast again to electrify sphere
@@ -145,7 +136,6 @@ spells:
         name: SuperShell
         description: Create a large hollow sphere
         usage: Cast twice to construct
-        cancel: SuperShell cancelled
         target_selected: Cast again to build shell
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -154,7 +144,6 @@ spells:
         name: SuperDisc
         description: Create a large circular disc
         usage: Cast twice to construct
-        cancel: SuperDisc cancelled
         target_selected: Cast again to build disc
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -163,7 +152,6 @@ spells:
         name: SuperRing
         description: Create a large circular ring
         usage: Cast twice to construct
-        cancel: SuperRing cancelled
         target_selected: Cast again to build ring
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -172,7 +160,6 @@ spells:
         name: SuperDome
         description: Create a very large dome
         usage: Cast twice to construct
-        cancel: SuperDome cancelled
         target_selected: Cast again to build dome
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -181,7 +168,6 @@ spells:
         name: SuperPyramid
         description: Create a large hollow pyramid
         usage: Cast twice to construct
-        cancel: SuperPyramid cancelled
         target_selected: Cast again to build pyramid
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -190,7 +176,6 @@ spells:
         name: SuperBox
         description: Create a large hollow box
         usage: Cast twice to construct
-        cancel: SuperBox cancelled
         target_selected: Cast again to build box
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -199,7 +184,6 @@ spells:
         name: SuperCube
         description: Create a large solid cube
         usage: Cast twice to construct
-        cancel: SuperCube cancelled
         target_selected: Cast again to build cube
         fail: Too large!
         cast_finish: Filled $count blocks with $material
@@ -240,7 +224,6 @@ spells:
         name: Fill
         description: Fill a selected cuboid area
         usage: Cast twice to fill
-        cancel: Fill cancelled
         target_selected: Cast again to fill with $material
         fail: Can't fill that much!
         cast_finish: Filled $count blocks with $material
@@ -252,7 +235,6 @@ spells:
         cast: Regenerating chunks
         target_selected: Cast again to regenerate chunks
         cast_finish: Regenerated $count blocks
-        cancel: SuperRegenerate cancelled
     regenerate:
         name: Regenerate
         description: Regenerate a selected area
@@ -261,7 +243,6 @@ spells:
         cast: Regenerating area
         target_selected: Cast again to regenerate area
         cast_finish: Regenerated $count blocks
-        cancel: Regenerate cancelled
     recurse:
         name: Recurse
         description: Recursively fill blocks
