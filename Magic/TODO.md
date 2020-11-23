@@ -2,6 +2,8 @@
 
 ## List is too long
 
+ - Send list of spells, mobs, wands, etc to the editor - inject in types[spell_list].options, other places
+
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties
