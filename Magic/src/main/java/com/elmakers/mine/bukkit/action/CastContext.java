@@ -996,7 +996,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         String playerMessage = getMessage(messageKey);
         if (playerMessage.length() > 0)
         {
-            playerMessage = playerMessage.replace("$spell", spell.getName());
+            playerMessage = parameterizeMessage(playerMessage);
             for (Entity target : targets)
             {
                 UUID targetUUID = target.getUniqueId();
@@ -1010,13 +1010,6 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
                 }
             }
         }
-    }
-
-    public String parameterizeMessage(String message) {
-        for (Map.Entry<String, String> entry : messageParameters.entrySet()) {
-            message = message.replace("$" + entry.getKey(), entry.getValue());
-        }
-        return message;
     }
 
     @Nullable
@@ -1342,11 +1335,24 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterBreaking(block);
     }
 
+    public String parameterizeMessage(String message) {
+        return parameterize(message, "$");
+    }
+
     @Override
     public String parameterize(String command) {
+        return parameterize(command, "@");
+    }
+
+    private String parameterize(String command, String prefix) {
+        if (command == null || command.isEmpty()) return "";
         Location location = getLocation();
         Mage mage = getMage();
         MageController controller = getController();
+
+        for (Map.Entry<String, String> entry : messageParameters.entrySet()) {
+            command = command.replace(prefix + entry.getKey(), entry.getValue());
+        }
 
         ConfigurationSection variables = getAllVariables();
         List<String> keys = new ArrayList<>(variables.getKeys(false));
@@ -1370,16 +1376,16 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         }
 
         command = command
-                .replace("@_", " ")
-                .replace("@spell", getSpell().getName())
-                .replace("@pd", mage.getDisplayName())
-                .replace("@pn", mage.getName())
-                .replace("@uuid", mage.getId())
-                .replace("@p", mage.getName());
+                .replace(prefix + "_", " ")
+                .replace(prefix + "spell", getSpell().getName())
+                .replace(prefix + "pd", mage.getDisplayName())
+                .replace(prefix + "pn", mage.getName())
+                .replace(prefix + "uuid", mage.getId())
+                .replace(prefix + "p", mage.getName());
 
         if (location != null) {
             command = command
-                    .replace("@world", location.getWorld().getName())
+                    .replace(prefix + "world", location.getWorld().getName())
                     .replace("$x", Double.toString(location.getX()))
                     .replace("$y", Double.toString(location.getY()))
                     .replace("$z", Double.toString(location.getZ()))
@@ -1405,16 +1411,16 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             if (controller.isMage(targetEntity)) {
                 Mage targetMage = controller.getMage(targetEntity);
                 command = command
-                        .replace("@td", targetMage.getDisplayName())
-                        .replace("@tn", targetMage.getName())
-                        .replace("@tuuid", targetMage.getId())
-                        .replace("@t", targetMage.getName());
+                        .replace(prefix + "d", targetMage.getDisplayName())
+                        .replace(prefix + "tn", targetMage.getName())
+                        .replace(prefix + "tuuid", targetMage.getId())
+                        .replace(prefix + "t", targetMage.getName());
             } else {
                 command = command
-                        .replace("@td", controller.getEntityDisplayName(targetEntity))
-                        .replace("@tn", controller.getEntityName(targetEntity))
-                        .replace("@tuuid", targetEntity.getUniqueId().toString())
-                        .replace("@t", controller.getEntityName(targetEntity));
+                        .replace(prefix + "td", controller.getEntityDisplayName(targetEntity))
+                        .replace(prefix + "tn", controller.getEntityName(targetEntity))
+                        .replace(prefix + "tuuid", targetEntity.getUniqueId().toString())
+                        .replace(prefix + "t", controller.getEntityName(targetEntity));
             }
         }
 
