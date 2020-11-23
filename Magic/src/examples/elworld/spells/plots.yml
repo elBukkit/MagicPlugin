@@ -37,7 +37,7 @@ barracks:
     field_type: glowstone
     field_rent: 1 Gold
     field_rent_period: 7d
-    field_rent_sign_direction: 12
+    field_rent_sign_direction: "north"
     brush: schematic:barracksplot
     target: block
     range: 64

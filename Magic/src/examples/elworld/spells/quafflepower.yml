@@ -3,6 +3,7 @@ quafflepower:
     actions:
         cast:
         - class: ArmorStandProjectile
+          item: ""
           actions:
           - class: GiveItem
           miss:
@@ -45,6 +46,7 @@ quafflepower:
       falling: false
       velocity: 30
       hitbox_size: 1.5
+      item: quaffleitem
       helmet_item: quaffleitem
       armor_stand_invisible: true
       armor_stand_marker: true
