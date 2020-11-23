@@ -1820,6 +1820,7 @@ public class MagicController implements MageController {
         // Cast Managers
         if (worldGuardManager.isEnabled()) castManagers.add(worldGuardManager);
         if (preciousStonesManager.isEnabled()) castManagers.add(preciousStonesManager);
+        if (redProtectManager != null && redProtectManager.isFlagsEnabled()) castManagers.add(redProtectManager);
 
         // Entity Targeting Managers
         if (preciousStonesManager.isEnabled()) targetingProviders.add(preciousStonesManager);
