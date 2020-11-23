@@ -259,7 +259,7 @@ public class RideEntityAction extends BaseSpellAction
             }
             sound.setPitch((float)((soundMaxPitch - soundMinPitch) * speedRatio) + soundMinPitch);
             sound.setVolume((float)((soundMaxVolume - soundMinVolume) * speedRatio) + soundMinVolume);
-            sound.play(context.getPlugin(), mounted);
+            sound.play(context.getPlugin(), context.getController().getLogger(), mounted);
         }
 
         // Check for crashing

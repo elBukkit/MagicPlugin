@@ -3972,7 +3972,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (playEffects && effectSound != null && controller.soundsEnabled() && effectSoundInterval > 0) {
             if (lastSoundEffect == 0 || now > lastSoundEffect + effectSoundInterval) {
                 lastSoundEffect = now;
-                effectSound.play(controller.getPlugin(), mage.getPlayer());
+                effectSound.play(controller.getPlugin(), controller.getLogger(), mage.getPlayer());
             }
         }
     }

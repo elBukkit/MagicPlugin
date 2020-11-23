@@ -38,8 +38,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
     public static int PARTICLE_RANGE = 32;
 
-    public static boolean initialize(Plugin plugin) {
-        effectLib = EffectLibManager.initialize(plugin);
+    public static boolean initialize(Plugin plugin, Logger logger) {
+        effectLib = EffectLibManager.initialize(plugin, logger);
         return effectLib != null;
     }
 
@@ -285,6 +285,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
     }
 
+    public void validate() {
+        if (effectLib != null && effectLibConfig != null) {
+            effectLib.validate(effectLibConfig, this, null, null, parameterMap);
+        }
+    }
+
     public void setLocationType(String locationType) {
         originIsSelection = false;
         playAtAllTargets = false;
@@ -443,9 +449,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (sound != null) {
             if (broadcastSound) {
-                sound.play(plugin, sourceLocation);
+                sound.play(plugin, getLogger(), sourceLocation);
             } else if (sourceEntity != null) {
-                sound.play(plugin, sourceEntity);
+                sound.play(plugin, getLogger(), sourceEntity);
             }
         }
         if (fireworkEffect != null) {

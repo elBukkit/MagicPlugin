@@ -28,7 +28,7 @@ public class PlaySoundAction extends BaseSpellAction
             if (entity == null || !(entity instanceof Player)) {
                 return SpellResult.NO_TARGET;
             }
-            sound.play(context.getPlugin(), entity);
+            sound.play(context.getPlugin(), context.getController().getLogger(), entity);
             return countAsCast ? SpellResult.CAST : SpellResult.NO_ACTION;
         }
         Location location = context.getTargetLocation();
@@ -38,7 +38,7 @@ public class PlaySoundAction extends BaseSpellAction
         if (location == null) {
             return SpellResult.NO_TARGET;
         }
-        sound.play(context.getPlugin(), location);
+        sound.play(context.getPlugin(), context.getLogger(), location);
         return countAsCast ? SpellResult.CAST : SpellResult.NO_ACTION;
     }
 

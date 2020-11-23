@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.effect;
 
+import java.util.logging.Logger;
+
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -15,5 +17,7 @@ public interface SoundEffect {
     int getRange();
     void play(Plugin controller, Entity entity);
     void play(Plugin controller, Location location);
+    void play(Plugin controller, Logger logger, Entity entity);
+    void play(Plugin controller, Logger logger, Location location);
     void stop(Player player);
 }
