@@ -43,6 +43,7 @@ public class ValidateSpellsTask implements Runnable {
                         Collection<String> handlers = actionSpell.getHandlers();
                         for (String handler : handlers) {
                             actionSpell.setCurrentHandler(handler, context);
+                            actionSpell.reloadParameters(context);
                         }
                     } else {
                         mageSpell.reloadParameters(context);
