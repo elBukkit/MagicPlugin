@@ -20,7 +20,10 @@
    - Wizard gear can be enchanted, does not come with enchantments
    - Wizard boots cost 2x magic hearts, grant speed boost
  - Reworking wand buffs
-   - TODO: Remove protection, replace with ... something?
+    - Wand buffshop removed for now.
+    - Will be replaced by something else in the future.
+    - Players that have purchased wand protection will get to keep it for now, but my plan is to remove it in the
+      future and reimburse them in some way.
 
 ## Other Changes of Note
 
