@@ -221,6 +221,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.LogMessage;
 import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -1745,6 +1746,7 @@ public class MagicController implements MageController {
         // Load custom attributes, do this prior to loadAttributes
         logger.setContext("attributes");
         loadAttributes(loader.getAttributes());
+        logger.setContext(null);
         log("Loaded " + attributes.size() + " attributes");
 
         // Do this before spell loading in case of attribute or requirement providers
@@ -1753,47 +1755,58 @@ public class MagicController implements MageController {
 
         logger.setContext("effects");
         loadEffects(loader.getEffects());
+        logger.setContext(null);
         log("Loaded " + effects.size() + " effect lists");
 
         logger.setContext("items");
         items.load(loader.getItems());
+        logger.setContext(null);
         log("Loaded " + items.getCount() + " items");
 
         logger.setContext("wands");
         loadWandTemplates(loader.getWands());
+        logger.setContext(null);
         log("Loaded " + getWandTemplates().size() + " wands");
 
         logger.setContext("spells");
         loadSpells(sender, loader.getSpells());
+        logger.setContext(null);
         log("Loaded " + spells.size() + " spells");
 
         logger.setContext("classes");
         loadMageClasses(loader.getClasses());
+        logger.setContext(null);
         log("Loaded " + mageClasses.size() + " classes");
 
         logger.setContext("modifiers");
         loadModifiers(loader.getModifiers());
+        logger.setContext(null);
         log("Loaded " + modifiers.size() + " classes");
 
         logger.setContext("paths");
         loadPaths(loader.getPaths());
+        logger.setContext(null);
         log("Loaded " + getPathCount() + " progression paths");
 
         logger.setContext("mobs");
         loadMobs(loader.getMobs());
+        logger.setContext(null);
         log("Loaded " + mobs.getCount() + " mob templates");
 
         logger.setContext("automata");
         loadAutomatonTemplates(loader.getAutomata());
+        logger.setContext(null);
         log("Loaded " + automatonTemplates.size() + " automata templates");
 
         logger.setContext("crafting");
         crafting.load(loader.getCrafting());
-        log("Loaded " + crafting.getCount() + " crafting recipes");
 
         // Register crafting recipes
         crafting.register(this, plugin);
         MagicRecipe.FIRST_REGISTER = false;
+
+        logger.setContext(null);
+        log("Loaded " + crafting.getCount() + " crafting recipes");
 
         if (!loaded) {
             postLoadIntegration();
@@ -2121,8 +2134,8 @@ public class MagicController implements MageController {
     protected void resetLoading(CommandSender sender) {
         com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
         if (sender != null) {
-            List<MagicLogger.LogMessage> errors = logger.getErrors();
-            List<MagicLogger.LogMessage> warnings = logger.getWarnings();
+            List<LogMessage> errors = logger.getErrors();
+            List<LogMessage> warnings = logger.getWarnings();
 
             if (!warnings.isEmpty()) {
                 if (warnings.size() == 1) {
@@ -2182,6 +2195,7 @@ public class MagicController implements MageController {
         if (sender != null) {
              com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(true);
              logger.enableCapture(true);
+             sender.sendMessage(ChatColor.DARK_AQUA + "Please wait while the configuration is reloaded and validated");
         }
         reloadVerboseLogging = verboseLogging;
         loading = true;
