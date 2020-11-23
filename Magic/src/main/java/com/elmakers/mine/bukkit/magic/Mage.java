@@ -930,19 +930,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (message == null || message.length() == 0 || sender == null) return;
         boolean isTitle = false;
         boolean isActionBar = false;
-        if (prefix.startsWith("a:")) {
+        if (message.startsWith("a:")) {
+            prefix = "";
+            isActionBar = true;
+            message = message.substring(2);
+        } else if (message.startsWith("t:")) {
+            isTitle = true;
+            prefix = "";
+            message = message.substring(2);
+        } else if (prefix.startsWith("a:")) {
             isActionBar = true;
             prefix = prefix.substring(2);
         } else if (prefix.startsWith("t:")) {
             isTitle = true;
             prefix = prefix.substring(2);
-        }
-
-        if (message.startsWith("t:")) {
-            isTitle = true;
-            // message overrides prefix
-            isActionBar = false;
-            message = message.substring(2);
         }
 
         String[] messages = StringUtils.split(message, "\n");
