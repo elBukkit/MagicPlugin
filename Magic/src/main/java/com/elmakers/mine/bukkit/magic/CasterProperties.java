@@ -235,7 +235,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public boolean setSpellLevel(String spellKey, int level) {
         BaseMagicConfigurable storage = getStorage("spell_levels");
         if (storage != this && storage != null && storage instanceof com.elmakers.mine.bukkit.api.magic.CasterProperties) {
-            return ((com.elmakers.mine.bukkit.api.magic.CasterProperties)storage).setSpelLLevel(spellKey, level);
+            return ((com.elmakers.mine.bukkit.api.magic.CasterProperties)storage).setSpellLevel(spellKey, level);
         }
         if (!hasSpell(spellKey)) {
             return false;
