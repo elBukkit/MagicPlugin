@@ -1829,7 +1829,6 @@ public class MagicController implements MageController {
             getLogger().info("Finished reloading configuration");
         }
         if (sender != null && logger.isCapturing()) {
-            notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded, now looking for issues...");
             Bukkit.getScheduler().runTaskAsynchronously(plugin, new ValidateSpellsTask(this, sender));
         } else {
             resetLoading(sender);
@@ -2143,7 +2142,9 @@ public class MagicController implements MageController {
                 }
             }
             if (warnings.isEmpty() && errors.isEmpty()) {
-                sender.sendMessage(ChatColor.GREEN + "No issues found!");
+                sender.sendMessage(ChatColor.GREEN + "Finished loading, No issues found!");
+            } else {
+                sender.sendMessage(ChatColor.GOLD + "Finished loading");
             }
         }
 
