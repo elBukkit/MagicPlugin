@@ -66,6 +66,10 @@ public class RedProtectManager implements BlockBreakManager, BlockBuildManager, 
         }
     }
 
+    public boolean isFlagsEnabled() {
+        return flagsEnabled;
+    }
+
     @Override
     public boolean hasBuildPermission(Player player, Block block) {
         try {

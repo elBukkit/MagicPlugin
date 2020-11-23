@@ -1260,6 +1260,7 @@ public class MagicController implements MageController {
             try {
                 deadSoulsController = new DeadSoulsManager(this);
                 plugin.getLogger().info("DeadSouls found, souls available in Recall level 2");
+                plugin.getLogger().info("Disable warping to souls in recall config with allow_souls: false");
                 plugin.getServer().getPluginManager().registerEvents(deadSoulsController, plugin);
             } catch (Exception ex) {
                 getLogger().log(Level.WARNING, "Error integrating with DeadSouls, is it up to date? Version 1.6 or higher required.", ex);
@@ -1421,7 +1422,9 @@ public class MagicController implements MageController {
                     redProtectManager = new RedProtectManager(pluginManager.getPlugin("RedProtect"), this, redProtectConfiguration);
                     getLogger().info("Integrated with RedProtect for build/break/pvp/target checks");
                     getLogger().info("Disable warping to fields in recall config with allow_redprotect: false");
-                    getLogger().info("Added custom flags: " + StringUtils.join(RedProtectManager.flags, ','));
+                    if (redProtectManager.isFlagsEnabled()) {
+                        getLogger().info("Added custom flags: " + StringUtils.join(RedProtectManager.flags, ','));
+                    }
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with RedProtect", ex);
                 }
