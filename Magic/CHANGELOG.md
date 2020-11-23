@@ -35,6 +35,7 @@
  - Add buysellshop template for a combo buy/sell shop
  - Allow potion_effects lists on classes and modifiers
  - Added `/mnpc command` command to easily setup command NPCs
+ - Added Flare Level 3
 
 ## Miscellaneous Changes
 

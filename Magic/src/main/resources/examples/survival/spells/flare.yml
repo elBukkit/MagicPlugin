@@ -41,6 +41,7 @@ flare:
         mana: 10
 
 flare|2:
+  upgrade_required_path: apprentice
   effects:
     actions:
         cast:
@@ -56,3 +57,20 @@ flare|2:
       radius: 8
       target_offset: 0,4,0
       size: 6
+
+flare|3:
+  effects:
+    hit:
+    - class: EffectRing
+      location: target
+      firework: star
+      radius: 8
+      target_offset: 0,4,0
+      size: 6
+    - class: EffectRing
+      location: target
+      firework_power: 1
+      radius: 16
+      target_offset: 0,12,0
+      size: 8
+      color: false
