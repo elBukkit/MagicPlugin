@@ -20,3 +20,6 @@ spell:
     upgrade_description_prefix: "&r&b&bull; &6"
     passive: "&2Passive"
     disabled: "&eDeactivated"
+    # This can be used to show who created a spell in spell lore
+    # creator: "&1Created by: &9$name"
+    creator: ""

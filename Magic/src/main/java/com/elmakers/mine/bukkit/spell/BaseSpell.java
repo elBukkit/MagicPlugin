@@ -2794,6 +2794,12 @@ public class BaseSpell implements MageSpell, Cloneable {
                 InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
             }
         }
+        if (creatorName != null && !creatorName.isEmpty()) {
+            String creatorTemplate = messages.get("spell.creator", "");
+            if (!creatorTemplate.isEmpty()) {
+                InventoryUtils.wrapText(creatorTemplate.replace("$name", creatorName), lore);
+            }
+        }
         if (usage != null && usage.length() > 0) {
             InventoryUtils.wrapText(usage, lore);
         }
