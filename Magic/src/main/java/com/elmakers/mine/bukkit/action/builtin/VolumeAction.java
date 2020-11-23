@@ -130,6 +130,7 @@ public class VolumeAction extends CompoundAction
 
     private void updateOrient(CastContext context) {
         Location location = context.getLocation();
+        if (location == null) return;
         pitch = 0.0f;
         if (autoPitch) {
             pitch = location.getPitch();
