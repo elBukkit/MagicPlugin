@@ -4783,6 +4783,7 @@ public class MagicController implements MageController {
         wandTemplates.remove(key);
     }
 
+    @Override
     public Collection<String> getWandTemplateKeys() {
         return wandTemplates.keySet();
     }
@@ -4853,6 +4854,11 @@ public class MagicController implements MageController {
         List<com.elmakers.mine.bukkit.api.spell.SpellCategory> allCategories = new ArrayList<>();
         allCategories.addAll(categories.values());
         return allCategories;
+    }
+
+    @Override
+    public Collection<String> getSpellTemplateKeys() {
+        return spells.keySet();
     }
 
     @Override

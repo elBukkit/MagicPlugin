@@ -423,7 +423,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         // Build session request
-        NewSessionRequest newSession = new NewSessionRequest(editorType);
+        NewSessionRequest newSession = new NewSessionRequest(controller, editorType);
         if (sender instanceof Player) {
             newSession.setBukkitPlayer((Player)sender);
         }

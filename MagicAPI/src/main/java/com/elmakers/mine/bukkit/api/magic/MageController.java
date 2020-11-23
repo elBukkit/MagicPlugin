@@ -142,6 +142,7 @@ public interface MageController {
     Wand getWand(ConfigurationSection config);
     @Nullable
     WandTemplate getWandTemplate(String key);
+    Collection<String> getWandTemplateKeys();
     Collection<WandTemplate> getWandTemplates();
     void loadWandTemplate(String key, ConfigurationSection wandNode);
     void unloadWandTemplate(String key);
@@ -156,6 +157,7 @@ public interface MageController {
     @Nullable
     SpellCategory getCategory(String key);
     Collection<SpellCategory> getCategories();
+    Collection<String> getSpellTemplateKeys();
     Collection<SpellTemplate> getSpellTemplates();
     Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
     Collection<String> getAutomatonTemplateKeys();
