@@ -62,62 +62,8 @@
 #    costs:
 #       health: 10
 
-recall:
-  parameters:
-    warps:
-     village:
-        name: Village
-        description: Near our house
-        locked: false
-        icon: compass 
-     dueling:
-        name: Dueling
-        description: Let's fight!
-        locked: false
-        icon: diamond_sword
-     nether:
-        name: Nether
-        description: By ghasts!
-        locked: false
-        icon: lava_bucket
-     mansion:
-        name: Wolf Vacation Home
-        description: Our mansion
-        locked: false
-        icon: emerald
-     fortress:
-        name: Nether Fortress
-        description: Blazes!
-        icon: nether_brick
-     dragon:
-        name: Ender Dragon
-        description: Scary!
-        icon: skull_item:5
-     endcity:
-        name: Ender City
-        description: yay!
-        icon: end_rod
-     icespikes:
-        name: North Pole
-        description: Igloos!
-        icon: snow_ball
-     pyramid:
-        name: Pyramid
-        description: Puzzling!
-        icon: sand
-
 override:  
   pvp_restricted: false
-
-find:
-  icon: compass
-  actions:
-    cast:
-      - class: PlayerSelect
-        actions:
-        - class: Teleport
-  parameters:
-    safe: false
 
 dragonize:
   icon: spell_icon:152

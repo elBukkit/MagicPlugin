@@ -44,3 +44,6 @@ wands:
     finder:
       name: Finder
       description: Teleport to other players
+
+spell:
+  creator: "&1Created by: &9$name"

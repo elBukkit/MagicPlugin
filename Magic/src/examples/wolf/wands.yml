@@ -96,31 +96,3 @@
 #    mana_max: 100
 #    mana: 100
 #    mana_regeneration: 10
-
-
-divinghelmet:
-    mode: cast
-    active_spell: wear
-    icon: stained_glass:3
-    indestructible: true
-    locked: true
-    keep: true
-    quiet: 2
-    mana_regeneration_boost: -0.1
-    potion_effects: night_vision:5,water_breathing
-    passive: true
-    enchantments:
-      oxygen: 3
-      water_worker: 1
-      depth_strider: 3
-    spells:
-        - wear
-
-finder:
-    mode: cast
-    active_spell: find
-    icon: compass
-    keep: true
-    undroppable: true
-    unstashable: true
-
