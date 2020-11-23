@@ -1,5 +1,8 @@
 divinghelmet:
     icon: light_blue_stained_glass{CustomModelData:18001}
+    migrate_legacy_icons:
+        "light_blue_stained_glass": light_blue_stained_glass{CustomModelData:18001}
+        "stained_glass:3": light_blue_stained_glass{CustomModelData:18001}
     legacy_icon: stained_glass:3
     indestructible: true
     locked: true
