@@ -46,6 +46,7 @@ public class ConfigurationLoadTask implements Runnable {
 
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
+    private final Map<String, ConfigurationSection> exampleConfigurations = new HashMap<>();
 
     private static final Object loadLock = new Object();
 
@@ -101,41 +102,44 @@ public class ConfigurationLoadTask implements Runnable {
 
     @Nonnull
     private ConfigurationSection loadExampleConfiguration(String examplesPrefix) {
-        String examplesFileName = examplesPrefix + ".yml";
-        File externalFolder = new File(plugin.getDataFolder(), examplesPrefix);
-        File externalFile = new File(plugin.getDataFolder(), examplesFileName);
-        ConfigurationSection exampleConfig = null;
-        if (externalFile.exists()) {
-            try {
-                exampleConfig = CompatibilityUtils.loadConfiguration(externalFile);
-            } catch (Exception ex) {
-                getLogger().severe("Error loading: " + examplesFileName);
-            }
-        }
-        if (externalFolder.exists()) {
-            try {
-                if (exampleConfig == null) {
-                    exampleConfig = new MemoryConfiguration();
-                }
-                exampleConfig = loadConfigFolder(exampleConfig, externalFolder, false);
-            } catch (Exception ex) {
-                getLogger().severe("Error loading: " + examplesFileName);
-            }
-        }
+        ConfigurationSection exampleConfig = exampleConfigurations.get(examplesPrefix);
         if (exampleConfig == null) {
-            InputStream input = plugin.getResource(examplesFileName);
-            if (input != null)  {
+            String examplesFileName = examplesPrefix + ".yml";
+            File externalFolder = new File(plugin.getDataFolder(), examplesPrefix);
+            File externalFile = new File(plugin.getDataFolder(), examplesFileName);
+            if (externalFile.exists()) {
                 try {
-                    exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                    exampleConfig = CompatibilityUtils.loadConfiguration(externalFile);
                 } catch (Exception ex) {
-                    getLogger().severe("Error loading: " + examplesFileName + " from builtin resources");
+                    getLogger().severe("Error loading: " + examplesFileName);
                 }
             }
+            if (externalFolder.exists()) {
+                try {
+                    if (exampleConfig == null) {
+                        exampleConfig = new MemoryConfiguration();
+                    }
+                    exampleConfig = loadConfigFolder(exampleConfig, externalFolder, false);
+                } catch (Exception ex) {
+                    getLogger().severe("Error loading: " + examplesFileName);
+                }
+            }
+            if (exampleConfig == null) {
+                InputStream input = plugin.getResource(examplesFileName);
+                if (input != null)  {
+                    try {
+                        exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                    } catch (Exception ex) {
+                        getLogger().severe("Error loading: " + examplesFileName + " from builtin resources");
+                    }
+                }
+            }
+            if (exampleConfig == null) {
+                exampleConfig = new MemoryConfiguration();
+            }
+            exampleConfigurations.put(examplesPrefix, exampleConfig);
         }
-        if (exampleConfig == null) {
-            exampleConfig = new MemoryConfiguration();
-        }
-        return exampleConfig;
+        return ConfigurationUtils.cloneConfiguration(exampleConfig);
     }
 
     private ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
@@ -218,10 +222,10 @@ public class ConfigurationLoadTask implements Runnable {
                 {
                     try {
                         boolean override = exampleConfig.getBoolean("example_override", false);
+                        info(" Adding " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
                         processInheritance(example, exampleConfig, fileName, exampleConfig);
                         mainConfigurations.put(example, exampleConfig);
                         ConfigurationUtils.addConfigurations(config, exampleConfig, override);
-                        info(" Added " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
                     } catch (Exception ex) {
                         getLogger().severe("Error loading: " + examplesFilePrefix);
                         throw ex;
@@ -299,7 +303,7 @@ public class ConfigurationLoadTask implements Runnable {
                         try {
                             List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
                             if (inherited.contains(inheritFrom)) {
-                                getLogger().log(Level.WARNING, "Circular dependency detected in configuration inheritance: " + StringUtils.join(inherited, " -> ") + " -> " + inheritFrom);
+                                getLogger().log(Level.WARNING, "    Circular dependency detected in configuration inheritance: " + StringUtils.join(inherited, " -> ") + " -> " + inheritFrom);
                             } else {
                                 if (processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited)) {
                                     disabledInherited = true;
@@ -313,7 +317,7 @@ public class ConfigurationLoadTask implements Runnable {
                                 enableAll(exampleConfig);
                             }
                             ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
-                            info(" Inheriting from " + inheritFrom);
+                            info("   Example " + exampleKey + " inheriting from " + inheritFrom);
                         } catch (Exception ex) {
                             getLogger().severe("Error loading file: " + inheritFilePrefix);
                             throw ex;
@@ -550,7 +554,7 @@ public class ConfigurationLoadTask implements Runnable {
                     }
                     try {
                         ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
-                        info("  Loading " + file.getName());
+                        info(" Loading " + file.getName());
                         if (setEnabled) {
                             enableAll(fileOverrides);
                         }
@@ -564,7 +568,7 @@ public class ConfigurationLoadTask implements Runnable {
             for (File file : priorityFiles) {
                 try {
                     ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
-                    info("  Loading " + file.getName());
+                    info(" Loading " + file.getName());
                     if (setEnabled) {
                         enableAll(fileOverrides);
                     }
