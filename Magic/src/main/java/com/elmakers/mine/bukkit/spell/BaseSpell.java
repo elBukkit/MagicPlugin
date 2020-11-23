@@ -557,6 +557,9 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public static BlockFace getFacing(Location location)
     {
+        if (location == null) {
+            return BlockFace.SELF;
+        }
         float playerRot = location.getYaw();
         while (playerRot < 0)
             playerRot += 360;

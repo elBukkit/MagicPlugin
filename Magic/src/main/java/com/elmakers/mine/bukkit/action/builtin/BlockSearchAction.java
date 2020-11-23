@@ -28,7 +28,7 @@ public class BlockSearchAction extends CompoundAction
         }
         catch (Exception ex)
         {
-            context.getLogger().info("Invalid search direction: " + parameters.getString("direction"));
+            context.getLogger().warning("Invalid search direction: " + parameters.getString("direction"));
             direction = BlockFace.DOWN;
         }
     }
