@@ -48,9 +48,6 @@ flipendo|2:
              iterations: 16
              particle: spell_instant
              color: FFFFFF
-             helixes: 6
-             circles: 4
-             grow: 0.5
              lengthGrow: 0.3
     parameters:
         range: 20
