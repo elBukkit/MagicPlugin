@@ -194,6 +194,7 @@ import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.requirements.RequirementsController;
 import com.elmakers.mine.bukkit.resourcepack.ResourcePackManager;
+import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
@@ -215,12 +216,12 @@ import com.elmakers.mine.bukkit.tasks.SaveDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageTask;
 import com.elmakers.mine.bukkit.tasks.UndoUpdateTask;
-import com.elmakers.mine.bukkit.utility.ColoredLogger;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
@@ -243,18 +244,20 @@ import de.slikey.effectlib.math.EquationStore;
 public class MagicController implements MageController {
     private static String DEFAULT_DATASTORE_PACKAGE = "com.elmakers.mine.bukkit.data";
     private static long MAGE_CACHE_EXPIRY = 10000;
+    private static int MAX_WARNINGS = 5;
+    private static int MAX_ERRORS = 5;
 
     // Special constructor used for interrogation
     public MagicController() {
         configFolder = null;
         dataFolder = null;
         defaultsFolder = null;
-        this.logger = Logger.getLogger("Magic");
+        this.logger = new MagicLogger(Logger.getLogger("Magic"));
     }
 
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
-        this.logger = new ColoredLogger(plugin.getLogger());
+        this.logger = new MagicLogger(plugin.getLogger());
         resourcePacks = new ResourcePackManager(this);
 
         SkinUtils.initialize(plugin);
@@ -1705,10 +1708,9 @@ public class MagicController implements MageController {
                 pm.registerEvents(new ErrorNotifier(), plugin);
             }
             loading = false;
-
+            resetLoading(sender);
             return;
         }
-
 
         // Clear some cache stuff... mainly this is for debugging/testing.
         schematics.clear();
@@ -1721,13 +1723,17 @@ public class MagicController implements MageController {
         addExamples = loader.getAddExamples();
 
         // Main configuration
+        logger.setContext("config");
         loadProperties(sender, loader.getMainConfiguration());
 
         // Configurations that don't rely on any external integrations
+        logger.setContext("messages");
         messages.load(loader.getMessages());
+        logger.setContext("materials");
         loadMaterials(loader.getMaterials());
 
         // Finalize integrations, we only do this one time at startup.
+        logger.setContext("integration");
         if (!loaded) {
             finalizeIntegration();
         }
@@ -1737,39 +1743,51 @@ public class MagicController implements MageController {
         log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
         // Load custom attributes, do this prior to loadAttributes
+        logger.setContext("attributes");
         loadAttributes(loader.getAttributes());
         log("Loaded " + attributes.size() + " attributes");
 
         // Do this before spell loading in case of attribute or requirement providers
+        logger.setContext("integration");
         registerManagers();
 
+        logger.setContext("effects");
         loadEffects(loader.getEffects());
         log("Loaded " + effects.size() + " effect lists");
 
+        logger.setContext("items");
         items.load(loader.getItems());
         log("Loaded " + items.getCount() + " items");
 
+        logger.setContext("wands");
         loadWandTemplates(loader.getWands());
         log("Loaded " + getWandTemplates().size() + " wands");
 
-        loadSpells(loader.getSpells());
+        logger.setContext("spells");
+        loadSpells(sender, loader.getSpells());
         log("Loaded " + spells.size() + " spells");
 
+        logger.setContext("classes");
         loadMageClasses(loader.getClasses());
         log("Loaded " + mageClasses.size() + " classes");
 
+        logger.setContext("modifiers");
         loadModifiers(loader.getModifiers());
         log("Loaded " + modifiers.size() + " classes");
 
+        logger.setContext("paths");
         loadPaths(loader.getPaths());
         log("Loaded " + getPathCount() + " progression paths");
 
+        logger.setContext("mobs");
         loadMobs(loader.getMobs());
         log("Loaded " + mobs.getCount() + " mob templates");
 
+        logger.setContext("automata");
         loadAutomatonTemplates(loader.getAutomata());
         log("Loaded " + automatonTemplates.size() + " automata templates");
 
+        logger.setContext("crafting");
         crafting.load(loader.getCrafting());
         log("Loaded " + crafting.getCount() + " crafting recipes");
 
@@ -1781,7 +1799,12 @@ public class MagicController implements MageController {
             postLoadIntegration();
         }
 
+        if (sender != null && logger.isCapturing()) {
+            validateSpells(sender);
+        }
+
         // Notify plugins that we've finished loading.
+        logger.setContext(null);
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
         loaded = true;
@@ -1812,8 +1835,32 @@ public class MagicController implements MageController {
             showExampleInstructions = false;
             showExampleInstructions(sender);
         }
+        resetLoading(sender);
 
         Bukkit.getScheduler().runTaskLater(plugin, new MigrationTask(this), 20 * 5);
+    }
+
+    private void validateSpells(CommandSender sender) {
+        for (SpellTemplate newSpell : spells.values()) {
+            String key = newSpell.getKey();
+            logger.setContext("spells." + key);
+            // For spells to check parameters for errors/warnings
+            if (sender != null && logger.isCapturing() && newSpell instanceof BaseSpell) {
+                BaseSpell spell = (BaseSpell)newSpell;
+                try {
+                    Mage mage = getMage(sender);
+                    MageSpell mageSpell = spell.createMageSpell(mage);
+                    com.elmakers.mine.bukkit.action.CastContext context = new com.elmakers.mine.bukkit.action.CastContext(mageSpell);
+                    context.setWorkingParameters(mageSpell.getSpellParameters());
+                    if (mageSpell instanceof ActionSpell) {
+                        ((ActionSpell)mageSpell).setCurrentHandler("cast", context);
+                    }
+                    mageSpell.reloadParameters(context);
+                } catch (Exception ex) {
+                    getLogger().log(Level.SEVERE, "There was an error checking spell " + key + " for issues", ex);
+                }
+            }
+        }
     }
 
     private void registerManagers() {
@@ -1952,6 +1999,7 @@ public class MagicController implements MageController {
         Set<String> keys = attributeConfiguration.getKeys(false);
         attributes.clear();
         for (String key : keys) {
+            logger.setContext("attribute." + key);
             MagicAttribute attribute = new MagicAttribute(key, attributeConfiguration.getConfigurationSection(key));
             attributes.put(key, attribute);
         }
@@ -1962,6 +2010,7 @@ public class MagicController implements MageController {
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         automatonTemplates.clear();
         for (String key : keys) {
+            logger.setContext("automata." + key);
             ConfigurationSection config = resolveConfiguration(key, automataConfiguration, templateConfigurations);
             if (!ConfigurationUtils.isEnabled(config)) continue;
 
@@ -2049,6 +2098,7 @@ public class MagicController implements MageController {
         effects.clear();
         Collection<String> effectKeys = effectsNode.getKeys(false);
         for (String effectKey : effectKeys) {
+            logger.setContext("effects." + effectKey);
             effects.put(effectKey, loadEffects(effectsNode, effectKey));
         }
     }
@@ -2066,6 +2116,44 @@ public class MagicController implements MageController {
             return getEffects(configuration.getString(effectKey));
         }
         return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey, getLogger(), logContext);
+    }
+
+    protected void resetLoading(CommandSender sender) {
+        com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
+        if (sender != null) {
+            List<MagicLogger.LogMessage> errors = logger.getErrors();
+            List<MagicLogger.LogMessage> warnings = logger.getWarnings();
+
+            if (!warnings.isEmpty()) {
+                if (warnings.size() == 1) {
+                    sender.sendMessage(ChatColor.YELLOW + "WARNING: " + ChatColor.WHITE + warnings.get(0).getMessage());
+                } else {
+                    sender.sendMessage(ChatColor.YELLOW + "WARNINGS: " + ChatColor.WHITE + warnings.size());
+                    for (int i = 0; i < warnings.size() && i < MAX_WARNINGS; i++) {
+                        sender.sendMessage(ChatColor.WHITE + " " + warnings.get(i).getMessage());
+                    }
+                    if (warnings.size() > MAX_WARNINGS) {
+                        sender.sendMessage("...");
+                    }
+                }
+            }
+
+            if (!errors.isEmpty()) {
+                if (errors.size() == 1) {
+                    sender.sendMessage(ChatColor.RED + "ERROR: " + ChatColor.WHITE + errors.get(0).getMessage());
+                } else {
+                    sender.sendMessage(ChatColor.RED + "ERRORS: " + ChatColor.WHITE + errors.size());
+                    for (int i = 0; i < errors.size() && i < MAX_ERRORS; i++) {
+                        sender.sendMessage(ChatColor.WHITE + " " + errors.get(i).getMessage());
+                    }
+                    if (errors.size() > MAX_ERRORS) {
+                        sender.sendMessage("...");
+                    }
+                }
+            }
+        }
+
+        logger.enableCapture(false);
     }
 
     @Override
@@ -2091,6 +2179,10 @@ public class MagicController implements MageController {
 
     public void loadConfiguration(CommandSender sender, boolean forceSynchronous, boolean verboseLogging) {
         if (!plugin.isEnabled()) return;
+        if (sender != null) {
+             com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(true);
+             logger.enableCapture(true);
+        }
         reloadVerboseLogging = verboseLogging;
         loading = true;
         ConfigurationLoadTask loadTask = new ConfigurationLoadTask(this, sender);
@@ -2632,7 +2724,7 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void loadSpells(ConfigurationSection spellConfigs)
+    protected void loadSpells(CommandSender sender, ConfigurationSection spellConfigs)
     {
         if (spellConfigs == null) return;
 
@@ -2645,6 +2737,7 @@ public class MagicController implements MageController {
         for (String key : keys)
         {
             if (key.equals("default") || key.equals("override")) continue;
+            logger.setContext("spells." + key);
 
             ConfigurationSection spellNode = spellConfigs.getConfigurationSection(key);
             Spell newSpell = null;
@@ -2669,12 +2762,12 @@ public class MagicController implements MageController {
                     getLogger().info("Couldn't load spell icon '" + icon + "' for spell: " + newSpell.getKey());
                 }
             }
-
             addSpell(newSpell);
         }
 
         // Second pass to fulfill requirements, which needs all spells loaded
         for (String key : keys) {
+            logger.setContext("spells." + key);
             SpellTemplate template = getSpellTemplate(key);
             if (template != null) {
                 template.loadPrerequisites(spellConfigs.getConfigurationSection(key));
@@ -2815,9 +2908,7 @@ public class MagicController implements MageController {
         resourcePacks.load(properties, sender, !loaded);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
-        if (logger instanceof ColoredLogger) {
-            ((ColoredLogger)logger).setColorize(properties.getBoolean("colored_logs", true));
-        }
+        logger.setColorize(properties.getBoolean("colored_logs", true));
 
         // Cancel any pending save tasks
         if (autoSaveTaskId > 0) {
@@ -2829,7 +2920,8 @@ public class MagicController implements MageController {
             configCheckTask = null;
         }
 
-        com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
+        debugEffectLib = properties.getBoolean("debug_effects", false);
+        com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
@@ -4642,6 +4734,7 @@ public class MagicController implements MageController {
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         for (String key : classKeys)
         {
+            logger.setContext("classes." + key);
             loadMageClassTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
         }
 
@@ -4649,6 +4742,7 @@ public class MagicController implements MageController {
         // to use the original un-inherited configs for parenting.
         for (String key : classKeys)
         {
+            logger.setContext("classes." + key);
             MageClassTemplate template = mageClasses.get(key);
             if (template != null) {
                 String parentKey = properties.getConfigurationSection(key).getString("parent");
@@ -4677,12 +4771,14 @@ public class MagicController implements MageController {
         Set<String> modifierKeys = properties.getKeys(false);
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         for (String key : modifierKeys) {
+            logger.setContext("modifiers." + key);
             loadModifierTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
         }
 
         // Resolve parents, we don't check for an inherited "parent" property, so it's important
         // to use the original un-inherited configs for parenting.
         for (String key : modifierKeys) {
+            logger.setContext("modifiers." + key);
             ModifierTemplate template = modifiers.get(key);
             if (template != null) {
                 String parentKey = properties.getConfigurationSection(key).getString("parent");
@@ -4740,6 +4836,7 @@ public class MagicController implements MageController {
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         for (String key : wandKeys)
         {
+            logger.setContext("wands." + key);
             loadWandTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
         }
     }
@@ -4750,6 +4847,7 @@ public class MagicController implements MageController {
         Set<String> mobKeys = properties.getKeys(false);
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         for (String key : mobKeys) {
+            logger.setContext("mobs." + key);
             mobs.load(key, resolveConfiguration(key, properties, templateConfigurations));
         }
     }
@@ -7020,6 +7118,7 @@ public class MagicController implements MageController {
     private boolean                             savePlayerData                  = true;
     private boolean                             externalPlayerData              = false;
     private boolean                             asynchronousSaving              = true;
+    private boolean                             debugEffectLib                  = false;
     private WarpController                        warpController                    = null;
     private Collection<ConfigurationSection>    materialColors                  = null;
     private List<Object>                        materialVariants                = null;
@@ -7059,7 +7158,7 @@ public class MagicController implements MageController {
     private MageDataStore                       migrateDataStore            = null;
     private MigrateDataTask                     migrateDataTask             = null;
 
-    private Logger                              logger                      = null;
+    private MagicLogger                         logger                      = null;
     private MagicPlugin                         plugin                      = null;
     private final File                            configFolder;
     private final File                            dataFolder;

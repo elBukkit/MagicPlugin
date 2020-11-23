@@ -327,4 +327,9 @@ public class ActionSpell extends BrushSpell
         }
         return startCast(SpellResult.REACTIVATE, getCurrentCast().getWorkingParameters()).isSuccess();
     }
+
+    public void setCurrentHandler(String handlerKey, com.elmakers.mine.bukkit.action.CastContext context) {
+        currentHandler = actions.get(handlerKey);
+        context.setRootHandler(currentHandler);
+    }
 }

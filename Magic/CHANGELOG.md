@@ -61,6 +61,7 @@
  - Fix using SkillAPI and Heroes attributes
  - Add DeadSouls integration in Recall, also avoids items getting lost when picking up a soul with the wand inventory open
    https://www.spigotmc.org/resources/dead-souls.69409/
+ - Editor improvements, including in-game warnings and errors
 
 # 8.0.3
 
