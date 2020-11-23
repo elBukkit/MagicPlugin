@@ -2144,7 +2144,11 @@ public class MagicController implements MageController {
             if (warnings.isEmpty() && errors.isEmpty()) {
                 sender.sendMessage(ChatColor.GREEN + "Finished loading, No issues found!");
             } else {
-                sender.sendMessage(ChatColor.GOLD + "Finished loading");
+                if (!errors.isEmpty()) {
+                    sender.sendMessage(ChatColor.RED + "Finished loading " + ChatColor.DARK_RED + "with errors");
+                } else {
+                    sender.sendMessage(ChatColor.GOLD + "Finished loading " + ChatColor.YELLOW + "with warnings");
+                }
             }
         }
 
