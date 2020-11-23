@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.effect;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;
@@ -32,10 +34,11 @@ public class EffectLibManager {
         this.plugin = plugin;
     }
 
-    public static EffectLibManager initialize(Plugin plugin) {
+    public static EffectLibManager initialize(Plugin plugin, Logger logger) {
         if (effectManager == null) {
-            effectManager = new EffectManager(plugin);
+            effectManager = new EffectManager(plugin, logger);
             effectManager.setImageCacheFolder(new File(plugin.getDataFolder(), "data/imagemapcache"));
+            effectManager.enableStackTraces(false);
         }
 
         return new EffectLibManager(plugin);
@@ -59,6 +62,16 @@ public class EffectLibManager {
 
     @Nullable
     public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap) {
+        return loadEffect(true, configuration, player, origin, target, parameterMap);
+    }
+
+    @Nullable
+    public EffectLibPlay validate(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap) {
+        return loadEffect(false, configuration, player, origin, target, parameterMap);
+    }
+
+    @Nullable
+    public EffectLibPlay loadEffect(boolean play, ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap) {
         // Check visibility type
         Player targetPlayer = null;
         switch (player.getVisibility()) {
@@ -142,7 +155,10 @@ public class EffectLibManager {
         }
 
         try {
-            effect = effectManager.start(effectClass, parameters, origin, target, parameterMap, targetPlayer);
+            effect = effectManager.getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer);
+            if (effect != null && play) {
+                effect.start();
+            }
             if (!parameters.contains("material"))
             {
                 MaterialAndData mat = player.getWorkingMaterial();
@@ -153,8 +169,7 @@ public class EffectLibManager {
                 }
             }
         } catch (Throwable ex) {
-            plugin.getLogger().warning("Error playing effects of class: " + effectClass);
-            ex.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Error playing effects of class: " + effectClass, ex);
         }
         return effect == null ? null : new EffectLibPlay(effect);
     }
@@ -164,8 +179,7 @@ public class EffectLibManager {
             try {
                 effect.cancel();
             } catch (Throwable ex) {
-                plugin.getLogger().warning("Error cancelling effects");
-                ex.printStackTrace();
+                plugin.getLogger().log(Level.WARNING, "Error cancelling effects", ex);
             }
         }
     }

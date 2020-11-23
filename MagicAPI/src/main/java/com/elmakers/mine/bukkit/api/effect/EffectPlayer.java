@@ -21,6 +21,7 @@ public interface EffectPlayer {
     void setEffectData(int data);
     void setScale(float scale);
     void cancel();
+    void validate();
 
     void setSound(Sound sound);
     void setSound(Sound sound, float volume, float pitch);

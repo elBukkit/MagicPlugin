@@ -194,7 +194,6 @@ import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.requirements.RequirementsController;
 import com.elmakers.mine.bukkit.resourcepack.ResourcePackManager;
-import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
@@ -216,6 +215,7 @@ import com.elmakers.mine.bukkit.tasks.SaveDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageTask;
 import com.elmakers.mine.bukkit.tasks.UndoUpdateTask;
+import com.elmakers.mine.bukkit.tasks.ValidateSpellsTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -245,8 +245,8 @@ import de.slikey.effectlib.math.EquationStore;
 public class MagicController implements MageController {
     private static String DEFAULT_DATASTORE_PACKAGE = "com.elmakers.mine.bukkit.data";
     private static long MAGE_CACHE_EXPIRY = 10000;
-    private static int MAX_WARNINGS = 5;
-    private static int MAX_ERRORS = 5;
+    private static int MAX_WARNINGS = 10;
+    private static int MAX_ERRORS = 10;
 
     // Special constructor used for interrogation
     public MagicController() {
@@ -754,7 +754,7 @@ public class MagicController implements MageController {
      * Get the log, if you need to debug or log errors.
      */
     @Override
-    public Logger getLogger() {
+    public MagicLogger getLogger() {
         return logger;
     }
 
@@ -1062,7 +1062,7 @@ public class MagicController implements MageController {
         maps = new MapController(plugin, urlMapFile, imageCache);
 
         // Initialize EffectLib.
-        if (com.elmakers.mine.bukkit.effect.EffectPlayer.initialize(plugin)) {
+        if (com.elmakers.mine.bukkit.effect.EffectPlayer.initialize(plugin, getLogger())) {
             getLogger().info("EffectLib initialized");
         } else {
             getLogger().warning("Failed to initialize EffectLib");
@@ -1812,10 +1812,6 @@ public class MagicController implements MageController {
             postLoadIntegration();
         }
 
-        if (sender != null && logger.isCapturing()) {
-            validateSpells(sender);
-        }
-
         // Notify plugins that we've finished loading.
         logger.setContext(null);
         LoadEvent loadEvent = new LoadEvent(this);
@@ -1832,7 +1828,13 @@ public class MagicController implements MageController {
         if (!(sender instanceof ConsoleCommandSender)) {
             getLogger().info("Finished reloading configuration");
         }
-        notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
+        if (sender != null && logger.isCapturing()) {
+            notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded, now looking for issues...");
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, new ValidateSpellsTask(this, sender));
+        } else {
+            resetLoading(sender);
+            notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
+        }
 
         if (reloadingMage != null) {
             Player player = reloadingMage.getPlayer();
@@ -1848,32 +1850,8 @@ public class MagicController implements MageController {
             showExampleInstructions = false;
             showExampleInstructions(sender);
         }
-        resetLoading(sender);
 
         Bukkit.getScheduler().runTaskLater(plugin, new MigrationTask(this), 20 * 5);
-    }
-
-    private void validateSpells(CommandSender sender) {
-        for (SpellTemplate newSpell : spells.values()) {
-            String key = newSpell.getKey();
-            logger.setContext("spells." + key);
-            // For spells to check parameters for errors/warnings
-            if (sender != null && logger.isCapturing() && newSpell instanceof BaseSpell) {
-                BaseSpell spell = (BaseSpell)newSpell;
-                try {
-                    Mage mage = getMage(sender);
-                    MageSpell mageSpell = spell.createMageSpell(mage);
-                    com.elmakers.mine.bukkit.action.CastContext context = new com.elmakers.mine.bukkit.action.CastContext(mageSpell);
-                    context.setWorkingParameters(mageSpell.getSpellParameters());
-                    if (mageSpell instanceof ActionSpell) {
-                        ((ActionSpell)mageSpell).setCurrentHandler("cast", context);
-                    }
-                    mageSpell.reloadParameters(context);
-                } catch (Exception ex) {
-                    getLogger().log(Level.SEVERE, "There was an error checking spell " + key + " for issues", ex);
-                }
-            }
-        }
     }
 
     private void registerManagers() {
@@ -2131,7 +2109,7 @@ public class MagicController implements MageController {
         return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey, getLogger(), logContext);
     }
 
-    protected void resetLoading(CommandSender sender) {
+    public void resetLoading(CommandSender sender) {
         com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
         if (sender != null) {
             List<LogMessage> errors = logger.getErrors();
@@ -2146,7 +2124,7 @@ public class MagicController implements MageController {
                         sender.sendMessage(ChatColor.WHITE + " " + warnings.get(i).getMessage());
                     }
                     if (warnings.size() > MAX_WARNINGS) {
-                        sender.sendMessage("...");
+                        sender.sendMessage(ChatColor.GRAY + "  ...");
                     }
                 }
             }
@@ -2160,9 +2138,12 @@ public class MagicController implements MageController {
                         sender.sendMessage(ChatColor.WHITE + " " + errors.get(i).getMessage());
                     }
                     if (errors.size() > MAX_ERRORS) {
-                        sender.sendMessage("...");
+                        sender.sendMessage(ChatColor.GRAY + "  ...");
                     }
                 }
+            }
+            if (warnings.isEmpty() && errors.isEmpty()) {
+                sender.sendMessage(ChatColor.GREEN + "No issues found!");
             }
         }
 

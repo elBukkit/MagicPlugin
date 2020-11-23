@@ -1836,6 +1836,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         playEffects(effectName, context, scale, null);
     }
 
+    public void validateEffects() {
+        for (Collection<EffectPlayer> players : effects.values()) {
+            for (EffectPlayer player : players) {
+                player.validate();
+            }
+        }
+    }
+
     @Override
     public void target() {
 
