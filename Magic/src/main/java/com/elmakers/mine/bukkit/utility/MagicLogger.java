@@ -1,37 +1,19 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import javax.annotation.Nullable;
-
-import org.bukkit.ChatColor;
 
 public class MagicLogger extends ColoredLogger {
-    public static class LogMessage {
-        @Nullable
-        private final String context;
-        private final String message;
-
-        public LogMessage(String context, String message) {
-            this.context = context;
-            this.message = message;
-        }
-
-        public String getMessage() {
-            if (context == null) {
-                return message;
-            }
-            return ChatColor.AQUA + context + ChatColor.GRAY + ": " + ChatColor.WHITE + message;
-        }
-    }
 
     private String context = null;
     private boolean capture = false;
-    private final List<LogMessage> warnings = new ArrayList<>();
-    private final List<LogMessage> errors = new ArrayList<>();
+    private final Set<LogMessage> warnings = new LinkedHashSet<>();
+    private final Set<LogMessage> errors = new LinkedHashSet<>();
 
     public MagicLogger(Logger delegate) {
         super(delegate);
@@ -45,9 +27,6 @@ public class MagicLogger extends ColoredLogger {
             } else if (record.getLevel().equals(Level.SEVERE)) {
                 errors.add(new LogMessage(context, record.getMessage().replace("[Magic] ", "")));
             }
-        }
-        if (context != null) {
-            record.setMessage(context + ": " + record.getMessage());
         }
         super.log(record);
     }
@@ -64,11 +43,11 @@ public class MagicLogger extends ColoredLogger {
     }
 
     public List<LogMessage> getErrors() {
-        return errors;
+        return new ArrayList<>(errors);
     }
 
     public List<LogMessage> getWarnings() {
-        return warnings;
+        return new ArrayList<>(warnings);
     }
 
     public boolean isCapturing() {
