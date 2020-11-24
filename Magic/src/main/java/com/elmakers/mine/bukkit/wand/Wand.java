@@ -89,9 +89,9 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.google.common.collect.ImmutableSet;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
-    public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(
-        "modifiers"
-    );
+    public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
+        .addAll(BaseMagicProperties.PROPERTY_KEYS)
+        .add("modifiers", "enchantments", "item_attributes").build();
     public static final int OFFHAND_SLOT = 40;
     public static final int INVENTORY_SIZE = 27;
     public static final int PLAYER_INVENTORY_SIZE = 36;

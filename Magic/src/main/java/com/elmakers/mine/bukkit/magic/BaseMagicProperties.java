@@ -346,7 +346,7 @@ public class BaseMagicProperties implements MagicProperties {
             if (value != null && (ignoreProperties == null || !ignoreProperties.contains(key))) {
                 ChatColor propertyColor = ChatColor.GRAY;
                 if (overriddenProperties == null || !overriddenProperties.contains(key)) {
-                    propertyColor = PROPERTY_KEYS.contains(key) ? ChatColor.DARK_AQUA : ChatColor.DARK_GREEN;
+                    propertyColor = getAllPropertyKeys().contains(key) ? ChatColor.DARK_AQUA : ChatColor.DARK_GREEN;
                 }
 
                 sender.sendMessage(propertyColor.toString() + key + ChatColor.GRAY + ": " + ChatColor.WHITE + describeProperty(value));
@@ -375,5 +375,9 @@ public class BaseMagicProperties implements MagicProperties {
     @Override
     public boolean isEmpty() {
         return configuration.getKeys(false).isEmpty();
+    }
+
+    protected Set<String> getAllPropertyKeys() {
+        return PROPERTY_KEYS;
     }
 }

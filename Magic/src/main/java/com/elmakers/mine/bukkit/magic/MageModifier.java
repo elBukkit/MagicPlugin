@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -10,7 +11,9 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ImmutableSet;
 
 public class MageModifier extends BaseMageModifier implements Comparable<MageModifier>, com.elmakers.mine.bukkit.api.magic.MageModifier {
-    public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of("items", "duration");
+    public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
+        .addAll(BaseMagicProperties.PROPERTY_KEYS)
+        .add("items", "duration").build();
 
     public MageModifier(@Nonnull Mage mage, @Nonnull ModifierTemplate template) {
         super(mage, MagicPropertyType.MODIFIER, template);
@@ -106,4 +109,10 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
     public String getDescription() {
         return getTemplate().getDescription();
     }
+
+    @Override
+    protected Set<String> getAllPropertyKeys() {
+        return PROPERTY_KEYS;
+    }
+
 }

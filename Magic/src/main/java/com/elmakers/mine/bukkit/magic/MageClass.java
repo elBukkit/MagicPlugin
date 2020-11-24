@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -16,7 +17,9 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableSet;
 
 public class MageClass extends BaseMageModifier implements com.elmakers.mine.bukkit.api.magic.MageClass  {
-    public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of("class_items");
+    public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
+        .addAll(BaseMagicProperties.PROPERTY_KEYS)
+        .add("class_items").build();
 
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
         super(mage, template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, template);
@@ -115,5 +118,10 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
             }
         }
         return false;
+    }
+
+    @Override
+    protected Set<String> getAllPropertyKeys() {
+        return PROPERTY_KEYS;
     }
 }

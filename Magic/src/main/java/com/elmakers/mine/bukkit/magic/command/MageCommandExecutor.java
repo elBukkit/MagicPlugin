@@ -322,7 +322,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
 
                 if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
-                    for (String key : BaseMagicProperties.PROPERTY_KEYS) {
+                    for (String key : com.elmakers.mine.bukkit.magic.MageClass.PROPERTY_KEYS) {
                         options.add(key);
                     }
 
