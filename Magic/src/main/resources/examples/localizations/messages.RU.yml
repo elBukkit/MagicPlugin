@@ -2466,6 +2466,11 @@ wand:
     slotted: " &8- &7$slotted"
     item_attributes:
       GENERIC_ATTACK_DAMAGE: "Урон от атаки"
+    prefixes:
+      protection: ""
+      strength: ""
+      weakness: ""
+      enchantment: "&7"
     protection:
       overall: "&2Защита $roman"
       physical: "&2Физ. защита $roman"
@@ -2493,41 +2498,42 @@ wand:
       explosion: '&Уязвимость к взрывам $roman'
       magic: '&4Уязвимость к магии $roman'
       unknown: '&4$type Уязвимость $roman'
-    enchantments:
-        ARROW_DAMAGE: "Урон Стрелы"
-        ARROW_FIRE: "Пламя Стрелы"
-        ARROW_INFINITE: "Бесконечность"
-        ARROW_KNOCKBACK: "Откидывание Стрелы"
-        BINDING_CURSE: "Проклятие несъемности"
-        CHANNELING: "Громовержец"
-        DAMAGE_ALL: Острота
-        DAMAGE_ARTHROPODS: Бич членистоногих
-        DAMAGE_UNDEAD: Небесная кара
-        DEPTH_STRIDER: Ходьба под водой
-        DIG_SPEED: Эффективность
-        DURABILITY: Прочность
-        FIRE_ASPECT: Заговор огня
-        FROST_WALKER: Ледоход
-        IMPALING: Пронзание
-        KNOCKBACK: Отдача
-        LOOT_BONUS_BLOCKS: Удача
-        LOOT_BONUS_MOBS: Добыча
-        LOYALTY: Верность
-        LUCK: Везучий рыбак
-        LURE: Приманка
-        MENDING: Починка
-        OXYGEN: Подводное дыхание
-        PROTECTION_ENVIRONMENTAL: Защита
-        PROTECTION_EXPLOSIONS: Взрывоустойчивость
-        PROTECTION_FALL: Невесомость
-        PROTECTION_FIRE: Огнестойкость
-        PROTECTION_PROJECTILE: Защита от снарядов
-        RIPTIDE: Тягун
-        SILK_TOUCH: Шелковое касание
-        SWEEPING_EDGE: Разящий клинок
-        THORNS: Шипы
-        VANISHING_CURSE: Проклятие утраты
-        WATER_WORKER: Подводник
+    enchantment:
+        arrow_damage: "Урон Стрелы $roman"
+        arrow_fire: "Пламя Стрелы"
+        arrow_infinite: "Бесконечность"
+        arrow_knockback: "Откидывание Стрелы $roman"
+        binding_curse: "Проклятие несъемности"
+        channeling: "Громовержец"
+        damage_all: Острота $roman
+        damage_arthropods: Бич членистоногих $roman
+        damage_undead: Небесная кара $roman
+        depth_strider: Ходьба под водой $roman
+        dig_speed: Эффективность $roman
+        durability: Прочность $roman
+        fire_aspect: Заговор огня
+        frost_walker: Ледоход $roman
+        impaling: Пронзание
+        knockback: Отдача $roman
+        loot_bonus_blocks: Удача $roman
+        loot_bonus_mobs: Добыча $roman
+        loyalty: Верность
+        luck: Везучий рыбак $roman
+        lure: Приманкаv $roman
+        mending: Починка
+        multishot: Multishot
+        oxygen: Подводное дыхание $roman
+        protection_environmental: Защита $roman
+        protection_explosions: Взрывоустойчивость $roman
+        protection_fall: Невесомость $roman
+        protection_fire: Огнестойкость $roman
+        protection_projectile: Защита от снарядов $roman
+        riptide: Тягун
+        silk_touch: Шелковое касание
+        sweeping_edge: Разящий клинок $roman
+        thorns: Шипы $roman
+        vanishing_curse: Проклятие утраты
+        water_worker: Подводник
     potion_effect: "&b$effect $roman"
     super_powered: "&3Сверхмощный"
     super_protected: "&3Неуязвимость"

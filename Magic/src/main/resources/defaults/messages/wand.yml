@@ -63,68 +63,74 @@ wand:
     slotted: " &8- &7$slotted"
     item_attributes:
       GENERIC_ATTACK_DAMAGE: "Attack Damage"
+    prefixes:
+      protection: "&2"
+      strength: "&2"
+      weakness: "&2"
+      enchantment: "&7"
     protection:
-      overall: "&2Protection $roman"
-      physical: "&2Physical Protection $roman"
-      projectile: "&2Projectile Protection $roman"
-      fall: "&2Fall Protection $roman"
-      fire: "&2Fire Protection $roman"
-      explosion: "&2Blast Protection $roman"
-      magic: "&2Magical Protection $roman"
-      unknown: "&2$type Protection $roman"
+      overall: "Protection $roman"
+      physical: "Physical Protection $roman"
+      projectile: "Projectile Protection $roman"
+      fall: "Fall Protection $roman"
+      fire: "Fire Protection $roman"
+      explosion: "Blast Protection $roman"
+      magic: "Magical Protection $roman"
+      unknown: "$type Protection $roman"
     strength:
-      overall: "&2Damage $roman"
-      physical: "&2Physical Damage $roman"
-      projectile: "&2Projectile Damage $roman"
-      fall: "&2Fall Damage $roman"
-      fire: "&2Fire Damage $roman"
-      explosion: "&2Blast Damage $roman"
-      magic: "&2Magical Damage $roman"
-      unknown: "&2$type Damage $roman"
+      overall: "Damage $roman"
+      physical: "Physical Damage $roman"
+      projectile: "Projectile Damage $roman"
+      fall: "Fall Damage $roman"
+      fire: "Fire Damage $roman"
+      explosion: "Blast Damage $roman"
+      magic: "Magical Damage $roman"
+      unknown: "$type Damage $roman"
     weakness:
-      overall: "&2Weakness $roman"
-      physical: "&2Physical Weakness $roman"
-      projectile: "&2Projectile Weakness $roman"
-      fall: "&2Fall Weakness $roman"
-      fire: "&2Fire Weakness $roman"
-      explosion: "&2Blast Weakness $roman"
-      magic: "&2Magical Weakness $roman"
-      unknown: "&2$type Weakness $roman"
-    enchantments:
-        ARROW_DAMAGE: "Arrow Damage"
-        ARROW_FIRE: "Arrow Fire"
-        ARROW_INFINITE: "Infinity"
-        ARROW_KNOCKBACK: "Arrow Knockback"
-        BINDING_CURSE: "Binding Curse"
-        CHANNELING: "Channeling"
-        DAMAGE_ALL: Sharpness
-        DAMAGE_ARTHROPODS: Damage Arthropods
-        DAMAGE_UNDEAD: Damage Undead
-        DEPTH_STRIDER: Depth Strider
-        DIG_SPEED: Dig Speed
-        DURABILITY: Durability
-        FIRE_ASPECT: Fire Aspect
-        FROST_WALKER: Frost Walker
-        IMPALING: Impaling
-        KNOCKBACK: Knockback
-        LOOT_BONUS_BLOCKS: Fortune
-        LOOT_BONUS_MOBS: Looting
-        LOYALTY: Loyalty
-        LUCK: Luck
-        LURE: Lure
-        MENDING: Mending
-        OXYGEN: Oxygen
-        PROTECTION_ENVIRONMENTAL: Environment Protection
-        PROTECTION_EXPLOSIONS: Blast Protection
-        PROTECTION_FALL: Fall Protection
-        PROTECTION_FIRE: Fire Protection
-        PROTECTION_PROJECTILE: Projectile Protection
-        RIPTIDE: Riptide
-        SILK_TOUCH: Silk Touch
-        SWEEPING_EDGE: Sweeping Edge
-        THORNS: Thorns
-        VANISHING_CURSE: Vanishing Curse
-        WATER_WORKER: Water Worker
+      overall: "Weakness $roman"
+      physical: "Physical Weakness $roman"
+      projectile: "Projectile Weakness $roman"
+      fall: "Fall Weakness $roman"
+      fire: "Fire Weakness $roman"
+      explosion: "Blast Weakness $roman"
+      magic: "Magical Weakness $roman"
+      unknown: "$type Weakness $roman"
+    enchantment:
+      arrow_damage: "Power $roman"
+      arrow_fire: "Flame"
+      arrow_infinite: "Infinity"
+      arrow_knockback: "Punch $roman"
+      binding_curse: "Curse of Binding"
+      channeling: "Channeling"
+      damage_all: Sharpness $roman
+      damage_arthropods: Bane of Arthropods $roman
+      damage_undead: Smite $roman
+      depth_strider: Depth Strider $roman
+      dig_speed: Efficiency $roman
+      durability: Unbreaking $roman
+      fire_aspect: Fire Aspect
+      frost_walker: Frost Walker $roman
+      impaling: Impaling
+      knockback: Knockback $roman
+      loot_bonus_blocks: Fortune $roman
+      loot_bonus_mobs: Looting $roman
+      loyalty: Loyalty
+      luck: Luck $roman
+      lure: Lure $roman
+      mending: Mending
+      multishot: Multishot
+      oxygen: Respiration $roman
+      protection_environmental: Environment Protection $roman
+      protection_explosions: Blast Protection $roman
+      protection_fall: Fall Protection $roman
+      protection_fire: Fire Protection $roman
+      protection_projectile: Projectile Protection $roman
+      riptide: Riptide
+      silk_touch: Silk Touch
+      sweeping_edge: Sweeping Edge $roman
+      thorns: Thorns $roman
+      vanishing_curse: Curse of Vanishing
+      water_worker: Water Worker
     potion_effect: "&b$effect $roman"
     super_powered: "&3Superpowered"
     super_protected: "&3Invulnerability"

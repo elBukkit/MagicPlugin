@@ -2311,6 +2311,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
+        if (isEnchantable()) {
+            int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
+            ConfigurationSection enchantments = getConfigurationSection("enchantments");
+            if ((hideFlags & 1) == 1 && enchantments != null) {
+                Set<String> enchantmentKeys = enchantments.getKeys(false);
+                for (String enchantmentKey : enchantmentKeys) {
+                    int level = enchantments.getInt(enchantmentKey);
+                    addDamageTypeLore("enchantment", enchantmentKey.toLowerCase(), level, 0, lore);
+                }
+            }
+        }
+
         ConfigurationSection weaknessConfig = getConfigurationSection("weakness");
         if (weaknessConfig != null) {
             Set<String> keys = weaknessConfig.getKeys(false);
@@ -2386,18 +2398,24 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private void addDamageTypeLore(String property, String propertyType, double amount, List<String> lore) {
+        addDamageTypeLore(property, propertyType, amount, 1, lore);
+    }
+
+    private void addDamageTypeLore(String property, String propertyType, double amount, double max, List<String> lore) {
         if (amount != 0) {
+            String prefix = getMessageKey("prefixes." + property);
+            prefix = controller.getMessages().get(prefix, "");
             String templateKey = getMessageKey(property + "." + propertyType);
             String template;
             if (controller.getMessages().containsKey(templateKey)) {
                 template = controller.getMessages().get(templateKey);
             } else {
-                templateKey = getMessageKey("protection.unknown");
+                templateKey = getMessageKey(property + ".unknown");
                 template = controller.getMessages().get(templateKey);
                 String pretty = propertyType.substring(0, 1).toUpperCase() + propertyType.substring(1);
                 template = template.replace("$type", pretty);
             }
-            template = formatPropertyString(template, (float)amount);
+            template = formatPropertyString(prefix + template, (float)amount, (float)max);
             ConfigurationUtils.addIfNotEmpty(template, lore);
         }
     }
@@ -5966,7 +5984,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public static void addParameterKeys(MageController controller, Collection<String> options) {
-        for (String key : BaseMagicProperties.PROPERTY_KEYS) {
+        for (String key : PROPERTY_KEYS) {
             options.add(key);
         }
 
@@ -6018,6 +6036,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 enchantments.set(entry.getKey().getName().toLowerCase(), entry.getValue());
             }
             setProperty("enchantments", enchantments);
+            saveState();
+            updateLore();
         }
     }
 
@@ -6041,4 +6061,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         return getPropertyConfiguration(key).get(key);
     }
+
+    @Override
+    protected Set<String> getAllPropertyKeys() {
+        return PROPERTY_KEYS;
+    }
+
 }

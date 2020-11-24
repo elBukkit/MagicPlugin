@@ -245,10 +245,10 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     public String formatPropertyString(String message, float amount, float max, @Nullable String propertyTemplate)
     {
         if (message.contains("$roman")) {
-            if (max != 1) {
+            if (max != 1 && max != 0) {
                 amount = amount / max;
             }
-            String property = getRomanString(amount);
+            String property = max == 0 ? getRomanLevelString((int)Math.ceil(amount)) : getRomanString(amount);
             if (propertyTemplate != null) {
                 property = propertyTemplate.replace("$property", property);
             }
@@ -298,6 +298,26 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             roman = get("wand.enchantment_level_2");
         } else {
             roman = get("wand.enchantment_level_1");
+        }
+        if (negative) {
+            roman = "-" + roman;
+        }
+        return roman;
+    }
+
+    private String getRomanLevelString(int level) {
+        String roman = "";
+        boolean negative = false;
+        if (level < 0) {
+            level = -level;
+            negative = true;
+        }
+
+        if (level > 5) {
+            roman = get("wand.enchantment_level_max");
+        } else {
+            if (level == 0) level = 1;
+            roman = get("wand.enchantment_level_" + level);
         }
         if (negative) {
             roman = "-" + roman;
