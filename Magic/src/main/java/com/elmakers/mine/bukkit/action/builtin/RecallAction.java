@@ -732,15 +732,17 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                         break;
                     case SOULS:
                         List<DeathLocation> deathLocations = controller.getDeathLocations(player);
-                        for (DeathLocation death : deathLocations) {
-                            Waypoint targetLocation = getWaypoint(player, testType, death.getLocation(), parameters, context);
-                            if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
-                                ItemStack[] items = death.getItems();
-                                int itemCount = items == null ? 0 : items.length;
-                                targetLocation.description = targetLocation.description
-                                        .replace("$items", Integer.toString(itemCount))
-                                        .replace("$xp", Integer.toString(death.getExperiencePoints()));
-                                options.add(targetLocation);
+                        if (deathLocations != null) {
+                            for (DeathLocation death : deathLocations) {
+                                Waypoint targetLocation = getWaypoint(player, testType, death.getLocation(), parameters, context);
+                                if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
+                                    ItemStack[] items = death.getItems();
+                                    int itemCount = items == null ? 0 : items.length;
+                                    targetLocation.description = targetLocation.description
+                                            .replace("$items", Integer.toString(itemCount))
+                                            .replace("$xp", Integer.toString(death.getExperiencePoints()));
+                                    options.add(targetLocation);
+                                }
                             }
                         }
                         break;
