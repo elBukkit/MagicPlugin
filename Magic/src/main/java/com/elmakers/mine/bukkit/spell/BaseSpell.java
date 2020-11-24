@@ -605,6 +605,9 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         if (!quiet && canSendMessage() && message != null && message.length() > 0)
         {
+            if (currentCast != null) {
+                message = currentCast.parameterizeMessage(message);
+            }
             mage.castMessage(message);
             lastMessageSent = System.currentTimeMillis();
         }
@@ -630,6 +633,9 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         if (!quiet && message != null && message.length() > 0)
         {
+            if (currentCast != null) {
+                message = currentCast.parameterizeMessage(message);
+            }
             mage.sendMessage(message);
             lastMessageSent = System.currentTimeMillis();
         }
@@ -1716,10 +1722,6 @@ public class BaseSpell implements MageSpell, Cloneable {
                 // TODO: Localize "None", provide static getter
                 materialName = materialName == null ? "None" : materialName;
                 message = message.replace("$material", materialName);
-            }
-
-            if (currentCast != null) {
-                message = currentCast.parameterizeMessage(message);
             }
         }
         return message;
