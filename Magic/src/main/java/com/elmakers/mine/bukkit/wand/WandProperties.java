@@ -17,7 +17,33 @@ import com.google.common.collect.ImmutableSet;
 public abstract class WandProperties extends TemplatedProperties {
     public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
         .addAll(BaseMagicProperties.PROPERTY_KEYS)
-        .add("modifiers", "enchantments", "item_attributes").build();
+        .add(
+            "modifiers", "enchantments", "item_attributes", "auto_absorb",
+            "active_spell", "active_brush", "alternate_spell", "alternate_spell2", "worn",
+            "bound", "has_uses", "uses", "upgrade", "indestructible", "use_mode",
+            "undroppable", "boostable",
+            "effect_bubbles", "effect_color",
+            "effect_particle", "effect_particle_count", "effect_particle_data",
+            "effect_particle_interval",
+            "effect_particle_min_velocity",
+            "effect_particle_radius", "effect_particle_offset",
+            "effect_sound", "effect_sound_interval",
+            "cast_spell", "cast_parameters", "cast_interval", "cast_interval_cost_free",
+            "cast_min_velocity", "cast_velocity_direction", "cast_min_bowpull",
+            "icon_inactive", "icon_inactive_delay", "mode",
+            "active_effects", "cancel_effects_delay",
+            "brush_mode", "currency_display",
+            "keep", "locked", "quiet", "force", "rename", "rename_description",
+            "power", "item_attributes", "heroes",
+            "enchant_count", "max_enchant_count", "cast_location",
+            "quick_cast",
+            "left_click", "right_click", "drop", "swap",
+            "left_click_sneak", "right_click_sneak", "drop_sneak", "swap_sneak",
+            "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
+            "unique", "track", "invulnerable", "immortal", "inventory_rows",
+            "class", "classes", "consume_spell", "stack", "unstashable", "unmoveable",
+            "page_free_space", "enchantable", "hide_flags", "slot", "slots", "slotted"
+        ).build();
     protected BaseMagicProperties wandTemplate;
     protected MageClass mageClass;
 

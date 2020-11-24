@@ -31,46 +31,23 @@ public class BaseMagicProperties implements MagicProperties {
 
     // TODO: Separate these out into wand vs class properties
     public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(
-            "active_spell", "active_brush", "alternate_spell", "alternate_spell2",
-            "path", "template", "worn",
+            "path", "template",
             "mana", "mana_regeneration", "mana_max", "mana_max_boost",
             "mana_regeneration_boost",
             "mana_per_damage", "reset_mana_on_activate",
-            "bound", "has_uses", "uses", "upgrade", "indestructible", "use_mode",
-            "undroppable", "boostable", "auto_absorb",
             "consume_reduction", "cost_reduction", "cooldown_reduction",
-            "effect_bubbles", "effect_color",
-            "effect_particle", "effect_particle_count", "effect_particle_data",
-            "effect_particle_interval",
-            "effect_particle_min_velocity",
-            "effect_particle_radius", "effect_particle_offset",
-            "effect_sound", "effect_sound_interval",
-            "cast_spell", "cast_parameters", "cast_interval", "cast_interval_cost_free",
-            "cast_min_velocity", "cast_velocity_direction", "cast_min_bowpull",
-            "hotbar_count", "hotbar",
-            "icon", "icon_inactive", "icon_inactive_delay", "mode",
-            "active_effects", "cancel_effects_delay",
-            "brush_mode", "currency_display",
-            "keep", "locked", "quiet", "force", "rename",
-            "rename_description",
-            "power", "overrides",
-            "protection", "potion_effects", "item_attributes",
+            "hotbar_count",
+            "icon", "overrides",
+            "protection", "potion_effects",
             "brushes", "brush_inventory", "spells", "spell_inventory", "spell_levels",
-            "powered", "protected", "heroes",
-            "enchant_count", "max_enchant_count",
-            "quick_cast",
-            "left_click", "right_click", "drop", "swap",
-            "left_click_sneak", "right_click_sneak", "drop_sneak", "swap_sneak",
-            "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
-            "unique", "track", "invulnerable", "immortal", "inventory_rows", "cast_location",
-            "earn_multiplier", "class", "classes",
-            "consume_spell", "stack", "unstashable", "unmoveable", "attributes", "tags",
-            "page_free_space", "enchantable", "hide_flags", "slot", "slots", "slotted"
+            "powered", "protected",
+            "earn_multiplier",
+            "attributes", "tags"
     );
 
     public static final ImmutableSet<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
             "owner", "owner_id", "version", "item_attributes", "item_attribute_slot",
-            "mana_timestamp", "storage"
+            "mana_timestamp", "storage", "hotbar"
     );
 
     protected BaseMagicProperties(@Nonnull MageController controller) {

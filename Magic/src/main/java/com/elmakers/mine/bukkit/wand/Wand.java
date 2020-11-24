@@ -72,7 +72,6 @@ import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.item.ArmorSlot;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
-import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MageParameters;
@@ -86,7 +85,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.google.common.collect.ImmutableSet;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
     public static final int OFFHAND_SLOT = 40;
