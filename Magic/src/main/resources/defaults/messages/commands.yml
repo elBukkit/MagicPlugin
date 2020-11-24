@@ -60,7 +60,7 @@ commands:
         load_prompt: "&7Use &f/magic load &7to apply pending changes"
       apply:
         usage: "&cUsage: /mconfig apply [session id]"
-        wait: "&bPlease wait, fetching configuration..."
+        wait: "&bFetching configuration..."
         error: "&cSomething went wrong, please check logs"
         error_saving: "&cCould not write to file $file"
         overwrote: "&eOverwrote &bfile &a$file"
@@ -70,7 +70,7 @@ commands:
         invalid: "&cYour file has parse errors. Please fix them and try again."
       load:
         usage: "&cUsage: /mconfig load [session id]"
-        wait: "&bPlease wait, fetching configuration..."
+        wait: "&bFetching configuration..."
         error: "&cSomething went wrong, please check logs"
         missing: "&cThe $field field was missing from the server response"
         error_saving: "&cCould not write to file $file"

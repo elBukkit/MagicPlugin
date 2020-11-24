@@ -207,6 +207,7 @@ import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
 import com.elmakers.mine.bukkit.tasks.EssentialsItemIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.LoadDataTask;
+import com.elmakers.mine.bukkit.tasks.LogWatchdogTask;
 import com.elmakers.mine.bukkit.tasks.MageQuitTask;
 import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MigrateDataTask;
@@ -245,6 +246,7 @@ import de.slikey.effectlib.math.EquationStore;
 public class MagicController implements MageController {
     private static String DEFAULT_DATASTORE_PACKAGE = "com.elmakers.mine.bukkit.data";
     private static long MAGE_CACHE_EXPIRY = 10000;
+    private static long LOG_WATCHDOG_TIMEOUT = 30000;
     private static int MAX_WARNINGS = 10;
     private static int MAX_ERRORS = 10;
 
@@ -2109,50 +2111,56 @@ public class MagicController implements MageController {
     }
 
     public void resetLoading(CommandSender sender) {
-        com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
-        if (sender != null) {
-            List<LogMessage> errors = logger.getErrors();
-            List<LogMessage> warnings = logger.getWarnings();
+        synchronized (logger) {
+            com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
+            if (sender != null) {
+                List<LogMessage> errors = logger.getErrors();
+                List<LogMessage> warnings = logger.getWarnings();
 
-            if (!warnings.isEmpty()) {
-                if (warnings.size() == 1) {
-                    sender.sendMessage(ChatColor.YELLOW + "WARNING: " + ChatColor.WHITE + warnings.get(0).getMessage());
-                } else {
-                    sender.sendMessage(ChatColor.YELLOW + "WARNINGS: " + ChatColor.WHITE + warnings.size());
-                    for (int i = 0; i < warnings.size() && i < MAX_WARNINGS; i++) {
-                        sender.sendMessage(ChatColor.WHITE + " " + warnings.get(i).getMessage());
-                    }
-                    if (warnings.size() > MAX_WARNINGS) {
-                        sender.sendMessage(ChatColor.GRAY + "  ...");
+                if (!warnings.isEmpty()) {
+                    if (warnings.size() == 1) {
+                        sender.sendMessage(ChatColor.YELLOW + "WARNING: " + ChatColor.WHITE + warnings.get(0).getMessage());
+                    } else {
+                        sender.sendMessage(ChatColor.YELLOW + "WARNINGS: " + ChatColor.WHITE + warnings.size());
+                        for (int i = 0; i < warnings.size() && i < MAX_WARNINGS; i++) {
+                            sender.sendMessage(ChatColor.WHITE + " " + warnings.get(i).getMessage());
+                        }
+                        if (warnings.size() > MAX_WARNINGS) {
+                            sender.sendMessage(ChatColor.GRAY + "  ...");
+                        }
                     }
                 }
-            }
 
-            if (!errors.isEmpty()) {
-                if (errors.size() == 1) {
-                    sender.sendMessage(ChatColor.RED + "ERROR: " + ChatColor.WHITE + errors.get(0).getMessage());
-                } else {
-                    sender.sendMessage(ChatColor.RED + "ERRORS: " + ChatColor.WHITE + errors.size());
-                    for (int i = 0; i < errors.size() && i < MAX_ERRORS; i++) {
-                        sender.sendMessage(ChatColor.WHITE + " " + errors.get(i).getMessage());
-                    }
-                    if (errors.size() > MAX_ERRORS) {
-                        sender.sendMessage(ChatColor.GRAY + "  ...");
-                    }
-                }
-            }
-            if (warnings.isEmpty() && errors.isEmpty()) {
-                sender.sendMessage(ChatColor.GREEN + "Finished loading, No issues found!");
-            } else {
                 if (!errors.isEmpty()) {
-                    sender.sendMessage(ChatColor.RED + "Finished loading " + ChatColor.DARK_RED + "with errors");
+                    if (errors.size() == 1) {
+                        sender.sendMessage(ChatColor.RED + "ERROR: " + ChatColor.WHITE + errors.get(0).getMessage());
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "ERRORS: " + ChatColor.WHITE + errors.size());
+                        for (int i = 0; i < errors.size() && i < MAX_ERRORS; i++) {
+                            sender.sendMessage(ChatColor.WHITE + " " + errors.get(i).getMessage());
+                        }
+                        if (errors.size() > MAX_ERRORS) {
+                            sender.sendMessage(ChatColor.GRAY + "  ...");
+                        }
+                    }
+                }
+                if (warnings.isEmpty() && errors.isEmpty()) {
+                    sender.sendMessage(ChatColor.GREEN + "Finished loading, No issues found!");
                 } else {
-                    sender.sendMessage(ChatColor.GOLD + "Finished loading " + ChatColor.YELLOW + "with warnings");
+                    if (!errors.isEmpty()) {
+                        sender.sendMessage(ChatColor.RED + "Finished loading " + ChatColor.DARK_RED + "with errors");
+                    } else {
+                        sender.sendMessage(ChatColor.GOLD + "Finished loading " + ChatColor.YELLOW + "with warnings");
+                    }
                 }
             }
-        }
 
-        logger.enableCapture(false);
+            logger.enableCapture(false);
+             if (logWatchdogTimer != null) {
+                 logWatchdogTimer.cancel();
+                 logWatchdogTimer = null;
+             }
+        }
     }
 
     @Override
@@ -2179,9 +2187,15 @@ public class MagicController implements MageController {
     public void loadConfiguration(CommandSender sender, boolean forceSynchronous, boolean verboseLogging) {
         if (!plugin.isEnabled()) return;
         if (sender != null) {
-             com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(true);
-             logger.enableCapture(true);
-             sender.sendMessage(ChatColor.DARK_AQUA + "Please wait while the configuration is reloaded and validated");
+            synchronized (logger) {
+                 com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(true);
+                 logger.enableCapture(true);
+                 if (logWatchdogTimer != null) {
+                     logWatchdogTimer.cancel();
+                 }
+                 logWatchdogTimer = plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new LogWatchdogTask(this, sender), LOG_WATCHDOG_TIMEOUT / 50);
+                 sender.sendMessage(ChatColor.DARK_AQUA + "Please wait while the configuration is reloaded and validated");
+            }
         }
         reloadVerboseLogging = verboseLogging;
         loading = true;
@@ -2908,6 +2922,7 @@ public class MagicController implements MageController {
         resourcePacks.load(properties, sender, !loaded);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
+        LOG_WATCHDOG_TIMEOUT = properties.getInt("load_watchdog_timeout", 30000);
         logger.setColorize(properties.getBoolean("colored_logs", true));
 
         // Cancel any pending save tasks
@@ -7158,7 +7173,8 @@ public class MagicController implements MageController {
     private MageDataStore                       migrateDataStore            = null;
     private MigrateDataTask                     migrateDataTask             = null;
 
-    private MagicLogger                         logger                      = null;
+    private final MagicLogger                   logger;
+    private BukkitTask                          logWatchdogTimer            = null;
     private MagicPlugin                         plugin                      = null;
     private final File                            configFolder;
     private final File                            dataFolder;

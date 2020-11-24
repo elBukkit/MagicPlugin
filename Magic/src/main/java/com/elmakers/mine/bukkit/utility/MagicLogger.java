@@ -22,13 +22,24 @@ public class MagicLogger extends ColoredLogger {
     @Override
     public void log(LogRecord record) {
         if (capture) {
+            boolean logged = false;
+            // Always log if there's an exception attached
+            if (record.getThrown() != null) {
+                logged = true;
+                super.log(record);
+            }
             if (record.getLevel().equals(Level.WARNING)) {
                 warnings.add(new LogMessage(context, record.getMessage().replace("[Magic] ", "")));
             } else if (record.getLevel().equals(Level.SEVERE)) {
                 errors.add(new LogMessage(context, record.getMessage().replace("[Magic] ", "")));
+            } else if (!logged) {
+                // Don't want to eat any info or debug messages- I guess?
+                // I'm going to try to avoid these when doing a "quiet" config load.
+                super.log(record);
             }
+        } else {
+            super.log(record);
         }
-        super.log(record);
     }
 
     public void enableCapture(boolean enable) {
