@@ -23,10 +23,14 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 public class BaseMageModifier extends ParentedProperties implements CostReducer, CooldownReducer {
     private List<EntityAttributeModifier> attributeModifiers;
     private boolean checkedAttributes = false;
+    protected @Nullable
+    Multimap<String, CustomTrigger> triggers;
 
     protected final Mage mage;
 
@@ -208,6 +212,13 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
         for (TriggeredSpell triggered : triggers) {
             mage.cancelPending(triggered.getSpellKey());
         }
+
+        Collection<CustomTrigger> customTriggers = this.triggers == null ? null : this.triggers.get(triggerType);
+        if (customTriggers != null) {
+            for (CustomTrigger trigger : customTriggers) {
+                trigger.cancel(mage);
+            }
+        }
     }
 
     public void trigger(String triggerType) {
@@ -219,6 +230,13 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
                     spell.cast();
                     triggered.getTrigger().triggered();
                 }
+            }
+        }
+
+        Collection<CustomTrigger> customTriggers = this.triggers == null ? null : this.triggers.get(triggerType);
+        if (customTriggers != null) {
+            for (CustomTrigger trigger : customTriggers) {
+                trigger.execute(mage);
             }
         }
     }
@@ -334,6 +352,23 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
             if (!gaveItems.isEmpty()) {
                 setProperty("gave_items", gaveItems);
             }
+        }
+    }
+
+    @Override
+    public void loadProperties() {
+        super.loadProperties();
+
+        ConfigurationSection triggerConfig = getConfigurationSection("triggers");
+        Set<String> triggerKeys = triggerConfig == null ? null : triggerConfig.getKeys(false);
+        if (triggerKeys != null) {
+            triggers = ArrayListMultimap.create();
+            for (String triggerKey : triggerKeys) {
+                CustomTrigger trigger = new CustomTrigger(controller, triggerKey, triggerConfig.getConfigurationSection(triggerKey));
+                triggers.put(trigger.getTrigger(), trigger);
+            }
+        } else {
+            triggers = null;
         }
     }
 }

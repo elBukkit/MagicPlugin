@@ -36,6 +36,8 @@
  - Allow potion_effects lists on classes and modifiers
  - Added `/mnpc command` command to easily setup command NPCs
  - Added Flare Level 3
+ - Modifiers can now be put on wand (see vader_lightsaber from stars example)
+ - Tirggers can be put directly on classes and modifiers, work like mob configs
 
 ## Miscellaneous Changes
 
