@@ -32,7 +32,7 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
     public void onRemoved() {
         deactivate();
         takeItems();
-        cancelTrigger("unlock");
+        cancelTrigger("added");
         trigger("removed");
     }
 
