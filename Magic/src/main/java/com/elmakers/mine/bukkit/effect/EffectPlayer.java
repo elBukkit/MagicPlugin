@@ -285,6 +285,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
     }
 
+    @Override
     public void validate() {
         if (effectLib != null && effectLibConfig != null) {
             effectLib.validate(effectLibConfig, this, null, null, parameterMap);
