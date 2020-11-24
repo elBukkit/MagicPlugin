@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
+import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,8 +12,12 @@ import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.TemplatedProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.google.common.collect.ImmutableSet;
 
 public abstract class WandProperties extends TemplatedProperties {
+    public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
+        .addAll(BaseMagicProperties.PROPERTY_KEYS)
+        .add("modifiers", "enchantments", "item_attributes").build();
     protected BaseMagicProperties wandTemplate;
     protected MageClass mageClass;
 
@@ -76,5 +81,10 @@ public abstract class WandProperties extends TemplatedProperties {
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, classConfiguration);
         }
         return effectiveConfiguration;
+    }
+
+    @Override
+    protected Set<String> getAllPropertyKeys() {
+        return PROPERTY_KEYS;
     }
 }
