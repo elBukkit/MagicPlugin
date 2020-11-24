@@ -86,8 +86,12 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.google.common.collect.ImmutableSet;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
+    public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(
+        "modifiers"
+    );
     public static final int OFFHAND_SLOT = 40;
     public static final int INVENTORY_SIZE = 27;
     public static final int PLAYER_INVENTORY_SIZE = 36;
@@ -4114,6 +4118,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Play deactivate FX
         playPassiveEffects("deactivate");
 
+        // Remove modifiers
+        List<String> modifiers = getStringList("modifiers");
+        if (modifiers != null) {
+            for (String key : modifiers) {
+                mage.removeModifier(key);
+            }
+        }
+
         // Cancel effects
         if (effectContext != null) {
             int cancelDelay = getInt("cancel_effects_delay", 0);
@@ -4689,6 +4701,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         this.mage = mage;
         this.isInOffhand = offhand;
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
+
+        // Add modifiers
+        List<String> modifiers = getStringList("modifiers");
+        if (modifiers != null) {
+            for (String key : modifiers) {
+                mage.addModifier(key);
+            }
+        }
 
         discoverRecipes("discover_recipes");
 
