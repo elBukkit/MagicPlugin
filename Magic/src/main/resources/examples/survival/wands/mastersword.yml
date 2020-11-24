@@ -6,11 +6,11 @@ mastersword:
     icon: diamond_sword{CustomModelData:18002}
     legacy_icon: sword_icon:1
     effect_color: '11FF88'
-    hide_flags: 62
+    hide_flags: 61
     alternate_spell: masterattack
     drop: alt_cast
-    protection:
-      physical: 0.5
+    enchantable: true
+    item_attribute_slot: mainhand
     item_attributes:
       GENERIC_ATTACK_DAMAGE: 10
     tags:

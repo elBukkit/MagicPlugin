@@ -6,7 +6,7 @@ wizardhelmet:
     mana_regeneration_boost: 0.05
     passive: true
     enchantable: true
-    hide_flags: 0
+    hide_flags: 61
     protection:
       magic: 0.1
       drowning: 0.2

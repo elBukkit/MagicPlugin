@@ -7,16 +7,15 @@ magicsword:
     icon: netherite_sword{CustomModelData:18009}
     legacy_icon: sword_icon:8
     effect_color: '11FF11'
-    hide_flags: 62
+    hide_flags: 61
     active_spell: missile
     limit_spells_to_path: true
     limit_brushes_to_path: true
-    protection:
-      physical: 0.4
+    enchantable: true
+    item_attribute_slot: mainhand
     item_attributes:
       GENERIC_ATTACK_DAMAGE: 6
     tags:
     - buffable
     - sharpenable
     - transformablesword
-
