@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 
@@ -26,7 +27,8 @@ public class EnchantingController implements Listener {
 
     @EventHandler
     public void onEnchantItem(EnchantItemEvent event) {
-        Wand wand = controller.getIfWand(event.getItem());
+        ItemStack item = event.getItem();
+        Wand wand = controller.getIfWand(item);
         if (wand == null) return;
         if (wand.isEnchantable()) {
             Player player = event.getEnchanter();
@@ -34,6 +36,9 @@ public class EnchantingController implements Listener {
                 event.setCancelled(true);
                 return;
             }
+            // Reconfigure the wand's properties with the new item enchantments
+            wand.setEnchantments(event.getEnchantsToAdd());
+            return;
         } else if (enchantingEnabled) {
             Player player = event.getEnchanter();
             if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
@@ -64,7 +69,7 @@ public class EnchantingController implements Listener {
 
     @EventHandler
     public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
-        Wand wand = controller.getIfWand(event.getItem());
+        Wand wand = controller.getIfWand(InventoryUtils.getCopy(event.getItem()));
         if (wand == null) return;
 
         // In this context we do not want to do anything special for enchantable wands
@@ -99,6 +104,9 @@ public class EnchantingController implements Listener {
                 event.setCancelled(true);
                 return;
             }
+
+            // Need to wrap the actual item here or changes will be lost
+            wand = controller.getIfWand(event.getItem());
             wand.makeEnchantable(true);
             WandUpgradePath path = wand.getPath();
             if (path == null) {
@@ -131,36 +139,26 @@ public class EnchantingController implements Listener {
         if (event.isCancelled()) return;
         InventoryType inventoryType = event.getInventory().getType();
         if (inventoryType != InventoryType.ENCHANTING) return;
-
         SlotType slotType = event.getSlotType();
-        ItemStack current = event.getCurrentItem();
-        Wand currentWand = controller.getIfWand(current);
-        if (currentWand != null && currentWand.isEnchantable()) {
-            // When taking the wand out, reconfigured the wand's properties with the new item
-            // enchantments.
-            currentWand.setEnchantments(current.getItemMeta().getEnchants());
-            return;
-        }
+        if (slotType != SlotType.CRAFTING) return;
 
-        if (enchantingEnabled)
-        {
-            if (slotType == SlotType.CRAFTING) {
-                HumanEntity clicker = event.getWhoClicked();
-                Player player = clicker instanceof Player ? (Player)clicker : null;
-                if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
-                    return;
-                }
+        if (enchantingEnabled) {
+            HumanEntity clicker = event.getWhoClicked();
+            Player player = clicker instanceof Player ? (Player)clicker : null;
+            if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
+                return;
+            }
 
-                // Make wands into an enchantable item when placing
-                ItemStack cursor = event.getCursor();
-                Wand cursorWand = controller.getIfWand(cursor);
-                if (cursorWand != null && cursorWand.isModifiable()) {
-                    cursorWand.makeEnchantable(true);
-                }
-                // And turn them back when taking out
-                if (currentWand != null && currentWand.isModifiable()) {
-                    currentWand.makeEnchantable(false);
-                }
+            // Make wands into an enchantable item when placing
+            ItemStack cursor = event.getCursor();
+            Wand cursorWand = controller.getIfWand(cursor);
+            if (cursorWand != null && cursorWand.isModifiable()) {
+                cursorWand.makeEnchantable(true);
+            }
+            // And turn them back when taking out
+            Wand currentWand = controller.getIfWand(event.getCurrentItem());
+            if (currentWand != null && currentWand.isModifiable()) {
+                currentWand.makeEnchantable(false);
             }
         }
     }
