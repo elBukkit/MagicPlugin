@@ -23,17 +23,33 @@ reflect:
         -  sound: block_beacon_activate
            sound_pitch: 2
            sound_volume: 0.8
-        -  location: target
+        -  location: source
+           source_location: eyes
            sound: block_glass_break
            sound_pitch: 2
            sound_volume: 0.3
-           target_location: block
+           relative_offset: 2.2,0,0
            effectlib:
-             class: SphereEffect
-             particle: block_crack
-             radius: $radius
-             duration: 500
-             offset: 0.5,0.5,0.5
+             class: Modified
+             duration: 400
+             period: 1
+             variable_a: $radius
+             parameters:
+               radius: "(t/i)*a*1.2 + 0.2"
+             effect:
+               class: Circle
+               particle: end_rod
+               orient: true
+               whole_circle: true
+               update_directions: false
+               update_locations: false
+               angular_velocity_x: 1
+               angular_velocity_z: 0
+               angular_velocity_y: 0
+               z_rotation: 1.57
+               particle_offset: 0.1,0.1,0.1
+               particles: 10
+               particle_count: 2
     parameters:
         allow_max_range: true
         range: 3
