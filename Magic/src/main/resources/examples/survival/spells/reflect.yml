@@ -38,7 +38,7 @@ reflect:
                radius: "(t/i)*a*1.2 + 0.2"
              effect:
                class: Circle
-               particle: end_rod
+               particle: nautilus
                orient: true
                whole_circle: true
                update_directions: false
