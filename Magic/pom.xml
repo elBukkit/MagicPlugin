@@ -835,6 +835,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/stars/modifiers.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/stars/modifiers">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
 
                                 <!-- Survival Configs -->
 

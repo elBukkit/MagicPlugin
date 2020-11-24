@@ -1,0 +1,3 @@
+lightsaber_vader:
+  inherit: lightsaber_red
+  modifiers: vader

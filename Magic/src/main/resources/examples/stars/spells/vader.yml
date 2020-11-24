@@ -1,0 +1,15 @@
+vader:
+  toggle: undo
+  actions:
+    cast:
+    - class: Disguise
+    - class: Wear
+  parameters:
+    target: self
+    armor_slot: 3
+    item: skull_vader
+    disguise:
+      type: player
+      name: Darth Vader
+      skin: '{"id":"4cb358ae-719c-4423-93c7-8769ce46e9c3","name":"NathanWolf","properties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTYwNjE5NzI3MDUwNywKICAicHJvZmlsZUlkIiA6ICI0Y2IzNThhZTcxOWM0NDIzOTNjNzg3NjljZTQ2ZTljMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYXRoYW5Xb2xmIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIyMjAwZDM4M2Q4Yjc2MjQ0MmVjYTUzY2VmYzliZjMxM2M5MjA2OWZmNmUzMTE1MzdiNzJlNjk1NzlkYzBlNmYiCiAgICB9CiAgfQp9","signature":"gRxXB4T5oFsWB32oJn6XlSCzQKd+xxtqextNPEpwz1PhrsMschmIY4PIGgbTySVdZUvy0PIHKARFWFbeyL7PW61vLAcgPulEivZ1DZYBkH2q9+zCkLX5EZoKWT3iDzU8TLuGsc5NpYhrt4//jtMwl4EMyRdmDSukHxADcQWQQ49Va14+x1qHT8AXsHB/GySFsN0q5VhhA5wK9HUz0avkHtZvcQwq196b5a9YQyCalxwdvxw2glE7gkRY6yezYSCn4iAEYBzJKdIOu4K7t1AZxc9rPKRz8jEfo0qpiR8O5eeeyI50+0A8ha9OBWu12z98IMFzOYPK/twNS+VFLhQdDo7pflMDZMpuqfo6Cev3vh/QQDlNTivbkuI0ZeRvOLYXN5kiYun16rC016lPVFZvv7uoA848VDz+EMooEEaFpv+D3ibTOYlJkzC5qPmUU8g6ACZ7v4a0ST8LPSeJhcP2NB6Qt81Tu5EL1aGKXbAyrugkX2hS4tw+icftspJ9Z1rjV77KPn2zSb4EBFNFbAOrn8WZPNAtybBcr6KYBgmRd/gm3vGi+ZojPaR+p2PKBN3E/1ZuMMUbOMfzL6IVd00PHcOC99i51m7WNXITqv1mtdjqL532MBBYMN/Nu1Y1CQNaz+FucFOkfZX/YMWIaYhB5UA6SchTmQXwdr2dmpSWMoI="}],"legacy":false}'
+

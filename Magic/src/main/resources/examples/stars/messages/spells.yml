@@ -43,7 +43,10 @@ spells:
       title: "Choose Your Path"
       confirm_title: "Choose $item"
     blaster:
-        name: Blaster
-        description: Fire powerful bolts of energy
-        usage: Reflects off of iron blocks
+      name: Blaster
+      description: Fire powerful bolts of energy
+      usage: Reflects off of iron blocks
+    vader:
+      name: Vader's Essense
+      cancel: ""
 

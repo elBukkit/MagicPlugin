@@ -1,0 +1,28 @@
+vader:
+  name: Darth Vader
+  type: zombie
+  disguise:
+    type: player
+    name: Darth Vader
+    # Skin with no helmet
+    # skin: '{"id":"4cb358ae-719c-4423-93c7-8769ce46e9c3","name":"NathanWolf","properties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTYwNjE5NzI3MDUwNywKICAicHJvZmlsZUlkIiA6ICI0Y2IzNThhZTcxOWM0NDIzOTNjNzg3NjljZTQ2ZTljMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYXRoYW5Xb2xmIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIyMjAwZDM4M2Q4Yjc2MjQ0MmVjYTUzY2VmYzliZjMxM2M5MjA2OWZmNmUzMTE1MzdiNzJlNjk1NzlkYzBlNmYiCiAgICB9CiAgfQp9","signature":"gRxXB4T5oFsWB32oJn6XlSCzQKd+xxtqextNPEpwz1PhrsMschmIY4PIGgbTySVdZUvy0PIHKARFWFbeyL7PW61vLAcgPulEivZ1DZYBkH2q9+zCkLX5EZoKWT3iDzU8TLuGsc5NpYhrt4//jtMwl4EMyRdmDSukHxADcQWQQ49Va14+x1qHT8AXsHB/GySFsN0q5VhhA5wK9HUz0avkHtZvcQwq196b5a9YQyCalxwdvxw2glE7gkRY6yezYSCn4iAEYBzJKdIOu4K7t1AZxc9rPKRz8jEfo0qpiR8O5eeeyI50+0A8ha9OBWu12z98IMFzOYPK/twNS+VFLhQdDo7pflMDZMpuqfo6Cev3vh/QQDlNTivbkuI0ZeRvOLYXN5kiYun16rC016lPVFZvv7uoA848VDz+EMooEEaFpv+D3ibTOYlJkzC5qPmUU8g6ACZ7v4a0ST8LPSeJhcP2NB6Qt81Tu5EL1aGKXbAyrugkX2hS4tw+icftspJ9Z1rjV77KPn2zSb4EBFNFbAOrn8WZPNAtybBcr6KYBgmRd/gm3vGi+ZojPaR+p2PKBN3E/1ZuMMUbOMfzL6IVd00PHcOC99i51m7WNXITqv1mtdjqL532MBBYMN/Nu1Y1CQNaz+FucFOkfZX/YMWIaYhB5UA6SchTmQXwdr2dmpSWMoI="}],"legacy":false}'
+    # Skin with helmet
+    skin: '{"id":"4cb358ae-719c-4423-93c7-8769ce46e9c3","name":"NathanWolf","properties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTYwNjE5Njk3NDg4OSwKICAicHJvZmlsZUlkIiA6ICI0Y2IzNThhZTcxOWM0NDIzOTNjNzg3NjljZTQ2ZTljMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYXRoYW5Xb2xmIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzIxMDkyOTBhMjRkZTZhZmFkMThlMjNlYWRjZWVhNWNiMGZmNWQ3OTg4YTc5Yzg2ZTU0ZmYyYzdhMWI2MzkzZWMiCiAgICB9CiAgfQp9","signature":"tDlxSzDMAv73rotc5nPd8WrWkXlTItbHpy/VLywuAiLFwYi90AK65cmmszgJidQZ6q6mZp86e1yd9vHtVNo/CtSoxlvjom91SMBYv7b6537bKaDqnczL0WMN/3RtBd/h1YiW28Trojjx5iro02PaGh2cFr4Z51jdmVXg8vR2IzFGlrsAhs1obkjUXFdxk14Chwax94xM4H9oimBQGQDxodF8g8c6X37/2nyTDYlRJYDOjc6A4cQiARlWF4Yvfk0c7HIdInczefMNJA6AJzUc186TJrxSkUIUfNarBq5dDRTfgLTnoyFgL3qjhIl9vdBAh7OAO15MGJM+7VUHb9ou0ewXERRqjG6/s3vNzUSXL7KM+CaMPJDJz64v40hJ6mF1ixDE0zbDUj2yrPZaZaqm/oL9ZGkuK9Ext1a/aGKyfaCpKpp7pQra3JedfEsx2l8xMazNPe7naxFWAotk6OioP8ZqW245xYyELXcOk/CLbJ878L9hoibr6W7vP5euCxgUA/Ox/ySNRS3iy1HQnXrQ0Md5kTABIaEjiJeKzAm3hOIwiBtaYa06ENgAkepMlGwp9W77Jse1bpzgyC9sf8LNWJDW+2IaOCA9Fw7AIlESVKDdiP7LaXhfs+8+Fl92gL6h1fMc5VgMIdDAZJEIR+FSg8o2Xw2wmLveLxNeohlZBJk="}],"legacy":false'
+  health: 5000
+  default_drops: false
+  interval: 1000
+  helmet: nothing
+  triggers:
+    interval:
+      cast:
+        missile|4: 200
+        none: 20
+  drops:
+  - gold_ingot@30
+  - sp:200
+  potion_effects:
+  - type: speed
+    amplifier: 1
+
+
+

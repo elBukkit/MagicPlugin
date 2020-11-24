@@ -53,6 +53,9 @@ wands:
     lightsaber_red:
         name: Lightsaber
         description: "Chosen Weapon of a $path"
+    lightsaber_vader:
+      name: Vader's Lightsaber
+      description: Become one with the Dark Side
     lightsaber_green:
         name: Lightsaber
         description: "Chosen Weapon of a $path"

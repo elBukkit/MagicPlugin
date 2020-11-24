@@ -1,0 +1,4 @@
+vader:
+  triggers:
+    added:
+      cast: vader
