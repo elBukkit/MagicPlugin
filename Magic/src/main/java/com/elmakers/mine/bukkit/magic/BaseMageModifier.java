@@ -62,13 +62,17 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
             activeWand.updated();
         }
         if (!isLocked()) {
-            deactivateAttributes();
-            activateAttributes();
+            deactivate();
+            activate();
         }
         mage.updatePassiveEffects();
     }
 
-    public void activateAttributes() {
+    public void activate() {
+        activateAttributes();
+    }
+
+    protected void activateAttributes() {
         double healthScale = getDouble("health_scale");
         if (healthScale > 0) {
             Player player = mage.getPlayer();
@@ -113,7 +117,11 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
         checkedAttributes = true;
     }
 
-    public void deactivateAttributes() {
+    public void deactivate() {
+        deactivateAttributes();
+    }
+
+    protected void deactivateAttributes() {
         double healthScale = getDouble("health_scale");
         if (healthScale > 0) {
             Player player = mage.getPlayer();

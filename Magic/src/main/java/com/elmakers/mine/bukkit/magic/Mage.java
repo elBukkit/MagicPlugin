@@ -1937,11 +1937,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             if (!mageClass.isLocked()) {
-                mageClass.deactivateAttributes();
+                mageClass.deactivate();
             }
             mageClass.setTemplate(template);
             if (!mageClass.isLocked()) {
-                mageClass.activateAttributes();
+                mageClass.activate();
             }
         }
     }
@@ -1957,9 +1957,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 it.remove();
                 continue;
             }
-            modifier.deactivateAttributes();
+            modifier.deactivate();
             modifier.setTemplate(template);
-            modifier.activateAttributes();
+            modifier.activate();
         }
     }
 
@@ -1968,16 +1968,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Map.Entry<String, MageClass> entry = it.next();
             MageClass mageClass = entry.getValue();
             if (!mageClass.isLocked()) {
-                mageClass.deactivateAttributes();
-                mageClass.activateAttributes();
+                mageClass.deactivate();
+                mageClass.activate();
             }
         }
 
         for (Iterator<Map.Entry<String, MageModifier>> it = modifiers.entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, MageModifier> entry = it.next();
             MageModifier modifier = entry.getValue();
-            modifier.deactivateAttributes();
-            modifier.activateAttributes();
+            modifier.deactivate();
+            modifier.activate();
         }
     }
 
@@ -4784,7 +4784,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void deactivateClasses() {
         for (MageClass mageClass : classes.values()) {
             if (!mageClass.isLocked()) {
-                mageClass.deactivateAttributes();
+                mageClass.deactivate();
             }
         }
     }
@@ -4794,7 +4794,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (MageClass mageClass : classes.values()) {
             mageClass.loadProperties();
             if (!mageClass.isLocked()) {
-                mageClass.activateAttributes();
+                mageClass.activate();
             }
         }
     }
@@ -4802,14 +4802,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void deactivateModifiers() {
         for (MageModifier modifier : modifiers.values()) {
-            modifier.deactivateAttributes();
+            modifier.deactivate();
         }
     }
 
     @Override
     public void activateModifiers() {
         for (MageModifier modifier : modifiers.values()) {
-            modifier.activateAttributes();
+            modifier.activate();
         }
     }
 

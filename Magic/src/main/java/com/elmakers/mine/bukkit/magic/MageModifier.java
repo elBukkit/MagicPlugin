@@ -30,7 +30,7 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
     }
 
     public void onRemoved() {
-        deactivateAttributes();
+        deactivate();
         takeItems();
         cancelTrigger("unlock");
         trigger("removed");
@@ -38,7 +38,7 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
 
     public void onAdd(int duration) {
         setProperty("last_add", System.currentTimeMillis());
-        activateAttributes();
+        activate();
         giveItems("items");
         reset(duration);
         trigger("added");

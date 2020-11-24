@@ -42,7 +42,7 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
 
     @Override
     public void onLocked() {
-        deactivateAttributes();
+        deactivate();
         if (getBoolean("clean_on_lock", false)) {
             Player player = mage.getPlayer();
             if (player != null) {
@@ -67,7 +67,7 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
 
     @Override
     public void onUnlocked() {
-        activateAttributes();
+        activate();
         discoverRecipes("discover_recipes");
         giveItems("class_items");
         trigger("unlock");
