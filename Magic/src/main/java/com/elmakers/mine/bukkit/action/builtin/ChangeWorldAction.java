@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.Arrays;
 import java.util.Collection;
+import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,37 +25,59 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 public class ChangeWorldAction extends BaseTeleportAction
 {
     private String targetWorldMessage = "";
-    private Location targetLocation = null;
+    private String targetWorldName;
+    private boolean loadWorld;
+    private double scale;
+    ConfigurationSection worldMap;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
 
-        World world = context.getWorld();
-        Location playerLocation = context.getLocation();
-        targetLocation = null;
-        if (world == null) {
-            return;
-        }
-
-        String worldName = world.getName();
+        scale = parameters.getDouble("scale", 1);
         if (parameters.contains("target_world")) {
-            World targetWorld = getWorld(context, parameters.getString("target_world"), parameters.getBoolean("load", true), null);
+            targetWorldName = parameters.getString("target_world");
+            loadWorld = parameters.getBoolean("load", true);
+        } else if (parameters.contains("worlds")) {
+            worldMap = ConfigurationUtils.getConfigurationSection(parameters, "worlds");
+        }
+    }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTargetEntity() {
+        return true;
+    }
+
+    @Nullable
+    protected Location prepareTargetLocation(CastContext context) {
+        World world = context.getWorld();
+        if (world == null) {
+            return null;
+        }
+        Location playerLocation = context.getLocation();
+        if (playerLocation == null) {
+            return null;
+        }
+        String worldName = world.getName();
+        Location targetLocation = null;
+        if (targetWorldName != null && !targetWorldName.isEmpty()) {
+            World targetWorld = getWorld(context, targetWorldName, loadWorld, null);
             if (targetWorld == null) {
-                return;
+                return null;
             }
             if (targetWorld.getEnvironment() == World.Environment.THE_END) {
                 targetLocation = targetWorld.getSpawnLocation();
             } else {
-                double scale = parameters.getDouble("scale", 1);
                 targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
             }
-        }
-        else if (parameters.contains("worlds"))
-        {
-            ConfigurationSection worldMap = ConfigurationUtils.getConfigurationSection(parameters, "worlds");
-            if (worldMap == null || !worldMap.contains(worldName)) {
-                return;
+        } else if (worldMap != null) {
+            if (!worldMap.contains(worldName)) {
+                return null;
             }
 
             ConfigurationSection worldNode = ConfigurationUtils.getConfigurationSection(worldMap, worldName);
@@ -94,8 +117,8 @@ public class ChangeWorldAction extends BaseTeleportAction
                     if (targetLocation.getZ() > maxLocation.getZ()) targetLocation.setZ(maxLocation.getZ());
                 }
             }
-        }
-        else {
+        } else {
+            // Auto-determine target world and scale
             if (worldName.contains("_the_end")) {
                 worldName = worldName.replace("_the_end", "");
                 World targetWorld = Bukkit.getWorld(worldName);
@@ -119,20 +142,16 @@ public class ChangeWorldAction extends BaseTeleportAction
                 }
             }
         }
-    }
 
-    @Override
-    public boolean isUndoable() {
-        return true;
-    }
-
-    @Override
-    public boolean requiresTargetEntity() {
-        return true;
+        return targetLocation;
     }
 
     @Override
     public SpellResult perform(CastContext context) {
+        Location targetLocation = prepareTargetLocation(context);
+        if (targetLocation == null) {
+            return SpellResult.NO_TARGET;
+        }
         Entity e = context.getTargetEntity();
         LivingEntity entity = e != null && e instanceof LivingEntity ? (LivingEntity)e : null;
         if (entity == null) {
