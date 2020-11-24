@@ -608,15 +608,27 @@ public class InventoryUtils extends NMSUtils
     }
     
     public static void applyEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
-        if (item == null || enchantConfig == null) return;
-        Collection<String> enchantKeys = enchantConfig.getKeys(false);
-        for (String enchantKey : enchantKeys)
-        {
-            try {
-                Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
-                item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
-            } catch (Exception ex) {
-                getLogger().warning("Invalid enchantment: " + enchantKey);
+        if (item == null) return;
+
+        Set<Enchantment> keep = null;
+        if (enchantConfig != null) {
+            keep = new HashSet<>();
+            Collection<String> enchantKeys = enchantConfig.getKeys(false);
+            for (String enchantKey : enchantKeys)
+            {
+                try {
+                    Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                    item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
+                    keep.add(enchantment);
+                } catch (Exception ex) {
+                    getLogger().warning("Invalid enchantment: " + enchantKey);
+                }
+            }
+        }
+        Collection<Enchantment> existing = new ArrayList<>(item.getEnchantments().keySet());
+        for (Enchantment enchantment : existing) {
+            if (keep == null || !keep.contains(enchantment)) {
+                item.removeEnchantment(enchantment);
             }
         }
     }
