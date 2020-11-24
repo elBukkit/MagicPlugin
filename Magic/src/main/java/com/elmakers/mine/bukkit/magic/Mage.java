@@ -4957,6 +4957,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         template = template.getMageTemplate(this);
         modifier = new MageModifier(this, template);
+        modifier.loadProperties();
         modifiers.put(key, modifier);
         modifier.onAdd(duration);
         updatePassiveEffects();
