@@ -107,7 +107,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             }
 
             Location location = adjustLocation(sourceLocation.getLocation(context));
-            Entity spawned = entityData.spawn(context.getController(), location, spawnReason);
+            Entity spawned = entityData.spawn(location, spawnReason);
             if (spawned != null) {
                 context.registerForUndo(spawned);
                 setEntity(context.getController(), spawned);

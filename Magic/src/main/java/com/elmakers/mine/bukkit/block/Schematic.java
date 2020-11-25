@@ -7,9 +7,14 @@ import java.util.Map;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class Schematic  extends AbstractSchematic {
+    public Schematic(MageController controller) {
+        super(controller);
+    }
+
     public void load(short width, short height, short length, int[] blockTypes, Map<Integer, MaterialAndData> palette, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin) {
         initialize(width, height, length);
         loadEntities(entityData, origin);

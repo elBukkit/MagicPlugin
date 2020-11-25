@@ -923,7 +923,7 @@ public class MagicController implements MageController {
         if (CompatibilityUtils.hasBlockDataSupport()) {
             final InputStream inputSchematic = findSchematic(schematicName, "schem");
             if (inputSchematic != null) {
-                com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic();
+                com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
                 schematics.put(schematicName, new WeakReference<>(schematic));
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     try {
@@ -943,7 +943,7 @@ public class MagicController implements MageController {
         if (legacySchematic == null) {
             return null;
         }
-        LegacySchematic schematic = new LegacySchematic();
+        LegacySchematic schematic = new LegacySchematic(this);
         schematics.put(schematicName, new WeakReference<>(schematic));
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
@@ -6013,7 +6013,7 @@ public class MagicController implements MageController {
     public Entity spawnMob(String key, Location location) {
         EntityData mobType = mobs.get(key);
         if (mobType != null) {
-            return mobType.spawn(this, location);
+            return mobType.spawn(location);
         }
         EntityType entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(key);
         if (entityType == null) {
@@ -6058,7 +6058,7 @@ public class MagicController implements MageController {
             String originalType = effectiveParameters.getString("type", mobType);
             effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
             effectiveParameters.set("type", originalType);
-            mob.load(this, effectiveParameters);
+            mob.load(effectiveParameters);
         } else if (mob == null) {
             mob = new com.elmakers.mine.bukkit.entity.EntityData(this, parameters);
         }
@@ -6088,7 +6088,7 @@ public class MagicController implements MageController {
             effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, newParameters);
             // Handle the replacement type being bare
             effectiveParameters.set("type", replaceType.getType().name());
-            newData.load(this, effectiveParameters);
+            newData.load(effectiveParameters);
         }
 
         if (force) {
@@ -6096,7 +6096,7 @@ public class MagicController implements MageController {
         }
         Entity spawnedEntity = null;
         try {
-            spawnedEntity = newData.spawn(this, targetEntity.getLocation(), reason);
+            spawnedEntity = newData.spawn(targetEntity.getLocation(), reason);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -79,6 +79,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected WeakReference<CastContext>    context;
 
     protected Mage                    owner;
+    protected MageController          controller;
     protected Plugin                   plugin;
 
     protected boolean               undone              = false;
@@ -120,6 +121,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public UndoList(@Nonnull MageController controller)
     {
+        this.controller = controller;
         this.plugin = controller.getPlugin();
         createdTime = System.currentTimeMillis();
         modifiedTime = createdTime;
@@ -136,6 +138,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.owner = mage;
         if (mage != null) {
             this.plugin = mage.getController().getPlugin();
+            this.controller = mage.getController();
         }
     }
 
@@ -585,7 +588,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                     try {
                         data.undo();
                     } catch (Exception ex) {
-                        context.getLogger().log(Level.WARNING, "Error restoring entity on undo", ex);
+                        if (context != null) {
+                            context.getLogger().log(Level.WARNING, "Error restoring entity on undo", ex);
+                        } else {
+                            ex.printStackTrace();
+                        }
                     }
 
                     // Check for playing effects on resurrected entities
@@ -707,7 +714,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             UUID entityId = entity.getUniqueId();
             entityData = modifiedEntities.get(entityId);
             if (entityData == null) {
-                entityData = new EntityData(entity);
+                entityData = new EntityData(controller, entity);
                 modifiedEntities.put(entityId, entityData);
                 watch(entity);
             }

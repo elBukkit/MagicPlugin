@@ -18,6 +18,6 @@ public class ModifyEntityTask implements Runnable {
 
     @Override
     public void run() {
-        entityData.modify(controller, entity);
+        entityData.modify(entity);
     }
 }

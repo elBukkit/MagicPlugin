@@ -17,15 +17,21 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public abstract class AbstractSchematic implements Schematic {
+    private final MageController controller;
     protected volatile boolean loaded = false;
     protected Vector size;
     protected Vector center;
     protected MaterialAndData[][][] blocks;
     protected Collection<EntityData> entities;
     protected Map<BlockVector, Object> tileEntities;
+
+    protected AbstractSchematic(MageController controller) {
+        this.controller = controller;
+    }
 
     protected void initialize(short width, short height, short length) {
         size = new Vector(width, height, length);
@@ -112,7 +118,7 @@ public abstract class AbstractSchematic implements Schematic {
 
                 byte facingData = NMSUtils.getMetaByte(entity, "Facing");
                 BlockFace facing = getFacing(facingData);
-                EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(position, art, facing);
+                EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(controller, position, art, facing);
                 entities.add(painting);
             } else if (type.equalsIgnoreCase("ItemFrame")) {
                 byte facing = NMSUtils.getMetaByte(entity, "Facing");
@@ -122,7 +128,7 @@ public abstract class AbstractSchematic implements Schematic {
                     rot = Rotation.values()[rotation];
                 }
                 ItemStack item = NMSUtils.getItem(NMSUtils.getNode(entity, "Item"));
-                EntityData itemFrame = com.elmakers.mine.bukkit.entity.EntityData.loadItemFrame(position, item, getFacing(facing), rot);
+                EntityData itemFrame = com.elmakers.mine.bukkit.entity.EntityData.loadItemFrame(controller, position, item, getFacing(facing), rot);
                 entities.add(itemFrame);
             }
         }

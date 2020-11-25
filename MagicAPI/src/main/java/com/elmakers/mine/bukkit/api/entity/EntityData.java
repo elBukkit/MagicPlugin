@@ -51,15 +51,21 @@ public interface EntityData extends Cloneable {
     @Nullable
     Entity spawn();
     @Nullable
-    Entity spawn(MageController controller);
+    Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason);
     @Nullable
     Entity spawn(Location location);
+    @Deprecated
     @Nullable
     Entity spawn(MageController controller, Location location);
+    @Deprecated
+    @Nullable
+    Entity spawn(MageController controller);
+    @Deprecated
     @Nullable
     Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason);
     @Nullable
     Entity undo();
+    @Deprecated
     boolean modify(MageController controller, Entity entity);
     boolean modify(Entity entity);
     @Nullable
@@ -83,15 +89,18 @@ public interface EntityData extends Cloneable {
     MaterialAndData getMaterial();
     @Nullable
     ConfigurationSection getConfiguration();
+    @Deprecated
     void load(@Nonnull MageController controller, ConfigurationSection parameters);
+    void load(ConfigurationSection parameters);
 
     /**
      * Attach this mob to an existing entity. This does not modify the entity, and only has an effect
      * if this mob has mage data (e.g. is a spellcaster)
      *
-     * @param controller The MageController, used to create a Mage
      * @param entity The entity to attach to
      */
+    void attach(@Nonnull Entity entity);
+    @Deprecated
     void attach(@Nonnull MageController controller, @Nonnull Entity entity);
     @Nonnull
     EntityData clone();

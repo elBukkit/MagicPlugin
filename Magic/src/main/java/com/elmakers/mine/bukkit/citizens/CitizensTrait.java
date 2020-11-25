@@ -134,7 +134,7 @@ public abstract class CitizensTrait extends Trait {
             MageController controller = api.getController();
             EntityData customEntity = controller.getMob(mobKey);
             if (customEntity != null && controller.getRegisteredMage(entity) == null) {
-                customEntity.attach(controller, entity);
+                customEntity.attach(entity);
             }
         }
     }

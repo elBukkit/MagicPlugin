@@ -73,7 +73,7 @@ public class Spawner {
                             entityData = entityData.clone();
                             ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(entityData.getConfiguration());
                             effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, entityParameters);
-                            entityData.load(controller, effectiveParameters);
+                            entityData.load(effectiveParameters);
                         }
                         String customMob = entityData.getName();
                         if (customMob == null || customMob.isEmpty()) {
@@ -236,7 +236,7 @@ public class Spawner {
             EntityData entityData = RandomUtils.weightedRandom(entityTypeProbability);
             if (entityData == null) continue;
             try {
-                entity = entityData.spawn(controller, target);
+                entity = entityData.spawn(target);
             } catch (Throwable ex) {
                 controller.getLogger().log(Level.WARNING, "Error spawning mob from automaton at " + location, ex);
                 entity = null;

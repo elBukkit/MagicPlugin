@@ -659,7 +659,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     protected void addEntities(Collection<Entity> source, Collection<com.elmakers.mine.bukkit.api.entity.EntityData> destination) {
         for (Entity entity : source) {
             if (!(entity instanceof Player || entity instanceof Item || controller.isNPC(entity))) {
-                EntityData entityData = new EntityData(entity);
+                EntityData entityData = new EntityData(controller, entity);
                 Location translated = fromTargetLocation(cloneTarget.getWorld(), entityData.getLocation(), entity instanceof Hanging);
                 entityData.setLocation(translated);
                 destination.add(entityData);

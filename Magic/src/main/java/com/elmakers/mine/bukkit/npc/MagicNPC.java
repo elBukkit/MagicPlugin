@@ -147,7 +147,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         }
         if (entity == null) {
             controller.getLogger().warning("NPC has unknown mob type: " + mobKey + ", and no deafult mob type was available. Defaulting to villager.");
-            entity = new EntityData(EntityType.VILLAGER);
+            entity = new EntityData(controller, EntityType.VILLAGER);
         }
         setEntityData(entity);
     }
@@ -165,11 +165,6 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
         EntityData entityData = controller.getMob(templateKey);
         return entityData == null ? null : entityData.getConfiguration();
-    }
-
-    protected void defaultMob() {
-        entityData = new EntityData(EntityType.VILLAGER);
-        configureEntityData();
     }
 
     protected boolean isLocationValid() {
@@ -230,7 +225,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         // Always keep entity type and name
         effectiveParameters.set("type", entityData.getType().name());
         effectiveParameters.set("name", name);
-        entityData.load(controller, effectiveParameters);
+        entityData.load(effectiveParameters);
     }
 
     @Override
@@ -275,9 +270,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public Entity restore() {
         Entity entity = getEntity();
         if (entity == null || !entity.isValid()) {
-            entity = entityData.spawn(controller, location);
+            entity = entityData.spawn(location);
         } else {
-            entityData.modify(controller, entity);
+            entityData.modify(entity);
             entity.teleport(location);
         }
         if (entity == null) {

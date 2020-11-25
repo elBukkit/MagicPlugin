@@ -28,7 +28,7 @@ public class MagicCreature extends MACreature {
     @Override
     public LivingEntity spawn(Arena arena, World world, Location loc) {
         loc.setWorld(world);
-        Entity entity = entityData.spawn(controller, loc);
+        Entity entity = entityData.spawn(loc);
         if (!(entity instanceof LivingEntity)) return null;
 
         if (entity instanceof Creature) {

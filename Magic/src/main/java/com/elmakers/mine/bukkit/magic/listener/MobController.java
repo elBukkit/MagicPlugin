@@ -203,7 +203,7 @@ public class MobController implements Listener {
             entity.setMetadata("nosplit", new FixedMetadataValue(controller.getPlugin(), true));
         }
         if (!entity.hasMetadata("nodrops")) {
-            mob.modifyDrops(controller, event);
+            mob.modifyDrops(event);
         }
         entity.removeMetadata("nodrops", controller.getPlugin());
     }
@@ -289,7 +289,7 @@ public class MobController implements Listener {
     public EntityData getDefaultMob(EntityType entityType) {
         EntityData defaultMob = defaultMobs.get(entityType);
         if (defaultMob == null) {
-            defaultMob = new com.elmakers.mine.bukkit.entity.EntityData(entityType);
+            defaultMob = new com.elmakers.mine.bukkit.entity.EntityData(controller, entityType);
         }
         return defaultMob;
     }

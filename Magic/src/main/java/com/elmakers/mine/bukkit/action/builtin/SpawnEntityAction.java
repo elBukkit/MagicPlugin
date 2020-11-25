@@ -216,7 +216,7 @@ public class SpawnEntityAction extends CompoundAction
                 try {
                     entityData = controller.getMob(randomType);
                     if (entityData == null) {
-                        entityData = new com.elmakers.mine.bukkit.entity.EntityData(EntityType.valueOf(randomType.toUpperCase()));
+                        entityData = new com.elmakers.mine.bukkit.entity.EntityData(controller, EntityType.valueOf(randomType.toUpperCase()));
                     }
                 } catch (Throwable ex) {
                     entityData = null;
@@ -233,7 +233,7 @@ public class SpawnEntityAction extends CompoundAction
         }
         Entity spawnedEntity = null;
         try {
-            spawnedEntity = entityData.spawn(context.getController(), spawnLocation, spawnReason);
+            spawnedEntity = entityData.spawn(spawnLocation, spawnReason);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

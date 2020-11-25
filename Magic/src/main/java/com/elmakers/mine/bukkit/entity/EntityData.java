@@ -86,6 +86,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     private static int mobStackSize = 0;
     private static final int maxMobStackSize = 255;
 
+    @Nonnull
+    private final MageController controller;
     protected String key;
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
@@ -172,7 +174,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     protected ConfigurationSection configuration;
 
-    public EntityData(Entity entity) {
+    public EntityData(MageController controller, Entity entity) {
+        this.controller = controller;
         setEntity(entity);
         this.location = CompatibilityUtils.getHangingLocation(entity);
         this.magicSpawned = entity.hasMetadata("magicspawned");
@@ -286,6 +289,22 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    public EntityData(MageController controller, EntityType type) {
+        this.controller = controller;
+        this.type = type;
+    }
+
+    public EntityData(@Nonnull MageController controller, @Nonnull String key, ConfigurationSection parameters) {
+        this.controller = controller;
+        this.key = key;
+        load(parameters);
+    }
+
+    public EntityData(@Nonnull MageController controller, ConfigurationSection parameters) {
+        this.controller = controller;
+        load(parameters);
+    }
+
     @Nullable
     private ItemData getItem(ItemStack item) {
         return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
@@ -296,21 +315,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return item;
     }
 
-    public EntityData(EntityType type) {
-        this.type = type;
-    }
-
-    public EntityData(@Nonnull MageController controller, @Nonnull String key, ConfigurationSection parameters) {
-        this.key = key;
-        load(controller, parameters);
-    }
-
-    public EntityData(@Nonnull MageController controller, ConfigurationSection parameters) {
-        load(controller, parameters);
+    @Deprecated
+    @Override
+    public void load(@Nonnull MageController controller, ConfigurationSection parameters) {
+        load(parameters);
     }
 
     @Override
-    public void load(@Nonnull MageController controller, ConfigurationSection parameters) {
+    public void load(ConfigurationSection parameters) {
         this.configuration = parameters;
         // This is required to allow changes to health
         hasChangedHealth = true;
@@ -586,16 +598,16 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
-    public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {
-        EntityData data = new EntityData(EntityType.PAINTING);
+    public static EntityData loadPainting(MageController controller, Vector location, Art art, BlockFace direction) {
+        EntityData data = new EntityData(controller, EntityType.PAINTING);
         data.facing = direction;
         data.relativeLocation = location.clone();
         data.art = art;
         return data;
     }
 
-    public static EntityData loadItemFrame(Vector location, ItemStack item, BlockFace direction, Rotation rotation) {
-        EntityData data = new EntityData(EntityType.ITEM_FRAME);
+    public static EntityData loadItemFrame(MageController controller, Vector location, ItemStack item, BlockFace direction, Rotation rotation) {
+        EntityData data = new EntityData(controller, EntityType.ITEM_FRAME);
         data.facing = direction;
         data.relativeLocation = location.clone();
         data.rotation = rotation;
@@ -660,7 +672,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Nullable
     @SuppressWarnings("deprecation")
-    protected Entity trySpawn(MageController controller, CreatureSpawnEvent.SpawnReason reason) {
+    protected Entity trySpawn(CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
         boolean addedToWorld = false;
         if (type != null && type != EntityType.PLAYER) {
@@ -700,14 +712,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         if (spawned != null) {
             try {
-                modifyPreSpawn(controller, spawned);
+                modifyPreSpawn(spawned);
                 if (!addedToWorld) {
                     isSpawning = true;
                     reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
                     CompatibilityUtils.addToWorld(location.getWorld(), spawned, reason);
                     isSpawning = false;
                 }
-                modifyPostSpawn(controller, spawned);
+                modifyPostSpawn(spawned);
             } catch (Exception ex) {
                  org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity properties for] " + getType() + " at " + getLocation(), ex);
             }
@@ -733,33 +745,42 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Nullable
     @Override
     public Entity spawn() {
-        return spawn(null, null);
+        return spawn((Location)null, null);
     }
 
     @Nullable
     @Override
     public Entity spawn(Location location) {
-        return spawn(null, location, null);
+        return spawn(location, null);
     }
 
+    @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller) {
-        return spawn(controller, null);
+        return spawn((Location)null, null);
     }
 
+    @Deprecated
     @Nullable
     @Override
     public Entity spawn(MageController controller, Location location) {
-        return spawn(controller, location, null);
+        return spawn(location, null);
+    }
+
+    @Deprecated
+    @Nullable
+    @Override
+    public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
+        return spawn(location, reason);
     }
 
     @Nullable
     @Override
-    public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
+    public Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
         else if (this.location == null) return null;
-        return trySpawn(controller, reason);
+        return trySpawn(reason);
     }
 
     @Nullable
@@ -774,7 +795,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             if (respawnedEntity != null) {
                 entity = respawnedEntity.get();
             } else {
-                entity = trySpawn(null, null);
+                entity = trySpawn(null);
                 if (entity != null) {
                     respawned.put(uuid, new WeakReference<>(entity));
 
@@ -789,26 +810,25 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return entity;
     }
 
+    @Deprecated
     @Override
-    public boolean modify(Entity entity) {
-        return modify(null, entity);
+    public boolean modify(MageController controller, Entity entity) {
+        return modify(entity);
     }
 
     @Override
-    public boolean modify(MageController controller, Entity entity) {
+    public boolean modify(Entity entity) {
         // Don't check isValid here since it will be false on the spawn event!
         if (entity.isDead()) return false;
-        boolean modifiedPre = modifyPreSpawn(controller, entity);
-        boolean modifiedPost = modifyPostSpawn(controller, entity);
+        boolean modifiedPre = modifyPreSpawn(entity);
+        boolean modifiedPost = modifyPostSpawn(entity);
         return modifiedPre || modifiedPost;
     }
 
-    private boolean modifyPreSpawn(MageController controller, Entity entity) {
+    private boolean modifyPreSpawn(Entity entity) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
 
-        if (controller != null) {
-            controller.registerMob(entity, this);
-        }
+        controller.registerMob(entity, this);
         boolean isPlayer = (entity instanceof Player);
         if (extraData != null) {
             extraData.apply(entity);
@@ -921,12 +941,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (!isPlayer) {
             entity.setCustomNameVisible(nameVisible);
         }
-        if (controller != null) {
-            attach(controller, entity);
-        }
+        attach(entity);
 
-        if (controller != null && disguise != null) {
-            tryDisguise(controller, entity, disguise);
+        if (disguise != null) {
+            tryDisguise(entity, disguise);
             int redisguise = disguise.getString("type", "").equalsIgnoreCase("player") ? 2 : 0;
             redisguise = disguise.getInt("redisguise", redisguise);
             if (redisguise > 0) {
@@ -937,14 +955,20 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return true;
     }
 
-    private void tryDisguise(final MageController controller, final Entity entity, final ConfigurationSection disguise) {
+    private void tryDisguise(final Entity entity, final ConfigurationSection disguise) {
         if (!controller.disguise(entity, disguise)) {
             controller.getLogger().warning("Invalid disguise type: " + disguise.getString("type"));
         }
     }
 
+    @Deprecated
     @Override
     public void attach(@Nonnull MageController controller, @Nonnull Entity entity) {
+        attach(entity);
+    }
+
+    @Override
+    public void attach(@Nonnull Entity entity) {
         if (mageData != null) {
             Mage apiMage = controller.getMage(entity);
             if (apiMage.getEntityData() == this) return;
@@ -963,7 +987,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return mageData != null ? mageData.mageProperties : null;
     }
 
-    private boolean modifyPostSpawn(MageController controller, Entity entity) {
+    private boolean modifyPostSpawn(Entity entity) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
 
         if (hasMoved && location != null && !location.equals(entity.getLocation())) {
@@ -977,22 +1001,18 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             mobStackSize++;
             boolean allowMount = true;
             if (mobStackSize > maxMobStackSize) {
-                if (controller != null) {
-                    controller.getLogger().warning("Mob " + key + " has more than " + maxMobStackSize + " mounts");
-                }
+                controller.getLogger().warning("Mob " + key + " has more than " + maxMobStackSize + " mounts");
                 allowMount = false;
             }
             if (mount == null) {
                 mount = (EntityData)controller.getMob(mountType);
                 if (mount == null) {
-                    if (controller != null) {
-                        controller.getLogger().warning("Mob " + key + " has invalid mount: " + mountType);
-                    }
+                    controller.getLogger().warning("Mob " + key + " has invalid mount: " + mountType);
                     allowMount = false;
                 }
             }
             if (allowMount) {
-                Entity mountEntity = mount.spawn(controller, entity.getLocation());
+                Entity mountEntity = mount.spawn(entity.getLocation());
                 DeprecatedUtils.setPassenger(mountEntity, entity);
             }
             mobStackSize--;
@@ -1128,7 +1148,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.respawn = respawn;
     }
 
-    public void modifyDrops(MageController controller, EntityDeathEvent event) {
+    public void modifyDrops(EntityDeathEvent event) {
         if (dropXp != null) {
             event.setDroppedExp(dropXp);
         }

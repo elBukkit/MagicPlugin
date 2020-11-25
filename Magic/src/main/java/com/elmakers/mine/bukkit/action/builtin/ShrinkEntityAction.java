@@ -91,7 +91,7 @@ public class ShrinkEntityAction extends DamageAction
         if (replaceType != null) {
             UndoList spawnedList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(li);
             context.registerModified(li);
-            Entity replacement = controller.replaceMob(li, new EntityData(replaceType), true, CreatureSpawnEvent.SpawnReason.CUSTOM);
+            Entity replacement = controller.replaceMob(li, new EntityData(controller, replaceType), true, CreatureSpawnEvent.SpawnReason.CUSTOM);
             if (replacement == null) {
                 return SpellResult.FAIL;
             }
