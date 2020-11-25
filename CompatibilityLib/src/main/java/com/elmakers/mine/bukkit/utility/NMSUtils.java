@@ -72,6 +72,7 @@ public class NMSUtils {
     protected static boolean legacy = false;
     protected static boolean isModernVersion = false;
     protected static boolean isCurrentVersion = false;
+    protected static boolean hasStatistics = false;
 
     protected static String versionPrefix = "";
 
@@ -658,6 +659,14 @@ public class NMSUtils {
 
             // We don't want to consider new-ish builds as "legacy" and print a warning, so keep a separate flag
             boolean current = true;
+
+            try {
+                Class.forName("org.bukkit.event.player.PlayerStatisticIncrementEvent");
+                hasStatistics = true;
+            } catch (Throwable ex) {
+                hasStatistics = false;
+                getLogger().warning("Statistics not available, jump trigger will not work");
+            }
 
             try {
                 Class<?> class_RecipeChoice = Class.forName("org.bukkit.inventory.RecipeChoice");
@@ -2749,6 +2758,10 @@ public class NMSUtils {
             }
         }
         return null;
+    }
+
+    public static boolean hasStatistics() {
+        return hasStatistics;
     }
 
     protected static Logger getLogger() {

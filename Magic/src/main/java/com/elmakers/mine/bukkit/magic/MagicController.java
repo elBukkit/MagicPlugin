@@ -172,6 +172,7 @@ import com.elmakers.mine.bukkit.magic.listener.ExplosionController;
 import com.elmakers.mine.bukkit.magic.listener.HangingController;
 import com.elmakers.mine.bukkit.magic.listener.InventoryController;
 import com.elmakers.mine.bukkit.magic.listener.ItemController;
+import com.elmakers.mine.bukkit.magic.listener.JumpController;
 import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
 import com.elmakers.mine.bukkit.magic.listener.MobController2;
@@ -273,6 +274,16 @@ public class MagicController implements MageController {
 
         defaultsFolder = new File(configFolder, "defaults");
         defaultsFolder.mkdirs();
+    }
+
+    public void onPlayerJump(Player player) {
+        if (climbableMaterials.testBlock(player.getLocation().getBlock())) {
+            return;
+        }
+        Mage mage = getRegisteredMage(player);
+        if (mage != null) {
+            mage.trigger("jump");
+        }
     }
 
     @Nullable
@@ -1051,7 +1062,9 @@ public class MagicController implements MageController {
         inventoryController = new InventoryController(this);
         explosionController = new ExplosionController(this);
         requirementsController = new RequirementsController(this);
-
+        if (NMSUtils.hasStatistics()) {
+            jumpController = new JumpController(this);
+        }
         if (NMSUtils.isCurrentVersion()) {
             mobs2 = new MobController2(this);
         }
@@ -1590,6 +1603,9 @@ public class MagicController implements MageController {
         pm.registerEvents(playerController, plugin);
         pm.registerEvents(inventoryController, plugin);
         pm.registerEvents(explosionController, plugin);
+        if (jumpController != null) {
+            pm.registerEvents(jumpController, plugin);
+        }
         if (mobs2 != null) {
             pm.registerEvents(mobs2, plugin);
         }
@@ -2899,6 +2915,7 @@ public class MagicController implements MageController {
                 .getMaterialSetEmpty("interactible");
         containerMaterials = materialSetManager
                 .getMaterialSetEmpty("containers");
+        climbableMaterials = materialSetManager.getMaterialSetEmpty("climbable");
         undoableMaterials = materialSetManager.getMaterialSetEmpty("undoable");
         wearableMaterials = materialSetManager.getMaterialSetEmpty("wearable");
         meleeMaterials = materialSetManager.getMaterialSetEmpty("melee");
@@ -7075,6 +7092,7 @@ public class MagicController implements MageController {
     private @Nonnull MaterialSet                containerMaterials              = MaterialSets.empty();
     private @Nonnull MaterialSet                wearableMaterials               = MaterialSets.empty();
     private @Nonnull MaterialSet                meleeMaterials                  = MaterialSets.empty();
+    private @Nonnull MaterialSet                climbableMaterials              = MaterialSets.empty();
     private @Nonnull MaterialSet                undoableMaterials               = MaterialSets.wildcard();
 
     private boolean                             backupInventories               = true;
@@ -7283,6 +7301,7 @@ public class MagicController implements MageController {
     private EntityController                    entityController            = null;
     private InventoryController                 inventoryController         = null;
     private ExplosionController                 explosionController         = null;
+    private JumpController                      jumpController              = null;
     private @Nonnull MageIdentifier             mageIdentifier              = new MageIdentifier();
     private final SimpleMaterialSetManager      materialSetManager          = new SimpleMaterialSetManager();
     private boolean                             citizensEnabled                = true;

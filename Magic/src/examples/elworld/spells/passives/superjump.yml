@@ -1,0 +1,42 @@
+superjump:
+    icon: feather{CustomModelData:18001}
+    icon_disabled: feather{CustomModelData:18002}
+    passive: true
+    triggers:
+      - trigger: jump
+    actions:
+        cast:
+        - class: Velocity
+        - class: FallProtection
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_ender_dragon_flap
+           sound_volume: 1
+           effectlib:
+             class: Trace
+             iterations: 30
+             particle_offset_x: 1
+             particle_offset_y: 1
+             particle_offset_z: 1
+             particle_count: 2
+             speed: 2
+             particle: spell
+        land:
+        -  sound: block_stone_step
+           sound_pitch: 0.7
+        -  class: EffectRing
+           particle: block_crack
+           source_location: feet
+           period: 4
+           particle_count: 80
+           radius: 4
+           particle_offset_x: 0.9
+           particle_offset_z: 0.9
+           particle_offset_y: 0.1
+    parameters:
+        duration: 20000
+        target: self
+        min_speed: 5
+        max_speed: 5
+        y_offset: 0.5
