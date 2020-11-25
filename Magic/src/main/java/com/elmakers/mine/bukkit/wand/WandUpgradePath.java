@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
 /**
@@ -53,6 +54,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private TreeMap<Integer, WandLevel> levelMap = null;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private List<String> upgradeCommands;
+    private String upgradeBroadcast;
     private int[] levels = null;
     private final String key;
     private final WandUpgradePath parent;
@@ -109,6 +111,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.migrateIcon = inherit.migrateIcon;
         this.maxMana = inherit.maxMana;
         this.manaRegeneration = inherit.manaRegeneration;
+        this.upgradeBroadcast = inherit.upgradeBroadcast;
         effects.putAll(inherit.effects);
         allRequiredSpells.addAll(inherit.allRequiredSpells);
         allSpells.addAll(inherit.allSpells);
@@ -195,6 +198,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         // Upgrade commands
         upgradeCommands = template.getStringList("upgrade_commands");
+        upgradeBroadcast = template.getString("upgrade_broadcast", upgradeBroadcast);
 
         // Effects
         if (template.contains("effects")) {
@@ -541,6 +545,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
         Player player = mage != null ? mage.getPlayer() : null;
         boolean shouldRunCommands = (player == null || !player.hasPermission("Magic.bypass_upgrade_commands"));
+        boolean shouldBroadcast = (player == null || !player.hasPermission("Magic.bypass_upgrade_broadcast"));
         if (upgradeCommands != null && shouldRunCommands) {
             for (String command : upgradeCommands) {
                 if (command.contains("@uuid") || command.contains("@pn") || command.contains("@pd")) {
@@ -562,6 +567,18 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 command = command.replace("$path", upgrade.getName());
                 command = ChatColor.translateAlternateColorCodes('&', command);
                 controller.getPlugin().getServer().dispatchCommand(sender, command);
+            }
+        }
+        if (upgradeBroadcast != null && !upgradeBroadcast.isEmpty() && shouldBroadcast) {
+            WandUpgradePath upgrade = getPath(upgradeKey);
+            String message = upgradeBroadcast
+                .replace("$pn", mage.getName())
+                .replace("$pn", mage.getDisplayName())
+                .replace("$name", mage.getName())
+                .replace("$path", upgrade.getName());
+            message = ChatColor.translateAlternateColorCodes('&', message);
+            for (Player messagePlayer : controller.getPlugin().getServer().getOnlinePlayers()) {
+                TextUtils.sendMessage(messagePlayer, message);
             }
         }
         if (upgradeItemKey != null && !upgradeItemKey.isEmpty()) {

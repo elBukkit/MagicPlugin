@@ -37,7 +37,9 @@
  - Added `/mnpc command` command to easily setup command NPCs
  - Added Flare Level 3
  - Modifiers can now be put on wand (see vader_lightsaber from stars example)
- - Tirggers can be put directly on classes and modifiers, work like mob configs
+ - Triggers can be put directly on classes and modifiers, work like mob configs
+ - Rankups will now be broadcast to the server by default.
+   Use `/mconfig configure path default upgrade_broadcast ""` to disable this.
 
 ## Miscellaneous Changes
 

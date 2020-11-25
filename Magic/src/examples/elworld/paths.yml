@@ -1,3 +1,0 @@
-default:
-  upgrade_commands:
-    - say &6@pd &3has advanced to &b$path&3!

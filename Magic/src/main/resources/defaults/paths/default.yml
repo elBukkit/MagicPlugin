@@ -4,9 +4,11 @@
 
 default:
   hidden: true
-  # This can be used to broadcast rankups
+  # This will broadcast rankups. Set to "" if you don't want this.
+  upgrade_broadcast: "&6$name &3has advanced to &b$path&3!"
+  # This can be used to run other commands on rankup
   # upgrade_commands:
-  #   - broadcast &6@pd &3has advanced to &b$path&3!
+  #   - lp user @pn parent set $path
   effects:
       # These effects will play when a wand is modified as a result of being
       # enchanted or buying a spell.

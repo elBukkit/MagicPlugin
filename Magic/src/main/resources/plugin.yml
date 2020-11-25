@@ -1860,6 +1860,10 @@ permissions:
     description: A player will skip upgrade commands when ranking up
     default: false
     type: boolean
+  Magic.bypass_upgrade_broadcast:
+    description: A player will skip upgrade broadcast messages when ranking up
+    default: false
+    type: boolean
   Magic.craft:
     description: The wands and items a player may craft
     type: list
