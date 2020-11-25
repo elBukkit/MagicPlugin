@@ -1029,4 +1029,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             }
         }
     }
+
+    public void updated() {
+        super.updated();
+        getMage().updatePassiveEffects();
+    }
 }
