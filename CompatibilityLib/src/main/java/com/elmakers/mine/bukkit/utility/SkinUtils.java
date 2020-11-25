@@ -346,7 +346,6 @@ public class SkinUtils extends NMSUtils {
                         } else {
                             String uuidJSON = fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
                             if (uuidJSON.isEmpty()) {
-                                engageHoldoff();
                                 if (DEBUG) getLogger().warning("Got empty UUID JSON for " + playerName);
                                 synchronizeCallbackUUID(callback, null);
                                 return;
@@ -359,7 +358,7 @@ public class SkinUtils extends NMSUtils {
                             }
                             if (uuidString == null) {
                                 engageHoldoff();
-                                if (DEBUG) getLogger().warning("Failed to parse UUID JSON for " + playerName);
+                                if (DEBUG) getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
                                 synchronizeCallbackUUID(callback, null);
                                 return;
                             }
@@ -376,9 +375,9 @@ public class SkinUtils extends NMSUtils {
                         }
                     } catch (Exception ex) {
                         if (DEBUG) {
-                            getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName, ex);
+                            getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes", ex);
                         } else {
-                            getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName);
+                            getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes");
                         }
                         engageHoldoff();
                         uuid = null;
@@ -387,7 +386,7 @@ public class SkinUtils extends NMSUtils {
                     synchronizeCallbackUUID(callback, uuid);
                 }
             }
-         }, holdoff);
+         }, holdoff / 50);
     }
 
     private static String addDashes(String uuidString) {
@@ -496,7 +495,7 @@ public class SkinUtils extends NMSUtils {
                         if (profileJSON.isEmpty()) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) getLogger().warning("Failed to fetch profile JSON for " + uuid);
+                            if (DEBUG) getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
                         if (DEBUG) getLogger().info("Got profile: " + profileJSON);
@@ -504,7 +503,7 @@ public class SkinUtils extends NMSUtils {
                         if (element == null || !element.isJsonObject()) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) getLogger().warning("Failed to parse profile JSON for " + uuid);
+                            if (DEBUG) getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
 
@@ -527,7 +526,7 @@ public class SkinUtils extends NMSUtils {
                         if (encodedTextures == null) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) getLogger().warning("Failed to find textures in profile JSON");
+                            if (DEBUG) getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
                             return;
                         }
                         String decodedTextures = Base64Coder.decodeString(encodedTextures);
@@ -547,15 +546,15 @@ public class SkinUtils extends NMSUtils {
                         holdoff = 0;
                     } catch (Exception ex) {
                         if (DEBUG) {
-                            getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid, ex);
+                            getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes", ex);
                         } else {
-                            getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid);
+                            getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes");
                         }
                         engageHoldoff();
                         synchronizeCallbackProfile(callback, null);
                     }
                 }
             }
-        }, holdoff);
+        }, holdoff / 50);
     }
 }
