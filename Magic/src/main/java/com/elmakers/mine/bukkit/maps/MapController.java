@@ -369,7 +369,10 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      */
     @Override
     public void forceReloadPlayerPortrait(String worldName, String playerName) {
-        forceReload(worldName, "http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", 8, 8, 8, 8);
+        String url = SkinUtils.getOnlineSkinURL(playerName);
+        if (url != null) {
+            forceReload(worldName, url, 8, 8, 8, 8);
+        }
     }
 
     /**
