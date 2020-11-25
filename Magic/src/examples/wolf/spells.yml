@@ -169,6 +169,7 @@ creeperize:
   actions:
     cast:
       - class: Disguise
+      - class: Modifier
   effects:
     cast:
       - class: EffectSingle
@@ -198,6 +199,7 @@ creeperize:
           particle_orbital: fireworks_spark
           iterations: 40
   parameters:
+    modifier: hidden
     target: self
     disguise:
       type: creeper

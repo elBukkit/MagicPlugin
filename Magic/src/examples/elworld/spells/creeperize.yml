@@ -1,0 +1,49 @@
+creeperize:
+  icon: creeper_head
+  icon_disabled: creeper_head
+  quick_cast: true
+  toggle: undo
+  actions:
+    cast:
+      - class: Disguise
+      - class: Modifier
+      - class: AreaOfEffect
+        actions:
+        - class: Aggro
+          clear_target: true
+  effects:
+    cast:
+      - class: EffectSingle
+        sound: magic.zap_big
+      - class: EffectSingle
+        sound: magic.zap
+    tick:
+      - location: target
+        particle: fireworks_spark
+        particle_count: 3
+        particle_offset_x: 0.01
+        particle_offset_y: 0.01
+        particle_offset_z: 0.01
+    hit:
+      - class: EffectSingle
+        location: target
+        color: F5EFFB
+        firework: ball
+      - class: EffectSingle
+        sound: entity_experience_orb_pickup
+        location: target
+        requires_entity_target: true
+        particle_override: particle_orbital
+        effectlib:
+          class: AtomEffect
+          particle_nucleus: fireworks_spark
+          particle_orbital: fireworks_spark
+          iterations: 40
+  parameters:
+    add_modifiers: hidden
+    target: self
+    radius: 32
+    disguise:
+      type: creeper
+    cooldown: 10000
+    undo_entity_effects: true
