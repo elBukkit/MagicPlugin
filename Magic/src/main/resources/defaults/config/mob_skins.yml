@@ -1,40 +1,74 @@
 # These are player skins that represent mobs. Some are provided here
 # as official Mojang skins, but more can be added.
 mob_skins:
+  bat: MHF_Bat
   bee: MHF_Bee
   blaze: MHF_Blaze
+  cat: http://textures.minecraft.net/texture/6b253fc6b656988453a2d7138fca4d1f2752f47691f0c434e432183771cfe1
   cave_spider: MHF_CaveSpider
   chicken: MHF_Chicken
+  cod: http://textures.minecraft.net/texture/7892d7dd6aadf35f86da27fb63da4edda211df96d2829f691462a4fb1cab0
   cow: MHF_Cow
   creeper: MHF_Creeper
+  dolphin: http://textures.minecraft.net/texture/8e9688b950d880b55b7aa2cfcd76e5a0fa94aac6d16f78e833f7443ea29fed3
+  donkey: http://textures.minecraft.net/texture/63a976c047f412ebc5cb197131ebef30c004c0faf49d8dd4105fca1207edaff3
   drowned: MHF_Drowned
   elder_guardian: MHF_EGuardian
   enderman: MHF_Enderman
   endermite: MHF_Endermite
-  guardian: MHF_Guardian
+  evoker: MHF_Evoker
+  fox: MHF_Fox
   ghast: MHF_Ghast
+  guardian: MHF_Guardian
+  hoglin: http://textures.minecraft.net/texture/9bb9bc0f01dbd762a08d9e77c08069ed7c95364aa30ca1072208561b730e8d75
+  horse: http://textures.minecraft.net/texture/450f992599a55a8311373a5412716bb7f91cf39afadea2517f415d72879a2
+  husk: MHF_Husk
+  illusioner: http://textures.minecraft.net/texture/512512e7d016a2343a7bff1a4cd15357ab851579f1389bd4e3a24cbeb88b
   iron_golem: MHF_Golem
+  llama: http://textures.minecraft.net/texture/c2b1ecff77ffe3b503c30a548eb23a1a08fa26fd67cdff389855d74921368
   magma_cube: MHF_LavaSlime
   mooshroom: MHF_MushroomCow
+  mule: http://textures.minecraft.net/texture/a0486a742e7dda0bae61ce2f55fa13527f1c3b334c57c034bb4cf132fb5f5f
   ocelot: MHF_Ocelot
+  panda: http://textures.minecraft.net/texture/dca096eea506301bea6d4b17ee1605625a6f5082c71f74a639cc940439f47166
+  parrot: MHF_Parrot
+  phantom: http://textures.minecraft.net/texture/746830da5f83a3aaed838a99156ad781a789cfcf13e25beef7f54a86e4fa4
   pig: MHF_Pig
+  piglin: MHF_Piglin
+  piglin_brute: http://textures.minecraft.net/texture/3e300e9027349c4907497438bac29e3a4c87a848c50b34c21242727b57f4e1cf
+  pillager: http://textures.minecraft.net/texture/c4fe926922fbb406f343b34a10bb98992cee4410137d3f88099427b22de3ab90
+  polar_bear: http://textures.minecraft.net/texture/c4fe926922fbb406f343b34a10bb98992cee4410137d3f88099427b22de3ab90
   pufferfish: MHF_Pufferfish
+  rabbit: MHF_Rabbit
+  ravager: http://textures.minecraft.net/texture/cd20bf52ec390a0799299184fc678bf84cf732bb1bd78fd1c4b441858f0235a8
+  salmon: http://textures.minecraft.net/texture/afbdf10317a7a6315c3cbaf7edc590f0d97714bd699c8615a24f72bb8a9bc
   sheep: MHF_Sheep
   shulker: MHF_Shulker
+  silverfish: MHF_Silverfish
   skeleton: MHF_Skeleton
+  skeleton_horse: http://textures.minecraft.net/texture/47effce35132c86ff72bcae77dfbb1d22587e94df3cbc2570ed17cf8973a
   slime: MHF_Slime
+  snowman: http://textures.minecraft.net/texture/8e8d206f61e6de8a79d0cb0bcd98aced464cbfefc921b4160a25282163112a
   spider: MHF_Spider
   squid: MHF_Squid
   stray: MHF_Stray
+  strider: MHF_Strider
+  trader_llama: http://textures.minecraft.net/texture/8424780b3c5c5351cf49fb5bf41fcb289491df6c430683c84d7846188db4f84d
+  tropical_fish: http://textures.minecraft.net/texture/d6dd5e6addb56acbc694ea4ba5923b1b25688178feffa72290299e2505c97281
   turtle: MHF_Turtle
-  zombie: MHF_Zombie
-  zombie_pigman: MHF_PigZombie
   vex: MHF_Vex
   villager: MHF_Villager
+  vindicator: http://textures.minecraft.net/texture/6deaec344ab095b48cead7527f7dee61b063ff791f76a8fa76642c8676e2173
   witch: MHF_Witch
   wither: MHF_Wither
   wither_skeleton: MHF_WSkeleton
   wolf: MHF_Wolf
+  zoglin: http://textures.minecraft.net/texture/e67e18602e03035ad68967ce090235d8996663fb9ea47578d3a7ebbc42a5ccf9
+  zombie: MHF_Zombie
+  zombie_horse: http://textures.minecraft.net/texture/d22950f2d3efddb18de86f8f55ac518dce73f12a6e0f8636d551d8eb480ceec
+  zombie_pigman: MHF_PigZombie
+  zombie_villager: http://textures.minecraft.net/texture/e5e08a8776c1764c3fe6a6ddd412dfcb87f41331dad479ac96c21df4bf3ac89c
+  zombified_piglin: http://textures.minecraft.net/texture/7eabaecc5fae5a8a49c8863ff4831aaa284198f1a2398890c765e0a8de18da8c
 
   # For pre-1.13 versions
   mushroom_cow: MHF_MushroomCow
