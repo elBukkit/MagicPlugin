@@ -17,8 +17,9 @@ public class MobTrigger extends CustomTrigger {
         requiresTarget = configuration.getBoolean("requires_target");
     }
 
+    @Override
     public boolean isValid(Mage mage) {
-        if (!isValid(mage)) return false;
+        if (!super.isValid(mage)) return false;
         if (requiresTarget) {
             Entity entity = mage.getEntity();
             if (entity instanceof Creature) {
