@@ -114,6 +114,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
@@ -923,61 +924,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void sendMessage(String prefix, String message) {
         if (message == null || message.length() == 0 || quiet || !controller.showMessages()) return;
-        sendMessage(getCommandSender(), getPlayer(), prefix, message);
-    }
-
-    public static void sendMessage(CommandSender sender, Player player, String prefix, String message) {
-        if (message == null || message.length() == 0 || sender == null) return;
-        boolean isTitle = false;
-        boolean isActionBar = false;
-        if (message.startsWith("a:")) {
-            prefix = "";
-            isActionBar = true;
-            message = message.substring(2);
-        } else if (message.startsWith("t:")) {
-            isTitle = true;
-            prefix = "";
-            message = message.substring(2);
-        } else if (prefix.startsWith("a:")) {
-            isActionBar = true;
-            prefix = prefix.substring(2);
-        } else if (prefix.startsWith("t:")) {
-            isTitle = true;
-            prefix = prefix.substring(2);
-        }
-
-        String[] messages = StringUtils.split(message, "\n");
-        if (messages.length == 0) {
-            return;
-        }
-
-        if (isTitle && player != null) {
-            String fullMessage = prefix + messages[0];
-            String subtitle = messages.length > 1 ? prefix + messages[1] : null;
-            CompatibilityUtils.sendTitle(player, fullMessage, subtitle, -1, -1, -1);
-            if (messages.length > 2) {
-                messages = Arrays.copyOfRange(messages, 2, messages.length);
-            } else {
-                return;
-            }
-        }
-
-        for (String line : messages) {
-            if (line.trim().isEmpty()) continue;
-            boolean lineIsActionBar = isActionBar;
-            if (line.startsWith("a:")) {
-                lineIsActionBar = true;
-                line = line.substring(2);
-            }
-
-            isActionBar = false;
-            String fullMessage = prefix + line;
-            if (lineIsActionBar && player != null) {
-                CompatibilityUtils.sendActionBar(player, fullMessage);
-            } else {
-                sender.sendMessage(fullMessage);
-            }
-        }
+        TextUtils.sendMessage(getCommandSender(), getPlayer(), prefix, message);
     }
 
     public void clearBuildingMaterial() {

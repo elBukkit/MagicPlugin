@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class ResourcePackManager {
     private static final String RP_FILE = "resourcepack";
@@ -107,13 +108,13 @@ public class ResourcePackManager {
     protected boolean promptResourcePack(final Player player, String message) {
         if (message != null && !message.isEmpty()) {
             if (resourcePackPromptDelay <= 0) {
-                com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, controller.getMessagePrefix(), message);
+                TextUtils.sendMessage(player, controller.getMessagePrefix(), message);
             } else {
                 Plugin plugin = controller.getPlugin();
                 plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, controller.getMessagePrefix(), message);
+                        TextUtils.sendMessage(player, controller.getMessagePrefix(), message);
                     }
                 }, resourcePackPromptDelay / 50);
             }
@@ -186,7 +187,7 @@ public class ResourcePackManager {
         Player player = mage.getPlayer();
         String message = controller.getMessages().get("resource_pack.sending");
         if (message != null && !message.isEmpty()) {
-            com.elmakers.mine.bukkit.magic.Mage.sendMessage(player, player, controller.getMessagePrefix(), message);
+            TextUtils.sendMessage(player, controller.getMessagePrefix(), message);
         }
 
         // Give them some time to read the message
