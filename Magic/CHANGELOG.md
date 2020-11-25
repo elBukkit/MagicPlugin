@@ -24,6 +24,9 @@
     - Will be replaced by something else in the future.
     - Players that have purchased wand protection will get to keep it for now, but my plan is to remove it in the
       future and reimburse them in some way.
+    - If you want, you can set up an NPE using the `wanddebuffs` spell if you'd like players to be able to refune
+      the protection they bought. I am concerned about the possibility of abuse if players have been able to
+      duplicate wands, though.
 
 ## Other Changes of Note
 

@@ -176,6 +176,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable Collection<Requirement> requirements;
         protected @Nullable List<String> commands;
         protected @Nullable List<CostModifier> costModifiers;
+        protected @Nullable List<CostModifier> earnModifiers;
         protected @Nullable List<Cost> earns = null;
         protected @Nullable Map<String,String> alternateSpellTags;
         protected @Nonnull String effects = "selected";
@@ -325,6 +326,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             iconKey = configuration.getString("icon");
             iconDisabledKey = configuration.getString("icon_disabled");
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
+            earnModifiers = parseCostModifiers(configuration, "earn_modifiers");
             if (!free) {
                 costs = parseCosts(ConfigurationUtils.getConfigurationSection(configuration, "costs"));
                 double cost = configuration.getDouble("cost");
@@ -756,6 +758,12 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
                 String earnString = getMessage("earn_lore");
                 for (Cost earn : earns) {
+                    if (earnModifiers != null) {
+                        for (CostModifier modifier : earnModifiers) {
+                            modifier.modify(earn);
+                        }
+                    }
+
                     earnString = earnString.replace("$earn", earn.getFullDescription(context.getController().getMessages()));
                     InventoryUtils.wrapText(earnString, lore);
                 }

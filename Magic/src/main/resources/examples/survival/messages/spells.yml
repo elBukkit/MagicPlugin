@@ -1316,6 +1316,24 @@ spells:
     add_sharpness:
       name: Sharpen Sword
       description: "Add the sharpness enchantment to your magic sword."
+    remove_protection:
+      name: Refund Protection
+      description: "Refund some of your Overall Protection for Spell Points"
+    remove_fall_protection:
+      name: Refund Fall Protection
+      description: "Refund some of your Fall Protection for Spell Points"
+    remove_fire_protection:
+      name: Refund Fire Protection
+      description: "Refund some of your Fire Protection for Spell Points"
+    remove_physical_protection:
+      name: Refund Physical Protection
+      description: "Refund some of your Physical Protection for Spell Points"
+    remove_projectile_protection:
+      name: Refund Projectile Protection
+      description: "Refund some of your Projectile Protection for Spell Points"
+    remove_explosion_protection:
+      name: Refund Explosion Protection
+      description: "Refund some of your Explosion Protection for Spell Points"
     magictorch:
       name: Magic Torch
       description: A light that follows you around
@@ -1325,6 +1343,13 @@ spells:
       cast_fail: "&cYou are maxed out on that buff!"
       selected: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
       no_template: "&cYou may not add this buff to your $wand&c."
+    wanddebuffshop:
+      name: Wand Refunds
+      description: "Removes buffs from your wand in exchange for Spell Points"
+      property_min: "&cYou don't have that buff!"
+      cast_fail: "&cYou don't have that buff!"
+      selected: "&d&oYou selected &r&6$item"
+      no_template: "&cYour $wand&c does not have this buff."
     mute:
       name: Mute
       description: Mute the target player

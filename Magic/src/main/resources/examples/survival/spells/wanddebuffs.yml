@@ -1,0 +1,175 @@
+wanddebuffshop:
+  icon: shield{CustomModelData:18010}
+  icon_disabled: shield{CustomModelData:18011}
+  legacy_legacy_icon: spell_icon:234
+  legacy_legacy_icon_disabled: spell_icon_disabled:234
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    confirm: true
+    confirm_filler: stained_glass:13
+    show_unavailable: true
+    earn_type: sp
+    requirements:
+    - holding_wand: true
+    options:
+    - placeholder: true
+    - placeholder: true
+    - cast_spell: remove_protection
+      earn: 1000
+      earn_modifiers:
+        - scale: "1 + 9 * ((x - 0.2) ^ 3)"
+          type: wand
+          property: protection.overall
+      requirements:
+        - wand_properties:
+          - property: protection.overall
+            min: 0.05
+    - cast_spell: remove_physical_protection
+      earn: 200
+      earn_modifiers:
+        - scale: "1 + 15 * ((x - 0.2) ^ 3)"
+          type: wand
+          property: protection.physical
+      requirements:
+        - wand_properties:
+          - property: protection.physical
+            min: 0.05
+    - cast_spell: remove_fall_protection
+      earn: 300
+      earn_modifiers:
+        - scale: "1 + 15 * ((x - 0.2) ^ 3)"
+          type: wand
+          property: protection.fall
+      requirements:
+        - wand_properties:
+          - property: protection.fall
+            min: 0.05
+    - cast_spell: remove_fire_protection
+      earn: 500
+      earn_modifiers:
+        - scale: "1 + 15 * ((x - 0.2) ^ 3)"
+          type: wand
+          property: protection.fire
+      requirements:
+        - wand_properties:
+          - property: protection.fire
+            min: 0.05
+
+remove_protection:
+  icon: shield{CustomModelData:18010}
+  icon_disabled: shield{CustomModelData:18011}
+  legacy_icon: spell_icon:234
+  legacy_icon_disabled: spell_icon_disabled:234
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  hidden: true
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - property: "protection.overall"
+      value: "x - 2"
+      min: 0
+
+remove_explosion_protection:
+  icon: shield{CustomModelData:18012}
+  icon_disabled: shield{CustomModelData:18013}
+  legacy_icon: spell_icon:235
+  legacy_icon_disabled: spell_icon_disabled:235
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  hidden: true
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - property: "protection.explosion"
+      value: "x - 2"
+      min: 0
+
+remove_fall_protection:
+  icon: shield{CustomModelData:18014}
+  icon_disabled: shield{CustomModelData:18015}
+  legacy_icon: spell_icon:236
+  legacy_icon_disabled: spell_icon_disabled:236
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  hidden: true
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - property: "protection.fall"
+      value: "x - 0.2"
+      min: 0
+
+remove_fire_protection:
+  icon: shield{CustomModelData:18016}
+  icon_disabled: shield{CustomModelData:18017}
+  legacy_icon: spell_icon:237
+  legacy_icon_disabled: spell_icon_disabled:237
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  hidden: true
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - property: "protection.fire"
+      value: "x - 0.2"
+      min: 0
+
+remove_physical_protection:
+  icon: shield{CustomModelData:18018}
+  icon_disabled: shield{CustomModelData:18019}
+  legacy_icon: spell_icon:238
+  legacy_icon_disabled: spell_icon_disabled:238
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  hidden: true
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - property: "protection.physical"
+      value: "x - 0.2"
+      min: 0
+
+remove_projectile_protection:
+  icon: shield{CustomModelData:18020}
+  icon_disabled: shield{CustomModelData:18021}
+  legacy_icon: spell_icon:239
+  legacy_icon_disabled: spell_icon_disabled:239
+  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  hidden: true
+  actions:
+    cast:
+    - class: ModifyProperties
+  parameters:
+    bypass_undo: true
+    target: self
+    modify_target: "wand"
+    modify:
+    - property: "protection.projectile"
+      value: "x - 0.2"
+      min: 0
