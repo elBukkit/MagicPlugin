@@ -215,6 +215,7 @@ public class SkinUtils extends NMSUtils {
     }
 
     public static String getOnlineSkinURL(String playerName) {
+        if (playerName.startsWith("http")) return playerName;
         Player player = DeprecatedUtils.getPlayerExact(playerName);
         String url = null;
         if (player != null) {

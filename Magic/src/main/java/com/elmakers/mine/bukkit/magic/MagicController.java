@@ -6446,7 +6446,14 @@ public class MagicController implements MageController {
                     }
                 };
             }
-            DeprecatedUtils.setSkullOwner(skull, ownerName, skullCallback);
+            if (ownerName.startsWith("http")) {
+                skull = InventoryUtils.setSkullURL(skull, ownerName);
+                if (callback != null) {
+                    callback.updated(skull);
+                }
+            } else {
+                DeprecatedUtils.setSkullOwner(skull, ownerName, skullCallback);
+            }
         } else if (callback != null) {
             callback.updated(skull);
         }
