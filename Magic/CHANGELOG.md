@@ -43,6 +43,7 @@
 
 ## Miscellaneous Changes
 
+ - Add ignored_by_mobs wand/class/modifier property
  - Add use_target_mage parameter to ChangeContext action
    Useful for actions such as Selector and CheckRequirement that only use the mage context and not the target
  - Improved spellbook inventory behavior

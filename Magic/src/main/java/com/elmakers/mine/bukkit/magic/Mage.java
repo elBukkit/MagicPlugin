@@ -227,6 +227,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
+    protected boolean superProtected;
+    protected boolean superPowered;
+    protected boolean ignoredByMobs;
 
     private Map<Integer, Wand> activeArmor = new HashMap<>();
 
@@ -2330,25 +2333,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return true;
             }
         }
-        MageClass activeClass = getActiveClass();
-        if (activeClass != null && activeClass.getBoolean("protected")) {
-            return true;
-        }
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.isSuperProtected();
-        }
-        return activeWand != null && activeWand.isSuperProtected();
+        return superProtected;
     }
 
     @Override
     public boolean isSuperPowered() {
-        if (activeClass != null && activeClass.getBoolean("powered")) {
-            return true;
-        }
-        if (offhandCast && offhandWand != null) {
-            return offhandWand.isSuperPowered();
-        }
-        return activeWand != null && activeWand.isSuperPowered();
+        return superPowered;
+    }
+
+    @Override
+    public boolean isIgnoredByMobs() {
+        return ignoredByMobs || superProtected;
     }
 
     @Override
@@ -3824,6 +3819,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
+        // Add flags
+        if (!superProtected && properties.getBoolean("protected")) {
+            superProtected = true;
+        }
+        if (!superPowered && properties.getBoolean("powered")) {
+            superPowered = true;
+        }
+        if (!ignoredByMobs && properties.getBoolean("ignored_by_mobs")) {
+            ignoredByMobs = true;
+        }
+
+
         // Add potion effects
         effectivePotionEffects.putAll(properties.getPotionEffects());
 
@@ -3908,6 +3915,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         strength.clear();
         weakness.clear();
         castOverrides.clear();
+        superProtected = false;
+        superPowered = false;
+        ignoredByMobs = false;
 
         // Try to avoid constantly re-creating these, don't clear the whole map
         for (List<TriggeredSpell> triggerList : triggers.values()) {

@@ -390,6 +390,7 @@ public interface Mage extends CostReducer, CooldownReducer {
 
     boolean isSuperPowered();
     boolean isSuperProtected();
+    boolean isIgnoredByMobs();
 
     float getRangeMultiplier();
     float getRadiusMultiplier();

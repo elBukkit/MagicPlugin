@@ -156,7 +156,7 @@ public class MobController implements Listener {
             }
 
             Mage targetMage = controller.getRegisteredMage(target);
-            if (targetMage != null && targetMage.isSuperProtected()) {
+            if (targetMage != null && targetMage.isIgnoredByMobs()) {
                 event.setCancelled(true);
                 return;
             }
