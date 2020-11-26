@@ -50,6 +50,11 @@ public abstract class CompoundAction extends BaseSpellAction
         return SpellResult.NO_ACTION;
     }
 
+    /**
+     * This is called after every iteration, which is each time the step() method
+     * returns something other than PENDING.
+     * Return true here to continue iterating, false to break out of the loop.
+     */
     public boolean next(CastContext context) {
         return false;
     }

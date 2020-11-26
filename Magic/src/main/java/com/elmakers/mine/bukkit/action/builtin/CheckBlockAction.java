@@ -15,6 +15,7 @@ public class CheckBlockAction extends CheckAction {
     private boolean useTarget;
     private BlockFace direction;
     private boolean setTarget;
+    private boolean allowBrush;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -30,6 +31,7 @@ public class CheckBlockAction extends CheckAction {
         super.prepare(context, parameters);
         useTarget = parameters.getBoolean("use_target", true);
         setTarget = parameters.getBoolean("set_target", false);
+        allowBrush = parameters.getBoolean("allow_brush", false);
         String directionString = parameters.getString("direction");
         if (directionString != null && !directionString.isEmpty()) {
             try {
@@ -50,28 +52,32 @@ public class CheckBlockAction extends CheckAction {
         if (direction != null) {
             block = block.getRelative(direction);
         }
-        if (allowed != null) {
-            if (!allowed.testBlock(block)) return false;
-        } else {
+        boolean isAllowed = false;
+        if (allowBrush) {
+            isAllowed = brush != null && !brush.isDifferent(block);
+        }
+        if (!isAllowed && allowed != null) {
+            isAllowed = allowed.testBlock(block);
+        } else if (isAllowed && !allowBrush && allowed == null) {
             if (brush != null && brush.isErase()) {
                 if (!context.hasBreakPermission(block)) {
-                    return false;
+                    isAllowed = false;
                 }
             } else {
                 if (!context.hasBuildPermission(block)) {
-                    return false;
+                    isAllowed = false;
                 }
             }
             if (!context.isDestructible(block)) {
-                return false;
+                isAllowed = false;
             }
         }
 
-        if (setTarget) {
+        if (setTarget && isAllowed) {
             createActionContext(context, context.getEntity(), null, context.getTargetEntity(), block.getLocation());
         }
 
-        return true;
+        return isAllowed;
     }
 
     @Override
