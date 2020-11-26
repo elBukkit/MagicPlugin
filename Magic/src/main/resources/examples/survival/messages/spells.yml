@@ -10,6 +10,9 @@ spells:
         description: Collapse a spherical area of blocks
         cast_finish: Collapsed $count blocks
         upgrade_description: "Increased radius, breaks more types of blocks"
+    sparkle:
+        name: Sparkle
+        description: Gives you a random effect, bad or good
     secure:
         name: Secure
         description: Secures containers

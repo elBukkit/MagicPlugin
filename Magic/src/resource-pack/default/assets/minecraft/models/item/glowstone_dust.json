@@ -6,6 +6,8 @@
 
   "overrides": [
     {"predicate": { "custom_model_data": 18001}, "model": "item/spells/superblast"},
-    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/superblast"}
+    {"predicate": { "custom_model_data": 18002}, "model": "item/spells_disabled/superblast"},
+    {"predicate": { "custom_model_data": 18003}, "model": "item/spells/sparkle"},
+    {"predicate": { "custom_model_data": 18004}, "model": "item/spells_disabled/sparkle"}
   ]
 }
