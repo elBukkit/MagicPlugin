@@ -65,8 +65,11 @@ public class SpawnEntityAction extends CompoundAction
 
     private EntityData entityData;
     private WeakReference<Entity> entity;
-    private boolean spawnedActionsRun = false;
+    private boolean spawnActionsRun = false;
+    private boolean deathActionsRun = false;
     private boolean hasSpawnActions = false;
+    private boolean hasDeathActions = false;
+    private boolean hasAnyActions = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -75,9 +78,7 @@ public class SpawnEntityAction extends CompoundAction
         force = parameters.getBoolean("force", false);
         tamed = parameters.getBoolean("tamed", false);
         setOwner = parameters.getBoolean("owned", true);
-        setTarget = parameters.getBoolean("set_target", false);
         setSource = parameters.getBoolean("set_source", false);
-        waitForDeath = parameters.getBoolean("wait_for_death", true);
         repeatRandomize = parameters.getBoolean("repeat_random", true);
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
@@ -139,8 +140,17 @@ public class SpawnEntityAction extends CompoundAction
             }
         }
 
+        ActionHandler actions = getHandler("actions");
+        hasDeathActions = actions != null && actions.size() > 0;
         ActionHandler handler = getHandler("spawn");
         hasSpawnActions = handler != null && handler.size() > 0;
+        hasAnyActions = hasDeathActions || hasSpawnActions;
+
+        // These defaults change depending on the action setup
+        // This may be kind of confusing but I think it is handy and will make
+        // using this action more intuitive.
+        waitForDeath = parameters.getBoolean("wait_for_death", hasDeathActions);
+        setTarget = parameters.getBoolean("set_target", hasSpawnActions);
     }
 
     @Override
@@ -156,32 +166,31 @@ public class SpawnEntityAction extends CompoundAction
     }
 
     @Override
+    public boolean next(CastContext context) {
+        return (hasSpawnActions && !spawnActionsRun) || (hasDeathActions && !deathActionsRun);
+    }
+
+    @Override
     public SpellResult step(CastContext context) {
-        ActionHandler actions = getHandler("actions");
         if (entity == null) {
             SpellResult result = spawn(context);
-            if (!result.isSuccess() || actions == null || actions.size() == 0) {
+            // Run the spawn actions right away
+            if (!result.isSuccess() || !hasAnyActions) {
                 return result;
             }
         }
-
-        if (actions == null || actions.size() == 0) {
-            // This shouldn't really ever happen, but just in case we don't want to get stuck here.
-            return SpellResult.NO_ACTION;
-        }
         Entity spawned = entity.get();
-        if (spawned == null || spawned.isDead() || !spawned.isValid() || !waitForDeath) {
+        if (hasSpawnActions && !spawnActionsRun) {
+            spawnActionsRun = true;
+            return startTargetedActions("spawn", spawned, context);
+        }
+        boolean isDead = spawned == null || spawned.isDead() || !spawned.isValid();
+        if (hasDeathActions && (isDead || !waitForDeath) && !deathActionsRun) {
+            deathActionsRun = true;
             return startTargetedActions("actions", spawned, context);
         }
 
-        if (hasSpawnActions && !spawnedActionsRun) {
-            spawnedActionsRun = true;
-            // We always need to return pending here, even if the spawn actions finish
-            // This is to make sure we wait to run the death actions.
-            startTargetedActions("spawn", spawned, context);
-        }
-
-        return SpellResult.PENDING;
+        return isDead || !waitForDeath ? SpellResult.CAST : SpellResult.PENDING;
     }
 
     private SpellResult startTargetedActions(String actionKey, Entity spawned, CastContext context) {
@@ -285,7 +294,7 @@ public class SpawnEntityAction extends CompoundAction
         if (setOwner && spawnedEntity instanceof Creature) {
             spawnedEntity.setMetadata("owner", new FixedMetadataValue(controller.getPlugin(), context.getMage().getId()));
         }
-        if (setTarget)
+        if (setTarget && !hasAnyActions)
         {
             context.setTargetEntity(spawnedEntity);
         }
