@@ -9,24 +9,28 @@ finder:
     - class: Brush
       sample: true
       actions:
-      - class: Volume
+      - class: Recurse
         actions:
         - class: CheckBlock
           allow_brush: true
-          # allowed: white_wool
           actions:
-          - class: Message
-            message: Found It!
-          - class: Orient
-          - class: PlayEffects
-            effects: found
-          - class: SpawnEntity
-            type: shulker
-            ai: false
-            silent: true
-            set_target: true
-            potion_effects: glowing,invisibility
-          - class: Stop
+          # Skip the first block since that'll be the target block
+          - class: Skip
+            skip: 1
+            repeat_skip: false
+            actions:
+            - class: Message
+              message: Found It!
+            - class: Orient
+            - class: PlayEffects
+              effects: found
+            - class: SpawnEntity
+              type: shulker
+              ai: false
+              silent: true
+              set_target: true
+              potion_effects: glowing,invisibility
+            - class: Stop
   effects:
     cast:
       - location: origin
@@ -67,11 +71,14 @@ finder:
   # Parameters change how a spell behaves, these may be base spell parameters or
   # specific to the set of actions you are using.
   parameters:
-    range: 32
-    radius: 32
-    thickness: 31
+    depth: 32
+    range: 8
+    cooldown: 20000
     duration: 5000
     undo: 5000
     target_block: true
+    # Search all non-air bocks, but only stop on the block matching the brush
+    destructible: "!all_air"
+    transparent: "!all_air"
 
 
