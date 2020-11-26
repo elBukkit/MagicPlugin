@@ -27,7 +27,7 @@ public class SkipAction extends CompoundAction
 
     @Override
     public SpellResult step(CastContext context) {
-        if (skipCounter++ <= skipCount)
+        if (skipCounter++ < skipCount)
         {
             return SpellResult.NO_ACTION;
         }
