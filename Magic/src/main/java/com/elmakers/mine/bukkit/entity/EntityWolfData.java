@@ -44,7 +44,9 @@ public class EntityWolfData extends EntityAnimalData {
         super.apply(entity);
         if (entity instanceof Wolf) {
             Wolf wolf = (Wolf)entity;
-            wolf.setCollarColor(collarColor);
+            if (collarColor != null) {
+                wolf.setCollarColor(collarColor);
+            }
             wolf.setAngry(isAngry);
             wolf.setSitting(sitting);
         }
