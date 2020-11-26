@@ -109,27 +109,29 @@ cure|4:
 cure|5:
     actions:
         cast:
-        - class: CheckEntity
-          allowed_entities: zombie_villager
+        - class: AreaOfEffect
           actions:
-          - class: RemoveEntity
-          - class: ChangeContext
-            target_entity: true
-            target_offset: 0,-0.3,0
+          - class: CheckEntity
+            allowed_entities: zombie_villager
             actions:
-            - class: SpawnEntity
-              type: villager
-              set_target: true
-          - class: PlayEffects
-            effects: cured
-        -  class: PotionEffect
-        -  class: ApplyCooldown
-           clear: true
-           duration: 0
-        - class: Repeat
-          actions:
-          - class: Delay
-          - class: Feed
+            - class: RemoveEntity
+            - class: ChangeContext
+              target_entity: true
+              target_offset: 0,-0.3,0
+              actions:
+              - class: SpawnEntity
+                type: villager
+                set_target: true
+            - class: PlayEffects
+              effects: cured
+          -  class: PotionEffect
+          -  class: ApplyCooldown
+             clear: true
+             duration: 0
+          - class: Repeat
+            actions:
+            - class: Delay
+            - class: Feed
     effects:
       cured:
         - class: EffectSingle
