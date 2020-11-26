@@ -4529,6 +4529,9 @@ public class MagicController implements MageController {
         // We can always target ourselves at this level
         if (attacker == entity) return true;
 
+        // We don't handle non-entities here
+        if (attacker == null || entity == null) return true;
+
         // We can't target our friends (bypassing happens at a higher level)
         if (isFriendly(attacker, entity, false))
         {
