@@ -1,5 +1,5 @@
 police:
-  type: zombie
+  type: piglin
   item: pistol_item
   baby: false
   name: Police

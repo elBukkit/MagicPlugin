@@ -2,9 +2,6 @@
 
 ## List is too long
 
- - Path hints would be nice
- - Special editor support for Effectlib rotation radians parameters
-
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties
@@ -27,6 +24,14 @@
  - Spells ignore tamed mobs of friends ?
  - Mage add brush tab-completion is dumb (or does this command not exist?)
  - Absorb should allow you to bypass restricted materials when you have bypass perms
+
+## Editor
+
+ - Editor Doesn't suggest "cast" anymore under actions
+ -   nor "actions" under cast - bleh
+ - Biome list needs updating
+ - Path hints would be nice
+ - Special editor support for Effectlib rotation radians parameters
 
 ## Hot Issues
 

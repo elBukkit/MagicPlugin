@@ -1,0 +1,14 @@
+mutant:
+  type: pig_zombie
+
+mutant_captain:
+  type: pig_zombie
+
+police:
+  type: pig_zombie
+
+riot_police:
+  type: pig_zombie
+
+soldier:
+  type: pig_zombie

@@ -1,5 +1,5 @@
 soldier:
-  type: zombie
+  type: piglin
   item: ak47_item
   baby: false
   chestplate: iron_chestplate

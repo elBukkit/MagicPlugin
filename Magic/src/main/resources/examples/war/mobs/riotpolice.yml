@@ -1,5 +1,5 @@
 riotpolice:
-  type: zombie
+  type: piglin
   item: shotgun_item
   baby: false
   chestplate: iron_chestplate
