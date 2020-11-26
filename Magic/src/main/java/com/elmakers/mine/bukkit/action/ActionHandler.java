@@ -189,6 +189,10 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
             if (!started) {
                 started = true;
                 action.getAction().reset(context);
+            } else {
+                // Update as these may have changed
+                targetLocation = context.getTargetLocation();
+                targetEntity = context.getTargetEntity();
             }
             if (action.getAction().requiresTargetEntity() && targetEntity == null) {
                 if (showDebug) {
