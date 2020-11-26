@@ -1873,8 +1873,8 @@ public class CompatibilityUtils extends NMSUtils {
             Object blockData = class_Server_createBlockDataMethod.invoke(server, data);
             class_Block_setBlockDataMethod.invoke(block, blockData, false);
             return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ignore) {
+            // Ignore issues setting invalid block data
         }
         return false;
     }
