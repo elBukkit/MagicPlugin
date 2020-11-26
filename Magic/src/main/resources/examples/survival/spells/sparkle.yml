@@ -18,7 +18,7 @@ sparkle:
       - class: PotionEffect
         add_effects: damage_resistance
       - class: PotionEffect
-        add_effects: dolphins_grace 
+        add_effects: dolphins_grace
       - class: PotionEffect
         add_effects: fast_digging
       - class: PotionEffect
@@ -54,14 +54,13 @@ sparkle:
       - class: PotionEffect
         add_effects: slow_falling
       - class: PotionEffect
-        add_effects: speed         
+        add_effects: speed
       - class: PotionEffect
-        add_effects: unluck    
+        add_effects: unluck
       - class: PotionEffect
-        add_effects: water_breathing         
+        add_effects: water_breathing
       - class: PotionEffect
         add_effects: weakness
-       
   effects:
     cast:
     - location: target
@@ -81,4 +80,3 @@ sparkle:
     target: self
     duration: 20000
     cooldown: 30000
-    
