@@ -70,7 +70,6 @@
  - Add delay and warmup parameters and "wait", "teleporting" and "menu" effects to Recall
  - Added "active_wand" target to ModifyProperties, won't switch wands by default
  - Add rainbow/technicolor armor set (not craftable)
- - Add Magic.allowed_spell_categories permission list
  - Add "not_permission" requirement
  - Add earns_cooldown_scale parameter, use in missile to make reducing or changing the overall sp cooldown easier
  - Add /mage forget command, to make a player forget crafting recipes
