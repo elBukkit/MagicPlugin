@@ -148,10 +148,10 @@ commands:
     modifier:
       usage: "Использование: /mage modifier <add|remove> <модификатор> [длительность]"
       add:
-        success: "Добавлен модификатор $name для игрока $player"
+        success: "Добавлен модификатор &3$name &fдля игрока &6$player"
         success_duration: "Добавлен модификатор &3$name &fдля игрока &6$player &fна $duration"
         fail: "&cНевозможно добавить модификатор &3$name &fдля игрока &6$player, &fтак как он уже его имеет"
-        invalid: "&cНеправильная длительность: $input"
+        invalid: "&cНеправильная длительность: &4$input"
       remove:
         success: "Убран модификатор &3$name &fу игрока &6$player"
         fail: "&cНевозможно убрать модификатор &3$name &fу игрока &6$player, &fтак как он его не имеет"
@@ -685,6 +685,9 @@ spells:
     cast: Впусти меня!
   admission|2:
     upgrade_description: Теперь открывает железные двери
+  sparkle:
+    name: Искра
+    description: "Дает случайный эффект: положительный или отрицательный"
   secure:
     name: Обезопасить
     description: Защищает контейнеры
