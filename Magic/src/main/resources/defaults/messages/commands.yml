@@ -88,10 +88,10 @@ commands:
     modifier:
       usage: "Use: /mage modifier <add|remove> <modifier> [duration]"
       add:
-        success: "Added modifier $name to $player"
+        success: "Added modifier &3$name &fto &6$player"
         success_duration: "Added modifier &3$name &fto &6$player &ffor $duration"
         fail: "&cCould not add modifier &3$name &fto &6$player, &fmay already have it"
-        invalid: "&cInvalid duration: $input"
+        invalid: "&cInvalid duration: &4$input"
       remove:
         success: "Removed modifier &3$name &ffrom &6$player"
         fail: "&cCould not remove modifier &3$name &ffrom &6$player, &fmay not have it"
