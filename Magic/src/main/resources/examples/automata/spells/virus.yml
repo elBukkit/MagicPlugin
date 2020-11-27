@@ -233,5 +233,5 @@ birth_virus:
   inherit: virus
   parameters:
     allow_max_range: true
-    seed_radius: 2
+    seed_radius: 3
     ignore_region_overrides: true

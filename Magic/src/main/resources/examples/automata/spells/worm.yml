@@ -111,7 +111,6 @@ worm_death:
         target: self
         check_destructible: true
         speed: -0.2
-        undo_speed: 5
         brush: air
         falling: true
         radius: 2
@@ -122,5 +121,5 @@ birth_worm:
   inherit: worm
   parameters:
     allow_max_range: true
-    seed_radius: 2
+    seed_radius: 3
     ignore_region_overrides: true
