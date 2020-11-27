@@ -6,8 +6,9 @@ mutant_captain:
   helmet: gold_helmet
   boots: gold_boots
   name: Mutant Captain
-  health: 100
+  health: 40
   default_drops: false
+  transformable: false
   drops:
   - gold_nugget@10
   - sp:8

@@ -7,7 +7,7 @@ dark_wizard:
   leggings: warlock_leggings
   helmet: iron_helmet
   boots: warlock_boots
-  health: 1000
+  health: 100
   default_drops: false
   interval: 1000
   triggers:

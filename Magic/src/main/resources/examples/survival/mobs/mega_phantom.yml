@@ -3,7 +3,7 @@ mega_phantom:
     type: phantom
     size: 100
     interval: 5000
-    health: 150
+    health: 80
     interval_requires_target: false
     protection:
       fire: 100

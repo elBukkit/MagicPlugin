@@ -37,6 +37,7 @@
     - If you want, you can set up an NPE using the `wanddebuffs` spell if you'd like players to be able to refune
       the protection they bought. I am concerned about the possibility of abuse if players have been able to
       duplicate wands, though.
+ - Builtin Magic Mobs Nerfed (mostly just reduced health)
 
 ## Other Changes of Note
 

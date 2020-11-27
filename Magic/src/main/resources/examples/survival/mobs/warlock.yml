@@ -8,7 +8,7 @@ warlock:
   helmet: chainmail_helmet
   boots: warlock_boots
   name: Warlock
-  health: 200
+  health: 50
   default_drops: false
   transformable: false
   protection:

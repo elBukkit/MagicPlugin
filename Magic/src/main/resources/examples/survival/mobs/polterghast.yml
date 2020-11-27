@@ -1,6 +1,6 @@
 polterghast:
   type: ghast
-  health: 100
+  health: 50
   name: Polterghast
   drops:
   - gold_nugget@10

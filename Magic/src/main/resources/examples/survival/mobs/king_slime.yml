@@ -4,6 +4,7 @@ kingslime:
   size: 18
   interval: 3000
   cast_requires_target: false
+  health: 75
   triggers:
     interval:
       cast:

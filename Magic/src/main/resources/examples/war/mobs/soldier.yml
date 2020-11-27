@@ -10,6 +10,7 @@ soldier:
   health: 50
   default_drops: false
   cast_interval: 1000
+  transformable: false
   cast:
     ak47: 80
     none: 50

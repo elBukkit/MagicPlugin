@@ -1,7 +1,7 @@
 # TODO
 
 ## List is too long
-
+ - /mage modifier <player> remove tab-completion doesn't work
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties

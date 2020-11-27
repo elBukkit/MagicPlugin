@@ -1,7 +1,7 @@
 fire_elemental:
   type: blaze
   name: Fire Elemental
-  health: 100
+  health: 30
   default_drops: false
   protection:
     fire: 2

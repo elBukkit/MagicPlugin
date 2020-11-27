@@ -7,7 +7,7 @@ archer:
   helmet: chainmail_helmet
   boots: warlock_boots
   name: Archer
-  health: 150
+  health: 50
   default_drops: false
   protection:
     fall: 1

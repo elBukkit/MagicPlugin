@@ -6,7 +6,8 @@ mutant:
   helmet: iron_helmet
   boots: iron_boots
   name: Mutant
-  health: 50
+  health: 20
   default_drops: false
+  transformable: false
   drops:
   - gold_nugget@5

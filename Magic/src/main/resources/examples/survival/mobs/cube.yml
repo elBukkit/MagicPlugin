@@ -1,6 +1,6 @@
 cube:
   name: Gelatinous Cube
   type: slime
-  health: 100
+  health: 25
   size: 10
   split: false
