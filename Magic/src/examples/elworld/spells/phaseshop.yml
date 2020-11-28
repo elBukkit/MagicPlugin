@@ -1,7 +1,7 @@
 phaseshop:
     inherit: buyshop
     parameters:
-        items:
+        spells:
         - item: phase
           cost: 1000
               
