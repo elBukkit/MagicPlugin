@@ -76,7 +76,7 @@ phase:
              duration: 5000
              y_offset: -0.5
     parameters:
-        warmup: 5000
+        warmup: 2000
         cancel_on_damage: 1
         cancel_on_cast_other: true
         cooldown: 15000
