@@ -291,7 +291,7 @@ spells:
     fling:
         name: Fling
         description: Sends you flying in the target direction
-        upgrade_description: "Increased speed, reduced cooldown"
+        upgrade_description: "Increased speed, reduced cooldown\n&7Sneak-cast for a smaller jump"
     leap:
         name: Leap
         description: Take a big leap

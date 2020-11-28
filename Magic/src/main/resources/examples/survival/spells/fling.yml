@@ -55,6 +55,9 @@ fling:
 fling|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 100
+    alternate_sneak_parameters:
+      min_speed: 2.0
+      max_speed: 2.0
     parameters:
         min_speed: 2
         max_speed: 3
@@ -76,6 +79,6 @@ fling|4:
     parameters:
         min_speed: 3
         max_speed: 5
-        cooldown: 0
+        cooldown: 200
     costs:
         mana: 90

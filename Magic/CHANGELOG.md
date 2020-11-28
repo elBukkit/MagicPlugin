@@ -2,6 +2,8 @@
 
 # 8.2
 
+ - Add alt-case (crouch) to levelled up fling to get the original speed
+
 # 8.1.1
 
 # 8.1
