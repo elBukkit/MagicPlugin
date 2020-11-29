@@ -599,6 +599,7 @@ public class InventoryController implements Listener {
                 activeWand.deactivate();
             }
             Wand wand = controller.createWand(clickedItem);
+            wand.activate(mage);
             if (wand.addItem(heldItem)) {
                 event.setCancelled(true);
                 event.setCursor(null);
