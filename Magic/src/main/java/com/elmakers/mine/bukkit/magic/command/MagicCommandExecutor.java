@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -358,17 +359,21 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 Collection<Batch> pendingBatches = mage.getPendingBatches();
                 String names = "";
                 if (pendingBatches.size() > 0) {
+                    List<String> nameList = new ArrayList();
                     for (Batch batch : pendingBatches) {
-                        names = names + batch.getName() + " ";
+                        nameList.add(batch.getName());
                         totalSize += batch.size();
                         totalRemaining += batch.remaining();
                     }
+                    names = StringUtils.join(nameList, ChatColor.GRAY + "," + ChatColor.YELLOW);
                 }
-
+                int percent = totalSize > 0 ? totalRemaining * 100 / totalSize : 100;
+                percent = 100 - Math.min(100, percent);
                 sender.sendMessage(ChatColor.AQUA + mage.getName() + ChatColor.GRAY + " has "
                         + ChatColor.WHITE + "" + pendingBatches.size() + "" + ChatColor.GRAY
-                        + " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
-                        + "" + ChatColor.GRAY + ") (" + names + ")");
+                        + " pending (" + ChatColor.GOLD + percent + ChatColor.WHITE + "%"
+                        + ChatColor.GRAY + ") ("
+                        + ChatColor.YELLOW + names + ChatColor.GRAY + ")");
             }
             return true;
         }
