@@ -1,8 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -10,12 +14,14 @@ import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 
 public class BrushAction extends CompoundAction {
     private List<String> brushes = new ArrayList<>();
     private boolean sample = false;
     private String brushMod;
+    private Map<Material, MaterialAndData> materialMap;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -34,6 +40,27 @@ public class BrushAction extends CompoundAction {
             }
         }
         sample = parameters.getBoolean("sample", false);
+        ConfigurationSection replaceConfiguration = parameters.getConfigurationSection("replacements");
+        if (replaceConfiguration != null) {
+            materialMap = new HashMap<>();
+            Set<String> fromKeys = replaceConfiguration.getKeys(false);
+            for (String fromKey : fromKeys) {
+                Material fromMaterial;
+                try {
+                    fromMaterial = Material.valueOf(fromKey.toUpperCase());
+                } catch (Exception ex) {
+                    context.getLogger().warning("Invalid material replacement (from): " + fromKey);
+                    continue;
+                }
+                String toKey = replaceConfiguration.getString(fromKey);
+                MaterialAndData toMaterial = new MaterialAndData(toKey);
+                if (!toMaterial.isValid()) {
+                    context.getLogger().warning("Invalid material replacement (to): " + toKey);
+                    continue;
+                }
+                materialMap.put(fromMaterial, toMaterial);
+            }
+        }
     }
 
     protected void addBrush(String brushKey) {
@@ -56,7 +83,7 @@ public class BrushAction extends CompoundAction {
                 actionContext.setBrush(brush);
             }
         }
-        else
+        else if (brushes != null)
         {
             String brushKey = brushes.get(context.getRandom().nextInt(brushes.size()));
             MaterialBrush brush = null;
@@ -67,6 +94,14 @@ public class BrushAction extends CompoundAction {
                 brush = new MaterialBrush(context.getMage(), context.getLocation(), brushKey);
             }
             actionContext.setBrush(brush);
+        }
+        if (materialMap != null) {
+            com.elmakers.mine.bukkit.api.block.MaterialBrush activeBrush = actionContext.getBrush();
+            MaterialAndData replacement = materialMap.get(activeBrush.getMaterial());
+            if (replacement != null) {
+                activeBrush.setMaterial(replacement.getMaterial());
+                activeBrush.setData(replacement.getData());
+            }
         }
         return startActions();
     }

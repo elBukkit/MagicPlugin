@@ -56,6 +56,7 @@ public class ConstructBatch extends BrushBatch {
     private final @Nonnull MaterialSet deferredTypes;
     private MaterialAndData replace;
     private Material replaceType;
+    private Map<Material, ? extends MaterialAndData> replaceMaterials;
 
     private boolean finishedNonAttached = false;
     private boolean finishedAttached = false;
@@ -564,6 +565,12 @@ public class ConstructBatch extends BrushBatch {
 
             BlockState prior = block.getState();
             brush.modify(block, applyPhysics);
+            if (replaceMaterials != null) {
+                MaterialAndData replacement = replaceMaterials.get(brush.getMaterial());
+                if (replacement != null) {
+                    replacement.modify(block, applyPhysics);
+                }
+            }
             if (!undoList.isScheduled()) {
                 controller.logBlockChange(spell.getMage(), prior, block.getState());
             }
@@ -641,5 +648,9 @@ public class ConstructBatch extends BrushBatch {
     }
     public void setUseBrushSize(boolean useBrushSize) {
         this.useBrushSize = useBrushSize;
+    }
+
+    public void setReplaceMaterials(Map<Material, ? extends MaterialAndData> replaceMaterials) {
+        this.replaceMaterials = replaceMaterials;
     }
 }
