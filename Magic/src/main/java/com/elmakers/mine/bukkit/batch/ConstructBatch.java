@@ -547,7 +547,18 @@ public class ConstructBatch extends BrushBatch {
         byte previousData = DeprecatedUtils.getData(block);
         touch(block);
 
-        if (brush.isValid() && (brush.isDifferent(block) || commit)) {
+        boolean isDifferent = false;
+        MaterialAndData replacement = null;
+        if (replaceMaterials != null) {
+            replacement = replaceMaterials.get(brush.getMaterial());
+        }
+        if (replacement != null) {
+            isDifferent = replacement.isDifferent(block);
+        } else {
+            isDifferent = brush.isDifferent(block);
+        }
+
+        if (brush.isValid() && (isDifferent || commit)) {
             if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {
                 ItemStack requires = brush.getItemStack(1);
                 if (!mage.hasItem(requires, consumeVariants)) {
@@ -565,11 +576,8 @@ public class ConstructBatch extends BrushBatch {
 
             BlockState prior = block.getState();
             brush.modify(block, applyPhysics);
-            if (replaceMaterials != null) {
-                MaterialAndData replacement = replaceMaterials.get(brush.getMaterial());
-                if (replacement != null) {
-                    replacement.modify(block, applyPhysics);
-                }
+            if (replacement != null) {
+                replacement.modify(block, applyPhysics);
             }
             if (!undoList.isScheduled()) {
                 controller.logBlockChange(spell.getMage(), prior, block.getState());
