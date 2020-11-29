@@ -6,6 +6,8 @@
 
 # 8.1.1
 
+ - Fix some issues absorbing spell items, now requires you to be holding your wand
+
 # 8.1
 
 ## Migration Notes
