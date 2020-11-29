@@ -3820,6 +3820,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean addItem(ItemStack item) {
         if (isUpgrade) return false;
+        // This prevents issues with class wands that don't own their own properties, though this is
+        // not really an idea solution.
+        if (mageClassKeys != null && !mageClassKeys.isEmpty() && mage == null) {
+            return false;
+        }
         Integer sp = getSP(item);
         boolean isUpgrade = isUpgrade(item);
         if (!isModifiable() && !isUpgrade && sp == null) return false;
