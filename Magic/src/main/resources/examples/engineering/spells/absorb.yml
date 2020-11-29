@@ -8,6 +8,7 @@ absorb:
     tags: noduel
     worth: 9999
     brush_selection: true
+    upgrade_required_casts: 20
     actions:
         cast:
         -  class: AbsorbAction
@@ -41,3 +42,6 @@ absorb:
     costs:
         mana: 30
 
+absorb|2:
+  alternate_sneak_parameters:
+    wildcard: true

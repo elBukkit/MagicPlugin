@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -15,6 +16,14 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class AbsorbAction extends BaseSpellAction
 {
+    private boolean wildcard = false;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        wildcard = parameters.getBoolean("wildcard");
+    }
+
     @Override
     public SpellResult perform(CastContext context)
     {
@@ -42,6 +51,9 @@ public class AbsorbAction extends BaseSpellAction
 
         // Add to the wand
         MaterialAndData mat = new MaterialAndData(target);
+        if (wildcard) {
+            mat.setData(null);
+        }
         if (!wand.addBrush(mat.getKey())) {
             // Still try and activate it
             wand.setActiveBrush(mat.getKey());

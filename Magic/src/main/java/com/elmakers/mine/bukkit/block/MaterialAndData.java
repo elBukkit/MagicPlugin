@@ -960,6 +960,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public void setData(Short data) {
         this.data = data;
+        if (data == null) {
+            this.extraData = null;
+            this.blockData = null;
+        }
     }
 
     @Override

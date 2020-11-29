@@ -10,7 +10,7 @@ books:
         title: The Master Spell Book
 
 material:
-    wildcard: " (Any Type)"
+    wildcard: " (Keep Block Data)"
 
 economy:
     missing: "&cMy shop is closed, sorry!"

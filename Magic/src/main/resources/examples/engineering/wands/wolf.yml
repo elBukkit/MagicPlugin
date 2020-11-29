@@ -28,7 +28,7 @@ wolf:
   active_spell: fling|4
   spells:
     - debugger@7
-    - absorb@8
+    - absorb|2@8
     - alter@90
     - animate@51
     - arrowrain@72

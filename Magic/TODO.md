@@ -1,6 +1,9 @@
 # TODO
 
 ## List is too long
+
+ - /mnpc select just doesn't work sometimes
+
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties

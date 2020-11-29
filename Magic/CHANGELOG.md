@@ -2,7 +2,10 @@
 
 # 8.2
 
- - Add alt-case (crouch) to levelled up fling to get the original speed
+ - Add alt-cast (sneak) to levelled up fling to get the original speed
+ - Add Alter level 2, with alt-cast (sneak) to absorb a wildcard brush
+ - Fix support for wildcard brushes (use with SuperReplace to replace stairs, fences, etc in-place)
+ - Add replacement options to ChangeBiome, Brush actions and ConstructSpell
 
 # 8.1.1
 
