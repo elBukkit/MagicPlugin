@@ -609,9 +609,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (Wand.isSpell(item) && !Wand.isSkill(item)) {
             String spell = Wand.getSpell(item);
             SpellKey spellKey = new SpellKey(spell);
-            Map<String, Integer> spellLevels = getSpellLevels();
-            Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
-            if ((currentLevel == null || currentLevel < spellKey.getLevel()) && addSpell(spell)) {
+            Integer spellLevel = null;
+            if (hasSpell(spellKey.getBaseKey())) {
+                spellLevel = getSpellLevel(spellKey.getBaseKey());
+            }
+            if ((spellLevel == null || spellLevel < spellKey.getLevel()) && addSpell(spell)) {
                 return true;
             }
         } else if (Wand.isBrush(item)) {
@@ -1030,6 +1032,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
     }
 
+    @Override
     public void updated() {
         super.updated();
         getMage().updatePassiveEffects();
