@@ -104,7 +104,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.blockData = blockData;
     }
 
-    public MaterialAndData(final Material material, final  short data) {
+    public MaterialAndData(final Material material, final short data) {
+        this(material, (Short)data);
+    }
+
+    public MaterialAndData(final Material material, final Short data) {
         this.material = material;
         this.data = data;
     }

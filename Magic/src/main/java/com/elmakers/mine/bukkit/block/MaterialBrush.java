@@ -814,7 +814,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public ItemStack getItem(MageController controller, boolean isItem) {
         Messages messages = controller.getMessages();
         boolean urlIcons = mage == null ? controller.isUrlIconsEnabled() : mage.isUrlIconsEnabled();
-        MaterialAndData icon = new MaterialAndData(this.getMaterial(), this.getData());
+        Short data = this.getData();
+        MaterialAndData icon = data == null ? new MaterialAndData(this.getMaterial()) : new MaterialAndData(this.getMaterial(), data);
         String extraLore = null;
         String customName = getName(messages);
         ItemStack itemStack = null;
