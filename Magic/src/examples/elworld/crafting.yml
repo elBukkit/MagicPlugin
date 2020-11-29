@@ -10,6 +10,9 @@
 #   enabled: false
 #
 
+camera:
+  enabled: true
+
 zombie_leather:
   enabled: true
 
@@ -31,15 +34,5 @@ mastersword:
 magictorch:
   enabled: true
 
-doublewand:
-  output: magicbow
-  output_type: wand
-
-  materials:
-    i: wand
-
-  row_1: ii
-  row_2:
-  row_3:
 
 

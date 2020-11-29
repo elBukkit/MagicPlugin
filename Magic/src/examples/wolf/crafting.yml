@@ -27,8 +27,29 @@
 #   enabled: false
 
 # Enable crafting ink from coal and bonemean
-coal_ink:
+camera:
   enabled: true
 
 zombie_leather:
   enabled: true
+
+coal_ink:
+  enabled: true
+
+saddle:
+  enabled: true
+
+name_tag:
+  enabled: true
+
+elytra:
+  enabled: true
+
+mastersword:
+  enabled: true
+
+magictorch:
+  enabled: true
+
+
+
