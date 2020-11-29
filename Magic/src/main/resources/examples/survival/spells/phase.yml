@@ -12,73 +12,74 @@ phase:
     actions:
         cast:
         - class: Delay
+        - class: PotionEffect
         - class: PlayEffects
           effects: phase
         - class: ChangeWorld
     effects:
         cast:
-        -  class: EffectSingle
-           sound: block_portal_travel
+        -  sound: block_portal_travel
            sound_volume: 0.2
            sound_pitch: 0.4
            location: source
            source_location: eyes
            effectlib:
-             class: AnimatedBall
-             particle: portal
-             duration: 5000
-             y_offset: -0.5
-             particle_count: 8
-             particle_offset_x: 0.9
-             particle_offset_y: 2
-             particle_offset_z: 0.9
+             class: Cuboid
+             particle: end_rod
+             duration: 2000
+             x_length: 1
+             z_length: 1
+             y_length: 2.5
+             offset: -0.5, -1.5, -0.5
+             update_locations: false
         -  location: source
            source_location: eyes
            effectlib:
-             class: AnimatedBall
-             particle: redstone
-             color: "F000F0"
-             duration: 5000
-             y_offset: -0.5
+             class: Cuboid
+             particle: portal
+             duration: 2000
+             x_length: 1
+             z_length: 1
+             y_length: 1
+             offset: -0.5, -0.75, -0.5
+             update_locations: false
         phase:
-        - class: EffectSingle
-          source_location: eyes
+        - source_location: eyes
           sound: magic.teleport
           location: source
           sound_volume: 0.8
           sound_pitch: 0.8
-          color: FF00FF
-          firework: star
         teleport:
         - class: EffectSingle
           sound: magic.teleport
           sound_volume: 0.8
           sound_pitch: 0.8
           location: target
-          source_location: eyes
-          color: FF00FF
-          firework: star
           effectlib:
-             class: AnimatedBall
+            class: Cuboid
+            particle: end_rod
+            duration: 2000
+            x_length: 1
+            z_length: 1
+            y_length: 2.5
+            offset: -0.5, 1.5, -0.5
+            update_locations: false
+        - location: target
+          effectlib:
+             class: Cuboid
              particle: portal
-             duration: 2500
-             y_offset: -0.5
-             particle_count: 8
-             particle_offset_x: 0.9
-             particle_offset_y: 2
-             particle_offset_z: 0.9
-        -  location: target
-           source_location: eyes
-           effectlib:
-             class: AnimatedBall
-             particle: redstone
-             color: "F000F0"
-             duration: 5000
-             y_offset: -0.5
+             duration: 2000
+             x_length: 1
+             z_length: 1
+             y_length: 1
+             offset: -0.5, 1.5, -0.5
+             update_locations: false
     parameters:
+        add_potion_effects:
+          slow: 5
+        duration: 2000
         warmup: 2000
         cancel_on_damage: 1
-        cancel_on_cast_other: true
         cooldown: 15000
         target: self
         vertical_range: 255

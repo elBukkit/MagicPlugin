@@ -1,7 +1,8 @@
 phaseshop:
     inherit: buyshop
     parameters:
+        apply_to_caster: true
         spells:
         - item: phase
-          cost: 1000
+          cost: 100
               
