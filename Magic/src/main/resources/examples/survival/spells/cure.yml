@@ -60,6 +60,7 @@ cure:
       bypass_pvp: true
       bypass_friendly_fire: true
       only_friendly: true
+      target_self: true
       remove_effects:
       - confusion
       - poison

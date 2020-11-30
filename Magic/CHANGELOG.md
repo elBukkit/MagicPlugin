@@ -11,6 +11,7 @@
 # 8.1.1
 
  - Fix some issues absorbing spell items, now requires you to be holding your wand
+ - Fix cure not working on the caster
 
 # 8.1
 
