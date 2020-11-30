@@ -711,7 +711,7 @@ spells:
         cast_entity: Teleporting $target to your target
         cast_player_message: "a:&d&o$player &r&5folded space"
         cast_friend: Warping you to $name
-        no_target_friend: Invalid friend $name
+        no_target_friend: Can't warp to $name
         title_friend: $name
         add_friend: "&bYou have added &5$name &bas a &6Friend!"
         remove_friend: "&cYou have removed &5$name &cas a &6Friend!"
@@ -748,7 +748,7 @@ spells:
         no_target_spawn: Can't recall to spawn
         no_target_town: You're not in a town
         no_target_regions: You have no homes
-        no_target_friend: Invalid friend $name
+        no_target_friend: Can't recall to $name
         title_move_marker: "Move Marker #$number to Here"
         description_move_marker: Replaces your current marker
         title_marker: "Marker #$number"
