@@ -14,7 +14,7 @@ mutant_captain:
   - sp:8
   potion_effects:
   - type: speed
-    amplifier: 1
+    amplifier: 0
   entity_attributes:
     generic_knockback_resistance: 1
     generic_attack_speed: 5
