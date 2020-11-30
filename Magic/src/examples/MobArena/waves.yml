@@ -30,6 +30,7 @@
             darkwizard: 1
             warlock: 10
             megaspider: 10
+            archer: 10
       single:
         swarm1:
           type: swarm
