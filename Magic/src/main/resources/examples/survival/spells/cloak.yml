@@ -26,6 +26,11 @@ cloak:
         - class: Wear
           item: pumpkin_seeds
           armor_slot: 3
+        - class: AreaOfEffect
+          actions:
+            - class: Aggro
+              clear_target: true
+        - class: Modifier
     effects:
         cast:
         - class: EffectSingle
@@ -68,7 +73,10 @@ cloak:
       duration: 3600000
       cooldown: 30000
       effect_invisibility: 5
+      radius: 32
+      add_modifiers: hidden
     costs:
       mana: 10
     active_costs:
       mana: 5
+

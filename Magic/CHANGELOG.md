@@ -6,6 +6,7 @@
  - Add Alter level 2, with alt-cast (sneak) to absorb a wildcard brush
  - Fix support for wildcard brushes (use with SuperReplace to replace stairs, fences, etc in-place)
  - Add replacement options to ChangeBiome, Brush actions and ConstructSpell
+ - Cloak now hides you from mobs
 
 # 8.1.1
 
