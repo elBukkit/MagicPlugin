@@ -13,7 +13,7 @@ rocket:
         - class: Parallel
           actions:
           - class: Firework
-            launch:
+            projectile:
             - class: Mount
             actions:
             - class: Stop

@@ -2,7 +2,7 @@
 
 # 8.2
 
- - Projectile "start" actions have been renamed to "start" to avoid conflict with the "start" distance parameter.
+ - Projectile "start" actions have been renamed to "projectile" to avoid conflict with the "start" distance parameter.
    This was used, for instance, in the rocket spell. Please change start to launch if you were using these.
 
 # 8.1
