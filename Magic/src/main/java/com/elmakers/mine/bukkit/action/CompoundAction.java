@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -32,6 +33,7 @@ public abstract class CompoundAction extends BaseSpellAction
     private @Nullable Object baseActions;
 
     protected Map<String, ActionHandler> handlers = new HashMap<>();
+    protected Set<String> handlerKeys = new HashSet<>();
     protected Set<ActionHandler> ran = new HashSet<>();
     protected @Nullable String currentHandler = null;
     protected State state = State.NOT_STARTED;
@@ -188,6 +190,7 @@ public abstract class CompoundAction extends BaseSpellAction
     @Nullable
     protected ActionHandler addHandler(Spell spell, String handlerKey) {
         ActionHandler handler = handlers.get(handlerKey);
+        handlerKeys.add(handlerKey);
         if (handler != null) {
             return handler;
         }
@@ -360,5 +363,10 @@ public abstract class CompoundAction extends BaseSpellAction
             }
         }
         return action;
+    }
+
+    @Nonnull
+    public Collection<String> getAllHandlerKeys() {
+        return handlerKeys;
     }
 }
