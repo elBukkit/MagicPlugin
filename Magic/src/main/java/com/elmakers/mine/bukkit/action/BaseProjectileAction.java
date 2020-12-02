@@ -35,7 +35,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
 
     private Set<Entity> tracking;
     private long expiration;
-    private boolean startActionsRun;
+    private boolean launchActionsRun;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -61,13 +61,13 @@ public abstract class BaseProjectileAction extends CompoundAction {
         super.reset(context);
         expiration = System.currentTimeMillis() + lifetime;
         tracking = null;
-        startActionsRun = false;
+        launchActionsRun = false;
     }
 
     @Override
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
         super.addHandlers(spell, parameters);
-        addHandler(spell, "start");
+        addHandler(spell, "launch");
         addHandler(spell, "tick");
     }
 
@@ -91,11 +91,11 @@ public abstract class BaseProjectileAction extends CompoundAction {
             return SpellResult.NO_TARGET;
         }
 
-        if (!startActionsRun) {
-            startActionsRun = true;
-            if (hasActions("start")) {
+        if (!launchActionsRun) {
+            launchActionsRun = true;
+            if (hasActions("launch")) {
                 createActionContext(context);
-                return startActions("start");
+                return startActions("launch");
             }
         }
 
