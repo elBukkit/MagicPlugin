@@ -2336,7 +2336,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if (earnMultiplier > 1) {
             String earnDescription = getPropertyString("earn_multiplier", earnMultiplier - 1);
-            earnDescription = earnDescription.replace("$type", "SP");
+            String earnType = getController().getMessages().get("costs.sp_short", "SP");
+            earnDescription = earnDescription.replace("$type", earnType);
             ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
         }
         ConfigurationSection attributes = getConfigurationSection("attributes");
