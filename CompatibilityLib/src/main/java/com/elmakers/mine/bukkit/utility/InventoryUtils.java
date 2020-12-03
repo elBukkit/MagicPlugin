@@ -607,11 +607,11 @@ public class InventoryUtils extends NMSUtils
             // We want to keep the syntax the same, however there are some fundamental differences in how
             // entity vs item modifiers work, enough that it makes sense to keep the two separate
             try {
-                Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                 double value = 0;
                 int operation = 0;
                 ConfigurationSection attributeConfiguration = attributeConfig.getConfigurationSection(attributeKey);
                 if (attributeConfiguration != null) {
+                    attributeKey = attributeConfiguration.getString("attribute", attributeKey);
                     value = attributeConfiguration.getDouble("value");
                     slot = attributeConfiguration.getString("slot", slot);
                     String operationKey = attributeConfiguration.getString("operation");
@@ -626,6 +626,7 @@ public class InventoryUtils extends NMSUtils
                 } else {
                     value = attributeConfig.getDouble(attributeKey);
                 }
+                Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                 if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot, operation)) {
                     getLogger().warning("Failed to set attribute: " + attributeKey);
                 }

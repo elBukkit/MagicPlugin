@@ -123,9 +123,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             item = InventoryUtils.makeReal(item);
             for (ConfigurationSection attributeConfig : attributes) {
                 String attributeKey = attributeConfig.getString("type");
+                attributeKey = attributeConfig.getString("attribute", attributeKey);
                 try {
                     Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                     double value = attributeConfig.getDouble("amount");
+                    value = attributeConfig.getDouble("value", value);
                     String slot = attributeConfig.getString("slot");
                     String uuidString = attributeConfig.getString("uuid");
                     UUID uuid = null;
