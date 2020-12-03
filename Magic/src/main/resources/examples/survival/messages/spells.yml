@@ -695,6 +695,7 @@ spells:
         name: Flare
         description: Fire off flares
         cast: You fire some magical flares
+        upgrade_description: "More fireworks!"
     respawn:
         name: Respawn
         description: Return to spawn
