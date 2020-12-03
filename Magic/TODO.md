@@ -3,6 +3,8 @@
 ## List is too long
 
  - /mnpc select just doesn't work sometimes
+ - Wands deactivate on TP (sometimes? cross-world? idk, can't reproduce)
+ - Magic crossbow support: https://editor.elmakers.com/bz8e4d
 
  - Modifiers
    - Allow variables in modifiers
