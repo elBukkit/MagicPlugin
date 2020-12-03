@@ -140,19 +140,16 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
 
         PreparedStatement insert = null;
         try {
-            insert = getConnection().prepareStatement("REPLACE INTO mage (id, data) VALUES (?, ?)");
+            insert = getConnection().prepareStatement("REPLACE INTO mage (id, data, locked) VALUES (?, ?, ?)");
             insert.setString(1, mage.getId());
             insert.setString(2, serialized.saveToString());
+            insert.setInt(3, releaseLock ? 0 : 1);
             insert.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error saving player " + mage.getId(), ex);
             close();
         } finally {
             close(insert);
-        }
-
-        if (releaseLock) {
-            releaseLock(mage);
         }
 
         if (callback != null) {
