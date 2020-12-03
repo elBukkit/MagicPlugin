@@ -36,3 +36,110 @@ attributes:
   mana_max:
     name: Mana maximal
     description: La limite maximale de mana d'un joueur
+    
+    
+commands:
+    no_permission: "&cTu n'es pas autorisé à utiliser cette commande."
+    in_game: "&cCette commande peut uniquement être utilisée en jeu."
+    unknown_command: "&cCommande inconnue: &f$command"
+    mconfig:
+      write_failed: "&cEcriture sur le fichier $file impossible."
+      example:
+        usage: "&cUsage: /mconfig example [$actions]"
+        list:
+          base: "&bExemples de base: &3$example"
+          header: "&bExemples:"
+          item: "  &f- &3$example"
+        fetch:
+          usage: "&cUsage: /mconfig example fetch <example name> <url>"
+          unknown: "&cExemple inconnu: &e$example, &cutilise une url pour le récupérer en premier.&r\n&cUsage: /mconfig example fetch <example name> <url>"
+          fail: "&cRécupération de l'url &e$url impossible"
+          error: "&cQuelque chose s'est mal passé, regarde les logs pour plus d'infos"
+          wait: "&bPatience, téléchargement en cours &b$url..."
+          success: "&bExemple &2$example téléchargé&f\n&rUtilise &6/mconfig example add $example&f pour l'ajouter à la configuration actuelle\n&rUse &6/mconfig example set $example&f pour l'utiliser comme configuration générale"
+          backup: "&eExemple existant, &3sauvegarde dans &f$backup"
+          overwrite_backup: "&eExemple et sauvegarde existants, &créécriture &f$backup"
+          url_write: "&bTu peux mettre à jour cet exemple avec &6/mconfig example fetch $example&r"
+          url_write_failed: "&cL'écriture du fichier à partir de l'url s'est mal passée, regarde les logs pour plus d'infos"
+          url_exists: "&eL'exemple a un fichier d'url intégré, réécriture impossible.\n&r&fUne nouvelle version de cet exemple est peut-être disponible,\n&6/mconfig example fetch $example &bpour le mettre à jour"
+        add:
+          usage: "&cUsage: /mconfig example add <example>"
+          duplicate: "&cLes exemples &2$examples &csont déjà chargés"
+          success: "&bLes exemples &2$examples ont été ajoutés avec succès"
+        remove:
+          usage: "&cUsage: /mconfig example remove <example>"
+          missing: "&cL'exemple &2$example &cn'est pas chargé"
+          all: "&bSuppression de tous les exemples, dont l'exemple de base.\n&6/mconfig example set survival none&b si tu ne veux pas supprimer l'exemple de base de survie.\n&r&bSinon &6/magic load&b pour appliquer les changements"
+          success: "&bSuppression de l'exemple &2$example avec succès"
+        set:
+          success: "&bSet base example to &2$example"
+          multiple: "&bSet base example to &2$example&f\n&r&bSet added examples to &2$examples"
+          clear_added: "&bSet base example to &2$example&f\n&r&bCleared added examples"
+          clear: "&bCleared base example.&f\n&r&bUse &g/mconfig example remove all&b if you have added examples you want to remove"
+      disable:
+        usage: "&cUsage: /mconfig disable [$options] [key]"
+        nokey: "&cInvalid type: $type, options: $options"
+        success: "&bDisabled &3$type.$key&b, use &f/magic load &bto apply pending changes"
+      enable:
+        usage: "&cUsage: /mconfig enable [$options] [key]"
+        nokey: "&cInvalid type: $type, options: $options"
+        success: "&bEnabled &3$type.$key&b, use &f/magic load &bto apply pending changes"
+      configure:
+        usage: "&cUsage: /mconfig configure [$options] [key] [property] [value]"
+        nokey: "&cInvalid type: $type, options: $options"
+        success: "&bChanged &3$type.$key&b, use &f/magic load &bto apply pending changes"
+      reset:
+        usage: "&cUsage: /mconfig reset [$options] [key] "
+        nokey: "&cInvalid type: $type, options: $options"
+        missing: "&cFile &f$file &cdoes not exist, not resetting"
+        nothing: "&cFile &f$file &cdoes not exist, and &f$key &cwas not found in the customization file"
+        none: "&cNo customizations were found to reset"
+        removed: "&bRemoved &3$key &bfrom customizations file"
+        success: "&bDeleted &3$file"
+        backup: "&7Backup file saved to &f$backup &7in case you want to undo this change"
+        load_prompt: "&7Use &f/magic load &7to apply pending changes"
+      apply:
+        usage: "&cUsage: /mconfig apply [session id]"
+        wait: "&bFetching configuration..."
+        error: "&cSomething went wrong, please check logs"
+        error_saving: "&cCould not write to file $file"
+        overwrote: "&eOverwrote &bfile &a$file"
+        created: "&bCreated file &a$file"
+        missing: "&cThe $field field was missing from the server response"
+        load_prompt: "&7Use &f/magic load &7to load your changes"
+        invalid: "&cYour file has parse errors. Please fix them and try again."
+      load:
+        usage: "&cUsage: /mconfig load [session id]"
+        wait: "&bFetching configuration..."
+        error: "&cSomething went wrong, please check logs"
+        missing: "&cThe $field field was missing from the server response"
+        error_saving: "&cCould not write to file $file"
+        overwrote: "&eOverwrote &bfile &a$file"
+        created: "&bCreated file &a$file"
+        invalid: "&cYour file has parse errors. Please fix them and try again."
+      editor:
+        usage: "&cUsage: /mconfig editor [$options]"
+        error: "&cSomething went wrong, please check logs"
+        wait: "&bPlease wait, starting new session..."
+        server_error: "&cSomething went wrong, server says: &e$message"
+        new_session: "&3Go to &f$url &3in your web browser"
+        new_item: "&3Creating new &2$type.&b$item"
+        edit_item: "&3Editing &2$type.&b$item"
+    modifier:
+      usage: "Use: /mage modifier <add|remove> <modifier> [duration]"
+      add:
+        success: "Added modifier &3$name &fto &6$player"
+        success_duration: "Added modifier &3$name &fto &6$player &ffor $duration"
+        fail: "&cCould not add modifier &3$name &fto &6$player, &fmay already have it"
+        invalid: "&cInvalid duration: &4$input"
+      remove:
+        success: "Removed modifier &3$name &ffrom &6$player"
+        fail: "&cCould not remove modifier &3$name &ffrom &6$player, &fmay not have it"
+    getrp:
+      auto: "You will now receive the resource pack automatically at login"
+      manual: "RP preference cleared, you will be prompted again at next login."
+      turnoff: "You will no longer receive the resource pack automatically at login nor be prompted.\n&rUse &6/getrp&f if you want to get it.\n&rIf you'd prefer to download the RP, you can use &6/getrp url&f to get the URL"
+      sending: "Use &6/getrp auto&f to get the resource pack automatically.\n&rOr use &6/getrp off&f to turn off the login prompt."
+      preference: "RP reference set to &3$pack&f\nUse &6/getrp default&f to change back."
+      noauto: "Use &6/getrp auto &fto get this pack automatically at login"
+      default: "RP preference set back to default"    
