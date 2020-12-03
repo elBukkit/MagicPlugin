@@ -5,6 +5,7 @@
  - Fix some issues absorbing spell items, now requires you to be holding your wand
  - Fix cure not working on the caster
  - Fix releasing player data locks on shutdown, causing warnings on next login
+ - Fix lightsaber appearances in legacy MC versions
 
 # 8.1
 
