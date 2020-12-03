@@ -142,4 +142,78 @@ commands:
       sending: "&6/getrp auto&f pour recevoir le resource pack automatiquement \n&rou &6/getrp off&f pour désactiver la demande à la connexion"
       preference: "Préférences pour le resource pack mises à &3$pack&f\n&6/getrp default&f pour le remettre par défaut"
       noauto: "&6/getrp auto &fpour avoir le resource pack automatiquement à la connexion"
-      default: "Préférences du resource pack remises par défaut"    
+      default: "Préférences du resource pack remises par défaut"   
+    
+    
+    
+    
+costs:
+    sp_amount: $amount PS
+    xp_amount: $amount XP
+    levels_amount: $amount Niveaux d'XP
+    mana_amount: $amount Mana
+    mana: Mana
+    xp: XP
+    levels: Niveaux
+    sp: Points de Sort
+    sp_short: PS
+    hunger: Energie
+    health: Vie
+    health_amount: $amount Vie
+    hunger_amount: $amount Energie
+    heroes_mana: $amount Mana
+    currency_singular: Dollar
+    currency: Dollars
+    currency_amount: "$$amount"
+
+currency:
+    item_name: "&e$amount &6$type"
+    description: Clic droit pour déposer
+    limit: "a:&eLa limite de &6$type &eest de &c$amount"
+    deposited: "a:&aDépôt de &2$amount &6$type&a, montant: &2$balance"
+    earned: "a:&6+ &e$earned"
+
+sp:
+    name: "&e$amount &6Points de Sort"
+    description: Clic droit pour récupérer les Points de Sort
+    limit: "a:&eLa limite pour les &6Points de Sort &eest de &c$amount"
+    deposited: "a:&aDépôt de &2$amount &6Points de Sort&a, montant: &2$balance"
+ 
+ 
+ 
+ 
+item:
+    duplicated: Ton objet a été dupliqué
+    destroyed: Ton objet a été détruit
+    cleaned: Ton objet a été de toutes les données de Magic
+    no_item: Tu dois avoir un objet en main!
+    renamed: Ton objet a été renommé
+    rename_clear: Le nom de ton objet a été supprimé
+    flag_added: "Added the $flag flag to your item"
+    flag_removed: "Removed the $flag flag from your item"
+    no_flags: That item has no flags
+    no_flag: "That item does not have the $flag flag"
+    lore_added: "Added lore: $lore"
+    lore_removed: "Removed lore: $lore"
+    no_lore: That item has no lore
+    not_unbreakable: That item is not unbreakable
+    already_unbreakable: That item is already unbreakable
+    add_unbreakable: That item is now unbreakable
+    remove_unbreakable: That item is no longer unbreakable
+    not_unplaceable: That item is not unplaceable
+    already_unplaceable: That item is already unplaceable
+    add_unplaceable: That item is now unplaceable
+    remove_unplaceable: That item is no longer unplaceable
+    no_enchants: This item has no enchantments
+    no_enchant: "That item does not have the $enchant enchantment"
+    enchant_removed: "Removed the $enchant enchantment from your item"
+    enchant_added: "Added the $enchant enchantment to your item"
+    enchant_not_added: "Did not add the $enchant enchantment to your item"
+    enchant_unsafe: "You do not have permission to add unsafe enchantments"
+    no_attribute: "That item does not have the $attribute attribute"
+    attribute_removed: "Removed the $attribute attribute from your item"
+    attribute_added: "Set the $attribute attribute on your item to $value for $slot ($operation)"
+    attribute_not_added: "Could not set the $attribute attribute on your item"
+    skull: Your book has been turned into a skull
+    skull_no_book: You must hold a written book with skull data in it
+    skull_invalid_book: "That book does not have skull data in it! Paste in just the text in 'Textures.Value', it is a long string of random characters normally ending in =="
