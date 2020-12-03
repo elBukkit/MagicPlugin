@@ -1140,8 +1140,23 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot) {
-        return setItemAttribute(item, attribute, value, slot, 0);
+    public static boolean removeItemAttributes(ItemStack item) {
+        try {
+            Object handle = getHandle(item);
+            if (handle == null) return false;
+            Object tag = getTag(handle);
+            if (tag == null) return false;
+
+            Object attributesNode = getNode(tag, "AttributeModifiers");
+            if (attributesNode == null) {
+                return false;
+            }
+            removeMeta(tag, "AttributeModifiers");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
@@ -1159,7 +1174,6 @@ public class CompatibilityUtils extends NMSUtils {
                     return false;
                 }
                 ItemMeta meta = item.getItemMeta();
-                class_ItemMeta_removeAttributeModifierMethod.invoke(meta, attribute);
                 AttributeModifier modifier;
                 if (slot != null && !slot.isEmpty()) {
                     EquipmentSlot equipmentSlot;

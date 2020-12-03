@@ -941,6 +941,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
 
         ItemStack newItem = CompatibilityUtils.makeReal(item);
+        CompatibilityUtils.removeItemAttribute(newItem, attribute);
         if (CompatibilityUtils.setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal())) {
             if (attributeSlot == null) {
                 attributeSlot = "(All Slots)";

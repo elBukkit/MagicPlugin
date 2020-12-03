@@ -597,7 +597,9 @@ public class InventoryUtils extends NMSUtils
     }
     
     public static void applyAttributes(ItemStack item, ConfigurationSection attributeConfig, String slot) {
-        if (item == null || attributeConfig == null) return;
+        if (item == null) return;
+        CompatibilityUtils.removeItemAttributes(item);
+        if (attributeConfig == null) return;
         Collection<String> attributeKeys = attributeConfig.getKeys(false);
         for (String attributeKey : attributeKeys)
         {
