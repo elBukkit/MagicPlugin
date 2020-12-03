@@ -291,7 +291,7 @@ public class MagicController implements MageController {
     public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(String mageId) {
         checkNotNull(mageId);
 
-        if (!loaded) {
+        if (!loaded || shuttingDown) {
             return null;
         }
         return mages.get(mageId);
@@ -402,6 +402,13 @@ public class MagicController implements MageController {
 
         com.elmakers.mine.bukkit.magic.Mage apiMage = null;
         if (!mages.containsKey(mageId)) {
+            if (shuttingDown) {
+                if (entity instanceof Player) {
+                    getLogger().warning("Player data request for " + mageId + " (" + ((Player)commandSender).getName() + ") failed, plugin is shutting down");
+                }
+
+                throw new PluginNotLoadedException();
+            }
             if (entity instanceof Player && !((Player)entity).isOnline() && !isNPC(entity))
             {
                 getLogger().warning("Player data for " + mageId + " (" + entity.getName() + ") loaded while offline!");
@@ -2709,17 +2716,19 @@ public class MagicController implements MageController {
 
         final List<YamlDataFile> saveData = new ArrayList<>();
         final List<MageData> saveMages = new ArrayList<>();
-        if (savePlayerData && mageDataStore != null) {
+
+        // Player data will be saved as each player quits on shutdown, so skip it here.
+        if (savePlayerData && mageDataStore != null && !shuttingDown) {
             saveMageData(saveMages);
+            info("Saving " + saveMages.size() + " players");
         }
-        info("Saving " + saveMages.size() + " players");
         saveSpellData(saveData);
         saveLostWands(saveData);
         saveAutomata(saveData);
         saveWarps(saveData);
         saveNPCs(saveData);
 
-        if (mageDataStore != null) {
+        if (mageDataStore != null && !shuttingDown) {
             if (asynchronous) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, new SaveMageDataTask(this, saveMages));
             } else {
@@ -3744,7 +3753,6 @@ public class MagicController implements MageController {
         if (!loaded) {
             return;
         }
-        loaded = false;
         Collection<Mage> saveMages = new ArrayList<>(mages.values());
         for (Mage mage : saveMages)
         {
@@ -3756,6 +3764,7 @@ public class MagicController implements MageController {
         vanished.clear();
         pendingConstruction.clear();
         spells.clear();
+        loaded = false;
     }
 
     protected void unregisterPhysicsHandler(Listener listener)
@@ -3959,6 +3968,7 @@ public class MagicController implements MageController {
     }
 
     public void onShutdown() {
+        shuttingDown = true;
         for (Mage mobMage : mobMages.values()) {
             Entity entity = mobMage.getEntity();
             if (entity != null) {
@@ -4001,7 +4011,7 @@ public class MagicController implements MageController {
         // Delay removal one tick to avoid issues with plugins that kill
         // players on logout (CombatTagPlus, etc)
         // Don't delay on shutdown, though.
-        if (loaded && implementation != null) {
+        if (loaded && implementation != null && !shuttingDown) {
             final com.elmakers.mine.bukkit.magic.Mage quitMage = implementation;
             quitMage.setUnloading(true);
             plugin.getServer().getScheduler().runTaskLater(plugin, new MageQuitTask(this, quitMage, callback, isOpen), 1);
@@ -4018,7 +4028,7 @@ public class MagicController implements MageController {
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
             // Save synchronously on shutdown
-            saveMage(mage, loaded, callback, isOpen, true);
+            saveMage(mage, !shuttingDown, callback, isOpen, true);
         }
         else if (callback != null)
         {
@@ -5916,7 +5926,7 @@ public class MagicController implements MageController {
     }
 
     public boolean isLoaded() {
-        return loaded;
+        return loaded && !shuttingDown;
     }
 
     public boolean areLocksProtected() {
@@ -7265,6 +7275,7 @@ public class MagicController implements MageController {
     private String                              exampleDefaults             = null;
     private Collection<String>                  addExamples                 = null;
     private boolean                             loaded                      = false;
+    private boolean                             shuttingDown                = false;
     private boolean                             dataLoaded                  = false;
     private String                              defaultSkillIcon            = "stick";
     private int                                 skillInventoryRows          = 6;
