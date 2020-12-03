@@ -1908,7 +1908,7 @@ permissions:
   Magic.create.*:
     description: A player may create any wand with the /wand command
     type: boolean
-    default: op
+    default: true
   Magic.wand.overwrite:
     description: A player may delete or overwrite saved wands
     default: op

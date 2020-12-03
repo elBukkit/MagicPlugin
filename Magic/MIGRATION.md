@@ -4,6 +4,8 @@
 
  - Projectile "start" actions have been renamed to "projectile" to avoid conflict with the "start" distance parameter.
    This was used, for instance, in the rocket spell. Please change start to launch if you were using these.
+ - The Magic.create.* permissions is now given by default. This means if you have /mgive permission, you can use it
+   to create any item. This permission can be negated to go back to the previous behavior.
 
 # 8.1
 
