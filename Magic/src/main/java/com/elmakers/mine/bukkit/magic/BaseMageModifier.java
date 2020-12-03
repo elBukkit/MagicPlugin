@@ -178,7 +178,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
                 String operationType = modifierConfig.getString("operation");
                 if (operationType.equalsIgnoreCase("base")) {
                     base = value;
-                } else  if (operationType != null && !operationType.isEmpty()) {
+                } else if (operationType != null && !operationType.isEmpty()) {
                     try {
                         operation = AttributeModifier.Operation.valueOf(operationType.toUpperCase());
                     } catch (Exception ex) {

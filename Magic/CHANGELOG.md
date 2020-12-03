@@ -7,6 +7,7 @@
  - Fix support for wildcard brushes (use with SuperReplace to replace stairs, fences, etc in-place)
  - Add replacement options to ChangeBiome, Brush actions and ConstructSpell
  - Cloak now hides you from mobs
+ - Allow specifying item_attributes as sections, so you can set a slot per-attribute
 
 # 8.1.1
 

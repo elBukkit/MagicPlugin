@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -600,10 +601,30 @@ public class InventoryUtils extends NMSUtils
         Collection<String> attributeKeys = attributeConfig.getKeys(false);
         for (String attributeKey : attributeKeys)
         {
+            // Note that there is some duplication here with BaseMageModifier.getAttributeModifiers
+            // We want to keep the syntax the same, however there are some fundamental differences in how
+            // entity vs item modifiers work, enough that it makes sense to keep the two separate
             try {
                 Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
-                double value = attributeConfig.getDouble(attributeKey);
-                if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot)) {
+                double value = 0;
+                int operation = 0;
+                ConfigurationSection attributeConfiguration = attributeConfig.getConfigurationSection(attributeKey);
+                if (attributeConfiguration != null) {
+                    value = attributeConfiguration.getDouble("value");
+                    slot = attributeConfiguration.getString("slot", slot);
+                    String operationKey = attributeConfiguration.getString("operation");
+                    if (operationKey != null && !operationKey.isEmpty()) {
+                        try {
+                            AttributeModifier.Operation eOperation = AttributeModifier.Operation.valueOf(operationKey.toUpperCase());
+                            operation = eOperation.ordinal();
+                        } catch (Exception ex) {
+                            getLogger().warning("Invalid operation " + operationKey);
+                        }
+                    }
+                } else {
+                    value = attributeConfig.getDouble(attributeKey);
+                }
+                if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot, operation)) {
                     getLogger().warning("Failed to set attribute: " + attributeKey);
                 }
             } catch (Exception ex) {
