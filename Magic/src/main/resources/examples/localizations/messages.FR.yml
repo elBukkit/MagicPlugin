@@ -1,0 +1,38 @@
+
+attributes:
+  bowpull:
+    name: Band de l'arc
+    description: Distance avec laquelle un joueur a bandé son arc, s'applique uniquement aux sorts d'arc
+  health:
+    name: Vie
+    description: Vie d'un joueur ou d'une créature (coeurs x 2)
+  health_max:
+    name: Vie maximale
+    description: Limite maximale de la vie d'un joueur ou d'une créature
+  time:
+    name: Heure
+    description: L'heure actuelle dans le monde, en ticks de 0 à 23999
+  moon:
+    name: Phase de la lune
+    description: 0 = Pleine lune, 1 = Lune décroissante, 4 = Nouvelle lune, 7 = Lune croissante
+  location_x:
+    name: Coordonnées X
+    description: Les coordonnées x d'un joueur ou d'une créature dans le monde
+  location_y:
+    name: Coordonnées Y
+    description: La hauteur d'un joueur ou d'une créature dans le monde
+  location_z:
+    name: Coordonnées Z
+    description: Les coordonnées z d'un joueur ou d'une créature dans le monde
+  level:
+    name: Niveau d'expérience
+    description: Le niveau d'expérience d'un joueur
+  xp:
+    name: Experience
+    description: Le total de points d'expérience d'un joueur
+  mana:
+    name: Mana
+    description: Le nombre de mana actuel d'un joueur
+  mana_max:
+    name: Mana maximal
+    description: La limite maximale de mana d'un joueur
