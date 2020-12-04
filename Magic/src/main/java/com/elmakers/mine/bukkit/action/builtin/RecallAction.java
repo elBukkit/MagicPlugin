@@ -795,6 +795,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             String warpName = parameters.getString("warp");
             Waypoint waypoint = getWarp(warpName);
             if (tryTeleport(player, waypoint)) {
+                if (teleport) {
+                    return doTeleport() ? SpellResult.CAST : SpellResult.FAIL;
+                }
                 return SpellResult.CAST;
             }
             return SpellResult.FAIL;
@@ -833,11 +836,19 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     return SpellResult.FAIL;
                 }
             }
-
-            RecallType recallType = RecallType.valueOf(typeString.toUpperCase());
+            RecallType recallType;
+            try {
+                recallType = RecallType.valueOf(typeString.toUpperCase());;
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid recall type: " + typeString);
+                return SpellResult.FAIL;
+            }
 
             Waypoint location = getWaypoint(player, recallType, null, parameters, context);
             if (tryTeleport(player, location)) {
+                if (teleport) {
+                    return doTeleport() ? SpellResult.CAST : SpellResult.FAIL;
+                }
                 return SpellResult.CAST;
             }
             return SpellResult.FAIL;
