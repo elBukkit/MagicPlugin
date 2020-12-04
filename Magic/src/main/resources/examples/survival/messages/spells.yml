@@ -720,6 +720,11 @@ spells:
         friend_request_title: "@tn wants to be friends"
         reject: "@pn said no ;("
         send_request_title: "Send Friend Request"
+    recall_death:
+        name: Recall to Last Death
+        description: Takes you directly to the last place you died
+        cast_death: Returning you to your last death location
+        no_target_death: No recorded death location
     recall:
         name: Recall
         cancel: Recall interrupted!
