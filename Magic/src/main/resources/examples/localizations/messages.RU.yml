@@ -70,7 +70,7 @@ commands:
         usage: "&cИспользование: /mconfig example [$actions]"
         list:
           base: "&bБазовая конфигурация: &3$example"
-          header: "&bДоступные конфигурации:"
+          header: "&bКонфигурации:"
           item: "  &f- &3$example"
         fetch:
           usage: "&cИспользование: /mconfig example fetch <название> <ссылка>"
@@ -86,8 +86,8 @@ commands:
           url_exists: "&eКонфигурация уже имеет загруженный файл с ссылкой.\n&r&fВозможно, вышло обновление для конфигурации.\n&r&&bfИспользуй команду &6/mconfig example fetch $example&b, чтобы обновить"
         add:
           usage: "&cИспользование: /mconfig example add <example>"
-          duplicate: "&cКонфигурация &2$example &cуже загружена"
-          success: "&bДобавлена конфигурация &2$example"
+          duplicate: "&cКонфигурации &2$examples &cуже загружены"
+          success: "&bДобавлены конфигурации: &2$examples"
         remove:
           usage: "&cИспользование: /mconfig example remove <example>"
           missing: "&cКонфигурация &2$example &cне загружена"
@@ -117,7 +117,7 @@ commands:
         removed: "&bУбрано &3$key &bиз файла настроек"
         success: "&bУдалено &3$file"
         backup: "&7Бэкап файл был сохранен &f$backup&7, используй его если захочешь отменить изменения"
-        load_prompt: "&7Используй &f/magic load &7to apply pending changes"
+        load_prompt: "&7Используй &f/magic load&7, чтобы изменения вступили в силу"
       apply:
         usage: "&cИспользование: /mconfig apply [id сессии]"
         wait: "&bПодождите, загружаю конфигурацию..."
@@ -172,6 +172,7 @@ costs:
     xp: Опыт
     levels: уровней
     sp: Очки заклинаний
+    sp_short: ОЗ
     hunger: Энергия
     health: Health
     health_amount: $amount ед. Здоровья
@@ -664,7 +665,7 @@ spells:
     fizzle: Заклинание ослабло!
     backfire: Заклинание отлетело в вас!
     fail: Что-то пошло не так!
-    insufficient_permission: У тебя нет прав использовать это здесь.
+    insufficient_permission: У тебя нет прав использовать это.
     cast_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
     indirect_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
     insufficient_resources: Недостаточно $cost
@@ -1409,8 +1410,7 @@ spells:
     alternate: Get away!
     upgrade_description: Толкает с большей силой
   push|4:
-    upgrade_description: Наведи курсор вниз и нажми ЛКМ, чтобы применить альтернативную
-      способность
+    upgrade_description: Наведи курсор вниз и нажми ЛКМ, чтобы применить альтернативную способность
   farm:
     name: Ферма
     description: Призывает животных
@@ -1695,6 +1695,7 @@ spells:
     name: Фейерверк
     description: Запускает фейерверк
     cast: Ты запустил магический фейерверк
+    upgrade_description: 'Больше фейерверков!'
   respawn:
     name: Респавн
     description: Вернуться на спавн
@@ -2448,7 +2449,7 @@ wand:
     mana_amount_boosted: "&eМана: $amount &f(&b$mana&f)"
     mana_regeneration: "&eВосстановление маны: $amount/сек."
     mana_per_damage: "&eЯрость маны: $amount/HP"
-    mana_regeneration_boosted: "&eВосстановление маны: $amount &f(&b$mana&f)&d/сек."
+    mana_regeneration_boosted: "&eВосстановление маны: $amount &f(&b$mana&f)/сек."
     mana_boost: "&eУвеличение маны: $percent%"
     mana_regeneration_boost: "&eУвеличение восстановления маны: $percent%"
     earn_multiplier: "&6Увеличение полученных ОЗ: $percent%"
