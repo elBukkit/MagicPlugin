@@ -4,4 +4,10 @@ lightsaber_green:
     legacy_icon: shield_icon:2
     icon: shield{CustomModelData:18002}
     effect_color: '00FF00'
-
+    migrate_legacy_icons:
+      'shield_icon:2': shield{CustomModelData:18002}
+    # This is here because Magic 8.0 released without legacy icons for lightsabers,
+    # breaking them in legacy MC versions
+    # This puts it back, and is ignored in favor of migrate_legacy_icons in modern versions of MC
+    migrate_icons:
+      'shield{"CustomModelData":18002}': shield_icon:2
