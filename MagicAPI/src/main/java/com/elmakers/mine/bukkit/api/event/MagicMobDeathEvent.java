@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -36,7 +37,10 @@ public class MagicMobDeathEvent extends Event {
             Entity damagingEntity = damageByEvent.getDamager();
             if (damagingEntity instanceof Projectile) {
                 Projectile projectile = (Projectile)damagingEntity;
-                damagingEntity = (LivingEntity)projectile.getShooter();
+                ProjectileSource source = projectile.getShooter();
+                if (source instanceof LivingEntity) {
+                    damagingEntity = (LivingEntity)source;
+                }
             }
             if (damagingEntity != null && damagingEntity instanceof Player)
             {
