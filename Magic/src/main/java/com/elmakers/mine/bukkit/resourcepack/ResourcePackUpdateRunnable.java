@@ -121,7 +121,7 @@ public class ResourcePackUpdateRunnable implements Runnable {
         catch (Exception ex) {
             success = false;
             responses.add("An unexpected error occurred while checking your resource pack (see logs): " + ChatColor.DARK_RED + finalResourcePack);
-            controller.getLogger().log(Level.WARNING,"Error checking resource pack", ex);
+            controller.getLogger().log(Level.WARNING,"Error checking resource pack: " + ex.getClass().getSimpleName() + " : " + ex.getMessage());
         }
 
         if (plugin.isEnabled() && callback != null) {
