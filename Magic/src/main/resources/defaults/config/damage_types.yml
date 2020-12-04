@@ -52,3 +52,55 @@ damage_types:
     max_reduction: 0.5
     max_strength: 5
     max_weakness: 10
+  entity_sweep_attack:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  drowning:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  lightning:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  hot_floor:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  suffocation:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  cramming:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  thorns:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  starve:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  fly_into_wall:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  melting:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  out_of_world:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  poison:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
+  wither:
+    max_reduction: 1.0
+    max_strength: 5
+    max_weakness: 10
