@@ -2471,42 +2471,66 @@ wand:
     item_attributes:
       GENERIC_ATTACK_DAMAGE: "Урон от атаки"
     prefixes:
-      protection: ""
-      strength: ""
-      weakness: ""
+      protection: "&3"
+      strength: "&2"
+      weakness: "&4"
       enchantment: "&7"
     protection:
-      overall: "&2Защита $roman"
-      physical: "&2Физ. защита $roman"
-      projectile: "&2Защита от снарядов $roman"
-      fall: "&2Невесомость $roman"
-      fire: "&2Огнеупорность $roman"
-      explosion: "&2Взрывоустойчивость $roman"
-      magic: "&2Защита от магии $roman"
-      unknown: "&2Защита от $type $roman"
+      overall: "Защита $roman"
+      physical: "Физ. защита $roman"
+      projectile: "Защита от снарядов $roman"
+      fall: "Защита от падения $roman"
+      fire: "Защита от огня $roman"
+      explosion: "Защита от взрывов $roman"
+      magic: "Защита от магии $roman"
+      drowning: "Защита от утопления $roman"
+      lightning: "Зашита от молний $roman"
+      hot_floor: "Защита от магмы $roman"
+      suffocation: "Защита от удушья $roman"
+      cramming: "Защита от сдавливания $roman"
+      thorns: "Защита от шипов $roman"
+      poison: "Защита от яда $roman"
+      wither: "Защита от иссушения $roman"
+      unknown: "Защита от $type $roman"
     strength:
-      overall: '&2+Урон $roman'
-      physical: '&2+Физ. урон $roman'
-      projectile: '&2+Урон от снарядов $roman'
-      fall: '&2+Урон от падения $roman'
-      fire: '&2+Урон от огня $roman'
-      explosion: '&2+Урон от взрыва $roman'
-      magic: '&2Магический урон $roman'
-      unknown: '&2$type урон $roman'
+      overall: 'Урон $roman'
+      physical: 'Физ. урон $roman'
+      projectile: 'Урон от снарядов $roman'
+      fall: 'Урон от падения $roman'
+      fire: 'Урон от огня $roman'
+      explosion: 'Урон от взрывов $roman'
+      magic: 'Магический урон $roman'
+      drowning: "Урон от утопления $roman"
+      lightning: "Урон от молний $roman"
+      hot_floor: "Урон от магмы $roman"
+      suffocation: "Урон от удушья $roman"
+      cramming: "Урон от сдавливания $roman"
+      thorns: "Урон от шипов $roman"
+      poison: "Урон от яда $roman"
+      wither: "Урон от иссушения $roman"
+      unknown: '$type урон $roman'
     weakness:
-      overall: '&4Уязвимость $roman'
-      physical: '&4Физ. уязвимость $roman'
-      projectile: '&4Уязвимость к снарядам $roman'
-      fall: '&4Уязвимость к падению $roman'
-      fire: '&4Уязвимость к огню $roman'
-      explosion: '&Уязвимость к взрывам $roman'
-      magic: '&4Уязвимость к магии $roman'
-      unknown: '&4$type Уязвимость $roman'
+      overall: 'Уязвимость $roman'
+      physical: 'Физ. уязвимость $roman'
+      projectile: 'Уязвимость к снарядам $roman'
+      fall: 'Уязвимость к падению $roman'
+      fire: 'Уязвимость к огню $roman'
+      explosion: 'Уязвимость к взрывам $roman'
+      magic: 'Уязвимость к магии $roman'
+      drowning: "Уязвимость к утоплению $roman"
+      lightning: "Уязвимость к молниям $roman"
+      hot_floor: "Уязвимость к магме $roman"
+      suffocation: "Уязвимость к удушью $roman"
+      cramming: "Уязвимость к сдавливанию $roman"
+      thorns: "Уязвимость к шипам $roman"
+      poison: "Уязвимость к яду $roman"
+      wither: "Уязвимость к иссушени $roman"
+      unknown: '$type Уязвимость $roman'
     enchantment:
-        arrow_damage: "Урон Стрелы $roman"
-        arrow_fire: "Пламя Стрелы"
-        arrow_infinite: "Бесконечность"
-        arrow_knockback: "Откидывание Стрелы $roman"
+        arrow_damage: "Урон стрел $roman"
+        arrow_fire: "Горящая стрела"
+        arrow_infinite: "Бесконечные стрелы"
+        arrow_knockback: "Откидывание $roman"
         binding_curse: "Проклятие несъемности"
         channeling: "Громовержец"
         damage_all: Острота $roman
@@ -2523,9 +2547,9 @@ wand:
         loot_bonus_mobs: Добыча $roman
         loyalty: Верность
         luck: Везучий рыбак $roman
-        lure: Приманкаv $roman
+        lure: Приманка $roman
         mending: Починка
-        multishot: Multishot
+        multishot: Тройной выстрел
         oxygen: Подводное дыхание $roman
         protection_environmental: Защита $roman
         protection_explosions: Взрывоустойчивость $roman
