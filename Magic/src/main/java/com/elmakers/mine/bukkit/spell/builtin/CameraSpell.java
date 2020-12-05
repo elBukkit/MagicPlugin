@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -66,6 +67,7 @@ public class CameraSpell extends TargetingSpell
                             playerName = getMobSkin(targetEntity.getType());
                             if (playerName != null) {
                                 metaName = targetEntity.getType().getName();
+                                metaName = WordUtils.capitalize(metaName.toLowerCase().replace('_', ' '));
                             }
                         }
                     } else {
@@ -75,7 +77,8 @@ public class CameraSpell extends TargetingSpell
                         }
                         playerName = getBlockSkin(targetBlock.getType());
                         if (playerName != null) {
-                            metaName = target.getBlock().getType().name().toLowerCase();
+                            metaName = target.getBlock().getType().name();
+                            metaName = WordUtils.capitalize(metaName.toLowerCase().replace('_', ' '));
                         }
                     }
                 }
