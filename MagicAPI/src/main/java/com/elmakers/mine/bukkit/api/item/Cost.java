@@ -18,8 +18,14 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 public interface Cost {
 
     /**
-     * Whether or not this record has any costs associated with it,
-     * after being reduced
+     * Whether or not this record has any costs associated with it.
+     *
+     * @return False if this has any non-zero costs.
+     */
+    boolean isEmpty();
+
+    /**
+     * Whether or not this record has any costs associated with it.
      *
      * @param reducer The CostReducer to use for calculating costs
      * @return False if this has any non-zero costs.

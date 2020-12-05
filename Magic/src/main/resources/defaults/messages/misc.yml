@@ -8,6 +8,8 @@ books:
         title: $category Spell Book
     all:
         title: The Master Spell Book
+    spell:
+        title: $spell Spell Book
 
 material:
     wildcard: " (Keep Block Data)"

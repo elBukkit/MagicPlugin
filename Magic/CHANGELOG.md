@@ -9,6 +9,7 @@
  - Cloak now hides you from mobs
  - Allow specifying item_attributes as sections, so you can set a slot per-attribute
  - Allow crafting a magic sword with a damaged netherite sword
+ - Use `/mgive book:fling` to give a descriptive book about one spell
 
 # 8.1.1
 

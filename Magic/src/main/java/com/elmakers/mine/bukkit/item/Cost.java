@@ -64,6 +64,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     }
 
     @Override
+    public boolean isEmpty() {
+        return isEmpty(null);
+    }
+
+    @Override
     public boolean isEmpty(CostReducer reducer) {
         if (item == null && currency == null) {
             return true;

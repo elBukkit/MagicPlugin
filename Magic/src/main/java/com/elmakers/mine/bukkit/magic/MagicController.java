@@ -119,7 +119,6 @@ import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProvider;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
-import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -5133,8 +5132,6 @@ public class MagicController implements MageController {
         List<String> categoryKeys = new ArrayList<>(categories.keySet());
         Collections.sort(categoryKeys);
 
-        // Hrm? So much Copy+paste! :(
-        CostReducer reducer = null;
         ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
         BookMeta book = (BookMeta)bookItem.getItemMeta();
         book.setAuthor(messages.get("books.default.author"));
@@ -5146,9 +5143,6 @@ public class MagicController implements MageController {
         }
         book.setTitle(title);
         List<String> pages = new ArrayList<>();
-
-        Set<String> paths = WandUpgradePath.getPathKeys();
-
         for (String key : categoryKeys) {
             category = getCategory(key);
             title = messages.get("books.default.title").replace("$category", category.getName());
@@ -5158,113 +5152,9 @@ public class MagicController implements MageController {
 
             List<SpellTemplate> categorySpells = categories.get(key);
             Collections.sort(categorySpells);
+
             for (SpellTemplate spell : categorySpells) {
-                List<String> lines = new ArrayList<>();
-                lines.add("" + ChatColor.GOLD + ChatColor.BOLD + spell.getName());
-                lines.add("" + ChatColor.RESET);
-
-                String spellDescription = spell.getDescription();
-                if (spellDescription != null && spellDescription.length() > 0) {
-                    lines.add("" + ChatColor.BLACK + spellDescription);
-                    lines.add("");
-                }
-
-                String spellCooldownDescription = spell.getCooldownDescription();
-                if (spellCooldownDescription != null && spellCooldownDescription.length() > 0) {
-                    spellCooldownDescription = messages.get("cooldown.description").replace("$time", spellCooldownDescription);
-                    lines.add("" + ChatColor.DARK_PURPLE + spellCooldownDescription);
-                }
-
-                String spellMageCooldownDescription = spell.getMageCooldownDescription();
-                if (spellMageCooldownDescription != null && spellMageCooldownDescription.length() > 0) {
-                    spellMageCooldownDescription = messages.get("cooldown.mage_description").replace("$time", spellMageCooldownDescription);
-                    lines.add("" + ChatColor.RED + spellMageCooldownDescription);
-                }
-
-                Collection<CastingCost> costs = spell.getCosts();
-                if (costs != null) {
-                    for (CastingCost cost : costs) {
-                        if (!cost.isEmpty(reducer)) {
-                            lines.add(ChatColor.DARK_PURPLE + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
-                        }
-                    }
-                }
-                Collection<CastingCost> activeCosts = spell.getActiveCosts();
-                if (activeCosts != null) {
-                    for (CastingCost cost : activeCosts) {
-                        if (!cost.isEmpty(reducer)) {
-                            lines.add(ChatColor.DARK_PURPLE + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
-                        }
-                    }
-                }
-
-                for (String pathKey : paths) {
-                    WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
-                    if (!checkPath.isHidden() && (checkPath.hasSpell(spell.getKey()) || checkPath.hasExtraSpell(spell.getKey()))) {
-                        lines.add(ChatColor.DARK_BLUE + messages.get("spell.available_path").replace("$path", checkPath.getName()));
-                        break;
-                    }
-                }
-
-                for (String pathKey : paths) {
-                    WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
-                    if (checkPath.requiresSpell(spell.getKey())) {
-                        lines.add(ChatColor.DARK_RED + messages.get("spell.required_path").replace("$path", checkPath.getName()));
-                        break;
-                    }
-                }
-
-                String duration = spell.getDurationDescription(messages);
-                if (duration != null) {
-                    lines.add(ChatColor.DARK_GREEN + duration);
-                }
-                else if (spell.showUndoable())
-                {
-                    if (spell.isUndoable()) {
-                        String undoable = messages.get("spell.undoable", "");
-                        if (undoable != null && !undoable.isEmpty())
-                        {
-                            lines.add(undoable);
-                        }
-                    } else {
-                        String notUndoable = messages.get("spell.not_undoable", "");
-                        if (notUndoable != null && !notUndoable.isEmpty())
-                        {
-                            lines.add(notUndoable);
-                        }
-                    }
-                }
-
-                if (spell.usesBrush()) {
-                    lines.add(ChatColor.DARK_GRAY + messages.get("spell.brush"));
-                }
-
-                SpellKey baseKey = spell.getSpellKey();
-                SpellKey upgradeKey = new SpellKey(baseKey.getBaseKey(), baseKey.getLevel() + 1);
-                SpellTemplate upgradeSpell = getSpellTemplate(upgradeKey.getKey());
-                int spellLevels = 0;
-                while (upgradeSpell != null) {
-                    spellLevels++;
-                    upgradeKey = new SpellKey(upgradeKey.getBaseKey(), upgradeKey.getLevel() + 1);
-                    upgradeSpell = getSpellTemplate(upgradeKey.getKey());
-                }
-                if (spellLevels > 0) {
-                    spellLevels++;
-                    lines.add(ChatColor.DARK_AQUA + messages.get("spell.levels_available").replace("$levels", Integer.toString(spellLevels)));
-                }
-
-                String usage = spell.getUsage();
-                if (usage != null && usage.length() > 0) {
-                    lines.add("" + ChatColor.GRAY + ChatColor.ITALIC + usage + ChatColor.RESET);
-                    lines.add("");
-                }
-
-                String spellExtendedDescription = spell.getExtendedDescription();
-                if (spellExtendedDescription != null && spellExtendedDescription.length() > 0) {
-                    lines.add("" + ChatColor.BLACK + spellExtendedDescription);
-                    lines.add("");
-                }
-
+                List<String> lines = getSpellBookDescription(spell);
                 pages.add(StringUtils.join(lines, "\n"));
             }
         }
@@ -5272,6 +5162,130 @@ public class MagicController implements MageController {
         book.setPages(pages);
         bookItem.setItemMeta(book);
         return bookItem;
+    }
+
+    public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellTemplate spell, int count) {
+        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
+        BookMeta book = (BookMeta)bookItem.getItemMeta();
+        book.setAuthor(messages.get("books.default.author"));
+        book.setTitle(messages.get("books.spell.title").replace("$spell", spell.getName()));
+        List<String> pages = new ArrayList<>();
+        List<String> lines = getSpellBookDescription(spell);
+        pages.add(StringUtils.join(lines, "\n"));
+        book.setPages(pages);
+        bookItem.setItemMeta(book);
+        return bookItem;
+    }
+
+    protected List<String> getSpellBookDescription(SpellTemplate spell) {
+        Set<String> paths = WandUpgradePath.getPathKeys();
+        List<String> lines = new ArrayList<>();
+        lines.add("" + ChatColor.GOLD + ChatColor.BOLD + spell.getName());
+        lines.add("" + ChatColor.RESET);
+
+        String spellDescription = spell.getDescription();
+        if (spellDescription != null && spellDescription.length() > 0) {
+            lines.add("" + ChatColor.BLACK + spellDescription);
+            lines.add("");
+        }
+
+        String spellCooldownDescription = spell.getCooldownDescription();
+        if (spellCooldownDescription != null && spellCooldownDescription.length() > 0) {
+            spellCooldownDescription = messages.get("cooldown.description").replace("$time", spellCooldownDescription);
+            lines.add("" + ChatColor.DARK_PURPLE + spellCooldownDescription);
+        }
+
+        String spellMageCooldownDescription = spell.getMageCooldownDescription();
+        if (spellMageCooldownDescription != null && spellMageCooldownDescription.length() > 0) {
+            spellMageCooldownDescription = messages.get("cooldown.mage_description").replace("$time", spellMageCooldownDescription);
+            lines.add("" + ChatColor.RED + spellMageCooldownDescription);
+        }
+
+        Collection<CastingCost> costs = spell.getCosts();
+        if (costs != null) {
+            for (CastingCost cost : costs) {
+                if (!cost.isEmpty()) {
+                    lines.add(ChatColor.DARK_PURPLE + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages)));
+                }
+            }
+        }
+        Collection<CastingCost> activeCosts = spell.getActiveCosts();
+        if (activeCosts != null) {
+            for (CastingCost cost : activeCosts) {
+                if (!cost.isEmpty()) {
+                    lines.add(ChatColor.DARK_PURPLE + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages)));
+                }
+            }
+        }
+
+        for (String pathKey : paths) {
+            WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
+            if (!checkPath.isHidden() && (checkPath.hasSpell(spell.getKey()) || checkPath.hasExtraSpell(spell.getKey()))) {
+                lines.add(ChatColor.DARK_BLUE + messages.get("spell.available_path").replace("$path", checkPath.getName()));
+                break;
+            }
+        }
+
+        for (String pathKey : paths) {
+            WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
+            if (checkPath.requiresSpell(spell.getKey())) {
+                lines.add(ChatColor.DARK_RED + messages.get("spell.required_path").replace("$path", checkPath.getName()));
+                break;
+            }
+        }
+
+        String duration = spell.getDurationDescription(messages);
+        if (duration != null) {
+            lines.add(ChatColor.DARK_GREEN + duration);
+        }
+        else if (spell.showUndoable())
+        {
+            if (spell.isUndoable()) {
+                String undoable = messages.get("spell.undoable", "");
+                if (undoable != null && !undoable.isEmpty())
+                {
+                    lines.add(undoable);
+                }
+            } else {
+                String notUndoable = messages.get("spell.not_undoable", "");
+                if (notUndoable != null && !notUndoable.isEmpty())
+                {
+                    lines.add(notUndoable);
+                }
+            }
+        }
+
+        if (spell.usesBrush()) {
+            lines.add(ChatColor.DARK_GRAY + messages.get("spell.brush"));
+        }
+
+        SpellKey baseKey = spell.getSpellKey();
+        SpellKey upgradeKey = new SpellKey(baseKey.getBaseKey(), baseKey.getLevel() + 1);
+        SpellTemplate upgradeSpell = getSpellTemplate(upgradeKey.getKey());
+        int spellLevels = 0;
+        while (upgradeSpell != null) {
+            spellLevels++;
+            upgradeKey = new SpellKey(upgradeKey.getBaseKey(), upgradeKey.getLevel() + 1);
+            upgradeSpell = getSpellTemplate(upgradeKey.getKey());
+        }
+        if (spellLevels > 0) {
+            spellLevels++;
+            lines.add(ChatColor.DARK_AQUA + messages.get("spell.levels_available").replace("$levels", Integer.toString(spellLevels)));
+        }
+
+        String usage = spell.getUsage();
+        if (usage != null && usage.length() > 0) {
+            lines.add("" + ChatColor.GRAY + ChatColor.ITALIC + usage + ChatColor.RESET);
+            lines.add("");
+        }
+
+        String spellExtendedDescription = spell.getExtendedDescription();
+        if (spellExtendedDescription != null && spellExtendedDescription.length() > 0) {
+            lines.add("" + ChatColor.BLACK + spellExtendedDescription);
+            lines.add("");
+        }
+
+        return lines;
     }
 
     @Override
@@ -5432,15 +5446,21 @@ public class MagicController implements MageController {
                 com.elmakers.mine.bukkit.api.spell.SpellCategory category = null;
 
                 if (!bookCategory.isEmpty() && !bookCategory.equalsIgnoreCase("all")) {
-                    category = getCategory(bookCategory);
+                    category = categories.get(bookCategory);
                     if (category == null) {
-                        if (callback != null) {
-                            callback.updated(null);
+                        SpellTemplate spell = getSpellTemplate(bookCategory);
+                        if (spell == null) {
+                            if (callback != null) {
+                                callback.updated(null);
+                            }
+                            return null;
+                        } else {
+                            itemStack = getSpellBook(spell, amount);
                         }
-                        return null;
+                    } else {
+                        itemStack = getSpellBook(category, amount);
                     }
                 }
-                itemStack = getSpellBook(category, amount);
             } else if (magicItemKey.startsWith("recipe:")) {
                 String recipeKey = magicItemKey.substring(7);
                 itemStack = CompatibilityUtils.getKnowledgeBook();
