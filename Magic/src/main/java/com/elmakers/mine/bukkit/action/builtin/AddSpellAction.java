@@ -28,10 +28,12 @@ public class AddSpellAction extends BaseSpellAction
     private String exactPath = null;
     private String permissionNode = null;
     protected boolean autoUpgrade = false;
+    private String addTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        addTarget = parameters.getString("add_to", "wand");
         permissionNode = parameters.getString("permission", null);
         spellKey = parameters.getString("spell");
         requiredPath = parameters.getString("path", null);
@@ -57,12 +59,26 @@ public class AddSpellAction extends BaseSpellAction
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
 
-        Wand wand = context.getWand();
-        String wandName = wand == null ? "?" : wand.getName();
-        CasterProperties caster = wand != null ? wand : mage.getActiveProperties();
-        if (caster.hasSpell(spellKey)) {
+        CasterProperties caster = null;
+        if (addTarget.equals("wand")) {
+            caster = context.getWand();
+        } else if (addTarget.equals("active_wand")) {
+            caster = context.checkWand();
+        } else if (addTarget.equals("player")) {
+            caster = mage.getProperties();
+        } else if (addTarget.equals("class")) {
+            caster = mage.getActiveClass();
+        } else if (addTarget.equals("active")) {
+            caster = mage.getActiveProperties();
+        } else {
+            caster = mage.getClass(addTarget);
+        }
+
+        if (caster == null || caster.hasSpell(spellKey)) {
             return SpellResult.NO_TARGET;
         }
+        Wand wand = (caster instanceof Wand) ? (Wand)caster : null;
+        String wandName = (wand == null) ? "" : wand.getName();
         if (requiredPath != null || exactPath != null) {
             ProgressionPath path = caster.getPath();
             if (path == null) {
@@ -129,6 +145,7 @@ public class AddSpellAction extends BaseSpellAction
         parameters.add("path_exact");
         parameters.add("permission");
         parameters.add("auto_upgrade");
+        parameters.add("add_to");
     }
 
     @Override
@@ -143,6 +160,12 @@ public class AddSpellAction extends BaseSpellAction
             examples.addAll(com.elmakers.mine.bukkit.wand.WandUpgradePath.getPathKeys());
         } else if (parameterKey.equals("auto_upgrade")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
+        } else if (parameterKey.equals("add_to")) {
+            examples.add("wand");
+            examples.add("active_wand");
+            examples.add("player");
+            examples.add("class");
+            examples.add("active");
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

@@ -115,6 +115,10 @@ public class ModifyPropertiesAction extends BaseSpellAction
             properties = context.checkWand();
         } else if (modifyTarget.equals("player")) {
             properties = mage.getProperties();
+        } else if (modifyTarget.equals("class")) {
+            properties = mage.getActiveClass();
+        } else if (modifyTarget.equals("active")) {
+            properties = mage.getActiveProperties();
         } else {
             properties = mage.getClass(modifyTarget);
         }

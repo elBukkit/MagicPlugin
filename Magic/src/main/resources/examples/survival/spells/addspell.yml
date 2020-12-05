@@ -19,4 +19,5 @@ addspell:
     parameters:
         spell: flare
         loud: true
+        add_to: class
 
