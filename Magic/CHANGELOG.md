@@ -8,6 +8,7 @@
  - Add replacement options to ChangeBiome, Brush actions and ConstructSpell
  - Cloak now hides you from mobs
  - Allow specifying item_attributes as sections, so you can set a slot per-attribute
+ - Allow crafting a magic sword with a damaged netherite sword
 
 # 8.1.1
 
