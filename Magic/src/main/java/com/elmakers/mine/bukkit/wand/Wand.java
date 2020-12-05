@@ -162,6 +162,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean hasId = false;
     private boolean suspendUpdate = false;
     private boolean showCycleModeLore = true;
+    private boolean useActiveName = false;
     private int inventoryRows = 1;
     private Vector castLocation;
 
@@ -1719,6 +1720,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         maxEnchantCount = getInt("max_enchant_count");
         inventoryRows = getInt("inventory_rows", 5);
         showCycleModeLore = getBoolean("show_cycle_lore", true);
+        useActiveName = getBoolean("use_active_name", false);
         if (inventoryRows <= 0) inventoryRows = 1;
 
         resetManaOnActivate = null;
@@ -2149,6 +2151,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Messages messages = controller.getMessages();
         boolean showSpell = isModifiable() && hasSpellProgression();
         showSpell = !quickCast && (spells.size() > 1 || showSpell) && getMode() != WandMode.SKILLS;
+        showSpell = showSpell || useActiveName;
         if (spell != null && showSpell) {
             name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }
@@ -2185,7 +2188,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void updateName(boolean isActive) {
-        if (isActive) {
+        if (isActive || useActiveName) {
             CompatibilityUtils.setDisplayName(item, !isUpgrade ? getActiveWandName() :
                     ChatColor.translateAlternateColorCodes('&', getMessage("upgrade_prefix")) + getDisplayName());
         } else {
