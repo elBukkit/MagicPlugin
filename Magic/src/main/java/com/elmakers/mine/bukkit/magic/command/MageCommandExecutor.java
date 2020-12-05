@@ -234,7 +234,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             if (args.length > 1) {
                 Player targetPlayer = DeprecatedUtils.getPlayer(args[0]);
                 if (targetPlayer != null) {
-                    sender = targetPlayer;
+                    target = targetPlayer;
                     args = Arrays.copyOfRange(args, 1, args.length);
                 }
             }
