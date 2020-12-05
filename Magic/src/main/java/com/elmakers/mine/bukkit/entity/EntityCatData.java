@@ -35,7 +35,7 @@ public class EntityCatData extends EntityAnimalData {
             try {
                 collarColor = DyeColor.valueOf(colorString.toUpperCase());
             } catch (Exception ex) {
-                log.warning("Invalid collor color: " + colorString);
+                log.warning("Invalid collar color: " + colorString);
                 collarColor = null;
             }
         }
@@ -55,8 +55,12 @@ public class EntityCatData extends EntityAnimalData {
         super.apply(entity);
         if (entity instanceof Cat) {
             Cat cat = (Cat)entity;
-            cat.setCatType(type);
-            cat.setCollarColor(collarColor);
+            if (type != null) {
+                cat.setCatType(type);
+            }
+            if (collarColor != null) {
+                cat.setCollarColor(collarColor);
+            }
         }
     }
 }
