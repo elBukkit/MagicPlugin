@@ -6,6 +6,8 @@
    This was used, for instance, in the rocket spell. Please change start to launch if you were using these.
  - The Magic.create.* permissions is now given by default. This means if you have /mgive permission, you can use it
    to create any item. This permission can be negated to go back to the previous behavior.
+ - The crafting recipe parameter "substitue" was mis-spelled and has been fixed to "substitute". I'm guessing no one
+   has ever used this.
 
 # 8.1
 

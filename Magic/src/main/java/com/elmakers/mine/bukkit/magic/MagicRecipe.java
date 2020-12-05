@@ -58,7 +58,7 @@ public class MagicRecipe {
             return false;
         }
 
-        substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
+        substitue = ConfigurationUtils.getMaterial(configuration, "substitute", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
         group = configuration.getString("group", "");
         ignoreDamage = configuration.getBoolean("ignore_damage", false);
