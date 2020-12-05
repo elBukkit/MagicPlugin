@@ -153,6 +153,11 @@ public class SelectorAction extends CompoundAction implements GUIAction
         }
     }
 
+    // This is mainly here for MagicMeta interrogation
+    public SelectorConfiguration getSelectorOption(ConfigurationSection section) {
+        return new SelectorConfiguration(section);
+    }
+
     protected class SelectorConfiguration {
         protected @Nullable ItemStack icon;
         protected @Nullable String iconKey;

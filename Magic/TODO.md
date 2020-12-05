@@ -6,6 +6,11 @@
  - Wands deactivate on TP (sometimes? cross-world? idk, can't reproduce)
  - Magic crossbow support: https://editor.elmakers.com/bz8e4d
 
+ This this example setup:
+
+   Base example: potter
+   Examples: - arenas
+
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties
