@@ -128,7 +128,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected int fireTicks;
 
     protected DyeColor dyeColor;
-    protected Rabbit.Type rabbitType = null;
 
     protected Collection<PotionEffect> potionEffects = null;
     protected Collection<PotionEffectType> removeEffects = null;
@@ -258,8 +257,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Wolf) {
             extraData = new EntityWolfData(entity);
         } else if (entity instanceof Rabbit) {
-            Rabbit rabbit = (Rabbit)entity;
-            rabbitType = rabbit.getRabbitType();
+            extraData = new EntityRabbitData((Rabbit)entity);
         } else if (entity instanceof ArmorStand) {
             extraData = new EntityArmorStandData((ArmorStand)entity);
         } else if (entity instanceof ExperienceOrb) {
@@ -499,8 +497,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             else if (type == EntityType.AREA_EFFECT_CLOUD) {
                 extraData = new EntityAreaEffectCloudData(parameters, controller);
             }
-            else if (type == EntityType.RABBIT && parameters.contains("rabbit_type")) {
-                rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
+            else if (type == EntityType.RABBIT) {
+                extraData = new EntityRabbitData(parameters, controller);
             }
             else if (type == EntityType.ZOMBIE || (type != null && type.name().equals("PIG_ZOMBIE"))) {
                 EntityZombieData zombieData = new EntityZombieData();
@@ -873,9 +871,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             droppedItem.setItemStack(item);
-        } else if (entity instanceof Rabbit && rabbitType != null) {
-            Rabbit rabbit = (Rabbit)entity;
-            rabbit.setRabbitType(rabbitType);
         } else if (entity instanceof ExperienceOrb && xp != null) {
             ((ExperienceOrb)entity).setExperience(xp);
         }
@@ -1185,11 +1180,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             return name;
         }
         if (type == null) return "Unknown";
-
-        String name = type.name();
-        if (rabbitType != null) {
-            name += ":" + rabbitType;
-        }
         return name;
     }
 

@@ -25,21 +25,21 @@ public class EntityHorseData extends EntityAbstractHorseData {
     public EntityHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         Logger log = controller.getLogger();
-        if (parameters.contains("horse_color")) {
+        String horseColorKey = parameters.getString("horse_color");
+        if (horseColorKey != null && !horseColorKey.isEmpty()) {
             try {
-                String colorString = parameters.getString("horse_color");
-                color = Horse.Color.valueOf(colorString.toUpperCase());
+                color = Horse.Color.valueOf(horseColorKey.toUpperCase());
             } catch (Exception ex) {
-                log.log(Level.WARNING, "Invalid horse_color: " + parameters.getString("horse_color"), ex);
+                log.log(Level.WARNING, "Invalid horse_color: " + horseColorKey);
             }
         }
 
-        if (parameters.contains("horse_style")) {
+        String styleString = parameters.getString("horse_style");
+        if (styleString != null && !styleString.isEmpty()) {
             try {
-                String styleString = parameters.getString("horse_style");
                 style = Horse.Style.valueOf(styleString.toUpperCase());
             } catch (Exception ex) {
-                log.log(Level.WARNING, "Invalid horse_style: " + parameters.getString("horse_style"), ex);
+                log.log(Level.WARNING, "Invalid horse_style: " + parameters.getString("horse_style"));
             }
         }
 

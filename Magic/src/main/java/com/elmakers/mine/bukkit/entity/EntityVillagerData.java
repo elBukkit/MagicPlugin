@@ -18,8 +18,9 @@ public class EntityVillagerData extends EntityExtraData {
     }
 
     public EntityVillagerData(ConfigurationSection parameters, MageController controller) {
-        if (parameters.contains("villager_profession")) {
-            String professionKey = parameters.getString("villager_profession").toUpperCase();
+        String professionKey = parameters.getString("villager_profession");
+        if (professionKey != null && !professionKey.isEmpty()) {
+            professionKey = professionKey.toUpperCase();
             if (professionKey.startsWith("RAND")) {
                 randomProfession = true;
             } else {

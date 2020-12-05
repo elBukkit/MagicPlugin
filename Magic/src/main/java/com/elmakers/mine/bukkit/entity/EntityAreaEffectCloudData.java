@@ -37,20 +37,22 @@ public class EntityAreaEffectCloudData extends EntityExtraData {
             ColorHD colorHD = new ColorHD(parameters.getString("color"));
             color = colorHD.getColor();
         }
-        if (parameters.contains("base_potion_type")) {
+        String potionTypeKey = parameters.getString("base_potion_type");
+        if (potionTypeKey != null && !potionTypeKey.isEmpty()) {
             PotionType potionType;
             try {
-                potionType = PotionType.valueOf(parameters.getString("base_potion_type").toUpperCase());
+                potionType = PotionType.valueOf(potionTypeKey.toUpperCase());
                 basePotionData = new PotionData(potionType);
             } catch (Exception ex) {
-                controller.getLogger().warning("Invalid base_potion_type: " + parameters.getString("base_potion_type"));
+                controller.getLogger().warning("Invalid base_potion_type: " + potionTypeKey);
             }
         }
-        if (parameters.contains("particle")) {
+        String particleKey = parameters.getString("particle");
+        if (particleKey != null && !particleKey.isEmpty()) {
             try {
-                particle = Particle.valueOf(parameters.getString("particle").toUpperCase());
+                particle = Particle.valueOf(particleKey.toUpperCase());
             } catch (Exception ex) {
-                controller.getLogger().warning("Invalid particle: " + parameters.getString("particle"));
+                controller.getLogger().warning("Invalid particle: " + particleKey);
             }
         }
         duration = parameters.getInt("duration", 2000) * 20 / 1000;

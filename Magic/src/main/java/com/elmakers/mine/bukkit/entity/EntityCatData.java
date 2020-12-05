@@ -31,7 +31,7 @@ public class EntityCatData extends EntityAnimalData {
         }
 
         String colorString = parameters.getString("color");
-        if (colorString != null) {
+        if (colorString != null && !colorString.isEmpty()) {
             try {
                 collarColor = DyeColor.valueOf(colorString.toUpperCase());
             } catch (Exception ex) {
