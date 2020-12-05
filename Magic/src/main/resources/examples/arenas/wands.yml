@@ -112,7 +112,8 @@ warrior:
 
 jedi:
     inherit: base_arena_lightsaber
-    icon: shield:3
+    legacy_icon: shield_icon:3
+    icon: shield{CustomModelData:18003}
     effect_color: '0000FF'
     mana_max: 50
     mana: 50
@@ -124,7 +125,8 @@ jedi:
 
 sith:
     inherit: base_arena_lightsaber
-    icon: shield:4
+    legacy_icon: shield_icon:4
+    icon: shield{CustomModelData:18004}
     effect_color: 'FF0000'
     mana_max: 50
     mana: 50
