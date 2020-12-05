@@ -1,11 +1,21 @@
 # CHANGELOG
 
+# 8.2
+
+ - Add alt-cast (sneak) to levelled up fling to get the original speed
+ - Add Alter level 2, with alt-cast (sneak) to absorb a wildcard brush
+ - Fix support for wildcard brushes (use with SuperReplace to replace stairs, fences, etc in-place)
+ - Add replacement options to ChangeBiome, Brush actions and ConstructSpell
+ - Cloak now hides you from mobs
+ - Allow specifying item_attributes as sections, so you can set a slot per-attribute
+
 # 8.1.1
 
  - Fix some issues absorbing spell items, now requires you to be holding your wand
  - Fix cure not working on the caster
  - Fix releasing player data locks on shutdown, causing warnings on next login
  - Fix lightsaber appearances in legacy MC versions
+ - Allow crafting a magic sword with a damaged netherite sword
 
 # 8.1
 
