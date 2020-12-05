@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -16,6 +17,7 @@ import com.elmakers.mine.bukkit.wand.Wand;
 
 public class ItemController {
     private MageController controller;
+    private final Set<String> itemKeys = new HashSet<>();
     private final Map<String, ItemData> items = new HashMap<>();
     private final Map<ItemStack, ItemData> itemsByStack = new HashMap<>();
 
@@ -44,6 +46,7 @@ public class ItemController {
         try {
             ItemData magicItem = new ItemData(itemKey, material);
             if (magicItem != null) {
+                itemKeys.add(itemKey);
                 items.put(itemKey, magicItem);
                 itemsByStack.put(magicItem.getItemStack(1), magicItem);
             } else {
@@ -58,6 +61,7 @@ public class ItemController {
         try {
             ItemData magicItem = new ItemData(itemKey, configuration);
             if (magicItem != null) {
+                itemKeys.add(itemKey);
                 items.put(itemKey, magicItem);
                 itemsByStack.put(magicItem.getItemStack(1), magicItem);
             } else {
@@ -73,7 +77,7 @@ public class ItemController {
     }
 
     public Set<String> getKeys() {
-        return items.keySet();
+        return itemKeys;
     }
 
     @Nullable
@@ -127,5 +131,6 @@ public class ItemController {
             itemsByStack.remove(existing.getItemStack(1));
         }
         items.remove(key);
+        itemKeys.remove(key);
     }
 }
