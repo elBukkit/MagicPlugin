@@ -34,9 +34,9 @@ public class ExplosionAction extends BaseSpellAction {
 
         // Make sure undo info on exploding blocks gets attached to this cast.
         UndoList currentList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
-        com.elmakers.mine.bukkit.block.UndoList.setUndoList(context.getPlugin(), entity, context.getUndoList());
+        com.elmakers.mine.bukkit.block.UndoList.setUndoList(entity, context.getUndoList());
         NMSUtils.createExplosion(entity, location.getWorld(), location.getX(), location.getY(), location.getZ(), size, useFire, breakBlocks);
-        com.elmakers.mine.bukkit.block.UndoList.setUndoList(context.getPlugin(), entity, currentList);
+        com.elmakers.mine.bukkit.block.UndoList.setUndoList(entity, currentList);
         return SpellResult.CAST;
     }
 
