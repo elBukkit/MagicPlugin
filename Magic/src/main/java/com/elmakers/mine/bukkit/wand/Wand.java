@@ -1611,6 +1611,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return null;
         }
 
+        // This lets us use spell books as wands, which is a fancy way to make
+        // books that can teach you about a spell
+        if (key.startsWith("book:")) {
+            ItemStack bookItem = controller.createItem(key);
+            if (bookItem != null) {
+                return new MaterialAndData(bookItem);
+            }
+        }
+
         com.elmakers.mine.bukkit.api.block.MaterialAndData materialData = null;
         ItemData itemData = controller.getItem(key);
         if (itemData != null) {
