@@ -443,7 +443,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             return;
         }
         ConfigurationSection parameters = npc.getParameters();
-        ConfigurationSection disguise = parameters.getConfigurationSection("disguise");
+        ConfigurationSection disguise = parameters.createSection("disguise");
         disguise.set("skin", playerName);
         disguise.set("type", "player");
         npc.update();
