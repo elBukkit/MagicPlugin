@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,7 +32,6 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -63,8 +63,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static @Nonnull MaterialSet attachablesWall      = MaterialSets.empty();
     public static @Nonnull MaterialSet attachablesDouble    = MaterialSets.empty();
 
-    protected static final UndoRegistry     registry = new UndoRegistry();
-    protected static BlockComparator        blockComparator = new BlockComparator();
+    protected static final UndoRegistry             registry = new UndoRegistry();
+    protected static final Map<Entity, com.elmakers.mine.bukkit.api.block.UndoList>    watchedEntities = new WeakHashMap<>();
+    protected static BlockComparator                blockComparator = new BlockComparator();
 
     protected Map<Long, BlockData>          watching;
     private Set<String>                     worlds = new HashSet<>();
@@ -376,7 +377,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Override
     public void remove(Entity entity) {
-        entity.removeMetadata("MagicBlockList", plugin);
+        watchedEntities.remove(entity);
         if (entities != null) {
             entities.remove(entity);
         }
@@ -542,7 +543,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                             if (context != null && context.hasEffects("undo_entity")) {
                                 context.playEffects("undo_entity", 1.0f, null, null, entity.getLocation(), entity, null);
                             }
-                            setUndoList(plugin, entity, null);
+                            setUndoList(entity, null);
                             entity.remove();
                         }
                     }
@@ -553,7 +554,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                 for (EntityData data : modifiedEntities.values()) {
                     Entity entity = data.getEntity();
                     if (entity != null) {
-                        setUndoList(plugin, entity, null);
+                        setUndoList(entity, null);
                     }
                     if (!undoEntityEffects && undoEntityTypes != null && !undoEntityTypes.contains(data.getType())) continue;
 
@@ -661,9 +662,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
         if (worldName == null) worldName = entity.getWorld().getName();
 
-        if (!entity.hasMetadata("MagicBlockList")) {
-            setUndoList(plugin, entity, this);
-        }
+        setUndoList(entity, this);
         modifiedTime = System.currentTimeMillis();
     }
 
@@ -977,16 +976,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Nullable
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Entity entity) {
-        com.elmakers.mine.bukkit.api.block.UndoList blockList = null;
-        if (entity != null && entity.hasMetadata("MagicBlockList")) {
-            List<MetadataValue> values = entity.getMetadata("MagicBlockList");
-            for (MetadataValue metadataValue : values) {
-                Object value = metadataValue.value();
-                if (value instanceof com.elmakers.mine.bukkit.api.block.UndoList) {
-                    blockList = (com.elmakers.mine.bukkit.api.block.UndoList)value;
-                }
-            }
-        } else if (entity != null && entity instanceof FallingBlock) {
+        com.elmakers.mine.bukkit.api.block.UndoList blockList = entity != null ? watchedEntities.get(entity) : null;
+        if (entity != null && blockList == null && entity instanceof FallingBlock) {
             // Falling blocks need to check their location to handle chain reaction effects
             Location entityLocation = entity.getLocation();
             blockList = getUndoList(entityLocation);
@@ -1006,12 +997,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return blockData == null ? null : blockData.getUndoList();
     }
 
-    public static void setUndoList(Plugin plugin, Entity entity, com.elmakers.mine.bukkit.api.block.UndoList list) {
+    public static void setUndoList(Entity entity, com.elmakers.mine.bukkit.api.block.UndoList list) {
         if (entity != null) {
             if (list != null) {
-                entity.setMetadata("MagicBlockList", new FixedMetadataValue(plugin, list));
+                watchedEntities.put(entity, list);
             } else {
-                entity.removeMetadata("MagicBlockList", plugin);
+                watchedEntities.remove(entity);
             }
         }
     }
