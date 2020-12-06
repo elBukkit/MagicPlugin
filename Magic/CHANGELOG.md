@@ -10,6 +10,7 @@
  - Allow specifying item_attributes as sections, so you can set a slot per-attribute
  - Allow crafting a magic sword with a damaged netherite sword
  - Use `/mgive book:fling` to give a descriptive book about one spell
+ - Add `/mgive learnbook:spell` to give a book that describes a spell and can be used to learn it
 
 # 8.1.1
 

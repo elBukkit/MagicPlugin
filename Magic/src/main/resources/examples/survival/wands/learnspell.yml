@@ -1,0 +1,11 @@
+# Create variants of this to learn differen spells
+learnspell:
+  active_spell: addspell
+  left_click: cast
+  uses: 1
+
+  # Change the icon to use your spell, it will automatically make a book describing the spell
+  icon: book:blast
+  overrides:
+    # Change this to the spell you want the player to learn
+    spell: blast

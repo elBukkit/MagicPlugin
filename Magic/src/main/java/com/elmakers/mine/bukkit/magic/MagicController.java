@@ -5288,6 +5288,19 @@ public class MagicController implements MageController {
         return lines;
     }
 
+    public ItemStack getLearnSpellBook(SpellTemplate spell, int amount) {
+        ConfigurationSection wandConfiguration = new MemoryConfiguration();
+        wandConfiguration.set("template", "learnspell");
+        wandConfiguration.set("icon", "book:" + spell.getKey());
+        wandConfiguration.set("name", messages.get("books.learnspell.name").replace("$spell", spell.getName()));
+        wandConfiguration.set("description", messages.get("books.learnspell.description").replace("$spell", spell.getName()));
+        wandConfiguration.set("overrides", "spell " + spell.getKey());
+        Wand wand = new Wand(this, wandConfiguration);
+        ItemStack item = wand.getItem();
+        item.setAmount(amount);
+        return item;
+    }
+
     @Override
     public MaterialAndData getRedstoneReplacement() {
         return redstoneReplacement;
@@ -5461,6 +5474,16 @@ public class MagicController implements MageController {
                         itemStack = getSpellBook(category, amount);
                     }
                 }
+            } else if (magicItemKey.startsWith("learnbook:")) {
+                String bookSpell = magicItemKey.substring(10);
+                SpellTemplate spell = getSpellTemplate(bookSpell);
+                if (spell == null) {
+                    if (callback != null) {
+                        callback.updated(null);
+                    }
+                    return null;
+                }
+                itemStack = getLearnSpellBook(spell, amount);
             } else if (magicItemKey.startsWith("recipe:")) {
                 String recipeKey = magicItemKey.substring(7);
                 itemStack = CompatibilityUtils.getKnowledgeBook();

@@ -10,6 +10,9 @@ books:
         title: The Master Spell Book
     spell:
         title: $spell Spell Book
+    learnspell:
+      name: "&eArcane Spellbook &7(&6$spell&7)"
+      description: Right-click to read about the spell, left-click to learn it
 
 material:
     wildcard: " (Keep Block Data)"
