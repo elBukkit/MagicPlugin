@@ -16,6 +16,7 @@
  - Fix releasing player data locks on shutdown, causing warnings on next login
  - Fix lightsaber appearances in legacy MC versions
  - Allow crafting a magic sword with a damaged netherite sword
+ - Fix /mnpc player command
 
 # 8.1
 
