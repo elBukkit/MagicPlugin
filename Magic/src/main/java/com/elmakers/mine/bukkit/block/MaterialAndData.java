@@ -22,6 +22,7 @@ import org.bukkit.block.Skull;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -82,7 +83,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected Material material;
     protected Short data;
     protected Map<String, Object> tags;
-    protected BlockExtraData extraData;
+    protected MaterialExtraData extraData;
     protected String blockData;
     protected boolean isValid = true;
     protected boolean isTargetValid = true;
@@ -139,6 +140,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof PotionMeta) {
                 extraData = new PotionData(CompatibilityUtils.getColor((PotionMeta)meta));
+            }
+        } else if (this.material == Material.WRITTEN_BOOK) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null && meta instanceof BookMeta) {
+                extraData = new WrittenBookData((BookMeta)meta);
             }
         }
 
@@ -204,7 +210,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         String[] pieces = splitMaterialKey(materialKey);
         Short data = 0;
         Material material = null;
-        BlockExtraData extraData = null;
+        MaterialExtraData extraData = null;
         materialKey = pieces[0];
         if (materialKey.equalsIgnoreCase("skull") || materialKey.equalsIgnoreCase("skull_item")) {
             MaterialAndData skullData = DefaultMaterials.getPlayerSkullItem();
@@ -866,6 +872,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = stack.getItemMeta();
             if (extraData != null && extraData instanceof PotionData && meta != null && meta instanceof PotionMeta) {
                 CompatibilityUtils.setColor((PotionMeta)meta, ((PotionData)extraData).getColor());
+                stack.setItemMeta(meta);
+            }
+        } else if (this.material == Material.WRITTEN_BOOK) {
+            ItemMeta meta = stack.getItemMeta();
+            if (extraData != null && extraData instanceof WrittenBookData && meta != null && meta instanceof BookMeta) {
+                BookMeta book = (BookMeta) meta;
+                WrittenBookData data = (WrittenBookData)extraData;
+                data.applyTo(book);
                 stack.setItemMeta(meta);
             }
         }

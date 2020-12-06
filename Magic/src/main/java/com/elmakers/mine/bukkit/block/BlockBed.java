@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import org.bukkit.DyeColor;
 
 // TODO: 1.12-only, I guess.
-public class BlockBed extends BlockExtraData {
+public class BlockBed extends MaterialExtraData {
     protected DyeColor baseColor;
 
     public BlockBed(DyeColor color) {
@@ -11,7 +11,7 @@ public class BlockBed extends BlockExtraData {
     }
 
     @Override
-    public BlockExtraData clone() {
+    public MaterialExtraData clone() {
         return new BlockBed(baseColor);
     }
 }

@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
-public class BlockTileEntity extends BlockExtraData {
+public class BlockTileEntity extends MaterialExtraData {
     protected Object data;
 
     public BlockTileEntity(Object data) {
@@ -8,7 +8,7 @@ public class BlockTileEntity extends BlockExtraData {
     }
 
     @Override
-    public BlockExtraData clone() {
+    public MaterialExtraData clone() {
         return new BlockTileEntity(data);
     }
 }

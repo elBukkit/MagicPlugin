@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
-public class BlockMobSpawner extends BlockExtraData {
+public class BlockMobSpawner extends MaterialExtraData {
     protected String mobName;
 
     public BlockMobSpawner(String mobName) {
@@ -8,7 +8,7 @@ public class BlockMobSpawner extends BlockExtraData {
     }
 
     @Override
-    public BlockExtraData clone() {
+    public MaterialExtraData clone() {
         return new BlockMobSpawner(mobName);
     }
 }

@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
-public class BlockSign extends BlockExtraData {
+public class BlockSign extends MaterialExtraData {
     protected String[] lines = new String[4];
     protected static Gson gson;
 
@@ -41,7 +41,7 @@ public class BlockSign extends BlockExtraData {
     }
 
     @Override
-    public BlockExtraData clone() {
+    public MaterialExtraData clone() {
         return new BlockSign(lines);
     }
 }

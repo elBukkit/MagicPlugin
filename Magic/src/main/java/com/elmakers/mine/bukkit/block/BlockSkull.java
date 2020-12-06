@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.block;
 
 import org.bukkit.block.BlockFace;
 
-public class BlockSkull extends BlockExtraData {
+public class BlockSkull extends MaterialExtraData {
     protected BlockFace rotation = null;
     protected Object profile = null;
     protected String playerName = null;
@@ -27,7 +27,7 @@ public class BlockSkull extends BlockExtraData {
     }
 
     @Override
-    public BlockExtraData clone() {
+    public MaterialExtraData clone() {
         return new BlockSkull(profile, playerName, rotation);
     }
 }

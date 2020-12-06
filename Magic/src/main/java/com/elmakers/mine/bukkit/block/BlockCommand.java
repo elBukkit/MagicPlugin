@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
-public class BlockCommand extends BlockExtraData {
+public class BlockCommand extends MaterialExtraData {
     protected String command;
     protected String customName = null;
 
@@ -14,7 +14,7 @@ public class BlockCommand extends BlockExtraData {
     }
 
     @Override
-    public BlockExtraData clone() {
+    public MaterialExtraData clone() {
         return new BlockCommand(command, customName);
     }
 }

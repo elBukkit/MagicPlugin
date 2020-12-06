@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.block;
 
 import org.bukkit.Color;
 
-public class LeatherArmorData extends BlockExtraData {
+public class LeatherArmorData extends MaterialExtraData {
     protected Color color;
 
     public LeatherArmorData(Color color) {
@@ -14,7 +14,7 @@ public class LeatherArmorData extends BlockExtraData {
     }
 
     @Override
-    public BlockExtraData clone() {
+    public MaterialExtraData clone() {
         return new LeatherArmorData(color);
     }
 }

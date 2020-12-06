@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
 
-public class BlockBanner extends BlockExtraData {
+public class BlockBanner extends MaterialExtraData {
     protected List<Pattern> patterns;
     protected DyeColor baseColor;
 
@@ -19,7 +19,7 @@ public class BlockBanner extends BlockExtraData {
     }
 
     @Override
-    public BlockExtraData clone() {
+    public MaterialExtraData clone() {
         return new BlockBanner(patterns, baseColor);
     }
 }
