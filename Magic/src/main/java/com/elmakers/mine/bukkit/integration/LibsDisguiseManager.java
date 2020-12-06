@@ -147,15 +147,15 @@ public class LibsDisguiseManager {
             if (offhand != null) {
                 watcher.setItemInOffHand(offhand);
             }
-            watcher.setInvisible(configuration.getBoolean("invisible", false));
-            watcher.setBurning(configuration.getBoolean("burning", false));
-            watcher.setGlowing(configuration.getBoolean("glowing", false));
-            watcher.setFlyingWithElytra(configuration.getBoolean("flying", false));
-            watcher.setSneaking(configuration.getBoolean("sneaking", false));
-            watcher.setAddEntityAnimations(configuration.getBoolean("animations", false));
-            watcher.setSprinting(configuration.getBoolean("sprinting", false));
-            watcher.setSwimming(configuration.getBoolean("swimming", false));
-            watcher.setRightClicking(configuration.getBoolean("right_clicking", false));
+            if (configuration.getBoolean("invisible", false)) watcher.setInvisible(true);
+            if (configuration.getBoolean("burning", false)) watcher.setBurning(true);
+            if (configuration.getBoolean("glowing", false)) watcher.setGlowing(true);
+            if (configuration.getBoolean("flying", false)) watcher.setFlyingWithElytra(true);
+            if (configuration.getBoolean("sneaking", false)) watcher.setSneaking(true);
+            if (configuration.getBoolean("animations", false)) watcher.setAddEntityAnimations(true);
+            if (configuration.getBoolean("sprinting", false)) watcher.setSprinting(true);
+            if (configuration.getBoolean("swimming", false)) watcher.setSwimming(true);
+            if (configuration.getBoolean("right_clicking", false)) watcher.setRightClicking(true);
             DisguiseAPI.disguiseEntity(entity, disguise);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Error creating disguise", ex);
