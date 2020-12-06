@@ -8,7 +8,6 @@
  - Add replacement options to ChangeBiome, Brush actions and ConstructSpell
  - Cloak now hides you from mobs
  - Allow specifying item_attributes as sections, so you can set a slot per-attribute
- - Allow crafting a magic sword with a damaged netherite sword
  - Use `/mgive book:fling` to give a descriptive book about one spell
  - Add `/mgive learnbook:spell` to give a book that describes a spell and can be used to learn it
 
@@ -19,6 +18,7 @@
  - Fix cure not working on the caster
  - Fix releasing player data locks on shutdown, causing warnings on next login
  - Fix lightsaber appearances in legacy MC versions
+ - Allow crafting a magic sword with a damaged netherite sword
  - Fix /mnpc player command
 
 # 8.1
