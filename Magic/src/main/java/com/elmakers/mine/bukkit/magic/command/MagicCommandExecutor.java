@@ -359,7 +359,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 Collection<Batch> pendingBatches = mage.getPendingBatches();
                 String names = "";
                 if (pendingBatches.size() > 0) {
-                    List<String> nameList = new ArrayList();
+                    List<String> nameList = new ArrayList<>();
                     for (Batch batch : pendingBatches) {
                         nameList.add(batch.getName());
                         totalSize += batch.size();
