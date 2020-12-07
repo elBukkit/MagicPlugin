@@ -604,6 +604,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/defaults/worlds.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/worlds">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
 
                                 <!-- Automata Configs -->
 

@@ -239,6 +239,7 @@ import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
+import com.elmakers.mine.bukkit.world.WorldController;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -1070,6 +1071,7 @@ public class MagicController implements MageController {
         inventoryController = new InventoryController(this);
         explosionController = new ExplosionController(this);
         requirementsController = new RequirementsController(this);
+        worldController = new WorldController(this);
         if (NMSUtils.hasStatistics()) {
             jumpController = new JumpController(this);
         }
@@ -1631,6 +1633,7 @@ public class MagicController implements MageController {
         pm.registerEvents(playerController, plugin);
         pm.registerEvents(inventoryController, plugin);
         pm.registerEvents(explosionController, plugin);
+        pm.registerEvents(worldController, plugin);
         if (jumpController != null) {
             pm.registerEvents(jumpController, plugin);
         }
@@ -1853,6 +1856,12 @@ public class MagicController implements MageController {
 
         logger.setContext(null);
         log("Loaded " + crafting.getCount() + " crafting recipes");
+
+        // Load worlds
+        logger.setContext("worlds");
+        worldController.load(loader.getWorlds());
+        logger.setContext(null);
+        log("Loaded " + worldController.getCount() + " customized worlds");
 
         if (!loaded) {
             postLoadIntegration();
@@ -7384,6 +7393,7 @@ public class MagicController implements MageController {
     private InventoryController                 inventoryController         = null;
     private ExplosionController                 explosionController         = null;
     private JumpController                      jumpController              = null;
+    private WorldController                     worldController             = null;
     private @Nonnull MageIdentifier             mageIdentifier              = new MageIdentifier();
     private final SimpleMaterialSetManager      materialSetManager          = new SimpleMaterialSetManager();
     private boolean                             citizensEnabled                = true;

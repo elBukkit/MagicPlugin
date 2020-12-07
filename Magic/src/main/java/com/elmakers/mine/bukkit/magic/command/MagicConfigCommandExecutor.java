@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,7 +59,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list", "fetch", "help");
     private static Set<String> availableFiles = ImmutableSet.of(
             "spells", "wands", "automata", "classes", "config", "crafting", "effects",
-            "items", "materials", "mobs", "paths", "attributes", "messages", "modifiers");
+            "items", "materials", "mobs", "paths", "attributes", "messages", "modifiers","worlds");
     private static final Map<String, String> availableFileMap = ImmutableMap.<String, String>builder()
         .put("spell", "spells")
         .put("wand", "wands")
@@ -73,6 +74,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         .put("attribute", "attributes")
         .put("message", "messages")
         .put("modifier", "modifiers")
+        .put("world", "worlds")
         .build();
 
     private final MagicController magic;
@@ -227,6 +229,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                     Collection<String> recipeList = api.getController().getRecipeKeys();
                     for (String recipe : recipeList) {
                         options.add(recipe);
+                    }
+                }
+                if (fileType.equals("worlds")) {
+                    for (World world : api.getPlugin().getServer().getWorlds()) {
+                        options.add(world.getName());
                     }
                 }
                 if (fileType.equals("mobs")) {

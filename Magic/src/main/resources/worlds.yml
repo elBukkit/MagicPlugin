@@ -1,0 +1,15 @@
+#
+# Modify this file to customize world generation and mob spawning
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+
+#
+# This is the World configuration file for the Magic plugin.
+#
+# Each main section represents one customization to a specific world or set of worlds.
+#
+# If a `world` and `worlds` propery is not provided, the section key is assumed to be the
+# target world name.
+#

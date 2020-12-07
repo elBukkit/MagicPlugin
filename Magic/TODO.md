@@ -1,6 +1,25 @@
 # TODO
 
+## Discord Issues
+
+ - Memory Leaks
+   - Should entity undo also be value-weak? Is there a use-case for it needing to undo (other than scheduled)
+     after the caster has left?
+   - Get rid of using the Bukkit Metadata system entirely. Maybe just an "entity data lite" map to store the various
+     boolean flags?
+
 ## List is too long
+
+ - Path re-work
+   - Treat like another TemplatedProperties property holder
+   - Maybe use ParentedProperties and reconsider the way path inheritance works
+   - Allow specifying path as a storage location
+   - Change survival classes (or base class?) to get mana/regen from path
+   - Will need a customized data storage block for every mage/path
+ - Boss bar support via optional class, using Bukkit API
+ - Crafting recipe option to preserve enchantments, use for magic sword
+   .. there was also that rando on discord who wanted to use this on a Geyser server to emulate a smithing table
+      on bedrock
 
  - /mnpc select just doesn't work sometimes
  - Wands deactivate on TP (sometimes? cross-world? idk, can't reproduce)
