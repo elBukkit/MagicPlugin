@@ -532,7 +532,7 @@ public class EntityController implements Listener {
         Entity shooter = event.getEntity();
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(shooter);
         if (mage == null || mage.isLaunchingProjectile()) return;
-        mage.setLastBowPull(event.getForce());
+        mage.setLastBowPull(Math.max(0.0, Math.min(1.0, event.getForce())));
         mage.setLastBowUsed(event.getBow());
     }
 
