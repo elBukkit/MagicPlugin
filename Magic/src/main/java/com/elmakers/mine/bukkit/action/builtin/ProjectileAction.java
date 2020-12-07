@@ -75,6 +75,7 @@ public class ProjectileAction  extends BaseProjectileAction
         count = parameters.getInt("count", 1);
         size = parameters.getInt("size", defaultSize);
         damage = parameters.getDouble("damage", 0);
+        damage = parameters.getDouble("arrow_damage", damage);
         speed = (float)parameters.getDouble("speed", 0.6f);
         spread = (float)parameters.getDouble("spread", 12);
         useFire = parameters.getBoolean("fire", false);

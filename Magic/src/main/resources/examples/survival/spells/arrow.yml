@@ -38,7 +38,7 @@ arrow:
     parameters:
       target: none
       projectile: TippedArrow
-      damage: 0.75
+      arrow_damage: 0.75
       speed: 2
       spread: 6
       fire: false
@@ -54,7 +54,7 @@ arrow|2:
     upgrade_required_path: beginner
     upgrade_required_casts: 30
     parameters:
-      damage: 0.80
+      arrow_damage: 0.80
       speed: 2.5
       spread: 5
     costs:
@@ -64,7 +64,7 @@ arrow|3:
     upgrade_required_path: student
     upgrade_required_casts: 50
     parameters:
-      damage: 0.85
+      arrow_damage: 0.85
       speed: 3
       spread: 4
     costs:
@@ -74,7 +74,7 @@ arrow|4:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
-      damage: 0.9
+      arrow_damage: 0.9
       speed: 3.5
       spread: 3
     costs:
@@ -84,7 +84,7 @@ arrow|5:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-      damage: 0.95
+      arrow_damage: 0.95
       speed: 4
       spread: 1
     costs:
@@ -92,7 +92,7 @@ arrow|5:
 
 arrow|6:
     parameters:
-      damage: 1
+      arrow_damage: 1
       speed: 5
       spread: 0
     costs:

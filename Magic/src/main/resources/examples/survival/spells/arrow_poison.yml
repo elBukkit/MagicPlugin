@@ -49,6 +49,6 @@ arrow_poison:
       speed: "bowpull * 3"
       spread: "1 - bowpull"
       radius: "2 + 4 * bowpull"
-      damage: 2
+      arrow_damage: "bowpull"
     costs:
       arrow: 1
