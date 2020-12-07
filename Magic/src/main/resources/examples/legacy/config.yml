@@ -1,0 +1,8 @@
+# Use legacy icons for backwards-compatibility with combined resource packs
+legacy_icons_enabled: true
+
+# Turn back on free wand interval casting
+cast_interval_cost_free: true
+
+# Turn back on spammy console casting
+cast_console_feedback: true

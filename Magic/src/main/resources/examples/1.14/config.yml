@@ -1,3 +1,3 @@
-inherit: 7
+inherit: legacy
 resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-8-1.zip"
 add_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-all-RP-8-1.zip"
