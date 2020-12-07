@@ -1660,10 +1660,6 @@ permissions:
     description: Player may reset player recipe knowledge
     type: boolean
     default: op
-  Magic.commands.mage.check:
-    description: Player may check permissions
-    type: boolean
-    default: op
   Magic.commands.mage.unbind:
     description: Player may unbind all of a player's stored wands
     type: boolean
