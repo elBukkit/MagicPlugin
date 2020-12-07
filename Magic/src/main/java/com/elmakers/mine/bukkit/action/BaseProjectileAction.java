@@ -67,7 +67,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
     @Override
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
         super.addHandlers(spell, parameters);
-        addHandler(spell, "projectile");
+        addHandler(spell, "spawn");
         addHandler(spell, "tick");
     }
 
@@ -93,9 +93,9 @@ public abstract class BaseProjectileAction extends CompoundAction {
 
         if (!launchActionsRun) {
             launchActionsRun = true;
-            if (hasActions("projectile")) {
+            if (hasActions("spawn")) {
                 createActionContext(context);
-                return startActions("projectile");
+                return startActions("spawn");
             }
         }
 
