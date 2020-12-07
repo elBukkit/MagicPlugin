@@ -9,6 +9,8 @@
  - Cloak now hides you from mobs
  - Allow specifying item_attributes as sections, so you can set a slot per-attribute
 
+# 8.1.2
+
 # 8.1.1
 
  - Fix compatibility with older versions of LibsDisguises
