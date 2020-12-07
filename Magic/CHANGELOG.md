@@ -12,6 +12,8 @@
  - Add `/mgive learnbook:spell` to give a book that describes a spell and can be used to learn it
  - Fix spell inventory issues when using the ajParkour plugin
 
+# 8.1.2
+
 # 8.1.1
 
  - Fix compatibility with older versions of LibsDisguises
