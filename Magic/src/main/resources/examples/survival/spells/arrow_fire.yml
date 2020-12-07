@@ -66,7 +66,7 @@ arrow_fire:
       undo: 10000
       speed: "bowpull * 3"
       spread: "1 - bowpull"
-      damage: "bowpull * 4"
+      arrow_damage: "bowpull"
       radius: "1 + 2 * bowpull"
     costs:
       arrow: 1

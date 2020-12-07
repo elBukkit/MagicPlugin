@@ -13,7 +13,7 @@ arrow_regular:
       projectile: TippedArrow
       speed: "bowpull * 3"
       spread: "1 - bowpull"
-      damage: "10 * bowpull"
+      arrow_damage: "2 * bowpull"
       tick_increase: 0
       pickup: allowed
     costs:

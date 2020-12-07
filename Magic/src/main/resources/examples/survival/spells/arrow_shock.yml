@@ -114,7 +114,7 @@ arrow_shock:
       tick_increase: 500
       speed: "bowpull * 3"
       spread: "1 - bowpull"
-      damage: "bowpull * 2"
+      arrow_damage: "bowpull"
       repeat: "bowpull * 5 + 10"
       effect_slow: 10
       keep_in_inventory: true

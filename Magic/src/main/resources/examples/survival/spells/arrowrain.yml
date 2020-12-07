@@ -70,6 +70,7 @@ arrowrain:
         pdy: ~-0.2
         undo: 15000
         cooldown: 10000
+        arrow_damage: 0.8
     costs:
         mana: 30
 

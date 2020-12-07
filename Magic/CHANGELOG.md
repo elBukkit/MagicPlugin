@@ -21,6 +21,7 @@
  - Fix lightsaber appearances in legacy MC versions
  - Allow crafting a magic sword with a damaged netherite sword
  - Fix /mnpc player command
+ - Fix OP damage of Magic Bow regular arrows
 
 # 8.1
 

@@ -76,6 +76,6 @@ arrow_blink:
       spread: "1 - bowpull"
       vertical_range: 8
       ledge_range: 4
-      damage: 1
+      arrow_damage: 0
     costs:
       arrow: 1
