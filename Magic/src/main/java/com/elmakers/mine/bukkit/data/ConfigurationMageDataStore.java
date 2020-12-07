@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.data.BrushData;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
+import com.elmakers.mine.bukkit.api.data.SerializedLocation;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -43,10 +44,10 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         saveFile.set("created", mage.getCreatedTime());
         saveFile.set("last_cast", mage.getLastCast());
         saveFile.set("cooldown_expiration", mage.getCooldownExpiration());
-        saveFile.set("last_death_location", ConfigurationUtils.fromLocation(mage.getLastDeathLocation()));
-        Location location = mage.getLocation();
+        saveFile.set("last_death_location", ConfigurationUtils.fromSerializedLocation(mage.getSerializedLastDeathLocation()));
+        SerializedLocation location = mage.getSerializedLocation();
         if (location != null) {
-            saveFile.set("location", ConfigurationUtils.fromLocation(location));
+            saveFile.set("location", ConfigurationUtils.fromSerializedLocation(location));
         }
         saveFile.set("destination_warp", mage.getDestinationWarp());
         saveFile.set("fall_protection_count", mage.getFallProtectionCount());
@@ -289,8 +290,8 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
 
         // Random data and mage properties
         data.setName(saveFile.getString("name", ""));
-        data.setLastDeathLocation(ConfigurationUtils.getLocation(saveFile, "last_death_location"));
-        data.setLocation(ConfigurationUtils.getLocation(saveFile, "location"));
+        data.setSerializedLastDeathLocation(ConfigurationUtils.getSerializedLocation(saveFile, "last_death_location"));
+        data.setSerializedLocation(ConfigurationUtils.getSerializedLocation(saveFile, "location"));
         data.setLastCast(saveFile.getLong("last_cast", 0));
         data.setCreatedTime(saveFile.getLong("created", 0));
         data.setCooldownExpiration(saveFile.getLong("cooldown_expiration", 0));

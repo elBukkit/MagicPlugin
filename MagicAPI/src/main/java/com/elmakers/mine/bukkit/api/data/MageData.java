@@ -22,8 +22,8 @@ public class MageData {
     private Map<String, ConfigurationSection> modifierProperties;
     private String activeClass;
     private long lastCast;
-    private Location lastDeathLocation;
-    private Location location;
+    private SerializedLocation lastDeathLocation;
+    private SerializedLocation location;
     private String destinationWarp;
     private long cooldownExpiration;
     private long fallProtectionCount;
@@ -88,20 +88,46 @@ public class MageData {
         this.lastCast = lastCast;
     }
 
+    /**
+     * Data can be saved asynchronously, and Locations' Worlds can be invalidated if the server unloads a world.
+     * So do not call this method during saving.
+     */
+    @Nullable
     public Location getLastDeathLocation() {
-        return lastDeathLocation;
+        return lastDeathLocation == null ? null : lastDeathLocation.asLocation();
     }
 
     public void setLastDeathLocation(Location lastDeathLocation) {
-        this.lastDeathLocation = lastDeathLocation;
+        this.lastDeathLocation = lastDeathLocation == null ? null : new SerializedLocation(lastDeathLocation);
     }
 
+    /**
+     * Data can be saved asynchronously, and Locations' Worlds can be invalidated if the server unloads a world.
+     * So do not call this method during saving.
+     */
+    @Nullable
     public Location getLocation() {
-        return location;
+        return location == null ? null : location.asLocation();
     }
 
     public void setLocation(Location location) {
+        this.location = location == null ? null : new SerializedLocation(location);
+    }
+
+    public void setSerializedLocation(SerializedLocation location) {
         this.location = location;
+    }
+
+    public SerializedLocation getSerializedLocation() {
+        return location;
+    }
+
+    public void setSerializedLastDeathLocation(SerializedLocation location) {
+        this.lastDeathLocation = location;
+    }
+
+    public SerializedLocation getSerializedLastDeathLocation() {
+        return lastDeathLocation;
     }
 
     public String getDestinationWarp() {

@@ -29,8 +29,10 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.data.SerializedLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
@@ -55,6 +57,16 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         return toLocation(stringData);
+    }
+
+    @Nullable
+    public static SerializedLocation getSerializedLocation(ConfigurationSection node, String path) {
+        String stringData = node.getString(path);
+        if (stringData == null) {
+            return null;
+        }
+
+        return toSerializedLocation(stringData);
     }
 
     @Nullable
@@ -154,6 +166,13 @@ public class ConfigurationUtils extends ConfigUtils {
                 + "," + location.getYaw() + "," + location.getPitch();
     }
 
+    public static String fromSerializedLocation(SerializedLocation location) {
+        if (location == null) return "";
+        if (location.getWorld() == null) return "";
+        return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorldName()
+                + "," + location.getYaw() + "," + location.getPitch();
+    }
+
     public static String fromMaterial(Material material)
     {
         if (material == null) return "";
@@ -172,6 +191,15 @@ public class ConfigurationUtils extends ConfigUtils {
         if (o instanceof Location) {
             return (Location)o;
         }
+        SerializedLocation location = toSerializedLocation(o);
+        return location == null ? null : location.asLocation();
+    }
+
+    @Nullable
+    public static SerializedLocation toSerializedLocation(Object o) {
+        if (o instanceof SerializedLocation) {
+            return (SerializedLocation)o;
+        }
         if (o instanceof String) {
             try {
                 float pitch = 0;
@@ -180,17 +208,17 @@ public class ConfigurationUtils extends ConfigUtils {
                 double x = parseDouble(pieces[0]);
                 double y = parseDouble(pieces[1]);
                 double z = parseDouble(pieces[2]);
-                World world = null;
+                String world = null;
                 if (pieces.length > 3) {
-                    world = Bukkit.getWorld(pieces[3]);
+                    world = pieces[3];
                 } else {
-                    world = Bukkit.getWorlds().get(0);
+                    world = Bukkit.getWorlds().get(0).getName();
                 }
                 if (pieces.length > 5) {
                     yaw = Float.parseFloat(pieces[4]);
                     pitch = Float.parseFloat(pieces[5]);
                 }
-                return new Location(world, x, y, z, yaw, pitch);
+                return new SerializedLocation(world, new BlockVector(x, y, z), yaw, pitch);
             } catch (Exception ex) {
                 return null;
             }
