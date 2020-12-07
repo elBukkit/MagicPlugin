@@ -20,6 +20,9 @@ public class DeadSoulsManager implements Listener {
     public DeadSoulsManager(MageController controller) {
         this.controller = controller;
         api = DeadSoulsAPI.instance();
+        controller.getLogger().info("DeadSouls found, souls available in Recall level 2");
+        controller.getLogger().info("Disable warping to souls in recall config with allow_souls: false");
+        controller.getPlugin().getServer().getPluginManager().registerEvents(this, controller.getPlugin());
     }
 
     @EventHandler

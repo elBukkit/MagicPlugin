@@ -10,6 +10,7 @@
  - Allow specifying item_attributes as sections, so you can set a slot per-attribute
  - Use `/mgive book:fling` to give a descriptive book about one spell
  - Add `/mgive learnbook:spell` to give a book that describes a spell and can be used to learn it
+ - Fix spell inventory issues when using the ajParkour plugin
 
 # 8.1.1
 

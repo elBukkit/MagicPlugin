@@ -178,6 +178,7 @@ import com.elmakers.mine.bukkit.magic.listener.MobController2;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.npc.MagicNPC;
+import com.elmakers.mine.bukkit.protection.AJParkourManager;
 import com.elmakers.mine.bukkit.protection.CitadelManager;
 import com.elmakers.mine.bukkit.protection.DeadSoulsManager;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
@@ -1284,9 +1285,6 @@ public class MagicController implements MageController {
         if (deadSoulsPlugin != null) {
             try {
                 deadSoulsController = new DeadSoulsManager(this);
-                plugin.getLogger().info("DeadSouls found, souls available in Recall level 2");
-                plugin.getLogger().info("Disable warping to souls in recall config with allow_souls: false");
-                plugin.getServer().getPluginManager().registerEvents(deadSoulsController, plugin);
             } catch (Exception ex) {
                 getLogger().log(Level.WARNING, "Error integrating with DeadSouls, is it up to date? Version 1.6 or higher required.", ex);
             }
@@ -1410,6 +1408,19 @@ public class MagicController implements MageController {
             }
         } else {
             getLogger().info("Skript integration disabled.");
+        }
+
+        // ajParkour
+        if (ajParkourConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("ajParkour")) {
+                try {
+                    ajParkourManager = new AJParkourManager(this);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with ajParkour", ex);
+                }
+            }
+        } else {
+            getLogger().info("ajParkour integration disabled.");
         }
 
         // Citadel
@@ -3145,6 +3156,7 @@ public class MagicController implements MageController {
         mobArenaConfiguration = properties.getConfigurationSection("mobarena");
         residenceConfiguration = properties.getConfigurationSection("residence");
         redProtectConfiguration = properties.getConfigurationSection("redprotect");
+        ajParkourConfiguration = properties.getConfigurationSection("ajparkour");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);
         }
@@ -7374,6 +7386,7 @@ public class MagicController implements MageController {
     private ConfigurationSection                redProtectConfiguration     = null;
     private ConfigurationSection                citadelConfiguration        = null;
     private ConfigurationSection                mobArenaConfiguration       = null;
+    private ConfigurationSection                ajParkourConfiguration      = null;
     private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
     private boolean                             castConsoleFeedback         = false;
     private String                              editorURL                   = null;
@@ -7391,6 +7404,7 @@ public class MagicController implements MageController {
     private GriefPreventionManager              griefPreventionManager        = new GriefPreventionManager();
     private NCPManager                          ncpManager                   = new NCPManager();
     private ProtectionManager                   protectionManager           = new ProtectionManager();
+    private AJParkourManager                    ajParkourManager              = null;
     private CitadelManager                      citadelManager              = null;
     private ResidenceManager                    residenceManager            = null;
     private RedProtectManager                   redProtectManager           = null;
