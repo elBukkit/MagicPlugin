@@ -29,7 +29,7 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
     public int process(int maxBlocks) {
         if (finished) return 0;
         Spell spell = context.getSpell();
-        if (spell.cancelOnNoPermission() && !context.canCast(context.getLocation())) {
+        if (spell.cancelOnNoPermission() && !context.canContinue(context.getLocation())) {
             cancel();
             return 0;
         }

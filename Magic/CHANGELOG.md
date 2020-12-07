@@ -11,6 +11,9 @@
  - Use `/mgive book:fling` to give a descriptive book about one spell
  - Add `/mgive learnbook:spell` to give a book that describes a spell and can be used to learn it
  - Fix spell inventory issues when using the ajParkour plugin
+ - Fix strange behavior when using a broom while already on a broom
+ - Add active_spells_exclusive and active_spells_restricted spell properties, to make spells only castable if some
+   other spell(s) is or is not already active
 
 # 8.1.2
 

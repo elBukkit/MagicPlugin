@@ -2,8 +2,8 @@ spells:
     default:
         fizzle: Your spell fizzled!
         backfire: Your spell backfired!
-        fail: Something went wrong!
-        insufficient_permission: You don't have permission to use that here.
+        fail: "&cSomething went wrong!"
+        insufficient_permission: "&eYou can't do that right now."
         cast_player_message: "a:&d&o$player &r&5cast &3&o$spell &r&5on you!"
         indirect_player_message: "a:&d&o$player &r&5cast &3&o$spell &r&5on you!"
         insufficient_resources: Not enough $cost

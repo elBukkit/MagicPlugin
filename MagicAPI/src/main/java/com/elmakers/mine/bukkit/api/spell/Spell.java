@@ -48,6 +48,7 @@ public interface Spell extends SpellTemplate {
     boolean canTarget(Entity entity);
     boolean isActive();
     boolean hasBrushOverride();
+    boolean canContinue(Location location);
     boolean canCast(Location location);
     void clearCooldown();
     void reduceRemainingCooldown(long ms);

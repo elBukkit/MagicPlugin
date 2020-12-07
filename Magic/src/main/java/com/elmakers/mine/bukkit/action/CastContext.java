@@ -1265,6 +1265,15 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     }
 
     @Override
+    public boolean canContinue(Location location)
+    {
+        if (baseSpell != null) {
+            return baseSpell.canContinue(location);
+        }
+        return true;
+    }
+
+    @Override
     public boolean isBreakable(Block block) {
         return com.elmakers.mine.bukkit.block.UndoList.getRegistry().isBreakable(block);
     }

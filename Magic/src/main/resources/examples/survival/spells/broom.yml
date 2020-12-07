@@ -16,6 +16,7 @@ broom:
     show_undoable: false
     undoable: false
     reactivate: true
+    active_spells_restricted: broom,superbroom,levitate,superfly
     actions:
       reactivate:
         - class: MountArmorStand
@@ -39,6 +40,8 @@ broom:
                       result: no_target
                       end_result: true
                     - class: Stop
+        - class: Cancel
+          spell: broom
         - class: MountArmorStand
     effects:
         cast:

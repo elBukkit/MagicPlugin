@@ -250,6 +250,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean commandBlockAllowed       = true;
     protected int verticalSearchDistance        = 8;
     protected Set<String> hideMessages          = null;
+    protected Set<String> activeSpellsExclusive = null;
+    protected Set<String> activeSpellsRestricted = null;
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
@@ -964,6 +966,20 @@ public class BaseSpell implements MageSpell, Cloneable {
             hideMessages = new HashSet<>(hideMessageKeys);
         }
 
+        List<String> activeSpellsExclusiveKeys = ConfigurationUtils.getStringList(node, "active_spells_exclusive");
+        if (activeSpellsExclusiveKeys == null || activeSpellsExclusiveKeys.isEmpty()) {
+            activeSpellsExclusive = null;
+        } else {
+            activeSpellsExclusive = new HashSet<>(activeSpellsExclusiveKeys);
+        }
+
+        List<String> activeSpellsRestrictedKeys = ConfigurationUtils.getStringList(node, "active_spells_restricted");
+        if (activeSpellsRestrictedKeys == null || activeSpellsRestrictedKeys.isEmpty()) {
+            activeSpellsRestricted = null;
+        } else {
+            activeSpellsRestricted = new HashSet<>(activeSpellsRestrictedKeys);
+        }
+
         requiredSpells = new ArrayList<>();
 
         List<String> removesSpellKeys = ConfigurationUtils.getStringList(node, "removes_spells");
@@ -1501,6 +1517,34 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean canCast(Location location) {
+        if (!canContinue(location)) return false;
+        if (activeSpellsExclusive != null || activeSpellsRestricted != null) {
+            Collection<Batch> batches = mage.getPendingBatches();
+            boolean hasExclusive = activeSpellsExclusive == null;
+            for (Batch batch : batches) {
+                if (batch instanceof SpellBatch) {
+                    SpellBatch spellBatch = (SpellBatch)batch;
+                    Spell spell = spellBatch.getSpell();
+                    if (spell != null && activeSpellsRestricted != null && activeSpellsRestricted.contains(spell.getSpellKey().getBaseKey())) {
+                        return false;
+                    }
+                    if (spell != null && activeSpellsExclusive != null && activeSpellsExclusive.contains(spell.getSpellKey().getBaseKey())) {
+                        hasExclusive = true;
+                        if (activeSpellsRestricted == null) {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!hasExclusive) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canContinue(Location location) {
         if (bypassAll) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
         Entity entity = mage.getEntity();
