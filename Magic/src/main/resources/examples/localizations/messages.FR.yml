@@ -366,50 +366,135 @@ shops:
   no_path_end: "&cTu dois pouvoir avancer de $path&r!"
   insufficient: "&cPrix : $cost"
   confirm_title: "Acheter $item"
-  unlock_confirm_title: "Unlock $item"
-  deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
-  selected: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
-  sold: "&d&oYou sold &r&6$item &r&d&ofor &r&a$earn"
-  unlocked: "&d&oYou unlocked &r&6$item &r&d&ofor &r&a$cost"
-  selected_free: "&d&oYou chose &r&6$item"
-  not_applicable: "You already have $item"
-  cast_fail: "&cSorry, please try again!"
-  no_items: "There is nothing for you to buy here"
-  title: "Shop ($balance&0)"
-  sell_title: "Sell ($balance&0)"
-  sell_icon_name: "&6Sell Items"
-  buy_icon_name: "&aBuy Items"
-  extra_spell: "&aNot Required"
-  no_upgrade: "There is nothing more for you to learn here."
-  upgrade_name_change: "&r&4Upgrades: &r$name"
-  level_requirement: "&r&cRequires: &6$path"
-  tags_requirement: "&r&cRequires: &6$tags"
-  cast_requirement: "&r&cCasts: &6$current&f/&e$required"
+  unlock_confirm_title: "Débloquer $item"
+  deducted: "&d&oTu as acheté &r&6$item &r&d&ocontre &r&a$cost"
+  selected: "&d&oTu as acheté &r&6$item &r&d&ocontre &r&a$cost"
+  sold: "&d&oTu as vendu &r&6$item &r&d&ocontre &r&a$earn"
+  unlocked: "&d&oTu as débloqué &r&6$item &r&d&ocontre &r&a$cost"
+  selected_free: "&d&oTu as choisi &r&6$item"
+  not_applicable: "Tu possèdes déjà $item"
+  cast_fail: "&cDésolé, merci de réessayer!"
+  no_items: "Tu n'as rien à acheter ici"
+  title: "Magasin ($balance&0)"
+  sell_title: "Vente ($balance&0)"
+  sell_icon_name: "&6Vendre des objets"
+  buy_icon_name: "&aAcheter des objets"
+  extra_spell: "&aNon requis"
+  no_upgrade: "Tu n'as rien à apprendre ici"
+  upgrade_name_change: "&r&4Améliorations: &r$name"
+  level_requirement: "&r&cRequis: &6$path"
+  tags_requirement: "&r&cRequis: &6$tags"
+  cast_requirement: "&r&cLancers: &6$current&f/&e$required"
   prerequisite_spell_level: "&6$name"
-  prerequisite_spell_progress_level: " (Progress $level/$max_level)"
-  required_spells: "&r&cRequires: $spells"
+  prerequisite_spell_progress_level: " (Progrès $level/$max_level)"
+  required_spells: "&r&cRequis: $spells"
   cast_spell: "$spell"
   unlock_class: "$class"
-  nothing: "Nothing"
-  cost_lore: "&6Costs: &e$cost"
-  earn_lore: "&6Earns: &e$earn"
+  nothing: "Rien"
+  cost_lore: "&6Prix: &e$cost"
+  earn_lore: "&6Gains: &e$earn"
   earn_heading: ""
   cost_heading: ""
   #cost_heading: "&6Click to purchase"
-  unlock_cost_lore: "&6Unlock Cost: &e$cost"
-  locked: "&cLocked, &eUnlock in Donation Shop"
-  required_cost_lore: "&cCosts: &4$cost"
-  required_unlock_cost_lore: "&cUnlock Cost: &4$cost"
-  has_class: "You already have class $class"
-  at_limit: "You are at your limit of $limit"
-  unlocked_lore: "&aUnlocked"
-  property_requirement: "&r&cRequires: &6$property &cof $4$value"
-  property_max: "&r&cYour &6$property &cis maxed out"
-  property_min: "&r&cYour &6$property &cmust be greater than $4$value"
+  unlock_cost_lore: "&6Prix pour débloquer: &e$cost"
+  locked: "&cBloqué, &eDébloquer dans le magasin des donations"
+  required_cost_lore: "&cPrix: &4$cost"
+  required_unlock_cost_lore: "&cPrix pour débloquer: &4$cost"
+  has_class: "Tu possèdes déjà la classe $class"
+  at_limit: "Tu as atteint ta limite de $limit"
+  unlocked_lore: "&aDébloqué"
+  property_requirement: "&r&cRequis: &6$property : $4$value"
+  property_max: "&r&cTu as atteint le maximum de &6$property"
+  property_min: "&r&cTu dois posséder plus de $4$value &6$property"
   item_amount: "$name x$amount"
   attribute: "&6$attribute &f(&b$amount&f)"
-  increase_attribute: "Increase $attribute by $amount"
-  decrease_attribute: "Decrease $attribute by $amount"
-  attribute_max: "You can not increase $attribute any further"
-  attribute_min: "You can not decrease $attribute any further"
-  full: "Your inventory is full!"  
+  increase_attribute: "Augmentation de $attribute de $amount"
+  decrease_attribute: "Diminution de $attribute de $amount"
+  attribute_max: "Tu ne peux pas augmenter l'attribut $attribute"
+  attribute_min: "Tu ne peux pas diminuer l'attribut $attribute"
+  full: "Ton inventaire est plein!"  
+ 
+ 
+ 
+ 
+spell:
+    category: ""
+    # category: "&7&o$category"
+    brush: Utilisation des brosses
+    undoable: ""
+    not_undoable: "&4Ne peut pas être annulé"
+    available_path: "Disponible au niveau $path"
+    required_path: "Requis pour compléter le niveau $path"
+    levels_available: "Niveau max: &r&5$levels"
+    required_spell: "Tu dois apprendre &r&4$spell &d&opour avancer &b$path"
+    prerequisite_spell_level: "&cTu dois connaitre le &6niveau $level $name"
+    prerequisite_spell_progress_level: " &6(Progrès $level/$max_level)"
+    level_description: Niveau $level
+    progress_description: "&6Progrès: &b$level&6/&3$max_level"
+    quick_cast: "&2Lancement rapide"
+    earns: "&2Gagne jusqu'à &6$earns"
+    description_lore: "&b$description"
+    level_lore: "&6$level"
+    toggle: "&aLancer pour basculer sur activer / désactiver"
+    upgrade_description_prefix: "&r&bamélioration; &6"
+    passive: "&2Passif"
+    disabled: "&eDésactivé"
+    # This can be used to show who created a spell in spell lore
+    # creator: "&1Created by: &9$name"
+    creator: ""
+    
+    
+    
+    
+spells:
+    default:
+        fizzle: Ton sort a fait des étincelles!
+        backfire: Ton sort a pétaradé!
+        fail: Quelque chose s'est mal passé!
+        insufficient_permission: Tu n'as pas la permission d'utiliser ça ici.
+        cast_player_message: "a:&d&o$player &r&5a lancé &3&o$spell &r&5sur toi!"
+        indirect_player_message: "a:&d&o$player &r&5a lancé &3&o$spell &r&5sur toi!"
+        insufficient_resources: Pas assez de $cost
+        insufficient: "&cNécessite &4$cost"
+        cooldown: Tu dois attendre $time.
+        cancelled: Ton sort a été annulé!
+        cancel: "a:&cLe sort &6$spell a été annulé"
+        entity_required: Une entité est nécessaire.
+        living_entity_required: Une entité vivante est nécessaire.
+        player_required: Un joueur est nécessaire.
+        location_required: Une localisation est nécessaire.
+        world_required: Un monde est nécessaire.
+        invalid_world: Le monde n'est pas valide.
+        cast_finish: ""  
+        
+        
+        
+        
+        
+time:
+    wait_seconds: encore $seconds secondes
+    wait_minutes: encore $minutes minutes
+    wait_hours: encore $hours heures
+    wait_moment: encore un instant
+    wait_second: une seconde
+    wait_minute: une minute
+    wait_hour: encore une heure
+    description_hour: Une heure
+    description_hours: $hours heures
+    description_minute: Une minute
+    description_minutes: $minutes minutes
+    description_second: Une seconde
+    description_seconds: $seconds secondes
+    description_moment: Un instant
+    # description_moment: "$seconds seconds"
+    description: "&eCooldown: &6$time"
+    mage_description: "&cFatigue: &6$time"        
+   
+   
+   
+wands:
+  testwand:
+    name: Baguette de test
+    description: Une baguette vide à utiliser pour tester les sorts.   
+   
+   
