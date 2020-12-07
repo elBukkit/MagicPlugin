@@ -14,6 +14,7 @@
  - Fix strange behavior when using a broom while already on a broom
  - Add active_spells_exclusive and active_spells_restricted spell properties, to make spells only castable if some
    other spell(s) is or is not already active
+ - Added WildStacker integration to avoid stacking Magic Mobs (or any custom-spawned mob).
 
 # 8.1.2
 

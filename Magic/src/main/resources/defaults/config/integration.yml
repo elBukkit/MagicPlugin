@@ -189,6 +189,11 @@ ajparkour:
   # This may cause item loss if using inventory mode wands
   enabled: true
 
+# WildStacker integration
+wildstacker:
+  # This will cancel stack events for any custom mob spawns, which prevents magic mobs from stacking
+  enabled: true
+
 # Indirect integration with other protection plugins.
 # Add a plugin here to have Magic send it fake Block/Break events to check for permission.
 # This may have strange behavior, use with caution.

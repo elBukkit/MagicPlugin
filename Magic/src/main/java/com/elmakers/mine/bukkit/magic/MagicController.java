@@ -176,6 +176,7 @@ import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
 import com.elmakers.mine.bukkit.magic.listener.MobController2;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
+import com.elmakers.mine.bukkit.magic.listener.WildStackerListener;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.npc.MagicNPC;
 import com.elmakers.mine.bukkit.protection.AJParkourManager;
@@ -1143,6 +1144,16 @@ public class MagicController implements MageController {
             } else {
                 battleArenaManager = null;
                 getLogger().info("BattleArena integration disabled");
+            }
+        }
+
+        // Check for WildStacker
+        if (pluginManager.isPluginEnabled("WildStacker")) {
+            if (useWildStacker) {
+                getLogger().info("Wild Stacker integration enabled");
+                pluginManager.registerEvents(new WildStackerListener(), plugin);
+            } else {
+                getLogger().info("Wild Stacker found, but integration disabled");
             }
         }
 
@@ -3223,6 +3234,7 @@ public class MagicController implements MageController {
         locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
         griefPreventionManager.setEnabled(properties.getBoolean("grief_prevention_enabled", griefPreventionManager.isEnabled()));
         ncpManager.setEnabled(properties.getBoolean("ncp_enabled", false));
+        useWildStacker = properties.getBoolean("wildstacker.enabled", true);
         com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CLASS = properties.getString("default_mage_class", "");
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
@@ -7340,6 +7352,7 @@ public class MagicController implements MageController {
     private boolean                             useSkillAPIAllies           = true;
     private boolean                             useBattleArenaTeams         = true;
     private boolean                             skillsUsePermissions        = false;
+    private boolean                             useWildStacker              = true;
     private String                              heroesSkillPrefix           = "";
     private String                              skillsSpell                 = "";
     private boolean                             isFileLockingEnabled        = false;
