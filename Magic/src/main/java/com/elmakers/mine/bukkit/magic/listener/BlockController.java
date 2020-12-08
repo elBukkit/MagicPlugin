@@ -29,6 +29,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.Inventory;
@@ -425,6 +426,12 @@ public class BlockController implements Listener {
     public void onChunkLoad(ChunkLoadEvent e) {
         controller.resumeAutomata(e.getChunk());
         controller.restoreNPCs(e.getChunk());
+    }
+
+    @EventHandler
+    public void onWorldInit(WorldInitEvent e) {
+        controller.checkAutomata(e.getWorld());
+        controller.checkNPCs(e.getWorld());
     }
 
     @EventHandler

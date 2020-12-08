@@ -2383,87 +2383,131 @@ public class MagicController implements MageController {
         info("Loaded " + lostWands.size() + " lost wands");
     }
 
+    public void checkNPCs(World world) {
+        if (this.invalidNPCs.isEmpty()) return;
+        List<ConfigurationSection> check = this.invalidNPCs;
+        this.invalidNPCs = new ArrayList<>();
+        int npcCount = loadNPCs(check);
+        if (npcCount > 0) {
+            info("Loaded " + npcCount + " NPCs in world " + world.getName());
+            for (Chunk chunk : world.getLoadedChunks()) {
+                restoreNPCs(chunk);
+            }
+        }
+    }
+
     protected void loadNPCs() {
+        ConfigurationSection npcData = loadDataFile(NPC_DATA_FILE);
+        if (npcData != null) {
+            Collection<ConfigurationSection> list = ConfigurationUtils.getNodeList(npcData, "npcs");
+            int npcCount = loadNPCs(list);
+            if (npcCount > 0) {
+                for (World world : Bukkit.getWorlds()) {
+                    for (Chunk chunk : world.getLoadedChunks()) {
+                        restoreNPCs(chunk);
+                    }
+                }
+                info("Loaded " + npcCount + " NPCs");
+            }
+        }
+    }
+
+    protected int loadNPCs(Collection<ConfigurationSection> list) {
         int npcCount = 0;
         try {
-            ConfigurationSection npcData = loadDataFile(NPC_DATA_FILE);
-            if (npcData != null) {
-                Collection<ConfigurationSection> list = ConfigurationUtils.getNodeList(npcData, "npcs");
-                for (ConfigurationSection node : list) {
-                    MagicNPC npc = new MagicNPC(this, node);
-                    if (!npc.isValid()) continue;
-
-                    String chunkId = getChunkKey(npc.getLocation());
-                    if (chunkId == null) continue;
-
-                    List<MagicNPC> restoreChunk = npcs.get(chunkId);
-                    if (restoreChunk == null) {
-                        restoreChunk = new ArrayList<>();
-                        npcs.put(chunkId, restoreChunk);
-                    }
-
-                    npcCount++;
-                    restoreChunk.add(npc);
+            for (ConfigurationSection node : list) {
+                MagicNPC npc = new MagicNPC(this, node);
+                if (!npc.isValid()) {
+                    invalidNPCs.add(node);
+                    continue;
                 }
+
+                String chunkId = getChunkKey(npc.getLocation());
+                if (chunkId == null) {
+                    invalidNPCs.add(node);
+                    continue;
+                }
+
+                List<MagicNPC> restoreChunk = npcs.get(chunkId);
+                if (restoreChunk == null) {
+                    restoreChunk = new ArrayList<>();
+                    npcs.put(chunkId, restoreChunk);
+                }
+
+                npcCount++;
+                restoreChunk.add(npc);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.SEVERE, "Something went wrong loading NPC data", ex);
         }
+        return npcCount;
+    }
 
-        if (npcCount > 0) {
-            for (World world : Bukkit.getWorlds()) {
-                for (Chunk chunk : world.getLoadedChunks()) {
-                    restoreNPCs(chunk);
-                }
+    public void checkAutomata(World world) {
+        if (this.invalidAutomata.isEmpty()) return;
+        List<ConfigurationSection> check = this.invalidAutomata;
+        this.invalidAutomata = new ArrayList<>();
+        int automataCount = loadAutomata(check);
+        if (automataCount > 0) {
+            info("Loaded " + automataCount + " automata in world " + world.getName());
+            for (Chunk chunk : world.getLoadedChunks()) {
+                resumeAutomata(chunk);
             }
         }
-
-        info("Loaded " + npcCount + " NPCs");
     }
 
     protected void loadAutomata() {
+        ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_DATA_FILE);
+        if (toggleBlockData != null) {
+            Collection<ConfigurationSection> list = ConfigurationUtils.getNodeList(toggleBlockData, "automata");
+            int automataCount = loadAutomata(list);
+            if (automataCount > 0) {
+                info("Loaded " + automataCount + " automata");
+                for (World world : Bukkit.getWorlds()) {
+                    for (Chunk chunk : world.getLoadedChunks()) {
+                        resumeAutomata(chunk);
+                    }
+                }
+            }
+        }
+    }
+
+    protected int loadAutomata(Collection<ConfigurationSection> list) {
         int automataCount = 0;
         try {
-            ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_DATA_FILE);
-            if (toggleBlockData != null) {
-                Collection<ConfigurationSection> list = ConfigurationUtils.getNodeList(toggleBlockData, "automata");
-                for (ConfigurationSection node : list) {
-                    Automaton automaton = new Automaton(this, node);
-                    if (!automaton.isValid()) continue;
-
-                    String chunkId = getChunkKey(automaton.getLocation());
-                    if (chunkId == null) continue;
-
-                    Map<Long, Automaton> restoreChunk = automata.get(chunkId);
-                    if (restoreChunk == null) {
-                        restoreChunk = new HashMap<>();
-                        automata.put(chunkId, restoreChunk);
-                    }
-
-                    long id = automaton.getId();
-                    Automaton existing = restoreChunk.get(id);
-                    if (existing != null) {
-                        getLogger().warning("Duplicate automata exist at " + automaton.getLocation() + ", one will be removed!");
-                        continue;
-                    }
-
-                    automataCount++;
-                    restoreChunk.put(id, automaton);
+            for (ConfigurationSection node : list) {
+                Automaton automaton = new Automaton(this, node);
+                if (!automaton.isValid()) {
+                    invalidAutomata.add(node);
+                    continue;
                 }
+
+                String chunkId = getChunkKey(automaton.getLocation());
+                if (chunkId == null) {
+                    invalidAutomata.add(node);
+                    continue;
+                }
+
+                Map<Long, Automaton> restoreChunk = automata.get(chunkId);
+                if (restoreChunk == null) {
+                    restoreChunk = new HashMap<>();
+                    automata.put(chunkId, restoreChunk);
+                }
+
+                long id = automaton.getId();
+                Automaton existing = restoreChunk.get(id);
+                if (existing != null) {
+                    getLogger().warning("Duplicate automata exist at " + automaton.getLocation() + ", one will be removed!");
+                    continue;
+                }
+
+                automataCount++;
+                restoreChunk.put(id, automaton);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.SEVERE, "Something went wrong loading automata data", ex);
         }
-
-        if (automataCount > 0) {
-            for (World world : Bukkit.getWorlds()) {
-                for (Chunk chunk : world.getLoadedChunks()) {
-                    resumeAutomata(chunk);
-                }
-            }
-        }
-
-        info("Loaded " + automataCount + " automata");
+        return automataCount;
     }
 
     protected void saveWarps(Collection<YamlDataFile> stores) {
@@ -2490,6 +2534,7 @@ public class MagicController implements MageController {
                     }
                 }
             }
+            nodes.addAll(invalidAutomata);
             automataData.set("automata", nodes);
             stores.add(automataData);
         } catch (Exception ex) {
@@ -2507,6 +2552,7 @@ public class MagicController implements MageController {
                     npc.save(node);
                     nodes.add(node);
                 }
+                nodes.addAll(invalidNPCs);
             }
             npcData.set("npcs", nodes);
             stores.add(npcData);
@@ -7351,9 +7397,11 @@ public class MagicController implements MageController {
     private PhysicsHandler                        physicsHandler                = null;
 
     private Map<String, List<MagicNPC>>          npcs                       = new HashMap<>();
+    private List<ConfigurationSection>           invalidNPCs                = new ArrayList<>();
     private Set<UUID>                            activeNPCs                 = new HashSet<>();
 
     private Map<String, Map<Long, Automaton>>    automata                   = new HashMap<>();
+    private List<ConfigurationSection>           invalidAutomata            = new ArrayList<>();
     private Map<Long, Automaton>                 activeAutomata             = new HashMap<>();
     private Map<String, LostWand>                lostWands                  = new HashMap<>();
     private Map<String, Set<String>>             lostWandChunks             = new HashMap<>();

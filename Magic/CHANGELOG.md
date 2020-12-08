@@ -2,6 +2,12 @@
 
 # 8.2
 
+ - MagicWorlds merged
+   - Magic can now customize world generation and mob spawning without needing MagicWorlds
+   - Configs go into the "worlds" folder, and follow the same format as MagicWorlds
+   - There is editor support
+   - Fix issues with NPCs and Automata getting lost if in unloaded worlds
+
  - Add alt-cast (sneak) to levelled up fling to get the original speed
  - Add Alter level 2, with alt-cast (sneak) to absorb a wildcard brush
  - Fix support for wildcard brushes (use with SuperReplace to replace stairs, fences, etc in-place)
