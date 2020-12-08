@@ -775,5 +775,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     String getPreferredResourcePack();
     boolean isUrlIconsEnabled();
+    boolean canUse(ItemStack item);
     boolean canCraft(String recipeKey);
 }

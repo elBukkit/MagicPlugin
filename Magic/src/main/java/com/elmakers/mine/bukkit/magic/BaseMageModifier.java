@@ -24,9 +24,14 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 
 public class BaseMageModifier extends ParentedProperties implements CostReducer, CooldownReducer {
+    public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
+        .addAll(BaseMagicProperties.PROPERTY_KEYS)
+        .add("craftable", "useable", "health_scale", "entity_attributes", "triggers").build();
+
     private List<EntityAttributeModifier> attributeModifiers;
     private boolean checkedAttributes = false;
     protected @Nullable
@@ -370,5 +375,27 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
         } else {
             triggers = null;
         }
+    }
+
+    public boolean canUse(String itemKey) {
+        List<String> useable = getStringList("useable");
+        if (useable == null) return false;
+        for (String key : useable) {
+            if (key.equalsIgnoreCase(itemKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canCraft(String recipeKey) {
+        List<String> craftable = getStringList("craftable");
+        if (craftable == null) return false;
+        for (String key : craftable) {
+            if (key.equalsIgnoreCase(recipeKey)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

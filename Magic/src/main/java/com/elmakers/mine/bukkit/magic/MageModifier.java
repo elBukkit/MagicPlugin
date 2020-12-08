@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableSet;
 
 public class MageModifier extends BaseMageModifier implements Comparable<MageModifier>, com.elmakers.mine.bukkit.api.magic.MageModifier {
     public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
-        .addAll(BaseMagicProperties.PROPERTY_KEYS)
+        .addAll(BaseMageModifier.PROPERTY_KEYS)
         .add("items", "duration").build();
 
     public MageModifier(@Nonnull Mage mage, @Nonnull ModifierTemplate template) {

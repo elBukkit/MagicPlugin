@@ -1334,17 +1334,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return true;
     }
 
-    public boolean canUse(ItemStack itemStack) {
-        String lockKey = controller.getLockKey(itemStack);
-        if (lockKey == null) {
-            return true;
-        }
-        for (MageClass mageClass : classes.values()) {
-            if (!mageClass.isLocked() && mageClass.canUse(lockKey)) return true;
-        }
-        return false;
-    }
-
     public boolean useArrow(ItemStack itemStack, int slot, ProjectileLaunchEvent event) {
         String spellKey = Wand.getArrowSpell(itemStack);
         if (spellKey == null) return false;
@@ -5093,13 +5082,41 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean canUse(ItemStack itemStack) {
+        String lockKey = controller.getLockKey(itemStack);
+        if (lockKey == null) {
+            return true;
+        }
+        MageClass activeClass = getActiveClass();
+        if (activeClass.canUse(lockKey)) {
+            return true;
+        }
+        for (MageClass passiveClass : classes.values()) {
+            if (!passiveClass.isLocked() && passiveClass.isPassive() && passiveClass.canUse(lockKey)) {
+                return true;
+            }
+        }
+        for (MageModifier modifier : modifiers.values()) {
+            if (!modifier.isLocked() && modifier.isPassive() && modifier.canUse(lockKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean canCraft(String recipeKey) {
         MageClass activeClass = getActiveClass();
         if (activeClass.canCraft(recipeKey)) {
             return true;
         }
         for (MageClass passiveClass : classes.values()) {
-            if (passiveClass.isPassive() && passiveClass.canCraft(recipeKey)) {
+            if (!passiveClass.isLocked() && passiveClass.isPassive() && passiveClass.canCraft(recipeKey)) {
+                return true;
+            }
+        }
+        for (MageModifier modifier : modifiers.values()) {
+            if (!modifier.isLocked() && modifier.isPassive() && modifier.canCraft(recipeKey)) {
                 return true;
             }
         }
