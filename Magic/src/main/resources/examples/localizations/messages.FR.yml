@@ -139,7 +139,7 @@ commands:
       sending: "&6/getrp auto&f pour recevoir le resource pack automatiquement \n&rou &6/getrp off&f pour désactiver la demande à la connexion"
       preference: "Préférences pour le resource pack mises à &3$pack&f\n&6/getrp default&f pour le remettre par défaut"
       noauto: "&6/getrp auto &fpour avoir le resource pack automatiquement à la connexion"
-      default: "Préférences du resource pack remises par défaut"    
+      default: "Préférences du resource pack remises par défaut"
 costs:
     sp_amount: $amount PS
     xp_amount: $amount XP
@@ -294,7 +294,7 @@ npc:
   deducted: "&cRetiré : $cost"
   no_permission: "&r&4Tu ne peux pas intéragir avec moi!"
 path:
-  level_up: "t:&r&b*** &r&5$path &b***\n&5Avancé"  
+  level_up: "t:&r&b*** &r&5$path &b***\n&5Avancé"
 requirements:
   unknown: "&cNon autorisé"
   property_requirement: "&r&cRequis: &6$property &cde &4$value"
@@ -312,7 +312,7 @@ requirements:
   time: "Heure"
   height: "Hauteur"
   currency: "Devise"
-  no_cast: "&cTu dois lancer le sort $spell en premier" 
+  no_cast: "&cTu dois lancer le sort $spell en premier"
 shops:
   no_wand: "&cTu dois tenir une baguette en main!"
   no_template: "&cTu ne peux pas l'apprendre avec la baguette $wand&"
@@ -369,7 +369,7 @@ shops:
   decrease_attribute: "Diminution de $attribute de $amount"
   attribute_max: "Tu ne peux pas augmenter l'attribut $attribute"
   attribute_min: "Tu ne peux pas diminuer l'attribut $attribute"
-  full: "Ton inventaire est plein!"  
+  full: "Ton inventaire est plein!"
 spell:
     category: ""
     # category: "&7&o$category"
@@ -394,7 +394,7 @@ spell:
     disabled: "&eDésactivé"
     # This can be used to show who created a spell in spell lore
     # creator: "&1Created by: &9$name"
-    creator: "" 
+    creator: ""
 spells:
     default:
         fizzle: Ton sort a fait des étincelles!
@@ -414,7 +414,7 @@ spells:
         location_required: Une localisation est nécessaire.
         world_required: Un monde est nécessaire.
         invalid_world: Le monde n'est pas valide.
-        cast_finish: ""       
+        cast_finish: ""
 time:
     wait_seconds: encore $seconds secondes
     wait_minutes: encore $minutes minutes
@@ -432,7 +432,7 @@ time:
     description_moment: Un instant
     # description_moment: "$seconds seconds"
     description: "&eCooldown: &6$time"
-    mage_description: "&cFatigue: &6$time"         
+    mage_description: "&cFatigue: &6$time"
 wand:
     default_name: Baguette
     upgrade_default_description: Améliore ta baguette.
@@ -710,8 +710,8 @@ wand:
     unmodifiable_prefix: "&6"
     spell_prefix: "&6"
     brush_prefix: "&7"
-    chest_inventory_title: "Baguette"   
+    chest_inventory_title: "Baguette"
 wands:
   testwand:
     name: Baguette de test
-    description: Une baguette vide à utiliser pour tester les sorts.   
+    description: Une baguette vide à utiliser pour tester les sorts
