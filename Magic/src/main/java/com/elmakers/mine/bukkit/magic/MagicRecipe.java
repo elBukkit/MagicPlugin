@@ -43,6 +43,7 @@ public class MagicRecipe {
     private final MagicController controller;
     private final String key;
     private boolean autoDiscover = false;
+    private boolean locked = false;
     private List<String> discover = null;
 
     public static boolean FIRST_REGISTER = true;
@@ -64,6 +65,7 @@ public class MagicRecipe {
         group = configuration.getString("group", "");
         ignoreDamage = configuration.getBoolean("ignore_damage", false);
         autoDiscover = configuration.getBoolean("auto_discover", false);
+        locked = configuration.getBoolean("locked", false);
         discover = ConfigurationUtils.getStringList(configuration, "discover");
 
         if (disableDefaultRecipe) {
@@ -388,4 +390,9 @@ public class MagicRecipe {
     public boolean isAutoDiscover() {
         return autoDiscover;
     }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
 }

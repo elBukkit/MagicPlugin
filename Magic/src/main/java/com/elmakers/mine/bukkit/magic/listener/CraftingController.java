@@ -97,7 +97,18 @@ public class CraftingController implements Listener {
         if (!controller.hasPermission(player, "Magic.wand.craft")) {
             return false;
         }
-        return controller.hasPermission(player, "Magic.craft." + recipe.getKey(), true);
+        if (!controller.hasPermission(player, "Magic.craft." + recipe.getKey(), true)) {
+            return false;
+        }
+        if (!recipe.isLocked()) {
+            return true;
+        }
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) {
+            return false;
+        }
+
+        return mage.canCraft(recipe.getKey());
     }
 
     public void register(MagicController controller, Plugin plugin) {

@@ -12,6 +12,8 @@
    - Allow using "vanilla: true" to easily override a vanilla recipe (just set the output to a vanilla item type)
      - Does not remove the default recipe from players' knowledge book (not sure if that's possible)
      - Does not work with vanilla recipes that have multiple possible ingredients (e.g. different wood variants)
+   - Add "locked" option for recipes, to prevent crafting by default
+   - Add "craftable" list to classes, specifying locked recipes that class may craft
 
  - Add alt-cast (sneak) to levelled up fling to get the original speed
  - Add Alter level 2, with alt-cast (sneak) to absorb a wildcard brush

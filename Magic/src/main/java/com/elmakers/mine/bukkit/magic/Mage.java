@@ -3807,7 +3807,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         addPassiveEffectsGroup(weakness, properties, "weakness", stack, 1.0);
         addPassiveEffectsGroup(strength, properties, "strength", stack, 1.0);
 
-        if (activeReduction || properties.getBoolean("passive") || stack) {
+        if (activeReduction || properties.isPassive() || stack) {
             if (stack) {
                 cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
                 costReduction = stackValue(costReduction, properties.getFloat("cost_reduction", 0));
@@ -3888,7 +3888,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addPassiveAttributes(activeClass);
         }
         for (MageClass mageClass : classes.values()) {
-            if (mageClass != activeClass && !mageClass.isLocked() && mageClass.getBoolean("passive")) {
+            if (mageClass != activeClass && !mageClass.isLocked() && mageClass.isPassive()) {
                 addPassiveAttributes(mageClass);
             }
         }
@@ -3941,7 +3941,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             addPassiveEffects(activeClass, true);
         }
         for (MageClass mageClass : classes.values()) {
-            if (mageClass != activeClass && !mageClass.isLocked() && mageClass.getBoolean("passive")) {
+            if (mageClass != activeClass && !mageClass.isLocked() && mageClass.isPassive()) {
                 addPassiveEffects(mageClass, true);
             }
         }
@@ -5090,5 +5090,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             overrides.addAll(spellOverrides);
         }
         return overrides;
+    }
+
+    @Override
+    public boolean canCraft(String recipeKey) {
+        MageClass activeClass = getActiveClass();
+        if (activeClass.canCraft(recipeKey)) {
+            return true;
+        }
+        for (MageClass passiveClass : classes.values()) {
+            if (passiveClass.isPassive() && passiveClass.canCraft(recipeKey)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
