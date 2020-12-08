@@ -71,13 +71,10 @@ public class MagicWorld {
         }
         seed = config.getLong("seed", this.seed);
         autoLoad = config.getBoolean("autoload", autoLoad);
-
         ConfigurationSection chunkConfig = config.getConfigurationSection("chunk_generate");
         if (chunkConfig != null) {
             chunkHandler.load(worldName, chunkConfig);
         }
-
-        spawnHandler.clear();
         ConfigurationSection entityConfig = config.getConfigurationSection("entity_spawn");
         if (entityConfig != null) {
             spawnHandler.load(worldName, entityConfig);
@@ -128,7 +125,7 @@ public class MagicWorld {
     public void installPopulators(World world) {
         if (chunkHandler.isEmpty()) return;
         controller.info("Installing Populators in " + world.getName());
-        world.getPopulators().add(chunkHandler);
+        world.getPopulators().addAll(chunkHandler.getPopulators());
     }
 
     @Nullable

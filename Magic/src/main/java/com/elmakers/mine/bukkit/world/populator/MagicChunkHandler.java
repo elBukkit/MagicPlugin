@@ -1,22 +1,20 @@
 package com.elmakers.mine.bukkit.world.populator;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.Nullable;
 
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.generator.BlockPopulator;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 
-public class MagicChunkHandler extends BlockPopulator {
+public class MagicChunkHandler {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
 
     private final MagicController controller;
-    private final Map<String, MagicChunkPopulator> chunkPopulators = new HashMap<String, MagicChunkPopulator>();
+    private final List<MagicChunkPopulator> chunkPopulators = new ArrayList<MagicChunkPopulator>();
 
     public MagicChunkHandler(MagicController controller) {
         this.controller = controller;
@@ -28,30 +26,22 @@ public class MagicChunkHandler extends BlockPopulator {
             if (handlerConfig == null) continue;
 
             String className = handlerConfig.getString("class");
-            MagicChunkPopulator populator = chunkPopulators.get(key);
-            if (populator == null) {
-                populator = createChunkPopulator(className);
-            }
+            MagicChunkPopulator populator = createChunkPopulator(className);
             if (populator != null) {
                 if (populator.load(handlerConfig, controller)) {
-                    chunkPopulators.put(key, populator);
-                    controller.getLogger().info("Adding " + key + " populator to " + worldName);
+                    chunkPopulators.add(populator);
+                    controller.info("Adding " + key + " populator to " + worldName);
                 } else {
-                    controller.getLogger().info("Skipping invalid " + key + " populator for " + worldName);
+                    controller.info("Skipping invalid " + key + " populator for " + worldName);
                 }
+            } else {
+                controller.info("Skipping invalid " + key + " populator for " + worldName);
             }
         }
     }
 
-    @Override
-    public void populate(World world, Random random, Chunk chunk) {
-        for (MagicChunkPopulator populator : chunkPopulators.values()) {
-            populator.populate(world, random, chunk);
-        }
-    }
-
-    public void clear() {
-        chunkPopulators.clear();
+    public Collection<MagicChunkPopulator> getPopulators() {
+        return chunkPopulators;
     }
 
     @Nullable
@@ -66,17 +56,15 @@ public class MagicChunkHandler extends BlockPopulator {
         try {
             handlerClass = Class.forName(className);
         } catch (Throwable ex) {
-            controller.getLogger().warning("Error loading chunk populator: " + className);
-            ex.printStackTrace();
+            controller.getLogger().log(Level.WARNING, "Error loading chunk populator: " + className, ex);
             return null;
         }
 
         Object newObject;
         try {
-            newObject = handlerClass.newInstance();
+            newObject = handlerClass.getDeclaredConstructor().newInstance();
         } catch (Throwable ex) {
-            controller.getLogger().warning("Error loading chunk populator: " + className);
-            ex.printStackTrace();
+            controller.getLogger().log(Level.WARNING, "Error loading chunk populator: " + className, ex);
             return null;
         }
 

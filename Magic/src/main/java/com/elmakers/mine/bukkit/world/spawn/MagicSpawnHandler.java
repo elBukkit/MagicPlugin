@@ -122,7 +122,7 @@ public class MagicSpawnHandler {
 
         Object newObject;
         try {
-            newObject = handlerClass.newInstance();
+            newObject = handlerClass.getDeclaredConstructor().newInstance();
         } catch (Throwable ex) {
             controller.getLogger().warning("Error loading handler: " + className);
             ex.printStackTrace();
