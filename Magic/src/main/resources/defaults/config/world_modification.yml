@@ -1,0 +1,7 @@
+world_modification:
+  # Spawn reasons that will be ignored by world spawn processing rules
+  ignore_spawn_reasons:
+    - CUSTOM
+    - EGG
+    - SPAWNER
+    - SPAWNER_EGG

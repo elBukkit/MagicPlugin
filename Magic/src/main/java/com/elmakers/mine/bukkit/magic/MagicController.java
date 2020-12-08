@@ -1633,13 +1633,14 @@ public class MagicController implements MageController {
         pm.registerEvents(playerController, plugin);
         pm.registerEvents(inventoryController, plugin);
         pm.registerEvents(explosionController, plugin);
-        pm.registerEvents(worldController, plugin);
         if (jumpController != null) {
             pm.registerEvents(jumpController, plugin);
         }
         if (mobs2 != null) {
             pm.registerEvents(mobs2, plugin);
         }
+
+        worldController.registerEvents();
     }
 
     public Collection<Mage> getPending() {
@@ -1859,7 +1860,7 @@ public class MagicController implements MageController {
 
         // Load worlds
         logger.setContext("worlds");
-        worldController.load(loader.getWorlds());
+        worldController.loadWorlds(loader.getWorlds());
         logger.setContext(null);
         log("Loaded " + worldController.getCount() + " customized worlds");
 
@@ -3452,6 +3453,9 @@ public class MagicController implements MageController {
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
         }
+
+        // Configure world generation and spawn replacement
+        worldController.load(properties.getConfigurationSection("world_modification"));
 
         // Link to generic protection plugins
         protectionManager.initialize(plugin, properties.getStringList("generic_protection"));

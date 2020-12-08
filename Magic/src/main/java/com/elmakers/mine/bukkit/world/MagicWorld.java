@@ -9,6 +9,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -20,25 +21,30 @@ public class MagicWorld {
     private enum WorldState { UNLOADED, LOADING, LOADED }
 
     private final MagicController controller;
-    private MagicChunkHandler chunkHandler;
-    private MagicSpawnHandler spawnHandler;
-    private String copyFrom;
+    private final MagicChunkHandler chunkHandler;
+    private final MagicSpawnHandler spawnHandler;
+    private String copyFrom = "";
     private boolean autoLoad = false;
     private World.Environment worldEnvironment = World.Environment.NORMAL;
     private World.Environment appearanceEnvironment = null;
     private WorldType worldType = WorldType.NORMAL;
     private String worldName;
+    private String resourcePack;
     private long seed;
     private static Random random = new Random();
     private WorldState state = WorldState.UNLOADED;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
+        seed = random.nextLong();
+        chunkHandler = new MagicChunkHandler(controller);
+        spawnHandler = new MagicSpawnHandler(controller);
     }
 
     public void load(String name, ConfigurationSection config) {
         worldName = name;
-        copyFrom = config.getString("copy", "");
+        copyFrom = config.getString("copy", copyFrom);
+        resourcePack = config.getString("resource_pack", null);
         if (config.contains("environment")) {
             String typeString = config.getString("environment");
             try {
@@ -63,16 +69,9 @@ public class MagicWorld {
                 controller.getLogger().warning("Invalid world type: " + typeString);
             }
         }
-        seed = config.getLong("seed", random.nextLong());
-        autoLoad = config.getBoolean("autoload", false);
+        seed = config.getLong("seed", this.seed);
+        autoLoad = config.getBoolean("autoload", autoLoad);
 
-        if (chunkHandler == null) {
-            chunkHandler = new MagicChunkHandler(controller);
-        }
-        if (spawnHandler == null) {
-            spawnHandler = new MagicSpawnHandler(controller);
-        }
-        chunkHandler.clear();
         ConfigurationSection chunkConfig = config.getConfigurationSection("chunk_generate");
         if (chunkConfig != null) {
             chunkHandler.load(worldName, chunkConfig);
@@ -83,7 +82,9 @@ public class MagicWorld {
         if (entityConfig != null) {
             spawnHandler.load(worldName, entityConfig);
         }
+    }
 
+    public void finalizeLoad() {
         // Autoload worlds
         if (autoLoad && copyFrom.isEmpty()) {
             // Wait a few ticks to do this, to avoid errors during initialization
@@ -95,13 +96,14 @@ public class MagicWorld {
                }
            }, 1L);
         }
+        spawnHandler.finalizeLoad();
     }
 
     public void createWorld() {
         state = WorldState.LOADING;
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            controller.getLogger().info("Loading " + worldName + " as " + worldEnvironment + " (" + worldType + ")");
+            controller.info("Loading " + worldName + " as " + worldEnvironment + " (" + worldType + ")");
             WorldCreator worldCreator = WorldCreator.name(worldName);
             worldCreator.seed(seed);
             worldCreator.environment(worldEnvironment);
@@ -119,19 +121,13 @@ public class MagicWorld {
         }
         if (world != null && appearanceEnvironment != null) {
             NMSUtils.setEnvironment(world, appearanceEnvironment);
-            controller.getLogger().info("Changed " + worldName + " appearance to " + appearanceEnvironment);
-        }
-    }
-
-    public void finalizeLoad() {
-        if (spawnHandler != null) {
-            spawnHandler.finalizeLoad();
+            controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
         }
     }
 
     public void installPopulators(World world) {
         if (chunkHandler.isEmpty()) return;
-        controller.getLogger().info("Installing Populators in " + world.getName());
+        controller.info("Installing Populators in " + world.getName());
         world.getPopulators().add(chunkHandler);
     }
 
@@ -165,16 +161,22 @@ public class MagicWorld {
                // Create this world if it doesn't exist
                World world = Bukkit.getWorld(worldName);
                if (world == null) {
-                   controller.getLogger().info("Loading " + worldName + " using settings copied from " + initWorld.getName());
+                   controller.info("Loading " + worldName + " using settings copied from " + initWorld.getName());
                    world = Bukkit.createWorld(new WorldCreator(worldName).copy(initWorld));
                    if (world == null) {
                        controller.getLogger().warning("Failed to create world: " + worldName);
                    } else if (appearanceEnvironment != null) {
                        NMSUtils.setEnvironment(world, appearanceEnvironment);
-                       controller.getLogger().info("Changed " + worldName + " appearance to " + appearanceEnvironment);
+                       controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
                    }
                }
            }
         }, 1);
+    }
+
+    public void playerEntered(Player player) {
+        if (resourcePack != null) {
+            player.setResourcePack(resourcePack);
+        }
     }
 }
