@@ -100,7 +100,48 @@ public class MagicRecipe {
             return false;
         }
 
-        if (item != null) {
+        String vanillaItemKey = configuration.getString("vanilla");
+        if (vanillaItemKey != null && !vanillaItemKey.isEmpty() && item != null) {
+            ItemStack vanillaItem = item;
+            if (!vanillaItemKey.equalsIgnoreCase("true")) {
+                vanillaItem = controller.createItem(vanillaItemKey);
+                if (vanillaItem == null) {
+                    controller.getLogger().warning("Crafting recipe " + key + " specifies a vanilla recipe with an invalid item: " + vanillaItemKey);
+                    vanillaItem = item;
+                }
+            }
+            outputType = item.getType();
+            List<Recipe> recipes = controller.getPlugin().getServer().getRecipesFor(vanillaItem);
+            if (recipes != null && !recipes.isEmpty()) {
+                if (recipes.size() > 1) {
+                    controller.getLogger().warning("Crafting recipe " + key + " specifies a vanilla recipe, but more than one recipe was found for: " + outputKey + ". Only one version will be overridden.");
+                }
+                Recipe recipe = recipes.get(0);
+                if (recipe instanceof ShapedRecipe) {
+                    ShapedRecipe copyRecipe = (ShapedRecipe)recipe;
+                    this.recipe = CompatibilityUtils.createShapedRecipe(controller.getPlugin(), key, item);
+                    this.recipe.shape(copyRecipe.getShape());
+                    for (Map.Entry<Character, ItemStack> entry : copyRecipe.getIngredientMap().entrySet()) {
+                        char ingredientKey = entry.getKey();
+                        ItemStack input = entry.getValue();
+                        if (CompatibilityUtils.isEmpty(input)) {
+                            input = new ItemStack(Material.AIR);
+                        }
+                        ItemData ingredient = new com.elmakers.mine.bukkit.item.ItemData(input);
+                        ingredients.put(ingredientKey, ingredient);
+                        if (!CompatibilityUtils.setRecipeIngredient(this.recipe, ingredientKey, ingredient.getItemStack(1), ignoreDamage)) {
+                            outputType = null;
+                            controller.getLogger().warning("Unable to set recipe ingredient from vanilla ingredient: " + input);
+                            return false;
+                        }
+                    }
+                } else {
+                    controller.getLogger().warning("Crafting recipe " + key + " specifies a shapeless vanilla recipe: " + outputKey);
+                }
+            } else {
+                controller.getLogger().warning("Crafting recipe " + key + " specifies a vanilla recipe, but no recipe was found for: " + outputKey);
+            }
+        } else if (item != null) {
             outputType = item.getType();
             ShapedRecipe shaped = CompatibilityUtils.createShapedRecipe(controller.getPlugin(), key, item);
             List<String> rows = new ArrayList<>();

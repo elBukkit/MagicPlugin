@@ -8,6 +8,11 @@
    - There is editor support
    - Fix issues with NPCs and Automata getting lost if in unloaded worlds
 
+ - Crafting improvements
+   - Allow using "vanilla: true" to easily override a vanilla recipe (just set the output to a vanilla item type)
+     - Does not remove the default recipe from players' knowledge book (not sure if that's possible)
+     - Does not work with vanilla recipes that have multiple possible ingredients (e.g. different wood variants)
+
  - Add alt-cast (sneak) to levelled up fling to get the original speed
  - Add Alter level 2, with alt-cast (sneak) to absorb a wildcard brush
  - Fix support for wildcard brushes (use with SuperReplace to replace stairs, fences, etc in-place)
