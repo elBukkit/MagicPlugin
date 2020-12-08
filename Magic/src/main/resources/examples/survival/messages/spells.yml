@@ -703,6 +703,7 @@ spells:
     gather:
         name: Gather
         description: Teleport you to other players
+        usage: Aim down and cast to send friend requests
         alternate_down_no_target: "&4No one is around"
         no_target: |2-
 
