@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
+import com.elmakers.mine.bukkit.world.tasks.CheckWorldCreateTask;
 
 public class MagicWorld {
     private enum WorldState { UNLOADED, LOADING, LOADED }
@@ -85,12 +86,7 @@ public class MagicWorld {
         // Autoload worlds
         if (autoLoad) {
             // Wait a few ticks to do this, to avoid errors during initialization
-            Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-               @Override
-               public void run() {
-                   checkWorldCreate();
-               }
-           }, 1L);
+            Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new CheckWorldCreateTask(this), 1L);
         }
         spawnHandler.finalizeLoad();
     }
@@ -104,11 +100,9 @@ public class MagicWorld {
         if (copyFrom.isEmpty()) {
             createWorld();
         } else {
-            if (!copyFrom.isEmpty()) {
-                World targetWorld = controller.getPlugin().getServer().getWorld(copyFrom);
-                if (targetWorld != null) {
-                    copyWorld(targetWorld);
-                }
+            World targetWorld = controller.getPlugin().getServer().getWorld(copyFrom);
+            if (targetWorld != null) {
+                copyWorld(targetWorld);
             }
         }
     }
@@ -166,29 +160,22 @@ public class MagicWorld {
         copyWorld(initWorld);
     }
 
-    public void copyWorld(World world) {
-        if (copyFrom.isEmpty() || !world.getName().equals(copyFrom)) return;
+    public void copyWorld(World targetWorld) {
+        if (copyFrom.isEmpty() || !targetWorld.getName().equals(copyFrom)) return;
 
         state = WorldState.LOADING;
-
-        // Wait a few ticks to do this, to avoid errors during initialization
-        Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
-           @Override
-           public void run() {
-               // Create this world if it doesn't exist
-               World world = Bukkit.getWorld(worldName);
-               if (world == null) {
-                   controller.info("Loading " + worldName + " using settings copied from " + world.getName());
-                   world = Bukkit.createWorld(new WorldCreator(worldName).copy(world));
-                   if (world == null) {
-                       controller.getLogger().warning("Failed to create world: " + worldName);
-                   } else if (appearanceEnvironment != null) {
-                       NMSUtils.setEnvironment(world, appearanceEnvironment);
-                       controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
-                   }
-               }
+        // Create this world if it doesn't exist
+        World world = Bukkit.getWorld(worldName);
+        if (world == null) {
+           controller.info("Loading " + worldName + " using settings copied from " + targetWorld.getName());
+           world = Bukkit.createWorld(new WorldCreator(worldName).copy(targetWorld));
+           if (world == null) {
+               controller.getLogger().warning("Failed to create world: " + worldName);
+           } else if (appearanceEnvironment != null) {
+               NMSUtils.setEnvironment(world, appearanceEnvironment);
+               controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
            }
-        }, 1);
+        }
     }
 
     public void playerEntered(Player player) {
