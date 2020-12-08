@@ -1,4 +1,3 @@
-
 attributes:
   bowpull:
     name: Band de l'arc
@@ -36,8 +35,6 @@ attributes:
   mana_max:
     name: Mana maximal
     description: La limite maximale de mana d'un joueur
-    
-    
 commands:
     no_permission: "&cTu n'es pas autorisé à utiliser cette commande."
     in_game: "&cCette commande peut uniquement être utilisée en jeu."
@@ -142,11 +139,7 @@ commands:
       sending: "&6/getrp auto&f pour recevoir le resource pack automatiquement \n&rou &6/getrp off&f pour désactiver la demande à la connexion"
       preference: "Préférences pour le resource pack mises à &3$pack&f\n&6/getrp default&f pour le remettre par défaut"
       noauto: "&6/getrp auto &fpour avoir le resource pack automatiquement à la connexion"
-      default: "Préférences du resource pack remises par défaut"   
-    
-    
-    
-    
+      default: "Préférences du resource pack remises par défaut"    
 costs:
     sp_amount: $amount PS
     xp_amount: $amount XP
@@ -165,23 +158,17 @@ costs:
     currency_singular: Dollar
     currency: Dollars
     currency_amount: "$$amount"
-
 currency:
     item_name: "&e$amount &6$type"
     description: Clic droit pour déposer
     limit: "a:&eLa limite de &6$type &eest de &c$amount"
     deposited: "a:&aDépôt de &2$amount &6$type&a, montant: &2$balance"
     earned: "a:&6+ &e$earned"
-
 sp:
     name: "&e$amount &6Points de Sort"
     description: Clic droit pour récupérer les Points de Sort
     limit: "a:&eLa limite pour les &6Points de Sort &eest de &c$amount"
     deposited: "a:&aDépôt de &2$amount &6Points de Sort&a, montant: &2$balance"
- 
- 
- 
- 
 item:
     duplicated: Ton objet a été dupliqué
     destroyed: Ton objet a été détruit
@@ -217,8 +204,6 @@ item:
     skull: Ton livre a été transformé en tête
     skull_no_book: Tu dois tenir un livre écrit avec une valeur de tête dedans
     skull_invalid_book: "Ce livre n'a pas de valeur de tête écrit dedans! Copie le texte 'Textures.Value' à l'intérieur, c'est une longue suite de charactère aléatoire généralement finissant par =="
-
-
 mage:
     removed_property: Suppression de la propriété $name
     no_property: Le mage n'a pas la propriété $name
@@ -237,29 +222,22 @@ mage:
     spell_upgraded: "Ton sort &r&6$name &d&oa été amélioré au niveau &3$level"
     spell_added: "Tu as appris le sort &r&6$name"
     brush_added: "Tu as acquis la brosse &r&7$name"
-
-
-
 general:
     locked_chest: Ce coffre est fermé, tu ne peux pas le casser
     spawn_egg_title: "Oeuf de $entity"
-
 books:
     default:
         author: NathanWolf
         title: $category Livre de sort
     all:
         title: Livre de sort du Maître
-
 material:
     wildcard: " (Conservation des données du bloc)"
-
 economy:
     missing: "&cMon magasin est fermé, désolé!"
     insufficient: "Prix: &6$cost"
     deducted: "Retiré: &6$cost"
     requires: "Tu dois avoir au moins $cost"
-
 worlds:
     world:
         name: L'Overworld
@@ -267,14 +245,11 @@ worlds:
         name: Le Nether
     world_the_end:
         name: L'End
-
 cooldown:
     description: "&eCooldown: &6$time"
     mage_description: "&cFatigue: &6$time"
-
 warmup:
     description: "&7Préparation: &6$time"
-
 duration:
     lasts_seconds: Dure $seconds secondes
     lasts_minutes: Dure $minutes minutes
@@ -282,7 +257,6 @@ duration:
     lasts_second: Dure $seconds seconde
     lasts_minute: Dure $minutes minute
     lasts_hour: Dure $hours heure
-
 skills:
     inventory_title: "Compétences"
     inventory_title_heroes: "Compétences de $class ($page/$pages)"
@@ -293,32 +267,25 @@ skills:
     passive_description: "&1PASSIF"
     none: "Tu n'as aucune compétence!"
     none_on_page: "Il n'y a pas de compétence sur la page $page"
-
 resource_pack:
     # This will be sent to players on join if resource_pack_prompt is set to true in config.yml.
     prompt: "Utilise /getrp pour télécharger le resource pack"
     off_prompt: "a:&eUtilise &4/getrp &epour télécharger le resource pack"
     sending: "t:&3Patience\n&benvoi du resource pack"
-
 controls:
   drop: Lacher (Q)
   right_click: Clic droit
   left_click: Clic gauche
   swap: Changer (F)
-
 skillapi:
   required_skill: "&cCompétence requise: &4$skill"
   required_class: "&cClasse requise: &4$class"
-
 damage_types:
   explosion: "Explosion"
   fall: "Chute"
   fire: "Feu"
   physical: "Physique"
   projectile: "Projectile"
-  
-
-
 npc:
   # Valid placeholders: $speaker, $line, $target
   # These (except $line) can also be used in the dialog text itself
@@ -326,15 +293,8 @@ npc:
   insufficient: "&cPrix : $cost"
   deducted: "&cRetiré : $cost"
   no_permission: "&r&4Tu ne peux pas intéragir avec moi!"
-  
-  
-  
 path:
   level_up: "t:&r&b*** &r&5$path &b***\n&5Avancé"  
-  
-  
-
-
 requirements:
   unknown: "&cNon autorisé"
   property_requirement: "&r&cRequis: &6$property &cde &4$value"
@@ -352,10 +312,7 @@ requirements:
   time: "Heure"
   height: "Hauteur"
   currency: "Devise"
-  no_cast: "&cTu dois lancer le sort $spell en premier"
-  
-  
-  
+  no_cast: "&cTu dois lancer le sort $spell en premier" 
 shops:
   no_wand: "&cTu dois tenir une baguette en main!"
   no_template: "&cTu ne peux pas l'apprendre avec la baguette $wand&"
@@ -413,10 +370,6 @@ shops:
   attribute_max: "Tu ne peux pas augmenter l'attribut $attribute"
   attribute_min: "Tu ne peux pas diminuer l'attribut $attribute"
   full: "Ton inventaire est plein!"  
- 
- 
- 
- 
 spell:
     category: ""
     # category: "&7&o$category"
@@ -441,11 +394,7 @@ spell:
     disabled: "&eDésactivé"
     # This can be used to show who created a spell in spell lore
     # creator: "&1Created by: &9$name"
-    creator: ""
-    
-    
-    
-    
+    creator: "" 
 spells:
     default:
         fizzle: Ton sort a fait des étincelles!
@@ -465,12 +414,7 @@ spells:
         location_required: Une localisation est nécessaire.
         world_required: Un monde est nécessaire.
         invalid_world: Le monde n'est pas valide.
-        cast_finish: ""  
-        
-        
-        
-        
-        
+        cast_finish: ""       
 time:
     wait_seconds: encore $seconds secondes
     wait_minutes: encore $minutes minutes
@@ -488,10 +432,7 @@ time:
     description_moment: Un instant
     # description_moment: "$seconds seconds"
     description: "&eCooldown: &6$time"
-    mage_description: "&cFatigue: &6$time"        
-   
-   
-   
+    mage_description: "&cFatigue: &6$time"         
 wand:
     default_name: Baguette
     upgrade_default_description: Améliore ta baguette.
@@ -708,7 +649,6 @@ wand:
     description_lore: "&o&a$description"
     path_lore: ""
     #path_lore: "&o$path"
-
     wand_instructions_header: |-
       &8 ----------------------------------------------------
       &8|
@@ -771,11 +711,7 @@ wand:
     spell_prefix: "&6"
     brush_prefix: "&7"
     chest_inventory_title: "Baguette"   
-   
-   
 wands:
   testwand:
     name: Baguette de test
     description: Une baguette vide à utiliser pour tester les sorts.   
-   
-   
