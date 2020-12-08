@@ -185,6 +185,14 @@ public class MagicRecipe {
         return outputType != null;
     }
 
+    public void unregister(Plugin plugin) {
+        // Remove this recipe
+        boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
+        if (recipe != null && !FIRST_REGISTER && canRemoveRecipes) {
+            CompatibilityUtils.removeRecipe(plugin, key);
+        }
+    }
+
     public void register(MagicController controller, Plugin plugin)
     {
         // I think we can only do this once..
@@ -207,14 +215,11 @@ public class MagicRecipe {
         boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
         if (recipe != null)
         {
-            if (!FIRST_REGISTER) {
-                if (canRemoveRecipes) {
-                    CompatibilityUtils.removeRecipe(plugin, key);
-                } else {
-                    List<Recipe> existing = plugin.getServer().getRecipesFor(craft());
-                    if (existing.size() > 0) {
-                        return;
-                    }
+            // Recipes can't be removed on older minecraft versions, so we have to skip re-registering if we've already registered this one
+            if (!FIRST_REGISTER && !canRemoveRecipes) {
+                List<Recipe> existing = plugin.getServer().getRecipesFor(craft());
+                if (existing.size() > 0) {
+                    return;
                 }
             }
             controller.info("Adding crafting recipe for " + outputKey);

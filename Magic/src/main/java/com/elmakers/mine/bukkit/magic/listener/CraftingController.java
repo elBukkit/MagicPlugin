@@ -46,6 +46,11 @@ public class CraftingController implements Listener {
     }
 
     public void load(ConfigurationSection configuration) {
+        for (List<MagicRecipe> recipeList : recipes.values()) {
+            for (MagicRecipe recipe : recipeList) {
+                recipe.unregister(controller.getPlugin());
+            }
+        }
         recipes.clear();
         recipeKeys.clear();
         autoDiscoverRecipeKeys.clear();
