@@ -32,6 +32,8 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     private final MagicController controller;
     @Nullable
     private Location location;
+    @Nullable
+    private String worldName;
     @Nonnull
     private EntityData entityData;
     @Nonnull
@@ -112,15 +114,14 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             double z = location.getDouble("z");
             float yaw = (float)location.getDouble("yaw");
             float pitch = (float)location.getDouble("pitch");
-            String worldName = location.getString("world");
+            worldName = location.getString("world");
             if (worldName == null || worldName.isEmpty()) {
                 worldName = "world";
                 controller.getLogger().warning("NPC missing world name, defaulting to 'world'");
             }
+
+            // This world may not be loaded yet, if that happens we may try to load it again later
             World world = Bukkit.getWorld(worldName);
-            if (world == null) {
-                controller.getLogger().warning("NPC has unknown world: " + worldName + ", will be removed!");
-            }
             this.location = new Location(world, x, y, z, yaw, pitch);
         } else {
             this.location = null;
@@ -294,7 +295,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         configuration.set("creator_name", creatorName);
         configuration.set("imported_id", importedId);
         ConfigurationSection locationSection = configuration.createSection("location");
-        locationSection.set("world", location.getWorld().getName());
+        locationSection.set("world", worldName);
         locationSection.set("x", location.getX());
         locationSection.set("y", location.getY());
         locationSection.set("z", location.getZ());

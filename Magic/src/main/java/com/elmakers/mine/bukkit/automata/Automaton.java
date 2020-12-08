@@ -35,6 +35,7 @@ public class Automaton implements Locatable {
     private String templateKey;
     @Nonnull
     private Location location;
+    private String worldName;
     private long createdAt;
     private String creatorId;
     private String creatorName;
@@ -68,7 +69,7 @@ public class Automaton implements Locatable {
         double z = node.getDouble("z");
         float yaw = (float)node.getDouble("yaw");
         float pitch = (float)node.getDouble("pitch");
-        String worldName = node.getString("world");
+        worldName = node.getString("world");
         if (worldName == null || worldName.isEmpty()) {
             worldName = "world";
             controller.getLogger().warning("Automaton missing world name, defaulting to 'world'");
@@ -113,7 +114,7 @@ public class Automaton implements Locatable {
         node.set("creator", creatorId);
         node.set("creator_name", creatorName);
         node.set("template", templateKey);
-        node.set("world", location.getWorld().getName());
+        node.set("world", worldName);
         node.set("x", location.getX());
         node.set("y", location.getY());
         node.set("z", location.getZ());
