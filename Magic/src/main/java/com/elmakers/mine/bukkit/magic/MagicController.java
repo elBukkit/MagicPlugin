@@ -5831,8 +5831,17 @@ public class MagicController implements MageController {
 
     @Override
     public boolean itemsAreEqual(ItemStack first, ItemStack second) {
-        if (first == null || second == null) return false;
-        if (first.getType() != second.getType() || first.getDurability() != second.getDurability()) return false;
+        return itemsAreEqual(first, second, false);
+    }
+
+    @Override
+    public boolean itemsAreEqual(ItemStack first, ItemStack second, boolean ignoreDamage) {
+        boolean firstIsEmpty = CompatibilityUtils.isEmpty(first);
+        boolean secondIsEmpty = CompatibilityUtils.isEmpty(second);
+        if (secondIsEmpty && firstIsEmpty) return true;
+        if (secondIsEmpty || firstIsEmpty) return false;
+        if (first.getType() != second.getType()) return false;
+        if (!ignoreDamage && first.getDurability() != second.getDurability()) return false;
 
         boolean firstIsWand = Wand.isWandOrUpgrade(first);
         boolean secondIsWand = Wand.isWandOrUpgrade(second);

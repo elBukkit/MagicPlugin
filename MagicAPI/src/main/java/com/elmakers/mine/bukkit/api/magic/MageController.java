@@ -323,6 +323,7 @@ public interface MageController {
     CurrencyItem getCurrency();
     Currency getCurrency(String key);
     boolean itemsAreEqual(ItemStack first, ItemStack second);
+    boolean itemsAreEqual(ItemStack first, ItemStack second, boolean ignoreDamage);
 
     void addFlightExemption(Player player, int duration);
     void addFlightExemption(Player player);
