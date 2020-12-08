@@ -1359,10 +1359,6 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         Mage mage = getMage();
         MageController controller = getController();
 
-        for (Map.Entry<String, String> entry : messageParameters.entrySet()) {
-            command = command.replace(prefix + entry.getKey(), entry.getValue());
-        }
-
         ConfigurationSection variables = getAllVariables();
         List<String> keys = new ArrayList<>(variables.getKeys(false));
         Collections.sort(keys, (o1, o2) -> o2.length() - o1.length());
@@ -1382,6 +1378,10 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         for (String attribute : attributes) {
             Double value = mage.getAttribute(attribute);
             command = command.replace("@" + attribute, value == null ? "?" : Integer.toString((int)(double)value));
+        }
+
+        for (Map.Entry<String, String> entry : messageParameters.entrySet()) {
+            command = command.replace(prefix + entry.getKey(), entry.getValue());
         }
 
         command = command
