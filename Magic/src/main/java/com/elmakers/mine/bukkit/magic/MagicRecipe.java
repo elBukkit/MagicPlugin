@@ -55,9 +55,8 @@ public class MagicRecipe {
 
     public boolean load(ConfigurationSection configuration) {
         outputKey = configuration.getString("output");
-
-        if (outputKey == null) {
-            return false;
+        if (outputKey == null || outputKey.isEmpty()) {
+            outputKey = this.key;
         }
 
         substitue = ConfigurationUtils.getMaterial(configuration, "substitute", null);
@@ -97,13 +96,14 @@ public class MagicRecipe {
         {
             item = controller.createItem(outputKey);
         }
-        else
-        {
+        if (item == null) {
+            controller.getLogger().warning("Unknown output for recipe " + key + ": " + outputKey);
             return false;
         }
 
         String vanillaItemKey = configuration.getString("vanilla");
-        if (vanillaItemKey != null && !vanillaItemKey.isEmpty() && item != null) {
+        boolean isVanillaRecipe = vanillaItemKey != null && !vanillaItemKey.isEmpty() && !vanillaItemKey.equalsIgnoreCase("false");
+        if (isVanillaRecipe) {
             ItemStack vanillaItem = item;
             if (!vanillaItemKey.equalsIgnoreCase("true")) {
                 vanillaItem = controller.createItem(vanillaItemKey);
@@ -143,7 +143,7 @@ public class MagicRecipe {
             } else {
                 controller.getLogger().warning("Crafting recipe " + key + " specifies a vanilla recipe, but no recipe was found for: " + outputKey);
             }
-        } else if (item != null) {
+        } else {
             outputType = item.getType();
             ShapedRecipe shaped = CompatibilityUtils.createShapedRecipe(controller.getPlugin(), key, item);
             List<String> rows = new ArrayList<>();
