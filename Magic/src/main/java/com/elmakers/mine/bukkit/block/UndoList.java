@@ -46,6 +46,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.entity.SpawnedEntity;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -73,9 +74,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     private Set<String>                     worlds = new HashSet<>();
     private boolean                         loading = false;
 
-    protected Set<Entity>                     entities;
     protected Deque<Runnable>                 runnables;
-    protected HashMap<UUID, EntityData>     modifiedEntities;
+    protected Map<UUID, SpawnedEntity>      spawnedEntities;
+    protected Map<UUID, EntityData>         modifiedEntities;
 
     protected WeakReference<CastContext>    context;
 
@@ -161,7 +162,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         return (
             (blockList == null || blockList.isEmpty())
-        &&     (entities == null || entities.isEmpty())
+        &&     (spawnedEntities == null || spawnedEntities.isEmpty())
         &&     (runnables == null || runnables.isEmpty()));
     }
 
@@ -187,7 +188,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Override
     public boolean hasChanges() {
-        return size() > 0 || (runnables != null && !runnables.isEmpty()) || (entities != null && !entities.isEmpty()) || (undoEntityEffects && modifiedEntities != null && !modifiedEntities.isEmpty());
+        return size() > 0 || (runnables != null && !runnables.isEmpty()) || (spawnedEntities != null && !spawnedEntities.isEmpty()) || (undoEntityEffects && modifiedEntities != null && !modifiedEntities.isEmpty());
     }
 
     @Override
@@ -265,10 +266,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void add(Entity entity)
     {
         if (entity == null) return;
-        if (entities == null) entities = new HashSet<>();
+        if (spawnedEntities == null) spawnedEntities = new HashMap<>();
         if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
 
-        entities.add(entity);
+        spawnedEntities.put(entity.getUniqueId(), new SpawnedEntity(entity));
         if (this.isScheduled()) {
             entity.setMetadata("magicspawned", new FixedMetadataValue(plugin, true));
         }
@@ -397,10 +398,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void remove(Entity entity) {
         watchedEntities.remove(entity);
-        if (entities != null) {
-            entities.remove(entity);
-        }
         UUID entityId = entity.getUniqueId();
+        if (spawnedEntities != null) {
+            spawnedEntities.remove(entityId);
+        }
         if (modifiedEntities != null) {
             modifiedEntities.remove(entityId);
         }
@@ -551,27 +552,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void undoEntityEffects()
     {
         // This part doesn't happen in a batch, and may lag on large lists
-        if (entities != null || modifiedEntities != null) {
-            if (entities != null) {
-                for (Entity entity : entities) {
-                    if (entity != null) {
-                        if (!entity.isValid()) {
-                            if (!entity.getLocation().getChunk().isLoaded()) {
-                                entity.getLocation().getChunk().load();
-                            }
-                            entity = CompatibilityUtils.getEntity(entity.getWorld(), entity.getUniqueId());
-                        }
-                        if (entity != null && entity.isValid()) {
-                            CastContext context = getContext();
-                            if (context != null && context.hasEffects("undo_entity")) {
-                                context.playEffects("undo_entity", 1.0f, null, null, entity.getLocation(), entity, null);
-                            }
-                            setUndoList(entity, null);
-                            entity.remove();
-                        }
-                    }
+        if (spawnedEntities != null || modifiedEntities != null) {
+            if (spawnedEntities != null) {
+                for (SpawnedEntity entity : spawnedEntities.values()) {
+                    entity.despawn(getContext());
                 }
-                entities = null;
+                spawnedEntities = null;
             }
             if (modifiedEntities != null) {
                 for (EntityData data : modifiedEntities.values()) {
@@ -706,11 +692,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (worldName == null) worldName = entity.getWorld().getName();
 
         // Check to see if this is something we spawned, and has now been destroyed
-        if (entities != null && entities.contains(entity) && !entity.isValid()) {
-            entities.remove(entity);
+        UUID entityId = entity.getUniqueId();
+        if (spawnedEntities != null && spawnedEntities.containsKey(entityId) && !entity.isValid()) {
+            spawnedEntities.remove(entityId);
         } else if (entity.isValid()) {
             if (modifiedEntities == null) modifiedEntities = new HashMap<>();
-            UUID entityId = entity.getUniqueId();
             entityData = modifiedEntities.get(entityId);
             if (entityData == null) {
                 entityData = new EntityData(controller, entity);
@@ -1119,12 +1105,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public Collection<Entity> getAllEntities() {
         ArrayList<Entity> entities = new ArrayList<>();
-        if (this.entities != null)
+        if (this.spawnedEntities != null)
         {
-            for (Entity entity : this.entities)
+            for (SpawnedEntity spawnedEntity : this.spawnedEntities.values())
             {
-                if (entity != null)
-                {
+                Entity entity = spawnedEntity.getEntity();
+                if (entity != null) {
                     entities.add(entity);
                 }
             }
