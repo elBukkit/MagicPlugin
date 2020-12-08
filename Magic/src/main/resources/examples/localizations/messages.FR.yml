@@ -492,6 +492,287 @@ time:
    
    
    
+wand:
+    default_name: Baguette
+    upgrade_default_description: Améliore ta baguette.
+    upgrade_item_description: "&eLacher sur une baguette pour l'améliorer"
+    #spell_item_description: "&eDrop on a wand to learn"
+    spell_item_description: ""
+    #brush_item_description: "&eDrop on a wand to learn"
+    brush_item_description: ""
+    copy_material_name: Copier
+    copy_material_description: Remplit avec le bloc ciblé
+    erase_material_name: Efface
+    erase_material_description: Remplit avec de l'air
+    clone_material_name: Cloner
+    clone_material_description: Copie les blocs de la cible
+    replicate_material_name: Reproduire
+    replicate_material_description: Reproduit le modèle de clonage cible
+    clone_material_activated: "a:Modèle de clonage sélectionné"
+    replicate_material_activated: "a:Modèle à reproduire sélectionné"
+    erase_modifier_activated: "a:Effacement actif"
+    map_material_name: "Carte $id"
+    map_material_name_scaled: "Carte $id ($sizex$size)"
+    map_material_description: Créé un pixel art depuis la dernier carte tenue
+    schematic_material_description: Utilisation de $schematic pour la construction.
+    building_material_description: Construit avec $material
+    upgrade_uses: "&aAjout de $count utilisations"
+    upgrade_uses_singular: "&aAjout de $count utilisation"
+    uses_remaining_brief: "&c$count utilisations"
+    uses_remaining_singular: "&c$count utilisation"
+    uses_remaining: $count utilisations restantes
+    enchantment_level_1: I
+    enchantment_level_2: II
+    enchantment_level_3: III
+    enchantment_level_4: IV
+    enchantment_level_5: V
+    enchantment_level_max: X
+    spell_count: $count sorts appris
+    material_count: $count blocs
+    upgrade_spell_count: Ajout de $count sorts
+    upgrade_material_count: Ajout de $count blocs
+    mana_max: "&eMana: $amount"
+    mana_amount: "&eMana: $amount"
+    mana_amount_boosted: "&eMana: $amount &f(&b$mana&f)"
+    mana_regeneration: "&eRégénération du Mana: $amount/s"
+    mana_per_damage: "&eRage de Mana: $amount/HP"
+    mana_regeneration_boosted: "&eMana Regeneration: $amount &f(&b$mana&f)&d/s"
+    mana_boost: "&eBoost de Mana: $percent%"
+    mana_regeneration_boost: "&eBoost de régénération de Mana: $percent%"
+    earn_multiplier: "&6Boost de $type : $percent%"
+    block_chance: "&bBlocage $roman"
+    reflect_chance: "&bRéflexion $roman"
+    cost_reduction: "&6Réduction du coût $roman"
+    consume_reduction: "&6Manifestation"
+    cooldown_reduction: "&6Réduction du cooldown $roman"
+    power: "&6Puissance $roman"
+    attributes: "&d$attribute $value"
+    property_stack: "+$property"
+    property_stack_negative: "&c$property"
+    property_value: "$property"
+    property_value_negative: "&c$property"
+    upgrade_slot: "&6Va dans le slot&7: &3$slot"
+    slots_header: "&6Améliorations&7:"
+    empty_slot: " &8- &7(&2slot &6$slot vide&7)"
+    slotted: " &8- &7$slotted"
+    item_attributes:
+      GENERIC_ATTACK_DAMAGE: "Dégât d'attaque"
+    prefixes:
+      protection: "&2"
+      strength: "&2"
+      weakness: "&2"
+      enchantment: "&7"
+    protection:
+      overall: "Protection $roman"
+      physical: "Protection physique $roman"
+      projectile: "Protection contre les projectiles $roman"
+      fall: "Protection de chute $roman"
+      fire: "Protection de feu $roman"
+      explosion: "Protection contre les explosions $roman"
+      magic: "Protection magique $roman"
+      unknown: "Protection contre $type $roman"
+    strength:
+      overall: "Dégâts $roman"
+      physical: "Dégâts physiques $roman"
+      projectile: "Dégâts de projectile $roman"
+      fall: "Dégâts de chute $roman"
+      fire: "Dégâts de feu $roman"
+      explosion: "Dégâts d'explosion $roman"
+      magic: "Dégâts magiques $roman"
+      unknown: "Dégâts $type $roman"
+    weakness:
+      overall: "Faiblesse $roman"
+      physical: "Faiblesse physique $roman"
+      projectile: "Faiblesse contre les projectiles $roman"
+      fall: "Faiblesse contre les chutes $roman"
+      fire: "Faiblesse contre le feu $roman"
+      explosion: "Faiblesse contre les explosions $roman"
+      magic: "Faiblesse contre la magique $roman"
+      unknown: "Faiblesse contre $type $roman"
+    enchantment:
+      arrow_damage: "Puissance $roman"
+      arrow_fire: "Flamme"
+      arrow_infinite: "Infinité"
+      arrow_knockback: "Recul $roman"
+      binding_curse: "Malédiction du lien éternel"
+      channeling: "Canalisation"
+      damage_all: Tranchant $roman
+      damage_arthropods: Fléau des arthropodes $roman
+      damage_undead: Châtiment $roman
+      depth_strider: Agilité aquatique $roman
+      dig_speed: Efficacité $roman
+      durability: Solidité $roman
+      fire_aspect: Aura de feu
+      frost_walker: Semelles givrantes $roman
+      impaling: Empalement
+      knockback: Recul $roman
+      loot_bonus_blocks: Fortune $roman
+      loot_bonus_mobs: Butin $roman
+      loyalty: Loyauté
+      luck: Chance $roman
+      lure: Appât $roman
+      mending: Raccommodage
+      multishot: Tir multiple
+      oxygen: Respiration $roman
+      protection_environmental: Protection $roman
+      protection_explosions: Protection contre les explosions $roman
+      protection_fall: Protection contre les chutes $roman
+      protection_fire: Protection contre le feu $roman
+      protection_projectile: Protection contre les projectiles $roman
+      riptide: Impulsion
+      silk_touch: Toucher de soie
+      sweeping_edge: Affilage $roman
+      thorns: Épines $roman
+      vanishing_curse: Malédiction de disparition
+      water_worker: Travailleur de l'eau
+    potion_effect: "&b$effect $roman"
+    super_powered: "&3Superpuissant"
+    super_protected: "&3Invulnérable"
+    spell_aura: "&bAura: &6$spell"
+    costs_description: Coût : $description
+    active_costs_description: Coût : $description par seconde
+    range_description: "&9Portée: &6$range &9mètres"
+    owner_description: "&2&oBaguette de $name"
+    bound_description: "&3&oLié à $name"
+    unmodifiable: Cette baguette ne peut pas être modifiée
+    player_unmodifiable: La baguette de $name ne peut pas être modifiée
+    bound_to_other: Cette baguette ne t'est pas liée
+    bound: Cette baguette est liée à $name
+    spell_added: "Tu as appris le sort &r&6$name"
+    brush_added: "Tu as appris la brosse &r&7$name"
+    player_spell_upgraded: "Le sort &r&6$name de $players et été amélioré au niveau &3$level"
+    spell_upgraded: "Le sort &r&6$name &d&oa été amélioré au niveau &3$level"
+    spell_override_upgraded: "Le sort &r&6$name &d&oa été amélioré"
+    upgraded_property: "&r&dTu as été promu à &r&b$name"
+    spell_progression: "Le sort &r&6$name &d&oa progressé à &3$level&d&o/&3$max_level"
+    mana_added: "&r&dTu as maintenant $value mana"
+    hotbar_count: "$amount barre de raccourcis"
+    player_upgraded: Amélioration de la baguette de $name
+    player_not_upgraded: Amélioration de la baguette de $name impossible
+    player_spells_levelled: "Amélioration au niveau $count du sort $name"
+    player_spells_not_levelled: "Aucune amélioration pour le sort $name"
+    spells_levelled: "Amélioration au niveau $count des sorts"
+    spells_not_levelled: "Aucune amélioration des sorts"
+    no_wand: Tu dois tenir une baguette
+    player_no_wand: $name n'a pas de baguette en main
+    no_item: Tu dois tenir un objet
+    player_no_item: $name n'a pas d'objet en main
+    reorganized: "$wand &bréorganisée"
+    player_reorganized: La baguette de $name a été réorganisée
+    alphabetized: "$wand &balphabetized"
+    player_alphabetized: $name's wand alphabetized
+    already_enchanted: That $item is already a wand
+    enchanted: Your $item has been turned into a wand
+    player_enchanted: $name's $item has been turned into a wand
+    unenchanted: Your wand has been turned into a normal item
+    player_unenchanted: $name's wand has been turned into a normal item
+    no_path: "&r&4Your $wand &4can not be enchanted"
+    max_enchanted: "&r&4Your $wand &4can not be enchanted any further"
+    duplicated: Your wand has been duplicated
+    player_duplicated: $name's wand has been duplicated
+    restored: Your wands have been restored
+    player_restored: $name's wands have been restored
+    not_restored: You have no missing wands on record
+    player_not_restored: $name's wand has no missing wands on record
+    setbound: Your wand has been bound
+    player_setbound: $name's wand has been bound
+    unbound: Your wand has been unbound
+    player_unbound: $name's wand has been unbound
+    unboundall: All of your bound wands have been forgotten
+    player_unboundall: All of $name's bound wands have been forgotten. Their inventory was not cleared!
+    notunbound: You do not have a bound $wand wand
+    player_notunbound: Player $name does not have a bound $wand wand
+    unlocked: Your wand has been unlocked
+    player_unlocked: $name's wand has been unlocked
+    unknown_template: Unknown wand name $name
+    reconfigured: Wand reconfigured
+    not_reconfigured: Wand not reconfigured
+    removed_property: Removed property $name
+    no_property: Wand has no property $name
+    player_reconfigured: $name's wand reconfigured
+    player_not_reconfigured: $name's wand not reconfigured
+    filled: "&bYour $wand &bnow contains all of your spells"
+    player_filled: $name's wand filled
+    renamed: Your wand has been renamed
+    player_renamed: $name's wand renamed
+    self_destruct: The ancient artifact crumbles in your hands
+    no_permission: "&r&4You may not use that $wand &r&4here."
+    single_spell: Wand of $spell
+    fully_enchanted: "&cYou cannot progress any further &4(for now)"
+    need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"
+    require_more_levels: "You must enchant at a higher level"
+    randomized_lore: What kind of wand will you get?
+    randomized_name: Wand Box
+    upgrade_name: $name Upgrade
+    randomized_description: "&o&2$description"
+    description_lore: "&o&a$description"
+    path_lore: ""
+    #path_lore: "&o$path"
+
+    wand_instructions_header: |-
+      &8 ----------------------------------------------------
+      &8|
+      &8|   &b&lWAND INSTRUCTIONS
+      &8|
+    wand_instructions_footer: |-
+      &8|
+      &8 ----------------------------------------------------
+    sp_instructions: |-
+      &8| &7> &fYou have earned some &6Spell Points!
+      &8| &7> &fYour &6SP &fis displayed above your mana bar
+      &8| &7> &6SP &fmay be spent at an &eenchanting table &fto learn new spells
+      &8| &7> &fRepeat casts of the same spell earn less &6SP&f
+      &8| &7> &fTry &dmixing up your casts &fonce you have more spells!
+    currency_instructions: |-
+      &8| &7> &fYou have earned some &6$currency!
+      &8| &7> &fYour &6$currency &fis displayed above your mana bar
+      &8| &7> &6$currency &fmay be spent at an &enchanting table &fto learn new spells
+      &8| &7> &fRepeat casts of the same spell earn less &6SP&f
+      &8| &7> &fTry &dmixing up your casts &fonce you have more spells!
+    bound_instructions: |-
+      &8| &7> &fYour &a$wand &fis &9bound &fto you, and is &9undroppable
+    spell_instructions: |-
+      &8| &7> &6Swing &fyour &a$wand &fto cast &d$spell
+    mana_instructions: |-
+      &8| &7> &fSpells require &6mana &fto cast, shown in the &5XP bar
+    enchant_instructions: |-
+      &8| &7> &fEarn &6Spell Points &fby casting spells
+      &8| &7> &fLearn new spells by using &6SP &fat an &eenchanting table
+    page_instructions: |-
+      &8| &7> &eYour &a$wand&8 &fhas more than one page of spells
+      &8| &7> &6Click &foutside the inventory window to change pages
+    hotbar_count_usage: |-
+      &8| &7> &eYou have gained another hotbar
+      &8| &7> &6$cycle_hotbar &fto swap between your hotbars
+    inventory_instructions: |-
+      &8| &7> &6$toggle &fto open and close the &espell inventory
+      &8| &7> &6Open your inventory (E) &fto manage hotbar spells
+      &8| &7> &fUse &6number keys &fto select the desired spell
+    chest_instructions: |-
+      &8| &7> &6$toggle &fto open and close the &espell inventory
+      &8| &7> &6Click &fon a spell to activate it
+    skills_instructions: |-
+      &8| &7> &6$toggle &fto open and close the &espell inventory
+      &8| &7> &6Drag &fa spell to your hotbar to activate it
+      &8| &7> &fUse &6number keys &fto cast the desired spell
+    cycle_instructions: |-
+      &8| &7> &6$cycle &fto switch your active spell
+    brush_instructions: |-
+      &8| &7> &6Material brushes &fhave been added to your &a$wand
+      &8| &7> &6Shift+$toggle &fto select a brush.
+    hotbar_changed: ""
+    spell_activated: "$spell"
+    upgrade_prefix: "&6"
+    single_use_prefix: "&4"
+    bound_prefix: "&3"
+    unbound_prefix: "&b"
+    has_path_prefix: "&d"
+    unmodifiable_prefix: "&6"
+    spell_prefix: "&6"
+    brush_prefix: "&7"
+    chest_inventory_title: "Wand"   
+   
+   
 wands:
   testwand:
     name: Baguette de test
