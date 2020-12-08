@@ -659,51 +659,51 @@ wand:
     player_no_item: $name n'a pas d'objet en main
     reorganized: "$wand &bréorganisée"
     player_reorganized: La baguette de $name a été réorganisée
-    alphabetized: "$wand &balphabetized"
-    player_alphabetized: $name's wand alphabetized
-    already_enchanted: That $item is already a wand
-    enchanted: Your $item has been turned into a wand
-    player_enchanted: $name's $item has been turned into a wand
-    unenchanted: Your wand has been turned into a normal item
-    player_unenchanted: $name's wand has been turned into a normal item
-    no_path: "&r&4Your $wand &4can not be enchanted"
-    max_enchanted: "&r&4Your $wand &4can not be enchanted any further"
-    duplicated: Your wand has been duplicated
-    player_duplicated: $name's wand has been duplicated
-    restored: Your wands have been restored
-    player_restored: $name's wands have been restored
-    not_restored: You have no missing wands on record
-    player_not_restored: $name's wand has no missing wands on record
-    setbound: Your wand has been bound
-    player_setbound: $name's wand has been bound
-    unbound: Your wand has been unbound
-    player_unbound: $name's wand has been unbound
-    unboundall: All of your bound wands have been forgotten
-    player_unboundall: All of $name's bound wands have been forgotten. Their inventory was not cleared!
-    notunbound: You do not have a bound $wand wand
-    player_notunbound: Player $name does not have a bound $wand wand
-    unlocked: Your wand has been unlocked
-    player_unlocked: $name's wand has been unlocked
-    unknown_template: Unknown wand name $name
-    reconfigured: Wand reconfigured
-    not_reconfigured: Wand not reconfigured
-    removed_property: Removed property $name
-    no_property: Wand has no property $name
-    player_reconfigured: $name's wand reconfigured
-    player_not_reconfigured: $name's wand not reconfigured
-    filled: "&bYour $wand &bnow contains all of your spells"
-    player_filled: $name's wand filled
-    renamed: Your wand has been renamed
-    player_renamed: $name's wand renamed
-    self_destruct: The ancient artifact crumbles in your hands
-    no_permission: "&r&4You may not use that $wand &r&4here."
-    single_spell: Wand of $spell
-    fully_enchanted: "&cYou cannot progress any further &4(for now)"
-    need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"
-    require_more_levels: "You must enchant at a higher level"
-    randomized_lore: What kind of wand will you get?
-    randomized_name: Wand Box
-    upgrade_name: $name Upgrade
+    alphabetized: "La baguette $wand &b est maintenant triée par ordre alphabétique"
+    player_alphabetized: La baguette de $name &b est maintenant triée par ordre alphabétique
+    already_enchanted: L'objet $item est déjà une baguette
+    enchanted: L'objet $item a été transformé en baguette
+    player_enchanted: L'objet $item de $name a été transformé en baguette
+    unenchanted: Ta baguette est devenue un objet normal
+    player_unenchanted: La baguette de $name est devenue un objet normal
+    no_path: "&r&4Ta baguette $wand &4ne peut pas être enchantée"
+    max_enchanted: "&r&4Ta baguette  $wand &4ne peut pas recevoir plus d'enchantements"
+    duplicated: Ta baguette a été dupliquée
+    player_duplicated: La baguette de $name a été dupliquée
+    restored: Ta baguette a été restaurée
+    player_restored: La baguette de $name a été restaurée
+    not_restored: Aucune baguette manquante
+    player_not_restored: $name n'a aucune baguette manquante
+    setbound: Ta baguette est maintenant liée
+    player_setbound: La baguette de $name est maintenant liée
+    unbound: Ta baguette n'est plus liée
+    player_unbound: La baguette de $name n'est plus liée
+    unboundall: L'intégralité de tes baguettes ne sont plus liées
+    player_unboundall: L'intégralité des baguettes de $name ne sont plus liées (mais sont toujours dans son inventaire)
+    notunbound: La baguette $wand n'est pas liée
+    player_notunbound: La baguette $wand du joueur $name n'est pas liée
+    unlocked: Ta baguette a été débloquée
+    player_unlocked: La baguette de $name a été débloquée
+    unknown_template: Le nom $name ne correspond à aucune baguette
+    reconfigured: La baguette a été reconfigurée
+    not_reconfigured: La baguette n'a pas été reconfigurée
+    removed_property: Suppression de la propriété $name
+    no_property: La baguette n'a pas la propriété $name
+    player_reconfigured: La baguette de $name a été reconfigurée
+    player_not_reconfigured: La baguette de $name n'a pas été reconfigurée
+    filled: "&bTa baguette $wand &bcontient maintenant tous tes sorts"
+    player_filled: La baguette de $name a été remplie
+    renamed: Ta baguette a été renommée
+    player_renamed: La baguette de $name a été renommée
+    self_destruct: L'ancien artéfact s'effrite entre tes mains
+    no_permission: "&r&4Tu ne peux pas utiliser la baguette $wand &r&4ici"
+    single_spell: Baguette de $spell
+    fully_enchanted: "&cTu ne peux pas apporter d'amélioration &4(pour le moment)"
+    need_more_levels: "Tu dois avoir au moins &r&4$levels &d&oniveaux pour l'enchanter"
+    require_more_levels: "Tu dois avoir des niveaux supplémentaire pour l'enchanter"
+    randomized_lore: Quel type de baguette obtiendras-tu?
+    randomized_name: Boîte à baguette
+    upgrade_name: Amélioration : $name
     randomized_description: "&o&2$description"
     description_lore: "&o&a$description"
     path_lore: ""
@@ -718,48 +718,48 @@ wand:
       &8|
       &8 ----------------------------------------------------
     sp_instructions: |-
-      &8| &7> &fYou have earned some &6Spell Points!
-      &8| &7> &fYour &6SP &fis displayed above your mana bar
-      &8| &7> &6SP &fmay be spent at an &eenchanting table &fto learn new spells
-      &8| &7> &fRepeat casts of the same spell earn less &6SP&f
-      &8| &7> &fTry &dmixing up your casts &fonce you have more spells!
+      &8| &7> &fTu as gagné des &6Points de Sort!
+      &8| &7> &fTes &6PS &fsont affichés sous ta barre de Mana
+      &8| &7> &6Les PS &fpeuvent être utilisés dans une table d'enchantement pour apprendre de nouveaux sorts
+      &8| &7> &fLancer plusieurs fois le même sort te donnera moins de &6PS&f
+      &8| &7> &fIl vaut mieux &dalterner les sorts &florsque tu en connais plusieurs!
     currency_instructions: |-
-      &8| &7> &fYou have earned some &6$currency!
-      &8| &7> &fYour &6$currency &fis displayed above your mana bar
-      &8| &7> &6$currency &fmay be spent at an &enchanting table &fto learn new spells
-      &8| &7> &fRepeat casts of the same spell earn less &6SP&f
-      &8| &7> &fTry &dmixing up your casts &fonce you have more spells!
+      &8| &7> &fTu as gagné des &6$currency!
+      &8| &7> &fLe montant de &6$currency &fest affiché sous ta barre de Mana
+      &8| &7> &6Les $currency &fpeuvent être utilisés dans une table d'enchantement pour apprendre de nouveaux sorts
+      &8| &7> &fLancer plusieurs fois le même sort te donnera moins de &6PS&f
+      &8| &7> &fIl vaut mieux &dalterner les sorts &florsque tu en connais plusieurs!
     bound_instructions: |-
-      &8| &7> &fYour &a$wand &fis &9bound &fto you, and is &9undroppable
+      &8| &7> &fLa baguette &a$wand &fest &9liée &fà toi et tu ne peux pas t'en séparer
     spell_instructions: |-
-      &8| &7> &6Swing &fyour &a$wand &fto cast &d$spell
+      &8| &7> &6Agite &fla baguette &a$wand &fpour lancer &d$spell
     mana_instructions: |-
-      &8| &7> &fSpells require &6mana &fto cast, shown in the &5XP bar
+      &8| &7> &fLes sorts nécessitent du &6mana &fpour être lancés, affiché dans &5la barre d'XP
     enchant_instructions: |-
-      &8| &7> &fEarn &6Spell Points &fby casting spells
-      &8| &7> &fLearn new spells by using &6SP &fat an &eenchanting table
+      &8| &7> &fGagne &6des Points de Sort &fen lancçant des sorts
+      &8| &7> &fApprend de nouveaux sorts en utilisant les &6PS &fdans une &etable d'enchantement
     page_instructions: |-
-      &8| &7> &eYour &a$wand&8 &fhas more than one page of spells
-      &8| &7> &6Click &foutside the inventory window to change pages
+      &8| &7> &eLa baguette &a$wand&8 &fa plus d'une page de sorts
+      &8| &7> &6Clique &fen dehors de l'inventaire pour changer de page
     hotbar_count_usage: |-
-      &8| &7> &eYou have gained another hotbar
-      &8| &7> &6$cycle_hotbar &fto swap between your hotbars
+      &8| &7> &eTu as gagné une autre barre de raccourcis
+      &8| &7> &6$cycle_hotbar &fpour changer entre tes barres de raccourcis
     inventory_instructions: |-
-      &8| &7> &6$toggle &fto open and close the &espell inventory
-      &8| &7> &6Open your inventory (E) &fto manage hotbar spells
-      &8| &7> &fUse &6number keys &fto select the desired spell
+      &8| &7> &6$toggle &fpour ouvrir / fermer &el'inventaire de sorts
+      &8| &7> &6Ouvre ton inventaire (E) &fpour gérer le raccourcis des sorts
+      &8| &7> &fUtilises &6le numéro du slot &fpour sélectionner le sort
     chest_instructions: |-
-      &8| &7> &6$toggle &fto open and close the &espell inventory
-      &8| &7> &6Click &fon a spell to activate it
+      &8| &7> &6$toggle &fpour ouvrir / fermer &el'inventaire de sorts
+      &8| &7> &6Clique &fsur un sort pour l'activer
     skills_instructions: |-
-      &8| &7> &6$toggle &fto open and close the &espell inventory
-      &8| &7> &6Drag &fa spell to your hotbar to activate it
-      &8| &7> &fUse &6number keys &fto cast the desired spell
+      &8| &7> &6$toggle &fpour ouvrir / fermer &el'inventaire de sorts
+      &8| &7> &6Glisse &fun sort dans la barre de raccourcis pour l'activer
+      &8| &7> &fUtilises &6le numéro du slot &fpour lancer le sort
     cycle_instructions: |-
-      &8| &7> &6$cycle &fto switch your active spell
+      &8| &7> &6$cycle &fpour changer de sort actif
     brush_instructions: |-
-      &8| &7> &6Material brushes &fhave been added to your &a$wand
-      &8| &7> &6Shift+$toggle &fto select a brush.
+      &8| &7> &6La brosse &fa été ajouté à &a$wand
+      &8| &7> &6Shift+$toggle &fpour sélectionner une brosse
     hotbar_changed: ""
     spell_activated: "$spell"
     upgrade_prefix: "&6"
@@ -770,7 +770,7 @@ wand:
     unmodifiable_prefix: "&6"
     spell_prefix: "&6"
     brush_prefix: "&7"
-    chest_inventory_title: "Wand"   
+    chest_inventory_title: "Baguette"   
    
    
 wands:
