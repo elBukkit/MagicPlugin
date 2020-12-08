@@ -8,6 +8,16 @@
    - Get rid of using the Bukkit Metadata system entirely. Maybe just an "entity data lite" map to store the various
      boolean flags?
 
+## World Gen
+
+ - Some way to scale mobs up (levels?) with distance from spawn
+ - Synchronized day/night cycle of two worlds (sleep event?)
+
+## RPG
+
+ - Need a way to add spells to a path
+ - Hide version configs from example commands
+
 ## List is too long
 
  - Path re-work

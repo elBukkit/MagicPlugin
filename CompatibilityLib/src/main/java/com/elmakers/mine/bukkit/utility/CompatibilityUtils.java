@@ -24,7 +24,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ComplexEntityPart;
@@ -2236,7 +2235,6 @@ public class CompatibilityUtils extends NMSUtils {
             Object movingObject = class_MovingObjectPositionBlock_createMethod.invoke(null, vec3D, directionEnum, blockPosition);
             Object actionContext = class_BlockActionContext_constructor.newInstance(world, originatorHandle, enum_EnumHand_MAIN_HAND, item, movingObject);
             Object placedState = class_Block_getPlacedStateMethod.invoke(nmsBlock, actionContext);
-            // getLogger().info("Placed from " + facing + ": " + placedState);
             if (placedState == null) return false;
             class_CraftBlock_setTypeAndDataMethod.invoke(block, placedState, physics);
             // class_World_setTypeAndDataMethod.invoke(world, blockPosition, placedState, 11);
@@ -2254,7 +2252,6 @@ public class CompatibilityUtils extends NMSUtils {
             Object blockData = class_nms_Block_getBlockDataMethod.invoke(nmsBlock);
             Object world = getHandle(block.getWorld());
             Object blockPosition = class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
-            getLogger().info("   Updating " + nmsBlock + " to " + blockData);
             class_World_setTypeAndDataMethod.invoke(world, blockPosition, blockData, 11);
             return true;
          } catch (Throwable e) {
@@ -2280,9 +2277,54 @@ public class CompatibilityUtils extends NMSUtils {
             if (!class_Phantom.isAssignableFrom(entity.getClass())) return false;
             class_Phantom_setSizeMethod.invoke(entity, size);
             return true;
-         } catch (Throwable e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static Location getBedSpawnLocation(Player player) {
+        if (player == null) {
+            return null;
+        }
+        if (class_EntityHuman_getBedMethod != null && class_EntityPlayer_getSpawnDimensionMethod != null) {
+            try {
+                Object playerHandle = getHandle(player);
+                Object bedLocation = class_EntityHuman_getBedMethod.invoke(playerHandle);
+                Object spawnDimension = class_EntityPlayer_getSpawnDimensionMethod.invoke(playerHandle);
+                if (spawnDimension != null && bedLocation != null) {
+                    Object server = class_EntityPlayer_serverField.get(playerHandle);
+                    Object worldServer = server != null ? class_MinecraftServer_getWorldServerMethod.invoke(server, spawnDimension) : null;
+                    World world = worldServer != null ? (World)class_WorldServer_worldMethod.invoke(worldServer) : null;
+                    if (world != null) {
+                        int x = (int)class_BlockPosition_getXMethod.invoke(bedLocation);
+                        int y = (int)class_BlockPosition_getYMethod.invoke(bedLocation);
+                        int z = (int)class_BlockPosition_getZMethod.invoke(bedLocation);
+                        return new Location(world, x, y, z);
+                    }
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+        if (class_EntityHuman_getBedMethod != null && class_EntityHuman_spawnWorldField != null) {
+            try {
+                Object playerHandle = getHandle(player);
+                Object bedLocation = class_EntityHuman_getBedMethod.invoke(playerHandle);
+                String spawnWorld = (String)class_EntityHuman_spawnWorldField.get(playerHandle);
+                if (spawnWorld != null && bedLocation != null) {
+                    World world = Bukkit.getWorld(spawnWorld);
+                    if (world != null) {
+                        int x = (int)class_BlockPosition_getXMethod.invoke(bedLocation);
+                        int y = (int)class_BlockPosition_getYMethod.invoke(bedLocation);
+                        int z = (int)class_BlockPosition_getZMethod.invoke(bedLocation);
+                        return new Location(world, x, y, z);
+                    }
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+        return player.getBedSpawnLocation();
     }
 }

@@ -310,7 +310,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 defaultIcon = getIcon(context, parameters, "icon_town");
                 break;
             case HOME:
-                Location bedLocation = player == null ? null : player.getBedSpawnLocation();
+                Location bedLocation = CompatibilityUtils.getBedSpawnLocation(player);
                 if (bedLocation != null) {
                     bedLocation = bedLocation.clone();
                     bedLocation.setX(bedLocation.getX() + 0.5);

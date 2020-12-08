@@ -23,6 +23,7 @@
  - Added WildStacker integration to avoid stacking Magic Mobs (or any custom-spawned mob).
  - Broomsticks will now put a temporary "broomstick handle" item in the player's inventory so the slot
    doesn't get taken up by new items and the broomstick has nowhere to go when finished
+ - Improved Recall-to-bed behavior
 
 # 8.1.2
 

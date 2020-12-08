@@ -319,6 +319,10 @@ public class NMSUtils {
     protected static Method class_Server_removeRecipeMethod;
     protected static Method class_HumanEntity_discoverRecipeMethod;
     protected static Method class_HumanEntity_undiscoverRecipeMethod;
+    protected static Method class_EntityHuman_getBedMethod;
+    protected static Method class_EntityPlayer_getSpawnDimensionMethod;
+    protected static Method class_MinecraftServer_getWorldServerMethod;
+    protected static Method class_WorldServer_worldMethod;
 
     protected static boolean legacyMaps;
 
@@ -414,6 +418,8 @@ public class NMSUtils {
     protected static Field class_ChestLock_key;
     protected static Field class_EntityPainting_art;
     protected static Field class_EntityHanging_blockPosition;
+    protected static Field class_EntityHuman_spawnWorldField;
+    protected static Field class_EntityPlayer_serverField;
 
     protected static Object object_magicSource;
     protected static Object object_emptyChestLock;
@@ -1008,6 +1014,23 @@ public class NMSUtils {
                 class_EntityLiving_damageEntityMethod = null;
                 class_DamageSource_getMagicSourceMethod = null;
                 object_magicSource = null;
+            }
+
+            try {
+                try {
+                    class_EntityHuman_getBedMethod = class_EntityPlayer.getMethod("getSpawn");
+                    class_EntityPlayer_getSpawnDimensionMethod = class_EntityPlayer.getMethod("getSpawnDimension");
+                    class_EntityPlayer_serverField = class_EntityPlayer.getField("server");
+                    Class<?> class_resourceKey = fixBukkitClass("net.minecraft.server.ResourceKey");
+                    class_MinecraftServer_getWorldServerMethod = class_MinecraftServer.getMethod("getWorldServer", class_resourceKey);
+                    class_WorldServer_worldMethod = class_WorldServer.getMethod("getWorld");
+                } catch (Exception notCurrent) {
+                    class_EntityHuman_getBedMethod = class_EntityHuman.getMethod("getBed");
+                    class_EntityHuman_spawnWorldField = class_EntityHuman.getField("spawnWorld");
+                }
+            } catch (Throwable ex) {
+                class_EntityHuman_getBedMethod = null;
+                getLogger().log(Level.WARNING, "An error occurred, could not get bed location directly, will use API", ex);
             }
 
             try {
