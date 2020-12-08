@@ -122,6 +122,11 @@ public class CraftingController implements Listener {
         }
         for (List<MagicRecipe> list : recipes.values()) {
             for (MagicRecipe recipe : list) {
+                recipe.preregister(plugin);
+            }
+        }
+        for (List<MagicRecipe> list : recipes.values()) {
+            for (MagicRecipe recipe : list) {
                 recipe.register(controller, plugin);
             }
         }

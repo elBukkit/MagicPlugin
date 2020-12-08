@@ -187,8 +187,7 @@ public class MagicRecipe {
         }
     }
 
-    public void register(MagicController controller, Plugin plugin)
-    {
+    public void preregister(Plugin plugin) {
         boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
         if (disableDefaultRecipe && canRemoveRecipes) {
             int disabled = 0;
@@ -201,7 +200,11 @@ public class MagicRecipe {
                 plugin.getLogger().info("Disabled " + disabled + " default crafting recipe(s) for " + outputType);
             }
         }
+    }
 
+    public void register(MagicController controller, Plugin plugin)
+    {
+        boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
         // Add our custom recipe if crafting is enabled
         if (recipe != null)
         {
