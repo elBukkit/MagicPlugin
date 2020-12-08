@@ -38,6 +38,7 @@ public class MountArmorStandAction extends RideEntityAction
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
 
     private ItemStack item;
+    private ItemStack replacementItem;
     private int slotNumber;
     private boolean mountTarget = false;
     private String mountName;
@@ -57,6 +58,7 @@ public class MountArmorStandAction extends RideEntityAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        MageController controller = context.getController();
         mountTarget = parameters.getBoolean("mount_target", false);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
         armorStandSmall = parameters.getBoolean("armor_stand_small", false);
@@ -68,6 +70,10 @@ public class MountArmorStandAction extends RideEntityAction
         mountWand = parameters.getBoolean("mount_wand", false);
         findWand = parameters.getBoolean("find_wand", false);
         mountName = parameters.getString("mount_name", null);
+        ItemData replacementType = controller.getOrCreateItemOrWand(parameters.getString("replacement_item"));
+        if (replacementType != null) {
+            replacementItem = replacementType.getItemStack(1);
+        }
         if (parameters.contains("armor_stand_reason")) {
             String reasonText = parameters.getString("armor_stand_reason").toUpperCase();
             try {
@@ -77,7 +83,6 @@ public class MountArmorStandAction extends RideEntityAction
             }
         }
 
-        MageController controller = context.getController();
         ItemData itemType = controller.getOrCreateItemOrWand(parameters.getString("helmet_item"));
         if (itemType != null) {
             helmetItem = itemType.getItemStack(1);
@@ -168,7 +173,8 @@ public class MountArmorStandAction extends RideEntityAction
             return SpellResult.FAIL;
         }
         if (mountWand) {
-            player.getInventory().setItem(slotNumber, new ItemStack(Material.AIR));
+            ItemStack replacement = replacementItem == null ? new ItemStack(Material.AIR) : replacementItem;
+            player.getInventory().setItem(slotNumber, replacement);
         }
 
         SpellResult result = super.mount(context);;
@@ -238,8 +244,10 @@ public class MountArmorStandAction extends RideEntityAction
         Player player = mage.getPlayer();
         if (player == null || item == null) return;
 
-        ItemStack currentItem = player.getInventory().getItem(slotNumber);
-        if (currentItem != null || mage.hasStoredInventory() || player.isDead()) {
+        ItemStack currentItem = mage.getInventory().getItem(slotNumber);
+        if (replacementItem != null && context.getController().itemsAreEqual(currentItem, replacementItem)) {
+            mage.getInventory().setItem(slotNumber, item);
+        } else if (currentItem != null || mage.hasStoredInventory() || player.isDead()) {
             mage.giveItem(item);
         } else {
             player.getInventory().setItem(slotNumber, item);
@@ -261,6 +269,7 @@ public class MountArmorStandAction extends RideEntityAction
         parameters.add("armor_stand_pitch");
         parameters.add("mount_wand");
         parameters.add("mount_target");
+        parameters.add("replacement_item");
     }
 
     @Override

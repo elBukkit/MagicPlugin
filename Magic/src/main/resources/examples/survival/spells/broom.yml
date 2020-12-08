@@ -79,6 +79,7 @@ broom:
         target: self
         mount_name: Broomstick
         mount_wand: true
+        replacement_item: broomstick_handle
         start_speed: 0.2
         min_speed: 0.1
         max_deceleration: 0.02

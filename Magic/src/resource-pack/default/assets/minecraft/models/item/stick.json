@@ -49,6 +49,8 @@
     {"predicate": {"custom_model_data": 18043}, "model": "item/custom/gauntlet"},
     {"predicate": {"custom_model_data": 18044}, "model": "item/custom/magmawand"},
     {"predicate": {"custom_model_data": 18045}, "model": "item/spells/wand"},
-    {"predicate": {"custom_model_data": 18046}, "model": "item/spells_disabled/wand"}
+    {"predicate": {"custom_model_data": 18046}, "model": "item/spells_disabled/wand"},
+    {"predicate": {"custom_model_data": 18047}, "model": "item/custom/broomstick_handle"},
+    {"predicate": {"custom_model_data": 18048}, "model": "item/custom/broomstick2_handle"}
   ]
 }

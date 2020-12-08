@@ -1,0 +1,13 @@
+broomstick_handle:
+  tags:
+    unmoveable: true
+    undroppable: true
+    unstashable: true
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: STICK
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Broomstick Handle
+      custom-model-data: 18047

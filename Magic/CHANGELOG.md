@@ -15,6 +15,8 @@
  - Add active_spells_exclusive and active_spells_restricted spell properties, to make spells only castable if some
    other spell(s) is or is not already active
  - Added WildStacker integration to avoid stacking Magic Mobs (or any custom-spawned mob).
+ - Broomsticks will now put a temporary "broomstick handle" item in the player's inventory so the slot
+   doesn't get taken up by new items and the broomstick has nowhere to go when finished
 
 # 8.1.2
 
