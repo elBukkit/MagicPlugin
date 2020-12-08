@@ -2,6 +2,10 @@
 
 ## Discord Issues
 
+ - Editor
+   - Gets confused by spaces, test out recipes
+     row_2: "aa ...
+
  - Memory Leaks
    - Should entity undo also be value-weak? Is there a use-case for it needing to undo (other than scheduled)
      after the caster has left?

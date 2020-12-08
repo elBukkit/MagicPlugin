@@ -193,6 +193,7 @@ public class NMSUtils {
     protected static Class<?> class_MovingObjectPositionBlock;
     protected static Class<?> class_Vec3D;
     protected static Class<?> class_Phantom;
+    protected static Class<?> class_Keyed;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -323,6 +324,7 @@ public class NMSUtils {
     protected static Method class_EntityPlayer_getSpawnDimensionMethod;
     protected static Method class_MinecraftServer_getWorldServerMethod;
     protected static Method class_WorldServer_worldMethod;
+    protected static Method class_Keyed_getKeyMethod;
 
     protected static boolean legacyMaps;
 
@@ -1077,6 +1079,8 @@ public class NMSUtils {
                 class_NamespacedKey = Class.forName("org.bukkit.NamespacedKey");
                 class_NamespacedKey_constructor = class_NamespacedKey.getConstructor(Plugin.class, String.class);
                 class_ShapedRecipe_constructor = ShapedRecipe.class.getConstructor(class_NamespacedKey, ItemStack.class);
+                class_Keyed = Class.forName("org.bukkit.Keyed");
+                class_Keyed_getKeyMethod = class_Keyed.getMethod("getKey");
             } catch (Throwable ex) {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;

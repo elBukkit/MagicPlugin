@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,11 +65,6 @@ public class MagicRecipe {
         autoDiscover = configuration.getBoolean("auto_discover", false);
         locked = configuration.getBoolean("locked", false);
         discover = ConfigurationUtils.getStringList(configuration, "discover");
-
-        if (disableDefaultRecipe) {
-            controller.getLogger().warning("Recipe " + key + " has disable_default: true, ignoring because trying to remove a recipe now throws an error.");
-            disableDefaultRecipe = false;
-        }
 
         outputItemType = configuration.getString("output_type", "item");
         ItemStack item = null;
@@ -195,24 +189,20 @@ public class MagicRecipe {
 
     public void register(MagicController controller, Plugin plugin)
     {
-        // I think we can only do this once..
-        if (FIRST_REGISTER) {
-            if (disableDefaultRecipe)
-            {
-                Iterator<Recipe> it = plugin.getServer().recipeIterator();
-                while (it.hasNext())
-                {
-                    Recipe defaultRecipe = it.next();
-                    if (defaultRecipe != null && defaultRecipe.getResult().getType() == outputType && defaultRecipe.getResult().getDurability() == 0)
-                    {
-                        plugin.getLogger().info("Disabled default crafting recipe for " + outputType);
-                        it.remove();
-                    }
-                }
+        boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
+        if (disableDefaultRecipe && canRemoveRecipes) {
+            int disabled = 0;
+            List<Recipe> existing = plugin.getServer().getRecipesFor(new ItemStack(outputType));
+            for (Recipe recipe : existing) {
+                CompatibilityUtils.removeRecipe(plugin, recipe);
+                disabled++;
+            }
+            if (disabled > 0) {
+                plugin.getLogger().info("Disabled " + disabled + " default crafting recipe(s) for " + outputType);
             }
         }
+
         // Add our custom recipe if crafting is enabled
-        boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
         if (recipe != null)
         {
             // Recipes can't be removed on older minecraft versions, so we have to skip re-registering if we've already registered this one

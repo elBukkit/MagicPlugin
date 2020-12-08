@@ -52,6 +52,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -1521,6 +1522,22 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean canRemoveRecipes() {
         return class_Server_removeRecipeMethod != null;
+    }
+
+    public static boolean removeRecipe(Plugin plugin, Recipe recipe) {
+        if (class_Keyed == null || class_Keyed_getKeyMethod == null || class_Server_removeRecipeMethod == null) {
+            return false;
+        }
+        if (!class_Keyed.isAssignableFrom(recipe.getClass())) {
+            return false;
+        }
+        try {
+            Object namespacedKey = class_Keyed_getKeyMethod.invoke(recipe);
+            return (boolean)class_Server_removeRecipeMethod.invoke(plugin.getServer(), namespacedKey);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     public static boolean removeRecipe(Plugin plugin, String key) {
