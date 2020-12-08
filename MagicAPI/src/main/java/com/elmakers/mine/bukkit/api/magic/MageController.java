@@ -696,4 +696,19 @@ public interface MageController {
     void loadConfigurationQuietly(CommandSender sender);
     @Nullable
     List<DeathLocation> getDeathLocations(Player player);
+
+    /**
+     * Cast a specific Spell, with optional parameters.
+     *
+     * <p>The parameters are generally in alternating key/value format, such as
+     *
+     * <code>{"radius", "32", "range", "64"}</code>
+     *
+     * <p>This Spell will be cast using the COMMAND Mage.
+     *
+     * @param spellName The key name of the Spell to cast
+     * @param parameters A list of parameters, as if cast from the command-line.
+     * @return true if the spell succeeds, else false
+     */
+    boolean cast(String spellName, String[] parameters);
 }

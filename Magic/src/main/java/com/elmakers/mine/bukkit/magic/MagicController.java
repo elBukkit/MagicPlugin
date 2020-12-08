@@ -4235,6 +4235,20 @@ public class MagicController implements MageController {
         return new ArrayList<>(lostWands.values());
     }
 
+    @Override
+    public boolean cast(String spellName, String[] parameters) {
+        return cast(spellName, parameters, Bukkit.getConsoleSender(), null);
+    }
+
+    public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
+        ConfigurationSection config = null;
+        if (parameters != null && parameters.length > 0) {
+            config = new MemoryConfiguration();
+            ConfigurationUtils.addParameters(parameters, config);
+        }
+        return cast(null, spellName, config, sender, entity);
+    }
+
     public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity)
     {
         Player usePermissions = (sender == entity && entity instanceof Player) ? (Player)entity
