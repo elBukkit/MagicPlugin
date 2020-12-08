@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -111,7 +112,6 @@ public class MagicRecipe {
             }
             if (rows.size() > 0) {
                 shaped = shaped.shape(rows.toArray(new String[0]));
-
                 ConfigurationSection materials = configuration.getConfigurationSection("ingredients");
                 if (materials == null) {
                     materials = configuration.getConfigurationSection("materials");
@@ -224,9 +224,36 @@ public class MagicRecipe {
         return item;
     }
 
+    public boolean isSameRecipe(Recipe matchRecipe) {
+        if (!(matchRecipe instanceof ShapedRecipe)) {
+            return false;
+        }
+        ShapedRecipe shaped = (ShapedRecipe)matchRecipe;
+        if (!Arrays.equals(recipe.getShape(), shaped.getShape())) {
+            return false;
+        }
+        for (Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
+            ItemStack matchItem = entry.getValue();
+            ItemStack thisItem = recipe.getIngredientMap().get(entry.getKey());
+            if (thisItem == null && matchItem != null) return false;
+            if (thisItem != null && matchItem == null) return false;
+            if (!controller.itemsAreEqual(matchItem, thisItem, ignoreDamage)) return false;
+        }
+
+        return true;
+    }
+
     @SuppressWarnings("deprecation")
-    public MatchType getMatchType(ItemStack[] matrix) {
+    public MatchType getMatchType(Recipe matchRecipe, ItemStack[] matrix) {
         if (recipe == null || matrix.length < 4) return MatchType.NONE;
+
+        // Modern minecraft versions account for custom data in ingredients,
+        // so we can leave the ingredient matching up to vanilla code.
+        // The complicated matrix matching code here is flawed, for instance it does not
+        // account for vanilla recipes being mirrorable.
+        if (!CompatibilityUtils.isLegacyRecipes()) {
+            return isSameRecipe(matchRecipe) ? MatchType.MATCH : MatchType.NONE;
+        }
         int height = (int)Math.sqrt(matrix.length);
         int width = height;
         boolean[] rows = new boolean[width];

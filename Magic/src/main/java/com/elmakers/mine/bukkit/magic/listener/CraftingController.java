@@ -140,7 +140,7 @@ public class CraftingController implements Listener {
 
         MagicRecipe.MatchType matchType = MagicRecipe.MatchType.NONE;
         for (MagicRecipe candidate : candidates) {
-            matchType = candidate.getMatchType(contents);
+            matchType = candidate.getMatchType(recipe, contents);
             Material substitute = candidate.getSubstitute();
             if (matchType != MagicRecipe.MatchType.NONE) {
                 for (HumanEntity human : event.getViewers()) {

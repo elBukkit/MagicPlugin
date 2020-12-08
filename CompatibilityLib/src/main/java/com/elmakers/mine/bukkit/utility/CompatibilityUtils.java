@@ -2179,6 +2179,10 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
+    public static boolean isLegacyRecipes() {
+        return class_RecipeChoice_ExactChoice == null || class_NamespacedKey == null;
+    }
+
     public static boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage) {
         if (ingredient == null) return false;
         if (class_RecipeChoice_ExactChoice == null) {
