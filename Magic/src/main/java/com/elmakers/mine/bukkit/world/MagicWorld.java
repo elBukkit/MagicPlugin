@@ -83,17 +83,34 @@ public class MagicWorld {
 
     public void finalizeLoad() {
         // Autoload worlds
-        if (autoLoad && copyFrom.isEmpty()) {
+        if (autoLoad) {
             // Wait a few ticks to do this, to avoid errors during initialization
             Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
                @Override
-               public void run()
-               {
-                  createWorld();
+               public void run() {
+                   checkWorldCreate();
                }
            }, 1L);
         }
         spawnHandler.finalizeLoad();
+    }
+
+    public void checkWorldCreate() {
+        // Loaded check
+        if (state != WorldState.UNLOADED) {
+            return;
+        }
+
+        if (copyFrom.isEmpty()) {
+            createWorld();
+        } else {
+            if (!copyFrom.isEmpty()) {
+                World targetWorld = controller.getPlugin().getServer().getWorld(copyFrom);
+                if (targetWorld != null) {
+                    copyWorld(targetWorld);
+                }
+            }
+        }
     }
 
     public void createWorld() {
@@ -133,33 +150,36 @@ public class MagicWorld {
         return spawnHandler.process(plugin, entity);
     }
 
-    public void onWorldInit(final Plugin plugin, final World initWorld)
-    {
-        // Loaded check
-        if (state != WorldState.UNLOADED) {
-            return;
-        }
-
+    public void onWorldInit(final World initWorld) {
         // Flag loaded worlds
         if (initWorld.getName().equals(worldName)) {
             state = WorldState.LOADED;
             return;
         }
 
-        if (copyFrom.length() == 0 || !initWorld.getName().equals(copyFrom)) return;
+        // Loaded check
+        if (state != WorldState.UNLOADED) {
+            return;
+        }
+
+        // See if this is a world we want to make a copy of
+        copyWorld(initWorld);
+    }
+
+    public void copyWorld(World world) {
+        if (copyFrom.isEmpty() || !world.getName().equals(copyFrom)) return;
 
         state = WorldState.LOADING;
 
         // Wait a few ticks to do this, to avoid errors during initialization
-        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+        Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
            @Override
-           public void run()
-           {
+           public void run() {
                // Create this world if it doesn't exist
                World world = Bukkit.getWorld(worldName);
                if (world == null) {
-                   controller.info("Loading " + worldName + " using settings copied from " + initWorld.getName());
-                   world = Bukkit.createWorld(new WorldCreator(worldName).copy(initWorld));
+                   controller.info("Loading " + worldName + " using settings copied from " + world.getName());
+                   world = Bukkit.createWorld(new WorldCreator(worldName).copy(world));
                    if (world == null) {
                        controller.getLogger().warning("Failed to create world: " + worldName);
                    } else if (appearanceEnvironment != null) {

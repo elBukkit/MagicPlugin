@@ -88,7 +88,7 @@ public class WorldController implements Listener {
     public void onWorldInit(WorldInitEvent event) {
         World world = event.getWorld();
         for (MagicWorld notifyWorld : magicWorlds.values()) {
-            notifyWorld.onWorldInit(controller.getPlugin(), world);
+            notifyWorld.onWorldInit(world);
         }
         MagicWorld magicWorld = magicWorlds.get(world.getName());
         if (magicWorld == null) return;
