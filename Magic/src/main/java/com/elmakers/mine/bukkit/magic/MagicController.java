@@ -6883,7 +6883,10 @@ public class MagicController implements MageController {
                         if (e == null)
                             break;
                         String name = e.getName();
-                        if (name.startsWith("examples/") && name.endsWith("/")) {
+                        if (!name.equals("examples/")
+                            && !name.equals("examples/localizations/")
+                            && name.startsWith("examples/")
+                            && name.endsWith("/") && !name.contains(".")) {
                             examples.add(name.replace("examples/", "").replace("/", ""));
                         }
                     }
