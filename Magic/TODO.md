@@ -12,8 +12,14 @@
    - Get rid of using the Bukkit Metadata system entirely. Maybe just an "entity data lite" map to store the various
      boolean flags?
 
+## Configs
+
+ - Add `/mconfig language` command
+ - Inheritance is broken in otherside config?
+
 ## World Gen
 
+ - Do world configs support inheritance? Check backup worlds in otherside/netherside
  - Some way to scale mobs up (levels?) with distance from spawn
  - Synchronized day/night cycle of two worlds (sleep event?)
 
