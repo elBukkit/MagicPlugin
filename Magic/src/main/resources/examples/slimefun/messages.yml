@@ -1,0 +1,9 @@
+examples:
+  slimefun:
+    instructions: |-
+      &8| &3&nSLIMEFUN &r
+      &8|   &fThis changes the default RP to use one that has Slimefun &r
+      &8|   &fcustom models merged in. &r
+      &8|   &fThis example is not going to get further updates and &r
+      &8|   &fmay not work well going forward. &r
+      &8|   &fIt is recommend that you merge and host your own RP instead. &r
