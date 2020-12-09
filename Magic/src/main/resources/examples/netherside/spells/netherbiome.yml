@@ -1,0 +1,139 @@
+netherbiome:
+  icon: stone_pickaxe{CustomModelData:18001}
+  icon_disabled: stone_pickaxe{CustomModelData:18002}
+  legacy_icon: spell_icon:103
+  legacy_icon_disabled: spell_icon_disabled:103
+  icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
+  category: engineering
+  tags: noduel
+  worth: 300
+  actions:
+    cast:
+      - class: Sphere
+        actions:
+          - class: ChangeBiome
+  effects:
+    cast:
+      - class: EffectSingle
+        sound: block_piston_extend
+        sound_volume: 0.2
+        sound_pitch: 0.5
+      - sound: entity_illusioner_cast_spell
+        sound_pitch: 1.8
+      - location: target
+        target_offset: 0,1,0
+        effectlib:
+          class: Helix
+          particle: crimson_spore
+          duration: 1000
+          radius: 2
+          particles: 8
+          particle_count: 4
+          particle_offset: 0.05
+      - class: EffectTrail
+        particle: dripping_honey
+        particle_count: 4
+        particle_offset: 0.2
+      - location: target
+        effectlib:
+          class: Star
+          particle: end_rod
+          duration: 1000
+          spike_height: 4
+          particles: 10
+          particle_count: 4
+          particle_offset: 0.05
+      - class: EffectTrail
+        particle: dripping_honey
+        particle_count: 4
+        particle_offset: 0.2
+  parameters:
+    target: block
+    allow_max_range: false
+    range: 32
+    radius: 128
+    type: sphere
+    check_destructible: false
+    indestructible: restricted
+    transparent: transparent_to_construction
+    brushtarget: true
+    cooldown: 7000
+    ignore_region_overrides: true
+    cancel_on_deactivate: false
+    biome_replacements:
+      badlands: basalt_deltas
+      badlands_plateau: basalt_deltas
+      modified_badlands_plateau: basalt_deltas
+      modified_wooded_badlands_plateau: basalt_deltas
+      eroded_badlands: basalt_deltas
+      wooded_badlands_plateau: basalt_deltas
+      wooded_hills: basalt_deltas
+      wooded_mountains: basalt_deltas
+
+      bamboo_jungle: warped_forest
+      bamboo_jungle_hills: warped_forest
+
+      beach: basalt_deltas
+
+      birch_forest: warped_forest
+      birch_forest_hills: warped_forest
+
+      dark_forest: crimson_forest
+      dark_forest_hills: crimson_forest
+
+      cold_ocean: nether_wastes
+      deep_cold_ocean: nether_wastes
+      deep_frozen_ocean: nether_wastes
+      deep_lukewarm_ocean: nether_wastes
+      deep_ocean: nether_wastes
+      deep_warm_ocean: nether_wastes
+      ocean: nether_wastes
+      warm_ocean: nether_wastes
+      river: nether_wastes
+
+      desert: basalt_deltas
+      desert_hills: basalt_deltas
+      desert_lakes: basalt_deltas
+
+      flower_forest: warped_forest
+      forest: crimson_forest
+
+      giant_spruce_taiga: warped_forest
+      giant_spruce_taiga_hills: warped_forest
+      giant_tree_taiga: warped_forest
+      giant_tree_taiga_hills: warped_forest
+
+      modified_gravelly_mountains: basalt_deltas
+      gravelly_mountains: basalt_deltas
+      ice_spikes: basalt_deltas
+
+      jungle: warped_forest
+      jungle_edge: warped_forest
+      jungle_hills: warped_forest
+      modified_jungle: warped_forest
+      modified_jungle_edge: warped_forest
+
+      mountain_edge: basalt_deltas
+      mountains: basalt_deltas
+
+      plains: crimson_forest
+      savanna_plateau: crimson_forest
+      shattered_savanna: crimson_forest
+      shattered_savanna_plateau: crimson_forest
+
+      snowy_beach: basalt_deltas
+      snowy_taiga: warped_forest
+      snowy_taiga_hills: warped_forest
+      snowy_taiga_mountains: warped_forest
+      taiga_hills: warped_forest
+      taiga_mountains: warped_forest
+
+      sunflower_plains: warped_forest
+      swamp: basalt_deltas
+      swamp_hills: basalt_deltas
+      stone_shore: basalt_deltas
+
+      tall_birch_forest: warped_forest
+      tall_birch_hills: warped_forest
+  costs:
+    mana: 200

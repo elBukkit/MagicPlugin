@@ -1,0 +1,12 @@
+#
+# This customizes the Phase spell so it takes you to The Nether Side instead of the nether.
+#
+phase:
+  parameters:
+    worlds:
+      world:
+        target: world_netherside
+        scale: 1
+      world_netherside:
+        target: world
+        scale: 1

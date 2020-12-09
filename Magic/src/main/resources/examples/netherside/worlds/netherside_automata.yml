@@ -1,0 +1,158 @@
+netherside_automata:
+  world: world_netherside
+  enabled: false
+  copy: world
+  entity_spawn:
+
+    creeper_2_hunter:
+      target_type: creeper
+      probability: 0.005
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_hunter
+    creeper_3_snake:
+      target_type: creeper
+      probability: 0.005
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_snake
+    creeper_4_worm:
+      target_type: creeper
+      probability: 0.005
+      y_offset: 24
+      min_y: 63
+      allow_indoors: false
+      cooldown: 10000
+      class: CastRule
+      spells:
+        - birth_worm
+    creeper_5_defender:
+      target_type: creeper
+      probability: 0.01
+      y_offset: 24
+      min_y: 63
+      allow_indoors: false
+      cooldown: 10000
+      class: CastRule
+      spells:
+        - birth_defenter
+    creeper_6_virus:
+      target_type: creeper
+      probability: 0.001
+      y_offset: 24
+      min_y: 63
+      allow_indoors: false
+      cooldown: 10000
+      class: CastRule
+      spells:
+        - virth_virus
+
+    zombie_3_hunter:
+      target_type: zombie
+      probability: 0.005
+      y_offset: 6
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_hunter
+    zombie_4_snake:
+      target_type: zombie
+      probability: 0.001
+      y_offset: 6
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_snake
+    zombie_5_worm:
+      target_type: zombie
+      probability: 0.001
+      y_offset: 6
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_worm
+    zombie_6_defender:
+      target_type: zombie
+      probability: 0.01
+      y_offset: 6
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_defender
+    zombie_7_virus:
+      target_type: zombie
+      probability: 0.0005
+      y_offset: 24
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_virus
+
+    spider_4_hunter:
+      target_type: spider
+      probability: 0.005
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_hunter
+    spider_5_snake:
+      target_type: spider
+      probability: 0.002
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_snake
+    spider_6_defender:
+      target_type: spider
+      probability: 0.05
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_defender
+    spider_7_worm:
+      target_type: spider
+      probability: 0.01
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_worm
+    spider_8_virus:
+      target_type: spider
+      probability: 0.002
+      min_y: 63
+      class: CastRule
+      y_offset: 24
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - birth_virus

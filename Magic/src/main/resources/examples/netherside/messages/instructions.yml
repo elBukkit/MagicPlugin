@@ -1,0 +1,14 @@
+examples:
+  netherside:
+    instructions: |-
+      &8| &3&nTHE NOTHER SIDE &r
+      &8|   &fThe &6Phase &fspell will now take you to an alternate &r
+      &8|   &fdimension full of dangerous mobs. &r
+      &8|   &fAdmins can use the &6netherize&r and &6supernetherize&r. &r
+      &8|   &fspells to copy structures from the overworld. &r
+      &8|   &fUse &7/mconfig enable world netherside_automata &r
+      &8|   &fTo add block monsters to the nether side &r
+      &8|   &fIf your default world is not called &6world&f you will &r
+      &8|   &fneed to customize your configuration using &r
+      &8|   &7/mconfig configure spell phase parameters.worlds.yourworld.target world_netherside &r
+      &8|   &7/mconfig configure spell phase parameters.worlds.world_netherside.target yourworld &r

@@ -1,0 +1,215 @@
+netherside_blocks:
+  world: world_netherside
+  copy: world
+  autoload: true
+  chunk_generate:
+    replace:
+      class: ReplacePopulator
+      replace_biomes:
+        badlands: basalt_deltas
+        badlands_plateau: basalt_deltas
+        modified_badlands_plateau: basalt_deltas
+        modified_wooded_badlands_plateau: basalt_deltas
+        eroded_badlands: basalt_deltas
+        wooded_badlands_plateau: basalt_deltas
+        wooded_hills: basalt_deltas
+        wooded_mountains: basalt_deltas
+
+        bamboo_jungle: warped_forest
+        bamboo_jungle_hills: warped_forest
+
+        beach: basalt_deltas
+
+        birch_forest: warped_forest
+        birch_forest_hills: warped_forest
+
+        dark_forest: crimson_forest
+        dark_forest_hills: crimson_forest
+
+        cold_ocean: nether_wastes
+        deep_cold_ocean: nether_wastes
+        deep_frozen_ocean: nether_wastes
+        deep_lukewarm_ocean: nether_wastes
+        deep_ocean: nether_wastes
+        deep_warm_ocean: nether_wastes
+        ocean: nether_wastes
+        warm_ocean: nether_wastes
+        river: nether_wastes
+
+        desert: basalt_deltas
+        desert_hills: basalt_deltas
+        desert_lakes: basalt_deltas
+
+        flower_forest: warped_forest
+        forest: crimson_forest
+
+        giant_spruce_taiga: warped_forest
+        giant_spruce_taiga_hills: warped_forest
+        giant_tree_taiga: warped_forest
+        giant_tree_taiga_hills: warped_forest
+
+        gravelly_mountains: basalt_deltas
+        modified_gravelly_mountains: basalt_deltas
+        ice_spikes: basalt_deltas
+
+        jungle: warped_forest
+        jungle_edge: warped_forest
+        jungle_hills: warped_forest
+        modified_jungle: warped_forest
+        modified_jungle_edge: warped_forest
+
+        mountain_edge: basalt_deltas
+        mountains: basalt_deltas
+
+        plains: crimson_forest
+        savanna_plateau: crimson_forest
+        shattered_savanna: crimson_forest
+        shattered_savanna_plateau: crimson_forest
+
+        snowy_beach: basalt_deltas
+        snowy_taiga: warped_forest
+        snowy_taiga_hills: warped_forest
+        snowy_taiga_mountains: warped_forest
+        taiga_hills: warped_forest
+        taiga_mountains: warped_forest
+
+        sunflower_plains: warped_forest
+        swamp: basalt_deltas
+        swamp_hills: basalt_deltas
+        stone_shore: basalt_deltas
+
+        tall_birch_forest: warped_forest
+        tall_birch_hills: warped_forest
+
+      replace:
+        andesite: polished_blackstone_bricks
+        diorite: chiseled_nether_bricks
+        granite: chiseled_polished_blackstone
+        grass_block: crimson_nylium
+        dirt: netherrack
+        stone: blackstone
+        oak_leaves: nether_wart_block
+        spruce_leaves: warped_wart_block
+        birch_leaves: warped_wart_block
+        jungle_leaves: warped_wart_block
+        acacia_leaves: nether_wart_block
+        dark_oak_leaves: nether_wart_block
+        oak_log: crimson_stem:*
+        spruce_log: warped_stem:*
+        birch_log: warped_stem:*
+        jungle_log: warped_stem:*
+        acacia_log: crimson_stem:*
+        dark_oak_log: crimson_stem:*
+        water: lava
+        lava: water
+        seagrass: lava
+        tall_seagrass: lava
+        kelp: lava
+        kelp_plant: lava
+        sandstone: soul_soil
+        sand: soul_sand
+        gravel: gravel
+        cactus: stripped_warped_hyphae
+        tall_grass: warped_roots
+        dandelion: warped_fungus
+        poppy: crimson_fungus
+        grass: nether_wart
+        oxeye_daisy: crimson_roots
+        blue_orchid: nether_sprouts
+        dead_bush: crimson_roots
+        fern: soul_fire
+        large_fern: warped_roots
+        orange_tulip: warped_fungus
+        pink_tulip: warped_roots
+        red_tulip: crimson_roots
+        white_tulip: warped_fungus
+
+        oak_fence: nether_brick_fence:*
+        spruce_fence: crimson_fence:*
+        birch_fence: warped_fence:*
+        jungle_fence: crimson_fence:*
+        acacia_fence: nether_brick_fence:*
+        dark_oak_fence: warped_fence_gate:*
+
+        oak_fence_gate: warped_fence_gate:*
+        spruce_fence_gate: crimson_fence_gate:*
+        birch_fence_gate: warped_fence_gate:*
+        jungle_fence_gate: crimson_fence_gate:*
+        acacia_fence_gate: crimson_fence_gate:*
+        dark_oak_fence_gate: warped_fence_gate:*
+        cobblestone_wall: nether_brick_wall:*
+
+        oak_planks: warped_planks
+        spruce_planks: crimson_planks
+        birch_planks: warped_planks
+        jungle_planks: crimson_planks
+        acacia_planks: crimson_planks
+        dark_oak_planks: warped_planks
+
+        oak_stairs: crimson_stairs:*
+        spruce_stairs: warped_stairs:*
+        birch_stairs: warped_stairs:*
+        jungle_stairs: warped_stairs:*
+        acacia_stairs: crimson_stairs:*
+        dark_oak_stairs: crimson_stairs:*
+        cobblestone_stairs: nether_brick_stairs:*
+
+        oak_slab: crimson_slab:*
+        spruce_slab: warped_slab:*
+        birch_slab: warped_slab:*
+        jungle_slab: warped_slab:*
+        acacia_slab: crimson_slab:*
+        dark_oak_slab: crimson_slab:*
+        cobblestone_slab: nether_brick_slab:*
+
+        oak_trapdoor: crimson_trapdoor:*
+        spruce_trapdoor: warped_trapdoor:*
+        birch_trapdoor: warped_trapdoor:*
+        jungle_trapdoor: warped_trapdoor:*
+        acacia_trapdoor: crimson_trapdoor:*
+        dark_oak_trapdoor: crimson_trapdoor:*
+
+        oak_door: crimson_door:*
+        spruce_door: warped_door:*
+        birch_door: warped_door:*
+        jungle_door: warped_door:*
+        acacia_door: crimson_door:*
+        dark_oak_door: crimson_door:*
+
+        glass: red_stained_glass:*
+        glass_pane: red_stained_glass_pane:*
+
+        grass_path: cracked_polished_blackstone_bricks
+        sugar_cane: twisting_vines
+        sunflower: twisting_vines
+        bamboo: twisting_vines
+
+        iron_bars: mossy_cobblestone_wall
+        cobblestone: nether_bricks
+        mossy_cobblestone: iron_block
+        ice: basalt
+        packed_ice: polished_basalt
+        blue_ice: polished_blackstone
+        clay: gilded_blackstone
+        snow_block: magma_block
+        coal_ore: nether_quartz_ore
+        diamond_ore: ancient_debris
+        emerald_ore: ancient_debris
+        iron_ore: nether_quartz_ore
+        gold_ore: nether_gold_ore
+        pumpkin: jack_o_lantern
+        melon: glowstone
+        torch: glowstone
+        vine: weeping_vines:*
+        cocoa: shroomlight
+        sea_lantern: glowstone
+        red_mushroom_block: glowstone
+        brown_mushroom_block: glowstone
+
+        rail: cyan_carpet
+        powered_rail: red_carpet
+
+netherside_blocks_backup:
+  inherit: netherside_blocks
+  world: world_netherside_backup
+  autoload: false

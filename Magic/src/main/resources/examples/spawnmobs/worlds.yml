@@ -1,0 +1,34 @@
+overworld_mobs:
+  world: world
+  entity_spawn:
+
+    enderman_1_warlock:
+      class: ReplaceRule
+      target_type: enderman
+      replace_type: warlock
+      probability: 0.1
+    enderman_2_dark_wizard:
+      class: ReplaceRule
+      target_type: enderman
+      replace_type: dark_wizard
+      probability: 0.05
+    spider_1_dark_spider:
+      class: ReplaceRule
+      target_type: enderman
+      replace_type: dark_spider
+      probability: 0.1
+    spider_2_mega_spider:
+      class: ReplaceRule
+      target_type: enderman
+      replace_type: mega_spider
+      probability: 0.05
+
+  nether_mobs:
+    world: world_nether
+    entity_spawn:
+
+      ghast_1_polterghast:
+        class: ReplaceRule
+        target_type: ghast
+        replace_type: polterghast
+        probability: 0.3

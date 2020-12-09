@@ -498,6 +498,8 @@
                     <exclude>**/examples/automata/**/*.yml</exclude>
                     <exclude>**/examples/bending/**/*.yml</exclude>
                     <exclude>**/examples/engineering/**/*.yml</exclude>
+                    <exclude>**/examples/netherside/**/*.yml</exclude>
+                    <exclude>**/examples/otherside/**/*.yml</exclude>
                     <exclude>**/examples/potter/**/*.yml</exclude>
                     <exclude>**/examples/rpg/**/*.yml</exclude>
                     <exclude>**/examples/stars/**/*.yml</exclude>
@@ -705,6 +707,42 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/engineering/mobs.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/engineering/mobs">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Netherside Configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/netherside/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/netherside/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/netherside/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/netherside/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/netherside/worlds.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/netherside/worlds">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Otherside Configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/otherside/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/otherside/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/otherside/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/otherside/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/otherside/worlds.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/otherside/worlds">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

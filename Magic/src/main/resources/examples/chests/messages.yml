@@ -1,0 +1,11 @@
+examples:
+  magicchests:
+    instructions: |-
+      &8| &3&nMAGIC CHESTS &r
+      &8|   &fYou can now find &6Spell Points &fin naturally-spawned chests &r
+      &8|   &fThey will only be added once, and so can only be found in &r
+      &8|   &fchunks generated after this example has been enabled. &r
+      &8|   &fIf your default world is not called &6world&f you will &r
+      &8|   &fneed to customize your configuration using &r
+      &8|   &7/mconfig configure world overworld_chests world yourworld &r
+      &8|   &7/mconfig configure world nether_chests world yournether &r

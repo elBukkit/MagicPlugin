@@ -7,6 +7,7 @@
    - Configs go into the "worlds" folder, and follow the same format as MagicWorlds
    - There is editor support
    - Fix issues with NPCs and Automata getting lost if in unloaded worlds
+   - Added new example configs: `spawnmobs`, `chests`, `netherside` and `otherside`
 
  - Crafting improvements
    - Allow using "vanilla: true" to easily override a vanilla recipe (just set the output to a vanilla item type)

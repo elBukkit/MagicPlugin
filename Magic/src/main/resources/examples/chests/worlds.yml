@@ -1,0 +1,40 @@
+overworld_chests:
+  world: world
+  chunk_generate:
+    items:
+      class: MagicChestPopulator
+      base_probability:
+        0: 100
+        1: 80
+      item_probability:
+        sp|100: 1
+        sp|80: 2
+        sp|70: 3
+        sp|60: 4
+        sp|50: 5
+        sp|40: 10
+        sp|30: 20
+        sp|25: 30
+        sp|20: 40
+        sp|15: 50
+
+nether_chests:
+  world: world_nether
+  chunk_generate:
+    items:
+      class: MagicChestPopulator
+      base_probability:
+        0: 100
+        1: 80
+        2: 2
+      item_probability:
+        sp|200: 1
+        sp|150: 2
+        sp|100: 3
+        sp|75: 4
+        sp|50: 5
+        sp|45: 10
+        sp|40: 20
+        sp|30: 30
+        sp|25: 40
+        sp|20: 50

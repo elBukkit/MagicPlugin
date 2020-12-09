@@ -1,0 +1,248 @@
+otherside_automata:
+  world: world_other
+  copy: world
+  entity_spawn:
+
+    creeper_2_hunter:
+      target_type: creeper
+      probability: 0.3
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - hunter seed_radius 2
+    creeper_3_snake:
+      target_type: creeper
+      probability: 0.3
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - snake seed_radius 2
+    creeper_4_worm:
+      target_type: creeper
+      probability: 0.2
+      y_offset: 24
+      min_y: 63
+      allow_indoors: false
+      cooldown: 10000
+      class: CastRule
+      spells:
+        - worm seed_radius 3
+    creeper_5_defender:
+      target_type: creeper
+      probability: 0.2
+      y_offset: 24
+      min_y: 63
+      allow_indoors: false
+      cooldown: 10000
+      class: CastRule
+      spells:
+        - defender seed_radius 3
+    creeper_6_virus:
+      target_type: creeper
+      probability: 0.05
+      y_offset: 24
+      min_y: 63
+      allow_indoors: false
+      cooldown: 10000
+      class: CastRule
+      spells:
+        - virus seed_radius 3
+    creeper_7_hunter:
+      target_type: creeper
+      probability: 1
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - hunter seed_radius 2
+
+    zombie_3_hunter:
+      target_type: zombie
+      probability: 0.3
+      y_offset: 6
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - hunter seed_radius 2
+    zombie_4_snake:
+      target_type: zombie
+      probability: 0.3
+      y_offset: 6
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - snake seed_radius 2
+    zombie_5_worm:
+      target_type: zombie
+      probability: 0.2
+      y_offset: 6
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - worm seed_radius 2
+    zombie_6_defender:
+      target_type: zombie
+      probability: 0.8
+      y_offset: 6
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - defender seed_radius 2
+    zombie_7_virus:
+      target_type: zombie
+      probability: 0.1
+      y_offset: 24
+      min_y: 63
+      class: CastRule
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - virus seed_radius 3
+    zombie_8_defender:
+      target_type: zombie
+      probability: 1
+      min_y: 63
+      class: CastRule
+      y_offset: 12
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - defender seed_radius 3
+
+    spider_4_hunter:
+      target_type: spider
+      probability: 0.3
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - hunter seed_radius 2
+    spider_5_snake:
+      target_type: spider
+      probability: 0.4
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - snake seed_radius 2
+    spider_6_defender:
+      target_type: spider
+      probability: 0.5
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - defender seed_radius 2
+    spider_7_worm:
+      target_type: spider
+      probability: 0.5
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - worm seed_radius 2
+    spider_8_virus:
+      target_type: spider
+      probability: 0.1
+      min_y: 63
+      class: CastRule
+      y_offset: 24
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - virus seed_radius 3
+    spider_9_hunter:
+      target_type: spider
+      probability: 1
+      min_y: 63
+      class: CastRule
+      y_offset: 32
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - hunter seed_radius 3
+
+    enderman_3_hunter:
+      target_type: enderman
+      probability: 0.2
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - hunter seed_radius 2
+    enderman_4_snake:
+      target_type: enderman
+      probability: 0.3
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - snake seed_radius 2
+    enderman_5_worm:
+      target_type: enderman
+      probability: 0.4
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - worm seed_radius 2
+    enderman_6_defender:
+      target_type: enderman
+      probability: 0.1
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - defender seed_radius 2
+    enderman_7_virus:
+      target_type: enderman
+      probability: 0.1
+      min_y: 63
+      class: CastRule
+      y_offset: 6
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - virus seed_radius 2
+    enderman_8_hunter:
+      target_type: enderman
+      probability: 1
+      min_y: 63
+      class: CastRule
+      y_offset: 24
+      allow_indoors: false
+      cooldown: 10000
+      spells:
+        - hunter seed_radius 3

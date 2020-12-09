@@ -1,0 +1,10 @@
+examples:
+  otherside:
+    instructions: |-
+      &8| &3&nTHE OTHER SIDE &r
+      &8|   &fThe &6Phase &fspell will now take you to an alternate &r
+      &8|   &fdimension full of powerful block monsters. &r
+      &8|   &fIf your default world is not called &6world&f you will &r
+      &8|   &fneed to customize your configuration using &r
+      &8|   &7/mconfig configure spell phase parameters.worlds.yourworld.target world_other &r
+      &8|   &7/mconfig configure spell phase parameters.worlds.world_other.target yourworld &r
