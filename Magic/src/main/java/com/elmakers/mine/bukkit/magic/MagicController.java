@@ -6908,6 +6908,37 @@ public class MagicController implements MageController {
 
     @Nonnull
     @Override
+    public Collection<String> getLocalizations() {
+        List<String> examples = new ArrayList<>();
+        try {
+            CodeSource src = MagicController.class.getProtectionDomain().getCodeSource();
+            if (src != null) {
+                URL jar = src.getLocation();
+                try (InputStream is = jar.openStream();
+                    ZipInputStream zip = new ZipInputStream(is)) {
+                    while (true) {
+                        ZipEntry e = zip.getNextEntry();
+                        if (e == null)
+                            break;
+                        String name = e.getName();
+                        if (!name.equals("examples/")
+                            && !name.equals("examples/localizations/")
+                            && name.startsWith("examples/localizations/messages.")
+                            && name.endsWith(".yml")) {
+                            examples.add(name.replace("examples/localizations/messages.", "").replace(".yml", ""));
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            plugin.getLogger().log(Level.WARNING, "Error scanning example files", ex);
+        }
+
+        return examples;
+    }
+
+    @Nonnull
+    @Override
     public Collection<String> getExternalExamples() {
         List<String> examples = new ArrayList<>(builtinExternalExamples.keySet());
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");

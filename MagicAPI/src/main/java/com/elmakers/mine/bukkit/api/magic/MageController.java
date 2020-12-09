@@ -615,6 +615,14 @@ public interface MageController {
     @Nullable
     String getExternalExampleURL(String exampleKey);
 
+    /**
+     * Return all builtin localizations. These are represented as ISO language codes.
+     *
+     * @return A list of all builtin localizations
+     */
+    @Nonnull
+    Collection<String> getLocalizations();
+
     double getBlockDurability(@Nonnull Block block);
 
     /**
