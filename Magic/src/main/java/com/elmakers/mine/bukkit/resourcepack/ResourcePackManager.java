@@ -324,6 +324,18 @@ public class ResourcePackManager {
         return resourcePack;
     }
 
+    public String getResourcePackURL(final CommandSender sender) {
+        return getResourcePackURL(controller.getMage(sender));
+    }
+
+    public String getResourcePackURL(final Mage mage) {
+        String url = getResourcePackUrl(mage.getPreferredResourcePack());
+        if (url == null) {
+            url = resourcePack;
+        }
+        return url;
+    }
+
     public boolean isResourcePackEnabledByDefault() {
         return isResourcePackEnabledByDefault;
     }

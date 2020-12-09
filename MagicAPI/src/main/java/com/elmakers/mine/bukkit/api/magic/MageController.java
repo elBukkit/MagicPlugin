@@ -498,6 +498,8 @@ public interface MageController {
     boolean promptNoResourcePack(Player player);
     @Nullable
     String getResourcePackURL();
+    @Nullable
+    String getResourcePackURL(CommandSender sender);
     boolean isResourcePackEnabledByDefault();
     Collection<String> getAlternateResourcePacks();
     boolean commitOnQuit();

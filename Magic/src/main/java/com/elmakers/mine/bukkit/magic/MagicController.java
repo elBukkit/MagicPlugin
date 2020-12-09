@@ -7212,6 +7212,11 @@ public class MagicController implements MageController {
         return resourcePacks.getDefaultResourcePackURL();
     }
 
+    @Nullable
+    public String getResourcePackURL(CommandSender sender) {
+        return resourcePacks.getResourcePackURL(sender);
+    }
+
     @Override
     public boolean isUrlIconsEnabled() {
         return urlIconsEnabled;

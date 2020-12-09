@@ -43,7 +43,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
         }
         String subCommand = args.length > 0 ? args[0] : "";
         if (subCommand.equalsIgnoreCase("url") || subCommand.equalsIgnoreCase("download")) {
-            sender.sendMessage(controller.getResourcePackURL());
+            sender.sendMessage(controller.getResourcePackURL(sender));
             return true;
         }
         if (!(sender instanceof Player)) {

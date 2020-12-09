@@ -33,6 +33,7 @@
  - Broomsticks will now put a temporary "broomstick handle" item in the player's inventory so the slot
    doesn't get taken up by new items and the broomstick has nowhere to go when finished
  - Improved Recall-to-bed behavior
+ - Fix `/getrp url` to return the correct URL when a custom RP has been selected
 
 # 8.1.2
 
