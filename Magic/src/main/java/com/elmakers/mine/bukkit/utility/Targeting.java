@@ -6,8 +6,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.WeakHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -22,8 +24,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
@@ -35,6 +35,7 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 
 public class Targeting {
     private static final Set<UUID> EMPTY_IGNORE_SET = Collections.emptySet();
+    private static final Map<Entity, Hit>       projectileHits          = new WeakHashMap<>();
 
     private @Nonnull TargetingResult            result                  = TargetingResult.NONE;
     private Location                            source                  = null;
@@ -673,21 +674,25 @@ public class Targeting {
         return breakBlockRecursively(context, block, (int)Math.ceil(breakableAmount + breakable - 1));
     }
 
-    public static void track(Plugin plugin, Entity tracked) {
+    public static void track(Entity tracked) {
         EntityMetadataUtils.instance().setBoolean(tracked, "tracking", true);
     }
 
-    public static boolean checkTracking(Plugin plugin, Entity tracked, Entity target, Block block) {
+    public static boolean checkTracking(Entity tracked, Entity target, Block block) {
         if (tracked == null || !EntityMetadataUtils.instance().getBoolean(tracked, "tracking")) {
             return false;
         }
         if (target != null) {
-            tracked.setMetadata("hit", new FixedMetadataValue(plugin, new WeakReference<>(target)));
+            projectileHits.put(tracked, new Hit(target));
         } else if (!tracked.hasMetadata("hit")) {
-            tracked.setMetadata("hit", new FixedMetadataValue(plugin, block));
+            projectileHits.put(tracked, new Hit(block));
         }
 
         return true;
+    }
+
+    public static Hit getHit(Entity tracked) {
+        return projectileHits.get(tracked);
     }
 
     public void ignoreEntity(Entity entity) {

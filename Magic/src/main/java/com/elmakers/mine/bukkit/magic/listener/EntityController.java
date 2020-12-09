@@ -129,7 +129,7 @@ public class EntityController implements Listener {
         // This is here to register misses, mainly.
 
         // TODO: use event.getBlock in newer API.
-        Targeting.checkTracking(controller.getPlugin(), projectile, null, CompatibilityUtils.getHitBlock(event));
+        Targeting.checkTracking(projectile, null, CompatibilityUtils.getHitBlock(event));
     }
 
     @EventHandler
@@ -259,7 +259,7 @@ public class EntityController implements Listener {
                 }
             }
         } else {
-            Targeting.checkTracking(controller.getPlugin(), damager, entity, null);
+            Targeting.checkTracking(damager, entity, null);
         }
     }
 

@@ -1,9 +1,7 @@
 package com.elmakers.mine.bukkit.action;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -11,8 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -20,6 +16,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
+import com.elmakers.mine.bukkit.utility.Hit;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
@@ -81,9 +78,6 @@ public abstract class BaseProjectileAction extends CompoundAction {
 
         if (System.currentTimeMillis() > expiration) {
             for (Entity entity : tracking) {
-                entity.removeMetadata("track", context.getPlugin());
-                entity.removeMetadata("damaged", context.getPlugin());
-                entity.removeMetadata("hit", context.getPlugin());
                 entity.remove();
             }
             context.getMage().sendDebugMessage(ChatColor.DARK_GRAY + "Projectiles expired", 4);
@@ -103,38 +97,18 @@ public abstract class BaseProjectileAction extends CompoundAction {
         for (Entity entity : tracking)
         {
             trackingEntity = entity;
-            if (!entity.isValid() || entity.hasMetadata("hit"))
+            Hit hit = Targeting.getHit(entity);
+            if (!entity.isValid() || hit != null)
             {
-                tracking.remove(entity);
-                Plugin plugin = context.getPlugin();
-                Entity targetEntity = null;
-                Block targetBlock = null;
+                Entity targetEntity = hit == null ? null : hit.getEntity();
                 Location targetLocation = entity.getLocation();
-                List<MetadataValue> metadata = entity.getMetadata("hit");
-                for (MetadataValue value : metadata) {
-                    if (value.getOwningPlugin().equals(plugin)) {
-                        Object o = value.value();
-                        if (o != null && o instanceof WeakReference) {
-                            WeakReference<?> reference = (WeakReference<?>)o;
-                            o = reference.get();
-                            if (o != null && o instanceof Entity) {
-                                targetEntity = (Entity)o;
-                                targetLocation = targetEntity.getLocation();
-                            }
-                            break;
-                        } else if (o != null && o instanceof Block) {
-                            targetBlock = (Block)o;
-                            break;
-                        }
-                    }
-                }
-                entity.removeMetadata("track", plugin);
+                Block targetBlock = hit == null ? null : hit.getBlock();
+                tracking.remove(entity);
                 if (targetEntity == null) {
                     context.getMage().sendDebugMessage(ChatColor.GRAY + "Projectile missed", 4);
                 } else {
                     context.getMage().sendDebugMessage(ChatColor.GREEN + "Projectile hit " + ChatColor.GOLD + targetEntity.getType());
                 }
-                entity.removeMetadata("hit", plugin);
                 Location sourceLocation = entity.getLocation();
 
                 // So.. projectile X direction is backwards. See: https://hub.spigotmc.org/jira/browse/SPIGOT-3867
@@ -162,11 +136,11 @@ public abstract class BaseProjectileAction extends CompoundAction {
                     Vector endPoint = startPoint.clone().add(direction.clone().normalize().multiply(2));
                     BoundingBox hitbox = new BoundingBox(targetLocation.toVector(), 0.001, 0.998, 0.001, 0.998, 0.001, 0.998);
 
-                    Vector hit = hitbox.getIntersection(startPoint, endPoint);
-                    if (hit != null) {
-                        targetLocation.setX(hit.getX());
-                        targetLocation.setY(hit.getY());
-                        targetLocation.setZ(hit.getZ());
+                    Vector intersection = hitbox.getIntersection(startPoint, endPoint);
+                    if (intersection != null) {
+                        targetLocation.setX(intersection.getX());
+                        targetLocation.setY(intersection.getY());
+                        targetLocation.setZ(intersection.getZ());
                     }
                 } else {
                     context.getMage().sendDebugMessage(ChatColor.GRAY + "Projectile hit at " + TextUtils.printLocation(entity.getLocation())
@@ -222,7 +196,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
             }
         }
         if (track) {
-            Targeting.track(context.getPlugin(), entity);
+            Targeting.track(entity);
         }
     }
 
