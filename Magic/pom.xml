@@ -713,6 +713,11 @@
 
                                 <!-- Netherside Configs -->
 
+                                <concat destfile="${project.build.directory}/classes/examples/netherside/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/netherside/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/netherside/messages.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/netherside/messages">
                                         <include name="**/*.yml"/>
@@ -731,6 +736,11 @@
 
                                 <!-- Otherside Configs -->
 
+                                <concat destfile="${project.build.directory}/classes/examples/otherside/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/otherside/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/otherside/messages.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/otherside/messages">
                                         <include name="**/*.yml"/>
