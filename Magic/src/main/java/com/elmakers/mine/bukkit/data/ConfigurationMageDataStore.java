@@ -42,6 +42,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         saveFile.set("id", mage.getId());
         saveFile.set("name", mage.getName());
         saveFile.set("created", mage.getCreatedTime());
+        saveFile.set("updated", System.currentTimeMillis());
         saveFile.set("last_cast", mage.getLastCast());
         saveFile.set("cooldown_expiration", mage.getCooldownExpiration());
         saveFile.set("last_death_location", ConfigurationUtils.fromSerializedLocation(mage.getSerializedLastDeathLocation()));
