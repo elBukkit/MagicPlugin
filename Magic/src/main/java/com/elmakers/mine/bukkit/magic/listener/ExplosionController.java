@@ -98,10 +98,12 @@ public class ExplosionController implements Listener {
                     blockList.explode(explodingEntity, event.blockList());
                 }
             }
-        }
-        else if (blockList != null) {
+        } else if (blockList != null) {
             blockList.explode(explodingEntity, event.blockList());
-            blockList.getOwner().registerForUndo(blockList);
+            Mage owner = blockList.getOwner();
+            if (owner != null) {
+                owner.registerForUndo(blockList);
+            }
         }
     }
 

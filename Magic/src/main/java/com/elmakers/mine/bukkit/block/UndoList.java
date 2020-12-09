@@ -78,7 +78,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected WeakReference<CastContext>    context;
 
-    protected Mage                    owner;
+    protected WeakReference<Mage>     owner;
+    protected MageController          controller;
     protected Plugin                   plugin;
 
     protected boolean               undone              = false;
@@ -93,8 +94,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected long                  scheduledTime;
     protected double                speed = 0;
 
-    protected Spell                 spell;
-    protected Batch                 batch;
+    protected WeakReference<Spell>  spell;
+    protected WeakReference<Batch>  batch;
     protected UndoQueue             undoQueue;
 
     // Doubly-linked list
@@ -132,7 +133,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     public void setMage(Mage mage) {
-        this.owner = mage;
+        this.owner = mage == null ? null : new WeakReference<>(mage);
         if (mage != null) {
             this.plugin = mage.getController().getPlugin();
         }
@@ -141,13 +142,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void setBatch(Batch batch)
     {
-        this.batch = batch;
+        this.batch = batch == null ? null : new WeakReference<>(batch);
     }
 
     @Override
     public void setSpell(Spell spell)
     {
-        this.spell = spell;
+        this.spell = spell == null ? null : new WeakReference<>(spell);
         this.context = spell == null ? null : new WeakReference<>(spell.getCurrentCast());
     }
 
@@ -222,8 +223,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public boolean add(BlockData blockData)
     {
-        if (finished && spell != null) {
-            spell.getController().getLogger().warning("Trying to add to a finished UndoList, this may result in blocks that don't get cleaned up: " + name);
+        if (finished) {
+            controller.getLogger().warning("Trying to add to a finished UndoList, this may result in blocks that don't get cleaned up: " + name);
             Thread.dumpStack();
         }
         if (bypass) return true;
@@ -413,6 +414,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         BlockState currentState = blockData.getBlock().getState();
         if (undo(blockData, applyPhysics)) {
             blockIdMap.remove(blockData.getId());
+            Mage owner = getOwner();
             if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
                 owner.giveItem(new ItemStack(currentState.getType(), 1, DeprecatedUtils.getRawData(currentState)));
             }
@@ -472,6 +474,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void undo(boolean blocking)
     {
+        Spell spell = getSpell();
         if (spell != null)
         {
             spell.cancel();
@@ -484,6 +487,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (undone) return;
         undone = true;
 
+        Batch batch = getBatch();
         if (batch != null && !batch.isFinished())
         {
             batch.finish();
@@ -516,13 +520,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
 
         // Block changes will be performed in a batch
-        UndoBatch batch = new UndoBatch(this);
-        if (blocking) {
-            while (!batch.isFinished()) {
-                batch.process(1000);
+        UndoBatch undoBatch = new UndoBatch(this);
+        Mage owner = getOwner();
+        if (blocking || owner == null) {
+            while (!undoBatch.isFinished()) {
+                undoBatch.process(1000);
             }
         } else {
-            owner.addUndoBatch(batch);
+            owner.addUndoBatch(undoBatch);
         }
     }
 
@@ -532,7 +537,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (spawnedEntities != null || modifiedEntities != null) {
             if (spawnedEntities != null) {
                 for (SpawnedEntity entity : spawnedEntities.values()) {
-                    entity.despawn(getContext());
+                    entity.despawn(controller, getContext());
                 }
                 spawnedEntities = null;
             }
@@ -585,7 +590,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         undo(blocking, false);
 
-        if (isScheduled())
+        Mage owner = getOwner();
+        if (isScheduled() && owner != null)
         {
             owner.getController().cancelScheduledUndo(this);
         }
@@ -835,15 +841,27 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return name;
     }
 
+    @Nullable
     public Spell getSpell()
     {
-        return spell;
+        return spell == null ? null : spell.get();
+    }
+
+    @Nullable
+    public Batch getBatch()
+    {
+        return batch == null ? null : batch.get();
     }
 
     @Override
+    @Nullable
     public Mage getOwner()
     {
-        return owner;
+        return owner == null ? null : owner.get();
+    }
+
+    public MageController getController() {
+        return controller;
     }
 
     @Nullable
@@ -1025,7 +1043,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void addDamage(Block block, double damage) {
         BlockData blockData = get(block);
-        blockData.addDamage(damage);
+        if (blockData != null) {
+            blockData.addDamage(damage);
+        }
     }
 
     @Override

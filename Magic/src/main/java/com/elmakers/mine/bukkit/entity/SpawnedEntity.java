@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.util.BlockVector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
@@ -43,10 +44,10 @@ public class SpawnedEntity {
         return this.entity.get();
     }
 
-    public void despawn(CastContext context) {
+    public void despawn(MageController controller, CastContext context) {
         Entity entity = this.getEntity();
         if (entity == null || !entity.isValid()) {
-            World world = context.getPlugin().getServer().getWorld(worldName);
+            World world = controller.getPlugin().getServer().getWorld(worldName);
 
             // Not force-loading worlds for this, so this entity gets to live to fight another day
             if (world == null) {

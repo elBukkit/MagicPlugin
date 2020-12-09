@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -63,18 +64,21 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private class UndoMarkerMove implements Runnable
     {
         private final Location location;
-        private final Mage mage;
+        private final WeakReference<Mage> mage;
 
         public UndoMarkerMove(Mage mage, Location currentLocation)
         {
             this.location = currentLocation;
-            this.mage = mage;
+            this.mage = new WeakReference<>(mage);
         }
 
         @Override
         public void run()
         {
-            mage.getData().set(markerKey, ConfigurationUtils.fromLocation(location));
+            Mage mage = this.mage.get();
+            if (mage != null) {
+                mage.getData().set(markerKey, ConfigurationUtils.fromLocation(location));
+            }
         }
     }
 

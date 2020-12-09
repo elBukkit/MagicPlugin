@@ -75,6 +75,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     boolean contains(Location location, int threshold);
 
     String getName();
+    @Nullable
     Mage getOwner();
     @Nullable
     CastContext getContext();

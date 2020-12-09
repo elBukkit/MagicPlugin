@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -13,17 +15,20 @@ public class VanishAction extends BaseSpellAction
 {
     private static class UndoVanish implements Runnable
     {
-        private final Mage mage;
+        private final WeakReference<Mage> mage;
 
         public UndoVanish(Mage mage)
         {
-            this.mage = mage;
+            this.mage = new WeakReference<>(mage);
         }
 
         @Override
         public void run()
         {
-            mage.setVanished(false);
+            Mage mage = this.mage.get();
+            if (mage != null) {
+                mage.setVanished(false);
+            }
         }
     }
 

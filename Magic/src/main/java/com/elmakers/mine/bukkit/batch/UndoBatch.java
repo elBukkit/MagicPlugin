@@ -22,8 +22,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     private final MaterialSet attachables;
 
     public UndoBatch(UndoList blockList) {
-        Mage mage = blockList.getOwner();
-        controller = mage.getController();
+        controller = blockList.getController();
 
         undoList = blockList;
         this.applyPhysics = blockList.getApplyPhysics();
