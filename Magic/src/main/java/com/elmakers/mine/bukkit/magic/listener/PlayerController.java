@@ -197,13 +197,10 @@ public class PlayerController implements Listener {
 
         // Check for auto wand
         boolean isWand = Wand.isWand(next);
-        String templateKey = next == null ? null : controller.getAutoWandKey(next.getType());
-        if (templateKey != null && !isWand && !templateKey.isEmpty()) {
-            Wand wand = controller.createWand(templateKey);
-            if (wand == null) {
-                controller.getLogger().warning("Invalid wand template in auto_wands config: " + templateKey);
-            } else {
-                next = wand.getItem();
+        if (!isWand) {
+            ItemStack autoWand = controller.getAutoWand(next);
+            if (autoWand != null) {
+                next = autoWand;
                 inventory.setItem(event.getNewSlot(), next);
                 isWand = true;
             }

@@ -1599,9 +1599,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Nullable
-    private Wand checkWand(ItemStack itemInHand) {
+    private Wand checkMainhandWand() {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
+
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        boolean isWand = Wand.isWand(itemInHand);
+        if (!isWand && itemInHand != null) {
+            ItemStack autoWand = controller.getAutoWand(itemInHand);
+            if (autoWand != null) {
+                itemInHand = autoWand;
+                player.getInventory().setItemInMainHand(itemInHand);
+                isWand = true;
+            }
+        }
 
         ItemStack activeWandItem = activeWand != null ? activeWand.getItem() : null;
         if (InventoryUtils.isSameInstance(activeWandItem, itemInHand)) return activeWand;
@@ -1611,7 +1622,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return activeWand;
         }
 
-        if (!Wand.isWand(itemInHand)) itemInHand = null;
+        if (!isWand) itemInHand = null;
 
         if ((itemInHand != null && activeWandItem == null)
                 || (activeWandItem != null && itemInHand == null)
@@ -1638,7 +1649,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
         checkOffhandWand();
-        return checkWand(player.getInventory().getItemInMainHand());
+        return checkMainhandWand();
     }
 
     public boolean offhandCast() {
@@ -1686,21 +1697,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     private Wand checkOffhandWand() {
         Player player = getPlayer();
-        if (player == null) {
-            return null;
-        }
-        return checkOffhandWand(player.getInventory().getItemInOffHand());
-    }
-
-    @Nullable
-    private Wand checkOffhandWand(ItemStack itemInHand) {
-        Player player = getPlayer();
         if (isLoading() || player == null) return null;
+        ItemStack itemInHand = player.getInventory().getItemInOffHand();
+
+        boolean isWand = Wand.isWand(itemInHand);
+        if (!isWand && itemInHand != null) {
+            ItemStack autoWand = controller.getAutoWand(itemInHand);
+            if (autoWand != null) {
+                itemInHand = autoWand;
+                player.getInventory().setItemInOffHand(itemInHand);
+                isWand = true;
+            }
+        }
 
         ItemStack offhandWandItem = offhandWand != null ? offhandWand.getItem() : null;
         if (InventoryUtils.isSameInstance(offhandWandItem, itemInHand)) return offhandWand;
 
-        if (!Wand.isWand(itemInHand)) itemInHand = null;
+        if (!isWand) itemInHand = null;
 
         if ((itemInHand != null && offhandWandItem == null)
         || (offhandWandItem != null && itemInHand == null)

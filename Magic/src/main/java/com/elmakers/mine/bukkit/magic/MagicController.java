@@ -4830,6 +4830,21 @@ public class MagicController implements MageController {
     }
 
     @Nullable
+    public ItemStack getAutoWand(ItemStack itemStack) {
+        if (itemStack == null) return null;
+        String templateKey = getAutoWandKey(itemStack.getType());
+        if (templateKey != null && !templateKey.isEmpty()) {
+            Wand wand = createWand(templateKey);
+            if (wand == null) {
+                getLogger().warning("Invalid wand template in auto_wands config: " + templateKey);
+            } else {
+                return wand.getItem();
+            }
+        }
+        return null;
+    }
+
+    @Nullable
     protected ConfigurationSection resolveConfiguration(String key, ConfigurationSection properties, Map<String, ConfigurationSection> configurations) {
         resolvingKeys.clear();
         return resolveConfiguration(key, properties, configurations, resolvingKeys);
@@ -7212,6 +7227,7 @@ public class MagicController implements MageController {
         return resourcePacks.getDefaultResourcePackURL();
     }
 
+    @Override
     @Nullable
     public String getResourcePackURL(CommandSender sender) {
         return resourcePacks.getResourcePackURL(sender);
