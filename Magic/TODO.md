@@ -5,6 +5,7 @@
  - Editor
    - Gets confused by spaces, test out recipes
      row_2: "aa ...
+   - There is no class metadata
 
  - Memory Leaks
    - Should entity undo also be value-weak? Is there a use-case for it needing to undo (other than scheduled)
@@ -15,7 +16,6 @@
 ## Configs
 
  - Add `/mconfig language` command
- - Inheritance is broken in otherside config?
 
 ## World Gen
 

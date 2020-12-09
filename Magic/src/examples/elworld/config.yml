@@ -25,6 +25,9 @@ examples:
 - war
 - arenas
 - robes
+- magicmobs
+- chests
+- otherside
 
 # Testing custom currencies
 custom_currency:
