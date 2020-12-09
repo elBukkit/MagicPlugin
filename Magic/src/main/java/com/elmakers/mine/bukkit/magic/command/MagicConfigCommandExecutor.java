@@ -201,6 +201,23 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 if (subCommand.equals("configure") && fileType.equals("messages")) {
                     options.addAll(controller.getMessages().getAllKeys());
                 }
+                if (fileType.equals("worlds")) {
+                    if (subCommand.equals("configure")) {
+                        for (World world : api.getPlugin().getServer().getWorlds()) {
+                            options.add(world.getName());
+                        }
+                    }
+
+                    File pluginFolder = api.getPlugin().getDataFolder();
+                    File defaultsFile = new File(pluginFolder, "defaults/worlds.defaults.yml");
+                    YamlConfiguration defaultConfig = null;
+                    try {
+                        defaultConfig = new YamlConfiguration();
+                        defaultConfig.load(defaultsFile);
+                        options.addAll(defaultConfig.getKeys(false));
+                    } catch (Exception ignore) {
+                    }
+                }
                 if (fileType.equals("spells")) {
                     Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
                     for (SpellTemplate spell : spellList) {
@@ -229,11 +246,6 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                     Collection<String> recipeList = api.getController().getRecipeKeys();
                     for (String recipe : recipeList) {
                         options.add(recipe);
-                    }
-                }
-                if (fileType.equals("worlds")) {
-                    for (World world : api.getPlugin().getServer().getWorlds()) {
-                        options.add(world.getName());
                     }
                 }
                 if (fileType.equals("mobs")) {
