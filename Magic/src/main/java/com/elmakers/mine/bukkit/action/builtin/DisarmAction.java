@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,18 +36,20 @@ public class DisarmAction extends BaseSpellAction
 {
     private static class DisarmUndoAction implements Runnable
     {
-        private final Mage mage;
+        private final WeakReference<Mage> mage;
         private final int originalSlot;
         private final int targetSlot;
 
         public DisarmUndoAction(Mage mage, int originalSlot, int targetSlot) {
-            this.mage = mage;
+            this.mage = new WeakReference<>(mage);
             this.originalSlot = originalSlot;
             this.targetSlot = targetSlot;
         }
 
         @Override
         public void run() {
+            Mage mage = this.mage.get();
+            if (mage == null) return;
             Wand activeWand = mage.getActiveWand();
             if (activeWand != null && activeWand.isInventoryOpen()) return;
 

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.block;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +15,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {
-    private final Mage                    owner;
+    private final WeakReference<Mage>   owner;
+    private final MageController        controller;
     private UndoList                    head = null;
     private UndoList                    tail = null;
     private int                         scheduledSize = 0;
@@ -23,7 +25,13 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 
     public UndoQueue(Mage mage)
     {
-        this.owner = mage;
+        this.owner = new WeakReference<>(mage);
+        this.controller = mage.getController();
+    }
+
+    @Nullable
+    protected Mage getOwner() {
+        return owner == null ? null : owner.get();
     }
 
     @Override
@@ -34,6 +42,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         if (addList.hasUndoQueue()) {
             return;
         }
+        Mage owner = getOwner();
         addList.setMage(owner);
 
         int iterations = 100;
@@ -95,7 +104,8 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             UndoList checkList = nextList;
             nextList = nextList.getNext();
             if (checkList.isScheduled()) {
-                if (spellKey == null || checkList.getSpell() == null || (checkList.hasBeenScheduled() && checkList.getSpell().getSpellKey().getBaseKey().equals(spellKey))) {
+                Spell spell = checkList.getSpell();
+                if (spellKey == null || spell == null || (checkList.hasBeenScheduled() && spell.getSpellKey().getBaseKey().equals(spellKey))) {
                     checkList.undoScheduled(true);
                     undid++;
                 }
@@ -251,20 +261,19 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
                     add(list);
                     if (list.isScheduled() && list.hasChanges())
                     {
-                        owner.getController().scheduleUndo(list);
+                        controller.scheduleUndo(list);
                     }
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            owner.getController().getLogger().warning("Failed to load undo data: " + ex.getMessage());
+            controller.getLogger().warning("Failed to load undo data: " + ex.getMessage());
         }
     }
 
     @Override
     public void save(UndoData data)
     {
-        MageController controller = owner.getController();
         int maxSize = controller.getMaxUndoPersistSize();
         try {
             int discarded = 0;
@@ -281,7 +290,9 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             }
 
             if (discarded > 0) {
-                controller.getLogger().info("Not saving " + discarded + " undo batches for mage " + owner.getName() + ", over max size of " + maxSize);
+                Mage owner = getOwner();
+                String name = owner == null ? "(Offline)" : owner.getName();
+                controller.getLogger().info("Not saving " + discarded + " undo batches for mage " + name + ", over max size of " + maxSize);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

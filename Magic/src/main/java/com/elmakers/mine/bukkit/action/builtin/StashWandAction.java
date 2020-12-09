@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -22,26 +23,27 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 public class StashWandAction extends BaseSpellAction
 {
     private ItemStack stashedItem;
-    private Mage targetMage;
+    private WeakReference<Mage> targetMage;
     private int slotNumber;
     private boolean isOffhand = false;
     private boolean returnOnFinish = true;
 
     private class StashWandUndoAction implements Runnable
     {
-        private final CastContext context;
+        private final WeakReference<CastContext> context;
 
         public StashWandUndoAction(CastContext context) {
-            this.context = context;
+            this.context = new WeakReference<>(context);
         }
 
         @Override
         public void run() {
-            returnItem(context);
+            returnItem(this.context.get());
         }
     }
 
     private void returnItem(CastContext context) {
+        Mage targetMage = this.targetMage == null ? null : this.targetMage.get();
         if (targetMage == null || stashedItem == null) return;
         Player player = targetMage.getPlayer();
         if (player == null) return;
@@ -68,9 +70,15 @@ public class StashWandAction extends BaseSpellAction
         if (!gave) {
             targetMage.giveItem(stashedItem);
         }
-        context.checkWand();
+        if (context == null) {
+            if (targetMage != null) {
+                targetMage.checkWand();
+            }
+        } else {
+            context.checkWand();
+        }
         stashedItem = null;
-        targetMage = null;
+        this.targetMage = null;
     }
 
     @Override
@@ -125,7 +133,7 @@ public class StashWandAction extends BaseSpellAction
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         }
 
-        targetMage = mage;
+        targetMage = new WeakReference<>(mage);
         context.registerForUndo(new StashWandUndoAction(context));
         return SpellResult.CAST;
     }

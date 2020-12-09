@@ -38,7 +38,7 @@ public class Target implements Comparable<Target>
     private Location location;
     private MaterialAndData locationMaterial;
     private WeakReference<Entity> entityRef;
-    private Mage     mage;
+    private WeakReference<Mage>   mageRef;
     private boolean  reverseDistance = false;
 
     private double   distanceSquared    = 100000;
@@ -217,11 +217,11 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
-        this.mage = mage;
         if (mage != null) {
+            this.mageRef = new WeakReference<>(mage);
             this.entityRef = new WeakReference<>(mage.getLivingEntity());
+            this.location = mage.getEyeLocation();
         }
-        if (mage != null) this.location = mage.getEyeLocation();
         calculateScore();
     }
 
@@ -232,12 +232,12 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
-        this.mage = mage;
         this.playerWeight = playerWeight;
         if (mage != null) {
+            this.mageRef = new WeakReference<>(mage);
             this.entityRef = new WeakReference<>(mage.getLivingEntity());
+            this.location = mage.getEyeLocation();
         }
-        if (mage != null) this.location = mage.getEyeLocation();
         calculateScore();
     }
 
@@ -259,6 +259,11 @@ public class Target implements Comparable<Target>
         } else if (entity != null) {
             this.location = CompatibilityUtils.getEyeLocation(entity);
         }
+    }
+
+    @Nullable
+    protected Mage getMage() {
+        return mageRef == null ? null : mageRef.get();
     }
 
     public int getScore()
@@ -380,6 +385,7 @@ public class Target implements Comparable<Target>
         if (maxDistanceSquared > 0) score = (int)(score + (maxDistanceSquared - distanceSquared) * distanceWeight);
         if (!useHitbox && angle > 0 && maxAngle > 0) score = (int)(score + (3 - angle) * fovWeight);
 
+        Mage mage = getMage();
         if (entity != null && mage != null && mage.getController().isNPC(entity))
         {
             score = score + npcWeight;

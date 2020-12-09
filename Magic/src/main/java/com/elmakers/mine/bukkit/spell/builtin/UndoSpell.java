@@ -68,7 +68,9 @@ public class UndoSpell extends TargetingSpell
                 {
                     Mage targetMage = undid.getOwner();
                     undoListName = undid.getName();
-                    getCurrentCast().setTargetName(targetMage.getName());
+                    if (targetMage != null) {
+                        getCurrentCast().setTargetName(targetMage.getName());
+                    }
                     return result;
                 }
             }
