@@ -51,6 +51,9 @@ public class ExplosionController implements Listener {
     @Nullable
     protected UndoList getExplosionUndo(Entity explodingEntity) {
         UndoList blockList = controller.getEntityUndo(explodingEntity);
+        if (blockList != null && blockList.isUndone()) {
+            blockList = null;
+        }
         if (blockList == null && autoRollbackDuration > 0 && rollbackExplosions.contains(explodingEntity.getType())) {
             Mage mage = controller.getMage(explodingEntity);
             blockList = new com.elmakers.mine.bukkit.block.UndoList(mage, "Explosion (" + explodingEntity.getType().name() + ")");
