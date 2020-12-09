@@ -63,6 +63,7 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         return set;
     }
 
+    @SuppressWarnings("unchecked")
     public boolean load(String key, ConfigurationSection parameters, MagicController controller) {
         this.parameters = parameters;
         this.key = key;
