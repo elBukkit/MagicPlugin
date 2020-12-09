@@ -9,7 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.BaseProjectileAction;
@@ -20,6 +19,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 public class TNTAction extends BaseProjectileAction
@@ -81,9 +81,8 @@ public class TNTAction extends BaseProjectileAction
             grenade.setYield(size);
             grenade.setFuseTicks(fuse);
             grenade.setIsIncendiary(useFire);
-            if (!breakBlocks)
-            {
-                grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
+            if (!breakBlocks) {
+                EntityMetadataUtils.instance().setBoolean(grenade, "cancel_explosion", true);
             }
             track(context, grenade);
         }

@@ -7,11 +7,11 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 @Deprecated
@@ -56,7 +56,7 @@ public class GrenadeSpell extends BlockSpell
             grenade.setIsIncendiary(useFire);
             registerForUndo(grenade);
             if (!breakBlocks) {
-                grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
+                EntityMetadataUtils.instance().setBoolean(grenade, "cancel_explosion", true);
             }
         }
 

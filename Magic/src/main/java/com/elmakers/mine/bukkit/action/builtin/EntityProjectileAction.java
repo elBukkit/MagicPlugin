@@ -8,7 +8,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
@@ -21,6 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 public class EntityProjectileAction extends CustomProjectileAction {
@@ -81,7 +81,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     protected Entity setEntity(MageController controller, @Nonnull Entity entity) {
         this.entity = entity;
         if (noTarget) {
-            entity.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
+            EntityMetadataUtils.instance().setBoolean(entity, "notarget", true);
         }
         CompatibilityUtils.setPersist(entity, false);
 
@@ -157,9 +157,6 @@ public class EntityProjectileAction extends CustomProjectileAction {
     public void finishEffects() {
         super.finishEffects();
         if (entity != null) {
-            if (plugin != null) {
-                entity.removeMetadata("notarget", plugin);
-            }
             entity.remove();
             entity = null;
         }

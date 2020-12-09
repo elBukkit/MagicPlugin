@@ -25,13 +25,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -224,7 +224,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                     }
                     if (!loot)
                     {
-                        entity.setMetadata("nodrops", new FixedMetadataValue(mage.getController().getPlugin(), true));
+                        EntityMetadataUtils.instance().setBoolean(entity, "nodrops", true);
                     }
                     if (spawnBaby && entity instanceof Ageable) {
                         Ageable ageable = (Ageable)entity;

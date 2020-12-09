@@ -674,11 +674,11 @@ public class Targeting {
     }
 
     public static void track(Plugin plugin, Entity tracked) {
-        tracked.setMetadata("tracking", new FixedMetadataValue(plugin, true));
+        EntityMetadataUtils.instance().setBoolean(tracked, "tracking", true);
     }
 
     public static boolean checkTracking(Plugin plugin, Entity tracked, Entity target, Block block) {
-        if (tracked == null || !tracked.hasMetadata("tracking")) {
+        if (tracked == null || !EntityMetadataUtils.instance().getBoolean(tracked, "tracking")) {
             return false;
         }
         if (target != null) {

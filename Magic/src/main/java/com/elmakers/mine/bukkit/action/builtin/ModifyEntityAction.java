@@ -18,7 +18,6 @@ import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -31,6 +30,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
 public class ModifyEntityAction extends BaseSpellAction
 {
@@ -114,7 +114,7 @@ public class ModifyEntityAction extends BaseSpellAction
         }
 
         if (!loot) {
-            spawnedEntity.setMetadata("nodrops", new FixedMetadataValue(controller.getPlugin(), true));
+            EntityMetadataUtils.instance().setBoolean(spawnedEntity, "nodrops", true);
         }
         if (speed > 0)
         {
@@ -136,7 +136,7 @@ public class ModifyEntityAction extends BaseSpellAction
             CompatibilityUtils.setEntityMotion(spawnedEntity, motion);
         }
         if (setOwner && spawnedEntity instanceof Creature) {
-            spawnedEntity.setMetadata("owner", new FixedMetadataValue(controller.getPlugin(), context.getMage().getId()));
+            EntityMetadataUtils.instance().setString(spawnedEntity, "owner", context.getMage().getId());
         }
         LivingEntity shooter = context.getLivingEntity();
         if (shooter != null) {

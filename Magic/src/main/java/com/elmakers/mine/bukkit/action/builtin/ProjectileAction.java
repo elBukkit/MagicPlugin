@@ -16,7 +16,6 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
@@ -29,6 +28,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ProjectileAction  extends BaseProjectileAction
@@ -181,7 +181,7 @@ public class ProjectileAction  extends BaseProjectileAction
                     }
                 }
                 if (!breakBlocks) {
-                    projectile.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
+                    EntityMetadataUtils.instance().setBoolean(projectile, "cancel_explosion", true);
                 }
                 track(context, projectile);
             } catch (Exception ex) {

@@ -29,8 +29,6 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
@@ -39,6 +37,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
 public class MobController implements Listener {
     private MageController controller;
@@ -143,15 +142,12 @@ public class MobController implements Listener {
 
         Entity target = event.getTarget();
         if (target != null) {
-            if (source.hasMetadata("owner")) {
-                List<MetadataValue> metadata = source.getMetadata("owner");
-                for (MetadataValue value : metadata) {
-                    String ownerId = value.asString();
-                    Mage mageOwner = controller.getRegisteredMage(ownerId);
-                    if (mageOwner != null && mageOwner.getEntity() == target) {
-                        event.setCancelled(true);
-                        return;
-                    }
+            String ownerId = EntityMetadataUtils.instance().getString(target, "owner");
+            if (ownerId != null) {
+                Mage mageOwner = controller.getRegisteredMage(ownerId);
+                if (mageOwner != null && mageOwner.getEntity() == target) {
+                    event.setCancelled(true);
+                    return;
                 }
             }
 
@@ -174,9 +170,8 @@ public class MobController implements Listener {
     @EventHandler
     public void onSlimeSplit(SlimeSplitEvent event) {
         Entity entity = event.getEntity();
-        if (entity.hasMetadata("nosplit")) {
+        if (EntityMetadataUtils.instance().getBoolean(entity, "nosplit")) {
             event.setCancelled(true);
-            entity.removeMetadata("nosplit", controller.getPlugin());
         }
     }
 
@@ -200,12 +195,11 @@ public class MobController implements Listener {
             Bukkit.getPluginManager().callEvent(deathEvent);
         }
         if (!mob.isSplittable()) {
-            entity.setMetadata("nosplit", new FixedMetadataValue(controller.getPlugin(), true));
+            EntityMetadataUtils.instance().setBoolean(entity, "nosplit", true);
         }
-        if (!entity.hasMetadata("nodrops")) {
+        if (!EntityMetadataUtils.instance().getBoolean(entity, "nodrops")) {
             mob.modifyDrops(event);
         }
-        entity.removeMetadata("nodrops", controller.getPlugin());
     }
 
     public int getCount() {

@@ -26,7 +26,6 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
@@ -40,6 +39,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
@@ -262,9 +262,8 @@ public class SpawnEntityAction extends CompoundAction
             return SpellResult.FAIL;
         }
 
-        if (!loot)
-        {
-            spawnedEntity.setMetadata("nodrops", new FixedMetadataValue(controller.getPlugin(), true));
+        if (!loot) {
+            EntityMetadataUtils.instance().setBoolean(spawnedEntity, "nodrops", true);
         }
         if (speed > 0)
         {
@@ -292,7 +291,7 @@ public class SpawnEntityAction extends CompoundAction
         }
         context.registerForUndo(spawnedEntity);
         if (setOwner && spawnedEntity instanceof Creature) {
-            spawnedEntity.setMetadata("owner", new FixedMetadataValue(controller.getPlugin(), context.getMage().getId()));
+            EntityMetadataUtils.instance().setString(spawnedEntity, "owner", context.getMage().getId());
         }
         if (setTarget && !hasAnyActions)
         {

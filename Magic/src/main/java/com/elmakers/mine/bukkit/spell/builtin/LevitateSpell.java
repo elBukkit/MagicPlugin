@@ -33,7 +33,6 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -51,6 +50,7 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -204,7 +204,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         public void onHorseJump(HorseJumpEvent event)
         {
             Entity horse = ((EntityEvent)event).getEntity();
-            if (horse.hasMetadata("broom"))
+            if (EntityMetadataUtils.instance().getBoolean(horse, "broom"))
             {
                 Entity passenger = horse.getPassenger();
                 Mage mage = controller.getMage(passenger);
@@ -224,7 +224,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         {
             HumanEntity player = event.getPlayer();
             Entity mount = player.getVehicle();
-            if (mount != null && mount.hasMetadata("broom")) {
+            if (mount != null && EntityMetadataUtils.instance().getBoolean(mount, "broom")) {
                 event.setCancelled(true);
             }
         }
@@ -233,7 +233,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         public void onVehicleExit(VehicleExitEvent event)
         {
             Entity vehicle = event.getVehicle();
-            if (vehicle.hasMetadata("broom"))
+            if (EntityMetadataUtils.instance().getBoolean(vehicle, "broom"))
             {
                 event.setCancelled(true);
                 Entity passenger = vehicle.getPassenger();
@@ -708,8 +708,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 mageEntity.eject();
             }
             if (armorStand != null) {
-                armorStand.removeMetadata("notarget", plugin);
-                armorStand.removeMetadata("broom", plugin);
                 armorStand.remove();
             }
             if (mountEntity instanceof Horse) {
@@ -722,8 +720,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
             }
             mountEntity.eject();
             mountEntity.setPassenger(null);
-            mountEntity.removeMetadata("notarget", plugin);
-            mountEntity.removeMetadata("broom", plugin);
             CompatibilityUtils.setInvulnerable(mountEntity, false);
             if (mountEntity instanceof LivingEntity) {
                 ((LivingEntity)mountEntity).setHealth(0);
@@ -895,8 +891,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     armorStand = CompatibilityUtils.createArmorStand(mage.getLocation());
                     configureArmorStand(armorStand);
                     armorStand.setPassenger(mountEntity);
-                    armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
-                    armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
+                    EntityMetadataUtils.instance().setBoolean(armorStand, "notarget", true);
+                    EntityMetadataUtils.instance().setBoolean(armorStand, "broom", true);
                     controller.setForceSpawn(true);
                     try {
                         CompatibilityUtils.addToWorld(mage.getLocation().getWorld(), armorStand, mountSpawnReason);
@@ -909,8 +905,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 }
 
                 mountEntity.setPassenger(mage.getEntity());
-                mountEntity.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
-                mountEntity.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
+                EntityMetadataUtils.instance().setBoolean(mountEntity, "notarget", true);
+                EntityMetadataUtils.instance().setBoolean(mountEntity, "broom", true);
 
                 if (listener == null) {
                     listener = new LevitateListener(controller);
@@ -967,8 +963,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         } else {
             armorStand.setItemInHand(heldItem);
         }
-        armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
-        armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
+        EntityMetadataUtils.instance().setBoolean(armorStand, "notarget", true);
+        EntityMetadataUtils.instance().setBoolean(armorStand, "broom", true);
         if (mountInvisible) {
             CompatibilityUtils.setInvisible(armorStand, true);
         }

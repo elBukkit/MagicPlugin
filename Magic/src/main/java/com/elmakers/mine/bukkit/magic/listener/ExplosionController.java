@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
 public class ExplosionController implements Listener {
     private final MagicController controller;
@@ -71,7 +72,7 @@ public class ExplosionController implements Listener {
 
         UndoList blockList = getExplosionUndo(explodingEntity);
         boolean cancel = event.isCancelled();
-        cancel = cancel || explodingEntity.hasMetadata("cancel_explosion");
+        cancel = cancel || EntityMetadataUtils.instance().getBoolean(explodingEntity, "cancel_explosion");
         if (blockList != null)
         {
             com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();

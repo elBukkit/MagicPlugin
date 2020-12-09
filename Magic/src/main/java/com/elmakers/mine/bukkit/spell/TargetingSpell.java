@@ -41,6 +41,7 @@ import com.elmakers.mine.bukkit.tasks.PlaySpellEffectsTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 
@@ -358,7 +359,7 @@ public class TargetingSpell extends BaseSpell {
             if (mounted != null && mageEntity != null && mounted.equals(mageEntity)) return false;
         }
         if (!targetTamed && entity instanceof Tameable && ((Tameable)entity).isTamed()) return false;
-        if (entity.hasMetadata("notarget")) return false;
+        if (EntityMetadataUtils.instance().getBoolean(entity, "notarget")) return false;
         if (!targetNPCs && controller.isStaticNPC(entity)) return false;
         if (!targetArmorStands && entity instanceof ArmorStand) return false;
         if (ignoreEntityTypes != null && ignoreEntityTypes.contains(entity.getType())) {

@@ -32,7 +32,6 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 
@@ -50,6 +49,7 @@ import com.elmakers.mine.bukkit.entity.SpawnedEntity;
 import com.elmakers.mine.bukkit.magic.MaterialSets;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.google.common.base.Preconditions;
 
 /**
@@ -271,7 +271,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         spawnedEntities.put(entity.getUniqueId(), new SpawnedEntity(entity));
         if (this.isScheduled()) {
-            entity.setMetadata("magicspawned", new FixedMetadataValue(plugin, true));
+            EntityMetadataUtils.instance().setBoolean(entity, "magicspawned", true);
         }
         watch(entity);
         contain(entity.getLocation().toVector());
@@ -692,7 +692,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public EntityData modify(Entity entity) {
         EntityData entityData = null;
-        if (entity == null || entity.hasMetadata("notarget")) return entityData;
+        if (entity == null || EntityMetadataUtils.instance().getBoolean(entity, "notarget")) return entityData;
         if (worldName != null && !entity.getWorld().getName().equals(worldName)) return entityData;
         if (worldName == null) worldName = entity.getWorld().getName();
 

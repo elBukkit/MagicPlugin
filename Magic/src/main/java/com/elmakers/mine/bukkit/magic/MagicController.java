@@ -222,6 +222,7 @@ import com.elmakers.mine.bukkit.tasks.ValidateSpellsTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.LogMessage;
@@ -267,6 +268,7 @@ public class MagicController implements MageController {
         resourcePacks = new ResourcePackManager(this);
 
         SkinUtils.initialize(plugin);
+        EntityMetadataUtils.initialize(plugin);
 
         configFolder = plugin.getDataFolder();
         configFolder.mkdirs();

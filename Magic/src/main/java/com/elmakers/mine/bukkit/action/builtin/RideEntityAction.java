@@ -14,7 +14,6 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
@@ -27,6 +26,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 import de.slikey.effectlib.util.VectorUtils;
@@ -535,7 +535,7 @@ public class RideEntityAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
         if (noTarget) {
-            mount.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
+            EntityMetadataUtils.instance().setBoolean(mount, "notarget", true);
         }
         if (isPassenger) {
             DeprecatedUtils.setPassenger(entity, mount);
@@ -554,7 +554,7 @@ public class RideEntityAction extends BaseSpellAction
             nextSoundPlay = System.currentTimeMillis();
         }
         if (noTargetPlayer) {
-            entity.setMetadata("notarget", new FixedMetadataValue(context.getController().getPlugin(), true));
+            EntityMetadataUtils.instance().setBoolean(entity, "notarget", true);
         }
         if (ridingEffects != null && entity instanceof LivingEntity) {
             CompatibilityUtils.applyPotionEffects((LivingEntity)entity, ridingEffects);
@@ -566,14 +566,8 @@ public class RideEntityAction extends BaseSpellAction
     @Override
     public void finish(CastContext context) {
         if (mount != null) {
-            if (noTarget) {
-                mount.removeMetadata("notarget", context.getPlugin());
-            }
             mount.eject();
             mount = null;
-        }
-        if (noTargetPlayer) {
-            context.getEntity().removeMetadata("notarget", context.getPlugin());
         }
         Entity mountedEntity = context.getEntity();
         if (warningEffectsApplied && warningEffects != null && mountedEntity != null && mountedEntity instanceof LivingEntity) {

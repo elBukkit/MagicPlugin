@@ -55,7 +55,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -66,11 +65,11 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.item.Cost;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -177,8 +176,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.controller = controller;
         setEntity(entity);
         this.location = CompatibilityUtils.getHangingLocation(entity);
-        this.magicSpawned = entity.hasMetadata("magicspawned");
-        this.respawn = !entity.hasMetadata("norespawn");
+        this.magicSpawned = EntityMetadataUtils.instance().getBoolean(entity, "magicspawned");
+        this.respawn = !EntityMetadataUtils.instance().getBoolean(entity, "norespawn");
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
@@ -798,7 +797,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     respawned.put(uuid, new WeakReference<>(entity));
 
                     // Undo'ing an entity won't drop loot
-                    entity.setMetadata("nodrops", new FixedMetadataValue(MagicPlugin.getAPI().getPlugin(), true));
+                    EntityMetadataUtils.instance().setBoolean(entity, "nodrops", true);
                 }
             }
             setEntity(entity);

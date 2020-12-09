@@ -14,7 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -24,6 +23,7 @@ import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
 public class Automaton implements Locatable {
     @Nonnull
@@ -159,7 +159,6 @@ public class Automaton implements Locatable {
             for (WeakReference<Entity> mobReference : spawned) {
                 Entity mob = mobReference.get();
                 if (mob != null && mob.isValid()) {
-                    mob.removeMetadata("automaton", controller.getPlugin());
                     mob.remove();
                 }
             }
@@ -216,7 +215,7 @@ public class Automaton implements Locatable {
             spawned = new ArrayList<>();
         }
         for (Entity entity : entities) {
-            entity.setMetadata("automaton", new FixedMetadataValue(controller.getPlugin(), getId()));
+            EntityMetadataUtils.instance().setLong(entity, "automaton", getId());
             spawned.add(new WeakReference<>(entity));
         }
     }

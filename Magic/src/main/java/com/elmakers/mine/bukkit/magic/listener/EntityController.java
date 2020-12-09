@@ -38,7 +38,6 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
@@ -51,6 +50,7 @@ import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.Targeting;
@@ -114,7 +114,8 @@ public class EntityController implements Listener {
         Item itemOne = event.getEntity();
         Item itemTwo = event.getTarget();
 
-        if (itemOne.hasMetadata("temporary") || itemTwo.hasMetadata("temporary")) {
+        if (EntityMetadataUtils.instance().getBoolean(itemOne, "temporary")
+            || EntityMetadataUtils.instance().getBoolean(itemTwo, "temporary")) {
             event.setCancelled(true);
         }
     }
@@ -312,22 +313,16 @@ public class EntityController implements Listener {
     public void onEntityDeath(EntityDeathEvent event)
     {
         Entity entity = event.getEntity();
-        if (entity.hasMetadata("automaton")) {
-            for (MetadataValue value : entity.getMetadata("automaton")) {
-                if (value.getOwningPlugin() == controller.getPlugin()) {
-                    long id = value.asLong();
-                    Automaton automaton = controller.getActiveAutomaton(id);
-                    if (automaton != null) {
-                        automaton.onSpawnDeath();
-                    }
-                }
+        Long spawnerId = EntityMetadataUtils.instance().getLong(entity, "automaton");
+        if (spawnerId != null) {
+            Automaton automaton = controller.getActiveAutomaton(spawnerId);
+            if (automaton != null) {
+                automaton.onSpawnDeath();
             }
-            entity.removeMetadata("automaton", controller.getPlugin());
         }
-        if (entity.hasMetadata("nodrops")) {
+        if (EntityMetadataUtils.instance().getBoolean(entity, "nodrops")) {
             event.setDroppedExp(0);
             event.getDrops().clear();
-            entity.removeMetadata("nodrops", controller.getPlugin());
         } else {
             UndoList pendingUndo = controller.getEntityUndo(entity);
             if (pendingUndo != null && pendingUndo.isUndoType(entity.getType())) {

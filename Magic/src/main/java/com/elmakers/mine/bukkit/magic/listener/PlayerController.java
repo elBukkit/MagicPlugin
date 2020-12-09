@@ -65,6 +65,7 @@ import com.elmakers.mine.bukkit.tasks.DropActionTask;
 import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
@@ -1007,9 +1008,8 @@ public class PlayerController implements Listener {
     {
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
-        if (NMSUtils.isTemporary(pickup) || item.hasMetadata("temporary"))
+        if (NMSUtils.isTemporary(pickup) || EntityMetadataUtils.instance().getBoolean(item, "temporary"))
         {
-            item.removeMetadata("temporary", controller.getPlugin());
             item.remove();
             event.setCancelled(true);
             return;
