@@ -2441,6 +2441,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected List<String> getCustomLore(Collection<String> loreTemplate) {
         List<String> lore = new ArrayList<>();
         for (String line : loreTemplate) {
+            if (line == null) line = "";
             if (line.startsWith("$")) {
                 switch (line) {
                     case "$description":
