@@ -23,7 +23,13 @@ public class MagicChunkHandler {
     public void load(String worldName, ConfigurationSection config) {
         for (String key : config.getKeys(false)) {
             ConfigurationSection handlerConfig = config.getConfigurationSection(key);
-            if (handlerConfig == null) continue;
+            if (handlerConfig == null) {
+                controller.getLogger().warning("Was expecting a properties section in world chunk_generate config for key '" + worldName + "', but got: " + config.get(key));
+                continue;
+            }
+            if (!handlerConfig.getBoolean("enabled", true)) {
+                continue;
+            }
 
             String className = handlerConfig.getString("class");
             MagicChunkPopulator populator = createChunkPopulator(className);

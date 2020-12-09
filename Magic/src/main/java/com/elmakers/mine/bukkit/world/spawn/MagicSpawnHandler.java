@@ -22,7 +22,6 @@ public class MagicSpawnHandler {
     private final Set<SpawnRule> globalRules = new TreeSet<SpawnRule>();
     private final Map<String, SpawnRule> spawnRules = new TreeMap<String, SpawnRule>();
     protected String worldName;
-    protected ConfigurationSection configuration;
 
     public MagicSpawnHandler(MagicController controller) {
         this.controller = controller;
@@ -37,7 +36,7 @@ public class MagicSpawnHandler {
     @Nullable
     public LivingEntity process(Plugin plugin, LivingEntity entity) {
         Set<SpawnRule> entityRules = entityTypeMap.get(entity.getType());
-        if (entityRules != null) {
+         if (entityRules != null) {
             for (SpawnRule rule : entityRules) {
                 LivingEntity result = rule.process(plugin, entity);
                 if (result != null) {
@@ -72,10 +71,16 @@ public class MagicSpawnHandler {
 
     public void load(String worldName, ConfigurationSection config) {
         this.worldName = worldName;
-        this.configuration = config;
-        this.globalRules.clear();
         for (String key : config.getKeys(false)) {
             ConfigurationSection handlerConfig = config.getConfigurationSection(key);
+            if (handlerConfig == null) {
+                controller.getLogger().warning("Was expecting a properties section in world entity_spawn config for key '" + worldName + "', but got: " + config.get(key));
+                continue;
+            }
+            if (!handlerConfig.getBoolean("enabled", true)) {
+                continue;
+            }
+
             String className = handlerConfig.getString("class");
             SpawnRule handler = spawnRules.get(key);
             spawnRules.remove(key);

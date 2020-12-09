@@ -62,6 +62,8 @@ public class WorldController implements Listener {
                 controller.getLogger().warning("Was expecting a properties section in world config for key '" + worldName + "', but got: " + configuration.get(worldName));
                 continue;
             }
+            if (!worldConfiguration.getBoolean("enabled", true)) continue;
+
             worldName = worldConfiguration.getString("world", worldName);
             controller.info("Customizing world " + worldName);
             MagicWorld world = magicWorlds.get(worldName);
