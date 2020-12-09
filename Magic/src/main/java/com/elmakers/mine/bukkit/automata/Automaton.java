@@ -86,6 +86,8 @@ public class Automaton implements Locatable {
         this.templateKey = templateKey;
         this.parameters = parameters;
         this.location = location;
+        World world = this.location.getWorld();
+        worldName = world == null ? null : world.getName();
         setTemplate(controller.getAutomatonTemplate(templateKey));
         createdAt = System.currentTimeMillis();
         this.creatorId = creatorId;
@@ -205,6 +207,8 @@ public class Automaton implements Locatable {
 
     public void setLocation(Location location) {
         this.location = location;
+        World world = this.location.getWorld();
+        worldName = world == null ? null : world.getName();
     }
 
     public void track(List<Entity> entities) {
