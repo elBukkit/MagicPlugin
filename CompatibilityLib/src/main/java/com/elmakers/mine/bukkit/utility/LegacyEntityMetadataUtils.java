@@ -14,11 +14,6 @@ public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
         super(plugin);
     }
 
-    @Override
-    public boolean hasMetadata(Entity entity, String key) {
-        return entity.hasMetadata(key);
-    }
-
     protected Object getRawValue(Entity entity, String key) {
         Map<String, Object> data = metadata.get(entity);
         return data == null ? null : data.get(key);
@@ -45,7 +40,7 @@ public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
     @Override
     public String getString(Entity entity, String key) {
         Object value = getRawValue(entity, key);
-        return value == null || !(value instanceof String) ? "" : (String)value;
+        return value == null || !(value instanceof String) ? null : (String)value;
     }
 
     protected void setRawValue(Entity entity, String key, Object value) {

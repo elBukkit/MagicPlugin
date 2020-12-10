@@ -12,15 +12,29 @@ public abstract class EntityMetadataUtils {
         this.plugin = plugin;
     }
 
+    protected static boolean hasPersistentMetadata() {
+        try {
+            Class.forName("org.bukkit.persistence.PersistentDataContainer");
+            return true;
+        } catch (Exception noPersistence) {
+
+        }
+        return false;
+    }
+
     public static void initialize(Plugin plugin) {
-        metadataUtils = new LegacyEntityMetadataUtils(plugin);
+        if (hasPersistentMetadata()) {
+            metadataUtils = new PersistentEntityMetadataUtils(plugin);
+        } else {
+            plugin.getLogger().info("Persistent metadata is not available, will rely on custom names to restore persistent magic mobs");
+            metadataUtils = new LegacyEntityMetadataUtils(plugin);
+        }
     }
 
     public static EntityMetadataUtils instance() {
         return metadataUtils;
     }
 
-    public abstract boolean hasMetadata(Entity entity, String key);
     public abstract boolean getBoolean(Entity entity, String key);
     public abstract Double getDouble(Entity entity, String key);
     public abstract Long getLong(Entity entity, String key);
