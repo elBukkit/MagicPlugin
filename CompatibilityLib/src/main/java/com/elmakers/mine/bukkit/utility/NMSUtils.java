@@ -25,6 +25,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -325,6 +326,7 @@ public class NMSUtils {
     protected static Method class_MinecraftServer_getWorldServerMethod;
     protected static Method class_WorldServer_worldMethod;
     protected static Method class_Keyed_getKeyMethod;
+    protected static Method class_LivingEntity_setRemoveWhenFarAway;
 
     protected static boolean legacyMaps;
 
@@ -738,6 +740,7 @@ public class NMSUtils {
             try {
                 class_Entity_persistField = class_Entity.getDeclaredField("persist");
                 class_Entity_persistField.setAccessible(true);
+                class_LivingEntity_setRemoveWhenFarAway = LivingEntity.class.getMethod("setRemoveWhenFarAway", Boolean.TYPE);
             } catch (Throwable ex) {
                 class_Entity_persistField = null;
                 getLogger().warning("Could not bind to persist entity tag, can't make mobs persistent");
