@@ -56,10 +56,6 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.material.Button;
-import org.bukkit.material.Lever;
-import org.bukkit.material.PistonBaseMaterial;
-import org.bukkit.material.PoweredRail;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
@@ -99,6 +95,7 @@ import java.util.logging.Level;
  * switch everything over once the new Bukkit method is in an
  * official release.
  */
+@SuppressWarnings("deprecation")
 public class CompatibilityUtils extends NMSUtils {
     public static boolean USE_MAGIC_DAMAGE = true;
     public static int BLOCK_BREAK_RANGE = 64;
@@ -1969,10 +1966,10 @@ public class CompatibilityUtils extends NMSUtils {
     protected static boolean isPowerableLegacy(Block block) {
         BlockState blockState = block.getState();
         org.bukkit.material.MaterialData data = blockState.getData();
-        return data instanceof Button ||
-                data instanceof Lever ||
-                data instanceof PistonBaseMaterial ||
-                data instanceof PoweredRail;
+        return data instanceof org.bukkit.material.Button ||
+                data instanceof org.bukkit.material.Lever ||
+                data instanceof org.bukkit.material.PistonBaseMaterial ||
+                data instanceof org.bukkit.material.PoweredRail;
     }
 
     public static boolean isPowered(Block block) {
@@ -1993,17 +1990,17 @@ public class CompatibilityUtils extends NMSUtils {
     protected static boolean isPoweredLegacy(Block block) {
         BlockState blockState = block.getState();
         org.bukkit.material.MaterialData data = blockState.getData();
-        if (data instanceof Button) {
-            Button powerData = (Button)data;
+        if (data instanceof org.bukkit.material.Button) {
+            org.bukkit.material.Button powerData = (org.bukkit.material.Button)data;
             return powerData.isPowered();
-        } else if (data instanceof Lever) {
-            Lever powerData = (Lever)data;
+        } else if (data instanceof org.bukkit.material.Lever) {
+            org.bukkit.material.Lever powerData = (org.bukkit.material.Lever)data;
             return powerData.isPowered();
-        } else if (data instanceof PistonBaseMaterial) {
-            PistonBaseMaterial powerData = (PistonBaseMaterial)data;
+        } else if (data instanceof org.bukkit.material.PistonBaseMaterial) {
+            org.bukkit.material.PistonBaseMaterial powerData = (org.bukkit.material.PistonBaseMaterial)data;
             return powerData.isPowered();
-        } else if (data instanceof PoweredRail) {
-            PoweredRail powerData = (PoweredRail)data;
+        } else if (data instanceof org.bukkit.material.PoweredRail) {
+            org.bukkit.material.PoweredRail powerData = (org.bukkit.material.PoweredRail)data;
             return powerData.isPowered();
         }
         return false;
@@ -2051,20 +2048,20 @@ public class CompatibilityUtils extends NMSUtils {
         BlockState blockState = block.getState();
         org.bukkit.material.MaterialData data = blockState.getData();
         boolean powerBlock = false;
-        if (data instanceof Button) {
-            Button powerData = (Button)data;
+        if (data instanceof org.bukkit.material.Button) {
+            org.bukkit.material.Button powerData = (org.bukkit.material.Button)data;
             powerData.setPowered(!powerData.isPowered());
             powerBlock = true;
-        } else if (data instanceof Lever) {
-            Lever powerData = (Lever)data;
+        } else if (data instanceof org.bukkit.material.Lever) {
+            org.bukkit.material.Lever powerData = (org.bukkit.material.Lever)data;
             powerData.setPowered(!powerData.isPowered());
             powerBlock = true;
-        } else if (data instanceof PistonBaseMaterial) {
-            PistonBaseMaterial powerData = (PistonBaseMaterial)data;
+        } else if (data instanceof org.bukkit.material.PistonBaseMaterial) {
+            org.bukkit.material.PistonBaseMaterial powerData = (org.bukkit.material.PistonBaseMaterial)data;
             powerData.setPowered(!powerData.isPowered());
             powerBlock = true;
-        } else if (data instanceof PoweredRail) {
-            PoweredRail powerData = (PoweredRail)data;
+        } else if (data instanceof org.bukkit.material.PoweredRail) {
+            org.bukkit.material.PoweredRail powerData = (org.bukkit.material.PoweredRail)data;
             powerData.setPowered(!powerData.isPowered());
             powerBlock = true;
         }
