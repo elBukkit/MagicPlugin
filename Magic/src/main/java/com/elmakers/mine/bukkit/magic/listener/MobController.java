@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.magic.listener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -11,9 +10,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -28,7 +24,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
@@ -72,6 +68,17 @@ public class MobController implements Listener {
         String mobName = mob.getName();
         if (mobName != null && !mobName.isEmpty()) {
             mobsByName.put(mobName, mob);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGH)
+    public void onChunkLoad(ChunkLoadEvent event) {
+        for (Entity entity : event.getChunk().getEntities()) {
+            String magicMobKey = EntityMetadataUtils.instance().getString(entity, "magicmob");
+            com.elmakers.mine.bukkit.api.entity.EntityData storedMob = controller.getMob(magicMobKey);
+            if (storedMob != null) {
+                storedMob.modify(entity);
+            }
         }
     }
 
@@ -244,39 +251,6 @@ public class MobController implements Listener {
     @Nonnull
     public Collection<Entity> getActiveMobs() {
         return new ArrayList<>(activeMobs.keySet());
-    }
-
-    @EventHandler
-    public void onChunkUnload(ChunkUnloadEvent event) {
-        Chunk chunk = event.getChunk();
-        Collection<Mage> magicMobs = controller.getMobMages();
-        List<Entity> toRemove = null;
-
-        for (Mage mage : magicMobs) {
-            Entity entity = mage.getEntity();
-            if (entity == null) continue;
-            Location location = entity.getLocation();
-            if (!chunk.getWorld().getName().equals(location.getWorld().getName())) continue;
-
-            int chunkX = chunk.getX();
-            int chunkZ = chunk.getZ();
-            if (chunkZ != location.getBlockZ() >> 4 || chunkX != location.getBlockX() >> 4) continue;
-
-            mage.sendDebugMessage(ChatColor.RED + "Despawned", 4);
-
-            if (toRemove == null) {
-                toRemove = new ArrayList<>();
-            }
-            toRemove.add(entity);
-        }
-
-        // Someone on DBO reported getting a CME when entities were removed inline.
-        // I can't really see how that could happen, but I put a fix in anyway.
-        if (toRemove != null) {
-            for (Entity entity : toRemove) {
-                entity.remove();
-            }
-        }
     }
 
     @Nonnull

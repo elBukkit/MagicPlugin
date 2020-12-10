@@ -34,6 +34,9 @@
    doesn't get taken up by new items and the broomstick has nowhere to go when finished
  - Improved Recall-to-bed behavior
  - Fix `/getrp url` to return the correct URL when a custom RP has been selected
+ - Fix ChangeContext not being able to set the source entity to nothing (affects Mob, Monster, etc spells)
+ - Fix a whole pile of memory leaks
+ - Improved support for persistent mobs (in 1.14 and up)
 
 # 8.1.2
 

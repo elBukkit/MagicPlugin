@@ -184,7 +184,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.type = entity.getType();
         this.fireTicks = entity.getFireTicks();
         this.isSilent = CompatibilityUtils.isSilent(entity);
-        this.persist = CompatibilityUtils.isPersist(entity);
+        // This will actually always be true so we need a better way to track this.
+        // this.persist = CompatibilityUtils.isPersist(entity);
         this.canPickupItems = (entity instanceof Creature) ? ((Creature)entity).getCanPickupItems() : false;
         name = entity.getCustomName();
         nameVisible = entity.isCustomNameVisible();
@@ -1025,6 +1026,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             if (facing != null) {
                 itemFrame.setFacingDirection(facing, true);
             }
+        }
+
+        if (this.key != null) {
+            EntityMetadataUtils.instance().setString(entity, "magicmob", this.key);
         }
         return true;
     }
