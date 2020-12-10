@@ -64,7 +64,7 @@ import com.google.common.base.Preconditions;
 public class CastContext extends WandEffectContext implements com.elmakers.mine.bukkit.api.action.CastContext {
     protected static Random random;
 
-    private final Entity entity;
+    private final WeakReference<Entity> entity;
     private @Nullable Location targetLocation;
     private @Nullable Location targetSourceLocation;
     private @Nullable Location targetCenterLocation;
@@ -128,14 +128,14 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Mage sourceMage, Entity sourceEntity, Location sourceLocation) {
         super(sourceMage, sourceMage.getActiveWand());
         this.location = sourceLocation == null ? null : sourceLocation.clone();
-        this.entity = sourceEntity;
+        this.entity = new WeakReference<>(sourceEntity);
         copyFrom(copy);
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity, Location sourceLocation) {
         super(copy.getMage(), copy.getWand());
         this.location = sourceLocation == null ? null : sourceLocation.clone();
-        this.entity = sourceEntity;
+        this.entity = new WeakReference<>(sourceEntity);
         copyFrom(copy);
     }
 
@@ -241,6 +241,8 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         if (location != null) {
             return location;
         }
+
+        Entity entity = getContextEntity();
         if (entity != null) {
             if (entity instanceof  LivingEntity) {
                 return ((LivingEntity) entity).getEyeLocation();
@@ -251,10 +253,20 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         return spell.getEyeLocation();
     }
 
+    @Nullable
+    protected Entity getContextEntity() {
+        return entity == null ? null : entity.get();
+    }
+
+    protected boolean hasContextEntity() {
+        return entity != null;
+    }
+
     @Override
+    @Nullable
     public Entity getEntity() {
-        if (entity != null) {
-            return entity;
+        if (hasContextEntity()) {
+            return getContextEntity();
         }
 
         return spell.getEntity();
@@ -273,6 +285,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         if (location != null) {
             return location;
         }
+        Entity entity = getContextEntity();
         if (entity != null) {
             return entity.getLocation();
         }
