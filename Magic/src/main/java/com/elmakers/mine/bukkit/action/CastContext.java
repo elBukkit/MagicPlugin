@@ -65,12 +65,12 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     protected static Random random;
 
     private final WeakReference<Entity> entity;
+    private @Nullable WeakReference<Entity> targetEntity;
     private @Nullable Location targetLocation;
     private @Nullable Location targetSourceLocation;
     private @Nullable Location targetCenterLocation;
     private @Nullable Block targetBlock;
     private Block previousBlock;
-    private @Nullable Entity targetEntity;
     private UndoList undoList;
     private String targetName = null;
     private SpellResult result = SpellResult.NO_ACTION;
@@ -141,7 +141,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
     protected void copyFrom(com.elmakers.mine.bukkit.api.action.CastContext copy) {
         this.spell = setSpell((MageSpell)copy.getSpell());
-        this.targetEntity = copy.getTargetEntity();
+        this.setTargetEntity(copy.getTargetEntity());
         this.targetLocation = copy.getTargetLocation();
         if (this.targetLocation != null) {
             this.targetLocation = this.targetLocation.clone();
@@ -324,7 +324,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Nullable
     @Override
     public Entity getTargetEntity() {
-        return targetEntity;
+        return targetEntity == null ? null : targetEntity.get();
     }
 
     @Nullable
@@ -362,7 +362,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
     @Override
     public void setTargetEntity(Entity targetEntity) {
-        this.targetEntity = targetEntity;
+        this.targetEntity = new WeakReference<>(targetEntity);
     }
 
     @Override
