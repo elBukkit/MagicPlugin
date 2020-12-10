@@ -30,6 +30,7 @@ import java.util.logging.Level;
 
 import com.google.common.collect.Multimap;
 
+@SuppressWarnings("deprecation")
 public class InventoryUtils extends NMSUtils
 {
     public static int MAX_LORE_LENGTH = 24;

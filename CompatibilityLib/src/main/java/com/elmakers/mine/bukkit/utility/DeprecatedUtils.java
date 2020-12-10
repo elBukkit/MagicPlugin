@@ -84,7 +84,7 @@ public class DeprecatedUtils {
     }
 
     public static short getMapId(MapView mapView) {
-        return mapView.getId();
+        return (short)mapView.getId();
     }
 
     public static String getName(EntityType entityType) {

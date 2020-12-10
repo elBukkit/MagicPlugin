@@ -66,7 +66,7 @@ import com.google.common.base.CaseFormat;
  * 
  * Use any of this at your own risk!
  */
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class NMSUtils {
     protected static boolean failed = false;
     protected static boolean legacy = false;
