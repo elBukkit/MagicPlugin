@@ -142,7 +142,7 @@ public class MobController implements Listener {
 
         Entity target = event.getTarget();
         if (target != null) {
-            String ownerId = EntityMetadataUtils.instance().getString(target, "owner");
+            String ownerId = EntityMetadataUtils.instance().getString(source, "owner");
             if (ownerId != null) {
                 Mage mageOwner = controller.getRegisteredMage(ownerId);
                 if (mageOwner != null && mageOwner.getEntity() == target) {
