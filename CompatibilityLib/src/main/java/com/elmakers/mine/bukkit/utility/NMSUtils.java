@@ -1518,7 +1518,7 @@ public class NMSUtils {
                     }
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, setting arrow lifespan will not work", ex);
+                getLogger().log(Level.WARNING, "Could not find arrow lifetime field, setting arrow lifespan will not work");
                 class_EntityArrow_lifeField = null;
             }
             if (class_EntityArrow_lifeField != null)
