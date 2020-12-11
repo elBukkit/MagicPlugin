@@ -120,6 +120,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public UndoList(@Nonnull MageController controller)
     {
+        this.controller = controller;
         this.plugin = controller.getPlugin();
         createdTime = System.currentTimeMillis();
         modifiedTime = createdTime;
@@ -136,6 +137,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.owner = mage == null ? null : new WeakReference<>(mage);
         if (mage != null) {
             this.plugin = mage.getController().getPlugin();
+            this.controller = mage.getController();
         }
     }
 
