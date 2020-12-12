@@ -3845,7 +3845,6 @@ public class MagicController implements MageController {
         }
 
         mages.clear();
-        vanished.clear();
         pendingConstruction.clear();
         spells.clear();
         loaded = false;
@@ -4147,14 +4146,6 @@ public class MagicController implements MageController {
     @Override
     public void removeMage(String id) {
         mages.remove(id);
-        mageRemoved(id);
-    }
-
-    /**
-     * This is a little hacky, should be used when removing a mage via getMutableMages.
-     */
-    public void mageRemoved(String id) {
-        vanished.remove(id);
     }
 
     public void saveMage(Mage mage, boolean asynchronous)
@@ -7054,17 +7045,11 @@ public class MagicController implements MageController {
         return crafting.getAutoDiscoverRecipeKeys();
     }
 
-    public void setVanished(Mage mage, boolean isVanished) {
-        if (isVanished) {
-            vanished.put(mage.getId(), mage);
-        } else {
-            vanished.remove(mage.getId());
-        }
-    }
-
     public void checkVanished(Player player) {
-        for (Mage mage : vanished.values()) {
-            DeprecatedUtils.hidePlayer(plugin, player, mage.getPlayer());
+        for (Mage mage : mages.values()) {
+            if (mage.isVanished()) {
+                DeprecatedUtils.hidePlayer(plugin, player, mage.getPlayer());
+            }
         }
     }
 
@@ -7412,7 +7397,6 @@ public class MagicController implements MageController {
             "fall_distance"
     );
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
-    private final Map<String, Mage> vanished                                = new HashMap<>();
     private final Set<Mage> pendingConstruction                             = new HashSet<>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
     private final Map<String, WeakReference<Schematic>> schematics          = new HashMap<>();

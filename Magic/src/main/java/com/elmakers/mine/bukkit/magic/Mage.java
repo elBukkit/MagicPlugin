@@ -4452,7 +4452,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void setVanished(boolean vanished) {
         Player thisPlayer = getPlayer();
         if (thisPlayer != null && isVanished != vanished) {
-            controller.setVanished(this, vanished);
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (vanished) {
                     DeprecatedUtils.hidePlayer(controller.getPlugin(), player, thisPlayer);
