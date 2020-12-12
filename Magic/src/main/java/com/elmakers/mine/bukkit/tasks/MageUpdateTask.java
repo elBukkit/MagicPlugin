@@ -25,7 +25,6 @@ public class MageUpdateTask implements Runnable {
                 // Players are handled by logout
                 if (!mage.isPlayer() && !mage.hasPending()) {
                     iterator.remove();
-                    controller.mageRemoved(mage.getId());
                 }
                 continue;
             }
