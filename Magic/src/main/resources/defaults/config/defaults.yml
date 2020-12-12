@@ -618,3 +618,6 @@ save_player_data_asynchronously: true
 # So it did not work out, but if you want to try changing it you can.
 # Options: animate, interact, animate_if_adventure
 left_click_type: animate
+
+# Set this to true to remove magic mobs on shutdown and chunk unload
+despawn_magic_mobs: false

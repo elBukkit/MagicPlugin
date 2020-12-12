@@ -3439,6 +3439,7 @@ public class MagicController implements MageController {
         asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
         isFileLockingEnabled = properties.getBoolean("use_file_locking", false);
         fileLoadDelay = properties.getInt("file_load_delay", 0);
+        despawnMagicMobs = properties.getBoolean("despawn_magic_mobs", false);
 
         if (mageDataStore != null) {
             mageDataStore.close();
@@ -3844,7 +3845,6 @@ public class MagicController implements MageController {
         }
 
         mages.clear();
-        mobMages.clear();
         vanished.clear();
         pendingConstruction.clear();
         spells.clear();
@@ -4053,13 +4053,14 @@ public class MagicController implements MageController {
 
     public void onShutdown() {
         shuttingDown = true;
-        for (Mage mobMage : mobMages.values()) {
-            Entity entity = mobMage.getEntity();
-            if (entity != null) {
-                entity.remove();
+        if (despawnMagicMobs) {
+            for (Mage mobMage : getMobMages()) {
+                Entity entity = mobMage.getEntity();
+                if (entity != null) {
+                    entity.remove();
+                }
             }
         }
-        mobMages.clear();
         if (mageDataStore != null) {
             mageDataStore.close();
         }
@@ -4153,7 +4154,6 @@ public class MagicController implements MageController {
      * This is a little hacky, should be used when removing a mage via getMutableMages.
      */
     public void mageRemoved(String id) {
-        mobMages.remove(id);
         vanished.remove(id);
     }
 
@@ -4531,8 +4531,13 @@ public class MagicController implements MageController {
 
     @Override
     public Collection<Mage> getMobMages() {
-        Collection<? extends Mage> values = mobMages.values();
-        return Collections.unmodifiableCollection(values);
+        Collection<Mage> mobMages = new ArrayList<>();
+        for (Mage mage : mages.values()) {
+            if (mage.getEntityData() != null) {
+                mobMages.add(mage);
+            }
+        }
+        return Collections.unmodifiableCollection(mobMages);
     }
 
     @Override
@@ -6868,10 +6873,6 @@ public class MagicController implements MageController {
         return null;
     }
 
-    public void registerMagicMob(com.elmakers.mine.bukkit.magic.Mage mage) {
-        mobMages.put(mage.getId(), mage);
-    }
-
     @Override
     public @Nonnull Collection<String> getLoadedExamples() {
         List<String> examples = new ArrayList<>();
@@ -7291,6 +7292,10 @@ public class MagicController implements MageController {
         return locations;
     }
 
+    public boolean isDespawnMagicMobs() {
+        return despawnMagicMobs;
+    }
+
     /*
      * Private data
      */
@@ -7407,7 +7412,6 @@ public class MagicController implements MageController {
             "fall_distance"
     );
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
-    private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();
     private final Map<String, Mage> vanished                                = new HashMap<>();
     private final Set<Mage> pendingConstruction                             = new HashSet<>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
@@ -7488,6 +7492,7 @@ public class MagicController implements MageController {
     private boolean                             shuttingDown                = false;
     private boolean                             dataLoaded                  = false;
     private String                              defaultSkillIcon            = "stick";
+    private boolean despawnMagicMobs = false;
     private int                                 skillInventoryRows          = 6;
     private boolean                             skillsUseHeroes             = true;
     private boolean                             useHeroesMana               = true;

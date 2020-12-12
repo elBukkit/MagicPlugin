@@ -10,6 +10,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -25,24 +28,25 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
 public class MobController implements Listener {
-    private MageController controller;
+    private MagicController controller;
     private final Map<String, EntityData> mobs = new HashMap<>();
     private final Map<String, EntityData> mobsByName = new HashMap<>();
     private final Map<EntityType, EntityData> defaultMobs = new HashMap<>();
     private final Map<Entity, EntityData> activeMobs = new WeakHashMap<>();
 
-    public MobController(MageController controller) {
+    public MobController(MagicController controller) {
         this.controller = controller;
     }
 
@@ -260,5 +264,26 @@ public class MobController implements Listener {
             defaultMob = new com.elmakers.mine.bukkit.entity.EntityData(controller, entityType);
         }
         return defaultMob;
+    }
+
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent event) {
+        Chunk chunk = event.getChunk();
+        if (controller.isDespawnMagicMobs()) {
+            Collection<Mage> magicMobs = controller.getMobMages();
+            for (Mage mage : magicMobs) {
+                Entity entity = mage.getEntity();
+                if (entity == null) continue;
+                Location location = entity.getLocation();
+                if (!chunk.getWorld().getName().equals(location.getWorld().getName())) continue;
+
+                int chunkX = chunk.getX();
+                int chunkZ = chunk.getZ();
+                if (chunkZ != location.getBlockZ() >> 4 || chunkX != location.getBlockX() >> 4) continue;
+
+                mage.sendDebugMessage(ChatColor.RED + "Despawned", 4);
+                entity.remove();
+            }
+        }
     }
 }
