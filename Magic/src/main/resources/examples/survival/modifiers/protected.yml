@@ -1,0 +1,6 @@
+# This will make an entity or player completely invulnerable,
+# ignored by mobs and untargetable by any spells.
+# Note that this may have unintended consequences such as being able to interact with some NCPs
+# if they target the player with spells.
+protected:
+  protected: true
