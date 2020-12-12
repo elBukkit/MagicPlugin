@@ -6,8 +6,44 @@ superjump:
       - trigger: jump
     actions:
         cast:
-        - class: Velocity
-        - class: FallProtection
+        - class: ChangeContext
+          source_pitch_min: -45
+          actions:
+          - class: Velocity
+          - class: FallProtection
+          - class: Interval
+            actions:
+            - class: CheckTrigger
+              trigger: land
+              actions:
+                - class: ModifyParameters
+                  actions:
+                    # - class: Message
+                    #   message: "Fell $fall_distance blocks for $equation radius"
+                    #   equation: "min(5, 4 * (fall_distance - 5) / 64)"
+                    - class: CheckRequirements
+                      requirements:
+                       - attributes:
+                           - attribute: fall_distance
+                             min: 8
+                      actions:
+                        - class: ChangeContext
+                          target_location: feet
+                          actions:
+                          - class: PlayEffects
+                            effects: landing
+                          - class: AreaOfEffect
+                            actions:
+                             - class: Damage
+                             - class: Velocity
+                               speed: 0.9
+                               living_entity_speed: 0.7
+                               push: 1
+                          - class: Sphere
+                            actions:
+                             - class: BreakBlock
+                               direction: 0,0.8,0
+                          - class: Stop
     effects:
         cast:
         -  class: EffectSingle
@@ -22,7 +58,7 @@ superjump:
              particle_count: 2
              speed: 2
              particle: spell
-        land:
+        landing:
         -  sound: block_stone_step
            sound_pitch: 0.7
         -  class: EffectRing
@@ -30,13 +66,25 @@ superjump:
            source_location: feet
            period: 4
            particle_count: 80
-           radius: 4
+           radius: $radius
            particle_offset_x: 0.9
            particle_offset_z: 0.9
            particle_offset_y: 0.1
     parameters:
         duration: 20000
         target: self
-        min_speed: 5
-        max_speed: 5
-        y_offset: 0.5
+        speed: 4
+
+        falling: true
+        radius: "min(5, 4 * (fall_distance - 5) / 64)"
+        break_durability: 1000
+        destructible_durability: 5000
+        durability_max_distance: 5
+        damage_max_distance: 4
+        cooldown: 500
+        destructible: solid
+        destructible_override: true
+        select_self: false
+        undo: 15000
+        undo_speed: 2
+        damage: 6
