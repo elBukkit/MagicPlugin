@@ -1,4 +1,4 @@
-hulklanding:
+falldistance:
   passive: true
   triggers:
     - trigger: land
