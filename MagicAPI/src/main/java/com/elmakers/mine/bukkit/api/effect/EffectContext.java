@@ -20,6 +20,7 @@ public interface EffectContext {
     Location getEyeLocation();
     @Nullable
     Location getLocation();
+    void setLocation(Location location);
     @Nullable
     Entity getTargetEntity();
     @Nullable

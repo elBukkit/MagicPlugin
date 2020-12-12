@@ -46,6 +46,11 @@ public class EffectContext implements com.elmakers.mine.bukkit.api.effect.Effect
         return location;
     }
 
+    @Override
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     @Nullable
     @Override
     public Location getCastLocation() {
