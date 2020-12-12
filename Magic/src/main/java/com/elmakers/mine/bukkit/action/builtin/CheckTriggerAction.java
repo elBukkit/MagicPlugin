@@ -9,7 +9,6 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public class CheckTriggerAction extends CheckAction {
-    private boolean sinceStartOfCast;
     private long startTime;
     private String trigger;
 
@@ -18,19 +17,19 @@ public class CheckTriggerAction extends CheckAction {
     {
         super.prepare(context, parameters);
         trigger = parameters.getString("trigger", "");
-        sinceStartOfCast = parameters.getBoolean("since_start_of_cast", false);
-    }
-
-    @Override
-    public void reset(CastContext context) {
-        startTime = System.currentTimeMillis();
     }
 
     @Override
     protected boolean isAllowed(CastContext context) {
         Long lastTrigger = context.getMage().getLastTrigger(trigger);
-        long startTime = sinceStartOfCast ? context.getStartTime() : this.startTime;
-        return (lastTrigger != null && lastTrigger > startTime);
+        if (startTime == 0) {
+            startTime = context.getStartTime();
+        }
+        boolean isTriggered = (lastTrigger != null && lastTrigger > startTime);
+        if (isTriggered) {
+            startTime = System.currentTimeMillis();
+        }
+        return isTriggered;
     }
 
     @Override
