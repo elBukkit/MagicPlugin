@@ -230,6 +230,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected boolean superProtected;
     protected boolean superPowered;
     protected boolean ignoredByMobs;
+    private boolean isInAir = false;
+    private double lastFallDistance;
 
     private Map<Integer, Wand> activeArmor = new HashMap<>();
 
@@ -1761,6 +1763,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         lastLocation = getLocation();
+
+        Entity entity = getEntity();
+        if (entity != null) {
+            boolean isOnGround = entity.isOnGround();
+            double fallDistance = entity.getFallDistance();
+            if (fallDistance > 0) {
+                lastFallDistance = fallDistance;
+            }
+            if (isInAir && isOnGround) {
+                trigger("land");
+            }
+            isInAir = !isOnGround;
+        }
     }
 
     @Override
@@ -4616,6 +4631,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             case "bowpull": {
                 return getLastBowPull();
+            }
+            case "fall_distance": {
+                return lastFallDistance;
             }
             case "bowpower": {
                 return (double)getLastBowPower();

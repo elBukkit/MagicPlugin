@@ -27,6 +27,7 @@
 
  - Need a way to add spells to a path
  - Hide version configs from example commands
+ - Support for simple list of string triggers
 
 ## List is too long
 

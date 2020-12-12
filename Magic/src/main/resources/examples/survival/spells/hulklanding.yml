@@ -1,0 +1,8 @@
+hulklanding:
+  passive: true
+  triggers:
+    - trigger: land
+  actions:
+    cast:
+      - class: Message
+        message: "Fell $fall_distance blocks"

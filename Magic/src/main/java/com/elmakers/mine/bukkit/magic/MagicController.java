@@ -4540,7 +4540,6 @@ public class MagicController implements MageController {
         return mobs.getActiveMobs();
     }
 
-
     @Override
     @Deprecated
     public Set<Material> getRestrictedMaterials() {
@@ -7404,7 +7403,8 @@ public class MagicController implements MageController {
     private final Set<String>                   registeredAttributes        = new HashSet<>();
     private final Set<String>                   builtinAttributes           = ImmutableSet.of(
             "health", "health_max", "time", "moon", "location_x", "location_y", "location_z",
-            "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt"
+            "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
+            "fall_distance"
     );
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mobMages = new HashMap<>();
