@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class GrowEntityAction extends BaseSpellAction
@@ -56,7 +57,7 @@ public class GrowEntityAction extends BaseSpellAction
         if (li instanceof Ageable && !((Ageable)li).isAdult() && !(li instanceof Player)) {
             context.registerModified(li);
             ((Ageable)li).setAdult();
-        } else  if (li instanceof Zombie) {
+        } else if (li instanceof Zombie) {
             Zombie zombie = (Zombie)li;
             if (!zombie.isBaby()) {
                 replaceType = EntityType.GIANT;
@@ -64,16 +65,20 @@ public class GrowEntityAction extends BaseSpellAction
                 context.registerModified(li);
                 ((Zombie) li).setBaby(false);
             }
-        } else  if (li instanceof Slime) {
+        } else if (li instanceof Slime) {
             context.registerModified(li);
             Slime slime = (Slime)li;
             slime.setSize(slime.getSize() + 1);
-        } else  if (li instanceof Skeleton && skeletons) {
+        } else if (li instanceof Skeleton && skeletons) {
             try {
                 replaceType = EntityType.valueOf("WITHER_SKELETON");
             } catch (Exception ex) {
                 return SpellResult.NO_TARGET;
             }
+        } else if (li.getType().name().equals("PHANTOM")) {
+            EntityPhantomData phantomData = new EntityPhantomData(li);
+            phantomData.size++;
+            phantomData.apply(li);
         } else {
             return SpellResult.NO_TARGET;
         }
@@ -111,7 +116,7 @@ public class GrowEntityAction extends BaseSpellAction
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
-        parameters.add("skeleton");
+        parameters.add("skeletons");
     }
 
     @Override

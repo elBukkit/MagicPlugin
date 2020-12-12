@@ -23,18 +23,21 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
 public class ShrinkEntityAction extends DamageAction
 {
     private boolean dropSkull;
+    private boolean skeletons;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
         dropSkull = parameters.getBoolean("drop_skull", true);
+        skeletons = parameters.getBoolean("skeletons", false);
     }
 
     @Override
@@ -60,6 +63,7 @@ public class ShrinkEntityAction extends DamageAction
         String itemName = DeprecatedUtils.getDisplayName(li) + " Head";
         EntityType replaceType = null;
 
+        boolean handled = true;
         if (li instanceof Player) {
             super.perform(context);
             if (li.isDead() && !alreadyDead && dropSkull) {
@@ -73,15 +77,29 @@ public class ShrinkEntityAction extends DamageAction
         } else  if (li instanceof Zombie && !((Zombie)li).isBaby()) {
             context.registerModified(li);
             ((Zombie)li).setBaby(true);
-        } else  if (li instanceof Slime && ((Slime)li).getSize() > 1) {
+        } else if (li instanceof Slime && ((Slime)li).getSize() > 1) {
             context.registerModified(li);
             Slime slime = (Slime)li;
             slime.setSize(slime.getSize() - 1);
-        /*
-        } else if (li instanceof WitherSkeleton && skeletons) {
+        } else if (li instanceof Slime && ((Slime)li).getSize() > 1) {
+            context.registerModified(li);
+            Slime slime = (Slime)li;
+            slime.setSize(slime.getSize() - 1);
+        } else if (li.getType().name().equals("WITHER_SKELETON") && skeletons) {
             replaceType = EntityType.SKELETON;
-        */
+        } else if (li.getType().name().equals("PHANTOM")) {
+            EntityPhantomData phantomData = new EntityPhantomData(li);
+            if (phantomData.size > 1) {
+                phantomData.size--;
+                phantomData.apply(li);
+            } else {
+                handled = false;
+            }
         } else {
+            handled = false;
+        }
+
+        if (!handled) {
             super.perform(context);
             if ((li.isDead() || li.getHealth() == 0) && !alreadyDead && dropSkull) {
                 dropHead(context, targetEntity, itemName);
@@ -136,11 +154,12 @@ public class ShrinkEntityAction extends DamageAction
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
         parameters.add("drop_skull");
+        parameters.add("skeletons");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("drop_skull")) {
+        if (parameterKey.equals("drop_skull") || parameterKey.equals("skeletons")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);

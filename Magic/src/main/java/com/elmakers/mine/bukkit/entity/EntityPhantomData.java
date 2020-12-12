@@ -19,4 +19,12 @@ public class EntityPhantomData extends EntityExtraData {
     public void apply(Entity entity) {
         CompatibilityUtils.setPhantomSize(entity, size);
     }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getSize() {
+        return size;
+    }
 }

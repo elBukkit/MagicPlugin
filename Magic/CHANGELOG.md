@@ -39,6 +39,7 @@
  - Improved support for persistent mobs (in 1.14 and up)
  - Add "land" trigger and "fall_distance" attribute
  - Allow ChangeContext sourceLocation and targetLocation parameters to specify feet, head, etc entity locations
+ - Phantoms can be shrunk and grown (wither skeletons can also be shrunk again, optionally)
 
 # 8.1.2
 
