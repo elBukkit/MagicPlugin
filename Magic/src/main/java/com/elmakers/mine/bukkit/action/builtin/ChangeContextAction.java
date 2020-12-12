@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 
@@ -47,8 +48,10 @@ public class ChangeContextAction extends CompoundAction {
     private float sourcePitchOffset;
     private float targetYawOffset;
     private float targetPitchOffset;
-    private String targetLocation;
-    private String sourceLocation;
+    private String absoluteTargetLocation;
+    private String absoluteSourceLocation;
+    private SourceLocation sourceLocation;
+    private SourceLocation targetLocation;
     private boolean persistTarget;
     private boolean attachBlock;
     private boolean persistCaster;
@@ -97,8 +100,6 @@ public class ChangeContextAction extends CompoundAction {
         attachBlock = parameters.getBoolean("target_attachment", false);
         persistCaster = parameters.getBoolean("persist_caster", false);
         snapTargetToSize = parameters.getInt("target_snap", 0);
-        targetLocation = parameters.getString("target_location");
-        sourceLocation = parameters.getString("source_location");
         sourcePitchMin = parameters.getInt("source_pitch_min", 90);
         sourcePitchMax = parameters.getInt("source_pitch_max", -90);
         orientPitch = parameters.getBoolean("orient_pitch", true);
@@ -107,6 +108,19 @@ public class ChangeContextAction extends CompoundAction {
         targetYawOffset = (float)parameters.getDouble("target_yaw_offset", 0);
         targetPitchOffset = (float)parameters.getDouble("target_pitch_offset", 0);
         swapSourceAndTarget = parameters.getBoolean("swap_source_and_target", false);
+
+        absoluteTargetLocation = parameters.getString("target_location");
+        absoluteSourceLocation = parameters.getString("source_location");
+
+        // See if these are entity-specific locations;
+        targetLocation = SourceLocation.tryCreate(absoluteTargetLocation, false);
+        if (targetLocation != null) {
+            absoluteTargetLocation = null;
+        }
+        sourceLocation = SourceLocation.tryCreate(absoluteSourceLocation, true);
+        if (sourceLocation != null) {
+            absoluteSourceLocation = null;
+        }
 
         if (parameters.contains("target_direction_speed"))
         {
@@ -309,8 +323,8 @@ public class ChangeContextAction extends CompoundAction {
         if (sourceLocation != null) {
             sourceLocation = sourceLocation.clone();
         }
-        if (this.sourceLocation != null && !this.sourceLocation.isEmpty()) {
-            Vector newSource = ConfigurationUtils.toVector(this.sourceLocation);
+        if (this.absoluteSourceLocation != null && !this.absoluteSourceLocation.isEmpty()) {
+            Vector newSource = ConfigurationUtils.toVector(this.absoluteSourceLocation);
             if (newSource != null) {
                 if (sourceLocation == null) {
                     World world = context.getWorld();
@@ -324,21 +338,21 @@ public class ChangeContextAction extends CompoundAction {
                     sourceLocation.setZ(newSource.getZ());
                 }
             } else {
-                context.getLogger().warning("Invalid source location in spell " + context.getSpell().getKey() + ": " + this.sourceLocation);
+                context.getLogger().warning("Invalid source location in spell " + context.getSpell().getKey() + ": " + this.absoluteSourceLocation);
             }
         }
         Block targetBlock = null;
         Block previousBlock = null;
         if (targetLocation != null) {
             targetLocation = targetLocation.clone();
-            if (this.targetLocation != null && !this.targetLocation.isEmpty()) {
-                Vector newTarget = ConfigurationUtils.toVector(this.targetLocation);
+            if (this.absoluteTargetLocation != null && !this.absoluteTargetLocation.isEmpty()) {
+                Vector newTarget = ConfigurationUtils.toVector(this.absoluteTargetLocation);
                 if (newTarget != null) {
                     targetLocation.setX(newTarget.getX());
                     targetLocation.setY(newTarget.getY());
                     targetLocation.setZ(newTarget.getZ());
                 } else {
-                    context.getLogger().warning("Invalid target location in spell " + context.getSpell().getKey() + ": " + this.targetLocation);
+                    context.getLogger().warning("Invalid target location in spell " + context.getSpell().getKey() + ": " + this.absoluteTargetLocation);
                 }
             }
         }
@@ -426,6 +440,12 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (previousBlock != null) {
             actionContext.setPreviousBlock(previousBlock);
+        }
+        if (this.sourceLocation != null) {
+            actionContext.setLocation(this.sourceLocation.getLocation(actionContext));
+        }
+        if (this.targetLocation != null) {
+            actionContext.setTargetLocation(this.targetLocation.getLocation(actionContext));
         }
         return startActions();
     }

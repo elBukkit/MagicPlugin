@@ -31,6 +31,23 @@ public class SourceLocation {
         BLOCK_CENTER
     }
 
+    @Nullable
+    public static SourceLocation tryCreate(String locationTypeString, boolean isSource) {
+        if (locationTypeString != null && !locationTypeString.isEmpty()) {
+            try {
+                LocationType locationType = LocationType.valueOf(locationTypeString.toUpperCase());
+                return new SourceLocation(locationType, isSource);
+            } catch (Exception ignore) {
+            }
+        }
+        return null;
+    }
+
+    protected SourceLocation(LocationType locationType, boolean isSource) {
+        this.locationType = locationType;
+        this.isSource = isSource;
+    }
+
     public SourceLocation(ConfigurationSection configuration) {
         this(configuration, "source_location", true);
     }
