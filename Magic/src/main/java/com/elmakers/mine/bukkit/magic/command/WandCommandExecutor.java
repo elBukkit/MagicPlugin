@@ -36,6 +36,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
+    public static boolean CONSOLE_BYPASS_LOCKED = true;
     private final WandPaginator wandPaginator;
 
     public WandCommandExecutor(MagicAPI api) {
@@ -878,7 +879,12 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
     protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet) {
         Mage mage = controller.getMage(player);
         Wand wand = mage.getActiveWand();
-        boolean bypassLocked = (sender instanceof Player) && api.hasPermission(sender, "Magic.wand.override_locked");
+        boolean bypassLocked;
+        if (sender instanceof Player) {
+            bypassLocked = api.hasPermission(sender, "Magic.wand.override_locked");
+        } else {
+            bypassLocked = CONSOLE_BYPASS_LOCKED;
+        }
         if (wand == null) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (api.isUpgrade(item)) {

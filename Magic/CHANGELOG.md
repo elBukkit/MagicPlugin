@@ -40,6 +40,8 @@
  - Add "land" trigger and "fall_distance" attribute
  - Allow ChangeContext sourceLocation and targetLocation parameters to specify feet, head, etc entity locations
  - Phantoms can be shrunk and grown (wither skeletons can also be shrunk again, optionally)
+ - Wand commands when used from the console can now bypass locked wands (same as a player with `Magic.wand.override_locked` permission)
+   Use `console_bypass_locked_wands: false` to disable this
 
 # 8.1.2
 

@@ -31,6 +31,7 @@
 
 ## List is too long
 
+ - Check for saddle on horse with horse spell
  - Path re-work
    - Treat like another TemplatedProperties property holder
    - Maybe use ParentedProperties and reconsider the way path inheritance works

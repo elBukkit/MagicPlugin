@@ -161,6 +161,7 @@ import com.elmakers.mine.bukkit.integration.SkriptManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
+import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
 import com.elmakers.mine.bukkit.magic.listener.BlockController;
 import com.elmakers.mine.bukkit.magic.listener.CraftingController;
@@ -3094,6 +3095,7 @@ public class MagicController implements MageController {
         loadMobEggs(properties.getConfigurationSection("mob_eggs"));
         loadSkulls(properties.getConfigurationSection("skulls"));
         loadOtherMaterials(properties);
+        WandCommandExecutor.CONSOLE_BYPASS_LOCKED = properties.getBoolean("console_bypass_locked_wands", true);
 
         maxPower = (float)properties.getDouble("max_power", maxPower);
         ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");

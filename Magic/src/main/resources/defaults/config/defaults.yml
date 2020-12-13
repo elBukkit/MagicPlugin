@@ -621,3 +621,6 @@ left_click_type: animate
 
 # Set this to true to remove magic mobs on shutdown and chunk unload
 despawn_magic_mobs: false
+
+# Set this to false to disallow wand commands modifying locked wands when used from the console or command blocks
+console_bypass_locked_wands: true
