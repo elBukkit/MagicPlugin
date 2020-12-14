@@ -570,8 +570,8 @@ wand:
     super_powered: "&3Superpuissant"
     super_protected: "&3Invulnérable"
     spell_aura: "&bAura: &6$spell"
-    costs_description: Coût : $description
-    active_costs_description: Coût : $description par seconde
+    costs_description: "Coût : $description"
+    active_costs_description: "Coût : $description par seconde"
     range_description: "&9Portée: &6$range &9mètres"
     owner_description: "&2&oBaguette de $name"
     bound_description: "&3&oLié à $name"
@@ -644,7 +644,7 @@ wand:
     require_more_levels: "Tu dois avoir des niveaux supplémentaire pour l'enchanter"
     randomized_lore: Quel type de baguette obtiendras-tu?
     randomized_name: Boîte à baguette
-    upgrade_name: Amélioration : $name
+    upgrade_name: "Amélioration : $name"
     randomized_description: "&o&2$description"
     description_lore: "&o&a$description"
     path_lore: ""
