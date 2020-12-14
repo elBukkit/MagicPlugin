@@ -27,6 +27,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.MaterialMap;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.BlockData;
@@ -56,7 +57,7 @@ public class ConstructBatch extends BrushBatch {
     private final @Nonnull MaterialSet deferredTypes;
     private MaterialAndData replace;
     private Material replaceType;
-    private Map<Material, ? extends MaterialAndData> replaceMaterials;
+    private MaterialMap replaceMaterials;
 
     private boolean finishedNonAttached = false;
     private boolean finishedAttached = false;
@@ -658,7 +659,7 @@ public class ConstructBatch extends BrushBatch {
         this.useBrushSize = useBrushSize;
     }
 
-    public void setReplaceMaterials(Map<Material, ? extends MaterialAndData> replaceMaterials) {
+    public void setReplaceMaterials(MaterialMap replaceMaterials) {
         this.replaceMaterials = replaceMaterials;
     }
 }

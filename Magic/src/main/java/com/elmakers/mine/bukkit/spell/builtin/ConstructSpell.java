@@ -2,11 +2,8 @@ package com.elmakers.mine.bukkit.spell.builtin;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,6 +11,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.magic.MaterialMap;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.batch.ConstructBatch;
@@ -155,27 +153,9 @@ public class ConstructSpell extends BrushSpell
         batch.setConsume(consume);
         batch.setCheckChunks(checkChunks);
 
-        ConfigurationSection replaceConfiguration = parameters.getConfigurationSection("replacements");
-        if (replaceConfiguration != null) {
-            Map<Material, MaterialAndData> materialMap = new HashMap<>();
-            Set<String> fromKeys = replaceConfiguration.getKeys(false);
-            for (String fromKey : fromKeys) {
-                Material fromMaterial;
-                try {
-                    fromMaterial = Material.valueOf(fromKey.toUpperCase());
-                } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid material replacement (from): " + fromKey);
-                    continue;
-                }
-                String toKey = replaceConfiguration.getString(fromKey);
-                MaterialAndData toMaterial = new MaterialAndData(toKey);
-                if (!toMaterial.isValid()) {
-                    controller.getLogger().warning("Invalid material replacement (to): " + toKey);
-                    continue;
-                }
-                materialMap.put(fromMaterial, toMaterial);
-            }
-            batch.setReplaceMaterials(materialMap);
+        MaterialMap replacements = controller.getMaterialSetManager().mapFromConfig(parameters, "replacements");
+        if (replacements != null) {
+            batch.setReplaceMaterials(replacements);
         }
 
         UndoList undoList = getUndoList();
