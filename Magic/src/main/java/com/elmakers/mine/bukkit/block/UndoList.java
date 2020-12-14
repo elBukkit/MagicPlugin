@@ -46,7 +46,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.entity.SpawnedEntity;
-import com.elmakers.mine.bukkit.magic.MaterialSets;
+import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;

@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.materials.MaterialSets;
+import com.elmakers.mine.bukkit.materials.SimpleMaterialSetManager;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MaterialSetsTest {

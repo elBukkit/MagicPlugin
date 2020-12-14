@@ -179,6 +179,8 @@ import com.elmakers.mine.bukkit.magic.listener.MobController2;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.magic.listener.WildStackerListener;
 import com.elmakers.mine.bukkit.maps.MapController;
+import com.elmakers.mine.bukkit.materials.MaterialSets;
+import com.elmakers.mine.bukkit.materials.SimpleMaterialSetManager;
 import com.elmakers.mine.bukkit.npc.MagicNPC;
 import com.elmakers.mine.bukkit.protection.AJParkourManager;
 import com.elmakers.mine.bukkit.protection.CitadelManager;
@@ -7531,7 +7533,7 @@ public class MagicController implements MageController {
     private JumpController                      jumpController              = null;
     private WorldController                     worldController             = null;
     private @Nonnull MageIdentifier             mageIdentifier              = new MageIdentifier();
-    private final SimpleMaterialSetManager      materialSetManager          = new SimpleMaterialSetManager();
+    private final SimpleMaterialSetManager materialSetManager          = new SimpleMaterialSetManager();
     private boolean                             citizensEnabled                = true;
     private boolean                             logBlockEnabled             = true;
     private boolean                             libsDisguiseEnabled            = true;

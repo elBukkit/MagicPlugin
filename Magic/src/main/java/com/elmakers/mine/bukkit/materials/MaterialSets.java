@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.materials;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

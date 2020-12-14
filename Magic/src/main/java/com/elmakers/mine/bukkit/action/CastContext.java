@@ -52,7 +52,7 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.effect.WandEffectContext;
-import com.elmakers.mine.bukkit.magic.MaterialSets;
+import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.materials;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-/* package */ final class SimpleMaterialSetManager
+public final class SimpleMaterialSetManager
         implements MaterialSetManager {
     private Map<String, MaterialSet> materialSets = new HashMap<>();
     private Set<String> unmodifiableMaterialSetKeys = Collections
@@ -100,7 +100,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
         return fromConfig(name, MaterialSets.empty());
     }
 
-    /* package */ void loadMaterials(ConfigurationSection materialNode) {
+    public void loadMaterials(ConfigurationSection materialNode) {
         loading = materialNode;
         // Create Material sets
         Set<String> keys = materialNode.getKeys(false);
