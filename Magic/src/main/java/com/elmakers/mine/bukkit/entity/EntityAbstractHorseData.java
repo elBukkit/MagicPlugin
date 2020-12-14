@@ -1,15 +1,20 @@
 package com.elmakers.mine.bukkit.entity;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class EntityAbstractHorseData extends EntityAnimalData {
     public Integer domestication;
     public Integer maxDomestication;
     public Double jumpStrength;
+    public ItemData saddle;
 
     public EntityAbstractHorseData() {
 
@@ -30,6 +35,8 @@ public class EntityAbstractHorseData extends EntityAnimalData {
         if (parameters.contains("max_domestication")) {
             maxDomestication = parameters.getInt("max_domestication");
         }
+
+        saddle = controller.getOrCreateItem(parameters.getString("saddle"));
     }
 
     public EntityAbstractHorseData(Entity entity) {
@@ -39,7 +46,13 @@ public class EntityAbstractHorseData extends EntityAnimalData {
             domestication = horse.getDomestication();
             maxDomestication = horse.getMaxDomestication();
             jumpStrength = horse.getJumpStrength();
+            saddle = getItem(horse.getInventory().getSaddle());
         }
+    }
+
+    @Nullable
+    protected ItemData getItem(ItemStack item) {
+        return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
     }
 
     @Override
@@ -55,6 +68,9 @@ public class EntityAbstractHorseData extends EntityAnimalData {
             }
             if (jumpStrength != null) {
                 horse.setJumpStrength(jumpStrength);
+            }
+            if (saddle != null) {
+                horse.getInventory().setSaddle(saddle.getItemStack(1));
             }
         }
     }

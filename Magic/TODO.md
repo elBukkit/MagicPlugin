@@ -26,12 +26,11 @@
 ## RPG
 
  - Need a way to add spells to a path
- - Hide version configs from example commands
  - Support for simple list of string triggers
 
 ## List is too long
 
- - Check for saddle on horse with horse spell
+ - Flare spell keeps running?
  - Path re-work
    - Treat like another TemplatedProperties property holder
    - Maybe use ParentedProperties and reconsider the way path inheritance works
@@ -94,14 +93,14 @@
  - Automata re-activation delay ?
 
  - Make melee a tag instead of a material list
- 
+
  - Passives:
    - Some way to tag/group passives, where only N spells from a group can be active at a time
 
  - Add support for Sponge schematics
 
  - Add support for Bukkit projectiles, when there is an entity shooter
- 
+
  - Add option to reset mana on wand activation
 
  - Add denied_item parameter to CheckInventory action
@@ -115,41 +114,41 @@
  - Freezing water changes it to a source block when undone... ?? https://forge.avatarmc.com/T1993
  - Using alter on stained glass pane makes it go funky in 1.13
 
- - Broom crafting, wheat isn't needed in 1.13.1 - something weird definitely going on there, maybe just need to 
+ - Broom crafting, wheat isn't needed in 1.13.1 - something weird definitely going on there, maybe just need to
    convert legacy ingredients before registering?
  - Look at lightsaber crafting, seems broken? Maybe only in 1.13? Starshop also always gives white stained glass...
 
  - Some clean way to make magic bow arrow spells useable on a wand?
    Mainly to avoid people always reporting them as bugs :\
  - Issues with wand/bows migrating to new version (waiting on details)
- 
+
  - (PS - /ps allowall lags?)
 
  - Small bug! When you die, it makes your wand auto-select the first spell in your hotbar:
    https://youtu.be/wExxOdFWCV4
 
  - /m strange tab-completion behavior
-           
+
  - Test attributes when reloading mage class configs live
  - Option to specify a slot for class items to auto-equip
-                       
- - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't 
+
+ - Creating blocks (e.g. Reflect level 5) on the right-bottom corner of a painting breaks the painting but doesn't
    catch the dropped item.
-   
+
  - There seems to be an undo issue here somewhere.
    - Goldwalker blocks didn't undo once on sandbox (Can not reproduce)
    - Nathanwolf auto at dev spawn has some permanent blocks now
    - Random blocks show up in mob arena sometimes (web, broken floor)
    - Can't find a pattern. Tried world save... don't know. :(
-  
+
  - Change potter progression, maybe add spells per year graduation?
- 
+
  - Cars look floaty
- 
+
  - Need some option to orient an EffectRing, or some other way to make a ring of effects that follows a projectile
-  
+
 ## Recent Requests
- 
+
  - Some way to copy the last spell cast by your target.
  - Support for "FationsOne" (sic, sp?) - I guess? Good lord, Factions, get your act together.
  - Special blocks that act as automata when placed, remove automata when used
@@ -160,33 +159,33 @@
  - Custom spell lore showing arbitrary parameters (or something)
 
 ## Future
-  
+
  - Ability to earn SP (Or whatever) from various actions, sword use, bow use, mining, etc.
    Generalized XP system?
-  
+
  - Take a look at this, maybe use accurate block hitboxes?
    https://bitbucket.org/BillyGalbreath/pl3xsigns/src/c4ce6a50592aca67be0aef26117cc8b7e069c3eb/src/main/java/net/pl3x/bukkit/pl3xsigns/lineofsight/BoundingBox.java?at=master&fileviewer=file-view-default
-   
+
  - FOV change action?
    https://wiki.vg/Protocol#Player_Abilities_.28clientbound.29
-   
+
  - It'd be really cool to support configs from remote repos....
    Github has an API for fetching a list of files, maybe can use that?
    https://api.github.com/repos/grisstyl/BetterPotter/contents/spells/spells
-       
+
  - Add path 2nd parameter to enchant command to stop when reaching end of a path
-  
+
  - Optional lore on wands to say which classes they work with
-     
+
  - Update skill icon lore when armor updates (to take buffs into account)
- 
+
  - Brushette requests damage reduction (as in subtract an amount)
  - Status effect system
    - Some way to temporarily modify properties that works with stacking and is guaranteed to undo
    - Invoke via action, similar to ModifyProperties (maybe extend from it)
-   
+
  - Make editor work with selector options
-   
+
 ## Attributes
 
  - Attributes can improve with rankup (spell purchase? need new progression mechanism...)
@@ -201,7 +200,7 @@
    - Attack speed
    - Damage protection
    - Anti-hunger
-   
+
 ## Suggestions
 
  - mauto spawner option to randomize facing direction
@@ -209,17 +208,17 @@
  - Cast location offset override per spell.
  - Flag to prevent putting SP in chests
  - Check knockback resistance in Velocity action, or add Mage knockback resistance.
- 
+
  - Add an action to simulate the red screen you get while out of bounds. See:
    https://gist.github.com/leonardosnt/ffa8e72b60df197c762d1f2e903cc67f
 
  - Placeholder API integration: https://www.spigotmc.org/wiki/hooking-into-placeholderapi/
    - Allow placeholder-driven attributes
- 
+
  - Mana regen cooldown, so that casting a spell puts mana regen on a cooldown
- 
+
  - Paginate wand and spell lists
- 
+
  - TreeAction should grow the right type of tree for the given sapling
 
 ## On Hold
@@ -231,7 +230,7 @@
  - Wand disappearing during duels- maybe via disarm, maybe drop action? (red 0 on PW)
  - PW would like some custom lore for wand "quiet" and quick cast settings.
  - Recall warps don't show up with /mage getdata?
-   
+
 ## Fast Blocks
 
  - The easiest way to deal with that is to probably pretend the client doesn't have the chunk yet
@@ -240,13 +239,13 @@
  - and make sure to call playerChunkMap.a(playerChunk); to schedule an update
 
   https://github.com/tastybento/askyblock/blob/master/src/com/wasteofplastic/askyblock/nms/v1_12_R1/NMSHandler.java
-  
+
 ## Not so High-Priority
- 
+
  - Per-player language settings (See https://www.spigotmc.org/resources/api-languages.22305/)
  - Would be cool to have a configurable max # of maps, and start re-using map ids when limit is hit, LRU
  - Ability to alter flower pots and beds (need to tweak TileEntity data.. doable, but messy to track with Material keys)
- - Aliases don't work with levels 
+ - Aliases don't work with levels
  - Ability to specify map dimensions/offset in percentage
 
 ## Sabers
@@ -262,11 +261,11 @@
  - An attribute that lets spells level up more quickly
  - Wand Power based on Strength potion effect
  - Add ModifyPower action
- 
+
  ZQuest API: https://www.spigotmc.org/resources/zquestapi-feel-the-might-of-java.35327/
  ZQuest How to make Extensions: http://zquestwiki.com/index.php?title=APIcreatingExtensions
  ZQuest Page: https://www.spigotmc.org/resources/zquest-feel-the-might-of-creating-1-9-1-10-1-11.18045/
- 
+
 ### Suggestions
 
  - Bonuses to wands:
@@ -286,7 +285,7 @@
    - bonus to that would be if you could set a configurable cooldown for being able to change out the spells on your wand
  - If you add permanent bonuses I think it should work more like rune stones with the ability to add certain bonuses to specific armor pieces in the way you would add an enchant to an item. This would allow you to add the buffs to existing armor that already has enchants on them. This would allow for creating an economy around these buffs as you would need to eventually obtain more rune stones to enchant more armor. You could possibly even have a whitelist/blacklist of items that could/could not be enchanted with the rune stone. Of course these buffs would all have to do with making you a better wand caster that fit with the Magic plugin theme.
  - Chance to fizzle should only happen if you have been cursed (I saw a spell that say's reduced chance of fizzle)
- 
+
 ## To Review
 
  - MagicArenas: Doesn't TP players out on a draw.. ?
@@ -294,7 +293,7 @@
  - Admission+Break door = dupe door (thought this was fixed???)
  - Grow/Shrink doesn't work on rabbits?
  - Put a size cap on slimes with Grow
- 	
+
  - Shops/Items:
    - Add new command, mshop
      - /mshop create [shoptype] [title] : Create a new shop NPC, default type "buyshop" in configs
@@ -302,19 +301,19 @@
      - /mshop remove <remove item in hand from shop>
      - Should look up itemstack (with count of 1) first, save as key if found
      - Eventually a GUI would be nice.
- 
+
  - Alter/grow/shrink/rollback should prevent mobs dropping loot
-  
+
  - See if snow that falls on something undoable can undo?
- 
+
  - Undo bugs with pistons.. yuck. https://youtu.be/S-d-XT2r_vM
- 
+
  - Arenas preventing last death Recall isn't working?
-  
+
  - Show mana from offhand wand (if no wand in main hand)
  - Add builtin "help" command, check messaging for missing commands- shows "no permission"?
  - Expand armor to include power, other modifiers?
- 
+
  - "Triggered" spells.. ? Apparently MagicSpells does this or somesuch.
    Examples- Activated spells/ passive spells Upon taking damage- activate a heal spell effect Upon dealing damage- explosion in line of sight
 
@@ -325,7 +324,7 @@
 
  - Pull/Accio on top of an entity sends it skyrocketing
  - Column's radius doesn't seem to work
-   
+
  - CoreProtect integration
    http://minerealm.com/community/viewtopic.php?f=32&t=16362
 
@@ -338,13 +337,13 @@
  - Fix block targeting cast messages
 
  - Fix that horrible inv-dupe issue :(
- 
+
  - Add spell or brush or something to auto-convert from MagicWorlds configs
- 
+
  - Try to support projectile hitbox modifiers that aren't cubes
- 
+
  - Overrides with commas in them are broken again
- 
+
  - Spells acting oddly with Copy - Box, Iterate
 
  - Lead on possible undo issue- undo another player's spell while building, it still builds another tick or so?
@@ -395,7 +394,7 @@
 ## NEW SPELLS
 
  - avatar - Goes into "avatar" state- free spells, super power, levitating, special effects- but rapidly decreasing mana while active.
-    - will need a spell-based power/protection system, or use potion effects? 
+    - will need a spell-based power/protection system, or use potion effects?
     - would be nice if this could extend from potioneffect and levitate- maybe refactor?
     - will need a separate "active cost reduction" property
  - banish - sets a player's home and spawn?
@@ -405,21 +404,21 @@
  - Decorate, places paintings at target
 
 ## OTHER STUFF
- 
+
  - Customize dynmap map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
  - Make volley multi-sample?
  - Alter names sheep "jeb_", - others "Dinnerbone" ?
-  
+
  - Need separate activate/deactivate costs. Fill vs levitate :\
    - Variable costs would be nice, too- for fill and superconstruct.
  - prevent pillar from passing through non-air blocks of different materials than the target
  - If possible, label more material data like stair direction.
  - Add locale option to suffix messages.yml
- 
+
  - Show active spells in a different color
 
  - Continue work on combining wands on anvils
- 
+
 ## STACK TRACES / EXTRA DEBUG INFO
 
 ## PLAYER REQUESTS:
