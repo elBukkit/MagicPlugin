@@ -263,6 +263,7 @@ public class MagicController implements MageController {
         dataFolder = null;
         defaultsFolder = null;
         this.logger = new MagicLogger(Logger.getLogger("Magic"));
+        this.materialSetManager.setLogger(logger);
     }
 
     public MagicController(final MagicPlugin plugin) {
@@ -7533,7 +7534,7 @@ public class MagicController implements MageController {
     private JumpController                      jumpController              = null;
     private WorldController                     worldController             = null;
     private @Nonnull MageIdentifier             mageIdentifier              = new MageIdentifier();
-    private final SimpleMaterialSetManager materialSetManager          = new SimpleMaterialSetManager();
+    private final SimpleMaterialSetManager materialSetManager               = new SimpleMaterialSetManager();
     private boolean                             citizensEnabled                = true;
     private boolean                             logBlockEnabled             = true;
     private boolean                             libsDisguiseEnabled            = true;
