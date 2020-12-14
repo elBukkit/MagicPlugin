@@ -5,17 +5,9 @@
  - Editor
    - Gets confused by spaces, test out recipes
      row_2: "aa ...
-   - There is no class metadata
-
- - Memory Leaks
-   - Should entity undo also be value-weak? Is there a use-case for it needing to undo (other than scheduled)
-     after the caster has left?
-   - Get rid of using the Bukkit Metadata system entirely. Maybe just an "entity data lite" map to store the various
-     boolean flags?
 
 ## World Gen
 
- - Do world configs support inheritance? Check backup worlds in otherside/netherside
  - Some way to scale mobs up (levels?) with distance from spawn
  - Synchronized day/night cycle of two worlds (sleep event?)
 

@@ -1863,7 +1863,7 @@ public class MagicController implements MageController {
 
         // Load worlds
         logger.setContext("worlds");
-        worldController.loadWorlds(loader.getWorlds());
+        loadWorlds(loader.getWorlds());
         logger.setContext(null);
         log("Loaded " + worldController.getCount() + " customized worlds");
 
@@ -5005,6 +5005,17 @@ public class MagicController implements MageController {
             logger.setContext("mobs." + key);
             mobs.load(key, resolveConfiguration(key, properties, templateConfigurations));
         }
+    }
+
+    public void loadWorlds(ConfigurationSection properties) {
+        Set<String> worldKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
+        for (String key : worldKeys) {
+            if (key.equalsIgnoreCase("worlds")) continue;
+            logger.setContext("worlds." + key);
+            properties.set(key, resolveConfiguration(key, properties, templateConfigurations));
+        }
+        worldController.loadWorlds(properties);
     }
 
     @Override
