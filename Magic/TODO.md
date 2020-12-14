@@ -8,6 +8,7 @@
 
 ## World Gen
 
+ - Allow using weighted probability map for mob spawns (and maybe block replacement)
  - Some way to scale mobs up (levels?) with distance from spawn
  - Synchronized day/night cycle of two worlds (sleep event?)
 
