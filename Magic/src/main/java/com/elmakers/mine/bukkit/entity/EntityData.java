@@ -476,7 +476,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     List<String> dropList = ConfigurationUtils.getStringList(item);
                     if (dropList != null) {
                         Deque<WeightedPair<String>> dropProbability = new ArrayDeque<>();
-                        RandomUtils.populateProbabilityList(String.class, dropProbability, dropList);
+                        RandomUtils.populateStringProbabilityList(dropProbability, dropList);
                         drops.add(dropProbability);
                     }
                 }

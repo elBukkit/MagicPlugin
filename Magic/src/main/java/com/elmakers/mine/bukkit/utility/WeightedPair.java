@@ -17,23 +17,10 @@ public class WeightedPair<T extends Object> implements Comparable<WeightedPair<?
     private final Float rawThreshold;
     private final T value;
 
-    @SuppressWarnings("unchecked")
-    public WeightedPair(Float threshold, Float rawThreshold, String value, Class<T> parseAs) {
+    public WeightedPair(Float threshold, Float rawThreshold, String value, ValueParser<T> parser) {
         this.threshold = threshold;
         this.rawThreshold = rawThreshold;
-        // This is pretty ugly, but not as ugly as trying to
-        // infer the generic type argument.
-        if (parseAs == Integer.class) {
-            this.value = (T)(Integer)Integer.parseInt(value);
-        } else if (parseAs == Float.class) {
-            this.value = (T)(Float)Float.parseFloat(value);
-        } else if (parseAs == Double.class) {
-            this.value = (T)(Double)Double.parseDouble(value);
-        } else if (parseAs == String.class) {
-            this.value = (T)value;
-        } else {
-            this.value = null;
-        }
+        this.value = (parser == null) ? null : parser.parse(value);
     }
 
     public WeightedPair(T value) {
