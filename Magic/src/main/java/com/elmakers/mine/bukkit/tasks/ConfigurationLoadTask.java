@@ -443,7 +443,7 @@ public class ConfigurationLoadTask implements Runnable {
         addVersionConfigs(config, fileName);
 
         // Apply language overrides, but only to the messages config
-        if (fileName.equals("messages") && languageOverride != null) {
+        if (fileName.equals("messages") && languageOverride != null && !languageOverride.isEmpty() && !languageOverride.equalsIgnoreCase("EN")) {
             String languageFilePrefix = "examples/localizations/messages." + languageOverride;
             ConfigurationSection languageConfig = loadExampleConfiguration(languageFilePrefix);
             if (languageConfig != null) {

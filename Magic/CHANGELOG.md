@@ -42,6 +42,7 @@
  - Phantoms can be shrunk and grown (wither skeletons can also be shrunk again, optionally)
  - Wand commands when used from the console can now bypass locked wands (same as a player with `Magic.wand.override_locked` permission)
    Use `console_bypass_locked_wands: false` to disable this
+ - Add `mconfig language` command to easily ues a builtin localization file
 
 # 8.1.2
 

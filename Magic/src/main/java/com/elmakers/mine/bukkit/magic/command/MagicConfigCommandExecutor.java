@@ -101,6 +101,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "load");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "apply");
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "example");
+            addIfPermissible(sender, options, "Magic.commands.mconfig.", "language");
         }
         String subCommand = args[0];
         if (args.length == 3 && subCommand.equals("example") && args[1].equals("fetch")) {
@@ -137,6 +138,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 options.add("none");
             }
             options.addAll(controller.getExamples());
+        }
+
+        if (args.length == 3 && subCommand.equals("language")) {
+            options.addAll(controller.getLocalizations());
         }
 
         // After here we assume args[1] is the file type
@@ -342,6 +347,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             onMagicConfigure(sender, parameters);
             return true;
         }
+        if (subCommand.equals("language")) {
+            onMagicLanguage(sender, parameters);
+            return true;
+        }
         if (subCommand.equals("reset")) {
             onReset(sender, parameters);
             return true;
@@ -399,6 +408,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(escapeMessage(magic.getMessages().get("commands.mconfig." + command + ".usage"), "", "", '|'));
             return null;
         }
+
+        return getConfigFile(fileKey);
+    }
+
+    protected File getConfigFile(String fileKey) {
         return new File(magic.getPlugin().getDataFolder() + File.separator + fileKey, CUSTOM_FILE_NAME);
     }
 
@@ -1078,6 +1092,20 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.success").replace("$file", configFile.getName()));
         sender.sendMessage(magic.getMessages().get("commands.mconfig.reset.backup").replace("$backup", backupFile.getName()));
         return success;
+    }
+
+    protected void onMagicLanguage(CommandSender sender, String[] parameters) {
+        String language = "";
+        if (parameters.length > 0 && !parameters[0].equalsIgnoreCase("EN")) {
+            language = parameters[0].toUpperCase();
+        }
+
+        String fileType = "config";
+        File configFile = getConfigFile(fileType);
+        String path = "language";
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+        setPath(configuration, path, ConfigurationUtils.convertProperty(language));
+        trySave("configure", sender, configFile, configuration, fileType, path);
     }
 
     protected void onMagicConfigure(CommandSender sender, String[] parameters) {

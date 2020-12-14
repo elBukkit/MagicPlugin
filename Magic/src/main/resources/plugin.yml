@@ -344,6 +344,7 @@ commands:
         /mconfig reset     Delete a customized file, resetting to the builtin version
         /mconfig configure Change parameters for a spell, wand or other config
         /mconfig clean     Clean your custom configs, removing default values
+        /mconfig language  Change the language the plugin uses for in-game text
   "mconfig editor":
      description: Launch a web editor to edit or create a new spell, wand, item, mob or recipe
      permission: Magic.commands.mconfig.editor
@@ -407,6 +408,14 @@ commands:
         /mconfig configure wand wolf icon coal
         /mconfig configure config sp_enabled false
         /mconfig configure message costs.sp Super Points
+  "mconfig language":
+     description: Change the language used by the plugin.
+     permission: Magic.commands.mconfig.language
+     usage: |
+        /mconfig language ES
+        /mconfig language RU
+        /mconfig language FR
+        /mconfig language EN
   magic:
     description: Administer the Magic plugin
     permission: Magic.commands.magic
