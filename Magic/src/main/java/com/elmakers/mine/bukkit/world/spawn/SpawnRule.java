@@ -29,6 +29,7 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
     protected int minY;
     protected int maxY;
     protected int cooldown;
+    protected int priority;
     protected long lastSpawn;
     protected boolean allowIndoors;
     protected boolean targetCustom;
@@ -96,12 +97,14 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         this.maxY = parameters.getInt("max_y", 255);
         this.percentChance = (float)parameters.getDouble("probability", 1.0);
         this.cooldown = parameters.getInt("cooldown", 0);
+        this.priority = parameters.getInt("priority", 0);
         Collection<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
         if (tagList != null && !tagList.isEmpty()) {
             tags = new HashSet<String>(tagList);
         }
         biomes = loadBiomes(ConfigurationUtils.getStringList(parameters, "biomes"));
         notBiomes = loadBiomes(ConfigurationUtils.getStringList(parameters, "not_biomes"));
+        priority = parameters.getInt("priority");
         return true;
     }
 
@@ -154,6 +157,11 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
     @Override
     public int compareTo(SpawnRule other)
     {
+        if (this.priority > other.priority) {
+            return -1;
+        } else if (this.priority < other.priority) {
+            return 1;
+        }
         return this.key.compareTo(other.key);
     }
 
