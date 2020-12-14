@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Chunk;
@@ -34,28 +33,15 @@ public class MagicChestPopulator extends MagicChunkPopulator {
         minY = config.getInt("min_y", minY);
 
         // Fetch base probabilities
-        Float currentThreshold = 0.0f;
         ConfigurationSection base = config.getConfigurationSection("base_probability");
         if (base != null) {
-            Set<String> keys = base.getKeys(false);
-            for (String key : keys) {
-                Integer wandCount = Integer.parseInt(key);
-                Float threshold = (float)base.getDouble(key, 0);
-                currentThreshold += threshold;
-                baseProbability.add(new WeightedPair<Integer>(currentThreshold, wandCount));
-            }
+            RandomUtils.populateIntegerProbabilityMap(baseProbability, base);
         }
 
         // Fetch wand probabilities
-        currentThreshold = 0.0f;
         ConfigurationSection wands = config.getConfigurationSection("item_probability");
         if (wands != null) {
-            Set<String> keys = wands.getKeys(false);
-            for (String key : keys) {
-                Float threshold = (float)wands.getDouble(key, 0);
-                currentThreshold += threshold;
-                itemProbability.add(new WeightedPair<String>(currentThreshold, key));
-            }
+            RandomUtils.populateStringProbabilityMap(itemProbability, base);
         }
 
         return baseProbability.size() > 0 && itemProbability.size() > 0;

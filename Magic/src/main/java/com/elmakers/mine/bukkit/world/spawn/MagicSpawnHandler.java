@@ -75,7 +75,7 @@ public class MagicSpawnHandler {
 
             String className = handlerConfig.getString("class");
             SpawnRule handler = createSpawnRule(className);
-            if (handler != null) {
+            if (handler != null && handler.load(key, handlerConfig, controller)) {
                 addRule(handler);
             }
         }
