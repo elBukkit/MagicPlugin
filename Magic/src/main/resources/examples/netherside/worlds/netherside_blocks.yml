@@ -205,7 +205,7 @@ netherside_blocks:
         sea_lantern: glowstone
         red_mushroom_block: glowstone
         brown_mushroom_block: glowstone
-        podzoi: nether_wart_block
+        podzol: nether_wart_block
         coarse_dirt: crimson_hyphae
 
         rail: cyan_carpet

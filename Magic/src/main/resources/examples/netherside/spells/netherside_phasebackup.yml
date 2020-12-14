@@ -1,0 +1,13 @@
+#
+# This customizes the Phase to Backup spell to support backing up the netherside world
+#
+phasebackup:
+  parameters:
+    worlds:
+      world_netherside:
+        target: world_netherside_backup
+        copy: true
+        scale: 1
+      world_netherside_backup:
+        target: world_netherside
+        scale: 1
