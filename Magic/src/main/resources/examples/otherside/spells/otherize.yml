@@ -1,0 +1,64 @@
+otherize:
+  icon: stone_pickaxe{CustomModelData:18001}
+  icon_disabled: stone_pickaxe{CustomModelData:18002}
+  legacy_icon: spell_icon:103
+  legacy_icon_disabled: spell_icon_disabled:103
+  icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
+  category: engineering
+  tags: noduel
+  worth: 300
+  class: ConstructSpell
+  effects:
+    cast:
+      - class: EffectSingle
+        sound: block_piston_extend
+        sound_volume: 0.2
+        sound_pitch: 0.5
+      - sound: entity_illusioner_cast_spell
+        sound_pitch: 1.8
+      - location: target
+        target_offset: 0,1,0
+        effectlib:
+          class: Helix
+          particle: crimson_spore
+          duration: 1000
+          radius: 2
+          particles: 8
+          particle_count: 4
+          particle_offset: 0.05
+      - class: EffectTrail
+        particle: dripping_honey
+        particle_count: 4
+        particle_offset: 0.2
+      - location: target
+        effectlib:
+          class: Star
+          particle: end_rod
+          duration: 1000
+          spike_height: 4
+          particles: 10
+          particle_count: 4
+          particle_offset: 0.05
+      - class: EffectTrail
+        particle: dripping_honey
+        particle_count: 4
+        particle_offset: 0.2
+  parameters:
+    target: block
+    allow_max_range: false
+    range: 32
+    radius: 4
+    type: sphere
+    check_destructible: false
+    transparent: transparent_to_construction
+    brush: clone
+    brushmod: erase
+    otworld: world_netherside
+    obworld: world
+    brushtarget: true
+    cooldown: 7000
+    ignore_region_overrides: true
+    cancel_on_deactivate: false
+    replacements: otherside
+  costs:
+    mana: 200

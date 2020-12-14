@@ -1,0 +1,77 @@
+superotherize:
+  icon: golden_pickaxe{CustomModelData:18001}
+  icon_disabled: golden_pickaxe{CustomModelData:18002}
+  legacy_icon: spell_icon:104
+  legacy_icon_disabled: spell_icon_disabled:104
+  icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
+  category: engineering
+  tags: noduel
+  class: ConstructSpell
+  worth: 500
+  effects:
+    no_target:
+      - sound: block_note_block_didgeridoo
+        sound_pitch: 1.75
+        sound_volume: 0.15
+      - location: both
+      - class: EffectTrail
+        particle: spell_mob
+      - class: EffectTrail
+        particle: redstone
+        color: "#880000"
+        particle_count: 8
+        particle_offset_x: 0.05
+        particle_offset_y: 0.05
+        particle_offset_z: 0.05
+    cast:
+      - class: EffectSingle
+        sound: block_piston_extend
+        sound_volume: 0.2
+        sound_pitch: 0.3
+      - sound: entity_illusioner_cast_spell
+        sound_pitch: 0.7
+      - location: target
+        target_offset: 0,1,0
+        effectlib:
+          class: Helix
+          particle: crimson_spore
+          duration: 1000
+          radius: 2
+          particles: 8
+          particle_count: 4
+          particle_offset: 0.05
+      - class: EffectTrail
+        particle: dripping_honey
+        particle_count: 4
+        particle_offset: 0.2
+      - location: selection_to_target
+        radius_override: spike_height
+        effectlib:
+          class: Star
+          particle: end_rod
+          duration: 500
+          particles: 10
+          particle_count: 4
+          particle_offset: 0.05
+      - class: EffectTrail
+        particle: dripping_honey
+        particle_count: 4
+        particle_offset: 0.2
+  parameters:
+    target: select
+    allow_max_range: true
+    max_dimension: 32
+    range: 32
+    type: sphere
+    check_destructible: false
+    transparent: transparent_to_construction
+    brush: clone
+    brushmod: erase
+    otworld: world_netherside
+    obworld: world
+    brushtarget: true
+    ignore_region_overrides: true
+    cancel_on_deactivate: false
+    replacements: otherside
+  costs:
+    mana: 400

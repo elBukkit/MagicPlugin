@@ -1,0 +1,8 @@
+spells:
+  otherize:
+    name: Otherize
+    description: Copy structures from the overworld into the other side
+
+  superotherize:
+    name: SuperOtherise
+    description: Copy structures from the overworld into the other side
