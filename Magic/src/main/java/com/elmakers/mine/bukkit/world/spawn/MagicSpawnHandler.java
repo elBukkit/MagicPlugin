@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.world.spawn;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,24 +18,17 @@ public class MagicSpawnHandler {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.spawn.builtin";
 
     protected final MagicController controller;
-    private final Map<EntityType, Set<SpawnRule>> entityTypeMap = new HashMap<EntityType, Set<SpawnRule>>();
-    private final Set<SpawnRule> globalRules = new TreeSet<SpawnRule>();
-    private final Map<String, SpawnRule> spawnRules = new TreeMap<String, SpawnRule>();
+    private final Map<EntityType, List<SpawnRule>> entityTypeMap = new HashMap<>();
+    private final List<SpawnRule> globalRules = new ArrayList<>();
     protected String worldName;
 
     public MagicSpawnHandler(MagicController controller) {
         this.controller = controller;
     }
 
-    public void clear() {
-        entityTypeMap.clear();
-        spawnRules.clear();
-        globalRules.clear();
-    }
-
     @Nullable
     public LivingEntity process(Plugin plugin, LivingEntity entity) {
-        Set<SpawnRule> entityRules = entityTypeMap.get(entity.getType());
+        List<SpawnRule> entityRules = entityTypeMap.get(entity.getType());
          if (entityRules != null) {
             for (SpawnRule rule : entityRules) {
                 LivingEntity result = rule.process(plugin, entity);
@@ -55,12 +48,11 @@ public class MagicSpawnHandler {
     }
 
     protected void addRule(SpawnRule rule) {
-        spawnRules.put(rule.getKey(), rule);
         EntityType targetType = rule.getTargetType();
         if (targetType != null) {
-            Set<SpawnRule> entityRules = entityTypeMap.get(rule.getTargetType());
+            List<SpawnRule> entityRules = entityTypeMap.get(rule.getTargetType());
             if (entityRules == null) {
-                entityRules = new TreeSet<SpawnRule>();
+                entityRules = new ArrayList<>();
                 entityTypeMap.put(targetType, entityRules);
             }
             entityRules.add(rule);
@@ -82,30 +74,23 @@ public class MagicSpawnHandler {
             }
 
             String className = handlerConfig.getString("class");
-            SpawnRule handler = spawnRules.get(key);
-            spawnRules.remove(key);
-            if (handler == null) {
-                handler = createSpawnRule(className);
-            } else {
-                EntityType entityType = handler.getTargetType();
-                if (entityType != null) {
-                    Set<SpawnRule> entityRules = entityTypeMap.get(entityType);
-                    if (entityRules != null) {
-                        entityRules.remove(handler);
-                    }
-                }
-            }
+            SpawnRule handler = createSpawnRule(className);
             if (handler != null) {
-                if (handler.load(key, handlerConfig, controller)) {
-                    addRule(handler);
-                }
+                addRule(handler);
             }
         }
     }
 
     public void finalizeLoad() {
-        for (SpawnRule rule : spawnRules.values()) {
+        Collections.sort(globalRules);
+        for (SpawnRule rule : globalRules) {
             rule.finalizeLoad(worldName);
+        }
+        for (List<SpawnRule> rules : entityTypeMap.values()) {
+            Collections.sort(rules);
+            for (SpawnRule rule : rules) {
+                rule.finalizeLoad(worldName);
+            }
         }
     }
 
