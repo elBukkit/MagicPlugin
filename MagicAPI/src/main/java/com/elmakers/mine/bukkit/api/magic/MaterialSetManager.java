@@ -4,6 +4,8 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 /**
  * Container of material sets.
  */
@@ -32,6 +34,17 @@ public interface MaterialSetManager {
 
     @Nonnull
     MaterialSet getMaterialSetEmpty(@Nonnull String name);
+
+    /**
+     * Looks up a material map by its name.
+     *
+     * @param name
+     *            The name of the material map. One of
+     *            {@link #getMaterialSets()}.
+     * @return The material map, or null when it is not available or if it is not a map
+     */
+    @Nullable
+    MaterialMap getMaterialMap(@Nonnull String name);
 
     /**
      * Loads or creates a material set from a configuration string.
@@ -63,4 +76,17 @@ public interface MaterialSetManager {
      */
     @Nonnull
     MaterialSet fromConfigEmpty(@Nullable String name);
+
+    /**
+     * Loads or creates a material map from a configuration section.
+     *
+     * @param configuration
+     *            The configuration to load from.
+     * @param key
+     *            The configuration key containing the config to load from.
+     *            Must be a string (referencing a configured material map)
+     *            or a configuration section (creating an ad-hoc map)
+     */
+    @Nullable
+    MaterialMap mapFromConfig(ConfigurationSection configuration, String key);
 }

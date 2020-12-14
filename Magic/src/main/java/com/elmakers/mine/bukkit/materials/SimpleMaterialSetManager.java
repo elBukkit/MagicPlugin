@@ -10,12 +10,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.magic.MaterialMap;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -23,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public final class SimpleMaterialSetManager
         implements MaterialSetManager {
+    private Logger log;
     private Map<String, MaterialSet> materialSets = new HashMap<>();
     private Set<String> unmodifiableMaterialSetKeys = Collections
             .unmodifiableSet(materialSets.keySet());
@@ -73,6 +77,12 @@ public final class SimpleMaterialSetManager
     }
 
     @Nullable
+    public MaterialMap getMaterialMap(@Nonnull String name) {
+        MaterialSet existing = materialSets.get(name);
+        return existing == null || !(existing instanceof MaterialMap) ? null : (MaterialMap)existing;
+    }
+
+    @Nullable
     @Override
     public MaterialSet fromConfig(String name) {
         if (name == null || name.isEmpty()) {
@@ -98,6 +108,15 @@ public final class SimpleMaterialSetManager
     @Override
     public MaterialSet fromConfigEmpty(String name) {
         return fromConfig(name, MaterialSets.empty());
+    }
+
+    @Nullable
+    public MaterialMap mapFromConfig(ConfigurationSection configuration, String key) {
+        ConfigurationSection adhoc = configuration.getConfigurationSection(key);
+        if (adhoc != null) {
+            return createMaterialMap(adhoc);
+        }
+        return getMaterialMap(configuration.getString(key));
     }
 
     public void loadMaterials(ConfigurationSection materialNode) {
@@ -156,6 +175,7 @@ public final class SimpleMaterialSetManager
         }
 
         if (existing == null) {
+            warning("Invalid material set: " + materialSet);
             return null;
         }
 
@@ -168,14 +188,39 @@ public final class SimpleMaterialSetManager
             return createMaterialSetFromString(node.getString(key));
         }
 
+        ConfigurationSection section = node.getConfigurationSection(key);
+        if (section != null) {
+            return createMaterialMap(section);
+        }
+
         List<String> materialData = node.getStringList(key);
         if (materialData == null) {
-            // Ignore malformed data
-            // TODO: Support for explicitly specifying block state and tile meta
+            warning("Unexpected config type for material set '" + key + "': " + node.get(key));
             return null;
         }
 
         return createMaterialSetFromStringList(materialData);
+    }
+
+    private MaterialMap createMaterialMap(ConfigurationSection section) {
+        Map<Material, MaterialAndData> materialMap = new HashMap<>();
+        Set<String> keys = section.getKeys(false);
+        for (String key : keys) {
+            Material material = ConfigurationUtils.toMaterial(key);
+            if (material == null) {
+                warning("Invalid material key in map: " + key);
+                continue;
+            }
+
+            String valueKey = section.getString(key);
+            MaterialAndData toMaterial = ConfigurationUtils.toMaterialAndData(valueKey);
+            if (toMaterial == null || !toMaterial.isValid()) {
+                warning("Invalid material value in map: " + valueKey);
+                continue;
+            }
+            materialMap.put(material, toMaterial);
+        }
+        return new SimpleMaterialMap(materialMap);
     }
 
     private MaterialSet createMaterialSetFromStringList(List<String> names) {
@@ -190,12 +235,16 @@ public final class SimpleMaterialSetManager
                         .toMaterialAndData(matName);
                 if (material != null && material.isValid()) {
                     union.add(material);
+                } else {
+                    warning("Invalid material value in list: " + matName);
                 }
             } else {
                 // No data specified => Match all materials.
                 Material material = ConfigurationUtils.toMaterial(matName);
                 if (material != null) {
                     union.add(material);
+                } else {
+                    warning("Invalid material value in list: " + matName);
                 }
             }
         }
@@ -203,4 +252,13 @@ public final class SimpleMaterialSetManager
         return union.build();
     }
 
+    protected void warning(String message) {
+        if (log != null) {
+            log.warning(message);
+        }
+    }
+
+    public void setLogger(Logger logger) {
+        this.log = logger;
+    }
 }
