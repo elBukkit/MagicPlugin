@@ -179,7 +179,7 @@ public final class SimpleMaterialSetManager
     }
 
     private MaterialSet createMaterialSetFromStringList(List<String> names) {
-        MaterialSets.Union union = MaterialSets.unionBuilder();
+        Union union = MaterialSets.unionBuilder();
         for (String matName : names) {
             MaterialSet resolved = parseMaterialSet(matName);
             if (resolved != null) {
