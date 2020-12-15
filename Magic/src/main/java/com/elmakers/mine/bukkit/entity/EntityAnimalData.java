@@ -9,10 +9,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Sittable;
 import org.bukkit.entity.Tameable;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class EntityAnimalData extends EntityExtraData {
     private UUID owner;
@@ -46,10 +46,7 @@ public class EntityAnimalData extends EntityExtraData {
             }
             this.tamed = tameable.isTamed();
         }
-        if (entity instanceof Sittable) {
-            Sittable sittable = (Sittable)entity;
-            this.sitting = sittable.isSitting();
-        }
+        this.sitting = CompatibilityUtils.isSitting(entity);
     }
 
     @Override
@@ -64,9 +61,6 @@ public class EntityAnimalData extends EntityExtraData {
             }
             tameable.setTamed(tamed);
         }
-        if (entity instanceof Sittable) {
-            Sittable sittable = (Sittable)entity;
-            sittable.setSitting(sitting);
-        }
+        CompatibilityUtils.setSitting(entity, sitting);
     }
 }

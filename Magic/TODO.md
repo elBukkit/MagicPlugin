@@ -5,6 +5,7 @@
  - Editor
    - Gets confused by spaces, test out recipes
      row_2: "aa ...
+   - Add support for triggers
 
 ## World Gen
 
