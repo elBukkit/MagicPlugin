@@ -45,7 +45,6 @@ otherside:
 
   cobblestone: nether_bricks
   mossy_cobblestone: iron_block
-  spawner: diamond_block
   ice: white_stained_glass
   packed_ice: blue_stained_glass
   clay: orange_terracotta
