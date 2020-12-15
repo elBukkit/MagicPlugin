@@ -9,7 +9,7 @@ madscientist:
   leggings: warlock_leggings
   helmet: madscientist_helmet
   boots: warlock_boots
-  health: 5000
+  health: 150
   default_drops: false
   interval: 1000
   triggers:
@@ -19,7 +19,7 @@ madscientist:
         none: 20
   drops:
   - gold_ingot@30
-  - sp:200
+  - sp:50
   potion_effects:
   - type: speed
     amplifier: 1

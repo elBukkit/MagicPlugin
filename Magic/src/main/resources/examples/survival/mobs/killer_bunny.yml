@@ -2,7 +2,7 @@ killer_bunny:
   type: rabbit
   rabbit_type: the_killer_bunny
   name: Killer Bunny
-  health: 50
+  health: 25
   default_drops: false
 
   # This will force this mob to target the player who is damaging it.
