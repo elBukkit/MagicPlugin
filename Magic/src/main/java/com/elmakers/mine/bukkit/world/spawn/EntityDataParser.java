@@ -24,6 +24,9 @@ public class EntityDataParser extends ValueParser<EntityData> {
     @Override
     @Nullable
     public EntityData parse(String value) {
+        if (value == null || value.isEmpty() || value.equalsIgnoreCase("none")) {
+            return null;
+        }
         return controller.getMob(value);
     }
 }

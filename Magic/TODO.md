@@ -8,7 +8,6 @@
 
 ## World Gen
 
- - Allow using weighted probability map for mob spawns (and maybe block replacement)
  - Some way to scale mobs up (levels?) with distance from spawn
  - Synchronized day/night cycle of two worlds (sleep event?)
 
@@ -19,7 +18,6 @@
 
 ## List is too long
 
- - Flare spell keeps running?
  - Path re-work
    - Treat like another TemplatedProperties property holder
    - Maybe use ParentedProperties and reconsider the way path inheritance works
@@ -35,11 +33,6 @@
  - Wands deactivate on TP (sometimes? cross-world? idk, can't reproduce)
  - Magic crossbow support: https://editor.elmakers.com/bz8e4d
 
- This this example setup:
-
-   Base example: potter
-   Examples: - arenas
-
  - Modifiers
    - Allow variables in modifiers
    - Inputs are all of the target wand's properties
@@ -52,13 +45,8 @@
     - larger radius ?
     - longer DOT durations ?
 
- - Archer mob is broken ... ?
- - Re-work wand protection
- - Mnpc select can't target underwater
  - Can we make pets?
  - Make "untame" spell
- - EntityData improvements:
-   - llama/donkey properties, inventory
  - Spells ignore tamed mobs of friends ?
  - Mage add brush tab-completion is dumb (or does this command not exist?)
  - Absorb should allow you to bypass restricted materials when you have bypass perms
