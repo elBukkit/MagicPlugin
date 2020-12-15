@@ -8,6 +8,10 @@
    - There is editor support
    - Fix issues with NPCs and Automata getting lost if in unloaded worlds
    - Added new example configs: `spawnmobs`, `chests`, `netherside` and `otherside`
+   - Spawn rules can now use weighted probability maps
+   - Spawn rules can have a priority, don't need to rely on key order
+   - Replace rules can specify special directives: `stop` to stop further processing,
+     `remove` to just remove a mob without replacing
 
  - Crafting improvements
    - Allow using "vanilla: true" to easily override a vanilla recipe (just set the output to a vanilla item type)

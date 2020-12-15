@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,25 +27,29 @@ public class MagicSpawnHandler {
         this.controller = controller;
     }
 
-    @Nullable
-    public LivingEntity process(Plugin plugin, LivingEntity entity) {
-        List<SpawnRule> entityRules = entityTypeMap.get(entity.getType());
-         if (entityRules != null) {
-            for (SpawnRule rule : entityRules) {
-                LivingEntity result = rule.process(plugin, entity);
-                if (result != null) {
+    protected SpawnResult processRules(Plugin plugin, LivingEntity entity, List<SpawnRule> rules) {
+        if (rules != null) {
+            for (SpawnRule rule : rules) {
+                SpawnResult result = rule.process(plugin, entity);
+                if (result != SpawnResult.SKIP) {
                     return result;
                 }
             }
         }
+        return SpawnResult.SKIP;
+    }
 
-        for (SpawnRule rule : globalRules) {
-            LivingEntity result = rule.process(plugin, entity);
-            if (result != null) {
-                return result;
-            }
-        }
-        return null;
+    /**
+     * Returns true if the spawn should be cancelled
+     */
+    @Nullable
+    public boolean process(Plugin plugin, LivingEntity entity) {
+        List<SpawnRule> entityRules = entityTypeMap.get(entity.getType());
+        SpawnResult result = processRules(plugin, entity, entityRules);
+        if (result == SpawnResult.STOP) return false;
+        if (result != SpawnResult.SKIP) return true;
+        result = processRules(plugin, entity, globalRules);
+        return result != SpawnResult.SKIP && result != SpawnResult.STOP;
     }
 
     protected void addRule(SpawnRule rule) {
@@ -109,7 +114,7 @@ public class MagicSpawnHandler {
         try {
             handlerClass = Class.forName(className);
         } catch (Throwable ex) {
-            controller.getLogger().warning("Error loading handler: " + className + ", " + ex.getMessage());
+            controller.getLogger().log(Level.WARNING, "Error loading handler: " + className, ex);
             return null;
         }
 
@@ -117,8 +122,7 @@ public class MagicSpawnHandler {
         try {
             newObject = handlerClass.getDeclaredConstructor().newInstance();
         } catch (Throwable ex) {
-            controller.getLogger().warning("Error loading handler: " + className);
-            ex.printStackTrace();
+            controller.getLogger().log(Level.WARNING, "Error loading handler: " + className, ex);
             return null;
         }
 

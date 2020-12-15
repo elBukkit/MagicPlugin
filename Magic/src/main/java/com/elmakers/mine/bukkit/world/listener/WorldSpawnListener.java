@@ -54,8 +54,7 @@ public class WorldSpawnListener implements Listener
         Plugin plugin = controller.getPlugin();
         spawning = true;
         try {
-            LivingEntity replace =  magicWorld.processEntitySpawn(plugin, entity);
-            if (replace != null && replace != entity) {
+            if (magicWorld.processEntitySpawn(plugin, entity)) {
                 entity.remove();
                 event.setCancelled(true);
             }

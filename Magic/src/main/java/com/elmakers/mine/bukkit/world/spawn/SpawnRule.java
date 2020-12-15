@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -41,7 +42,8 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
 
     protected static final Random rand = new Random();
 
-    public abstract LivingEntity onProcess(Plugin plugin, LivingEntity entity);
+    @Nonnull
+    public abstract SpawnResult onProcess(Plugin plugin, LivingEntity entity);
 
     public SpawnRule() {
     }
@@ -70,7 +72,7 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         this.key = key;
         this.controller = controller;
         String entityTypeName = parameters.getString("target_type");
-        if (entityTypeName != null && !entityTypeName.isEmpty() && !entityTypeName.equals("*")) {
+        if (entityTypeName != null && !entityTypeName.isEmpty() && !entityTypeName.equals("*") && !entityTypeName.equalsIgnoreCase("all")) {
             this.targetEntityType = EntityData.parseEntityType(entityTypeName);
             if (targetEntityType == null) {
                 this.controller.getLogger().warning(" Invalid entity type: " + entityTypeName);
@@ -100,20 +102,12 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         this.priority = parameters.getInt("priority", 0);
         Collection<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
         if (tagList != null && !tagList.isEmpty()) {
-            tags = new HashSet<String>(tagList);
+            tags = new HashSet<>(tagList);
         }
         biomes = loadBiomes(ConfigurationUtils.getStringList(parameters, "biomes"));
         notBiomes = loadBiomes(ConfigurationUtils.getStringList(parameters, "not_biomes"));
         priority = parameters.getInt("priority");
         return true;
-    }
-
-    public void setPercentChance(float percentChance) {
-        this.percentChance = percentChance;
-    }
-
-    public float getPercentChance() {
-        return percentChance;
     }
 
     public EntityType getTargetType() {
@@ -124,30 +118,30 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         return key;
     }
 
-    @Nullable
-    public LivingEntity process(Plugin plugin, LivingEntity entity) {
-        if (targetEntityType != null && targetEntityType != entity.getType()) return null;
-        if (targetEntityClass != null && !targetEntityClass.isAssignableFrom(entity.getClass())) return null;
-        if (!targetCustom && entity.getCustomName() != null) return null;
-        if (!targetNPC && controller.isNPC(entity)) return null;
-        if (percentChance < rand.nextFloat()) return null;
+    @Nonnull
+    public SpawnResult process(Plugin plugin, LivingEntity entity) {
+        if (targetEntityType != null && targetEntityType != entity.getType()) return SpawnResult.SKIP;
+        if (targetEntityClass != null && !targetEntityClass.isAssignableFrom(entity.getClass())) return SpawnResult.SKIP;
+        if (!targetCustom && entity.getCustomName() != null) return SpawnResult.SKIP;
+        if (!targetNPC && controller.isNPC(entity)) return SpawnResult.SKIP;
+        if (percentChance < rand.nextFloat()) return SpawnResult.SKIP;
         long now = System.currentTimeMillis();
-        if (cooldown > 0 && lastSpawn != 0 && now < lastSpawn + cooldown) return null;
+        if (cooldown > 0 && lastSpawn != 0 && now < lastSpawn + cooldown) return SpawnResult.SKIP;
         Location entityLocation = entity.getLocation();
         int y = entityLocation.getBlockY();
-        if (y < minY || y > maxY) return null;
+        if (y < minY || y > maxY) return SpawnResult.SKIP;
 
         if (tags != null && !controller.inTaggedRegion(entity.getLocation(), tags)) {
-            return null;
+            return SpawnResult.SKIP;
         }
-        if (biomes != null && !biomes.contains(entity.getLocation().getBlock().getBiome())) return null;
-        if (notBiomes != null && notBiomes.contains(entity.getLocation().getBlock().getBiome())) return null;
+        if (biomes != null && !biomes.contains(entity.getLocation().getBlock().getBiome())) return SpawnResult.SKIP;
+        if (notBiomes != null && notBiomes.contains(entity.getLocation().getBlock().getBiome())) return SpawnResult.SKIP;
 
         if (!this.allowIndoors) {
             // Bump it up two to miss things like tall grass
             Block highest = entityLocation.getWorld().getHighestBlockAt(entityLocation);
             if (highest.getY() - entityLocation.getY() > 3) {
-                return null;
+                return SpawnResult.SKIP;
             }
         }
         lastSpawn = now;
@@ -169,6 +163,25 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         if (targetEntityClass != null) {
             return "entities of class " + targetEntityClass.getSimpleName();
         }
-        return targetEntityType == null ? "all entities" : targetEntityType.name();
+        return targetEntityType == null ? "all entities" : targetEntityType.name().toLowerCase();
+    }
+
+    protected void logSpawnRule(String message) {
+        if (minY > 0) {
+            message += " at y > " + minY;
+        }
+        if (percentChance < 1) {
+            message += " at a " + (percentChance * 100) + "% chance";
+        }
+        if (tags != null) {
+            message = message + " in regions tagged with any of " + tags.toString();
+        }
+        if (biomes != null) {
+            message = message + " in biomes " + biomes.toString();
+        }
+        if (notBiomes != null) {
+            message = message + " not in biomes " + notBiomes.toString();
+        }
+        controller.info(message);
     }
 }

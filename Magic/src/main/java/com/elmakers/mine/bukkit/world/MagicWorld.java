@@ -140,7 +140,7 @@ public class MagicWorld {
     }
 
     @Nullable
-    public LivingEntity processEntitySpawn(Plugin plugin, LivingEntity entity) {
+    public boolean processEntitySpawn(Plugin plugin, LivingEntity entity) {
         return spawnHandler.process(plugin, entity);
     }
 

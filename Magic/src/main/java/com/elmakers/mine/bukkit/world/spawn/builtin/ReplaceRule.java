@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,13 +15,15 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import com.elmakers.mine.bukkit.world.spawn.EntityDataParser;
+import com.elmakers.mine.bukkit.world.spawn.SpawnOption;
+import com.elmakers.mine.bukkit.world.spawn.SpawnOptionParser;
+import com.elmakers.mine.bukkit.world.spawn.SpawnResult;
 import com.elmakers.mine.bukkit.world.spawn.SpawnRule;
 
 public class ReplaceRule extends SpawnRule {
     // Keep these separate for efficiency
-    protected EntityData replaceWith;
-    protected Deque<WeightedPair<EntityData>> replaceProbability;
+    protected SpawnOption replaceWith;
+    protected Deque<WeightedPair<SpawnOption>> replaceProbability;
 
     @Override
     public void finalizeLoad(String worldName) {
@@ -34,11 +36,12 @@ public class ReplaceRule extends SpawnRule {
         }
 
         ConfigurationSection section = parameters.getConfigurationSection("type");
+        SpawnOptionParser parser = SpawnOptionParser.getInstance(controller);
         if (section == null) {
-            replaceWith = controller.getMob(parameters.getString("type"));
+            replaceWith = parser.parse(parameters.getString("type"));
         } else {
             replaceProbability = new ArrayDeque<>();
-            RandomUtils.populateProbabilityMap(EntityDataParser.getInstance(controller), replaceProbability, section);
+            RandomUtils.populateProbabilityMap(parser, replaceProbability, section);
         }
 
         if (replaceProbability == null && (replaceWith == null || replaceWith.getType() == null)) {
@@ -50,47 +53,40 @@ public class ReplaceRule extends SpawnRule {
             replaceDescription = replaceWith.describe();
         } else {
             List<String> names = new ArrayList<>();
-            for (WeightedPair<EntityData> entityType : replaceProbability) {
-                EntityData entityData = entityType.getValue();
-                names.add(entityData == null ? "(None)" : entityData.describe());
+            for (WeightedPair<SpawnOption> option : replaceProbability) {
+                names.add(option.getValue().describe());
             }
             replaceDescription = StringUtils.join(names, ",");
         }
-        String message = " Replacing: " + getTargetEntityTypeName() + " in " + worldName + " at y > " + minY
-                + " with " + replaceDescription + " at a " + (percentChance * 100) + "% chance";
-
-        if (tags != null) {
-            message = message + " in regions tagged with any of " + tags.toString();
-        }
-        if (biomes != null) {
-            message = message + " in biomes " + biomes.toString();
-        }
-        if (notBiomes != null) {
-            message = message + " not in biomes " + notBiomes.toString();
-        }
-        controller.info(message);
+        logSpawnRule("Replacing: " + getTargetEntityTypeName() + " in " + worldName + " with " + replaceDescription);
     }
 
     @Override
-    @Nullable
-    public LivingEntity onProcess(Plugin plugin, LivingEntity entity) {
-        if (replaceWith == null && replaceProbability == null) return null;
-        EntityData replaceWith = this.replaceWith;
+    @Nonnull
+    public SpawnResult onProcess(Plugin plugin, LivingEntity entity) {
+        if (replaceWith == null && replaceProbability == null) return SpawnResult.SKIP;
+        SpawnOption option = this.replaceWith;
         if (replaceProbability != null) {
-            replaceWith = RandomUtils.weightedRandom(replaceProbability);
+            option = RandomUtils.weightedRandom(replaceProbability);
         }
-        if (replaceWith == null) {
-            return null;
+        if (option.getType() == SpawnResult.REPLACE) {
+            EntityData replacement = option.getReplacement();
+
+            // This makes replacing the same type of mob have better balance,
+            // particularly with mob spawners
+            if (entity.getType() == replacement.getType()) {
+                replacement.modify(entity);
+                // Don't cancel spawning in this case, but also stop further processing
+                // since that is how a replacement normally works.
+                return SpawnResult.STOP;
+            }
+
+            Entity spawned = replacement.spawn(entity.getLocation());
+            if (replacement == null) {
+                return SpawnResult.SKIP;
+            }
         }
 
-        // This makes replacing the same type of mob have better balance,
-        // particularly with mob spawners
-        if (entity.getType() == replaceWith.getType()) {
-            replaceWith.modify(entity);
-            return entity;
-        }
-
-        Entity spawned = replaceWith.spawn(entity.getLocation());
-        return spawned instanceof LivingEntity ? (LivingEntity)spawned : null;
+        return option.getType();
     }
 }
