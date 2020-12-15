@@ -100,6 +100,9 @@ public class MagicSpawnHandler {
 
         if (className.indexOf('.') <= 0) {
             className = BUILTIN_CLASSPATH + "." + className;
+            if (!className.endsWith("Rule")) {
+                className += "Rule";
+            }
         }
 
         Class<?> handlerClass = null;

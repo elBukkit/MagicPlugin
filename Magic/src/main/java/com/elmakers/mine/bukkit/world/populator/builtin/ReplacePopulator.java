@@ -40,7 +40,7 @@ public class ReplacePopulator extends MagicBlockPopulator {
 
         ConfigurationSection replaceBiomeSection = config.getConfigurationSection("replace_biomes");
         if (replaceBiomeSection != null) {
-            replaceBiomes = new HashMap<Biome, Biome>();
+            replaceBiomes = new HashMap<>();
             Set<String> biomeKeys = replaceBiomeSection.getKeys(false);
             for (String biomeKey : biomeKeys) {
                 String toBiomeKey = replaceBiomeSection.getString(biomeKey);

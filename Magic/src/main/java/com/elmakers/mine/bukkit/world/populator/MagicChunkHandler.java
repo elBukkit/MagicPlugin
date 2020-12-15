@@ -56,6 +56,9 @@ public class MagicChunkHandler {
 
         if (className.indexOf('.') <= 0) {
             className = BUILTIN_CLASSPATH + "." + className;
+            if (!className.endsWith("Populator")) {
+                className += "Populator";
+            }
         }
 
         Class<?> handlerClass = null;
