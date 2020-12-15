@@ -77,6 +77,7 @@ public final class SimpleMaterialSetManager
     }
 
     @Nullable
+    @Override
     public MaterialMap getMaterialMap(@Nonnull String name) {
         MaterialSet existing = materialSets.get(name);
         return existing == null || !(existing instanceof MaterialMap) ? null : (MaterialMap)existing;
@@ -111,6 +112,7 @@ public final class SimpleMaterialSetManager
     }
 
     @Nullable
+    @Override
     public MaterialMap mapFromConfig(ConfigurationSection configuration, String key) {
         ConfigurationSection adhoc = configuration.getConfigurationSection(key);
         if (adhoc != null) {
