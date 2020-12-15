@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.bukkit.Chunk;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -41,6 +44,29 @@ public class WorldSpawnListener implements Listener
                 }
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onChunkLoad(ChunkLoadEvent event) {
+        if (spawning || ignoreReasons.contains(SpawnReason.CHUNK_GEN) || !event.isNewChunk()) return;
+        Chunk chunk = event.getChunk();
+        MagicWorld magicWorld = controller.getWorld(chunk.getWorld().getName());
+        if (magicWorld == null) return;
+
+        Plugin plugin = controller.getPlugin();
+        spawning = true;
+        for (Entity testEntity : chunk.getEntities()) {
+            if (!(testEntity instanceof LivingEntity)) continue;
+            LivingEntity entity = (LivingEntity)testEntity;
+            try {
+                if (magicWorld.processEntitySpawn(plugin, entity)) {
+                    entity.remove();
+                }
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.SEVERE, "Error replacing mob", ex);
+            }
+        }
+        spawning = false;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
