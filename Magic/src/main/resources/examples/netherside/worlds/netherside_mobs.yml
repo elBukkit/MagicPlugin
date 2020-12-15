@@ -3,186 +3,209 @@ netherside_mobs:
   copy: world
   entity_spawn:
 
-    polar_bear_1_warlock:
-      class: ReplaceRule
-      target_type: polar_bear
-      replace_type: warlock
-      probability: 0.05
+    # Prevent replacing piglins on zombificiation
+    zombified_piglin:
+      priority: 1000
+      class: Replace
+      target_type: zombified_piglin
+      replace_type: stop
+    zoglin:
+      priority: 1000
+      class: Replace
+      target_type: zoglin
+      replace_type: stop
 
-    rabbit_1_warlock:
-      class: ReplaceRule
-      target_type: rabbit
-      replace_type: warlock
-      probability: 0.05
+    # This will run if nothing else does, we make sure to replace every mob here.
+    fallback:
+      priority: -500
+      class: Replace
+      replace_type:
+        warlock: 10
+        dark_wizard: 1
+        undead_overlord: 40
+        undead_minion: 100
+        mutant: 100
+        mutant_captain: 10
+        dark_spider: 20
+        mega_spider: 1
+        mutant_spider: 20
+        mega_phantom: 5
+        polterghast: 15
+        cube: 20
+        fire_elemental: 15
+        werewolf: 10
+        madscientist: 1
+        strider: 20
+        blaze: 20
+        ghast: 20
+        piglin: 5
+        zombified_piglin: 5
+        hoglin: 2
+        zoglin: 4
 
-    rabbit_2_dark_wizard:
-      class: ReplaceRule
+    rabbit:
+      class: Replace
       target_type: rabbit
-      replace_type: dark_wizard
-      probability: 0.01
-
-    rabbit_3_killer:
-      target_type: rabbit
-      replace_type: killer_bunny
       probability: 0.9
+      replace_type:
+        warlock: 10
+        dark_wizard: 1
+        killer_bunny: 20
 
-    skeleton_1_overlord:
-      class: ReplaceRule
+    skeleton:
+      class: Replace
       target_type: skeleton
-      replace_type: undead_overlord
-      probability: 0.5
+      probability: 0.9
+      replace_type:
+        undead_overlord: 10
+        undead_minion: 100
+        dark_wizard: 1
+        blaze: 5
+        none: 50
 
-    skeleton_2_minion:
-      class: ReplaceRule
-      target_type: skeleton
-      replace_type: undead_minion
-      probability: 0.5
+    creeper:
+      class: Replace
+      target_type: creeper
+      probability: 0.9
+      replace_type:
+        dark_wizard: 1
+        zombified_piglin: 20
+        piglin: 50
+        blaze: 5
 
-    creeper_1_dark_wizard:
-      class: ReplaceRule
-      target_type: skeleton
-      replace_type: dark_wizard
-      probability: 0.01
-
-    zombie_1_mutant:
-      class: ReplaceRule
+    zombie:
+      class: Replace
       target_type: zombie
-      replace_type: mutant
-      probability: 0.1
-    zombie_2_mutant_captain:
-      class: ReplaceRule
-      target_type: zombie
-      replace_type: mutant_captain
-      probability: 0.1
+      probability: 0.9
+      replace_type:
+        mutant: 10
+        mutant_captain: 1
+        zombified_piglin: 25
+        piglin: 10
+        blaze: 5
 
-    spider_1_dark:
-      class: ReplaceRule
-      target_type: zombie
-      replace_type: dark_spider
-      probability: 0.1
-    spider_2_mega:
-      class: ReplaceRule
-      target_type: zombie
-      replace_type: mega_spider
-      probability: 0.1
-    spider_3_mutant:
-      class: ReplaceRule
-      target_type: zombie
-      replace_type: mutant_spider
-      probability: 0.1
-
-    enderman_1_warlock:
-      class: ReplaceRule
-      probability: 0.1
-      target_type: enderman
-      replace_type: warlock
-    enderman_2_dark_wizard:
-      class: ReplaceRule
-      probability: 0.1
-      target_type: enderman
-      replace_type: dark_wizard
-    enderman_10_giant:
-      target_type: enderman
-      probability: 0.1
-      min_y: 63
-      class: ReplaceRule
-      replace_type: giant
-
-    # None of these are likely to spawn here since there is no grass!
-
-    horse_1_skeleton_horse:
-      target_type: horse
-      probability: 0.5
-      min_y: 63
-      class: ReplaceRule
-      replace_type: horse
-      replace_sub_type: skeleton_horse
-
-    chicken_999_enderman:
-      target_type: chicken
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: strider
-    sheep_999_enderman:
-      target_type: sheep
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: strider
-    horse_999_enderman:
-      target_type: horse
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: zombie_horse
-    cow_998_mushroom_cow:
-      target_type: cow
-      probability: 0.8
-      min_y: 63
-      class: ReplaceRule
-      replace_type: mushroom_cow
-    cow_999_enderman:
-      target_type: cow
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: skeleton_horse
-
-    # Default fallbacks
-
-    zombie_999_zombie_villager:
-      target_type: zombie
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: zombie_villager
-    spider_999_enderman:
+    spider:
+      class: Replace
       target_type: spider
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: enderman
-    rabbit_999_enderman:
-      target_type: rabbit
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: zombie_horse
-    pig_999_hoglin:
+      probability: 0.9
+      replace_type:
+        dark_spider: 10
+        mega_spider: 1
+        mutant_spider: 10
+        # Spiders are everywhere! eek
+        none: 10
+
+    enderman:
+      class: Replace
+      target_type: enderman
+      probability: 0.9
+      replace_type:
+        warlock: 10
+        dark_wizard: 1
+        giant: 5
+        wither_skeleton: 25
+        blaze: 20
+
+    horse:
+      target_type: horse
+      class: Replace
+      replace_type:
+        skeleton_horse: 10
+        zombie_horse: 10
+
+    chicken:
+      target_type: chicken
+      class: Replace
+      replace_type:
+        strider: 10
+        skeleton: 5
+        wither_skeleton: 1
+        piglin: 5
+
+    sheep:
+      target_type: sheep
+      class: Replace
+      replace_type: piglin
+
+    pig:
       target_type: pig
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: hoglin
+      class: Replace
+      replace_type:
+        hoglin: 50
+        zoglin: 10
 
-    # Other Mob Replacement
-    villager_1_mutant:
-      class: ReplaceRule
-      probability: 0.5
-      target_type: villager
-      replace_type: mutant
-    villager_2_mutant_captain:
-      class: ReplaceRule
-      probability: 0.4
-      target_type: villager
-      replace_type: mutant_captain
-    villager_3_mutant_villager:
-      class: ReplaceRule
-      probability: 1.0
-      target_type: villager
-      replace_type: mutant_villager
+    cow_mushroom_cow:
+      target_type: cow
+      class: Replace
+      replace_type: mushroom_cow
 
-    slime_1_lavaslime:
+    villager:
+      target_type: villager
+      class: Replace
+      replace_type:
+        mutant: 10
+        mutant_villager: 50
+        mutant_captain: 5
+
+    slime:
       target_type: slime
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: magma_cube
+      class: Replace
+      replace_type:
+        magma_cube: 20
+        king_slime: 5
+        cube: 10
 
-    bat_1_blaze:
+    bat:
       target_type: bat
-      probability: 1.0
-      min_y: 63
-      class: ReplaceRule
-      replace_type: blaze
+      class: Replace
+      probability: 0.9
+      replace_type:
+        blaze: 50
+        ghast: 30
+        polterghast: 5
+
+    phantom:
+      target_type: phantom
+      class: Replace
+      replace_type:
+        phantom: 50
+        mega_phantom: 10
+
+    # All sea creatures to striders
+
+    drowned:
+      target_type: drowned
+      class: Replace
+      replace_type: strider
+    pufferfish:
+      target_type: pufferfish
+      class: Replace
+      replace_type: strider
+    dolphin:
+      target_type: dolphin
+      class: Replace
+      replace_type: strider
+    guardian:
+      target_type: guardian
+      class: Replace
+      replace_type: strider
+    elder_guardian:
+      target_type: elder_guardian
+      class: Replace
+      replace_type: strider
+    salmon:
+      target_type: salmon
+      class: Replace
+      replace_type: strider
+    turtle:
+      target_type: turtle
+      class: Replace
+      replace_type: strider
+    tropical_fish:
+      target_type: tropical_fish
+      class: Replace
+      replace_type: strider
+    cod:
+      target_type: cod
+      class: Replace
+      replace_type: strider
