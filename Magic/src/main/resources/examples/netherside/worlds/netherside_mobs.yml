@@ -15,6 +15,13 @@ netherside_mobs:
       target_type: zoglin
       replace_type: stop
 
+    # Don't replace bats, they seem to be problematic. Caves really want bats.
+    bat:
+      priority: 1000
+      target_type: bat
+      class: Replace
+      replace_type: stop
+
     # This will run if nothing else does, we make sure to replace every mob here.
     fallback:
       priority: -500
@@ -154,15 +161,6 @@ netherside_mobs:
         magma_cube: 20
         king_slime: 5
         cube: 10
-
-    bat:
-      target_type: bat
-      class: Replace
-      probability: 0.9
-      replace_type:
-        blaze: 50
-        ghast: 30
-        polterghast: 5
 
     phantom:
       target_type: phantom

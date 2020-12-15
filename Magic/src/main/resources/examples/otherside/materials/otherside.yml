@@ -61,7 +61,7 @@ otherside:
   brown_mushroom_block: chorus_flower
 
   poppy: crimson_fungus
-  grass: nether_wart
+  grass: crimson_roots
   oxeye_daisy: crimson_roots
   blue_orchid: nether_sprouts
   dead_bush: crimson_roots
@@ -123,3 +123,4 @@ otherside:
   sunflower: twisting_vines
   cocoa: shroomlight
   bamboo: chorus_plant
+  beehive: gold_block
