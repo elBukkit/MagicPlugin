@@ -3559,8 +3559,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     int index = entry.getKey();
                     if (!CompatibilityUtils.isEmpty(armor[index])) {
                         if (addToInventory == null) {
-                            addToInventory.add(armor[index]);
+                            addToInventory = new ArrayList<>();
                         }
+                        addToInventory.add(armor[index]);
                     }
                     armor[index] = item;
                 }
