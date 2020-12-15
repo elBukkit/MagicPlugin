@@ -2507,18 +2507,35 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void addDescriptionLore(List<String> lore) {
-        String descriptionTemplate = controller.getMessages().get(getMessageKey("description_lore"), "");
-        if (!description.isEmpty() && !descriptionTemplate.isEmpty()) {
-            if (description.contains("$path")) {
-                String pathName = getPathName();
-                String description = ChatColor.translateAlternateColorCodes('&', this.description);
-                description = description.replace("$path", pathName == null ? "Unknown" : pathName);
-                InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
-            } else {
-                String description = ChatColor.translateAlternateColorCodes('&', this.description);
-                InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
+        String description = getAndUpdateDescription();
+        InventoryUtils.wrapText(description, lore);
+    }
+
+    protected String getAndUpdateDescription() {
+        String updatedDescription = description;
+        if (description.contains("$") && !description.contains("$path")) {
+            String newDescription = controller.getMessages().escape(description);
+            if (!newDescription.equals(description)) {
+                this.description = newDescription;
+                setProperty("description", description);
+                updatedDescription = newDescription;
             }
         }
+        String descriptionTemplate = controller.getMessages().get(getMessageKey("description_lore"), "");
+        if (description.contains("$path") && !descriptionTemplate.isEmpty()) {
+            String pathName = getPathName();
+            updatedDescription = updatedDescription.replace("$path", pathName == null ? "Unknown" : pathName);
+        } else if (description.contains("$")) {
+            String randomDescription = getMessage("randomized_lore");
+            String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
+            if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
+                updatedDescription = randomDescription;
+            }
+        } else if (!descriptionTemplate.isEmpty()) {
+            updatedDescription = descriptionTemplate.replace("$description", description);
+        }
+        updatedDescription = ChatColor.translateAlternateColorCodes('&', updatedDescription);
+        return updatedDescription;
     }
 
     @Nullable
@@ -2590,30 +2607,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     return lore;
                 }
             }
-            if (description.contains("$") && !description.contains("$path")) {
-                String newDescription = controller.getMessages().escape(description);
-                if (!newDescription.equals(description)) {
-                    this.description = newDescription;
-                    setProperty("description", description);
-                }
-            }
-            String descriptionTemplate = controller.getMessages().get(getMessageKey("description_lore"), "");
-            if (description.contains("$path") && !descriptionTemplate.isEmpty()) {
-                String description = ChatColor.translateAlternateColorCodes('&', this.description);
-                description = description.replace("$path", pathName == null ? "Unknown" : pathName);
-                InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
-            } else if (description.contains("$")) {
-                String randomDescription = getMessage("randomized_lore");
-                String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
-                if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
-                    randomDescription = ChatColor.translateAlternateColorCodes('&', randomDescription);
-                    InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), lore);
-                    return lore;
-                }
-            } else if (!descriptionTemplate.isEmpty()) {
-                String description = ChatColor.translateAlternateColorCodes('&', this.description);
-                InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
-            }
+            String description = getAndUpdateDescription();
+            InventoryUtils.wrapText(description, lore);
         }
         String pathTemplate = getMessage("path_lore", "");
         if (pathName != null && !pathTemplate.isEmpty()) {
