@@ -58,7 +58,7 @@ public class ReplaceRule extends SpawnRule {
             }
             replaceDescription = StringUtils.join(names, ",");
         }
-        logSpawnRule("Replacing: " + getTargetEntityTypeName() + " in " + worldName + " with " + replaceDescription);
+        logSpawnRule("Replacing " + getTargetEntityTypeName() + " in " + worldName + " with " + replaceDescription);
     }
 
     @Override

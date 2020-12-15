@@ -15,7 +15,7 @@ public class ModifyRule extends SpawnRule {
     @Override
     public void finalizeLoad(String worldName) {
         entityData = new EntityData(controller, parameters);
-        logSpawnRule("Modifying : " + getTargetEntityTypeName() + " in " + worldName);
+        logSpawnRule("Modifying " + getTargetEntityTypeName() + " in " + worldName);
     }
 
     @Override

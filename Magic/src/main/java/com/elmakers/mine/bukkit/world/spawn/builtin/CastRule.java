@@ -45,7 +45,7 @@ public class CastRule extends SpawnRule {
             }
 
             this.spells.add(new CastSpell(spellName, spellParameters));
-            logSpawnRule("Casting: " + StringUtils.join(spells, ",") + " on " + getTargetEntityTypeName() + " in " + worldName);
+            logSpawnRule("Casting " + StringUtils.join(spells, ",") + " on " + getTargetEntityTypeName() + " in " + worldName);
         }
     }
 

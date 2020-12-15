@@ -15,7 +15,7 @@ public class EquipmentRule extends SpawnRule {
     @Override
     public void finalizeLoad(String worldName) {
         equipment = new EntityData(controller, parameters);
-        logSpawnRule("Replacing equipment of : " + getTargetEntityTypeName() + " in " + worldName);
+        logSpawnRule("Replacing equipment of " + getTargetEntityTypeName() + " in " + worldName);
     }
 
     @Override
