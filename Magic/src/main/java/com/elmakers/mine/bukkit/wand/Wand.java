@@ -1914,10 +1914,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             inactiveIcon = null;
         }
         inactiveIconDelay = getInt("icon_inactive_delay");
-        randomizeOnActivate = randomizeOnActivate && hasProperty("randomize_icon");
+        randomizeOnActivate = randomizeOnActivate && hasIcon(legacyIcons, "randomize_icon");
         if (randomizeOnActivate) {
-            String randomizeIcon = getString("randomize_icon");
-            setIcon(loadIcon(getIcon(legacyIcons, randomizeIcon)));
+            String randomizeIcon = getIcon(legacyIcons, "randomize_icon");
+            setIcon(loadIcon(randomizeIcon));
             if (item == null) {
                 controller.getLogger().warning("Invalid randomize_icon in wand '" + template + "' config: " + randomizeIcon);
                 setIcon(new MaterialAndData(DefaultWandMaterial));
