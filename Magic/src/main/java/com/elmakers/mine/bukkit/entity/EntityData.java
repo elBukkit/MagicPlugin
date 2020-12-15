@@ -1184,7 +1184,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             return name;
         }
         if (type == null) return "Unknown";
-        return name;
+        return type.name().toLowerCase();
     }
 
     public void setKey(String key) {

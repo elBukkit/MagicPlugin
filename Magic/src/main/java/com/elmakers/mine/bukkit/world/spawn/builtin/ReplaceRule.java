@@ -1,9 +1,12 @@
 package com.elmakers.mine.bukkit.world.spawn.builtin;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -42,7 +45,17 @@ public class ReplaceRule extends SpawnRule {
             controller.getLogger().warning("Error reading in configuration for custom mob in " + worldName + " for rule " + key);
             return;
         }
-        String replaceDescription = replaceWith == null ? "(randomized)" : replaceWith.describe();
+        String replaceDescription;
+        if (replaceWith != null) {
+            replaceDescription = replaceWith.describe();
+        } else {
+            List<String> names = new ArrayList<>();
+            for (WeightedPair<EntityData> entityType : replaceProbability) {
+                EntityData entityData = entityType.getValue();
+                names.add(entityData == null ? "(None)" : entityData.describe());
+            }
+            replaceDescription = StringUtils.join(names, ",");
+        }
         String message = " Replacing: " + getTargetEntityTypeName() + " in " + worldName + " at y > " + minY
                 + " with " + replaceDescription + " at a " + (percentChance * 100) + "% chance";
 
