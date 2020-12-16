@@ -74,6 +74,8 @@ public class NMSUtils {
     protected static boolean isModernVersion = false;
     protected static boolean isCurrentVersion = false;
     protected static boolean hasStatistics = false;
+    protected static boolean hasEntityTransformEvent = false;
+    protected static boolean hasTimeSkipEvent = false;
 
     protected static String versionPrefix = "";
 
@@ -676,6 +678,22 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 hasStatistics = false;
                 getLogger().warning("Statistics not available, jump trigger will not work");
+            }
+
+            try {
+                Class.forName("org.bukkit.event.entity.EntityTransformEvent");
+                hasEntityTransformEvent = true;
+            } catch (Throwable ex) {
+                hasEntityTransformEvent = false;
+                getLogger().warning("EntityTransformEvent not found, can't prevent mobs naturally transforming");
+            }
+
+            try {
+                Class.forName("org.bukkit.event.world.TimeSkipEvent");
+                hasTimeSkipEvent = true;
+            } catch (Throwable ex) {
+                hasTimeSkipEvent = false;
+                getLogger().warning("TimeSkipEvent not found, can't synchronize time between worlds");
             }
 
             try {
@@ -2797,6 +2815,14 @@ public class NMSUtils {
 
     public static boolean hasStatistics() {
         return hasStatistics;
+    }
+
+    public static boolean hasEntityTransformEvent() {
+        return hasEntityTransformEvent;
+    }
+
+    public static boolean hasTimeSkipEvent() {
+        return hasTimeSkipEvent;
     }
 
     protected static Logger getLogger() {

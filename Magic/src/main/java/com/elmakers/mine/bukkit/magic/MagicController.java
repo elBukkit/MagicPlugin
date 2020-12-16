@@ -1082,7 +1082,7 @@ public class MagicController implements MageController {
         if (NMSUtils.hasStatistics()) {
             jumpController = new JumpController(this);
         }
-        if (NMSUtils.isCurrentVersion()) {
+        if (NMSUtils.hasEntityTransformEvent()) {
             mobs2 = new MobController2(this);
         }
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
