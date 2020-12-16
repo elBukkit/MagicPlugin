@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.world;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,6 +17,8 @@ import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.world.listener.TimeListener;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
 import com.elmakers.mine.bukkit.world.listener.WorldSpawnListener;
 
@@ -24,11 +27,17 @@ public class WorldController implements Listener {
     private final MagicController controller;
     private final WorldPlayerListener playerListener;
     private final WorldSpawnListener spawnListener;
+    private final TimeListener timeListener;
 
     public WorldController(MagicController controller) {
         this.controller = controller;
         playerListener = new WorldPlayerListener(this);
         spawnListener = new WorldSpawnListener(this);
+        if (NMSUtils.hasTimeSkipEvent()) {
+            timeListener = new TimeListener(this);
+        } else {
+            timeListener = null;
+        }
     }
 
     public void registerEvents() {
@@ -37,6 +46,9 @@ public class WorldController implements Listener {
         pm.registerEvents(this, plugin);
         pm.registerEvents(playerListener, plugin);
         pm.registerEvents(spawnListener, plugin);
+        if (timeListener != null) {
+            pm.registerEvents(timeListener, plugin);
+        }
     }
 
     public void load(ConfigurationSection configuration) {
@@ -104,6 +116,10 @@ public class WorldController implements Listener {
 
     public MagicWorld getWorld(String name) {
         return magicWorlds.get(name);
+    }
+
+    public Collection<MagicWorld> getWorlds() {
+        return magicWorlds.values();
     }
 
     public Logger getLogger() {

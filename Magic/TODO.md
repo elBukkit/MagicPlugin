@@ -10,7 +10,6 @@
 ## World Gen
 
  - Some way to scale mobs up (levels?) with distance from spawn
- - Synchronized day/night cycle of two worlds (sleep event?)
 
 ## RPG
 

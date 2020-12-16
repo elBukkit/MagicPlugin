@@ -1,5 +1,6 @@
 otherside_blocks:
   copy: world
+  time_offset: 12000
   world: world_other
   autoload: true
   chunk_generate:

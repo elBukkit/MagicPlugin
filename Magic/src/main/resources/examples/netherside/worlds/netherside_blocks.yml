@@ -1,6 +1,7 @@
 netherside_blocks:
   world: world_netherside
   copy: world
+  time_offset: 12000
   autoload: true
   chunk_generate:
     replace:

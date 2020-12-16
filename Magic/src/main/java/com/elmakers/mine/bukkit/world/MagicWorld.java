@@ -32,6 +32,8 @@ public class MagicWorld {
     private String worldName;
     private String resourcePack;
     private long seed;
+    private boolean synchronizeTime = true;
+    private long synchronizedTimeOffset = 0;
     private static Random random = new Random();
     private WorldState state = WorldState.UNLOADED;
 
@@ -45,7 +47,9 @@ public class MagicWorld {
     public void load(String name, ConfigurationSection config) {
         worldName = name;
         copyFrom = config.getString("copy", copyFrom);
-        resourcePack = config.getString("resource_pack", null);
+        synchronizeTime = config.getBoolean("synchronize_time", synchronizeTime);
+        synchronizedTimeOffset = config.getLong("time_offset", synchronizedTimeOffset);
+        resourcePack = config.getString("resource_pack", resourcePack);
         if (config.contains("environment")) {
             String typeString = config.getString("environment");
             try {
@@ -148,6 +152,7 @@ public class MagicWorld {
         // Flag loaded worlds
         if (initWorld.getName().equals(worldName)) {
             state = WorldState.LOADED;
+            updateTime();
             return;
         }
 
@@ -182,5 +187,31 @@ public class MagicWorld {
         if (resourcePack != null) {
             player.setResourcePack(resourcePack);
         }
+    }
+
+    public void updateTime() {
+        updateTimeFrom(null, 0);
+    }
+
+    public boolean updateTimeFrom(World changedWorld, long skipAmount) {
+        if (!synchronizeTime || copyFrom.isEmpty() || state != WorldState.LOADED) {
+            return true;
+        }
+        if (changedWorld != null && worldName.equals(changedWorld.getName())) {
+            return false;
+        }
+        if (changedWorld == null) {
+            changedWorld = Bukkit.getWorld(copyFrom);
+        } else if (!changedWorld.getName().equals(copyFrom)) {
+            return true;
+        }
+        if (changedWorld == null) {
+            return true;
+        }
+        World world = Bukkit.getWorld(worldName);
+        if (world != null) {
+            world.setTime(changedWorld.getTime() + synchronizedTimeOffset + skipAmount);
+        }
+        return true;
     }
 }
