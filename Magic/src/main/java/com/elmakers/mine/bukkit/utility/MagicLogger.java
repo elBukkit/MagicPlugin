@@ -8,6 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 public class MagicLogger extends ColoredLogger {
 
     private String context = null;
@@ -15,8 +18,13 @@ public class MagicLogger extends ColoredLogger {
     private final Set<LogMessage> warnings = new LinkedHashSet<>();
     private final Set<LogMessage> errors = new LinkedHashSet<>();
 
+    private int pendingWarningCount = 0;
+    private int pendingErrorCount = 0;
+    private long lastMessageSent;
+
     public MagicLogger(Logger delegate) {
         super(delegate);
+        lastMessageSent = System.currentTimeMillis();
     }
 
     @Override
@@ -38,6 +46,11 @@ public class MagicLogger extends ColoredLogger {
                 super.log(record);
             }
         } else {
+            if (record.getLevel().equals(Level.WARNING)) {
+                pendingWarningCount++;
+            } else if (record.getLevel().equals(Level.SEVERE)) {
+                pendingErrorCount++;
+            }
             super.log(record);
         }
     }
@@ -63,5 +76,43 @@ public class MagicLogger extends ColoredLogger {
 
     public boolean isCapturing() {
         return capture;
+    }
+
+    public void checkNotify(Messages messages) {
+        if (pendingErrorCount == 0 && pendingWarningCount == 0) return;
+
+        int errorCount = pendingErrorCount;
+        int warningCount = pendingWarningCount;
+        long timeSince = System.currentTimeMillis() - lastMessageSent;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.hasPermission("Magic.notify")) {
+                String sinceMessage = messages.getTimeDescription(timeSince, "description", "cooldown");
+                String messageKey = "logs.notify_errors";
+                if (pendingErrorCount == 0) {
+                    messageKey = "logs.notify_warnings";
+                } else if (pendingWarningCount != 0) {
+                    messageKey = "logs.notify_errors_and_warnings";
+                }
+                String message = messages.get(messageKey);
+                message = message
+                    .replace("$time", sinceMessage)
+                    .replace("$warnings", Integer.toString(warningCount))
+                    .replace("$errors", Integer.toString(errorCount));
+                if (!message.isEmpty()) {
+                    player.sendMessage(message);
+                }
+                message = messages.get("logs.instructions");
+                if (!message.isEmpty()) {
+                    player.sendMessage(message);
+                }
+                clearNotify();
+            }
+        }
+    }
+
+    public void clearNotify() {
+        pendingErrorCount = 0;
+        pendingWarningCount = 0;
+        lastMessageSent = System.currentTimeMillis();
     }
 }

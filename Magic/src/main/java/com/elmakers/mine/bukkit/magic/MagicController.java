@@ -212,6 +212,7 @@ import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
 import com.elmakers.mine.bukkit.tasks.EssentialsItemIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.LoadDataTask;
+import com.elmakers.mine.bukkit.tasks.LogNotifyTask;
 import com.elmakers.mine.bukkit.tasks.LogWatchdogTask;
 import com.elmakers.mine.bukkit.tasks.MageQuitTask;
 import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
@@ -3043,6 +3044,10 @@ public class MagicController implements MageController {
             configCheckTask.cancel();
             configCheckTask = null;
         }
+        if (logNotifyTask != null) {
+            logNotifyTask.cancel();
+            logNotifyTask = null;
+        }
 
         debugEffectLib = properties.getBoolean("debug_effects", false);
         com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
@@ -3500,12 +3505,23 @@ public class MagicController implements MageController {
         } else {
             log("Skin-based spell icons disabled");
         }
+
+        // Set up sandbox config update timer
         int configUpdateInterval = properties.getInt("config_update_interval");
         if (configUpdateInterval > 0) {
             log("Sandbox enabled, will check for updates from the web UI");
             final ConfigCheckTask configCheck = new ConfigCheckTask(this);
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
                 configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
+        }
+
+        // Set up log notify timer
+        logger.clearNotify();
+        int logNotifyInterval = properties.getInt("log_notify_interval");
+        if (logNotifyInterval > 0) {
+            final LogNotifyTask logNotify = new LogNotifyTask(this);
+            logNotifyTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, logNotify,
+                logNotifyInterval * 20 / 1000, logNotifyInterval * 20 / 1000);
         }
 
         // Configure world generation and spawn replacement
@@ -4360,7 +4376,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.magic.Messages getMessages() {
+    public Messages getMessages() {
         return messages;
     }
 
@@ -7381,6 +7397,7 @@ public class MagicController implements MageController {
     private int                                    autoUndo                        = 0;
     private int                                    autoSaveTaskId                    = 0;
     private BukkitTask                          configCheckTask                 = null;
+    private BukkitTask                          logNotifyTask                   = null;
     private boolean                             savePlayerData                  = true;
     private boolean                             externalPlayerData              = false;
     private boolean                             asynchronousSaving              = true;

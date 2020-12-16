@@ -109,12 +109,14 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
         if (subCommand.equalsIgnoreCase("rpcheck"))
         {
+            api.getController().getLogger().warning("RPCHECK WAS USED OH NOOOO!");
             api.getController().checkResourcePack(sender);
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("rpsend"))
         {
+            api.getController().getLogger().severe("RPSEND WAS USED OH NOOOO!");
             api.getController().sendResourcePackToAllPlayers(sender);
             return true;
         }

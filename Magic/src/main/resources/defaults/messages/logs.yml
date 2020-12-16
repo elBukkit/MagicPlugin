@@ -1,0 +1,5 @@
+logs:
+  notify_errors: "&7[Magic] &bThere have been &c$errors errors &bin the past &3$time&b, please check logs!"
+  notify_warnings: "&7[Magic] &bThere have been &e$warnings warnings &bin the past &3$time&b, please check logs!"
+  notify_errors_and_warnings: "&7[Magic] &bThere have been &c$errors errors &band &e$warnings warnings &bin the past &3$time&b, please check logs!"
+  notify_instructions: "&7  Negate the &fMagic.notify &7permission or check configs to disable these messages"

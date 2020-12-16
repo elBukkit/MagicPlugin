@@ -580,7 +580,11 @@ editor_url: https://editor.elmakers.com
 # This can be used for a server that is hooked up with a live editor
 # The editor will update Magic/data/updated.yml, and the server will automatically
 # reload configurations when the configs have changed.
-config_update_interval: 0
+config_update_interval: 60000
+
+# Set this to 0 to remove the in-game error notifications
+# otherwise this value is in milliseconds, default is every 5 minutes
+log_notify_interval: 300000
 
 # This can be used to restrict the use of certain actions.
 # Mainly intended for the sandbox configs.

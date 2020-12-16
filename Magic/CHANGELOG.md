@@ -12,6 +12,7 @@
    - Spawn rules can have a priority, don't need to rely on key order
    - Replace rules can specify special directives: `stop` to stop further processing,
      `remove` to just remove a mob without replacing
+   - Fix several issues with mob spawning in MagicWorlds
 
  - Crafting improvements
    - Allow using "vanilla: true" to easily override a vanilla recipe (just set the output to a vanilla item type)
@@ -48,6 +49,7 @@
    Use `console_bypass_locked_wands: false` to disable this
  - Add `mconfig language` command to easily ues a builtin localization file
  - Add FR (French) translation files (thank you, Brushette!)
+ - Add in-game notifications to ops about magic errors and warnings (can be controlled via configs or permissions)
 
 # 8.1.2
 
