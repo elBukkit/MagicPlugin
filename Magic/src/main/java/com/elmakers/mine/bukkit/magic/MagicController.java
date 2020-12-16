@@ -1731,6 +1731,10 @@ public class MagicController implements MageController {
     }
 
     protected YamlDataFile createDataFile(String fileName) {
+        return createDataFile(fileName, true);
+    }
+
+    protected YamlDataFile createDataFile(String fileName, boolean checkBackupSize) {
         File dataFile = new File(dataFolder, fileName + ".yml");
         YamlDataFile configuration = new YamlDataFile(getLogger(), dataFile);
         return configuration;
@@ -2641,7 +2645,7 @@ public class MagicController implements MageController {
     protected void saveSpellData(Collection<YamlDataFile> stores) {
         String lastKey = "";
         try {
-            YamlDataFile spellsDataFile = createDataFile(SPELLS_DATA_FILE);
+            YamlDataFile spellsDataFile = createDataFile(SPELLS_DATA_FILE, false);
             for (SpellData data : templateDataMap.values()) {
                 lastKey = data.getKey().getBaseKey();
                 ConfigurationSection spellNode = spellsDataFile.createSection(lastKey);
@@ -2662,7 +2666,7 @@ public class MagicController implements MageController {
     protected void saveLostWands(Collection<YamlDataFile> stores) {
         String lastKey = "";
         try {
-            YamlDataFile lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
+            YamlDataFile lostWandsConfiguration = createDataFile(LOST_WANDS_FILE, false);
             for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
                 lastKey = wandEntry.getKey();
                 if (lastKey == null || lastKey.length() == 0) continue;

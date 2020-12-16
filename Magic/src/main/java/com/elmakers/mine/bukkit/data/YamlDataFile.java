@@ -9,15 +9,22 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class YamlDataFile extends YamlConfiguration {
     protected final File file;
     protected final Logger logger;
+    protected final boolean checkBackupSize;
 
     public YamlDataFile(Logger logger, File file) {
+        this(logger, file, true);
+    }
+
+    public YamlDataFile(Logger logger, File file, boolean checkBackupSize) {
         this.file = file;
         this.logger = logger;
+        this.checkBackupSize = checkBackupSize;
     }
 
     public YamlDataFile(Logger logger, String filename) {
         file = new File(filename);
         this.logger = logger;
+        checkBackupSize = true;
     }
 
     public void load() {
@@ -30,10 +37,6 @@ public class YamlDataFile extends YamlConfiguration {
     }
 
     public void save() {
-        save(true);
-    }
-
-    public void save(boolean checkBackupSize) {
         try {
             File tempFile = new File(file.getAbsolutePath() + ".tmp");
             if (tempFile.exists()) {

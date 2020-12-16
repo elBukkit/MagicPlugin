@@ -44,9 +44,9 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
     @Override
     public void save(MageData mage, MageDataCallback callback, boolean releaseLock) {
         File playerData = new File(playerDataFolder, mage.getId() + ".dat");
-        YamlDataFile saveFile = new YamlDataFile(controller.getLogger(), playerData);
+        YamlDataFile saveFile = new YamlDataFile(controller.getLogger(), playerData, false);
         save(mage, saveFile);
-        saveFile.save(false);
+        saveFile.save();
         if (releaseLock) {
             releaseLock(mage);
         }
