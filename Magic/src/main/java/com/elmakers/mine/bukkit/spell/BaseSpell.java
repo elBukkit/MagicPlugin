@@ -1102,12 +1102,31 @@ public class BaseSpell implements MageSpell, Cloneable {
             controller.getLogger().warning("Invalid toggle type: " + toggleString);
         }
 
-
-        Collection<ConfigurationSection> triggersConfiguration = ConfigurationUtils.getNodeList(node, "triggers");
-        if (triggersConfiguration != null) {
+        if (node.isList("triggers")) {
+            List<?> list = node.getList("triggers");
+            if (!list.isEmpty()) {
+                Object item = list.get(0);
+                if (item instanceof String) {
+                    List<String> triggerList = node.getStringList("triggers");
+                    triggers = new ArrayList<>();
+                    for (String triggerKey : triggerList) {
+                        triggers.add(new Trigger(controller, triggerKey));
+                    }
+                } else {
+                    Collection<ConfigurationSection> triggersConfiguration = ConfigurationUtils.getNodeList(node, "triggers");
+                    if (triggersConfiguration != null && !triggersConfiguration.isEmpty()) {
+                        triggers = new ArrayList<>();
+                        for (ConfigurationSection triggerConfiguration : triggersConfiguration) {
+                            triggers.add(new Trigger(controller, triggerConfiguration));
+                        }
+                    }
+                }
+            }
+        } else if (node.isString("triggers")) {
+            String[] triggerList = StringUtils.split(node.getString("triggers"), ',');
             triggers = new ArrayList<>();
-            for (ConfigurationSection triggerConfiguration : triggersConfiguration) {
-                triggers.add(new Trigger(controller, triggerConfiguration));
+            for (String triggerKey : triggerList) {
+                triggers.add(new Trigger(controller, triggerKey));
             }
         }
 

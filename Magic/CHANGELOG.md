@@ -50,6 +50,7 @@
  - Add `mconfig language` command to easily ues a builtin localization file
  - Add FR (French) translation files (thank you, Brushette!)
  - Add in-game notifications to ops about magic errors and warnings (can be controlled via configs or permissions)
+ - Triggers can now be a simple list or a one-liner
 
 # 8.1.2
 

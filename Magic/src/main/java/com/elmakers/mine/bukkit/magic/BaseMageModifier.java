@@ -214,8 +214,10 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
 
     protected void cancelTrigger(String triggerType) {
         List<TriggeredSpell> triggers = getTriggers(triggerType);
-        for (TriggeredSpell triggered : triggers) {
-            mage.cancelPending(triggered.getSpellKey());
+        if (triggers != null) {
+            for (TriggeredSpell triggered : triggers) {
+                mage.cancelPending(triggered.getSpellKey());
+            }
         }
 
         Collection<CustomTrigger> customTriggers = this.triggers == null ? null : this.triggers.get(triggerType);
@@ -228,12 +230,14 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
 
     public void trigger(String triggerType) {
         List<TriggeredSpell> triggers = getTriggers(triggerType);
-        for (TriggeredSpell triggered : triggers) {
-            if (triggered.getTrigger().isValid(mage)) {
-                Spell spell = mage.getSpell(triggered.getSpellKey());
-                if (spell != null && spell.isEnabled()) {
-                    spell.cast();
-                    triggered.getTrigger().triggered();
+        if (triggers != null) {
+            for (TriggeredSpell triggered : triggers) {
+                if (triggered.getTrigger().isValid(mage)) {
+                    Spell spell = mage.getSpell(triggered.getSpellKey());
+                    if (spell != null && spell.isEnabled()) {
+                        spell.cast();
+                        triggered.getTrigger().triggered();
+                    }
                 }
             }
         }
@@ -246,14 +250,19 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
         }
     }
 
+    @Nullable
     protected List<TriggeredSpell> getTriggers(String triggerType) {
-        List<TriggeredSpell> triggers = new ArrayList<>();
+        List<TriggeredSpell> triggers = null;
         for (String spellKey : getSpells()) {
             Spell spell = getSpell(spellKey);
             if (spell == null) continue;
             Collection<Trigger> spellTriggers = spell.getTriggers();
+            if (spellTriggers == null) continue;
             for (Trigger trigger : spellTriggers) {
                 if (trigger.getTrigger().equalsIgnoreCase(triggerType)) {
+                    if (triggers == null) {
+                        triggers = new ArrayList<>();
+                    }
                     triggers.add(new TriggeredSpell(spellKey, trigger));
                 }
             }

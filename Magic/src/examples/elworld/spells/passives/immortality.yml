@@ -3,8 +3,7 @@ immortality:
   icon_disabled: spell_icon_disabled:76
   name: Immortality
   inherit: base_passive
-  triggers:
-    - trigger: damage
+  triggers: damage
   actions:
     cast:
     - class: CheckHealth

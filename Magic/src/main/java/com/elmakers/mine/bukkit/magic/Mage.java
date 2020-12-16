@@ -3886,8 +3886,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (triggeredSpells.contains(spellKey)) continue;
             Spell spell = getSpell(spellKey);
             if (spell == null) continue;
-            triggeredSpells.add(spellKey);
             Collection<Trigger> spellTriggers = spell.getTriggers();
+            if (spellTriggers == null) continue;
+            triggeredSpells.add(spellKey);
             for (Trigger trigger : spellTriggers) {
                 String triggerType = trigger.getTrigger();
                 List<TriggeredSpell> typeTriggers = triggers.get(triggerType);

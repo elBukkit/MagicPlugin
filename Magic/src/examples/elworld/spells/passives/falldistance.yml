@@ -1,7 +1,6 @@
 falldistance:
   passive: true
-  triggers:
-    - trigger: land
+  triggers: land
   actions:
     cast:
       - class: Message

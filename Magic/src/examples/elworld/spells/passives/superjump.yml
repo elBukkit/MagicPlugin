@@ -2,8 +2,7 @@ superjump:
     icon: feather{CustomModelData:18001}
     icon_disabled: feather{CustomModelData:18002}
     passive: true
-    triggers:
-      - trigger: jump
+    triggers: jump
     actions:
         cast:
         - class: ChangeContext

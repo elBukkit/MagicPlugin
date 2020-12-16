@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 
 public class Trigger {
@@ -29,6 +30,10 @@ public class Trigger {
 
     public Trigger(MageController controller, ConfigurationSection configuration) {
         this(controller, configuration, "");
+    }
+
+    public Trigger(MageController controller, String triggerKey) {
+        this(controller, new MemoryConfiguration(), triggerKey);
     }
 
     public Trigger(MageController controller, ConfigurationSection configuration, String defaultType) {

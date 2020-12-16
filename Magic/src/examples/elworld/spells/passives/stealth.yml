@@ -5,9 +5,8 @@ stealth:
   icon: spell_icon:116
   icon_disabled: spell_icon_disabled:116
   passive: true
-  triggers:
-    # This triggers when the player sneaks
-    - trigger: sneak
+  # This triggers when the player sneaks
+  triggers: sneak
   actions:
     cast:
       - class: PotionEffect
