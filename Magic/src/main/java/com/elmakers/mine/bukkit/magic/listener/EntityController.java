@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -310,6 +309,48 @@ public class EntityController implements Listener {
      * see the drops.
      */
     @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerPreDeath(PlayerDeathEvent event) {
+        final Player player = event.getEntity();
+
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
+        Wand wand = mage.getActiveWand();
+        if (wand == null) return;
+
+        List<ItemStack> drops = event.getDrops();
+        if (wand != null) {
+            // Retrieve stored inventory before deactivating the wand
+            if (mage.hasStoredInventory()) {
+                boolean isKeepInventory = event.getKeepInventory();
+                String rule = player.getWorld().getGameRuleValue("keepInventory");
+                if (rule.equalsIgnoreCase("true")) {
+                    isKeepInventory = true;
+                }
+                // Remove the wand inventory from drops
+                drops.clear();
+
+                // Deactivate the wand.
+                wand.deactivate();
+
+                // Add restored inventory back to drops
+                if (!isKeepInventory) {
+                    ItemStack[] stored = player.getInventory().getContents();
+                    for (ItemStack stack : stored) {
+                        if (stack != null) {
+                            drops.add(stack);
+                        }
+                    }
+                }
+            } else {
+                wand.deactivate();
+            }
+        }
+    }
+
+    /**
+     * This death handler is for mobs and players alike
+     */
+    @EventHandler(priority = EventPriority.LOW)
     public void onEntityDeath(EntityDeathEvent event)
     {
         Entity entity = event.getEntity();
@@ -346,46 +387,6 @@ public class EntityController implements Listener {
 
         mage.deactivateAllSpells();
         mage.onDeath(event);
-
-        if (!(entity instanceof Player)) {
-            return;
-        }
-        final Player player = (Player)entity;
-        List<ItemStack> drops = event.getDrops();
-        Wand wand = mage.getActiveWand();
-        if (wand != null) {
-            // Retrieve stored inventory before deactivating the wand
-            if (mage.hasStoredInventory()) {
-                boolean isKeepInventory = false;
-                if (event instanceof PlayerDeathEvent) {
-                    PlayerDeathEvent playerDeath = (PlayerDeathEvent)event;
-                    if (playerDeath.getKeepInventory()) {
-                        isKeepInventory = true;
-                    }
-                }
-                String rule = player.getWorld().getGameRuleValue("keepInventory");
-                if (rule.equals("true")) {
-                    isKeepInventory = true;
-                }
-                // Remove the wand inventory from drops
-                drops.removeAll(Arrays.asList(player.getInventory().getContents()));
-
-                // Deactivate the wand.
-                wand.deactivate();
-
-                // Add restored inventory back to drops
-                if (!isKeepInventory) {
-                    ItemStack[] stored = player.getInventory().getContents();
-                    for (ItemStack stack : stored) {
-                        if (stack != null) {
-                            drops.add(stack);
-                        }
-                    }
-                }
-            } else {
-                wand.deactivate();
-            }
-        }
     }
 
     @EventHandler
