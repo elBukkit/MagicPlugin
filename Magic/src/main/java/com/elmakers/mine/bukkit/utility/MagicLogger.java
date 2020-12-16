@@ -9,6 +9,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MagicLogger extends ColoredLogger {
@@ -78,35 +79,42 @@ public class MagicLogger extends ColoredLogger {
         return capture;
     }
 
+    public void notify(Messages messages, CommandSender sender) {
+        if (pendingErrorCount == 0 && pendingWarningCount == 0) return;
+        long timeSince = System.currentTimeMillis() - lastMessageSent;
+
+        String sinceMessage = messages.getTimeDescription(timeSince, "description", "cooldown");
+        String messageKey = "logs.notify_errors";
+        if (pendingErrorCount == 0) {
+            messageKey = "logs.notify_warnings";
+        } else if (pendingWarningCount != 0) {
+            messageKey = "logs.notify_errors_and_warnings";
+        }
+        String message = messages.get(messageKey);
+        message = message
+            .replace("$time", sinceMessage)
+            .replace("$warnings", Integer.toString(pendingWarningCount))
+            .replace("$errors", Integer.toString(pendingErrorCount));
+        if (!message.isEmpty()) {
+            sender.sendMessage(message);
+        }
+    }
+
     public void checkNotify(Messages messages) {
         if (pendingErrorCount == 0 && pendingWarningCount == 0) return;
-
-        int errorCount = pendingErrorCount;
-        int warningCount = pendingWarningCount;
-        long timeSince = System.currentTimeMillis() - lastMessageSent;
+        boolean sent = false;
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("Magic.notify")) {
-                String sinceMessage = messages.getTimeDescription(timeSince, "description", "cooldown");
-                String messageKey = "logs.notify_errors";
-                if (pendingErrorCount == 0) {
-                    messageKey = "logs.notify_warnings";
-                } else if (pendingWarningCount != 0) {
-                    messageKey = "logs.notify_errors_and_warnings";
-                }
-                String message = messages.get(messageKey);
-                message = message
-                    .replace("$time", sinceMessage)
-                    .replace("$warnings", Integer.toString(warningCount))
-                    .replace("$errors", Integer.toString(errorCount));
+                notify(messages, player);
+                String message = messages.get("logs.notify_instructions");
                 if (!message.isEmpty()) {
                     player.sendMessage(message);
                 }
-                message = messages.get("logs.instructions");
-                if (!message.isEmpty()) {
-                    player.sendMessage(message);
-                }
-                clearNotify();
+                sent = true;
             }
+        }
+        if (sent) {
+            clearNotify();
         }
     }
 

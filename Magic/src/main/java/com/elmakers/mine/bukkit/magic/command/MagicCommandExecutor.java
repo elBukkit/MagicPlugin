@@ -109,14 +109,12 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
         if (subCommand.equalsIgnoreCase("rpcheck"))
         {
-            api.getController().getLogger().warning("RPCHECK WAS USED OH NOOOO!");
             api.getController().checkResourcePack(sender);
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("rpsend"))
         {
-            api.getController().getLogger().severe("RPSEND WAS USED OH NOOOO!");
             api.getController().sendResourcePackToAllPlayers(sender);
             return true;
         }
@@ -377,6 +375,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                         + ChatColor.GRAY + ") ("
                         + ChatColor.YELLOW + names + ChatColor.GRAY + ")");
             }
+            ((MagicController)api.getController()).checkLogs(sender);
             return true;
         }
         if (listCommand.equalsIgnoreCase("schematics")) {

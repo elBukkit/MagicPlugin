@@ -3520,7 +3520,7 @@ public class MagicController implements MageController {
         int logNotifyInterval = properties.getInt("log_notify_interval");
         if (logNotifyInterval > 0) {
             final LogNotifyTask logNotify = new LogNotifyTask(this);
-            logNotifyTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, logNotify,
+            logNotifyTask = Bukkit.getScheduler().runTaskTimer(plugin, logNotify,
                 logNotifyInterval * 20 / 1000, logNotifyInterval * 20 / 1000);
         }
 
@@ -7311,6 +7311,10 @@ public class MagicController implements MageController {
 
     public boolean isDespawnMagicMobs() {
         return despawnMagicMobs;
+    }
+
+    public void checkLogs(CommandSender sender) {
+        logger.notify(messages, sender);
     }
 
     /*
