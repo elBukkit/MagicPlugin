@@ -3426,9 +3426,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         sender.sendMessage(ChatColor.GOLD + "Permission check for " + ChatColor.AQUA + getDisplayName());
         sender.sendMessage(ChatColor.GOLD + "  id " + ChatColor.DARK_AQUA + getId());
-        sender.sendMessage(ChatColor.GOLD + " at " + ChatColor.AQUA
-                + ChatColor.BLUE + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ()
-                + " " + ChatColor.DARK_BLUE + location.getWorld().getName());
+        sender.sendMessage(ChatColor.YELLOW + " On " + ChatColor.GRAY
+            + location.getBlock().getRelative(BlockFace.DOWN).getType().name().toLowerCase()
+            + ChatColor.YELLOW + " at " + TextUtils.printBlockLocation(location)
+            + " " + ChatColor.DARK_BLUE + location.getWorld().getName());
 
         Player player = getPlayer();
         boolean hasBypass = false;
@@ -3436,6 +3437,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         boolean hasBuildBypass = false;
         boolean hasBreakBypass = false;
         if (player != null) {
+            Block lookingAt = player.getTargetBlock(new HashSet<Material>(controller.getMaterialSetManager().getMaterialSet("all_air").getMaterials()), 128);
+            if (lookingAt != null) {
+                sender.sendMessage(ChatColor.YELLOW + " Looking at " + ChatColor.GRAY
+                    + lookingAt.getType().name().toLowerCase()
+                    + ChatColor.YELLOW + " at " + TextUtils.printBlockLocation(location));
+            }
             hasBypass = controller.hasBypassPermission(player);
             hasPVPBypass = player.hasPermission("Magic.bypass_pvp");
             hasBuildBypass = player.hasPermission("Magic.bypass_build");
