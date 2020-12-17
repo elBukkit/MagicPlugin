@@ -394,7 +394,7 @@ public class Targeting {
 
     protected void findTargetBlock(TargetingContext context, double range)
     {
-        if (source == null)
+        if (source == null || !CompatibilityUtils.isChunkLoaded(source))
         {
             return;
         }

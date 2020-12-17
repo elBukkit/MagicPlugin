@@ -541,6 +541,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public Block getPlayerBlock() {
         Location location = getLocation();
         if (location == null) return null;
+        if (!CompatibilityUtils.isChunkLoaded(location)) return null;
         return location.getBlock().getRelative(BlockFace.DOWN);
     }
 
