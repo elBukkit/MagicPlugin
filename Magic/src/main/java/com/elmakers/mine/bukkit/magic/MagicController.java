@@ -1736,7 +1736,7 @@ public class MagicController implements MageController {
 
     protected YamlDataFile createDataFile(String fileName, boolean checkBackupSize) {
         File dataFile = new File(dataFolder, fileName + ".yml");
-        YamlDataFile configuration = new YamlDataFile(getLogger(), dataFile);
+        YamlDataFile configuration = new YamlDataFile(getLogger(), dataFile, checkBackupSize);
         return configuration;
     }
 
