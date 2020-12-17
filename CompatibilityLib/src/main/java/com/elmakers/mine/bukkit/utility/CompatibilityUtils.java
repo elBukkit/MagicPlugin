@@ -2426,6 +2426,10 @@ public class CompatibilityUtils extends NMSUtils {
             }
         }
 
-        world.getChunkAt(x, z).load();
+        Chunk chunk = world.getChunkAt(x, z);
+        chunk.load();
+        if (consumer != null) {
+            consumer.accept(chunk);
+        }
     }
 }
