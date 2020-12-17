@@ -171,9 +171,7 @@ public class ChangeWorldAction extends BaseTeleportAction
         targetLocation.setPitch(playerLocation.getPitch());
 
         setTargetWorldName(context, targetLocation.getWorld().getName());
-        teleport(context, entity, targetLocation);
-
-        return SpellResult.CAST;
+        return teleport(context, entity, targetLocation);
     }
 
     protected World getWorld(CastContext context, String worldName, boolean loadWorld, World copyFrom) {
