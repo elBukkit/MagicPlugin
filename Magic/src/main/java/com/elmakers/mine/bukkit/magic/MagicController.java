@@ -2590,7 +2590,7 @@ public class MagicController implements MageController {
         long id = automaton.getId();
         chunkAutomata.put(id, automaton);
 
-        if (automaton.getLocation().getChunk().isLoaded()) {
+        if (CompatibilityUtils.isChunkLoaded(automaton.getLocation())) {
             activeAutomata.put(id, automaton);
             automaton.resume();
         }

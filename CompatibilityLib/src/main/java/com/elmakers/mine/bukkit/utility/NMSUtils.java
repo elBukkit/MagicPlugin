@@ -698,7 +698,7 @@ public class NMSUtils {
             }
 
             try {
-                class_World_getChunkAtAsyncMethod = World.class.getMethod("getChunkAtAsync", Integer.TYPE, Integer.TYPE);
+                class_World_getChunkAtAsyncMethod = World.class.getMethod("getChunkAtAsync", Integer.TYPE, Integer.TYPE, Boolean.TYPE);
                 logger.info("Async chunk loading API found");
             } catch (Throwable ignore) {
                 class_World_getChunkAtAsyncMethod = null;

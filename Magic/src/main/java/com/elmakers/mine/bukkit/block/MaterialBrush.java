@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -370,7 +371,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public boolean isReady() {
         if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && materialTarget != null) {
             Block block = materialTarget.getBlock();
-            return (block.getChunk().isLoaded());
+            return CompatibilityUtils.isChunkLoaded(block);
         } else if (mode == BrushMode.SCHEMATIC) {
             return checkSchematic();
         }
@@ -481,7 +482,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 isTargetValid = false;
             } else {
                 Block block = materialTarget.getBlock();
-                if (!block.getChunk().isLoaded()) return false;
+                if (!CompatibilityUtils.isChunkLoaded(block)) return false;
 
                 updateFromBlock(block, fromMage.getRestrictedMaterialSet());
                 isTargetValid = fillWithAir || material != Material.AIR;
@@ -592,9 +593,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public void prepare() {
         if (cloneSource != null && cloneTarget != null) {
             Block block = cloneTarget.getBlock();
-            if (!block.getChunk().isLoaded()) {
-                block.getChunk().load(true);
-            }
+            CompatibilityUtils.checkChunk(block.getLocation(), true);
         }
     }
 

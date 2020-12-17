@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
 public class ExplosionController implements Listener {
@@ -84,6 +85,7 @@ public class ExplosionController implements Listener {
             event.setCancelled(true);
         }
         else if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
+            if (!CompatibilityUtils.isChunkLoaded(explodingEntity.getLocation())) return;
             Chunk chunk = explodingEntity.getLocation().getChunk();
             if (chunk == null || !chunk.isLoaded()) return;
 

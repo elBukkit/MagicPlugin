@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.tasks.PlayEffectTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import de.slikey.effectlib.util.DynamicLocation;
@@ -381,6 +382,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @SuppressWarnings("deprecation")
     protected MaterialAndData getWorkingMaterial() {
         Location target = getTarget();
+        if (target != null && !CompatibilityUtils.isChunkLoaded(target)) {
+            target = null;
+        }
         if (sampleTarget && target != null) {
             return new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
         }

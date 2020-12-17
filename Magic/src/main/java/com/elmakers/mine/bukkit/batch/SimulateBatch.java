@@ -254,10 +254,10 @@ public class SimulateBatch extends SpellBatch {
         int y = center.getBlockY() + dy;
         int z = center.getBlockZ() + dz;
         Block block = world.getBlockAt(x, y, z);
-        if (!block.getChunk().isLoaded()) {
+        if (!CompatibilityUtils.isChunkLoaded(block)) {
             return false;
         }
-        if (!context.hasBuildPermission(block)) return false;
+        if (!context.hasBuildPermission(block)) return true;
 
         Material blockMaterial = block.getType();
         if (birthMaterial.is(block)) {
@@ -349,7 +349,7 @@ public class SimulateBatch extends SpellBatch {
 
                 // We are going to rely on the block toggling to kick this back to life when the chunk
                 // reloads, so for now just bail and hope the timing works out.
-                if (heartBlock == null || !heartBlock.getChunk().isLoaded()) {
+                if (heartBlock == null || !CompatibilityUtils.isChunkLoaded(heartBlock)) {
                     finish();
                     return processedBlocks;
                 }
@@ -372,7 +372,10 @@ public class SimulateBatch extends SpellBatch {
         }
 
         while (state == SimulationState.SCANNING && processedBlocks <= maxBlocks) {
-            simulateBlocks(x, y, z);
+            if (!simulateBlocks(x, y, z)) {
+                finish();
+                return processedBlocks;
+            }
 
             y++;
             if (y > yRadius) {
@@ -399,7 +402,8 @@ public class SimulateBatch extends SpellBatch {
             int deadIndex = updatingIndex;
             if (deadIndex >= 0 && deadIndex < deadBlocks.size()) {
                 Block killBlock = deadBlocks.get(deadIndex);
-                if (!killBlock.getChunk().isLoaded()) {
+                if (!CompatibilityUtils.isChunkLoaded(killBlock)) {
+                    finish();
                     return processedBlocks;
                 }
 
@@ -421,7 +425,8 @@ public class SimulateBatch extends SpellBatch {
             int bornIndex = updatingIndex - deadBlocks.size();
             if (bornIndex >= 0 && bornIndex < bornBlocks.size()) {
                 Block birthBlock = bornBlocks.get(bornIndex);
-                if (!birthBlock.getChunk().isLoaded()) {
+                if (!CompatibilityUtils.isChunkLoaded(birthBlock)) {
+                    finish();
                     return processedBlocks;
                 }
                 createBlock(birthBlock);
@@ -494,7 +499,7 @@ public class SimulateBatch extends SpellBatch {
         if (state == SimulationState.HEART_UPDATE) {
             if (isAutomata) {
                 if (heartTargetBlock != null) {
-                    if (!heartTargetBlock.getChunk().isLoaded()) {
+                    if (!CompatibilityUtils.isChunkLoaded(heartTargetBlock)) {
                         finish();
                         return processedBlocks;
                     }
@@ -557,6 +562,10 @@ public class SimulateBatch extends SpellBatch {
                 while (iterator.hasNext()) {
                     BlockData block = iterator.next();
                     long blockId = block.getId();
+                    if (!CompatibilityUtils.isChunkLoaded(block.getWorldLocation())) {
+                        finish();
+                        return processedBlocks;
+                    }
                     if (block.getMaterial() == deathMaterial && block.getBlock().getType() != birthMaterial.getMaterial()) {
                         liveBlocks.remove(blockId);
                         lostBlocks++;
@@ -774,7 +783,9 @@ public class SimulateBatch extends SpellBatch {
         int liveCount = 0;
         BlockFace[] faces = yRadius > 0 ? POWER_FACES : MAIN_FACES;
         for (BlockFace face : faces) {
-            if (liveMaterial.is(block.getRelative(face))) {
+            Block faceBlock = block.getRelative(face);
+            if (!CompatibilityUtils.isChunkLoaded(faceBlock)) continue;
+            if (liveMaterial.is(faceBlock)) {
                 liveCount++;
             }
         }
@@ -784,7 +795,9 @@ public class SimulateBatch extends SpellBatch {
     protected int getDiagonalNeighborCount(Block block, MaterialAndData liveMaterial) {
         int liveCount = 0;
         for (BlockFace face : DIAGONAL_FACES) {
-            if (liveMaterial.is(block.getRelative(face))) {
+            Block faceBlock = block.getRelative(face);
+            if (!CompatibilityUtils.isChunkLoaded(faceBlock)) continue;
+            if (liveMaterial.is(faceBlock)) {
                 liveCount++;
             }
         }
@@ -792,14 +805,18 @@ public class SimulateBatch extends SpellBatch {
         if (yRadius > 0) {
             Block upBlock = block.getRelative(BlockFace.UP);
             for (BlockFace face : NEIGHBOR_FACES) {
-                if (liveMaterial.is(upBlock.getRelative(face))) {
+                Block faceBlock = upBlock.getRelative(face);
+                if (!CompatibilityUtils.isChunkLoaded(faceBlock)) continue;
+                if (liveMaterial.is(faceBlock)) {
                     liveCount++;
                 }
             }
 
             Block downBlock = block.getRelative(BlockFace.DOWN);
             for (BlockFace face : NEIGHBOR_FACES) {
-                if (liveMaterial.is(downBlock.getRelative(face))) {
+                Block faceBlock = downBlock.getRelative(face);
+                if (!CompatibilityUtils.isChunkLoaded(faceBlock)) continue;
+                if (liveMaterial.is(faceBlock)) {
                     liveCount++;
                 }
             }

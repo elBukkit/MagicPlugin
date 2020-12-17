@@ -753,6 +753,9 @@ public class TargetingSpell extends BaseSpell {
         Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
             Block block = target.getBlock();
+            if (!CompatibilityUtils.isChunkLoaded(block)) {
+                return super.getEffectMaterial();
+            }
             MaterialAndData targetMaterial = new MaterialAndData(block);
             if (targetMaterial.getMaterial() == Material.AIR) {
                 targetMaterial.setMaterial(DEFAULT_EFFECT_MATERIAL);

@@ -1755,6 +1755,10 @@ public class CompatibilityUtils extends NMSUtils {
         return materialKey;
     }
 
+    public static boolean isChunkLoaded(Block block) {
+        return isChunkLoaded(block.getLocation());
+    }
+
     public static boolean isChunkLoaded(Location location) {
         int chunkX = location.getBlockX() >> 4;
         int chunkZ = location.getBlockZ() >> 4;
@@ -1763,15 +1767,23 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean checkChunk(Location location) {
+        return checkChunk(location, false);
+    }
+
+    public static boolean checkChunk(Location location, boolean generate) {
         int chunkX = location.getBlockX() >> 4;
         int chunkZ = location.getBlockZ() >> 4;
         World world = location.getWorld();
-        return checkChunk(world, chunkX, chunkZ);
+        return checkChunk(world, chunkX, chunkZ, generate);
     }
 
     public static boolean checkChunk(World world, int chunkX, int chunkZ) {
+        return checkChunk(world, chunkX, chunkZ, false);
+    }
+
+    public static boolean checkChunk(World world, int chunkX, int chunkZ, boolean generate) {
         if (!world.isChunkLoaded(chunkX, chunkZ)) {
-            loadChunk(world, chunkX, chunkZ);
+            loadChunk(world, chunkX, chunkZ, generate);
             return false;
         }
         return isReady(world.getChunkAt(chunkX, chunkZ));
@@ -2336,10 +2348,10 @@ public class CompatibilityUtils extends NMSUtils {
         return player.getBedSpawnLocation();
     }
 
-    public static void loadChunk(World world, int x, int z) {
+    public static void loadChunk(World world, int x, int z, boolean generate) {
         if (class_World_getChunkAtAsyncMethod != null) {
             try {
-                class_World_getChunkAtAsyncMethod.invoke(world, x, z);
+                class_World_getChunkAtAsyncMethod.invoke(world, x, z, generate);
                 return;
             } catch (Exception ex) {
                 getLogger().log(Level.WARNING, "Error loading chunk asynchronously", ex);

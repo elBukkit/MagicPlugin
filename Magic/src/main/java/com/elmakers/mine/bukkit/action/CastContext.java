@@ -1178,6 +1178,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     {
         Chunk chunk = location.getBlock().getChunk();
         if (!chunk.isLoaded()) {
+            // We should check that it is loaded before we get here, ideally
             chunk.load(true);
         }
 

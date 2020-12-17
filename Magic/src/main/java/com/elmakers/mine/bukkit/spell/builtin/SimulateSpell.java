@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.automata.AutomatonLevel;
 import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -72,7 +73,9 @@ public class SimulateSpell extends BlockSpell {
                     dmyValue == null ? 0 : dmyValue,
                     dmzValue == null ? 0 : dmzValue);
             Location targetLocation = target.getLocation().add(offset);
-            if (!targetLocation.getBlock().getChunk().isLoaded()) return SpellResult.FAIL;
+            if (!CompatibilityUtils.isChunkLoaded(targetLocation)) {
+                return SpellResult.FAIL;
+            }
             birthMaterial = new MaterialAndData(targetLocation.getBlock());
         }
 

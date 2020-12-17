@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -15,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
@@ -131,9 +131,7 @@ public class PhaseSpell extends TargetingSpell
     }
 
     protected void tryPhase(final LivingEntity entity, final Location targetLocation) {
-        Chunk chunk = targetLocation.getBlock().getChunk();
-        if (!chunk.isLoaded()) {
-            chunk.load(true);
+        if (!CompatibilityUtils.checkChunk(targetLocation, true)) {
             if (retryCount < MAX_RETRY_COUNT) {
                 Plugin plugin = controller.getPlugin();
                 final PhaseSpell me = this;

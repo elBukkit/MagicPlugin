@@ -205,7 +205,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     }
 
     protected void checkForRestore() {
-        if (location != null && location.getChunk().isLoaded()) {
+        if (location != null && CompatibilityUtils.isChunkLoaded(location)) {
             restore();
         }
     }
@@ -238,7 +238,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     public void teleport(@Nonnull Location location) {
         this.location = location.clone();
-        if (location.getChunk().isLoaded()) {
+        if (CompatibilityUtils.isChunkLoaded(location)) {
             restore();
         }
         Entity entity = getEntity();

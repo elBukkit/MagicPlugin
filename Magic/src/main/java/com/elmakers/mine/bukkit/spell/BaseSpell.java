@@ -318,6 +318,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean allowPassThrough(Block block) {
+        if (!CompatibilityUtils.isChunkLoaded(block)) return false;
         if (mage != null && mage.isSuperPowered()) {
             return true;
         }
@@ -336,6 +337,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean isPassthrough(Block block) {
+        if (!CompatibilityUtils.isChunkLoaded(block)) return false;
         return passthroughMaterials != null
                 && passthroughMaterials.testBlock(block);
     }
@@ -353,6 +355,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean isOkToStandIn(Block block) {
+        if (!CompatibilityUtils.isChunkLoaded(block)) return false;
         if (isHalfBlock(block.getType())) {
             return false;
         }
@@ -367,6 +370,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isOkToStandOn(Block block)
     {
+        if (!CompatibilityUtils.isChunkLoaded(block)) return false;
         return isOkToStandOn(block.getType());
     }
 
@@ -385,8 +389,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isSafeLocation(Block block)
     {
-        if (!block.getChunk().isLoaded()) {
-            block.getChunk().load(true);
+        if (!CompatibilityUtils.isChunkLoaded(block)) {
             return false;
         }
 
@@ -435,7 +438,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Nullable
     public Location findPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta) {
-        if (!targetLoc.getBlock().getChunk().isLoaded()) return null;
+        if (!CompatibilityUtils.isChunkLoaded(targetLoc)) return null;
         int minY = MIN_Y;
         int maxY = CompatibilityUtils.getMaxHeight(targetLoc.getWorld());
 

@@ -427,8 +427,10 @@ public class CustomProjectileAction extends CompoundAction
             // Start up projectile FX
             startProjectileEffects(context, projectileEffectKey);
 
-            context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile launched from "
-                + TextUtils.printLocation(projectileLocation) + ChatColor.BLUE, 7);
+            if (context.getMage().getDebugLevel() >= 7) {
+                context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile launched from "
+                    + TextUtils.printLocation(projectileLocation) + ChatColor.BLUE, 7);
+            }
         }
         else
         {
@@ -654,8 +656,10 @@ public class CustomProjectileAction extends CompoundAction
             }
 
             targetLocation = projectileLocation.clone().add(velocity.clone().multiply(distanceTravelledThisTick));
-            context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + ChatColor.DARK_PURPLE
-                    + " at " + TextUtils.printBlock(targetLocation.getBlock()) + " from range of " + distanceTravelledThisTick + " over time " + delta, 14);
+            if (context.getMage().getDebugLevel() >= 14) {
+                context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + ChatColor.DARK_PURPLE
+                        + " at " + TextUtils.printBlock(targetLocation.getBlock()) + " from range of " + distanceTravelledThisTick + " over time " + delta, 14);
+            }
         } else {
             if (hasPreHitEffects) {
                 actionContext.playEffects("prehit");
@@ -667,11 +671,13 @@ public class CustomProjectileAction extends CompoundAction
                 context.getLogger().warning("Targeting hit, with no target location: " + targetingResult + " with " + targeting.getTargetType() + " from " + context.getSpell().getName());
             }
 
-            context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
-                + ChatColor.BLUE + " at " + TextUtils.printBlock(targetLocation.getBlock())
-                + ChatColor.BLUE + " from " + TextUtils.printBlock(projectileLocation.getBlock()) + ChatColor.BLUE + " to "
-                + TextUtils.printVector(targetLocation.toVector()) + ChatColor.BLUE
-                + " from range of " + ChatColor.GOLD + distanceTravelledThisTick + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 8);
+            if (context.getMage().getDebugLevel() >= 8) {
+                context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
+                    + ChatColor.BLUE + " at " + TextUtils.printBlock(targetLocation.getBlock())
+                    + ChatColor.BLUE + " from " + TextUtils.printBlock(projectileLocation.getBlock()) + ChatColor.BLUE + " to "
+                    + TextUtils.printVector(targetLocation.toVector()) + ChatColor.BLUE
+                    + " from range of " + ChatColor.GOLD + distanceTravelledThisTick + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 8);
+            }
             distanceTravelledThisTick = targetLocation.distance(projectileLocation);
         }
         distanceTravelled += distanceTravelledThisTick;
@@ -719,11 +725,11 @@ public class CustomProjectileAction extends CompoundAction
             return miss();
         }
 
-        Block block = targetLocation.getBlock();
-        if (!block.getChunk().isLoaded()) {
+        if (!CompatibilityUtils.isChunkLoaded(targetLocation)) {
             return miss();
         }
 
+        Block block = targetLocation.getBlock();
         if (distanceTravelled < minRange) {
             // TODO : Should this be < ?
             if (distanceTravelled >= minBlockRange && targetingResult == Targeting.TargetingResult.BLOCK) {
