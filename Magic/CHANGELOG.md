@@ -56,6 +56,7 @@
  - Triggers can now be a simple list or a one-liner
  - Jedi and Sith will auto-learn recipes, nether stars removed (still needed for hilt)
  - Fix auto_close on shops not working
+ - Fix NPCs sometimes not respawning
 
 # 8.1.2
 

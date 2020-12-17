@@ -320,7 +320,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     public void setName(@Nonnull String name) {
         this.name = name;
-        restore();
+        checkForRestore();
     }
 
     @Nonnull
