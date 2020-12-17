@@ -320,19 +320,28 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 if (timeout > 0) {
                     long seconds = (timeout - System.currentTimeMillis()) / 1000;
                     sender.sendMessage(ChatColor.GREEN + "Physics handler active for another " + ChatColor.DARK_GREEN + seconds + ChatColor.GREEN + " seconds");
-                } else {
-                    sender.sendMessage(ChatColor.GRAY + "Physics handler inactive");
                 }
             }
 
             Collection<Mage> mages = controller.getMages();
-            sender.sendMessage(ChatColor.AQUA + "Locked Chunks: " + ChatColor.LIGHT_PURPLE + controller.getLockedChunks().size());
+            int lockedChunks = controller.getLockedChunks().size();
+            if (lockedChunks > 0) {
+                sender.sendMessage(ChatColor.AQUA + "Locked Chunks: " + ChatColor.LIGHT_PURPLE + lockedChunks);
+            }
             sender.sendMessage(ChatColor.AQUA + "Modified blocks: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getModified().size());
             sender.sendMessage(ChatColor.AQUA + "Watching blocks: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getWatching().size());
-            sender.sendMessage(ChatColor.AQUA + "Registered breaking: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreaking().size());
-            sender.sendMessage(ChatColor.AQUA + "Registered breakable: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getBreakable().size());
-            sender.sendMessage(ChatColor.AQUA + "Registered reflective: " + ChatColor.LIGHT_PURPLE + UndoList.getRegistry().getReflective().size());
-
+            int breakingCount = UndoList.getRegistry().getBreaking().size();
+            if (breakingCount > 0) {
+                sender.sendMessage(ChatColor.AQUA + "Registered breaking: " + ChatColor.LIGHT_PURPLE + breakingCount);
+            }
+            int breakableCount = UndoList.getRegistry().getBreakable().size();
+            if (breakableCount > 0) {
+                sender.sendMessage(ChatColor.AQUA + "Registered breakable: " + ChatColor.LIGHT_PURPLE + breakableCount);
+            }
+            int reflectiveCount = UndoList.getRegistry().getReflective().size();
+            if (reflectiveCount > 0) {
+                sender.sendMessage(ChatColor.AQUA + "Registered reflective: " + ChatColor.LIGHT_PURPLE + reflectiveCount);
+            }
             int lightCount = controller.getLightCount();
             if (lightCount > 0) {
                 sender.sendMessage(ChatColor.AQUA + "Registered lights: " + ChatColor.LIGHT_PURPLE + lightCount);
