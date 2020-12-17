@@ -42,7 +42,6 @@ public class MagicSpawnHandler {
     /**
      * Returns true if the spawn should be cancelled
      */
-    @Nullable
     public boolean process(Plugin plugin, LivingEntity entity) {
         List<SpawnRule> entityRules = entityTypeMap.get(entity.getType());
         SpawnResult result = processRules(plugin, entity, entityRules);

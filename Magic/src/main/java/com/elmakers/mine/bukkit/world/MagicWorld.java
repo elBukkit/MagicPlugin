@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.world;
 
 import java.util.Random;
-import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -143,7 +142,6 @@ public class MagicWorld {
         world.getPopulators().addAll(chunkHandler.getPopulators());
     }
 
-    @Nullable
     public boolean processEntitySpawn(Plugin plugin, LivingEntity entity) {
         return spawnHandler.process(plugin, entity);
     }

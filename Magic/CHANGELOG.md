@@ -2,6 +2,9 @@
 
 # 8.2
 
+ - Many, many optimizations - memory leaks plugged, synchronous chunk loads eliminated (on Paper),
+   hard entity references removed
+
  - MagicWorlds merged
    - Magic can now customize world generation and mob spawning without needing MagicWorlds
    - Configs go into the "worlds" folder, and follow the same format as MagicWorlds
