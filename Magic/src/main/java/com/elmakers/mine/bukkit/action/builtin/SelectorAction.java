@@ -52,7 +52,6 @@ public class SelectorAction extends CompoundAction implements GUIAction
     private static final String[] _DEFAULT_COST_FALLBACKS = {"currency", "item"};
     private static final List<String> DEFAULT_COST_FALLBACKS = Arrays.asList(_DEFAULT_COST_FALLBACKS);
     private static final int MAX_INVENTORY_SLOTS = 6 * 9;
-    protected boolean autoClose = true;
     protected SelectorConfiguration defaultConfiguration;
     protected ItemData confirmFillMaterial;
     protected CastContext context;
@@ -228,7 +227,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             unlockClass = configuration.getString("unlock_class", unlockClass);
             lockClass = configuration.getString("lock_class", lockClass);
             nameIcon = configuration.getBoolean("apply_name_to_icon", nameIcon);
-            autoClose = configuration.getBoolean("auto_close", true);
+            autoClose = configuration.getBoolean("auto_close", autoClose);
             allowAttributeReduction = configuration.getBoolean("allow_attribute_reduction", allowAttributeReduction);
             if (configuration.contains("switch_class")) {
                 switchClass = true;
@@ -1260,7 +1259,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
         if (item == null || !InventoryUtils.hasMeta(item, "slot")) {
-            if (autoClose) {
+            if (defaultConfiguration.autoClose) {
                 mage.deactivateGUI();
             }
             return;
@@ -1277,7 +1276,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         String unpurchasableMessage = InventoryUtils.getMetaString(item, "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
-            if (autoClose || option.autoClose) {
+            if (option.autoClose) {
                 mage.deactivateGUI();
             }
             return;
@@ -1324,7 +1323,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 context.showMessage(option.getSelectedMessage());
             }
         }
-        if (autoClose || option.autoClose || finalResult != SpellResult.CAST) {
+        if (option.autoClose || finalResult != SpellResult.CAST) {
             if (isActive) {
                 mage.deactivateGUI();
             }
@@ -1343,7 +1342,6 @@ public class SelectorAction extends CompoundAction implements GUIAction
         if (fillerKey != null && !fillerKey.isEmpty()) {
             confirmFillMaterial = context.getController().getItem(fillerKey);
         }
-        autoClose = parameters.getBoolean("auto_close", true);
         title = parameters.getString("title");
         confirmTitle = parameters.getString("confirm_title");
         confirmUnlockTitle = parameters.getString("unlock_confirm_title");
