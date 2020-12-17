@@ -2397,7 +2397,15 @@ public class CompatibilityUtils extends NMSUtils {
         return player.getBedSpawnLocation();
     }
 
+    public static void loadChunk(Location location, boolean generate, Consumer<Chunk> consumer) {
+        loadChunk(location.getWorld(), location.getBlockX() >> 4, location.getBlockZ() >> 4, generate, consumer);
+    }
+
     public static void loadChunk(World world, int x, int z, boolean generate) {
+        loadChunk(world, x, z, generate, null);
+    }
+
+    public static void loadChunk(World world, int x, int z, boolean generate, Consumer<Chunk> consumer) {
         final LoadingChunk loading = new LoadingChunk(world, x, z);
         if (loadingChunks.contains(loading)) {
             return;
@@ -2407,6 +2415,9 @@ public class CompatibilityUtils extends NMSUtils {
                 loadingChunks.add(loading);
                 class_World_getChunkAtAsyncMethod.invoke(world, x, z, generate, (Consumer<Chunk>) chunk -> {
                     loadingChunks.remove(loading);
+                    if (consumer != null) {
+                        consumer.accept(chunk);
+                    }
                 });
                 return;
             } catch (Exception ex) {

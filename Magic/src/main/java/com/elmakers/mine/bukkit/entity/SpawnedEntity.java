@@ -55,10 +55,16 @@ public class SpawnedEntity {
             }
             Location entityLocation = new Location(world, location.getX(), location.getY(), location.getZ());
             if (!CompatibilityUtils.isChunkLoaded(entityLocation)) {
-                // TODO: Fully use async chunk API to load the chunk async and then despawn?
-                entityLocation.getChunk().load();
+                CompatibilityUtils.loadChunk(entityLocation, false, chunk -> {
+                    Entity removeEntity = CompatibilityUtils.getEntity(world, id);
+                    if (removeEntity != null) {
+                        UndoList.setUndoList(removeEntity, null);
+                        removeEntity.remove();
+                    }
+                });
+            } else {
+                entity = CompatibilityUtils.getEntity(world, id);
             }
-            entity = CompatibilityUtils.getEntity(world, id);
         }
         if (entity != null && entity.isValid()) {
             if (context != null && context.hasEffects("undo_entity")) {
