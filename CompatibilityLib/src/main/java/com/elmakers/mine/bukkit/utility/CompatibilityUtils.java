@@ -75,12 +75,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 /**
@@ -104,6 +106,47 @@ public class CompatibilityUtils extends NMSUtils {
     public static Map<Integer, Material> materialIdMap;
     private static ItemStack dummyItem;
     public static final UUID emptyUUID = new UUID(0L, 0L);
+    private static final Set<LoadingChunk> loadingChunks = new HashSet<>();
+
+    static class LoadingChunk {
+        private final String worldName;
+        private final int chunkX;
+        private final int chunkZ;
+
+        public LoadingChunk(Chunk chunk) {
+            this(chunk.getWorld().getName(), chunk.getX(), chunk.getX());
+        }
+
+        public LoadingChunk(World world, int chunkX, int chunkZ) {
+            this(world.getName(), chunkX, chunkZ);
+        }
+
+        public LoadingChunk(String worldName, int chunkX, int chunkZ) {
+            this.worldName = worldName;
+            this.chunkX = chunkX;
+            this.chunkZ = chunkZ;
+        }
+
+        @Override
+        public int hashCode() {
+            int worldHashCode = worldName.hashCode();
+            return ((worldHashCode & 0xFFF) << 48)
+                    | ((chunkX & 0xFFFFFF) << 24)
+                    | (chunkX & 0xFFFFFF);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof LoadingChunk)) return false;
+            LoadingChunk other = (LoadingChunk)o;;
+            return worldName.equals(other.worldName) && chunkX == other.chunkX && chunkZ == other.chunkZ;
+        }
+
+        @Override
+        public String toString() {
+            return worldName + ":" + chunkX + "," + chunkZ;
+        }
+    }
 
     private static final EnteredStateTracker DAMAGING = new EnteredStateTracker();
 
@@ -2349,12 +2392,20 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void loadChunk(World world, int x, int z, boolean generate) {
+        final LoadingChunk loading = new LoadingChunk(world, x, z);
+        if (loadingChunks.contains(loading)) {
+            return;
+        }
         if (class_World_getChunkAtAsyncMethod != null) {
             try {
-                class_World_getChunkAtAsyncMethod.invoke(world, x, z, generate);
+                loadingChunks.add(loading);
+                class_World_getChunkAtAsyncMethod.invoke(world, x, z, generate, (Consumer<Chunk>) chunk -> {
+                    loadingChunks.remove(loading);
+                });
                 return;
             } catch (Exception ex) {
                 getLogger().log(Level.WARNING, "Error loading chunk asynchronously", ex);
+                loadingChunks.remove(loading);
             }
         }
 

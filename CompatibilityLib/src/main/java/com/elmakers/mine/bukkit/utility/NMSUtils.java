@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -698,7 +699,7 @@ public class NMSUtils {
             }
 
             try {
-                class_World_getChunkAtAsyncMethod = World.class.getMethod("getChunkAtAsync", Integer.TYPE, Integer.TYPE, Boolean.TYPE);
+                class_World_getChunkAtAsyncMethod = World.class.getMethod("getChunkAtAsync", Integer.TYPE, Integer.TYPE, Boolean.TYPE, Consumer.class);
                 logger.info("Async chunk loading API found");
             } catch (Throwable ignore) {
                 class_World_getChunkAtAsyncMethod = null;
