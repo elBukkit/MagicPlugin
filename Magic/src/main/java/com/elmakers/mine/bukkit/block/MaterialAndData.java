@@ -425,7 +425,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             isValid = false;
             return;
         }
-        if (!CompatibilityUtils.checkChunk(block.getLocation(), true)) {
+        if (!CompatibilityUtils.checkChunk(block.getLocation())) {
             return;
         }
 

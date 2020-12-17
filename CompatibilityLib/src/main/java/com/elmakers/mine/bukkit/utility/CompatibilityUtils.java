@@ -1810,9 +1810,12 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean checkChunk(Location location) {
-        return checkChunk(location, false);
+        return checkChunk(location, true);
     }
 
+    /**
+     * Take care if setting generate to false, the chunk will load but not show as loaded
+     */
     public static boolean checkChunk(Location location, boolean generate) {
         int chunkX = location.getBlockX() >> 4;
         int chunkZ = location.getBlockZ() >> 4;
@@ -1821,9 +1824,12 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean checkChunk(World world, int chunkX, int chunkZ) {
-        return checkChunk(world, chunkX, chunkZ, false);
+        return checkChunk(world, chunkX, chunkZ, true);
     }
 
+    /**
+     * Take care if setting generate to false, the chunk will load but not show as loaded
+     */
     public static boolean checkChunk(World world, int chunkX, int chunkZ, boolean generate) {
         if (!world.isChunkLoaded(chunkX, chunkZ)) {
             loadChunk(world, chunkX, chunkZ, generate);

@@ -131,7 +131,7 @@ public class PhaseSpell extends TargetingSpell
     }
 
     protected void tryPhase(final LivingEntity entity, final Location targetLocation) {
-        if (!CompatibilityUtils.checkChunk(targetLocation, true)) {
+        if (!CompatibilityUtils.checkChunk(targetLocation)) {
             if (retryCount < MAX_RETRY_COUNT) {
                 Plugin plugin = controller.getPlugin();
                 final PhaseSpell me = this;
