@@ -2,10 +2,9 @@ lightsaber_orange:
   output: lightsaber_orange
   output_type: wand
   materials:
-    o: nether_star
     i: lightsaber_hilt
     x: stained_glass:1
-  row_1: " o "
-  row_2: " o "
+  row_1: ""
+  row_2: ""
   row_3: "xix"
 

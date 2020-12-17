@@ -15,7 +15,6 @@ starshop:
       selected: "You became $name for $cost"
       items:
       - lightsaber_hilt
-      - nether_star@2
       - stained_glass:3@2
       - stained_glass:1@2
       - stained_glass:2@2
@@ -26,7 +25,6 @@ starshop:
       selected: "You gave in to the dark side as a $name for $cost"
       items:
       - lightsaber_hilt
-      - nether_star@2
       - stained_glass:14@2
       cost: 5000
       limit: 1
