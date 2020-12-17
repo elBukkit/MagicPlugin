@@ -2340,6 +2340,7 @@ public class CompatibilityUtils extends NMSUtils {
         if (class_World_getChunkAtAsyncMethod != null) {
             try {
                 class_World_getChunkAtAsyncMethod.invoke(world, x, z);
+                return;
             } catch (Exception ex) {
                 getLogger().log(Level.WARNING, "Error loading chunk asynchronously", ex);
             }
