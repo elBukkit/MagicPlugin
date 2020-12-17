@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -30,6 +31,8 @@ public interface BlockData extends MaterialAndData {
     String getWorldName();
     @Nullable
     Block getBlock();
+    @Nullable
+    Location getWorldLocation();
     @Nullable
     Chunk getChunk();
     BlockVector getPosition();

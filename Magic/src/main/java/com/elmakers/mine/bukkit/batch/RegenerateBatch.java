@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class RegenerateBatch extends SpellBatch {
     private static final BlockData[] template = new BlockData[0];
@@ -92,11 +93,12 @@ public class RegenerateBatch extends SpellBatch {
         case SAVING:
             while (processedBlocks <= maxBlocks && ix < absx) {
                 while (processedBlocks <= maxBlocks && blockY < 256) {
-                    Chunk chunk = world.getChunkAt(x + ix * dx, z + iz * dz);
-                    if (!chunk.isLoaded()) {
-                        chunk.load();
+                    int chunkX = x + ix * dx;
+                    int chunkZ = z + iz * dz;
+                    if (!CompatibilityUtils.checkChunk(world, chunkX, chunkZ)) {
                         return processedBlocks;
                     }
+                    Chunk chunk = world.getChunkAt(chunkX, chunkZ);
                     Block block = chunk.getBlock(blockX, blockY, blockZ);
                     if (!spell.hasBuildPermission(block) || !spell.hasBreakPermission(block)) {
                         spell.sendMessageKey("insufficient_permission");
@@ -142,11 +144,12 @@ public class RegenerateBatch extends SpellBatch {
             break;
         case REGENERATING:
             while (processedBlocks <= maxBlocks && ix < absx) {
-                Chunk chunk = world.getChunkAt(x + ix * dx, z + iz * dz);
-                if (!chunk.isLoaded()) {
-                    chunk.load();
+                int chunkX = x + ix * dx;
+                int chunkZ = z + iz * dz;
+                if (!CompatibilityUtils.checkChunk(world, chunkX, chunkZ)) {
                     return processedBlocks;
                 }
+                Chunk chunk = world.getChunkAt(chunkX, chunkZ);
                 // Note that we've already done permissions checks for every block in this chunk.
                 processedBlocks += 256 * 16 * 16;
                 world.regenerateChunk(chunk.getX(), chunk.getZ());

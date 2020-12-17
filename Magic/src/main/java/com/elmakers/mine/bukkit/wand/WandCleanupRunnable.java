@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 
 public class WandCleanupRunnable extends RunnableJob {
@@ -74,12 +75,11 @@ public class WandCleanupRunnable extends RunnableJob {
                 return;
             }
         }
-        Chunk chunk = location.getChunk();
-        if (!chunk.isLoaded()) {
-            chunk.load();
+        if (!CompatibilityUtils.checkChunk(location)) {
             return;
         }
 
+        Chunk chunk = location.getChunk();
         Entity[] entities = chunk.getEntities();
         for (Entity entity : entities) {
             if (!(entity instanceof Item)) continue;

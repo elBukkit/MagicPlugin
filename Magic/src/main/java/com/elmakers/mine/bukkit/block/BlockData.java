@@ -20,6 +20,7 @@ import org.bukkit.util.BlockVector;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 
@@ -173,6 +174,13 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     @Override
     public boolean undo(ModifyType modifyType)
     {
+        Location location = getWorldLocation();
+        if (location == null) {
+            return true;
+        }
+        if (!CompatibilityUtils.checkChunk(location)) {
+            return false;
+        }
         Block block = getBlock();
         if (block == null)
         {
@@ -190,13 +198,6 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             fakeSentToPlayers = null;
             unlink();
             return true;
-        }
-
-        Chunk chunk = block.getChunk();
-        if (!chunk.isLoaded())
-        {
-            chunk.load();
-            return false;
         }
 
         // Don't undo if not the top of the stack
@@ -327,6 +328,20 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             }
         }
         return block;
+    }
+
+    @Nullable
+    @Override
+    public Location getWorldLocation() {
+        Location blockLocation = null;
+        if (location != null)
+        {
+            World world = getWorld();
+            if (world != null) {
+                blockLocation = new Location(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            }
+        }
+        return blockLocation;
     }
 
     @Nullable

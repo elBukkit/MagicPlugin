@@ -55,6 +55,7 @@ public class SpawnedEntity {
             }
             Location entityLocation = new Location(world, location.getX(), location.getY(), location.getZ());
             if (!entityLocation.getChunk().isLoaded()) {
+                // TODO: Fully use async chunk API to load the chunk async and then despawn?
                 entityLocation.getChunk().load();
             }
             entity = CompatibilityUtils.getEntity(world, id);

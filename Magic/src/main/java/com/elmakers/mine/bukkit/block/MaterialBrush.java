@@ -682,6 +682,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                     Location chunkLocation = chunk.getBlock(0, 0, 0).getLocation();
                     chunkLocation = toTargetLocation(sourceWorld, chunkLocation);
                     Chunk sourceChunk = chunkLocation.getChunk();
+                    // This has to be loaded synchronously or else we have to re-work this code quite a bit.
                     sourceChunk.load();
                     addEntities(Arrays.asList(sourceChunk.getEntities()), copyEntities);
                 }

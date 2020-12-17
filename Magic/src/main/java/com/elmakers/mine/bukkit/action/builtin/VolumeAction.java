@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 
 public class VolumeAction extends CompoundAction
@@ -62,6 +63,7 @@ public class VolumeAction extends CompoundAction
     private boolean appliedMultiplier;
     private float pitch;
     private float yaw;
+    private boolean checkChunk = false;
 
     private Material replaceMaterial;
 
@@ -112,6 +114,7 @@ public class VolumeAction extends CompoundAction
         outerProbability = (float)parameters.getDouble("outer_probability", outerProbability);
         useBrushSize = parameters.getBoolean("use_brush_size", false);
         replaceTarget = parameters.getBoolean("replace", false);
+        checkChunk = parameters.getBoolean("check_chunk", true);
         String typeString = parameters.getString("volume_type");
         if (typeString != null) {
             try {
@@ -437,6 +440,10 @@ public class VolumeAction extends CompoundAction
         validBlock = validBlock && (probability >= 1 || context.getRandom().nextDouble() <= probability);
         if (validBlock)
         {
+            if (checkChunk && !CompatibilityUtils.checkChunk(context.getTargetLocation())) {
+                context.addWork(100);
+                return SpellResult.PENDING;
+            }
             Block block = context.getTargetBlock();
             Vector offset = new Vector();
             if (autoOrient) {

@@ -57,7 +57,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         consumeBlocks = parameters.getBoolean("consume", false);
         consumeVariants = parameters.getBoolean("consume_variants", true);
         fallingBlocksHurt = parameters.getBoolean("falling_hurts", false);
-        checkChunk = parameters.getBoolean("check_chunk", false);
+        checkChunk = parameters.getBoolean("check_chunk", true);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction") && !parameters.getString("direction").isEmpty())
         {
@@ -80,11 +80,12 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.FAIL;
         }
 
-        Block block = context.getTargetBlock();
-        if (checkChunk && !CompatibilityUtils.checkChunk(block.getChunk())) {
+        if (checkChunk && !CompatibilityUtils.checkChunk(context.getTargetLocation())) {
+            context.addWork(100);
             return SpellResult.PENDING;
         }
 
+        Block block = context.getTargetBlock();
         if (brush.isErase()) {
             if (!context.hasBreakPermission(block)) {
                 return SpellResult.INSUFFICIENT_PERMISSION;

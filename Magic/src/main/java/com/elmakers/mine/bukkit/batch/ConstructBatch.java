@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
-import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -179,18 +178,13 @@ public class ConstructBatch extends BrushBatch {
                 finish();
             } else while (!deferred.isEmpty() && workPerformed < workAllowed && !finished) {
                 com.elmakers.mine.bukkit.api.block.BlockData delayed = deferred.pop();
+                if (checkChunks && !CompatibilityUtils.checkChunk(delayed.getWorldLocation())) {
+                    return workPerformed + 20;
+                }
                 Block block = delayed.getBlock();
-                Chunk chunk = block.getChunk();
                 if (!deferredTypes.testMaterial(block.getType())) {
                     workPerformed++;
                     continue;
-                }
-                if (!chunk.isLoaded()) {
-                    chunk.load();
-                    return workPerformed + 20;
-                }
-                if (!CompatibilityUtils.isReady(chunk)) {
-                    return workPerformed + 5;
                 }
 
                 workPerformed += 5;
@@ -206,16 +200,10 @@ public class ConstructBatch extends BrushBatch {
                 }
             } else while (delayedBlockIndex < delayedBlocks.size() && workPerformed < workAllowed && !finished) {
                 BlockData delayed = delayedBlocks.get(delayedBlockIndex);
+                if (checkChunks && !CompatibilityUtils.checkChunk(delayed.getWorldLocation())) {
+                    return workPerformed + 20;
+                }
                 Block block = delayed.getBlock();
-                Chunk chunk = block.getChunk();
-                if (!chunk.isLoaded()) {
-                    chunk.load();
-                    return workPerformed  + 20;
-                }
-                if (!CompatibilityUtils.isReady(chunk)) {
-                    return workPerformed + 5;
-                }
-
                 workPerformed += 10;
                 modifyWith(block, delayed);
 
@@ -224,11 +212,10 @@ public class ConstructBatch extends BrushBatch {
         } else if (finishedNonAttached) {
             while (attachedBlockIndex < attachedBlockList.size() && workPerformed < workAllowed && !finished) {
                 BlockData attach = attachedBlockList.get(attachedBlockIndex);
-                Block block = attach.getBlock();
-                if (!block.getChunk().isLoaded()) {
-                    block.getChunk().load();
+                if (checkChunks && !CompatibilityUtils.checkChunk(attach.getWorldLocation())) {
                     return workPerformed + 20;
                 }
+                Block block = attach.getBlock();
 
                 // TODO: Port all this to fill... or move to BlockSpell?
 
@@ -430,10 +417,11 @@ public class ConstructBatch extends BrushBatch {
         if (y < 0 || y > center.getWorld().getMaxHeight()) return true;
 
         // Make sure the block is loaded.
-        Block block = center.getWorld().getBlockAt(x, y, z);
-        if (checkChunks && !CompatibilityUtils.checkChunk(block.getChunk())) {
+        Location location = new Location(center.getWorld(), x, y, z);
+        if (checkChunks && !CompatibilityUtils.checkChunk(location)) {
             return false;
         }
+        Block block = location.getBlock();
 
         // Destructibility and permission checks
         if (!spell.isDestructible(block))

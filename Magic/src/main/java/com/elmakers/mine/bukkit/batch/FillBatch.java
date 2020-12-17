@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class FillBatch extends BrushBatch {
     private final MaterialBrush brush;
@@ -83,12 +84,12 @@ public class FillBatch extends BrushBatch {
         int workPerformed = 0;
 
         while (workPerformed <= maxWork && ix < absx) {
-            Block block = world.getBlockAt(x + ix * dx, y + iy * dy, z + iz * dz);
-            brush.update(mage, block.getLocation());
-            if (!block.getChunk().isLoaded()) {
-                block.getChunk().load();
+            Location location = new Location(world, x + ix * dx, y + iy * dy, z + iz * dz);
+            if (!CompatibilityUtils.checkChunk(location)) {
                 return workPerformed + 20;
             }
+            Block block = location.getBlock();
+            brush.update(mage, block.getLocation());
             if (!brush.isReady()) {
                 brush.prepare();
                 return workPerformed + 10;

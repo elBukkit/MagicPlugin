@@ -197,11 +197,11 @@ public class ShapeBatch extends BrushBatch {
         if (y < 0 || y > center.getWorld().getMaxHeight()) return true;
 
         // Make sure the block is loaded.
-        Block block = center.getWorld().getBlockAt(x, y, z);
-        if (!block.getChunk().isLoaded()) {
-            block.getChunk().load();
+        Location location = new Location(center.getWorld(), x, y, z);
+        if (!CompatibilityUtils.checkChunk(location)) {
             return false;
         }
+        Block block = location.getBlock();
 
         touch(block);
         // Prepare material brush, it may update
