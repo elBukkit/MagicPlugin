@@ -1755,42 +1755,26 @@ public class CompatibilityUtils extends NMSUtils {
         return materialKey;
     }
 
-    private static boolean checkSingleChunk(Chunk chunk, boolean load) {
-        if (!chunk.isLoaded()) {
-            if (load) {
-                chunk.load();
-            }
-            return false;
-        }
-        return isReady(chunk);
+    public static boolean isChunkLoaded(Location location) {
+        int chunkX = location.getBlockX() >> 4;
+        int chunkZ = location.getBlockZ() >> 4;
+        World world = location.getWorld();
+        return world.isChunkLoaded(chunkX, chunkZ);
     }
 
-    public static boolean checkChunk(Chunk chunk) {
-        return checkChunk(chunk, true, true);
+    public static boolean checkChunk(Location location) {
+        int chunkX = location.getBlockX() >> 4;
+        int chunkZ = location.getBlockZ() >> 4;
+        World world = location.getWorld();
+        return checkChunk(world, chunkX, chunkZ);
     }
 
-    public static boolean checkChunk(Chunk chunk, boolean load, boolean checkNeighbors) {
-        if (!checkSingleChunk(chunk, load)) {
+    public static boolean checkChunk(World world, int chunkX, int chunkZ) {
+        if (!world.isChunkLoaded(chunkX, chunkZ)) {
+            loadChunk(world, chunkX, chunkZ);
             return false;
         }
-
-        if (!checkNeighbors) {
-            return true;
-        }
-
-        for (int x = -1; x <= 1; x++) {
-            for (int z = -1; z <= 1; z++) {
-                // Already checked this one
-                if (x == 0 && z == 0) continue;
-
-                Chunk checkChunk = chunk.getWorld().getChunkAt(chunk.getX() + x, chunk.getZ() + z);
-                if (!checkSingleChunk(checkChunk, load)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        return isReady(world.getChunkAt(chunkX, chunkZ));
     }
 
     public static boolean applyBonemeal(Location location) {
@@ -2131,6 +2115,9 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean lockChunk(Chunk chunk, Plugin plugin) {
         if (!plugin.isEnabled()) return false;
+        if (!chunk.isLoaded()) {
+            getLogger().info("Locking unloaded chunk");
+        }
         if (class_Chunk_addPluginChunkTicketMethod == null) return false;
         try {
             class_Chunk_addPluginChunkTicketMethod.invoke(chunk, plugin);
@@ -2347,5 +2334,17 @@ public class CompatibilityUtils extends NMSUtils {
             }
         }
         return player.getBedSpawnLocation();
+    }
+
+    public static void loadChunk(World world, int x, int z) {
+        if (class_World_getChunkAtAsyncMethod != null) {
+            try {
+                class_World_getChunkAtAsyncMethod.invoke(world, x, z);
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error loading chunk asynchronously", ex);
+            }
+        }
+
+        world.getChunkAt(x, z).load();
     }
 }
