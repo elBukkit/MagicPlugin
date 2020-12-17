@@ -69,6 +69,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private boolean isActive = false;
     private long delayExpiration = 0;
     private Waypoint selectedWaypoint;
+    private Location pendingTeleport = null;
 
     private static class UndoMarkerMove implements Runnable
     {
@@ -466,6 +467,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     @Override
     public SpellResult perform(CastContext context) {
+        if (pendingTeleport != null) {
+            return doTeleport();
+        }
         if (isActive) {
             if (context.getMage().getActiveGUI() != this) {
                 if (context.getTargetLocation() == null) {
@@ -482,7 +486,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 }
                 isActive = false;
                 if (teleport) {
-                    return doTeleport() ? SpellResult.CAST : SpellResult.FAIL;
+                    return doTeleport();
                 }
                 return SpellResult.CAST;
             }
@@ -800,7 +804,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             Waypoint waypoint = getWarp(warpName);
             if (tryTeleport(player, waypoint)) {
                 if (teleport) {
-                    return doTeleport() ? SpellResult.CAST : SpellResult.FAIL;
+                    return doTeleport();
                 }
                 return SpellResult.CAST;
             }
@@ -851,7 +855,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             Waypoint location = getWaypoint(player, recallType, null, parameters, context);
             if (tryTeleport(player, location)) {
                 if (teleport) {
-                    return doTeleport() ? SpellResult.CAST : SpellResult.FAIL;
+                    return doTeleport();
                 }
                 return SpellResult.CAST;
             }
@@ -1148,18 +1152,23 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return true;
     }
 
-    protected boolean doTeleport() {
+    protected SpellResult doTeleport() {
         Mage mage = context.getMage();
         Player player = mage.getPlayer();
         Location targetLocation = context.getTargetLocation();
+        if (!CompatibilityUtils.checkChunk(targetLocation)) {
+            pendingTeleport = targetLocation;
+            return SpellResult.PENDING;
+        }
+        pendingTeleport = null;
         context.playEffects("teleporting");
         if (context.teleport(player, targetLocation, verticalSearchDistance, selectedWaypoint.safe, selectedWaypoint.safe)) {
             context.castMessageKey("teleport", selectedWaypoint.message);
         } else {
             context.sendMessageKey("teleport_failed", selectedWaypoint.failMessage);
-            return false;
+            return SpellResult.FAIL;
         }
-        return true;
+        return SpellResult.CAST;
     }
 
     protected boolean placeMarker(Block target, int markerNumber)
