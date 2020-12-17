@@ -312,6 +312,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         {
             return false;
         }
+        // This may cause an occasional missed attachment for super large constructions,
+        // but the alternative is either very complicated or very inefficient
+        boolean isDifferentChunk = baseBlock.getX() >> 4 != testBlock.getX() >> 4 || baseBlock.getZ() >> 4 != testBlock.getZ() >> 4;
+        if (isDifferentChunk && !CompatibilityUtils.isChunkLoaded(testBlock.getLocation())) {
+            return false;
+        }
 
         if (materials.testBlock(testBlock))
         {
