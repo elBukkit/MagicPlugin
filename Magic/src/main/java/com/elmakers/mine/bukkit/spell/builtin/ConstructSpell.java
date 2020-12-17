@@ -66,6 +66,7 @@ public class ConstructSpell extends BrushSpell
         boolean commit = parameters.getBoolean("commit", false);
         boolean consume = parameters.getBoolean("consume", false);
         boolean checkChunks = parameters.getBoolean("check_chunks", true);
+        boolean lockChunks = parameters.getBoolean("lock_chunks", false);
         double breakable = parameters.getDouble("breakable", 0);
         double backfireChance = parameters.getDouble("reflect_chance", 0);
 
@@ -192,6 +193,7 @@ public class ConstructSpell extends BrushSpell
             batch.setFallingDirection(ConfigurationUtils.getVector(parameters, "falling_direction"));
             batch.setFallingBlockSpeed(force);
         }
+        batch.setLockChunks(lockChunks);
         batch.setApplyPhysics(physicsType.equalsIgnoreCase("true"));
         batch.setDeferPhysics(physicsType.equalsIgnoreCase("defer"));
         if (breakable > 0) {

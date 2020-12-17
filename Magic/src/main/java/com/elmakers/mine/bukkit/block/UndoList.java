@@ -88,6 +88,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean               finished              = false;
     protected int                      timeToLive          = 0;
     protected ModifyType            modifyType           = ModifyType.NO_PHYSICS;
+    protected boolean               lockChunks = false;
 
     protected boolean                bypass                 = false;
     protected boolean                hasBeenScheduled    = false;
@@ -1031,6 +1032,15 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public boolean getApplyPhysics() {
         return modifyType == ModifyType.NORMAL;
+    }
+
+    @Override
+    public void setLockChunks(boolean lockChunks) {
+        this.lockChunks = lockChunks;
+    }
+
+    public boolean getLockChunks() {
+        return lockChunks;
     }
 
     @Override

@@ -18,11 +18,12 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     protected final MageController controller;
     protected boolean finished = false;
     protected boolean applyPhysics = false;
+    protected boolean lockChunks = false;
     protected UndoList undoList;
     protected int listSize;
     protected int listProcessed;
     protected double partialWork = 0;
-    private Set<Chunk> affectedChunks = new HashSet<>();
+    private Set<Chunk> affectedChunks = null;
 
     private final MaterialSet attachables;
 
@@ -31,6 +32,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
 
         undoList = blockList;
         this.applyPhysics = blockList.getApplyPhysics();
+        this.setLockChunks(blockList.getLockChunks());
 
         CastContext context = undoList.getContext();
         if (context != null) {
@@ -83,7 +85,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
                 // There may have been a forced chunk load here
                 workPerformed += 20;
                 break;
-            } else {
+            } else if (lockChunks) {
                 Chunk chunk = undone.getChunk();
                 if (affectedChunks.add(chunk)) {
                     controller.lockChunk(chunk);
@@ -124,10 +126,12 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
             if (context != null) {
                 context.playEffects("undo_finished");
             }
-            for (Chunk chunk : affectedChunks) {
-                controller.unlockChunk(chunk);
+            if (lockChunks) {
+                for (Chunk chunk : affectedChunks) {
+                    controller.unlockChunk(chunk);
+                }
+                affectedChunks.clear();
             }
-            affectedChunks.clear();
         }
     }
 
@@ -150,6 +154,13 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     public void complete() {
         while (!isFinished()) {
             process(-1);
+        }
+    }
+
+    public void setLockChunks(boolean lockChunks) {
+        this.lockChunks = lockChunks;
+        if (lockChunks && affectedChunks == null) {
+            affectedChunks = new HashSet<>();
         }
     }
 }

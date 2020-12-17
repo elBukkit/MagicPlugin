@@ -79,7 +79,9 @@ public class FillSpell extends BrushSpell
 
             FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
             boolean consumeBlocks = parameters.getBoolean("consume", false);
+            boolean lockChunks = parameters.getBoolean("lock_chunks", false);
             batch.setConsume(consumeBlocks);
+            batch.setLockChunks(lockChunks);
             UndoList undoList = getUndoList();
             if (undoList != null && !currentCast.isConsumeFree()) {
                 undoList.setConsumed(consumeBlocks);
