@@ -2,6 +2,12 @@ jedi:
   parent: force_user
   locked: true
   path: youngling
+  discover_recipes:
+    - lightsaber_blue
+    - lightaber_green
+    - lightaber_orange
+    - lightaber_hilt
+    - lightaber_purple
   spells:
     - forcepush
     - forcepull

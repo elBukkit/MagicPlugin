@@ -1,3 +1,5 @@
 trooper:
   parent: stars_soldier
   locked: false
+  discover_recipes:
+    - blaster_red

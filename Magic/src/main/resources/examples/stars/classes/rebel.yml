@@ -1,4 +1,7 @@
 rebel:
   parent: stars_soldier
   locked: false
+  discover_recipes:
+    - blaster_blue
+    - blaster_green
 

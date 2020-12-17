@@ -18,7 +18,7 @@ import com.google.common.collect.ImmutableSet;
 public class MageClass extends BaseMageModifier implements com.elmakers.mine.bukkit.api.magic.MageClass  {
     public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
         .addAll(BaseMageModifier.PROPERTY_KEYS)
-        .add("class_items").build();
+        .add("class_items", "discover_recipes").build();
 
     public MageClass(@Nonnull Mage mage, @Nonnull MageClassTemplate template) {
         super(mage, template.hasParent() ? MagicPropertyType.SUBCLASS : MagicPropertyType.CLASS, template);
