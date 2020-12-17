@@ -36,6 +36,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -2088,6 +2091,31 @@ public class BaseSpell implements MageSpell, Cloneable {
     public boolean onCancelSelection()
     {
         return false;
+    }
+
+    /**
+     * Listener method, called on player quit for registered spells.
+     *
+     * @param event The player who just quit
+     */
+    public void onPlayerQuit(PlayerQuitEvent event)
+    {
+
+    }
+
+    /**
+     * Listener method, called on player move for registered spells.
+     *
+     * @param event The original entity death event
+     */
+    public void onPlayerDeath(EntityDeathEvent event)
+    {
+
+    }
+
+    public void onPlayerDamage(EntityDamageEvent event)
+    {
+
     }
 
     /**
