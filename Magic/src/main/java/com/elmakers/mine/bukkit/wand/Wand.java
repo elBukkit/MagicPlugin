@@ -2393,16 +2393,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return controller.getMessages().getPropertyString(getMessageKey(templateName), value, max, getMessageKey(propertyTemplate));
     }
 
-    private String formatPropertyString(String template, float value) {
-        return formatPropertyString(template, value, 1);
-    }
-
-    private String formatPropertyString(String template, float value, float max) {
+    private String formatPropertyString(String message, float value, float max) {
         String propertyTemplate = getBoolean("stack") ? "property_stack" : "property_value";
         if (value < 0) {
             propertyTemplate = propertyTemplate + "_negative";
         }
-        return controller.getMessages().formatPropertyString(template, value, max, getMessage(propertyTemplate));
+        return controller.getMessages().formatPropertyString(message, value, max, getMessage(propertyTemplate));
     }
 
     private void addDamageTypeLore(String property, String propertyType, double amount, List<String> lore) {
