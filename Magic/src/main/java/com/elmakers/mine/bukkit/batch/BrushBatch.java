@@ -14,7 +14,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public abstract class BrushBatch extends SpellBatch {
-    private Set<Chunk> affectedChunks = null;
+    private final Set<Chunk> affectedChunks = new HashSet<>();
     private boolean lockChunks = false;
 
     public BrushBatch(BrushSpell spell) {
@@ -24,9 +24,11 @@ public abstract class BrushBatch extends SpellBatch {
     protected abstract boolean contains(Location location);
 
     protected void touch(Block block) {
-        if (!lockChunks) return;
         Chunk chunk = block.getChunk();
-        if (affectedChunks.add(chunk)) {
+        // Still need to add to affectedChunks even if not locking, in case
+        // we end up copying entities
+        // This is a weak reference to the actual nms chunk though so it should be OK
+        if (affectedChunks.add(chunk) && lockChunks) {
             controller.lockChunk(chunk);
         }
     }
@@ -62,17 +64,14 @@ public abstract class BrushBatch extends SpellBatch {
                 for (Chunk chunk : affectedChunks) {
                     controller.unlockChunk(chunk);
                 }
-                affectedChunks.clear();
             }
+            affectedChunks.clear();
             super.finish();
         }
     }
 
     public void setLockChunks(boolean lockChunks) {
         this.lockChunks = lockChunks;
-        if (lockChunks && this.affectedChunks == null) {
-            this.affectedChunks = new HashSet<>();
-        }
         if (undoList != null) {
             undoList.setLockChunks(lockChunks);
         }
