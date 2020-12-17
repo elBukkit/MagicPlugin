@@ -26,7 +26,7 @@ public class ConstructSpell extends BrushSpell
     public static final String[] CONSTRUCT_PARAMETERS = {
         "radius", "falling", "speed", "max_dimension", "replace", "consume",
         "type", "thickness", "orient_dimension_max", "orient_dimension_min",
-        "breakable", "backfire", "select_self", "use_brush_size", "falling_direction"
+        "breakable", "backfire", "select_self", "use_brush_size", "falling_direction", "lock_chunks"
     };
 
     private static final ConstructionType DEFAULT_CONSTRUCTION_TYPE = ConstructionType.SPHERE;
@@ -284,7 +284,8 @@ public class ConstructSpell extends BrushSpell
             for (ConstructionType constructionType : constructionTypes) {
                 examples.add(constructionType.name().toLowerCase());
             }
-        } else if (parameterKey.equals("power") || parameterKey.equals("replace") || parameterKey.equals("falling")) {
+        } else if (parameterKey.equals("power") || parameterKey.equals("replace")
+                || parameterKey.equals("falling") || parameterKey.equals("lock_chunks")) {
             examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
         }
     }
