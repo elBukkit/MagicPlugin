@@ -67,7 +67,7 @@ superotherize:
     transparent: transparent_to_construction
     brush: clone
     brushmod: erase
-    otworld: world_netherside
+    otworld: world_other
     obworld: world
     brushtarget: true
     ignore_region_overrides: true

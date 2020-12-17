@@ -53,7 +53,7 @@ otherize:
     transparent: transparent_to_construction
     brush: clone
     brushmod: erase
-    otworld: world_netherside
+    otworld: world_other
     obworld: world
     brushtarget: true
     cooldown: 7000
