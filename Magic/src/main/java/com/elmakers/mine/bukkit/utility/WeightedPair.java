@@ -59,4 +59,9 @@ public class WeightedPair<T extends Object> implements Comparable<WeightedPair<?
     public int compareTo(WeightedPair<? extends Object> other) {
         return this.threshold.compareTo(other.threshold);
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }
