@@ -18,6 +18,9 @@
 
 ## List is too long
 
+ - Undo on world save is flawed
+   - Chunks save when unloaded
+   - Do we need to auto-undo spells on chunk unload?
  - Path re-work
    - Treat like another TemplatedProperties property holder
    - Maybe use ParentedProperties and reconsider the way path inheritance works

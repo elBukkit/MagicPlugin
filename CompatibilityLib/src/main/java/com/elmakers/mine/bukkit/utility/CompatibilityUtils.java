@@ -2405,6 +2405,12 @@ public class CompatibilityUtils extends NMSUtils {
         loadChunk(world, x, z, generate, null);
     }
 
+    /**
+     * This will load chunks asynchronously if possible.
+     *
+     * But note that it will never be truly asynchronous, it is important not to call this in a tight retry loop,
+     * the main server thread needs to free up to actually process the async chunk loads.
+     */
     public static void loadChunk(World world, int x, int z, boolean generate, Consumer<Chunk> consumer) {
         final LoadingChunk loading = new LoadingChunk(world, x, z);
         if (loadingChunks.contains(loading)) {

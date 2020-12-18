@@ -89,6 +89,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected int                      timeToLive          = 0;
     protected ModifyType            modifyType           = ModifyType.NO_PHYSICS;
     protected boolean               lockChunks = false;
+    protected boolean               forceSynchronous = false;
 
     protected boolean                bypass                 = false;
     protected boolean                hasBeenScheduled    = false;
@@ -436,13 +437,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             return null;
         }
         BlockData blockData = blockList.removeFirst();
-        if (!CompatibilityUtils.checkChunk(blockData.getWorldLocation())) {
+        Block block = blockData.getBlock();
+        if (forceSynchronous && !CompatibilityUtils.isChunkLoaded(block)) {
+            block.getChunk().load();
+        } else if (!CompatibilityUtils.checkChunk(blockData.getWorldLocation())) {
             blockList.addFirst(blockData);
             // Skip through this undo if we need to start loading chunks
             speed = 0;
             return null;
         }
-        BlockState currentState = blockData.getBlock().getState();
+        BlockState currentState = block.getState();
         if (undo(blockData, applyPhysics)) {
             blockIdMap.remove(blockData.getId());
             Mage owner = getOwner();
@@ -452,7 +456,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
             CastContext context = getContext();
             if (context != null && context.hasEffects("undo_block")) {
-                Block block = blockData.getBlock();
+                // Not sure if I really have to fetch the block again here, or if getType would just return the updated result?
+                block = blockData.getBlock();
                 if (block.getType() != currentState.getType()) {
                     context.playEffects("undo_block", 1.0f, null, null, block.getLocation(), null, block);
                 }
@@ -517,6 +522,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         if (undone) return;
         undone = true;
+
+        if (blocking) {
+            forceSynchronous = true;
+        }
 
         Batch batch = getBatch();
         if (batch != null && !batch.isFinished())
@@ -1236,5 +1245,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public boolean affectsWorld(@Nonnull World world) {
         Preconditions.checkNotNull(world);
         return worlds.contains(world.getName());
+    }
+
+    public void setSynchronous(boolean sync) {
+        forceSynchronous = sync;
     }
 }

@@ -152,6 +152,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
 
     @Override
     public void complete() {
+        undoList.setSynchronous(true);
         while (!isFinished()) {
             process(-1);
         }
