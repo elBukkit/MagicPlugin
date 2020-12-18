@@ -50,6 +50,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
+    public static void showStackTraces(boolean debug) {
+        if (effectLib != null) {
+            effectLib.enableStackTraces(debug);
+        }
+    }
+
     public static void setParticleRange(int range) {
         PARTICLE_RANGE = range;
         if (effectLib != null) {

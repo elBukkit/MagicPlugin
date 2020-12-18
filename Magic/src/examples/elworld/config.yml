@@ -1,6 +1,7 @@
 # This IS a dev server, after all!
 log_verbosity: 10
 debug_effects: true
+debug_effects_stack_traces: true
 
 # Creative mode is super annoying sometimes
 prevent_creative_breaking: 0

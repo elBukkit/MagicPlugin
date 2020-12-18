@@ -38,7 +38,6 @@ public class EffectLibManager {
         if (effectManager == null) {
             effectManager = new EffectManager(plugin, logger);
             effectManager.setImageCacheFolder(new File(plugin.getDataFolder(), "data/imagemapcache"));
-            effectManager.enableStackTraces(false);
         }
 
         return new EffectLibManager(plugin);
@@ -47,6 +46,12 @@ public class EffectLibManager {
     public void enableDebug(boolean debug) {
         if (effectManager != null) {
             effectManager.enableDebug(debug);
+        }
+    }
+
+    public void enableStackTraces(boolean debug) {
+        if (effectManager != null) {
+            effectManager.enableStackTraces(debug);
         }
     }
 
