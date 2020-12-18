@@ -99,6 +99,7 @@ import java.util.logging.Level;
  */
 @SuppressWarnings("deprecation")
 public class CompatibilityUtils extends NMSUtils {
+    public static final int MAX_CHUNK_LOAD_TRY = 10;
     public static boolean USE_MAGIC_DAMAGE = true;
     public static int BLOCK_BREAK_RANGE = 64;
     public final static int MAX_ENTITY_RANGE = 72;
@@ -106,7 +107,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static Map<Integer, Material> materialIdMap;
     private static ItemStack dummyItem;
     public static final UUID emptyUUID = new UUID(0L, 0L);
-    private static final Set<LoadingChunk> loadingChunks = new HashSet<>();
+    private static final Map<LoadingChunk, Integer> loadingChunks = new HashMap<>();
 
     static class LoadingChunk {
         private final String worldName;
@@ -2413,12 +2414,25 @@ public class CompatibilityUtils extends NMSUtils {
      */
     public static void loadChunk(World world, int x, int z, boolean generate, Consumer<Chunk> consumer) {
         final LoadingChunk loading = new LoadingChunk(world, x, z);
-        if (loadingChunks.contains(loading)) {
+        Integer requestCount = loadingChunks.get(loading);
+        if (requestCount != null) {
+            requestCount++;
+            if (requestCount > MAX_CHUNK_LOAD_TRY) {
+                getLogger().warning("Exceeded retry count for asynchronous chunk load, loading synchronously");
+                Chunk chunk = world.getChunkAt(x, z);
+                chunk.load();
+                if (consumer != null) {
+                    consumer.accept(chunk);
+                }
+                loadingChunks.remove(loading);
+                return;
+            }
+            loadingChunks.put(loading, requestCount);
             return;
         }
         if (class_World_getChunkAtAsyncMethod != null) {
             try {
-                loadingChunks.add(loading);
+                loadingChunks.put(loading, 1);
                 class_World_getChunkAtAsyncMethod.invoke(world, x, z, generate, (Consumer<Chunk>) chunk -> {
                     loadingChunks.remove(loading);
                     if (consumer != null) {
