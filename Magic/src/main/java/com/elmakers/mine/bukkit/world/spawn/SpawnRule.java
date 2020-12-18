@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.world.spawn;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -24,7 +26,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 public abstract class SpawnRule implements Comparable<SpawnRule> {
     protected MagicController controller;
     protected String key;
-    protected EntityType targetEntityType;
+    protected final List<EntityType> targetEntityTypes = new ArrayList<>();
     protected Class<? extends Entity> targetEntityClass;
     protected float percentChance;
     protected int minY;
@@ -39,6 +41,7 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
     protected Set<String> tags;
     protected Set<Biome> biomes;
     protected Set<Biome> notBiomes;
+    protected boolean isGlobal;
 
     protected static final Random rand = new Random();
 
@@ -71,15 +74,20 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         this.parameters = parameters;
         this.key = key;
         this.controller = controller;
+        isGlobal = true;
+        List<String> entityTypes = parameters.getStringList("target_types");
         String entityTypeName = parameters.getString("target_type");
         if (entityTypeName != null && !entityTypeName.isEmpty() && !entityTypeName.equals("*") && !entityTypeName.equalsIgnoreCase("all")) {
-            this.targetEntityType = EntityData.parseEntityType(entityTypeName);
-            if (targetEntityType == null) {
+            entityTypes.add(entityTypeName);
+        }
+        for (String entityType : entityTypes) {
+            isGlobal = false;
+            EntityType targetType = EntityData.parseEntityType(entityType);
+            if (targetType == null) {
                 this.controller.getLogger().warning(" Invalid entity type: " + entityTypeName);
-                return false;
+            } else {
+                targetEntityTypes.add(targetType);
             }
-        } else {
-            this.targetEntityType = null;
         }
 
         String entityClassName = parameters.getString("target_class");
@@ -110,8 +118,12 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         return true;
     }
 
-    public EntityType getTargetType() {
-        return targetEntityType;
+    public List<EntityType> getTargetTypes() {
+        return targetEntityTypes;
+    }
+
+    public boolean isGlobal() {
+        return isGlobal;
     }
 
     public String getKey() {
@@ -120,7 +132,6 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
 
     @Nonnull
     public SpawnResult process(Plugin plugin, LivingEntity entity) {
-        if (targetEntityType != null && targetEntityType != entity.getType()) return SpawnResult.SKIP;
         if (targetEntityClass != null && !targetEntityClass.isAssignableFrom(entity.getClass())) return SpawnResult.SKIP;
         if (!targetCustom && entity.getCustomName() != null) return SpawnResult.SKIP;
         if (!targetNPC && controller.isNPC(entity)) return SpawnResult.SKIP;
@@ -163,7 +174,7 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         if (targetEntityClass != null) {
             return "entities of class " + targetEntityClass.getSimpleName();
         }
-        return targetEntityType == null ? "all entities" : targetEntityType.name().toLowerCase();
+        return targetEntityTypes.isEmpty() ? "all entities" : StringUtils.join(targetEntityTypes, ",");
     }
 
     protected void logSpawnRule(String message) {

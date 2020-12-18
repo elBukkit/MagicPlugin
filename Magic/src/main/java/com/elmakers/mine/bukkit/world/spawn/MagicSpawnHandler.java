@@ -52,15 +52,16 @@ public class MagicSpawnHandler {
     }
 
     protected void addRule(SpawnRule rule) {
-        EntityType targetType = rule.getTargetType();
-        if (targetType != null) {
-            List<SpawnRule> entityRules = entityTypeMap.get(rule.getTargetType());
+        List<EntityType> targetTypes = rule.getTargetTypes();
+        for (EntityType targetType : targetTypes) {
+            List<SpawnRule> entityRules = entityTypeMap.get(targetType);
             if (entityRules == null) {
                 entityRules = new ArrayList<>();
                 entityTypeMap.put(targetType, entityRules);
             }
             entityRules.add(rule);
-        } else {
+        }
+        if (rule.isGlobal()) {
             globalRules.add(rule);
         }
     }
