@@ -1,4 +1,23 @@
+# Enable some cruelty-free recipes
+
+zombie_leather:
+  enabled: true
+
+coal_ink:
+  enabled: true
+
+# and some OP ones
+
+saddle:
+  enabled: true
+
+name_tag:
+  enabled: true
+
 # Disable all magic items for now
+
+magicheart:
+  enabled: false
 
 apprenticeboots:
   enabled: false
