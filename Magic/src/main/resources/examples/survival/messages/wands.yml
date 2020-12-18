@@ -85,6 +85,9 @@ wands:
     magicbow:
         name: Magic Bow
         description: "$path &rMagic Bow"
+    magiccrossbow:
+        name: Magic Crosswow
+        description: "$path &rMagic Crossbow"
     mastersword:
         name: Master Sword
         description: The legendary sword that seals the darkness
