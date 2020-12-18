@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -58,6 +59,7 @@ public class ReplaceRule extends SpawnRule {
             }
             replaceDescription = StringUtils.join(names, ",");
         }
+        replaceDescription = ChatColor.stripColor(replaceDescription);
         logSpawnRule("Replacing " + getTargetEntityTypeName() + " in " + worldName + " with " + replaceDescription);
     }
 
@@ -82,7 +84,7 @@ public class ReplaceRule extends SpawnRule {
             }
 
             Entity spawned = replacement.spawn(entity.getLocation());
-            if (replacement == null) {
+            if (spawned == null) {
                 return SpawnResult.SKIP;
             }
         }
