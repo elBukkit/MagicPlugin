@@ -241,6 +241,7 @@ public class InventoryController implements Listener {
             ItemStack replacement = NMSUtils.getReplacement(clickedItem);
             event.setCurrentItem(replacement);
             event.setCancelled(true);
+            mage.armorUpdated();
             return;
         }
 
