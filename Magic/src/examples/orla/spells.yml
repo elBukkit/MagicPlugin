@@ -70,3 +70,19 @@ giveteleporter:
   parameters:
     target: self
     item: teleporter
+
+permafrost:
+    icon: spell_icon:38
+    icon_disabled: spell_icon_disabled:38
+    icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
+    category: engineering
+    tags: noduel
+    worth: 2000
+    earns_sp: 10
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ChangeBiome
+    parameters:
+        radius: 200
