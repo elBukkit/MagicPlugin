@@ -64,7 +64,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     public MagicNPC(MagicController controller, Mage creator, Location location, String name, EntityData template) {
         this(controller);
-        this.location = location.clone();
+        this.setLocation(location);
         this.name = name;
         this.createdAt = System.currentTimeMillis();
         this.creatorId = creator.getId();
@@ -237,13 +237,21 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Override
     public void teleport(@Nonnull Location location) {
-        this.location = location.clone();
+        setLocation(location);
         if (CompatibilityUtils.isChunkLoaded(location)) {
             restore();
         }
         Entity entity = getEntity();
         if (entity != null && entity.isValid()) {
             entity.teleport(location);
+        }
+    }
+
+    public void setLocation(Location location) {
+        this.location = location.clone();
+        World world = this.location.getWorld();
+        if (world != null) {
+            this.worldName = world.getName();
         }
     }
 
