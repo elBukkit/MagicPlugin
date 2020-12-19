@@ -108,6 +108,7 @@ public class CompatibilityUtils extends NMSUtils {
     private static ItemStack dummyItem;
     public static final UUID emptyUUID = new UUID(0L, 0L);
     private static final Map<LoadingChunk, Integer> loadingChunks = new HashMap<>();
+    private static boolean hasDumpedStack = false;
 
     static class LoadingChunk {
         private final String worldName;
@@ -2419,6 +2420,10 @@ public class CompatibilityUtils extends NMSUtils {
             requestCount++;
             if (requestCount > MAX_CHUNK_LOAD_TRY) {
                 getLogger().warning("Exceeded retry count for asynchronous chunk load, loading synchronously");
+                if (!hasDumpedStack) {
+                    hasDumpedStack = true;
+                    Thread.dumpStack();
+                }
                 Chunk chunk = world.getChunkAt(x, z);
                 chunk.load();
                 if (consumer != null) {
