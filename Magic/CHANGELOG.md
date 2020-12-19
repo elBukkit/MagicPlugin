@@ -57,7 +57,8 @@
  - Jedi and Sith will auto-learn recipes, nether stars removed (still needed for hilt)
  - Fix auto_close on shops not working
  - Fix NPCs sometimes not respawning
- - Add simpler "slot" parameter to Wear action, boots,helmet,chesplate or leggings
+ - Add simpler `slot` parameter to Wear action, boots,helmet,chesplate or leggings
+ - Add `direction_count` and `source_location` parameters to CheckBlock action, more control over where it looks
 
 # 8.1.2
 

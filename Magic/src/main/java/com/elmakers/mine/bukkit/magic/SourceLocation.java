@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -106,6 +107,12 @@ public class SourceLocation {
         if (configuration.getBoolean("reorient", false)) {
             orientToTarget = false;
         }
+    }
+
+    @Nullable
+    public Block getBlock(EffectContext context) {
+        Location location = getLocation(context);
+        return location == null ? null : location.getBlock();
     }
 
     @Nullable
