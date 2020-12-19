@@ -55,3 +55,18 @@ skating:
     speed: 0.7
     delay: 50
     duration: 500
+
+giveteleporter:
+  actions:
+    cast:
+      - class: CheckInventory
+        actions:
+          - class: Message
+            message: You already have a teleporter! It's the weird glowing thingy.
+        fail:
+          - class: Message
+            message: Here you go! Use it wisely.
+          - class: GiveItem
+  parameters:
+    target: self
+    item: teleporter
