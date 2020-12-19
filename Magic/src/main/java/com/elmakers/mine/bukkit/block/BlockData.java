@@ -219,10 +219,9 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     @Override
     public void commit()
     {
-        updateFrom(getBlock());
         if (nextState != null) {
             nextState.setPriorState(null);
-            nextState.updateFrom(getBlock());
+            nextState.updateFrom(this);
             nextState = null;
         }
 
@@ -232,7 +231,6 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
             // Cascade the commit downward, unlinking everything,
             // in case other BlockLists contain these records
-            priorState.updateFrom(getBlock());
             priorState.commit();
             priorState = null;
         }
