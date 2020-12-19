@@ -1,13 +1,16 @@
 teleporter:
  - effectlib:
      class: Fountain
+     radius: 1
+     height: 2
+     height_spout: 4
+     particles_spout: 3
+     particles_strand: 5
      duration: 86400000
-     particles_spout: 5
-     particles_strand: 10
      particle_offset_x: 0.1
      particle_offset_y: 0.1
      particle_offset_z: 0.1
-     particle_count: 5
+     particle_count: 4
      particle_data: 2
      interval: 4
      particle: enchantment_table
