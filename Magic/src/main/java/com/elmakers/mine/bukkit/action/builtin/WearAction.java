@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.item.ArmorSlot;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -114,9 +115,20 @@ public class WearAction extends BaseSpellAction
     {
         material = ConfigurationUtils.getMaterialAndData(parameters, "material");
         item = context.getController().createItem(parameters.getString("item"));
-        useItem = parameters.getBoolean("use_item", false);
-        slotNumber = parameters.getInt("armor_slot", 3);
+        String slotName = parameters.getString("slot");
+        if (slotName != null && !slotName.isEmpty()) {
+            try {
+                ArmorSlot slot = ArmorSlot.valueOf(slotName.toUpperCase());
+                slotNumber = slot.getArmorSlot();
+            } catch (Exception ex) {
+                context.getLogger().warning("Invalid slot in Wear action: " + slotName);
+            }
+        } else {
+            slotNumber = parameters.getInt("armor_slot", 3);
+        }
         slotNumber = Math.max(Math.min(slotNumber, 3), 0);
+
+        useItem = parameters.getBoolean("use_item", false);
         unbreakable = parameters.getBoolean("unbreakable", true);
         returnOnFinish = parameters.getBoolean("return_on_finish", false);
     }

@@ -15,4 +15,8 @@ public enum ArmorSlot {
     public int getSlot() {
         return slot;
     }
+
+    public int getArmorSlot() {
+        return slot - 36;
+    }
 }
