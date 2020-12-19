@@ -32,7 +32,9 @@ public class WeatherAction extends BaseSpellAction
             makeStorm = !hasStorm;
         }
 
-        if (makeStorm) {
+        if (weatherString.equals("rain")) {
+            world.setStorm(true);
+        } else if (makeStorm) {
             world.setStorm(true);
             world.setThundering(true);
         } else {
@@ -51,6 +53,7 @@ public class WeatherAction extends BaseSpellAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("weather")) {
+            examples.add("rain");
             examples.add("storm");
             examples.add("cycle");
             examples.add("clear");
