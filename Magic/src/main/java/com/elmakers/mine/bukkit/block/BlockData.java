@@ -221,7 +221,6 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     {
         if (nextState != null) {
             nextState.setPriorState(null);
-            nextState.updateFrom(this);
             nextState = null;
         }
 
