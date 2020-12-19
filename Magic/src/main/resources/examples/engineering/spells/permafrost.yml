@@ -8,11 +8,11 @@ permafrost:
     earns_sp: 10
     actions:
         cast:
+        - class: Weather
         - class: Sphere
           actions:
           - class: ChangeBiome
           - class: Freeze
-          - class: Weather
     effects:
         cast:
         -  class: EffectSingle
