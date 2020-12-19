@@ -26,33 +26,35 @@ public class ValidateSpellsTask implements Runnable {
     @Override
     public void run() {
         MagicLogger logger = controller.getLogger();
-        Mage mage = controller.getMage(sender);
-        Collection<SpellTemplate> spells = controller.getSpellTemplates();
-        for (SpellTemplate newSpell : spells) {
-            String key = newSpell.getKey();
-            logger.setContext("spells." + key);
-            // For spells to check parameters for errors/warnings
-            if (newSpell instanceof BaseSpell) {
-                BaseSpell spell = (BaseSpell)newSpell;
-                try {
-                    MageSpell mageSpell = spell.createMageSpell(mage);
-                    com.elmakers.mine.bukkit.action.CastContext context = new com.elmakers.mine.bukkit.action.CastContext(mageSpell);
-                    context.setWorkingParameters(mageSpell.getSpellParameters());
-                    if (mageSpell instanceof ActionSpell) {
-                        ActionSpell actionSpell = (ActionSpell)mageSpell;
-                        Collection<String> handlers = actionSpell.getHandlers();
-                        for (String handler : handlers) {
-                            actionSpell.setCurrentHandler(handler, context);
-                            actionSpell.reloadParameters(context);
+        Mage mage = controller.getRegisteredMage(sender);
+        if (mage != null) {
+            Collection<SpellTemplate> spells = controller.getSpellTemplates();
+            for (SpellTemplate newSpell : spells) {
+                String key = newSpell.getKey();
+                logger.setContext("spells." + key);
+                // For spells to check parameters for errors/warnings
+                if (newSpell instanceof BaseSpell) {
+                    BaseSpell spell = (BaseSpell)newSpell;
+                    try {
+                        MageSpell mageSpell = spell.createMageSpell(mage);
+                        com.elmakers.mine.bukkit.action.CastContext context = new com.elmakers.mine.bukkit.action.CastContext(mageSpell);
+                        context.setWorkingParameters(mageSpell.getSpellParameters());
+                        if (mageSpell instanceof ActionSpell) {
+                            ActionSpell actionSpell = (ActionSpell)mageSpell;
+                            Collection<String> handlers = actionSpell.getHandlers();
+                            for (String handler : handlers) {
+                                actionSpell.setCurrentHandler(handler, context);
+                                actionSpell.reloadParameters(context);
+                            }
+                        } else {
+                            mageSpell.reloadParameters(context);
                         }
-                    } else {
-                        mageSpell.reloadParameters(context);
+                        if (mageSpell instanceof BaseSpell) {
+                            ((BaseSpell)mageSpell).validateEffects();
+                        }
+                    } catch (Exception ex) {
+                        logger.log(Level.SEVERE, "There was an error checking spell " + key + " for issues", ex);
                     }
-                    if (mageSpell instanceof BaseSpell) {
-                        ((BaseSpell)mageSpell).validateEffects();
-                    }
-                } catch (Exception ex) {
-                    logger.log(Level.SEVERE, "There was an error checking spell " + key + " for issues", ex);
                 }
             }
         }
