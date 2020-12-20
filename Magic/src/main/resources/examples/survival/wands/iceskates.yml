@@ -1,0 +1,7 @@
+iceskates:
+  icon: iron_boots:190
+  name: Ice Skates
+  lore: []
+  passive: true
+  cast_interval: 500
+  cast_spell: skating

@@ -4,58 +4,6 @@ recall:
     allow_death: true
     allow_souls: true
 
-wearskates:
-  name: Wear Ice Skates
-  actions:
-    cast:
-      - class: Wear
-      - class: Message
-        message: "You put on some ice skates- now go skating!"
-  parameters:
-    target: self
-    item: iceskates
-    slot: boots
-
-skating:
-  name: Skating
-  actions:
-    cast:
-      - class: CheckBlock
-        direction: down
-        source_location: feet
-        allowed: ice,blue_ice,frosted_ice,packed_ice
-        actions:
-        - class: PlayEffects
-          effects: start
-        - class: Interval
-          actions:
-          - class: PlayEffects
-            effects: skate
-          - class: ChangeContext
-            source_pitch: 0
-            actions:
-            - class: Velocity
-          - class: Delay
-  effects:
-    start:
-    - sound: entity_wither_shoot
-      sound_pitch: 0.15
-      sound_volume: 0.3
-    skate:
-    - particle: snowball
-      source_location: feet
-      particle_count: 16
-      particle_offset_x: 1
-      particle_offset_z: 1
-      particle_offset_y: 0.1
-  alternate_sneak_parameters:
-    speed: 1.5
-  parameters:
-    target: self
-    speed: 0.7
-    delay: 50
-    duration: 500
-
 giveteleporter:
   actions:
     cast:

@@ -2,6 +2,9 @@
 
 # 8.2
 
+ - Happy Holidays!
+   Build a skating rink out of ice and then use `/mnpc add skater` for some festive fun!
+
  - Many, many optimizations - memory leaks plugged, synchronous chunk loads eliminated (on Paper),
    hard entity references removed
 

@@ -2,5 +2,3 @@ wands:
   teleporter:
     name: Teleportation Stone
     description: Right-Click (Or swing at ground) to teleport to different places.
-  iceskates:
-    name: Ice Skates

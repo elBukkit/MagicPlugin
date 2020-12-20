@@ -1,0 +1,11 @@
+wearskates:
+  name: Wear Ice Skates
+  actions:
+    cast:
+      - class: Wear
+      - class: Message
+        message: "You put on some ice skates- now go skating!"
+  parameters:
+    target: self
+    item: iceskates
+    slot: boots

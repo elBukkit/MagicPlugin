@@ -432,3 +432,5 @@ wands:
     rainbowboots:
       name: Technicolor Boots
       spell_aura: ""
+    iceskates:
+      name: Ice Skates
