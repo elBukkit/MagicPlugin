@@ -8,58 +8,64 @@
  - Many, many optimizations - memory leaks plugged, synchronous chunk loads eliminated (on Paper),
    hard entity references removed
 
- - MagicWorlds merged
-   - Magic can now customize world generation and mob spawning without needing MagicWorlds
-   - Configs go into the "worlds" folder, and follow the same format as MagicWorlds
-   - There is editor support
-   - Fix issues with NPCs and Automata getting lost if in unloaded worlds
-   - Added new example configs: `spawnmobs`, `chests`, `netherside` and `otherside`
-   - Spawn rules can now use weighted probability maps
-   - Spawn rules can have a priority, don't need to rely on key order
-   - Replace rules can specify special directives: `stop` to stop further processing,
-     `remove` to just remove a mob without replacing
-   - Fix several issues with mob spawning in MagicWorlds
+##  MagicWorlds merged
 
- - Crafting improvements
-   - Allow using "vanilla: true" to easily override a vanilla recipe (just set the output to a vanilla item type)
-     - Does not remove the default recipe from players' knowledge book (not sure if that's possible)
-     - Does not work with vanilla recipes that have multiple possible ingredients (e.g. different wood variants)
-   - Add "locked" option for recipes, to prevent crafting by default
-   - Add "craftable" list to classes, specifying locked recipes that class may craft
-   - The "disable_default" option for recipes now works again, letting you replace vanilla crafting recipes
+ - Magic can now customize world generation and mob spawning without needing MagicWorlds
+ - Configs go into the "worlds" folder, and follow the same format as MagicWorlds
+ - There is editor support
+ - Fix issues with NPCs and Automata getting lost if in unloaded worlds
+ - Added new example configs: `spawnmobs`, `chests`, `netherside` and `otherside`
+ - Spawn rules can now use weighted probability maps
+ - Spawn rules can have a priority, don't need to rely on key order
+ - Replace rules can specify special directives: `stop` to stop further processing,
+   `remove` to just remove a mob without replacing
+ - Fix several issues with mob spawning in MagicWorlds
+
+## Crafting improvements
+
+  - Allow using "vanilla: true" to easily override a vanilla recipe (just set the output to a vanilla item type)
+    - Does not remove the default recipe from players' knowledge book (not sure if that's possible)
+    - Does not work with vanilla recipes that have multiple possible ingredients (e.g. different wood variants)
+  - Add "locked" option for recipes, to prevent crafting by default
+  - Add "craftable" list to classes, specifying locked recipes that class may craft
+  - The "disable_default" option for recipes now works again, letting you replace vanilla crafting recipes
+
+## Fixes
+
+ - Fix support for wildcard brushes (use with SuperReplace to replace stairs, fences, etc in-place)
+ - Fix spell inventory issues when using the ajParkour plugin
+ - Fix strange behavior when using a broom while already on a broom
+ - Fix `/getrp url` to return the correct URL when a custom RP has been selected
+ - Fix ChangeContext not being able to set the source entity to nothing (affects Mob, Monster, etc spells)
+ - Fix auto_close on shops not working
+ - Fix NPCs sometimes not respawning
+
+## Additions and Improvements
 
  - Add alt-cast (sneak) to levelled up fling to get the original speed
  - Add Alter level 2, with alt-cast (sneak) to absorb a wildcard brush
- - Fix support for wildcard brushes (use with SuperReplace to replace stairs, fences, etc in-place)
  - Add replacement options to ChangeBiome, Brush actions and ConstructSpell
+ - Add `mconfig language` command to easily ues a builtin localization file
+ - Add FR (French) translation files (thank you, Brushette!)
+ - Add in-game notifications to ops about magic errors and warnings (can be controlled via configs or permissions)
  - Cloak now hides you from mobs
  - Allow specifying item_attributes as sections, so you can set a slot per-attribute
  - Use `/mgive book:fling` to give a descriptive book about one spell
  - Add `/mgive learnbook:spell` to give a book that describes a spell and can be used to learn it
- - Fix spell inventory issues when using the ajParkour plugin
- - Fix strange behavior when using a broom while already on a broom
  - Add active_spells_exclusive and active_spells_restricted spell properties, to make spells only castable if some
    other spell(s) is or is not already active
  - Added WildStacker integration to avoid stacking Magic Mobs (or any custom-spawned mob).
  - Broomsticks will now put a temporary "broomstick handle" item in the player's inventory so the slot
    doesn't get taken up by new items and the broomstick has nowhere to go when finished
  - Improved Recall-to-bed behavior
- - Fix `/getrp url` to return the correct URL when a custom RP has been selected
- - Fix ChangeContext not being able to set the source entity to nothing (affects Mob, Monster, etc spells)
- - Fix a whole pile of memory leaks
  - Improved support for persistent mobs (in 1.14 and up)
  - Add "land" trigger and "fall_distance" attribute
  - Allow ChangeContext sourceLocation and targetLocation parameters to specify feet, head, etc entity locations
  - Phantoms can be shrunk and grown (wither skeletons can also be shrunk again, optionally)
  - Wand commands when used from the console can now bypass locked wands (same as a player with `Magic.wand.override_locked` permission)
    Use `console_bypass_locked_wands: false` to disable this
- - Add `mconfig language` command to easily ues a builtin localization file
- - Add FR (French) translation files (thank you, Brushette!)
- - Add in-game notifications to ops about magic errors and warnings (can be controlled via configs or permissions)
  - Triggers can now be a simple list or a one-liner
  - Jedi and Sith will auto-learn recipes, nether stars removed (still needed for hilt)
- - Fix auto_close on shops not working
- - Fix NPCs sometimes not respawning
  - Add simpler `slot` parameter to Wear action, boots,helmet,chesplate or leggings
  - Add `direction_count` and `source_location` parameters to CheckBlock action, more control over where it looks
  - Add "rain" option to Weather action
