@@ -11,7 +11,7 @@ hat:
     upgrade_required_casts: 40
     actions:
         cast:
-        -  class: Hat
+        - class: Wear
     effects:
         cast:
         -  sound: entity_generic_drink

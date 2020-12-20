@@ -7,8 +7,7 @@ wear:
     worth: 150
     actions:
         cast:
-        - class: Delay
-        - class: Hat
+        - class: Wear
     parameters:
         target: self
         use_item: true
