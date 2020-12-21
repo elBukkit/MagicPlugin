@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 8.2.1
+
 # 8.2
 
  - Happy Holidays!
@@ -70,8 +72,6 @@
  - Add simpler `slot` parameter to Wear action, boots,helmet,chesplate or leggings
  - Add `direction_count` and `source_location` parameters to CheckBlock action, more control over where it looks
  - Add "rain" option to Weather action
-
-# 8.1.2
 
 # 8.1.1
 
