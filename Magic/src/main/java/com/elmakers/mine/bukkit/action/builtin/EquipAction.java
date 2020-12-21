@@ -34,7 +34,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
-public class WearAction extends BaseSpellAction
+public class EquipAction extends BaseSpellAction
 {
     private MaterialAndData material;
     private ItemStack item;
