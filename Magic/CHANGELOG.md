@@ -2,6 +2,8 @@
 
 # 8.3
 
+ - Rename Wear action to Equip (Wear still works). Supports any inventory slot, main_hand or "free" to find a free slot.
+
 # 8.2.1
 
 # 8.2
