@@ -26,7 +26,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
-import com.elmakers.mine.bukkit.item.ArmorSlot;
+import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -40,7 +40,7 @@ public class EquipAction extends BaseSpellAction
     private ItemStack item;
     private boolean useItem;
     private Map<Enchantment, Integer> enchantments;
-    private int slotNumber;
+    private InventorySlot slot;
     private boolean unbreakable = true;
     private boolean returnOnFinish = false;
     private WearUndoAction undoAction;
@@ -86,21 +86,19 @@ public class EquipAction extends BaseSpellAction
             if (player == null) return;
 
             Mage targetMage = controller.getRegisteredMage(player);
-            ItemStack[] armor = player.getInventory().getArmorContents();
-            ItemStack currentItem = armor[slotNumber];
+            ItemStack currentItem = targetMage.getItem(slotNumber);
             if (NMSUtils.isTemporary(currentItem)) {
                 ItemStack replacement = NMSUtils.getReplacement(currentItem);
-
-                // This will handle the case where the player is now dead
-                // Clear the temporary item first, then use setArmorContents, which will
-                // set the armor if player is alive, else add it to respawn inventory to get
-                // added after they respawn.
-                armor[slotNumber] = new ItemStack(Material.AIR);
-                player.getInventory().setArmorContents(armor);
-                targetMage.setArmorItem(slotNumber, replacement);
+                if (player.isDead()) {
+                    targetMage.giveItem(replacement);
+                } else {
+                    targetMage.setItem(slotNumber, replacement);
+                }
             }
-            if (targetMage != null && targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)targetMage).armorUpdated();
+            if (targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                com.elmakers.mine.bukkit.magic.Mage implMage = ((com.elmakers.mine.bukkit.magic.Mage)targetMage);
+                implMage.armorUpdated();
+                implMage.checkWandNextTick();
             }
         }
 
@@ -111,22 +109,19 @@ public class EquipAction extends BaseSpellAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
-    {
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         material = ConfigurationUtils.getMaterialAndData(parameters, "material");
         item = context.getController().createItem(parameters.getString("item"));
         String slotName = parameters.getString("slot");
         if (slotName != null && !slotName.isEmpty()) {
             try {
-                ArmorSlot slot = ArmorSlot.valueOf(slotName.toUpperCase());
-                slotNumber = slot.getArmorSlot();
+                slot = InventorySlot.valueOf(slotName.toUpperCase());
             } catch (Exception ex) {
                 context.getLogger().warning("Invalid slot in Wear action: " + slotName);
             }
         } else {
-            slotNumber = parameters.getInt("armor_slot", 3);
+            slot = InventorySlot.getArmorSlot(parameters.getInt("armor_slot", 3));
         }
-        slotNumber = Math.max(Math.min(slotNumber, 3), 0);
 
         useItem = parameters.getBoolean("use_item", false);
         unbreakable = parameters.getBoolean("unbreakable", true);
@@ -134,15 +129,16 @@ public class EquipAction extends BaseSpellAction
     }
 
     @Override
-    public SpellResult perform(CastContext context)
-    {
+    public SpellResult perform(CastContext context) {
+        if (slot == null) {
+            return SpellResult.FAIL;
+        }
         Entity entity = context.getTargetEntity();
         if (entity == null) {
             if (!context.getTargetsCaster()) return SpellResult.NO_TARGET;
             entity = context.getEntity();
         }
-        if (entity == null || !(entity instanceof Player))
-        {
+        if (entity == null || !(entity instanceof Player)) {
             return SpellResult.NO_TARGET;
         }
 
@@ -150,8 +146,10 @@ public class EquipAction extends BaseSpellAction
         MaterialAndData material = this.material;
         MageController controller = context.getController();
         Mage mage = controller.getMage(player);
-        if (useItem)
-        {
+        ItemStack equipItem = null;
+
+        // Find or create the item to wear
+        if (useItem) {
             Wand activeWand = mage.getActiveWand();
             // Check for trying to wear an item from the offhand slot
             // Not handling this for now.
@@ -164,119 +162,128 @@ public class EquipAction extends BaseSpellAction
             }
 
             ItemStack itemInHand = player.getInventory().getItemInMainHand();
-            if (itemInHand == null || itemInHand.getType() == Material.AIR)
-            {
+            if (itemInHand == null || itemInHand.getType() == Material.AIR) {
                 return SpellResult.FAIL;
             }
-            ItemStack[] armor = player.getInventory().getArmorContents();
-            ItemStack currentItem = armor[slotNumber];
-            armor[slotNumber] = itemInHand;
-            player.getInventory().setArmorContents(armor);
-            if (!InventoryUtils.isTemporary(currentItem)) {
-                player.getInventory().setItemInMainHand(currentItem);
+            equipItem = itemInHand;
+        } else {
+            String materialName = null;
+
+            // Create an item as a copy of an existing template
+            if (item != null) {
+                equipItem = InventoryUtils.getCopy(item);
+                materialName = context.getController().describeItem(equipItem);
             } else {
-                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-            }
-
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
-            }
-            return SpellResult.CAST;
-        }
-
-        ItemStack wearItem = null;
-        String materialName = null;
-        if (item == null)
-        {
-            if (material == null && (context.getSpell().usesBrush() || context.getSpell().hasBrushOverride())) {
-                material = context.getBrush();
-            }
-            if (material == null)
-            {
-                Block targetBlock = context.getTargetBlock();
-                if (targetBlock != null)
-                {
-                    material = new com.elmakers.mine.bukkit.block.MaterialAndData(targetBlock);
-                    material.setMaterial(DefaultMaterials.blockToItem(material.getMaterial()));
+                // Otherwise create a new item from a material name, falling back to the brush
+                if (material == null && (context.getSpell().usesBrush() || context.getSpell().hasBrushOverride())) {
+                    material = context.getBrush();
                 }
+                // And then falling back to the target block
+                if (material == null) {
+                    Block targetBlock = context.getTargetBlock();
+                    if (targetBlock != null)
+                    {
+                        material = new com.elmakers.mine.bukkit.block.MaterialAndData(targetBlock);
+                        material.setMaterial(DefaultMaterials.blockToItem(material.getMaterial()));
+                    }
+                }
+
+                // If we didn't end up with a valid materia, exit
+                if (material == null || DefaultMaterials.isAir(material.getMaterial())) {
+                    return SpellResult.NO_TARGET;
+                }
+
+                equipItem = material.getItemStack(1);
+                materialName = material.getName();
             }
 
-            if (material == null || DefaultMaterials.isAir(material.getMaterial())) {
+            if (DefaultMaterials.isAir(equipItem.getType())) {
                 return SpellResult.NO_TARGET;
             }
 
-            wearItem = material.getItemStack(1);
-            materialName = material.getName();
-        }
-        else
-        {
-            wearItem = InventoryUtils.getCopy(item);
-            materialName = context.getController().describeItem(wearItem);
-        }
+            // Set custom name and other information on created item
+            ItemMeta meta = equipItem.getItemMeta();
 
-        if (DefaultMaterials.isAir(wearItem.getType())) {
-            return SpellResult.NO_TARGET;
-        }
-
-        ItemMeta meta = wearItem.getItemMeta();
-
-        // Legacy support
-        String displayName = context.getMessage("hat_name", "");
-        displayName = context.getMessage("wear_name", displayName);
-        if (materialName == null || materialName.isEmpty())
-        {
-            materialName = "?";
-        }
-        if (displayName != null && !displayName.isEmpty())
-        {
-            meta.setDisplayName(displayName.replace("$hat", materialName).replace("$item", materialName));
-        }
-        List<String> lore = new ArrayList<>();
-        String loreLine = context.getMessage("hat_lore");
-        loreLine = context.getMessage("wear_lore", loreLine);
-        lore.add(loreLine);
-        meta.setLore(lore);
-        wearItem.setItemMeta(meta);
-        wearItem = InventoryUtils.makeReal(wearItem);
-        NMSUtils.makeTemporary(wearItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
-        if (enchantments != null) {
-            wearItem.addUnsafeEnchantments(enchantments);
-        }
-        if (unbreakable) {
-            CompatibilityUtils.makeUnbreakable(wearItem);
-        }
-
-        ItemStack[] armor = player.getInventory().getArmorContents();
-        ItemStack itemStack = armor[slotNumber];
-        if (itemStack != null && itemStack.getType() != Material.AIR)
-        {
-            if (NMSUtils.isTemporary(itemStack))
+            // Legacy support
+            String displayName = context.getMessage("hat_name", "");
+            displayName = context.getMessage("wear_name", displayName);
+            if (materialName == null || materialName.isEmpty())
             {
-                ItemStack replacement = NMSUtils.getReplacement(itemStack);
+                materialName = "?";
+            }
+            if (displayName != null && !displayName.isEmpty())
+            {
+                meta.setDisplayName(displayName.replace("$hat", materialName).replace("$item", materialName));
+            }
+            List<String> lore = new ArrayList<>();
+            String loreLine = context.getMessage("hat_lore");
+            loreLine = context.getMessage("wear_lore", loreLine);
+            lore.add(loreLine);
+            meta.setLore(lore);
+            equipItem.setItemMeta(meta);
+            equipItem = InventoryUtils.makeReal(equipItem);
+            NMSUtils.makeTemporary(equipItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
+            if (enchantments != null) {
+                equipItem.addUnsafeEnchantments(enchantments);
+            }
+            if (unbreakable) {
+                CompatibilityUtils.makeUnbreakable(equipItem);
+            }
+        }
+
+        // Find the target slot and see if there's an existing item in there
+        ItemStack existingItem = null;
+        int slotNumber = -1;
+
+        // If replacing the main hand item we're going to deactivate the wand
+        if (slot == InventorySlot.MAIN_HAND) {
+            Wand activeWand = mage.getActiveWand();
+            if (activeWand != null) {
+                activeWand.deactivate();
+            }
+        }
+
+        // Get the slot number and the item that is there now
+        slotNumber = slot.getSlot(mage);
+        if (slotNumber == -1) {
+            context.getLogger().warning("Invalid slot for Wear action: " + slot);
+            return SpellResult.FAIL;
+        }
+        existingItem = mage.getItem(slotNumber);
+
+        // Decide what to do with the item in the slot being replaced
+        if (!CompatibilityUtils.isEmpty(existingItem)) {
+            if (NMSUtils.isTemporary(existingItem)) {
+                ItemStack replacement = NMSUtils.getReplacement(existingItem);
                 if (replacement != null) {
-                    itemStack = replacement;
+                    existingItem = replacement;
                 }
             }
-            NMSUtils.setReplacement(wearItem, itemStack);
+
+            // If we were equipping the wand, then just replace the main hand item.
+            // Otherwise, store the item inside the new item, to be returned on click or when
+            // the spell finished
+            if (useItem) {
+                player.getInventory().setItemInMainHand(existingItem);
+            } else {
+                NMSUtils.setReplacement(equipItem, existingItem);
+            }
+        } else if (useItem) {
+            // If we didn't swap the wand out with the item in the target slot, we need to clear the main hand
+            // slot since we're going to equip that item and don't want to dupe it
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         }
 
-        armor[slotNumber] = wearItem;
-        player.getInventory().setArmorContents(armor);
-
-        // Sanity check to make sure the block was allowed to be created
-        armor = player.getInventory().getArmorContents();
-        ItemStack helmetItem = armor[slotNumber];
-        if (!NMSUtils.isTemporary(helmetItem)) {
-            armor[slotNumber] = itemStack;
-            player.getInventory().setArmorContents(armor);
-            return SpellResult.NO_TARGET;
-        }
+        // Put the new item in the target slot
+        mage.setItem(slotNumber, equipItem);
 
         undoAction = new WearUndoAction(controller, player, slotNumber);
         context.registerForUndo(undoAction);
 
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
+            com.elmakers.mine.bukkit.magic.Mage implMage = ((com.elmakers.mine.bukkit.magic.Mage)mage);
+            implMage.armorUpdated();
+            implMage.checkWandNextTick();
         }
         return SpellResult.CAST;
     }
@@ -300,18 +307,17 @@ public class EquipAction extends BaseSpellAction
     }
 
     @Override
-    public void getParameterNames(Spell spell, Collection<String> parameters)
-    {
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
         parameters.add("material");
         parameters.add("item");
         parameters.add("use_item");
         parameters.add("armor_slot");
+        parameters.add("slot");
     }
 
     @Override
-    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
-    {
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("material")) {
             examples.addAll(MagicPlugin.getAPI().getBrushes());
         } else if (parameterKey.equals("item")) {
@@ -327,6 +333,10 @@ public class EquipAction extends BaseSpellAction
             examples.add("1");
             examples.add("2");
             examples.add("3");
+        } else if (parameterKey.equals("slot")) {
+            for (InventorySlot slot : InventorySlot.values()) {
+                examples.add(slot.name().toLowerCase());
+            }
         } else if (parameterKey.equals("use_item")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
