@@ -43,6 +43,7 @@ public class EquipAction extends BaseSpellAction
     private InventorySlot slot;
     private boolean unbreakable = true;
     private boolean returnOnFinish = false;
+    private boolean makeTemporary = true;
     private WearUndoAction undoAction;
 
     @Override
@@ -126,6 +127,7 @@ public class EquipAction extends BaseSpellAction
         useItem = parameters.getBoolean("use_item", false);
         unbreakable = parameters.getBoolean("unbreakable", true);
         returnOnFinish = parameters.getBoolean("return_on_finish", false);
+        makeTemporary = parameters.getBoolean("temporary", true);
     }
 
     @Override
@@ -222,7 +224,9 @@ public class EquipAction extends BaseSpellAction
             meta.setLore(lore);
             equipItem.setItemMeta(meta);
             equipItem = InventoryUtils.makeReal(equipItem);
-            NMSUtils.makeTemporary(equipItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
+            if (makeTemporary) {
+                NMSUtils.makeTemporary(equipItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
+            }
             if (enchantments != null) {
                 equipItem.addUnsafeEnchantments(enchantments);
             }
