@@ -39,6 +39,7 @@
  - Fix ChangeContext not being able to set the source entity to nothing (affects Mob, Monster, etc spells)
  - Fix auto_close on shops not working
  - Fix NPCs sometimes not respawning
+ - The Decoy spell doesn't use vanish
 
 ## Additions and Improvements
 

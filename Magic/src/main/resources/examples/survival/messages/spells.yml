@@ -1381,6 +1381,7 @@ spells:
     decoy:
       name: Decoy
       description: Hide behind a clone
+      cancel: Your decoy died!
     piggyback:
       name: Piggyback
       description: Who's riding what, now?

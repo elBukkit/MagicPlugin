@@ -2,10 +2,15 @@
 
 ## Discord Issues
 
- - Editor
+## Hot
+
+ - Souls not showing in recall on server?
+
+## Editor
    - Gets confused by spaces, test out recipes
      row_2: "aa ...
    - Add support for triggers
+   - Add automaton support (or maybe fix- pluralize problem?)
 
 ## World Gen
 

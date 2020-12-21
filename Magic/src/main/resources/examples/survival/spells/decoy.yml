@@ -10,7 +10,8 @@ decoy:
   requires: LibsDisguises
   actions:
     cast:
-    - class: Vanish
+    - class: PotionEffect
+      duration: 3600000
     - class: ChangeContext
       target_entity: true
       actions:
@@ -21,7 +22,10 @@ decoy:
           actions:
             - class: Aggro
         actions:
-        - class: Undo
+        - class: ChangeContext
+          target_caster: true
+          actions:
+          - class: Undo
   effects:
     cast:
       - sound: magic.vanish
@@ -35,11 +39,14 @@ decoy:
     cooldown: 30000
     cancel_on_damage: 0.5
     cancel_on_cast_other: true
+    effect_invisibility: 5
     type: husk
     silent: true
     disguise_target: self
     max_health: 20
     radius: 32
     on_block: false
+    target_source: false
   costs:
     mana: 100
+
