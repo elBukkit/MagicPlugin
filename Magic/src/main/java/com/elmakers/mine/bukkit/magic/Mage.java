@@ -104,6 +104,7 @@ import com.elmakers.mine.bukkit.effect.MageEffectContext;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -2602,6 +2603,44 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         // TODO: Maybe wrap EntityEquipment in an Inventory... ? Could be hacky.
         return null;
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getItem(int slot) {
+        if (slot >= InventorySlot.BOOTS.getSlot()) {
+            Player player = getPlayer();
+            if (player != null) {
+                return player.getInventory().getItem(slot);
+            }
+            return null;
+        }
+
+        Inventory inventory = getInventory();
+        if (slot >= 0 && slot < inventory.getSize()) {
+            return inventory.getItem(slot);
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public boolean setItem(int slot, ItemStack item) {
+        if (slot >= InventorySlot.BOOTS.getSlot()) {
+            Player player = getPlayer();
+            if (player != null) {
+                player.getInventory().setItem(slot, item);
+                return true;
+            }
+            return false;
+        }
+
+        Inventory inventory = getInventory();
+        if (slot >= 0 && slot < inventory.getSize()) {
+            inventory.setItem(slot, item);
+            return true;
+        }
+        return false;
     }
 
     @Override
