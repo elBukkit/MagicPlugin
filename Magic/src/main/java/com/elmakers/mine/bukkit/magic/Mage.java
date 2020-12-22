@@ -142,11 +142,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static double SNEAKING_CAST_OFFSET = -0.2;
 
     private static class DamagedBy {
-        private WeakReference<Player> player;
+        private WeakReference<Entity> player;
         public double damage;
 
-        public DamagedBy(Player player, double damage) {
-            this.player = new WeakReference<>(player);
+        public DamagedBy(Entity entity, double damage) {
+            this.player = new WeakReference<>(entity);
             this.damage = damage;
         }
 
@@ -534,20 +534,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void damagedBy(@Nonnull Entity damager, double damage) {
         lastDamage = damage;
-        if (damagedBy == null) return;
         damager = CompatibilityUtils.getSource(damager);
 
-        // Only tracking players for now.
-        if (!(damager instanceof Player)) return;
-        Player damagingPlayer = (Player)damager;
-
-        // Don't attack yourself, silly mob!
+        // Don't count self-attacks
         if (damager == getEntity()) return;
 
-        lastDamager = damagedBy.get(damagingPlayer.getUniqueId());
+        lastDamager = damagedBy.get(damager.getUniqueId());
         if (lastDamager == null) {
-            lastDamager = new DamagedBy(damagingPlayer, damage);
-            damagedBy.put(damagingPlayer.getUniqueId(), lastDamager);
+            lastDamager = new DamagedBy(damager, damage);
+            if (damagedBy != null) {
+                damagedBy.put(damager.getUniqueId(), lastDamager);
+            }
         } else {
             lastDamager.damage += damage;
         }
@@ -555,11 +552,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (topDamager != null) {
             if (topDamager.getEntity() == null || topDamager.damage < lastDamager.damage || !withinRange(topDamager.getEntity())) {
                 topDamager = lastDamager;
-                setTarget(damagingPlayer);
+                setTarget(damager);
             }
         } else {
             topDamager = lastDamager;
-            setTarget(damagingPlayer);
+            setTarget(damager);
         }
     }
 
