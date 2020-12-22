@@ -35,7 +35,7 @@ public class CheckBlockAction extends CheckAction {
         useTarget = parameters.getBoolean("use_target", true);
         setTarget = parameters.getBoolean("set_target", false);
         allowBrush = parameters.getBoolean("allow_brush", false);
-        sourceLocation = new SourceLocation(parameters.getString("source_location", "EYES"), !useTarget);
+        sourceLocation = new SourceLocation(parameters.getString("source_location", "BLOCK"), !useTarget);
         directionCount = parameters.getInt("direction_count", 1);
         String directionString = parameters.getString("direction");
         if (directionString != null && !directionString.isEmpty()) {

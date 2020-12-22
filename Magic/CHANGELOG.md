@@ -2,6 +2,8 @@
 
 # 8.2.1
 
+ - Revert default behavior of CheckBlock action targeting, 8.2 may have broken some spells that use it. Sorry about that!
+
 # 8.2
 
  - Happy Holidays!
