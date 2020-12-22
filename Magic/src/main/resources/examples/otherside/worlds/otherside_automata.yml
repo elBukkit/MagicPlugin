@@ -1,6 +1,5 @@
 otherside_automata:
   world: world_other
-  copy: world
   entity_spawn:
 
     spawn_automata:

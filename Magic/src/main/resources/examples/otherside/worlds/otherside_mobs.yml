@@ -1,6 +1,5 @@
 otherside_mobs:
   world: world_other
-  copy: world
   entity_spawn:
 
     # Don't replace bats, they seem to be problematic. Caves really want bats.

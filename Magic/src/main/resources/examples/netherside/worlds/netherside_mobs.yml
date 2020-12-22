@@ -1,6 +1,5 @@
 netherside_mobs:
   world: world_netherside
-  copy: world
   entity_spawn:
 
     # Prevent replacing piglins on zombificiation

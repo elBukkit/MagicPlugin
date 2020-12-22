@@ -1,7 +1,6 @@
 netherside_automata:
   world: world_netherside
   enabled: false
-  copy: world
   entity_spawn:
 
     spawn_automata:
