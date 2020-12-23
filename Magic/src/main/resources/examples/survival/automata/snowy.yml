@@ -1,0 +1,4 @@
+snowy:
+  name: Snowy
+  description: A 32x32x32 area of snowiness
+  effects: snowy

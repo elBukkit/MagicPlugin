@@ -3,6 +3,7 @@
 # 8.3
 
  - Rename Wear action to Equip (Wear still works). Supports any inventory slot, main_hand or "free" to find a free slot.
+ - Add "snowy" automaton for making a 32x32 snowy area
 
 # 8.2.1
 

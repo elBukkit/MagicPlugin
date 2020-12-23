@@ -1,0 +1,26 @@
+snowy:
+  - effectlib:
+      class: Equation
+      offset: 0,16,0
+      duration: forever
+      particle: fireworks_spark
+      x_equation: "rand(-16,16)"
+      y_equation: "rand(-16,16)"
+      z_equation: "rand(-16,16)"
+      particle_offset_x: 8
+      particle_offset_y: 16
+      particle_offset_z: 8
+      particle_count: 16
+  - effectlib:
+      class: Equation
+      offset: 0,16,0
+      duration: forever
+      particle: snowball
+      x_equation: "rand(-16,16)"
+      y_equation: "rand(-16,16)"
+      z_equation: "rand(-16,16)"
+      particle_offset_x: 8
+      particle_offset_y: 16
+      particle_offset_z: 8
+      particle_count: 16
+
