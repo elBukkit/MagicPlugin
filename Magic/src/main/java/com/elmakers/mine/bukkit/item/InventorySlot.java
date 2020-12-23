@@ -63,6 +63,8 @@ public enum InventorySlot {
                     }
                 }
             break;
+            default:
+                return -1;
         }
         return -1;
     }
