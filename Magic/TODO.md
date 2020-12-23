@@ -5,8 +5,10 @@
 ## Hot
 
  - Souls not showing in recall on server?
+ - Magic mobs or automata fight without players around?
 
 ## Editor
+
    - Gets confused by spaces, test out recipes
      row_2: "aa ...
    - Add support for triggers

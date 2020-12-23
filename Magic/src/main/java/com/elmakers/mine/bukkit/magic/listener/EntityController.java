@@ -482,7 +482,7 @@ public class EntityController implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onEntityDamage(EntityDamageEvent event)
     {
         Entity entity = event.getEntity();
