@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.integration;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -50,7 +50,7 @@ public class VaultController {
         this.economy = economy;
     }
 
-    public double getBalance(Player player) {
+    public double getBalance(OfflinePlayer player) {
         if (economy == null || player == null) {
             return 0;
         }
@@ -58,7 +58,7 @@ public class VaultController {
         return economy.getBalance(player);
     }
 
-    public boolean has(Player player, double amount) {
+    public boolean has(OfflinePlayer player, double amount) {
         if (economy == null || player == null) {
             return false;
         }
@@ -82,7 +82,7 @@ public class VaultController {
         return economy == null ? "" : economy.currencyNamePlural();
     }
 
-    public boolean withdrawPlayer(Player player, double amount) {
+    public boolean withdrawPlayer(OfflinePlayer player, double amount) {
         if (economy == null || player == null) {
             return false;
         }
@@ -90,7 +90,7 @@ public class VaultController {
         return response.transactionSuccess();
     }
 
-    public boolean depositPlayer(Player player, double amount) {
+    public boolean depositPlayer(OfflinePlayer player, double amount) {
         if (economy == null || player == null) {
             return false;
         }
