@@ -537,16 +537,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         damager = CompatibilityUtils.getSource(damager);
 
         // Don't count self-attacks
-        if (damager == getEntity()) return;
+        if (damager == null || damager == getEntity()) return;
 
-        lastDamager = damagedBy.get(damager.getUniqueId());
-        if (lastDamager == null) {
-            lastDamager = new DamagedBy(damager, damage);
-            if (damagedBy != null) {
-                damagedBy.put(damager.getUniqueId(), lastDamager);
-            }
-        } else {
+        // See if this is the same damager as last time
+        if (lastDamager == damager) {
             lastDamager.damage += damage;
+        } else {
+            // See if we have been damaged by this before
+            // Currently only mobs track damage history like this
+            if (damagedBy != null) {
+                lastDamager = damagedBy.get(damager.getUniqueId());
+            }
+            // If this is a new damager, create a new record to track it
+            if (lastDamager == null) {
+                lastDamager = new DamagedBy(damager, damage);
+                if (damagedBy != null) {
+                    damagedBy.put(damager.getUniqueId(), lastDamager);
+                }
+            } else {
+                lastDamager.damage += damage;
+            }
         }
 
         if (topDamager != null) {
