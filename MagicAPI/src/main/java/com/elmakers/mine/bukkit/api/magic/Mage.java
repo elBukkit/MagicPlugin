@@ -470,7 +470,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     int getItemCount(ItemStack item);
     @Nullable
     ItemStack getItem(int slot);
-    @Nullable
     boolean setItem(int slot, ItemStack item);
 
     MaterialBrush getBrush();
