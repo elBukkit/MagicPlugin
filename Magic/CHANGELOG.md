@@ -7,6 +7,7 @@
 # 8.2.1
 
  - Revert default behavior of CheckBlock action targeting, 8.2 may have broken some spells that use it. Sorry about that!
+ - Fix potter, stars and bending examples also containing all survival spells
 
 # 8.2
 

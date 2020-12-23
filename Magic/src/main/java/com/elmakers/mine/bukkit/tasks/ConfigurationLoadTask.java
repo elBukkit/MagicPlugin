@@ -518,13 +518,17 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
-    private void enableAll(ConfigurationSection rootSection, boolean enabled) {
+    private void enableAll(ConfigurationSection rootSection, boolean setEnabled) {
         Set<String> keys = rootSection.getKeys(false);
         for (String key : keys)
         {
             ConfigurationSection section = rootSection.getConfigurationSection(key);
-            if (section.isSet("enabled") && !section.getBoolean("enabled")) {
-                section.set("enabled", null);
+            if (setEnabled) {
+                if (section.isSet("enabled") && !section.getBoolean("enabled")) {
+                    section.set("enabled", null);
+                }
+            } else {
+                section.set("enabled", false);
             }
         }
     }
