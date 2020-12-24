@@ -1330,7 +1330,7 @@ public class MagicController implements MageController {
         try {
             Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
             if (dynmapPlugin != null && dynmapPlugin.isEnabled()) {
-                dynmap = new DynmapController(plugin, dynmapPlugin);
+                dynmap = new DynmapController(plugin, dynmapPlugin, messages);
             } else {
                 dynmap = null;
             }

@@ -25,6 +25,7 @@ import org.dynmap.markers.MarkerSet;
 import org.dynmap.markers.PolyLineMarker;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
@@ -32,21 +33,24 @@ public class DynmapController {
      private final Plugin plugin;
      private DynmapCommonAPI dynmap = null;
      private DateFormat dateFormatter = new SimpleDateFormat("yy-MM-dd HH:mm");
+     private final Messages messages;
 
-     public DynmapController(Plugin plugin, Plugin dynmapPlugin) throws InvalidClassException {
-         this.plugin = plugin;
-         if (dynmapPlugin != null && !(dynmapPlugin instanceof DynmapCommonAPI)) {
+     public DynmapController(Plugin plugin, Plugin dynmapPlugin, Messages messages) throws InvalidClassException {
+        this.plugin = plugin;
+        if (dynmapPlugin != null && !(dynmapPlugin instanceof DynmapCommonAPI)) {
             throw new InvalidClassException("Dynmap plugin found, but class is not DynmapCommonAPI");
         }
         dynmap = (DynmapCommonAPI)dynmapPlugin;
+        this.messages = messages;
      }
 
      public void showCastMarker(Mage mage, Spell spell, SpellResult result) {
         if (isReady()) {
             MarkerAPI markers = dynmap.getMarkerAPI();
+            String markerSetName = messages.get("dynmap.spells_markerset");
             MarkerSet spellSet = markers.getMarkerSet("Spells");
             if (spellSet == null) {
-                spellSet = markers.createMarkerSet("Spells", "Spell Casts", null, false);
+                spellSet = markers.createMarkerSet("Spells", markerSetName, null, false);
             }
             final String markerId = "Spell-" + mage.getId();
             final String targetId = "SpellTarget-" + mage.getId();
@@ -122,7 +126,8 @@ public class DynmapController {
             MarkerAPI markers = dynmap.getMarkerAPI();
             MarkerSet markerSet = markers.getMarkerSet(group);
             if (markerSet == null) {
-                markerSet = markers.createMarkerSet(group, WordUtils.capitalize(group), null, false);
+                String markerSetName = messages.get("dynmap." + group + "_markerset", WordUtils.capitalize(group));
+                markerSet = markers.createMarkerSet(group, markerSetName, null, false);
             }
             MarkerIcon wandIcon = markers.getMarkerIcon(icon);
             if (wandIcon == null) {
