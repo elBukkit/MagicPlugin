@@ -4,6 +4,7 @@
 
  - Revert default behavior of CheckBlock action targeting, 8.2 may have broken some spells that use it. Sorry about that!
  - Fix potter, stars and bending examples also containing all survival spells
+ - Add off-by-default target_pet parameter to spells, will ignore pets from SimplePets
 
 # 8.2
 

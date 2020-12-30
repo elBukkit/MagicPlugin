@@ -361,6 +361,7 @@ public interface MageController {
      */
     boolean isNPC(Entity entity);
     boolean isStaticNPC(Entity entity);
+    boolean isPet(Entity entity);
     boolean isMagicNPC(Entity entity);
     boolean isVanished(Entity entity);
 

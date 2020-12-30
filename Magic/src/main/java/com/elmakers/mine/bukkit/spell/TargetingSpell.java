@@ -59,6 +59,7 @@ public class TargetingSpell extends BaseSpell {
     private Entity                                targetEntity            = null;
 
     private boolean                                targetNPCs                = false;
+    private boolean                                targetPets                = false;
     private boolean                                targetArmorStands        = false;
     private boolean                                targetInvisible            = true;
     private boolean                                targetVanished            = false;
@@ -361,6 +362,7 @@ public class TargetingSpell extends BaseSpell {
         if (!targetTamed && entity instanceof Tameable && ((Tameable)entity).isTamed()) return false;
         if (EntityMetadataUtils.instance().getBoolean(entity, "notarget")) return false;
         if (!targetNPCs && controller.isStaticNPC(entity)) return false;
+        if (!targetPets && controller.isPet(entity)) return false;
         if (!targetArmorStands && entity instanceof ArmorStand) return false;
         if (ignoreEntityTypes != null && ignoreEntityTypes.contains(entity.getType())) {
             return false;
@@ -586,6 +588,7 @@ public class TargetingSpell extends BaseSpell {
         targetPotionEffectTypes = parsePotionEffectTypes(parameters, "target_potion_effects");
         ignorePotionEffectTypes = parsePotionEffectTypes(parameters, "ignore_potion_effects");
         targetNPCs = parameters.getBoolean("target_npc", false);
+        targetPets = parameters.getBoolean("target_pet", false);
         targetArmorStands = parameters.getBoolean("target_armor_stand", false);
         targetInvisible = parameters.getBoolean("target_invisible", true);
         targetVanished = parameters.getBoolean("target_vanished", false);
