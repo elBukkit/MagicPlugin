@@ -4432,6 +4432,12 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean isPet(Entity entity) {
+        // This currently only looks for pets from SimplePets
+        return entity.hasMetadata("pet");
+    }
+
+    @Override
     public boolean isMagicNPC(Entity entity) {
         return activeNPCs.contains(entity.getUniqueId());
     }
