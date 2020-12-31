@@ -503,6 +503,13 @@ public class ConfigurationLoadTask implements Runnable {
                 getLogger().severe("Error loading file: " + versionFileName);
                 throw ex;
             }
+        } else {
+            ConfigurationSection versionConfig = new MemoryConfiguration();
+            processInheritance(versionExample, versionConfig, fileName, getMainConfiguration(versionExample));
+            if (!versionConfig.getKeys(false).isEmpty()) {
+                ConfigurationUtils.addConfigurations(config, versionConfig, true, true);
+                getLogger().info(" Using inherited compatibility configs: " + versionFileName);
+            }
         }
     }
 
