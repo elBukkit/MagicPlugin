@@ -43,8 +43,10 @@ public class ShopAction extends SelectorAction {
         boolean isSellShop = parameters.getBoolean("sell");
         if (isSellShop) {
             // Support scale parameter
-            parameters.set("earn_scale", parameters.get("scale"));
-            parameters.set("scale", null);
+            if (parameters.contains("scale") && !parameters.contains("earn_scale")) {
+                parameters.set("earn_scale", parameters.get("scale"));
+                parameters.set("scale", null);
+            }
 
             // Supply selected message
             if (!parameters.contains("selected")) {
