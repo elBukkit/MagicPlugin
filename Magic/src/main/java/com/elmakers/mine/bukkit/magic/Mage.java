@@ -104,7 +104,6 @@ import com.elmakers.mine.bukkit.effect.MageEffectContext;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
-import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -2608,7 +2607,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     @Override
     public ItemStack getItem(int slot) {
-        if (slot >= InventorySlot.BOOTS.getSlot()) {
+        if (slot >= 36) {
             Player player = getPlayer();
             if (player != null) {
                 return player.getInventory().getItem(slot);
@@ -2625,7 +2624,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean setItem(int slot, ItemStack item) {
-        if (slot >= InventorySlot.BOOTS.getSlot()) {
+        if (slot >= 36) {
             Player player = getPlayer();
             if (player != null) {
                 player.getInventory().setItem(slot, item);
