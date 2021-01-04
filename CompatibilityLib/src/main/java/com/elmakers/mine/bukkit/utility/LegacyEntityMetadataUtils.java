@@ -2,20 +2,23 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
-    private final Map<Entity, Map<String, Object>> metadata = new WeakHashMap<>();
+    // This is leaky.
+    // There does not seem to be a way to really track entities to clean up this map, other than periodic checks
+    // which don't feel performant enough to be worth the small amount of memory leaked here.
+    // Modern MC versions will use the persistent metadata system instead.
+    private final Map<String, Map<String, Object>> metadata = new HashMap<>();
 
     protected LegacyEntityMetadataUtils(Plugin plugin) {
         super(plugin);
     }
 
     protected Object getRawValue(Entity entity, String key) {
-        Map<String, Object> data = metadata.get(entity);
+        Map<String, Object> data = metadata.get(entity.getUniqueId().toString());
         return data == null ? null : data.get(key);
     }
 
@@ -44,10 +47,10 @@ public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
     }
 
     protected void setRawValue(Entity entity, String key, Object value) {
-        Map<String, Object> values = metadata.get(entity);
+        Map<String, Object> values = metadata.get(entity.getUniqueId().toString());
         if (values == null) {
             values = new HashMap<>();
-            metadata.put(entity, values);
+            metadata.put(entity.getUniqueId().toString(), values);
         }
         values.put(key, value);
     }
