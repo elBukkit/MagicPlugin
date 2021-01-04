@@ -53,7 +53,7 @@ public class ItemController {
                 controller.getLogger().warning("Could not create item with key " + itemKey + " and material " + material);
             }
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
+            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey);
         }
     }
 
@@ -68,7 +68,7 @@ public class ItemController {
                 controller.getLogger().warning("Could not create item with key " + itemKey);
             }
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
+            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey);
         }
     }
 
