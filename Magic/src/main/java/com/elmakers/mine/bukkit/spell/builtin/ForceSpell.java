@@ -37,7 +37,7 @@ public class ForceSpell extends TargetingSpell
             {
                 releaseTarget();
             }
-            else if (targetWorld == null || location == null || !targetWorld.getName().equals(location.getWorld().getName()))
+            else if (targetWorld == null || location == null || targetWorld != location.getWorld())
             {
                 releaseTarget();
             }

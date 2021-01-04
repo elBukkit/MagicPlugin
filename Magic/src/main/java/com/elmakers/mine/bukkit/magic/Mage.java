@@ -523,7 +523,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     private boolean withinRange(Entity entity) {
-        boolean withinRange = getLocation().getWorld().getName().equals(entity.getLocation().getWorld().getName());
+        boolean withinRange = getLocation().getWorld() == entity.getLocation().getWorld();
         double rangeSquared = entityData == null ? 0 : entityData.getTrackRadiusSquared();
         if (rangeSquared > 0 && withinRange) {
             withinRange = getLocation().distanceSquared(entity.getLocation()) <= rangeSquared;
