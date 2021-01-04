@@ -273,9 +273,6 @@ public class MagicController implements MageController {
         this.logger = new MagicLogger(plugin.getLogger());
         resourcePacks = new ResourcePackManager(this);
 
-        SkinUtils.initialize(plugin);
-        EntityMetadataUtils.initialize(plugin);
-
         configFolder = plugin.getDataFolder();
         configFolder.mkdirs();
 
@@ -284,6 +281,15 @@ public class MagicController implements MageController {
 
         defaultsFolder = new File(configFolder, "defaults");
         defaultsFolder.mkdirs();
+    }
+
+    public boolean registerNMSBindings() {
+        if (!NMSUtils.initialize(getLogger())) {
+            return false;
+        }
+        SkinUtils.initialize(plugin);
+        EntityMetadataUtils.initialize(plugin);
+        return true;
     }
 
     public void onPlayerJump(Player player) {

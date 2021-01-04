@@ -153,25 +153,24 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     }
 
     @Override
-    public void onLoad()
-    {
+    public void onLoad() {
         if (controller == null) {
             controller = new MagicController(this);
         }
-        controller.initializeWorldGuardFlags();
+        if (!controller.registerNMSBindings()) {
+            controller = null;
+        } else {
+            controller.initializeWorldGuardFlags();
+        }
     }
 
     @Override
     public void onEnable() {
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         if (controller == null) {
-            controller = new MagicController(this);
-        }
-
-        if (!NMSUtils.initialize(controller.getLogger())) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Magic] Something went wrong with some Deep Magic, plugin will not load.");
             Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Magic] Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
         } else {
+            Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             if (NMSUtils.isLegacy()) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Magic] Using backwards-compatibility layer. It is highly recommended that you update to the latest Spigot version and/or the latest Magic version.");
             }
