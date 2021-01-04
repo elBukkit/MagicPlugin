@@ -13,6 +13,7 @@ cloak:
     quick_cast: true
     actions:
         cast:
+        - class: Vanish
         - class: PotionEffect
         - class: Wear
           item: pumpkin_seeds

@@ -10,6 +10,7 @@ decoy:
   requires: LibsDisguises
   actions:
     cast:
+    - class: Vanish
     - class: PotionEffect
       duration: 3600000
     - class: ChangeContext
