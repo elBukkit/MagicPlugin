@@ -2623,7 +2623,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return null;
     }
 
-    @Nullable
     @Override
     public boolean setItem(int slot, ItemStack item) {
         if (slot >= InventorySlot.BOOTS.getSlot()) {
