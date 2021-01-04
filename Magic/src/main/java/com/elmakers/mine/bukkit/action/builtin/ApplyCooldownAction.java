@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -60,16 +59,6 @@ public class ApplyCooldownAction extends BaseSpellAction
                     spells.add(spell.getKey());
                 }
             }
-        }
-
-        String excludeCSV = parameters.getString("exclude_spells", null);
-        if (excludeCSV != null)
-        {
-            excludeSpells = new HashSet<>(Arrays.asList(StringUtils.split(excludeCSV, ',')));
-        }
-        else
-        {
-            excludeSpells = null;
         }
     }
 
