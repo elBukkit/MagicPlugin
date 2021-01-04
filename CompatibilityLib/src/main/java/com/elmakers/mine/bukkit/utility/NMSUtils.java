@@ -782,7 +782,6 @@ public class NMSUtils {
                 getLogger().warning("Could not bind to stopSound method, StopSound action will not work.");
             }
 
-
             try {
                 class_Sittable = Class.forName("org.bukkit.entity.Sittable");
                 class_Sitting_isSittingMethod = class_Sittable.getMethod("isSitting");

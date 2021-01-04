@@ -13,6 +13,10 @@ public abstract class EntityMetadataUtils {
     }
 
     protected static boolean hasPersistentMetadata() {
+        // Unfortunately this API is bugged prior to 1.16, it does not work for dropped items so we can not use it.
+        int[] version = CompatibilityUtils.getServerVersion();
+        if (version[0] <= 1 && version[1] < 16) return false;
+
         try {
             Class.forName("org.bukkit.persistence.PersistentDataContainer");
             return true;
