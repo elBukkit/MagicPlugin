@@ -11,6 +11,7 @@
  - Fix potter, stars and bending examples also containing all survival spells
  - Add off-by-default target_pet parameter to spells, will ignore pets from SimplePets
  - Fix crafting the magic sword in legacy MC versions
+ - Fix temporary items being able to be picked up on older MC versions (persistent metadata API was broken)
 
 # 8.2
 
