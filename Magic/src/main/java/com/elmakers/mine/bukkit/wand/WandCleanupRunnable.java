@@ -57,7 +57,7 @@ public class WandCleanupRunnable extends RunnableJob {
         }
         LostWand lostWand = lostWands.getFirst();
         Location location = lostWand.getLocation();
-        if (world != null && !location.getWorld().getName().equals(world.getName())) {
+        if (world != null && location.getWorld() != world) {
             lostWands.removeFirst();
             return;
         }

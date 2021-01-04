@@ -275,7 +275,7 @@ public class MobController implements Listener {
                 Entity entity = mage.getEntity();
                 if (entity == null) continue;
                 Location location = entity.getLocation();
-                if (!chunk.getWorld().getName().equals(location.getWorld().getName())) continue;
+                if (chunk.getWorld() != location.getWorld()) continue;
 
                 int chunkX = chunk.getX();
                 int chunkZ = chunk.getZ();
