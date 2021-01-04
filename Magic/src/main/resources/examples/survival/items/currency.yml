@@ -1,27 +1,43 @@
 # Economy items, used in withdrawals/deposits shops
-gold_nugget:
+
+iron_nugget:
   worth: 1
-
-gold_ingot:
-  worth: 9
-
-gold_block:
-  worth: 81
 
 iron_ingot:
-  worth: 1
-
-iron_block:
   worth: 9
 
-diamond:
-  worth: 16
+iron_block:
+  worth: 81
 
-diamond_block:
-  worth: 144
+gold_nugget:
+  worth: 3
+
+gold_ingot:
+  worth: 27
+
+gold_block:
+  worth: 243
 
 emerald:
-  worth: 100
+  worth: 50
 
 emerald_block:
+  worth: 450
+
+diamond:
+  worth: 100
+
+diamond_block:
   worth: 900
+
+netherite_ingot:
+  worth: 1000
+
+netherite_block:
+  worth: 9000
+
+lapis_lazuli:
+  worth: 16
+
+lapis_block:
+  worth: 144

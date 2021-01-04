@@ -155,7 +155,7 @@ decorshop:
         - wood_button@4
         - lever@4
         - trap_door@2
-        - redstone_torch_on@8
+        - redstone_torch@8
         - packed_ice@16
         - iron_fence@8
         - brewing_stand_item@2
@@ -231,40 +231,6 @@ saplingshop:
         - sapling|3
         - sapling|4
         - sapling|5
-
-naturesellshop:
-    inherit: sellshop
-    parameters:
-        items:
-        - sapling@8
-        - sapling|1@8
-        - sapling|2@8
-        - sapling|3@8
-        - sapling|4@8
-        - sapling|5@8
-        - seeds@8
-        - apple@8
-        - flower_pot_item@4
-        - sapling@64
-        - sapling|1@64
-        - sapling|2@64
-        - sapling|3@64
-        - sapling|4@64
-        - sapling|5@64
-        - seeds@64
-        - apple@64
-        - flower_pot_item@64
-
-miningsellshop:
-    inherit: sellshop
-    parameters:
-        items:
-        - coal@4
-        - iron_ore@2
-        - gold_ore
-        - coal@64
-        - iron_ore@64
-        - gold_ore@64
 
 clayshop:
     inherit: buyshop
@@ -387,15 +353,6 @@ redstoneshop:
         - stone_button
         - stone_plate
         - observer
-
-redstonesellshop:
-    inherit: sellshop
-    parameters:
-        items:
-        - redstone@16
-        - redstone@64
-        - redstone_block@64
-        - slime_ball@5
 
 generalshop:
     inherit: buyshop
@@ -546,38 +503,6 @@ brushshop:
           brush:quartz_block: 600
           brush:quartz_block|1: 600
           brush:quartz_block|2: 700
-
-appraiser:
-    inherit: sellshop
-    icon: emerald
-    category: npc
-    hidden: true
-    parameters:
-        items:
-          - iron_ingot@10
-          - iron_block@10
-          - diamond@10
-          - diamond_block@10
-          - iron_ingot@60
-          - iron_block@60
-          - diamond@60
-          - diamond_block@60
-
-jeweller:
-    icon: emerald
-    inherit: buyshop
-    category: npc
-    hidden: true
-    parameters:
-        items:
-          - iron_ingot
-          - iron_block
-          - diamond
-          - diamond_block
-          - iron_ingot@64
-          - iron_block@64
-          - diamond@64
-          - diamond_block@64
 
 dyeshop:
   icon: ink_sack

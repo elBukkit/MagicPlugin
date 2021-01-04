@@ -4,6 +4,7 @@
 
  - Rename Wear action to Equip (Wear still works). Supports any inventory slot, main_hand or "free" to find a free slot.
  - Add "snowy" automaton for making a 32x32 snowy area
+ - Re-work appraiser NPC shop, re-balance emerald/diamond/gold/iron prices
 
 # 8.2.1
 

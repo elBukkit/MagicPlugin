@@ -69,8 +69,6 @@ brick:0:
   worth: 0.2
 brick_stairs:0:
   worth: 0.3
-step:4:
-  worth: 0.2
 
 packed_ice:
   worth: 2
@@ -83,8 +81,6 @@ ladder:
 
 torch:
   worth: 0.1
-furnace:
-  worth: 10
 cauldron_item:
   worth: 50
 vine:
@@ -127,6 +123,8 @@ cobble_wall:
 cobble_wall:1:
   worth: 0.25
 
+netherrack:
+  worth: 0.1
 dirt:
   worth: 0.05
 grass:

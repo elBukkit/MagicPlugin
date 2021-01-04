@@ -1,0 +1,138 @@
+lootshop:
+    inherit: sellshop
+    parameters:
+        items:
+          - spider_eye@4
+          - string@2
+          - rotten_flesh@2
+          - bone@2
+          - ghast_tear
+          - blaze_powder
+          - sulphur
+          - slime_ball
+          - magma_cream
+          - ender_pearl
+          - none
+          - none
+          - none
+          - none
+          - none
+          - none
+          - none
+          - none
+          - spider_eye@64
+          - string@64
+          - rotten_flesh@64
+          - bone@64
+          - ghast_tear@64
+          - blaze_powder@64
+          - sulphur@64
+          - slime_ball@64
+          - magma_cream@64
+          - ender_pearl@64
+
+farmsellshop:
+  inherit: sellshop
+  parameters:
+    items:
+        - apple
+        - carrot_item@4
+        - potato_item@4
+        - baked_potato@3
+        - melon@2
+        - pumpkin
+        - beetroot@3
+        - pumpkin_pie
+        - egg@2
+        - seeds@2
+        - melon_seeds@2
+        - pumpkin_seeds@2
+        - beetroot_seeds@2
+        - sugar@4
+
+redstonesellshop:
+    inherit: sellshop
+    parameters:
+        items:
+        - redstone@16
+        - redstone@64
+        - redstone_block@64
+        - slime_ball@5
+
+naturesellshop:
+    inherit: sellshop
+    parameters:
+        items:
+        - sapling@8
+        - sapling|1@8
+        - sapling|2@8
+        - sapling|3@8
+        - sapling|4@8
+        - sapling|5@8
+        - seeds@8
+        - apple@8
+        - flower_pot_item@4
+        - sapling@64
+        - sapling|1@64
+        - sapling|2@64
+        - sapling|3@64
+        - sapling|4@64
+        - sapling|5@64
+        - seeds@64
+        - apple@64
+        - flower_pot_item@64
+
+miningsellshop:
+    inherit: sellshop
+    parameters:
+        items:
+        - coal@4
+        - iron_ore@2
+        - gold_ore
+        - coal@64
+        - iron_ore@64
+        - gold_ore@64
+
+saplingsellshop:
+    inherit: sellshop
+    parameters:
+        items:
+        - sapling@8
+        - sapling|1@8
+        - sapling|2@8
+        - sapling|3@8
+        - sapling|4@8
+        - sapling|5@8
+        - none
+        - none
+        - apple@8
+        - sapling@64
+        - sapling|1@64
+        - sapling|2@64
+        - sapling|3@64
+        - sapling|4@64
+        - sapling|5@64
+        - none
+        - none
+        - apple@64
+
+flowersellshop:
+  inherit: sellshop
+  parameters:
+    items:
+      - red_rose:6@2
+      - water_lily
+      - red_rose:5@2
+      - red_rose:4@2
+      - red_rose:2@2
+      - red_rose:1@2
+      - red_rose:0@2
+      - yellow_flower:0@2
+
+junksellshop:
+  inherit: sellshop
+  parameters:
+    items:
+      - dirt@64
+      - cobblestone@64
+      - netherrack@64

@@ -1,0 +1,33 @@
+appraiser:
+    inherit: buysellshop
+    icon: emerald
+    category: npc
+    hidden: true
+    parameters:
+        earn_scale: 2
+        scale: 1
+        items:
+          - iron_nugget
+          - iron_ingot
+          - iron_block
+          - none
+          - none
+          - none
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - none
+          - none
+          - diamond
+          - diamond_block
+          - netherite
+          - netherite_block
+
+# This used to be two separate shops
+jeweller:
+  inherit: appraiser
