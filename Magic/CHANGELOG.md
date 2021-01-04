@@ -6,6 +6,8 @@
  - Add "snowy" automaton for making a 32x32 snowy area
  - Re-work appraiser NPC shop, re-balance emerald/diamond/gold/iron prices
 
+# 8.2.2
+
 # 8.2.1
 
  - Revert default behavior of CheckBlock action targeting, 8.2 may have broken some spells that use it. Sorry about that!
