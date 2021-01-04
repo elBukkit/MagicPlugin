@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.batch;
 
+import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
@@ -49,14 +50,20 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
     @Override
     public void finish() {
         if (!finished) {
-            handler.cancel(context);
-            handler.finish(context);
-            context.finish();
+            try {
+                handler.cancel(context);
+                handler.finish(context);
+                context.finish();
 
-            // Shouldn't need this anymore
-            UndoList undoList = context.getUndoList();
-            if (undoList != null) {
-                undoList.setBatch(null);
+                // Shouldn't need this anymore
+                UndoList undoList = context.getUndoList();
+                if (undoList != null) {
+                    undoList.setBatch(null);
+                }
+            } catch (Exception ex) {
+                if (context != null) {
+                    context.getLogger().log(Level.SEVERE, "Unexpected error finishing spell " + context.getSpell().getKey(), ex);
+                }
             }
 
             finished = true;
