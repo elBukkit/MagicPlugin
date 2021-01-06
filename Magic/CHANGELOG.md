@@ -3,6 +3,7 @@
 # 8.2.2
 
  - Fix a bug when using a broomstick in an offhand and landing while your wand inventory is open
+ - Fix temporary blocks becoming permanent after using Peek on them
 
 # 8.2.1
 
