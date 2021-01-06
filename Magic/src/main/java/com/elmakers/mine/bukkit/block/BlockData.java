@@ -202,7 +202,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
         // Don't undo if not the top of the stack
         // Otherwise, state will be pushed up in unlink
-        if (nextState == null && isDifferent(block))
+        if ((nextState == null || nextState.isFake()) && isDifferent(block))
         {
             undoing = true;
             try {
