@@ -6,6 +6,7 @@
  - Add "snowy" automaton for making a 32x32 snowy area
  - Use Vanish for Cloak and Decoy spells
  - Re-work appraiser NPC shop, re-balance emerald/diamond/gold/iron prices
+ - Some potter wand upgrades changed keys to include `_upgrade` and not  conflict with survival wands (e.g staff_upgrade)
 
 # 8.2.2
 

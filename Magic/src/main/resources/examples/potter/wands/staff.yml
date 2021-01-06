@@ -1,4 +1,4 @@
-staff:
+staff_upgrade:
     inherit: base_bound
     icon: nether_star
     upgrade: true

@@ -1,4 +1,4 @@
-headstaff:
+headstaff_upgrade:
     icon: nether_star
     upgrade: true
     upgrade_path: graduate

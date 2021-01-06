@@ -39,21 +39,17 @@ wands:
         name: Dr00bles Wand
         description: Lignum Vitae and Phoenix Feather
 
-    allis0n:
-        name: Moon Scepter
-        description: Rosewood and Phoenix Feather
-
-    staff:
+    staff_upgrade:
         name: Staff Upgrade
         description: A powerful staff-only upgrade
         upgrade_description: Welcome to the Staff!
 
-    headstaff:
+    headstaff_upgrade:
         name: Head Staff Upgrade
         description: A super powerful staff-only upgrade
         upgrade_description: Welcome to the VIP Staff!
 
-    prefect:
+    prefect_upgrade:
         name: Prefect Upgrade
         description: An upgrade for the best and brightest
         upgrade_description: A nice upgrade to your spells

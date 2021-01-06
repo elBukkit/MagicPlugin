@@ -1,4 +1,4 @@
-prefect:
+prefect_upgrade:
     icon: nether_star
     upgrade: true
     spells:
