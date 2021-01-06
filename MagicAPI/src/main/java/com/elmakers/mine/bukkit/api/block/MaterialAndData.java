@@ -32,13 +32,14 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
  * there may be other non-material keys such as clone, copy, schematic:lantern, map, etc.
  *
  * <p>When used as a storage mechanism for Block or Material data, this class will store the following bits of information:
- *
+ * <ul>
  * <li> Base Material type
  * <li> Data/durability of material
  * <li> Sign Text
  * <li> Command Block Text
  * <li> Custom Name of Block (Skull, Command block name)
  * <li> InventoryHolder contents
+ * </ul>
  *
  * <p>If persisted to a ConfigurationSection, this will currently only store the base Material and data, extra metadata will not
  * be saved.

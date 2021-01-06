@@ -44,7 +44,7 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 
 /**
  * A Mage represents any entity that may cast spells. This can include:
- *
+ * <ul>
  * <li>A Player. Mages for Players will be persisted and destroyed if a Player
  * logs out. By default a Mage will be kept around if a Player has anything in
  * their undo queue, so that an admin may Rewind their constructions after logout.
@@ -56,7 +56,10 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
  * persistent Spell data.
  *
  * <li>A CommandSender. Any other CommandSender, such as from the server console,
- * will map to a global "COMMAND" mage. This Mage has no Location, so is generally
+ * will map to a global "COMMAND" mage.
+ * </ul>
+ *
+ * <p>The COMMAND Mage has no Location, so is generally
  * limited in what it can cast unless the "p" location parameters are used, e.g.
  *
  * <code>cast blast pworld world px 0 py 70 pz 0</code>
@@ -110,7 +113,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Gets the source location of spells cast by this mage, which were
      * not cast with a wand.
-     * @return
+     * @return the location
      */
     @Nullable
     Location getCastLocation();
@@ -119,7 +122,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      * Currently returns the cast location, even when not holding a wand,
      * but this behavior is subject to change and in the future this may
      * return null if the Mage is not holding a Wand.
-     * @return
+     * @return the location
      */
     @Nullable
     Location getWandLocation();
@@ -399,14 +402,13 @@ public interface Mage extends CostReducer, CooldownReducer {
     /**
      * Returns the combination of power-based damage multiplier, overall damage multiplier, and type-specific damage
      * multiplier.
-     *
-     * @return
+     * @return the multiplier
      */
     double getDamageMultiplier(String damageType);
 
     /**
      * Returns power-based damage combined with overall damage multipliers.
-     * @return
+     * @return the multiplier
      */
     float getDamageMultiplier();
 
@@ -603,7 +605,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      *
      * <p>If the mage has no active class, then mage properties are returned.
      *
-     * @return
+     * @return The caster
      */
     @Nonnull
     CasterProperties getActiveProperties();

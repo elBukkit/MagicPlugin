@@ -648,7 +648,7 @@ public interface MageController {
      * Retrieve a list of effects defined in effects.yml
      *
      * @param effectKey The effect key
-     * @return
+     * @return A collection of effect players
      */
     @Nonnull
     Collection<EffectPlayer> getEffects(@Nonnull String effectKey);

@@ -11,7 +11,7 @@ public interface RequirementsProvider extends RequirementsProcessor, MagicProvid
     /**
      * Used in CheckRequirements and other configurations for specifying different requirements types.
      * Must be a unique key.
-     * @return
+     * @return The unique key for this provider
      */
     @Nonnull
     String getKey();

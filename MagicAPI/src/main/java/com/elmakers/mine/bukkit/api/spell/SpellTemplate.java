@@ -152,7 +152,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
      * This can hold the UUID of the owner of this spell, when using an editor
      * that supports saving owned spells.
      *
-     * @return
+     * @return The id of the creator of this spell
      */
     @Nullable
     String getCreatorId();

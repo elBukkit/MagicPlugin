@@ -64,7 +64,7 @@ public interface Batch {
 
     /**
      * Return a friendly name to identify this batch.
-     * @return
+     * @return A readable name
      */
     String getName();
 }

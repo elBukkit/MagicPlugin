@@ -88,7 +88,7 @@ public interface Currency extends MagicProvider {
      * Get an icon to use to represent this currency as a physical item.
      * This is used in commands such as /mgive sp:100
      *
-     * @return
+     * @return The icon to use representing this currency as an item
      */
     @Nullable
     MaterialAndData getIcon();
@@ -98,7 +98,7 @@ public interface Currency extends MagicProvider {
      * Most currencies weight their worth in terms of virtual currency (e.g. Vault), so if a currency returns 10
      * it is worth 10x standard virtual currency.
      *
-     * @return
+     * @return The value of this currency relative to vault currency
      */
     double getWorth();
 

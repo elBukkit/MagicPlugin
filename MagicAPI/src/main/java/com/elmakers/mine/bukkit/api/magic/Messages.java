@@ -38,7 +38,7 @@ public interface Messages {
      * @param propertyTemplateName the template to use for formatting the amount, such as "properties.stacked_negative,
      *                             which would have an entry such as "+$property".
      *                             This is most often used to differentiate between positive and negative values.
-     * @return
+     * @return The formatted string
      */
     String getPropertyString(String templateName, float amount, float max, String propertyTemplateName);
 
@@ -53,7 +53,7 @@ public interface Messages {
      * @param amount The amount of the property to print
      * @param max The max value of the property to print, used in "roman" mode
      * @param propertyTemplate The string to use for property formatting, such as "+&4$property"
-     * @return
+     * @return The formatted string
      */
     String formatPropertyString(String template, float amount, float max, String propertyTemplate);
 

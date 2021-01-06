@@ -12,7 +12,7 @@ public interface PlayerWarpProvider extends PlayerWarpManager, MagicProvider {
     /**
      * Used in Recall configurations for enabling/disabling groups of warp types.
      * Must be a unique key.
-     * @return
+     * @return A unique key for this provider
      */
     @Nonnull
     String getKey();

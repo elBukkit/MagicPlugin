@@ -176,7 +176,7 @@ public interface Cost {
 
     /**
      * This will return the currency type key or item key.
-     * @return
+     * @return The type or item key
      */
     @Nonnull
     String getType();

@@ -72,7 +72,7 @@ public interface CastContext extends WandEffectContext {
      * Currently return the cast source location, but in the future may change
      * to return only the wand location, or null if this spell was not cast with
      * a wand.
-     * @return
+     * @return The location
      */
     @Override
     @Nullable
@@ -80,7 +80,7 @@ public interface CastContext extends WandEffectContext {
 
     /**
      * Get the source location of this cast.
-     * @return
+     * @return The location
      */
     @Override
     @Nullable
