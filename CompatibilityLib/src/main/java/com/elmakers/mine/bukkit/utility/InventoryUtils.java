@@ -562,19 +562,24 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static boolean hasItem(Inventory inventory, String itemName) {
+        ItemStack itemStack = getItem(inventory, itemName);
+        return itemStack != null;
+    }
+
+    public static ItemStack getItem(Inventory inventory, String itemName) {
         if (inventory == null) {
-            return false;
+            return null;
         }
         ItemStack[] items = inventory.getContents();
         for (ItemStack item : items) {
             if (item != null && item.hasItemMeta()) {
                 String displayName = item.getItemMeta().getDisplayName();
                 if (displayName != null && displayName.equals(itemName)) {
-                    return true;
+                    return item;
                 }
             }
         }
-        return false;
+        return null;
     }
 
     public static void openSign(Player player, Location signBlock) {
