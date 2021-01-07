@@ -43,6 +43,7 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class MagicItemCommandExecutor extends MagicTabExecutor {
@@ -85,20 +86,28 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        String subCommand = args[0];
+        String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+        Player player = sender instanceof Player ? (Player)sender : null;
+        if (args2.length > 0) {
+            Player findPlayer = DeprecatedUtils.getPlayer(args2[0]);
+            if (findPlayer != null) {
+                player = findPlayer;
+                args2 = Arrays.copyOfRange(args2, 1, args2.length);
+            }
+        }
+
         // Everything beyond this point is is-game only and requires a sub-command
-        if (!(sender instanceof Player)) {
+        if (player == null) {
             return false;
         }
 
         // All commands past here also require an item being held
-        Player player = (Player)sender;
-        if (!checkItem(player)) {
+        if (!checkItem(sender, player)) {
             return true;
         }
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        String subCommand = args[0];
-        String[] args2 = Arrays.copyOfRange(args, 1, args.length);
-        return processItemCommand(player, itemInHand, subCommand, args2);
+        return processItemCommand(sender, player, itemInHand, subCommand, args2);
     }
 
     @Override
@@ -256,79 +265,79 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return options;
     }
 
-    protected boolean processItemCommand(Player player, ItemStack item, String subCommand, String[] args)
+    protected boolean processItemCommand(CommandSender sender, Player player, ItemStack item, String subCommand, String[] args)
     {
-        if (!api.hasPermission(player, "Magic.commands.mitem." + subCommand)) {
-            sendNoPermission(player);
+        if (!api.hasPermission(sender, "Magic.commands.mitem." + subCommand)) {
+            sendNoPermission(sender);
             return true;
         }
         if (subCommand.equalsIgnoreCase("add"))
         {
-            return onItemAdd(player, item, args);
+            return onItemAdd(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("remove"))
         {
-            return onItemRemove(player, item, args);
+            return onItemRemove(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("destroy"))
         {
-            return onItemDestroy(player);
+            return onItemDestroy(sender, player);
         }
         else if (subCommand.equalsIgnoreCase("clean"))
         {
-            return onItemClean(player);
+            return onItemClean(sender, player);
         }
         else if (subCommand.equalsIgnoreCase("worth"))
         {
-            return onItemWorth(player, item);
+            return onItemWorth(sender, player, item);
         }
         else if (subCommand.equalsIgnoreCase("earns"))
         {
-            return onItemEarns(player, item);
+            return onItemEarns(sender, player, item);
         }
         else if (subCommand.equalsIgnoreCase("type"))
         {
-            return onItemType(player, item, args);
+            return onItemType(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("damage"))
         {
-            return onItemDurability(player, item, args);
+            return onItemDurability(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("duplicate"))
         {
-            return onItemDuplicate(player, item);
+            return onItemDuplicate(sender, player, item);
         }
         else if (subCommand.equalsIgnoreCase("save"))
         {
-            return onItemSave(player, item, args);
+            return onItemSave(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("describe"))
         {
-            return onItemDescribe(player, item, args);
+            return onItemDescribe(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("configure"))
         {
-            return onItemConfigure(player, item, args);
+            return onItemConfigure(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("name"))
         {
-            return onItemName(player, item, args);
+            return onItemName(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("export"))
         {
-            return onItemExport(player, item, args);
+            return onItemExport(sender, player, item, args);
         }
         else if (subCommand.equalsIgnoreCase("skull"))
         {
-            return onItemSkull(player, item);
+            return onItemSkull(sender, player, item);
         }
 
         return false;
     }
 
-    public boolean onItemConfigure(Player player, ItemStack item, String[] args) {
+    public boolean onItemConfigure(CommandSender sender, Player player, ItemStack item, String[] args) {
         if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /mitem configure <key> [value]");
+            sender.sendMessage(ChatColor.RED + "Usage: /mitem configure <key> [value]");
             return true;
         }
 
@@ -343,23 +352,23 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 i++;
             }
             if (node == null) {
-                player.sendMessage(ChatColor.RED + "Item does not have path: " + ChatColor.DARK_RED + tag);
+                sender.sendMessage(ChatColor.RED + "Item does not have path: " + ChatColor.DARK_RED + tag);
                 return true;
             }
             if (!CompatibilityUtils.containsNode(node, path[path.length - 1])) {
-                player.sendMessage(ChatColor.RED + "Item does not have tag: " + ChatColor.DARK_RED + tag);
+                sender.sendMessage(ChatColor.RED + "Item does not have tag: " + ChatColor.DARK_RED + tag);
                 return true;
             }
             CompatibilityUtils.removeMeta(node, path[path.length - 1]);
             item.setItemMeta(newItem.getItemMeta());
-            player.sendMessage(ChatColor.GREEN + "Removed: " + ChatColor.DARK_GREEN + tag);
+            sender.sendMessage(ChatColor.GREEN + "Removed: " + ChatColor.DARK_GREEN + tag);
             return true;
         }
         String value = ChatColor.translateAlternateColorCodes('&', args[1]);
         for (int i = 0; i < path.length; i++) {
             String key = path[i];
             if (node == null) {
-                player.sendMessage(ChatColor.RED + "Failed to set item data");
+                sender.sendMessage(ChatColor.RED + "Failed to set item data");
                 return true;
             }
             if (i < path.length - 1) {
@@ -369,13 +378,13 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             }
         }
         item.setItemMeta(newItem.getItemMeta());
-        player.sendMessage(ChatColor.GREEN + "Set: " + ChatColor.DARK_GREEN + tag + " to " + ChatColor.AQUA + value);
+        sender.sendMessage(ChatColor.GREEN + "Set: " + ChatColor.DARK_GREEN + tag + " to " + ChatColor.AQUA + value);
         return true;
     }
 
-    public boolean onItemDescribe(Player player, ItemStack item, String[] args) {
+    public boolean onItemDescribe(CommandSender sender, Player player, ItemStack item, String[] args) {
         MaterialAndData material = new MaterialAndData(item);
-        player.sendMessage(ChatColor.GOLD + material.getKey());
+        sender.sendMessage(ChatColor.GOLD + material.getKey());
         YamlConfiguration configuration = new YamlConfiguration();
         if (ConfigurationUtils.loadAllTagsFromNBT(configuration, item)) {
             String itemString = null;
@@ -391,12 +400,12 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             } else {
                 itemString = configuration.saveToString().replace(ChatColor.COLOR_CHAR, '&');
             }
-            player.sendMessage(itemString);
+            sender.sendMessage(itemString);
         }
         if (args.length == 0) {
             ItemData itemData = api.getController().getItem(item);
             if (itemData != null) {
-                player.sendMessage(ChatColor.AQUA + "Give with: " + ChatColor.GRAY + "/mgive " + ChatColor.YELLOW + itemData.getKey());
+                sender.sendMessage(ChatColor.AQUA + "Give with: " + ChatColor.GRAY + "/mgive " + ChatColor.YELLOW + itemData.getKey());
                 double worth = itemData.getWorth();
                 if (worth > 0) {
                     double earns = itemData.getEarns();
@@ -404,16 +413,16 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                     if (earns != worth) {
                         message = message + " " + ChatColor.GRAY + "(" + ChatColor.DARK_GREEN + earns + ChatColor.DARK_AQUA + " when selling" + ChatColor.GRAY + ")";
                     }
-                    player.sendMessage(message);
+                    sender.sendMessage(message);
                 }
             }
         }
         return true;
     }
 
-    public boolean onItemExport(Player player, ItemStack item, String[] parameters) {
+    public boolean onItemExport(CommandSender sender, Player player, ItemStack item, String[] parameters) {
         if (parameters.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /mitem export filename");
+            sender.sendMessage(ChatColor.RED + "Usage: /mitem export filename");
             return true;
         }
         PlayerInventory inventory = player.getInventory();
@@ -425,7 +434,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             inventory.setItem(itemSlot, testItem);
             ItemStack setItem = inventory.getItem(itemSlot);
             if (setItem == null || setItem.getType() != testItem.getType()) {
-                player.sendMessage("Skipped: " + material.name());
+                sender.sendMessage("Skipped: " + material.name());
                 continue;
             }
 
@@ -457,26 +466,26 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 output.append(material.getName() + "," + material.getKey() + "," + worthString + "," + earnsString + "\n");
             }
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Error exporting data: " + ex.getMessage());
+            sender.sendMessage(ChatColor.RED + "Error exporting data: " + ex.getMessage());
             ex.printStackTrace();
         }
         inventory.setItem(itemSlot, item);
         return true;
     }
 
-    public boolean onItemSerialize(Player player, ItemStack item) {
+    public boolean onItemSerialize(CommandSender sender, Player player, ItemStack item) {
         YamlConfiguration configuration = new YamlConfiguration();
         configuration.set("item", item);
         String itemString = configuration.saveToString().replace("item:", "").replace(ChatColor.COLOR_CHAR, '&');
-        player.sendMessage(itemString);
+        sender.sendMessage(itemString);
         return true;
     }
 
-    public boolean onItemWorth(Player player, ItemStack item) {
+    public boolean onItemWorth(CommandSender sender, Player player, ItemStack item) {
         MageController controller = api.getController();
         Double worth = controller.getWorth(item);
         if (worth == null) {
-            player.sendMessage(ChatColor.RED + "No worth defined for that item");
+            sender.sendMessage(ChatColor.RED + "No worth defined for that item");
             return true;
         }
         String worthDescription = null;
@@ -497,15 +506,15 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        player.sendMessage("That item is worth " + ChatColor.GOLD + worthDescription);
+        sender.sendMessage("That item is worth " + ChatColor.GOLD + worthDescription);
         return true;
     }
 
-    public boolean onItemEarns(Player player, ItemStack item) {
+    public boolean onItemEarns(CommandSender sender, Player player, ItemStack item) {
         MageController controller = api.getController();
         Double earns = controller.getEarns(item);
         if (earns == null) {
-            player.sendMessage(ChatColor.RED + "No earns defined for that item");
+            sender.sendMessage(ChatColor.RED + "No earns defined for that item");
             return true;
         }
         String earnsDescription = null;
@@ -526,31 +535,31 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        player.sendMessage("That item can be sold for " + ChatColor.GOLD + earnsDescription);
+        sender.sendMessage("That item can be sold for " + ChatColor.GOLD + earnsDescription);
         return true;
     }
 
-    public boolean onItemDuplicate(Player player, ItemStack item)
+    public boolean onItemDuplicate(CommandSender sender, Player player, ItemStack item)
     {
         ItemStack newItem = InventoryUtils.getCopy(item);
         api.giveItemToPlayer(player, newItem);
 
-        player.sendMessage(api.getMessages().get("item.duplicated"));
+        sender.sendMessage(api.getMessages().get("item.duplicated"));
         return true;
     }
 
-    public boolean onItemSkull(Player player, ItemStack item)
+    public boolean onItemSkull(CommandSender sender, Player player, ItemStack item)
     {
         ItemMeta meta = item.getItemMeta();
         if (meta == null || !(meta instanceof BookMeta)) {
-            player.sendMessage(api.getMessages().get("item.skull_no_book"));
+            sender.sendMessage(api.getMessages().get("item.skull_no_book"));
             return true;
         }
 
         BookMeta bookMeta = (BookMeta)meta;
         List<String> pages = bookMeta.getPages();
         if (pages.isEmpty()) {
-            player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+            sender.sendMessage(api.getMessages().get("item.skull_invalid_book"));
             return true;
         }
 
@@ -559,17 +568,17 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         try {
             String decoded = Base64Coder.decodeString(pageText);
             if (decoded == null || decoded.isEmpty()) {
-                player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+                sender.sendMessage(api.getMessages().get("item.skull_invalid_book"));
                 return true;
             }
             String url = decoded.replace("\"", "").replace("{textures:{SKIN:{url:", "").replace("}}}", "").trim();
             skullItem = controller.getURLSkull(url);
             if (InventoryUtils.isEmpty(skullItem)) {
-                player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+                sender.sendMessage(api.getMessages().get("item.skull_invalid_book"));
                 return true;
             }
         } catch (Exception ex) {
-            player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+            sender.sendMessage(api.getMessages().get("item.skull_invalid_book"));
             return true;
         }
         if (pages.size() > 1) {
@@ -589,17 +598,17 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 skullItem.setItemMeta(skullMeta);
             }
         }
-        player.sendMessage(api.getMessages().get("item.skull"));
+        sender.sendMessage(api.getMessages().get("item.skull"));
         player.getInventory().setItemInMainHand(skullItem);
 
         return true;
     }
 
-    protected boolean checkItem(Player player)
+    protected boolean checkItem(CommandSender sender, Player player)
     {
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand == null || itemInHand.getType() == Material.AIR) {
-            player.sendMessage(api.getMessages().get("item.no_item"));
+            sender.sendMessage(api.getMessages().get("item.no_item"));
             return false;
         }
         return true;
@@ -693,10 +702,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    public boolean onItemSave(Player player, ItemStack item, String[] parameters)
+    public boolean onItemSave(CommandSender sender, Player player, ItemStack item, String[] parameters)
     {
         if (parameters.length < 1) {
-            player.sendMessage("Use: /mitem save <filename> [worth] [earns]");
+            sender.sendMessage("Use: /mitem save <filename> [worth] [earns]");
             return true;
         }
 
@@ -707,7 +716,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             String creatorId = existing.getCreatorId();
             boolean isCreator = creatorId != null && creatorId.equalsIgnoreCase(player.getUniqueId().toString());
             if (!player.hasPermission("Magic.item.overwrite_own") || !isCreator) {
-                player.sendMessage(ChatColor.RED + "The " + template + " item already exists and you don't have permission to overwrite it.");
+                sender.sendMessage(ChatColor.RED + "The " + template + " item already exists and you don't have permission to overwrite it.");
                 return true;
             }
         }
@@ -717,8 +726,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             try {
                 worth = Double.parseDouble(parameters[1]);
             } catch (Exception ex) {
-                player.sendMessage("Invalid worth, expecting a number but got: " + parameters[1]);
-                player.sendMessage("Use: /mitem save <filename> [worth]");
+                sender.sendMessage("Invalid worth, expecting a number but got: " + parameters[1]);
+                sender.sendMessage("Use: /mitem save <filename> [worth]");
                 return true;
             }
         } else if (existing != null) {
@@ -740,8 +749,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 earns = Double.parseDouble(parameters[2]);
                 itemSection.set("earns", earns);
             } catch (Exception ex) {
-                player.sendMessage("Invalid earns, expecting a number but got: " + parameters[2]);
-                player.sendMessage("Use: /mitem save <filename> [worth] [earns]");
+                sender.sendMessage("Invalid earns, expecting a number but got: " + parameters[2]);
+                sender.sendMessage("Use: /mitem save <filename> [worth] [earns]");
                 return true;
             }
         } else if (existing != null && existing.hasCustomEarns()) {
@@ -757,7 +766,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             itemConfig.save(itemFile);
         } catch (IOException ex) {
             ex.printStackTrace();
-            player.sendMessage(ChatColor.RED + "Can't write to file " + itemFile.getName());
+            sender.sendMessage(ChatColor.RED + "Can't write to file " + itemFile.getName());
             return true;
         }
         controller.loadItemTemplate(template, itemSection);
@@ -765,25 +774,25 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         if (earns != null) {
             message = message + " " + ChatColor.GRAY + "(" + ChatColor.DARK_GREEN + earns + ChatColor.DARK_AQUA + " when selling" + ChatColor.GRAY + ")";
         }
-        player.sendMessage(message);
+        sender.sendMessage(message);
         if (existing != null) {
             message = ChatColor.YELLOW + " Replaced Worth " + ChatColor.DARK_GREEN + existing.getWorth();
             if (existing.hasCustomEarns()) {
                 message = message + " " + ChatColor.GRAY + "(" + ChatColor.DARK_GREEN + existing.getEarns() + ChatColor.DARK_AQUA + " when selling" + ChatColor.GRAY + ")";
             }
-            player.sendMessage(message);
+            sender.sendMessage(message);
         }
         return true;
     }
 
-    public boolean onItemName(Player player, ItemStack item, String[] parameters)
+    public boolean onItemName(CommandSender sender, Player player, ItemStack item, String[] parameters)
     {
         String displayName = null;
         if (parameters.length < 1) {
-            player.sendMessage(api.getMessages().get("item.rename_clear"));
+            sender.sendMessage(api.getMessages().get("item.rename_clear"));
         } else {
             displayName = ChatColor.translateAlternateColorCodes('&', StringUtils.join(parameters, " "));
-            player.sendMessage(api.getMessages().get("item.renamed"));
+            sender.sendMessage(api.getMessages().get("item.renamed"));
         }
 
         ItemMeta meta = item.getItemMeta();
@@ -792,13 +801,13 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         return true;
     }
 
-    public boolean onItemAddFlag(Player player, ItemStack item, String flagName)
+    public boolean onItemAddFlag(CommandSender sender, Player player, ItemStack item, String flagName)
     {
         ItemFlag flag = null;
         try {
             flag = ItemFlag.valueOf(flagName.toUpperCase());
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Invalid flag: " + ChatColor.WHITE + flagName);
+            sender.sendMessage(ChatColor.RED + "Invalid flag: " + ChatColor.WHITE + flagName);
             return true;
         }
 
@@ -806,19 +815,19 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         itemMeta.addItemFlags(flag);
         item.setItemMeta(itemMeta);
 
-        player.sendMessage(api.getMessages().get("item.flag_added").replace("$flag", flag.name()));
+        sender.sendMessage(api.getMessages().get("item.flag_added").replace("$flag", flag.name()));
 
         return true;
     }
 
-    public boolean onItemRemoveFlag(Player player, ItemStack item, String flagName)
+    public boolean onItemRemoveFlag(CommandSender sender, Player player, ItemStack item, String flagName)
     {
         ItemFlag flag = null;
         ItemMeta itemMeta = item.getItemMeta();
         if (flagName == null) {
             Set<ItemFlag> flags = itemMeta.getItemFlags();
             if (flags == null || flags.size() == 0) {
-                player.sendMessage(api.getMessages().get("item.no_flags"));
+                sender.sendMessage(api.getMessages().get("item.no_flags"));
                 return true;
             }
             flag = flags.iterator().next();
@@ -826,45 +835,45 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             try {
                 flag = ItemFlag.valueOf(flagName.toUpperCase());
             } catch (Exception ex) {
-                player.sendMessage(ChatColor.RED + "Invalid flag: " + ChatColor.WHITE + flagName);
+                sender.sendMessage(ChatColor.RED + "Invalid flag: " + ChatColor.WHITE + flagName);
                 return true;
             }
         }
 
         if (!itemMeta.hasItemFlag(flag)) {
-            player.sendMessage(api.getMessages().get("item.no_flag").replace("$flag", flag.name()));
+            sender.sendMessage(api.getMessages().get("item.no_flag").replace("$flag", flag.name()));
         } else {
             itemMeta.removeItemFlags(flag);
             item.setItemMeta(itemMeta);
-            player.sendMessage(api.getMessages().get("item.flag_removed").replace("$flag", flag.name()));
+            sender.sendMessage(api.getMessages().get("item.flag_removed").replace("$flag", flag.name()));
         }
 
         return true;
     }
 
-    public boolean onItemAddEnchant(Player player, ItemStack item, String enchantName, String enchantValue)
+    public boolean onItemAddEnchant(CommandSender sender, Player player, ItemStack item, String enchantName, String enchantValue)
     {
         Enchantment enchantment = null;
         try {
             enchantment = Enchantment.getByName(enchantName.toUpperCase());
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+            sender.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
             return true;
         }
         if (enchantment == null) {
-            player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+            sender.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
             return true;
         }
         int level = 0;
         try {
             level = Integer.parseInt(enchantValue);
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
+            sender.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
             return true;
         }
         if (!player.hasPermission("Magic.item.enchant.extreme")) {
             if (level < 0 || level > 10) {
-                player.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
+                sender.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
                 return true;
             }
         }
@@ -873,26 +882,26 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         boolean allowUnsafe = player.hasPermission("Magic.item.enchant.unsafe");
         if (itemMeta.addEnchant(enchantment, level, allowUnsafe)) {
             item.setItemMeta(itemMeta);
-            player.sendMessage(api.getMessages().get("item.enchant_added").replace("$enchant", enchantment.getName()));
+            sender.sendMessage(api.getMessages().get("item.enchant_added").replace("$enchant", enchantment.getName()));
         } else {
             if (!allowUnsafe && level > 5) {
-                player.sendMessage(api.getMessages().get("item.enchant_unsafe"));
+                sender.sendMessage(api.getMessages().get("item.enchant_unsafe"));
             } else {
-                player.sendMessage(api.getMessages().get("item.enchant_not_added").replace("$enchant", enchantment.getName()));
+                sender.sendMessage(api.getMessages().get("item.enchant_not_added").replace("$enchant", enchantment.getName()));
             }
         }
 
         return true;
     }
 
-    public boolean onItemRemoveEnchant(Player player, ItemStack item, String enchantName)
+    public boolean onItemRemoveEnchant(CommandSender sender, Player player, ItemStack item, String enchantName)
     {
         Enchantment enchantment = null;
         ItemMeta itemMeta = item.getItemMeta();
         if (enchantName == null) {
             Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
             if (enchants == null || enchants.size() == 0) {
-                player.sendMessage(api.getMessages().get("item.no_enchants"));
+                sender.sendMessage(api.getMessages().get("item.no_enchants"));
                 return true;
             }
             enchantment = enchants.keySet().iterator().next();
@@ -900,27 +909,27 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             try {
                 enchantment = Enchantment.getByName(enchantName.toUpperCase());
             } catch (Exception ex) {
-                player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+                sender.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
                 return true;
             }
             if (enchantment == null) {
-                player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+                sender.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
                 return true;
             }
         }
 
         if (!itemMeta.hasEnchant(enchantment)) {
-            player.sendMessage(api.getMessages().get("item.no_enchant").replace("$enchant", enchantment.getName()));
+            sender.sendMessage(api.getMessages().get("item.no_enchant").replace("$enchant", enchantment.getName()));
         } else {
             itemMeta.removeEnchant(enchantment);
             item.setItemMeta(itemMeta);
-            player.sendMessage(api.getMessages().get("item.enchant_removed").replace("$enchant", enchantment.getName()));
+            sender.sendMessage(api.getMessages().get("item.enchant_removed").replace("$enchant", enchantment.getName()));
         }
 
         return true;
     }
 
-    public boolean onItemAddAttribute(Player player, ItemStack item, String attributeName, String attributeValue, String attributeSlot, AttributeModifier.Operation operation)
+    public boolean onItemAddAttribute(CommandSender sender, Player player, ItemStack item, String attributeName, String attributeValue, String attributeSlot, AttributeModifier.Operation operation)
     {
         Attribute attribute = null;
         if (attributeName == null) return false;
@@ -928,7 +937,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         try {
             attribute = Attribute.valueOf(attributeName.toUpperCase());
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Invalid attribute: " + ChatColor.WHITE + attributeName);
+            sender.sendMessage(ChatColor.RED + "Invalid attribute: " + ChatColor.WHITE + attributeName);
             return true;
         }
 
@@ -936,7 +945,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         try {
             value = Double.parseDouble(attributeValue);
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Invalid attribute value: " + ChatColor.WHITE + attributeValue);
+            sender.sendMessage(ChatColor.RED + "Invalid attribute value: " + ChatColor.WHITE + attributeValue);
             return true;
         }
 
@@ -948,19 +957,19 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             }
 
             item.setItemMeta(newItem.getItemMeta());
-            player.sendMessage(api.getMessages().get("item.attribute_added")
+            sender.sendMessage(api.getMessages().get("item.attribute_added")
                     .replace("$attribute", attribute.name())
                     .replace("$value", Double.toString(value))
                     .replace("$slot", attributeSlot)
                     .replace("$operation", operation.name().toLowerCase()));
         } else {
-            player.sendMessage(api.getMessages().get("item.attribute_not_added").replace("$attribute", attribute.name()));
+            sender.sendMessage(api.getMessages().get("item.attribute_not_added").replace("$attribute", attribute.name()));
         }
 
         return true;
     }
 
-    public boolean onItemRemoveAttribute(Player player, ItemStack item, String attributeName)
+    public boolean onItemRemoveAttribute(CommandSender sender, Player player, ItemStack item, String attributeName)
     {
         Attribute attribute = null;
         if (attributeName == null) return false;
@@ -968,73 +977,73 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         try {
             attribute = Attribute.valueOf(attributeName.toUpperCase());
         } catch (Exception ex) {
-            player.sendMessage(ChatColor.RED + "Invalid attribute: " + ChatColor.WHITE + attributeName);
+            sender.sendMessage(ChatColor.RED + "Invalid attribute: " + ChatColor.WHITE + attributeName);
             return true;
         }
 
         if (!CompatibilityUtils.removeItemAttribute(item, attribute)) {
-            player.sendMessage(api.getMessages().get("item.no_attribute").replace("$attribute", attribute.name()));
+            sender.sendMessage(api.getMessages().get("item.no_attribute").replace("$attribute", attribute.name()));
         } else {
-            player.sendMessage(api.getMessages().get("item.attribute_removed").replace("$attribute", attribute.name()));
+            sender.sendMessage(api.getMessages().get("item.attribute_removed").replace("$attribute", attribute.name()));
         }
 
         return true;
     }
 
-    public boolean onItemAddUnplaceable(Player player, ItemStack item)
+    public boolean onItemAddUnplaceable(CommandSender sender, Player player, ItemStack item)
     {
         if (InventoryUtils.isUnplaceable(item)) {
-            player.sendMessage(api.getMessages().get("item.already_unplaceable"));
+            sender.sendMessage(api.getMessages().get("item.already_unplaceable"));
         } else {
             ItemStack newItem = InventoryUtils.makeReal(item);
             InventoryUtils.makeUnplaceable(newItem);
             item.setItemMeta(newItem.getItemMeta());
-            player.sendMessage(api.getMessages().get("item.add_unplaceable"));
+            sender.sendMessage(api.getMessages().get("item.add_unplaceable"));
         }
 
         return true;
     }
 
-    public boolean onItemRemoveUnplaceable(Player player, ItemStack item)
+    public boolean onItemRemoveUnplaceable(CommandSender sender, Player player, ItemStack item)
     {
         if (!InventoryUtils.isUnplaceable(item)) {
-            player.sendMessage(api.getMessages().get("item.not_unplaceable"));
+            sender.sendMessage(api.getMessages().get("item.not_unplaceable"));
         } else {
             InventoryUtils.removeUnplaceable(item);
-            player.sendMessage(api.getMessages().get("item.remove_unplaceable"));
+            sender.sendMessage(api.getMessages().get("item.remove_unplaceable"));
         }
 
         return true;
     }
 
-    public boolean onItemAddUnbreakable(Player player, ItemStack item)
+    public boolean onItemAddUnbreakable(CommandSender sender, Player player, ItemStack item)
     {
         if (InventoryUtils.isUnbreakable(item)) {
-            player.sendMessage(api.getMessages().get("item.already_unbreakable"));
+            sender.sendMessage(api.getMessages().get("item.already_unbreakable"));
         } else {
             // Need API!
             ItemStack newItem = InventoryUtils.makeReal(item);
             InventoryUtils.makeUnbreakable(newItem);
             item.setItemMeta(newItem.getItemMeta());
-            player.sendMessage(api.getMessages().get("item.add_unbreakable"));
+            sender.sendMessage(api.getMessages().get("item.add_unbreakable"));
         }
 
         return true;
     }
 
-    public boolean onItemRemoveUnbreakable(Player player, ItemStack item)
+    public boolean onItemRemoveUnbreakable(CommandSender sender, Player player, ItemStack item)
     {
         if (!InventoryUtils.isUnbreakable(item)) {
-            player.sendMessage(api.getMessages().get("item.not_unbreakable"));
+            sender.sendMessage(api.getMessages().get("item.not_unbreakable"));
         } else {
             InventoryUtils.removeUnbreakable(item);
-            player.sendMessage(api.getMessages().get("item.remove_unbreakable"));
+            sender.sendMessage(api.getMessages().get("item.remove_unbreakable"));
         }
 
         return true;
     }
 
-    public boolean onItemAddLore(Player player, ItemStack item, String loreLine)
+    public boolean onItemAddLore(CommandSender sender, Player player, ItemStack item, String loreLine)
     {
         ItemMeta itemMeta = item.getItemMeta();
         List<String> lore = itemMeta.getLore();
@@ -1045,16 +1054,16 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
 
-        player.sendMessage(api.getMessages().get("item.lore_added").replace("$lore", loreLine));
+        sender.sendMessage(api.getMessages().get("item.lore_added").replace("$lore", loreLine));
         return true;
     }
 
-    public boolean onItemRemoveLore(Player player, ItemStack item, String loreIndex)
+    public boolean onItemRemoveLore(CommandSender sender, Player player, ItemStack item, String loreIndex)
     {
         ItemMeta itemMeta = item.getItemMeta();
         List<String> lore = itemMeta.getLore();
         if (lore == null || lore.isEmpty()) {
-            player.sendMessage(api.getMessages().get("item.no_lore"));
+            sender.sendMessage(api.getMessages().get("item.no_lore"));
             return true;
         }
 
@@ -1063,24 +1072,24 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             try {
                 index = Integer.parseInt(loreIndex);
             } catch (Exception ex) {
-                player.sendMessage(ChatColor.RED + "Invalid lore line: " + loreIndex);
+                sender.sendMessage(ChatColor.RED + "Invalid lore line: " + loreIndex);
                 return true;
             }
         }
 
         if (index < 0 || index >= lore.size()) {
-            player.sendMessage(ChatColor.RED + "Invalid lore line: " + loreIndex);
+            sender.sendMessage(ChatColor.RED + "Invalid lore line: " + loreIndex);
             return true;
         }
 
         String line = lore.remove(index);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
-        player.sendMessage(api.getMessages().get("item.lore_removed").replace("$lore", line));
+        sender.sendMessage(api.getMessages().get("item.lore_removed").replace("$lore", line));
         return true;
     }
 
-    public boolean onItemType(Player player, ItemStack item, String[] parameters)
+    public boolean onItemType(CommandSender sender, Player player, ItemStack item, String[] parameters)
     {
         if (parameters.length < 1) {
             return false;
@@ -1088,14 +1097,14 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         String materialKey = parameters[0];
         MaterialAndData material = new MaterialAndData(materialKey);
         if (!material.isValid() || material.getMaterial() == Material.AIR) {
-            player.sendMessage(ChatColor.RED + "Invalid material key: " + ChatColor.DARK_RED + materialKey);
+            sender.sendMessage(ChatColor.RED + "Invalid material key: " + ChatColor.DARK_RED + materialKey);
             return true;
         }
         material.applyToItem(item);
         return true;
     }
 
-    public boolean onItemDurability(Player player, ItemStack item, String[] parameters)
+    public boolean onItemDurability(CommandSender sender, Player player, ItemStack item, String[] parameters)
     {
         if (parameters.length < 1) {
             return false;
@@ -1104,39 +1113,39 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         try {
             durability = (short)Integer.parseInt(parameters[0]);
         } catch (NumberFormatException ex) {
-            player.sendMessage("Invalid damage value: " + parameters[0]);
+            sender.sendMessage("Invalid damage value: " + parameters[0]);
             return true;
         }
         item.setDurability(durability);
         return true;
     }
 
-    public boolean onItemAdd(Player player, ItemStack item, String[] parameters)
+    public boolean onItemAdd(CommandSender sender, Player player, ItemStack item, String[] parameters)
     {
         if (parameters.length < 1) {
             return false;
         }
         String addCommand = parameters[0];
         if (addCommand.equalsIgnoreCase("unbreakable")) {
-            return onItemAddUnbreakable(player, item);
+            return onItemAddUnbreakable(sender, player, item);
         }
         if (addCommand.equalsIgnoreCase("unplaceable")) {
-            return onItemAddUnplaceable(player, item);
+            return onItemAddUnplaceable(sender, player, item);
         }
         if (parameters.length < 2) {
             return false;
         }
         if (addCommand.equalsIgnoreCase("flag")) {
-            return onItemAddFlag(player, item, parameters[1]);
+            return onItemAddFlag(sender, player, item, parameters[1]);
         }
 
         if (addCommand.equalsIgnoreCase("lore")) {
             String[] loreLines = Arrays.copyOfRange(parameters, 1, parameters.length);
             String loreLine = ChatColor.translateAlternateColorCodes('&', StringUtils.join(loreLines, " "));
-            return onItemAddLore(player, item, loreLine);
+            return onItemAddLore(sender, player, item, loreLine);
         }
         if (addCommand.equalsIgnoreCase("enchant")) {
-            return onItemAddEnchant(player, item, parameters[1], parameters.length >= 3 ? parameters[2] : "1");
+            return onItemAddEnchant(sender, player, item, parameters[1], parameters.length >= 3 ? parameters[2] : "1");
         }
         if (parameters.length < 3) {
             return false;
@@ -1148,29 +1157,29 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 try {
                     operation = AttributeModifier.Operation.valueOf(parameters[4].toUpperCase());
                 } catch (Exception ex) {
-                    player.sendMessage(ChatColor.RED + "Invalid operation: " + parameters[4]);
+                    sender.sendMessage(ChatColor.RED + "Invalid operation: " + parameters[4]);
                 }
             }
-            return onItemAddAttribute(player, item, parameters[1], parameters[2], slot, operation);
+            return onItemAddAttribute(sender, player, item, parameters[1], parameters[2], slot, operation);
         }
         return false;
     }
 
-    public boolean onItemDestroy(Player player)
+    public boolean onItemDestroy(CommandSender sender, Player player)
     {
         player.getInventory().setItemInMainHand(null);
-        player.sendMessage(api.getMessages().get("item.destroyed"));
+        sender.sendMessage(api.getMessages().get("item.destroyed"));
         return true;
     }
 
-    public boolean onItemClean(Player player)
+    public boolean onItemClean(CommandSender sender, Player player)
     {
         api.getController().cleanItem(player.getInventory().getItemInMainHand());
-        player.sendMessage(api.getMessages().get("item.cleaned"));
+        sender.sendMessage(api.getMessages().get("item.cleaned"));
         return true;
     }
 
-    public boolean onItemRemove(Player player, ItemStack item, String[] parameters)
+    public boolean onItemRemove(CommandSender sender, Player player, ItemStack item, String[] parameters)
     {
         if (parameters.length < 1) {
             return false;
@@ -1178,24 +1187,24 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         String removeCommand = parameters[0];
 
         if (removeCommand.equalsIgnoreCase("unbreakable")) {
-            return onItemRemoveUnbreakable(player, item);
+            return onItemRemoveUnbreakable(sender, player, item);
         }
         if (removeCommand.equalsIgnoreCase("unplaceable")) {
-            return onItemRemoveUnplaceable(player, item);
+            return onItemRemoveUnplaceable(sender, player, item);
         }
 
         String firstParameter = parameters.length > 1 ? parameters[1] : null;
         if (removeCommand.equalsIgnoreCase("flag")) {
-            return onItemRemoveFlag(player, item, firstParameter);
+            return onItemRemoveFlag(sender, player, item, firstParameter);
         }
         if (removeCommand.equalsIgnoreCase("lore")) {
-            return onItemRemoveLore(player, item, firstParameter);
+            return onItemRemoveLore(sender, player, item, firstParameter);
         }
         if (removeCommand.equalsIgnoreCase("enchant")) {
-            return onItemRemoveEnchant(player, item, firstParameter);
+            return onItemRemoveEnchant(sender, player, item, firstParameter);
         }
         if (removeCommand.equalsIgnoreCase("attribute")) {
-            return onItemRemoveAttribute(player, item, firstParameter);
+            return onItemRemoveAttribute(sender, player, item, firstParameter);
         }
         return false;
     }
