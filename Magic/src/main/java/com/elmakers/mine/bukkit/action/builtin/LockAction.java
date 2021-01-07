@@ -22,7 +22,6 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class LockAction extends BaseSpellAction
 {
@@ -58,10 +57,11 @@ public class LockAction extends BaseSpellAction
         Mage mage = context.getMage();
         boolean result = false;
         if (actionType == LockActionType.KEY) {
-            if (!giveKey(mage, keyName, keyDescription)) {
+            if (hasKey(mage, keyName)) {
                 context.sendMessageKey("already_key");
                 return SpellResult.NO_TARGET;
             }
+            giveKey(mage, keyName, keyDescription);
             return SpellResult.CAST;
         }
 
@@ -110,11 +110,8 @@ public class LockAction extends BaseSpellAction
                 }
                 context.sendMessageKey("acquire");
             }
-            result = CompatibilityUtils.setLock(targetBlock, keyName);
-            if (!giveKey(mage, keyName, keyDescription)) {
-                context.sendMessageKey("already_key");
-                return SpellResult.NO_TARGET;
-            }
+            ItemStack keyItem = giveKey(mage, keyName, keyDescription);
+            result = CompatibilityUtils.setLock(targetBlock, keyItem.getItemMeta().getDisplayName());
         } else {
             String lock = CompatibilityUtils.getLock(targetBlock);
             if (lock == null || lock.isEmpty())
@@ -134,9 +131,14 @@ public class LockAction extends BaseSpellAction
         return result ? SpellResult.CAST : SpellResult.FAIL;
     }
 
-    protected boolean giveKey(Mage mage, String keyName, String keyDescription) {
-        if (InventoryUtils.hasItem(mage.getInventory(), keyName)) {
-            return false;
+    protected boolean hasKey(Mage mage, String keyName) {
+        return InventoryUtils.hasItem(mage.getInventory(), keyName);
+    }
+
+    protected ItemStack giveKey(Mage mage, String keyName, String keyDescription) {
+        ItemStack itemStack = InventoryUtils.getItem(mage.getInventory(), keyName);
+        if (itemStack != null) {
+            return itemStack;
         }
 
         ItemStack keyItem = null;
@@ -151,15 +153,13 @@ public class LockAction extends BaseSpellAction
             }
             meta.setLore(lore);
         }
+        meta.setDisplayName(keyName);
         keyItem.setItemMeta(meta);
         keyItem = CompatibilityUtils.makeReal(keyItem);
-        if (!NMSUtils.isLegacy()) {
-            CompatibilityUtils.setDisplayNameRaw(keyItem, "{\"text\":\"" + keyName + "\"}");
-        }
         CompatibilityUtils.makeUnplaceable(keyItem);
         InventoryUtils.makeKeep(keyItem);
         mage.giveItem(keyItem);
-        return true;
+        return keyItem;
     }
 
     @Override
