@@ -58,7 +58,10 @@ public class LockAction extends BaseSpellAction
         Mage mage = context.getMage();
         boolean result = false;
         if (actionType == LockActionType.KEY) {
-            giveKey(mage, keyName, keyDescription);
+            if (!giveKey(mage, keyName, keyDescription)) {
+                context.sendMessageKey("already_key");
+                return SpellResult.NO_TARGET;
+            }
             return SpellResult.CAST;
         }
 
@@ -108,7 +111,10 @@ public class LockAction extends BaseSpellAction
                 context.sendMessageKey("acquire");
             }
             result = CompatibilityUtils.setLock(targetBlock, keyName);
-            giveKey(mage, keyName, keyDescription);
+            if (!giveKey(mage, keyName, keyDescription)) {
+                context.sendMessageKey("already_key");
+                return SpellResult.NO_TARGET;
+            }
         } else {
             String lock = CompatibilityUtils.getLock(targetBlock);
             if (lock == null || lock.isEmpty())
@@ -128,29 +134,32 @@ public class LockAction extends BaseSpellAction
         return result ? SpellResult.CAST : SpellResult.FAIL;
     }
 
-    protected void giveKey(Mage mage, String keyName, String keyDescription) {
-        if (!InventoryUtils.hasItem(mage.getInventory(), keyName)) {
-            ItemStack keyItem = null;
-            keyItem = iconType.getItemStack(1);
-            ItemMeta meta = keyItem.getItemMeta();
-            meta.setDisplayName(keyName);
-            if (!keyDescription.isEmpty()) {
-                List<String> lore = new ArrayList<>();
-                String[] lines = StringUtils.split(keyDescription, '\n');
-                for (String line : lines) {
-                    lore.add(line);
-                }
-                meta.setLore(lore);
-            }
-            keyItem.setItemMeta(meta);
-            keyItem = CompatibilityUtils.makeReal(keyItem);
-            if (!NMSUtils.isLegacy()) {
-                CompatibilityUtils.setDisplayNameRaw(keyItem, "{\"text\":\"" + keyName + "\"}");
-            }
-            CompatibilityUtils.makeUnplaceable(keyItem);
-            InventoryUtils.makeKeep(keyItem);
-            mage.giveItem(keyItem);
+    protected boolean giveKey(Mage mage, String keyName, String keyDescription) {
+        if (InventoryUtils.hasItem(mage.getInventory(), keyName)) {
+            return false;
         }
+
+        ItemStack keyItem = null;
+        keyItem = iconType.getItemStack(1);
+        ItemMeta meta = keyItem.getItemMeta();
+        meta.setDisplayName(keyName);
+        if (!keyDescription.isEmpty()) {
+            List<String> lore = new ArrayList<>();
+            String[] lines = StringUtils.split(keyDescription, '\n');
+            for (String line : lines) {
+                lore.add(line);
+            }
+            meta.setLore(lore);
+        }
+        keyItem.setItemMeta(meta);
+        keyItem = CompatibilityUtils.makeReal(keyItem);
+        if (!NMSUtils.isLegacy()) {
+            CompatibilityUtils.setDisplayNameRaw(keyItem, "{\"text\":\"" + keyName + "\"}");
+        }
+        CompatibilityUtils.makeUnplaceable(keyItem);
+        InventoryUtils.makeKeep(keyItem);
+        mage.giveItem(keyItem);
+        return true;
     }
 
     @Override

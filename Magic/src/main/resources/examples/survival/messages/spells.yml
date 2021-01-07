@@ -19,6 +19,7 @@ spells:
         usage: Aim up and cast for a replacement key, sneak-cast to unlock
         cast: Container is now locked- you must hold your key to unlock it!
         acquire: Lock changed!
+        already_key: You already have a key
         already: That is already locked
         alternate_up: You summon a replacement key
         alternate_sneak: Container unlocked
