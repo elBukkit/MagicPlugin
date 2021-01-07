@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 8.2.3
+
 # 8.2.2
 
  - Fix badly compiled 8.2.1 build which was breaking anything with Vault interaction, including all shops and progressmenu
