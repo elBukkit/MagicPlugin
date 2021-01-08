@@ -1300,7 +1300,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         List<CastParameter> overrides = mage.getOverrides(getSpellKey().getBaseKey());
         if (overrides != null) {
             for (CastParameter parameter : overrides) {
-                workingParameters.set(parameter.getParameter(), parameter.getValue());
+                workingParameters.set(parameter.getParameter(), parameter.getConvertedValue());
             }
         }
         currentCast.setWorkingParameters(workingParameters);

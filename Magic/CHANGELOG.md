@@ -10,6 +10,8 @@
 
 # 8.2.3
 
+ - Fix wand cast overrides not working for boolean or numeric values
+
 # 8.2.2
 
  - Fix a bug when using a broomstick in an offhand and landing while your wand inventory is open
