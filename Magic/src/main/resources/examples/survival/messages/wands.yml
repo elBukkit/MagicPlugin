@@ -434,3 +434,6 @@ wands:
       spell_aura: ""
     iceskates:
       name: Ice Skates
+    bringer:
+        name: Bringer
+        description: Bring other players to you

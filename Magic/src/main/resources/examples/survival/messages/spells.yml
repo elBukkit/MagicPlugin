@@ -701,6 +701,10 @@ spells:
         name: Respawn
         description: Return to spawn
         cast: You teleport back to safety
+    bring:
+        name: Bring
+        description: Teleport other players to you
+        title: "Teleport to You:"
     gather:
         name: Gather
         description: Teleport you to other players

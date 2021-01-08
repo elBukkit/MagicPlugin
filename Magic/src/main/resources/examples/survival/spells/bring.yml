@@ -1,0 +1,98 @@
+bring:
+  icon: soul_lantern{CustomModelData:18001}
+  icon_disabled: soul_lantern{CustomModelData:18002}
+  legacy_icon: spell_icon:48
+  legacy_icon_disabled: spell_icon_disabled:48
+  icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
+  category: staff
+  show_undoable: false
+  quick_cast: true
+  actions:
+    cast:
+      - class: PlayerSelect
+        actions:
+          - class: ChangeContext
+            swap_source_and_target: true
+            actions:
+            - class: Teleport
+  effects:
+    no_action: []
+    no_target: []
+    cast:
+    -  sound: block_beacon_activate
+       sound_pitch: 0.75
+       sound_volume: 0.8
+    -  sound: entity_enderman_teleport
+       sound_pitch: 0.25
+       sound_volume: 0.5
+    -  class: EffectSingle
+       sound: magic.teleport
+       sound_volume: 0.8
+       sound_pitch: 0.3
+       source_location: eyes
+       color_override: color
+       effectlib:
+          class: WarpEffect
+          duration: 1000
+          period: 1
+          particle: redstone
+          particle_offset_x: 0.9
+          particle_offset_y: 0.1
+          particle_offset_z: 0.9
+          radius: 1
+          offset: 0,-1,0
+    menu:
+      - sound: entity_enderman_teleport
+        sound_pitch: 1.5
+        sound_volume: 0.75
+    teleporting:
+    -  sound: entity_enderman_teleport
+       sound_pitch: 0.75
+       sound_volume: 0.75
+       location: both
+    -  class: EffectSingle
+       location: both
+       source_location: eyes
+       color_override: color
+       effectlib:
+         class: WarpEffect
+         particle: redstone
+         particle_offset_x: 0.9
+         particle_offset_y: 0.1
+         particle_offset_z: 0.9
+         offset: 0,-1,0
+         period: 2
+         update_locations: false
+    -  class: EffectSingle
+       sound: magic.teleport
+       sound_pitch: 1.2
+       location: both
+       source_location: eyes
+       effectlib:
+         class: WarpEffect
+         period: 1
+         particle: portal
+         particle_count: 10
+         particle_offset_x: 0.9
+         particle_offset_y: 0.1
+         particle_offset_z: 0.9
+         offset: 0,-1,0
+         update_locations: false
+    player_selected:
+      - class: EffectSingle
+        sound: entity_enderman_ambient
+      - class: EffectTrail
+        particle: portal
+        particle_count: 4
+      - class: EffectSingle
+        location: both
+        effectlib:
+          class: WarpEffect
+          particle: portal
+  parameters:
+    target: self
+    target_self: false
+    bypass_friendly_fire: true
+    bypass_pvp: true
+    loud: true
+    target_game_modes: survival,creative,adventure
