@@ -5207,4 +5207,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         return false;
     }
+
+    @Override
+    public String parameterize(String command, String prefix) {
+        Player player = getPlayer();
+        if (player != null) {
+            command = controller.setPlaceholders(player, command);
+        }
+
+        command = command
+                .replace(prefix + "_", " ")
+                .replace(prefix + "pd", getDisplayName())
+                .replace(prefix + "pn", getName())
+                .replace(prefix + "uuid", getId())
+                .replace(prefix + "p", getName());
+
+        return command;
+    }
 }
