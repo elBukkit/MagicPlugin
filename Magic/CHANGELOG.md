@@ -12,6 +12,7 @@
 # 8.2.3
 
  - Fix wand cast overrides not working for boolean or numeric values
+ - Fix some specific issues with overlapping casts
 
 # 8.2.2
 

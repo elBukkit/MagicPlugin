@@ -34,7 +34,7 @@ public abstract class CompoundAction extends BaseSpellAction
 
     protected Map<String, ActionHandler> handlers = new HashMap<>();
     protected Set<String> handlerKeys = new HashSet<>();
-    protected Set<ActionHandler> ran = new HashSet<>();
+    protected Set<ActionHandler> ran = null;
     protected @Nullable String currentHandler = null;
     protected State state = State.NOT_STARTED;
 
@@ -154,6 +154,7 @@ public abstract class CompoundAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        ran = new HashSet<>();
         for (ActionHandler handler : handlers.values()) {
             handler.prepare(context, context.getSpell().getWorkingParameters());
         }
