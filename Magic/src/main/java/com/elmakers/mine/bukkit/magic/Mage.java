@@ -1875,9 +1875,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         int updated = 0;
         for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
             Batch batch = iterator.next();
-            int batchUpdated = batch.process(Math.max(1, maxWorldAllowed - updated));
+            int batchUpdated = 0;
+            boolean errored = false;
+            try {
+                batchUpdated = batch.process(Math.max(1, maxWorldAllowed - updated));
+            } catch (Exception ex) {
+                errored = true;
+                controller.getLogger().log(Level.SEVERE, "Error processing batch: " + batch, ex);
+                try {
+                    batch.finish();
+                } catch (Exception finishEx) {
+                    controller.getLogger().log(Level.SEVERE, " Additional error force-finishing batch", finishEx);
+                }
+            }
             updated += batchUpdated;
-            if (batch.isFinished()) {
+            if (batch.isFinished() || errored) {
                 iterator.remove();
             }
         }
