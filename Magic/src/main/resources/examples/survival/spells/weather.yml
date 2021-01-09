@@ -8,6 +8,7 @@ weather:
     worth: 500
     earns_sp: 5
     quick_cast: true
+    show_undoable: false
     actions:
         cast:
         -  class: Weather

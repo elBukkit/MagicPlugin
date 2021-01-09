@@ -701,10 +701,6 @@ spells:
         name: Respawn
         description: Return to spawn
         cast: You teleport back to safety
-    bring:
-        name: Bring
-        description: Teleport other players to you
-        title: "Teleport to You:"
     gather:
         name: Gather
         description: Teleport you to other players
@@ -805,7 +801,7 @@ spells:
       cooldown: ""
     warpmenu:
       name: Warp Menu
-      description: Essentially identical to Recall, can be used in NPCs or command blocks so players don't get cast credit for Recall when using a warp menu
+      description: Teleport directly to a variety of locations
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
@@ -1409,3 +1405,17 @@ spells:
       name: Critical
       description: A chance to deal some extra damage
       upgrade_description: "Improved chances of critical"
+    bring:
+      name: Bring
+      description: Teleport other players to you
+      title: "Teleport to You:"
+    goto:
+      name: Goto
+      description: Teleport yourself to another player
+      title: "Teleport To:"
+    feed:
+      name: Feed
+      description: Feed and slightly heal any player
+      usage: Gives 16 bread
+      title: "Feed and Heal:"
+

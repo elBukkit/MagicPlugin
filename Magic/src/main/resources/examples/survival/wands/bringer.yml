@@ -1,4 +1,0 @@
-bringer:
-    mode: cast
-    icon: nether_star{"CustomModelData":18001}
-    spells: bring

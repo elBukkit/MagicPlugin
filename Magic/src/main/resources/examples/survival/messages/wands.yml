@@ -434,6 +434,6 @@ wands:
       spell_aura: ""
     iceskates:
       name: Ice Skates
-    bringer:
-        name: Bringer
-        description: Bring other players to you
+    admintool:
+        name: Admin Tool
+        description: A variety of useful tools for mods and admins

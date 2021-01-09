@@ -1,0 +1,61 @@
+feed:
+    icon: milk_bucket{CustomModelData:18001}
+    icon_disabled: milk_bucket{CustomModelData:18002}
+    category: staff
+    quick_cast: true
+    actions:
+        cast:
+          - class: PlayerSelect
+            actions:
+              - class: Feed
+              - class: GiveItem
+              - class: Heal
+              - class: PotionEffect
+    effects:
+        cast:
+        - sound: entity_generic_drink
+          sound_pitch: 0.1
+          sound_volume: 0.4
+        - sound: block_beacon_activate
+          sound_pitch: 0.1
+          sound_volume: 1.4
+        - sound: entity_generic_drink
+          sound_pitch: 0.3
+          sound_volume: 0.2
+          location: targets
+          source_location: body
+          effectlib:
+            class: Warp
+            radius: 1
+            rings: 8
+            grow: 0.1
+            particle: end_rod
+        - class: EffectSingle
+          sound: magic.shimmer
+          source_location: body
+          location: source
+          effectlib:
+             class: Modified
+             iterations: 40
+             period: 2
+             parameters:
+                 radius: "(t/i) * 5 + 0.5"
+                 radius_nucleus: "(t/i) * 8 + 2"
+             effect:
+                 class: AtomEffect
+                 particle_nucleus: heart
+                 particle_orbital: crit
+                 particles_nucleus: 4
+                 particles_orbital: 30
+    parameters:
+      amount: 5
+      item: bread
+      item_count: 16
+      target_self: true
+      bypass_confusion: true
+      bypass_pvp: true
+      bypass_friendly_fire: true
+      only_friendly: true
+      remove_effects:
+      - poison
+      - wither
