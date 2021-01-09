@@ -13,6 +13,7 @@ recall:
     upgrade_required_casts: 25
     world_border_restricted: false
     quick_cast: true
+    show_undoable: false
     actions:
         cast:
           - class: Recall
