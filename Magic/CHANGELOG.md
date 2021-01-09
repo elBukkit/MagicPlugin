@@ -7,7 +7,8 @@
  - Use Vanish for Cloak and Decoy spells
  - Re-work appraiser NPC shop, re-balance emerald/diamond/gold/iron prices
  - Some potter wand upgrades changed keys to include `_upgrade` and not  conflict with survival wands (e.g staff_upgrade)
- - Added staff-only "bring" spell, like gather but in reverse (tp players to you)
+ - Added staff-only `admintool` wand, a set of useful tools for admins
+ - Fix issues with Teleport action when target contact has been changed
 
 # 8.2.3
 
