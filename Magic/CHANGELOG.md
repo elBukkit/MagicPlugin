@@ -2,16 +2,30 @@
 
 # 8.3
 
- - Rename Wear action to Equip (Wear still works). Supports any inventory slot, main_hand or "free" to find a free slot.
+## Fixes
+
+ - Fix some strange problems that can come up when customizing the builtin examples (affected PotterPlus)
+ - Fix Petrify upgrades (it should go up to level 3 now)
+ - Fix Fireball upgrades (fireball projectiles weren't correctly registering entity hits in modern MC versionsx`)
+ - Fix issues with Teleport action when target context has been changed
+
+## Changes
+
+ - Rename Wear action to Equip (Wear still works).
+   Supports any inventory slot, main_hand or "free" to find a free slot.
+ - Use Vanish for Cloak and Decoy spells
+ - Re-work appraiser NPC shop, re-balance emerald/diamond/gold/iron prices
+ - Some potter wand upgrades changed keys to include `_upgrade`
+   and not  conflict with survival wands (e.g staff_upgrade)
+
+## Additions
+
  - Add "snowy" automaton for making a 32x32 snowy area
  - Use Vanish for Cloak and Decoy spells
  - Re-work appraiser NPC shop, re-balance emerald/diamond/gold/iron prices
  - Some potter wand upgrades changed keys to include `_upgrade` and not  conflict with survival wands (e.g staff_upgrade)
  - Added staff-only `admintool` wand, a set of useful tools for admins
- - Fix issues with Teleport action when target contact has been changed
  - Add "break" effect, for when a wand's uses are used up
- - Fix Petrify upgrades (it should go up to level 3 now)
- - Fix Fireball upgrades (fireball projectiles weren't correctly registering entity hits in modern MC versionsx`)
  - Added Holy Light spell to Wizard path
 
 # 8.2.3
