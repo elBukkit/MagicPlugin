@@ -11,6 +11,7 @@ master:
       - silence
       - tent
       - tame
+      - holylight
     spells:
       - fury
       - blessing

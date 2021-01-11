@@ -11,7 +11,8 @@
  - Fix issues with Teleport action when target contact has been changed
  - Add "break" effect, for when a wand's uses are used up
  - Fix Petrify upgrades (it should go up to level 3 now)
- - Fix Fireball upgrades (fireball projectiles weren't correctly registering entity hits in modern MC versions)
+ - Fix Fireball upgrades (fireball projectiles weren't correctly registering entity hits in modern MC versionsx`)
+ - Added Holy Light spell to Wizard path
 
 # 8.2.3
 
