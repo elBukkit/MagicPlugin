@@ -7,6 +7,8 @@ petrify:
     category: combat
     worth: 300
     earns_sp: 8
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     actions:
       cast:
       - class: CustomProjectile
@@ -85,14 +87,10 @@ petrify:
         cooldown: 10000
 
 petrify|2:
-    upgrade_required_path: master
-    upgrade_required_casts: 50
     parameters:
       duration: 5000
 
 petrify|3:
-    upgrade_required_path: master
-    upgrade_required_casts: 50
     parameters:
       duration: 7000
 

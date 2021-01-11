@@ -10,6 +10,7 @@
  - Added staff-only `admintool` wand, a set of useful tools for admins
  - Fix issues with Teleport action when target contact has been changed
  - Add "break" effect, for when a wand's uses are used up
+ - Fix Petrify upgrades (it should go up to level 3 now)
 
 # 8.2.3
 
