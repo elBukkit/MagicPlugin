@@ -9,6 +9,7 @@
  - Some potter wand upgrades changed keys to include `_upgrade` and not  conflict with survival wands (e.g staff_upgrade)
  - Added staff-only `admintool` wand, a set of useful tools for admins
  - Fix issues with Teleport action when target contact has been changed
+ - Add "break" effect, for when a wand's uses are used up
 
 # 8.2.3
 

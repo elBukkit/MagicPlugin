@@ -4349,6 +4349,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     // If the wand is not currently active it will be destroyed on next activate
                     Player player = mage.getPlayer();
                     Mage theMage = mage;
+                    playEffects("break");
 
                     deactivate();
 
