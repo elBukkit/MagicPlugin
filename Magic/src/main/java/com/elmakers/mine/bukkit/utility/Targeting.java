@@ -685,7 +685,12 @@ public class Targeting {
         if (target != null) {
             projectileHits.put(tracked, new Hit(target));
         } else if (!tracked.hasMetadata("hit")) {
-            projectileHits.put(tracked, new Hit(block));
+            // Don't overwrite entity hits, projectiles that explode seem to send multiple ProjectIleHit events
+            // which will stomp on the EDBE event that tracks
+            Hit current = projectileHits.get(tracked);
+            if (current == null || current.getEntity() == null) {
+                projectileHits.put(tracked, new Hit(block));
+            }
         }
 
         return true;
