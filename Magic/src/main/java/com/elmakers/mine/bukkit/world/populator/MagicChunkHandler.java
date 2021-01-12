@@ -21,6 +21,7 @@ public class MagicChunkHandler {
     }
 
     public void load(String worldName, ConfigurationSection config) {
+        if (config == null) return;
         for (String key : config.getKeys(false)) {
             ConfigurationSection handlerConfig = config.getConfigurationSection(key);
             if (handlerConfig == null) {

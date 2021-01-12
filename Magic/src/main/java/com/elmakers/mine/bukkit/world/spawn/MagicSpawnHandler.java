@@ -68,6 +68,7 @@ public class MagicSpawnHandler {
 
     public void load(String worldName, ConfigurationSection config) {
         this.worldName = worldName;
+        if (config == null) return;
         for (String key : config.getKeys(false)) {
             ConfigurationSection handlerConfig = config.getConfigurationSection(key);
             if (handlerConfig == null) {

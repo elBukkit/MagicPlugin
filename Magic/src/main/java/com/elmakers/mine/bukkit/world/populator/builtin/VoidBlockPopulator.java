@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.world.BlockResult;
 import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
 public class VoidBlockPopulator extends MagicBlockPopulator {
@@ -18,7 +19,8 @@ public class VoidBlockPopulator extends MagicBlockPopulator {
     }
 
     @Override
-    public MaterialAndData populate(Block block, Random random) {
-        return AIR;
+    public BlockResult populate(Block block, Random random) {
+        block.setType(Material.AIR);
+        return BlockResult.CANCEL;
     }
 }

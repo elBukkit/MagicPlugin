@@ -21,9 +21,8 @@
 ## Additions
 
  - Add "snowy" automaton for making a 32x32 snowy area
- - Use Vanish for Cloak and Decoy spells
- - Re-work appraiser NPC shop, re-balance emerald/diamond/gold/iron prices
- - Some potter wand upgrades changed keys to include `_upgrade` and not  conflict with survival wands (e.g staff_upgrade)
+ - Added block_place and block_break world handlers
+   - Currently support "Cast" and "Replace" rule classes
  - Added staff-only `admintool` wand, a set of useful tools for admins
  - Add "break" effect, for when a wand's uses are used up
  - Added Holy Light spell to Wizard path

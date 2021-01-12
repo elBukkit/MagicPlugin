@@ -4,6 +4,9 @@
 
 ## Hot
 
+ - Wolf house signs are broke again (check teleporter room)
+ - Add "melee" flag for wands to allow them to do melee damage
+
  - Souls not showing in recall on server?
  - Magic mobs or automata fight without players around?
 

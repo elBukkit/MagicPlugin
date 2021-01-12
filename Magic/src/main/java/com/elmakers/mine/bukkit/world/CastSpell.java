@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.world.spawn;
+package com.elmakers.mine.bukkit.world;
 
 import org.apache.commons.lang.StringUtils;
 

@@ -15,8 +15,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import com.elmakers.mine.bukkit.world.spawn.CastSpell;
-import com.elmakers.mine.bukkit.world.spawn.CastSpellParser;
+import com.elmakers.mine.bukkit.world.CastSpell;
+import com.elmakers.mine.bukkit.world.CastSpellParser;
 import com.elmakers.mine.bukkit.world.spawn.SpawnResult;
 import com.elmakers.mine.bukkit.world.spawn.SpawnRule;
 
@@ -72,7 +72,9 @@ public class CastRule extends SpawnRule {
             spells.clear();
             spells.add(spell);
         }
+        boolean casted = false;
         for (CastSpell spell : spells) {
+            if (spell.isEmpty()) continue;
             String[] fullParameters = new String[spell.getParameters().length + standardParameters.length];
             for (int index = 0; index < standardParameters.length; index++) {
                 fullParameters[index] = standardParameters[index];
@@ -82,10 +84,10 @@ public class CastRule extends SpawnRule {
                 fullParameters[index  + standardParameters.length] = spell.getParameters()[index];
             }
 
-            controller.cast(spell.getName(), fullParameters);
+            casted = controller.cast(spell.getName(), fullParameters);
             controller.info("Spawn rule casting: " + spell.getName() + " " + StringUtils.join(fullParameters, ' ') + " at " + entity.getLocation().toVector());
         }
 
-        return SpawnResult.REMOVE;
+        return casted ? SpawnResult.REMOVE : SpawnResult.SKIP;
     }
 }

@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialMap;
+import com.elmakers.mine.bukkit.world.BlockResult;
 import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
 public class ReplacePopulator extends MagicBlockPopulator {
@@ -67,7 +68,7 @@ public class ReplacePopulator extends MagicBlockPopulator {
 
     @Override
     @Nullable
-    public MaterialAndData populate(Block block, Random random) {
+    public BlockResult populate(Block block, Random random) {
         if (block.getY() < minY || block.getY() > maxY) return null;
         if (replaceBiomes != null) {
             Biome newBiome = replaceBiomes.get(block.getBiome());
@@ -83,6 +84,11 @@ public class ReplacePopulator extends MagicBlockPopulator {
                 }
             }
         }
-        return replaceMap == null ? null : replaceMap.get(block.getType());
+        MaterialAndData replace =  replaceMap == null ? null : replaceMap.get(block.getType());
+        if (replace == null) {
+            return BlockResult.SKIP;
+        }
+        replace.modify(block);
+        return BlockResult.CANCEL;
     }
 }

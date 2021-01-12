@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
 import com.elmakers.mine.bukkit.world.tasks.CheckWorldCreateTask;
@@ -23,6 +25,8 @@ public class MagicWorld {
     private final MagicController controller;
     private final MagicChunkHandler chunkHandler;
     private final MagicSpawnHandler spawnHandler;
+    private final MagicBlockHandler blockPlaceHandler;
+    private final MagicBlockHandler blockBreakHandler;
     private String copyFrom = "";
     private boolean autoLoad = false;
     private World.Environment worldEnvironment = World.Environment.NORMAL;
@@ -41,6 +45,8 @@ public class MagicWorld {
         seed = random.nextLong();
         chunkHandler = new MagicChunkHandler(controller);
         spawnHandler = new MagicSpawnHandler(controller);
+        blockPlaceHandler = new MagicBlockHandler(controller);
+        blockBreakHandler = new MagicBlockHandler(controller);
     }
 
     public void load(String name, ConfigurationSection config) {
@@ -75,14 +81,10 @@ public class MagicWorld {
         }
         seed = config.getLong("seed", this.seed);
         autoLoad = config.getBoolean("autoload", autoLoad);
-        ConfigurationSection chunkConfig = config.getConfigurationSection("chunk_generate");
-        if (chunkConfig != null) {
-            chunkHandler.load(worldName, chunkConfig);
-        }
-        ConfigurationSection entityConfig = config.getConfigurationSection("entity_spawn");
-        if (entityConfig != null) {
-            spawnHandler.load(worldName, entityConfig);
-        }
+        chunkHandler.load(worldName, config.getConfigurationSection("chunk_generate"));
+        blockBreakHandler.load(worldName, "break", config.getConfigurationSection("block_break"));
+        blockPlaceHandler.load(worldName, "place", config.getConfigurationSection("block_place"));
+        spawnHandler.load(worldName, config.getConfigurationSection("entity_spawn"));
     }
 
     public void finalizeLoad() {
@@ -144,6 +146,14 @@ public class MagicWorld {
 
     public boolean processEntitySpawn(Plugin plugin, LivingEntity entity) {
         return spawnHandler.process(plugin, entity);
+    }
+
+    public BlockResult processBlockBreak(Block block, Player player) {
+        return blockBreakHandler.handleBlock(block, player);
+    }
+
+    public BlockResult processBlockPlace(Block block, Player player) {
+        return blockPlaceHandler.handleBlock(block, player);
     }
 
     public void onWorldInit(final World initWorld) {
