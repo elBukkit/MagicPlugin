@@ -1,0 +1,11 @@
+world_lucky:
+  world: world
+  block_break:
+    lucky_cobble:
+      class: Cast
+      type: cobblestone
+      spells:
+        lucky_loot: 10
+        lucky_potion: 20
+        lucky_block: 30
+        none: 100

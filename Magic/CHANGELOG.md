@@ -23,6 +23,7 @@
  - Add "snowy" automaton for making a 32x32 snowy area
  - Added block_place and block_break world handlers
    - Currently support "Cast" and "Replace" rule classes
+ - Added "lucky" example (WIP)
  - Added staff-only `admintool` wand, a set of useful tools for admins
  - Add "break" effect, for when a wand's uses are used up
  - Added Holy Light spell to Wizard path

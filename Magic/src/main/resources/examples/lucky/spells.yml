@@ -1,0 +1,20 @@
+lucky_loot:
+  actions:
+    cast:
+      - class: Message
+  parameters:
+    message: "Loot!"
+
+lucky_potion:
+  actions:
+    cast:
+      - class: Message
+  parameters:
+    message: "Potion!"
+
+lucky_block:
+  actions:
+    cast:
+      - class: Message
+  parameters:
+    message: "Block!"
