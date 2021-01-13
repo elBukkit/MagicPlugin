@@ -27,7 +27,7 @@ You can easily import Magic's API into your project like this:
   </dependency>
 </dependencies>
 <repositories>
-  <!-- Releases are published to github -->
+  <!-- Releases are published to Maven Central -->
   <repository>
       <id>Maven Central</id>
       <url>https://repo1.maven.org/maven2/</url>
