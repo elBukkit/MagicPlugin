@@ -17,6 +17,7 @@
  - Re-work appraiser NPC shop, re-balance emerald/diamond/gold/iron prices
  - Some potter wand upgrades changed keys to include `_upgrade`
    and not  conflict with survival wands (e.g staff_upgrade)
+ - The inactive_icon feature will now work on non-inventory-mode wands
 
 ## Additions
 

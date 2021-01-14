@@ -627,10 +627,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (!indestructible && !isUpgrade && icon.getMaterial().getMaxDurability() > 0) {
             durability = item.getDurability();
         }
-
         try {
-            if (inactiveIcon == null || (mage != null && getMode() == WandMode.INVENTORY && isInventoryOpen())) {
-                icon.applyToItem(item);
+            if (inactiveIcon == null || useActiveIcon()) {
+                if (inactiveIcon != null && inactiveIconDelay > 0) {
+                    inactiveIcon.applyToItem(item);
+                    Plugin plugin = controller.getPlugin();
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new ApplyWandIconTask(this), inactiveIconDelay * 20 / 1000);
+                } else {
+                    icon.applyToItem(item);
+                }
             } else {
                 inactiveIcon.applyToItem(item);
             }
@@ -651,6 +656,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             CompatibilityUtils.removeUnbreakable(item);
         }
         CompatibilityUtils.hideFlags(item, getProperty("hide_flags", HIDE_FLAGS));
+    }
+
+    private boolean useActiveIcon() {
+        boolean useActiveIcon = mage != null;
+        if (useActiveIcon && getMode() == WandMode.INVENTORY) {
+            useActiveIcon = isInventoryOpen();
+        }
+        return useActiveIcon;
     }
 
     @Override
@@ -1474,8 +1487,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     isInOffhand = true;
                     return true;
                 }
-
-
             }
         }
         return false;
@@ -4165,12 +4176,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (isInventoryOpen()) {
             closeInventory(closePlayerInventory);
         }
-        showActiveIcon(false);
         storedInventory = null;
         if (usesXPNumber() || usesXPBar()) {
             mage.resetSentExperience();
         }
         saveState();
+        showActiveIcon(false);
         mage.deactivateWand(this);
         this.mage = null;
         updateMaxMana(true);
@@ -4639,6 +4650,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void applyIcon() {
+        if (!useActiveIcon()) return;
         findItem();
         icon.applyToItem(item);
     }
@@ -4713,6 +4725,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Bukkit.getPluginManager().callEvent(preActivateEvent);
         if (preActivateEvent.isCancelled()) {
             return false;
+        }
+
+        if (getMode() != WandMode.INVENTORY) {
+            showActiveIcon(true);
         }
 
         boolean needsSave = false;
