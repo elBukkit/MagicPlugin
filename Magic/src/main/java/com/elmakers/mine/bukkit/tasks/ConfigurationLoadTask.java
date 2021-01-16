@@ -280,7 +280,6 @@ public class ConfigurationLoadTask implements Runnable {
         } else {
             inherited = new LinkedHashSet<>(inherited);
         }
-        boolean disabledInherited = false;
         boolean isMainConfig = fileName.equals("config");
         inherited.add(exampleKey);
         List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
@@ -305,16 +304,10 @@ public class ConfigurationLoadTask implements Runnable {
                             if (inherited.contains(inheritFrom)) {
                                 getLogger().log(Level.WARNING, "    Circular dependency detected in configuration inheritance: " + StringUtils.join(inherited, " -> ") + " -> " + inheritFrom);
                             } else {
-                                if (processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited)) {
-                                    disabledInherited = true;
-                                }
+                                processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited);
                             }
                             if (!isMainConfig && disable != null && disable.contains(fileName) && !allExamples.contains(inheritFrom)) {
-                                disableAll(inheritedConfig);
-                                disabledInherited = true;
-                            }
-                            if (disabledInherited) {
-                                reenableAll(exampleConfig);
+                                disableAllExcept(inheritedConfig, exampleConfig);
                             }
                             ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
                             info("   Example " + exampleKey + " inheriting from " + inheritFrom);
@@ -326,7 +319,7 @@ public class ConfigurationLoadTask implements Runnable {
                 }
             }
         }
-        return disabledInherited;
+        return false;
     }
 
     private ConfigurationSection loadOverrides(String fileName) throws IOException, InvalidConfigurationException {
@@ -382,7 +375,7 @@ public class ConfigurationLoadTask implements Runnable {
         if (loadDefaults) {
             info(" Based on defaults " + defaultsFileName);
             if (disableDefaults) {
-                disableAll(defaultConfig);
+                disableAllExcept(defaultConfig, config);
             }
             ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
@@ -393,7 +386,7 @@ public class ConfigurationLoadTask implements Runnable {
             if (exampleConfig != null) {
                 try {
                     if (disableDefaults) {
-                        disableAll(exampleConfig);
+                        disableAllExcept(exampleConfig, config);
                     }
                     if (processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults))) {
                         disableDefaults = true;
@@ -412,11 +405,6 @@ public class ConfigurationLoadTask implements Runnable {
             ConfigurationUtils.addConfigurations(overrides, mainSection);
         }
 
-        // Re-enable anything we are overriding
-        if (disableDefaults) {
-            reenableAll(overrides);
-        }
-
         // Add in examples
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
@@ -425,9 +413,6 @@ public class ConfigurationLoadTask implements Runnable {
                 if (exampleConfig != null)
                 {
                     try {
-                        if (disableDefaults) {
-                            reenableAll(exampleConfig);
-                        }
                         processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
                         ConfigurationUtils.addConfigurations(config, exampleConfig, false);
                         info(" Added " + examplesFilePrefix);
@@ -525,31 +510,15 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
-    private void toggleAll(ConfigurationSection rootSection, boolean setEnabled) {
-        Set<String> keys = rootSection.getKeys(false);
-        for (String key : keys)
-        {
-            ConfigurationSection section = rootSection.getConfigurationSection(key);
-            boolean wasDisabled = section.getBoolean("disabled");
-            section.set("disabled", null);
-
-            if (setEnabled) {
-                if (section.isSet("enabled") && !section.getBoolean("enabled") && wasDisabled) {
-                    section.set("enabled", null);
-                }
-            } else {
-                section.set("disabled", true);
-                section.set("enabled", false);
-            }
+    private void disableAllExcept(ConfigurationSection config, ConfigurationSection except) {
+        Set<String> keys = config.getKeys(false);
+        for (String key : keys) {
+            ConfigurationSection thisConfig = config.getConfigurationSection(key);
+            if (thisConfig == null) continue;
+            ConfigurationSection existing = except.getConfigurationSection(key);
+            if (existing != null && existing.getBoolean("enabled")) continue;
+            thisConfig.set("enabled", false);
         }
-    }
-
-    private void reenableAll(ConfigurationSection rootSection) {
-        toggleAll(rootSection, true);
-    }
-
-    private void disableAll(ConfigurationSection rootSection) {
-        toggleAll(rootSection, false);
     }
 
     private ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean reenable)
@@ -570,9 +539,6 @@ public class ConfigurationLoadTask implements Runnable {
                     try {
                         ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
                         info(" Loading " + file.getName());
-                        if (reenable) {
-                            reenableAll(fileOverrides);
-                        }
                         config = ConfigurationUtils.addConfigurations(config, fileOverrides);
                     } catch (Exception ex) {
                         getLogger().severe("Error loading: " + file.getName());
@@ -584,9 +550,6 @@ public class ConfigurationLoadTask implements Runnable {
                 try {
                     ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
                     info(" Loading " + file.getName());
-                    if (reenable) {
-                        reenableAll(fileOverrides);
-                    }
                     config = ConfigurationUtils.addConfigurations(config, fileOverrides);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + file.getName());
