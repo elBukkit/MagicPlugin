@@ -546,6 +546,10 @@ public class MagicController implements MageController {
                 callback.run(cached);
                 return;
             }
+            if (mageDataStore == null) {
+                callback.run(null);
+                return;
+            }
             try {
                 mageDataStore.load(id, new MageDataCallback() {
                     @Override
