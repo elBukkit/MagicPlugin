@@ -28,6 +28,7 @@
  - Added staff-only `admintool` wand, a set of useful tools for admins
  - Add "break" effect, for when a wand's uses are used up
  - Added Holy Light spell to Wizard path
+ - Add "equation" parameter to Command action, works just like Message action
 
 # 8.2.3
 

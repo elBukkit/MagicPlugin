@@ -55,7 +55,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
  */
 public class CommandAction extends BaseSpellAction {
     public static final String[] PARAMETERS = {
-            "command", "console", "op", "local_echo", "modal", "timeout", "escape_sequence"
+            "command", "console", "op", "local_echo", "modal", "timeout", "escape_sequence", "equation"
     };
 
     private List<String> commands = new ArrayList<>();
@@ -66,6 +66,7 @@ public class CommandAction extends BaseSpellAction {
     private int timeout;
     private String escapeSequence;
     private Map<String, String> variables;
+    private Double equationValue;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -83,6 +84,11 @@ public class CommandAction extends BaseSpellAction {
             for (String variable : variableNames) {
                 variables.put(variable, parameters.getString(variable, ""));
             }
+        }
+        if (parameters.contains("equation")) {
+            equationValue = parameters.getDouble("equation");
+        } else {
+            equationValue = null;
         }
     }
 
@@ -119,6 +125,10 @@ public class CommandAction extends BaseSpellAction {
         for (String command : commands) {
             try {
                 String converted = context.parameterize(command);
+                if (equationValue != null) {
+                    converted = converted.replace("$equation", Double.toString(equationValue))
+                        .replace("@equation", Integer.toString((int)(double)equationValue));
+                }
                 if (variables != null) {
                     for (Map.Entry<String, String> variable : variables.entrySet()) {
                         converted = converted.replace("$" + variable.getKey(), variable.getValue());
