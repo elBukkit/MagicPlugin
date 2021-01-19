@@ -261,11 +261,11 @@ public class ConfigurationLoadTask implements Runnable {
         return config;
     }
 
-    private boolean processInheritance(String exampleKey, ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration) {
-        return processInheritance(exampleKey, exampleConfig, fileName, mainConfiguration, null);
+    private void processInheritance(String exampleKey, ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration) {
+        processInheritance(exampleKey, exampleConfig, fileName, mainConfiguration, null);
     }
 
-    private boolean processInheritance(String exampleKey, ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration, Set<String> inherited) {
+    private void processInheritance(String exampleKey, ConfigurationSection exampleConfig, String fileName, ConfigurationSection mainConfiguration, Set<String> inherited) {
         // This lets a configuration be dropped into the plugins/Magic folder, or plugins/Magic/examples
         // and behave the same way.
         if (mainConfiguration.contains("example")) {
@@ -275,12 +275,15 @@ public class ConfigurationLoadTask implements Runnable {
 
         // We can have multiple inheritance which causes us to actually load the same configuration
         // twice, so we have to traverse each tree edge individually
+        boolean isMainConfig = fileName.equals("config") || fileName.equals("messages") || fileName.equals("materials");
         if (inherited == null) {
             inherited = new LinkedHashSet<>();
+            if (!isMainConfig) {
+                enableAll(exampleConfig);
+            }
         } else {
             inherited = new LinkedHashSet<>(inherited);
         }
-        boolean isMainConfig = fileName.equals("config");
         inherited.add(exampleKey);
         List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
         if (inherits != null) {
@@ -306,8 +309,8 @@ public class ConfigurationLoadTask implements Runnable {
                             } else {
                                 processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited);
                             }
-                            if (!isMainConfig && disable != null && disable.contains(fileName) && !allExamples.contains(inheritFrom)) {
-                                disableAllExcept(inheritedConfig, exampleConfig);
+                            if (!isMainConfig && disable != null && disable.contains(fileName)) {
+                                disableAll(inheritedConfig);
                             }
                             ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
                             info("   Example " + exampleKey + " inheriting from " + inheritFrom);
@@ -319,7 +322,10 @@ public class ConfigurationLoadTask implements Runnable {
                 }
             }
         }
-        return false;
+        // Prepare this config to be merged with others that may have force-disabled some of this config via inheritance
+        if (!isMainConfig) {
+            enableAll(exampleConfig);
+        }
     }
 
     private ConfigurationSection loadOverrides(String fileName) throws IOException, InvalidConfigurationException {
@@ -349,6 +355,7 @@ public class ConfigurationLoadTask implements Runnable {
         if (DEFAULT_ON.contains(fileName)) {
             loadAllDefaults = true;
         }
+        boolean isMainConfig = fileName.equals("config") || fileName.equals("messages") || fileName.equals("materials");
         boolean loadDefaults = mainConfiguration.getBoolean("load_default_" + fileName, loadAllDefaults);
         boolean disableDefaults = mainConfiguration.getBoolean("disable_default_" + fileName, false);
 
@@ -375,7 +382,7 @@ public class ConfigurationLoadTask implements Runnable {
         if (loadDefaults) {
             info(" Based on defaults " + defaultsFileName);
             if (disableDefaults) {
-                disableAllExcept(defaultConfig, config);
+                disableAll(defaultConfig);
             }
             ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
@@ -386,11 +393,9 @@ public class ConfigurationLoadTask implements Runnable {
             if (exampleConfig != null) {
                 try {
                     if (disableDefaults) {
-                        disableAllExcept(exampleConfig, config);
+                        disableAll(exampleConfig);
                     }
-                    if (processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults))) {
-                        disableDefaults = true;
-                    }
+                    processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
                     ConfigurationUtils.addConfigurations(config, exampleConfig);
                     info(" Using " + examplesFilePrefix);
                 } catch (Exception ex) {
@@ -414,6 +419,7 @@ public class ConfigurationLoadTask implements Runnable {
                 {
                     try {
                         processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
+                        reenableAll(config, exampleConfig);
                         ConfigurationUtils.addConfigurations(config, exampleConfig, false);
                         info(" Added " + examplesFilePrefix);
                     } catch (Exception ex) {
@@ -443,11 +449,14 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Apply overrides after loading defaults and examples
+        if (isMainConfig) {
+            enableAll(overrides);
+        }
         ConfigurationUtils.addConfigurations(config, overrides);
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        loadConfigFolder(config, configSubFolder, disableDefaults);
+        loadConfigFolder(config, configSubFolder, !isMainConfig);
 
         // Save defaults
         File savedDefaults = new File(configFolder, defaultsFileName);
@@ -461,6 +470,8 @@ public class ConfigurationLoadTask implements Runnable {
         } else  {
             deleteDefaults(defaultsFileName);
         }
+
+        clearEnabled(config);
 
         return config;
     }
@@ -510,14 +521,42 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
-    private void disableAllExcept(ConfigurationSection config, ConfigurationSection except) {
+    private void disableAll(ConfigurationSection config) {
         Set<String> keys = config.getKeys(false);
         for (String key : keys) {
             ConfigurationSection thisConfig = config.getConfigurationSection(key);
             if (thisConfig == null) continue;
-            ConfigurationSection existing = except.getConfigurationSection(key);
-            if (existing != null && existing.getBoolean("enabled")) continue;
             thisConfig.set("enabled", false);
+        }
+    }
+
+    private void reenableAll(ConfigurationSection config, ConfigurationSection from) {
+        Set<String> keys = config.getKeys(false);
+        for (String key : keys) {
+            ConfigurationSection thisConfig = config.getConfigurationSection(key);
+            if (thisConfig == null) continue;
+            ConfigurationSection fromConfig = from.getConfigurationSection(key);
+            if (fromConfig != null && fromConfig.getBoolean("enabled", true)) {
+                thisConfig.set("enabled", true);
+            }
+        }
+    }
+
+    private void enableAll(ConfigurationSection config) {
+        Set<String> keys = config.getKeys(false);
+        for (String key : keys) {
+            ConfigurationSection thisConfig = config.getConfigurationSection(key);
+            if (thisConfig == null || thisConfig.contains("enabled")) continue;
+            thisConfig.set("enabled", true);
+        }
+    }
+
+    private void clearEnabled(ConfigurationSection config) {
+        Set<String> keys = config.getKeys(false);
+        for (String key : keys) {
+            ConfigurationSection thisConfig = config.getConfigurationSection(key);
+            if (thisConfig == null || !thisConfig.getBoolean("enabled")) continue;
+            thisConfig.set("enabled", null);
         }
     }
 
@@ -539,6 +578,9 @@ public class ConfigurationLoadTask implements Runnable {
                     try {
                         ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
                         info(" Loading " + file.getName());
+                        if (reenable) {
+                            enableAll(fileOverrides);
+                        }
                         config = ConfigurationUtils.addConfigurations(config, fileOverrides);
                     } catch (Exception ex) {
                         getLogger().severe("Error loading: " + file.getName());
@@ -550,6 +592,9 @@ public class ConfigurationLoadTask implements Runnable {
                 try {
                     ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
                     info(" Loading " + file.getName());
+                    if (reenable) {
+                        enableAll(fileOverrides);
+                    }
                     config = ConfigurationUtils.addConfigurations(config, fileOverrides);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + file.getName());
