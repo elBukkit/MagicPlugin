@@ -975,7 +975,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
                         if (targetPlayer == null) {
                             context.getLogger().warning("Couldn't look up player with uuid " + ownerId + " for shop payment");
                         } else {
-                            context.getController().depositVaultCurrency(targetPlayer, cost.getAmount());
+                            double scaledAmount = cost.getAmount();
+                            scaledAmount = Math.ceil(scaledAmount * earnScale);
+                            context.getController().depositVaultCurrency(targetPlayer, scaledAmount);
                             if (!messaged) {
                                 messaged = true;
                                 String message = getMessage("paid").replace("$owner", targetPlayer.getName());

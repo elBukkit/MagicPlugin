@@ -1,0 +1,14 @@
+playershop:
+    inherit: buyshop
+    parameters:
+        # This will need to be assigned an owner_id and chest_location
+        # This is most often done via NPC overrides, using the ManageShop action
+        confirm: true
+        auto_close: true
+        confirm_filler: black_stained_glass_pane
+
+        # Player shops sell items for cheaper than server shops to encourage trade
+        scale: 0.75
+
+        # The shop villager takes a cut
+        earn_scale: 0.7
