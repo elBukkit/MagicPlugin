@@ -11,8 +11,13 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -65,6 +70,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
     private String titleKey;
     private String confirmTitleKey;
     private String confirmUnlockTitleKey;
+    private Location chestLocation;
 
     // State
     private boolean isActive = false;
@@ -1129,12 +1135,38 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 context.showMessage(costDescription);
                 return SpellResult.INSUFFICIENT_RESOURCES;
             }
+            if (!checkChestLocation()) {
+                context.showMessage(getMessage("nostock"));
+                return SpellResult.INSUFFICIENT_RESOURCES;
+            }
 
             if (!effects.isEmpty()) {
                 context.playEffects(effects);
             }
 
             return SpellResult.CAST;
+        }
+
+        private boolean checkChestLocation() {
+            if (chestLocation == null) return true;
+            if (slot == null) return false;
+            if (items == null || items.size() != 1) return false;
+
+            Block block = chestLocation.getBlock();
+            BlockState state = block.getState();
+            if (state instanceof Container) {
+                Container container = (Container)state;
+                ItemStack containerItem = container.getInventory().getItem(slot);
+                if (InventoryUtils.isEmpty(containerItem)) return false;
+                ItemStack giveItem = items.get(0);
+                if (giveItem.getAmount() != containerItem.getAmount()) return false;
+                if (context.getController().itemsAreEqual(giveItem, containerItem)) {
+                    container.getInventory().setItem(slot, new ItemStack(Material.AIR));
+                    //container.update();
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Nullable
@@ -1348,6 +1380,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         titleKey = parameters.getString("title_key", "title");
         confirmTitleKey = parameters.getString("confirm_title_key", "confirm_title");
         confirmUnlockTitleKey = parameters.getString("unlock_confirm_title_key", "unlock_confirm_title");
+        chestLocation = ConfigurationUtils.getLocation(parameters, "chest_location");
         finalResult = null;
         isActive = false;
 
@@ -1357,6 +1390,27 @@ public class SelectorAction extends CompoundAction implements GUIAction
         Collection<ConfigurationSection> optionConfigs = ConfigurationUtils.getNodeList(parameters, "options");
         if (optionConfigs != null) {
             loadOptions(optionConfigs);
+        }
+        if (chestLocation != null) {
+            // Load items from chest if configured
+            Block block = chestLocation.getBlock();
+            BlockState state = block.getState();
+            if (state instanceof Container) {
+                Container container = (Container)state;
+                List<ConfigurationSection> items = new ArrayList<>();
+                for (ItemStack item : container.getInventory()) {
+                    ConfigurationSection itemConfig = new MemoryConfiguration();
+                    if (CompatibilityUtils.isEmpty(item)) {
+                        itemConfig.set("placeholder", true);
+                    } else {
+                        String key = context.getController().getItemKey(item);
+                        key = key + "@" + item.getAmount();
+                        itemConfig.set("item", key);
+                    }
+                    items.add(itemConfig);
+                }
+                loadOptions(items);
+            }
         }
 
         // Have to do this after adding options since options may register action handlers
@@ -1383,6 +1437,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             int slot = targetSlot == null ? numSlots : targetSlot;
             if (slot >= MAX_INVENTORY_SLOTS) continue;
             if (!option.isPlaceholder()) itemCount++;
+            option.slot = slot;
             showingItems.put(slot, option);
             numSlots = Math.max(slot + 1, numSlots);
         }
