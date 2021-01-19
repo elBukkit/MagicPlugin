@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -13,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
@@ -71,6 +73,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
     private String confirmTitleKey;
     private String confirmUnlockTitleKey;
     private Location chestLocation;
+    private UUID ownerId;
 
     // State
     private boolean isActive = false;
@@ -963,9 +966,23 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (required != null) {
                 return required;
             }
+            boolean messaged = false;
             if (costs != null) {
                 for (Cost cost : costs) {
                     cost.deduct(context.getMage(), context.getWand());
+                    if (ownerId != null && context.getController().isVaultCurrencyEnabled() && cost.isVaultCurrency()) {
+                        OfflinePlayer targetPlayer = context.getPlugin().getServer().getOfflinePlayer(ownerId);
+                        if (targetPlayer == null) {
+                            context.getLogger().warning("Couldn't look up player with uuid " + ownerId + " for shop payment");
+                        } else {
+                            context.getController().depositVaultCurrency(targetPlayer, cost.getAmount());
+                            if (!messaged) {
+                                messaged = true;
+                                String message = getMessage("paid").replace("$owner", targetPlayer.getName());
+                                context.showMessage(message);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -1381,6 +1398,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
         confirmTitleKey = parameters.getString("confirm_title_key", "confirm_title");
         confirmUnlockTitleKey = parameters.getString("unlock_confirm_title_key", "unlock_confirm_title");
         chestLocation = ConfigurationUtils.getLocation(parameters, "chest_location");
+        String idString = parameters.getString("owner_uuid");
+        if (idString != null && !idString.isEmpty()) {
+            try {
+                ownerId = UUID.fromString(idString);
+            } catch (Exception ex) {
+                context.getLogger().warning("Invalid owner_uuid: " + idString);
+            }
+        }
         finalResult = null;
         isActive = false;
 

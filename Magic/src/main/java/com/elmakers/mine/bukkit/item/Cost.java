@@ -452,4 +452,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         }
         return "Unknown";
     }
+
+    public boolean isVaultCurrency() {
+        if (currency != null && currency.getKey().equalsIgnoreCase("currency")) {
+            return true;
+        }
+        return false;
+    }
 }

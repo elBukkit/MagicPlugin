@@ -47,6 +47,7 @@ import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -6192,6 +6193,11 @@ public class MagicController implements MageController {
     @Override
     public boolean isVaultCurrencyEnabled() {
         return VaultController.hasEconomy();
+    }
+
+    @Override
+    public void depositVaultCurrency(OfflinePlayer player, double amount) {
+        VaultController.getInstance().depositPlayer(player, amount);
     }
 
     @Override

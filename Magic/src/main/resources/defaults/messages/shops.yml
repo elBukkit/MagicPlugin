@@ -56,3 +56,4 @@ shops:
   attribute_min: "You can not decrease $attribute any further"
   full: "Your inventory is full!"
   nostock: "Sorry, that item is out of stock!"
+  paid: "&7$owner thanks you for your business!"

@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -439,6 +440,7 @@ public interface MageController {
     boolean isSPEnabled();
     boolean isSPEarnEnabled();
     boolean isVaultCurrencyEnabled();
+    void depositVaultCurrency(OfflinePlayer player, double amount);
     int getSPMaximum();
     void deleteMage(final String id);
     void disableItemSpawn();
