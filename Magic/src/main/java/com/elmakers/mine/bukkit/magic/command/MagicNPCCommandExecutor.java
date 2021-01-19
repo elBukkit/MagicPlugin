@@ -386,6 +386,12 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             } else {
                 mage.sendMessage(ChatColor.GREEN + "NPC dialog script set for " + ChatColor.GOLD + npc.getName());
             }
+            String title = meta.getTitle();
+            if (title != null && !title.isEmpty()) {
+                // In case of old books that did not use title to rename
+                title = title.replace("NPC Script: ", "");
+                npc.setName(title);
+            }
             npc.configure("dialog", pages);
             mage.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             return;
@@ -398,7 +404,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
         ItemStack book = new ItemStack(bookMaterial);
         BookMeta meta = (BookMeta)book.getItemMeta();
-        meta.setTitle("NPC Script: " + npc.getName());
+        meta.setTitle(npc.getName());
         meta.setAuthor(mage.getDisplayName());
         List<String> pages = npc.getParameters().getStringList("dialog");
         if (pages == null) {
@@ -411,7 +417,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         selections.highlight(npc);
         book.setItemMeta(meta);
         book = InventoryUtils.makeReal(book);
-        InventoryUtils.setMeta(book, "npc", npc.getUUID().toString());
+        InventoryUtils.setMeta(book, "npc", npc.getId().toString());
         mage.giveItem(book);
         mage.sendMessage(ChatColor.GREEN + "Edit the script book and use this command again while holding the book to set the NPC's chat dialog");
     }
