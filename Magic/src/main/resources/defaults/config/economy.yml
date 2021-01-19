@@ -67,9 +67,12 @@ worth_xp: 1
 #
 # Adjust the "worth" value below to scale an item-based economy up or down. A value of 1 will make
 # emerald costs match configured worth/cost values.
+#
+# It is important that this matches the value of an emerald as defined in the items configuration,
+# If you plan on selling or buying emeralds
 currency:
   emerald:
-    worth: 100
+    worth: 50
     name: Emerald
     name_plural: Emeralds
 
