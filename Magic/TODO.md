@@ -4,7 +4,7 @@
 
 ## Hot
 
- - Allow inactive icons on non-inventory wands (activate when held)
+ - The `/wand name` command doesn't work reliably
  - Wolf house signs are broke again (check teleporter room)
  - Add "melee" flag for wands to allow them to do melee damage
 

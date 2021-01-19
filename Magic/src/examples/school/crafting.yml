@@ -50,7 +50,18 @@ magicsword:
   enabled: false
 
 broomstick:
-  enabled: false
+  inherit: false
+  auto_discover: true
+  output: broomstick
+  output_type: wand
+  group: "Broomsticks"
+  materials:
+    i: stick
+    o: phantom_membrane
+    w: wheat
+  row_1: " i "
+  row_2: " i "
+  row_3: "wow"
 
 camera:
   enabled: false
