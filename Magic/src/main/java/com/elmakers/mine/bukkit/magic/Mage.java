@@ -1191,6 +1191,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         String templateKey = boundWand.getTemplateKey();
                         if (templateKey != null && !templateKey.isEmpty()) {
                             boundWands.put(templateKey, boundWand);
+                        } else {
+                            controller.getLogger().warning("Failed to load bound wand for " + playerName + ", wand has no template assigned");
                         }
                     } catch (Exception ex) {
                         controller.getLogger().log(Level.WARNING, "Failed to load bound wand for " + playerName + ": " + boundWandItem, ex);
@@ -1537,7 +1539,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (boundWands.size() > 0) {
                 Map<String, ItemStack> wandItems = new HashMap<>();
                 for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
-                    wandItems.put(wandEntry.getKey(), wandEntry.getValue().getItem());
+                    Wand wand = wandEntry.getValue();
+                    ItemStack item = wand.getItem();
+                    if (CompatibilityUtils.isEmpty(item)) {
+                        // This makes sure bound wands get saved as valid items even if vanilla did something
+                        // ugly like turn their items to air.
+                        item = new ItemStack(wand.getIcon().getMaterial());
+                        item = CompatibilityUtils.makeReal(item);
+                        wand.setItem(item);
+                        wand.updateItemIcon();
+                        wand.saveState();
+                        wandItems.put(wandEntry.getKey(), wand.getItem());
+                    }
                 }
                 data.setBoundWands(wandItems);
             }

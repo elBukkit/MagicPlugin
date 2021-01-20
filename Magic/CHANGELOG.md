@@ -18,6 +18,7 @@
  - Fix issues with Teleport action when target context has been changed
  - Fix "preuse" wands not casting on their final use
  - Fix wand open/close/etc sound FX broadcasting to nearby players
+ - Fix issues saving bound wands, particularly after using /clear
 
 ## Changes
 
