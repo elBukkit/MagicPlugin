@@ -202,7 +202,6 @@ import com.elmakers.mine.bukkit.requirements.RequirementsController;
 import com.elmakers.mine.bukkit.resourcepack.ResourcePackManager;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
-import com.elmakers.mine.bukkit.tasks.ActivateNPCsTask;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
 import com.elmakers.mine.bukkit.tasks.AutoSaveTask;
 import com.elmakers.mine.bukkit.tasks.AutomataUpdateTask;
@@ -7207,8 +7206,10 @@ public class MagicController implements MageController {
         String chunkKey = getChunkKey(chunk);
         List<MagicNPC> chunkData = npcsByChunk.get(chunkKey);
         if (chunkData != null) {
-            // Delay this one tick to make sure the chunk has loaded
-            plugin.getServer().getScheduler().runTaskLater(plugin, new ActivateNPCsTask(this, chunkData), 1);
+            for (MagicNPC npc : chunkData) {
+                npc.restore();
+                activateNPC(npc);
+            }
         }
     }
 
