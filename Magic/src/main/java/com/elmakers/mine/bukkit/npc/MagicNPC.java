@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
@@ -300,6 +301,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             controller.getLogger().warning("Failed to restore NPC entity");
             return null;
         }
+        EntityMetadataUtils.instance().setString(entity, "npc_id", id.toString());
         entity.setCustomName(getName());
         this.entityId = entity.getUniqueId();
         return entity;

@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.WeakHashMap;
+import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -82,6 +84,21 @@ public class MobController implements Listener {
             com.elmakers.mine.bukkit.api.entity.EntityData storedMob = controller.getMob(magicMobKey);
             if (storedMob != null) {
                 storedMob.modify(entity);
+            }
+            // Check for disconnected NPCs, we don't want to leave invulnerable entities around
+            String npcId = EntityMetadataUtils.instance().getString(entity, "npc_id");
+            try {
+                if (npcId != null && controller.getNPC(UUID.fromString(npcId)) == null) {
+                    Location location = entity.getLocation();
+                    controller.getLogger().info("Removing an invalid NPC entity: " + npcId + " at ["
+                        + location.getWorld().getName() + "] " + location.getBlockX()
+                        + "," + location.getBlockY() + "," + location.getBlockZ());
+                    entity.remove();
+                }
+                // TODO: This would also be a better way to reactivate NPCs, but we can't rely on this until
+                // versions of spigot without the persistent metadata API are no longer supported
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.SEVERE, "Error reading entity NPC id", ex);
             }
         }
     }
