@@ -689,6 +689,8 @@ public interface MageController {
     MagicNPC addNPC(Mage creator, String name);
     @Nullable
     MagicNPC getNPC(@Nullable Entity entity);
+    @Nullable
+    MagicNPC getNPC(UUID id);
     void registerMob(@Nonnull Entity entity, @Nonnull EntityData entityData);
     @Nonnull
     Collection<Chunk> getLockedChunks();

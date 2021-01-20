@@ -7197,6 +7197,12 @@ public class MagicController implements MageController {
         return npcsByEntity.get(entity.getUniqueId());
     }
 
+    @Override
+    @Nullable
+    public MagicNPC getNPC(UUID id) {
+        return npcs.get(id);
+    }
+
     public void restoreNPCs(final Chunk chunk) {
         String chunkKey = getChunkKey(chunk);
         List<MagicNPC> chunkData = npcsByChunk.get(chunkKey);
