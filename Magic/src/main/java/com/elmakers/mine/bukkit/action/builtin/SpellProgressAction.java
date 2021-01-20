@@ -105,29 +105,24 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                         continue;
                     }
                     if (!upgradeSpell.getName().equals(spell.getName())) {
-                        lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", spell.getName()));
+                        InventoryUtils.wrapText(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", spell.getName()), lore);
                     }
                     if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
                     {
                         requiredPathKey = currentPath.translatePath(requiredPathKey);
                         com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                         if (upgradePath == null) continue;
-                        lore.add(context.getMessage("level_requirement").replace("$path", upgradePath.getName()));
+                        InventoryUtils.wrapText(context.getMessage("level_requirement").replace("$path", upgradePath.getName()), lore);
                     }
                     if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                         Set<String> tags = currentPath.getMissingTags(requiredPathTags);
-                        lore.add(context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name")));
+                        InventoryUtils.wrapText(context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name")), lore);
                     }
                     long castCount = Math.min(spell.getCastCount(), requiredCastCount);
-                    if (castCount == requiredCastCount) {
-                        lore.add(ChatColor.GREEN + context.getMessage("cast_requirement")
-                                .replace("$current", Long.toString(castCount))
-                                .replace("$required", Long.toString(requiredCastCount)));
-                    } else {
-                        lore.add(ChatColor.RED + context.getMessage("cast_requirement")
-                                .replace("$current", Long.toString(castCount))
-                                .replace("$required", Long.toString(requiredCastCount)));
-                    }
+                    ChatColor prefixColor = castCount == requiredCastCount ? ChatColor.GREEN : ChatColor.RED;
+                    InventoryUtils.wrapText(prefixColor + context.getMessage("cast_requirement")
+                            .replace("$current", Long.toString(castCount))
+                            .replace("$required", Long.toString(requiredCastCount)), lore);
 
                     meta.setLore(lore);
                     spellItem.setItemMeta(meta);

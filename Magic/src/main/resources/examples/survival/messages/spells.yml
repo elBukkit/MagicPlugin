@@ -1020,7 +1020,7 @@ spells:
         description: Shows progress in upgrading your current spells
         fail: You must be holding a wand!
         upgrade_name_change: "&r&4Upgrades: &r$name"
-        level_requirement: "&r&cRequires: &6$path"
+        level_requirement: "&r&cRequires: &6$path\n&r&7Collect all spells to rank up"
         cast_requirement: "&r&cCasts: &6$current&f/&e$required"
         tags_requirement: "&r&cRequires: &6$tags"
         confirm_title: "Change to $item"
