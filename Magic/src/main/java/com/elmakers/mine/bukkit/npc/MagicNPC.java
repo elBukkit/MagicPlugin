@@ -30,6 +30,8 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Nonnull
     private final MagicController controller;
+    @Nonnull
+    private UUID id;
     @Nullable
     private Location location;
     @Nullable
@@ -41,7 +43,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Nonnull
     private String name;
     @Nonnull
-    private UUID uuid;
+    private UUID entityId;
     @Nullable
     private String templateKey;
 
@@ -69,6 +71,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         this.createdAt = System.currentTimeMillis();
         this.creatorId = creator.getId();
         this.creatorName = creator.getName();
+        id = UUID.randomUUID();
         if (template != null) {
             if (this.name == null) {
                 this.name = template.getName();
@@ -96,9 +99,18 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             templateKey = DEFAULT_NPC_KEY;
         }
         mobKey = configuration.getString("mob", mobKey);
-        String uuidString = configuration.getString("uuid");
+
+        String idString = configuration.getString("id");
+        if (idString != null && !idString.isEmpty()) {
+            id = UUID.fromString(idString);
+        } else {
+            id = UUID.randomUUID();
+        }
+
+        // Old configs may use "uuid" for the entity UUID, so don't re-use this property!
+        String uuidString = configuration.getString("entity_uuid", configuration.getString("uuid"));
         if (uuidString != null && !uuidString.isEmpty()) {
-            uuid = UUID.fromString(uuidString);
+            entityId = UUID.fromString(uuidString);
         }
         name = configuration.getString("name", name);
         createdAt = configuration.getLong("created", createdAt);
@@ -176,7 +188,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         return entityData != null && isLocationValid();
     }
 
-    public long getId() {
+    public long getBlockId() {
         return BlockData.getBlockId(getLocation());
     }
 
@@ -232,7 +244,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     @Nullable
     public Entity getEntity() {
-        return uuid == null ? null : CompatibilityUtils.getEntity(location.getWorld(), uuid);
+        return entityId == null ? null : CompatibilityUtils.getEntity(location.getWorld(), entityId);
     }
 
     @Override
@@ -289,13 +301,14 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             return null;
         }
         entity.setCustomName(getName());
-        this.uuid = entity.getUniqueId();
+        this.entityId = entity.getUniqueId();
         return entity;
     }
 
     public void save(ConfigurationSection configuration) {
         configuration.set("template", templateKey);
-        configuration.set("uuid", uuid.toString());
+        configuration.set("id", id.toString());
+        configuration.set("entity_uuid", entityId.toString());
         configuration.set("mob", mobKey);
         configuration.set("name", name);
         configuration.set("created", createdAt);
@@ -333,8 +346,21 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Nonnull
     @Override
+    public UUID getId() {
+        return id;
+    }
+
+    @Nonnull
+    @Override
+    public UUID getEntityId() {
+        return entityId;
+    }
+
+    @Nonnull
+    @Override
+    @Deprecated
     public UUID getUUID() {
-        return uuid;
+        return entityId;
     }
 
     @Override

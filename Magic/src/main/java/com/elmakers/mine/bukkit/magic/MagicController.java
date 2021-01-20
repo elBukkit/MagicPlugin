@@ -2447,14 +2447,15 @@ public class MagicController implements MageController {
                     continue;
                 }
 
-                List<MagicNPC> restoreChunk = npcs.get(chunkId);
+                List<MagicNPC> restoreChunk = npcsByChunk.get(chunkId);
                 if (restoreChunk == null) {
                     restoreChunk = new ArrayList<>();
-                    npcs.put(chunkId, restoreChunk);
+                    npcsByChunk.put(chunkId, restoreChunk);
                 }
 
                 npcCount++;
                 restoreChunk.add(npc);
+                npcs.put(npc.getId(), npc);
             }
         } catch (Exception ex) {
             getLogger().log(Level.SEVERE, "Something went wrong loading NPC data", ex);
@@ -2565,14 +2566,12 @@ public class MagicController implements MageController {
         try {
             YamlDataFile npcData = createDataFile(NPC_DATA_FILE);
             List<ConfigurationSection> nodes = new ArrayList<>();
-            for (Entry<String, List<MagicNPC>> toggleEntry : npcs.entrySet()) {
-                for (MagicNPC npc : toggleEntry.getValue()) {
-                    ConfigurationSection node = new MemoryConfiguration();
-                    npc.save(node);
-                    nodes.add(node);
-                }
-                nodes.addAll(invalidNPCs);
+            for (MagicNPC npc : npcs.values()) {
+                ConfigurationSection node = new MemoryConfiguration();
+                npc.save(node);
+                nodes.add(node);
             }
+            nodes.addAll(invalidNPCs);
             npcData.set("npcs", nodes);
             stores.add(npcData);
         } catch (Exception ex) {
@@ -4446,7 +4445,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isMagicNPC(Entity entity) {
-        return activeNPCs.contains(entity.getUniqueId());
+        return npcsByEntity.containsKey(entity.getUniqueId());
     }
 
     @Override
@@ -7134,11 +7133,7 @@ public class MagicController implements MageController {
 
     @Override
     public Collection<com.elmakers.mine.bukkit.api.npc.MagicNPC> getNPCs() {
-        List<com.elmakers.mine.bukkit.api.npc.MagicNPC> all = new ArrayList<>();
-        for (List<MagicNPC> list : npcs.values()) {
-            all.addAll(list);
-        }
-        return all;
+        return new ArrayList<>(npcs.values());
     }
 
     @Override
@@ -7147,18 +7142,19 @@ public class MagicController implements MageController {
         String chunkId = getChunkKey(location);
         if (chunkId == null) return;
 
-        List<MagicNPC> chunkNPCs = npcs.get(chunkId);
+        List<MagicNPC> chunkNPCs = npcsByChunk.get(chunkId);
         if (chunkNPCs != null) {
             Iterator<MagicNPC> it = chunkNPCs.iterator();
             while (it.hasNext()) {
                 MagicNPC found = it.next();
-                if (npc.getUUID().equals(found.getUUID())) {
+                if (npc.getId().equals(found.getId())) {
                     npc.remove();
                     it.remove();
                 }
             }
         }
-        activeNPCs.remove(npc.getUUID());
+        npcs.remove(npc.getId());
+        npcsByEntity.remove(npc.getEntityId());
     }
 
     @Override
@@ -7184,12 +7180,13 @@ public class MagicController implements MageController {
             return false;
         }
 
-        List<MagicNPC> chunkNPCs = npcs.get(chunkId);
+        List<MagicNPC> chunkNPCs = npcsByChunk.get(chunkId);
         if (chunkNPCs == null) {
             chunkNPCs = new ArrayList<>();
-            npcs.put(chunkId, chunkNPCs);
+            npcsByChunk.put(chunkId, chunkNPCs);
         }
         chunkNPCs.add(npc);
+        npcs.put(npc.getId(), npc);
         activateNPC(npc);
         return true;
     }
@@ -7197,19 +7194,12 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public MagicNPC getNPC(@Nullable Entity entity) {
-        for (List<MagicNPC> list : npcs.values()) {
-            for (MagicNPC npc : list) {
-                if (entity.getUniqueId().equals(npc.getUUID())) {
-                    return npc;
-                }
-            }
-        }
-        return null;
+        return npcsByEntity.get(entity.getUniqueId());
     }
 
     public void restoreNPCs(final Chunk chunk) {
         String chunkKey = getChunkKey(chunk);
-        List<MagicNPC> chunkData = npcs.get(chunkKey);
+        List<MagicNPC> chunkData = npcsByChunk.get(chunkKey);
         if (chunkData != null) {
             // Delay this one tick to make sure the chunk has loaded
             plugin.getServer().getScheduler().runTaskLater(plugin, new ActivateNPCsTask(this, chunkData), 1);
@@ -7217,7 +7207,7 @@ public class MagicController implements MageController {
     }
 
     public void activateNPC(MagicNPC npc) {
-        activeNPCs.add(npc.getUUID());
+        npcsByEntity.put(npc.getEntityId(), npc);
     }
 
     @Override
@@ -7516,9 +7506,10 @@ public class MagicController implements MageController {
 
     private PhysicsHandler                        physicsHandler                = null;
 
-    private Map<String, List<MagicNPC>>          npcs                       = new HashMap<>();
+    private Map<String, List<MagicNPC>>          npcsByChunk                = new HashMap<>();
     private List<ConfigurationSection>           invalidNPCs                = new ArrayList<>();
-    private Set<UUID>                            activeNPCs                 = new HashSet<>();
+    private Map<UUID, MagicNPC>                  npcsByEntity               = new HashMap<>();
+    private Map<UUID, MagicNPC>                  npcs                       = new HashMap<>();
 
     private Map<String, Map<Long, Automaton>>    automata                   = new HashMap<>();
     private List<ConfigurationSection>           invalidAutomata            = new ArrayList<>();

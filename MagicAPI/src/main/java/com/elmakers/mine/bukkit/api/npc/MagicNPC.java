@@ -28,8 +28,6 @@ public interface MagicNPC extends Locatable {
     void update();
     @Nonnull
     ConfigurationSection getParameters();
-    @Nonnull
-    UUID getUUID();
     void teleport(@Nonnull Location location);
     boolean setType(@Nonnull String mobKey);
     boolean setTemplate(@Nonnull String mobKey);
@@ -39,4 +37,18 @@ public interface MagicNPC extends Locatable {
     Integer getImportedId();
     @Nullable
     Entity getEntity();
+    @Nonnull
+    UUID getId();
+    @Nonnull
+    UUID getEntityId();
+
+    /**
+     * This method returns the UUID of the entity and may change if the entity needs to be
+     * respawned.
+     * This is ambiguous, use getEntityId instead, or if looking for a persistent unique id for the NPC itself,
+     * use getId()
+     */
+    @Nonnull
+    @Deprecated
+    UUID getUUID();
 }
