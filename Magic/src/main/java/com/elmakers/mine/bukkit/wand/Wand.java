@@ -2587,6 +2587,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @SuppressWarnings("unchecked")
     protected List<String> getLore()
     {
+        List<String> messagesLore = controller.getMessages().getAll(getMessageKey("lore"));
+        if (messagesLore != null) {
+            return getCustomLore(messagesLore);
+        }
         Object customLore = getProperty("lore");
         if (customLore != null && customLore instanceof Collection) {
             return getCustomLore((Collection<String>)customLore);

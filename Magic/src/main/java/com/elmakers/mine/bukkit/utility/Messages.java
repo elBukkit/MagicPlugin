@@ -37,8 +37,8 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     public static DecimalFormat MOMENT_SECONDS_FORMATTER = new DecimalFormat("0.##");
 
     private Map<String, String> messageMap = new HashMap<>();
+    private Map<String, List<String>> listMap = new HashMap<>();
     private Map<String, List<String>> randomized = new HashMap<>();
-    private ConfigurationSection configuration = null;
 
     private NumberFormat formatter = new DecimalFormat("#0.00");
 
@@ -47,7 +47,6 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     public void load(ConfigurationSection messages) {
-        configuration = messages;
         Collection<String> keys = messages.getKeys(true);
         for (String key : keys) {
             if (key.equals("randomized")) {
@@ -60,30 +59,34 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 String value = messages.getString(key);
                 value = ChatColor.translateAlternateColorCodes('&', StringEscapeUtils.unescapeHtml(value));
                 messageMap.put(key, value);
+            } else if (messages.isList(key)) {
+                listMap.put(key, messages.getStringList(key));
             }
         }
     }
 
     @Override
     public List<String> getAll(String path) {
-        if (configuration == null) return new ArrayList<>();
-        return configuration.getStringList(path);
+        return listMap.get(path);
     }
 
     @Override
     @Nonnull
     public Collection<String> getAllKeys() {
-        if (configuration == null) return new ArrayList<>();
-        return configuration.getKeys(true);
+        List<String> allKeys = new ArrayList<>();
+        allKeys.addAll(listMap.keySet());
+        allKeys.addAll(messageMap.keySet());
+        return allKeys;
     }
 
     public void reset() {
         messageMap.clear();
+        listMap.clear();
     }
 
     @Override
     public boolean containsKey(String key) {
-        return messageMap.containsKey(key);
+        return messageMap.containsKey(key) || listMap.containsKey(key);
     }
 
     @Override
