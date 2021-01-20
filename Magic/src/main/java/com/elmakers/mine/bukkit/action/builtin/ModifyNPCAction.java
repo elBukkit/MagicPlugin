@@ -10,12 +10,14 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public class ModifyNPCAction extends BaseSpellAction {
     private UUID npcId;
     private String name;
     private String npcTemplate;
     private ConfigurationSection npcConfiguration;
+    private boolean nameFromWand;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -23,6 +25,7 @@ public class ModifyNPCAction extends BaseSpellAction {
         name = parameters.getString("name");
         npcTemplate = parameters.getString("npc_template");
         npcConfiguration = parameters.getConfigurationSection("npc_parameters");
+        nameFromWand = parameters.getBoolean("name_from_wand", false);
         String idString = parameters.getString("npc_id");
         if (idString != null && !idString.isEmpty()) {
             try {
@@ -60,6 +63,12 @@ public class ModifyNPCAction extends BaseSpellAction {
                 } else {
                     npc.configure(key, npcConfiguration.get(key));
                 }
+            }
+        }
+        if (nameFromWand) {
+            Wand wand = context.getWand();
+            if (wand != null) {
+                npc.setName(wand.getName());
             }
         }
         return SpellResult.CAST;
