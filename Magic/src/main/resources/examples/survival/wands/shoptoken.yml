@@ -1,0 +1,14 @@
+shoptoken:
+    inherit: base_undroppable
+    icon: nether_star{"CustomModelData":18001}
+    mode: cast
+    left_click: cast
+    right_click: right
+    active_spell: createshop
+    interactible: ""
+    uses: 1
+
+    # This is here so the shop tool replaces the token after use, otherwise
+    # it would go to a different slot.
+    # The CreateNPC action should normally not fail so this ought to be safe.
+    preuse: true

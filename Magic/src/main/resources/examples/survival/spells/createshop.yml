@@ -1,0 +1,18 @@
+createshop:
+    actions:
+        cast:
+        - class: CreateNPC
+    parameters:
+        target: block
+        name: "$pd's Shop"
+        key_item: shoptool
+        key_book_contents: $npc_name
+        npc_template: playershop
+        key_overrides:
+            owner_uuid: $uuid
+            npc_id: $npc
+        npc_parameters:
+            interact_spell_parameters:
+                owner_uuid: $uuid
+                chest_location: $tx,$ty,$tz,$tworld
+                title: $npc_name

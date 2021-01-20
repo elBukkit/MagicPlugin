@@ -2,6 +2,14 @@
 
 # 8.3
 
+## Player Shops
+
+ - Magic now includes a basic system for player-run shops
+ - Use `/mgive shoptoken` to recipe a shop token
+ - Use the shop token to create a shopkeeper NPC and recipe a shop tool to manage your shop
+ - Use the shop tool on a chest to set the chest for the shopkeeper to use
+ - Profit!
+
 ## Fixes
 
  - Fix some strange problems that can come up when customizing the builtin examples (affected PotterPlus)

@@ -1418,4 +1418,9 @@ spells:
       description: Feed and slightly heal any player
       usage: Gives 16 bread
       title: "Feed and Heal:"
+    manageshop:
+      name: Manage Shop
+      description: Configures a player shop
+      moved: Set shop chest location
+      teleported: Moved your shopkeeper and updated their name
 

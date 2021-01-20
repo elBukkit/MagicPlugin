@@ -437,3 +437,14 @@ wands:
     admintool:
         name: Admin Tool
         description: A variety of useful tools for mods and admins
+    shoptoken:
+        name: Shop Token
+        description: Creates a shop that you can manage
+    shoptool:
+        name: $npc_name
+        lore:
+            - "Manage your shop:"
+            - "&7Aim at a chest to set shop inventory"
+            - "&8Otherwise, &3update shop name and"
+            - "&3Teleport your shopkeeper to your current location"
+            - "&8Use an anvil to rename your shop tool"

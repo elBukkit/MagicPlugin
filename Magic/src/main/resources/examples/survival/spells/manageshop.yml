@@ -1,0 +1,25 @@
+manageshop:
+    actions:
+        cast:
+        - class: CheckBlock
+          actions:
+              - class: ModifyNPC
+                name_from_wand: true
+                npc_parameters:
+                  interact_spell_parameters:
+                    chest_location: $tx,$ty,$tz,$tworld
+              - class: Message
+                message_key: moved
+          fail:
+            - class: Message
+              message_key: teleported
+            - class: ChangeContext
+              target_caster: true
+              target_location: feet
+              actions:
+              - class: TeleportNPC
+            - class: ModifyNPC
+              name_from_wand: true
+    parameters:
+        target: block
+        allowed: chest
