@@ -1358,6 +1358,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterBreaking(block);
     }
 
+    @Override
     public String parameterizeMessage(String message) {
         return parameterize(message, "$");
     }
@@ -1415,7 +1416,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         Location targetLocation = getTargetLocation();
         if (targetLocation != null) {
             command = command
-                    .replace("@tworld", targetLocation.getWorld().getName())
+                    .replace(prefix + "tworld", targetLocation.getWorld().getName())
                     .replace("$tx", Double.toString(targetLocation.getX()))
                     .replace("$ty", Double.toString(targetLocation.getY()))
                     .replace("$tz", Double.toString(targetLocation.getZ()))

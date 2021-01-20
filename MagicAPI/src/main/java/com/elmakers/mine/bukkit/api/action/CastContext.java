@@ -227,6 +227,7 @@ public interface CastContext extends WandEffectContext {
     boolean canContinue(Location location);
     boolean canCast(Location location);
     String parameterize(String command);
+    String parameterizeMessage(String message);
     boolean isConsumeFree();
     void addHandler(ActionHandler handler);
     SpellResult processHandlers();
