@@ -71,13 +71,6 @@ public class CreateNPCAction extends BaseSpellAction {
                 name = parameterize(context, name, npc.getId(), escapedName);
                 wand.setName(name);
                 wand.saveState();
-                item = wand.getItem();
-                ItemMeta meta = item.getItemMeta();
-                if (meta instanceof BookMeta && keyBookContents != null && !keyBookContents.isEmpty()) {
-                    BookMeta book = (BookMeta)meta;
-                    String escaped = parameterize(context, keyBookContents, npc.getId(), escapedName);
-                    book.setPages(escaped);
-                }
             }
             owner.giveItem(item);
         }
