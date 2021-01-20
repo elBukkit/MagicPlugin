@@ -6166,7 +6166,7 @@ public class MagicController implements MageController {
         return item != null && wearableMaterials.testItem(item);
     }
 
-    public boolean isInteractable(Block block) {
+    public boolean isInteractible(Block block) {
         return block != null && interactibleMaterials.testBlock(block);
     }
 

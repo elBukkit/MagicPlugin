@@ -29,6 +29,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -125,6 +126,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private Map<String, Integer> spellLevels = new HashMap<>();
     private Map<String, Integer> brushInventory = new HashMap<>();
     private Set<String> brushes = new LinkedHashSet<>();
+    private MaterialSet interactibleMaterials = null;
 
     private String activeSpell = "";
     private String alternateSpell = "";
@@ -1681,6 +1683,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         manaPerDamage = getFloat("mana_per_damage");
         earnMultiplier = getFloat("earn_multiplier", getFloat("sp_multiplier", 1));
+
+        String interactibleMaterialKey = getString("interactible");
+        if (interactibleMaterialKey != null) {
+            interactibleMaterials = controller.getMaterialSetManager().fromConfigEmpty(interactibleMaterialKey);
+        } else {
+            interactibleMaterials = null;
+        }
 
         String singleClass = getString("class");
         if (singleClass != null && !singleClass.isEmpty()) {
@@ -6084,5 +6093,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
         return getPropertyConfiguration(key).get(key);
+    }
+
+    public boolean isInteractible(Block block) {
+        if (block == null) {
+            return false;
+        }
+        if (interactibleMaterials != null) {
+            return interactibleMaterials.testBlock(block);
+        }
+        return controller != null ? controller.isInteractible(block) : false;
     }
 }

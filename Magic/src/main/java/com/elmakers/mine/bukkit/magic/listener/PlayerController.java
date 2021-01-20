@@ -764,7 +764,8 @@ public class PlayerController implements Listener {
         Wand wand = mage.checkWand();
         if (action == Action.RIGHT_CLICK_BLOCK) {
             Material material = event.getClickedBlock().getType();
-            isRightClick = !controller.isInteractable(event.getClickedBlock());
+            boolean isInteractible = wand != null ? wand.isInteractible(event.getClickedBlock()) : controller.isInteractible(event.getClickedBlock());
+            isRightClick = !isInteractible;
 
             // This is to prevent Essentials signs from giving you an item in your wand inventory.
             if (wand != null && DefaultMaterials.isSign(material)) {
