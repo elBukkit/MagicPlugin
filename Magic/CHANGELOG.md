@@ -17,6 +17,7 @@
  - Fix Fireball upgrades (fireball projectiles weren't correctly registering entity hits in modern MC versionsx`)
  - Fix issues with Teleport action when target context has been changed
  - Fix "preuse" wands not casting on their final use
+ - Fix wand open/close/etc sound FX broadcasting to nearby players
 
 ## Changes
 
