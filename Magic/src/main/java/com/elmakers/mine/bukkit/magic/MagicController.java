@@ -3463,6 +3463,7 @@ public class MagicController implements MageController {
         fileLoadDelay = properties.getInt("file_load_delay", 0);
         despawnMagicMobs = properties.getBoolean("despawn_magic_mobs", false);
         MobController.REMOVE_INVULNERABLE = properties.getBoolean("remove_invulnerable_mobs", false);
+        com.elmakers.mine.bukkit.effect.EffectPlayer.ENABLE_VANILLA_SOUNDS = properties.getBoolean("enable_vanilla_sounds", true);
 
         if (mageDataStore != null) {
             mageDataStore.close();

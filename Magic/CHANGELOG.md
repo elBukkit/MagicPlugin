@@ -39,6 +39,7 @@
  - Add "break" effect, for when a wand's uses are used up
  - Added Holy Light spell to Wizard path
  - Add "equation" parameter to Command action, works just like Message action
+ - Add "enable_vanilla_sounds" configuration option for those of you who *really* hate the new sound configs
 
 # 8.2.3
 

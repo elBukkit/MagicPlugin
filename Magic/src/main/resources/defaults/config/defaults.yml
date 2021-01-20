@@ -633,3 +633,7 @@ remove_invulnerable_mobs: false
 
 # Set this to false to disallow wand commands modifying locked wands when used from the console or command blocks
 console_bypass_locked_wands: true
+
+# Set this to false to turn off all vanilla sounds by default
+# They can be turned on/off for each effect using enable_vanilla_sounds on the effect config as well
+enable_vanilla_sounds: true

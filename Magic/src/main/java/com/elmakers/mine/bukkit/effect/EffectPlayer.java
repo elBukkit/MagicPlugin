@@ -37,6 +37,7 @@ import de.slikey.effectlib.util.DynamicLocation;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
+    public static boolean ENABLE_VANILLA_SOUNDS = true;
     public static int PARTICLE_RANGE = 32;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
@@ -232,6 +233,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             sound.setVolume((float)configuration.getDouble("sound_volume", sound.getVolume()));
             sound.setPitch((float)configuration.getDouble("sound_pitch", sound.getPitch()));
             sound.setRange(configuration.getInt("sound_range", sound.getRange()));
+        }
+        boolean enableVanillaSounds = configuration.getBoolean("enable_vanilla_sounds", ENABLE_VANILLA_SOUNDS);
+        if (!enableVanillaSounds && sound != null && !sound.isCustom()) {
+            sound = null;
         }
 
         if (configuration.contains("firework") || configuration.contains("firework_power")) {
