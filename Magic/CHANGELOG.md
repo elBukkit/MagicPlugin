@@ -8,6 +8,7 @@
  - Fix Petrify upgrades (it should go up to level 3 now)
  - Fix Fireball upgrades (fireball projectiles weren't correctly registering entity hits in modern MC versionsx`)
  - Fix issues with Teleport action when target context has been changed
+ - Fix "preuse" wands not casting on their final use
 
 ## Changes
 

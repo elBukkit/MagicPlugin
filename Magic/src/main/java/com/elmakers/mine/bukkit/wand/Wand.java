@@ -4302,9 +4302,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return true;
         }
         if (useMode == WandUseMode.PRECAST) {
-            if (!use()) {
-                return false;
-            }
+            use();
         }
         ConfigurationSection castParameters = null;
         Map<String, String> castOverrides = this.getOverrides();
