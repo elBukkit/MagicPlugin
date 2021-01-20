@@ -1154,7 +1154,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 context.showMessage(costDescription);
                 return SpellResult.INSUFFICIENT_RESOURCES;
             }
-            if (!checkChestLocation()) {
+            if (!checkChestLocation(true)) {
                 context.showMessage(getMessage("nostock"));
                 return SpellResult.INSUFFICIENT_RESOURCES;
             }
@@ -1166,7 +1166,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             return SpellResult.CAST;
         }
 
-        private boolean checkChestLocation() {
+        private boolean checkChestLocation(boolean take) {
             if (chestLocation == null) return true;
             if (slot == null) return false;
             if (items == null || items.size() != 1) return false;
@@ -1180,8 +1180,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 ItemStack giveItem = items.get(0);
                 if (giveItem.getAmount() != containerItem.getAmount()) return false;
                 if (context.getController().itemsAreEqual(giveItem, containerItem)) {
-                    container.getInventory().setItem(slot, new ItemStack(Material.AIR));
-                    //container.update();
+                    if (take) {
+                        container.getInventory().setItem(slot, new ItemStack(Material.AIR));
+                    }
                     return true;
                 }
             }
@@ -1327,6 +1328,15 @@ public class SelectorAction extends CompoundAction implements GUIAction
         String unpurchasableMessage = InventoryUtils.getMetaString(item, "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
+            if (option.autoClose) {
+                mage.deactivateGUI();
+            }
+            return;
+        }
+
+        // For chest-backed shops, check chest first but do not remove item until confirmed
+        if (!option.checkChestLocation(false)) {
+            context.showMessage(getMessage("nostock"));
             if (option.autoClose) {
                 mage.deactivateGUI();
             }
