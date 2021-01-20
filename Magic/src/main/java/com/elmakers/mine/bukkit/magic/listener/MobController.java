@@ -38,10 +38,12 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
 public class MobController implements Listener {
+    public static boolean REMOVE_INVULNERABLE = false;
     private MagicController controller;
     private final Map<String, EntityData> mobs = new HashMap<>();
     private final Map<String, EntityData> mobsByName = new HashMap<>();
@@ -86,19 +88,32 @@ public class MobController implements Listener {
                 storedMob.modify(entity);
             }
             // Check for disconnected NPCs, we don't want to leave invulnerable entities around
+            boolean foundNPC = false;
             String npcId = EntityMetadataUtils.instance().getString(entity, "npc_id");
             try {
                 if (npcId != null && controller.getNPC(UUID.fromString(npcId)) == null) {
                     Location location = entity.getLocation();
-                    controller.getLogger().info("Removing an invalid NPC entity: " + npcId + " at ["
+                    controller.getLogger().warning("Removing an invalid NPC (id=" + npcId + ") entity of type " + entity.getType() + " at ["
                         + location.getWorld().getName() + "] " + location.getBlockX()
                         + "," + location.getBlockY() + "," + location.getBlockZ());
                     entity.remove();
+                } else if (npcId != null) {
+                    foundNPC = true;
                 }
                 // TODO: This would also be a better way to reactivate NPCs, but we can't rely on this until
                 // versions of spigot without the persistent metadata API are no longer supported
             } catch (Exception ex) {
                 controller.getLogger().log(Level.SEVERE, "Error reading entity NPC id", ex);
+            }
+
+            // Don't remove invulnerable items since those could be dropped wands
+            if (REMOVE_INVULNERABLE && entity.getType() != EntityType.DROPPED_ITEM
+                && !foundNPC && CompatibilityUtils.isInvulnerable(entity)) {
+                Location location = entity.getLocation();
+                controller.getLogger().warning("Removing an invulnerable entity of type " + entity.getType() + " at ["
+                    + location.getWorld().getName() + "] " + location.getBlockX()
+                    + "," + location.getBlockY() + "," + location.getBlockZ());
+                entity.remove();
             }
         }
     }

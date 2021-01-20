@@ -61,3 +61,6 @@ player_data_store:
 # migrate_data_store:
 #  class: Yaml
 #  folder: data/players
+
+# Clean up broken NPC villagers
+remove_invulnerable_mobs: true

@@ -3462,6 +3462,7 @@ public class MagicController implements MageController {
         isFileLockingEnabled = properties.getBoolean("use_file_locking", false);
         fileLoadDelay = properties.getInt("file_load_delay", 0);
         despawnMagicMobs = properties.getBoolean("despawn_magic_mobs", false);
+        MobController.REMOVE_INVULNERABLE = properties.getBoolean("remove_invulnerable_mobs", false);
 
         if (mageDataStore != null) {
             mageDataStore.close();
