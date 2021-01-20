@@ -212,6 +212,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected double costScale = 1;
         protected double earnScale = 1;
         protected boolean autoClose = true;
+        protected boolean showFree = true;
 
         protected int limit = 0;
 
@@ -237,6 +238,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             lockClass = configuration.getString("lock_class", lockClass);
             nameIcon = configuration.getBoolean("apply_name_to_icon", nameIcon);
             autoClose = configuration.getBoolean("auto_close", autoClose);
+            showFree = configuration.getBoolean("show_free", showFree);
             allowAttributeReduction = configuration.getBoolean("allow_attribute_reduction", allowAttributeReduction);
             if (configuration.contains("switch_class")) {
                 switchClass = true;
@@ -574,25 +576,22 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.iconPlaceholderKey = defaults.iconPlaceholderKey;
             this.iconDisabledKey = defaults.iconDisabledKey;
             this.autoClose = defaults.autoClose;
+            this.showFree = defaults.showFree;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<>();
 
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
             if (placeholder) {
-                this.icon = parseItem(iconPlaceholderKey);
-                if (icon == null) {
-                    this.icon = new ItemStack(Material.AIR);
-                } else {
-                    icon = InventoryUtils.makeReal(icon);
-                    InventoryUtils.makeUnbreakable(icon);
-                    InventoryUtils.hideFlags(icon, 63);
-                    ItemMeta meta = icon.getItemMeta();
-                    meta.setDisplayName(" ");
-                    icon.setItemMeta(meta);
-                }
+                makePlaceholder();
                 return;
             }
 
             parse(configuration);
+
+            // Check for items that have no costs
+            if (!showFree && (costs == null || costs.isEmpty())) {
+                makePlaceholder();
+                return;
+            }
 
             if (defaults.requirements != null) {
                 if (requirements == null) {
@@ -682,6 +681,21 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             updateIcon(context);
+        }
+
+        private void makePlaceholder() {
+            placeholder = true;
+            this.icon = parseItem(iconPlaceholderKey);
+            if (icon == null) {
+                this.icon = new ItemStack(Material.AIR);
+            } else {
+                icon = InventoryUtils.makeReal(icon);
+                InventoryUtils.makeUnbreakable(icon);
+                InventoryUtils.hideFlags(icon, 63);
+                ItemMeta meta = icon.getItemMeta();
+                meta.setDisplayName(" ");
+                icon.setItemMeta(meta);
+            }
         }
 
         public void updateIcon(CastContext context) {

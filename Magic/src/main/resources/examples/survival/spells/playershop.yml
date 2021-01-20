@@ -5,6 +5,7 @@ playershop:
         # This is most often done via NPC overrides, using the ManageShop action
         confirm: true
         auto_close: true
+        show_free: false
         confirm_filler: black_stained_glass_pane
 
         # Player shops sell items for cheaper than server shops to encourage trade
