@@ -1,5 +1,5 @@
 magictorch:
-  required: LightAPI
+  requires: LightAPI
   enabled: true
   output: magictorch
   output_type: wand

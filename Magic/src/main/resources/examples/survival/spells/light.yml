@@ -7,7 +7,7 @@ light:
     category: engineering
     worth: 500
     earns_sp: 2
-    required: LightAPI
+    requires: LightAPI
     actions:
         cast:
         -  class: Light

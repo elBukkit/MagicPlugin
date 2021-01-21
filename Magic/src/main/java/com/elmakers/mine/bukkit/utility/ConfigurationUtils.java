@@ -1201,7 +1201,7 @@ public class ConfigurationUtils extends ConfigUtils {
     public static boolean isEnabled(ConfigurationSection configuration) {
          if (configuration == null) return false;
          if (!configuration.getBoolean("enabled", true)) return false;
-         String required = configuration.getString("required");
+         String required = configuration.getString("requires");
          if (required != null && !required.isEmpty()) {
              if (!Bukkit.getPluginManager().isPluginEnabled(required)) {
                  return false;
