@@ -89,6 +89,7 @@ public class MobController implements Listener {
             }
             // Check for disconnected NPCs, we don't want to leave invulnerable entities around
             boolean foundNPC = false;
+            boolean removedNPC = false;
             String npcId = EntityMetadataUtils.instance().getString(entity, "npc_id");
             try {
                 if (npcId != null && controller.getNPC(UUID.fromString(npcId)) == null) {
@@ -97,6 +98,7 @@ public class MobController implements Listener {
                         + location.getWorld().getName() + "] " + location.getBlockX()
                         + "," + location.getBlockY() + "," + location.getBlockZ());
                     entity.remove();
+                    removedNPC = true;
                 } else if (npcId != null) {
                     foundNPC = true;
                 }
@@ -108,7 +110,7 @@ public class MobController implements Listener {
 
             // Don't remove invulnerable items since those could be dropped wands
             if (REMOVE_INVULNERABLE && entity.getType() != EntityType.DROPPED_ITEM
-                && !foundNPC && CompatibilityUtils.isInvulnerable(entity)) {
+                && !foundNPC && !removedNPC && CompatibilityUtils.isInvulnerable(entity)) {
                 Location location = entity.getLocation();
                 controller.getLogger().warning("Removing an invulnerable entity of type " + entity.getType() + " at ["
                     + location.getWorld().getName() + "] " + location.getBlockX()
