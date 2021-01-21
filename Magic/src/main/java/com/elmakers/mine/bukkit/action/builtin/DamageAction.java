@@ -39,6 +39,8 @@ public class DamageAction extends BaseSpellAction
     private double minDamage;
     private String damageType;
     private SourceLocation damageSourceLocation;
+    private double criticalProbability;
+    private double criticalMultiplier;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -73,6 +75,8 @@ public class DamageAction extends BaseSpellAction
         minDamage = parameters.getDouble("min_damage", 0);
         damageType = parameters.getString("damage_type");
         damageSourceLocation = new SourceLocation(parameters.getString("damage_source_location", "BODY"), false);
+        criticalProbability = parameters.getDouble("critical_probability", 0);
+        criticalMultiplier = parameters.getDouble("critical_damage_multiplier", 0);
     }
 
     @Override
@@ -136,6 +140,9 @@ public class DamageAction extends BaseSpellAction
                 if (damageMultiplier != null) {
                     damage *= damageMultiplier;
                     mageMultiplier *= damageMultiplier;
+                }
+                if (criticalProbability > 0 && criticalMultiplier > 0 && context.getRandom().nextDouble() <= criticalProbability) {
+                    damage *= criticalMultiplier;
                 }
                 damage = Math.max(minDamage, damage);
                 if (damageType != null) {
