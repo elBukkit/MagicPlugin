@@ -22,6 +22,7 @@
  - Fix hex color codes being parsed as integers
    - This was a fundamental change to config parsing, it will no longer try to auto-convert types
    - Keeping an eye out for issues
+ - Fix Critical passive to work around Minecraft damage immunity timeout
 
 ## Changes
 
