@@ -951,6 +951,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     private void tryDisguise(final Entity entity, final ConfigurationSection disguise) {
+        if (!controller.hasDisguises()) return;
         if (!controller.disguise(entity, disguise)) {
             controller.getLogger().warning("Invalid disguise type in mob " + getName() + " (" + getKey() + "): " + disguise.getString("type"));
         }
