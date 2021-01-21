@@ -14,11 +14,14 @@
 
  - Fix some strange problems that can come up when customizing the builtin examples (affected PotterPlus)
  - Fix Petrify upgrades (it should go up to level 3 now)
- - Fix Fireball upgrades (fireball projectiles weren't correctly registering entity hits in modern MC versionsx`)
+ - Fix Fireball upgrades (fireball projectiles weren't correctly registering entity hits in modern MC versions)
  - Fix issues with Teleport action when target context has been changed
  - Fix "preuse" wands not casting on their final use
  - Fix wand open/close/etc sound FX broadcasting to nearby players
  - Fix issues saving bound wands, particularly after using /clear
+ - Fix hex color codes being parsed as integers
+   - This was a fundamental change to config parsing, it will no longer try to auto-convert types
+   - Keeping an eye out for issues
 
 ## Changes
 
