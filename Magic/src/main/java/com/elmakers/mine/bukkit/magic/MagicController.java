@@ -2316,7 +2316,7 @@ public class MagicController implements MageController {
 
     protected void loadData() {
         loadSpellData();
-        Bukkit.getScheduler().runTaskLater(plugin, new LoadDataTask(this), 10);
+        Bukkit.getScheduler().runTaskLater(plugin, new LoadDataTask(this), 2);
     }
 
     public void finishLoadData() {

@@ -20,8 +20,8 @@ public class CheckChunkTask implements Runnable {
     }
 
     public static void defer(Plugin plugin, ChunkLoadListener listener, Chunk chunk) {
-        // MagicController waits 10 ticks, so we'll wait a bit longer.
+        // MagicController waits 2 ticks, so we'll wait a bit longer.
         // This is kind of a hacky relationship, but I thought it preferable to retrying
-        plugin.getServer().getScheduler().runTaskLater(plugin, new CheckChunkTask(listener, chunk), 20);
+        plugin.getServer().getScheduler().runTaskLater(plugin, new CheckChunkTask(listener, chunk), 5);
     }
 }
