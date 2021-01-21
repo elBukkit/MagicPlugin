@@ -37,12 +37,13 @@ import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
-public class MobController implements Listener {
+public class MobController implements Listener, ChunkLoadListener {
     public static boolean REMOVE_INVULNERABLE = false;
     private MagicController controller;
     private final Map<String, EntityData> mobs = new HashMap<>();
@@ -79,44 +80,59 @@ public class MobController implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGH)
-    public void onChunkLoad(ChunkLoadEvent event) {
-        for (Entity entity : event.getChunk().getEntities()) {
+    public void checkMagicMob(Entity entity, String mobKey) {
+        com.elmakers.mine.bukkit.api.entity.EntityData storedMob = controller.getMob(mobKey);
+        if (storedMob != null) {
+            storedMob.modify(entity);
+        }
+    }
+
+    public void checkNPC(Entity entity, String npcId) {
+        try {
+            if (controller.getNPC(UUID.fromString(npcId)) == null) {
+                Location location = entity.getLocation();
+                controller.getLogger().warning("Removing an invalid NPC (id=" + npcId + ") entity of type " + entity.getType() + " at ["
+                    + location.getWorld().getName() + "] " + location.getBlockX()
+                    + "," + location.getBlockY() + "," + location.getBlockZ());
+                entity.remove();
+            }
+            // TODO: This would also be a better way to reactivate NPCs, but we can't rely on this until
+            // versions of spigot without the persistent metadata API are no longer supported
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.SEVERE, "Error reading entity NPC id", ex);
+        }
+    }
+
+    @Override
+    public void onChunkLoad(Chunk chunk) {
+        for (Entity entity : chunk.getEntities()) {
             String magicMobKey = EntityMetadataUtils.instance().getString(entity, "magicmob");
-            com.elmakers.mine.bukkit.api.entity.EntityData storedMob = controller.getMob(magicMobKey);
-            if (storedMob != null) {
-                storedMob.modify(entity);
+            if (magicMobKey != null) {
+                checkMagicMob(entity, magicMobKey);
             }
             // Check for disconnected NPCs, we don't want to leave invulnerable entities around
-            boolean foundNPC = false;
-            boolean removedNPC = false;
             String npcId = EntityMetadataUtils.instance().getString(entity, "npc_id");
-            try {
-                if (npcId != null && controller.getNPC(UUID.fromString(npcId)) == null) {
-                    Location location = entity.getLocation();
-                    controller.getLogger().warning("Removing an invalid NPC (id=" + npcId + ") entity of type " + entity.getType() + " at ["
-                        + location.getWorld().getName() + "] " + location.getBlockX()
-                        + "," + location.getBlockY() + "," + location.getBlockZ());
-                    entity.remove();
-                    removedNPC = true;
-                } else if (npcId != null) {
-                    foundNPC = true;
-                }
-                // TODO: This would also be a better way to reactivate NPCs, but we can't rely on this until
-                // versions of spigot without the persistent metadata API are no longer supported
-            } catch (Exception ex) {
-                controller.getLogger().log(Level.SEVERE, "Error reading entity NPC id", ex);
-            }
-
-            // Don't remove invulnerable items since those could be dropped wands
-            if (REMOVE_INVULNERABLE && entity.getType() != EntityType.DROPPED_ITEM
-                && !foundNPC && !removedNPC && CompatibilityUtils.isInvulnerable(entity)) {
+            if (npcId != null) {
+                checkNPC(entity, npcId);
+            } else if (REMOVE_INVULNERABLE && entity.getType() != EntityType.DROPPED_ITEM
+                && CompatibilityUtils.isInvulnerable(entity)) {
+                // Don't remove invulnerable items since those could be dropped wands
                 Location location = entity.getLocation();
                 controller.getLogger().warning("Removing an invulnerable entity of type " + entity.getType() + " at ["
                     + location.getWorld().getName() + "] " + location.getBlockX()
                     + "," + location.getBlockY() + "," + location.getBlockZ());
                 entity.remove();
             }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGH)
+    public void onChunkLoad(ChunkLoadEvent event) {
+        Chunk chunk = event.getChunk();
+        if (!controller.isDataLoaded()) {
+            CheckChunkTask.defer(controller.getPlugin(), this, chunk);
+        } else {
+            onChunkLoad(chunk);
         }
     }
 

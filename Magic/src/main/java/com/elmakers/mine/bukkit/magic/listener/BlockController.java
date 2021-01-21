@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,13 +44,14 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
-public class BlockController implements Listener {
+public class BlockController implements Listener, ChunkLoadListener {
     private final MagicController controller;
     private boolean undoOnWorldSave = false;
     private int creativeBreakFrequency = 0;
@@ -422,10 +424,20 @@ public class BlockController implements Listener {
         undoPending(world, "unload");
     }
 
+    @Override
+    public void onChunkLoad(Chunk chunk) {
+        controller.resumeAutomata(chunk);
+        controller.restoreNPCs(chunk);
+    }
+
     @EventHandler
-    public void onChunkLoad(ChunkLoadEvent e) {
-        controller.resumeAutomata(e.getChunk());
-        controller.restoreNPCs(e.getChunk());
+    public void onChunkLoad(ChunkLoadEvent event) {
+        Chunk chunk = event.getChunk();
+        if (!controller.isDataLoaded()) {
+            CheckChunkTask.defer(controller.getPlugin(), this, chunk);
+        } else {
+            onChunkLoad(chunk);
+        }
     }
 
     @EventHandler

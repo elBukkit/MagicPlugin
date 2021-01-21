@@ -125,4 +125,8 @@ public class WorldController implements Listener {
     public Logger getLogger() {
         return controller.getLogger();
     }
+
+    public boolean isDataLoaded() {
+        return controller.isDataLoaded();
+    }
 }

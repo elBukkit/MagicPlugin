@@ -17,11 +17,13 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.magic.listener.ChunkLoadListener;
+import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.WorldController;
 
-public class WorldSpawnListener implements Listener
+public class WorldSpawnListener implements Listener, ChunkLoadListener
 {
     private final WorldController controller;
     private boolean spawning = false;
@@ -46,10 +48,8 @@ public class WorldSpawnListener implements Listener
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onChunkLoad(ChunkLoadEvent event) {
-        if (spawning || ignoreReasons.contains(SpawnReason.CHUNK_GEN) || !event.isNewChunk()) return;
-        Chunk chunk = event.getChunk();
+    @Override
+    public void onChunkLoad(Chunk chunk) {
         MagicWorld magicWorld = controller.getWorld(chunk.getWorld().getName());
         if (magicWorld == null) return;
 
@@ -67,6 +67,17 @@ public class WorldSpawnListener implements Listener
             }
         }
         spawning = false;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onChunkLoad(ChunkLoadEvent event) {
+        if (spawning || ignoreReasons.contains(SpawnReason.CHUNK_GEN) || !event.isNewChunk()) return;
+        Chunk chunk = event.getChunk();
+        if (!controller.isDataLoaded()) {
+            CheckChunkTask.defer(controller.getPlugin(), this, chunk);
+        } else {
+            onChunkLoad(chunk);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

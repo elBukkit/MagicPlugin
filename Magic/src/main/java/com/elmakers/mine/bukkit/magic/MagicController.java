@@ -6143,6 +6143,10 @@ public class MagicController implements MageController {
         return loaded && !shuttingDown;
     }
 
+    public boolean isDataLoaded() {
+        return loaded && dataLoaded && !shuttingDown;
+    }
+
     public boolean areLocksProtected() {
         return protectLocked;
     }
