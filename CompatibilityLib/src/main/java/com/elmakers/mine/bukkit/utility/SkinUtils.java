@@ -28,10 +28,11 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class SkinUtils extends NMSUtils {
+    public static boolean DEBUG = false;
+
     private static Plugin plugin;
     private static Gson gson;
     private static long holdoff = 0;
-    private static boolean DEBUG = false;
     private static final Map<UUID, ProfileResponse> responseCache = new HashMap<>();
     private static final Map<String, UUID> uuidCache = new HashMap<>();
     private static final Map<String, Object> loadingUUIDs = new HashMap<>();

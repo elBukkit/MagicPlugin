@@ -3042,6 +3042,7 @@ public class MagicController implements MageController {
         resourcePacks.load(properties, sender, !loaded);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
+        SkinUtils.DEBUG = logVerbosity >= 5;
         LOG_WATCHDOG_TIMEOUT = properties.getInt("load_watchdog_timeout", 30000);
         logger.setColorize(properties.getBoolean("colored_logs", true));
 
