@@ -18,8 +18,6 @@ public class DisguiseTask implements Runnable {
 
     @Override
     public void run() {
-        if (!controller.disguise(entity, disguise)) {
-            controller.getLogger().warning("Invalid disguise type: " + disguise.getString("type"));
-        }
+        controller.disguise(entity, disguise);
     }
 }
