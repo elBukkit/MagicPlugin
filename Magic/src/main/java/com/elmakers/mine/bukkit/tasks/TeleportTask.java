@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.action;
+package com.elmakers.mine.bukkit.tasks;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,6 +7,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 

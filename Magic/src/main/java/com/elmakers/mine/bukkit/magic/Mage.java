@@ -61,7 +61,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.action.TeleportTask;
+import com.elmakers.mine.bukkit.tasks.TeleportTask;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.batch.Batch;
