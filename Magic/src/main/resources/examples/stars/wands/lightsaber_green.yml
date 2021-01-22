@@ -1,6 +1,6 @@
 lightsaber_green:
     inherit: base_lightsaber
-    class: jedi
+    classes: jedi,sith
     legacy_icon: shield_icon:2
     icon: shield{CustomModelData:18002}
     effect_color: '00FF00'

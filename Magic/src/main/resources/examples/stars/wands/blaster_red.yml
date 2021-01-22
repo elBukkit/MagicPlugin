@@ -1,5 +1,5 @@
 blaster_red:
-    class: trooper
+    class: trooper,rebel
     inherit: blaster
     effect_color: 'FF0000'
 

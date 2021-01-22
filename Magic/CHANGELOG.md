@@ -42,6 +42,7 @@
    and not  conflict with survival wands (e.g staff_upgrade)
  - The inactive_icon feature will now work on non-inventory-mode wands
  - Recipe discovery will now check for crafting permission
+ - Jedi and Sith can use any color lightsaber
 
 ## Additions
 
