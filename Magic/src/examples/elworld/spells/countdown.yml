@@ -7,6 +7,7 @@ countdown:
     - class: Repeat
       actions:
         - class: BossBar
+          bar_progress: countdown / 10
         - class: Delay
         - class: ModifyVariable
           variable: countdown
@@ -15,4 +16,3 @@ countdown:
     delay: 1000
     repeat: 10
     bar_title: Countdown
-    progress: countdown / 10
