@@ -13,8 +13,8 @@ public class CheckManaAction extends CheckAction {
     private double requirePercentage = 0;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         requirePercentage = parameters.getDouble("require_mana_percentage", 0);
         requireAmount = parameters.getDouble("require_mana", 0);
         requireNotFull = parameters.getBoolean("require_mana_not_full", false);

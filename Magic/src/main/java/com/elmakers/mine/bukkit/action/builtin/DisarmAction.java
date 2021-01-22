@@ -70,9 +70,9 @@ public class DisarmAction extends BaseSpellAction
     private String displayName;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         keepInInventory = parameters.getBoolean("keep_in_inventory", false);
         minSlot = parameters.getInt("min_slot", com.elmakers.mine.bukkit.wand.Wand.HOTBAR_SIZE);
         maxSlot = parameters.getInt("max_slot", com.elmakers.mine.bukkit.wand.Wand.PLAYER_INVENTORY_SIZE - 1);

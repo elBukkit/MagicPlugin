@@ -55,9 +55,9 @@ public class MountArmorStandAction extends RideEntityAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         MageController controller = context.getController();
         mountTarget = parameters.getBoolean("mount_target", false);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);

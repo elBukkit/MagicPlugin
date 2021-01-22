@@ -23,9 +23,9 @@ public class CheckEntityAction extends CheckAction {
     private List<Class<? extends Entity>> deniedClasses;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         allowCaster = parameters.getBoolean("allow_caster", true);
         onlyCaster = parameters.getBoolean("only_caster", false);
         if (parameters.contains("on_fire")) {

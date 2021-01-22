@@ -119,8 +119,8 @@ public class BookAction extends BaseSpellAction {
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
 
         Messages messages = context.getController().getMessages();
         String titleParam = parameters.getString("title", "");

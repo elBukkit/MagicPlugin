@@ -18,8 +18,8 @@ public class ModifyBreakableAction extends BaseSpellAction {
     private boolean targetAir = false;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         breakable = parameters.getDouble("breakable", 1);
         targetAir = parameters.getBoolean("target_air", false);
     }

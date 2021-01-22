@@ -18,8 +18,8 @@ public class SkipAction extends CompoundAction
     private boolean repeatSkip;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         skipCount = parameters.getInt("skip", 1);
         repeatSkip = parameters.getBoolean("repeat_skip", true);
         skipCounter = 0;

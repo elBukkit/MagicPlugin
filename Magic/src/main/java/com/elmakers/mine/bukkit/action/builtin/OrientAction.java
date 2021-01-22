@@ -23,8 +23,8 @@ public class OrientAction extends BaseSpellAction {
     private boolean targetBlock;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         if (parameters.contains("pitch")) {
             pitch = (float)parameters.getDouble("pitch");
         } else {

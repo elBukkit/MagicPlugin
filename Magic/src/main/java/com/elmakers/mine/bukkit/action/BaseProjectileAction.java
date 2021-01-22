@@ -35,8 +35,8 @@ public abstract class BaseProjectileAction extends CompoundAction {
     private boolean launchActionsRun;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         lifetime = parameters.getLong("lifetime", 10000);
         setTarget = parameters.getBoolean("set_target", false);
         track = parameters.getBoolean("track_projectile", track);

@@ -505,8 +505,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         permissionNode = parameters.getString("permission", null);
         sell = parameters.getBoolean("sell", false);
         showConfirmation = parameters.getBoolean("confirm", true);

@@ -12,6 +12,7 @@ public interface SpellAction extends Cloneable
 {
     SpellResult perform(CastContext context);
     void initialize(Spell spell, ConfigurationSection baseParameters);
+    default void processParameters(CastContext context, ConfigurationSection parameters) {}
     void prepare(CastContext context, ConfigurationSection parameters);
     void finish(CastContext context);
     void reset(CastContext context);

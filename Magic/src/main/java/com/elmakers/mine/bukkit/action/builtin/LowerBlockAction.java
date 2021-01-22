@@ -35,8 +35,8 @@ public class LowerBlockAction extends BaseSpellAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         verticalSearchDistance = parameters.getInt("vertical_range", context.getVerticalSearchDistance());
         directions = DirectionUtils.getDirections(parameters, "faces");
     }

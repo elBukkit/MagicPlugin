@@ -139,7 +139,7 @@ public class StashWandAction extends BaseSpellAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
         returnOnFinish = parameters.getBoolean("return_on_finish", false);
     }

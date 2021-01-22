@@ -19,8 +19,8 @@ public abstract class BaseTeleportAction extends BaseSpellAction
     private boolean keepVelocity = false;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         verticalSearchDistance = parameters.getInt("vertical_range", context.getVerticalSearchDistance());
         safe = parameters.getBoolean("safe", true);
         requiresBuildPermission = parameters.getBoolean("require_build", false);

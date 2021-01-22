@@ -13,9 +13,9 @@ public class CheckInventoryAction extends CheckAction {
     private ItemStack item;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         String itemKey = parameters.getString("item");
         item = context.getController().createItem(itemKey);
         if (item == null) {

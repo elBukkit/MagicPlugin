@@ -76,7 +76,7 @@ public class ModifyLoreAction extends BaseSpellAction
     private List<ModifyLoreLine> modify;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
         digits = parameters.getInt("digits");
         modify = new ArrayList<>();

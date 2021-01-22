@@ -21,9 +21,9 @@ public class CreateFieldAction extends ModifyBlockAction {
     private BlockFace rentSignDirection;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         fieldType = ConfigurationUtils.getMaterial(parameters, "field_type");
         rent = parameters.getString("field_rent", "");
         rentPeriod = parameters.getString("field_rent_period", "");

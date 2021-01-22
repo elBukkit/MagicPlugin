@@ -11,7 +11,7 @@ public class CastResultAction extends BaseSpellAction {
     private boolean endResult = false;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection configuration) {
+    public void processParameters(CastContext context, ConfigurationSection configuration) {
         endResult = configuration.getBoolean("end_result", false);
         String spellResultString = configuration.getString("result");
         if (spellResultString != null && !spellResultString.isEmpty()) {

@@ -44,8 +44,8 @@ public class ModifyBlockAction extends BaseSpellAction {
     private boolean autoBlockState = false;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         spawnFallingBlocks = parameters.getBoolean("falling", false);
         applyPhysics = parameters.getBoolean("physics", false);
         autoBlockState = parameters.getBoolean("auto_block_state", false);

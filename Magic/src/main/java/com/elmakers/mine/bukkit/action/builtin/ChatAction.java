@@ -26,8 +26,8 @@ public class ChatAction extends BaseSpellAction {
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
 
         List<String> keys = parameters.getStringList("randomized_messages");
         if (!keys.isEmpty()) {

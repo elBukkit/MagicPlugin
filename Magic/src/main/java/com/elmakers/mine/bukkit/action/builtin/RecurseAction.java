@@ -106,8 +106,8 @@ public class RecurseAction extends CompoundAction {
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         checker = parameters.getBoolean("checkered", false);
         replace = parameters.getBoolean("replace", false);
         depthFirst = parameters.getBoolean("depth_first", false);

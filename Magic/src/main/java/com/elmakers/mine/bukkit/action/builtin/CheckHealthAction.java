@@ -20,9 +20,9 @@ public class CheckHealthAction extends CheckAction {
     private boolean percentages;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         if (parameters.contains("min_health")) {
             minHealth = parameters.getDouble("min_health");
         }

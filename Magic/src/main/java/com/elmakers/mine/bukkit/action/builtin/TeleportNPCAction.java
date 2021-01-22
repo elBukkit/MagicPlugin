@@ -14,8 +14,8 @@ public class TeleportNPCAction extends BaseSpellAction {
     private UUID npcId;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         String idString = parameters.getString("npc_id");
         if (idString != null && !idString.isEmpty()) {
             try {

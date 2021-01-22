@@ -11,9 +11,9 @@ public class LightningAction extends BaseSpellAction {
     private boolean effectOnly;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         effectOnly = parameters.getBoolean("effect_only", false);
     }
 

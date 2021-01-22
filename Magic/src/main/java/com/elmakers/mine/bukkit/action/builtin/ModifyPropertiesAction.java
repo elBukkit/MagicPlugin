@@ -71,7 +71,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
         modifyTarget = parameters.getString("modify_target", "wand");
         upgrade = parameters.getBoolean("upgrade", false);

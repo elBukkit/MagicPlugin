@@ -29,9 +29,9 @@ public class GrowEntityAction extends BaseSpellAction
     private boolean skeletons;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         skeletons = parameters.getBoolean("skeletons", false);
     }
 

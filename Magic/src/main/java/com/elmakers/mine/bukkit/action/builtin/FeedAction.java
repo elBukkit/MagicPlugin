@@ -17,9 +17,9 @@ public class FeedAction extends BaseSpellAction
     private boolean clearExhaustion;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         feedAmount = parameters.getInt("feed", 20);
         saturationAmount = parameters.getInt("saturation", 20);
         clearExhaustion = parameters.getBoolean("exhaustion", true);

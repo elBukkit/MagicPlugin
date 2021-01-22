@@ -28,9 +28,9 @@ public class InventoryAction extends BaseSpellAction
     private boolean disposal = false;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         String inventoryTypeString = parameters.getString("type", "ender_chest").toUpperCase();
         if (inventoryTypeString.equals("ENDER")) {
             inventoryTypeString = "ENDER_CHEST";

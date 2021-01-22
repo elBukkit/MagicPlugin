@@ -48,8 +48,8 @@ public class ModifyEntityAction extends BaseSpellAction
     private EntityData entityData;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         loot = parameters.getBoolean("loot", false);
         force = parameters.getBoolean("force", false);
         tamed = parameters.getBoolean("tamed", false);

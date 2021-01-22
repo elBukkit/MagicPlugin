@@ -73,8 +73,8 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         showPath = parameters.getBoolean("show_path_spells", true);
         showExtra = parameters.getBoolean("show_extra_spells", true);
         showRequired = parameters.getBoolean("show_required_spells", false);

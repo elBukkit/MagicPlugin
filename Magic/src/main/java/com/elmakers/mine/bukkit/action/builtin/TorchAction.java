@@ -29,8 +29,8 @@ public class TorchAction extends BaseSpellAction
     private MaterialSet slippery;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         useRedstone = parameters.getBoolean("redstone_torch", false);
         allowLightstone = parameters.getBoolean("allow_glowstone", false);
         allowSeaLantern = parameters.getBoolean("allow_sea_lantern", false);

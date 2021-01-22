@@ -23,8 +23,8 @@ public class FakeBlockAction extends BaseSpellAction {
     private double radius = 0;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         radius = parameters.getDouble("player_radius", 0);
     }
 

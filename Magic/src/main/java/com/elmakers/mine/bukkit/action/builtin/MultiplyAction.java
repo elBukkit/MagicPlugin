@@ -20,8 +20,8 @@ public class MultiplyAction extends CompoundAction
     private int multiply;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         multiply = parameters.getInt("multiply", parameters.getInt("repeat", 2));
         multiplied = new ArrayList<>();
 

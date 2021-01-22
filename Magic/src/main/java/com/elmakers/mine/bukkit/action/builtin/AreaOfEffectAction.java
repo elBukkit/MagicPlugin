@@ -34,7 +34,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
         radius = parameters.getInt("radius", 8);
         yRadius = parameters.getInt("y_radius", radius);
@@ -44,7 +44,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
         Mage mage = context.getMage();
         radius = (int)(mage.getRadiusMultiplier() * radius);
 
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
     }
 
     @Override

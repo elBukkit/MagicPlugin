@@ -79,9 +79,9 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
         parameters.set("type", "armor_stand");
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
 
         armorStandMarker = parameters.getBoolean("armor_stand_marker", true);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);

@@ -37,8 +37,8 @@ public class FireworkAction extends BaseProjectileAction
     private boolean useWandColor;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         Random rand = context.getRandom();
         power = rand.nextInt(2) + 1;
         Mage mage = context.getMage();

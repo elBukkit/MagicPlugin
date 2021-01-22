@@ -13,9 +13,9 @@ public class CreatePlotAction extends BaseSpellAction {
     private Double price;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         if (parameters.contains("price")) {
             price = parameters.getDouble("price", 0);
         } else {

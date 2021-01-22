@@ -13,11 +13,11 @@ public class PlaneAction extends VolumeAction {
     protected Axis brushAxis;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
         axis = parseAxis(parameters.getString("axis"), Axis.Y);
         brushAxis = parseAxis(parameters.getString("brush_axis"), axis);
 
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
     }
 
     protected Axis parseAxis(String axisType, Axis defaultAxis) {

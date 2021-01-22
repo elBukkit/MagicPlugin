@@ -30,8 +30,8 @@ public class MessageAction extends BaseSpellAction
     private MessageType messageType = MessageType.CHAT;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         String messageKey = parameters.getString("message_key");
         if (messageKey != null) {
             message = context.getMessage(messageKey);

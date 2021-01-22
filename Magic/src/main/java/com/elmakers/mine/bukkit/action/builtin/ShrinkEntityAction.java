@@ -33,9 +33,9 @@ public class ShrinkEntityAction extends DamageAction
     private boolean skeletons;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         dropSkull = parameters.getBoolean("drop_skull", true);
         skeletons = parameters.getBoolean("skeletons", false);
     }

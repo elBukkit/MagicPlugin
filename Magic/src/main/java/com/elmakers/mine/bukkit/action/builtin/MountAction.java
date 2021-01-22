@@ -15,7 +15,7 @@ public class MountAction extends BaseSpellAction {
     private boolean dismount = false;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
         eject = parameters.getBoolean("eject", false);
         dismount = parameters.getBoolean("dismount", false);
     }

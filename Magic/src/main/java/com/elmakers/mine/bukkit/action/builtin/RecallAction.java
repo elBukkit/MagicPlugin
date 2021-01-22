@@ -448,8 +448,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         this.parameters = parameters;
         this.context = context;
         this.markerKey = parameters.getString("marker_key", "recall_marker");

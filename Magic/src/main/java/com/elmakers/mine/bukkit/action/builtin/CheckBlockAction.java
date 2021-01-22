@@ -30,8 +30,8 @@ public class CheckBlockAction extends CheckAction {
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         useTarget = parameters.getBoolean("use_target", true);
         setTarget = parameters.getBoolean("set_target", false);
         allowBrush = parameters.getBoolean("allow_brush", false);

@@ -18,9 +18,9 @@ public class RepairItemAction extends BaseSpellAction
     private boolean heldItem;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         armor = parameters.getBoolean("armor", false);
         heldItem = parameters.getBoolean("held_item", false);
     }

@@ -134,9 +134,9 @@ public class RideEntityAction extends BaseSpellAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         moveDistance = parameters.getDouble("steer_speed", 0);
         startSpeed = parameters.getDouble("start_speed", 0);
         minSpeed = parameters.getDouble("min_speed", 0);

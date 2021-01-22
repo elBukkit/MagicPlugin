@@ -68,10 +68,10 @@ public class ProjectileAction  extends BaseProjectileAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
         track = true;
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         count = parameters.getInt("count", 1);
         size = parameters.getInt("size", defaultSize);
         damage = parameters.getDouble("damage", 0);

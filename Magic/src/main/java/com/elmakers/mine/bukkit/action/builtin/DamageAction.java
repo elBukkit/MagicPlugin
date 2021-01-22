@@ -43,9 +43,9 @@ public class DamageAction extends BaseSpellAction
     private double criticalMultiplier;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         double damage = parameters.getDouble("damage", 1);
         entityDamage = parameters.getDouble("entity_damage", damage);
         playerDamage = parameters.getDouble("player_damage", damage);

@@ -19,6 +19,11 @@ public abstract class BaseSpellAction implements SpellAction
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
+        processParameters(context, parameters);
+    }
+
+    @Override
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
     }
 
     @Override

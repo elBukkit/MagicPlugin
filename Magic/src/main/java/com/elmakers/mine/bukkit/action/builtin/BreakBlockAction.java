@@ -24,8 +24,8 @@ public class BreakBlockAction extends ModifyBlockAction {
     private double maxDistanceSquared;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         durabilityAmount = parameters.getInt("break_durability", 1);
         double maxDistance = parameters.getDouble("durability_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;

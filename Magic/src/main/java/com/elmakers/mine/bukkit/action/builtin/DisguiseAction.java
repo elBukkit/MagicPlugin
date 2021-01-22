@@ -32,8 +32,8 @@ public class DisguiseAction extends BaseSpellAction
     private ConfigurationSection disguiseConfig;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         disguiseConfig = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
     }
 

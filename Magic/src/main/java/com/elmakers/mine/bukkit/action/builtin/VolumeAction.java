@@ -91,8 +91,8 @@ public class VolumeAction extends CompoundAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         radiusPadding = parameters.getDouble("radius_padding", 0.25);
         radius = parameters.getDouble("radius", DEFAULT_RADIUS);
         xSize = parameters.getDouble("x_size", radius);

@@ -10,8 +10,8 @@ public class CheckVelocityAction extends CheckAction {
     private double minSpeed;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
 
         maxSpeed = parameters.getDouble("max_speed", Double.NaN);
         minSpeed = parameters.getDouble("min_speed", Double.NaN);

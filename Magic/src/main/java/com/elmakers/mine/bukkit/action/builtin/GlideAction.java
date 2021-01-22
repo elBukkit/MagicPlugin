@@ -79,7 +79,7 @@ public class GlideAction extends BaseSpellAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
         waitForLanding = parameters.getBoolean("wait_for_landing", true);
         requireElytra = parameters.getBoolean("require_elytra", false);

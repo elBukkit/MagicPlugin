@@ -18,8 +18,8 @@ public class ModifySPAction extends BaseSpellAction
     private int sp;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         sp = parameters.getInt("sp", 1);
     }
 

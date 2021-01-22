@@ -24,8 +24,8 @@ public class ModifierAction extends BaseSpellAction {
     private int duration;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
 
         removeModifiers = ConfigurationUtils.getStringList(parameters, "remove_modifiers");
         ConfigurationSection addSection = parameters.getConfigurationSection("add_modifiers");

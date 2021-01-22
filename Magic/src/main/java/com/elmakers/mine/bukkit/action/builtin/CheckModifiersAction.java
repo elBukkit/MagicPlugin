@@ -16,9 +16,9 @@ public class CheckModifiersAction extends CheckAction {
     private Collection<String> blocked;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         required = ConfigurationUtils.getStringList(parameters, "required");
         blocked = ConfigurationUtils.getStringList(parameters, "blocked");
     }

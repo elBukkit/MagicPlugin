@@ -24,9 +24,9 @@ public class DropSkullAction extends BaseSpellAction
     private boolean allowBlocks;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         allowEntities = parameters.getBoolean("allow_entities", true);
         allowBlocks = parameters.getBoolean("allow_blocks", true);
     }

@@ -15,9 +15,9 @@ public class CheckRequirementsAction extends CheckAction {
     private boolean sendMessage;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
+    public void processParameters(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
+        super.processParameters(context, parameters);
         sendMessage = parameters.getBoolean("send_message");
         requirements = new ArrayList<>();
         Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(parameters, "requirements");

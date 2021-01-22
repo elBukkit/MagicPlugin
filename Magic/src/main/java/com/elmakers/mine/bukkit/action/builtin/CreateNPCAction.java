@@ -23,8 +23,8 @@ public class CreateNPCAction extends BaseSpellAction {
     private ConfigurationSection npcConfiguration;
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
         name = parameters.getString("name", "NPC");
         keyItem = parameters.getString("key_item");
         keyBookContents = parameters.getString("key_book_contents");

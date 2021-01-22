@@ -95,8 +95,8 @@ public class DoorAction extends BaseSpellAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+    public void processParameters(CastContext context, ConfigurationSection parameters) {
+        super.processParameters(context, parameters);
 
         actionType = DoorActionType.TOGGLE;
         String type = parameters.getString("type", "open");
