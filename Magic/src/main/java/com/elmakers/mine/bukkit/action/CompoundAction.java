@@ -27,6 +27,7 @@ public abstract class CompoundAction extends BaseSpellAction
     private boolean requiresBreakPermission = false;
     private boolean stopOnSuccess = false;
     private boolean initialized = false;
+    private boolean prepared = false;
     protected boolean pauseOnNext = false;
     protected @Nullable ConfigurationSection actionConfiguration;
     protected @Nullable CastContext actionContext;
@@ -151,14 +152,29 @@ public abstract class CompoundAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         ran = new HashSet<>();
         for (ActionHandler handler : handlers.values()) {
             handler.prepare(context, context.getSpell().getWorkingParameters());
         }
+        prepared = true;
+    }
+
+    @Override
+    public void processParameters(CastContext context, ConfigurationSection parameters)
+    {
+        super.processParameters(context, parameters);
         stopOnSuccess = parameters.getBoolean("stop_on_success", false);
+
+        // if prepare() is not yet finished then it will call prepare() on all of the children,
+        // which will call processParameters, so we can skip it here.
+        if (prepared) {
+            for (ActionHandler handler : handlers.values()) {
+                handler.processParameters(context, context.getSpell().getWorkingParameters());
+            }
+        }
     }
 
     @Override

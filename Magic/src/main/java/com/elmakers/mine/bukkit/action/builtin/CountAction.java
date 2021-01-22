@@ -58,7 +58,7 @@ public class CountAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         super.processParameters(context, parameters);
         totalCount = 0;
         counts.clear();
