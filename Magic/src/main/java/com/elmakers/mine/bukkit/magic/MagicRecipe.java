@@ -377,7 +377,9 @@ public class MagicRecipe {
     public void crafted(HumanEntity entity, MageController controller) {
         if (discover == null) return;
         for (String key : discover) {
-            CompatibilityUtils.discoverRecipe(entity, controller.getPlugin(), key);
+            if (controller.hasPermission(entity, "Magic.craft." + key, true)) {
+                CompatibilityUtils.discoverRecipe(entity, controller.getPlugin(), key);
+            }
         }
     }
 

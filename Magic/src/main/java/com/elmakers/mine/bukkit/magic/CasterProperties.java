@@ -1024,11 +1024,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     protected void discoverRecipes(String listKey) {
         List<String> recipes = getStringList(listKey);
         Mage mage = getMage();
-        if (recipes != null && mage != null && mage.isPlayer()) {
-            Player player = mage.getPlayer();
-            for (String recipe : recipes) {
-                CompatibilityUtils.discoverRecipe(player, controller.getPlugin(), recipe);
-            }
+        if (mage != null) {
+            mage.discoverRecipes(recipes);
         }
     }
 

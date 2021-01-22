@@ -1084,9 +1084,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // Load player-specific data
             Player player = getPlayer();
             if (player != null) {
-                for (String recipeKey : controller.getAutoDiscoverRecipeKeys()) {
-                    CompatibilityUtils.discoverRecipe(player, controller.getPlugin(), recipeKey);
-                }
+                discoverRecipes(controller.getAutoDiscoverRecipeKeys());
                 if (controller.isInventoryBackupEnabled()) {
                     if (restoreInventory != null) {
                         controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
@@ -5248,5 +5246,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 .replace(prefix + "p", getName());
 
         return command;
+    }
+
+    public void discoverRecipes(Collection<String> recipes) {
+        if (recipes == null) return;
+        Player player = getPlayer();
+        if (player != null && controller.hasPermission(player, "Magic.wand.craft")) {
+            for (String recipe : recipes) {
+                if (controller.hasPermission(player, "Magic.craft." + recipe, true)) {
+                    CompatibilityUtils.discoverRecipe(player, controller.getPlugin(), recipe);
+                }
+            }
+        }
     }
 }
