@@ -3165,6 +3165,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return (entity != null && entity instanceof LivingEntity) ? (LivingEntity) entity : null;
     }
 
+    @Nullable
+    public LivingEntity getTargetLivingEntity() {
+        Entity entity = lastDamageTarget == null ? null : lastDamageTarget.get();
+        return (entity != null && entity instanceof LivingEntity) ? (LivingEntity) entity : null;
+    }
+
     @Override
     public CommandSender getCommandSender() {
         return commandSenderRef.get();
@@ -4665,6 +4671,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             case "health_max": {
                 LivingEntity living = getLivingEntity();
+                return living == null ? null : CompatibilityUtils.getMaxHealth(living);
+            }
+            case "target_health": {
+                LivingEntity living = getTargetLivingEntity();
+                return living == null ? null : living.getHealth();
+            }
+            case "target_health_max": {
+                LivingEntity living = getTargetLivingEntity();
                 return living == null ? null : CompatibilityUtils.getMaxHealth(living);
             }
             case "mana": {
