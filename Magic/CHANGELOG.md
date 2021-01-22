@@ -43,6 +43,7 @@
  - The inactive_icon feature will now work on non-inventory-mode wands
  - Recipe discovery will now check for crafting permission
  - Jedi and Sith can use any color lightsaber
+ - The Force spell has been disabled until it can be re-worked
 
 ## Additions
 

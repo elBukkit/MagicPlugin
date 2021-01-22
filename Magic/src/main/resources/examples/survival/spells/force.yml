@@ -1,4 +1,6 @@
 force:
+    # Temporarily disabled pending re-work
+    enabled: false
     icon: leather{CustomModelData:18001}
     icon_disabled: leather{CustomModelData:18002}
     legacy_icon: spell_icon:151
