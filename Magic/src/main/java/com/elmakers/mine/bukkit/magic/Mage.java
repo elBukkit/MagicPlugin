@@ -61,7 +61,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.tasks.TeleportTask;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.batch.Batch;
@@ -112,6 +111,7 @@ import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
 import com.elmakers.mine.bukkit.tasks.CheckWandTask;
 import com.elmakers.mine.bukkit.tasks.MageLoadTask;
+import com.elmakers.mine.bukkit.tasks.TeleportTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
