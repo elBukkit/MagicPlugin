@@ -172,7 +172,7 @@ public class ActionSpell extends BrushSpell
     public void reloadParameters(CastContext context) {
         com.elmakers.mine.bukkit.api.action.ActionHandler handler = context.getRootHandler();
         if (handler != null) {
-            handler.prepare(context, context.getWorkingParameters());
+            handler.processParameters(context, context.getWorkingParameters());
         }
     }
 

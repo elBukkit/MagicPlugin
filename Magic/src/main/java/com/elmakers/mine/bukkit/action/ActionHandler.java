@@ -133,6 +133,15 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         }
     }
 
+    @Override
+    public void processParameters(CastContext context, ConfigurationSection parameters)
+    {
+        for (ActionContext action : actions)
+        {
+            action.processParameters(context, parameters);
+        }
+    }
+
     public void reset(CastContext context)
     {
         started = false;
