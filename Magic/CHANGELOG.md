@@ -10,6 +10,13 @@
  - Use the shop tool on a chest to set the chest for the shopkeeper to use
  - Profit!
 
+## Boss Bar Support
+
+ - Added BossBar action, see the countdown spell for an example
+   https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/examples/elworld/spells/countdown.yml
+ - Add boss_bar spell configuration, allows spells to show in the boss bar while they are active
+ - Added boss bars to Cloak and Boon
+
 ## Fixes
 
  - Fix some strange problems that can come up when customizing the builtin examples (affected PotterPlus)
@@ -47,7 +54,6 @@
  - Add "equation" parameter to Command action, works just like Message action
  - Add "enable_vanilla_sounds" configuration option for those of you who *really* hate the new sound configs
  - Add `critical_probability` and `crticail_damage_multiplier` parameters to Damage action
- - Added BossBar action
 
 # 8.2.3
 

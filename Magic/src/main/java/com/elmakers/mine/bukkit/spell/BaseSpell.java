@@ -28,6 +28,7 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -82,6 +83,7 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.SpellParameters;
+import com.elmakers.mine.bukkit.utility.BossBarConfiguration;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -267,6 +269,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
     protected Collection<Requirement> requirements = null;
+
+    // Boss bar
+    protected BossBar bossBar;
+    protected BossBarConfiguration bossBarConfiguration;
+    protected double bossBarMana;
 
     protected static Random random            = new Random();
 
@@ -1191,6 +1198,17 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
         } else if (node.contains("effects")) {
             controller.getLogger().warning("Invalid effects section in spell " + getKey() + ", did you forget to add cast: ?");
+        }
+
+        // Boss bar, can be a simple boolean or a config
+        bossBarConfiguration = null;
+        if (node.getBoolean("boss_bar")) {
+            bossBarConfiguration = new BossBarConfiguration(controller, node);
+        } else {
+            ConfigurationSection bossBarConfig = node.getConfigurationSection("boss_bar");
+            if (bossBarConfig != null) {
+                bossBarConfiguration = new BossBarConfiguration(controller, bossBarConfig);
+            }
         }
     }
 
@@ -2695,8 +2713,53 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void tick()
     {
+        checkBossBar();
         checkActiveDuration();
         checkActiveCosts();
+    }
+
+    private void checkBossBar() {
+        Player player = mage.getPlayer();
+        if (player != null && bossBarConfiguration != null) {
+            if (bossBar == null) {
+                bossBar = bossBarConfiguration.createBossBar(currentCast);
+                bossBar.addPlayer(player);
+                bossBarMana = mage.getMana();
+            }
+            double durationRemaining = 1;
+            if (duration > 0) {
+                durationRemaining = 1 - (System.currentTimeMillis() - spellData.getLastCast()) / duration;
+            }
+            double costsRemaining = 1;
+            if (activeCosts != null) {
+                int manaRequired = 0;
+                if (!mage.isCostFree()) {
+                    for (CastingCost cost : activeCosts) {
+                        manaRequired = cost.getMana(this);
+                        if (manaRequired > 0) break;
+                    }
+                }
+
+                if (manaRequired > 0) {
+                    double manaMax =  mage.getEffectiveManaMax();
+                    double manaRegeneration = 0;
+                    if (!disableManaRegeneration) {
+                        manaRegeneration = mage.getEffectiveManaRegeneration();
+                    }
+                    if (manaMax > manaRequired && manaRequired > manaRegeneration) {
+                        double manaDrain = manaRequired - manaRegeneration;
+                        double possibleDuration = bossBarMana / manaDrain;
+                        if (possibleDuration > 0) {
+                            double remainingMana = mage.getMana();
+                            double remainingDuration = remainingMana / manaDrain;
+                            costsRemaining = remainingDuration / possibleDuration;
+                        }
+                    }
+                }
+            }
+
+            bossBar.setProgress(Math.min(1,Math.max(0,Math.min(durationRemaining, costsRemaining))));
+        }
     }
 
     @Override
@@ -3036,6 +3099,12 @@ public class BaseSpell implements MageSpell, Cloneable {
             {
                 cost.refund(this);
             }
+        }
+
+        if (bossBar != null) {
+            bossBar.setVisible(false);
+            bossBar.removeAll();
+            bossBar = null;
         }
 
         if (cancelEffects) {
