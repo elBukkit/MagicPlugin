@@ -1,0 +1,18 @@
+countdown:
+  actions:
+    cast:
+    - class: ModifyVariable
+      variable: countdown
+      value: 10
+    - class: Repeat
+      actions:
+        - class: BossBar
+        - class: Delay
+        - class: ModifyVariable
+          variable: countdown
+          value: countdown - 1
+  parameters:
+    delay: 1000
+    repeat: 10
+    bar_title: Countdown
+    progress: countdown / 10
