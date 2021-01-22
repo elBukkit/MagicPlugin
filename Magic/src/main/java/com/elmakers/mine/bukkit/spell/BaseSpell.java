@@ -2604,6 +2604,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     {
         boolean cancelled = onCancelSelection();
         if (cancelled) {
+            sendMessageKey("cancel_selection");
             cancel();
         }
         return cancelled;

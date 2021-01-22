@@ -10,7 +10,8 @@ spells:
         insufficient: "&cRequires &4$cost"
         cooldown: You must wait $time.
         cancelled: Your spell was cancelled!
-        cancel: "a:&cCancelled &6$spell"
+        cancel: ""
+        cancel_selection: "a:&cCancelled &6$spell"
         entity_required: An entity is required.
         living_entity_required: A living entity is required.
         player_required: A player is required.

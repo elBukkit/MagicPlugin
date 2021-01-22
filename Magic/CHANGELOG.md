@@ -30,6 +30,7 @@
    - This was a fundamental change to config parsing, it will no longer try to auto-convert types
    - Keeping an eye out for issues
  - Fix Critical passive to work around Minecraft damage immunity timeout
+ - Turned off action bar message when spells like Boon and Cloak ran out of mana
 
 ## Changes
 
