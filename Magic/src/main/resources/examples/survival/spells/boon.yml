@@ -13,6 +13,7 @@ boon:
     quick_cast: true
     toggle: cancel
     disable_mana_regeneration: true
+    boss_bar: true
     actions:
         cast:
         - class: Repeat
