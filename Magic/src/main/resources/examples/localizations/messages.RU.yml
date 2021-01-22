@@ -373,7 +373,7 @@ shops:
   sell_title: "Продать ($balance&0)"
   sell_icon_name: "&6Продать предметы"
   buy_icon_name: "&aКупить предметы"
-  extra_spell: "&aНе требуется"
+  extra_spell: "&aНе требуется для повышения уровня"
   no_upgrade: "Тебе больше нечего изучать здесь."
   upgrade_name_change: "&r&4Улучшения: &r$name"
   level_requirement: "&r&cТребования: &6$path"
@@ -672,7 +672,8 @@ spells:
     insufficient: "&cТребуется &4$cost"
     cooldown: "Перезарядка: $time."
     cancelled: Твое заклинание было отменено
-    cancel: "a:&cЗаклинание &6$spell &cотменено"
+    cancel: ""
+    cancel_selection: "a:&cЗаклинание &6$spell &cотменено"
     entity_required: Требуется сущность.
     living_entity_required: Требуется живая сущность.
     player_required: Требуется игрок.
