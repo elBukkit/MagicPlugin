@@ -33,7 +33,7 @@ public class BossBarAction extends BaseSpellAction {
         if (bossBar == null) {
             bossBar = barConfig.createBossBar(context);
         }
-        bossBar.setProgress(progress);
+        bossBar.setProgress(Math.max(0, Math.min(1, progress)));
 
         Entity targetEntity = showTarget ? context.getTargetEntity() : context.getEntity();
         if (targetEntity == null) {
