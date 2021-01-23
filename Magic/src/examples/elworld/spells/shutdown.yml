@@ -1,0 +1,76 @@
+shutdown2:
+  name: Shutdown Server
+  description: Gives a 5-minute warning for server shutdown
+  icon: stick
+  actions:
+    cast:
+    - class: ModifyVariable
+      variable: started
+      value: epoch
+    - class: Asynchronous
+      actions:
+      - class: Interval
+        interval: 1000
+        duration: 60000
+        actions:
+          - class: AllEntities
+            actions:
+              - class: UpdateParameters
+                actions:
+                  - class: BossBar
+                    bar_title: "&cServer Shutting Down!"
+                    bar_progress: (60000 - (epoch - started)) / 60000
+    - class: AllEntities
+      actions:
+        - class: Message
+          message: "&e5 Minute warning, &fthe server will be &c&lshutting down!"
+    - class: Delay
+      delay: 240000
+    - class: AllEntities
+      actions:
+        - class: Message
+          message: "&e1 Minute warning, &fthe server will be &c&lshutting down!"
+    - class: Delay
+      delay: 50000
+    - class: AllEntities
+      actions:
+        - class: Message
+          message: "&efThe server will be &c&lshutting down &ein 10 seconds!"
+    - class: ModifyVariable
+      variable: countdown
+      value: 10
+    - class: Repeat
+      repeat: 9
+      actions:
+         - class: Delay
+           delay: 1000
+         - class: ModifyVariable
+           variable: countdown
+           value: countdown - 1
+         - class: AllEntities
+           actions:
+             - class: Message
+               message: "&fThe server will be &c&lshutting down &ein @countdown seconds!"
+    - class: AllEntities
+      actions:
+        - class: Message
+          message: "&c&lTHE SERVER IS SHUTTING DOWN NOW!!!"
+    - class: Delay
+      delay: 5000
+    - class: Command
+      commands:
+      - whitelist on
+      - kick @a
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Sphere
+        duration: 2000
+    - sound: magic.zap
+  parameters:
+    target_type: Player
+    message_target: true
+    target_self: true
+    bypass_protection: true
+    cooldown: 600000
