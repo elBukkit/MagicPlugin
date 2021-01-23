@@ -13,7 +13,7 @@ healthbar:
        variable: remaining
        value: target_health - damage_dealt
      - class: BossBar
-       bar_progress: "remaining/target_health_max"
+       bar_progress: "remaining/max(1,target_health_max)"
        bar_title: "$t's Health (@remaining/@target_health_max)[-$damage_dealt]"
      - class: Delay
  parameters:
