@@ -1,5 +1,10 @@
 # Migration Notes
 
+# 8.3
+
+ - The builtin economy was rebalanced, prices of items may have changed.
+   There is no "revert" example to undo this one, but contact me if you need the old prices.
+
 # 8.2
 
  - Projectile "start" actions have been renamed to "projectile" to avoid conflict with the "start" distance parameter.

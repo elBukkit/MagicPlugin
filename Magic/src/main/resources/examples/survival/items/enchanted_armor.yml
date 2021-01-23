@@ -1,0 +1,13 @@
+helmet_of_blinding:
+  worth: 750
+  item:
+     ==: org.bukkit.inventory.ItemStack
+     type: DIAMOND_HELMET
+     meta:
+       ==: ItemMeta
+       meta-type: UNSPECIFIC
+       display-name: Helmet of Blinding
+       lore:
+       - 'For use outside of water'
+       enchants:
+         WATER_WORKER: 10

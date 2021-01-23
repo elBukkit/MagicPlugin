@@ -6,3 +6,24 @@ pumpkin_pie:
 
 sugar:
   worth: 0.25
+
+mushroom_stew:
+  worth: 5
+
+beetroot_soup:
+  worth: 5
+
+rabbit_stew:
+  worth: 5
+
+glistering_melon_slice:
+  worth: 8
+
+golden_apple:
+  worth: 20
+
+golden_carrot:
+  worth: 20
+
+enchanted_golden_apple:
+  worth: 1000

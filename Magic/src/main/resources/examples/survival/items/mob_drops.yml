@@ -27,3 +27,39 @@ magma_cream:
 
 ender_pearl:
   worth: 10
+
+mutton:
+  worth: 0.5
+
+cooked_mutton:
+  worth: 0.6
+
+beef:
+  worth: 0.5
+
+cooked_beef:
+  worth: 0.6
+
+rabbit:
+  worth: 0.5
+
+cooked_rabbit:
+  worth: 0.5
+
+rabbit_hide:
+  worth: 0.5
+
+rabbit_foot:
+  worth: 20
+
+chicken:
+  worth: 0.5
+
+cooked_chicken:
+  worth: 0.6
+
+porkchop:
+  worth: 0.5
+
+cooked_porkchop:
+  worth: 0.6

@@ -1,128 +1,54 @@
 diamond_axe:
-  worth: 50
-
-dwarven_battle_axe:
-  worth: 7777
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_AXE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       display-name: Dwarven Battle Axe
-       enchants:
-         DAMAGE_ALL: 8
-         DURABILITY: 5
-
-
+  worth: 300
 diamond_spade:
-  worth: 16
-
-dwarven_spade:
   worth: 100
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_SPADE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       display-name: Dwarven Spade
-       lore:
-       - 'A spade used by many young dwarves'
-       enchants:
-         DIG_SPEED: 1
-         DURABILITY: 1
-
-dwarven_axe:
-  worth: 100
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_AXE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       display-name: Dwarven Axe
-       lore:
-       - 'An axe used by many young dwarves'
-       enchants:
-         DIG_SPEED: 1
-         DURABILITY: 1
-
-
+diamond_hoe:
+  worth: 200
 diamond_pickaxe:
-  worth: 50
+  worth: 300
+diamond_sword:
+  worth: 200
 
-dwarven_pickaxe:
-  worth: 777
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_PICKAXE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       display-name: Dwarven Pickaxe
-       enchants:
-         DIG_SPEED: 3
-         DURABILITY: 3
+iron_axe:
+  worth: 30
+iron_spade:
+  worth: 10
+iron_hoe:
+  worth: 20
+iron_pickaxe:
+  worth: 30
+iron_sword:
+  worth: 20
 
-dwarven_pickaxe_luck:
-  worth: 1337
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_PICKAXE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       display-name: Dwarven Pickaxe of Luck
-       enchants:
-         DIG_SPEED: 3
-         DURABILITY: 3
-         LOOT_BONUS_BLOCKS: 3
+stone_axe:
+  worth: 0.1
+stone_spade:
+  worth: 0.05
+stone_pickaxe:
+  worth: 0.15
+stone_sword:
+  worth: 0.10
+stone_hoe:
+  worth: 0.1
 
-felicis_pickaxe:
-  worth: 2500
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_PICKAXE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       display-name: Felicis Pickaxe
-       enchants:
-         LOOT_BONUS_BLOCKS: 5
+gold_axe:
+  worth: 90
+gold_spade:
+  worth: 30
+gold_hoe:
+  worth: 60
+gold_pickaxe:
+  worth: 90
+gold_sword:
+  worth: 60
 
-dwarven_felicis_pickaxe:
-  worth: 5555
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_PICKAXE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       display-name: Dwarven Felicis Pickaxe
-       enchants:
-         DIG_SPEED: 5
-         DURABILITY: 5
-         LOOT_BONUS_BLOCKS: 5
-
-loot3_pickaxe:
-  worth: 2500
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_PICKAXE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       enchants:
-         LOOT_BONUS_BLOCKS: 3
-
-loot5_pickaxe:
-  worth: 2500
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_PICKAXE
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       enchants:
-         LOOT_BONUS_BLOCKS: 5
+netherite_axe:
+  worth: 3000
+netherite_shovel:
+  worth: 1000
+netherite_hoe:
+  worth: 2000
+netherite_pickaxe:
+  worth: 3000
+netherite_sword:
+  worth: 2000

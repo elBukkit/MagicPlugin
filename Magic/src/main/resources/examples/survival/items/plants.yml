@@ -19,6 +19,35 @@ yellow_flower:0:
 red_mushroom:
   worth: 2
 
+yellow_flower:
+  worth: 3
+red_rose:
+  worth: 3
+double_plant:
+  worth: 3
+oxeye_daisy:
+  worth: 3
+blue_orchid:
+  worth: 3
+dandelion:
+  worth: 3
+dead_bush:
+  worth: 3
+fern:
+  worth: 3
+large_fern:
+  worth: 3
+orange_tulip:
+  worth: 3
+pink_tulip:
+  worth: 3
+poppy:
+  worth: 3
+red_tulip:
+  worth: 3
+white_tulip:
+  worth: 3
+
 seeds:
   worth: 0.5
 melon_seeds:
@@ -27,6 +56,13 @@ pumpkin_seeds:
   worth: 0.5
 beetroot_seeds:
   worth: 0.5
+
+sweet_berries:
+  worth: 1
+honeycomb:
+  worth: 5
+honey_bottle:
+  worth: 10
 
 jack_o_lantern:
   worth: 2

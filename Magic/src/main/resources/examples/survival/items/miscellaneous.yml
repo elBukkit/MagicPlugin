@@ -12,6 +12,8 @@ stone:5:
   worth: 0.4
 stone:6:
   worth: 0.5
+quartz:
+  worth: 0.1
 quartz_block:0:
   worth: 0.4
 quartz_block:1:
@@ -148,8 +150,11 @@ bow:
 arrow:
   worth: 0.5
 
+stick:
+  worth: 0.1
+
 leather:
-  worth: 10
+  worth: 1
 rotten_flesh:
   worth: 1
 
@@ -173,11 +178,11 @@ ender_chest:
 painting:
   worth: 2
 item_frame:
-  worth: 15
+  worth: 2
 furnace:
   worth: 1
 jukebox:
-  worth: 18
+  worth: 80
 chest:
   worth: 2
 workbench:
@@ -188,3 +193,20 @@ bed:
   worth: 4
 anvil:
   worth: 30
+
+prismarine_shard:
+  worth: 20
+sea_lantern:
+  worth: 100
+prismarine_crystals:
+  worth: 30
+
+name_tag:
+  worth: 1000
+
+saddle:
+  worth: 1500
+
+sea_pickle:
+  worth: 50
+

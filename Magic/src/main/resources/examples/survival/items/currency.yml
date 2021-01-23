@@ -30,6 +30,9 @@ diamond:
 diamond_block:
   worth: 900
 
+ancient_debris:
+  worth: 800
+
 netherite_ingot:
   worth: 1000
 

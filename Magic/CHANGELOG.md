@@ -9,6 +9,8 @@
  - Use the shop token to create a shopkeeper NPC and recipe a shop tool to manage your shop
  - Use the shop tool on a chest to set the chest for the shopkeeper to use
  - Profit!
+ - Note: the economy was rebalanced, prices were added to most, but not all, items. If an item
+   does not have a price assigned it will not appear in a player shop.
 
 ## Boss Bar Support
 
@@ -44,6 +46,7 @@
  - Recipe discovery will now check for crafting permission
  - Jedi and Sith can use any color lightsaber
  - The Force spell has been disabled until it can be re-worked
+ - Economy rebalance, builtin item prices have changed
 
 ## Additions
 

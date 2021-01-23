@@ -1,25 +1,44 @@
 leather_helmet:
-  worth: 50
+  worth: 5
 leather_chestplate:
-  worth: 80
+  worth: 8
 leather_leggings:
-  worth: 70
+  worth: 7
 leather_boots:
-  worth: 40
+  worth: 4
 
 diamond_helmet:
-  worth: 80
-
-helmet_of_blinding:
   worth: 500
-  item:
-     ==: org.bukkit.inventory.ItemStack
-     type: DIAMOND_HELMET
-     meta:
-       ==: ItemMeta
-       meta-type: UNSPECIFIC
-       display-name: Helmet of Blinding
-       lore:
-       - 'For use outside of water'
-       enchants:
-         WATER_WORKER: 10
+diamond_chestplate:
+  worth: 800
+diamond_leggings:
+  worth: 700
+diamond_boots:
+  worth: 400
+
+iron_helmet:
+  worth: 50
+iron_chestplate:
+  worth: 80
+iron_leggings:
+  worth: 70
+iron_boots:
+  worth: 40
+
+gold_helmet:
+  worth: 150
+gold_chestplate:
+  worth: 240
+gold_leggings:
+  worth: 210
+gold_boots:
+  worth: 120
+
+netherite_helmet:
+  worth: 5000
+netherite_chestplate:
+  worth: 8000
+netherite_leggings:
+  worth: 7000
+netherite_boots:
+  worth: 4000
