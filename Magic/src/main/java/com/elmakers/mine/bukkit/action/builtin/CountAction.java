@@ -59,7 +59,7 @@ public class CountAction extends BaseSpellAction
 
     @Override
     public void start(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
+        super.start(context, parameters);
         totalCount = 0;
         counts.clear();
     }

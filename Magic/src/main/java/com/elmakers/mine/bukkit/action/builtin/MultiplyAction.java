@@ -23,11 +23,12 @@ public class MultiplyAction extends CompoundAction
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         multiply = parameters.getInt("multiply", parameters.getInt("repeat", 2));
-        multiplied = new ArrayList<>();
     }
 
     @Override
     public void start(CastContext context, ConfigurationSection parameters) {
+        super.start(context, parameters);
+        multiplied = new ArrayList<>();
         ActionHandler base = getHandler("actions");
         if (base != null)
         {
