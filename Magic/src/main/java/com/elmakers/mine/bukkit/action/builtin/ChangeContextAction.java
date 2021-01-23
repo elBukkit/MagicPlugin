@@ -68,8 +68,8 @@ public class ChangeContextAction extends CompoundAction {
     protected Vector direction;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         useTargetMage = parameters.getBoolean("use_target_mage", false);
         targetEntityLocation = parameters.getBoolean("target_entity", false);
         targetCaster = parameters.getBoolean("target_caster", false);

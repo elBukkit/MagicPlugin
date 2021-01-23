@@ -19,8 +19,8 @@ public class MoveBlockAction extends BaseSpellAction
     private boolean setTarget;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         offset = ConfigurationUtils.getVector(parameters, "offset");
         setTarget = parameters.getBoolean("set_target", false);
     }

@@ -25,8 +25,8 @@ public class AllEntitiesAction extends CompoundEntityAction
     private boolean targetAllWorlds;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
     }
 

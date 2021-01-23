@@ -26,8 +26,8 @@ public class PowerBlockAction extends BaseSpellAction {
     private boolean applyPhysics = false;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         applyPhysics = parameters.getBoolean("physics", false);
     }
 

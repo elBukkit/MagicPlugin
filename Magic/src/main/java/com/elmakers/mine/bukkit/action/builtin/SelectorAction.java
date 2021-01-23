@@ -1409,7 +1409,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         this.context = context;
 
         defaultConfiguration = new SelectorConfiguration(parameters);
@@ -1465,7 +1465,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         }
 
         // Have to do this after adding options since options may register action handlers
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
     }
 
     protected void loadOptions(Collection<ConfigurationSection> optionConfigs) {

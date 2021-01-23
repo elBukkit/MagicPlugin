@@ -133,15 +133,6 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         }
     }
 
-    @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
-    {
-        for (ActionContext action : actions)
-        {
-            action.processParameters(context, parameters);
-        }
-    }
-
     public void reset(CastContext context)
     {
         started = false;
@@ -154,7 +145,9 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
 
     public SpellResult start(CastContext context, ConfigurationSection parameters)
     {
-        prepare(context, parameters);
+        for (ActionContext action : actions) {
+            action.start(context, parameters);
+        }
         reset(context);
         SpellResult handlerResult = perform(context);
         if (handlerResult == SpellResult.PENDING)

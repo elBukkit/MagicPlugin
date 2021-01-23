@@ -24,8 +24,8 @@ public class ModifyMaxHealthAction extends BaseSpellAction implements Listener {
     private double healthScale = 0.0;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         health = parameters.getDouble("max_health", 0.0);
         healthScale = parameters.getDouble("health_scale", 0.0);
     }

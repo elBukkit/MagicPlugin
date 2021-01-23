@@ -28,8 +28,8 @@ public class ModifyMageAction extends BaseSpellAction
     private ModifyType modifyType;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         mageClass = parameters.getString("mage_class", "");
         String modifyTypeString = parameters.getString("modify_type", "activate");
         try {

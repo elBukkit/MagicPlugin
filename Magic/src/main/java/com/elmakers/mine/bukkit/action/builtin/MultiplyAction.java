@@ -20,14 +20,14 @@ public class MultiplyAction extends CompoundAction
     private int multiply;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         multiply = parameters.getInt("multiply", parameters.getInt("repeat", 2));
         multiplied = new ArrayList<>();
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
+    public void start(CastContext context, ConfigurationSection parameters) {
         ActionHandler base = getHandler("actions");
         if (base != null)
         {
@@ -42,11 +42,11 @@ public class MultiplyAction extends CompoundAction
                 ActionHandler handler = (ActionHandler)base.clone();
                 if (i == 0 && initialParameters != null)
                 {
-                    handler.prepare(context, initialParameters);
+                    handler.start(context, initialParameters);
                 }
                 else
                 {
-                    handler.prepare(context, parameters);
+                    handler.start(context, parameters);
                 }
                 multiplied.add(handler);
             }

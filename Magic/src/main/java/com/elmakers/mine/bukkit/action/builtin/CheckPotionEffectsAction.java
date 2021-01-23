@@ -20,9 +20,9 @@ public class CheckPotionEffectsAction extends CheckAction {
     private Collection<PotionEffectType> blocked;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         required = getEffects(context, parameters, "required");
         blocked = getEffects(context, parameters, "blocked");
     }

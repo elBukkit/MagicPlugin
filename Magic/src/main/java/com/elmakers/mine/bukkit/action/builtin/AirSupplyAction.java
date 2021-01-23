@@ -19,9 +19,9 @@ public class AirSupplyAction extends BaseSpellAction
     private boolean max;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         max = parameters.getString("air", "").equalsIgnoreCase("max");
         if (!max) {
             air = parameters.getInt("air", 0);

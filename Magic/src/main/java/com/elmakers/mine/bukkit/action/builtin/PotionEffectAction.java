@@ -74,9 +74,9 @@ public class PotionEffectAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         ambient = parameters.getBoolean("effects_ambient", true);
         particles = parameters.getBoolean("effects_particles", true);
         amplifier = parameters.getInt("amplifier", 0);

@@ -26,9 +26,9 @@ public class TeleportAction extends BaseTeleportAction
     private boolean direct = false;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         Mage mage = context.getMage();
         ledgeSearchDistance = parameters.getInt("ledge_range", 2);
         autoPassthrough = parameters.getBoolean("allow_passthrough", false);

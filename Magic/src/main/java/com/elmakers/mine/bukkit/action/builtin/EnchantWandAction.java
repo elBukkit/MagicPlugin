@@ -28,8 +28,8 @@ public class EnchantWandAction extends BaseSpellAction
     private String exactPath = null;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         levels = parameters.getInt("levels", 1);
         useXp = parameters.getBoolean("use_xp", false);
         requiredPath = parameters.getString("path", null);

@@ -45,9 +45,9 @@ public class LightAction extends BaseSpellAction {
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         controller = context.getController();
         async = parameters.getBoolean("async", false);
         update = parameters.getBoolean("update", true);

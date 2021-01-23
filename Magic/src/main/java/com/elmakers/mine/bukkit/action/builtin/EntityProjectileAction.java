@@ -46,8 +46,8 @@ public class EntityProjectileAction extends CustomProjectileAction {
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         plugin = context.getPlugin();
         doVelocity = parameters.getBoolean("apply_velocity", true);
         doTeleport = parameters.getBoolean("teleport", true);

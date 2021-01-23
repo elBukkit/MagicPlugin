@@ -15,8 +15,8 @@ public class WeatherAction extends BaseSpellAction
     private String weatherString = "";
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         weatherString = parameters.getString("weather", "");
     }
 

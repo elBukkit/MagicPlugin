@@ -12,8 +12,8 @@ public class RemoveEntityAction extends BaseSpellAction
     private boolean ignoreInvalid;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         ignoreInvalid = parameters.getBoolean("ignore_invalid", true);
     }
 

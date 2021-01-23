@@ -19,8 +19,8 @@ public class UpgradePathAction extends BaseSpellAction {
     private int upgradeLevels;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         upgradeLevels = parameters.getInt("upgrade_levels", 0);
     }
 

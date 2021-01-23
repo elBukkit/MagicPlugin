@@ -37,8 +37,8 @@ public class EquationVolumeAction extends VolumeAction
     private MaterialBrush originalBrush;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         equation = EquationStore.getInstance().getTransform(parameters.getString("equation"), "x", "y", "z");
         brushMod = parameters.getString("brushmod");
         ConfigurationSection brushConfig = ConfigurationUtils.getConfigurationSection(parameters, "brushes");

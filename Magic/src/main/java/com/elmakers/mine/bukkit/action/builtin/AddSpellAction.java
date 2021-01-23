@@ -31,8 +31,8 @@ public class AddSpellAction extends BaseSpellAction
     private String addTarget;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         addTarget = parameters.getString("add_to", "wand");
         permissionNode = parameters.getString("permission", null);
         spellKey = parameters.getString("spell");

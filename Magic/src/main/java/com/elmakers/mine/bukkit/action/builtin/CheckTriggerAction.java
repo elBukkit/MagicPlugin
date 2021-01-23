@@ -13,9 +13,9 @@ public class CheckTriggerAction extends CheckAction {
     private String trigger;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         trigger = parameters.getString("trigger", "");
     }
 

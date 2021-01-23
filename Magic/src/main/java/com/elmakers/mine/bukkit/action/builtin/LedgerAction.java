@@ -25,9 +25,9 @@ public class LedgerAction extends BaseSpellAction {
     private Set<String> showTypes;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         List<String> ignoreList = ConfigurationUtils.getStringList(parameters, "ignore_currencies");
         if (ignoreList != null) {
             ignoreTypes = new HashSet<>(ignoreList);

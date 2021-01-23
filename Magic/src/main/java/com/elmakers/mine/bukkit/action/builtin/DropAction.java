@@ -37,8 +37,8 @@ public class DropAction extends BaseSpellAction {
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         dropCount = parameters.getInt("drop_count", -1);
         falling = parameters.getBoolean("falling", true);
         String toolMaterialName = parameters.getString("tool", defaultTool.name());

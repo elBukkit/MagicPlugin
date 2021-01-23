@@ -14,8 +14,8 @@ public class DeactivateAction extends BaseSpellAction
     private boolean deactivateSelf;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         deactivateSelf = parameters.getBoolean("deactivate_self", false);
     }
 

@@ -37,8 +37,8 @@ public class TimeAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         cycleMoonPhase = parameters.getBoolean("cycle_moon_phase", false);
         timeType = parameters.getString("time", "day");
     }

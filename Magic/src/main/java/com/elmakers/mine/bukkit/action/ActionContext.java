@@ -28,9 +28,9 @@ public class ActionContext implements Cloneable {
         action.prepare(context, getEffectiveParameters(parameters));
     }
 
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void start(CastContext context, ConfigurationSection parameters)
     {
-        action.processParameters(context, getEffectiveParameters(parameters));
+        action.start(context, getEffectiveParameters(parameters));
     }
 
     public SpellResult perform(CastContext context)

@@ -18,8 +18,8 @@ public class RepeatAction extends CompoundAction
     private int current;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         String repeatString = parameters.getString("repeat", "");
         if (repeatString.equals("infinite") || repeatString.equals("forever") || repeatString.equals("infinity")) {
             infinite = true;

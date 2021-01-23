@@ -32,9 +32,9 @@ public class TNTAction extends BaseProjectileAction
     private double velocity;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         track = true;
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         size = parameters.getInt("size", 6);
         count = parameters.getInt("count", 1);
         fuse = parameters.getInt("fuse", 80);

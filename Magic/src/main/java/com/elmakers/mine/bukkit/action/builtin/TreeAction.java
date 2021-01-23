@@ -69,9 +69,9 @@ public class TreeAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         treeType = null;
         requireSapling = parameters.getBoolean("require_sapling", false);
         String typeString = parameters.getString("type", "");

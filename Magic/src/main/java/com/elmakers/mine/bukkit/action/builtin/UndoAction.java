@@ -35,9 +35,9 @@ public class UndoAction extends BaseSpellAction
     private int undone;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         timeout = parameters.getInt("target_timeout", 0);
         blockTimeout = parameters.getInt("target_block_timeout", timeout);
 

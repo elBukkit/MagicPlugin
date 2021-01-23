@@ -17,9 +17,9 @@ public class ChangeBiomeAction extends BaseSpellAction {
     private Map<Biome, Biome> biomeMap;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         String biomeKey = parameters.getString("biome", "");
         if (!biomeKey.isEmpty()) {
             try {

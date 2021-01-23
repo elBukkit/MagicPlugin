@@ -19,8 +19,8 @@ public class AbsorbAction extends BaseSpellAction
     private boolean wildcard = false;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         wildcard = parameters.getBoolean("wildcard");
     }
 

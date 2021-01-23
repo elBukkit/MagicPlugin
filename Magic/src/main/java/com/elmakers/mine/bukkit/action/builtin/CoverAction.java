@@ -13,8 +13,8 @@ public class CoverAction extends CompoundAction
     protected boolean targetAbove = false;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         targetAbove = parameters.getBoolean("target_above", false);
     }
 

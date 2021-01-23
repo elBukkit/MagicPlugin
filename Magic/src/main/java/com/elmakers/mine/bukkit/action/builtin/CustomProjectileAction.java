@@ -196,8 +196,8 @@ public class CustomProjectileAction extends CompoundAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
 
         // Parameters that can be modified by a flight plan need
         // to be reset here.

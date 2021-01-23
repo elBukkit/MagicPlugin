@@ -31,9 +31,9 @@ public class ApplyCooldownAction extends BaseSpellAction
     private boolean targetCaster;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         cooldownAmount = parameters.getInt("duration", 0);
         if (parameters.contains("reduce")) {
             cooldownAmount = -parameters.getInt("reduce");

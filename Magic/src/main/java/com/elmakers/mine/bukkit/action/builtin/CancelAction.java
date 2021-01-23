@@ -22,9 +22,9 @@ public class CancelAction extends BaseSpellAction
     private boolean current;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         force = parameters.getBoolean("force", false);
         current = parameters.getBoolean("current", true);
         if (parameters.contains("spells")) {

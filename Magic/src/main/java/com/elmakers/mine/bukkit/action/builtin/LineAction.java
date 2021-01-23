@@ -34,9 +34,9 @@ public class LineAction extends CompoundAction
     private Vector direction;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         incrementData = parameters.getBoolean("increment_data", false);
         size = parameters.getInt("size", DEFAULT_SIZE);
         startDistance = parameters.getInt("start", 2);

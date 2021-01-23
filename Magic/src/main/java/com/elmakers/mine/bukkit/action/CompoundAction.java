@@ -27,7 +27,7 @@ public abstract class CompoundAction extends BaseSpellAction
     private boolean requiresBreakPermission = false;
     private boolean stopOnSuccess = false;
     private boolean initialized = false;
-    private boolean prepared = false;
+    private boolean started = false;
     protected boolean pauseOnNext = false;
     protected @Nullable ConfigurationSection actionConfiguration;
     protected @Nullable CastContext actionContext;
@@ -46,10 +46,6 @@ public abstract class CompoundAction extends BaseSpellAction
     }
 
     public SpellResult step(CastContext context) {
-        return SpellResult.NO_ACTION;
-    }
-
-    public SpellResult start(CastContext context) {
         return SpellResult.NO_ACTION;
     }
 
@@ -151,28 +147,32 @@ public abstract class CompoundAction extends BaseSpellAction
         currentHandler = null;
     }
 
+    public SpellResult start(CastContext context) {
+        return SpellResult.NO_ACTION;
+    }
+
+    @Override
+    public void start(CastContext context, ConfigurationSection parameters)
+    {
+        super.start(context, parameters);
+        ran = new HashSet<>();
+        for (ActionHandler handler : handlers.values()) {
+            handler.start(context, context.getSpell().getWorkingParameters());
+        }
+        started = true;
+    }
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        ran = new HashSet<>();
-        for (ActionHandler handler : handlers.values()) {
-            handler.prepare(context, context.getSpell().getWorkingParameters());
-        }
-        prepared = true;
-    }
-
-    @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
-    {
-        super.processParameters(context, parameters);
         stopOnSuccess = parameters.getBoolean("stop_on_success", false);
 
-        // if prepare() is not yet finished then it will call prepare() on all of the children,
-        // which will call processParameters, so we can skip it here.
-        if (prepared) {
+        // if start() is not yet finished then it will call start() on all of the children,
+        // which will call prepare, so we can skip it here.
+        if (started) {
             for (ActionHandler handler : handlers.values()) {
-                handler.processParameters(context, context.getSpell().getWorkingParameters());
+                handler.prepare(context, context.getSpell().getWorkingParameters());
             }
         }
     }

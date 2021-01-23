@@ -30,8 +30,8 @@ public class FlyAction extends BaseSpellAction {
     private boolean wasFlying = false;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         maxHeight = parameters.getInt("max_height", 0);
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", -1);
         duration = parameters.getInt("duration", 1);

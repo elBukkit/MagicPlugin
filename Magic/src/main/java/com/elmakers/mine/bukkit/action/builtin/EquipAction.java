@@ -110,7 +110,7 @@ public class EquipAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         material = ConfigurationUtils.getMaterialAndData(parameters, "material");
         item = context.getController().createItem(parameters.getString("item"));
         String slotName = parameters.getString("slot");

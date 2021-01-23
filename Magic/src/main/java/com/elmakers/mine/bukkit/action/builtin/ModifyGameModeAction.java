@@ -62,7 +62,7 @@ public class ModifyGameModeAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
         String gameModeString = parameters.getString("game_mode");
         try {

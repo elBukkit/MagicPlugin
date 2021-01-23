@@ -24,9 +24,9 @@ public class HealAction extends BaseSpellAction
     private double maxDistanceSquared;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         percentage = parameters.getDouble("percentage", 0);
         amount = parameters.getDouble("amount", 20);
         double maxDistance = parameters.getDouble("heal_max_distance");

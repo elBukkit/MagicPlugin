@@ -27,7 +27,7 @@ public class ShopAction extends SelectorAction {
     private boolean showNoPermission;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         boolean showPath = parameters.getBoolean("show_path_spells", false);
         boolean showExtra = parameters.getBoolean("show_extra_spells", false);
         boolean showRequired = parameters.getBoolean("show_required_spells", false);
@@ -66,7 +66,7 @@ public class ShopAction extends SelectorAction {
             parameters.set("apply_name_to_item", true);
         }
 
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
 
         // Restore items list. This is kind of messy, but so is this whole action.
         parameters.set("items", itemDefaults);

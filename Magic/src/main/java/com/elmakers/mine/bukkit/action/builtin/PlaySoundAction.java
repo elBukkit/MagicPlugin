@@ -43,8 +43,8 @@ public class PlaySoundAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         sound = new SoundEffect(parameters.getString("sound"));
         sound.setPitch((float)parameters.getDouble("pitch", sound.getPitch()));
         sound.setPitch((float)parameters.getDouble("sound_pitch", sound.getPitch()));

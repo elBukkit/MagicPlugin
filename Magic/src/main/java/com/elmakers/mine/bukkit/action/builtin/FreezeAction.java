@@ -25,9 +25,9 @@ public class FreezeAction extends BaseSpellAction
     private Material iceMaterial;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         freezeWater = parameters.getBoolean("freeze_water", true);
         freezeLava = parameters.getBoolean("freeze_lava", true);
         freezeFire = parameters.getBoolean("freeze_fire", true);

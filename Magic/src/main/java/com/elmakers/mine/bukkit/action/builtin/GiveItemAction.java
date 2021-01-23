@@ -33,8 +33,8 @@ public class GiveItemAction extends BaseSpellAction
     private String permissionNode = null;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         MageController controller = context.getController();
 
         permissionNode = parameters.getString("permission", null);

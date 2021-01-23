@@ -73,9 +73,9 @@ public class TakeItemAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         displayName = parameters.getString("display_name", null);
         if (displayName != null) {
             displayName = ChatColor.translateAlternateColorCodes('&', displayName);

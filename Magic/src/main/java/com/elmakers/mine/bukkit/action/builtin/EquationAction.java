@@ -44,9 +44,9 @@ public class EquationAction extends CompoundAction
     private Location startLocation;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         reorient = parameters.getBoolean("reorient", false);
         orient = parameters.getBoolean("orient", false);
         orientPitch = parameters.getBoolean("orient_pitch", true);

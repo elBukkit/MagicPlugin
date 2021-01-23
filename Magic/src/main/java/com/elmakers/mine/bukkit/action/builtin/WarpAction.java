@@ -13,8 +13,8 @@ public class WarpAction extends BaseTeleportAction
     private String warpKey;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         warpKey = parameters.getString("warp");
     }
 

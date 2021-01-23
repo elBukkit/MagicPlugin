@@ -43,8 +43,8 @@ public class RaiseBlockAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         consumeBlocks = parameters.getBoolean("consume", false);
         consumeVariants = parameters.getBoolean("consume_variants", true);
         verticalSearchDistance = parameters.getInt("vertical_range", context.getVerticalSearchDistance());

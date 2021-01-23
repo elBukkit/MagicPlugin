@@ -13,8 +13,8 @@ public class TakeCostsAction extends CheckAction {
     private List<Cost> costs = null;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         costs = Cost.parseCosts(ConfigurationUtils.getConfigurationSection(parameters, "costs"), context.getController());
     }
 

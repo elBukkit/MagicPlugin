@@ -17,8 +17,8 @@ public class DisablePhysicsAction extends BaseSpellAction
     private int duration;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         duration = parameters.getInt("duration", 1);
         duration += parameters.getInt("undo", 0);
         duration += parameters.getInt("physics_buffer", 1000);

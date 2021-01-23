@@ -18,9 +18,9 @@ public class CaptureAction extends BaseSpellAction {
     private double minHealth;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         minHealth = parameters.getDouble("min_health", -1);
     }
 

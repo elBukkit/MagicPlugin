@@ -36,9 +36,9 @@ public class ThrowBlockAction extends BaseProjectileAction
     private SourceLocation sourceLocation;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         double itemSpeed = parameters.getDouble("speed", 0.6f);
         speedMin = parameters.getDouble("speed_min", itemSpeed);
         speedMax = parameters.getDouble("speed_max", itemSpeed);

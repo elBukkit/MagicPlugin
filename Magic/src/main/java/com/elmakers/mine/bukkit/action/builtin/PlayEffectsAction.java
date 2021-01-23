@@ -26,8 +26,8 @@ public class PlayEffectsAction extends BaseSpellAction
     }
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         effectKey = parameters.getString("effect");
         effectKey = parameters.getString("effects", effectKey);
         countAsCast = parameters.getBoolean("effects_count_as_cast", false);

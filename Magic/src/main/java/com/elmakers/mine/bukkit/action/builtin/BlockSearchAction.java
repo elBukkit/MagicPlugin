@@ -14,9 +14,9 @@ public class BlockSearchAction extends CompoundAction
     private BlockFace direction;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.processParameters(context, parameters);
+        super.prepare(context, parameters);
         direction = BlockFace.UP;
         try {
             String directionString = parameters.getString("direction", "up").toUpperCase();

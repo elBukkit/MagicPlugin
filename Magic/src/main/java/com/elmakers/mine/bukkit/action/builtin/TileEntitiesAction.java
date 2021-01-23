@@ -26,8 +26,8 @@ public class TileEntitiesAction extends CompoundAction
     private int currentTile = 0;
 
     @Override
-    public void processParameters(CastContext context, ConfigurationSection parameters) {
-        super.processParameters(context, parameters);
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
     }
 
