@@ -135,6 +135,7 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
+import com.elmakers.mine.bukkit.economy.BaseMagicCurrency;
 import com.elmakers.mine.bukkit.economy.CustomCurrency;
 import com.elmakers.mine.bukkit.economy.ExperienceCurrency;
 import com.elmakers.mine.bukkit.economy.HealthCurrency;
@@ -1798,6 +1799,7 @@ public class MagicController implements MageController {
         // Configurations that don't rely on any external integrations
         logger.setContext("messages");
         messages.load(loader.getMessages());
+        processMessages();
         logger.setContext("materials");
         loadMaterials(loader.getMaterials());
 
@@ -1925,6 +1927,11 @@ public class MagicController implements MageController {
         }
 
         Bukkit.getScheduler().runTaskLater(plugin, new MigrationTask(this), 20 * 5);
+    }
+
+    private void processMessages() {
+        BaseMagicCurrency.formatter = new DecimalFormat(messages.get("numbers.decimal", "#,###.00"));
+        BaseMagicCurrency.intFormatter = new DecimalFormat(messages.get("numbers.integer", "#,###"));
     }
 
     private void registerManagers() {

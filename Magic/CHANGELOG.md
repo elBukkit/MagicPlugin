@@ -47,6 +47,7 @@
  - Jedi and Sith can use any color lightsaber
  - The Force spell has been disabled until it can be re-worked
  - Economy rebalance, builtin item prices have changed
+ - Vault currency prices will now show 2 decimal places (formatting is configurable in messages, number.integer/decimal)
 
 ## Additions
 

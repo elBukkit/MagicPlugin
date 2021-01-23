@@ -1,0 +1,3 @@
+numbers:
+  integer: #,###
+  decimal: #,###.00

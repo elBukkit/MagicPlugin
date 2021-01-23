@@ -9,12 +9,13 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 
 public abstract class BaseMagicCurrency implements Currency {
+    public static DecimalFormat formatter = new DecimalFormat("#,###.00");
+    public static DecimalFormat intFormatter = new DecimalFormat("#,###");
+
     protected final String key;
     protected final double worth;
     protected final String name;
     protected final String amountTemplate;
-    protected static final DecimalFormat formatter = new DecimalFormat("#,###.00");
-    protected static final DecimalFormat intFormatter = new DecimalFormat("#,###");
 
     protected BaseMagicCurrency(MageController controller, String key, double worth) {
         this(key, worth, controller.getMessages().get("costs." + key),
