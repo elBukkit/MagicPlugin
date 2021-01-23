@@ -1,4 +1,4 @@
-shutdown2:
+shutdown:
   name: Shutdown Server
   description: Gives a 5-minute warning for server shutdown
   icon: stick
@@ -11,7 +11,7 @@ shutdown2:
       actions:
       - class: Interval
         interval: 1000
-        duration: 60000
+        duration: 300000
         actions:
           - class: AllEntities
             actions:
@@ -19,7 +19,7 @@ shutdown2:
                 actions:
                   - class: BossBar
                     bar_title: "&cServer Shutting Down!"
-                    bar_progress: (60000 - (epoch - started)) / 60000
+                    bar_progress: (300000 - (epoch - started)) / 300000
     - class: AllEntities
       actions:
         - class: Message
@@ -35,7 +35,7 @@ shutdown2:
     - class: AllEntities
       actions:
         - class: Message
-          message: "&efThe server will be &c&lshutting down &ein 10 seconds!"
+          message: "&fThe server will be &c&lshutting down &ein 10 seconds!"
     - class: ModifyVariable
       variable: countdown
       value: 10
@@ -61,13 +61,6 @@ shutdown2:
       commands:
       - whitelist on
       - kick @a
-  effects:
-    cast:
-    - location: target
-      effectlib:
-        class: Sphere
-        duration: 2000
-    - sound: magic.zap
   parameters:
     target_type: Player
     message_target: true
