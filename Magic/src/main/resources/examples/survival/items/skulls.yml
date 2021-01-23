@@ -1,0 +1,264 @@
+skull_ale:
+  item: skull:http://textures.minecraft.net/texture/8f7dc8c91f7a24ecd9c5e9d4d8c39f0ac8333ae4853559acb8b03866f9d
+  worth: 200
+  name: '&bAle'
+
+skull_apple:
+  item: skull:http://textures.minecraft.net/texture/85ee2debeff42d9a958428840680204179e23cbbdafd6040101503e1b8f55827
+  worth: 200
+  name: '&bApple'
+
+skull_aquarium:
+  item: skull:http://textures.minecraft.net/texture/6dd8a9258092f26f117357e1b52bac8f4cedc575b982f52a85df3a313696d88f
+  worth: 200
+  name: '&bAquarium'
+
+skull_arrowdown:
+  item: skull:http://textures.minecraft.net/texture/9b7ce683d0868aa4378aeb60caa5ea80596bcffdab6b5af2d12595837a84853
+  worth: 200
+  name: '&bArrow Down'
+
+skull_arrowleft:
+  item: skull:http://textures.minecraft.net/texture/bb0f6e8af46ac6faf88914191ab66f261d6726a7999c637cf2e4159fe1fc477
+  worth: 200
+  name: '&bArrow Left'
+
+skull_arrowright:
+  item: skull:http://textures.minecraft.net/texture/f2f3a2dfce0c3dab7ee10db385e5229f1a39534a8ba2646178e37c4fa93b
+  worth: 200
+  name: '&bArrow Right'
+
+skull_arrowup:
+  item: skull:http://textures.minecraft.net/texture/58fe251a40e4167d35d081c27869ac151af96b6bd16dd2834d5dc7235f47791d
+  worth: 200
+  name: '&bArrow Up'
+
+skull_bentobox:
+  item: skull:http://textures.minecraft.net/texture/fe3052c535e14597a413ec32b32aafdd28686fdab6eed73030e1b94f7c38ff
+  worth: 200
+  name: '&bBento Box'
+
+skull_books:
+  item: skull:http://textures.minecraft.net/texture/7dc985a7a68c574f683c0b859521feb3fc3d2ffa05fa09db0bae44b8ac29b385
+  worth: 200
+  name: '&bBooks'
+
+skull_bread:
+  item: skull:http://textures.minecraft.net/texture/51997da64043b284822115643a654fdc4e8a7226664b48a4e1dbb557b5c0fe14
+  worth: 200
+  name: '&bBread'
+
+skull_burningcube:
+  item: skull:http://textures.minecraft.net/texture/333052e6b7a87923bdb88f94185e84b562dc5b854b7bb01cc017f22c5a8a4
+  worth: 200
+  name: '&bBurning Cube'
+
+skull_cake:
+  item: skull:http://textures.minecraft.net/texture/f9136514f342e7c5208a1422506a866158ef84d2b249220139e8bf6032e193
+  worth: 200
+  name: '&bCake'
+
+skull_carrot:
+  item: skull:http://textures.minecraft.net/texture/2159988443ee75d20c49c89abad5545bb4fb453a42b0388b5466355698bfa
+  worth: 200
+  name: '&bCarrot'
+
+skull_cheese:
+  item: skull:http://textures.minecraft.net/texture/34febbc15d1d4cc62bedc5d7a2b6f0f46cd5b0696a884de75e289e35cbb53a0
+  worth: 200
+  name: '&bCheese'
+
+skull_chocolatebar:
+  item: skull:http://textures.minecraft.net/texture/819f948d17718adace5dd6e050c586229653fef645d7113ab94d17b639cc466
+  worth: 200
+  name: '&bChocolate Bar'
+
+skull_clock:
+  item: skull:http://textures.minecraft.net/texture/a1af7105d7549ca59e5ddd0a3d6ba6ec64413e070daf288a13d0c30961052398
+  worth: 200
+  name: '&bClock'
+
+skull_companion:
+  item: skull:http://textures.minecraft.net/texture/7fa0e897fc501068c8e50599e646c08f28f1b04796eec475b58a6d8b241b3474
+  worth: 200
+  name: '&bCompanion Cube'
+
+skull_cookie:
+  item: skull:http://textures.minecraft.net/texture/b592cf9f42a5a8c995968493fdd1b11e0b69aad6473ff45384abe58b7fc7c7
+  worth: 200
+  name: '&bCookie'
+
+skull_copperchunk:
+  item: skull{display:{Name:"{\"text\":\"Copper Chunk\"}"},SkullOwner:{Id:[I;-1036162939,-1851833705,-1803264362,-2044992477],Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODc2NDA2MGI4MThlNGE2NzA2NzEzYzg1MWRmNTJhZmZiNzAwODM3MDE5Y2JkNzcxMjZlYTE1NGU3MGNkNjcxYyJ9fX0="}]}}}
+  worth: 200
+
+skull_crate:
+  item: skull:http://textures.minecraft.net/texture/8358fba2f1bdc519ba85e5366bab8def9bbe404ef639c2e3c654d10a1d8d3
+  worth: 200
+  name: '&bCrate'
+
+skull_creeperstone:
+  item: skull:http://textures.minecraft.net/texture/b7a6636d96d08f61939a60f57ee0d0299c0bd273b2bd30c1efe4f74e433a
+  worth: 200
+  name: '&bCreeper Stone'
+
+skull_diamondblock:
+  item: skull:http://textures.minecraft.net/texture/9631597dce4e4051e8d5a543641966ab54fbf25a0ed6047f11e6140d88bf48f
+  worth: 200
+  name: '&bDiamond Block'
+
+skull_donut:
+  item: skull:http://textures.minecraft.net/texture/837c9b82b186656e9f6363a2a1c6a4b5b93cfa9ef4dad6f16b94ebb5e362678
+  worth: 200
+  name: '&bDonut'
+
+skull_emeraldblock:
+  item: skull:http://textures.minecraft.net/texture/ac906d688e65802569d9705b579bce56edc86ea5c36bdd6d6fc35516a77d4
+  worth: 200
+  name: '&bEmerald Block'
+
+skull_fries:
+  item: skull:http://textures.minecraft.net/texture/a0eacac41a9eaf051376ef2f959701e1bbe1bf4aa6715adc34b6dc29a13ea9
+  worth: 200
+  name: '&bFrench Fries'
+
+skull_furnace:
+  item: skull:http://textures.minecraft.net/texture/87c0748362e9a63e07aa2b08b5f7d101e5395aa21532a476722dbdd98c2f2
+  worth: 200
+  name: '&bFurnace'
+
+skull_glados:
+  item: skull:http://textures.minecraft.net/texture/d9d048ce03f44f190842e12a8507434045e52add01a4f3bb6cc674c1a17e98be
+  worth: 200
+  name: '&bGLaDOS'
+
+skull_globe:
+  item: skull:http://textures.minecraft.net/texture/cf40942f364f6cbceffcf1151796410286a48b1aeba77243e218026c09cd1
+  worth: 200
+  name: '&bGlobe'
+
+skull_goldblock:
+  item: skull:http://textures.minecraft.net/texture/54bf893fc6defad218f7836efefbe636f1c2cc1bb650c82fccd99f2c1ee6
+  worth: 200
+  name: '&bGold Block'
+
+skull_hamburger:
+  item: skull:http://textures.minecraft.net/texture/a6ef1c25f516f2e7d6f7667420e33adcf3cdf938cb37f9a41a8b35869f569b
+  worth: 200
+  name: '&bHamburger'
+
+skull_ironman:
+  item: skull:http://textures.minecraft.net/texture/7cb05fc0ee938f49eab166c393e607a4f5f8b7061bc1e5cdca965eb95146dc75
+  worth: 200
+  name: '&bIron Man'
+
+skull_lantern:
+  item: skull:http://textures.minecraft.net/texture/474f894940c84fa2671601c38f9bde547cfa2d7c1a0ca38df79cde37422d6c
+  worth: 200
+  name: '&bLantern'
+
+skull_lavabucket:
+  item: skull:http://textures.minecraft.net/texture/8d5427a83540a08a3fa2e655c2964a07243514584a71ec35d6b9e184dfbe318
+  worth: 200
+  name: '&bLava Bucket'
+
+skull_lavamonster:
+  item: skull:http://textures.minecraft.net/texture/d412342b6165e7ff251898d4c859befc45c89bc26e7243062193497385f3
+  worth: 200
+  name: '&bLava Monster'
+
+skull_lemon:
+  item: skull:http://textures.minecraft.net/texture/957fd56ca15978779324df519354b6639a8d9bc1192c7c3de925a329baef6c
+  worth: 200
+  name: '&bLemon'
+
+skull_luigi:
+  item: skull:http://textures.minecraft.net/texture/3f09df4e9ea64ca36b16d41bffeeb20f8d5c429b060d809aa41a64f37d5cf058
+  worth: 200
+  name: '&bLuigi'
+
+skull_mario:
+  item: skull:http://textures.minecraft.net/texture/cf00b855d6f4947b9aab1c10de4e908087456e9dffcf56811859bc9307e2bd44
+  worth: 200
+  name: '&bMario'
+
+skull_moneybag:
+  item: skull:http://textures.minecraft.net/texture/e36e94f6c34a35465fce4a90f2e25976389eb9709a12273574ff70fd4daa6852
+  worth: 200
+  name: '&bMoney Bag'
+
+skull_pancakes:
+  item: skull:http://textures.minecraft.net/texture/347f4f5a74c6691280cd80e7148b49b2ce17dcf64fd55368627f5d92a976a6a8
+  worth: 200
+  name: '&bPancakes'
+
+skull_pokeball:
+  item: skull:http://textures.minecraft.net/texture/782f734fbd660723c46a4d9e161e04a0530f0a71329716d44760dad4693e0c44
+  worth: 200
+  name: '&bPokeball'
+
+skull_popcorn:
+  item: skull:http://textures.minecraft.net/texture/70bb2f279162d877c18897639a99cb3b8d25e72e2bdf85fa90eac149f3de0cf6
+  worth: 200
+  name: '&bPopcorn'
+
+skull_present_green:
+  item: skull:http://textures.minecraft.net/texture/2e10ac999703c735bf7ba6da63f9842d415c5bde07a742f96f3060e11ccfa6c6
+  worth: 200
+  name: '&bPresent'
+
+skull_present_red:
+  item: skull:http://textures.minecraft.net/texture/407c0d34f90548abf94040e5167c1e07c3427b920f66680d7356e23e11c1a77f
+  worth: 200
+  name: '&bPresent'
+
+skull_soupcan:
+  item: skull:http://textures.minecraft.net/texture/fc91f9507b48b6f719714fbaba77cf68534aa5b728371b11866d55ff833a7f
+  worth: 200
+  name: '&bCan of Soup'
+
+skull_strawberryjam:
+  item: skull:http://textures.minecraft.net/texture/c0b8b5889ee1c6388dc6c2c5dbd70b6984aefe54319a095e64db7638097b821
+  worth: 200
+  name: '&bStrawberry Jam'
+
+skull_sushi:
+  item: skull:http://textures.minecraft.net/texture/23bf8fca2af3592c5574b13e3bcf61e2fae829788535f0ddeaa7a2e45b6ba4
+  worth: 200
+  name: '&bSushi'
+
+skull_sushiroll:
+  item: skull:http://textures.minecraft.net/texture/2e12f267953e76ae66a8dd025a3286aecbc64b4ad98eeb10b3c67a69aae15
+  worth: 200
+  name: '&bSushi Roll'
+
+skull_taco:
+  item: skull:http://textures.minecraft.net/texture/98ced74a22021a535f6bce21c8c632b273dc2d9552b71a38d57269b3538cf
+  worth: 200
+  name: '&bTaco'
+
+skull_tea:
+  item: skull:http://textures.minecraft.net/texture/d8e94ddd769a5bea748376b4ec7383fd36d267894d7c3bee011e8e4f5fcd7
+  worth: 200
+  name: '&bCup of Tea'
+
+skull_watermelon:
+  item: skull:http://textures.minecraft.net/texture/f3903066ccc4695e113fee314c96a544eb919622eee7daa1d1966374f3fe848
+  worth: 200
+  name: '&bWatermelon'
+
+skull_whitecandle:
+  item: skull:http://textures.minecraft.net/texture/781226656d825291b1d7e456b74ecdce28672169641e6c35b1e23b9b40274e
+  worth: 200
+  name: '&bWhite Candle'
+
+skull_wildboar:
+  item: skull:http://textures.minecraft.net/texture/ca67bfada26bfdf8b7a52bb292fede983d69b4f175c079227914947e8a5f82f
+  worth: 200
+  name: '&bWild Boar'
+
+skull_yoshi:
+  item: skull:http://textures.minecraft.net/texture/6eedf164b500a63149fecb21b590524eda532c20d60976656c6f91e11f2f8223
+  worth: 200
+  name: '&bYoshi'
+
