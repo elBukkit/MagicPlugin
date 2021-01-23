@@ -35,6 +35,6 @@ public class FireSpell extends BlockSpell
         handler.loadAction(cover);
         handler.initialize(this, parameters);
         registerForUndo();
-        return handler.start(getCurrentCast(), parameters);
+        return handler.cast(getCurrentCast(), parameters);
     }
 }

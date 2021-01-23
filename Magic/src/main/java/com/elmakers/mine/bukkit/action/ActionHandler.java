@@ -143,11 +143,17 @@ public class ActionHandler implements com.elmakers.mine.bukkit.api.action.Action
         }
     }
 
-    public SpellResult start(CastContext context, ConfigurationSection parameters)
+    public void start(CastContext context, ConfigurationSection parameters)
     {
-        for (ActionContext action : actions) {
+        for (ActionContext action : actions)
+        {
             action.start(context, parameters);
         }
+    }
+
+    public SpellResult cast(CastContext context, ConfigurationSection parameters)
+    {
+        start(context, parameters);
         reset(context);
         SpellResult handlerResult = perform(context);
         if (handlerResult == SpellResult.PENDING)

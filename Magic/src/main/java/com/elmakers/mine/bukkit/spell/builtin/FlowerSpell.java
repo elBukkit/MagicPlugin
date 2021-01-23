@@ -34,6 +34,6 @@ public class FlowerSpell extends BlockSpell
         handler.initialize(this, parameters);
         registerForUndo();
 
-        return handler.start(getCurrentCast(), parameters);
+        return handler.cast(getCurrentCast(), parameters);
     }
 }

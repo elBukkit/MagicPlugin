@@ -34,7 +34,7 @@ public class ActionSpell extends BrushSpell
             ActionHandler handler = actions.get(result.name().toLowerCase());
             if (handler != null)
             {
-                handler.start(currentCast, castParameters);
+                handler.cast(currentCast, castParameters);
             }
         }
         super.processResult(result, castParameters);
@@ -145,7 +145,7 @@ public class ActionSpell extends BrushSpell
             currentCast.setAlternateResult(result);
             try {
                 currentCast.setInitialResult(result);
-                result = currentHandler.start(currentCast, parameters);
+                result = currentHandler.cast(currentCast, parameters);
                 result = currentCast.getInitialResult().max(result);
                 currentCast.setInitialResult(result);
             } catch (Exception ex) {
