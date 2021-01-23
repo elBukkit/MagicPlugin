@@ -74,7 +74,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         return materialKey;
     }
 
-    public ItemData(String key, ConfigurationSection configuration) throws Exception {
+    public ItemData(String key, ConfigurationSection configuration) throws InvalidMaterialException {
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");
         } else if (configuration.isConfigurationSection("item")) {
@@ -86,7 +86,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
                 item = material.getItemStack(1);
             }
             if (item == null) {
-                throw new Exception("Invalid item key: " + materialKey);
+                throw new InvalidMaterialException("Invalid item key: " + materialKey);
             }
 
             ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
@@ -102,11 +102,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
                 item = material.getItemStack(1);
             }
             if (item == null) {
-                throw new Exception("Invalid item key: " + materialKey);
+                throw new InvalidMaterialException("Invalid item key: " + materialKey);
             }
         }
         if (item == null) {
-            throw new Exception("Invalid item configuration: " + key);
+            throw new InvalidMaterialException("Invalid item configuration: " + key);
         }
         this.key = key;
         worth = configuration.getDouble("worth", 0);

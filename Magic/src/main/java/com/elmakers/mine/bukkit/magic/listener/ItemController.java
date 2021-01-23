@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.item.InvalidMaterialException;
 import com.elmakers.mine.bukkit.item.ItemData;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -52,8 +53,10 @@ public class ItemController {
             } else {
                 controller.getLogger().warning("Could not create item with key " + itemKey + " and material " + material);
             }
+        } catch (InvalidMaterialException ex) {
+            controller.getLogger().log(Level.WARNING, "Invalid item type '" + itemKey + "', may not exist on your server version: " + ex.getMessage());
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey);
+            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
     }
 
@@ -67,8 +70,10 @@ public class ItemController {
             } else {
                 controller.getLogger().warning("Could not create item with key " + itemKey);
             }
+        } catch (InvalidMaterialException ex) {
+            controller.getLogger().log(Level.WARNING, "Invalid item type '" + itemKey + "', may not exist on your server version: " + ex.getMessage());
         } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey);
+            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
     }
 
