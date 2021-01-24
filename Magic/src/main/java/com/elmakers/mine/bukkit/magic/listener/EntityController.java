@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -263,69 +262,18 @@ public class EntityController implements Listener {
     }
 
     /**
-     * This handler gives other plugins a chance to set the keep inventory flag
-     * Hopefully those plugins work at priority LOW or lower.
-     */
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        if (event.getKeepInventory()) return;
-
-        Player player = event.getEntity();
-        String rule = player.getWorld().getGameRuleValue("keepInventory");
-        if (rule.equals("true")) return;
-
-        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(player);
-        if (mage == null) return;
-
-        List<ItemStack> drops = event.getDrops();
-        List<ItemStack> removeDrops = new ArrayList<>();
-        PlayerInventory inventory = player.getInventory();
-        ItemStack[] contents = inventory.getContents();
-        for (int index = 0; index < contents.length; index++)
-        {
-            ItemStack itemStack = contents[index];
-            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-            if (NMSUtils.isTemporary(itemStack)) {
-                removeDrops.add(itemStack);
-                continue;
-            }
-            boolean keepItem = InventoryUtils.getMetaBoolean(itemStack, "keep", false);
-            if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
-            if (keepItem)
-            {
-                mage.addToRespawnInventory(index, itemStack);
-                inventory.setItem(index, null);
-                removeDrops.add(itemStack);
-            } else if (Wand.isSkill(itemStack)) {
-                removeDrops.add(itemStack);
-            }
-        }
-
-        drops.removeAll(removeDrops);
-    }
-
-    /**
      * This death handler fires right away to close the wand inventory before other plugin
      * see the drops.
      */
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerPreDeath(PlayerDeathEvent event) {
-        final Player player = event.getEntity();
-
-        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(player);
-        if (mage == null) return;
+    public void handlePlayerDeath(Player player, com.elmakers.mine.bukkit.magic.Mage mage, List<ItemStack> drops, boolean isKeepInventory) {
         Wand wand = mage.getActiveWand();
-        if (wand == null) return;
 
-        List<ItemStack> drops = event.getDrops();
+        // First, deactivate the active wand.
+        // If it had a spell inventory open, restore the survival inventory
+        // If keepInventory is not set, add the survival inventory to drops
         if (wand != null) {
             // Retrieve stored inventory before deactivating the wand
             if (mage.hasStoredInventory()) {
-                boolean isKeepInventory = event.getKeepInventory();
-                String rule = player.getWorld().getGameRuleValue("keepInventory");
-                if (rule.equalsIgnoreCase("true")) {
-                    isKeepInventory = true;
-                }
                 // Remove the wand inventory from drops
                 drops.clear();
 
@@ -337,6 +285,8 @@ public class EntityController implements Listener {
                     ItemStack[] stored = player.getInventory().getContents();
                     for (ItemStack stack : stored) {
                         if (stack != null) {
+                            // Since armor is not stored in the wand inventory it will be removed from drops
+                            // and added back in, hopefully that causes no issues
                             drops.add(stack);
                         }
                     }
@@ -345,12 +295,46 @@ public class EntityController implements Listener {
                 wand.deactivate();
             }
         }
+
+        if (isKeepInventory) return;
+
+        // Now check for undroppable items.
+        // Remove them from the inventory and drops list, and store them to give back on respawn
+        // It should be OK if some plugin wants to come in after this and turn keep inventory back on,
+        // it'll keep the inventory without any of the "keep" items (since we removed them), and hopefully
+        // Things will merge back together properly in the end.
+        PlayerInventory inventory = player.getInventory();
+        ItemStack[] contents = inventory.getContents();
+        for (int index = 0; index < contents.length; index++) {
+            ItemStack itemStack = contents[index];
+            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
+
+            // Remove temporary items from inventory and drops
+            if (NMSUtils.isTemporary(itemStack)) {
+                drops.remove(itemStack);
+                contents[index] = null;
+                continue;
+            }
+
+            // Save "keep" items to return on respawn
+            boolean keepItem = InventoryUtils.getMetaBoolean(itemStack, "keep", false);
+            if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
+            if (keepItem) {
+                mage.addToRespawnInventory(index, itemStack);
+                contents[index] = null;
+                drops.remove(itemStack);
+            } else if (Wand.isSkill(itemStack)) {
+                drops.remove(itemStack);
+                contents[index] = null;
+            }
+        }
+        inventory.setContents(contents);
     }
 
     /**
      * This death handler is for mobs and players alike
      */
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeath(EntityDeathEvent event)
     {
         Entity entity = event.getEntity();
@@ -387,6 +371,10 @@ public class EntityController implements Listener {
 
         mage.deactivateAllSpells();
         mage.onDeath(event);
+        if (event instanceof PlayerDeathEvent) {
+            PlayerDeathEvent playerDeath = (PlayerDeathEvent)event;
+            handlePlayerDeath(playerDeath.getEntity(), mage, playerDeath.getDrops(), playerDeath.getKeepInventory());
+        }
     }
 
     @EventHandler

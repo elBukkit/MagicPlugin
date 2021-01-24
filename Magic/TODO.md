@@ -4,7 +4,8 @@
 
 ## Hot
 
- - The `/wand name` command doesn't work reliably
+ - Add biome list to CheckBlock action
+ - The `/wand name` command doesn't work reliably (sounds like they are not using the command, see Discord)
  - Wolf house signs are broke again (check teleporter room)
  - Add "melee" flag for wands to allow them to do melee damage
 
