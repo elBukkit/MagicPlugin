@@ -1052,22 +1052,22 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void copyEquipmentTo(LivingEntity entity) {
         if (itemInHand != null) {
-            entity.getEquipment().setItemInMainHand(itemInHand.getItemStack(1));
+            itemInHand.getItemStack(1, itemStack -> entity.getEquipment().setItemInMainHand(itemStack));
         }
         if (itemInOffhand != null) {
-            entity.getEquipment().setItemInOffHand(itemInOffhand.getItemStack(1));
+            itemInOffhand.getItemStack(1, itemStack -> entity.getEquipment().setItemInOffHand(itemStack));
         }
         if (helmet != null) {
-            entity.getEquipment().setHelmet(helmet.getItemStack(1));
+            helmet.getItemStack(1, itemStack -> entity.getEquipment().setHelmet(itemStack));
         }
         if (chestplate != null) {
-            entity.getEquipment().setChestplate(chestplate.getItemStack(1));
+            chestplate.getItemStack(1, itemStack -> entity.getEquipment().setChestplate(itemStack));
         }
         if (leggings != null) {
-            entity.getEquipment().setLeggings(leggings.getItemStack(1));
+            leggings.getItemStack(1, itemStack -> entity.getEquipment().setLeggings(itemStack));
         }
         if (boots != null) {
-            entity.getEquipment().setBoots(boots.getItemStack(1));
+            boots.getItemStack(1, itemStack -> entity.getEquipment().setBoots(itemStack));
         }
     }
 

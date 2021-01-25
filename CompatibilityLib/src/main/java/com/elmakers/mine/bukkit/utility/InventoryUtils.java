@@ -474,6 +474,13 @@ public class InventoryUtils extends NMSUtils
         return SkinUtils.getOnlineSkinURL(playerName);
     }
 
+    public static boolean isSkull(ItemStack item) {
+        if (item == null) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+        return class_CraftMetaSkull.isInstance(meta);
+    }
+
     public static Object getSkullProfile(ItemMeta itemMeta)
     {
         Object profile = null;

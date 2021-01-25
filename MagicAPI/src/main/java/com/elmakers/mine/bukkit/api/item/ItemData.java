@@ -15,6 +15,8 @@ public interface ItemData {
     double getEarns();
     boolean hasCustomEarns();
     @Nullable
+    ItemStack getItemStack(int amount, ItemUpdatedCallback callback);
+    @Nullable
     ItemStack getItemStack(int amount);
     @Nullable
     ItemStack getItemStack();

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.item;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -24,9 +26,19 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableSet;
 
-public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
+public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback {
     public static final String MINECRAFT_ITEM_PREFIX = "minecraft:";
     public static double EARN_SCALE = 0.5;
+
+    private static class PendingUpdate {
+        public ItemStack item;
+        public ItemUpdatedCallback callback;
+
+        public PendingUpdate(ItemStack item, ItemUpdatedCallback callback) {
+            this.item = item;
+            this.callback = callback;
+        }
+    }
 
     private final MageController controller;
     private String key;
@@ -38,6 +50,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String creatorId;
     private String creator;
     private boolean locked;
+    private List<PendingUpdate> pending = null;
 
     public ItemData(ItemStack itemStack, MageController controller) {
         this.controller = controller;
@@ -226,9 +239,22 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Nullable
     @Override
     public ItemStack getItemStack(int amount) {
+        return getItemStack(amount, null);
+    }
+
+    @Nullable
+    public ItemStack getItemStack(int amount, ItemUpdatedCallback callback) {
         ItemStack newItem = InventoryUtils.getCopy(getOrCreateItemStack());
         if (newItem == null) {
+            if (callback != null) {
+                callback.updated(null);
+            }
             return null;
+        }
+        if (pending != null) {
+            pending.add(new PendingUpdate(newItem, callback));
+        } else if (callback != null) {
+            callback.updated(newItem);
         }
         newItem.setAmount(amount);
         return newItem;
@@ -243,7 +269,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Nonnull
     private ItemStack getOrCreateItemStack() {
         if (item == null) {
-            item = controller.createItem(materialKey);
+            item = controller.createItem(materialKey, null, false, this);
+            if (InventoryUtils.isSkull(item)) {
+                pending = new ArrayList<>();
+            }
         }
         if (item == null) {
             controller.getLogger().warning("Invalid material key: " + materialKey);
@@ -297,5 +326,27 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Override
     public boolean isLocked() {
         return this.locked;
+    }
+
+    @Override
+    public void updated(@Nullable ItemStack itemStack) {
+        if (pending != null && itemStack != null) {
+            this.item = itemStack;
+            ItemMeta populatedMeta = itemStack.getItemMeta();
+            Object profile = InventoryUtils.getSkullProfile(populatedMeta);
+            for (PendingUpdate update : pending) {
+                // We're assuming the only thing that changes here is skull profile
+                if (profile != null) {
+                    ItemStack item = update.item;
+                    ItemMeta meta = item.getItemMeta();
+                    InventoryUtils.setSkullProfile(meta, profile);
+                    item.setItemMeta(meta);
+                }
+                if (update.callback != null) {
+                    update.callback.updated(update.item);
+                }
+            }
+        }
+        pending = null;
     }
 }
