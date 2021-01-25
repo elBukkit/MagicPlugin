@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.configuration;
 
 import static org.bukkit.util.NumberConversions.toLong;
 

@@ -38,10 +38,10 @@ import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.configuration.MageParameters;
+import com.elmakers.mine.bukkit.configuration.ParameterizedConfigurationSection;
+import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
-import com.elmakers.mine.bukkit.magic.MageParameters;
-import com.elmakers.mine.bukkit.magic.ParameterizedConfigurationSection;
-import com.elmakers.mine.bukkit.magic.SpellParameters;
 
 import de.slikey.effectlib.util.ConfigUtils;
 

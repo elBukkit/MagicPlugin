@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.configuration;
 
 import java.util.Map;
 import java.util.Set;

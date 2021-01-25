@@ -133,6 +133,7 @@ import com.elmakers.mine.bukkit.block.LegacySchematic;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
+import com.elmakers.mine.bukkit.configuration.MageParameters;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.economy.BaseMagicCurrency;
