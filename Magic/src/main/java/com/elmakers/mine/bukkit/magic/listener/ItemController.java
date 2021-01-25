@@ -34,7 +34,7 @@ public class ItemController {
                 loadItem(itemKey, itemConfig);
             } else {
                 String itemString = configuration.getString(itemKey);
-                if (!itemString.isEmpty()) {
+                if (itemString != null && !itemString.isEmpty()) {
                     loadItem(itemKey, itemString);
                 } else {
                     controller.getLogger().warning("Improperly formatted item: " + itemKey);
@@ -45,7 +45,7 @@ public class ItemController {
 
     public void loadItem(String itemKey, String material) {
         try {
-            ItemData magicItem = new ItemData(itemKey, material);
+            ItemData magicItem = new ItemData(itemKey, material, controller);
             itemKeys.add(itemKey);
             items.put(itemKey, magicItem);
             itemsByStack.put(magicItem.getItemStack(1), magicItem);
@@ -58,7 +58,7 @@ public class ItemController {
 
     public void loadItem(String itemKey, ConfigurationSection configuration) {
         try {
-            ItemData magicItem = new ItemData(itemKey, configuration);
+            ItemData magicItem = new ItemData(itemKey, configuration, controller);
             if (magicItem != null) {
                 itemKeys.add(itemKey);
                 items.put(itemKey, magicItem);
@@ -118,7 +118,7 @@ public class ItemController {
         ItemData data = get(key);
         if (data == null) {
             try {
-                data = new ItemData(key);
+                data = new ItemData(key, controller);
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Error creating item: " + key);
             }

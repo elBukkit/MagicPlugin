@@ -6410,7 +6410,7 @@ public class MagicController implements MageController {
         }
         Wand wand = createWand(key);
         if (wand != null) {
-            return new com.elmakers.mine.bukkit.item.ItemData(wand.getItem());
+            return createItemData(wand.getItem());
         }
         return items.getOrCreate(key);
     }
@@ -6422,7 +6422,12 @@ public class MagicController implements MageController {
         if (InventoryUtils.isEmpty(item)) {
             return null;
         }
-        return new com.elmakers.mine.bukkit.item.ItemData(item);
+        return createItemData(item);
+    }
+
+    @Override
+    public ItemData createItemData(ItemStack itemStack) {
+        return new com.elmakers.mine.bukkit.item.ItemData(itemStack, this);
     }
 
     @Nullable

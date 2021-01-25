@@ -254,7 +254,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Item droppedItem = (Item)entity;
             item = droppedItem.getItemStack();
         } else if (entity instanceof Horse) {
-            extraData = new EntityHorseData((Horse)entity);
+            extraData = new EntityHorseData((Horse)entity, controller);
         } else if (entity instanceof Villager) {
             extraData = new EntityVillagerData((Villager)entity);
         } else if (entity instanceof Wolf) {
@@ -308,7 +308,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Nullable
     private ItemData getItem(ItemStack item) {
-        return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
+        return item == null ? null : controller.createItemData(item);
     }
 
     @Override

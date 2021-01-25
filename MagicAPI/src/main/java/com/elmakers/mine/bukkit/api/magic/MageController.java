@@ -513,6 +513,8 @@ public interface MageController {
     @Nullable
     ItemData getItem(ItemStack match);
     @Nullable
+    ItemData createItemData(ItemStack match);
+    @Nullable
     ItemData getOrCreateItem(String key);
     @Nullable
     ItemData getOrCreateItemOrWand(String key);

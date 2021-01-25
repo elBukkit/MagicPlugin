@@ -34,8 +34,8 @@ public class EntityChestedHorseData extends EntityAbstractHorseData {
         }
     }
 
-    public EntityChestedHorseData(Entity entity) {
-        super(entity);
+    public EntityChestedHorseData(Entity entity, MageController controller) {
+        super(entity, controller);
         if (entity instanceof ChestedHorse) {
             ChestedHorse horse = (ChestedHorse)entity;
             hasChest = horse.isCarryingChest();

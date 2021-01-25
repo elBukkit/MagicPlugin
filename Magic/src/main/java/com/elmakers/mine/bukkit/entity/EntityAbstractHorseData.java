@@ -39,20 +39,20 @@ public class EntityAbstractHorseData extends EntityAnimalData {
         saddle = controller.getOrCreateItem(parameters.getString("saddle"));
     }
 
-    public EntityAbstractHorseData(Entity entity) {
+    public EntityAbstractHorseData(Entity entity, MageController controller) {
         super(entity);
         if (entity instanceof AbstractHorse) {
             AbstractHorse horse = (AbstractHorse)entity;
             domestication = horse.getDomestication();
             maxDomestication = horse.getMaxDomestication();
             jumpStrength = horse.getJumpStrength();
-            saddle = getItem(horse.getInventory().getSaddle());
+            saddle = getItem(horse.getInventory().getSaddle(), controller);
         }
     }
 
     @Nullable
-    protected ItemData getItem(ItemStack item) {
-        return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
+    protected ItemData getItem(ItemStack item, MageController controller) {
+        return item == null ? null : controller.createItemData(item);
     }
 
     @Override

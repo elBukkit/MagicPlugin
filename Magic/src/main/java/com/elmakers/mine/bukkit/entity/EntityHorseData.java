@@ -46,11 +46,11 @@ public class EntityHorseData extends EntityAbstractHorseData {
         armor = controller.getOrCreateItem(parameters.getString("armor"));
     }
 
-    public EntityHorseData(Horse horse) {
-        super(horse);
+    public EntityHorseData(Horse horse, MageController controller) {
+        super(horse, controller);
         color = horse.getColor();
         style = horse.getStyle();
-        armor = getItem(horse.getInventory().getArmor());
+        armor = getItem(horse.getInventory().getArmor(), controller);
     }
 
     @Override

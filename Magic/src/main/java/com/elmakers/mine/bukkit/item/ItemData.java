@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -26,7 +28,9 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     public static final String MINECRAFT_ITEM_PREFIX = "minecraft:";
     public static double EARN_SCALE = 0.5;
 
+    private final MageController controller;
     private String key;
+    private String materialKey;
     private ItemStack item;
     private double worth;
     private Double earns;
@@ -35,46 +39,25 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String creator;
     private boolean locked;
 
-    public ItemData(ItemStack itemStack) {
+    public ItemData(ItemStack itemStack, MageController controller) {
+        this.controller = controller;
         this.item = NMSUtils.getCopy(itemStack);
         this.key = itemStack.getType().toString();
         locked = (Wand.getLockKey(itemStack) != null);
     }
 
-    public ItemData(String materialKey) throws InvalidMaterialException {
-        MaterialAndData material = new MaterialAndData(materialKey);
-        if (material.isValid() && CompatibilityUtils.isLegacy(material.getMaterial())) {
-            short convertData = (material.getData() == null ? 0 : material.getData());
-            material = new MaterialAndData(CompatibilityUtils.migrateMaterial(material.getMaterial(), (byte)convertData));
-        }
-        if (material.isValid()) {
-            item = material.getItemStack(1);
-        }
-        if (item == null) {
-            throw new InvalidMaterialException("Invalid item key: " + materialKey);
-        }
-        key = materialKey;
+    public ItemData(String materialKey, MageController controller) throws InvalidMaterialException {
+        this(materialKey, materialKey, controller);
     }
 
-    public ItemData(String key, String materialKey) throws InvalidMaterialException {
+    public ItemData(String key, String materialKey, MageController controller) throws InvalidMaterialException {
+        this.controller = controller;
         this.key = key;
-        MaterialAndData material = new MaterialAndData(materialKey);
-        if (material.isValid()) {
-            item = material.getItemStack(1);
-        }
-        if (item == null) {
-            throw new InvalidMaterialException("Invalid item key: " + materialKey);
-        }
+        this.materialKey = materialKey;
     }
 
-    public static String cleanMinecraftItemName(String materialKey) {
-        if (materialKey.startsWith(MINECRAFT_ITEM_PREFIX)) {
-            materialKey = materialKey.substring(MINECRAFT_ITEM_PREFIX.length());
-        }
-        return materialKey;
-    }
-
-    public ItemData(String key, ConfigurationSection configuration) throws InvalidMaterialException {
+    public ItemData(String key, ConfigurationSection configuration, MageController controller) throws InvalidMaterialException {
+        this.controller = controller;
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");
         } else if (configuration.isConfigurationSection("item")) {
@@ -109,6 +92,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             throw new InvalidMaterialException("Invalid item configuration: " + key);
         }
         this.key = key;
+        this.materialKey = key;
         worth = configuration.getDouble("worth", 0);
         if (configuration.contains("earns")) {
             earns = configuration.getDouble("earns");
@@ -189,17 +173,26 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         }
     }
 
-    public ItemData(String key, ItemStack item, double worth) throws Exception {
+    public ItemData(String key, ItemStack item, double worth, MageController controller) throws Exception {
+        this.controller = controller;
         if (item == null) {
             throw new Exception("Invalid item");
         }
         this.key = key;
+        this.materialKey = key;
         this.item = item;
         this.worth = worth;
     }
 
+    public static String cleanMinecraftItemName(String materialKey) {
+        if (materialKey.startsWith(MINECRAFT_ITEM_PREFIX)) {
+            materialKey = materialKey.substring(MINECRAFT_ITEM_PREFIX.length());
+        }
+        return materialKey;
+    }
+
     public ItemData createVariant(String key, short damage) throws Exception {
-        ItemData copy = new ItemData(key, this.item.clone(), worth);
+        ItemData copy = new ItemData(key, this.item.clone(), worth, controller);
         copy.categories = categories;
         copy.item.setDurability(damage);
         return copy;
@@ -233,7 +226,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Nullable
     @Override
     public ItemStack getItemStack(int amount) {
-        ItemStack newItem = InventoryUtils.getCopy(item);
+        ItemStack newItem = InventoryUtils.getCopy(getOrCreateItemStack());
         if (newItem == null) {
             return null;
         }
@@ -245,6 +238,25 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Override
     public ItemStack getItemStack() {
         return getItemStack(1);
+    }
+
+    @Nonnull
+    private ItemStack getOrCreateItemStack() {
+        if (item == null) {
+            MaterialAndData material = new MaterialAndData(materialKey);
+            if (material.isValid() && CompatibilityUtils.isLegacy(material.getMaterial())) {
+                short convertData = (material.getData() == null ? 0 : material.getData());
+                material = new MaterialAndData(CompatibilityUtils.migrateMaterial(material.getMaterial(), (byte)convertData));
+            }
+            if (material.isValid()) {
+                item = material.getItemStack(1);
+            }
+        }
+        if (item == null) {
+            controller.getLogger().warning("Invalid material key: " + materialKey);
+            item = new ItemStack(Material.AIR);
+        }
+        return item;
     }
 
     @Override
@@ -259,14 +271,14 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
 
     @Override
     public Material getType() {
-        return item == null ? Material.AIR : item.getType();
+        return getOrCreateItemStack().getType();
     }
 
     @Nullable
     @Deprecated
     @Override
     public org.bukkit.material.MaterialData getMaterialData() {
-        if (item == null) return null;
+        ItemStack item = getOrCreateItemStack();
         org.bukkit.material.MaterialData materialData = item.getData();
         materialData.setData((byte)item.getDurability());
         return materialData;
@@ -274,23 +286,19 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
 
     @Override
     public int getDurability() {
-        return item == null ? 0 : item.getDurability();
+        return getOrCreateItemStack().getDurability();
     }
 
     @Nullable
     @Override
     public ItemMeta getItemMeta() {
-        return item == null ? null : item.getItemMeta();
+        return getOrCreateItemStack().getItemMeta();
     }
 
     @Nullable
     @Override
     public MaterialAndData getMaterialAndData() {
-        if (item == null) {
-            return null;
-        }
-
-        return new MaterialAndData(item);
+        return new MaterialAndData(getOrCreateItemStack());
     }
 
     @Override

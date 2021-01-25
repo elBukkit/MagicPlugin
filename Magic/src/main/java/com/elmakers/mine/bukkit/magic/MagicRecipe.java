@@ -123,7 +123,7 @@ public class MagicRecipe {
                         if (CompatibilityUtils.isEmpty(input)) {
                             input = new ItemStack(Material.AIR);
                         }
-                        ItemData ingredient = new com.elmakers.mine.bukkit.item.ItemData(input);
+                        ItemData ingredient = controller.createItemData(input);
                         ingredients.put(ingredientKey, ingredient);
                         if (!CompatibilityUtils.setRecipeIngredient(this.recipe, ingredientKey, ingredient.getItemStack(1), ignoreDamage)) {
                             outputType = null;
