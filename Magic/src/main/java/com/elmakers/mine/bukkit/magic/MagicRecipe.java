@@ -156,7 +156,7 @@ public class MagicRecipe {
                 Set<String> keys = materials.getKeys(false);
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
-                    ItemData ingredient = controller.getOrCreateItemOrWand(materialKey);
+                    ItemData ingredient = controller.getOrCreateItem(materialKey);
                     if (ingredient == null) {
                         outputType = null;
                         controller.getLogger().warning("Invalid recipe ingredient " + materialKey);

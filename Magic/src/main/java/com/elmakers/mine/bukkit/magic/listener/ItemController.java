@@ -44,16 +44,10 @@ public class ItemController {
     }
 
     public void loadItem(String itemKey, String material) {
-        try {
-            ItemData magicItem = new ItemData(itemKey, material, controller);
-            itemKeys.add(itemKey);
-            items.put(itemKey, magicItem);
-            itemsByStack.put(magicItem.getItemStack(1), magicItem);
-        } catch (InvalidMaterialException ex) {
-            controller.getLogger().log(Level.WARNING, "Invalid item type '" + itemKey + "', may not exist on your server version: " + ex.getMessage());
-        } catch (Throwable ex) {
-            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
-        }
+        ItemData magicItem = new ItemData(itemKey, material, controller);
+        itemKeys.add(itemKey);
+        items.put(itemKey, magicItem);
+        itemsByStack.put(magicItem.getItemStack(1), magicItem);
     }
 
     public void loadItem(String itemKey, ConfigurationSection configuration) {
@@ -117,11 +111,7 @@ public class ItemController {
     public ItemData getOrCreate(String key) {
         ItemData data = get(key);
         if (data == null) {
-            try {
-                data = new ItemData(key, controller);
-            } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "Error creating item: " + key);
-            }
+            data = new ItemData(key, controller);
         }
         return data;
     }

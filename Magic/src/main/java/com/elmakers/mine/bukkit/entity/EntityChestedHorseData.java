@@ -28,7 +28,7 @@ public class EntityChestedHorseData extends EntityAbstractHorseData {
             this.inventory = new ItemStack[inventory.size()];
             int index = 0;
             for (String itemKey : inventory) {
-                ItemData data = controller.getOrCreateItemOrWand(itemKey);
+                ItemData data = controller.getOrCreateItem(itemKey);
                 this.inventory[index++] = data == null ? null : data.getItemStack();
             }
         }

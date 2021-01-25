@@ -70,7 +70,7 @@ public class MountArmorStandAction extends RideEntityAction
         mountWand = parameters.getBoolean("mount_wand", false);
         findWand = parameters.getBoolean("find_wand", false);
         mountName = parameters.getString("mount_name", null);
-        ItemData replacementType = controller.getOrCreateItemOrWand(parameters.getString("replacement_item"));
+        ItemData replacementType = controller.getOrCreateItem(parameters.getString("replacement_item"));
         if (replacementType != null) {
             replacementItem = replacementType.getItemStack(1);
         }
@@ -83,7 +83,7 @@ public class MountArmorStandAction extends RideEntityAction
             }
         }
 
-        ItemData itemType = controller.getOrCreateItemOrWand(parameters.getString("helmet_item"));
+        ItemData itemType = controller.getOrCreateItem(parameters.getString("helmet_item"));
         if (itemType != null) {
             helmetItem = itemType.getItemStack(1);
             if (helmetItem != null) {

@@ -103,35 +103,35 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         }
 
         MageController controller = context.getController();
-        ItemData itemType = controller.getOrCreateItemOrWand(parameters.getString("right_arm_item"));
+        ItemData itemType = controller.getOrCreateItem(parameters.getString("right_arm_item"));
         if (itemType != null) {
             rightArmItem = itemType.getItemStack(1);
             if (rightArmItem != null && unbreakableItems) {
                 InventoryUtils.makeUnbreakable(rightArmItem);
             }
         }
-        itemType = controller.getOrCreateItemOrWand(parameters.getString("helmet_item"));
+        itemType = controller.getOrCreateItem(parameters.getString("helmet_item"));
         if (itemType != null) {
             helmetItem = itemType.getItemStack(1);
             if (helmetItem != null && unbreakableItems) {
                 InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(helmetItem));
             }
         }
-        itemType = controller.getOrCreateItemOrWand(parameters.getString("chestplate_item"));
+        itemType = controller.getOrCreateItem(parameters.getString("chestplate_item"));
         if (itemType != null) {
             chestplateItem = itemType.getItemStack(1);
             if (chestplateItem != null && unbreakableItems) {
                 InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(chestplateItem));
             }
         }
-        itemType = controller.getOrCreateItemOrWand(parameters.getString("leggings_item"));
+        itemType = controller.getOrCreateItem(parameters.getString("leggings_item"));
         if (itemType != null) {
             leggingsItem = itemType.getItemStack(1);
             if (leggingsItem != null && unbreakableItems) {
                 InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(leggingsItem));
             }
         }
-        itemType = controller.getOrCreateItemOrWand(parameters.getString("boots_item"));
+        itemType = controller.getOrCreateItem(parameters.getString("boots_item"));
         if (itemType != null) {
             bootsItem = itemType.getItemStack(1);
             if (bootsItem != null && unbreakableItems) {

@@ -6409,24 +6409,13 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public ItemData getOrCreateItemOrWand(String key) {
-        if (key == null || key.isEmpty()) {
-            return null;
-        }
-        Wand wand = createWand(key);
-        if (wand != null) {
-            return createItemData(wand.getItem());
-        }
-        return items.getOrCreate(key);
+        return getOrCreateItem(key);
     }
 
     @Nullable
     @Override
     public ItemData getOrCreateMagicItem(String key) {
-        ItemStack item = createItem(key);
-        if (InventoryUtils.isEmpty(item)) {
-            return null;
-        }
-        return createItemData(item);
+        return getOrCreateItem(key);
     }
 
     @Override

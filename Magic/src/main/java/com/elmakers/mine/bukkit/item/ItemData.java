@@ -46,11 +46,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         locked = (Wand.getLockKey(itemStack) != null);
     }
 
-    public ItemData(String materialKey, MageController controller) throws InvalidMaterialException {
+    public ItemData(String materialKey, MageController controller) {
         this(materialKey, materialKey, controller);
     }
 
-    public ItemData(String key, String materialKey, MageController controller) throws InvalidMaterialException {
+    public ItemData(String key, String materialKey, MageController controller) {
         this.controller = controller;
         this.key = key;
         this.materialKey = materialKey;
@@ -243,14 +243,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     @Nonnull
     private ItemStack getOrCreateItemStack() {
         if (item == null) {
-            MaterialAndData material = new MaterialAndData(materialKey);
-            if (material.isValid() && CompatibilityUtils.isLegacy(material.getMaterial())) {
-                short convertData = (material.getData() == null ? 0 : material.getData());
-                material = new MaterialAndData(CompatibilityUtils.migrateMaterial(material.getMaterial(), (byte)convertData));
-            }
-            if (material.isValid()) {
-                item = material.getItemStack(1);
-            }
+            item = controller.createItem(materialKey);
         }
         if (item == null) {
             controller.getLogger().warning("Invalid material key: " + materialKey);

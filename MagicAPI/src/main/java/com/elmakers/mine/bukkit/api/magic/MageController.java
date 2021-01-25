@@ -516,9 +516,19 @@ public interface MageController {
     ItemData createItemData(ItemStack match);
     @Nullable
     ItemData getOrCreateItem(String key);
+
+    /**
+     * Redirects to getOrCreateItem
+     */
     @Nullable
+    @Deprecated
     ItemData getOrCreateItemOrWand(String key);
+
+    /**
+     * Redirects to getOrCreateItem
+     */
     @Nullable
+    @Deprecated
     ItemData getOrCreateMagicItem(String key);
     void unloadItemTemplate(String key);
     void loadItemTemplate(String key, ConfigurationSection itemNode);
