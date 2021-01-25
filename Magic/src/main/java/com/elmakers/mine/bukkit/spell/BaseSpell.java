@@ -79,10 +79,10 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MageClass;
-import com.elmakers.mine.bukkit.utility.BossBarConfiguration;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -1200,15 +1200,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Boss bar, can be a simple boolean or a config
-        bossBarConfiguration = null;
-        if (node.getBoolean("boss_bar")) {
-            bossBarConfiguration = new BossBarConfiguration(controller, node);
-        } else {
-            ConfigurationSection bossBarConfig = node.getConfigurationSection("boss_bar");
-            if (bossBarConfig != null) {
-                bossBarConfiguration = new BossBarConfiguration(controller, bossBarConfig);
-            }
-        }
+        bossBarConfiguration = BossBarConfiguration.parse(controller, node, "$spell");
     }
 
     @Nullable

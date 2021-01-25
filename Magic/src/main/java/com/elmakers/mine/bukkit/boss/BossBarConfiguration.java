@@ -1,6 +1,7 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.boss;
 
 import java.util.List;
+import javax.annotation.Nullable;
 
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -9,16 +10,25 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class BossBarConfiguration {
     private String title;
     private BarColor color;
     private BarStyle style;
     private BarFlag[] flags;
+    private double radius;
+    private long updateInterval;
+    private int updateIntervalRandomization;
 
     public BossBarConfiguration(MageController controller, ConfigurationSection parameters) {
-        title = parameters.getString("bar_title", "$spell");
+        this(controller, parameters, "$spell");
+    }
+
+    public BossBarConfiguration(MageController controller, ConfigurationSection parameters, String defaultTitle) {
+        title = parameters.getString("bar_title", defaultTitle);
         String colorString = parameters.getString("bar_color");
         if (colorString != null && !colorString.isEmpty()) {
             try {
@@ -53,6 +63,23 @@ public class BossBarConfiguration {
         } else {
             this.flags = new BarFlag[0];
         }
+        radius = parameters.getDouble("bar_radius", 32);
+        updateInterval = parameters.getLong("bar_interval", 10000);
+        updateIntervalRandomization = parameters.getInt("bar_interval_randomization", 1000);
+    }
+
+    @Nullable
+    public static BossBarConfiguration parse(MageController controller, ConfigurationSection config, String defaultTitle) {
+        BossBarConfiguration bossBarConfiguration = null;
+        if (config.getBoolean("boss_bar")) {
+            bossBarConfiguration = new BossBarConfiguration(controller, config, defaultTitle);
+        } else {
+            ConfigurationSection bossBarConfig = config.getConfigurationSection("boss_bar");
+            if (bossBarConfig != null) {
+                bossBarConfiguration = new BossBarConfiguration(controller, bossBarConfig, defaultTitle);
+            }
+        }
+        return bossBarConfiguration;
     }
 
     public BossBar createBossBar(CastContext context) {
@@ -60,5 +87,28 @@ public class BossBarConfiguration {
         BossBar bossBar = context.getPlugin().getServer().createBossBar(title, color, style, flags);
         bossBar.setVisible(true);
         return bossBar;
+    }
+
+    public BossBar createBossBar(Mage mage) {
+        String title = mage.parameterizeMessage(this.title);
+        BossBar bossBar = mage.getController().getPlugin().getServer().createBossBar(title, color, style, flags);
+        bossBar.setVisible(true);
+        return bossBar;
+    }
+
+    public BossBarTracker createTracker(Mage mage) {
+        return new BossBarTracker(mage, this);
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public long getUpdateInterval() {
+        return updateInterval;
+    }
+
+    public int getUpdateIntervalRandomization() {
+        return updateIntervalRandomization;
     }
 }

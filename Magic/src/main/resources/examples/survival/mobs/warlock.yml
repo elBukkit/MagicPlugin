@@ -11,6 +11,7 @@ warlock:
   health: 50
   default_drops: false
   transformable: false
+  boss_bar: true
   protection:
     fall: 1
   interval: 1000

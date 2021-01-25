@@ -64,6 +64,8 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
+import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -165,6 +167,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected EntityData.SourceType interactCommandSource;
     protected List<String> interactCommands;
     protected ConfigurationSection disguise;
+    protected BossBarConfiguration bossBar;
 
     protected EntityMageData mageData;
     protected EntityData mount;
@@ -346,6 +349,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         transformable = parameters.getBoolean("transformable", true);
         preventProjectiles = parameters.getBoolean("prevent_projectiles", false);
         preventMelee = parameters.getBoolean("prevent_melee", false);
+        bossBar = BossBarConfiguration.parse(controller, parameters, "$pn");
 
         String entityName = parameters.contains("type") ? parameters.getString("type") : key;
         if (entityName != null && !entityName.isEmpty()) {
@@ -1376,5 +1380,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public boolean isHidden() {
         return isHidden;
+    }
+
+    @Nullable
+    public BossBarTracker getBossBar(Mage mage) {
+        return bossBar == null ? null : bossBar.createTracker(mage);
     }
 }

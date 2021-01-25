@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.BossBarConfiguration;
+import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 
 public class BossBarAction extends BaseSpellAction {
     private BossBarConfiguration barConfig;

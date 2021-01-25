@@ -526,6 +526,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isStealth();
     boolean isSneaking();
     boolean isJumping();
+    void removed();
 
     void tick();
 
@@ -782,5 +783,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isUrlIconsEnabled();
     boolean canUse(ItemStack item);
     boolean canCraft(String recipeKey);
+    String parameterizeMessage(String command);
     String parameterize(String command, String prefix);
 }

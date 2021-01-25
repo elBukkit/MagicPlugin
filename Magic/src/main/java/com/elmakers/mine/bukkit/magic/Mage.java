@@ -96,6 +96,7 @@ import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
+import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.effect.MageEffectContext;
@@ -201,6 +202,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long disableWandOpenUntil = 0;
     private long created;
     private MageEffectContext effectContext = null;
+    private BossBarTracker bossBar = null;
 
     private DamagedBy topDamager;
     private DamagedBy lastDamager;
@@ -1798,6 +1800,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void removed() {
+        if (bossBar != null) {
+            bossBar.remove();
+            bossBar = null;
+        }
+    }
+
+    @Override
     public void tick() {
         triggeringSpells.clear();
         long now = System.currentTimeMillis();
@@ -1816,6 +1826,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             trigger("interval");
             updateVelocity();
             lastTick = now;
+        }
+        if (bossBar != null) {
+            bossBar.tick();
         }
 
         // Check for expired modifiers
@@ -4347,6 +4360,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             updatePassiveEffects();
         }
 
+        // Initialize boss bar
+        bossBar = entityData.getBossBar(this);
+
         // Only Magic Mobs tracks damage by player, for now
         damagedBy = new HashMap<>();
     }
@@ -5244,6 +5260,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return false;
+    }
+
+    @Override
+    public String parameterizeMessage(String message) {
+        return parameterize(message, "$");
     }
 
     @Override

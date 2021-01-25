@@ -10,6 +10,12 @@ dark_wizard:
   health: 100
   default_drops: false
   interval: 1000
+  boss_bar:
+    bar_color: red
+    bar_flags:
+      - create_fog
+      - darken_sky
+      - play_boss_music
   triggers:
     damage1:
       type: damage
