@@ -64,6 +64,7 @@
  - Add "enable_vanilla_sounds" configuration option for those of you who *really* hate the new sound configs
  - Add `critical_probability` and `critical_damage_multiplier` parameters to Damage action
  - Added new builtin attributes: target_health, target_health_max, epoch
+ - Add support for using saved disguises in LibsDisguises
 
 # 8.2.3
 
