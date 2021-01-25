@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
@@ -27,7 +26,7 @@ import com.google.common.collect.ImmutableSet;
 public class BaseMagicProperties implements MagicProperties {
 
     protected final @Nonnull MagicController controller;
-    protected ConfigurationSection configuration = new MemoryConfiguration();
+    protected ConfigurationSection configuration = ConfigurationUtils.newConfigurationSection();
 
     // TODO: Separate these out into wand vs class properties
     public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(

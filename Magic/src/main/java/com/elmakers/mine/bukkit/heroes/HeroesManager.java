@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -25,6 +24,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.ManaController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.TreeMultimap;
@@ -242,7 +242,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
 
         MageSpell newSpell = new HeroesSkillSpell();
         newSpell.initialize(controller);
-        ConfigurationSection config = new MemoryConfiguration();
+        ConfigurationSection config = ConfigurationUtils.newConfigurationSection();
         String iconURL = SkillConfigManager.getRaw(skill, "icon-url", SkillConfigManager.getRaw(skill, "icon_url", null));
         if (iconURL == null || iconURL.isEmpty()) {
             String icon = SkillConfigManager.getRaw(skill, "icon", null);

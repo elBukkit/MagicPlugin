@@ -6,7 +6,6 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -17,6 +16,7 @@ import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
@@ -27,7 +27,7 @@ import com.herocraftonline.heroes.characters.skill.SkillSetting;
 public class HeroesSpellSkill extends ActiveSkill {
     private final SpellTemplate spellTemplate;
     private final MageController controller;
-    private final ConfigurationSection parameters = new MemoryConfiguration();
+    private final ConfigurationSection parameters = ConfigurationUtils.newConfigurationSection();
     private int spellLevel = 1;
 
     public HeroesSpellSkill(Heroes heroes, String spellKey) {
@@ -106,7 +106,7 @@ public class HeroesSpellSkill extends ActiveSkill {
             }
             Set<String> parameterKeys = parameters.getKeys(false);
             ConfigurationSection spellParameters = spellTemplate.getSpellParameters();
-            ConfigurationSection heroParameters = new MemoryConfiguration();
+            ConfigurationSection heroParameters = ConfigurationUtils.newConfigurationSection();
             for (String parameterKey : parameterKeys) {
                 String value = parameters.getString(parameterKey);
                 String magicKey = heroesToMagic(parameterKey);

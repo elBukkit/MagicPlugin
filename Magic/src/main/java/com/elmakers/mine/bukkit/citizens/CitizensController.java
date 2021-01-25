@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -25,6 +24,7 @@ import com.elmakers.mine.bukkit.integration.NPCSupplier;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.npc.MagicNPC;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
@@ -127,7 +127,7 @@ public class CitizensController implements NPCSupplier {
                 entityType = entity.getType().name();
                 if (entity instanceof Player) {
                     entityType = "villager";
-                    ConfigurationSection disguise = new MemoryConfiguration();
+                    ConfigurationSection disguise = ConfigurationUtils.newConfigurationSection();
                     disguise.set("type", "player");
                     disguise.set("skin", npc.getName());
                     parameters.set("disguise", disguise);
@@ -195,7 +195,7 @@ public class CitizensController implements NPCSupplier {
                     CitizensTrait base = (CitizensTrait)trait;
                     if (base.isInvisible()) {
                         List<ConfigurationSection> potionEffects = new ArrayList<>();
-                        ConfigurationSection invisibility = new MemoryConfiguration();
+                        ConfigurationSection invisibility = ConfigurationUtils.newConfigurationSection();
                         invisibility.set("type", "invisibility");
                         invisibility.set("duration", "forever");
                         potionEffects.add(invisibility);
@@ -206,7 +206,7 @@ public class CitizensController implements NPCSupplier {
                         parameters.set("helmet", controller.getItemKey(hat));
                     }
                     if (base.getCost() > 0) {
-                        ConfigurationSection costs = new MemoryConfiguration();
+                        ConfigurationSection costs = ConfigurationUtils.newConfigurationSection();
                         costs.set("currency", base.getCost());
                         parameters.set("costs", costs);
                     }

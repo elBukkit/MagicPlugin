@@ -21,7 +21,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -744,7 +743,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         properties.setPath(getKey());
 
         boolean addedProperties = false;
-        ConfigurationSection wandProperties = new MemoryConfiguration();
+        ConfigurationSection wandProperties = ConfigurationUtils.newConfigurationSection();
         int manaRegeneration = properties.getManaRegeneration();
         if (this.manaRegeneration > 0 && maxManaRegeneration == 0 && this.manaRegeneration  > manaRegeneration) {
             addedProperties = true;

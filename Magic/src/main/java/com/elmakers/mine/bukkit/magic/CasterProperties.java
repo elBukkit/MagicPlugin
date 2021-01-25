@@ -14,7 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
@@ -569,7 +568,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         ConfigurationSection attributes = getConfigurationSection("attributes");
         if (attributes == null) {
             if (attributeValue == null) return;
-            attributes = new MemoryConfiguration();
+            attributes = ConfigurationUtils.newConfigurationSection();
         }
         attributes.set(attributeKey, attributeValue);
         setProperty("attributes", attributes);

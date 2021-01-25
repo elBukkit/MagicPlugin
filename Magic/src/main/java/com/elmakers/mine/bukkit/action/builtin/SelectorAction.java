@@ -19,7 +19,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -1450,7 +1449,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 Container container = (Container)state;
                 List<ConfigurationSection> items = new ArrayList<>();
                 for (ItemStack item : container.getInventory()) {
-                    ConfigurationSection itemConfig = new MemoryConfiguration();
+                    ConfigurationSection itemConfig = ConfigurationUtils.newConfigurationSection();
                     if (CompatibilityUtils.isEmpty(item)) {
                         itemConfig.set("placeholder", true);
                     } else {

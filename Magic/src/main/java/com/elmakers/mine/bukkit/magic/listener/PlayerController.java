@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -476,7 +475,7 @@ public class PlayerController implements Listener {
         boolean success = false;
         if (interactSpell != null) {
             ConfigurationSection parameters = mob.getInteractSpellParameters();
-            parameters = parameters == null ? new MemoryConfiguration() : ConfigurationUtils.cloneConfiguration(parameters);
+            parameters = parameters == null ? ConfigurationUtils.newConfigurationSection() : ConfigurationUtils.cloneConfiguration(parameters);
             Entity sourceEntity = player;
             switch (mob.getInteractSpellSource()) {
                 case PLAYER:

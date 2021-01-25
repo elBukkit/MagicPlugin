@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.ActionHandlerContext;
@@ -35,7 +34,7 @@ public class MultiplyAction extends CompoundAction
             ConfigurationSection initialParameters = ConfigurationUtils.getConfigurationSection(parameters, "first");
             if (initialParameters != null)
             {
-                ConfigurationSection combined = ConfigurationUtils.addConfigurations(new MemoryConfiguration(), parameters);
+                ConfigurationSection combined = ConfigurationUtils.addConfigurations(ConfigurationUtils.newConfigurationSection(), parameters);
                 initialParameters = ConfigurationUtils.addConfigurations(combined, initialParameters);
             }
             for (int i = 0; i < multiply; i++)

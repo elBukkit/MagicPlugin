@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
@@ -204,7 +203,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         List<Map<String, Object>> nodeList = new ArrayList<>();
         List<UndoList> undoList = undoData.getBlockList();
         for (UndoList list : undoList) {
-            MemoryConfiguration listNode = new MemoryConfiguration();
+            ConfigurationSection listNode = ConfigurationUtils.newConfigurationSection();
             list.save(listNode);
             nodeList.add(listNode.getValues(true));
         }

@@ -33,7 +33,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -166,7 +165,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Set<String> triggeredSpells = new HashSet<>();
     private final Set<String> triggeringSpells = new HashSet<>();
     private final Map<String, Long> lastTriggers = new HashMap<>();
-    protected ConfigurationSection data = new MemoryConfiguration();
+    protected ConfigurationSection data = ConfigurationUtils.newConfigurationSection();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> playerRef;
     protected WeakReference<Entity> entityRef;
@@ -3398,7 +3397,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public ConfigurationSection getData() {
         if (loading) {
-            return new MemoryConfiguration();
+            return ConfigurationUtils.newConfigurationSection();
         }
         return data;
     }
@@ -4983,7 +4982,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nonnull
     public ConfigurationSection getVariables() {
         if (variables == null) {
-            variables = new MemoryConfiguration();
+            variables = ConfigurationUtils.newConfigurationSection();
         }
         return variables;
     }

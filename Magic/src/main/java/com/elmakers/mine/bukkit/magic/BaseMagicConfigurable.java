@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 
@@ -558,6 +557,6 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     public void clear() {
-        configuration = new MemoryConfiguration();
+        configuration = ConfigurationUtils.newConfigurationSection();
     }
 }

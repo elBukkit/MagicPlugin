@@ -13,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -264,7 +263,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
 
             if (parameters.length > 1) {
                 mage.sendMessage(ChatColor.GREEN + " With parameters:");
-                ConfigurationSection spellParameters = new MemoryConfiguration();
+                ConfigurationSection spellParameters = ConfigurationUtils.newConfigurationSection();
                 ConfigurationUtils.addParameters(Arrays.copyOfRange(parameters, 1, parameters.length), spellParameters);
                 currentParameters.set("interact_spell_parameters", spellParameters);
                 Set<String> keys = spellParameters.getKeys(false);
@@ -473,7 +472,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             mage.sendMessage(ChatColor.RED + "Invalid cost type: " + costType);
             return;
         }
-        ConfigurationSection costSection = new MemoryConfiguration();
+        ConfigurationSection costSection = ConfigurationUtils.newConfigurationSection();
         costSection.set(costType, value);
         npc.configure("interact_costs", costSection);
         mage.sendMessage(ChatColor.GREEN + " Configured npc " + ChatColor.GOLD + npc.getName()

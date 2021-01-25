@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -55,7 +54,7 @@ public class EntityMageData {
             ConfigurationSection mageConfig = parameters.getConfigurationSection(mageProperty);
             if (mageConfig != null) {
                 if (mageProperties == null) {
-                    mageProperties = new MemoryConfiguration();
+                    mageProperties = ConfigurationUtils.newConfigurationSection();
                 }
                 mageProperties.set(mageProperty, mageConfig);
             }
@@ -79,7 +78,7 @@ public class EntityMageData {
         // Support legacy "cast" format
         if (parameters.contains("cast")) {
             if (triggerConfig == null) {
-                triggerConfig = new MemoryConfiguration();
+                triggerConfig = ConfigurationUtils.newConfigurationSection();
             }
             ConfigurationSection castSection = triggerConfig.createSection("interval");
             castSection.set("cast", parameters.getConfigurationSection("cast"));

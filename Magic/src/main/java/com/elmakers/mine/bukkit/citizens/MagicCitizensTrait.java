@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 
@@ -92,7 +91,7 @@ public class MagicCitizensTrait extends CitizensTrait {
                     sender = null;
                 }
                 if (targetPlayer) {
-                    config = new MemoryConfiguration();
+                    config = ConfigurationUtils.newConfigurationSection();
                     ConfigurationUtils.addConfigurations(config, parameters);
                     config.set("player", event.getClicker().getName());
                 }

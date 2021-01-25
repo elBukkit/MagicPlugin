@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
@@ -17,6 +16,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.effect.NPCTargetingContext;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 
@@ -27,7 +27,7 @@ public class NPCSelectionManager extends SelectionManager<MagicNPC> {
     public NPCSelectionManager(MagicController controller) {
         super(controller);
         targeting = new Targeting();
-        ConfigurationSection targetingParameters = new MemoryConfiguration();
+        ConfigurationSection targetingParameters = ConfigurationUtils.newConfigurationSection();
         targetingParameters.set("range", selectRange);
         targetingParameters.set("target", "other_entity");
         targetingParameters.set("ignore_blocks", true);

@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -56,7 +55,7 @@ public class CustomTrigger extends Trigger {
 
                 if (pieces.length > 1) {
                     String[] castParameters = Arrays.copyOfRange(pieces, 1, pieces.length);
-                    parameters = new MemoryConfiguration();
+                    parameters = ConfigurationUtils.newConfigurationSection();
                     ConfigurationUtils.addParameters(castParameters, parameters);
                 }
                 spells.add(new WeightedPair<>(new SpellCast(spellKey, parameters)));
@@ -134,7 +133,7 @@ public class CustomTrigger extends Trigger {
             castSpell = additionalParameters[0];
             additionalParameters = Arrays.copyOfRange(additionalParameters, 1, additionalParameters.length);
             if (parameters == null) {
-                parameters = new MemoryConfiguration();
+                parameters = ConfigurationUtils.newConfigurationSection();
             }
             ConfigurationUtils.addParameters(additionalParameters, parameters);
         }
@@ -147,7 +146,7 @@ public class CustomTrigger extends Trigger {
         double bowpull = mage.getLastBowPull();
         if (bowpull > 0) {
             if (parameters == null) {
-                parameters = new MemoryConfiguration();
+                parameters = ConfigurationUtils.newConfigurationSection();
             }
             parameters.set("bowpull", Double.toString(bowpull));
         }

@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -117,7 +116,7 @@ public class ConfigurationLoadTask implements Runnable {
             if (externalFolder.exists()) {
                 try {
                     if (exampleConfig == null) {
-                        exampleConfig = new MemoryConfiguration();
+                        exampleConfig = ConfigurationUtils.newConfigurationSection();
                     }
                     exampleConfig = loadConfigFolder(exampleConfig, externalFolder, false);
                 } catch (Exception ex) {
@@ -135,7 +134,7 @@ public class ConfigurationLoadTask implements Runnable {
                 }
             }
             if (exampleConfig == null) {
-                exampleConfig = new MemoryConfiguration();
+                exampleConfig = ConfigurationUtils.newConfigurationSection();
             }
             exampleConfigurations.put(examplesPrefix, exampleConfig);
         }
@@ -500,7 +499,7 @@ public class ConfigurationLoadTask implements Runnable {
                 throw ex;
             }
         } else {
-            ConfigurationSection versionConfig = new MemoryConfiguration();
+            ConfigurationSection versionConfig = ConfigurationUtils.newConfigurationSection();
             processInheritance(versionExample, versionConfig, fileName, getMainConfiguration(versionExample));
             if (!versionConfig.getKeys(false).isEmpty()) {
                 ConfigurationUtils.addConfigurations(config, versionConfig, true, true);
@@ -609,7 +608,7 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private ConfigurationSection mapSpells(ConfigurationSection spellConfiguration) throws InvalidConfigurationException, IOException {
-        ConfigurationSection spellConfigs = new MemoryConfiguration();
+        ConfigurationSection spellConfigs = ConfigurationUtils.newConfigurationSection();
         if (spellConfiguration == null) return spellConfigs;
 
         // Reset cached spell configs
@@ -759,7 +758,7 @@ public class ConfigurationLoadTask implements Runnable {
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading config.yml", ex);
             success = false;
-            mainConfiguration = new MemoryConfiguration();
+            mainConfiguration = ConfigurationUtils.newConfigurationSection();
         }
         mainConfigurations.put("", mainConfiguration);
 
@@ -777,7 +776,7 @@ public class ConfigurationLoadTask implements Runnable {
                 loadedConfigurations.put(configurationFile, configuration);
             } catch (Exception ex) {
                 logger.log(Level.WARNING, "Error loading " + configurationFile, ex);
-                loadedConfigurations.put(configurationFile, new MemoryConfiguration());
+                loadedConfigurations.put(configurationFile, ConfigurationUtils.newConfigurationSection());
                 success = false;
             }
         }
@@ -818,7 +817,7 @@ public class ConfigurationLoadTask implements Runnable {
     public ConfigurationSection getMainConfiguration(String exampleKey) {
         ConfigurationSection mainConfig = mainConfigurations.get(exampleKey);
         if (mainConfig == null) {
-            mainConfig = new MemoryConfiguration();
+            mainConfig = ConfigurationUtils.newConfigurationSection();
             mainConfigurations.put(exampleKey, mainConfig);
         }
         return mainConfig;

@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -16,6 +15,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -60,7 +60,7 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
                 mage.sendMessage(api.getMessages().get(command + ".no_property").replace("$name", parameters[0]));
             }
         } else {
-            ConfigurationSection node = new MemoryConfiguration();
+            ConfigurationSection node = ConfigurationUtils.newConfigurationSection();
 
             double transformed = Double.NaN;
             try {

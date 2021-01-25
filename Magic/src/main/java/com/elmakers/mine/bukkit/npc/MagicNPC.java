@@ -11,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
@@ -147,7 +146,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     protected void createEntityData() {
         // Kind of hacky to have this here, but it's a common initialization point
         if (parameters == null) {
-            parameters = new MemoryConfiguration();
+            parameters = ConfigurationUtils.newConfigurationSection();
         }
         boolean hasMobKey = mobKey != null && !mobKey.isEmpty();
         EntityData entity = hasMobKey ? controller.getMob(mobKey) : null;

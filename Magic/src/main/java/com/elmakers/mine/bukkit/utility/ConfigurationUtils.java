@@ -25,7 +25,6 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -41,6 +40,8 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
 import com.elmakers.mine.bukkit.configuration.ParameterizedConfigurationSection;
 import com.elmakers.mine.bukkit.configuration.SpellParameters;
+import com.elmakers.mine.bukkit.configuration.TranslatingConfiguration;
+import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 
 import de.slikey.effectlib.util.ConfigUtils;
@@ -361,7 +362,13 @@ public class ConfigurationUtils extends ConfigUtils {
         if (section instanceof ParameterizedConfigurationSection) {
             return new ParameterizedConfigurationSection((ParameterizedConfigurationSection)section);
         }
-        return new MemoryConfiguration();
+        if (section instanceof TranslatingConfiguration) {
+            return new TranslatingConfiguration();
+        }
+        if (section instanceof TranslatingConfigurationSection) {
+            return new TranslatingConfigurationSection((TranslatingConfigurationSection)section);
+        }
+        return ConfigurationUtils.newConfigurationSection();
     }
 
     public static ConfigurationSection cloneConfiguration(ConfigurationSection section)
@@ -434,7 +441,7 @@ public class ConfigurationUtils extends ConfigUtils {
     public static ConfigurationSection replaceParameters(ConfigurationSection configuration, ConfigurationSection parameters) {
         if (configuration == null) return null;
 
-        ConfigurationSection replaced = new MemoryConfiguration();
+        ConfigurationSection replaced = ConfigurationUtils.newConfigurationSection();
         Map<String, Object> map = NMSUtils.getMap(configuration);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();
@@ -1218,5 +1225,9 @@ public class ConfigurationUtils extends ConfigUtils {
             }
         }
         return directoryToBeDeleted.delete();
+    }
+
+    public static ConfigurationSection newConfigurationSection() {
+         return new TranslatingConfiguration();
     }
 }

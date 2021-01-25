@@ -12,7 +12,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
@@ -129,7 +128,7 @@ public class AnimateSpell extends SimulateSpell
         boolean simCheckDestructible = parameters.getBoolean("sim_check_destructible", true);
         simCheckDestructible = parameters.getBoolean("scd", simCheckDestructible);
 
-        final ConfigurationSection automataParameters = new MemoryConfiguration();
+        final ConfigurationSection automataParameters = ConfigurationUtils.newConfigurationSection();
         automataParameters.set("target", "self");
         automataParameters.set("cooldown", 0);
         automataParameters.set("m", targetMaterial.getKey());

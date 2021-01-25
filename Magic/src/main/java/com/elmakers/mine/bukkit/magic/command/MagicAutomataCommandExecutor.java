@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -146,7 +145,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         ConfigurationSection parameters = null;
         if (args.length > 1) {
             String[] parameterArgs = Arrays.copyOfRange(args, 1, args.length);
-            parameters = new MemoryConfiguration();
+            parameters = ConfigurationUtils.newConfigurationSection();
             ConfigurationUtils.addParameters(parameterArgs, parameters);
         }
         Automaton automaton = new Automaton(magicController, location, key, player.getUniqueId().toString(), player.getName(), parameters);
@@ -351,7 +350,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.YELLOW + "Removed property: " + ChatColor.AQUA + key);
         } else {
             if (parameters == null) {
-                parameters = new MemoryConfiguration();
+                parameters = ConfigurationUtils.newConfigurationSection();
             }
             ConfigurationUtils.set(parameters, key, args[1]);
             Object value = parameters.get(key);

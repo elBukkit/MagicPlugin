@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.NumberConversions;
 
@@ -131,8 +130,8 @@ public class ModifyPropertiesAction extends BaseSpellAction
         if (properties == null) {
             return SpellResult.NO_TARGET;
         }
-        ConfigurationSection original = new MemoryConfiguration();
-        ConfigurationSection changed = new MemoryConfiguration();
+        ConfigurationSection original = ConfigurationUtils.newConfigurationSection();
+        ConfigurationSection changed = ConfigurationUtils.newConfigurationSection();
         for (ModifyProperty property : modify) {
             Object originalValue = properties.getProperty(property.path);
             Object newValue = property.value;

@@ -57,7 +57,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -2555,7 +2554,7 @@ public class MagicController implements MageController {
                 Collection<Automaton> blocks = toggleEntry.getValue().values();
                 if (blocks.size() > 0) {
                     for (Automaton block : blocks) {
-                        ConfigurationSection node = new MemoryConfiguration();
+                        ConfigurationSection node = ConfigurationUtils.newConfigurationSection();
                         block.save(node);
                         nodes.add(node);
                     }
@@ -2574,7 +2573,7 @@ public class MagicController implements MageController {
             YamlDataFile npcData = createDataFile(NPC_DATA_FILE);
             List<ConfigurationSection> nodes = new ArrayList<>();
             for (MagicNPC npc : npcs.values()) {
-                ConfigurationSection node = new MemoryConfiguration();
+                ConfigurationSection node = ConfigurationUtils.newConfigurationSection();
                 npc.save(node);
                 nodes.add(node);
             }
@@ -4326,7 +4325,7 @@ public class MagicController implements MageController {
     public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
         ConfigurationSection config = null;
         if (parameters != null && parameters.length > 0) {
-            config = new MemoryConfiguration();
+            config = ConfigurationUtils.newConfigurationSection();
             ConfigurationUtils.addParameters(parameters, config);
         }
         return cast(null, spellName, config, sender, entity);
@@ -5013,7 +5012,7 @@ public class MagicController implements MageController {
     public MageClassTemplate getMageClass(String key) {
         MageClassTemplate template = mageClasses.get(key);
         if (template == null) {
-            MemoryConfiguration configuration = new MemoryConfiguration();
+            ConfigurationSection configuration = ConfigurationUtils.newConfigurationSection();
             template = new MageClassTemplate(this, key, configuration);
             mageClasses.put(key, template);
         }
@@ -5459,7 +5458,7 @@ public class MagicController implements MageController {
     }
 
     public ItemStack getLearnSpellBook(SpellTemplate spell, int amount) {
-        ConfigurationSection wandConfiguration = new MemoryConfiguration();
+        ConfigurationSection wandConfiguration = ConfigurationUtils.newConfigurationSection();
         wandConfiguration.set("template", "learnspell");
         wandConfiguration.set("icon", "book:" + spell.getKey());
         wandConfiguration.set("name", messages.get("books.learnspell.name").replace("$spell", spell.getName()));

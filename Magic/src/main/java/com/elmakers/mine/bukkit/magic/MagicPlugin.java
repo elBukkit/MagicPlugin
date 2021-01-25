@@ -10,7 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -462,7 +461,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
         ConfigurationSection config = null;
         if (parameters != null && parameters.length > 0) {
-            config = new MemoryConfiguration();
+            config = ConfigurationUtils.newConfigurationSection();
             ConfigurationUtils.addParameters(parameters, config);
         }
         return controller.cast(null, spellName, config, sender, entity);

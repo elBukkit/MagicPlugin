@@ -33,7 +33,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -311,7 +310,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         boolean isWand = isWand(item);
         boolean isUpgradeItem = isUpgrade(item);
         if (isWand || isUpgradeItem) {
-            ConfigurationSection wandConfig = itemToConfig(item, new MemoryConfiguration());
+            ConfigurationSection wandConfig = itemToConfig(item, ConfigurationUtils.newConfigurationSection());
 
             // Check for template migration
             WandTemplate wandTemplate = controller.getWandTemplate(wandConfig.getString("template"));
@@ -1789,7 +1788,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         castSpell = getString("cast_spell");
         String castParameterString = getString("cast_parameters", null);
         if (castParameterString != null && !castParameterString.isEmpty()) {
-            castParameters = new MemoryConfiguration();
+            castParameters = ConfigurationUtils.newConfigurationSection();
             ConfigurationUtils.addParameters(StringUtils.split(castParameterString, ' '), castParameters);
         } else {
             castParameters = null;
@@ -3902,7 +3901,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     protected void updateSlotted(Wand addSlot) {
         if (slottedConfiguration == null) {
-            slottedConfiguration = new MemoryConfiguration();
+            slottedConfiguration = ConfigurationUtils.newConfigurationSection();
         }
 
         ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(addSlot.getEffectiveConfiguration());
@@ -3999,7 +3998,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     if (spell != null) {
                         boolean costFree = getBoolean("cast_interval_cost_free", false);
                         if (castParameters == null) {
-                            castParameters = new MemoryConfiguration();
+                            castParameters = ConfigurationUtils.newConfigurationSection();
                         }
                         castParameters.set("aura", true);
                         if (costFree) {
@@ -4297,7 +4296,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean cast(Spell spell, String[] parameterArguments) {
         ConfigurationSection parameters = null;
         if (parameterArguments != null && parameterArguments.length > 0) {
-            parameters = new MemoryConfiguration();
+            parameters = ConfigurationUtils.newConfigurationSection();
             ConfigurationUtils.addParameters(parameterArguments, parameters);
         }
         return doCast(spell, parameters);
@@ -4320,7 +4319,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ConfigurationSection castParameters = null;
         Map<String, String> castOverrides = this.getOverrides();
         if (castOverrides != null && castOverrides.size() > 0) {
-            castParameters = new MemoryConfiguration();
+            castParameters = ConfigurationUtils.newConfigurationSection();
             for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
                 String[] key = StringUtils.split(entry.getKey(), ".", 2);
                 if (key.length == 0) continue;
@@ -4332,7 +4331,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         if (parameters != null) {
             if (castParameters == null) {
-                castParameters = new MemoryConfiguration();
+                castParameters = ConfigurationUtils.newConfigurationSection();
             }
             ConfigurationUtils.addConfigurations(castParameters, parameters, true);
         }
@@ -6064,7 +6063,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (enchants == null) {
             setProperty("enchantments", null);
         } else {
-            ConfigurationSection enchantments = new MemoryConfiguration();
+            ConfigurationSection enchantments = ConfigurationUtils.newConfigurationSection();
             for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
                 enchantments.set(entry.getKey().getName().toLowerCase(), entry.getValue());
             }

@@ -27,7 +27,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -1500,7 +1499,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
     @Override
     public ConfigurationSection getAllVariables() {
-        ConfigurationSection combinedVariables = new MemoryConfiguration();
+        ConfigurationSection combinedVariables = ConfigurationUtils.newConfigurationSection();
         if (variables != null) {
             ConfigurationUtils.addConfigurations(combinedVariables, variables, false);
         }
@@ -1516,7 +1515,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public ConfigurationSection getVariables() {
         if (variables == null) {
-            variables = new MemoryConfiguration();
+            variables = ConfigurationUtils.newConfigurationSection();
         }
         return variables;
     }

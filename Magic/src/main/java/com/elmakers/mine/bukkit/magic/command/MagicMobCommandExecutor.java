@@ -20,7 +20,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -181,7 +180,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 reader.setLenient(true);
                 Map<String, Object> tags = getGson().fromJson(reader, Map.class);
                 InventoryUtils.convertIntegers(tags);
-                ConfigurationSection mobConfig = new MemoryConfiguration();
+                ConfigurationSection mobConfig = ConfigurationUtils.newConfigurationSection();
                 mobConfig.set("type", mobKey);
                 for (Map.Entry<String, Object> entry : tags.entrySet()) {
                     mobConfig.set(entry.getKey(), entry.getValue());

@@ -32,7 +32,6 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -926,8 +925,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     public void loadTemplate(String key, ConfigurationSection node) {
         spellKey = new SpellKey(key);
         // Create a temporary cast and mage variable holders so they can be resolved if needed for template processing
-        ConfigurationSection castVariables = new MemoryConfiguration();
-        ConfigurationSection mageVariables = new MemoryConfiguration();
+        ConfigurationSection castVariables = ConfigurationUtils.newConfigurationSection();
+        ConfigurationSection mageVariables = ConfigurationUtils.newConfigurationSection();
         this.parameters = new SpellParameters(this, mageVariables, castVariables);
         this.configuration = node;
         this.loadTemplate(node, parameters);
@@ -1287,7 +1286,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             if (overrides != null && !overrides.isEmpty())
             {
                 if (extraParameters == null) {
-                    extraParameters = new MemoryConfiguration();
+                    extraParameters = ConfigurationUtils.newConfigurationSection();
                 }
                 for (String entry : overrides) {
                     String[] pieces = StringUtils.split(entry, ' ');
@@ -1397,7 +1396,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public boolean cast(@Nullable String[] extraParameters, @Nullable Location defaultLocation) {
         ConfigurationSection parameters = null;
         if (extraParameters != null && extraParameters.length > 0) {
-            parameters = new MemoryConfiguration();
+            parameters = ConfigurationUtils.newConfigurationSection();
             ConfigurationUtils.addParameters(extraParameters, parameters);
         }
         return cast(parameters, defaultLocation);

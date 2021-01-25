@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -95,7 +94,7 @@ public class ShopAction extends SelectorAction {
         if (addSellShop) {
             int startNextLine = ((int)Math.floor(getNumSlots() / 9)) * 9;
             int buttonSlot = startNextLine + 8;
-            ConfigurationSection sellShopConfig = new MemoryConfiguration();
+            ConfigurationSection sellShopConfig = ConfigurationUtils.newConfigurationSection();
             sellShopConfig.set("slot", buttonSlot);
             sellShopConfig.set("auto_close", true);
             sellShopConfig.set("selected", "");
@@ -163,7 +162,7 @@ public class ShopAction extends SelectorAction {
             int maxSlot = getNumSlots();
             int paddedSlot = 8 - (maxSlot + 8) % 9;
             for (int i = 0; i < paddedSlot; i++) {
-                ConfigurationSection emptyConfig = new MemoryConfiguration();
+                ConfigurationSection emptyConfig = ConfigurationUtils.newConfigurationSection();
                 emptyConfig.set("item", "none");
                 pathSpellConfigs.add(emptyConfig);
             }
@@ -171,7 +170,7 @@ public class ShopAction extends SelectorAction {
 
         String addLore = isExtra ? getMessage("extra_spell") : null;
         for (SpellTemplate spell : spells) {
-            ConfigurationSection spellConfig = new MemoryConfiguration();
+            ConfigurationSection spellConfig = ConfigurationUtils.newConfigurationSection();
             spellConfig.set("item", "spell:" + spell.getKey());
             if (addLore != null) {
                 spellConfig.set("description", addLore);
@@ -188,7 +187,7 @@ public class ShopAction extends SelectorAction {
                 ConfigurationSection itemSection = parameters.getConfigurationSection(key);
                 Set<String> itemKeys = itemSection.getKeys(false);
                 for (String itemKey : itemKeys) {
-                    ConfigurationSection itemConfig = new MemoryConfiguration();
+                    ConfigurationSection itemConfig = ConfigurationUtils.newConfigurationSection();
                     itemConfig.set("item", itemKey);
                     itemConfig.set("cost", itemSection.get(itemKey));
                     itemConfigs.add(itemConfig);
@@ -201,7 +200,7 @@ public class ShopAction extends SelectorAction {
                     } else if (object instanceof Map) {
                          itemConfigs.add(ConfigurationUtils.toConfigurationSection((Map<?, ?>)object));
                     } else if (object instanceof String) {
-                        ConfigurationSection itemConfig = new MemoryConfiguration();
+                        ConfigurationSection itemConfig = ConfigurationUtils.newConfigurationSection();
                         if (object.equals("none")) {
                             itemConfig.set("placeholder", true);
                         } else {

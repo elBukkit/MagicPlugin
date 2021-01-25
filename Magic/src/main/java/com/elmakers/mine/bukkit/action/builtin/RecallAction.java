@@ -19,7 +19,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -530,14 +529,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             MagicController magic = (MagicController)controller;
             Collection<MagicWarp> warps = magic.getWarps().getMagicWarps();
             if (!warps.isEmpty() && warpConfig == null) {
-                warpConfig = new MemoryConfiguration();
+                warpConfig = ConfigurationUtils.newConfigurationSection();
             }
             for (MagicWarp warp : warps) {
                 String icon = warp.getIcon();
                 if (icon == null || icon.isEmpty()) continue;
                 String warpGroup = warp.getGroup();
                 if (group != null && !group.isEmpty() && warpGroup != null && !warpGroup.isEmpty() && !warpGroup.equalsIgnoreCase(group)) continue;
-                ConfigurationSection magicWarpConfig = new MemoryConfiguration();
+                ConfigurationSection magicWarpConfig = ConfigurationUtils.newConfigurationSection();
                 magicWarpConfig.set("name", warp.getName());
                 magicWarpConfig.set("icon", icon);
                 magicWarpConfig.set("description", warp.getDescription());

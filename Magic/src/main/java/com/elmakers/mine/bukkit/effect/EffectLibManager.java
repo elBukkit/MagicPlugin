@@ -11,12 +11,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
@@ -101,7 +101,7 @@ public class EffectLibManager {
         }
 
         if (parameterMap == null) {
-            parameterMap = new MemoryConfiguration();
+            parameterMap = ConfigurationUtils.newConfigurationSection();
         }
         Entity originEntity = origin == null ? null : origin.getEntity();
         if (originEntity != null && originEntity instanceof Player) {
@@ -139,7 +139,7 @@ public class EffectLibManager {
         || (effectOverride != null && particleEffect != null)
         || radiusOverrideName != null)
         {
-            parameters = new MemoryConfiguration();
+            parameters = ConfigurationUtils.newConfigurationSection();
             Collection<String> keys = configuration.getKeys(false);
             for (String key : keys) {
                 parameters.set(key, configuration.get(key));
