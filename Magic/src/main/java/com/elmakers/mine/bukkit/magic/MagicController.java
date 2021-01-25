@@ -5795,6 +5795,10 @@ public class MagicController implements MageController {
                         return itemStack;
                     }
                     MaterialAndData item = new MaterialAndData(magicItemKey);
+                    if (item.isValid() && CompatibilityUtils.isLegacy(item.getMaterial())) {
+                        short convertData = (item.getData() == null ? 0 : item.getData());
+                        item = new MaterialAndData(CompatibilityUtils.migrateMaterial(item.getMaterial(), (byte)convertData));
+                    }
                     if (item.isValid()) {
                         return item.getItemStack(amount, callback);
                     }
