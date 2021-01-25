@@ -46,13 +46,9 @@ public class ItemController {
     public void loadItem(String itemKey, String material) {
         try {
             ItemData magicItem = new ItemData(itemKey, material);
-            if (magicItem != null) {
-                itemKeys.add(itemKey);
-                items.put(itemKey, magicItem);
-                itemsByStack.put(magicItem.getItemStack(1), magicItem);
-            } else {
-                controller.getLogger().warning("Could not create item with key " + itemKey + " and material " + material);
-            }
+            itemKeys.add(itemKey);
+            items.put(itemKey, magicItem);
+            itemsByStack.put(magicItem.getItemStack(1), magicItem);
         } catch (InvalidMaterialException ex) {
             controller.getLogger().log(Level.WARNING, "Invalid item type '" + itemKey + "', may not exist on your server version: " + ex.getMessage());
         } catch (Throwable ex) {

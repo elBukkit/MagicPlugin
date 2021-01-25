@@ -41,7 +41,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         locked = (Wand.getLockKey(itemStack) != null);
     }
 
-    public ItemData(String materialKey) throws Exception {
+    public ItemData(String materialKey) throws InvalidMaterialException {
         MaterialAndData material = new MaterialAndData(materialKey);
         if (material.isValid() && CompatibilityUtils.isLegacy(material.getMaterial())) {
             short convertData = (material.getData() == null ? 0 : material.getData());
@@ -51,19 +51,19 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
             item = material.getItemStack(1);
         }
         if (item == null) {
-            throw new Exception("Invalid item key: " + materialKey);
+            throw new InvalidMaterialException("Invalid item key: " + materialKey);
         }
         key = materialKey;
     }
 
-    public ItemData(String key, String materialKey) throws Exception {
+    public ItemData(String key, String materialKey) throws InvalidMaterialException {
         this.key = key;
         MaterialAndData material = new MaterialAndData(materialKey);
         if (material.isValid()) {
             item = material.getItemStack(1);
         }
         if (item == null) {
-            throw new Exception("Invalid item key: " + materialKey);
+            throw new InvalidMaterialException("Invalid item key: " + materialKey);
         }
     }
 
