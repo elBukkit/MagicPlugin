@@ -14,7 +14,7 @@ public class EntityMuleData extends EntityChestedHorseData {
         super(parameters, controller);
     }
 
-    public EntityMuleData(Entity entity) {
-        super(entity);
+    public EntityMuleData(Entity entity, MageController controller) {
+        super(entity, controller);
     }
 }

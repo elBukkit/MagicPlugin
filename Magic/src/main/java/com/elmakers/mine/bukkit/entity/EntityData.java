@@ -280,9 +280,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity.getType().name().equals("FOX")) {
             extraData = new EntityFoxData(entity);
         } else if (entity.getType().name().equals("LLAMA")) {
-            extraData = new EntityLlamaData(entity);
+            extraData = new EntityLlamaData(entity, controller);
         } else if (entity.getType().name().equals("MULE")) {
-            extraData = new EntityMuleData(entity);
+            extraData = new EntityMuleData(entity, controller);
         } else if (entity.getType().name().equals("CAT")) {
             extraData = new EntityCatData(entity);
         } else if (entity.getType().name().equals("PHANTOM")) {

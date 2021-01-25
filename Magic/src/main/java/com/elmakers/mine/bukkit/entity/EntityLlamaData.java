@@ -31,8 +31,8 @@ public class EntityLlamaData extends EntityChestedHorseData {
         strength = parameters.getInt("llama_strength", 1);
     }
 
-    public EntityLlamaData(Entity entity) {
-        super(entity);
+    public EntityLlamaData(Entity entity, MageController controller) {
+        super(entity, controller);
         if (entity instanceof Llama) {
             Llama llama = (Llama)entity;
             color = llama.getColor();
