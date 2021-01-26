@@ -18,7 +18,7 @@
    https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/examples/elworld/spells/countdown.yml
  - Add boss_bar spell configuration, allows spells to show in the boss bar while they are active
  - Added boss bars to Cloak and Boon
- - Mobs can have boss bars, see warlock and dark wizard for examples
+ - Mobs can have boss bars, see dark wizard for example
  - Automata have boss bars and no longer announce themselves in chat
 
 ## Fixes
