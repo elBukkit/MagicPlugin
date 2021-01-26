@@ -33,7 +33,7 @@ floodfill:
         allow_max_range: false
         range: 32
         depth: 10
-        destructible: air
+        destructible: all_air
         transparent: transparent_to_construction
         cooldown: 1000
         consume: true
