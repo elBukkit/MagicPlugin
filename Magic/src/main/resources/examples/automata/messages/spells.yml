@@ -27,8 +27,6 @@ spells:
     cast: You create a Magic Golem
     no_target: You must target two blocks next to each other
     fail: You can not make a Golem out of $material
-    cast_broadcast: "&c&o$name &r&5was born"
-    death_broadcast: "&c&o$name &r&5has been defeated"
   simulate3:
     name: Simulate 3D
     description: Conway's Game of Life ... in 3D!
@@ -41,22 +39,16 @@ spells:
     name: Virus
     description: You probably don't want to cast this
     cast: What have you done?
-    cast_broadcast: "&c&o$name &r&5was born"
-    death_broadcast: "&c&o$name &r&5has been defeated"
     fail: You can not make a Virus out of $material
   worm:
     name: Worm
     description: Release a dangerous giant worm
     cast: It's not a virus, it's a worm!
-    cast_broadcast: "&c&o$name &r&5was born"
-    death_broadcast: "&c&o$name &r&5has been defeated"
     fail: You can not make a Worm out of $material
   snake:
     name: Snake
     description: Create a deadly snake-like creature
     cast: Sssssssssnake time!
-    cast_broadcast: "&c&o$name &r&5was born"
-    death_broadcast: "&c&o$name &r&5has been defeated"
     fail: You can not make a Worm out of $material
   hunter:
     no_target: You must target two blocks next to each other
@@ -64,15 +56,11 @@ spells:
     description: Create a deadly Automaton
     fail: You can not make a Hunter out of $material
     cast: Destroy all humans!
-    cast_broadcast: "&c&o$name &r&5was born"
-    death_broadcast: "&c&o$name &r&5has been defeated"
   defender:
     name: Defender
     description: Create an Automata hunter
     cast: I will hunt for you, human
     fail: You can not make a Defender out of $material
-    cast_broadcast: "&c&o$name &r&5was born"
-    death_broadcast: "&c&o$name &r&5has been defeated"
   life:
     name: Life
     description: Create a HUGE Life board
