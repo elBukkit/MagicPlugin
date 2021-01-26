@@ -1968,7 +1968,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         if (!bypassProtection && !bypassFriendlyFire)
         {
-            controller.getLogger().info("** Defer controller.canTarget isFriendly");
             boolean canTarget = controller.canTarget(mage.getEntity(), entity);
             if (!canTarget) {
                 mage.sendDebugMessage("Controller says can't target entity", 30);
