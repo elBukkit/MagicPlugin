@@ -4,6 +4,7 @@ import static org.bukkit.util.NumberConversions.toLong;
 
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.Configuration;
@@ -11,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.util.NumberConversions;
 
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class TranslatingConfigurationSection extends MemorySection {
@@ -181,5 +183,29 @@ public class TranslatingConfigurationSection extends MemorySection {
             return s.equalsIgnoreCase("true") || s.equalsIgnoreCase("false");
         }
         return val instanceof Boolean;
+    }
+
+    @Nullable
+    @Override
+    public ConfigurationSection getConfigurationSection(String path) {
+        Object val = get(path, null);
+        if (val != null) {
+            if (val instanceof Map) {
+                ConfigurationSection translated = ConfigurationUtils.toConfigurationSection((Map<?, ?>)val);
+                set(path, translated);
+                return translated;
+            }
+            return (val instanceof ConfigurationSection) ? (ConfigurationSection) val : null;
+        }
+
+        // Default should never be a map since this only happens with lists-of-sections
+        val = get(path, getDefault(path));
+        return (val instanceof ConfigurationSection) ? createSection(path) : null;
+    }
+
+    @Override
+    public boolean isConfigurationSection(String path) {
+        Object val = get(path);
+        return val instanceof ConfigurationSection || val instanceof Map;
     }
 }
