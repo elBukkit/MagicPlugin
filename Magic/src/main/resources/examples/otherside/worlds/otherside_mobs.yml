@@ -36,9 +36,9 @@ otherside_mobs:
       target_type: rabbit
       probability: 0.9
       replace_type:
-        warlock: 10
+        warlock: 20
         dark_wizard: 1
-        killer_bunny: 20
+        killer_bunny: 50
 
     skeleton:
       class: Replace
@@ -47,7 +47,7 @@ otherside_mobs:
       replace_type:
         undead_overlord: 10
         undead_minion: 100
-        dark_wizard: 1
+        warlock: 1
         blaze: 5
         none: 50
 
@@ -56,7 +56,7 @@ otherside_mobs:
       target_type: creeper
       probability: 0.9
       replace_type:
-        dark_wizard: 1
+        warlock: 1
         blaze: 5
 
     zombie:
