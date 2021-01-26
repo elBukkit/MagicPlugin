@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -32,6 +33,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -61,139 +63,167 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             }
         }
 
-        Player player = null;
         int argStart = 1;
-
-        if (sender instanceof Player) {
-            if (args.length > 1 && sender.hasPermission("Magic.commands.mage.others"))
-            {
-                player = DeprecatedUtils.getPlayer(args[1]);
-            }
-            if (player == null)
-            {
-                player = (Player)sender;
-            }
-            else
-            {
+        List<Player> players = new ArrayList<>();
+        String playerName = args.length > 1 ? args[1] : null;
+        if (playerName != null && sender.hasPermission("Magic.commands.mage.others")) {
+            List<Entity> targets = NMSUtils.selectEntities(sender, playerName);
+            if (targets != null) {
                 argStart = 2;
+                for (Entity entity : targets) {
+                    if (entity instanceof Player) {
+                        players.add((Player)entity);
+                    }
+                }
+            } else {
+                Player player = DeprecatedUtils.getPlayer(playerName);
+                if (player != null) {
+                    argStart = 2;
+                    players.add(player);
+                }
             }
-        } else {
-            if (args.length <= 1) {
-                sender.sendMessage("Must specify a player name");
+        }
+        if (players.isEmpty()) {
+            if (!(sender instanceof Player)) {
+                if (playerName == null) {
+                    sender.sendMessage("Must specify a player name");
+                } else {
+                    sender.sendMessage("No players matched: " + playerName);
+                }
                 return true;
             }
-            argStart = 2;
-            player = DeprecatedUtils.getPlayer(args[1]);
-            if (player == null) {
-                sender.sendMessage("Can't find player " + args[1]);
-                return true;
-            }
-            if (!player.isOnline()) {
-                sender.sendMessage("Player " + args[1] + " is not online");
-                return true;
-            }
+            players.add((Player)sender);
         }
 
         String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
+        boolean handled = false;
+        for (Player player : players) {
+            if (subCommand.equalsIgnoreCase("check"))
+            {
+                onMageCheck(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("bypass"))
+            {
+                onMageBypass(sender, player);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("reset"))
+            {
+                onMageReset(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("modifier"))
+            {
+                onMageModifier(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("debug"))
+            {
+                onMageDebug(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("getdata"))
+            {
+                onMageGetData(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("setdata"))
+            {
+                onMageSetData(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("attribute"))
+            {
+                onMageAttribute(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("unbind"))
+            {
+                onMageUnbind(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("configure"))
+            {
+                onMageConfigure(sender, player, args2, false);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("upgrade"))
+            {
+                onMageConfigure(sender, player, args2, true);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("promote"))
+            {
+                onMagePromote(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("describe"))
+            {
+                onMageDescribe(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("activate"))
+            {
+                onMageActivate(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("deactivate"))
+            {
+                onMageDeactivate(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("unlock"))
+            {
+                onMageUnlock(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("lock"))
+            {
+                onMageLock(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("switch"))
+            {
+                onMageSwitch(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("add"))
+            {
+                onMageAdd(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("remove"))
+            {
+                onMageRemove(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("levelspells"))
+            {
+                onMageLevelSpells(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("clear"))
+            {
+                onMageClear(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("forget"))
+            {
+                onMageForget(sender, player, args2);
+                handled = true;
+            }
+            if (subCommand.equalsIgnoreCase("skin"))
+            {
+                onMageSkin(sender, player);
+                handled = true;
+            }
+        }
 
-        if (subCommand.equalsIgnoreCase("check"))
-        {
-            return onMageCheck(sender, player, args2);
+        if (!handled) {
+            sender.sendMessage("Unknown mage command: " + subCommand);
+            return false;
         }
-        if (subCommand.equalsIgnoreCase("bypass"))
-        {
-            return onMageBypass(sender, player);
-        }
-        if (subCommand.equalsIgnoreCase("reset"))
-        {
-            return onMageReset(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("modifier"))
-        {
-            return onMageModifier(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("debug"))
-        {
-            return onMageDebug(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("getdata"))
-        {
-            return onMageGetData(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("setdata"))
-        {
-            return onMageSetData(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("attribute"))
-        {
-            return onMageAttribute(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("unbind"))
-        {
-            return onMageUnbind(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("configure"))
-        {
-            return onMageConfigure(sender, player, args2, false);
-        }
-        if (subCommand.equalsIgnoreCase("upgrade"))
-        {
-            return onMageConfigure(sender, player, args2, true);
-        }
-        if (subCommand.equalsIgnoreCase("promote"))
-        {
-            return onMagePromote(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("describe"))
-        {
-            return onMageDescribe(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("activate"))
-        {
-            return onMageActivate(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("deactivate"))
-        {
-            return onMageDeactivate(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("unlock"))
-        {
-            return onMageUnlock(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("lock"))
-        {
-            return onMageLock(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("switch"))
-        {
-            return onMageSwitch(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("add"))
-        {
-            return onMageAdd(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("remove"))
-        {
-            return onMageRemove(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("levelspells"))
-        {
-            return onMageLevelSpells(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("clear"))
-        {
-            return onMageClear(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("forget"))
-        {
-            return onMageForget(sender, player, args2);
-        }
-        if (subCommand.equalsIgnoreCase("skin"))
-        {
-            return onMageSkin(sender, player);
-        }
-
-        sender.sendMessage("Unknown mage command: " + subCommand);
         return true;
     }
 
@@ -580,7 +610,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         }
         if (args.length > 3)
         {
-            return false;
+            sender.sendMessage(ChatColor.RED + "Too many parameters");
+            return true;
         }
         if (args[0].equals("*"))
         {
