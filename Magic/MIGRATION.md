@@ -4,6 +4,8 @@
 
  - The builtin economy was rebalanced, prices of items may have changed.
    There is no "revert" example to undo this one, but contact me if you need the old prices.
+ - Colored leather armor *must* use a # in the color code to differentiate between damage, e.g.
+   `/mgive leather_chestplate:#002233`
 
 # 8.2
 
