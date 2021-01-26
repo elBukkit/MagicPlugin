@@ -1160,6 +1160,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return SpellResult.PENDING;
         }
         pendingTeleport = null;
+        if (selectedWaypoint == null) {
+            context.getLogger().warning("Recall got to doTeleport with no waypoint selected");
+            return SpellResult.FAIL;
+        }
         context.playEffects("teleporting");
         if (context.teleport(player, targetLocation, verticalSearchDistance, selectedWaypoint.safe, selectedWaypoint.safe)) {
             context.castMessageKey("teleport", selectedWaypoint.message);
