@@ -246,6 +246,7 @@ import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
+import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.WorldController;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -7354,6 +7355,10 @@ public class MagicController implements MageController {
 
     public void checkLogs(CommandSender sender) {
         logger.notify(messages, sender);
+    }
+
+    public MagicWorld getMagicWorld(String name) {
+        return worldController.getWorld(name);
     }
 
     /*

@@ -29,6 +29,7 @@ public class MagicWorld {
     private final MagicBlockHandler blockBreakHandler;
     private String copyFrom = "";
     private boolean autoLoad = false;
+    private boolean cancelSpellsOnSave = true;
     private World.Environment worldEnvironment = World.Environment.NORMAL;
     private World.Environment appearanceEnvironment = null;
     private WorldType worldType = WorldType.NORMAL;
@@ -85,6 +86,7 @@ public class MagicWorld {
         blockBreakHandler.load(worldName, "break", config.getConfigurationSection("block_break"));
         blockPlaceHandler.load(worldName, "place", config.getConfigurationSection("block_place"));
         spawnHandler.load(worldName, config.getConfigurationSection("entity_spawn"));
+        cancelSpellsOnSave = config.getBoolean("cancel_spells_on_save", cancelSpellsOnSave);
     }
 
     public void finalizeLoad() {
@@ -221,5 +223,9 @@ public class MagicWorld {
             world.setTime(changedWorld.getTime() + synchronizedTimeOffset + skipAmount);
         }
         return true;
+    }
+
+    public boolean isCancelSpellsOnSave() {
+        return cancelSpellsOnSave;
     }
 }

@@ -50,6 +50,7 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.world.MagicWorld;
 
 public class BlockController implements Listener, ChunkLoadListener {
     private final MagicController controller;
@@ -404,8 +405,13 @@ public class BlockController implements Listener, ChunkLoadListener {
     @EventHandler
     public void onWorldSaveEvent(WorldSaveEvent event) {
         World world = event.getWorld();
+        MagicWorld magicWorld = controller.getMagicWorld(world.getName());
+        boolean undo = undoOnWorldSave;
+        if (undo && magicWorld != null && !magicWorld.isCancelSpellsOnSave()) {
+            undo = false;
+        }
 
-        if (undoOnWorldSave) {
+        if (undo) {
             undoPending(world, "save");
         }
 
