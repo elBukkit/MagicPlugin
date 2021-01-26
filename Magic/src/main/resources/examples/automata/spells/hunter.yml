@@ -48,6 +48,7 @@ hunter:
         "petrify": 50,100,150
         "none": 100,75,25
     parameters:
+        boss_bar: true
         target_invisible: false
         allow_max_range: false
         transparent: transparent_to_construction

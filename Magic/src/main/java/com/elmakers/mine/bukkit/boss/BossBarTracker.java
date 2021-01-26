@@ -37,7 +37,16 @@ public class BossBarTracker {
 
     public void tick() {
         if (bossBar == null || !mage.isValid()) return;
-        this.bossBar.setProgress(mage.getHealth() / mage.getMaxHealth());
+        double progress = mage.getMaxHealth();
+        if (progress > 0) {
+            progress = mage.getHealth() / progress;
+        }
+        tick(progress);
+    }
+
+    public void tick(double progress) {
+        if (bossBar == null || !mage.isValid()) return;
+        this.bossBar.setProgress(Math.min(1, Math.max(0, progress)));
         if (System.currentTimeMillis() > nextUpdate) {
             updateVisibility();
         }

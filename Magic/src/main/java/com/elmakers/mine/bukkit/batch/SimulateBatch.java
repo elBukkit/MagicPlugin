@@ -28,6 +28,8 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.automata.AutomatonLevel;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
+import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -100,9 +102,11 @@ public class SimulateBatch extends SpellBatch {
     private ModifyType modifyType = ModifyType.NO_PHYSICS;
     private double reflectChance;
     private int blockLimit = 0;
+    private int maxBlocks = 0;
     private int minBlocks = 5;
     private Set<Long> liveBlocks = new HashSet<>();
     private double breakingBlocks = 0;
+    private BossBarTracker bossBar;
 
     private List<Block> deadBlocks = new ArrayList<>();
     private List<Block> bornBlocks = new ArrayList<>();
@@ -331,6 +335,10 @@ public class SimulateBatch extends SpellBatch {
     @Override
     public int process(int maxBlocks) {
         int processedBlocks = 0;
+        if (bossBar != null) {
+            double progress = this.maxBlocks < 1 ? 0 : (double)this.blockLimit / this.maxBlocks;
+            bossBar.tick(progress);
+        }
         if (state == SimulationState.INITIALIZING) {
             // Reset state
             x = 0;
@@ -616,6 +624,7 @@ public class SimulateBatch extends SpellBatch {
         this.radius = level.getRadius(radius);
         this.yRadius = level.getYRadius(yRadius);
         this.blockLimit = level.getMaxBlocks(blockLimit);
+        this.maxBlocks = this.blockLimit;
         this.minBlocks = level.getMinBlocks(minBlocks);
     }
 
@@ -833,6 +842,10 @@ public class SimulateBatch extends SpellBatch {
         if (isAutomata && !mage.isPlayer()) {
             controller.forgetMage(mage);
         }
+        if (bossBar != null) {
+            bossBar.remove();
+            bossBar = null;
+        }
         state = SimulationState.FINISHED;
         super.finish();
     }
@@ -872,9 +885,16 @@ public class SimulateBatch extends SpellBatch {
 
     public void setMaxBlocks(int maxBlocks) {
         this.blockLimit = maxBlocks;
+        this.maxBlocks = maxBlocks;
     }
 
     public void setMinBlocks(int minBlocks) {
         this.minBlocks = minBlocks;
+    }
+
+    public void setBossBar(BossBarConfiguration config) {
+        if (config != null) {
+            bossBar = config.createTracker(mage);
+        }
     }
 }

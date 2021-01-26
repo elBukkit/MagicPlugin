@@ -47,6 +47,12 @@ virus:
     death_cast:
         virus_death: 50,80,100
     parameters:
+        boss_bar:
+          bar_color: red
+          bar_radius: 64
+          bar_flags:
+            - create_fog
+            - darken_sky
         target_invisible: false
         allow_max_range: false
         transparent: transparent_to_construction

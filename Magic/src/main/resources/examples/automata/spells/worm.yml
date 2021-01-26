@@ -48,6 +48,11 @@ worm:
         "railgun indestructible $birth": 20,40,80
         "none": 20,10,5
     parameters:
+        boss_bar:
+            bar_radius: 48
+            bar_color: yellow
+            bar_flags:
+            - darken_sky
         target_invisible: false
         allow_max_range: false
         transparent: transparent_to_construction

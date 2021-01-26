@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.automata.AutomatonLevel;
 import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -34,6 +35,7 @@ public class SimulateSpell extends BlockSpell {
         "olcx", "olcy", "olcz", "obcx", "obcy", "obcz", "live_rules", "birth_rules",
         "target_mode", "target_types", "move", "target_min_range", "target_max_range",
         "cast", "death_cast", "cast_probability", "diagonal_live_rules", "diagonal_birth_rules",
+        "boss_bar"
     };
 
     private static final int DEFAULT_RADIUS = 32;
@@ -159,6 +161,7 @@ public class SimulateSpell extends BlockSpell {
             batch.setDiagonalBirthRules(ConfigurationUtils.getIntegerList(parameters, "diagonal_birth_rules"));
         }
 
+        batch.setBossBar(BossBarConfiguration.parse(controller, parameters, "$p"));
         batch.setReflectChange(parameters.getDouble("reflect_chance", 0));
         batch.setBirthRange(parameters.getInt("birth_range", 0));
         batch.setLiveRange(parameters.getInt("live_range", 0));

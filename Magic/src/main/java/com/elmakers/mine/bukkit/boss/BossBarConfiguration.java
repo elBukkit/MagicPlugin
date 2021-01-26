@@ -70,11 +70,16 @@ public class BossBarConfiguration {
 
     @Nullable
     public static BossBarConfiguration parse(MageController controller, ConfigurationSection config, String defaultTitle) {
+        return parse(controller, config, defaultTitle, "boss_bar");
+    }
+
+    @Nullable
+    public static BossBarConfiguration parse(MageController controller, ConfigurationSection config, String defaultTitle, String key) {
         BossBarConfiguration bossBarConfiguration = null;
-        if (config.getBoolean("boss_bar")) {
+        if (config.getBoolean(key)) {
             bossBarConfiguration = new BossBarConfiguration(controller, config, defaultTitle);
         } else {
-            ConfigurationSection bossBarConfig = config.getConfigurationSection("boss_bar");
+            ConfigurationSection bossBarConfig = config.getConfigurationSection(key);
             if (bossBarConfig != null) {
                 bossBarConfiguration = new BossBarConfiguration(controller, bossBarConfig, defaultTitle);
             }

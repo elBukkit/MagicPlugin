@@ -23,6 +23,7 @@ defender:
     death_cast:
         "defender_death destructible $birth": 100
     parameters:
+        boss_bar: true
         allow_max_range: false
         transparent: transparent_to_construction
         check_destructible: false
