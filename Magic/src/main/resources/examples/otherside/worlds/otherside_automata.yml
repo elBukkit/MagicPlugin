@@ -1,5 +1,6 @@
 otherside_automata:
   world: world_other
+  cancel_spells_on_save: false
   entity_spawn:
 
     spawn_automata:
@@ -9,6 +10,7 @@ otherside_automata:
       min_y: 63
       allow_indoors: false
       cooldown: 10000
+      priority: 10
       target_types:
         - enderman
         - zombie
