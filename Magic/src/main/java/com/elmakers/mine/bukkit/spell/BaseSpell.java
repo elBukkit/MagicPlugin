@@ -1935,26 +1935,47 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean canTarget(Entity entity) {
-        if (bypassAll) return true;
+        if (bypassAll) {
+            return true;
+        }
         if (!bypassPvpRestriction && entity instanceof Player)
         {
             Player magePlayer = mage.getPlayer();
             if (magePlayer != null && !magePlayer.hasPermission("Magic.bypass_pvp"))
             {
                 // Check that the other player does not have PVP disabled for fairness
-                if (!controller.isPVPAllowed((Player)entity, entity.getLocation())) return false;
-                if (!controller.isPVPAllowed(magePlayer, entity.getLocation())) return false;
-                if (!controller.isPVPAllowed(magePlayer, mage.getLocation())) return false;
+                if (!controller.isPVPAllowed((Player)entity, entity.getLocation())) {
+                    mage.sendDebugMessage("PVP not allowed for target at target location", 30);
+                    return false;
+                }
+                if (!controller.isPVPAllowed(magePlayer, entity.getLocation())) {
+                    mage.sendDebugMessage("PVP not allowed for caster at target location", 30);
+                    return false;
+                }
+                if (!controller.isPVPAllowed(magePlayer, mage.getLocation())) {
+                    mage.sendDebugMessage("PVP not allowed for caster at caster location", 30);
+                    return false;
+                }
             }
         }
         if (onlyFriendlyFire && (friendlyEntityTypes == null || !friendlyEntityTypes.contains(entity.getType())))
         {
-            return controller.isFriendly(mage.getEntity(), entity);
+            boolean isFriendly = controller.isFriendly(mage.getEntity(), entity);
+            if (!isFriendly) {
+                mage.sendDebugMessage("Target is not friendly and spell is set to only friendly", 30);
+            }
+            return isFriendly;
         }
         if (!bypassProtection && !bypassFriendlyFire)
         {
-            return controller.canTarget(mage.getEntity(), entity);
+            controller.getLogger().info("** Defer controller.canTarget isFriendly");
+            boolean canTarget = controller.canTarget(mage.getEntity(), entity);
+            if (!canTarget) {
+                mage.sendDebugMessage("Controller says can't target entity", 30);
+            }
+            return canTarget;
         }
+
         return true;
     }
 

@@ -352,26 +352,48 @@ public class TargetingSpell extends BaseSpell {
     public boolean canTarget(Entity entity, Class<?> targetType) {
         // This is mainly here to ignore pets...
         if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) {
+            mage.sendDebugMessage("Entity is unknown type", 30);
             return false;
         }
         if (!targetMount) {
             Entity mounted = DeprecatedUtils.getPassenger(entity);
             Entity mageEntity = mage.getEntity();
-            if (mounted != null && mageEntity != null && mounted.equals(mageEntity)) return false;
+            if (mounted != null && mageEntity != null && mounted.equals(mageEntity)) {
+                mage.sendDebugMessage("Entity skipped, can't target your own mount", 30);
+                return false;
+            }
         }
-        if (!targetTamed && entity instanceof Tameable && ((Tameable)entity).isTamed()) return false;
-        if (EntityMetadataUtils.instance().getBoolean(entity, "notarget")) return false;
-        if (!targetNPCs && controller.isStaticNPC(entity)) return false;
-        if (!targetPets && controller.isPet(entity)) return false;
-        if (!targetArmorStands && entity instanceof ArmorStand) return false;
+        if (!targetTamed && entity instanceof Tameable && ((Tameable)entity).isTamed()) {
+            mage.sendDebugMessage("Entity skipped, is tamed", 30);
+            return false;
+        }
+        if (EntityMetadataUtils.instance().getBoolean(entity, "notarget")) {
+            mage.sendDebugMessage("Entity skipped, has notarget metadata", 30);
+            return false;
+        }
+        if (!targetNPCs && controller.isStaticNPC(entity)) {
+            mage.sendDebugMessage("Entity skipped, is npc", 30);
+            return false;
+        }
+        if (!targetPets && controller.isPet(entity)) {
+            mage.sendDebugMessage("Entity skipped, is pet", 30);
+            return false;
+        }
+        if (!targetArmorStands && entity instanceof ArmorStand) {
+            mage.sendDebugMessage("Entity is armor stand, so no", 30);
+            return false;
+        }
         if (ignoreEntityTypes != null && ignoreEntityTypes.contains(entity.getType())) {
+            mage.sendDebugMessage("Entity is in ignored types list, so no", 30);
             return false;
         }
         if (targetDisplayName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(targetDisplayName))) {
+            mage.sendDebugMessage("Entity is not the specific display name we're looking for", 30);
             return false;
         }
         if (targetPotionEffectTypes != null) {
             if (!(entity instanceof LivingEntity)) {
+                mage.sendDebugMessage("Entity not a living entity and looking for potion effects", 30);
                 return false;
             }
             LivingEntity li = (LivingEntity)entity;
@@ -383,6 +405,7 @@ public class TargetingSpell extends BaseSpell {
                 }
             }
             if (!has) {
+                mage.sendDebugMessage("Entity does not have the specific potion effect we're looking for", 30);
                 return false;
             }
         }
@@ -392,6 +415,7 @@ public class TargetingSpell extends BaseSpell {
                 LivingEntity li = (LivingEntity)entity;
                 for (PotionEffectType type : targetPotionEffectTypes) {
                     if (li.hasPotionEffect(type)) {
+                        mage.sendDebugMessage("Entity has one of the ignored potion effects", 30);
                         return false;
                     }
                 }
@@ -405,6 +429,7 @@ public class TargetingSpell extends BaseSpell {
                 Collection<PotionEffect> effects = living.getActivePotionEffects();
                 for (PotionEffect effect : effects) {
                     if (effect.getType().equals(PotionEffectType.DAMAGE_RESISTANCE) && effect.getAmplifier() >= damageResistanceProtection) {
+                        mage.sendDebugMessage("Entity skipped due to damage resistance", 30);
                         return false;
                     }
                 }
@@ -413,28 +438,61 @@ public class TargetingSpell extends BaseSpell {
         if (entity instanceof Player)
         {
             Player player = (Player)entity;
-            if (checkProtection && player.hasPermission("Magic.protected." + this.getKey())) return false;
-            if (controller.isMage(entity) && isSuperProtected(controller.getMage(entity))) return false;
-            if (!targetGameModes.contains(player.getGameMode())) return false;
+            if (checkProtection && player.hasPermission("Magic.protected." + this.getKey())) {
+                mage.sendDebugMessage("Entity has Magic.protected perm", 30);
+                return false;
+            }
+            if (controller.isMage(entity) && isSuperProtected(controller.getMage(entity))) {
+                mage.sendDebugMessage("Entity is superprotected", 30);
+                return false;
+            }
+            if (!targetGameModes.contains(player.getGameMode())) {
+                mage.sendDebugMessage("Entity has one of the ignored potion effects", 30);
+                return false;
+            }
         }
         // Ignore invisible entities
-        if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) return false;
-        if (!targetVanished && entity instanceof Player && controller.isVanished(entity)) return false;
+        if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+            mage.sendDebugMessage("Entity skipped, is invisible", 30);
+            return false;
+        }
+        if (!targetVanished && entity instanceof Player && controller.isVanished(entity)) {
+            mage.sendDebugMessage("Entity skipped, is vanished", 30);
+            return false;
+        }
 
         if (targetContents != null && entity instanceof ItemFrame)
         {
             ItemFrame itemFrame = (ItemFrame)entity;
             ItemStack item = itemFrame.getItem();
-            if (item == null || item.getType() != targetContents) return false;
+            if (item == null || item.getType() != targetContents) {
+                mage.sendDebugMessage("Entity missing item frame contents", 30);
+                return false;
+            }
         }
         if (targetType != null) {
-            return targetType.isAssignableFrom(entity.getClass()) && super.canTarget(entity);
+            boolean isTargetType = targetType.isAssignableFrom(entity.getClass());
+            if (!isTargetType) {
+                mage.sendDebugMessage("Entity is not the right target type", 30);
+            }
+            return isTargetType && super.canTarget(entity);
         }
-        if (targetEntityType == null && targetEntityTypes == null) return super.canTarget(entity);
+        if (targetEntityType == null && targetEntityTypes == null) {
+            return super.canTarget(entity);
+        }
         if (targetEntityTypes != null) {
-            return targetEntityTypes.contains(entity.getType()) && super.canTarget(entity);
+            boolean isTargetType = targetEntityTypes.contains(entity.getType());
+            if (!isTargetType) {
+                mage.sendDebugMessage("Entity is not the right target type", 30);
+            }
+            return isTargetType && super.canTarget(entity);
         }
-        return targetEntityType.isAssignableFrom(entity.getClass()) && super.canTarget(entity);
+
+        boolean isTargetType = targetEntityType.isAssignableFrom(entity.getClass());
+        if (!isTargetType) {
+            mage.sendDebugMessage("Entity is not the right target type", 30);
+        }
+        return isTargetType && super.canTarget(entity);
     }
 
     public boolean isSuperProtected(Mage mage) {
