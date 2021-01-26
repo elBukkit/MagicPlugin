@@ -29,6 +29,7 @@ public class ResourcePackManager {
 
     private final MagicController controller;
     private boolean enableResourcePackCheck = true;
+    private boolean resourcePacksEnabled = true;
     private int resourcePackPromptDelay = 0;
     private boolean resourcePackPrompt = false;
     private int resourcePackCheckInterval = 0;
@@ -150,6 +151,9 @@ public class ResourcePackManager {
         if (url == null) {
             url = resourcePack;
         }
+        if (url == null || url.isEmpty()) {
+            return false;
+        }
         ResourcePack rp = createResourcePack(url);
         if (!rp.isChecked()) {
             updateResourcePackHash(rp, false, false, new ResourcePackResponse() {
@@ -256,6 +260,10 @@ public class ResourcePackManager {
         }
     }
 
+    public boolean isResourcePackEnabled() {
+        return resourcePacksEnabled;
+    }
+
     public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force, final boolean filenameChanged) {
         final Plugin plugin = controller.getPlugin();
         if (!plugin.isEnabled()) return false;
@@ -273,6 +281,7 @@ public class ResourcePackManager {
 
         if (serverResourcePack != null && !serverResourcePack.isEmpty()) {
             if (!quiet) sender.sendMessage("Resource pack configured in server.properties, Magic not using RP from config.yml");
+            resourcePacksEnabled = false;
             return false;
         }
         resourcePack = defaultResourcePack;

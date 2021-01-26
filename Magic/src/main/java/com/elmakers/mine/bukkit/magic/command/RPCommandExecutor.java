@@ -50,6 +50,10 @@ public class RPCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(controller.getMessages().get("commands.in_game"));
             return true;
         }
+        if (!controller.isResourcePackEnabled()) {
+            sender.sendMessage(controller.getMessages().get("commands.getrp.disabled"));
+            return true;
+        }
 
         if (subCommand.isEmpty()) {
             sender.sendMessage(controller.getMessages().get("commands.getrp.sending"));

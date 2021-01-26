@@ -504,6 +504,7 @@ public interface MageController {
     @Nullable
     String getResourcePackURL(CommandSender sender);
     boolean isResourcePackEnabledByDefault();
+    boolean isResourcePackEnabled();
     Collection<String> getAlternateResourcePacks();
     boolean commitOnQuit();
 

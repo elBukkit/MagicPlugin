@@ -6531,6 +6531,11 @@ public class MagicController implements MageController {
         return resourcePacks.checkResourcePack(sender, quiet, force, false);
     }
 
+    @Override
+    public boolean isResourcePackEnabled() {
+        return resourcePacks.isResourcePackEnabled();
+    }
+
     @Nullable
     @Override
     public Material getMobEgg(EntityType mobType) {

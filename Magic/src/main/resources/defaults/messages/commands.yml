@@ -103,3 +103,4 @@ commands:
       preference: "RP reference set to &3$pack&f\nUse &6/getrp default&f to change back."
       noauto: "Use &6/getrp auto &fto get this pack automatically at login"
       default: "RP preference set back to default"
+      disabled: "This command has been disabled because this server has a resource pack configured in server.properties"
