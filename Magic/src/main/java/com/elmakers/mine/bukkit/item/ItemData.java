@@ -50,6 +50,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private String creatorId;
     private String creator;
     private boolean locked;
+    private boolean loaded;
     private List<PendingUpdate> pending = null;
 
     public ItemData(ItemStack itemStack, MageController controller) {
@@ -270,7 +271,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private ItemStack getOrCreateItemStack() {
         if (item == null) {
             item = controller.createItem(materialKey, null, false, this);
-            if (InventoryUtils.isSkull(item)) {
+            if (!loaded && InventoryUtils.isSkull(item)) {
                 pending = new ArrayList<>();
             }
         }
@@ -330,6 +331,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     @Override
     public void updated(@Nullable ItemStack itemStack) {
+        loaded = true;
         if (pending != null && itemStack != null) {
             this.item = itemStack;
             ItemMeta populatedMeta = itemStack.getItemMeta();
