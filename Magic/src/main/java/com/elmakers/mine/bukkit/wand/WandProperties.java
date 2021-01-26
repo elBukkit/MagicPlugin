@@ -43,7 +43,7 @@ public abstract class WandProperties extends TemplatedProperties {
             "unique", "track", "invulnerable", "immortal", "inventory_rows",
             "class", "classes", "consume_spell", "stack", "unstashable", "unmoveable",
             "page_free_space", "enchantable", "hide_flags", "slot", "slots", "slotted",
-            "use_active_name", "interactible"
+            "use_active_name", "interactible", "craftable"
         ).build();
     protected BaseMagicProperties wandTemplate;
     protected MageClass mageClass;

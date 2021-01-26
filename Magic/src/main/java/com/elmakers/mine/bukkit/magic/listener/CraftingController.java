@@ -17,10 +17,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
@@ -138,14 +140,12 @@ public class CraftingController implements Listener {
         CraftingInventory inventory = event.getInventory();
         ItemStack[] contents = inventory.getMatrix();
 
-        // Check for wands glitched into the crafting inventory
-        if (!allowWandsAsIngredients) {
-            for (int i = 0; i < 9 && i < contents.length; i++) {
-                ItemStack item = contents[i];
-                if (Wand.isSpecial(item)) {
-                    inventory.setResult(new ItemStack(Material.AIR));
-                    return;
-                }
+        // Check for wands placed in the crafting inventory
+        for (int i = 0; i < 9 && i < contents.length; i++) {
+            ItemStack item = contents[i];
+            if (!isCraftable(item)) {
+                inventory.setResult(new ItemStack(Material.AIR));
+                return;
             }
         }
 
@@ -193,6 +193,16 @@ public class CraftingController implements Listener {
         }
     }
 
+    private boolean isCraftable(ItemStack item) {
+        if (Wand.isSpecial(item)) {
+            if (!allowWandsAsIngredients) {
+                return false;
+            }
+            return InventoryUtils.getMetaBoolean(item, "craftable", false);
+        }
+        return true;
+    }
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) return;
@@ -203,10 +213,37 @@ public class CraftingController implements Listener {
         // Check for wand clicks to prevent grinding them to dust, or whatever.
         if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
             ItemStack cursor = event.getCursor();
-            if (Wand.isSpecial(cursor) && !allowWandsAsIngredients) {
+            if (!isCraftable(cursor)) {
                 event.setCancelled(true);
-            } else if (InventoryUtils.getMetaBoolean(cursor, "undroppable", false)) {
+            }
+        }
+    }
+
+    // Borrowed from InventoryView and pruned,
+    // TODO: Switch to InventoryView.getSlotType when dropping 1.9 compat
+    public final boolean isCraftingSlot(InventoryView view, int slot) {
+        if (slot >= 0 && slot < view.getTopInventory().getSize()) {
+            if (view.getType() == InventoryType.WORKBENCH || view.getType() == InventoryType.CRAFTING) {
+                return slot > 0;
+            }
+        }
+        return false;
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) return;
+        if (event.isCancelled()) return;
+        ItemStack item = event.getOldCursor();
+        // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
+        item = item.hasItemMeta() ? InventoryUtils.makeReal(item) : item;
+        if (isCraftable(item)) return;
+
+        InventoryView view = event.getView();
+        for (Integer slot : event.getInventorySlots()) {
+            if (slot != null && isCraftingSlot(view, slot)) {
                 event.setCancelled(true);
+                return;
             }
         }
     }

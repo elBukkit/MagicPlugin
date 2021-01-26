@@ -140,7 +140,7 @@ public class InventoryController implements Listener {
             if (Wand.isWand(oldCursor)) {
                 // Check to see if this wand is wearable in the target slot
                 if (isArmorSlot) {
-                    Wand wand = controller.createWand(oldCursor);
+                    Wand wand = controller.getWand(oldCursor);
                     if (wand.hasWearable()) {
                         for (int slot : slots) {
                             if (!wand.isWearableInSlot(slot)) {

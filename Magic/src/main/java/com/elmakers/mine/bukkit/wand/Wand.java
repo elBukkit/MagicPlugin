@@ -1973,6 +1973,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else {
             InventoryUtils.removeMeta(item, "unstashable");
         }
+
+        if (getBoolean("craftable")) {
+            InventoryUtils.setMetaBoolean(item, "craftable", true);
+        } else {
+            InventoryUtils.removeMeta(item, "craftable");
+        }
         if (getBoolean("unmoveable")) {
             InventoryUtils.setMetaBoolean(item, "unmoveable", true);
         } else {

@@ -6,6 +6,7 @@
    There is no "revert" example to undo this one, but contact me if you need the old prices.
  - Colored leather armor *must* use a # in the color code to differentiate between damage, e.g.
    `/mgive leather_chestplate:#002233`
+ - Wands now must have an explicit "craftable: true" parameter to be allowed as a crafting ingredient
 
 # 8.2
 
