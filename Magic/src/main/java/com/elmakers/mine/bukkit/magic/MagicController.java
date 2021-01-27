@@ -7158,23 +7158,26 @@ public class MagicController implements MageController {
 
     @Override
     public void removeNPC(com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
-        Location location = npc.getLocation();
-        String chunkId = getChunkKey(location);
-        if (chunkId == null) return;
-
-        List<MagicNPC> chunkNPCs = npcsByChunk.get(chunkId);
-        if (chunkNPCs != null) {
-            Iterator<MagicNPC> it = chunkNPCs.iterator();
-            while (it.hasNext()) {
-                MagicNPC found = it.next();
-                if (npc.getId().equals(found.getId())) {
-                    npc.remove();
-                    it.remove();
-                }
-            }
-        }
+        unregisterNPC(npc);
+        npc.remove();
         npcs.remove(npc.getId());
         npcsByEntity.remove(npc.getEntityId());
+    }
+
+    public void unregisterNPC(com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
+        String chunkId = getChunkKey(npc.getLocation());
+        if (chunkId == null) return;
+        List<MagicNPC> chunkNPCs = npcsByChunk.get(chunkId);
+        if (chunkNPCs == null) {
+            return;
+        }
+        Iterator<MagicNPC> it = chunkNPCs.iterator();
+        while (it.hasNext()) {
+            if (it.next().getId().equals(npc.getId())) {
+                it.remove();
+                break;
+            }
+        }
     }
 
     @Override

@@ -249,7 +249,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Override
     public void teleport(@Nonnull Location location) {
+        controller.unregisterNPC(this);
         setLocation(location);
+        controller.registerNPC(this);
         if (CompatibilityUtils.isChunkLoaded(location)) {
             restore();
         }
