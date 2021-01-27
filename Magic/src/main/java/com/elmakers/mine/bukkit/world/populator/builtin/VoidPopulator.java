@@ -10,7 +10,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.world.BlockResult;
 import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
-public class VoidBlockPopulator extends MagicBlockPopulator {
+public class VoidPopulator extends MagicBlockPopulator {
     private static MaterialAndData AIR = new MaterialAndData(Material.AIR);
 
     @Override
