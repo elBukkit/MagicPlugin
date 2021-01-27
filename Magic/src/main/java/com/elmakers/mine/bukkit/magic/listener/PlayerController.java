@@ -545,7 +545,6 @@ public class PlayerController implements Listener {
             }
         }
 
-
         if (costs != null && success) {
             String baseMessage = controller.getMessages().get("npc.deducted");
             for (Cost cost : costs) {

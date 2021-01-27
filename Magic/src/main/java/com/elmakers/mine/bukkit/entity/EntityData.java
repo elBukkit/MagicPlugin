@@ -166,6 +166,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected EntityData.TargetType interactSpellTarget;
     protected EntityData.SourceType interactCommandSource;
     protected List<String> interactCommands;
+    protected boolean cancelInteract;
     protected ConfigurationSection disguise;
     protected BossBarConfiguration bossBar;
 
@@ -486,6 +487,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
             }
         }
+        cancelInteract = parameters.getBoolean("cancel_interact");
         List<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
         if (tagList != null) {
             tags = new HashSet<>(tagList);
@@ -1253,7 +1255,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public boolean hasInteract() {
         if (interactSpell != null && !interactSpell.isEmpty()) return true;
         if (interactCommands != null && !interactCommands.isEmpty()) return true;
-        return false;
+        return cancelInteract;
     }
 
     @Override
