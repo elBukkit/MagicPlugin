@@ -20,7 +20,7 @@ public class VoidPopulator extends MagicBlockPopulator {
 
     @Override
     public BlockResult populate(Block block, Random random) {
-        block.setType(Material.AIR);
+        block.setType(Material.AIR, false);
         return BlockResult.CANCEL;
     }
 }
