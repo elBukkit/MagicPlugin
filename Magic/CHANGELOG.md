@@ -57,6 +57,7 @@
 
 ## Additions
 
+ - Added "bosses" builtin example (`/mconfig example fetch bosses`) from Phantom, lots of naturally-spawning custom mobs
  - Add "snowy" automaton for making a 32x32 snowy area
  - Added block_place and block_break world handlers
    - Currently support "Cast" and "Replace" rule classes
