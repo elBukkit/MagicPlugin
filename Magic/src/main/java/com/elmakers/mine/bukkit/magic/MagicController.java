@@ -7369,6 +7369,15 @@ public class MagicController implements MageController {
         return worldController.getWorld(name);
     }
 
+    public int getMaxHeight(World world) {
+        MagicWorld magicWorld = getMagicWorld(world.getName());
+        int maxHeight = CompatibilityUtils.getMaxHeight(world);
+        if (magicWorld != null) {
+            maxHeight = magicWorld.getMaxHeight(maxHeight);
+        }
+        return maxHeight;
+    }
+
     /*
      * Private data
      */

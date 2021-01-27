@@ -15,6 +15,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -507,6 +508,7 @@ public interface MageController {
     boolean isResourcePackEnabled();
     Collection<String> getAlternateResourcePacks();
     boolean commitOnQuit();
+    int getMaxHeight(World world);
 
     Set<String> getItemKeys();
     @Nullable

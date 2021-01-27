@@ -40,6 +40,7 @@ public class MagicWorld {
     private long synchronizedTimeOffset = 0;
     private static Random random = new Random();
     private WorldState state = WorldState.UNLOADED;
+    private Integer maxHeight;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -52,6 +53,9 @@ public class MagicWorld {
 
     public void load(String name, ConfigurationSection config) {
         worldName = name;
+        if (config.contains("max_height")) {
+            maxHeight = config.getInt("max_height");
+        }
         copyFrom = config.getString("copy", copyFrom);
         synchronizeTime = config.getBoolean("synchronize_time", synchronizeTime);
         synchronizedTimeOffset = config.getLong("time_offset", synchronizedTimeOffset);
@@ -227,5 +231,9 @@ public class MagicWorld {
 
     public boolean isCancelSpellsOnSave() {
         return cancelSpellsOnSave;
+    }
+
+    public int getMaxHeight(int defaultHeight) {
+        return maxHeight != null ? maxHeight : defaultHeight;
     }
 }

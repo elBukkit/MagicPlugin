@@ -402,7 +402,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
-        if (block.getY() > CompatibilityUtils.getMaxHeight(block.getWorld())) {
+        if (block.getY() > controller.getMaxHeight(block.getWorld())) {
             return false;
         }
 
@@ -430,7 +430,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Nullable
     public Location tryFindPlaceToStand(Location targetLoc) {
-        int maxHeight = CompatibilityUtils.getMaxHeight(targetLoc.getWorld());
+        int maxHeight = controller.getMaxHeight(targetLoc.getWorld());
         return tryFindPlaceToStand(targetLoc, maxHeight, maxHeight);
     }
 
@@ -449,7 +449,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public Location findPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta) {
         if (!CompatibilityUtils.isChunkLoaded(targetLoc)) return null;
         int minY = MIN_Y;
-        int maxY = CompatibilityUtils.getMaxHeight(targetLoc.getWorld());
+        int maxY = controller.getMaxHeight(targetLoc.getWorld());
 
         // Teleport above half blocks, we will get bumped down by checkForHalfBlock
         // if the location is safe
@@ -507,7 +507,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         Location targetLocation = target.clone();
         int yDelta = 0;
         int minY = MIN_Y;
-        int maxY = CompatibilityUtils.getMaxHeight(targetLocation.getWorld());
+        int maxY = controller.getMaxHeight(targetLocation.getWorld());
 
         while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY && yDelta < maxDelta)
         {
