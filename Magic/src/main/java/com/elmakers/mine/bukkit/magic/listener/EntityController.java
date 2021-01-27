@@ -401,6 +401,12 @@ public class EntityController implements Listener {
 
         Item itemEntity = event.getEntity();
         ItemStack spawnedItem = itemEntity.getItemStack();
+        if (InventoryUtils.isTemporary(spawnedItem)) {
+            event.setCancelled(true);
+            return;
+        }
+
+        /*
         Block block = itemEntity.getLocation().getBlock();
         BlockData undoData = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
         boolean isBreaking = block.getType() != Material.AIR;

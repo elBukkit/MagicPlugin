@@ -31,13 +31,11 @@
  - Fix wand open/close/etc sound FX broadcasting to nearby players
  - Fix issues saving bound wands, particularly after using /clear
  - Fix hex color codes being parsed as integers
-   - This was a fundamental change to config parsing, it will no longer try to auto-convert types
-   - Keeping an eye out for issues
  - Fix Critical passive to work around Minecraft damage immunity timeout
  - Turned off action bar message when spells like Boon and Cloak ran out of mana
  - Fix some issues processing true/false or numeric wand overrides
  - Fix Rocket spell
- - Turn off "undo on world save" feature in world_other to avoid automata self-destructing on save
+ - Fix issues with broomstick handle getting stuck in your inventory, they are droppable now
 
 ## Changes
 
@@ -55,6 +53,7 @@
  - Vault currency prices will now show 2 decimal places (formatting is configurable in messages, number.integer/decimal)
  - Wands now must have an explicit "craftable: true" parameter to be allowed as a crafting ingredient
  - Villager NPCs can't be traded with (by default, set cancel_interact to false to change)
+ - Turn off "undo on world save" feature in world_other to avoid automata self-destructing on save
 
 ## Additions
 

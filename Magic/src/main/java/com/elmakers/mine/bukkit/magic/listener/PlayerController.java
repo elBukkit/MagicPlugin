@@ -168,7 +168,9 @@ public class PlayerController implements Listener {
             return;
         }
 
-        if (NMSUtils.isTemporary(next)) {
+        // Immovable items don't disappear when equipped, this is to match with click behavior
+        // Also allows temporary items to be held, like with the broom handle
+        if (NMSUtils.isTemporary(next) && !InventoryUtils.getMetaBoolean(next, "unmoveable", false)) {
             ItemStack replacement = NMSUtils.getReplacement(next);
             inventory.setItem(event.getNewSlot(), replacement);
             mage.checkWand();
