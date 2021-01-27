@@ -25,6 +25,8 @@ netherside_mobs:
     fallback:
       priority: -500
       class: Replace
+      target_class: LivingEntity
+      not_types: armor_stand
       replace_type:
         warlock: 10
         dark_wizard: 1

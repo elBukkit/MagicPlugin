@@ -41,6 +41,7 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
     protected Set<String> tags;
     protected Set<Biome> biomes;
     protected Set<Biome> notBiomes;
+    protected Set<EntityType> notTypes;
     protected boolean isGlobal;
 
     protected static final Random rand = new Random();
@@ -64,6 +65,21 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
                 set.add(biome);
             } catch (Exception ex) {
                 this.controller.getLogger().warning(" Invalid biome: " + biomeName);
+            }
+        }
+        return set;
+    }
+
+    @Nullable
+    protected Set<EntityType> loadEntityTypes(List<String> typeNames) {
+        if (typeNames == null || typeNames.isEmpty()) return null;
+        Set<EntityType> set = new HashSet<>();
+        for (String typeName : typeNames) {
+            try {
+                EntityType entityType = EntityType.valueOf(typeName.trim().toUpperCase());
+                set.add(entityType);
+            } catch (Exception ex) {
+                this.controller.getLogger().warning(" Invalid entity type: " + typeName);
             }
         }
         return set;
@@ -114,6 +130,7 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         }
         biomes = loadBiomes(ConfigurationUtils.getStringList(parameters, "biomes"));
         notBiomes = loadBiomes(ConfigurationUtils.getStringList(parameters, "not_biomes"));
+        notTypes = loadEntityTypes(ConfigurationUtils.getStringList(parameters, "not_types"));
         priority = parameters.getInt("priority");
         return true;
     }
@@ -136,6 +153,7 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         if (!targetCustom && entity.getCustomName() != null) return SpawnResult.SKIP;
         if (!targetNPC && controller.isNPC(entity)) return SpawnResult.SKIP;
         if (percentChance < rand.nextFloat()) return SpawnResult.SKIP;
+        if (notTypes != null && notTypes.contains(entity.getType())) return SpawnResult.SKIP;
         long now = System.currentTimeMillis();
         if (cooldown > 0 && lastSpawn != 0 && now < lastSpawn + cooldown) return SpawnResult.SKIP;
         Location entityLocation = entity.getLocation();
@@ -171,10 +189,16 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
     }
 
     protected String getTargetEntityTypeName() {
+        String typeNames;
         if (targetEntityClass != null) {
-            return "entities of class " + targetEntityClass.getSimpleName();
+            typeNames = "entities of class " + targetEntityClass.getSimpleName();
+        } else {
+            typeNames = targetEntityTypes.isEmpty() ? "all entities" : StringUtils.join(targetEntityTypes, ",");
         }
-        return targetEntityTypes.isEmpty() ? "all entities" : StringUtils.join(targetEntityTypes, ",");
+        if (notTypes != null && !notTypes.isEmpty()) {
+            typeNames = typeNames + " and not any of " + notTypes;
+        }
+        return typeNames;
     }
 
     protected void logSpawnRule(String message) {

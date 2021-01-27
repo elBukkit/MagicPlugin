@@ -37,6 +37,7 @@
  - Fix Rocket spell
  - Fix issues with broomstick handle getting stuck in your inventory, they are droppable now
  - Fix NPCs duplicating, don't persist them, clean up leftover NPC enties (1.16 only)
+ - Fix brooms and armor stand projectiles not working in the other side or netherside
 
 ## Changes
 
