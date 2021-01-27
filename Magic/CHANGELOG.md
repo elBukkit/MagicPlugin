@@ -54,6 +54,7 @@
  - Economy rebalance, builtin item prices have changed
  - Vault currency prices will now show 2 decimal places (formatting is configurable in messages, number.integer/decimal)
  - Wands now must have an explicit "craftable: true" parameter to be allowed as a crafting ingredient
+ - Villager NPCs can't be traded with (by default, set cancel_interact to false to change)
 
 ## Additions
 
