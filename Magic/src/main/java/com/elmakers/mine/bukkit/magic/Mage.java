@@ -333,6 +333,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 this.location.setX(location.getX());
                 this.location.setY(location.getY());
                 this.location.setZ(location.getZ());
+                this.location.setWorld(location.getWorld());
             }
         } else {
             this.location = location;
@@ -1057,6 +1058,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     location.setX(blockLocation.getX());
                     location.setY(blockLocation.getY());
                     location.setZ(blockLocation.getZ());
+                    location.setWorld(blockLocation.getWorld());
                 }
                 setLocation(location, false);
             } else {
