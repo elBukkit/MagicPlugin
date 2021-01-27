@@ -277,14 +277,21 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
+    public static void setRemoveWhenFarAway(Entity entity, boolean flag) {
+        if (class_LivingEntity_setRemoveWhenFarAway == null || !(entity instanceof LivingEntity)) return;
+        try {
+            Object handle = getHandle(entity);
+            class_LivingEntity_setRemoveWhenFarAway.invoke(entity, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void setPersist(Entity entity, boolean flag) {
         if (class_Entity_persistField == null) return;
         try {
             Object handle = getHandle(entity);
             class_Entity_persistField.set(handle, flag);
-            if (entity instanceof LivingEntity && class_LivingEntity_setRemoveWhenFarAway != null) {
-                class_LivingEntity_setRemoveWhenFarAway.invoke(entity, !flag);
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

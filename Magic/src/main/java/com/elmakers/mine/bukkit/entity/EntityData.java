@@ -126,6 +126,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isNPC;
     protected boolean isHidden;
     protected Boolean persist = null;
+    protected Boolean removeWhenFarAway = null;
     protected int fireTicks;
 
     protected DyeColor dyeColor;
@@ -345,6 +346,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isSilent = parameters.getBoolean("silent", false);
         if (parameters.contains("persist")) {
             persist = parameters.getBoolean("persist");
+        }
+        if (parameters.contains("remove_when_far_away")) {
+            removeWhenFarAway = parameters.getBoolean("remove_when_far_away");
         }
         isDocile = parameters.getBoolean("docile");
         transformable = parameters.getBoolean("transformable", true);
@@ -840,6 +844,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (persist != null) {
             CompatibilityUtils.setPersist(entity, persist);
+        }
+        if (removeWhenFarAway != null) {
+            CompatibilityUtils.setRemoveWhenFarAway(entity, removeWhenFarAway);
         }
         CompatibilityUtils.setSilent(entity, isSilent);
         entity.setFireTicks(fireTicks);

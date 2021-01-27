@@ -36,6 +36,7 @@
  - Fix some issues processing true/false or numeric wand overrides
  - Fix Rocket spell
  - Fix issues with broomstick handle getting stuck in your inventory, they are droppable now
+ - Fix NPCs duplicating, don't persist them, clean up leftover NPC enties (1.16 only)
 
 ## Changes
 
