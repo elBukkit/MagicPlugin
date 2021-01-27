@@ -4,15 +4,11 @@
 
 ## Hot
 
- - Boss bar from Cloak doesn't go away
- - Can craft wand into blaze powder (supposed to not work if not droppable I think?)
  - Need friend management for Gather
  - Add biome list to CheckBlock action
  - The `/wand name` command doesn't work reliably (sounds like they are not using the command, see Discord)
  - Wolf house signs are broke again (check teleporter room)
  - Add "melee" flag for wands to allow them to do melee damage
-
- - Souls not showing in recall on server?
  - Magic mobs or automata fight without players around?
 
 ## Editor

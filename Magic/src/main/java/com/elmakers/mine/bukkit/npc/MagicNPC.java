@@ -370,6 +370,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public void configure(String key, Object value) {
         value = ConfigurationUtils.convertProperty(value);
         parameters.set(key, value);
+        if (entityData != null) {
+            entityData.getConfiguration().set(key, value);
+        }
         update();
     }
 
