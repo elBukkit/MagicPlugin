@@ -35,6 +35,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
@@ -89,7 +90,8 @@ public class MobController implements Listener, ChunkLoadListener {
 
     public void checkNPC(Entity entity, String npcId) {
         try {
-            if (controller.getNPC(UUID.fromString(npcId)) == null) {
+            MagicNPC npc = controller.getNPC(UUID.fromString(npcId));
+            if (npc == null || !npc.getEntityId().equals(entity.getUniqueId())) {
                 Location location = entity.getLocation();
                 controller.getLogger().warning("Removing an invalid NPC (id=" + npcId + ") entity of type " + entity.getType() + " at ["
                     + location.getWorld().getName() + "] " + location.getBlockX()
