@@ -15,6 +15,7 @@ public class BossBarAction extends BaseSpellAction {
     private boolean showTarget;
 
     private double progress;
+    private boolean updateTitle;
 
     // Transient state
     private BossBar bossBar;
@@ -23,6 +24,7 @@ public class BossBarAction extends BaseSpellAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
 
+        updateTitle = parameters.getBoolean("update_title");
         showTarget = parameters.getBoolean("show_target");
         progress = parameters.getDouble("bar_progress");
         barConfig = new BossBarConfiguration(context.getController(), parameters);
@@ -32,6 +34,9 @@ public class BossBarAction extends BaseSpellAction {
     public SpellResult perform(CastContext context) {
         if (bossBar == null) {
             bossBar = barConfig.createBossBar(context);
+        }
+        if (updateTitle) {
+            barConfig.updateTitle(bossBar, context);
         }
         bossBar.setProgress(Math.max(0, Math.min(1, progress)));
 

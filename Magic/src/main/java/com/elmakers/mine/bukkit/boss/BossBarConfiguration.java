@@ -101,6 +101,11 @@ public class BossBarConfiguration {
         return bossBar;
     }
 
+    public void updateTitle(BossBar bossBar, CastContext context) {
+        String title = context.parameterizeMessage(this.title);
+        bossBar.setTitle(title);
+    }
+
     public BossBarTracker createTracker(Mage mage) {
         return new BossBarTracker(mage, this);
     }
