@@ -157,7 +157,7 @@ public abstract class CompoundAction extends BaseSpellAction
         super.start(context, parameters);
         ran = new HashSet<>();
         for (ActionHandler handler : handlers.values()) {
-            handler.start(context, context.getSpell().getWorkingParameters());
+            handler.start(context, context.getWorkingParameters());
         }
         started = true;
     }
@@ -172,7 +172,7 @@ public abstract class CompoundAction extends BaseSpellAction
         // which will call prepare, so we can skip it here.
         if (started) {
             for (ActionHandler handler : handlers.values()) {
-                handler.prepare(context, context.getSpell().getWorkingParameters());
+                handler.prepare(context, context.getWorkingParameters());
             }
         }
     }

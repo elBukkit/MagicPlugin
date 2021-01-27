@@ -22,7 +22,7 @@
    - Add support for triggers
    - Add automaton support (or maybe fix- pluralize problem?)
    - Can't insert creator into materials or effects since they are lists!
-   - Test effectlib clases in effects block (stand-alone effects), doesn't seem to wrok
+   - Test effectlib classes in effects block (stand-alone effects), doesn't seem to work
 
 ## World Gen
 

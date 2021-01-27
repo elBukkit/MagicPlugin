@@ -10,7 +10,7 @@ public class UpdateParametersAction extends CompoundAction
     @Override
     public SpellResult step(CastContext context) {
         for (ActionHandler handler : handlers.values()) {
-            handler.prepare(context, context.getSpell().getWorkingParameters());
+            handler.prepare(context, context.getWorkingParameters());
         }
         return startActions();
     }
