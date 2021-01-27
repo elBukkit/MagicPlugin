@@ -6409,12 +6409,14 @@ public class MagicController implements MageController {
 
     @Nullable
     @Override
+    @Deprecated
     public ItemData getOrCreateItemOrWand(String key) {
         return getOrCreateItem(key);
     }
 
     @Nullable
     @Override
+    @Deprecated
     public ItemData getOrCreateMagicItem(String key) {
         return getOrCreateItem(key);
     }
@@ -7373,6 +7375,7 @@ public class MagicController implements MageController {
         return worldController.getWorld(name);
     }
 
+    @Override
     public int getMaxHeight(World world) {
         MagicWorld magicWorld = getMagicWorld(world.getName());
         int maxHeight = CompatibilityUtils.getMaxHeight(world);

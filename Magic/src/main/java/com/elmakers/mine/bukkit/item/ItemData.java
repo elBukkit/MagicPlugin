@@ -246,6 +246,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     }
 
     @Nullable
+    @Override
     public ItemStack getItemStack(int amount, ItemUpdatedCallback callback) {
         ItemStack newItem = InventoryUtils.getCopy(getOrCreateItemStack());
         if (newItem == null) {

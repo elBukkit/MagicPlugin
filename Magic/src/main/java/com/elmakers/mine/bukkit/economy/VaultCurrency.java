@@ -52,6 +52,7 @@ public class VaultCurrency extends BaseMagicCurrency {
         return isValid;
     }
 
+    @Override
     protected boolean hasDecimals() {
         return true;
     }
