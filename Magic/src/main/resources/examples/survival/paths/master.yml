@@ -29,7 +29,6 @@ master:
       - singularity
       - tornado
       - tendril
-      - force
       - stash
       - railgun
       - levitate
