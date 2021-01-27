@@ -159,6 +159,7 @@ public class PlayerController implements Listener {
         if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             mage.sendDebugMessage("EQUIP " + event.getNewSlot() + " from " + event.getPreviousSlot(), DEBUG_LEVEL);
         }
+        controller.updateOnEquip(next);
 
         // Check for self-destructing and temporary items
         if (Wand.isSelfDestructWand(next)) {

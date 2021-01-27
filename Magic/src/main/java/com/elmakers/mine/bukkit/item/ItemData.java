@@ -51,6 +51,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private String creator;
     private boolean locked;
     private boolean loaded;
+    private boolean replaceOnEquip;
     private List<PendingUpdate> pending = null;
 
     public ItemData(ItemStack itemStack, MageController controller) {
@@ -180,6 +181,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             InventoryUtils.setMetaBoolean(item, "locked", true);
             InventoryUtils.setMeta(item, "magic_key", key);
         }
+        replaceOnEquip = configuration.getBoolean("replace_on_equip");
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
         if (categoriesList != null) {
@@ -297,6 +299,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         return getOrCreateItemStack().getType();
     }
 
+    public int getCustomModelData() {
+        return InventoryUtils.getMetaInt(getOrCreateItemStack(), "CustomModelData", 0);
+    }
+
     @Nullable
     @Deprecated
     @Override
@@ -327,6 +333,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     @Override
     public boolean isLocked() {
         return this.locked;
+    }
+
+    public boolean isReplaceOnEquip() {
+        return this.replaceOnEquip;
     }
 
     @Override

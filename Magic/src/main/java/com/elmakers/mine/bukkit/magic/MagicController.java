@@ -6419,6 +6419,10 @@ public class MagicController implements MageController {
         return getOrCreateItem(key);
     }
 
+    public void updateOnEquip(ItemStack stack) {
+        items.updateOnEquip(stack);
+    }
+
     @Override
     public ItemData createItemData(ItemStack itemStack) {
         return new com.elmakers.mine.bukkit.item.ItemData(itemStack, this);

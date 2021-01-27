@@ -8,12 +8,16 @@ import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.item.InvalidMaterialException;
 import com.elmakers.mine.bukkit.item.ItemData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class ItemController {
@@ -21,6 +25,7 @@ public class ItemController {
     private final Set<String> itemKeys = new HashSet<>();
     private final Map<String, ItemData> items = new HashMap<>();
     private final Map<ItemStack, ItemData> itemsByStack = new HashMap<>();
+    private final Map<Material, Map<Integer, ItemData>> replaceOnEquip = new HashMap<>();
 
     public ItemController(MageController controller) {
         this.controller = controller;
@@ -57,6 +62,15 @@ public class ItemController {
                 itemKeys.add(itemKey);
                 items.put(itemKey, magicItem);
                 itemsByStack.put(magicItem.getItemStack(1), magicItem);
+                if (magicItem.isReplaceOnEquip()) {
+                    Material type = magicItem.getType();
+                    Map<Integer, ItemData> mapped = replaceOnEquip.get(type);
+                    if (mapped == null) {
+                        mapped = new HashMap<>();
+                        replaceOnEquip.put(type, mapped);
+                    }
+                    mapped.put(magicItem.getCustomModelData(), magicItem);
+                }
             } else {
                 controller.getLogger().warning("Could not create item with key " + itemKey);
             }
@@ -123,5 +137,17 @@ public class ItemController {
         }
         items.remove(key);
         itemKeys.remove(key);
+    }
+
+    public void updateOnEquip(ItemStack itemStack) {
+        if (CompatibilityUtils.isEmpty(itemStack)) return;
+        Map<Integer, ItemData> mapped = replaceOnEquip.get(itemStack.getType());
+        if (mapped == null) return;
+        int customData = InventoryUtils.getMetaInt(itemStack, "CustomModelData", 0);
+        ItemData replacement = mapped.get(customData);
+        if (replacement != null) {
+            ItemMeta meta = replacement.getItemMeta();
+            itemStack.setItemMeta(meta);
+        }
     }
 }
