@@ -1,4 +1,5 @@
 broomstick_handle:
+  replace_on_equip: true
   tags:
     unmoveable: true
     unstashable: true
