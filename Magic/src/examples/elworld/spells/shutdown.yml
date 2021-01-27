@@ -63,6 +63,7 @@ shutdown:
       - kick @a
   parameters:
     target_type: Player
+    show_target: true
     message_target: true
     target_self: true
     bypass_protection: true
