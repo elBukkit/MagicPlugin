@@ -1,8 +1,9 @@
 broomstick_handle:
   tags:
     unmoveable: true
-    undroppable: true
     unstashable: true
+    undroppable: false
+    temporary: true
   item:
     ==: org.bukkit.inventory.ItemStack
     type: STICK

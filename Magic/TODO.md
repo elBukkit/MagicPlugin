@@ -4,6 +4,8 @@
 
 ## Hot
 
+ - Some way to swap out items (based on type + custom model data?), fix people stuck with broomstick handles
+
  - Need friend management for Gather
  - Add biome list to CheckBlock action
  - The `/wand name` command doesn't work reliably (sounds like they are not using the command, see Discord)
