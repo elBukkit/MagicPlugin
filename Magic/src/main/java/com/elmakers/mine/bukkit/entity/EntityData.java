@@ -1215,7 +1215,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (drops != null) {
             for (Deque<WeightedPair<String>> dropTable : drops) {
                 String key = RandomUtils.weightedRandom(dropTable);
-                if (key != null) {
+                if (key != null && !key.equalsIgnoreCase("none")) {
                     ItemStack item = controller.createItem(key);
                     if (item != null) {
                         dropList.add(item);
