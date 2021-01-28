@@ -2687,6 +2687,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
                 if ((toggle == ToggleType.UNDO || toggle == ToggleType.UNDO_IF_ACTIVE) && toggleUndo != null && !toggleUndo.isUndone() && isActive()) {
                     toggleUndo.undo();
+                    removeBossBar();
                 }
                 toggleUndo = null;
             }
@@ -3087,6 +3088,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         return cancellable;
     }
 
+    private void removeBossBar() {
+        if (bossBar != null) {
+            bossBar.setVisible(false);
+            bossBar.removeAll();
+            bossBar = null;
+        }
+    }
+
     @Override
     public void finish(com.elmakers.mine.bukkit.api.action.CastContext context) {
         SpellResult result = context.getResult();
@@ -3113,11 +3122,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        if (bossBar != null) {
-            bossBar.setVisible(false);
-            bossBar.removeAll();
-            bossBar = null;
-        }
+        removeBossBar();
 
         if (cancelEffects) {
             context.cancelEffects();
