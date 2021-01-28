@@ -24,7 +24,7 @@ otherside_automata:
         - hoglin
       spells:
         birth_hunter: 500
-        birth_defender: 500
+        birth_defender: 300
         birth_snake: 100
         birth_worm: 50
         birth_virus: 1
