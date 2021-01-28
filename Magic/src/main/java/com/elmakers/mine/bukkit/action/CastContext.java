@@ -1100,6 +1100,12 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             }
             finishedHandlers = null;
         }
+        if (handlers != null) {
+            for (ActionHandlerContext context : handlers) {
+                context.finish();
+            }
+            handlers = null;
+        }
         if (undoSpell != null && undoSpell.isUndoable())
         {
             if (!undoList.isScheduled())
