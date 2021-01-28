@@ -57,6 +57,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -937,10 +938,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
             com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
-            if (path != null && usesSP())
+            if (path != null)
             {
-                String message = getMessage("enchant_instructions", "").replace("$wand", getName());
-                mage.sendMessage(message);
+                if (usesSP()) {
+                    String message = getMessage("enchant_instructions", "").replace("$wand", getName());
+                    mage.sendMessage(message);
+                }
+                ProgressionPath nextPath = path.getNextPath();
+                if (nextPath != null) {
+                    String message = getMessage("path_instructions", "").replace("$path", path.getName()).replace("$nextpath", nextPath.getName());
+                    mage.sendMessage(message);
+                }
             }
             endWandInstructions();
         }

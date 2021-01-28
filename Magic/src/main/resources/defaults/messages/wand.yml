@@ -244,6 +244,9 @@ wand:
     enchant_instructions: |-
       &8| &7> &fEarn &6Spell Points &fby casting spells
       &8| &7> &fLearn new spells by using &6SP &fat an &eenchanting table
+    path_instructions: |-
+      &8| &7> &fCollect all of the &a$path &fspells
+      &8| &7> &fto rank up to &a$nextpath &fand earn more &6mana
     page_instructions: |-
       &8| &7> &eYour &a$wand&8 &fhas more than one page of spells
       &8| &7> &6Click &foutside the inventory window to change pages
