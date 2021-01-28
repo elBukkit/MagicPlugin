@@ -1270,9 +1270,10 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         }
 
         Mage mage = controller.getMage(player);
-
+        wand.deactivate();
         wand.setName(StringUtils.join(parameters, " "));
         wand.saveState();
+        mage.checkWand();
         mage.sendMessage(api.getMessages().get("wand.renamed"));
         if (sender != player) {
             sender.sendMessage(api.getMessages().getParameterized("wand.player_renamed", "$name", player.getName()));
