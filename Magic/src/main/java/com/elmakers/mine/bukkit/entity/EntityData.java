@@ -1007,24 +1007,28 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             SafetyUtils.setVelocity(entity, velocity);
         }
         if (mount != null || mountType != null) {
-            mobStackSize++;
-            boolean allowMount = true;
-            if (mobStackSize > maxMobStackSize) {
-                controller.getLogger().warning("Mob " + key + " has more than " + maxMobStackSize + " mounts");
-                allowMount = false;
-            }
-            if (mount == null) {
-                mount = (EntityData)controller.getMob(mountType);
-                if (mount == null) {
-                    controller.getLogger().warning("Mob " + key + " has invalid mount: " + mountType);
+            Entity current = entity.getVehicle();
+            // This prevents respawning mounts on chunk load for persistent mobs
+            if (current == null) {
+                mobStackSize++;
+                boolean allowMount = true;
+                if (mobStackSize > maxMobStackSize) {
+                    controller.getLogger().warning("Mob " + key + " has more than " + maxMobStackSize + " mounts");
                     allowMount = false;
                 }
+                if (mount == null) {
+                    mount = (EntityData)controller.getMob(mountType);
+                    if (mount == null) {
+                        controller.getLogger().warning("Mob " + key + " has invalid mount: " + mountType);
+                        allowMount = false;
+                    }
+                }
+                if (allowMount) {
+                    Entity mountEntity = mount.spawn(entity.getLocation());
+                    DeprecatedUtils.setPassenger(mountEntity, entity);
+                }
+                mobStackSize--;
             }
-            if (allowMount) {
-                Entity mountEntity = mount.spawn(entity.getLocation());
-                DeprecatedUtils.setPassenger(mountEntity, entity);
-            }
-            mobStackSize--;
         }
         if (entity instanceof Painting) {
             Painting painting = (Painting) entity;
