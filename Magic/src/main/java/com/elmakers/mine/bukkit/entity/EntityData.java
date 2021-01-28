@@ -159,6 +159,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean dropsRequirePlayerKiller;
     protected List<Deque<WeightedPair<String>>> drops;
     protected Set<String> tags;
+    protected Set<String> removeMounts;
     protected String interactSpell;
     protected String interactPermission;
     protected List<com.elmakers.mine.bukkit.api.item.Cost> interactCosts;
@@ -386,6 +387,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             mount = new EntityData(controller, mountConfig);
         } else {
             mountType = parameters.getString("mount");
+        }
+        List<String> removeMountKeys = ConfigurationUtils.getStringList(parameters, "remove_mounts");
+        if (removeMountKeys != null && !removeMountKeys.isEmpty()) {
+            removeMounts = new HashSet(removeMountKeys);
         }
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
@@ -1163,6 +1168,30 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void setRespawn(boolean respawn) {
         this.respawn = respawn;
+    }
+
+    private void removeVehicles(Entity entity) {
+        entity = entity.getVehicle();
+        if (entity != null) {
+            removeVehicles(entity);
+            entity.remove();
+        }
+    }
+
+    private void removePassengers(Entity entity) {
+        // TODO: Use getPassengers
+        entity = DeprecatedUtils.getPassenger(entity);
+        if (entity != null) {
+            removePassengers(entity);
+            entity.remove();
+        }
+    }
+
+    public void onDeath(Entity died) {
+        if (removeMounts != null) {
+            removeVehicles(died);
+            removePassengers(died);
+        }
     }
 
     public void modifyDrops(EntityDeathEvent event) {

@@ -246,17 +246,16 @@ public class MobController implements Listener, ChunkLoadListener {
         }
 
         EntityData mob = activeMobs.get(entity);
-        boolean isMagicMob = mob != null;
         if (mob == null) {
             return;
         }
 
         // Prevent processing double-death events
-        if (isMagicMob) {
-            activeMobs.remove(entity);
-            MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
-            Bukkit.getPluginManager().callEvent(deathEvent);
-        }
+        activeMobs.remove(entity);
+        MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
+        Bukkit.getPluginManager().callEvent(deathEvent);
+
+        mob.onDeath(entity);
         if (!mob.isSplittable()) {
             EntityMetadataUtils.instance().setBoolean(entity, "nosplit", true);
         }
