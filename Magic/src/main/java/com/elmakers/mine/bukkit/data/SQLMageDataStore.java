@@ -196,7 +196,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                     if (!hasLock) {
                         // I am hoping this is only called on separate load threads!
                         if (System.currentTimeMillis() > start + lockTimeout) {
-                            controller.getLogger().log(Level.WARNING, "Lock timeout while waiting for mage " + id + ", claiming lock");
+                            controller.info("Lock timeout while waiting for mage " + id + ", claiming lock");
                             break;
                         }
                         Thread.sleep(lockRetry);
