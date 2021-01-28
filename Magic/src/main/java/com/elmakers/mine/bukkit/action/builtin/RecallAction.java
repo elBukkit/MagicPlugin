@@ -106,8 +106,19 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         COMMAND,
         WARP,
         FRIENDS,
+        REMOVE_FRIENDS(false),
 
-        PLACEHOLDER
+        PLACEHOLDER;
+
+        public final boolean showByDefault;
+
+        RecallType() {
+            showByDefault = true;
+        }
+
+        RecallType(boolean show) {
+            showByDefault = show;
+        }
     }
 
     private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
@@ -136,6 +147,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final String warpName;
         public final String serverName;
         public final int markerNumber;
+        public UUID friendId;
         public boolean unavailable = false;
 
         // Ok so I got sick of making these final with the zillion different constructors :|
@@ -695,7 +707,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         // Automatically append enabled types if not defined in options
         for (RecallType testType : RecallType.values()) {
-            if (!optionTypes.contains(testType) && parameters.getBoolean("allow_" + testType.name().toLowerCase(), true)) {
+            if (!optionTypes.contains(testType) && parameters.getBoolean("allow_" + testType.name().toLowerCase(), testType.showByDefault)) {
                 switch (testType) {
                     case FRIENDS:
                         for (String friendId : friends) {
@@ -705,7 +717,15 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                             }
                         }
                         break;
-                        case WARP:
+                    case REMOVE_FRIENDS:
+                        for (String friendId : friends) {
+                            Waypoint targetFriend = getRemoveFriend(friendId);
+                            if (targetFriend != null) {
+                                options.add(targetFriend);
+                            }
+                        }
+                        break;
+                    case WARP:
                         // Legacy warp config
                         if (warpConfig != null) {
                             Collection<String> warpKeys = warpConfig.getKeys(false);
@@ -1019,6 +1039,23 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     }
 
     @Nullable
+    protected Waypoint getRemoveFriend(String uuid) {
+        UUID playerId = UUID.fromString(uuid);
+        Player onlinePlayer = Bukkit.getPlayer(playerId);
+        if (onlinePlayer == null) return null;
+
+        String playerName = onlinePlayer.getDisplayName();
+        String castMessage = context.getMessage("cast_remove_friend").replace("$name", playerName);
+        String failMessage = context.getMessage("no_target_remove_friend").replace("$name", playerName);
+        String title = context.getMessage("title_remove_friend", "$name").replace("$name", playerName);
+        String iconURL = SkinUtils.getOnlineSkinURL(onlinePlayer);
+
+        Waypoint removeWaypoint = new Waypoint(RecallType.REMOVE_FRIENDS, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
+        removeWaypoint.friendId = playerId;
+        return removeWaypoint;
+    }
+
+    @Nullable
     protected Waypoint getWarp(String warpName) {
         for (Waypoint waypoint : options) {
             if (waypoint.type == RecallType.WARP && waypoint.warpName.equals(warpName)) {
@@ -1120,6 +1157,19 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 }
             }
             mage.enableSuperProtection(protectionTime);
+            return true;
+        }
+        if (waypoint.type == RecallType.REMOVE_FRIENDS) {
+            ConfigurationSection mageData = mage.getData();
+            Set<String> friends = new HashSet<>();
+            String friendString = mageData.getString(friendKey);
+            if (friendString != null && !friendString.isEmpty())
+            {
+                friends.addAll(Arrays.asList(StringUtils.split(friendString, ',')));
+            }
+            friends.remove(waypoint.friendId.toString());
+            friendString = StringUtils.join(friends, ",");
+            mageData.set(friendKey, friendString);
             return true;
         }
 

@@ -704,7 +704,7 @@ spells:
     gather:
         name: Gather
         description: Teleport you to other players
-        usage: Aim down and cast to send friend requests
+        usage: Aim down and cast to manage friends
         alternate_down_no_target: "&4No one is around"
         no_target: |2-
 
@@ -722,6 +722,11 @@ spells:
         friend_request_title: "@tn wants to be friends"
         reject: "@pn said no ;("
         send_request_title: "Send Friend Request"
+        add_friend_name: Send Friend Requests
+        remove_friend_name: Unfriend
+        remove_friend_title: Unfriend
+        cast_remove_friend: "&bYou have unfriended &5$name"
+        title_remove_friend: "$name"
     recall_death:
         name: Recall to Last Death
         description: Takes you directly to the last place you died

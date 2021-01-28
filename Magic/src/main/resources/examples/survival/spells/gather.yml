@@ -14,38 +14,52 @@ gather:
       - class: Recall
         title_key: "recall_title"
     alternate_down:
-      - class: PlayerSelect
-        title_key: "send_request_title"
-        actions:
-          - class: ChangeContext
-            use_target_mage: true
-            swap_source_and_target: true
+      - class: Selector
+        options:
+          - icon: lime_wool{CustomModelData:18001}
+            name_key: add_friend_name
+            actions: addfriend
+          - icon: yellow_wool{CustomModelData:18001}
+            name_key: remove_friend_name
+            actions: removefriend
+        removefriend:
+          - class: Recall
+            title_key: "remove_friend_title"
+            allow_friends: false
+            allow_remove_friends: true
+        addfriend:
+          - class: PlayerSelect
+            title_key: "send_request_title"
             actions:
-              - class: Selector
-                title_key: "friend_request_title"
-                friends:
-                  - class: Recall
-                    addfriend: target
-                  - class: ChangeContext
-                    swap_source_and_target: true
-                    use_target_mage: true
-                    actions:
-                    - class: Recall
-                      addfriend: target
-                nofriends:
-                  - class: Message
-                    message_target: true
-                    message_key: reject
-                options:
-                  - placeholder: true
-                  - placeholder: true
-                  - placeholder: true
-                  - name: Ok!
-                    icon: lime_wool
-                    actions: friends
-                  - name: Nope!
-                    icon: red_wool
-                    actions: nofriends
+              - class: ChangeContext
+                use_target_mage: true
+                swap_source_and_target: true
+                actions:
+                  - class: Selector
+                    title_key: "friend_request_title"
+                    friends:
+                      - class: Recall
+                        addfriend: target
+                      - class: ChangeContext
+                        swap_source_and_target: true
+                        use_target_mage: true
+                        actions:
+                        - class: Recall
+                          addfriend: target
+                    nofriends:
+                      - class: Message
+                        message_target: true
+                        message_key: reject
+                    options:
+                      - placeholder: true
+                      - placeholder: true
+                      - placeholder: true
+                      - name: Ok!
+                        icon: lime_wool
+                        actions: friends
+                      - name: Nope!
+                        icon: red_wool
+                        actions: nofriends
   effects:
     no_action: []
     no_target: []
