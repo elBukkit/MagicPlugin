@@ -603,7 +603,12 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (configuration.contains("slot")) {
                 slot = configuration.getInt("slot");
             }
-            name = configuration.getString("name", "");
+            name = "";
+            String nameKey = configuration.getString("name_key");
+            if (nameKey != null && !nameKey.isEmpty()) {
+                name = context.getMessage(nameKey);
+            }
+            name = configuration.getString("name", name);
 
             MageController controller = context.getController();
             if (name.isEmpty() && unlockClass != null && !unlockClass.isEmpty()) {
