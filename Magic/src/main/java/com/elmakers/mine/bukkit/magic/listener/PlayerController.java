@@ -246,11 +246,14 @@ public class PlayerController implements Listener {
         final Player player = event.getPlayer();
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
+        ItemStack main = event.getMainHandItem();
+        ItemStack offhand = event.getOffHandItem();
         if (mage.getDebugLevel() >= DEBUG_LEVEL) {
-            ItemStack main = event.getMainHandItem();
-            ItemStack offhand = event.getOffHandItem();
             mage.sendDebugMessage("SWAP ITEM: " + (main == null ? "(Nothing)" : main.getType().name())
                 + " with " + (offhand == null ? "(Nothing)" : offhand.getType().name()), DEBUG_LEVEL);
+        }
+        if (InventoryUtils.getMetaBoolean(offhand, "unswappable", false) || InventoryUtils.getMetaBoolean(main, "unswappable", false)) {
+            event.setCancelled(true);
         }
         final Wand activeWand = mage.getActiveWand();
         final Wand offhandWand = mage.getOffhandWand();

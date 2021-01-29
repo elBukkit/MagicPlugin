@@ -1975,7 +1975,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setIcon(new MaterialAndData(DefaultWandMaterial));
         }
 
-        // Add unstashable and unmoveable tags
+        // Add unstashable, unmoveable, etc tags
+        if (getBoolean("unswappable")) {
+            InventoryUtils.setMetaBoolean(item, "unswappable", true);
+        } else {
+            InventoryUtils.removeMeta(item, "unswappable");
+        }
         if (getBoolean("unstashable") || (undroppable && Unstashable)) {
             InventoryUtils.setMetaBoolean(item, "unstashable", true);
         } else {
