@@ -69,6 +69,7 @@ public class LibsDisguiseManager {
                         if (skin != null) {
                             playerDisguise.setSkin(skin);
                         }
+                        if (configuration.getBoolean("hide_name", false)) playerDisguise.setNameVisible(false);
                         disguise = playerDisguise;
                         break;
                     case ARMOR_STAND:
