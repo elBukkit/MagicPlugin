@@ -5049,6 +5049,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public void updated() {
         if (suspendUpdate) return;
+
+        if (effectContext != null) {
+            effectContext.cancelEffects();
+            effectContext = null;
+        }
         loadProperties();
         if (mage != null) {
             buildInventory();
@@ -5060,6 +5065,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateMaxMana(false);
         updateName();
         updateLore();
+        if (mage != null) {
+            playPassiveEffects("activate");
+        }
     }
 
     @Override
