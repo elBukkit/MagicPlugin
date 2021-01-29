@@ -117,7 +117,6 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
                     effects.put(effectKey, controller.loadEffects(effectsNode, effectKey));
                 }
             }
-            clearProperty("effects");
         }
 
         Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
@@ -207,7 +206,15 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
     private boolean playEffects(Mage mage, Wand wand, String effectName, float scale)
     {
         Preconditions.checkNotNull(mage, "mage");
-        Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects(effectName);
+        // First check the wand for overridden effects
+        Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = null;
+        String effectKey = wand.getString("effects." + effectName);
+        if (effectKey != null && !effectKey.isEmpty()) {
+            effects = controller.getEffects(effectKey);
+        }
+        if (effects == null || effects.isEmpty()) {
+            effects = getEffects(effectName);
+        }
         if (effects.isEmpty()) return false;
 
         Entity sourceEntity = mage.getEntity();
