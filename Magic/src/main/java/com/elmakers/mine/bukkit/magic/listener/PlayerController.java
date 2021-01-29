@@ -255,6 +255,7 @@ public class PlayerController implements Listener {
         if (InventoryUtils.getMetaBoolean(offhand, "unswappable", false) || InventoryUtils.getMetaBoolean(main, "unswappable", false)) {
             event.setCancelled(true);
         }
+        mage.trigger("swap");
         final Wand activeWand = mage.getActiveWand();
         final Wand offhandWand = mage.getOffhandWand();
 
@@ -316,6 +317,7 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
             return;
         }
+        mage.trigger("drop");
 
         final Wand activeWand = mage.getActiveWand();
         final ItemStack droppedItem = event.getItemDrop().getItemStack();
@@ -400,7 +402,7 @@ public class PlayerController implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Mage mage = controller.getRegisteredMage(event.getPlayer());
         if (mage == null) return;
-        mage.restoreRespawnInventories();
+        mage.onRespawn();
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)

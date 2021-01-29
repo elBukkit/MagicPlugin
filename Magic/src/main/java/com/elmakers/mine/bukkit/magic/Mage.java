@@ -3705,6 +3705,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    public void onRespawn() {
+        restoreRespawnInventories();
+        checkWand();
+        trigger("respawn");
+    }
 
     public void addToRespawnInventory(ItemStack item) {
         addToRespawnInventory(-1, item);

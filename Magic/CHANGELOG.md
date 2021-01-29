@@ -74,6 +74,7 @@
  - Add support for using saved disguises in LibsDisguises
  - Add ability to remove Gather friends
  - Added unswappable wand option
+ - Added triggers: respawn, drop, swap
 
 # 8.2.3
 
