@@ -672,7 +672,7 @@ public class TargetingSpell extends BaseSpell {
             try {
                 targetEntityType = Class.forName("org.bukkit.entity." + entityTypeName);
             } catch (Throwable ex) {
-                controller.getLogger().warning("Unknown entity type in target_type of " + getKey() + ": " + entityTypeName);
+                controller.getLogger().warning("Unknown entity class in target_type of " + getKey() + ": " + entityTypeName);
                 targetEntityType = null;
             }
         } else if (parameters.contains("target_types")) {
