@@ -303,7 +303,7 @@ public class MagicRequirement {
         if (attributes != null) {
             for (PropertyRequirement requirement : attributes) {
                 String key = requirement.key;
-                Double value = mage.getAttribute(key);
+                Double value = context.getAttribute(key);
                 if (!requirement.check(value)) {
                     return false;
                 }
@@ -554,7 +554,7 @@ public class MagicRequirement {
         if (attributes != null) {
             for (PropertyRequirement requirement : attributes) {
                 String key = requirement.key;
-                Double value = mage.getAttribute(key);
+                Double value = context.getAttribute(key);
                 String message = checkRequiredProperty(context, requirement, key, value);
                 if (message != null) {
                     return message;

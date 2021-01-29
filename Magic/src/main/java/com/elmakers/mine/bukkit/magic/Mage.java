@@ -3179,12 +3179,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return (entity != null && entity instanceof LivingEntity) ? (LivingEntity) entity : null;
     }
 
-    @Nullable
-    public LivingEntity getTargetLivingEntity() {
-        Entity entity = lastDamageTarget == null ? null : lastDamageTarget.get();
-        return (entity != null && entity instanceof LivingEntity) ? (LivingEntity) entity : null;
-    }
-
     @Override
     public CommandSender getCommandSender() {
         return commandSenderRef.get();
@@ -4687,20 +4681,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     private Double getBuiltinAttribute(String attributeKey) {
         switch (attributeKey) {
+            case "air": {
+                LivingEntity living = getLivingEntity();
+                return living == null ? null : (double)living.getRemainingAir();
+            }
+            case "air_max": {
+                LivingEntity living = getLivingEntity();
+                return living == null ? null : (double)living.getMaximumAir();
+            }
+            case "hunger": {
+                Player player = getPlayer();
+                return player == null ? null : (double)player.getFoodLevel();
+            }
             case "health": {
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : living.getHealth();
             }
             case "health_max": {
                 LivingEntity living = getLivingEntity();
-                return living == null ? null : CompatibilityUtils.getMaxHealth(living);
-            }
-            case "target_health": {
-                LivingEntity living = getTargetLivingEntity();
-                return living == null ? null : living.getHealth();
-            }
-            case "target_health_max": {
-                LivingEntity living = getTargetLivingEntity();
                 return living == null ? null : CompatibilityUtils.getMaxHealth(living);
             }
             case "mana": {

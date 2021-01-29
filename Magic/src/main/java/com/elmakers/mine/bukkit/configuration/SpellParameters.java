@@ -17,6 +17,7 @@ public class SpellParameters extends MageParameters {
     private @Nonnull ConfigurationSection mageVariables;
     private final @Nonnull Set<String> allParameters = new HashSet<>();
     private final @Nonnull MageSpell spell;
+    private @Nullable CastContext context;
 
     public SpellParameters(@Nonnull MageSpell spell, @Nullable ConfigurationSection mageVariables, @Nullable ConfigurationSection variables) {
         super(spell.getMage(), "Spell: " + spell.getKey());
@@ -36,6 +37,7 @@ public class SpellParameters extends MageParameters {
 
     public SpellParameters(@Nonnull MageSpell spell, @Nonnull CastContext context) {
         this(spell, context.getVariables());
+        this.context = context;
     }
 
     public SpellParameters(@Nonnull MageSpell spell, @Nullable CastContext context, ConfigurationSection config) {
@@ -50,6 +52,7 @@ public class SpellParameters extends MageParameters {
         this.spellVariables = copy.spellVariables;
         this.mageVariables = copy.mageVariables;
         this.allParameters.addAll(copy.allParameters);
+        this.context = copy.context;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class SpellParameters extends MageParameters {
         if (mageVariables != null && mageVariables.contains(parameter)) {
             return mageVariables.getDouble(parameter);
         }
-        Double value = spell.getAttribute(parameter);
+        Double value = context != null ? context.getAttribute(parameter) : spell.getAttribute(parameter);
         return value == null || Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
     }
 
@@ -100,5 +103,14 @@ public class SpellParameters extends MageParameters {
                 return mageVariables;
         }
         return null;
+    }
+
+    public void setContext(CastContext context) {
+        this.context = context;
+    }
+
+    @Nullable
+    public CastContext getContext() {
+        return this.context;
     }
 }

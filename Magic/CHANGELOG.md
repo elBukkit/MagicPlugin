@@ -70,7 +70,9 @@
  - Add "equation" parameter to Command action, works just like Message action
  - Add "enable_vanilla_sounds" configuration option for those of you who *really* hate the new sound configs
  - Add `critical_probability` and `critical_damage_multiplier` parameters to Damage action
- - Added new builtin attributes: target_health, target_health_max, epoch
+ - Added new builtin attributes: target_health, target_health_max, epoch, air, air_max, target_air, target_air_max, hunger, target_hunger
+   If using these inside of a projectile, AOE or other compound action you will also need to use UpdateParameters since
+   the target won't be set until after the actions have processed their parameters.
  - Add support for using saved disguises in LibsDisguises
  - Add ability to remove Gather friends
  - Add super-expensive butterfly effects to effects shop

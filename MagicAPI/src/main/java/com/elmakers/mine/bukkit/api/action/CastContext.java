@@ -255,6 +255,8 @@ public interface CastContext extends WandEffectContext {
     @Nonnull
     ConfigurationSection getAllVariables();
     ConfigurationSection getWorkingParameters();
+    @Nullable
+    Double getAttribute(String attributeKey);
     ActionHandler getRootHandler();
     void setCastData(@Nonnull String key, Object value);
     @Nullable

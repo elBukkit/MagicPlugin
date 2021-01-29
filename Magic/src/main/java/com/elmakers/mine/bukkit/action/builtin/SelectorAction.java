@@ -135,7 +135,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     value = mage.getProperties().getProperty(property, value);
                     break;
                 case ATTRIBUTE:
-                    Double attribute = mage.getAttribute(property);
+                    Double attribute = context.getAttribute(property);
                     if (attribute != null) {
                         value = attribute;
                     }
@@ -641,7 +641,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
             if (attributeKey != null) {
-                startingAttributeValue = context.getMage().getAttribute(attributeKey);
+                startingAttributeValue = context.getAttribute(attributeKey);
             }
 
             if (name.isEmpty() && items != null) {
@@ -918,7 +918,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             // Prepare icon
             String name = this.name;
             if (attributeKey != null && attributeAmount == 0) {
-                Double value = context.getMage().getAttribute(attributeKey);
+                Double value = context.getAttribute(attributeKey);
                 if (value != null) {
                     String template = getMessage("attribute");
                     name = template.replace("$attribute", name)

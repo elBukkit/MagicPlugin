@@ -57,6 +57,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 
@@ -1392,11 +1393,11 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         List<String> attributes = new ArrayList<>(controller.getAttributes());
         Collections.sort(attributes, (o1, o2) -> o2.length() - o1.length());
         for (String attribute : attributes) {
-            Double value = mage.getAttribute(attribute);
+            Double value = getAttribute(attribute);
             command = command.replace("$" + attribute, value == null ? "?" : Double.toString(value));
         }
         for (String attribute : attributes) {
-            Double value = mage.getAttribute(attribute);
+            Double value = getAttribute(attribute);
             command = command.replace("@" + attribute, value == null ? "?" : Integer.toString((int)(double)value));
         }
 
@@ -1449,6 +1450,50 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
         }
 
         return ChatColor.translateAlternateColorCodes('&', command);
+    }
+
+    @Nullable
+    public LivingEntity getTargetLivingEntity() {
+        Entity entity = getTargetEntity();
+        return (entity != null && entity instanceof LivingEntity) ? (LivingEntity) entity : null;
+    }
+
+    @Nullable
+    public Player getTargetPlayer() {
+        Entity entity = getTargetEntity();
+        return (entity != null && entity instanceof Player) ? (Player) entity : null;
+    }
+
+    @Nullable
+    @Override
+    public Double getAttribute(String attributeKey) {
+        Double value = baseSpell.getAttribute(attributeKey);
+        if (value != null) {
+            return value;
+        }
+        switch (attributeKey) {
+            case "target_health": {
+                LivingEntity living = getTargetLivingEntity();
+                return living == null ? null : living.getHealth();
+            }
+            case "target_health_max": {
+                LivingEntity living = getTargetLivingEntity();
+                return living == null ? null : CompatibilityUtils.getMaxHealth(living);
+            }
+            case "target_air": {
+                LivingEntity living = getTargetLivingEntity();
+                return living == null ? null : (double)living.getRemainingAir();
+            }
+            case "target_air_max": {
+                LivingEntity living = getTargetLivingEntity();
+                return living == null ? null : (double)living.getMaximumAir();
+            }
+            case "target_hunger": {
+                Player player = getTargetPlayer();
+                return player == null ? null : (double)player.getFoodLevel();
+            }
+        }
+        return value;
     }
 
     @Override
