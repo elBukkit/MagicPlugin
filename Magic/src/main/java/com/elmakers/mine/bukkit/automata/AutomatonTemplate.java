@@ -40,6 +40,7 @@ public class AutomatonTemplate {
     private final Integer maxTimeOfDay;
     private final Integer minPhaseOfMoon;
     private final Integer maxPhaseOfMoon;
+    private final boolean alwaysActive;
 
     public AutomatonTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         this.key = Preconditions.checkNotNull(key);
@@ -48,6 +49,7 @@ public class AutomatonTemplate {
         name = configuration.getString("name");
         description = configuration.getString("description");
         interval = configuration.getInt("interval", 0);
+        alwaysActive = configuration.getBoolean("always_active", false);
         if (configuration.isList("effects")) {
             effects = controller.loadEffects(configuration, "effects");
         } else {
@@ -149,6 +151,10 @@ public class AutomatonTemplate {
 
     public int getInterval() {
         return interval;
+    }
+
+    public boolean isAlwaysActive() {
+        return alwaysActive;
     }
 
     public void tick(Automaton instance) {

@@ -78,6 +78,7 @@
  - Add super-expensive butterfly effects to effects shop
  - Added unswappable wand option
  - Added triggers: respawn, drop, swap
+ - Added always_active option for automaton that run even when their chunk is not loaded
 
 # 8.2.3
 
