@@ -98,6 +98,8 @@ cleareffects:
     effect_bubbles: false
     effect_particle: ""
     icon: barrier
+    effects:
+        activate: ""
 rainboweffects:
     upgrade: true
     indestructible: false
@@ -118,3 +120,11 @@ haloeffects:
     effect_particle_data: 0
     effect_particle_radius: 0.4
     effect_particle_offset: 0.5
+butterflyeffects:
+    upgrade: true
+    indestructible: false
+    icon: feather
+    effect_bubbles: false
+    effect_particle: ""
+    effects:
+        activate: butterfly

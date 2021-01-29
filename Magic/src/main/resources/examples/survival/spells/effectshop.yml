@@ -27,7 +27,9 @@ effectshop:
         - item: rainboweffects
           unlock: rainbow
           cost: 2000
-        - item: none
+        - item: butterflyeffects
+          unlock: butterfly
+          cost: 100000
         - item: none
         - item: none
         - item: none

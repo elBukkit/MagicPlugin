@@ -222,6 +222,9 @@ wands:
     haloeffects:
         name: Halo Effects
         description: A personalized halo
+    butterflyeffects:
+        name: Butterfly Effects
+        description: It gives you wiiiiiiiings
     student_upgrade:
         name: Student Upgrade
         description: Upgrade to Student level

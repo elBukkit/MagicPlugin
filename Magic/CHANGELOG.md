@@ -73,6 +73,7 @@
  - Added new builtin attributes: target_health, target_health_max, epoch
  - Add support for using saved disguises in LibsDisguises
  - Add ability to remove Gather friends
+ - Add super-expensive butterfly effects to effects shop
  - Added unswappable wand option
  - Added triggers: respawn, drop, swap
 
