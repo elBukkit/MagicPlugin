@@ -1,0 +1,40 @@
+dragonwingleftred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18007
+
+dragonbodyred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18008
+
+dragonwingrightred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18009
+
+thorns:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        THORNS: 3

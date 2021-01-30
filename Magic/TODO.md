@@ -4,7 +4,9 @@
 
 ## Hot
 
- - Add drop and respawn triggers
+ - People are still getting broomstick handles somehow ;( ;(
+ - Refactor passive effects system from wand to work with classes and modifiers
+
  - Add biome list to CheckBlock action
  - The `/wand name` command doesn't work reliably (sounds like they are not using the command, see Discord)
  - Wolf house signs are broke again (check teleporter room)
