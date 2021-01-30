@@ -81,6 +81,7 @@
  - Added unswappable wand option
  - Added triggers: respawn, drop, swap
  - Added always_active option for automaton that run even when their chunk is not loaded
+ - Added fire_type parameter to Burn action, so you can use soul_fire
 
 # 8.2.3
 
