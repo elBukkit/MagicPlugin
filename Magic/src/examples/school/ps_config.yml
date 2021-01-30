@@ -124,8 +124,8 @@ force-field-blocks:
   protect-mobs: true
   protect-villagers: true
   protect-inventories: true
-  welcome-message: true
-  farewell-message: true
+  welcome-message: false
+  farewell-message: false
   ?prevent-portal-enter: true
   ?prevent-portal-destination: true
   ?prevent-portal-create: true
