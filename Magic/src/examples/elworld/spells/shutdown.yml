@@ -67,4 +67,6 @@ shutdown:
     message_target: true
     target_self: true
     bypass_protection: true
+    target_all_worlds: true
     cooldown: 600000
+    bypass_pvp: true
