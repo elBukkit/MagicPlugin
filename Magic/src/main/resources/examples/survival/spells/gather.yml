@@ -50,6 +50,10 @@ gather:
                       - class: Message
                         message_target: true
                         message_key: reject
+                      - class: ApplyCooldown
+                        spells: gather
+                        duration: 120000
+                        target_caster: false
                     options:
                       - placeholder: true
                       - placeholder: true
@@ -197,3 +201,4 @@ gather:
 
   costs:
     mana: 50
+
