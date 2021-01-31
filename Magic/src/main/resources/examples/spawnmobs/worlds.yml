@@ -15,6 +15,10 @@ overworld_mobs:
       replace_type:
         warlock: 10
         dark_wizard: 1
+        bluedragon: 1
+        greendragon: 1
+        greydragon: 0.5
+        purpledragon: 0.5
         undead_overlord: 40
         undead_minion: 100
         mutant: 100
@@ -37,6 +41,12 @@ overworld_mobs:
         target_type: ghast
         probability: 0.1
         replace_type: polterghast
+
+      reddragon:
+        class: ReplaceRule
+        target_type: ghast
+        probability: 0.01
+        replace_type: redragon
 
       replace_blazes:
         class: ReplaceRule

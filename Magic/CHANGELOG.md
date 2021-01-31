@@ -61,7 +61,9 @@
 
  - Added "bosses" builtin example (`/mconfig example fetch bosses`) thanks to Phantom,
    lots of unique naturally-spawning custom mobs that don't require a RP
- - Added "redragon" mob, thanks to Night, a really cool custom boss mob (requires the RP)
+ - Added dragon mobs, thanks to Night! Really cool custom boss mobs
+   - Requires the resource pack
+   - Will spawn naturally with spawnmobs example)
  - Add "snowy" automaton for making a 32x32 snowy area
  - Added block_place and block_break world handlers
    - Currently support "Cast" and "Replace" rule classes
@@ -83,6 +85,7 @@
  - Added always_active option for automaton that run even when their chunk is not loaded
  - Added fire_type parameter to Burn action, so you can use soul_fire
  - Add `protected` and `hidden` flags to mob configs
+ - Add `biomes` and `not_biomes` parameters to CheckBlock action
 
 # 8.2.3
 

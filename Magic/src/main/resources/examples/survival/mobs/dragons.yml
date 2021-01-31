@@ -1,4 +1,4 @@
-dragon_base:
+base_dragon:
   hidden: true
   type: Ghast
   disguise:
@@ -12,6 +12,10 @@ dragon_base:
   health: 100
   drop_xp: 100
   persist: true
+  boss_bar:
+    bar_color: red
+    bar_flags:
+      - play_boss_music
   protection:
     projectile: 0.9
     magic: 0.2
@@ -38,6 +42,7 @@ dragon_base:
     amplifier: 0
 
 bluedragon:
+  inherit: base_dragon
   hidden: false
   name: '&9Blue Dragon'
   item: dragonwingrightblue
@@ -45,6 +50,7 @@ bluedragon:
   helmet: dragonbodyblue
 
 greendragon:
+  inherit: base_dragon
   hidden: false
   name: '&aGreen Dragon'
   item: dragonwingrightgreen
@@ -52,6 +58,7 @@ greendragon:
   helmet: dragonbodygreen
 
 greydragon:
+  inherit: base_dragon
   hidden: false
   name: '&7Grey Dragon'
   item: dragonwingrightgrey
@@ -59,6 +66,7 @@ greydragon:
   helmet: dragonbodygrey
 
 purpledragon:
+  inherit: base_dragon
   hidden: false
   name: '&dPurple Dragon'
   item: dragonwingrightpurple
@@ -66,6 +74,7 @@ purpledragon:
   helmet: dragonbodypurple
 
 reddragon:
+  inherit: base_dragon
   hidden: false
   name: '&cRed Dragon'
   item: dragonwingrightred
