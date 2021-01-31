@@ -435,15 +435,15 @@ public class TargetingSpell extends BaseSpell {
                 }
             }
         }
+        if (controller.isMage(entity) && isSuperProtected(controller.getMage(entity))) {
+            mage.sendDebugMessage("Entity is superprotected", 30);
+            return false;
+        }
         if (entity instanceof Player)
         {
             Player player = (Player)entity;
             if (checkProtection && player.hasPermission("Magic.protected." + this.getKey())) {
                 mage.sendDebugMessage("Entity has Magic.protected perm", 30);
-                return false;
-            }
-            if (controller.isMage(entity) && isSuperProtected(controller.getMage(entity))) {
-                mage.sendDebugMessage("Entity is superprotected", 30);
                 return false;
             }
             if (!targetGameModes.contains(player.getGameMode())) {
