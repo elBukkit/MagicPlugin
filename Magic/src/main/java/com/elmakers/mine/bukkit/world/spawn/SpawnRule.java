@@ -56,21 +56,6 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
     }
 
     @Nullable
-    protected Set<Biome> loadBiomes(List<String> biomeNames) {
-        if (biomeNames == null || biomeNames.isEmpty()) return null;
-        Set<Biome> set = new HashSet<Biome>();
-        for (String biomeName : biomeNames) {
-            try {
-                Biome biome = Biome.valueOf(biomeName.trim().toUpperCase());
-                set.add(biome);
-            } catch (Exception ex) {
-                this.controller.getLogger().warning(" Invalid biome: " + biomeName);
-            }
-        }
-        return set;
-    }
-
-    @Nullable
     protected Set<EntityType> loadEntityTypes(List<String> typeNames) {
         if (typeNames == null || typeNames.isEmpty()) return null;
         Set<EntityType> set = new HashSet<>();
@@ -128,8 +113,8 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
         if (tagList != null && !tagList.isEmpty()) {
             tags = new HashSet<>(tagList);
         }
-        biomes = loadBiomes(ConfigurationUtils.getStringList(parameters, "biomes"));
-        notBiomes = loadBiomes(ConfigurationUtils.getStringList(parameters, "not_biomes"));
+        biomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(parameters, "biomes"), controller.getLogger(), "spawn rule " + key);
+        notBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(parameters, "not_biomes"), controller.getLogger(), "spawn rule " + key);
         notTypes = loadEntityTypes(ConfigurationUtils.getStringList(parameters, "not_types"));
         priority = parameters.getInt("priority");
         return true;

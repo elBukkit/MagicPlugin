@@ -8,8 +8,6 @@
  - Refactor passive effects system from wand to work with classes and modifiers
  - Add spell immunity list to mob data
 
- - Add biome list to CheckBlock action
- - The `/wand name` command doesn't work reliably (sounds like they are not using the command, see Discord)
  - Wolf house signs are broke again (check teleporter room)
  - Add "melee" flag for wands to allow them to do melee damage
  - Magic mobs or automata fight without players around?

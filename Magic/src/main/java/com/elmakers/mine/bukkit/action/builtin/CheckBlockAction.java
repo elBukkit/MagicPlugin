@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Set;
+
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,6 +13,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class CheckBlockAction extends CheckAction {
     private MaterialSet allowed;
@@ -19,6 +23,9 @@ public class CheckBlockAction extends CheckAction {
     private boolean setTarget;
     private boolean allowBrush;
     private SourceLocation sourceLocation;
+    private Set<Biome> allowedBiomes;
+    private Set<Biome> notBiomes;
+    private boolean checkPermissions;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -27,6 +34,8 @@ public class CheckBlockAction extends CheckAction {
 
         allowed = spell.getController().getMaterialSetManager()
                 .fromConfig(parameters.getString("allowed"));
+        allowedBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(parameters, "biomes"), spell.getController().getLogger(), "spell " + spell.getKey());
+        notBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(parameters, "not_biomes"), spell.getController().getLogger(), "spell " + spell.getKey());
     }
 
     @Override
@@ -37,6 +46,9 @@ public class CheckBlockAction extends CheckAction {
         allowBrush = parameters.getBoolean("allow_brush", false);
         sourceLocation = new SourceLocation(parameters.getString("source_location", "BLOCK"), !useTarget);
         directionCount = parameters.getInt("direction_count", 1);
+        checkPermissions = notBiomes == null && allowedBiomes == null && !allowBrush && allowed == null;
+        checkPermissions = parameters.getBoolean("check_permission", checkPermissions);
+
         String directionString = parameters.getString("direction");
         if (directionString != null && !directionString.isEmpty()) {
             try {
@@ -66,7 +78,7 @@ public class CheckBlockAction extends CheckAction {
         if (!isAllowed && allowed != null) {
             isAllowed = allowed.testBlock(block);
         }
-        if (!isAllowed && !allowBrush && allowed == null) {
+        if (!isAllowed && checkPermissions) {
             isAllowed = true;
             if (brush != null && brush.isErase()) {
                 if (!context.hasBreakPermission(block)) {
@@ -80,6 +92,12 @@ public class CheckBlockAction extends CheckAction {
             if (!context.isDestructible(block)) {
                 isAllowed = false;
             }
+        }
+        if (isAllowed && allowedBiomes != null && !allowedBiomes.contains(block.getBiome())) {
+            isAllowed = false;
+        }
+        if (isAllowed && notBiomes != null && notBiomes.contains(block.getBiome())) {
+            isAllowed = false;
         }
 
         if (setTarget && isAllowed) {

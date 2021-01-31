@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,6 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.block.Biome;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -1229,5 +1231,20 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static ConfigurationSection newConfigurationSection() {
          return new TranslatingConfiguration();
+    }
+
+    @Nullable
+    public static Set<Biome> loadBiomes(List<String> biomeNames, Logger logger, String logContext) {
+        if (biomeNames == null || biomeNames.isEmpty()) return null;
+        Set<Biome> set = new HashSet<Biome>();
+        for (String biomeName : biomeNames) {
+            try {
+                Biome biome = Biome.valueOf(biomeName.trim().toUpperCase());
+                set.add(biome);
+            } catch (Exception ex) {
+                logger.warning(" Invalid biome in " + logContext + ": " + biomeName);
+            }
+        }
+        return set;
     }
 }
