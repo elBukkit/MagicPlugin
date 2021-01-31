@@ -565,11 +565,17 @@ public class RideEntityAction extends BaseSpellAction
 
     @Override
     public void finish(CastContext context) {
+        if (noTarget && mount != null) {
+            EntityMetadataUtils.instance().setBoolean(mount, "notarget", false);
+        }
         if (mount != null) {
             mount.eject();
             mount = null;
         }
         Entity mountedEntity = context.getEntity();
+        if (noTargetPlayer && mountedEntity != null) {
+            EntityMetadataUtils.instance().setBoolean(mountedEntity, "notarget", false);
+        }
         if (warningEffectsApplied && warningEffects != null && mountedEntity != null && mountedEntity instanceof LivingEntity) {
             for (PotionEffect effect : warningEffects) {
                 ((LivingEntity)mountedEntity).removePotionEffect(effect.getType());
