@@ -79,8 +79,8 @@ wolf:
     - levitate|6@0
     - life@82
     - lightning|3@87
-    - damage@4
-    - missile|4
+    - damage
+    - missile|4@4
     - mob@67
     - monster@68
     - mount@116
