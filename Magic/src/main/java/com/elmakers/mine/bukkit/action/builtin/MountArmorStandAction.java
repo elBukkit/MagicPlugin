@@ -59,6 +59,7 @@ public class MountArmorStandAction extends RideEntityAction
     {
         super.prepare(context, parameters);
         MageController controller = context.getController();
+        noTarget = parameters.getBoolean("mount_untargetable", true);
         mountTarget = parameters.getBoolean("mount_target", false);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
         armorStandSmall = parameters.getBoolean("armor_stand_small", false);

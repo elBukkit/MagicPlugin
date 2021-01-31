@@ -76,7 +76,7 @@ public class RideEntityAction extends BaseSpellAction
     private double speed;
     private boolean warningEffectsApplied;
     private long nextSoundPlay;
-    private boolean noTarget = true;
+    protected boolean noTarget = true;
     private boolean noTargetPlayer = false;
     private Class<?> crashEntityType;
     private double crashDismountSpeed;
@@ -157,7 +157,7 @@ public class RideEntityAction extends BaseSpellAction
         durationWarning = parameters.getInt("duration_warning", 0);
         pitchOffset = parameters.getDouble("pitch_offset", 0);
         yawOffset = parameters.getDouble("yaw_offset", 0);
-        noTarget = parameters.getBoolean("mount_untargetable", true);
+        noTarget = parameters.getBoolean("mount_untargetable", false);
         noTargetPlayer = parameters.getBoolean("rider_untargetable", false);
         controllable = parameters.getBoolean("controllable", false);
         pitchControllable = parameters.getBoolean("pitch_controllable", true);
