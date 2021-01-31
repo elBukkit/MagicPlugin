@@ -25,7 +25,7 @@ debugger:
           level: 10
         alternate_sneak:
         - class: Debugger
-          level: 20
+          level: 100
           check: true
     effects:
         cast:
