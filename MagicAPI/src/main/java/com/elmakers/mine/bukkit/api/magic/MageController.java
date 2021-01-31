@@ -748,4 +748,5 @@ public interface MageController {
      * @return true if the spell succeeds, else false
      */
     boolean cast(String spellName, String[] parameters);
+    void setDisableSpawnReplacement(boolean disable);
 }

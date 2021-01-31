@@ -58,6 +58,7 @@ public class SpawnEntityAction extends CompoundAction
     private boolean tamed = false;
     private boolean setOwner = true;
     private boolean onBlock = true;
+    private boolean allowReplacement = true;
 
     private Vector direction = null;
     private double speed;
@@ -84,6 +85,7 @@ public class SpawnEntityAction extends CompoundAction
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
         onBlock = parameters.getBoolean("on_block", true);
+        allowReplacement = parameters.getBoolean("allow_replacement", true);
 
         String disguiseTarget = parameters.getString("disguise_target");
         if (disguiseTarget != null) {
@@ -240,11 +242,17 @@ public class SpawnEntityAction extends CompoundAction
         if (force) {
             controller.setForceSpawn(true);
         }
+        if (!allowReplacement) {
+            controller.setDisableSpawnReplacement(true);
+        }
         Entity spawnedEntity = null;
         try {
             spawnedEntity = entityData.spawn(spawnLocation, spawnReason);
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+        if (!allowReplacement) {
+            controller.setDisableSpawnReplacement(false);
         }
 
         // Special check to assign ownership

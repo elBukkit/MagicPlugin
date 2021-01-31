@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -77,7 +78,8 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        boolean isSpawnCommand = args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("spawn");
+        boolean isSummon = args[0].equalsIgnoreCase("summon");
+        boolean isSpawnCommand = args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("spawn") || isSummon;
         if (!isSpawnCommand || args.length < 2)
         {
             return false;
@@ -202,9 +204,22 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             sender.sendMessage("  Spawning as a normal mob, use " + ChatColor.AQUA + "/mnpc add " + mobKey + ChatColor.WHITE + " to create as an NPC");
         }
 
-        for (int i = 0; i < count; i++) {
-            spawned = entityData.spawn(targetLocation);
+        if (!isSummon) {
+            controller.setDisableSpawnReplacement(true);
         }
+        try {
+            for (int i = 0; i < count; i++) {
+                spawned = entityData.spawn(targetLocation);
+            }
+        } catch (Exception ex) {
+            sender.sendMessage(ChatColor.RED + "Failed to spawn mob of type " + ChatColor.YELLOW + mobKey + ChatColor.RED + ", an unexpected exception occurred, please check logs");
+            controller.getLogger().log(Level.SEVERE, "Error spawning mob " + mobKey, ex);
+            return true;
+        }
+        if (!isSummon) {
+            controller.setDisableSpawnReplacement(false);
+        }
+
         if (spawned == null) {
             sender.sendMessage(ChatColor.RED + "Failed to spawn mob of type " + ChatColor.YELLOW + mobKey);
             return true;
@@ -410,11 +425,13 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         if (args.length == 1) {
             options.add("add");
             options.add("spawn");
+            options.add("summon");
             options.add("egg");
             options.add("list");
             options.add("clear");
             options.add("remove");
         } else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn")
+                || args[0].equalsIgnoreCase("summon")
                 || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("add")
                 || args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("egg")
         )) {

@@ -26,7 +26,6 @@ import com.elmakers.mine.bukkit.world.WorldController;
 public class WorldSpawnListener implements Listener, ChunkLoadListener
 {
     private final WorldController controller;
-    private boolean spawning = false;
     private Set<SpawnReason> ignoreReasons = new HashSet<>();
 
     public WorldSpawnListener(final WorldController controller) {
@@ -54,7 +53,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
         if (magicWorld == null) return;
 
         Plugin plugin = controller.getPlugin();
-        spawning = true;
+        controller.setDisableSpawnReplacement(true);
         for (Entity testEntity : chunk.getEntities()) {
             if (!(testEntity instanceof LivingEntity)) continue;
             LivingEntity entity = (LivingEntity)testEntity;
@@ -66,12 +65,12 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
                 controller.getLogger().log(Level.SEVERE, "Error replacing mob", ex);
             }
         }
-        spawning = false;
+        controller.setDisableSpawnReplacement(false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent event) {
-        if (spawning || ignoreReasons.contains(SpawnReason.CHUNK_GEN) || !event.isNewChunk()) return;
+        if (controller.isDisableSpawnReplacement() || ignoreReasons.contains(SpawnReason.CHUNK_GEN) || !event.isNewChunk()) return;
         Chunk chunk = event.getChunk();
         if (!controller.isDataLoaded()) {
             CheckChunkTask.defer(controller.getPlugin(), this, chunk);
@@ -82,14 +81,14 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent event) {
-        if (spawning || ignoreReasons.contains(event.getSpawnReason())) return;
+        if (controller.isDisableSpawnReplacement() || ignoreReasons.contains(event.getSpawnReason())) return;
 
         MagicWorld magicWorld = controller.getWorld(event.getLocation().getWorld().getName());
         if (magicWorld == null) return;
 
         LivingEntity entity = event.getEntity();
         Plugin plugin = controller.getPlugin();
-        spawning = true;
+        controller.setDisableSpawnReplacement(true);
         try {
             if (magicWorld.processEntitySpawn(plugin, entity)) {
                 entity.remove();
@@ -98,6 +97,6 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error replacing mob", ex);
         }
-        spawning = false;
+        controller.setDisableSpawnReplacement(false);
     }
 }

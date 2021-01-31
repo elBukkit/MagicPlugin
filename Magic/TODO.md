@@ -6,6 +6,11 @@
 
  - People are still getting broomstick handles somehow ;( ;(
  - Refactor passive effects system from wand to work with classes and modifiers
+ - Gather remove friends need to be two-way
+ - Using Mount on bosses mobs breaks them?
+ - Add spell immunity list to mob data
+
+ - Need to (optionally?) skip replacement
 
  - Add biome list to CheckBlock action
  - The `/wand name` command doesn't work reliably (sounds like they are not using the command, see Discord)

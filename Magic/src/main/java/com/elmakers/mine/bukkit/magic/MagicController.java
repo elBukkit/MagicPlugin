@@ -7401,6 +7401,15 @@ public class MagicController implements MageController {
         return maxHeight;
     }
 
+    @Override
+    public void setDisableSpawnReplacement(boolean disable) {
+        disableSpawnReplacement = disable;
+    }
+
+    public boolean isDisableSpawnReplacement() {
+        return disableSpawnReplacement;
+    }
+
     /*
      * Private data
      */
@@ -7707,5 +7716,6 @@ public class MagicController implements MageController {
     private Map<Material, String>               autoWands                   = new HashMap<>();
     private Map<String, String>                 builtinExternalExamples     = new HashMap<>();
     private boolean                             showExampleInstructions     = false;
+    private boolean                             disableSpawnReplacement     = false;
     private SwingType                           swingType                   = SwingType.ANIMATE_IF_ADVENTURE;
 }

@@ -129,4 +129,12 @@ public class WorldController implements Listener {
     public boolean isDataLoaded() {
         return controller.isDataLoaded();
     }
+
+    public void setDisableSpawnReplacement(boolean disable) {
+        controller.setDisableSpawnReplacement(disable);
+    }
+
+    public boolean isDisableSpawnReplacement() {
+        return controller.isDisableSpawnReplacement();
+    }
 }
