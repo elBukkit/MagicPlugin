@@ -1160,16 +1160,17 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return true;
         }
         if (waypoint.type == RecallType.REMOVE_FRIENDS) {
-            ConfigurationSection mageData = mage.getData();
-            Set<String> friends = new HashSet<>();
-            String friendString = mageData.getString(friendKey);
-            if (friendString != null && !friendString.isEmpty())
-            {
-                friends.addAll(Arrays.asList(StringUtils.split(friendString, ',')));
+            removeFriend(mage, waypoint.friendId);
+
+            // Also remove you from the other players' list
+            MageController controller = context.getController();
+            Player online = controller.getPlugin().getServer().getPlayer(waypoint.friendId);
+            Entity mageEntity = mage.getEntity();
+            if (online != null && mageEntity != null) {
+                Mage friendMage = controller.getMage(online);
+                removeFriend(friendMage, mageEntity.getUniqueId());
             }
-            friends.remove(waypoint.friendId.toString());
-            friendString = StringUtils.join(friends, ",");
-            mageData.set(friendKey, friendString);
+
             return true;
         }
 
@@ -1278,5 +1279,18 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         delayExpiration = 0;
         selectedWaypoint = null;
         isActive = false;
+    }
+
+    private void removeFriend(Mage mage, UUID playerId) {
+        ConfigurationSection mageData = mage.getData();
+        Set<String> friends = new HashSet<>();
+        String friendString = mageData.getString(friendKey);
+        if (friendString != null && !friendString.isEmpty())
+        {
+            friends.addAll(Arrays.asList(StringUtils.split(friendString, ',')));
+        }
+        friends.remove(playerId.toString());
+        friendString = StringUtils.join(friends, ",");
+        mageData.set(friendKey, friendString);
     }
 }
