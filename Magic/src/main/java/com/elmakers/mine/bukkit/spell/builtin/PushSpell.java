@@ -130,13 +130,9 @@ public class PushSpell extends UndoableSpell
 
     protected void forceEntity(Entity target, double multiplier, Location sourceLocation, Location targetLocation, int magnitude, double damage, boolean pull)
     {
-        // Check for protected Mages
-        if (controller.isMage(target)) {
-            Mage targetMage = controller.getMage(target);
-            // Check for protected players (admins, generally...)
-            if (isSuperProtected(targetMage)) {
-                return;
-            }
+        // Check for protected players (admins, generally...)
+        if (isSuperProtected(target)) {
+            return;
         }
 
         if (target instanceof Hanging) {

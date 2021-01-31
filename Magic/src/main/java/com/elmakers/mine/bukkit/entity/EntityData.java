@@ -144,6 +144,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isLiving = false;
     protected boolean isProjectile = false;
     protected boolean canPickupItems = false;
+    protected boolean isSuperProtected = false;
 
     protected ItemData itemInHand;
     protected ItemData itemInOffhand;
@@ -401,6 +402,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isBaby = parameters.getBoolean("baby", false);
         hasAI = parameters.getBoolean("ai", true);
         hasGravity = parameters.getBoolean("gravity", true);
+        isSuperProtected = parameters.getBoolean("protected", false);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -1434,6 +1436,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public boolean isHidden() {
         return isHidden;
+    }
+
+    @Override
+    public boolean isSuperProtected() {
+        return isSuperProtected;
     }
 
     @Nullable

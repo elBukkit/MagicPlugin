@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -21,11 +20,8 @@ public class OrientSpell extends TargetingSpell
             return SpellResult.NO_TARGET;
         }
 
-        if (entity != mage.getEntity() && controller.isMage(entity)) {
-            Mage mage = controller.getMage(entity);
-            if (mage.isSuperProtected()) {
-                return SpellResult.NO_TARGET;
-            }
+        if (entity != mage.getEntity() && isSuperProtected(entity)) {
+            return SpellResult.NO_TARGET;
         }
 
         Location location = entity.getLocation();

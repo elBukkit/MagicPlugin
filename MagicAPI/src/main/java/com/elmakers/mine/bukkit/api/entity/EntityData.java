@@ -48,6 +48,7 @@ public interface EntityData extends Cloneable {
     boolean isTransformable();
     boolean isNPC();
     boolean isHidden();
+    boolean isSuperProtected();
     @Nullable
     Entity spawn();
     @Nullable

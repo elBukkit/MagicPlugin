@@ -440,7 +440,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void onCombust(EntityCombustEvent event) {
-        if (getProtection("fire") >= 1) {
+        if (getProtection("fire") >= 1 || isSuperProtected()) {
             event.getEntity().setFireTicks(0);
             event.setCancelled(true);
         }

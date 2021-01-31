@@ -29,6 +29,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
@@ -435,7 +436,7 @@ public class TargetingSpell extends BaseSpell {
                 }
             }
         }
-        if (controller.isMage(entity) && isSuperProtected(controller.getMage(entity))) {
+        if (isSuperProtected(entity)) {
             mage.sendDebugMessage("Entity is superprotected", 30);
             return false;
         }
@@ -495,8 +496,16 @@ public class TargetingSpell extends BaseSpell {
         return isTargetType && super.canTarget(entity);
     }
 
-    public boolean isSuperProtected(Mage mage) {
-        return !bypassProtection && !bypassAll && mage.isSuperProtected();
+    public boolean isSuperProtected(Entity entity) {
+        if (bypassAll || bypassProtection) {
+            return false;
+        }
+        Mage mage = controller.getRegisteredMage(entity);
+        if (mage != null && mage.isSuperProtected()) {
+            return true;
+        }
+        EntityData mob = controller.getMob(entity);
+        return mob != null && mob.isSuperProtected();
     }
 
     protected double getMaxRange()

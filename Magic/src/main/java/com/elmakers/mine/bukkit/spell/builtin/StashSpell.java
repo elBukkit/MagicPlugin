@@ -32,7 +32,7 @@ public class StashSpell extends TargetingSpell
             Player targetPlayer = (Player)targetEntity;
             Mage targetMage = controller.getMage(targetPlayer);
 
-            if (!mage.isSuperPowered() && isSuperProtected(targetMage)) {
+            if (!mage.isSuperPowered() && isSuperProtected(targetEntity)) {
                 return SpellResult.NO_TARGET;
             }
 

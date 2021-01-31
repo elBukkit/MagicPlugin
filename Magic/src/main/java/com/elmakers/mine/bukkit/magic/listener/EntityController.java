@@ -138,6 +138,10 @@ public class EntityController implements Listener {
         if (mage != null) {
             mage.onCombust(event);
         }
+        if (checkSuperProtection(entity)) {
+            event.setCancelled(true);
+            return;
+        }
 
         if (!event.isCancelled())
         {
@@ -147,6 +151,18 @@ public class EntityController implements Listener {
                 undoList.modify(entity);
             }
         }
+    }
+
+    private boolean checkSuperProtection(Entity entity) {
+
+        EntityData mob = controller.getMob(entity);
+        if (mob != null && mob.isSuperProtected()) {
+            if (entity.getFireTicks() > 0) {
+                entity.setFireTicks(0);
+            }
+            return true;
+        }
+        return false;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -208,6 +224,10 @@ public class EntityController implements Listener {
                 event.setCancelled(true);
                 return;
             }
+        }
+        if (checkSuperProtection(entity)) {
+            event.setCancelled(true);
+            return;
         }
         Entity damager = event.getDamager();
         if (entityDamageReduction != null) {
@@ -496,6 +516,10 @@ public class EntityController implements Listener {
             if (mountMage != null) {
                 mountMage.onDamage(event);
             }
+        }
+        if (checkSuperProtection(entity)) {
+            event.setCancelled(true);
+            return;
         }
         if (entity instanceof Item)
         {

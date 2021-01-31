@@ -192,11 +192,6 @@ public class UndoableSpell extends TargetingSpell {
                     continue;
                 }
 
-                // Check for protected players
-                if (targetMage != null && isSuperProtected(targetMage) && !isSourcePlayer) {
-                    continue;
-                }
-
                 if (!canTarget(entity)) continue;
 
                 if (entity.getLocation().distanceSquared(location) < radiusSquared) {

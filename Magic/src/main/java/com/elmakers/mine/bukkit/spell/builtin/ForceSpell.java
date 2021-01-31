@@ -8,7 +8,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
@@ -46,13 +45,9 @@ public class ForceSpell extends TargetingSpell
                 releaseTarget();
             }
 
-            // Check for protected Mages
-            if (targetEntity != null && controller.isMage(targetEntity)) {
-                Mage targetMage = controller.getMage(targetEntity);
-                // Check for protected players (admins, generally...)
-                if (isSuperProtected(targetMage)) {
-                    releaseTarget();
-                }
+            // Check for protected players (admins, generally...)
+            if (isSuperProtected(targetEntity)) {
+                releaseTarget();
             }
         }
 
@@ -67,14 +62,9 @@ public class ForceSpell extends TargetingSpell
             releaseTarget();
             LivingEntity checkTarget = (LivingEntity)target.getEntity();
 
-            // Check for protected Mages
-            if (checkTarget != null && controller.isMage(checkTarget)) {
-                Mage targetMage = controller.getMage(checkTarget);
-
-                // Check for protected players
-                if (isSuperProtected(targetMage)) {
-                    return SpellResult.NO_TARGET;
-                }
+            // Check for protected players
+            if (isSuperProtected(checkTarget)) {
+                return SpellResult.NO_TARGET;
             }
 
             selectTarget(checkTarget);

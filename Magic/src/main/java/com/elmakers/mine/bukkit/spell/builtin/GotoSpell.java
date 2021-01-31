@@ -13,7 +13,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -48,13 +47,9 @@ public class GotoSpell extends UndoableSpell
                 releaseTarget();
             }
 
-            // Check for protected Mages
-            if (targetEntity != null && controller.isMage(targetEntity)) {
-                Mage targetMage = controller.getMage(targetEntity);
-                // Check for protected players (admins, generally...)
-                if (isSuperProtected(targetMage)) {
-                    releaseTarget();
-                }
+            // Check for protected players (admins, generally...)
+            if (isSuperProtected(targetEntity)) {
+                releaseTarget();
             }
         }
 
@@ -88,18 +83,14 @@ public class GotoSpell extends UndoableSpell
         if (!isLookingUp() && !isLookingDown()) {
             Target target = getTarget();
 
-        if (targetEntity != null) {
-            // Check for protected Mages
-            if (controller.isMage(targetEntity)) {
-                Mage targetMage = controller.getMage(targetEntity);
+            if (targetEntity != null) {
                 // Check for protected players (admins, generally...)
-                if (isSuperProtected(targetMage)) {
+                if (isSuperProtected(targetEntity)) {
                     return SpellResult.NO_TARGET;
                 }
-            }
 
-            return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
-        }
+                return teleportTarget(target.getLocation()) ? SpellResult.CAST : SpellResult.NO_TARGET;
+            }
 
             if (!target.hasEntity() || !(target.getEntity() instanceof LivingEntity))
             {

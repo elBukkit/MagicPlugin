@@ -11,7 +11,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -37,11 +36,8 @@ public class PhaseSpell extends TargetingSpell
             return SpellResult.NO_TARGET;
         }
 
-        if (entity != mage.getEntity() && controller.isMage(entity)) {
-            Mage mage = controller.getMage(entity);
-            if (mage.isSuperProtected()) {
-                return SpellResult.NO_TARGET;
-            }
+        if (entity != mage.getEntity() && isSuperProtected(entity)) {
+            return SpellResult.NO_TARGET;
         }
         Location playerLocation = entity.getLocation();
         String worldName = playerLocation.getWorld().getName();

@@ -74,18 +74,13 @@ public class PotionEffectSpell extends UndoableSpell
             if (targetMage != null && fallProtection > 0) {
                 targetMage.enableFallProtection(fallProtection);
             }
-            if (targetEntity != mage.getEntity()) {
-                // Check for superprotected mages
-                if (targetMage != null) {
-                    // Check for protected players
-                    if (isSuperProtected(targetMage)) {
-                        continue;
-                    }
 
-                    if (parameters.getBoolean("deactivate_target_mage")) {
-                        targetMage.deactivateAllSpells(true, false);
-                    }
-                }
+            // Check for superprotected targets
+            if (targetEntity != mage.getEntity() && isSuperProtected(targetEntity)) {
+                continue;
+            }
+            if (targetMage != null && parameters.getBoolean("deactivate_target_mage")) {
+                targetMage.deactivateAllSpells(true, false);
             }
 
             if (targetEntity instanceof Player && parameters.getBoolean("feed", false)) {
