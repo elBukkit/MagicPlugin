@@ -50,7 +50,7 @@ public class DisarmSpell extends TargetingSpell
 
             // Check for protected players (admins, generally...)
             // This gets overridden by superpower...
-            if (!mage.isSuperPowered() && isSuperProtected(targetMage)) {
+            if (!mage.isSuperPowered() && isSuperProtected(entity)) {
                 return SpellResult.NO_TARGET;
             }
 
