@@ -4,6 +4,6 @@
 	"textures": {
 		"particle": "items/particle",
 		"texture": "items/texture",
-		"voxels_palette": "dragon/dragon_wing_red_right"
+		"voxels_palette": "dragon/dragon_wing_blue_right"
 	}
 }

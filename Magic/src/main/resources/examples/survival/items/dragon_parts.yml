@@ -38,3 +38,123 @@ thorns:
       meta-type: UNSPECIFIC
       enchants:
         THORNS: 3
+
+dragonwingleftblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18010
+
+dragonbodyblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18011
+
+dragonwingrightblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18012
+
+dragonwingleftgreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18013
+
+dragonbodygreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18014
+
+dragonwingrightgreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18015
+
+dragonwingleftgrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18016
+
+dragonbodygrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18017
+
+dragonwingrightgrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18018
+
+dragonwingleftpurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18019
+
+dragonbodypurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18020
+
+dragonwingrightpurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18021

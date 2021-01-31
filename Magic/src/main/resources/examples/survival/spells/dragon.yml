@@ -27,7 +27,7 @@ dragonexplodefire:
            source_location: body
            effectlib:
              class: Modified
-             duration: 0
+             duration: 1
              parameters:
                  radius: "(t/i) * -3 + 3"
                  radiusNucleus: "(t/i) * -3 + 3"
