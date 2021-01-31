@@ -45,13 +45,18 @@ public class MountAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
+        while (targetEntity instanceof ComplexEntityPart) {
+            targetEntity = ((ComplexEntityPart)targetEntity).getParent();
+        }
+        Entity passenger = DeprecatedUtils.getPassenger(targetEntity);
+        while (passenger != null) {
+            targetEntity = passenger;
+            passenger = DeprecatedUtils.getPassenger(targetEntity);
+        }
+
         if (targetEntity == DeprecatedUtils.getPassenger(source)
             || source == DeprecatedUtils.getPassenger(targetEntity)) {
             return SpellResult.NO_TARGET;
-        }
-
-        while (targetEntity instanceof ComplexEntityPart) {
-            targetEntity = ((ComplexEntityPart)targetEntity).getParent();
         }
         DeprecatedUtils.setPassenger(targetEntity, source);
 
