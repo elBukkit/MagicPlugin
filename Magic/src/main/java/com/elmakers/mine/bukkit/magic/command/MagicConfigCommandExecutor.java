@@ -274,7 +274,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 }
             }
             if (fileType.equals("mobs")) {
-                Collection<String> mobList = api.getController().getMobKeys();
+                Collection<String> mobList = api.getController().getMobKeys(true);
                 for (String mob : mobList) {
                     options.add(mob);
                 }

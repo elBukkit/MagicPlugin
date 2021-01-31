@@ -390,7 +390,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         List<String> removeMountKeys = ConfigurationUtils.getStringList(parameters, "remove_mounts");
         if (removeMountKeys != null && !removeMountKeys.isEmpty()) {
-            removeMounts = new HashSet(removeMountKeys);
+            removeMounts = new HashSet<>(removeMountKeys);
         }
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");

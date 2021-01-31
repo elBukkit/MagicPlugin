@@ -34,6 +34,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javax.annotation.Nonnull;
@@ -6276,8 +6277,19 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public Set<String> getMobKeys(boolean showHidden) {
+        if (showHidden) {
+            return mobs.getKeys();
+        }
+        return new HashSet<>(mobs.getMobs().stream()
+            .filter(mob -> !mob.isHidden())
+            .map(EntityData::getKey)
+            .collect(Collectors.toList()));
+    }
+
+    @Override
     public Set<String> getMobKeys() {
-        return mobs.getKeys();
+        return getMobKeys(false);
     }
 
     @Nullable

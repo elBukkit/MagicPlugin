@@ -453,7 +453,13 @@ public interface MageController {
     String getSpellArgs(ItemStack item);
 
     Set<String> getNPCKeys();
+
+    /**
+     * Will not return hidden mobs
+     * @return
+     */
     Set<String> getMobKeys();
+    Set<String> getMobKeys(boolean includeHidden);
     @Nullable
     Entity spawnMob(String key, Location location);
     @Nullable
