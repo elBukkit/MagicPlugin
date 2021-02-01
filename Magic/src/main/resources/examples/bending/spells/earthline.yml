@@ -30,7 +30,6 @@ earthline:
       cooldown: 8000
       delay: 100
       damage_type: earth
+      destructible: destructible_replace
   costs:
       mana: 50
-
-

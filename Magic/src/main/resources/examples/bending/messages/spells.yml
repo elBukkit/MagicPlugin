@@ -41,6 +41,9 @@ spells:
   earthsmash:
     name: Earth Smash
     description: Smash your target in a violent explosion
+  earthline:
+    name: Earth Line
+    description: Blast a line of earth at your opponent
   earthbullet:
     name: Earth Bullet
     description: Compress the ground beneath your feet and launch it as a projectile
