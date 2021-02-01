@@ -916,6 +916,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     this.icon = new ItemStack(com.elmakers.mine.bukkit.wand.Wand.DefaultUpgradeMaterial);
                     meta = this.icon.getItemMeta();
                 }
+                if (name.isEmpty()) {
+                    name = getMessage("invalid_item");
+                    meta.setDisplayName(name);
+                }
             }
 
             // Prepare icon

@@ -57,3 +57,4 @@ shops:
   full: "Your inventory is full!"
   nostock: "Sorry, that item is out of stock!"
   paid: "&7$owner thanks you for your business!"
+  invalid_item: "&cUnknown or Invalid Item"
