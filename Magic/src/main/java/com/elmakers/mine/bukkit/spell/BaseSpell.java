@@ -3098,13 +3098,12 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void finish(com.elmakers.mine.bukkit.api.action.CastContext context) {
-        SpellResult result = context.getResult();
-
         // Notify other plugins of this spell cast
-        CastEvent castEvent = new CastEvent(mage, this, result);
+        CastEvent castEvent = new CastEvent(context);
         Bukkit.getPluginManager().callEvent(castEvent);
 
         // Message targets
+        SpellResult result = context.getResult();
         if (result.isSuccess() && (loud || (!mage.isQuiet() && !quiet))) {
             messageTargets("cast_player_message");
         }
