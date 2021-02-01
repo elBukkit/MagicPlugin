@@ -313,7 +313,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 if (itemList.size() > 0) {
                     items = new ArrayList<>();
                     for (String itemKey : itemList) {
-                        items.add(parseItem(itemKey));
+                        ItemStack item = parseItem(itemKey);
+                        if (item != null) {
+                            items.add(item);
+                        }
                     }
                 }
             }

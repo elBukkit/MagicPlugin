@@ -144,6 +144,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
 
     @Override
     public String describeItem(ItemStack item) {
+        if (item == null) return "?";
         String displayName = null;
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
