@@ -457,6 +457,9 @@ public class ConfigurationLoadTask implements Runnable {
         File configSubFolder = new File(configFolder, fileName);
         loadConfigFolder(config, configSubFolder, !isMainConfig);
 
+        // Clear any enabled flags we added in to re-enable disabled inherited configs
+        clearEnabled(config);
+
         // Save defaults
         File savedDefaults = new File(configFolder, defaultsFileName);
         if (saveDefaultConfigs) {
@@ -469,8 +472,6 @@ public class ConfigurationLoadTask implements Runnable {
         } else  {
             deleteDefaults(defaultsFileName);
         }
-
-        clearEnabled(config);
 
         return config;
     }
