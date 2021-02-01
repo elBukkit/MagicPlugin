@@ -40,6 +40,7 @@ grenade:
         undo: 20000
         cooldown: 10000
         undo_speed: 0.2
+        check_destructible: false
     costs:
         mana: 40
 

@@ -71,6 +71,7 @@ boom:
         undo_speed: 0.5
         miss_effects: hit
         miss: actions
+        check_destructible: false
     costs:
         mana: 50
 

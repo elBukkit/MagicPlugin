@@ -2,11 +2,13 @@ package com.elmakers.mine.bukkit.magic.listener;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -74,17 +76,23 @@ public class ExplosionController implements Listener {
         UndoList blockList = getExplosionUndo(explodingEntity);
         boolean cancel = event.isCancelled();
         cancel = cancel || EntityMetadataUtils.instance().getBoolean(explodingEntity, "cancel_explosion");
-        if (blockList != null)
+        if (blockList != null && !cancel)
         {
             com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
-            if (!cancel && context != null && !context.hasBreakPermission(explodingEntity.getLocation().getBlock())) {
-                cancel = true;
+            if (context != null) {
+                Iterator<Block> blockIterator = event.blockList().iterator();
+                while (blockIterator.hasNext()) {
+                    Block block = blockIterator.next();
+                    if (!context.hasBreakPermission(block) || !context.isDestructible(block)) {
+                        blockIterator.remove();
+                    }
+                }
             }
         }
         if (cancel) {
             event.setCancelled(true);
         }
-        else if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
+        if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
             if (!CompatibilityUtils.isChunkLoaded(explodingEntity.getLocation())) return;
             Chunk chunk = explodingEntity.getLocation().getChunk();
             if (chunk == null || !chunk.isLoaded()) return;

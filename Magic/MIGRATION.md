@@ -7,6 +7,7 @@
  - Colored leather armor *must* use a # in the color code to differentiate between damage, e.g.
    `/mgive leather_chestplate:#002233`
  - Wands now must have an explicit "craftable: true" parameter to be allowed as a crafting ingredient
+ - Magic explosions (boom, grenade, etc) will now check block destructibility per-block
 
 # 8.2
 
