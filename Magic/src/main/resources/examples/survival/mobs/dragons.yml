@@ -26,15 +26,6 @@ base_dragon:
     generic_armor_toughness: 1
     generic_movement_speed: 0.22
     generic_knockback_resistance: 0.5
-  triggers:
-    launch:
-      cast:
-        dragonfire: 30
-    damage:
-      cast:
-        dragonexplodefire: 30
-        dragonfire: 10
-        dragonwingblast: 30
   drops:
   - sp:150
   potion_effects:
@@ -48,6 +39,15 @@ bluedragon:
   item: dragonwingrightblue
   offhand: dragonwingleftblue
   helmet: dragonbodyblue
+  triggers:
+    launch:
+      cast:
+        dragonwater: 30
+    damage:
+      cast:
+        dragonexplodewater: 30
+        dragonwater: 10
+        dragonwingblast: 30
 
 greendragon:
   inherit: base_dragon
@@ -56,6 +56,15 @@ greendragon:
   item: dragonwingrightgreen
   offhand: dragonwingleftgreen
   helmet: dragonbodygreen
+  triggers:
+    launch:
+      cast:
+        dragonpoison: 30
+    damage:
+      cast:
+        dragonexplodepoison: 30
+        dragonpoison: 10
+        dragonwingblast: 30
 
 greydragon:
   inherit: base_dragon
@@ -64,6 +73,15 @@ greydragon:
   item: dragonwingrightgrey
   offhand: dragonwingleftgrey
   helmet: dragonbodygrey
+  triggers:
+    launch:
+      cast:
+        dragondark: 30
+    damage:
+      cast:
+        dragonexplodedark: 30
+        dragondark: 10
+        dragonwingblast: 30
 
 purpledragon:
   inherit: base_dragon
@@ -72,6 +90,15 @@ purpledragon:
   item: dragonwingrightpurple
   offhand: dragonwingleftpurple
   helmet: dragonbodypurple
+  triggers:
+    launch:
+      cast:
+        dragonlightning: 30
+    damage:
+      cast:
+        dragonexplodelightning: 30
+        dragonlightning: 10
+        dragonwingblast: 30
 
 reddragon:
   inherit: base_dragon
@@ -80,3 +107,12 @@ reddragon:
   item: dragonwingrightred
   offhand: dragonwingleftred
   helmet: dragonbodyred
+  triggers:
+    launch:
+      cast:
+        dragonfire: 30
+    damage:
+      cast:
+        dragonexplodefire: 30
+        dragonfire: 10
+        dragonwingblast: 30
