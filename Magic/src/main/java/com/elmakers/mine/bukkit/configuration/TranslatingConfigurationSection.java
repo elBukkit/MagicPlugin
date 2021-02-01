@@ -167,7 +167,12 @@ public class TranslatingConfigurationSection extends MemorySection {
         Object val = get(path, def);
         if (val instanceof String) {
             String s = (String)val;
-            return s.equalsIgnoreCase("true");
+            if (s.equalsIgnoreCase("true")) {
+                return true;
+            }
+            if (s.equalsIgnoreCase("false")) {
+                return false;
+            }
         }
         return (val instanceof Boolean) ? (Boolean) val : def;
     }
