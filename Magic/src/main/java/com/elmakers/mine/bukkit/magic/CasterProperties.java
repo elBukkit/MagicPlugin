@@ -915,6 +915,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     {
         overrides = overrides != null && overrides.isEmpty() ? null : overrides;
         setProperty("overrides", overrides);
+        updated();
     }
 
     public void removeOverride(String key)
@@ -1031,7 +1032,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     public void updated() {
         super.updated();
-        getMage().updatePassiveEffects();
+        Mage mage = getMage();
+        if (mage != null) {
+            mage.updatePassiveEffects();
+        }
     }
 
     public boolean isPassive() {
