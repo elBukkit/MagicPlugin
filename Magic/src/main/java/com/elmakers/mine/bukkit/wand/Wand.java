@@ -3316,8 +3316,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 // Must have been an item inserted directly into player's inventory?
                 // Make sure it's not the wand item, that can happen due to glitchiness with the pick block
                 // button.
+                mage.sendDebugMessage(ChatColor.RED + "  updating slot with a non-brush/spell item: " + item.getType(), 30);
                 if (!item.equals(this.item)) {
                     mage.giveItem(item);
+                    mage.sendDebugMessage(ChatColor.RED + "    Giving to mage: " + item.getType(), 100);
                 }
                 return false;
             }
@@ -4178,6 +4180,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public void deactivate(boolean closePlayerInventory) {
         if (mage == null) return;
+        mage.sendDebugMessage(ChatColor.YELLOW + " Deactivating wand", 50);
 
         // Play deactivate FX
         playPassiveEffects("deactivate");
@@ -4720,6 +4723,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean activate(Mage mage, boolean offhand) {
         if (mage == null) return false;
+        mage.sendDebugMessage(ChatColor.YELLOW + "   Activating wand", 50);
         Player player = mage.getPlayer();
         if (player == null) return false;
 
