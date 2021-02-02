@@ -39,6 +39,8 @@
  - Fix NPCs duplicating, don't persist them, clean up leftover NPC enties (1.16 only)
  - Fix brooms and armor stand projectiles not working in the other side or netherside
  - Fix Grenade and Boom bypassing the indestructible block list
+ - Fix wand cast overrides not working for boolean or numeric values
+ - Fix some specific issues with overlapping casts
 
 ## Changes
 
@@ -87,11 +89,6 @@
  - Added fire_type parameter to Burn action, so you can use soul_fire
  - Add `protected` and `hidden` flags to mob configs
  - Add `biomes` and `not_biomes` parameters to CheckBlock action
-
-# 8.2.3
-
- - Fix wand cast overrides not working for boolean or numeric values
- - Fix some specific issues with overlapping casts
 
 # 8.2.2
 
