@@ -6,6 +6,7 @@
  - Fix Red Dragon not spawning in spawnmobs example (it should spawn randomly in the nether)
  - Fix potterplus external example URL
  - Fix consumable (`uses`) wands crashing creative, by not having them get consumed
+ - Lower volume of base wand FX
 
 # 8.3
 

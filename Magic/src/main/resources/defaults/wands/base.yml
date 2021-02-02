@@ -12,26 +12,26 @@ base_magic:
     open:
       - sound: magic.wandup
         sound_broadcast: false
-        sound_volume: 0.8
+        sound_volume: 0.4
       - sound: block_chest_open
         sound_pitch: 1.5
-        sound_volume: 0.7
+        sound_volume: 0.1
         sound_broadcast: false
     close:
       - sound: magic.wanddown
         sound_broadcast: false
-        sound_volume: 0.8
+        sound_volume: 0.4
       - sound: block_chest_close
         sound_pitch: 1.5
-        sound_volume: 0.7
+        sound_volume: 0.1
         sound_broadcast: false
     cycle:
       - sound: magic.paperturn
         sound_broadcast: false
-        sound_volume: 0.8
+        sound_volume: 0.4
       - sound: item_book_page_turn
         sound_pitch: 1.5
-        sound_volume: 0.7
+        sound_volume: 0.2
         sound_broadcast: false
 
 base_undroppable:
