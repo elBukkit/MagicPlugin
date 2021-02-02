@@ -2,6 +2,6 @@
 # These are examples that can be fetched via the `/mconfig fetch` command
 #
 external_examples:
-  potterplus: "https://github.com/grisstyl/PotterPlus/archive/master.zip"
+  potterplus: "https://github.com/PotterPlus/PotterPlus/archive/master.zip"
   superheroes: "https://github.com/elBukkit/Magic-Superheroes/archive/main.zip"
   extramobs: "https://github.com/PhvntxmX/Magic-Bosses/archive/main.zip"

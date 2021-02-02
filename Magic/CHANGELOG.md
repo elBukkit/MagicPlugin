@@ -4,6 +4,7 @@
 
  - Fix infinite recursion error when using `/cast day` from the console
  - Fix Red Dragon not spawning in spawnmobs example (it should spawn randomly in the nether)
+ - Fix potterplus external example URL
 
 # 8.3
 
