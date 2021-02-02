@@ -2,6 +2,8 @@
 
 # 8.3.1
 
+ - Fix infinite recursion error when using `/cast day` from the console
+
 # 8.3
 
 ## Player Shops

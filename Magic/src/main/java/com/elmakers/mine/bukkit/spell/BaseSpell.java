@@ -3333,12 +3333,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Nullable
     @Override
     public Double getAttribute(String attributeKey) {
-        Double data = mage == null ? null : mage.getAttribute(attributeKey);
-        if (data == null && workingParameters != null && workingParameters.contains(attributeKey)) {
-            data = workingParameters.getDouble(attributeKey);
-        }
-
-        return data;
+        return mage == null ? null : mage.getAttribute(attributeKey);
     }
 
     public void setMageClass(MageClass mageClass) {
