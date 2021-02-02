@@ -4379,6 +4379,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (hasUses) {
             findItem();
             ItemStack item = getItem();
+            if (mage != null) {
+                Player player = mage.getPlayer();
+                if (player != null && player.getGameMode() == GameMode.CREATIVE) {
+                    return true;
+                }
+            }
             if (item.getAmount() > 1)
             {
                 item.setAmount(item.getAmount() - 1);
