@@ -285,6 +285,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private Inventory storedInventory = null;
     private int heldSlot = 0;
+    private boolean isActive = false;
 
     public Wand(MagicController controller) {
         super(controller);
@@ -4179,7 +4180,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void deactivate(boolean closePlayerInventory) {
-        if (mage == null) return;
+        if (mage == null || !isActive) return;
+        isActive = false;
         mage.sendDebugMessage(ChatColor.YELLOW + " Deactivating wand", 50);
 
         // Play deactivate FX
@@ -4770,6 +4772,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setProperty("id", null);
         }
 
+        isActive = true;
         this.mage = mage;
         this.isInOffhand = offhand;
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
