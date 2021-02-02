@@ -17,6 +17,10 @@ public class CastEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
+    public CastEvent(Mage mage, Spell spell, SpellResult result) {
+        throw new IllegalArgumentException("Please create a CastEvent with CastContext now .. but also why are you creating a CastEvent?");
+    }
+
     public CastEvent(CastContext context) {
         this.context = context;
     }
