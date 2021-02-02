@@ -3,6 +3,7 @@
 # 8.3.1
 
  - Fix infinite recursion error when using `/cast day` from the console
+ - Fix Red Dragon not spawning in spawnmobs example (it should spawn randomly in the nether)
 
 # 8.3
 

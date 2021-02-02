@@ -45,7 +45,7 @@ overworld_mobs:
         class: ReplaceRule
         target_type: ghast
         probability: 0.01
-        replace_type: redragon
+        replace_type: reddragon
 
       replace_blazes:
         class: ReplaceRule
