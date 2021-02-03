@@ -1428,4 +1428,9 @@ spells:
       description: Configures a player shop
       moved: Set shop chest location
       teleported: Moved your shopkeeper and updated their name
-
+      removed: Removed your Shopkeeper
+      remove_label: Remove Shopkeeper (PERMANENTLY!)
+      move_label: Teleport Your Shopkeeper Here
+      confirm_title: "$item"
+      selected_free: ""
+      title: "Shop Management"
