@@ -1,0 +1,102 @@
+64palm:
+  name: 64 Palm
+  description: Stun your enemy and gain strength and speed
+  icon: diamond_axe:166
+  icon_disabled: diamond_hoe:166
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: Cast
+        spell: 64palmStun
+    - class: ChangeContext
+      target_self: true
+      actions:
+      - class: PotionEffect
+        duration: 6000
+  effects:
+    cast:
+    - class: EffectSingle
+      location: origin
+      effectlib:
+        class: Helix
+        duration: 6000
+        offset: 0,-1.6,0
+        particles: 100
+        strands: 5
+        rotation: 0
+        particle_count: 1
+        radius: 16
+        color: "00ff00"
+        particle: redstone
+        update_locations: false
+      sound: magic.zap
+      sound_pitch: 0.1
+      sound_volume: 0.6
+    - class: EffectSingle
+      sound: magic.teleport
+      sound_pitch: 0.1
+      location: origin
+      effectlib:
+particles: 100
+        duration: 6000
+        radius: 6
+        particle: end_rod
+        offset: 0,-1.6,0
+        class: Helix
+        strands: 5
+        rotation: 0
+        color: "00ff00"
+        update_locations: false
+    - class: EffectSingle
+      location: origin
+      source_location: feet
+      effectlib:
+        class: Warp
+        duration: 6000
+        particle: redstone
+        color: "00ff00"
+        rings: 4
+        radius: 14
+        particle_count: 8
+        particles: 8
+        particle_offset_x: 0.4
+        particle_offset_y: 0.4
+        particle_offset_z: 0.4
+        update_locations: false
+    - class: EffectSingle
+      location: origin
+      source_location: feet
+      effectlib:
+        class: Warp
+        duration: 6000
+        particle: redstone
+        color: "32cd32"
+        rings: 4
+        radius: 8
+        particle_count: 8
+        particles: 8
+        particle_offset_x: 0.3
+        particle_offset_y: 0.3
+        particle_offset_z: 0.3
+        update_locations: false
+    - class: EffectSingle
+      location: origin
+      source_location: feet
+      effectlib:
+        class: Warp
+        duration: 6000
+        particle: redstone
+        color: "7cfc00"
+        rings: 4
+        radius: 5
+        particle_count: 8
+        particles: 8
+        particle_offset_x: 0.2
+        particle_offset_y: 0.2
+        particle_offset_z: 0.2
+        update_locations: false
+  parameters:
+    cooldown: 60000
+    target: self
+    effect_increase_damage: 1

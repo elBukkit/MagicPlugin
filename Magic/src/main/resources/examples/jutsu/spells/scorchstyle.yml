@@ -1,0 +1,46 @@
+scorchstyle:
+  icon: diamond_axe:58
+  icon_disabled: diamond_hoe:58
+  actions:
+cast:
+- class: PotionEffect
+      duration: 5000
+      requires_entity_target: true
+    - class: PlayEffects
+      requires_entity_target: true
+      effects: hitFX
+    - class: Repeat
+      repeat: 4
+      actions:
+      - class: Damage
+        requires_entity_target: true
+        damage: 7
+  effects:
+cast:
+- class: EffectSingle
+      sound: block_fire_extinguish
+      location: origin
+    hitFX:
+    - class: EffectSingle
+      sound: block_lava_extinguish
+      sound_pitch: 0.1
+      location: target
+      effectlib:
+class: Sphere
+        particle: cloud
+        radius: 0.5
+        duration: 2500
+        particles: 20
+        speed: 0.1
+    - class: EffectSingle
+      sound: magic.flying
+      sound_volume: 1
+      sound_pitch: 0.1
+  parameters:
+effect_confusion: 5
+    effect_slow: 1
+    hitbox: true
+    target: other
+    target_type: LivingEntity
+    allow_max_range: false
+    range: 6

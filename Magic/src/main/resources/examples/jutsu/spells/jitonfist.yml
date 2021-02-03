@@ -1,0 +1,116 @@
+jitonfist:
+  icon: diamond_axe:116
+  icon_disabled: diamond_hoe:116
+  icon_url: http://textures.minecraft.net/texture/1e5b76818c576079939b5a4b033ddfb5c2364fc9f764e573c59508b811e365
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Damage
+      - class: Delay
+      - class: AreaOfEffect
+        actions:
+        - class: Asynchronous
+          actions:
+          - class: CustomProjectile
+            velocity: 150
+            actions:
+            - class: Repeat
+              actions:
+              - class: Electrify
+              - class: Damage
+                damage: 5
+              - class: Delay
+      - class: Electrify
+      - class: Repeat
+        actions:
+        - class: Damage
+        - class: Delay
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: magic.zap
+      sound_volume: 0.4
+      location: origin
+    - class: EffectSingle
+      sound: magic.electrify
+      sound_volume: 0.2
+      sound_pitch: 1.2
+      location: origin
+    projectile:
+    - class: EffectSingle
+      effectlib:
+        class: LineEffect
+        isZigZag: true
+        zigZags: 2
+        zigZagOffset: 0.1,0.1,0.1
+        length: 10
+        particles: 1
+        particle_count: 250
+        particle_offset_x: 0.7
+        particle_offset_y: 0.7
+        particle_offset_z: 0.7
+        particle: redstone
+        color: '000000'
+        duration: 2000
+    - location: source
+      effectlib:
+        class: LineEffect
+        isZigZag: true
+        zigZags: 2
+        zigZagOffset: 0,0.05,0
+        length: 10
+        particles: 1
+        particle_offset_x: 0.4
+        particle_offset_y: 0.4
+        particle_offset_z: 0.4
+        particle: end_rod
+        particle_count: 1
+        duration: 2000
+    tick:
+    - particle: redstone
+      color: "00ffff"
+      particle_count: 80
+      particle_offset_x: 0.7
+      particle_offset_y: 0.7
+      particle_offset_z: 0.7
+      location: target
+    hit:
+    - class: EffectSingle
+      location: target
+      particle: fireworks_spark
+      particle_count: 100
+      particle_offset_x: 0.5
+      particle_offset_y: 0.5
+      particle_offset_z: 0.5
+    hit_entity:
+    - class: EffectSingle
+      sound: magic.electrify
+      sound_volume: 1
+      sound_pitch: 1.4
+      location: target
+    - class: EffectSingle
+      sound: magic.bonk
+      sound_volume: 1
+      sound_pitch: 1.4
+      location: origin
+  parameters:
+    tick_size: 5
+    hitbox: true
+    hitbox_radius: 1
+    target: other
+    target_self: false
+    target_source: false
+    range: 120
+    gravity: 0.01
+    velocity: 64
+    radius: 16
+    target_count: 100
+    target_type: Damageable
+    damage: 8
+    delay: 250
+    repeat: 4
+    target_breakables: 1
+    cooldown: 1400
+  costs:
+    mana: 35

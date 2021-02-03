@@ -1,0 +1,89 @@
+waterdragon:
+  icon: diamond_axe:140
+  icon_disabled: diamond_hoe:140
+  icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        target_self: true
+        target_caster: true
+        actions:
+        - class: Velocity
+          additive: true
+          living_entity_speed: -1
+    - class: Asynchronous
+      actions:
+      - class: DisablePhysics
+        ignore_result: true
+    - class: Asynchronous
+      actions:
+      - class: CustomProjectile
+        tick:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
+            ignore_result: true
+          - class: Undo
+            ignore_result: true
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: PlayEffects
+              effect: streamhit
+              ignore_result: true
+            - class: Velocity
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: block_water_ambient
+    projectile:
+    - location: origin
+      effectlib:
+        class: Sphere
+        particle: water_splash
+        radius: 2
+        particles: 20
+    - location: origin
+      effectlib:
+        class: Sphere
+        particle: bubble_pop
+        radius: 2
+        particles: 20
+    streamhit:
+    - class: EffectSingle
+      sound: ambient_underwater_exit
+      sound_volume: 2
+      sound_pitch: 1.7
+    - location: target
+      effectlib:
+        class: SphereEffect
+        iterations: 4
+        particle: water_wake
+        radius: 0
+        particles: 20
+        speed: 0.1
+    tick:
+    - location: target
+    - class: EffectSingle
+      location: target
+      sound: entity.boat.paddle_water
+  parameters:
+    target: none
+    target_type: Damageable
+    radius: 1
+    velocity: 16
+    track_range: 100
+    lifetime: 5000
+    range: 100
+    duration: 10000
+    brush: stationary_water
+    increment_data: true
+    damage: 15
+    cooldown: 2000
+    destructible: destructible_replace
+    undo: 50
+    undo_to: 700
+  costs:
+    mana: 25

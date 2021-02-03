@@ -1,0 +1,105 @@
+hyotontsubamefubuki:
+  icon: diamond_axe:37
+  icon_disabled: diamond_hoe:37
+  actions:
+    cast:
+    - class: Delay
+    - class: Repeat
+      actions:
+      - class: Retarget
+        actions:
+        - class: Asynchronous
+          actions:
+          - class: CustomProjectile
+            actions:
+            - class: Damage
+      - class: PlayEffects
+        effect: shoot
+        ignore_result: true
+      - class: Delay
+        delay: 5
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: magic.electrify
+      sound_pitch: 0.1
+      source_location: body
+      origin_offset: 0,1.5,0
+      effectlib:
+        class: Sphere
+        particle: snowball
+        duration: $warmup
+        particles: 10
+        radius: 0.2
+    shoot:
+    - class: EffectSingle
+      sound: block_glass_break
+      source_location: body
+      sound_pitch: 1.4
+      particle: snowball
+      particle_count: 2
+      particle_offset_x: 0.1
+      particle_offset_y: 0.1
+      particle_offset_z: 0.1
+      relative_offset: 1,0,0
+    tick:
+    - location: target
+      particle: redstone
+      color: "e0ffff"
+      particle_count: 2
+      particle_offset_x: 0.01
+      particle_offset_y: 0.01
+      particle_offset_z: 0.01
+    hit_block:
+    - class: EffectSingle
+      location: target
+      particle: snowball
+      particle_count: 30
+      particle_offset_x: 0.2
+      particle_offset_y: 1
+      particle_offset_z: 0.2
+    hit_entity:
+    - class: EffectSingle
+      location: target
+      particle: snowball
+      particle_count: 20
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    hit:
+    - class: EffectSingle
+      location: target
+      particle: fireworks_spark
+      particle_count: 4
+      particle_offset_x: 0.3
+      particle_offset_y: 0.3
+      particle_offset_z: 0.3
+      sound: magic.zap
+      sound_volume: 1
+      particle_data: 0.1
+  parameters:
+    hitbox_size: 0.5
+    fov: 1
+    target: other
+    target_type: Damageable
+    source_location: body
+    ice: frosted_ice
+    transparent: freeze_transparent
+    destructible: freezeable
+    entity_undo: false
+    freeze_lava: false
+    track_target: true
+    undo: 2000
+    undo_speed: 3
+    track_speed: 1
+    range: 32
+    velocity: 50
+    spread: 0.1
+    cooldown: 1000
+    speed: 0.2
+    damage: 2
+    repeat: 28
+    warmup: 1200
+    push: -1.0E-4
+  costs:
+    mana: 100

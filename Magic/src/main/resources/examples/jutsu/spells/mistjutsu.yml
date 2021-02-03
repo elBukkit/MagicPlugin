@@ -1,0 +1,54 @@
+mistjutsu:
+  icon: diamond_axe:153
+  icon_disabled: diamond_hoe:153
+  actions:
+    cast:
+    - class: Asynchronous
+      ignore_result: true
+      actions:
+      - class: Repeat
+        repeat: 12
+        actions:
+        - class: AreaOfEffect
+          radius: 32
+          target_count: 500
+          actions:
+          - class: PotionEffect
+            duration: 1000
+        - class: Delay
+          delay: 5000
+    - class: Asynchronous
+      ignore_result: true
+      actions:
+      - class: Repeat
+        repeat: 1200
+        actions:
+        - class: PlayEffects
+          effect: magmasphere
+          ignore_result: true
+        - class: Delay
+          delay: 50
+  effects:
+    magmasphere:
+    - class: EffectSingle
+      location: origin
+      particle: explosion_normal
+      particle_count: 100
+      speed: 0
+      offset: 0, 2.5, 0
+      particle_offset_x: 30
+      particle_offset_y: 3
+      particle_offset_z: 30
+  parameters:
+    target: self
+    target_type: LivingEntity
+    brush: air
+    radius: 3
+    destructible: solid
+    effect_blindness: 5
+    undo: 1000
+    duration: 4000
+    cooldown: 400
+    undo_speed: 20
+    undo_to: 300
+    cancel_on_no_wand: true

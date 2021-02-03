@@ -1,0 +1,61 @@
+mokutonwall:
+  icon: diamond_axe:161
+  icon_disabled: diamond_hoe:161
+  icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
+  actions:
+    cast:
+    - class: Volume
+      y_size: 9
+      z_size: 0
+      x_size: 21
+      orient: true
+      reorient: false
+      actions:
+      - class: ModifyBlock
+      - class: Skip
+        skip: 14
+        actions:
+        - class: PlayEffects
+          effects: column
+        - class: Delay
+          delay: 10
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: magic.shield
+      sound_pitch: 0.3
+      sound_volume: 0.5
+    - class: EffectTrail
+      particle: block_crack
+      particle_count: 20
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    column:
+    - location: target
+      particle: block_crack
+      particle_count: 14
+      particle_offset_x: 0.2
+      particle_offset_y: 5
+      particle_offset_z: 0.2
+      offset: 0,-2,0
+    - class: EffectSingle
+      sound: block_wood_break
+      sound_pitch: 0.7
+      sound_volume: 0.2
+  parameters:
+    target_type: LivingEntity
+    allow_max_range: true
+    range: 16
+    radius: 0
+    transparent: transparent_to_construction
+    undo: 8000
+    undo_speed: 48
+    cooldown: 800
+    brush: oak_log
+    brushcolor: true
+    breakable: 3
+    destructible: destructible_replace
+    volume_type: xzy
+  costs:
+    mana: 45

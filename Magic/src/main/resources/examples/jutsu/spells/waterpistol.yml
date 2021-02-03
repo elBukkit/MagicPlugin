@@ -1,0 +1,78 @@
+waterpistol:
+  icon: diamond_axe:24
+  icon_disabled: diamond_hoe:24
+  icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        target_self: true
+        target_caster: true
+        actions:
+        - class: Velocity
+          additive: true
+          living_entity_speed: -0.7
+    - class: DisablePhysics
+      ignore_result: true
+    - class: CustomProjectile
+      tick:
+      - class: Sphere
+        actions:
+        - class: ModifyBlock
+          ignore_result: true
+        - class: Undo
+          ignore_result: true
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+          - class: PlayEffects
+            effect: waterballhit
+            ignore_result: true
+          - class: Velocity
+            speed: 0.2
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 2
+      sound_volume: 1
+    waterballhit:
+      - class: EffectSingle
+      - location: target
+        effectlib:
+          class: SphereEffect
+          iterations: 4
+          particle: bubble_pop
+          radius: 1.4
+          particles: 1
+          speed: 0.1
+          y_offset: -0.5
+    tick:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 1.3
+      sound_volume: 0.8
+    projectile:
+    - location: origin
+      particle: water_splash
+      particle_count: 40
+      particle_offset_x: 0.7
+      particle_offset_y: 0.7
+      particle_offset_z: 0.7
+  parameters:
+    target: none
+    target_type: Damageable
+    radius: 1
+    velocity: 36
+    lifetime: 3000
+    range: 64
+    brush: stationary_water
+    damage: 3
+    cooldown: 250
+    destructible: destructible_replace
+    undo: 200
+    undo_to: 3
+    start: 0.5
+  costs:
+    mana: 10

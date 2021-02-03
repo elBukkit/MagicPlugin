@@ -1,0 +1,74 @@
+waterprison:
+  icon: diamond_axe:241
+  icon_disabled: diamond_axe:241
+  icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Asynchronous
+        actions:
+        - class: Repeat
+          repeat: 120
+          actions:
+          - class: Velocity
+            direction: 0,-1,0
+            living_entity_speed: 0.05
+            requires_entity_target: true
+            additive: false
+          - class: Delay
+            delay: 50
+      - class: Asynchronous
+        actions:
+        - class: PotionEffect
+          effect_slow: 20
+          effect_jump: -20
+          duration: 5000
+      - class: Asynchronous
+        actions:
+        - class: DisablePhysics
+        - class: Volume
+          actions:
+          - class: ModifyBlock
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity_generic_splash
+      sound_pitch: 0.7
+      location: both
+    tick:
+    - location: target
+      particle: water_splash
+      particle_count: 8
+      particle_offset_x: 0.1
+      particle_offset_y: 0.1
+      particle_offset_z: 0.1
+    hit:
+    - class: EffectSingle
+      location: target
+      sound: ambient_underwater_enter
+      sound_pitch: 0.1
+      effectlib:
+        class: Shield
+        iterations: 10
+        particle: water_splash
+        radius: 1
+        particles: 8
+        particle_count: 4
+        particle_offset_x: 0.2
+        particle_offset_y: 0.2
+        particle_offset_z: 0.2
+  parameters:
+    velocity: 250
+    target_type: LivingEntity
+    allow_max_range: true
+    radius: 1
+    range: 6
+    cooldown: 1400
+    undo: 100
+    duration: 5000
+    destructible: destructible_replace
+    brush: stationary_water
+    hitbox: true
+  costs:
+    mana: 35

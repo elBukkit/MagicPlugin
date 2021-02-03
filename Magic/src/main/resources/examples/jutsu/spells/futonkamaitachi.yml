@@ -1,0 +1,91 @@
+futonkamaitachi:
+  icon: diamond_axe:192
+  icon_disabled: diamond_hoe:192
+  icon_url: http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 0
+        actions:
+        - class: CustomProjectile
+          tick:
+          - class: ChangeContext
+            actions:
+            - class: Sphere
+              ignore_result: true
+              actions:
+              - class: Volume
+                actions:
+                - class: ModifyBlock
+                  direction: 0,1,0
+                  speed: 0.2
+          - class: AreaOfEffect
+            actions:
+            - class: Velocity
+              ignore_result: true
+            - class: Damage
+  effects:
+    projectile:
+    - class: EffectSingle
+      sound: block_fire_extinguish
+      sound_volume: 0.2
+      sound_pitch: 0.3
+    - class: EffectSingle
+      sound: magic.flying
+      sound_volume: 1
+      sound_pitch: 0.1
+      effectlib:
+        class: Vortex
+        duration: $lifetime
+        circles: 10
+        helixes: 10
+        particle: spell
+        radius: 2
+        particle_count: 2
+        particle_offset_y: -1.2
+        offset: 0,-2,0
+    windsounds:
+    - class: EffectSingle
+      sound: magic.flying
+      sound_volume: 1
+      sound_pitch: 1.4
+      location: target
+    - class: EffectSingle
+      location: target
+      sound: entity_bat_takeoff
+      sound_pitch: 1.4
+    cast:
+    - class: EffectSingle
+      sound: block_fire_extinguish
+      sound_volume: 1
+      sound_pitch: 0.2
+      location: origin
+  parameters:
+    target: none
+    ignore_targeting: true
+    transparent: air,destructible
+    target_type: Entity
+    radius: 5
+    target_count: 40
+    item_speed: 0.1
+    living_entity_speed: 0.7
+    push: -1
+    y_offset: 1
+    velocity: 18
+    cooldown: 1000
+    lifetime: 2500
+    interval: 4
+    damage: 2
+    brush: erase
+    falling: true
+    falling_probability: 1
+    undo: 7000
+    x_size: 0
+    z_size: 0
+    y_size: 0
+    destructible_override: true
+    undo_speed: 20
+  costs:
+    mana: 40

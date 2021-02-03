@@ -1,0 +1,196 @@
+hyotoniceglacier:
+  icon: diamond_axe:22
+  icon_disabled: diamond_hoe:22
+  icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Asynchronous
+        actions:
+        - class: Volume
+          y_size: 7
+          z_size: 3
+          x_size: 3
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 38
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+      - class: Asynchronous
+        actions:
+        - class: Volume
+          y_size: 9
+          z_size: 1.5
+          x_size: 1.5
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 38
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+      - class: Asynchronous
+        actions:
+        - class: Volume
+          y_size: 10
+          z_size: 1
+          x_size: 1
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 38
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+      - class: Asynchronous
+        actions:
+        - class: Delay
+          delay: 4400
+        - class: AreaOfEffect
+          radius: 4
+          actions:
+          - class: Damage
+            damage: 10
+          - class: PlayEffects
+            effects: endFX
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: magic.shield
+      sound_pitch: 1.3
+      sound_volume: 0.5
+    - class: EffectTrail
+      particle: block_crack
+      material: ice
+      particle_count: 20
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    column:
+    - location: target
+      particle: block_crack
+      material: ice
+      particle_count: 14
+      particle_offset_x: 0.2
+      particle_offset_y: 5
+      particle_offset_z: 0.2
+      offset: 0,-2,0
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.3
+      sound_volume: 1
+    endFX:
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 2
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.9
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.8
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.7
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.6
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.5
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.4
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.3
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.2
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.1
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.9
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.8
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.7
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.6
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.5
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.4
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.3
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.2
+      location: target
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.1
+      location: target
+      particle: redstone
+      color: "87cefa"
+      particle_count: 700
+      particle_offset_x: 2
+      particle_offset_y: 4
+      particle_offset_z: 2
+    - class: EffectSingle
+      sound: entity_generic_explode
+      sound_pitch: 1.6
+  parameters:
+    target_type: LivingEntity
+    allow_max_range: true
+    range: 32
+    radius: 0
+    transparent: transparent_to_construction
+    undo: 1
+    cooldown: 800
+    brush: ice
+    breakable: 3
+    destructible: destructible_replace
+    volume_type: xzy
+  costs:
+    mana: 45

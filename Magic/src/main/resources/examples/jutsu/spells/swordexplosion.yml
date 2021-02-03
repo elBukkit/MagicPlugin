@@ -1,0 +1,59 @@
+swordexplosion:
+  icon: diamond_axe:21
+  icon_disabled: diamond_hoe:21
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Damage
+        damage: 10
+    - class: VelocityAction
+      y_offset: 0.4
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity.player.attack.weak
+      sound_pitch: 0.1
+      location: origin
+      particle: sweepattack
+      particle_count: 3
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    hit_entity:
+    - class: EffectSingle
+      location: target
+      particle: flame
+      particle_count: 100
+      particle_offset_x: 1
+      particle_offset_y: 1
+      particle_offset_z: 1
+      speed: 10
+      sound: entity_generic_explode
+      sound_pitch: 0.7
+    - class: EffectSingle
+      sound: entity.player.attack.sweep
+      sound_pitch: 0.1
+      location: origin
+    - class: EffectSingle
+      location: target
+      particle: explosion_large
+      particle_count: 1
+    - class: EffectSingle
+      location: target
+      particle: smoke_large
+      particle_count: 20
+      particle_offset_x: 1
+      particle_offset_y: 1
+      particle_offset_z: 1
+  parameters:
+    delay: 100
+    allow_max_range: true
+    range: 4
+    cooldown: 900
+    radius: 1
+    velocity: 80
+    living_entity_speed: 1
+    z_offset: 1
+    target_count: 5
+

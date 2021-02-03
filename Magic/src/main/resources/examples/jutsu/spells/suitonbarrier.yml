@@ -1,0 +1,126 @@
+suitonbarrier:
+  name: Suiton Barrier
+  icon: diamond_axe:24
+  icon_disabled: diamond_hoe:24
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 20
+        actions:
+        - class: CustomProjectile
+          tick:
+          - class: Sphere
+            y_size: 1
+            z_size: 5
+            x_size: 5
+            orient: true
+            reorient: false
+            actions:
+            - class: ModifyBlock
+              ignore_result: true
+            - class: Undo
+              ignore_result: true
+            - class: AreaOfEffect
+              actions:
+              - class: Damage
+              - class: PlayEffects
+                effect: waterballhit
+                ignore_result: true
+              - class: Velocity
+                speed: 0.8
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: -20
+        actions:
+        - class: CustomProjectile
+          tick:
+          - class: Sphere
+            y_size: 1
+            z_size: 5
+            x_size: 5
+            orient: true
+            reorient: false
+            actions:
+            - class: ModifyBlock
+              ignore_result: true
+            - class: Undo
+              ignore_result: true
+            - class: AreaOfEffect
+              actions:
+              - class: Damage
+              - class: PlayEffects
+                effect: waterballhit
+                ignore_result: true
+              - class: Velocity
+                speed: 0.8
+    - class: Asynchronous
+      actions:
+      - class: CustomProjectile
+        tick:
+        - class: Sphere
+          y_size: 1
+          z_size: 5
+          x_size: 5
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+            ignore_result: true
+          - class: Undo
+            ignore_result: true
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: PlayEffects
+              effect: waterballhit
+              ignore_result: true
+            - class: Velocity
+              speed: 0.8
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 1.4
+      sound_volume: 1
+    waterballhit:
+    - class: EffectSingle
+    - location: target
+      effectlib:
+        class: SphereEffect
+        iterations: 4
+        particle: bubble_pop
+        radius: 1.4
+        particles: 1
+        speed: 0.1
+        y_offset: -0.5
+    tick:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 0.1
+      sound_volume: 1
+    projectile:
+    - location: origin
+      effectlib:
+        class: Sphere
+        particle: water_splash
+        radius: 3
+        particles: 80
+  parameters:
+    range: 48
+    destructible: destructible_replace
+    undo: 100
+    target: none
+    target_type: Damageable
+    radius: 2
+    velocity: 14
+    undo_speed: 800
+    cooldown: 1400
+    brush: stationary_water
+    damage: 3
+    undo_to: 2000
+    start: 1
+  costs:
+    mana: 50

@@ -1,0 +1,150 @@
+futonrasengan:
+  icon: diamond_axe:24
+  icon_disabled: diamond_hoe:24
+  quick_cast: true
+  toggle: cancel
+  disable_mana_regeneration: false
+  actions:
+    cast:
+    - class: Asynchronous
+      ignore_result: true
+      actions:
+      - class: Repeat
+        repeat: 9999
+        actions:
+        - class: PlayEffects
+          effect: rasenganFXparticle
+          ignore_result: true
+        - class: Cast
+          spell: rasengansound
+        - class: Retarget
+        - class: ChangeContext
+          target_offset: 0,1.4,0
+          actions:
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
+            - class: PotionEffect
+              duration: 1000
+              add_effects:
+                speed: 1.5
+            - class: ChangeContext
+              target_caster: false
+              actions:
+              - class: AreaOfEffect
+                radius: 1
+                requires_entity_target: true
+                actions:
+                - class: PlayEffects
+                  effect: rasenganexplode
+                  ignore_result: true
+                - class: VelocityAction
+                  living_entity_speed: 5
+                  additive: true
+                  y_offset: 0.65
+                - class: AreaOfEffect
+                  radius: 1
+                  actions:
+                  - class: Damage
+                    damage: 15
+                    stop_on_success: true
+                  - class: Command
+                    console: true
+                    command: mgive @p sp 3
+                - class: Cancel
+                - class: Stop
+            - class: Undo
+        - class: Delay
+          delay: 50
+  effects:
+    cast:
+    - class: EffectSingle
+      location: origin
+      sound: entity_llama_swag
+      sound_pitch: 0.1
+    - class: EffectSingle
+      sound: block_fire_extinguish
+      sound_pitch: 0.6
+      location: origin
+    rasenganFXparticle:
+    - class: EffectSingle
+      location: origin
+      particle: redstone
+      color: "87ceeb"
+      particle_count: 30
+      particle_offset_x: 0.25
+      particle_offset_y: 0.25
+      particle_offset_z: 0.25
+    - class: EffectSingle
+      location: origin
+      particle: redstone
+      color: "f8f8ff"
+      particle_count: 20
+      particle_offset_x: 0.45
+      particle_offset_y: 0
+      particle_offset_z: 0.45
+    - class: EffectSingle
+      location: origin
+      particle: end_rod
+      particle_count: 3
+      particle_offset_x: 0.1
+      particle_offset_y: 0.1
+      particle_offset_z: 0.1
+    rasenganexplode:
+    - class: EffectSingle
+      location: origin
+      particle: end_rod
+      particle_count: 5
+      particle_data: 1
+      sound: magic.zap_crack
+      sound_pitch: 1
+      sound_volume: 0.3
+    - class: EffectSingle
+      location: target
+      particle: redstone
+      color: 55FFFF
+      particle_count: 20
+      particle_offset_x: 0.3
+      particle_offset_y: 0.3
+      particle_offset_z: 0.3
+    - class: EffectSingle
+      location: origin
+      particle: end_rod
+      particle_count: 20
+      particle_offset_x: 0.4
+      particle_offset_y: 0.4
+      particle_offset_z: 0.4
+    - class: EffectSingle
+      location: origin
+      particle: crit
+      speed: 0
+      particle_count: 40
+      particle_offset_x: 2
+      particle_offset_y: 2
+      particle_offset_z: 2
+    - class: EffectSingle
+      sound: entity.ender_dragon.flap
+      sound_pitch: 1.5
+      location: target
+    - class: EffectSingle
+      sound: entity.ender_dragon.flap
+      sound_volume: 1.3
+      sound_pitch: 0.1
+    - class: EffectSingle
+      sound: entity_generic_explode
+      sound_pitch: 1.4
+      location: target
+  parameters:
+    target: self
+    brush: air
+    radius: 3
+    destructible: solid
+    undo: 1000
+    cooldown: 400
+    undo_speed: 20
+    undo_to: 300
+    cancel_on_no_wand: true
+  costs:
+    mana: 35
+  active_costs:
+    mana: 8

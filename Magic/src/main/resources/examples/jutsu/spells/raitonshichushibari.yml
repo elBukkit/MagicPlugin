@@ -1,0 +1,270 @@
+raitonshichushibari:
+  icon: diamond_axe:108
+  icon_disabled: diamond_hoe:108
+  icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: Command
+        op: true
+        command: cast raitonshichushibari_electric
+    - class: Asynchronous
+      actions:
+      - class: Volume
+        y_size: 26
+        z_size: 2
+        x_size: 2
+        orient: true
+        reorient: false
+        actions:
+        - class: ChangeContext
+          relative_target_offset: 14,0,14
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 20
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+    - class: Asynchronous
+      actions:
+      - class: Volume
+        y_size: 26
+        z_size: 2
+        x_size: 2
+        orient: true
+        reorient: false
+        actions:
+        - class: ChangeContext
+          relative_target_offset: -14,0,-14
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 20
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+    - class: Asynchronous
+      actions:
+      - class: Volume
+        y_size: 26
+        z_size: 2
+        x_size: 2
+        orient: true
+        reorient: false
+        actions:
+        - class: ChangeContext
+          relative_target_offset: 14,0,-14
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 20
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+    - class: Asynchronous
+      actions:
+      - class: Volume
+        y_size: 26
+        z_size: 2
+        x_size: 2
+        orient: true
+        reorient: false
+        actions:
+        - class: ChangeContext
+          relative_target_offset: -14,0,14
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 20
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: magic.shield
+      sound_pitch: 0.7
+      sound_volume: 0.5
+    - class: EffectTrail
+      particle: block_crack
+      particle_count: 20
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    column:
+    - location: target
+      particle: block_crack
+      particle_count: 14
+      particle_offset_x: 0.2
+      particle_offset_y: 5
+      particle_offset_z: 0.2
+      offset: 0,-2,0
+    - class: EffectSingle
+      sound: block_stone_break
+      sound_pitch: 0.7
+      sound_volume: 0.2
+    hit:
+    - class: EffectSingle
+      location: target
+      effectlib:
+class: AnimatedBall
+  parameters:
+    target_type: Damageable
+    allow_max_range: true
+    range: 32
+    radius: 15
+    transparent: transparent_to_construction
+    undo: 8000
+    undo_speed: 600
+    cooldown: 800
+    brush: brown_terracotta
+    brushcolor: true
+    breakable: 3
+    destructible: destructible_replace
+    volume_type: xzy
+  costs:
+    mana: 45
+
+raitonshichushibari_electric:
+  hidden: true
+  actions:
+    cast:
+    - class: ChangeContext
+      actions:
+      - class: Delay
+        delay: 3000
+      - class: Multiply
+        actions:
+        - class: Delay
+        - class: CustomProjectile
+          actions:
+          - class: AreaOfEffect
+            radius: 4
+            actions:
+            - class: Velocity
+            - class: Damage
+            - class: Asynchronous
+              actions:
+              - class: CustomProjectile
+                velocity: 150
+                actions:
+                - class: Repeat
+                  actions:
+                  - class: Electrify
+                  - class: Damage
+                    damage: 4
+                  - class: Delay
+          - class: Electrify
+          - class: Repeat
+            actions:
+            - class: Damage
+            - class: Delay
+  effects:
+    cast:
+    - class: EffectSingle
+      custom_sound: magic.burn
+      location: both
+    - class: EffectSingle
+      location: target
+      effectlib:
+        class: Warp
+        particles: 75
+        rings: 90
+        radius: 17
+        duration: 10000
+        particle: redstone
+        color: "00ffff"
+    - class: EffectSingle
+      location: target
+      effectlib:
+        class: Warp
+        particles: 75
+        rings: 8
+        radius: 17
+        duration: 10000
+        particle: redstone
+        color: "00ffff"
+    tick:
+    - particle: fireworks_spark
+      particle_count: 2
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+      location: target
+    hit:
+    - class: EffectSingle
+      location: target
+      particle: fireworks_spark
+      particle_count: 10
+      particle_offset_x: 1
+      particle_offset_y: 1
+      particle_offset_z: 1
+    - class: EffectSingle
+      sound: entity_lightning_bolt_thunder
+      location: target
+      sound_volume: 1.5
+    hit_entity:
+    - class: EffectSingle
+      sound: magic.electrify
+      sound_volume: 0.5
+      sound_pitch: 1.4
+      location: target
+    projectile:
+    - class: EffectSingle
+      effectlib:
+        class: LineEffect
+        isZigZag: true
+        zigZags: 2
+        zigZagOffset: 0,0.05,0
+        length: 100
+        particles: 50
+        particle: redstone
+        color: 00FFFF
+        duration: 2000
+    - location: source
+      effectlib:
+        class: LineEffect
+        isZigZag: true
+        zigZags: 2
+        zigZagOffset: 0,0.05,0
+        length: 100
+        particles: 20
+        particle: fireworks_spark
+        particle_count: 4
+        particle_offset_x: 0.1
+        particle_offset_y: 0.1
+        particle_offset_z: 0.1
+        duration: 2000
+  parameters:
+    source_offset: 0,100,0
+    start: 72
+    spread: 0.25
+    first:
+      spread: 0
+    radius: 8
+    delay: rand(10,7750)
+    multiply: 200
+    target: block
+    damage: 4
+    range: 200
+    entity_hit_count: 1000
+    allow_max_range: true
+    hitbox: true
+    velocity: 1000
+    track_target: true
+    track_speed: 0.1
+    bypass_backfire: false
+    cooldown: 45
+    speed: 0.9
+    duration: 10000
+    effects_particles: false

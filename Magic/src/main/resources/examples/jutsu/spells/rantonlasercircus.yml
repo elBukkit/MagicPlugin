@@ -1,0 +1,145 @@
+rantonlasercircus:
+  icon: diamond_axe:55
+  icon_disabled: diamond_hoe:55
+  icon_url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78
+  actions:
+    cast:
+    - class: Repeat
+      repeat: 16
+      actions:
+      - class: Repeat
+        repeat: 2
+        actions:
+        - class: PotionEffect
+        - class: Retarget
+          actions:
+          - class: Asynchronous
+            actions:
+            - class: CustomProjectile
+              hitbox_size: 0.3
+              actions:
+              - class: Damage
+              - class: Velocity
+                living_entity_speed: 1
+                push: 1
+              - class: BreakBlock
+                ignore_result: true
+        - class: PlayEffects
+          effect: shoot
+          ignore_result: true
+  effects:
+    cast:
+    - class: EffectSingle
+      source_location: body
+      origin_offset: 0,0.55,0
+      effectlib:
+        class: AnimatedBall
+        particle: end_rod
+        duration: $warmup
+        particle_count: 1
+        size: 0.75
+        relative_offset: 0,-1,0
+    - class: EffectSingle
+      effectlib:
+        class: ConeEffect
+        iterations: 3
+        particle: end_rod
+        lengthGrow: 0
+        radiusGrow: 0.06
+        relative_offset: 1,0,0
+        updateLocations: true
+        updateDirections: true
+    shoot:
+    - class: EffectSingle
+      sound: entity.player.attack.crit
+      sound_volume: 0.3
+      sound_pitch: 1.2
+      source_location: body
+      particle: crit_magic
+      particle_count: 5
+    - class: EffectSingle
+      sound: entity_firework_rocket_launch
+      sound_volume: 0.2
+      sound_pitch: 0.8
+      source_location: body
+    - class: EffectSingle
+      sound: magic.electrify
+      sound_volume: 0.1
+      sound_pitch: 1.2
+      source_location: body
+    tick:
+    - location: target
+      particle: redstone
+      color: "00ffff"
+      particle_count: 5
+      particle_offset_x: 0.045
+      particle_offset_y: 0.045
+      particle_offset_z: 0.045
+    - location: target
+      particle: end_rod
+      particle_count: 10
+      particle_offset_x: 0.085
+      particle_offset_y: 0.085
+      particle_offset_z: 0.085
+    hit_block:
+    - class: Sphere
+      location: target
+      particle: crit_magic
+      particle_count: 3
+      radius: 0.4
+    hit_entity:
+    - class: Sphere
+      location: target
+      target_location: body
+      particle: redstone
+      color: "00ffff"
+      particle_count: 40
+      radius: 1
+    hit:
+    - class: Circle
+      location: target
+      target_location: body
+      particle: town_aura
+      particle_count: 1
+      radius: 1
+      sound: entity_wither_hurt
+      sound_volume: 2
+      particle_data: 0.1
+    reflect:
+    - class: EffectSingle
+      location: target
+      particle: town_aura
+      particle_count: 5
+      particle_offset_x: 0.025
+      particle_offset_y: 0.025
+      particle_offset_z: 0.025
+  parameters:
+    target_type: Damageable
+    source_location: body
+    range: 69
+    entity_hit_count: 1000
+    hitbox_size: 0.2
+    velocity: 140
+    damage: 6
+    spread: 0.45
+    spread_movement_max: 100
+    spread_movement: 100
+    cooldown: 2000
+    knockback_resistance: 10000
+    push: -0.01
+    speed: 1
+    target_self_timeout: 2000
+    track_speed: 0.15
+    track_range: 1000
+    track_target: false
+    repeat: 11
+    use_target_location: true
+    lifetime: 14000
+    warmup: 750
+    duration: 10000
+    undo: 8000
+    undo_speed: 1
+    destructible: solid
+    destructible_durability: 50
+    break_durability: 20
+    target_breakables: 1

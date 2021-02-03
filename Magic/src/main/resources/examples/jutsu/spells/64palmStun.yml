@@ -1,0 +1,14 @@
+64palmStun:
+  actions:
+    cast:
+    - class: AreaOfEffect
+      radius: 16
+      actions:
+      - class: PotionEffect
+        duration: 6000
+  parameters:
+    target: self
+    target_type: LivingEntity
+    effect_confusion: 5
+    effect_slow: 3
+    effect_weakness: 3

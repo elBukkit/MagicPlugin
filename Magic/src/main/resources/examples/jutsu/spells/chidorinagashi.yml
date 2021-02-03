@@ -1,0 +1,113 @@
+chidorinagashi:
+  icon: diamond_axe:164
+  icon_url: http://textures.minecraft.net/texture/1e5b76818c576079939b5a4b033ddfb5c2364fc9f764e573c59508b811e365
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: Repeat
+        repeat: 12
+        actions:
+        - class: PlayEffects
+          effect: chidorinagashiSFX
+        - class: Delay
+          delay: 400
+    - class: Repeat
+      repeat: 85
+      actions:
+      - class: CustomProjectile
+        hitbox: true
+        hitbox_size: 3
+        actions:
+        - class: Damage
+          damage: 2
+        - class: PotionEffect
+          effect_confusion: 5
+          effect_slow: 1
+          duration: 4000
+        - class: Delay
+        - class: AreaOfEffect
+          actions:
+          - class: Asynchronous
+            actions:
+            - class: CustomProjectile
+              velocity: 56
+              hitbox: true
+              hitbox_size: 3
+              actions:
+              - class: Damage
+                damage: 1
+              - class: PotionEffect
+                effect_confusion: 5
+                effect_slow: 1
+                duration: 4000
+              - class: Delay
+          actions:
+          - class: Damage
+            damage: 2
+          - class: PotionEffect
+            effect_confusion: 5
+            effect_slow: 1
+            duration: 4000
+  effects:
+    chidorinagashiSFX:
+    - class: EffectSingle
+      location: origin
+      sound: magic.electrify
+      sound_pitch: 1
+      sound_volume: 0.3
+    projectile:
+    - class: EffectSingle
+      effectlib:
+        class: LineEffect
+        isZigZag: true
+        zigZags: 4
+        zigZagOffset: 0,0.14,0
+        length: 4
+        particles: 24
+        particle: redstone
+        color: 55FFFF
+        duration: 2000
+    - location: source
+      effectlib:
+        class: LineEffect
+        isZigZag: true
+        zigZags: 4
+        zigZagOffset: 0,0.1,0
+        length: 3
+        particles: 5
+        particle: fireworks_spark
+        particle_count: 1
+        particle_offset_x: 0.1
+        particle_offset_y: 0.1
+        particle_offset_z: 0.1
+        duration: 2000
+    tick:
+    - particle: fireworks_spark
+      particle_count: 1
+      particle_offset_x: 0.1
+      particle_offset_y: 0.1
+      particle_offset_z: 0.1
+      location: target
+    hit:
+    - class: EffectSingle
+      particle: fireworks_spark
+      particle_count: 1
+      particle_offset_x: 1
+      particle_offset_y: 1
+      particle_offset_z: 1
+      location: target
+  parameters:
+    spread: 100
+    tick_size: 5
+    target: other
+    target_self: false
+    target_source: false
+    range: 10
+    velocity: 100
+    radius: 8
+    target_count: 100
+    target_type: Damageable
+    delay: 25
+    target_breakables: 1
+    cooldown: 1

@@ -1,0 +1,75 @@
+shieldrotation:
+  actions:
+    cast:
+    - class: ChangeContext
+      target_caster: true
+      actions:
+      - class: AreaOfEffect
+        radius: 8
+        actions:
+        - class: Velocity
+          direction: 0,1,0
+          living_entity_speed: 0.2
+      - class: Delay
+        delay: 100
+      - class: Repeat
+        repeat: 2
+        actions:
+        - class: AreaOfEffect
+          radius: 12
+          actions:
+          - class: PlayEffects
+            effects: windsounds
+            ignore_result: true
+          - class: Velocity
+            push: 1
+            living_entity_speed: 1
+          - class: Damage
+            damage: 5
+          - class: Delay
+            delay: 200
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: block_fire_extinguish
+      sound_volume: 1
+      sound_pitch: 0.6
+      location: origin
+      effectlib:
+        class: Sphere
+        particle: redstone
+        particles: 200
+        iterations: 40
+        particle_count: 1
+        radius: 3.5
+        offset: 0, -1.5, 0
+        color: "87ceeb"
+    - class: EffectSingle
+      effectlib:
+        class: HelixEffect
+        iterations: 4
+        particle: spell
+        offset: 0, -1.6, 0
+        color: "87ceeb"
+    windsounds:
+    - class: EffectSingle
+      sound: magic.flying
+      sound_volume: 1
+      sound_pitch: 1.4
+      location: target
+    - class: EffectSingle
+      location: target
+      sound: entity_bat_takeoff
+      sound_pitch: 1.4
+  parameters:
+    target_type: Entity
+    fov: 1
+    item_speed: 0.1
+    repeat: 3
+    delay: 250
+    y_offset: 0.75
+    cooldown: 2000
+    living_entity_speed: 1
+    range: 6
+    target_count: 100
+    repeat: 12

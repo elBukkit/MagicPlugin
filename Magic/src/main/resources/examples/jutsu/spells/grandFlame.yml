@@ -1,0 +1,113 @@
+grandFlame:
+  icon: diamond_axe:144
+  icon_disabled: diamond_hoe:144
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 20
+        actions:
+        - class: Line
+          actions:
+          - class: Cover
+            actions:
+            - class: Burn
+          - class: Delay
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: -20
+        actions:
+        - class: Line
+          actions:
+          - class: Cover
+            actions:
+            - class: Burn
+          - class: Delay
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 10
+        actions:
+        - class: Line
+          actions:
+          - class: Cover
+            actions:
+            - class: Burn
+          - class: Delay
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: -10
+        actions:
+        - class: Line
+          actions:
+          - class: Cover
+            actions:
+            - class: Burn
+          - class: Delay
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 30
+        actions:
+        - class: Line
+          actions:
+          - class: Cover
+            actions:
+            - class: Burn
+          - class: Delay
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: -30
+        actions:
+        - class: Line
+          actions:
+          - class: Cover
+            actions:
+            - class: Burn
+          - class: Delay
+    - class: Asynchronous
+      actions:
+      - class: Line
+        actions:
+        - class: Cover
+          actions:
+          - class: Burn
+        - class: Delay
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: magic.burn
+      sound_pitch: 0.1
+    - class: EffectSingle
+      sound: entity_blaze_ambient
+      sound_pitch: 0.1
+      effectlib:
+        class: DragonEffect
+        iterations: 25
+        length: 24
+        stepsPerIteration: 1
+        particles: 30
+        particle_count: 20
+        particle_offset_x: 0.7
+        particle_offset_y: 0.7
+        particle_offset_z: 0.7
+        relativeOffset: 2,0,0
+    iterate:
+    - location: target
+      particle: lava
+      particle_count: 8
+      particle_offset_x: 0.5
+      particle_offset_z: 0.5
+      particle_offset_y: 0.2
+  parameters:
+    range: 32
+    destructible: destructible_replace
+    undo: 6000
+    undo_speed: 5
+    target: none
+    delay: 40
+    cooldown: 1800

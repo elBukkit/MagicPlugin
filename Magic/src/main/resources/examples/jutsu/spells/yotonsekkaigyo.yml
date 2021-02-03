@@ -1,0 +1,75 @@
+yotonsekkaigyo:
+  icon: diamond_axe:58
+  icon_disabled: diamond_hoe:58
+  icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Sphere
+        actions:
+        - class: ModifyBlock
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity_llama_spit
+      sound_pitch: 0.1
+      effectlib:
+        class: DragonEffect
+        iterations: 20
+        length: 8
+        stepsPerIteration: 1
+        particle: redstone
+        color: "fff0f5"
+        particles: 20
+        particle_count: 20
+        particle_offset_x: 0.5
+        particle_offset_y: 0.5
+        particle_offset_z: 0.5
+        relativeOffset: 2,0,0
+    hit:
+    - class: EffectSingle
+      sound: item_bucket_empty_lava
+      sound_volume: 3
+      sound_pitch: 0.1
+    - class: EffectSingle
+      sound: item_bucket_fill_lava
+      sound_volume: 3
+      sound_pitch: 0.1
+    tick:
+    - location: target
+      sound: block_chorus_flower_death
+      sound_pitch: 0.1
+      sound_volume: 2.5
+      particle: block_crack
+      material: cobweb
+      particle_count: 10
+      particle_offset_x: 0.2
+      particle_offset_z: 0.2
+      particle_offset_y: 0.2
+    iterate:
+    - location: target
+      particle: redstone
+      color: "e6e6fa"
+      particle_count: 8
+      particle_offset_x: 0.5
+      particle_offset_z: 0.5
+      particle_offset_y: 0.2
+  parameters:
+    target_type: LivingEntity
+    transparent: transparent_to_construction
+    allow_max_range: true
+    range: 48
+    radius: 3
+    velocity: 24
+    size: 24
+    brush: cobweb
+    reverse: false
+    require_blocks: true
+    undo: 8000
+    undo_speed: 10
+    cooldown: 2000
+    destructible: destructible_replace
+    delay: 100
+  costs:
+    mana: 40

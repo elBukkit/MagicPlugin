@@ -1,0 +1,90 @@
+jitonblackiron:
+  icon: diamond_axe:9
+  icon_disabled: diamond_hoe:9
+  icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: PotionEffect
+      - class: Aggro
+      - class: Deactivate
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity_iron_golem_death
+      effectlib:
+        class: ConeEffect
+        iterations: 15
+        particle: redstone
+        color: 000000
+        lengthGrow: 0.1
+        radiusGrow: 0.003
+        updateLocations: false
+        updateDirections: false
+    tick:
+    - particle: redstone
+      color: 380B61
+      location: target
+    - particle: smoke_normal
+      particle_count: 10
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+      location: target
+    hit:
+    - class: EffectSingle
+      location: target
+      color: 000000
+      firework: star
+    - class: EffectSingle
+      location: target
+      requires_entity_target: true
+      effectlib:
+        class: SmokeEffect
+        iterations: 16
+        particle: spell_mob
+        color: 000000
+    hit_entity:
+    - location: target
+      source_location: body
+      effectlib:
+        class: Modified
+        duration: $duration
+        parameters:
+          radius: 1.5 * sin(t) + 0.5
+        effect:
+          class: SphereEffect
+          particle: redstone
+          color: 000000
+          particles: 20
+          disappear_with_origin_entity: true
+    - location: target
+      source_location: body
+      effectlib:
+        class: SphereEffect
+        iterations: 4
+        particle: redstone
+        color: FFFFFF
+        radius: 0.8
+        particles: 2
+        particle_count: 10
+        particle_offset_x: 0.2
+        particle_offset_y: 0.2
+        particle_offset_z: 0.2
+        disappear_with_origin_entity: true
+  costs:
+    mana: 80
+  parameters:
+    speed: 5
+    range: 16
+    target_type: LivingEntity
+    target_breakables: 1
+    target: other
+    duration: 8000
+    cooldown: 2000
+    hitbox: true
+    effect_slow: 3
+    effect_hunger: 2
+    effect_weakness: 3
+    effect_confusion: 5

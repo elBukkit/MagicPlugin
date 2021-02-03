@@ -1,0 +1,157 @@
+flamebreath:
+    icon: diamond_axe:92
+    icon_disabled: diamond_hoe:92
+    icon_url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78
+    actions:
+        cast:
+        - class: Delay
+          delay: 700
+        - class: Repeat
+          repeat: 7
+          actions:
+          - class: Repeat
+            repeat: 2
+            actions:
+            - class: PotionEffect
+            - class: Retarget
+              actions:
+- class: Asynchronous
+                actions:
+                - class: CustomProjectile
+                  hitbox_size: 0.3
+                  actions:
+                  - class: Damage
+                  - class: Ignite
+                  - class: Velocity
+                  - class: Disc
+                    radius: 1
+                    actions:
+                    - class: Cover
+                      actions:
+                      - class: Burn
+                  - class: BreakBlock
+                    ignore_result: true
+            - class: PlayEffects
+              effect: shoot
+              ignore_result: true
+            - class: Delay
+              delay: 50
+          - class: Delay
+            delay: 80
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_wither_ambient
+           sound_pitch: 1.2
+           sound_volume: 0.8
+           source_location: body
+           origin_offset: 0,0.55,0
+           effectlib:
+             class: AnimatedBall
+             particle: end_rod
+             duration: $warmup
+             particle_count: 4
+             size: 0.75
+             relative_offset: 0,-1,0
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particle: flame
+             lengthGrow: 0
+             radiusGrow: 0.06
+             relative_offset: 1,0,0
+             updateLocations: true
+             updateDirections: true
+        shoot:
+        -  class: EffectSingle
+           sound: entity.player.attack.crit
+           sound_volume: 0.3
+           sound_pitch: 1.2
+           source_location: body
+           particle: crit_magic
+           particle_count: 5
+        -  class: EffectSingle
+           sound: entity_firework_rocket_launch
+           sound_volume: 0.2
+           sound_pitch: 0.8
+           source_location: body
+        -  class: EffectSingle
+           sound: entity_blaze_shoot
+           sound_volume: 0.4
+           sound_pitch: 0.7
+           source_location: body
+        tick:
+        -  location: target
+           particle: flame
+           particle_count: 5
+           particle_offset_x: 0.045
+           particle_offset_y: 0.045
+           particle_offset_z: 0.045
+        -  location: target
+           particle: flame
+           particle_count: 10
+           particle_offset_x: 0.085
+           particle_offset_y: 0.085
+           particle_offset_z: 0.085
+        hit_block:
+        -  class: Sphere
+           location: target
+           particle: crit_magic
+           particle_count: 3
+           radius: 0.4
+        hit_entity:
+        -  class: Sphere
+           location: target
+           target_location: body
+           particle: flame
+           particle_count: 40
+           radius: 1
+        hit:
+        -  class: Circle
+           location: target
+           target_location: body
+           particle: town_aura
+           particle_count: 1
+           radius: 1
+           sound: entity_wither_hurt
+           sound_volume: 2
+           particle_data: 0.1
+        reflect:
+- class: EffectSingle
+          location: target
+          particle: town_aura
+          particle_count: 5
+          particle_offset_x: 0.025
+          particle_offset_y: 0.025
+          particle_offset_z: 0.025
+    parameters:
+      target_type: Damageable
+      source_location: body
+      range: 50
+      entity_hit_count: 1000
+      hitbox_size: 0.2
+      velocity: 80
+      damage: 5
+      spread: 0.45
+      spread_movement_max: 100
+      spread_movement: 100
+      cooldown: 2000
+      knockback_resistance: 10000
+      push: -0.01
+      speed: 1
+      target_self_timeout: 2000
+      track_speed: 0.15
+      track_range: 1000
+      track_target: false
+      repeat: 11
+      use_target_location: true
+      lifetime: 14000
+      warmup: 750
+      duration: 10000
+      undo: 8000
+      undo_speed: 1
+      destructible: solid
+      destructible_durability: 50
+      break_durability: 20
+      target_breakables: 1

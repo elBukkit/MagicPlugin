@@ -1,0 +1,101 @@
+fuutonkomunojutsu:
+  icon: diamond_axe:32
+  icon_disabled: diamond_hoe:32
+  actions:
+    cast:
+    - class: VelocityAction
+      y_offset: 1
+    - class: Repeat
+      actions:
+      - class: Delay
+      - class: PlayEffects
+        effects: iterate
+      - class: ConeOfEffectAction
+        actions:
+        - class: VelocityAction
+        - class: Damage
+          damage: 7
+        - class: PlayEffects
+          effects: windsounds
+          ignore_result: true
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: block_fire_extinguish
+      sound_volume: 1
+      sound_pitch: -0.1
+      location: origin
+      effectlib:
+        class: Modified
+        iterations: 20
+        parameters:
+          radius: (t/i) * 4 + 0.2
+        effect:
+          class: DnaEffect
+          particlesBase: 0
+          particles_helix: 15
+          particle_helix: cloud
+          particle_base1: cloud
+          particle_base2: cloud
+          speed: 0.1
+    - location: target
+      effectlib:
+        class: Sphere
+        particle: cloud
+        speed: 0.1
+        particles: 5
+        iterations: 20
+        particle_count: 20
+        particle_offset_x: 0.5
+        particle_offset_y: 0.5
+        particle_offset_z: 0.5
+        radius: 1.5
+    iterate:
+    - class: EffectSingle
+      location: origin
+      effectlib:
+        class: Modified
+        iterations: 10
+        parameters:
+          radius: (t/i) * 4 + 0.2
+        effect:
+          class: DnaEffect
+          particlesBase: 0
+          particles_helix: 7
+          particle_helix: cloud
+          particle_base1: cloud
+          particle_base2: cloud
+          speed: 0.1
+    - location: target
+      effectlib:
+        class: Sphere
+        particle: cloud
+        particles: 10
+        iterations: 20
+        particle_count: 10
+        particle_offset_x: 0.5
+        particle_offset_y: 0.5
+        particle_offset_z: 0.5
+        radius: 1.5
+        speed: 0.1
+    windsounds:
+    - class: EffectSingle
+      sound: magic.flying
+      sound_volume: 1
+      sound_pitch: 1.2
+      location: target
+  parameters:
+    target_type: Entity
+    range: 10
+    fov: 1
+    hitbox: true
+    hitbox_size: 4
+    target_count: 6
+    item_speed: 0.1
+    living_entity_speed: 0.6
+    repeat: 12
+    delay: 250
+    y_offset: 0.75
+    cooldown: 1000
+  costs:
+    mana: 50

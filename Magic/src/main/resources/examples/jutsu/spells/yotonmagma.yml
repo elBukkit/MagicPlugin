@@ -1,0 +1,135 @@
+yotonmagma:
+  icon: diamond_axe:36
+  icon_disabled: diamond_hoe:36
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 10
+        actions:
+        - class: CustomProjectile
+          tick:
+          - class: Sphere
+            y_size: 1
+            z_size: 2
+            x_size: 2
+            orient: true
+            reorient: false
+            actions:
+            - class: ModifyBlock
+              ignore_result: true
+            - class: Undo
+              ignore_result: true
+            - class: AreaOfEffect
+              actions:
+              - class: Damage
+              - class: PlayEffects
+                effect: waterballhit
+                ignore_result: true
+              - class: Velocity
+                speed: 0.1
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: -10
+        actions:
+        - class: CustomProjectile
+          tick:
+          - class: Sphere
+            y_size: 1
+            z_size: 2
+            x_size: 2
+            orient: true
+            reorient: false
+            actions:
+            - class: ModifyBlock
+              ignore_result: true
+            - class: Undo
+              ignore_result: true
+            - class: AreaOfEffect
+              actions:
+              - class: Damage
+              - class: PlayEffects
+                effect: waterballhit
+                ignore_result: true
+              - class: Velocity
+                speed: 0.1
+    - class: Asynchronous
+      actions:
+      - class: CustomProjectile
+        tick:
+        - class: Sphere
+          y_size: 1
+          z_size: 2
+          x_size: 2
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+            ignore_result: true
+          - class: Undo
+            ignore_result: true
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: PlayEffects
+              effect: waterballhit
+              ignore_result: true
+            - class: Velocity
+              speed: 0.1
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        target_self: true
+        actions:
+        - class: PotionEffect
+          duration: 7000
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 1.4
+      sound_volume: 1
+    waterballhit:
+    - class: EffectSingle
+    - location: target
+      effectlib:
+        class: SphereEffect
+        iterations: 4
+        particle: lava
+        radius: 1.4
+        particles: 1
+        speed: 0.1
+        y_offset: -0.5
+    tick:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 0.1
+      sound_volume: 1
+    projectile:
+    - location: origin
+      effectlib:
+        class: Sphere
+        particle: drip_lava
+        radius: 2.5
+        particles: 80
+  parameters:
+    effect_fire_resistance: 1
+    range: 48
+    destructible: destructible_replace
+    undo: 800
+    target: none
+    target_type: Damageable
+    transparent: lava,air
+    radius: 1
+    gravity: 0.02
+    velocity: 8
+    undo_speed: 100
+    cooldown: 1400
+    brush: lava
+    damage: 3
+    undo_to: 1600
+    start: 4
+  costs:
+    mana: 50

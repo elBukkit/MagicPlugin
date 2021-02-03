@@ -1,0 +1,126 @@
+grandtyphoon:
+  icon: diamond_axe:190
+  name: Suiton Grand typhoon
+  icon_disabled: diamond_hoe:190
+  icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Brush
+        ignore_result: true
+        brush: stationary_water
+        actions:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
+            direction: 0,1,0
+        - class: volume
+          y_size: 1
+          z_size: 10
+          x_size: 10
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+            ignore_result: true
+      - class: Repeat
+        actions:
+        - class: Delay
+        - class: PlayEffects
+          effects: splash
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+            ignore_result: true
+            push: -1
+            entity_speed: 0.7
+          - class: Damage
+        - class: Delay
+        - class: PlayEffects
+          effects: splish
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+            ignore_result: true
+            push: -1
+            entity_speed: 0.1
+          - class: Damage
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 1.4
+      sound_volume: 1
+    splash:
+    - class: EffectSingle
+      sound: ambient_underwater_enter
+      sound_volume: 1
+      sound_pitch: 0.1
+    splish:
+    - class: EffectSingle
+      sound: ambient_underwater_exit
+      sound_volume: 1
+      sound_pitch: 0.1
+    tick:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 0.1
+      sound_volume: 1
+    - location: target
+      particle: bubble_pop
+      particle_count: 10
+      particle_offset_x: 0.4
+      particle_offset_y: 0.4
+      particle_offset_z: 0.4
+    - location: target
+      particle: water_splash
+      particle_count: 10
+      particle_offset_x: 0.6
+      particle_offset_y: 0.6
+      particle_offset_z: 0.6
+    projectile:
+    - location: origin
+      effectlib:
+        class: Sphere
+        particle: water_splash
+        radius: 1
+        particles: 80
+    hit:
+    - class: EffectSingle
+      location: target
+      sound: magic.hit
+      effectlib:
+        class: SphereEffect
+        duration: 2500
+        particle: redstone
+        color: 4161
+        radius: 1
+        particles: 5
+    - location: target
+      effectlib:
+        class: HelixEffect
+        iterations: 50
+        particle: bubble_pop
+        offset: 0, 0.4, 0
+  parameters:
+    brush: stationary_water
+    target_type: Entity
+    velocity: 10
+    gravity: 0.02
+    hitbox_size: 2
+    undo: 100
+    undo_speed: 100
+    repeat: 15
+    delay: 250
+    damage: 1
+    target_self_timeout: 2000
+    speed: 0.5
+    item_speed: 0.5
+    entity_speed: 0.5
+    radius: 10
+    destructible: destructible,destructible2,destructible3
+    destructible_override: true
+    cooldown: 1400
+  costs:
+    mana: 50

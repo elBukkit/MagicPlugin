@@ -1,0 +1,52 @@
+katonbalsamine:
+    icon: diamond_axe:153
+    icon_disabled: diamond_hoe:153
+    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
+    actions:
+        cast:
+        - class: Repeat
+          repeat: 9
+          actions:
+          - class: Asynchronous
+            ignore_result: true
+            actions:
+            - class: PlayEffects
+              effects: castsound
+              ignore_result: true
+            - class: Projectile
+              ignore_result: true
+          - class: Delay
+            delay: 200
+    effects:
+        castsound:
+        - sound: magic.burn
+          sound_volume: 0.4
+          sound_pitch: 0.8
+          source_location: body
+        projectile:
+        - location: origin
+          effectlib:
+             class: Sphere
+             iterations: 10
+             period: 2
+             particles: 5
+             particle: lava
+             disappear_with_origin_entity: true
+        hit:
+        - class: EffectSingle
+          location: target
+          color: FE642E
+          firework: ball
+    parameters:
+        projectile: LargeFireball
+        fire: true
+        size: 1
+        undo: 4000
+        cooldown: 2100
+        start: 1
+        break_blocks: true
+        undo_speed: 1
+        spread: 4
+        speed: 2
+    costs:
+        mana: 30

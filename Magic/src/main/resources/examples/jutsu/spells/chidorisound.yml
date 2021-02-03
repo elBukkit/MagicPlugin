@@ -1,0 +1,13 @@
+chidorisound:
+  actions:
+    cast:
+    - class: PlayEffects
+      effect: chidorisound
+  effects:
+    chidorisound:
+    - class: EffectSingle
+      location: origin
+      sound: magic.electrify
+      sound_pitch: 1
+      sound_volume: 0.3
+  enabled: true

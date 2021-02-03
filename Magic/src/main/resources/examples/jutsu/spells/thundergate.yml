@@ -1,0 +1,70 @@
+thundergate:
+  icon: diamond_axe:39
+  icon_disabled: diamond_hoe:39
+  icon_url: http://textures.minecraft.net/texture/a31cc0ffb1e814e1c82301067ea318356befa65dc1a027afbfd498709cad58
+  actions:
+    cast:
+    - class: Lightning
+      ignore_result: true
+    - class: AreaOfEffect
+      radius: 10
+      actions:
+      - class: Damage
+      - class: Ignite
+    - class: Asynchronous
+      actions:
+      - class: Repeat
+        repeat: 8
+        actions:
+        - class: Spread
+          radius: 24
+          actions:
+          - class: Lightning
+            allow_max_range: true
+          - class: Delay
+            delay: 400
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity_firework_large_blast
+    - class: EffectTrail
+      particle: smoke_normal
+      particle_count: 8
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    - class: EffectSingle
+      location: target
+      effectlib:
+        class: HelixEffect
+        particle: smoke_large
+        particle_count: 10
+        particle_offset_x: 0.2
+        particle_offset_y: 4
+        particle_offset_z: 0.2
+        iterations: 1
+        particles: 12
+        radius: 4
+        offset: 0,2,0
+  parameters:
+    target_type: Damageable
+    allow_max_range: true
+    range: 1
+    damage_max_distance: 10
+    cooldown: 1400
+    effect_only: true
+    damage: 3
+    duration: 5000
+    speed: 0.9
+    falling: true
+    brush: air
+    undo: 10000
+    oty: -2
+    undo_speed: 0.5
+    player_damage: 9
+    entity_damage: 16
+  costs:
+    mana: 110
+  enabled: true
+  pvp_restricted: false
+  description: Thunder gate

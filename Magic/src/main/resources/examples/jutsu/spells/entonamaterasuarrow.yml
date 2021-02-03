@@ -1,0 +1,119 @@
+entonamaterasuarrow:
+  icon: diamond_axe:160
+  icon_disabled: diamond_hoe:160
+  icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Damage
+      - class: Ignite
+      - class: BreakBlock
+        ignore_result: true
+  effects:
+    cast:
+    - class: EffectSingle
+      location: origin
+      sound: item_firecharge_use
+      sound_pitch: 0.1
+    - class: EffectSingle
+      location: origin
+      sound: block_furnace_fire_crackle
+      sound_pitch: 0.1
+    - class: EffectSingle
+      sound: magic.zap_crack
+      sound_volume: 0.1
+      location: origin
+      color_override: color
+      effectlib:
+        class: ConeEffect
+        iterations: 10
+        particle: redstone
+        color: "000000"
+        lengthGrow: 0.11
+        radiusGrow: 0.004
+        updateLocations: false
+        updateDirections: false
+    tick:
+    - particle: redstone
+      color: "000000"
+      location: target
+      particle_count: 20
+      particle_offset_x: 0.15
+      particle_offset_y: 0.15
+      particle_offset_z: 0.15
+    break:
+    - class: EffectSingle
+      location: target
+      particle: block_crack
+      particle_count: 100
+      particle_offset_x: 0.6
+      particle_offset_y: 0.6
+      particle_offset_z: 0.6
+    hit_block:
+    - class: EffectSingle
+      location: target
+      particle: block_crack
+      particle_count: 30
+      particle_offset_x: 0.2
+      particle_offset_y: 1
+      particle_offset_z: 0.2
+    hit_entity:
+    - class: EffectSingle
+      location: target
+      particle: redstone
+      color: "000000"
+      particle_count: 30
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    hit:
+    - class: EffectSingle
+      location: target
+      particle: fireworks_spark
+      particle_count: 10
+      particle_offset_x: 0.3
+      particle_offset_y: 0.3
+      particle_offset_z: 0.3
+      sound: magic.zap
+      sound_volume: 0.3
+      particle_data: 0.1
+    headshot:
+    - class: EffectSingle
+      location: target
+      particle: fireworks_spark
+      particle_count: 20
+      particle_offset_y: 0.2
+      particle_offset_x: 0.2
+      particle_offset_z: 0.2
+      particle_data: 0.1
+      sound: magic.zap
+      sound_volume: 0.3
+    - sound: entity_player_attack_crit
+      sound_pitch: 0.8
+      location: target
+      particle: crit_magic
+      particle_count: 30
+      particle_offset_y: 1
+      particle_offset_x: 1
+      particle_offset_z: 1
+      particle_data: 0.5
+  headshot_parameters:
+    damage_multiplier: 2
+  parameters:
+    duration: 15000
+    allow_max_range: true
+    velocity: 150
+    range: 200
+    hitbox: true
+    target_type: Damageable
+    damage: 15
+    target_breakables: 1
+    cooldown: 1
+    reorient: false
+    destructible: solid
+    destructible_durability: 50
+    break_durability: 2
+    undo: 10000
+  costs:
+    mana: 1

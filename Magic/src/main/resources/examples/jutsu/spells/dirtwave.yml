@@ -1,0 +1,93 @@
+dirtwave:
+  icon: diamond_axe:195
+  icon_disabled: diamond_hoe:195
+  icon_url: http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac
+  actions:
+    cast:
+    - class: Line
+      actions:
+      - class: PlayEffects
+        ignore_result: true
+        effects: iterate
+      - class: Volume
+        ignore_result: true
+        actions:
+        - class: Cover
+          actions:
+          - class: ModifyBlock
+      - class: AreaOfEffect
+        actions:
+        - class: Velocity
+          ignore_result: true
+        - class: Damage
+      - class: Delay
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: block_grass_break
+      sound_volume: 1
+      sound_pitch: 0.1
+      location: origin
+      material: stone
+      effectlib:
+        class: EquationEffect
+        xEquation: t/16
+        yEquation: sin(t/16)
+        zEquation: '0'
+        x2Equation: '0'
+        y2Equation: '0'
+        z2Equation: t2/16 * 4 - 4
+        iterations: 15
+        particles: 50
+        particles2: 50
+        particle: redstone
+        color: "8b4513"
+        orient: true
+        orientPitch: false
+        period: 6
+    iterate:
+    - class: EffectSingle
+      location: target
+      sound: block_grass_break
+      sound_pitch: 0.1
+      orient: true
+      effectlib:
+        class: EquationEffect
+        xEquation: '0'
+        yEquation: floor(t/16)*0.2-1
+        zEquation: t/16*4-4
+        iterations: 5
+        particles: 5
+        particle_count: 1
+        particle_offset_x: 1
+        particle_offset_y: 0.2
+        particle_offset_z: 1
+        particle: smoke_large
+        orient: true
+        orientPitch: false
+  parameters:
+    target: block
+    target_type: Entity
+    start_at_target: true
+    x_size: 3
+    y_size: 0
+    z_size: 3
+    size: 16
+    range: 3
+    allow_max_range: true
+    orient: true
+    target_count: 16
+    item_speed: 0.2
+    living_entity_speed: 0.3
+    direction: 0,1,0
+    speed: 2
+    cooldown: 2400
+    delay: 250
+    brush: air
+    falling: true
+    undo: 7000
+    player_damage: 1
+    entity_damage: 3
+    undo_speed: 10
+  costs:
+    mana: 100

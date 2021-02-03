@@ -1,0 +1,57 @@
+mokutondome:
+  icon: diamond_axe:22
+  icon_disabled: diamond_hoe:22
+  icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Sphere
+        actions:
+        - class: ModifyBlock
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: magic.shield
+    tick:
+    - location: target
+      particle: block_crack
+      particle_count: 20
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    hit:
+    - location: target
+      effectlib:
+        class: SphereEffect
+        particle: block_crack
+        particle_count: 15
+        particles: 20
+        particle_offset_x: 0.3
+        particle_offset_y: 0.3
+        particle_offset_z: 0.3
+        radius: $radius
+        duration: 2000
+  parameters:
+    target: other
+    allow_max_range: false
+    velocity: 50
+    target_type: LivingEntity
+    range: 16
+    thickness: 1
+    radius: 5
+    type: sphere
+    transparent: transparent_to_construction
+    destructible: destructible_replace
+    check_destructible: true
+    undo: 6800
+    brush: oak_log
+    brushcolor: true
+    cooldown: 2000
+    undo_speed: 10
+    breakable: 4
+    reflect_chance: 1
+    miss_effects: hit
+    miss: actions
+  costs:
+    mana: 45

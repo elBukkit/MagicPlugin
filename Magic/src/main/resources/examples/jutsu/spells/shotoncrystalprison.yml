@@ -1,0 +1,124 @@
+shotoncrystalprison:
+  icon: diamond_axe:251
+  icon_disabled: diamond_hoe:251
+  icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Asynchronous
+        actions:
+        - class: Volume
+          y_size: 2
+          z_size: 2
+          x_size: 2
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 38
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+      - class: Asynchronous
+        actions:
+        - class: Volume
+          y_size: 5
+          z_size: 1
+          x_size: 1
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 38
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+      - class: Asynchronous
+        actions:
+        - class: Volume
+          y_size: 8
+          z_size: 0
+          x_size: 0
+          orient: true
+          reorient: false
+          actions:
+          - class: ModifyBlock
+          - class: Skip
+            skip: 38
+            actions:
+            - class: PlayEffects
+              effects: column
+            - class: Delay
+              delay: 10
+      - class: Asynchronous
+        actions:
+        - class: Delay
+          delay: 2200
+        - class: AreaOfEffect
+          radius: 4
+          actions:
+          - class: Damage
+            damage: 10
+          - class: PlayEffects
+            effects: endFX
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: magic.shield
+      sound_pitch: 1.3
+      sound_volume: 0.5
+    - class: EffectTrail
+      particle: block_crack
+      material: pink_stained_glass
+      particle_count: 20
+      particle_offset_x: 0.2
+      particle_offset_y: 0.2
+      particle_offset_z: 0.2
+    column:
+    - location: target
+      particle: block_crack
+      particle_count: 14
+      particle_offset_x: 0.2
+      particle_offset_y: 5
+      particle_offset_z: 0.2
+      offset: 0,-2,0
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 1.6
+      sound_volume: 1
+    endFX:
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_pitch: 0.1
+      location: target
+      particle: redstone
+      color: "ffb6c1"
+      particle_count: 500
+      particle_offset_x: 1.5
+      particle_offset_y: 3
+      particle_offset_z: 1.5
+    - class: EffectSingle
+      sound: entity_generic_explode
+      sound_pitch: 1.4
+  parameters:
+    target_type: LivingEntity
+    allow_max_range: true
+    range: 32
+    radius: 0
+    transparent: transparent_to_construction
+    undo: 1
+    # undo_speed: 1200
+    cooldown: 800
+    brush: pink_stained_glass
+    breakable: 3
+    destructible: destructible_replace
+    volume_type: xzy
+  costs:
+    mana: 45

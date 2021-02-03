@@ -2,6 +2,7 @@ examples:
   lucky:
     instructions: |-
       &8| &3&nLUCKY BLOCKS! &r
+      &8|   &fWork-in-progress &r
       &8|   &fBreaking certain blocks will now have random results &r
       &8|   &fCobblestone, dirt, end stone and netherrack are all luckified &r
       &8|   &fIf your default world is not called &6world&f you will &r

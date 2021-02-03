@@ -1,0 +1,59 @@
+katonboule:
+    icon: diamond_axe:75
+    icon_disabled: diamond_hoe:75
+    icon_url: http://textures.minecraft.net/texture/7dbb7f75e74ad4218d2af7191752b5952144436ce8aa2bb6fb27168e6f28af
+    actions:
+        cast:
+        - class: Asynchronous
+          actions:
+          - class: Line
+            actions:
+            - class: Cover
+              actions:
+              - class: Burn
+            - class: Delay
+              delay: 40
+        - class: CustomProjectile
+          actions:
+          - class: Disc
+            actions:
+            - class: Cover
+              actions:
+              - class: Burn
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.burn
+           sound_volume: 1
+           sound_pitch: 0.6
+           location: origin
+        tick:
+        -  class: EffectSingle
+           location: target
+           particle: flame
+           particle_count: 14
+           particle_offset_x: 0.25
+           particle_offset_y: 0.25
+           particle_offset_z: 0.25
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
+    parameters:
+        gravity: 0.01
+        velocity: 36
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 64
+        hitbox: true
+        fov: 0.03
+        radius: 5
+        vertical_range: 6
+        undo: 5000
+        undo_speed: 4
+        cooldown: 1400
+        target_breakables: 0
+        destructible: burnable
+    costs:
+        mana: 50

@@ -1,0 +1,135 @@
+futoncyclonebarrier:
+  icon: diamond_axe:32
+  icon_disabled: diamond_hoe:32
+  icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 20
+        actions:
+        - class: VelocityAction
+          y_offset: 1
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: PlayEffects
+            effects: iterate
+          - class: ConeOfEffectAction
+            actions:
+            - class: VelocityAction
+            - class: PlayEffects
+              effects: windsounds
+              ignore_result: true
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: -20
+        actions:
+        - class: VelocityAction
+          y_offset: 1
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: PlayEffects
+            effects: iterate
+          - class: ConeOfEffectAction
+            actions:
+            - class: VelocityAction
+            - class: PlayEffects
+              effects: windsounds
+              ignore_result: true
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 0
+        actions:
+        - class: VelocityAction
+          y_offset: 1
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: PlayEffects
+            effects: iterate
+          - class: ConeOfEffectAction
+            actions:
+            - class: VelocityAction
+            - class: PlayEffects
+              effects: windsounds
+              ignore_result: true
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: block_fire_extinguish
+      sound_volume: 1
+      sound_pitch: -0.1
+      location: origin
+      effectlib:
+        class: Modified
+        iterations: 40
+        parameters:
+          radius: (t/i) * 4 + 0.2
+        effect:
+          class: DnaEffect
+          particlesBase: 0
+          particles_helix: 5
+          particle_helix: spell
+          particle_base1: spell
+          particle_base2: spell
+    - location: target
+      effectlib:
+        class: Sphere
+        particle: spell
+        particles: 5
+        iterations: 40
+        particle_count: 8
+        particle_offset_x: 0.5
+        particle_offset_y: 0.5
+        particle_offset_z: 0.5
+        radius: 1.5
+    iterate:
+    - class: EffectSingle
+      location: origin
+      effectlib:
+        class: Modified
+        iterations: 40
+        parameters:
+          radius: (t/i) * 4 + 0.2
+        effect:
+          class: DnaEffect
+          particlesBase: 0
+          particles_helix: 5
+          particle_helix: spell
+          particle_base1: spell
+          particle_base2: spell
+    - location: target
+      effectlib:
+        class: Sphere
+        particle: spell
+        particles: 5
+        iterations: 40
+        particle_count: 1
+        particle_offset_x: 0.5
+        particle_offset_y: 0.5
+        particle_offset_z: 0.5
+        radius: 1.5
+    windsounds:
+    - class: EffectSingle
+      sound: magic.flying
+      sound_volume: 1
+      sound_pitch: 1.2
+      location: target
+  parameters:
+    target_type: Entity
+    range: 16
+    fov: 1
+    target_count: 100
+    item_speed: 0.1
+    living_entity_speed: 0.8
+    repeat: 3
+    delay: 250
+    y_offset: 0.75
+    cooldown: 2000
+  costs:
+    mana: 50

@@ -1,0 +1,102 @@
+shotoncrystaldragon:
+  icon: diamond_axe:163
+  icon_disabled: diamond_hoe:163
+  icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        target_self: true
+        target_caster: true
+        actions:
+        - class: Velocity
+          additive: true
+          living_entity_speed: -1
+    - class: Asynchronous
+      actions:
+      - class: DisablePhysics
+        ignore_result: true
+    - class: Asynchronous
+      actions:
+      - class: CustomProjectile
+        tick:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
+            ignore_result: true
+          - class: Undo
+            ignore_result: true
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: PlayEffects
+              effect: streamhit
+              ignore_result: true
+            - class: Velocity
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity_generic_explode
+      sound_pitch: 1.4
+      location: origin
+      sound_volume: 0.2
+    projectile:
+    - location: origin
+      effectlib:
+        class: Sphere
+        particle: redstone
+        color: "ffc0cb"
+        radius: 1.4
+        particles: 50
+    - location: origin
+      effectlib:
+        class: Sphere
+        particle: end_rod
+        radius: 1.4
+        particles: 4
+    streamhit:
+    - class: EffectSingle
+      sound: block_glass_break
+      sound_volume: 2
+      sound_pitch: 0.1
+    - location: target
+      effectlib:
+        class: SphereEffect
+        iterations: 4
+        particle: block_dust
+        material: pink_stained_glass
+        radius: 0
+        particles: 20
+        speed: 0.1
+    - class: EffectSingle
+      sound: entity_generic_explode
+      sound_pitch: 0.7
+      sound_volume: 2
+    tick:
+    - location: target
+    - class: EffectSingle
+      location: target
+      sound: block_glass_break
+      sound_pitch: 2
+      sound_volume: 2
+  parameters:
+    target: Damageable
+    target_type: Damageable
+    radius: 1
+    velocity: 16
+    track_range: 100
+    lifetime: 5000
+    range: 100
+    duration: 10000
+    brush: pink_stained_glass
+    transparent: stained_glasses,air,dirt,stone,grass,gravel,andesite,diorite,granite,cobblestone,sand,sandstone,tallgrass,destructible,water
+    destructible: destructible_replace,stained_glasses,not_attachable
+    increment_data: true
+    damage: 15
+    cooldown: 500
+    undo: 50
+    undo_to: 700
+    start: 5
+  costs:
+    mana: 25

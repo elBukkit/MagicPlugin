@@ -2,6 +2,7 @@
 
 # 8.4
 
+ - Add `jutsu` example (Naruto jutsus, thanks to Tof!)
  - "Not enough mana" messages will now show by default (unless your wand is set to silent)
 
 # 8.3.1

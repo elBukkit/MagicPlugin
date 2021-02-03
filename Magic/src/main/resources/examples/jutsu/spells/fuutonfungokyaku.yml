@@ -1,0 +1,103 @@
+fuutonfungokyaku:
+  icon: diamond_axe:11
+  icon_disabled: diamond_hoe:11
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        target_caster: true
+        actions:
+        - class: Velocity
+          direction: 0,1,0
+          living_entity_speed: 0.8
+        - class: Delay
+          delay: 50
+        - class: Velocity
+          living_entity_speed: 0.6
+          additive: true
+        - class: Delay
+          delay: 1000
+        - class: FallProtection
+        - class: Command
+          command: castp @p fuutonfungokyaku_part
+  effects:
+cast:
+    - class: EffectSingle
+      location: origin
+      sound: entity_ender_dragon_flap
+      sound_pitch: 1.8
+  parameters:
+target: other_entity
+    target_type: Damageable
+  costs:
+mana: 50
+
+fuutonfungokyaku_part:
+  hidden: true
+  actions:
+    cast:
+    - class: DisablePhysics
+      ignore_result: true
+    - class: CustomProjectile
+      tick:
+      - class: ModifyBlock
+        ignore_result: true
+      - class: Undo
+        ignore_result: true
+      - class: AreaOfEffect
+        actions:
+        - class: Damage
+        - class: PlayEffects
+          effect: kickFX
+          ignore_result: true
+        - class: AreaOfEffect
+          radius: 4
+          actions:
+          - class: Velocity
+            living_entity_speed: 3
+            requires_entity_target: true
+  effects:
+    kickFX:
+    - class: EffectSingle
+      location: target
+      sound: entity_ender_dragon_flap
+      sound_pitch: 0.7
+      effectlib:
+        class: Sphere
+        radius: 2.4
+        particle: cloud
+        speed: 0.2
+        particles: 70
+        duration: 500
+    - class: EffectSingle
+      location: target
+      sound: block_fire_extinguish
+      sound_pitch: 0.3
+    - class: EffectSingle
+      location: target
+      sound: entity_ender_dragon_flap
+      sound_pitch: 0.3
+      effectlib:
+        class: Helix
+        radius: 6
+        particle: redstone
+        color: "e6e6fa"
+        particles: 500
+        duration: 500
+  parameters:
+    target: none
+    target_type: Damageable
+    radius: 4
+    velocity: 100
+    track_range: 1
+    lifetime: 5000
+    range: 200
+    duration: 10000
+    brush: air
+    increment_data: true
+    damage: 7
+    cooldown: 100
+    destructible: destructible_replace
+    undo: 50
+    undo_to: 80

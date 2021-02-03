@@ -1,0 +1,102 @@
+suitonmizurappa:
+  name: Suiton Mizurappa
+  icon: diamond_axe:140
+  icon_disabled: diamond_hoe:140
+  actions:
+    cast:
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: -3
+        actions:
+        - class: CustomProjectile
+          tick:
+          - class: Sphere
+            y_size: 0
+            z_size: 1.5
+            x_size: 1.5
+            orient: true
+            reorient: false
+            actions:
+            - class: ModifyBlock
+              ignore_result: true
+            - class: Undo
+              ignore_result: true
+            - class: AreaOfEffect
+              actions:
+              - class: Damage
+              - class: PlayEffects
+                effect: waterballhit
+                ignore_result: true
+              - class: Velocity
+                speed: 0.8
+    - class: Asynchronous
+      actions:
+      - class: ChangeContext
+        source_yaw_offset: 3
+        actions:
+        - class: CustomProjectile
+          tick:
+          - class: Sphere
+            y_size: 0
+            z_size: 1.5
+            x_size: 1.5
+            orient: true
+            reorient: false
+            actions:
+            - class: ModifyBlock
+              ignore_result: true
+            - class: Undo
+              ignore_result: true
+            - class: AreaOfEffect
+              actions:
+              - class: Damage
+              - class: PlayEffects
+                effect: waterballhit
+                ignore_result: true
+              - class: Velocity
+                speed: 0.8
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 1.4
+      sound_volume: 1
+    waterballhit:
+    - class: EffectSingle
+    - location: target
+      effectlib:
+        class: SphereEffect
+        iterations: 4
+        particle: bubble_pop
+        radius: 1.4
+        particles: 1
+        speed: 0.1
+        y_offset: -0.5
+    tick:
+    - class: EffectSingle
+      sound: entity.boat.paddle_water
+      sound_pitch: 0.8
+      sound_volume: 1
+    projectile:
+    - location: origin
+      effectlib:
+        class: Sphere
+        particle: water_splash
+        radius: 1.5
+        particles: 40
+  parameters:
+    range: 54
+    destructible: destructible_replace
+    undo: 100
+    target: none
+    target_type: Damageable
+    velocity: 28
+    undo_speed: 100
+    cooldown: 1400
+    brush: stationary_water
+    damage: 3
+    undo_to: 100
+    start: 1
+  costs:
+    mana: 10

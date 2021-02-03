@@ -1,0 +1,128 @@
+chidori:
+  icon: diamond_axe:154
+  icon_disabled: diamond_hoe:154
+  quick_cast: true
+  toggle: cancel
+  disable_mana_regeneration: false
+  earns_sp: 3
+  description: Activating this spell will reduce your mana regen rate by 50%. You
+    will keep a sphere of air around you which allows you to go through blocks freely.
+    Shift to go into the ground. Gain invisibility. This pressure will explode upon
+    touching an entity, damaging them for 4 hp.
+  actions:
+    cast:
+    - class: Asynchronous
+      ignore_result: true
+      actions:
+      - class: Repeat
+        repeat: 9999
+        actions:
+        - class: PlayEffects
+          effect: chidoriFXparticle
+          ignore_result: true
+        - class: Cast
+          spell: chidorisound
+        - class: Retarget
+        - class: ChangeContext
+          target_offset: 0,1.4,0
+          actions:
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
+            - class: PotionEffect
+              duration: 1000
+              add_effects:
+                speed: 1.5
+            - class: ChangeContext
+              target_caster: false
+              actions:
+              - class: AreaOfEffect
+                radius: 1
+                requires_entity_target: true
+                actions:
+                - class: PlayEffects
+                  effect: chidoriexplode
+                  ignore_result: true
+                - class: AreaOfEffect
+                  radius: 1
+                  actions:
+                  - class: Damage
+                    damage: 15
+                    stop_on_success: true
+                  - class: Command
+                    console: true
+                    command: mgive @p sp 3
+                - class: Cancel
+                - class: Stop
+            - class: Undo
+        - class: Delay
+          delay: 200
+  effects:
+    chidoriFXparticle:
+    - class: EffectSingle
+      location: origin
+      particle: redstone
+      color: "55FFFF"
+      particle_count: 40
+      particle_offset_x: 0.7
+      particle_offset_y: 0.7
+      particle_offset_z: 0.7
+    - class: EffectSingle
+      location: origin
+      particle: end_rod
+      particle_count: 5
+      particle_offset_x: 0.3
+      particle_offset_y: 0.3
+      particle_offset_z: 0.3
+    chidoriexplode:
+    - class: EffectSingle
+      location: origin
+      particle: end_rod
+      particle_count: 5
+      particle_data: 1
+      sound: magic.zap
+      sound_pitch: 1.5
+    - class: EffectSingle
+      location: target
+      particle: redstone
+      color: "55FFFF"
+      particle_count: 20
+      particle_offset_x: 0.3
+      particle_offset_y: 0.3
+      particle_offset_z: 0.3
+    - class: EffectSingle
+      location: origin
+      particle: end_rod
+      particle_count: 20
+      particle_offset_x: 0.4
+      particle_offset_y: 0.4
+      particle_offset_z: 0.4
+    - class: EffectSingle
+      location: origin
+      particle: crit
+      speed: 0
+      particle_count: 40
+      particle_offset_x: 2
+      particle_offset_y: 2
+      particle_offset_z: 2
+    - class: EffectSingle
+      sound: magic.zap
+      location: target
+    - class: EffectSingle
+      sound: entity_generic_explode
+      sound_pitch: 2
+      location: target
+  parameters:
+    target: self
+    brush: air
+    radius: 3
+    destructible: solid
+    undo: 1000
+    cooldown: 400
+    undo_speed: 20
+    undo_to: 300
+    cancel_on_no_wand: true
+  costs:
+    mana: 35
+  active_costs:
+    mana: 8
