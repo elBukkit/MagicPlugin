@@ -1446,12 +1446,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (required != null) {
             String baseMessage = getMessage("insufficient_resources");
             String costDescription = required.getDescription(controller.getMessages(), mage);
-            // Send loud messages when items are required.
-            if (required.isItem()) {
-                sendMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
-            } else {
-                castMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
-            }
+            sendMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
             processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
             sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
             return false;

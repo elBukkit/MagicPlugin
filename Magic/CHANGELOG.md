@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 8.4
+
+ - "Not enough mana" messages will now show by default (unless your wand is set to silent)
+
 # 8.3.1
 
  - Fix infinite recursion error when using `/cast day` from the console
