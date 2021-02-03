@@ -2733,7 +2733,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     private void checkBossBar() {
         Player player = mage.getPlayer();
-        if (player != null && bossBarConfiguration != null) {
+        if (player != null && bossBarConfiguration != null && currentCast != null) {
             if (bossBar == null) {
                 bossBar = bossBarConfiguration.createBossBar(currentCast);
                 bossBar.addPlayer(player);
