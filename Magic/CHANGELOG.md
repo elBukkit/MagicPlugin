@@ -7,6 +7,7 @@
  - Shop management tool now uses a GUI
  - Add warp option to selectors
  - Add `damage_source: direct` option to Damage action, will bypass vanilla damage cooldowns (bypasses everything)
+ - Allow using @attributes in custom wand lore
 
 # 8.3.1
 

@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -5270,6 +5271,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public String parameterizeMessage(String message) {
         return parameterize(message, "$");
+    }
+
+    /**
+     * This is separate from parameterize() because CastContext.parameterize calls down here,
+     * but is responsible for handling attributes and we don't want to loop them twice.
+     */
+    public String parameterizeAttributes(String message) {
+        List<String> attributes = new ArrayList<>(controller.getAttributes());
+        Collections.sort(attributes, (o1, o2) -> o2.length() - o1.length());
+        for (String attribute : attributes) {
+            Double value = getAttribute(attribute);
+            message = message.replace("$" + attribute, value == null ? "?" : Double.toString(value));
+        }
+        for (String attribute : attributes) {
+            Double value = getAttribute(attribute);
+            message = message.replace("@" + attribute, value == null ? "?" : Integer.toString((int)(double)value));
+        }
+        return message;
     }
 
     @Override
