@@ -1,4 +1,11 @@
+spells:
+  studenttool:
+    title: "Arcane Stone"
+  help:
+    name: Call For Help
+    description: Please only use if you need the attention of an adult!
+
 wands:
-  teleporter:
-    name: Teleportation Stone
-    description: Right-Click (Or swing at ground) to teleport to different places.
+  tool:
+    name: Arcane Stone
+    description: "Right-Click (Or swing at ground) to use\nClick on (or take) item to teleport or get other help"

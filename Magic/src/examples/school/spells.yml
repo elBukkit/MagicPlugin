@@ -4,20 +4,20 @@ recall:
     allow_death: true
     allow_souls: true
 
-giveteleporter:
+givetool:
   actions:
     cast:
       - class: CheckInventory
         actions:
           - class: Message
-            message: You already have a teleporter! It's the weird glowing thingy.
+            message: You already have a stone! It's the weird glowing thingy.
         fail:
           - class: Message
             message: Here you go! Use it wisely.
           - class: GiveItem
   parameters:
     target: self
-    item: teleporter
+    item: tool
 
 permafrost:
     icon: spell_icon:38
@@ -44,3 +44,84 @@ gohome:
     allow_warp: false
     allow_spawn: false
     show_unavailable: false
+
+help:
+  icon: firework_star{CustomModelData:18001}
+  actions:
+    cast:
+      - class: Repeat
+        actions:
+          - class: ChangeContext
+            target_self: true
+            actions:
+            - class: AllEntities
+              actions:
+                - class: Message
+      - class: ChangeContext
+        source_direction: 0,1,0
+        actions:
+          - class: CustomProjectile
+            actions:
+              - class: Firework
+  effects:
+    cast:
+      - sound: entity_firework_rocket_launch
+    tick:
+      - location: target
+        particle: fireworks_spark
+        particle_count: 8
+        particle_offset_x: 0.2
+        particle_offset_y: 0.2
+        particle_offset_z: 0.2
+      - location: target
+        particle: redstone
+    hit:
+    - class: EffectRing
+      location: target
+      firework: star
+      radius: 8
+      target_offset: 0,4,0
+      size: 6
+    - class: EffectRing
+      location: target
+      firework_power: 1
+      radius: 16
+      target_offset: 0,12,0
+      size: 8
+      color: false
+  parameters:
+    repeat: 5
+    target_type: Player
+    target_all_worlds: true
+    use_target_location: false
+    bypass_protection: true
+    bypass_pvp: true
+    message: "&c{luckperms_prefix} &7(&4@pn&7) &dNEEDS HELP!!"
+    allow_max_range: true
+    range: 32
+    velocity: 20
+    ticks_flown: 2
+    expected_lifespan: 1
+    cooldown: 20000
+    miss_effects: hit
+
+studenttool:
+  actions:
+      cast:
+       - class: Selector
+  parameters:
+    confirm: false
+    auto_close: true
+    quiet: false
+    loud: true
+    options:
+    - cast_spell: help
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
+    - warp: mesa
+      requirements:
+      - permission: warp.mesa
+    - warp: jungle
+      requirements:
+      - permission: warp.jungle

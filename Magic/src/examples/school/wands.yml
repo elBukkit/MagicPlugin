@@ -1,4 +1,7 @@
 teleporter:
+  migrate_to: tool
+
+tool:
   inherit: base_keep
   lore:
     - $description
@@ -7,7 +10,7 @@ teleporter:
   migrate_icons:
     gunpowder: nether_star{CustomModelData:18001}
   mode: cast
-  active_spell: gohome
+  active_spell: studenttool
   effect_color: 'FF00FF'
   spells:
-      - gohome
+      - studenttool
