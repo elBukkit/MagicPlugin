@@ -567,6 +567,11 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static void damage(Damageable target, double amount, Entity source, String damageType) {
         if (target == null || target.isDead()) return;
+        if (damageType.equalsIgnoreCase("direct")) {
+            double health = target.getHealth() - amount;
+            target.setHealth(Math.max(health, 0));
+            return;
+        }
         if (damageType.equalsIgnoreCase("magic")) {
             magicDamage(target, amount, source);
             return;

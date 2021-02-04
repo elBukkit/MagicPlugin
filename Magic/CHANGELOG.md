@@ -6,6 +6,7 @@
  - "Not enough mana" messages will now show by default (unless your wand is set to silent)
  - Shop management tool now uses a GUI
  - Add warp option to selectors
+ - Add `damage_source: direct` option to Damage action, will bypass vanilla damage cooldowns (bypasses everything)
 
 # 8.3.1
 
