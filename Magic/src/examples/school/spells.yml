@@ -96,7 +96,7 @@ help:
     use_target_location: false
     bypass_protection: true
     bypass_pvp: true
-    message: "&c{luckperms_prefix} &7(&4@pn&7) &dNEEDS HELP!!"
+    message: "&c%luckperms_suffix% &7(&4@pn&7) &dNEEDS HELP!!"
     allow_max_range: true
     range: 32
     velocity: 20
