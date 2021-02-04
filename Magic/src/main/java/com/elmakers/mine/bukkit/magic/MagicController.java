@@ -246,6 +246,7 @@ import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.warp.MagicWarp;
 import com.elmakers.mine.bukkit.warp.WarpController;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.WorldController;
@@ -7408,6 +7409,18 @@ public class MagicController implements MageController {
 
     public boolean isDisableSpawnReplacement() {
         return disableSpawnReplacement;
+    }
+
+    @Override
+    @Nullable
+    public MagicWarp getMagicWarp(String warpKey) {
+        return warpController.getMagicWarp(warpKey);
+    }
+
+    @Override
+    @Nonnull
+    public Collection<? extends MagicWarp> getMagicWarps() {
+        return warpController.getMagicWarps();
     }
 
     /*

@@ -50,6 +50,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.api.warp.Warp;
 
 /**
  * The controller is used for more advanced plugin interaction, and is
@@ -749,4 +750,8 @@ public interface MageController {
      */
     boolean cast(String spellName, String[] parameters);
     void setDisableSpawnReplacement(boolean disable);
+    @Nullable
+    Warp getMagicWarp(String warpKey);
+    @Nonnull
+    Collection<? extends Warp> getMagicWarps();
 }

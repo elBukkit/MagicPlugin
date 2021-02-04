@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
@@ -135,6 +136,7 @@ public class WarpController {
         return warps.get(warpName);
     }
 
+    @Nonnull
     public Collection<MagicWarp> getMagicWarps() {
         return warps.values();
     }

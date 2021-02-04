@@ -9,11 +9,12 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.warp.Warp;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
-public class MagicWarp {
+public class MagicWarp implements Warp {
     @Nonnull
     private final String key;
     @Nonnull
@@ -64,6 +65,7 @@ public class MagicWarp {
     }
 
     @Nullable
+    @Override
     public Location getLocation() {
         if (location == null || location.getWorld() == null) {
             location = ConfigurationUtils.toLocation(this.locationDescriptor);
@@ -94,6 +96,7 @@ public class MagicWarp {
     }
 
     @Nonnull
+    @Override
     public String getName() {
         if (name != null) {
             return name;
@@ -101,6 +104,8 @@ public class MagicWarp {
         return keyToName(key);
     }
 
+    @Nullable
+    @Override
     public String getDescription() {
         return description;
     }
@@ -143,6 +148,7 @@ public class MagicWarp {
         return group;
     }
 
+    @Override
     @Nullable
     public String getWorldName() {
         return ConfigurationUtils.getWorldName(locationDescriptor);
