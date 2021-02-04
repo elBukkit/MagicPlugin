@@ -45,7 +45,7 @@ public class ModifyManaAction extends BaseSpellAction
         if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        Wand wand = mage.getActiveWand();
+        Wand wand = context.getWand();
         MageClass activeClass = mage.getActiveClass();
         CasterProperties caster = (wand != null && wand.getManaMax() > 0) ? wand : activeClass;
         if (caster == null) {
