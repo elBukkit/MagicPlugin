@@ -15,10 +15,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -44,6 +46,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.api.warp.Warp;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -177,6 +180,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable String costOverride = null;
         protected @Nonnull List<String> costTypeFallbacks = DEFAULT_COST_FALLBACKS;
         protected @Nullable String castSpell = null;
+        protected @Nullable String warpKey = null;
         protected @Nullable ConfigurationSection castSpellParameters = null;
         protected @Nullable String unlockClass = null;
         protected @Nullable String lockClass = null;
@@ -230,6 +234,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             applyToCaster = configuration.getBoolean("apply_to_caster", applyToCaster);
             applyToClass = configuration.getString("apply_to_class", applyToClass);
             putInHand = configuration.getBoolean("put_in_hand", putInHand);
+            warpKey = configuration.getString("warp", warpKey);
             castSpell = configuration.getString("cast_spell", castSpell);
             castSpellParameters = configuration.isConfigurationSection("cast_spell_parameters")
                 ? configuration.getConfigurationSection("cast_spell_parameters") : castSpellParameters;
@@ -544,6 +549,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.costs = defaults.costs;
             this.earnScale = defaults.earnScale;
             this.costScale = defaults.costScale;
+            this.warpKey = defaults.warpKey;
             this.castSpell = defaults.castSpell;
             this.castSpellParameters = defaults.castSpellParameters;
             this.applyToWand = defaults.applyToWand;
@@ -656,6 +662,11 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
+            if (name.isEmpty() && warpKey != null) {
+                Warp warp = controller.getMagicWarp(warpKey);
+                name = warp.getName();
+            }
+
             if (name.isEmpty() && iconKey != null) {
                 ItemStack icon = parseItem(iconKey);
                 name = controller.describeItem(icon);
@@ -684,6 +695,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     }
                 } else if (attribute != null && attributeAmount == 0) {
                     description = attribute.getDescription(controller.getMessages());
+                } else if (warpKey != null) {
+                    Warp warp = controller.getMagicWarp(warpKey);
+                    description = warp.getDescription();
                 }
             }
 
@@ -839,6 +853,17 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     }
                     if (icon == null && spellTemplate.getIconURL() != null) {
                         icon = controller.getURLSkull(spellTemplate.getIconURL());
+                    }
+                }
+            }
+
+            if (icon == null && warpKey != null && !warpKey.isEmpty()) {
+                Warp warp = controller.getMagicWarp(warpKey);
+                String icon = warp == null ? null : warp.getIcon();
+                if (icon != null && !icon.isEmpty()) {
+                    ItemData itemData = controller.getOrCreateItem(icon);
+                    if (itemData != null) {
+                        this.icon = itemData.getItemStack();
                     }
                 }
             }
@@ -1117,6 +1142,33 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 if (spell == null || !spell.cast(castSpellParameters)) {
                     context.showMessage("cast_fail", getDefaultMessage(context, "cast_fail"));
                     return SpellResult.NO_TARGET;
+                }
+            }
+
+            if (warpKey != null && !warpKey.isEmpty()) {
+                Location location = controller.getWarp(warpKey);
+                if (location == null) {
+                    context.showMessage("warp_fail", getDefaultMessage(context, "warp_fail"));
+                    return SpellResult.NO_TARGET;
+                }
+                // Auto-load world
+                if (location.getWorld() == null) {
+                    Warp magicWarp = controller.getMagicWarp(warpKey);
+                    if (magicWarp != null) {
+                        String worldName = magicWarp.getWorldName();
+                        if (worldName != null) {
+                            Bukkit.createWorld(new WorldCreator(worldName));
+                            location = magicWarp.getLocation();
+                        }
+                    }
+                    if (location.getWorld() == null) {
+                        context.showMessage("warp_fail", getDefaultMessage(context, "warp_fail"));
+                        return SpellResult.NO_TARGET;
+                    }
+                }
+                Entity entity = mage.getEntity();
+                if (entity != null) {
+                    entity.teleport(location);
                 }
             }
 

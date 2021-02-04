@@ -16,6 +16,7 @@ shops:
   selected_free: "&d&oYou chose &r&6$item"
   not_applicable: "You already have $item"
   cast_fail: "&cSorry, please try again!"
+  warp_fail: "&cSorry, something went wrong!"
   no_items: "There is nothing for you to buy here"
   title: "Shop ($balance&0)"
   sell_title: "Sell ($balance&0)"

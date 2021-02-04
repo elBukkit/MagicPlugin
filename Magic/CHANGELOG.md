@@ -5,6 +5,7 @@
  - Add `jutsu` example (Naruto jutsus, thanks to Tof!)
  - "Not enough mana" messages will now show by default (unless your wand is set to silent)
  - Shop management tool now uses a GUI
+ - Add warp option to selectors
 
 # 8.3.1
 

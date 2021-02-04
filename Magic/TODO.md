@@ -11,6 +11,7 @@
  - Wolf house signs are broke again (check teleporter room)
  - Add "melee" flag for wands to allow them to do melee damage
  - Magic mobs or automata fight without players around?
+ - Direct damage option to Damage action
 
 ## Editor
 
