@@ -4,8 +4,10 @@ teleporter:
     - $description
   unstashable: true
   icon: nether_star{CustomModelData:18001}
+  migrate_icons:
+    gunpowder: nether_star{CustomModelData:18001}
   mode: cast
-  active_spell: recall
+  active_spell: gohome
   effect_color: 'FF00FF'
   spells:
-      - recall
+      - gohome
