@@ -8,6 +8,7 @@
  - Add warp option to selectors
  - Add `damage_source: direct` option to Damage action, will bypass vanilla damage cooldowns (bypasses everything)
  - Allow using @attributes in custom wand lore
+ - Add `command_source` parameter to Selector action, can be player, console (default) or opped_player
 
 # 8.3.2
 

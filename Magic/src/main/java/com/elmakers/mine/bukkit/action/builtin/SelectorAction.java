@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -19,6 +20,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -102,6 +104,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
     }
 
     protected enum ModifierType { WAND, MAGE, CLASS, ATTRIBUTE }
+
+    protected enum CommandSourceType { PLAYER, CONSOLE, OPPED_PLAYER }
 
     protected class CostModifier {
         private ModifierType type;
@@ -191,6 +195,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nonnull String unlockSection = "unlocked";
         protected @Nullable Collection<Requirement> requirements;
         protected @Nullable List<String> commands;
+        protected @Nonnull CommandSourceType commandSourceType = CommandSourceType.CONSOLE;
         protected @Nullable List<CostModifier> costModifiers;
         protected @Nullable List<CostModifier> earnModifiers;
         protected @Nullable List<Cost> earns = null;
@@ -278,6 +283,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (command != null && !command.isEmpty()) {
                 if (commands == null) commands = new ArrayList<>();
                 commands.add(command);
+            }
+            String commandSourceTypeString = configuration.getString("command_source");
+            if (commandSourceTypeString != null && !commandSourceTypeString.isEmpty()) {
+                try {
+                    commandSourceType = CommandSourceType.valueOf(commandSourceTypeString.toUpperCase());
+                } catch (Exception ex) {
+                    context.getLogger().warning("Invalid command_source in selector option: " + commandSourceTypeString);
+                }
             }
             free = configuration.getBoolean("free", free);
             costScale = configuration.getDouble("scale", costScale);
@@ -572,6 +585,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.earnType = defaults.earnType;
             this.showUnavailable = defaults.showUnavailable;
             this.commands = defaults.commands;
+            this.commandSourceType = defaults.commandSourceType;
             this.actions = defaults.actions;
             this.free = defaults.free;
             this.costOverride = defaults.costOverride;
@@ -1205,7 +1219,34 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (commands != null && !commands.isEmpty()) {
                 for (String command : commands) {
                     String execute = context.parameterize(command);
-                    controller.getPlugin().getServer().dispatchCommand(Bukkit.getConsoleSender(), execute);
+                    boolean shouldOp = false;
+                    CommandSender commandSender = null;
+                    switch (commandSourceType) {
+                        case PLAYER:
+                            commandSender = mage.getPlayer();
+                            break;
+                        case OPPED_PLAYER:
+                            commandSender = mage.getPlayer();
+                            shouldOp = true;
+                            break;
+                        case CONSOLE:
+                            commandSender = Bukkit.getConsoleSender();
+                            break;
+                    }
+                    if (commandSender != null) {
+                        boolean wasOpped = commandSender.isOp();
+                        if (!wasOpped && shouldOp) {
+                            commandSender.setOp(true);
+                        }
+                        try {
+                            controller.getPlugin().getServer().dispatchCommand(commandSender, execute);
+                        } catch (Exception ex) {
+                            context.getLogger().log(Level.SEVERE, "Error executing command: " + execute, ex);
+                        }
+                        if (!wasOpped && shouldOp) {
+                            commandSender.setOp(false);
+                        }
+                    }
                 }
             }
 
