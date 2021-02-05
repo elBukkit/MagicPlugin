@@ -64,7 +64,18 @@ broomstick:
   row_3: "wow"
 
 camera:
-  enabled: false
+  enabled: true
+  inherit: false
+  output: camera
+  output_type: wand
+  auto_discover: true
+  materials:
+    i: dispenser
+    d: daylight_detector
+  row_1:
+  row_2: i
+  row_3: d
+
 
 divinghelmet:
   enabled: false

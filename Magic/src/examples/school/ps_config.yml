@@ -50,6 +50,7 @@ force-field-blocks:
   prevent-item-frame-take: true
   prevent-flow: true
   protect-crops: true
+  protect-animals: true
   protect-mobs: true
   protect-villagers: true
   protect-inventories: true
