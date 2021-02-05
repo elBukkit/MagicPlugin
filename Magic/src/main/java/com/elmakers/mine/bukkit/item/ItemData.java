@@ -248,6 +248,17 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     @Nullable
     @Override
     public ItemStack getItemStack(int amount, ItemUpdatedCallback callback) {
+        return getItemStack((Integer)amount, callback);
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getItemStack() {
+        return getItemStack(null, null);
+    }
+
+    @Nullable
+    private ItemStack getItemStack(Integer amount, ItemUpdatedCallback callback) {
         ItemStack newItem = InventoryUtils.getCopy(getOrCreateItemStack());
         if (newItem == null) {
             if (callback != null) {
@@ -260,14 +271,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         } else if (callback != null) {
             callback.updated(newItem);
         }
-        newItem.setAmount(amount);
+        if (amount != null) {
+            newItem.setAmount(amount);
+        }
         return newItem;
-    }
-
-    @Nullable
-    @Override
-    public ItemStack getItemStack() {
-        return getItemStack(1);
     }
 
     @Nonnull
