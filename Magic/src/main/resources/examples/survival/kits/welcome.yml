@@ -1,0 +1,21 @@
+welcome:
+  enabled: false
+
+  # This kit (if enabled) will be given on first join to every player
+  starter: true
+  items:
+    - wooden_sword
+    - wooden_pickaxe
+    - wooden_shovel
+    - wooden_axe
+    - wooden_pickaxe
+    - item: bread@32
+      slot: 8
+    - item: leather_helmet
+      slot: helmet
+    - item: leather_chestplate
+      slot: chestplate
+    - item: leather_leggings
+      slot: leggings
+    - item: leather_boots
+      slot: boots

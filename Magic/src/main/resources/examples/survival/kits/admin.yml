@@ -1,0 +1,17 @@
+admin:
+  enabled: false
+
+  # This kit will be given to players with the permission Magic.admin
+  requirements:
+    - permission: Magic.admin
+
+  # On login, players will be given any items in this kit that they are
+  # missing.
+  keep: true
+  # If they no longer meet the above requirements (permissions) any
+  # items in this kit will be taken away from them.
+  remove: true
+
+  # In general items in this kit should be undroppable and probably unstashable as well.
+  items:
+    - admintool

@@ -2,6 +2,7 @@ admintool:
     inherit: base_undroppable
     icon: nether_star{"CustomModelData":18001}
     mode: chest
+    unstashable: true
     quick_cast: true
     left_click: toggle
     right_click: toggle
