@@ -9,6 +9,8 @@
  - Add `damage_source: direct` option to Damage action, will bypass vanilla damage cooldowns (bypasses everything)
  - Allow using @attributes in custom wand lore
 
+# 8.3.2
+
 # 8.3.1
 
  - Fix infinite recursion error when using `/cast day` from the console
