@@ -15,9 +15,7 @@ pickpocket:
         cast:
         -  class: EffectSingle
            sound: entity_enderman_hurt
-        -  class: EffectTrail
-           particle: block_crack
-           material: obsidian
+           location: origin
     alternate_sneak_parameters:
         type: ender_chest
     parameters:
