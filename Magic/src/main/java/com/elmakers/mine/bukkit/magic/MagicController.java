@@ -163,6 +163,7 @@ import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.SkriptManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
+import com.elmakers.mine.bukkit.kit.KitController;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
@@ -569,6 +570,12 @@ public class MagicController implements MageController {
                 getLogger().warning("Failed to load mage data for " + id);
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public void finalizeMageLoad(Mage mage) {
+        if (mage.isPlayer()) {
+            kitController.onJoin(mage);
         }
     }
 
@@ -1077,6 +1084,7 @@ public class MagicController implements MageController {
      */
     public void initialize() {
         warpController = new WarpController(this);
+        kitController = new KitController(this);
         crafting = new CraftingController(this);
         mobs = new MobController(this);
         items = new ItemController(this);
@@ -1845,6 +1853,11 @@ public class MagicController implements MageController {
         loadSpells(sender, loader.getSpells());
         logger.setContext(null);
         log("Loaded " + spells.size() + " spells");
+
+        logger.setContext("kits");
+        kitController.load(loader.getKits());
+        logger.setContext(null);
+        log("Loaded " + kitController.getCount() + " kits");
 
         logger.setContext("classes");
         loadMageClasses(loader.getClasses());
@@ -7513,6 +7526,7 @@ public class MagicController implements MageController {
     private boolean                             asynchronousSaving              = true;
     private boolean                             debugEffectLib                  = false;
     private WarpController                        warpController                    = null;
+    private KitController                       kitController                   = null;
     private Collection<ConfigurationSection>    materialColors                  = null;
     private List<Object>                        materialVariants                = null;
     private ConfigurationSection                blockItems                  = null;

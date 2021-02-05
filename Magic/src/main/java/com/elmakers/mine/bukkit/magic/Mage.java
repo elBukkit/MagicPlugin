@@ -1164,6 +1164,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Error finalizing player data for " + playerName, ex);
         }
+
+        controller.finalizeMageLoad(this);
     }
 
     protected void finishLoad(MageData data) {

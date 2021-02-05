@@ -611,6 +611,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/defaults/kits.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/kits">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
 
                                 <!-- Automata Configs -->
 
@@ -969,6 +974,11 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/survival/effects.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/survival/effects">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/survival/kits.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/kits">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
