@@ -77,9 +77,9 @@ force-field-blocks:
   meta-name: '&3Shop Protection'
   meta-autoset: false
   meta-lore:
-  - '&eThis will protect a 6x12x6 area'
+  - '&eThis will protect a 5x12x5 area'
   block: BOOKSHELF
-  radius: 3
+  radius: 2
   custom-height: 6
   no-resize: true
   prevent-pvp: true

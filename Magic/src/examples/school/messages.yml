@@ -5,6 +5,8 @@ spells:
     name: Call For Help
     description: Please only use if you need the attention of an adult!
     cast_fail: ""
+  mars:
+    cast_player_message: ""
 
 wands:
   tool:

@@ -1,0 +1,11 @@
+mars:
+  # These track who created what spells, you can remove them if you want
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Mars air
+  # How often this automaton wakes up and checks for a spawn
+  interval: 5000
+  # Define how this spawner spawns mobs
+  cast:
+    spells: mars
+  always_active: true
