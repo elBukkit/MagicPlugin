@@ -70,7 +70,7 @@ blastoff:
       sound_volume: 2
       sound_range: 64
   parameters:
-    target_game_modes: survival,creative
+    target_game_modes: all
     show_target: true
     target_type: Player
     radius: 32

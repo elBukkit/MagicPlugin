@@ -63,6 +63,7 @@ shutdown:
       - whitelist on
       - kick @a
   parameters:
+    target_game_modes: all
     target_type: Player
     show_target: true
     message_target: true

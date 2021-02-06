@@ -41,6 +41,7 @@ help:
       size: 8
       color: false
   parameters:
+    target_game_modes: all
     repeat: 5
     target_type: Player
     target_all_worlds: true

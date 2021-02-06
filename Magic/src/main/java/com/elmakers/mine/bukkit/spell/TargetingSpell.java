@@ -664,7 +664,7 @@ public class TargetingSpell extends BaseSpell {
         targetMount = parameters.getBoolean("target_mount", false);
         targetGameModes = defaultTargetGameModes;
         List<String> gameModes = ConfigurationUtils.getStringList(parameters, "target_game_modes");
-        if (gameModes != null) {
+        if (gameModes != null && !gameModes.isEmpty() && !gameModes.get(0).equalsIgnoreCase("all")) {
             targetGameModes = new HashSet<>();
             for (String gameMode : gameModes) {
                 try {
