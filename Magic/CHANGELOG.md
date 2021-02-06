@@ -13,6 +13,8 @@
 
 # 8.3.2
 
+ - Fix issues with spell upgrades on wands
+
 # 8.3.1
 
  - Fix infinite recursion error when using `/cast day` from the console
