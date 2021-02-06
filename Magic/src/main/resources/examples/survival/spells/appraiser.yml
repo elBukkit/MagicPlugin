@@ -4,8 +4,9 @@ appraiser:
     category: npc
     hidden: true
     parameters:
-        earn_scale: 2
-        scale: 1
+        # Use this if you want buying and selling from this shop to be 1:1
+        # earn_scale: 2
+        # scale: 1
         items:
           - iron_nugget
           - iron_ingot
@@ -39,8 +40,9 @@ appraiser_sell:
     category: npc
     hidden: true
     parameters:
-        earn_scale: 2
-        scale: 1
+        # Use this if you want buying and selling from this shop to be 1:1
+        # earn_scale: 2
+        # scale: 1
         items:
           - iron_nugget
           - iron_ingot
@@ -69,8 +71,9 @@ appraiser_buy:
     category: npc
     hidden: true
     parameters:
-        earn_scale: 2
-        scale: 1
+        # Use this if you want buying and selling from this shop to be 1:1
+        # earn_scale: 2
+        # scale: 1
         items:
           - iron_nugget
           - iron_ingot
