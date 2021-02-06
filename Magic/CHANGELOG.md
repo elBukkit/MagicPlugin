@@ -11,6 +11,8 @@
  - Add `command_source` parameter to Selector action, can be player, console (default) or opped_player
  - The appraiser shop now sells at 50% like other shops
 
+# 8.3.3
+
 # 8.3.2
 
  - Fix issues with spell upgrades on wands
