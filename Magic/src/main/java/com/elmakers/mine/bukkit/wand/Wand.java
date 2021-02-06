@@ -2866,20 +2866,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
-    public static String getMagicKey(ItemStack item) {
-        if (InventoryUtils.isEmpty(item)) return null;
-        if (!InventoryUtils.hasMeta(item, "magic_key")) return null;
-        return InventoryUtils.getMetaString(item, "magic_key");
-    }
-
-    @Nullable
-    public static String getLockKey(ItemStack item) {
-        if (InventoryUtils.isEmpty(item)) return null;
-        if (!InventoryUtils.hasMeta(item, "locked")) return null;
-        return getMagicKey(item);
-    }
-
-    @Nullable
     protected static Object getWandOrUpgradeNode(ItemStack item) {
         if (InventoryUtils.isEmpty(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);

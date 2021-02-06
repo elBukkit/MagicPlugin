@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableSet;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback {
@@ -58,7 +57,6 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         this.controller = controller;
         this.item = NMSUtils.getCopy(itemStack);
         this.key = itemStack.getType().toString();
-        locked = (Wand.getLockKey(itemStack) != null);
     }
 
     public ItemData(String materialKey, MageController controller) {
@@ -176,11 +174,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             meta.setLore(lore);
             item.setItemMeta(meta);
         }
-        if (configuration.getBoolean("locked")) {
-            locked = true;
-            InventoryUtils.setMetaBoolean(item, "locked", true);
-            InventoryUtils.setMeta(item, "magic_key", key);
-        }
+        locked = configuration.getBoolean("locked");
         replaceOnEquip = configuration.getBoolean("replace_on_equip");
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");

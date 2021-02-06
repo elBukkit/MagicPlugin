@@ -4,6 +4,11 @@
 
 ## Hot
 
+ - Broomstick handle stuck in offhand
+ - "/wand add heal|3" resets all spell levels
+ - Auto-give (keep) kits not working
+   .. also what to do with a full inventory?
+
  - People are still getting broomstick handles somehow ;( ;(
  - Refactor passive effects system from wand to work with classes and modifiers
  - Add spell immunity list to mob data

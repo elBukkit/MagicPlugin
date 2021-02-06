@@ -18,7 +18,6 @@ import com.elmakers.mine.bukkit.item.InvalidMaterialException;
 import com.elmakers.mine.bukkit.item.ItemData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.wand.Wand;
 
 public class ItemController {
     private MageController controller;
@@ -32,6 +31,12 @@ public class ItemController {
     }
 
     public void load(ConfigurationSection configuration) {
+        // Need to clear cached items to prevent
+        itemKeys.clear();
+        items.clear();
+        itemsByStack.clear();
+        replaceOnEquip.clear();
+
         Set<String> itemKeys = configuration.getKeys(false);
         for (String itemKey : itemKeys) {
             ConfigurationSection itemConfig = configuration.getConfigurationSection(itemKey);
@@ -114,10 +119,6 @@ public class ItemController {
 
     @Nullable
     public ItemData get(ItemStack item) {
-        String key = Wand.getMagicKey(item);
-        if (key != null) {
-            return get(key);
-        }
         return itemsByStack.get(item);
     }
 
