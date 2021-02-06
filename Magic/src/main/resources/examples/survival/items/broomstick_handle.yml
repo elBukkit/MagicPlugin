@@ -3,6 +3,7 @@ broomstick_handle:
   tags:
     unmoveable: true
     unstashable: true
+    unswappable: true
     undroppable: false
     temporary: true
   item:
