@@ -176,7 +176,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                         }
                         configurationFile.renameTo(backupFile);
                     } else {
-                        warning("Backup file is larger than current map file, you may want to restore or delete it? " + backupFile.getAbsolutePath());
+                        info("Backup file is larger than current map file, you may want to restore or delete it? " + backupFile.getAbsolutePath());
                         if (!configurationFile.delete()) {
                             warning("Failed to delete file in order to replace it: " + configurationFile.getAbsolutePath());
                         }

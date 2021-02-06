@@ -47,7 +47,7 @@ public class YamlDataFile extends YamlConfiguration {
             save(tempFile);
 
             if (checkBackupSize && backupFile.exists() && backupFile.length() > tempFile.length()) {
-                logger.warning("Backup file " + backupFile.getName() + " is larger than " + tempFile.getName());
+                logger.info("Backup file " + backupFile.getName() + " is larger than " + tempFile.getName());
                 int index = 1;
                 File saveBackup = new File(backupFile.getAbsolutePath() + "." + index);
                 while (saveBackup.exists()) {
