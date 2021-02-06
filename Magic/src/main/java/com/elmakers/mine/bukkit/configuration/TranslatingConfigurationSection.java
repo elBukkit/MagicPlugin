@@ -213,4 +213,12 @@ public class TranslatingConfigurationSection extends MemorySection {
         Object val = get(path);
         return val instanceof ConfigurationSection || val instanceof Map;
     }
+
+    @Override
+    public void set(String key, Object value) {
+        if (value instanceof Map) {
+            value = ConfigurationUtils.toConfigurationSection((Map<?,?>)value);
+        }
+        super.set(key, value);
+    }
 }
