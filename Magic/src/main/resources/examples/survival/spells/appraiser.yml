@@ -31,3 +31,64 @@ appraiser:
 # This used to be two separate shops
 jeweller:
   inherit: appraiser
+
+# These can be useful for Geyser servers, the buy/sell shops are kind of confusing for Geyser users
+appraiser_sell:
+    inherit: sellshop
+    icon: emerald
+    category: npc
+    hidden: true
+    parameters:
+        earn_scale: 2
+        scale: 1
+        items:
+          - iron_nugget
+          - iron_ingot
+          - iron_block
+          - none
+          - none
+          - none
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - lapis_lazuli
+          - lapis_block
+          - diamond
+          - diamond_block
+          - netherite_ingot
+          - netherite_block
+
+appraiser_buy:
+    inherit: buyshop
+    icon: emerald
+    category: npc
+    hidden: true
+    parameters:
+        earn_scale: 2
+        scale: 1
+        items:
+          - iron_nugget
+          - iron_ingot
+          - iron_block
+          - none
+          - none
+          - none
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - lapis_lazuli
+          - lapis_block
+          - diamond
+          - diamond_block
+          - netherite_ingot
+          - netherite_block

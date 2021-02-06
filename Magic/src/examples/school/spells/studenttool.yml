@@ -1,0 +1,75 @@
+studenttool:
+  actions:
+      cast:
+       - class: Selector
+  effects:
+    cast:
+      - sound: magic.wandup
+        sound_broadcast: false
+        sound_volume: 0.4
+      - sound: block_chest_open
+        sound_pitch: 1.5
+        sound_volume: 0.1
+        sound_broadcast: false
+    warp:
+      - sound: entity_enderman_teleport
+        sound_pitch: 0.75
+        sound_volume: 0.75
+        location: both
+      - class: EffectSingle
+        location: both
+        source_location: eyes
+        color_override: color
+        effectlib:
+          class: WarpEffect
+          particle: redstone
+          particle_offset_x: 0.9
+          particle_offset_y: 0.1
+          particle_offset_z: 0.9
+          offset: 0,-1,0
+          period: 2
+          update_locations: false
+      - class: EffectSingle
+        sound: magic.teleport
+        sound_pitch: 1.2
+        location: both
+        source_location: eyes
+        effectlib:
+          class: WarpEffect
+          period: 1
+          particle: portal
+          particle_count: 10
+          particle_offset_x: 0.9
+          particle_offset_y: 0.1
+          particle_offset_z: 0.9
+          offset: 0,-1,0
+          update_locations: false
+  parameters:
+    confirm: false
+    auto_close: true
+    quiet: false
+    loud: true
+    command_source: player
+    options:
+    - cast_spell: help
+    - placeholder: true
+    - placeholder: true
+    - icon: music_disc_blocks{CustomModelData:18001}
+      name: Global Chat
+      description: Everyone can hear you
+      commands: ch global
+    - icon: music_disc_stal{CustomModelData:18001}
+      name: Local Chat
+      description: Only nearby people can hear you
+      commands: ch local
+    - placeholder: true
+    - placeholder: true
+    - warp: mesa
+      effects: warp
+      requirements:
+      - permission: warp.mesa
+    - warp: jungle
+      effects: warp
+      requirements:
+      - permission: warp.jungle
+

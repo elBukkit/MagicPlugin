@@ -1,0 +1,59 @@
+help:
+  icon: firework_star{CustomModelData:18001}
+  actions:
+    cast:
+      - class: AllEntities
+        actions:
+          - class: Repeat
+            actions:
+            - class: Message
+              message_target: true
+      - class: ChangeContext
+        source_direction: 0,1,0
+        actions:
+          - class: CustomProjectile
+            actions:
+              - class: Firework
+  effects:
+    cast:
+      - sound: entity_firework_rocket_launch
+    tick:
+      - location: target
+        particle: fireworks_spark
+        particle_count: 8
+        particle_offset_x: 0.2
+        particle_offset_y: 0.2
+        particle_offset_z: 0.2
+      - location: target
+        particle: redstone
+    hit:
+    - class: EffectRing
+      location: target
+      firework: star
+      radius: 8
+      target_offset: 0,4,0
+      size: 6
+    - class: EffectRing
+      location: target
+      firework_power: 1
+      radius: 16
+      target_offset: 0,12,0
+      size: 8
+      color: false
+  parameters:
+    repeat: 5
+    target_type: Player
+    target_all_worlds: true
+    target_self: true
+    use_target_location: false
+    bypass_protection: true
+    bypass_pvp: true
+    message: "&c%luckperms_suffix% &7(&4@pn&7) &dNEEDS HELP!!"
+    allow_max_range: true
+    range: 32
+    velocity: 20
+    ticks_flown: 2
+    expected_lifespan: 1
+    cooldown: 20000
+    miss_effects: hit
+

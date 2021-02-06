@@ -60,7 +60,8 @@ shutdown:
     - class: Command
       console: true
       commands:
-      - stop
+      - whitelist on
+      - kick @a
   parameters:
     target_type: Player
     show_target: true

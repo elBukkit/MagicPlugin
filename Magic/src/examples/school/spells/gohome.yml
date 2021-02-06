@@ -1,0 +1,10 @@
+gohome:
+  inherit: recall
+  name: Go Home
+  parameters:
+    allow_death: false
+    allow_souls: false
+    allow_warp: false
+    allow_spawn: false
+    show_unavailable: false
+

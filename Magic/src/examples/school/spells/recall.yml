@@ -1,0 +1,6 @@
+recall:
+  upgrade_required_casts: 0
+  parameters:
+    allow_death: true
+    allow_souls: true
+

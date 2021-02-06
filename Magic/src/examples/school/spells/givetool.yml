@@ -1,0 +1,15 @@
+givetool:
+  actions:
+    cast:
+      - class: CheckInventory
+        actions:
+          - class: Message
+            message: You already have a stone! It's the weird glowing thingy.
+        fail:
+          - class: Message
+            message: Here you go! Use it wisely.
+          - class: GiveItem
+  parameters:
+    target: self
+    item: tool
+
