@@ -48,7 +48,7 @@ public class TranslatingConfigurationSection extends MemorySection {
     }
 
     protected TranslatingConfigurationSection createSection(TranslatingConfigurationSection parent, String key) {
-        return new TranslatingConfigurationSection(this, key);
+        return new TranslatingConfigurationSection(parent, key);
     }
 
     /**
@@ -190,13 +190,20 @@ public class TranslatingConfigurationSection extends MemorySection {
         return val instanceof Boolean;
     }
 
+    @SuppressWarnings("unchecked")
+    private ConfigurationSection toConfigurationSection(String path, Map<?, ?> map) {
+        ConfigurationSection newSection = createSection(this, path);
+        NMSUtils.setMap(newSection, (Map<String, Object>) map)
+        return newSection;
+    }
+
     @Nullable
     @Override
     public ConfigurationSection getConfigurationSection(String path) {
         Object val = get(path, null);
         if (val != null) {
             if (val instanceof Map) {
-                ConfigurationSection translated = ConfigurationUtils.toConfigurationSection((Map<?, ?>)val);
+                ConfigurationSection translated = toConfigurationSection(path, (Map<?, ?>)val);
                 set(path, translated);
                 return translated;
             }
@@ -217,7 +224,7 @@ public class TranslatingConfigurationSection extends MemorySection {
     @Override
     public void set(String key, Object value) {
         if (value instanceof Map) {
-            value = ConfigurationUtils.toConfigurationSection((Map<?,?>)value);
+            value = toConfigurationSection(key, (Map<?,?>)value);
         }
         super.set(key, value);
     }
