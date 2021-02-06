@@ -1,0 +1,18 @@
+levelarea:
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  creator_name: NathanWolf
+  name: Level Area
+  description: Removes everything above y=64 in a 50x50 area around you
+  icon: tnt
+  actions:
+    cast:
+      - class: Volume
+        actions:
+          - class: ModifyBlock
+  parameters:
+    destructible: "!bedrock"
+    brush: erase
+    x_size: 50
+    z_size: 50
+    y_size: 97
+    ty: 160

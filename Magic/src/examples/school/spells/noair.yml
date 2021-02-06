@@ -1,0 +1,23 @@
+noair:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: No Air!
+  icon: stick
+  inherit: false
+  actions:
+    cast:
+    - class: Interval
+      actions:
+      - class: AllEntities
+        actions:
+            - class: UpdateParameters
+              actions:
+              - class: AirSupply
+                air: target_air - 5
+  parameters:
+    target: self
+    target_self: true
+    target_type: Player
+    bypass_pvp: true
+    duration: 5000
+    interval: 1

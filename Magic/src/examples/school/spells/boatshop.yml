@@ -1,0 +1,18 @@
+boatshop:
+  inherit: buyshop
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Boat Shop
+  icon: oak_boat
+  parameters:
+    target: self
+    auto_close: true
+    cooldown: 10000
+    title: "Boats Boats Boats!"
+    items:
+      acacia_boat: 1
+      oak_boat: 1
+      birch_boat: 1
+      dark_oak_boat: 1
+      jungle_boat: 1
+      spruce_boat: 1

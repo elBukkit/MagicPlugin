@@ -1,0 +1,12 @@
+toolshop:
+    parameters:
+        items:
+        - diamond_spade
+        - diamond_axe
+        - dwarven_spade
+        - dwarven_axe
+        - diamond_pickaxe
+        - dwarven_pickaxe
+        - dwarven_pickaxe_luck
+        - felicis_pickaxe
+        - dwarven_felicis_pickaxe

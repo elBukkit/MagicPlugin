@@ -1,0 +1,4 @@
+tomars:
+  inherit: blastoff
+  parameters:
+    warp: mars

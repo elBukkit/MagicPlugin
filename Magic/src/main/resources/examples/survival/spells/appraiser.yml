@@ -21,8 +21,8 @@ appraiser:
           - none
           - none
           - none
-          - none
-          - none
+          - lapis_lazuli
+          - lapis_block
           - diamond
           - diamond_block
           - netherite_ingot

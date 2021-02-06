@@ -1,0 +1,16 @@
+mesa:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Mesa
+  description: make it a badlands
+  icon: red_sand
+  actions:
+    cast:
+    - class: Volume
+      actions:
+        - class: ChangeBiome
+  parameters:
+    target: self
+    radius: 8
+    y_size: 64
+    biome: badlands

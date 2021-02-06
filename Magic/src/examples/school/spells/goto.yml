@@ -1,0 +1,3 @@
+goto:
+  parameters:
+    name_template: "%luckperms_prefix% &f%luckperms_suffix%"

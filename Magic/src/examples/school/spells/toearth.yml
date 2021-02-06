@@ -1,0 +1,4 @@
+toearth:
+  inherit: blastoff
+  parameters:
+    warp: earth
