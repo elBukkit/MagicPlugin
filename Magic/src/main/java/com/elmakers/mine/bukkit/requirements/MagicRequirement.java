@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -77,10 +78,10 @@ public class MagicRequirement {
             requiredTemplates = new HashSet<>(ConfigurationUtils.getStringList(configuration, "wands"));
         }
 
-        wandProperties = parsePropertyRequirements(configuration, "wand_properties", "property");
-        classProperties = parsePropertyRequirements(configuration, "class_properties", "property");
-        attributes = parsePropertyRequirements(configuration, "attributes", "attribute");
-        variables = parsePropertyRequirements(configuration, "variables", "variable");
+        wandProperties = parsePropertyRequirements(configuration, "wand_properties", "wand_property", "property");
+        classProperties = parsePropertyRequirements(configuration, "class_properties", "class_property", "property");
+        attributes = parsePropertyRequirements(configuration, "attributes", "attribute", "attribute");
+        variables = parsePropertyRequirements(configuration, "variables", "variable", "variable");
 
         lightLevel = parseRangedRequirement(configuration, "light");
         timeOfDay = parseRangedRequirement(configuration, "time");
@@ -111,17 +112,38 @@ public class MagicRequirement {
     }
 
     @Nullable
-    private List<PropertyRequirement> parsePropertyRequirements(ConfigurationSection configuration, String section, String type) {
-        if (!configuration.contains(section)) return null;
+    private List<PropertyRequirement> parsePropertyRequirements(ConfigurationSection configuration, String section, String singleSection, String type) {
+        List<PropertyRequirement> requirements = null;
+        if (configuration.isList(section)) {
+            requirements = new ArrayList<>();
+            Collection<ConfigurationSection> propertyConfigs = ConfigurationUtils.getNodeList(configuration, section);
+            for (ConfigurationSection propertyConfig : propertyConfigs) {
+                if (!propertyConfig.contains(type)) {
+                    controller.getLogger().warning("Property requirement missing " + type + " parameter");
+                    continue;
+                }
 
-        List<PropertyRequirement> requirements = new ArrayList<>();
-        Collection<ConfigurationSection> propertyConfigs = ConfigurationUtils.getNodeList(configuration, section);
-        for (ConfigurationSection propertyConfig : propertyConfigs) {
+                PropertyRequirement requirement = new PropertyRequirement(type, propertyConfig);
+                requirements.add(requirement);
+            }
+        }
+        Object singleConfigObject = configuration.get(singleSection);
+        ConfigurationSection propertyConfig = null;
+        if (singleConfigObject != null) {
+            if (singleConfigObject instanceof Map) {
+                propertyConfig = ConfigurationUtils.toConfigurationSection((Map<?, ?>)singleConfigObject);
+            } else if (singleConfigObject instanceof ConfigurationSection) {
+                propertyConfig = (ConfigurationSection) singleConfigObject;
+            }
+        }
+        if (propertyConfig != null) {
             if (!propertyConfig.contains(type)) {
                 controller.getLogger().warning("Property requirement missing " + type + " parameter");
-                continue;
+                return null;
             }
-
+            if (requirements == null) {
+                requirements = new ArrayList<>();
+            }
             PropertyRequirement requirement = new PropertyRequirement(type, propertyConfig);
             requirements.add(requirement);
         }
