@@ -11,10 +11,20 @@ mars:
       - class: AllEntities
         actions:
           - class: PotionEffect
-          - class: UpdateParameters
+          - class: CheckBlock
+            allowed: air
             actions:
-            - class: AirSupply
-              air: target_air - 5
+            - class: UpdateParameters
+              actions:
+              - class: CheckRequirements
+                requirements:
+                  - attribute:
+                      attribute: target_air
+                      max: 10
+                actions:
+                  - class: Damage
+              - class: AirSupply
+                air: max(0, target_air - 8)
   parameters:
     target: self
     target_self: true
@@ -27,3 +37,4 @@ mars:
     add_effects:
       jump: 3
       slow_falling: 1
+
