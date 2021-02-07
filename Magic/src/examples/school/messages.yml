@@ -9,6 +9,8 @@ spells:
     cast_player_message: ""
 
 wands:
+  spacehelmet:
+    name: SpaceX Helmet
   tool:
     name: Arcane Stone
     description: "Right-Click (Or swing at ground) to use\nClick on (or take) item to teleport or get other help"

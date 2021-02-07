@@ -14,17 +14,21 @@ mars:
           - class: CheckBlock
             allowed: air
             actions:
-            - class: UpdateParameters
-              actions:
-              - class: CheckRequirements
-                requirements:
-                  - attribute:
-                      attribute: target_air
-                      max: 10
+              - class: CheckInventory
+                slot: helmet
+                blocked_enchantments: oxygen
                 actions:
-                  - class: Damage
-              - class: AirSupply
-                air: max(0, target_air - 8)
+                  - class: UpdateParameters
+                    actions:
+                    - class: CheckRequirements
+                      requirements:
+                        - attribute:
+                            attribute: target_air
+                            max: 10
+                      actions:
+                        - class: Damage
+                    - class: AirSupply
+                      air: max(0, target_air - 8)
   parameters:
     target: self
     target_self: true
@@ -36,5 +40,5 @@ mars:
     effects_particles: false
     add_effects:
       jump: 3
-      slow_falling: 1
+      slow_falling: 0
 
