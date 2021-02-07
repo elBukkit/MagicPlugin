@@ -39,6 +39,6 @@ mars:
     effects_ambient: false
     effects_particles: false
     add_effects:
-      jump: 3
+      jump: 2
       slow_falling: 0
 

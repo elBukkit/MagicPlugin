@@ -192,6 +192,7 @@ public class Automaton implements Locatable {
                 }
             }
             controller.forgetMage(mage);
+            this.mage = null;
         }
     }
 
