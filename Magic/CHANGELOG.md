@@ -2,14 +2,19 @@
 
 # 8.4
 
- - Add `jutsu` example (Naruto jutsus, thanks to Tof!)
+## Changes
+
  - "Not enough mana" messages will now show by default (unless your wand is set to silent)
  - Shop management tool now uses a GUI
+ - The appraiser shop now sells at 50% like other shops
+
+## Additions
+
+ - Add `jutsu` example (Naruto jutsus, thanks to Tof!)
  - Add warp option to selectors
  - Add `damage_source: direct` option to Damage action, will bypass vanilla damage cooldowns (bypasses everything)
  - Allow using @attributes in custom wand lore
  - Add `command_source` parameter to Selector action, can be player, console (default) or opped_player
- - The appraiser shop now sells at 50% like other shops
 
 # 8.3.3
 

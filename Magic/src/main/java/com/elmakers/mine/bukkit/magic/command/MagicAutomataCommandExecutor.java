@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.automata.AutomatonTemplate;
@@ -75,6 +76,11 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equalsIgnoreCase("remove")) {
             onRemoveAutomata(sender, selection);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("debug")) {
+            onDebugAutomaton(sender, selection, args);
             return true;
         }
 
@@ -178,6 +184,44 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         playEffects(sender, automaton, "blockremove");
         String rangeMessage = selections.getDistanceMessage(sender, automaton);
         String message = ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + automaton.getName()
+            + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
+        if (rangeMessage != null) {
+            message += rangeMessage;
+        }
+        sender.sendMessage(message);
+    }
+
+    private void onDebugAutomaton(CommandSender sender, Automaton automaton, String[] args) {
+        if (automaton == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            return;
+        }
+        int level = 1;
+        if (args.length > 0) {
+            try {
+                level = Integer.parseInt(args[0]);
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Expected debug level, got: " + ChatColor.WHITE + args[0]);
+                return;
+            }
+        }
+
+        Mage mage = automaton.getMage();
+
+        if (level == 0 || (mage.getDebugLevel() > 0 && level == 1)) {
+            mage.setDebugLevel(0);
+            mage.setDebugger(null);
+            sender.sendMessage(ChatColor.GOLD + "Disabling debug for " + ChatColor.AQUA + automaton.getName());
+            return;
+        }
+
+        mage.setDebugLevel(level);
+        mage.setDebugger(sender);
+
+        Location location = automaton.getLocation();
+        playEffects(sender, automaton, "blockdebug");
+        String rangeMessage = selections.getDistanceMessage(sender, automaton);
+        String message = ChatColor.YELLOW + "Debugging " + ChatColor.LIGHT_PURPLE + automaton.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;

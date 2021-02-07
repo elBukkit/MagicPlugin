@@ -738,6 +738,7 @@ commands:
         /mauto configure                  Configure properties of selected automaton
         /mauto tp                         Teleport to the selected automaton
         /mauto move                       Move the selected automaton to your location
+        /mauto debug                      Debug spell casts from the selected automaton
   mmob:
     description: Manage Magic Mobs
     permission: Magic.commands.mmob
