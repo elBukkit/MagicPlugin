@@ -28,7 +28,7 @@ mars:
                       actions:
                         - class: Damage
                     - class: AirSupply
-                      air: max(0, target_air - 8)
+                      air: max(0, target_air - 6)
   parameters:
     target: self
     target_self: true
