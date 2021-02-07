@@ -2,10 +2,13 @@ package com.elmakers.mine.bukkit.configuration;
 
 import static org.bukkit.util.NumberConversions.toLong;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -226,5 +229,13 @@ public class TranslatingConfigurationSection extends MemorySection {
             value = toConfigurationSection(key, (Map<?,?>)value);
         }
         super.set(key, value);
+    }
+
+    @Override
+    public List<String> getStringList(String path) {
+        if (isString(path)) {
+            return Arrays.asList(StringUtils.split(getString(path), ','));
+        }
+        return super.getStringList(path);
     }
 }
