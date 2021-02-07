@@ -19,8 +19,8 @@ cone:
       target: block
       range: 32
       size: 16
-      destructible: air
-      transparent: air
+      destructible: all_air
+      transparent: all_air
       undo: 15000
       cooldown: 10000
       orient: true

@@ -65,7 +65,7 @@ futonkamaitachi:
   parameters:
     target: none
     ignore_targeting: true
-    transparent: air,destructible
+    transparent: all_air,destructible
     target_type: Entity
     radius: 5
     target_count: 40

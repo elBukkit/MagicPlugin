@@ -85,7 +85,7 @@ reparifarge:
         target: block
         allow_max_range: true
         range: 64
-        transparent: air
+        transparent: all_air
         bypass_backfire: true
         loud: true
         cancel: true
