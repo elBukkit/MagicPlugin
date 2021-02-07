@@ -2012,6 +2012,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Add vanilla enchantments
         ConfigurationSection enchantments = getConfigurationSection("enchantments");
+        if (enchantments == null) {
+            List<String> enchantmentList = getStringList("enchantments");
+            if (enchantmentList != null && !enchantmentList.isEmpty()) {
+                enchantments = ConfigurationUtils.newConfigurationSection();
+                for (String enchantKey : enchantmentList) {
+                    enchantments.set(enchantKey, 0);
+                }
+            }
+        }
         InventoryUtils.applyEnchantments(item, enchantments);
 
         // Add enchantment glow
