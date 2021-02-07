@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -25,6 +26,8 @@ public class ReplaceRule extends SpawnRule {
     // Keep these separate for efficiency
     protected SpawnOption replaceWith;
     protected Deque<WeightedPair<SpawnOption>> replaceProbability;
+    protected int yOffset;
+    protected boolean atHighestBlock;
 
     @Override
     public void finalizeLoad(String worldName) {
@@ -60,6 +63,8 @@ public class ReplaceRule extends SpawnRule {
             replaceDescription = StringUtils.join(names, ",");
         }
         replaceDescription = ChatColor.stripColor(replaceDescription);
+        atHighestBlock = parameters.getBoolean("highest_block", false);
+        yOffset = parameters.getInt("y_offset");
         logSpawnRule("Replacing " + getTargetEntityTypeName() + " in " + worldName + " with " + replaceDescription);
     }
 
@@ -83,7 +88,12 @@ public class ReplaceRule extends SpawnRule {
                 return SpawnResult.STOP;
             }
 
-            Entity spawned = replacement.spawn(entity.getLocation());
+            Location location = entity.getLocation();
+            if (atHighestBlock) {
+                location.setY(location.getWorld().getHighestBlockYAt(location));
+            }
+            location.setY(location.getY() + yOffset);
+            Entity spawned = replacement.spawn(location);
             if (spawned == null) {
                 return SpawnResult.SKIP;
             }

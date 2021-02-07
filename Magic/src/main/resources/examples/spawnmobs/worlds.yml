@@ -1,6 +1,25 @@
 overworld_mobs:
   world: world
   entity_spawn:
+    replace_flying:
+      class: Replace
+      y_offset: 32
+      highest_block: true
+      target_types:
+        - enderman
+        - zombie
+        - spider
+        - creeper
+        - skeleton
+        - husk
+        - phantom
+      probability: 0.01
+      replace_type:
+        bluedragon: 1
+        greendragon: 1
+        greydragon: 0.5
+        mega_phantom: 5
+        polterghast: 15
 
     replace_mobs:
       class: Replace
@@ -15,9 +34,6 @@ overworld_mobs:
       replace_type:
         warlock: 10
         dark_wizard: 1
-        bluedragon: 1
-        greendragon: 1
-        greydragon: 0.5
         undead_overlord: 40
         undead_minion: 100
         mutant: 100
@@ -25,33 +41,31 @@ overworld_mobs:
         dark_spider: 20
         mega_spider: 1
         mutant_spider: 20
-        mega_phantom: 5
-        polterghast: 15
         cube: 20
         werewolf: 10
         madscientist: 1
 
-  nether_mobs:
-    world: world_nether
-    entity_spawn:
+nether_mobs:
+  world: world_nether
+  entity_spawn:
 
-      replace_ghasts:
-        class: ReplaceRule
-        target_type: ghast
-        probability: 0.1
-        replace_type: polterghast
+    replace_ghasts:
+      class: ReplaceRule
+      target_type: ghast
+      probability: 0.1
+      replace_type: polterghast
 
-      reddragon:
-        class: ReplaceRule
-        target_type: ghast
-        probability: 0.01
-        replace_type: reddragon
+    reddragon:
+      class: ReplaceRule
+      target_type: ghast
+      probability: 0.01
+      replace_type: reddragon
 
-      replace_blazes:
-        class: ReplaceRule
-        target_type: blaze
-        probability: 0.1
-        replace_type: fire_elemental
+    replace_blazes:
+      class: ReplaceRule
+      target_type: blaze
+      probability: 0.1
+      replace_type: fire_elemental
 
 end_mobs:
   world: world_the_end

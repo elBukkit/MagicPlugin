@@ -2,6 +2,10 @@
 
 # 8.4
 
+## Fixes
+
+ - Fix flying mob spawns and nether mob spawns in `spawnmobs` example
+
 ## Changes
 
  - "Not enough mana" messages will now show by default (unless your wand is set to silent)
