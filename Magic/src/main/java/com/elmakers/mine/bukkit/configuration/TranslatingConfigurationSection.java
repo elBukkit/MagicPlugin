@@ -12,7 +12,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.util.NumberConversions;
 
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class TranslatingConfigurationSection extends MemorySection {
@@ -193,7 +192,7 @@ public class TranslatingConfigurationSection extends MemorySection {
     @SuppressWarnings("unchecked")
     private ConfigurationSection toConfigurationSection(String path, Map<?, ?> map) {
         ConfigurationSection newSection = createSection(this, path);
-        NMSUtils.setMap(newSection, (Map<String, Object>) map)
+        NMSUtils.setMap(newSection, (Map<String, Object>) map);
         return newSection;
     }
 

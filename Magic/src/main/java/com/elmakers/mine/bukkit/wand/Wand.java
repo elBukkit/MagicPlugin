@@ -1224,7 +1224,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void clearSpells() {
-        spellLevels.clear();
+        // The configuration just wraps this map, so clearing it also clears the configuration.
+        // We will not do that, since we'll be trying to load from the config right after this.
+        spellLevels = new HashMap<>();
         spells.clear();
     }
 
