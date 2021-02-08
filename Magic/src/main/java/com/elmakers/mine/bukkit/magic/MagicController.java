@@ -2675,6 +2675,23 @@ public class MagicController implements MageController {
         }
     }
 
+    @Override
+    @Nullable
+    public Automaton addAutomaton(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters) {
+        if (!isAutomataTemplate(templateKey)) {
+            return null;
+        }
+
+        Automaton existing = getAutomatonAt(location);
+        if (existing != null) {
+            return null;
+        }
+
+        Automaton automaton = new Automaton(this, location, templateKey, creatorId, creatorName, parameters);
+        registerAutomaton(automaton);
+        return automaton;
+    }
+
     protected void saveSpellData(Collection<YamlDataFile> stores) {
         String lastKey = "";
         try {

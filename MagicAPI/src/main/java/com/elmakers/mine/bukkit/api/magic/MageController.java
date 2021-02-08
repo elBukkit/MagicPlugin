@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.automata.Automaton;
 import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -754,4 +755,6 @@ public interface MageController {
     Warp getMagicWarp(String warpKey);
     @Nonnull
     Collection<? extends Warp> getMagicWarps();
+    @Nullable
+    Automaton addAutomaton(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters);
 }

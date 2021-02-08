@@ -25,7 +25,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 
-public class Automaton implements Locatable {
+public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automata.Automaton {
     @Nonnull
     private final MagicController controller;
     @Nullable
@@ -130,10 +130,12 @@ public class Automaton implements Locatable {
         return createdAt;
     }
 
+    @Override
     public void pause() {
         deactivate();
     }
 
+    @Override
     public void resume() {
         if (template == null) return;
 
