@@ -998,9 +998,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void takeOwnership(Player player) {
-        Mage mage = this.mage;
+        boolean setMage = false;
         if (mage == null) {
             mage = controller.getMage(player);
+            setMage = true;
         }
 
         if ((ownerId == null || ownerId.length() == 0) && quietLevel < 2)
@@ -1014,6 +1015,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         owner = ChatColor.stripColor(player.getDisplayName());
         ownerId = mage.getId();
+        if (setMage) {
+            mage = null;
+        }
         setProperty("owner", owner);
         setProperty("owner_id", ownerId);
         updateLore();
