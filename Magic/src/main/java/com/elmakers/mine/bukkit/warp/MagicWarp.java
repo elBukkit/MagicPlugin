@@ -162,11 +162,13 @@ public class MagicWarp implements Warp {
         this.locked = locked;
     }
 
+    @Override
     @Nonnull
     public String getKey() {
         return key;
     }
 
+    @Override
     @Nullable
     public String getIcon() {
         return icon;
