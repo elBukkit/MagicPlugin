@@ -1,0 +1,81 @@
+airpump:
+    icon: water_bucket{CustomModelData:18001}
+    icon_disabled: water_bucket{CustomModelData:18002}
+    legacy_icon: spell_icon:82
+    legacy_icon_disabled: spell_icon_disabled:82
+    icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
+    category: engineering
+    tags: noduel
+    worth: 6000
+    actions:
+        cast:
+          - class: Recurse
+            actions:
+            - class: ModifyBlock
+            maxdepth:
+            - class: ChangeContext
+              target_caster: true
+              actions:
+              - class: Recurse
+                depth: 130
+                actions:
+                 - class: Brush
+                   brush: air
+                   actions:
+                   - class: ModifyBlock
+              - class: PlayEffects
+                effects: breach
+              - class: AreaOfEffect
+                radius: 128
+                actions:
+                  - class: BossBar
+                    bar_title: "&cDOME BREACH! DANGER!!"
+                    bar_color: red
+                    bar_progress: 1
+                    show_target: true
+              - class: Interval
+                interval: 1000
+                duration: 10000
+                actions:
+                  - class: PlayEffects
+                    effects: breach
+              - class: Stop
+    effects:
+        breach:
+          - sound: block_bell_use
+            sound_pitch: 1.8
+            sound_volume: 2
+          - sound: item_elytra_flying
+            sound_volume: 1.3
+            sound_pitch: 1.8
+            effectlib:
+              class: Helix
+              particle: spell
+              offset: 0,5,0
+              particle_offset_x: 16
+              particle_offset_z: 16
+              particle_offset_y: 4
+              duration: 2000
+    parameters:
+        target: self
+        target_self: true
+        target_type: Player
+        brush: cave_air
+        depth: 128
+        destructible: air,cave_air
+        transparent: transparent_to_construction
+        cooldown: 1000
+        priority_faces: down
+        ignore_region_overrides: true
+        cancel_on_deactivate: false
+        bypass_pvp: true
+        bypass_protection: true
+        faces:
+        - down
+        - north
+        - east
+        - south
+        - west
+        - up
+    costs:
+        mana: 200
