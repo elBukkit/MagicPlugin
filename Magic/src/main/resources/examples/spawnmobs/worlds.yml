@@ -19,7 +19,6 @@ overworld_mobs:
         greendragon: 1
         greydragon: 0.5
         mega_phantom: 5
-        polterghast: 15
 
     replace_mobs:
       class: Replace
