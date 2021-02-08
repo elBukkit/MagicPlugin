@@ -87,6 +87,12 @@ public class RecurseAction extends CompoundAction {
     }
 
     @Override
+    protected void addHandlers(Spell spell, ConfigurationSection parameters) {
+        addHandler(spell, "actions");
+        addHandler(spell, "maxdepth");
+    }
+
+    @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
 
@@ -228,6 +234,11 @@ public class RecurseAction extends CompoundAction {
             return SpellResult.NO_TARGET;
         }
         if (current.depth > recursionDepth) {
+            // Check for max depth actions
+            if (hasActions("maxdepth")) {
+                return startActions("maxdepth");
+            }
+
             // Prevent blocks that get isolated due to not quite being reached from all 4 directions
             Block nextBlock = direction == null ? null : direction.getRelative(block);
             if (nextBlock != null && touched.contains(BlockData.getBlockId(nextBlock))) {
@@ -235,7 +246,6 @@ public class RecurseAction extends CompoundAction {
                     context.registerForUndo(block);
                     debugMaterials.get(debugMaterials.size() - 2).modify(block);
                 }
-
                 return startActions();
             }
             if (debugMaterials != null && !debugDepth) {
