@@ -56,6 +56,7 @@ public class RideEntityAction extends BaseSpellAction
     private boolean controllable = false;
     private boolean pitchControllable = true;
     private double strafeControllable = 0;
+    private double steerControllable = 0;
     private double jumpControllable = 0;
     private double jumpVelocity = 0;
     private double braking = 0;
@@ -164,6 +165,7 @@ public class RideEntityAction extends BaseSpellAction
         pitchControllable = parameters.getBoolean("pitch_controllable", true);
         airControllable = parameters.getBoolean("air_controllable", true);
         strafeControllable = parameters.getDouble("strafe_controllable", 0.0);
+        steerControllable = parameters.getDouble("steer_controllable", 0.0);
         jumpControllable = parameters.getDouble("jump_controllable", 0.0);
         jumpVelocity = parameters.getDouble("jump_velocity", 0.0);
         braking = parameters.getDouble("braking", 0.0);
@@ -331,6 +333,16 @@ public class RideEntityAction extends BaseSpellAction
 
     protected void adjustHeading(CastContext context) {
         targetLocation = context.getEntity().getLocation();
+
+        // Use strafe steering controls
+        if (steerControllable != 0) {
+            targetLocation.setDirection(direction);
+            double strafeDirection = context.getMage().getVehicleStrafeDirection();
+            if (strafeDirection != 0) {
+                strafeDirection = -strafeDirection * steerControllable;
+                targetLocation.setYaw(targetLocation.getYaw() + (float)strafeDirection);
+            }
+        }
         Vector targetDirection = targetLocation.getDirection();
 
         if (jumpControllable != 0 && context.getMage().isVehicleJumping()) {

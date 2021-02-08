@@ -23,6 +23,7 @@
  - Add allowed_enchantments, blocked_enchantments and slot parameters to CheckInventory, for checking on a specific inventory slot
  - Add wand instructions progress menu item
  - Add alternate_spell options on wand up to 7, so you can put 8 spells in total on a wand, one for each trigger (including sneak variants)
+ - Add steer_controllable parameter for vehicles, use in cars (WASD now steers, look direction not used)
 
 # 8.3.3
 
