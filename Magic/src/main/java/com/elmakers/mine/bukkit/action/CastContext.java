@@ -43,6 +43,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -94,7 +95,8 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     private CastContext base;
     private MageClass mageClass;
     private ConfigurationSection variables;
-
+    private MaterialSet destructible;
+    private MaterialSet indestructible;
     private List<ActionHandlerContext> handlers = null;
     private List<ActionHandlerContext> finishedHandlers = null;
     private Map<String, String> messageParameters = null;
@@ -172,6 +174,8 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
             this.targetCaster = ((CastContext)copy).targetCaster;
             this.brush = ((CastContext)copy).brush;
             this.previousBlock = ((CastContext)copy).previousBlock;
+            this.destructible = ((CastContext)copy).destructible;
+            this.indestructible = ((CastContext)copy).indestructible;
         }
         else
         {
@@ -536,6 +540,9 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
 
     @Override
     public boolean isIndestructible(Block block) {
+        if (indestructible != null) {
+            return indestructible.testBlock(block);
+        }
         return blockSpell != null ? blockSpell.isIndestructible(block) : true;
     }
 
@@ -897,8 +904,10 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public boolean isDestructible(Block block)
     {
-        if (blockSpell != null)
-        {
+        if (destructible != null) {
+            return destructible.testBlock(block);
+        }
+        if (blockSpell != null) {
             return blockSpell.isDestructible(block);
         }
         return true;
@@ -907,8 +916,7 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Override
     public boolean areAnyDestructible(Block block)
     {
-        if (blockSpell != null)
-        {
+        if (blockSpell != null) {
             return blockSpell.areAnyDestructible(block);
         }
         return true;
@@ -1641,5 +1649,15 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Nullable
     public Object getCastData(@Nonnull String key) {
         return castData == null ? null : castData.get(key);
+    }
+
+    @Override
+    public void setDestructible(MaterialSet destructible) {
+        this.destructible = destructible;
+    }
+
+    @Override
+    public void setIndestructible(MaterialSet indestructible) {
+        this.indestructible = indestructible;
     }
 }

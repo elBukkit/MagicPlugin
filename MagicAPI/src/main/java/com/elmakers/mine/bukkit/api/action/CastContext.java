@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -261,4 +262,6 @@ public interface CastContext extends WandEffectContext {
     void setCastData(@Nonnull String key, Object value);
     @Nullable
     Object getCastData(@Nonnull String key);
+    void setDestructible(MaterialSet destructible);
+    void setIndestructible(MaterialSet indestructible);
 }

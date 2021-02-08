@@ -11,6 +11,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -63,6 +64,8 @@ public class ChangeContextAction extends CompoundAction {
     private boolean sourceUseMovementDirection;
     private boolean targetUseMovementDirection;
     private boolean useTargetMage;
+    private MaterialSet destructible;
+    private MaterialSet indestructible;
 
     // Communication between source and target modifications
     protected Vector direction;
@@ -108,6 +111,14 @@ public class ChangeContextAction extends CompoundAction {
         targetYawOffset = (float)parameters.getDouble("target_yaw_offset", 0);
         targetPitchOffset = (float)parameters.getDouble("target_pitch_offset", 0);
         swapSourceAndTarget = parameters.getBoolean("swap_source_and_target", false);
+        String destructibleKey = parameters.getString("destructible_materials");
+        if (destructibleKey != null && !destructibleKey.isEmpty()) {
+            destructible = context.getController().getMaterialSetManager().fromConfig(destructibleKey);
+        }
+        String indestructibleKey = parameters.getString("indestructible_materials");
+        if (indestructibleKey != null && !indestructibleKey.isEmpty()) {
+            indestructible = context.getController().getMaterialSetManager().fromConfig(indestructibleKey);
+        }
 
         absoluteTargetLocation = parameters.getString("target_location");
         absoluteSourceLocation = parameters.getString("source_location");
@@ -446,6 +457,12 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (this.targetLocation != null) {
             actionContext.setTargetLocation(this.targetLocation.getLocation(actionContext));
+        }
+        if (destructible != null) {
+            actionContext.setDestructible(destructible);
+        }
+        if (indestructible != null) {
+            actionContext.setIndestructible(indestructible);
         }
         return startActions();
     }
