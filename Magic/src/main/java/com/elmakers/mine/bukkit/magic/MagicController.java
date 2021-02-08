@@ -6498,7 +6498,11 @@ public class MagicController implements MageController {
         ItemData configuredItem = items.get(item);
         item.setAmount(amount);
         if (configuredItem == null) {
-            return null;
+            Wand wand = getWand(item);
+            if (wand == null) {
+                return null;
+            }
+            return (double)wand.getWorth();
         }
 
         return configuredItem.getWorth() * amount;

@@ -832,7 +832,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public long getWorth() {
-        long worth = 0;
+        long worth = getInt("worth");
+        if (worth > 0) {
+            return worth;
+        }
         // TODO: Item properties, brushes, etc
         Set<String> spells = getSpells();
         for (String spellKey : spells) {
