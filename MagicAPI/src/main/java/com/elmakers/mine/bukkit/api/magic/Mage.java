@@ -541,8 +541,9 @@ public interface Mage extends CostReducer, CooldownReducer {
     void setDebugger(CommandSender debugger);
     void debugPermissions(CommandSender sender, Spell spell);
     CommandSender getDebugger();
-    boolean giveItem(ItemStack item);
-    boolean giveItem(ItemStack item, boolean putInHand);
+    void giveItem(ItemStack item);
+    void giveItem(ItemStack item, boolean putInHand);
+    boolean giveItem(ItemStack item, boolean putInHand, boolean allowDropping);
     void setArmorItem(int armorSlot, ItemStack item);
 
     /**
