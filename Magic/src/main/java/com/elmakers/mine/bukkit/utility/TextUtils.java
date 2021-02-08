@@ -7,6 +7,7 @@ import java.util.Arrays;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -55,6 +56,15 @@ public class TextUtils
     public static String printNumber(double number, int digits) {
         NumberFormat formatter = formatters[Math.min(Math.max(0, digits), formatters.length - 1)];
         return formatter.format(number);
+    }
+
+    public static String printLocationAndWorld(Location location, int digits) {
+        String locationString = printLocation(location, digits);
+        World world = location.getWorld();
+        if (world != null) {
+            locationString = locationString + ChatColor.GRAY + "(" + ChatColor.AQUA + world.getName() + ChatColor.GRAY + ")";
+        }
+        return locationString;
     }
 
     public static String printLocation(Location location) {

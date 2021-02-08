@@ -179,9 +179,13 @@ public class MagicWarp implements Warp {
     }
 
     public void describe(CommandSender sender) {
-
         sender.sendMessage(ChatColor.AQUA + "Warp " + ChatColor.DARK_AQUA + key);
-        sender.sendMessage(ChatColor.AQUA + "   " + TextUtils.printLocation(getLocation(), 0));
+        Location location = getLocation();
+        if (location == null) {
+            sender.sendMessage(ChatColor.RED + "(Unknown Location)");
+        } else {
+            sender.sendMessage(ChatColor.AQUA + "   " + TextUtils.printLocationAndWorld(location, 0));
+        }
         if (isLocked()) {
             sender.sendMessage(ChatColor.RED + "(Locked)");
         }

@@ -143,11 +143,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
 
     private void onSendWarp(CommandSender sender, Player player, String warpName) {
         Location location = magicController.getWarp(warpName);
-        if (location == null) {
-            sender.sendMessage(ChatColor.RED + "Unknown warp: " + ChatColor.DARK_RED + warpName);
-            return;
-        }
-         if (location.getWorld() == null) {
+        if (location == null || location.getWorld() == null) {
             MagicWarp magicWarp = magicController.getWarps().getMagicWarp(warpName);
             if (magicWarp != null) {
                 String worldName = magicWarp.getWorldName();
@@ -158,10 +154,10 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                     location = magicWarp.getLocation();
                 }
             }
-            if (location.getWorld() == null) {
-                sender.sendMessage(ChatColor.RED + "The target world for warp: " + ChatColor.DARK_RED + warpName + ChatColor.RED + " is not available");
-                return;
-            }
+        }
+        if (location == null || location.getWorld() == null) {
+            sender.sendMessage(ChatColor.RED + "The target location for warp: " + ChatColor.DARK_RED + warpName + ChatColor.RED + " is not available");
+            return;
         }
         player.teleport(location);
     }
