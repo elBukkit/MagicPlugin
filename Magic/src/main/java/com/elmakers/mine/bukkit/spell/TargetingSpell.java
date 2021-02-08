@@ -447,7 +447,7 @@ public class TargetingSpell extends BaseSpell {
                 mage.sendDebugMessage("Entity has Magic.protected perm", 30);
                 return false;
             }
-            if (!targetGameModes.contains(player.getGameMode())) {
+            if (targetGameModes != null && !targetGameModes.contains(player.getGameMode())) {
                 mage.sendDebugMessage("Entity has one of the ignored potion effects", 30);
                 return false;
             }
@@ -664,14 +664,18 @@ public class TargetingSpell extends BaseSpell {
         targetMount = parameters.getBoolean("target_mount", false);
         targetGameModes = defaultTargetGameModes;
         List<String> gameModes = ConfigurationUtils.getStringList(parameters, "target_game_modes");
-        if (gameModes != null && !gameModes.isEmpty() && !gameModes.get(0).equalsIgnoreCase("all")) {
-            targetGameModes = new HashSet<>();
-            for (String gameMode : gameModes) {
-                try {
-                    GameMode mode = GameMode.valueOf(gameMode.toUpperCase());
-                    targetGameModes.add(mode);
-                } catch (Exception ex) {
-                    controller.getLogger().warning(("Invalid game mode: " + gameMode));
+        if (gameModes != null && !gameModes.isEmpty()) {
+            if (gameModes.get(0).equalsIgnoreCase("all")) {
+                targetGameModes = null;
+            } else {
+                targetGameModes = new HashSet<>();
+                for (String gameMode : gameModes) {
+                    try {
+                        GameMode mode = GameMode.valueOf(gameMode.toUpperCase());
+                        targetGameModes.add(mode);
+                    } catch (Exception ex) {
+                        controller.getLogger().warning(("Invalid game mode: " + gameMode));
+                    }
                 }
             }
         }
