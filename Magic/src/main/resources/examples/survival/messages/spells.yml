@@ -1113,8 +1113,12 @@ spells:
         name: Magic Progress
         title: "Magic Progress"
         selected: ""
+        selected_free: ""
         cast_fail: ""
         no_template: "&cYou may not customize that $wand&c."
+    wandinstructions:
+        name: Wand Instructions
+        description: Show wand usage and progression information
     appearanceshop:
         name: Wand Appearances
         description: Change the look of your wand

@@ -21,6 +21,7 @@
  - Allow using @attributes in custom wand lore
  - Add `command_source` parameter to Selector action, can be player, console (default) or opped_player
  - Add allowed_enchantments, blocked_enchantments and slot parameters to CheckInventory, for checking on a specific inventory slot
+ - Add wand instructions progress menu item
 
 # 8.3.3
 

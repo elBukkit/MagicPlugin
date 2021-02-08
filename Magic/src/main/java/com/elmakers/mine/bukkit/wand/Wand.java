@@ -903,6 +903,100 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return false;
     }
 
+    @Override
+    public void showInstructions() {
+        if (mage == null) return;
+        startWandInstructions();
+        showBoundInstructions();
+        showSpellInstructions();
+        showBrushInstructions();
+        showPageInstructions();
+        showManaInstructions();
+        showPathInstructions();
+        endWandInstructions();
+    }
+
+    private void showBoundInstructions() {
+        if (ownerId != null) {
+            doShowBoundInstructions();
+        }
+    }
+
+    private void doShowBoundInstructions() {
+        mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
+    }
+
+    private void showSpellInstructions() {
+        String spellKey = getActiveSpellKey();
+        SpellTemplate spellTemplate = spellKey != null && !spellKey.isEmpty() ? controller.getSpellTemplate(spellKey) : null;
+        if (spellTemplate != null) {
+            int spellCount = spells.size();
+            if (spellCount > 0) {
+                if (leftClickAction == WandAction.CAST) {
+                    String controlKey = getInventoryKey("right_click");
+                    controlKey = controller.getMessages().get("controls." + controlKey);
+                    String message = getMessage("spell_instructions", "")
+                            .replace("$wand", getName())
+                            .replace("$toggle", controlKey)
+                            .replace("$spell", spellTemplate.getName());
+                    mage.sendMessage(message);
+                }
+
+                String controlKey = getInventoryKey();
+                String inventoryMessage = getControlMessage();
+                if (controlKey != null && inventoryMessage != null) {
+                    controlKey = controller.getMessages().get("controls." + controlKey);
+                    mage.sendMessage(getMessage(inventoryMessage, "")
+                        .replace("$wand", getName()).replace("$toggle", controlKey).replace("$cycle", controlKey));
+                }
+            }
+        }
+    }
+
+    private void showBrushInstructions() {
+        int brushCount = brushes.size();
+        if (brushCount == 0) {
+            String controlKey = getControlKey(WandAction.TOGGLE);
+            if (controlKey != null) {
+                controlKey = controller.getMessages().get("controls." + controlKey);
+                mage.sendMessage(getMessage("brush_instructions")
+                        .replace("$wand", getName()).replace("$toggle", controlKey));
+            }
+        }
+    }
+
+    private void showPageInstructions() {
+        if (inventories.size() > 1) {
+            mage.sendMessage(getMessage("page_instructions", "").replace("$wand", getName()));
+        }
+    }
+
+    private void showManaInstructions() {
+        String spellKey = getActiveSpellKey();
+        SpellTemplate spellTemplate = spellKey != null && !spellKey.isEmpty() ? controller.getSpellTemplate(spellKey) : null;
+        if (usesMana() && spellTemplate != null) {
+            String message = getMessage("mana_instructions", "")
+                .replace("$wand", getName())
+                .replace("$spell", spellTemplate.getName());
+            mage.sendMessage(message);
+        }
+    }
+
+    private void showPathInstructions() {
+        com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
+        if (path != null) {
+            if (usesSP()) {
+                String message = getMessage("enchant_instructions", "").replace("$wand", getName());
+                mage.sendMessage(message);
+            }
+            ProgressionPath nextPath = path.getNextPath();
+            if (nextPath != null) {
+                String message = getMessage("path_instructions", "").replace("$path", path.getName()).replace("$nextpath", nextPath.getName());
+                mage.sendMessage(message);
+            }
+        }
+    }
+
     public void takeOwnership(Player player) {
         Mage mage = this.mage;
         if (mage == null) {
@@ -912,47 +1006,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if ((ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
             startWandInstructions();
-            mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
-            String spellKey = getActiveSpellKey();
-            SpellTemplate spellTemplate = spellKey != null && !spellKey.isEmpty() ? controller.getSpellTemplate(spellKey) : null;
-            if (spellTemplate != null)
-            {
-                String controlKey = getInventoryKey("right_click");
-                controlKey = controller.getMessages().get("controls." + controlKey);
-                String message = getMessage("spell_instructions", "")
-                        .replace("$wand", getName())
-                        .replace("$toggle", controlKey)
-                        .replace("$spell", spellTemplate.getName());
-                mage.sendMessage(message);
-                if (usesMana()) {
-                    message = getMessage("mana_instructions", "")
-                        .replace("$wand", getName())
-                        .replace("$spell", spellTemplate.getName());
-                    mage.sendMessage(message);
-                }
-            }
-            if (spells.size() > 1)
-            {
-                String controlKey = getControlKey(WandAction.TOGGLE);
-                if (controlKey != null) {
-                    controlKey = controller.getMessages().get("controls." + controlKey);
-                    mage.sendMessage(getMessage("inventory_instructions", "")
-                        .replace("$wand", getName()).replace("$toggle", controlKey));
-                }
-            }
-            com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
-            if (path != null)
-            {
-                if (usesSP()) {
-                    String message = getMessage("enchant_instructions", "").replace("$wand", getName());
-                    mage.sendMessage(message);
-                }
-                ProgressionPath nextPath = path.getNextPath();
-                if (nextPath != null) {
-                    String message = getMessage("path_instructions", "").replace("$path", path.getName()).replace("$nextpath", nextPath.getName());
-                    mage.sendMessage(message);
-                }
-            }
+            doShowBoundInstructions();
+            showSpellInstructions();
+            showManaInstructions();
+            showPathInstructions();
             endWandInstructions();
         }
         owner = ChatColor.stripColor(player.getDisplayName());
@@ -5178,41 +5235,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (mage != null)
         {
             if (spells.size() != spellCount) {
-                boolean sentHeader = false;
-                if (spellCount == 0)
-                {
-                    if (leftClickAction == WandAction.CAST) {
-                        if (!sentHeader) startWandInstructions();
-                        sentHeader = true;
-                        String controlKey = getInventoryKey("right_click");
-                        controlKey = controller.getMessages().get("controls." + controlKey);
-                        String message = getMessage("spell_instructions", "")
-                                .replace("$wand", getName())
-                                .replace("$toggle", controlKey)
-                                .replace("$spell", template.getName());
-                        mage.sendMessage(message);
-                    }
+                // This is a little hackily tied to the send method logic
+                // This will also cause the spell instructions to get shown again when you get a new page
+                // But I think that's an OK reminder
+                boolean sendInstructions = (spellCount == 0 && leftClickAction == WandAction.CAST)
+                        || spellCount == 1 || (inventoryCount == 1 && inventories.size() > 1);
+                if (sendInstructions) {
+                    startWandInstructions();
+                    showSpellInstructions();
+                    showPageInstructions();
+                    endWandInstructions();
                 }
-                else
-                if (spellCount == 1)
-                {
-                    if (!sentHeader) startWandInstructions();
-                    sentHeader = true;
-                    String controlKey = getInventoryKey();
-                    String inventoryMessage = getControlMessage();
-                    if (controlKey != null && inventoryMessage != null) {
-                        controlKey = controller.getMessages().get("controls." + controlKey);
-                        mage.sendMessage(getMessage(inventoryMessage, "")
-                            .replace("$wand", getName()).replace("$toggle", controlKey).replace("$cycle", controlKey));
-                    }
-                }
-                if (inventoryCount == 1 && inventories.size() > 1)
-                {
-                    if (!sentHeader) startWandInstructions();
-                    sentHeader = true;
-                    mage.sendMessage(getMessage("page_instructions", "").replace("$wand", getName()));
-                }
-                if (sentHeader) endWandInstructions();
             }
         }
 
@@ -5237,7 +5270,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Nullable
     private String getControlMessage() {
-
         String inventoryMessage = null;
         switch (getMode()) {
         case INVENTORY:
@@ -5384,27 +5416,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         saveState();
         updateLore();
 
-        if (mage != null)
-        {
-            boolean sentHeader = false;
-            if (brushCount == 0)
-            {
-                String controlKey = getControlKey(WandAction.TOGGLE);
-                if (controlKey != null) {
-                    if (!sentHeader) startWandInstructions();
-                    sentHeader = true;
-                    controlKey = controller.getMessages().get("controls." + controlKey);
-                    mage.sendMessage(getMessage("brush_instructions")
-                            .replace("$wand", getName()).replace("$toggle", controlKey));
-                }
+        if (mage != null) {
+            // This is a little hackily tied to the send method logic
+            // This will also cause the spell instructions to get shown again when you get a new page
+            // But I think that's an OK reminder
+            boolean sendInstructions = (brushCount == 0) || (inventoryCount == 1 && inventories.size() > 1);
+            if (sendInstructions) {
+                startWandInstructions();
+                showBrushInstructions();
+                showPageInstructions();
+                endWandInstructions();
             }
-            if (inventoryCount == 1 && inventories.size() > 1)
-            {
-                if (!sentHeader) startWandInstructions();
-                sentHeader = true;
-                mage.sendMessage(getMessage("page_instructions").replace("$wand", getName()));
-            }
-            if (sentHeader) endWandInstructions();
         }
 
         return true;

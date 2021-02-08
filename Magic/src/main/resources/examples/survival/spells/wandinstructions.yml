@@ -1,0 +1,13 @@
+wandinstructions:
+    icon: warped_sign{CustomModelData:18001}
+    icon_disabled: warped_sign{CustomModelData:18001}
+    legacy_icon: diamond_axe:217
+    legacy_icon_disabled: diamond_axe:217
+    icon_url: http://textures.minecraft.net/texture/f6d6ac2ee323f6497c6e2663a7e56ed9523567b68d18a17f8f39736b06ac3cd
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: WandInstructions
+    parameters:
+      target: self

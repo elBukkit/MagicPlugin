@@ -277,4 +277,5 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     WandEffectContext getEffectContext();
     boolean isEnchantable();
     void setEnchantments(Map<Enchantment, Integer> enchants);
+    void showInstructions();
 }

@@ -11,7 +11,7 @@ progressmenu:
     - cast_spell: spellshop
     - cast_spell: upgrades
     - placeholder: true
-    - placeholder: true
+    - cast_spell: wandinstructions
     - placeholder: true
     - cast_spell: appearanceshop
       requirements:
