@@ -5193,6 +5193,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             WandUpgradePath path = getPath();
             if (path != null && !path.containsSpell(spellKey.getBaseKey())) return false;
         }
+        checkSpellLevelsAndInventory();
         if (!super.forceAddSpell(spellName)) {
             return false;
         }
@@ -5212,8 +5213,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (activeSpell == null || activeSpell.isEmpty()) {
             setActiveSpell(spellKey.getBaseKey());
         }
-
-        checkSpellLevelsAndInventory();
         updateInventory();
         updateHasInventory();
         saveState();
@@ -5281,7 +5280,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     /**
      * Covers the special case of a wand having spell levels and inventory slots that came from configs,
-     * but now we've modified the spells list and need to figure out if we also need to pesist the levels and
+     * but now we've modified the spells list and need to figure out if we also need to persist the levels and
      * slots separately.
      *
      * <p>This should all be moved to CasterProperties at some point to handle the same sort of issues with mage class
