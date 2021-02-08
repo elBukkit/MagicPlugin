@@ -24,6 +24,7 @@
  - Add wand instructions progress menu item
  - Add alternate_spell options on wand up to 7, so you can put 8 spells in total on a wand, one for each trigger (including sneak variants)
  - Add steer_controllable parameter for vehicles, use in cars (WASD now steers, look direction not used)
+ - Add While action, loops until some set of requirements is met (use with a variable for for/while loop type behavior)
 
 # 8.3.3
 
