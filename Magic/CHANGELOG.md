@@ -12,6 +12,7 @@
  - Shop management tool now uses a GUI
  - The appraiser shop now sells at 50% like other shops
  - Wands will now only show the active spell in their name when the wand is active
+ - Automaton can not have overlapping casts, use `allow_overlap: true` inside the `cast` block to change this
 
 ## Additions
 

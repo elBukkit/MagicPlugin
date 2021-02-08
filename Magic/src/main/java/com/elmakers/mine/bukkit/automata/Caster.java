@@ -18,15 +18,22 @@ public class Caster {
     private final Deque<WeightedPair<String>> spells;
     private final boolean recast;
     private final boolean undoAll;
+    private final boolean allowOverlapping;
 
     public Caster(@Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
         spells = new ArrayDeque<>();
         RandomUtils.populateStringProbabilityMap(spells, configuration, "spells");
         recast = configuration.getBoolean("recast", true);
         undoAll = configuration.getBoolean("undo_all", true);
+        allowOverlapping = configuration.getBoolean("allow_overlap", false);
     }
 
     public void cast(Mage mage) {
+        if (!allowOverlapping) {
+            if (!mage.getPendingBatches().isEmpty()) {
+                return;
+            }
+        }
         String castSpell = RandomUtils.weightedRandom(spells);
         if (castSpell.length() > 0) {
             String[] parameters = null;
