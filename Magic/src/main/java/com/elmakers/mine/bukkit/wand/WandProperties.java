@@ -19,7 +19,9 @@ public abstract class WandProperties extends TemplatedProperties {
         .addAll(BaseMagicProperties.PROPERTY_KEYS)
         .add(
             "modifiers", "enchantments", "item_attributes", "auto_absorb",
-            "active_spell", "active_brush", "alternate_spell", "alternate_spell2", "worn",
+            "active_spell", "active_brush", "worn",
+            "alternate_spell", "alternate_spell2", "alternate_spell3", "alternate_spell4",
+            "alternate_spell5", "alternate_spell6", "alternate_spell7",
             "bound", "has_uses", "uses", "upgrade", "indestructible", "use_mode",
             "undroppable", "boostable",
             "effect_bubbles", "effect_color",

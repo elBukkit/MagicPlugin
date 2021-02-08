@@ -22,6 +22,7 @@
  - Add `command_source` parameter to Selector action, can be player, console (default) or opped_player
  - Add allowed_enchantments, blocked_enchantments and slot parameters to CheckInventory, for checking on a specific inventory slot
  - Add wand instructions progress menu item
+ - Add alternate_spell options on wand up to 7, so you can put 8 spells in total on a wand, one for each trigger (including sneak variants)
 
 # 8.3.3
 

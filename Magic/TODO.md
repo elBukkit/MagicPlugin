@@ -4,7 +4,7 @@
 
 ## Hot
 
- - wand instructions icon to progressmenu
+ - Spawned mobs attacking caster? (see: ghast)
  - RideEntity action, parameter to ignore steering
 
  - Paste all entities in schematics

@@ -129,9 +129,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private MaterialSet interactibleMaterials = null;
 
     private String activeSpell = "";
-    private String alternateSpell = "";
-    private String alternateSpell2 = "";
-    private String alternateSpell3 = "";
+    private String[] alternateSpells = new String[7];
     private String activeBrush = "";
     protected String wandName = "";
     protected String description = "";
@@ -1950,9 +1948,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             activeSpell = activeKey.getBaseKey();
             setProperty("active_spell", activeSpell);
         }
-        alternateSpell = getString("alternate_spell");
-        alternateSpell2 = getString("alternate_spell2");
-        alternateSpell3 = getString("alternate_spell3");
+        for (int i = 0; i < alternateSpells.length; i++) {
+            String key = "alternate_spell";
+            if (i > 0) {
+                key = key + (i + 1);
+            }
+            alternateSpells[i] = getString(key);
+        }
         activeBrush = getString("active_brush", getString("active_material"));
 
         if (hasProperty("hotbar")) {
@@ -4307,21 +4309,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
-    public Spell getAlternateSpell() {
-        if (mage == null || alternateSpell == null || alternateSpell.length() == 0) return null;
-        return mage.getSpell(alternateSpell);
-    }
-
-    @Nullable
-    public Spell getAlternateSpell2() {
-        if (mage == null || alternateSpell2 == null || alternateSpell2.length() == 0) return null;
-        return mage.getSpell(alternateSpell2);
-    }
-
-    @Nullable
-    public Spell getAlternateSpell3() {
-        if (mage == null || alternateSpell3 == null || alternateSpell3.length() == 0) return null;
-        return mage.getSpell(alternateSpell3);
+    public Spell getAlternateSpell(int index) {
+        String key = alternateSpells[index];
+        if (mage == null || key == null || key.length() == 0) return null;
+        return mage.getSpell(key);
     }
 
     @Nullable
@@ -4364,16 +4355,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-    public boolean alternateCast() {
-        return cast(getAlternateSpell());
-    }
-
-    public boolean alternateCast2() {
-        return cast(getAlternateSpell2());
-    }
-
-    public boolean alternateCast3() {
-        return cast(getAlternateSpell3());
+    public boolean alternateCast(int index) {
+        return cast(getAlternateSpell(index));
     }
 
     @Override
@@ -5774,13 +5757,25 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 cast();
                 break;
             case ALT_CAST:
-                alternateCast();
+                alternateCast(0);
                 break;
             case ALT_CAST2:
-                alternateCast2();
+                alternateCast(1);
                 break;
             case ALT_CAST3:
-                alternateCast3();
+                alternateCast(2);
+                break;
+            case ALT_CAST4:
+                alternateCast(3);
+                break;
+            case ALT_CAST5:
+                alternateCast(4);
+                break;
+            case ALT_CAST6:
+                alternateCast(5);
+                break;
+            case ALT_CAST7:
+                alternateCast(6);
                 break;
             case TOGGLE:
                 if (mode == WandMode.CYCLE) {
@@ -6107,7 +6102,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 options.add(mode.name().toLowerCase());
             }
         } else if (key.equals("left_click") || key.equals("right_click")
-                || key.equals("drop") || key.equals("swap")) {
+                || key.equals("drop") || key.equals("swap")
+                || key.equals("left_click_sneak") || key.equals("right_click_sneak")
+                || key.equals("drop_sneak") || key.equals("swap_sneak")) {
             for (WandAction action : WandAction.values()) {
                 options.add(action.name().toLowerCase());
             }
