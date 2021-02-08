@@ -4,15 +4,10 @@
 
 ## Hot
 
- - /wand add gives duplicate icons in the spell inventory
  - wand instructions icon to progressmenu
  - RideEntity action, parameter to ignore steering
 
  - Paste all entities in schematics
- - Broomstick handle stuck in offhand
- - "/wand add heal|3" resets all spell levels
- - Auto-give (keep) kits not working
-   .. also what to do with a full inventory?
 
  - People are still getting broomstick handles somehow ;( ;(
  - Refactor passive effects system from wand to work with classes and modifiers

@@ -3742,23 +3742,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void giveItem(ItemStack itemStack, boolean putInHand) {
+    public boolean giveItem(ItemStack itemStack, boolean putInHand) {
         if (!tryGiveItem(itemStack, putInHand)) {
+            if (InventoryUtils.getMetaBoolean(itemStack, "undroppable", false))  return false;
             Entity entity = getEntity();
             if (entity != null) {
                 entity.getWorld().dropItem(entity.getLocation(), itemStack);
             }
         }
+        return true;
     }
 
     @Override
-    public void giveItem(ItemStack itemStack) {
+    public boolean giveItem(ItemStack itemStack) {
         if (!tryGiveItem(itemStack)) {
+            if (InventoryUtils.getMetaBoolean(itemStack, "undroppable", false))  return false;
             Entity entity = getEntity();
             if (entity != null) {
                 entity.getWorld().dropItem(entity.getLocation(), itemStack);
             }
         }
+        return true;
     }
 
     @Override

@@ -47,8 +47,7 @@ public class ItemCurrency extends BaseMagicCurrency {
 
     @Override
     public boolean give(Mage mage, CasterProperties caster, double amount) {
-        mage.giveItem(getItemStack(amount).clone());
-        return true;
+        return mage.giveItem(getItemStack(amount).clone());
     }
 
     @Override
