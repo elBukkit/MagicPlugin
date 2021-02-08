@@ -27,6 +27,8 @@
 
 # 8.3.3
 
+ - Fix PVP preventing players from targeting themselves
+
 # 8.3.2
 
  - Fix issues with spell upgrades on wands
