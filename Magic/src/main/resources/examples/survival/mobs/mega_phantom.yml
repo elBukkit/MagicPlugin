@@ -5,6 +5,7 @@ mega_phantom:
     interval: 5000
     health: 80
     interval_requires_target: false
+    persist: false
     protection:
       fire: 100
     triggers:
