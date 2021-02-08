@@ -2249,16 +2249,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void updateName(boolean isActive) {
+        updateName(isActive, false);
+    }
+
+    public void updateName(boolean isActive, boolean stripColors) {
+        String name;
         if (isActive || useActiveName) {
-            CompatibilityUtils.setDisplayName(item, !isUpgrade ? getActiveWandName() :
-                    ChatColor.translateAlternateColorCodes('&', getMessage("upgrade_prefix")) + getDisplayName());
+            name = !isUpgrade ? getActiveWandName() :
+                    ChatColor.translateAlternateColorCodes('&', getMessage("upgrade_prefix")) + getDisplayName();
         } else {
-            CompatibilityUtils.setDisplayName(item, ChatColor.stripColor(getDisplayName()));
+            name = stripColors ? getDisplayName() : getActiveWandName(null, null);
         }
+
+        if (stripColors) {
+            name = ChatColor.stripColor(name);
+        }
+        CompatibilityUtils.setDisplayName(item, name);
     }
 
     private void updateName() {
-        updateName(true);
+        updateName(isActive);
     }
 
     protected static String convertToHTML(String line) {

@@ -11,6 +11,7 @@
  - "Not enough mana" messages will now show by default (unless your wand is set to silent)
  - Shop management tool now uses a GUI
  - The appraiser shop now sells at 50% like other shops
+ - Wands will now only show the active spell in their name when the wand is active
 
 ## Additions
 

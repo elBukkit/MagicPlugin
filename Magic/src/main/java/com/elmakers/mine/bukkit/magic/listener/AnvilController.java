@@ -55,7 +55,7 @@ public class AnvilController implements Listener {
                 item = InventoryUtils.makeReal(item);
                 if (Wand.isWand(item)) {
                     Wand wand = controller.getWand(item);
-                    wand.updateName(false);
+                    wand.updateName(false, false);
                     final Inventory inventory = event.getInventory();
                     final ItemStack finalItem = item;
 
@@ -145,7 +145,7 @@ public class AnvilController implements Listener {
                 } else {
                     // Moving from inventory to anvil
                     Wand wand = controller.getWand(current);
-                    wand.updateName(false);
+                    wand.updateName(false, false);
                 }
                 return;
             }
@@ -155,7 +155,7 @@ public class AnvilController implements Listener {
                 // Putting a wand into the anvil's crafting slot
                 if (Wand.isWand(cursor)) {
                     Wand wand = controller.getWand(cursor);
-                    wand.updateName(false);
+                    wand.updateName(false, false);
                 }
                 // Taking a wand out of the anvil's crafting slot
                 if (Wand.isWand(current)) {
