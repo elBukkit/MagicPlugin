@@ -13,11 +13,11 @@ overworld_mobs:
         - skeleton
         - husk
         - phantom
-      probability: 0.01
+      probability: 0.001
       replace_type:
-        bluedragon: 1
-        greendragon: 1
-        greydragon: 0.5
+        bluedragon: 2
+        greendragon: 2
+        greydragon: 1
         mega_phantom: 5
 
     replace_mobs:

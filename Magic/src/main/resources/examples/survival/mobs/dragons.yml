@@ -12,6 +12,8 @@ base_dragon:
   health: 100
   drop_xp: 100
   persist: true
+  invisible: true
+  silent: true
   boss_bar:
     bar_color: red
     bar_flags:
