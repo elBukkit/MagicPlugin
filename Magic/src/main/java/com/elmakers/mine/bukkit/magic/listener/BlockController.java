@@ -107,7 +107,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                 }
             }
         }
-        if (!controller.checkAutomatonBreak(block)) {
+        if (controller.checkAutomatonBreak(block)) {
             event.setCancelled(true);
             return;
         }
