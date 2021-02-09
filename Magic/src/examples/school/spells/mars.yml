@@ -12,6 +12,7 @@ mars:
         actions:
           - class: PotionEffect
           - class: CheckBlock
+            source_location: eyes
             allowed: air
             actions:
               - class: CheckInventory
@@ -34,6 +35,7 @@ mars:
     target_self: true
     target_type: Player
     bypass_pvp: true
+    bypass_protection: true
     duration: 5000
     interval: 1
     effects_ambient: false

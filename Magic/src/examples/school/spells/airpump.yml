@@ -20,23 +20,24 @@ airpump:
               - class: PlayEffects
                 effects: breach
               - class: AreaOfEffect
-                radius: 128
                 actions:
                   - class: BossBar
                     bar_title: "&cDOME BREACH! DANGER!!"
                     bar_color: red
                     bar_progress: 1
                     show_target: true
-              - class: Brush
-                brush: air
+              - class: Parallel
                 actions:
-                - class: Recurse
-                  depth: 104
+                - class: Brush
+                  brush: air
                   actions:
-                  - class: ModifyBlock
-                  - class: Skip
-                    until: 1000
+                  - class: Sphere
                     actions:
+                    - class: ModifyBlock
+                - class: Interval
+                  interval: 100
+                  duration: 20000
+                  actions:
                     - class: PlayEffects
                       effects: breach
             - class: Stop
@@ -63,7 +64,8 @@ airpump:
         target_self: true
         target_type: Player
         brush: cave_air
-        depth: 100
+        depth: 128
+        radius: 128
         destructible: air,cave_air
         cooldown: 1000
         ignore_region_overrides: true
@@ -79,6 +81,12 @@ airpump:
         - west
         - up
 
+smallairpump:
+  inherit: airpump
+  parameters:
+    depth: 32
+    radius: 32
+
 debugpump:
     icon: water_bucket{CustomModelData:18001}
     icon_disabled: water_bucket{CustomModelData:18002}
@@ -93,41 +101,9 @@ debugpump:
           - class: Recurse
             actions:
             - class: ModifyBlock
-            # - class: Skip
-            #  skip: 500
-            #  actions:
-            #    - class: Delay
             maxdepth:
-            - class: ChangeContext
-              target_caster: true
-              destructible_materials: black_stained_glass,air,cave_air
-              actions:
-              - class: PlayEffects
-                effects: breach
-              - class: AreaOfEffect
-                radius: 128
-                actions:
-                  - class: BossBar
-                    bar_title: "&cDOME BREACH! DANGER!!"
-                    bar_color: red
-                    bar_progress: 1
-                    show_target: true
-              - class: Parallel
-                actions:
-                - class: Recurse
-                  depth: 104
-                  actions:
-                   - class: Brush
-                     brush: red_stained_glass
-                     actions:
-                     - class: ModifyBlock
-                - class: Interval
-                  interval: 1000
-                  duration: 10000
-                  actions:
-                    - class: PlayEffects
-                      effects: breach
-              - class: Stop
+              - class: Message
+                message: Hit max depth
     effects:
         breach:
           - sound: block_bell_use
@@ -199,3 +175,115 @@ reversepump:
         - south
         - west
         - up
+
+findleaks:
+    icon: water_bucket{CustomModelData:18001}
+    icon_disabled: water_bucket{CustomModelData:18002}
+    legacy_icon: spell_icon:82
+    legacy_icon_disabled: spell_icon_disabled:82
+    icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
+    category: engineering
+    tags: noduel
+    worth: 6000
+    actions:
+        cast:
+          - class: Recurse
+            actions:
+            - class: ModifyBlock
+    parameters:
+        target: self
+        target_self: true
+        target_type: Player
+        brush: yellow_stained_glass
+        depth: 100
+        destructible: cave_air
+        cooldown: 1000
+        ignore_region_overrides: true
+        bypass_undo: true
+        faces:
+        - down
+        - north
+        - east
+        - south
+        - west
+        - up
+
+findleaks2:
+    icon: water_bucket{CustomModelData:18001}
+    icon_disabled: water_bucket{CustomModelData:18002}
+    legacy_icon: spell_icon:82
+    legacy_icon_disabled: spell_icon_disabled:82
+    icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
+    category: engineering
+    tags: noduel
+    worth: 6000
+    actions:
+        cast:
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
+    parameters:
+        target: self
+        target_self: true
+        target_type: Player
+        brush: yellow_stained_glass
+        radius: 8
+        destructible: cave_air
+        cooldown: 1000
+        bypass_undo: true
+
+findpockets:
+    icon: water_bucket{CustomModelData:18001}
+    icon_disabled: water_bucket{CustomModelData:18002}
+    legacy_icon: spell_icon:82
+    legacy_icon_disabled: spell_icon_disabled:82
+    icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
+    category: engineering
+    tags: noduel
+    worth: 6000
+    actions:
+        cast:
+          - class: Recurse
+            actions:
+            - class: ModifyBlock
+    parameters:
+        target: self
+        target_self: true
+        target_type: Player
+        brush: red_stained_glass
+        depth: 100
+        destructible: air
+        cooldown: 1000
+        ignore_region_overrides: true
+        bypass_undo: true
+        faces:
+        - down
+        - north
+        - east
+        - south
+        - west
+        - up
+
+findpockets2:
+    icon: water_bucket{CustomModelData:18001}
+    icon_disabled: water_bucket{CustomModelData:18002}
+    legacy_icon: spell_icon:82
+    legacy_icon_disabled: spell_icon_disabled:82
+    icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
+    category: engineering
+    tags: noduel
+    worth: 6000
+    actions:
+        cast:
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
+    parameters:
+        target: self
+        target_self: true
+        target_type: Player
+        radius: 8
+        destructible: air
+        brush: red_stained_glass
+        cooldown: 1000
+        bypass_undo: true

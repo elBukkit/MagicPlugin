@@ -1,0 +1,4 @@
+marstoearth:
+  inherit: spaceflight
+  parameters:
+    warp: earth

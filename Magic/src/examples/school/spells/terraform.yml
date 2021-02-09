@@ -1,0 +1,36 @@
+terraform:
+    icon: spell_icon:38
+    icon_disabled: spell_icon_disabled:38
+    icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
+    category: engineering
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ChangeBiome
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: F5EFFB
+           firework: ball
+        - class: EffectSingle
+          location: target
+          target_offset: 0,0.2,0
+          effectlib:
+             class: Shield
+             duration: $undo
+             period: 4
+             particle: snowball
+             radius: $radius
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 48
+        radius: 16
+        destructible: "*"
+        cooldown: 10000
+        biome: plains

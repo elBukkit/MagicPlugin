@@ -30,3 +30,14 @@ airpump:
   right_click: cast
   active_spell: createairpump
   uses: 1
+
+smallairpump:
+  icon: hopper
+  right_click: cast
+  active_spell: createairpump
+  uses: 1
+  overrides:
+    automaton_parameters:
+      drop_when_removed: smallairpump
+      cast:
+        spells: smallairpump

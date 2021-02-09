@@ -1,0 +1,4 @@
+earthtomars:
+  inherit: spaceflight
+  parameters:
+    warp: mars

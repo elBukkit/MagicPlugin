@@ -27,7 +27,7 @@ blastoff:
           - class: AreaOfEffect
             actions:
               - class: BossBar
-                bar_title: Liftoff Imminent!
+                bar_title: Blasting Off!
                 bar_progress: mars / 10
         - class: Delay
     - class: AreaOfEffect

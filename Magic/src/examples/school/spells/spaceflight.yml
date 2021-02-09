@@ -1,0 +1,79 @@
+spaceflight:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: SpaceFlight
+  icon: stick
+  actions:
+    cast:
+    - class: AreaOfEffect
+      actions:
+        - class: Message
+          message_target: true
+          message: "Enjoy the ride!"
+    - class: Interval
+      interval: 100
+      duration: 12000
+      actions:
+        - class: PlayEffects
+          effects: flying
+    - class: AreaOfEffect
+      actions:
+       - class: Message
+         message_target: true
+         message: "Starting landing sequence, please strap in!"
+       - class: Interval
+         interval: 100
+         duration: 5000
+         actions:
+           - class: PlayEffects
+             effects: landing
+    - class: AreaOfEffect
+      actions:
+        - class: Warp
+  effects:
+    cast:
+    - location: origin
+      sound: block_beacon_activate
+      sound_pitch: 0.5
+      sound_volume: 2.0
+      particle: flash
+    flying:
+    - location: origin
+      particle: falling_dust
+      material: sand
+      source_offset: 0,10,0
+      particle_count: 24
+      particle_offset_x: 16
+      particle_offset_z: 16
+      particle_offset_y: 4
+    - location: origin
+      particle: end_rod
+      particle_count: 8
+      particle_offset_x: 24
+      particle_offset_z: 24
+      particle_offset_y: 4
+    landing:
+    - location: origin
+      particle: explosion_huge
+      particle_count: 10
+      particle_offset_x: 8
+      particle_offset_z: 8
+      particle_offset_y: 3
+      sound: entity_generic_explode
+      sound_pitch: 0.2
+      sound_range: 64
+    - location: origin
+      sound: block_campfire_crackle
+      sound_pitch: 0.7
+      sound_volume: 2
+      sound_range: 64
+  parameters:
+    target: self
+    target_self: true
+    target_game_modes: all
+    bypass_pvp: true
+    bypass_protection: true
+    cooldown: 20000
+    target_type: Player
+    radius: 32
+    warp: mars
