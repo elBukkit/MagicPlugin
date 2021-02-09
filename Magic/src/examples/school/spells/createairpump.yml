@@ -1,0 +1,14 @@
+createairpump:
+    icon: water_bucket{CustomModelData:18001}
+    icon_disabled: water_bucket{CustomModelData:18002}
+    actions:
+        cast:
+        - class: ChangeContext
+          target_attachment: true
+          actions:
+          - class: CreateAutomaton
+    parameters:
+        target: block
+        range: 2
+        allow_max_range: false
+        automaton: airpump

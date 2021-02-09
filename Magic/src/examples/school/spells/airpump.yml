@@ -27,30 +27,29 @@ airpump:
                     bar_color: red
                     bar_progress: 1
                     show_target: true
-              - class: Parallel
+              - class: Brush
+                brush: air
                 actions:
                 - class: Recurse
                   depth: 84
                   actions:
-                   - class: Brush
-                     brush: air
-                     actions:
-                     - class: ModifyBlock
-                - class: Interval
-                  interval: 1000
-                  duration: 10000
-                  actions:
+                  - class: ModifyBlock
+                  - class: Skip
+                    until: 1000
+                    actions:
                     - class: PlayEffects
                       effects: breach
-              - class: Stop
+            - class: Stop
     effects:
         breach:
           - sound: block_bell_use
             sound_pitch: 1.8
             sound_volume: 2
+            sound_range: 128
           - sound: item_elytra_flying
             sound_volume: 1.3
             sound_pitch: 1.8
+            sound_range: 128
             effectlib:
               class: Helix
               particle: spell
@@ -71,6 +70,7 @@ airpump:
         bypass_pvp: true
         bypass_protection: true
         target_game_modes: all
+        bypass_undo: true
         faces:
         - down
         - north
@@ -78,8 +78,6 @@ airpump:
         - south
         - west
         - up
-    costs:
-        mana: 200
 
 debugpump:
     icon: water_bucket{CustomModelData:18001}
@@ -166,5 +164,3 @@ debugpump:
         - south
         - west
         - up
-    costs:
-        mana: 200
