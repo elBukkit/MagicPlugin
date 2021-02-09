@@ -27,6 +27,7 @@
  - Add steer_controllable parameter for vehicles, use in cars (WASD now steers, look direction not used)
  - Add While action, loops until some set of requirements is met (use with a variable for for/while loop type behavior)
  - Add destructible_materials and indestructible_materials options to ChangeContext action
+ - Add `until` parameter to Skip action, to skip sub-actions until some amount of time has passed
 
 # 8.3.3
 

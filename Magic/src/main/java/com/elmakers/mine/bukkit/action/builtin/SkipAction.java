@@ -15,18 +15,34 @@ public class SkipAction extends CompoundAction
 {
     private int skipCount;
     private int skipCounter;
+    private int skipDuration;
     private boolean repeatSkip;
+    private Long targetTime;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        skipCount = parameters.getInt("skip", 1);
+        skipDuration = parameters.getInt("until", 0);
+        skipCount = parameters.getInt("skip", skipDuration > 0 ? 0 : 1);
         repeatSkip = parameters.getBoolean("repeat_skip", true);
         skipCounter = 0;
     }
 
     @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        targetTime = null;
+    }
+
+    @Override
     public SpellResult step(CastContext context) {
+        if (targetTime == null && skipDuration > 0) {
+            targetTime = System.currentTimeMillis() + skipDuration;
+            return SpellResult.PENDING;
+        }
+        if (skipDuration > 0 && System.currentTimeMillis() < targetTime) {
+            return SpellResult.PENDING;
+        }
         if (skipCounter++ < skipCount)
         {
             return SpellResult.NO_ACTION;

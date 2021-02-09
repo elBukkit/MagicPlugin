@@ -4,7 +4,6 @@
 
 ## Hot
 
- - Spawned mobs attacking caster? (see: ghast)
  - Paste all entities in schematics
 
  - People are still getting broomstick handles somehow ;( ;(
