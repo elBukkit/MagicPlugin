@@ -24,7 +24,7 @@ public class Caster {
         spells = new ArrayDeque<>();
         RandomUtils.populateStringProbabilityMap(spells, configuration, "spells");
         recast = configuration.getBoolean("recast", true);
-        undoAll = configuration.getBoolean("undo_all", true);
+        undoAll = configuration.getBoolean("undo_all", false);
         allowOverlapping = configuration.getBoolean("allow_overlap", false);
     }
 

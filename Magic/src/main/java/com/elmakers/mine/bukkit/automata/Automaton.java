@@ -395,10 +395,11 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
         String dropWhenRemoved = template.getDropWhenRemoved();
         if (dropWhenRemoved != null && !dropWhenRemoved.isEmpty() && location != null) {
             ItemData item = controller.getOrCreateItem(dropWhenRemoved);
-            if (item == null) {
+            ItemStack stack = item == null ? null : item.getItemStack();
+            if (CompatibilityUtils.isEmpty(stack)) {
                 controller.getLogger().warning("Invalid item dropped in automaton " + template.getKey() + ": " + dropWhenRemoved);
             } else {
-                location.getWorld().dropItemNaturally(location, item.getItemStack());
+                location.getWorld().dropItemNaturally(location, stack);
             }
         }
     }
