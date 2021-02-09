@@ -129,13 +129,15 @@ public class BlockController implements Listener, ChunkLoadListener {
                         modifiedBlock.modify(block);
                         items = block.getDrops();
                     }
-                    block.setType(Material.AIR);
                     if (items != null) {
                         Location location = block.getLocation();
                         for (ItemStack item : items) {
-                            location.getWorld().dropItemNaturally(location, item);
+                            if (!CompatibilityUtils.isEmpty(item)) {
+                                location.getWorld().dropItemNaturally(location, item);
+                            }
                         }
                     }
+                    block.setType(Material.AIR);
                 }
                 com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
             }
