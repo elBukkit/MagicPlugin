@@ -1500,6 +1500,18 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
                 Player player = getTargetPlayer();
                 return player == null ? null : (double)player.getFoodLevel();
             }
+            case "target_location_x": {
+                Location location = getTargetLocation();
+                return location == null ? null : location.getX();
+            }
+            case "target_location_y": {
+                Location location = getTargetLocation();
+                return location == null ? null : location.getY();
+            }
+            case "target_location_z": {
+                Location location = getTargetLocation();
+                return location == null ? null : location.getZ();
+            }
         }
         return value;
     }

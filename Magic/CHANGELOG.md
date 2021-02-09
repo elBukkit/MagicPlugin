@@ -28,6 +28,7 @@
  - Add While action, loops until some set of requirements is met (use with a variable for for/while loop type behavior)
  - Add destructible_materials and indestructible_materials options to ChangeContext action
  - Add `until` parameter to Skip action, to skip sub-actions until some amount of time has passed
+ - Add attributes: target_location_x, target_location_y, target_location_z
 
 # 8.3.3
 
