@@ -17,7 +17,7 @@ public class SkipAction extends CompoundAction
     private int skipCounter;
     private int skipDuration;
     private boolean repeatSkip;
-    private Long targetTime;
+    private long targetTime;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -31,39 +31,36 @@ public class SkipAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        targetTime = null;
+        targetTime = 0;
     }
 
     @Override
     public SpellResult step(CastContext context) {
-        if (targetTime == null && skipDuration > 0) {
+        if (targetTime == 0 && skipDuration > 0) {
             targetTime = System.currentTimeMillis() + skipDuration;
-            return SpellResult.PENDING;
-        }
-        if (skipDuration > 0 && System.currentTimeMillis() < targetTime) {
-            return SpellResult.PENDING;
-        }
-        if (skipCounter++ < skipCount)
-        {
             return SpellResult.NO_ACTION;
         }
-        if (repeatSkip)
-        {
+        if (skipDuration > 0 && System.currentTimeMillis() < targetTime) {
+            return SpellResult.NO_ACTION;
+        }
+        if (skipCounter++ < skipCount) {
+            return SpellResult.NO_ACTION;
+        }
+        if (repeatSkip) {
             skipCounter = 0;
+            targetTime = 0;
         }
         return startActions();
     }
 
     @Override
-    public void getParameterNames(Spell spell, Collection<String> parameters)
-    {
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
         parameters.add("skip");
     }
 
     @Override
-    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
-    {
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         super.getParameterOptions(spell, parameterKey, examples);
 
         if (parameterKey.equals("skip")) {
