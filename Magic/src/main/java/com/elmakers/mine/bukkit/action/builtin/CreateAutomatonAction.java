@@ -18,14 +18,14 @@ public class CreateAutomatonAction extends BaseSpellAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         automatonKey = parameters.getString("automaton");
-        parameters = parameters.getConfigurationSection("automaton_parameters");
+        this.parameters = parameters.getConfigurationSection("automaton_parameters");
     }
 
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
         MageController controller = context.getController();
-        Location location = context.getTargetLocation();
+        Location location = context.getTargetBlock().getLocation();
         Automaton automaton = controller.addAutomaton(location, automatonKey, mage.getId(), mage.getName(), parameters);
         return automaton == null ? SpellResult.FAIL : SpellResult.CAST;
     }

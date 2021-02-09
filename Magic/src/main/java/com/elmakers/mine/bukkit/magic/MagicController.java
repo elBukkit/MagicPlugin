@@ -2176,6 +2176,15 @@ public class MagicController implements MageController {
         return restoreChunk.get(blockId);
     }
 
+    public boolean checkAutomatonBreak(Block block) {
+        Automaton automaton = getAutomatonAt(block.getLocation());
+        if (automaton != null && automaton.getTemplate().removeWhenBroken()) {
+            unregisterAutomaton(automaton);
+            return true;
+        }
+        return false;
+    }
+
     @Nullable
     public AutomatonTemplate getAutomatonTemplate(String key) {
         return automatonTemplates.get(key);
@@ -2639,6 +2648,7 @@ public class MagicController implements MageController {
         if (activeAutomata.remove(id) != null) {
             automaton.pause();
         }
+        automaton.removed();
 
         return removed;
     }

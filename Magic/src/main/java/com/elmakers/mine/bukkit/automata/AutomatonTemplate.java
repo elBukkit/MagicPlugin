@@ -41,6 +41,8 @@ public class AutomatonTemplate {
     private final Integer minPhaseOfMoon;
     private final Integer maxPhaseOfMoon;
     private final boolean alwaysActive;
+    private final boolean removeWhenBroken;
+    private final String dropWhenRemoved;
 
     public AutomatonTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         this.key = Preconditions.checkNotNull(key);
@@ -50,6 +52,8 @@ public class AutomatonTemplate {
         description = configuration.getString("description");
         interval = configuration.getInt("interval", 0);
         alwaysActive = configuration.getBoolean("always_active", false);
+        removeWhenBroken = configuration.getBoolean("remove_when_broken", false);
+        dropWhenRemoved = configuration.getString("drop_when_removed");
         if (configuration.isList("effects")) {
             effects = controller.loadEffects(configuration, "effects");
         } else {
@@ -251,5 +255,13 @@ public class AutomatonTemplate {
 
     public ConfigurationSection getConfiguration() {
         return configuration;
+    }
+
+    public boolean removeWhenBroken() {
+        return removeWhenBroken;
+    }
+
+    public String getDropWhenRemoved() {
+        return dropWhenRemoved;
     }
 }

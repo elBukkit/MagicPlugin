@@ -107,6 +107,10 @@ public class BlockController implements Listener, ChunkLoadListener {
                 }
             }
         }
+        if (!controller.checkAutomatonBreak(block)) {
+            event.setCancelled(true);
+            return;
+        }
         com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
         if (modifiedBlock != null) {
             UndoList undoList = modifiedBlock.getUndoList();

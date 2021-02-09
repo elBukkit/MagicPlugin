@@ -11,12 +11,14 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Locatable;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.effect.EffectContext;
@@ -384,5 +386,20 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void removed() {
+        if (template.removeWhenBroken() && location != null) {
+            location.getBlock().setType(Material.AIR);
+        }
+        String dropWhenRemoved = template.getDropWhenRemoved();
+        if (dropWhenRemoved != null && !dropWhenRemoved.isEmpty() && location != null) {
+            ItemData item = controller.getOrCreateItem(dropWhenRemoved);
+            if (item == null) {
+                controller.getLogger().warning("Invalid item dropped in automaton " + template.getKey() + ": " + dropWhenRemoved);
+            } else {
+                location.getWorld().dropItemNaturally(location, item.getItemStack());
+            }
+        }
     }
 }
