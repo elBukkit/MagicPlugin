@@ -4,6 +4,11 @@
 
 ## Hot
 
+ - Check smallairpump, overrides didn't work?
+ - Test /mauto configure spell with parameters
+ - Make /mauto cast command? or better cast parameters configuration?
+ - /mauto enable/disable commands
+
  - Paste all entities in schematics
 
  - People are still getting broomstick handles somehow ;( ;(

@@ -17,6 +17,7 @@ wolf:
   overrides:
     - max_dimension 1024
     - floodfill.depth 256
+    - recurse.depth 256
     - recall.warmup 0
     - phase.warmup 0
     - gather.warmup 0
