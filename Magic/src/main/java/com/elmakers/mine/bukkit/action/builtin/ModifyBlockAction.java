@@ -141,7 +141,7 @@ public class ModifyBlockAction extends BaseSpellAction {
 
         if (!commit) {
             context.registerForUndo(block);
-            if (brush.isErase()) {
+            if (brush.isErase() && !DefaultMaterials.isAir(block.getType())) {
                 context.clearAttachables(block);
             }
         }
