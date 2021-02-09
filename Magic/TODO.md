@@ -4,10 +4,16 @@
 
 ## Hot
 
+ - Item swap and drop dupe issues: https://github.com/elBukkit/MagicPlugin/issues/845
+
+ - Mobs should choose new targets if their top damager dies or goes far away (?)
+ - Consider revamping the "work" mechanic, maybe just allow some # of ms per tick?
  - Check smallairpump, overrides didn't work?
+ - block-based automaton, more official features... interact actions
  - Test /mauto configure spell with parameters
  - Make /mauto cast command? or better cast parameters configuration?
  - /mauto enable/disable commands
+ - Does "grow" not work on Phantoms?
 
  - Paste all entities in schematics
 

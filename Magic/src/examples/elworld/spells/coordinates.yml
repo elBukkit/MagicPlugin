@@ -1,0 +1,10 @@
+coordinates:
+  icon: compass
+  actions:
+    cast:
+      - class: Message
+        message: "Location: @location_x, @location_y, @location_z"
+      - class: Message
+        message: "Target: @target_location_x, @target_location_y, @target_location_z"
+  parameters:
+    range: 32
