@@ -35,18 +35,8 @@ Requires recent Java 8 JDK. Import directly as Maven Project. Build against pare
   - Boosik
   - Dr00bles
   - grisstyl
-- 3D Artists: 
-  - Dr00bles
-  - Toffy
-  - VelVoxel Raptor (https://www.youtube.com/watch?v=5QId3rMv89o)
-- 2D Artists:
-  - Dr00bles
-  - eleazzaar
-  - Claire Meyers (https://www.behance.net/gallery/18354273/D-D-Class-Icon-System)
-  - https://vectorified.com/download-image#rpg-icon-1.png
-- Sound Effects:
-  - Dr00bles
-  - S-Toad (Flute samples for Ocarina)
+
+Please see README.md in the resource pack zip for artist credits!
   
 ## Notes on Spell Icons
 
