@@ -396,7 +396,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             if (parameters == null) {
                 parameters = ConfigurationUtils.newConfigurationSection();
             }
-            ConfigurationUtils.set(parameters, key, args[1]);
+            String configValue = StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " ");
+            ConfigurationUtils.set(parameters, key, configValue);
             Object value = parameters.get(key);
             automaton.setParameters(parameters);
             sender.sendMessage(ChatColor.DARK_AQUA + "Set property: " + ChatColor.AQUA + key
