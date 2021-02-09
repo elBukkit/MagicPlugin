@@ -10,5 +10,7 @@ airpump:
   interval: 10000
   min_players: 1
   player_range: 128
+  remove_when_broken: true
+  drop_when_removed: airpump
   cast:
     spells: airpump

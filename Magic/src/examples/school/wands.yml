@@ -24,3 +24,9 @@ spacehelmet:
     worn: true
     wearable: helmet
     worth: 1000
+
+airpump:
+  icon: hopper
+  right_click: cast
+  active_spell: createairpump
+  uses: 1
