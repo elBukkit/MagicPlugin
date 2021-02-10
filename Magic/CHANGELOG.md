@@ -34,6 +34,7 @@
 # 8.3.3
 
  - Fix PVP preventing players from targeting themselves
+ - Fix some wand dupe issues
 
 # 8.3.2
 

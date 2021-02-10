@@ -5608,7 +5608,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             // This works around a pick block exploit by replacing the block (which ends up being a spell) that was
             // picked with the wand item.
             // Otherwise normally we don't replace the wand item itself in case it was modified since being stored
-            if (i != heldSlot || !isWand(inventory.getItem(i))) {
+            if (i != heldSlot || isSpell(inventory.getItem(i))) {
                 inventory.setItem(i, storedItem);
             }
         }
