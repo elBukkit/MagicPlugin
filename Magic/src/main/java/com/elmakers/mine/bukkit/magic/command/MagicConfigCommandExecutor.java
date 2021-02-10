@@ -698,7 +698,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             sessionId = sessions.get(mage.getId());
         }
         if (sessionId == null) {
-            sender.sendMessage(magic.getMessages().get("commands.mconfig." + command + ".usage"));
+            if (load) {
+                magic.loadConfiguration(sender);
+            } else {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig." + command + ".usage"));
+            }
             return;
         }
 
@@ -899,8 +903,14 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onFetchExample(CommandSender sender, String[] parameters) {
+        final Plugin plugin = magic.getPlugin();
         if (parameters.length < 1) {
-            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.usage"));
+            Collection<String> externalKeys = magic.getExternalExamples();
+            if (externalKeys.isEmpty()) {
+                sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.usage"));
+                return;
+            }
+            magic.updateExternalExamples(sender);
             return;
         }
         String exampleKey = parameters[0];
@@ -916,7 +926,6 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.wait").replace("$url", url));
-        final Plugin plugin = magic.getPlugin();
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new FetchExampleRunnable(magic, sender, exampleKey, url));
     }
 

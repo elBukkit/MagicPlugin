@@ -5,10 +5,6 @@
 ## Hot
 
  - hit/entity _count parameters don't work with EntityProjectile
- - /magic load should automatically re-fetch examples (/mconfig load should not)
- - Allow bare /mconfig load to just load configs (if not already like that)
- - Add /mconfig fetch to re-fetch all examples but not reload... maybe? Is that even useful?
- - Maybe re-fetch on startup, if that can be done synchronously without a mess
 
  - Copy brush to context. It's time, it really is.
    - Persist source locations somehow
@@ -22,7 +18,6 @@
  - block-based automaton, more official features... interact actions
  - Test /mauto configure spell with parameters
  - Make /mauto cast command? or better cast parameters configuration?
- - /mauto enable/disable commands
  - Does "grow" not work on Phantoms?
 
  - Paste all entities in schematics

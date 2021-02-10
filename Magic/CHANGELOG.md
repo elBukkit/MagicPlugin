@@ -14,6 +14,7 @@
  - Wands will now only show the active spell in their name when the wand is active
  - Automata can not have overlapping casts, use `allow_overlap: true` inside the `cast` block to change this
  - Automata no longer undo all their spell casts when deactivating, use `undo_all: true` inside the `cast` block to change this
+ - The `/magic load` command will now update all fetched external examples before reloading. Use `/mconfig load` if you want to skip this.
 
 ## Additions
 

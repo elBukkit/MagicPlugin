@@ -733,6 +733,11 @@ public interface MageController {
      */
     boolean register(MagicProvider provider);
     void loadConfigurationQuietly(CommandSender sender);
+
+    /**
+     * Update all fetched examples and then reload configuration
+     */
+    void updateConfiguration(CommandSender sender);
     @Nullable
     List<DeathLocation> getDeathLocations(Player player);
 

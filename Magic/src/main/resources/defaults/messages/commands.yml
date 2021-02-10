@@ -15,6 +15,8 @@ commands:
           unknown: "&cUnknown example: &e$example, &cuse a url to fetch it first.&r\n&cUsage: /mconfig example fetch <example name> <url>"
           fail: "&cCould not retrieve url &e$url"
           error: "&cSomething went wrong, please check logs"
+          wait_all: "&bPlease wait while examples are updated"
+          success_all: "&bFinished updating all examples"
           wait: "&bPlease wait, downloading &b$url..."
           success: "&bDownloaded example &2$example&f\n&rUse &6/mconfig example add $example&f to mix this in with your current configs\n&rUse &6/mconfig example set $example&f to set this as your base configuration"
           backup: "&eExample exists, &3backing up to &f$backup"

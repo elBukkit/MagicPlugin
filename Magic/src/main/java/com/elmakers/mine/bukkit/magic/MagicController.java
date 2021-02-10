@@ -166,6 +166,8 @@ import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.kit.KitController;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.config.FetchExampleRunnable;
+import com.elmakers.mine.bukkit.magic.command.config.UpdateAllExamplesCallback;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
 import com.elmakers.mine.bukkit.magic.listener.BlockController;
 import com.elmakers.mine.bukkit.magic.listener.CraftingController;
@@ -2306,6 +2308,11 @@ public class MagicController implements MageController {
         } else {
             loadTask.runNow();
         }
+    }
+
+    @Override
+    public void updateConfiguration(CommandSender sender) {
+        updateExternalExamples(sender);
     }
 
     public void loadConfigurationExamples(CommandSender sender) {
@@ -7090,7 +7097,7 @@ public class MagicController implements MageController {
     @Nonnull
     @Override
     public Collection<String> getExternalExamples() {
-        List<String> examples = new ArrayList<>(builtinExternalExamples.keySet());
+        Set<String> examples = new HashSet<>(builtinExternalExamples.keySet());
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         if (examplesFolder.exists()) {
             for (File file : examplesFolder.listFiles()) {
@@ -7099,6 +7106,26 @@ public class MagicController implements MageController {
             }
         }
         return examples;
+    }
+
+    public void updateExternalExamples(CommandSender sender) {
+        Collection<String> examples = getExternalExamples();
+        if (examples.isEmpty()) {
+            loadConfiguration(sender);
+            return;
+        }
+        sender.sendMessage(getMessages().get("commands.mconfig.example.fetch.wait_all"));
+        UpdateAllExamplesCallback callback = new UpdateAllExamplesCallback(sender, this);
+        for (String exampleKey : examples) {
+            String url = getExternalExampleURL(exampleKey);
+            if (url == null || url.isEmpty()) {
+                sender.sendMessage(getMessages().get("commands.mconfig.example.fetch.unknown").replace("$example", exampleKey));
+                continue;
+            }
+            callback.loading();
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new FetchExampleRunnable(this, sender, exampleKey, url, callback, true));
+        }
+        callback.check();
     }
 
     @Nullable
@@ -7771,6 +7798,7 @@ public class MagicController implements MageController {
     private Map<String, PlayerWarpManager>      playerWarpManagers          = new HashMap<>();
     private Map<Material, String>               autoWands                   = new HashMap<>();
     private Map<String, String>                 builtinExternalExamples     = new HashMap<>();
+    private int                                 updatingExternalExamples    = 0;
     private boolean                             showExampleInstructions     = false;
     private boolean                             disableSpawnReplacement     = false;
     private SwingType                           swingType                   = SwingType.ANIMATE_IF_ADVENTURE;

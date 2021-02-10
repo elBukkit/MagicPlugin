@@ -21,14 +21,28 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class FetchExampleRunnable extends HttpGet {
     private final String exampleKey;
+    private final boolean quiet;
+    private final ExampleUpdatedCallback callback;
 
     public FetchExampleRunnable(MagicController controller, CommandSender sender, String exampleKey, String url) {
+        this(controller, sender, exampleKey, url, null, false);
+    }
+
+    public FetchExampleRunnable(MagicController controller, CommandSender sender, String exampleKey, String url, ExampleUpdatedCallback callback, boolean quiet) {
         super(controller, sender, url);
         this.exampleKey = exampleKey;
+        this.quiet = quiet;
+        this.callback = callback;
     }
 
     @Override
     public void processResponse(InputStream response) {
+        if (response == null) {
+            if (callback != null) {
+                callback.updated(false, exampleKey, url);
+            }
+            return;
+        }
         byte[] buffer = new byte[2048];
         File examplesFolder = new File(controller.getPlugin().getDataFolder(), "examples");
         examplesFolder = new File(examplesFolder, exampleKey);
@@ -83,6 +97,9 @@ public class FetchExampleRunnable extends HttpGet {
         } catch (Exception ex) {
             fail(messages, controller.getMessages().get("commands.mconfig.example.fetch.error"), "Error reading zip file", ex);
             ex.printStackTrace();
+            if (callback != null) {
+                callback.updated(false, exampleKey, url);
+            }
             return;
         }
         try {
@@ -105,8 +122,13 @@ public class FetchExampleRunnable extends HttpGet {
             }
         }
 
-        String message = controller.getMessages().get("commands.mconfig.example.fetch.success");
-        message = message.replace("$url", url).replace("$example", exampleKey);
-        success(messages, message);
+        if (!quiet) {
+            String message = controller.getMessages().get("commands.mconfig.example.fetch.success");
+            message = message.replace("$url", url).replace("$example", exampleKey);
+            success(messages, message);
+        }
+        if (callback != null) {
+            callback.updated(true, exampleKey, url);
+        }
     }
 }

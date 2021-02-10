@@ -126,7 +126,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
         if (subCommand.equalsIgnoreCase("load") || subCommand.equalsIgnoreCase("reload"))
         {
-            api.reload(sender);
+            api.getController().updateConfiguration(sender);
             return true;
         }
         if (subCommand.equalsIgnoreCase("clearcache"))
