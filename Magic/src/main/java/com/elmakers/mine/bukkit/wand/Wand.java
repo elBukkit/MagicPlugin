@@ -3188,7 +3188,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Make sure the wand is still in the held slot
         ItemStack currentItem = playerInventory.getItem(heldSlot);
         if (currentItem == null || !currentItem.getItemMeta().equals(item.getItemMeta())) {
-            controller.getLogger().warning("Trying to update hotbar but the wand has gone missing");
+            if (mage != null) {
+                mage.sendDebugMessage("Trying to update hotbar but the wand has gone missing");
+            }
             return false;
         }
 
