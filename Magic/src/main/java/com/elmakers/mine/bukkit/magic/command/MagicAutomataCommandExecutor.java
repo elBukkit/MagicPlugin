@@ -84,6 +84,16 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (subCommand.equalsIgnoreCase("enable")) {
+            onEnableAutomaton(sender, selection);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("disable")) {
+            onDisableAutomaton(sender, selection);
+            return true;
+        }
+
         if (subCommand.equalsIgnoreCase("tp")) {
             onTPAutomata(sender, selection);
             return true;
@@ -222,6 +232,48 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         playEffects(sender, automaton, "blockdebug");
         String rangeMessage = selections.getDistanceMessage(sender, automaton);
         String message = ChatColor.YELLOW + "Debugging " + ChatColor.LIGHT_PURPLE + automaton.getName()
+            + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
+        if (rangeMessage != null) {
+            message += rangeMessage;
+        }
+        sender.sendMessage(message);
+    }
+
+    private void onEnableAutomaton(CommandSender sender, Automaton automaton) {
+        if (automaton == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            return;
+        }
+        if (automaton.isEnabled()) {
+            sender.sendMessage(ChatColor.RED + "Automaton is already enabled");
+            return;
+        }
+        automaton.enable();
+        Location location = automaton.getLocation();
+        playEffects(sender, automaton, "blockselect");
+        String rangeMessage = selections.getDistanceMessage(sender, automaton);
+        String message = ChatColor.YELLOW + "Enabled " + ChatColor.LIGHT_PURPLE + automaton.getName()
+            + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
+        if (rangeMessage != null) {
+            message += rangeMessage;
+        }
+        sender.sendMessage(message);
+    }
+
+    private void onDisableAutomaton(CommandSender sender, Automaton automaton) {
+        if (automaton == null) {
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            return;
+        }
+        if (!automaton.isEnabled()) {
+            sender.sendMessage(ChatColor.RED + "Automaton is already disabled");
+            return;
+        }
+        automaton.disable();
+        Location location = automaton.getLocation();
+        playEffects(sender, automaton, "blockremove");
+        String rangeMessage = selections.getDistanceMessage(sender, automaton);
+        String message = ChatColor.YELLOW + "Disabled " + ChatColor.LIGHT_PURPLE + automaton.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
@@ -500,6 +552,9 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             options.add("name");
             options.add("tp");
             options.add("move");
+            options.add("debug");
+            options.add("enable");
+            options.add("disable");
         } else if (args.length == 2 && subCommand.equalsIgnoreCase("add")) {
             options.addAll(magicController.getAutomatonTemplateKeys());
         } else if (isConfigure) {

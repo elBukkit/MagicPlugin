@@ -140,6 +140,9 @@ public abstract class SelectionManager<T extends Locatable> extends Paginator<T>
             } else if (item.isActive()) {
                 listType = ListType.ACTIVE;
                 color = ChatColor.LIGHT_PURPLE;
+            } else if (!item.isEnabled()) {
+                listType = ListType.INACTIVE;
+                color = ChatColor.DARK_GRAY;
             } else {
                 listType = ListType.INACTIVE;
                 color = ChatColor.GRAY;

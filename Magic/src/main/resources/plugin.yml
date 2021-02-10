@@ -739,6 +739,8 @@ commands:
         /mauto tp                         Teleport to the selected automaton
         /mauto move                       Move the selected automaton to your location
         /mauto debug                      Debug spell casts from the selected automaton
+        /mauto disable                    Turn off an automaton without removing it
+        /mauto enable                     Reactivate a disabled automaton
   mmob:
     description: Manage Magic Mobs
     permission: Magic.commands.mmob

@@ -15,7 +15,6 @@
    - Maybe separate brush item to change source/target location?
    - Need to make sure that the target/source locations are shared across spells
  - Targeting options for passive or hostile mobs only
- - Item swap and drop dupe issues: https://github.com/elBukkit/MagicPlugin/issues/845
 
  - Mobs should choose new targets if their top damager dies or goes far away (?)
  - Consider revamping the "work" mechanic, maybe just allow some # of ms per tick?

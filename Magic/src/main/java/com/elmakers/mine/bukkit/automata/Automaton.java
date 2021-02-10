@@ -57,8 +57,9 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     public Automaton(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
         this.controller = controller;
 
-        // TODO: /mauto enable/disable commands, show disabled dark grey in list, etc
-        enabled = node.getBoolean("enabled");
+        // I messed up and added the "enabled" flag initially as defaulting to false.. rather than
+        // force everyone to clean up that mess, I'm changing it to "disabled".
+        enabled = !node.getBoolean("disabled", false);
         templateKey = node.getString("template");
         parameters = ConfigurationUtils.getConfigurationSection(node, "parameters");
         if (templateKey != null) {
@@ -120,7 +121,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     }
 
     public void save(ConfigurationSection node) {
-        node.set("enabled", enabled);
+        node.set("disabled", !enabled);
         node.set("created", createdAt);
         node.set("creator", creatorId);
         node.set("creator_name", creatorName);
@@ -213,6 +214,28 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     }
 
     @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void enable() {
+        if (enabled) return;
+        this.enabled = true;
+        if (inActiveChunk()) {
+            resume();
+        }
+    }
+
+    public void disable() {
+        this.enabled = false;
+        pause();
+    }
+
+    public boolean inActiveChunk() {
+        return CompatibilityUtils.isChunkLoaded(getLocation()) || isAlwaysActive();
+    }
+
+    @Override
     public Location getLocation() {
         return location;
     }
@@ -273,7 +296,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     }
 
     public void tick() {
-        if (template == null) return;
+        if (template == null || !enabled) return;
 
         long now = System.currentTimeMillis();
         if (now < nextTick) return;

@@ -6,4 +6,7 @@ public interface Locatable {
     String getName();
     Location getLocation();
     boolean isActive();
+    default boolean isEnabled() {
+        return true;
+    }
 }
