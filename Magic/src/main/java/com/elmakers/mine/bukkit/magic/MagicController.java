@@ -409,10 +409,6 @@ public class MagicController implements MageController {
             throws PluginNotLoadedException, NoSuchMageException {
         checkNotNull(mageId);
 
-        // Should only happen for Automata.
-        if (commandSender == null && entity == null) {
-            commandSender = Bukkit.getConsoleSender();
-        }
         if (!loaded) {
             if (entity instanceof Player) {
                 getLogger().warning("Player data request for " + mageId + " (" + ((Player)commandSender).getName() + ") failed, plugin not loaded yet");
