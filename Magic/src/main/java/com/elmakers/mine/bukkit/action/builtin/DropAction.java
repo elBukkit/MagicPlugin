@@ -23,6 +23,7 @@ public class DropAction extends BaseSpellAction {
     private boolean falling = true;
     private Collection<ItemStack> drops;
     private ItemStack toolItem;
+    private boolean giveToCaster;
 
     @Override
     public void finish(CastContext context) {
@@ -31,7 +32,11 @@ public class DropAction extends BaseSpellAction {
         if (target == null || drops == null) return;
 
         for (ItemStack drop : drops) {
-            target.getWorld().dropItemNaturally(target, drop);
+            if (giveToCaster) {
+                context.getMage().giveItem(drop);
+            } else {
+                target.getWorld().dropItemNaturally(target, drop);
+            }
         }
         drops = null;
     }
@@ -41,6 +46,7 @@ public class DropAction extends BaseSpellAction {
         super.prepare(context, parameters);
         dropCount = parameters.getInt("drop_count", -1);
         falling = parameters.getBoolean("falling", true);
+        giveToCaster = parameters.getBoolean("give_to_caster", false);
         String toolMaterialName = parameters.getString("tool", defaultTool.name());
         toolItem = null;
         try {
