@@ -1710,6 +1710,10 @@ public class BaseSpell implements MageSpell, Cloneable {
                 updateCooldown();
             }
         }
+
+        // Record cast time, may be redudant if updateCooldown was called above but that's ok
+        spellData.setLastCast(System.currentTimeMillis());
+
         // Need some way to clear selected target here
         if (success && toggle != ToggleType.NONE) {
             activate();
