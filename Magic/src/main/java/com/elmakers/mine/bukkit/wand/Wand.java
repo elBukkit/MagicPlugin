@@ -5209,12 +5209,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int inventoryCount = inventories.size();
         int spellCount = spells.size();
 
+        // Look for existing spells for spell upgrades
+        Integer inventorySlot = spellInventory.get(spellKey.getBaseKey());
+        clearSlot(inventorySlot);
+
         setSpellLevel(spellKey.getBaseKey(), level);
         spells.add(spellKey.getBaseKey());
 
         if (activeSpell == null || activeSpell.isEmpty()) {
             setActiveSpell(spellKey.getBaseKey());
         }
+
+        addToInventory(spellItem, inventorySlot);
+        checkSpellLevelsAndInventory();
         updateInventory();
         updateHasInventory();
         saveState();
@@ -5395,6 +5402,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         brushInventory.put(materialKey, null);
         brushes.add(materialKey);
+        addToInventory(itemStack);
         if (activeBrush == null || activeBrush.length() == 0) {
             activateBrush(materialKey);
         } else {
