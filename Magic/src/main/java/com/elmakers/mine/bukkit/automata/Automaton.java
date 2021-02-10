@@ -50,11 +50,15 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     private long lastSpawn;
     private EffectContext effectContext;
     private boolean isActive;
+    private boolean enabled;
 
     private Mage mage;
 
     public Automaton(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
         this.controller = controller;
+
+        // TODO: /mauto enable/disable commands, show disabled dark grey in list, etc
+        enabled = node.getBoolean("enabled");
         templateKey = node.getString("template");
         parameters = ConfigurationUtils.getConfigurationSection(node, "parameters");
         if (templateKey != null) {
@@ -116,6 +120,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     }
 
     public void save(ConfigurationSection node) {
+        node.set("enabled", enabled);
         node.set("created", createdAt);
         node.set("creator", creatorId);
         node.set("creator_name", creatorName);
@@ -319,6 +324,14 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
         return template;
     }
 
+    public boolean isAlwaysActive() {
+        return template != null && template.isAlwaysActive();
+    }
+
+    public boolean removeWhenBroken() {
+        return template != null && template.removeWhenBroken();
+    }
+
     @Nonnull
     private EffectContext getEffectContext() {
         if (effectContext == null) {
@@ -391,6 +404,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     }
 
     public void removed() {
+        if (template == null) return;
         if (template.removeWhenBroken() && location != null) {
             location.getBlock().setType(Material.AIR);
         }

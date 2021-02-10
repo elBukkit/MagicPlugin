@@ -2174,7 +2174,7 @@ public class MagicController implements MageController {
 
     public boolean checkAutomatonBreak(Block block) {
         Automaton automaton = getAutomatonAt(block.getLocation());
-        if (automaton != null && automaton.getTemplate().removeWhenBroken()) {
+        if (automaton != null && automaton.removeWhenBroken()) {
             unregisterAutomaton(automaton);
             return true;
         }
@@ -2624,7 +2624,7 @@ public class MagicController implements MageController {
         long id = automaton.getId();
         chunkAutomata.put(id, automaton);
 
-        if (CompatibilityUtils.isChunkLoaded(automaton.getLocation()) || automaton.getTemplate().isAlwaysActive()) {
+        if (CompatibilityUtils.isChunkLoaded(automaton.getLocation()) || automaton.isAlwaysActive()) {
             activeAutomata.put(id, automaton);
             automaton.resume();
         }
@@ -2655,7 +2655,7 @@ public class MagicController implements MageController {
         if (chunkData != null) {
             activeAutomata.putAll(chunkData);
             for (Automaton automaton : chunkData.values()) {
-                if (!automaton.getTemplate().isAlwaysActive()) {
+                if (!automaton.isAlwaysActive()) {
                     automaton.resume();
                 }
             }
@@ -2667,7 +2667,7 @@ public class MagicController implements MageController {
         Map<Long, Automaton> chunkData = automata.get(chunkKey);
         if (chunkData != null) {
             for (Automaton automaton : chunkData.values()) {
-                if (!automaton.getTemplate().isAlwaysActive()) {
+                if (!automaton.isAlwaysActive()) {
                     automaton.pause();
                     activeAutomata.remove(automaton.getId());
                 }
