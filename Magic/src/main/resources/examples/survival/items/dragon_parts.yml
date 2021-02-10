@@ -1,32 +1,1005 @@
-dragonwingleftred:
+dragonbodyblue:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
     meta:
       ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18007
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 60
+        BLUE: 170
+        GREEN: 68
+
+dragonbodybrown:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 131
+        BLUE: 50
+        GREEN: 84
+
+dragonbodycyan:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 22
+        BLUE: 156
+        GREEN: 156
+
+dragonbodygrey:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 128
+        BLUE: 128
+        GREEN: 128
+
+dragonbodyblack:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 71
+        BLUE: 82
+        GREEN: 79
+
+dragonbodygreen:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 94
+        BLUE: 22
+        GREEN: 124
+
+dragonbodylightblue:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 58
+        BLUE: 218
+        GREEN: 179
+
+dragonbodylightgrey:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 157
+        BLUE: 151
+        GREEN: 157
+
+dragonbodylightred:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 176
+        BLUE: 38
+        GREEN: 46
+
+dragonbodylime:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 128
+        BLUE: 31
+        GREEN: 199
+
+dragonbodymagenta:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 199
+        BLUE: 189
+        GREEN: 78
+
+dragonbodyorange:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 249
+        BLUE: 29
+        GREEN: 128
+
+dragonbodypink:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 243
+        BLUE: 170
+        GREEN: 139
+
+dragonbodypurple:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 137
+        BLUE: 184
+        GREEN: 50
 
 dragonbodyred:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
     meta:
       ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18008
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 176
+        BLUE: 38
+        GREEN: 46
+
+dragonbodywhite:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 249
+        BLUE: 254
+        GREEN: 255
+
+dragonbodyyellow:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Base"}],"text":""}'
+      custom-model-data: 18001
+      color:
+        ==: Color
+        RED: 254
+        BLUE: 61
+        GREEN: 216
+
+dragonleftgreen:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 94
+        BLUE: 22
+        GREEN: 124
+
+dragonwingleftblack:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 29
+        BLUE: 33
+        GREEN: 29
+
+dragonwingleftgrey:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 128
+        BLUE: 128
+        GREEN: 128
+
+dragonwingleftblue:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 60
+        BLUE: 170
+        GREEN: 68
+
+dragonwingleftbrown:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 131
+        BLUE: 50
+        GREEN: 84
+
+dragonwingleftcyan:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 22
+        BLUE: 156
+        GREEN: 156
+
+dragonwingleftgrey:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 71
+        BLUE: 82
+        GREEN: 79
+
+dragonwingleftgreen:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 94
+        BLUE: 22
+        GREEN: 124
+
+dragonwingleftlightblue:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 22
+        BLUE: 156
+        GREEN: 156
+
+dragonwingleftlightgrey:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 157
+        BLUE: 151
+        GREEN: 157
+
+dragonwingleftlime:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 128
+        BLUE: 31
+        GREEN: 199
+
+dragonwingleftmagenta:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 199
+        BLUE: 189
+        GREEN: 78
+
+dragonwingleftorange:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 249
+        BLUE: 29
+        GREEN: 128
+
+dragonwingleftpink:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 243
+        BLUE: 170
+        GREEN: 139
+
+dragonwingleftpurple:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 137
+        BLUE: 184
+        GREEN: 50
+
+dragonwingleftred:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 176
+        BLUE: 38
+        GREEN: 46
+
+dragonwingleftwhite:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 249
+        BLUE: 254
+        GREEN: 255
+
+dragonwingleftyellow:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Left wing"}],"text":""}'
+      custom-model-data: 18002
+      color:
+        ==: Color
+        RED: 254
+        BLUE: 61
+        GREEN: 216
+
+dragonwingrightblack:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 29
+        BLUE: 33
+        GREEN: 29
+
+
+dragonwingrightgrey:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 128
+        BLUE: 128
+        GREEN: 128
+
+dragonwingrightblue:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 60
+        BLUE: 170
+        GREEN: 68
+
+dragonwingrightbrown:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 131
+        BLUE: 50
+        GREEN: 84
+
+dragonwingrightcyan:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 22
+        BLUE: 156
+        GREEN: 156
+
+dragonwingrightgrey:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 71
+        BLUE: 82
+        GREEN: 79
+
+dragonwingrightgreen:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 94
+        BLUE: 22
+        GREEN: 124
+
+dragonwingrightlightblue:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 58
+        BLUE: 218
+        GREEN: 179
+
+dragonwingrightlightgrey:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 157
+        BLUE: 151
+        GREEN: 157
+
+dragonwingrightlightgreen:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 128
+        BLUE: 31
+        GREEN: 199
+
+dragonwingrightlime:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 128
+        BLUE: 31
+        GREEN: 199
+
+dragonwingrightmagenta:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 199
+        BLUE: 189
+        GREEN: 78
+
+dragonwingrightorange:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 249
+        BLUE: 29
+        GREEN: 128
+
+dragonwingrightpink:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 243
+        BLUE: 170
+        GREEN: 139
+
+dragonwingrightpurple:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 137
+        BLUE: 184
+        GREEN: 50
 
 dragonwingrightred:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
     meta:
       ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18009
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 176
+        BLUE: 38
+        GREEN: 46
+
+dragonwingrightwhite:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 249
+        BLUE: 254
+        GREEN: 255
+
+dragonwingrightyellow:
+  creator_id: 800a3f29-a0ec-420b-8add-afb5bcedc401
+  creator: thecornelia
+  worth: 0.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: LEATHER_HORSE_ARMOR
+    meta:
+      ==: ItemMeta
+      meta-type: LEATHER_ARMOR
+      display-name: '{"extra":[{"text":"Right Wing"}],"text":""}'
+      custom-model-data: 18003
+      color:
+        ==: Color
+        RED: 254
+        BLUE: 61
+        GREEN: 216
 
 thorns:
   item:
@@ -38,123 +1011,3 @@ thorns:
       meta-type: UNSPECIFIC
       enchants:
         THORNS: 3
-
-dragonwingleftblue:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18010
-
-dragonbodyblue:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18011
-
-dragonwingrightblue:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18012
-
-dragonwingleftgreen:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18013
-
-dragonbodygreen:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18014
-
-dragonwingrightgreen:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18015
-
-dragonwingleftgrey:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18016
-
-dragonbodygrey:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18017
-
-dragonwingrightgrey:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18018
-
-dragonwingleftpurple:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18019
-
-dragonbodypurple:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18020
-
-dragonwingrightpurple:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 2230
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      custom-model-data: 18021

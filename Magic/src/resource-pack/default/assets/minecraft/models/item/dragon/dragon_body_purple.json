@@ -1,7 +1,0 @@
-{
-	"__comment": "Minecraft structure body2 by NightScythe1",
-	"parent": "item/dragon/dragon_body_base",
-	"textures": {
-		"atlas": "dragon/dragon_body_purple"
-	}
-}

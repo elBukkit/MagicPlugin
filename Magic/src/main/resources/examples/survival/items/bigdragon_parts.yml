@@ -1,0 +1,149 @@
+bigdragonwingleftred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18007
+
+bigdragonbodyred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18008
+
+bigdragonwingrightred:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18009
+
+bigdragonwingleftblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18010
+
+bigdragonbodyblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18011
+
+bigdragonwingrightblue:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18012
+
+bigdragonwingleftgreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18013
+
+bigdragonbodygreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18014
+
+bigdragonwingrightgreen:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18015
+
+bigdragonwingleftgrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18016
+
+bigdragonbodygrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18017
+
+bigdragonwingrightgrey:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18018
+
+bigdragonwingleftpurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18019
+
+bigdragonbodypurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18020
+
+bigdragonwingrightpurple:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: FEATHER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      custom-model-data: 18021

@@ -1,9 +1,9 @@
 {
 	"__comment": "Minecraft structure wingright2 by NightScythe1",
-	"parent": "item/dragon/dragon_wing_base_right",
+	"parent": "item/bigdragon/dragon_wing_base_right",
 	"textures": {
 		"particle": "items/particle",
 		"texture": "items/texture",
-		"voxels_palette": "dragon/dragon_wing_purple_right"
+		"voxels_palette": "bigdragon/dragon_wing_grey_right"
 	}
 }
