@@ -4,6 +4,17 @@
 
 ## Hot
 
+ - hit/entity _count parameters don't work with EntityProjectile
+ - /magic load should automatically re-fetch examples (/mconfig load should not)
+ - Allow bare /mconfig load to just load configs (if not already like that)
+ - Add /mconfig fetch to re-fetch all examples but not reload... maybe? Is that even useful?
+ - Maybe re-fetch on startup, if that can be done synchronously without a mess
+
+ - Copy brush to context. It's time, it really is.
+   - Persist source locations somehow
+   - Maybe separate brush item to change source/target location?
+   - Need to make sure that the target/source locations are shared across spells
+ - Targeting options for passive or hostile mobs only
  - Item swap and drop dupe issues: https://github.com/elBukkit/MagicPlugin/issues/845
 
  - Mobs should choose new targets if their top damager dies or goes far away (?)

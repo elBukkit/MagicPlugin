@@ -66,8 +66,11 @@ public class CameraSpell extends TargetingSpell
                         } else {
                             playerName = getMobSkin(targetEntity.getType());
                             if (playerName != null) {
-                                metaName = targetEntity.getType().getName();
-                                metaName = WordUtils.capitalize(metaName.toLowerCase().replace('_', ' '));
+                                metaName = targetEntity.getCustomName();
+                                if (metaName == null || metaName.isEmpty()) {
+                                    metaName = targetEntity.getType().getName();
+                                    metaName = WordUtils.capitalize(metaName.toLowerCase().replace('_', ' '));
+                                }
                             }
                         }
                     } else {
