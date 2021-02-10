@@ -135,7 +135,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             }
         } else if (player != null) {
             Location location = player.getEyeLocation();
-            BlockIterator iterator = new BlockIterator(location.getWorld(), location.toVector(), location.getDirection(), 0, 64);
+            BlockIterator iterator = new BlockIterator(location.getWorld(), location.toVector(), location.getDirection(), 0, 16);
             Block block = location.getBlock();
             while (block.getType() == Material.AIR && iterator.hasNext()) {
                 block = iterator.next();
