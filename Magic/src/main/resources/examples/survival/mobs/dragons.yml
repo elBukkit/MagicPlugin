@@ -51,6 +51,21 @@ bluedragon:
         dragonwater: 10
         dragonwingblast: 30
 
+cyandragon:
+  inherit: bluedragon
+  hidden: false
+  name: '&bCyan Dragon'
+  item: dragonwingrightcyan
+  offhand: dragonwingleftcyan
+  helmet: dragonbodycyan
+
+lightbluedragon:
+  inherit: bluedragon
+  name: '&bLight Blue Dragon'
+  item: dragonwingrightlightblue
+  offhand: dragonwingleftlightblue
+  helmet: dragonbodylightblue
+
 greendragon:
   inherit: base_dragon
   hidden: false
@@ -67,6 +82,13 @@ greendragon:
         dragonexplodepoison: 30
         dragonpoison: 10
         dragonwingblast: 30
+
+limedragon:
+  inherit: greendragon
+  name: '&Lime Dragon'
+  item: dragonwingrightlime
+  offhand: dragonwingleftlime
+  helmet: dragonbodylime
 
 greydragon:
   inherit: base_dragon
@@ -85,6 +107,39 @@ greydragon:
         dragondark: 10
         dragonwingblast: 30
 
+whitedragon:
+  inherit: base_dragon
+  hidden: false
+  name: '&fWhite Dragon'
+  item: dragonwingrightwhite
+  offhand: dragonwingleftwhite
+  helmet: dragonbodywhite
+  triggers:
+    launch:
+      cast:
+        dragonwater: 30
+        dragonpoison: 30
+        dragonfire: 30
+        dragonlightning: 30
+    damage:
+      cast:
+        dragonexplodewater: 30
+        dragonwater: 10
+        dragonexplodepoison: 30
+        dragonpoison: 10
+        dragonexplodefire: 30
+        dragonfire: 10
+        dragonexplodelightning: 30
+        dragonlightning: 10
+        dragonwingblast: 50
+
+lightgreydragon:
+  inherit: greydragon
+  name: '&7Light Grey Dragon'
+  item: dragonwingrightlightgrey
+  offhand: dragonwingleftlightgrey
+  helmet: dragonbodylightgrey
+
 purpledragon:
   inherit: base_dragon
   hidden: false
@@ -102,6 +157,13 @@ purpledragon:
         dragonlightning: 10
         dragonwingblast: 30
 
+blackdragon:
+  inherit: greydragon
+  name: '&0Black Dragon'
+  item: dragonwingrightblack
+  offhand: dragonwingleftblack
+  helmet: dragonbodyblack
+
 reddragon:
   inherit: base_dragon
   hidden: false
@@ -109,6 +171,58 @@ reddragon:
   item: dragonwingrightred
   offhand: dragonwingleftred
   helmet: dragonbodyred
+  triggers:
+    launch:
+      cast:
+        dragonfire: 30
+    damage:
+      cast:
+        dragonexplodefire: 30
+        dragonfire: 10
+        dragonwingblast: 30
+
+lightreddragon:
+  inherit: reddragon
+  name: '&cLight Red Dragon'
+  item: dragonwingrightlightgrey
+  offhand: dragonwingleftlightgrey
+  helmet: dragonbodylightgrey
+
+magentadragon:
+  inherit: reddragon
+  name: '&cMagenta Dragon'
+  item: dragonwingrightmagenta
+  offhand: dragonwingleftmagenta
+  helmet: dragonbodymagenta
+
+pinkdragon:
+  inherit: reddragon
+  name: '&cPink Dragon'
+  item: dragonwingrightpink
+  offhand: dragonwingleftpink
+  helmet: dragonbodypink
+
+orangedragon:
+  inherit: reddragon
+  name: '&6Orange Dragon'
+  item: dragonwingrightorange
+  offhand: dragonwingleftorange
+  helmet: dragonbodyorange
+
+yellowdragon:
+  inherit: reddragon
+  name: '&eYellow Dragon'
+  item: dragonwingrightyellow
+  offhand: dragonwingleftyellow
+  helmet: dragonbodyyellow
+
+browndragon:
+  inherit: base_dragon
+  hidden: false
+  name: '&cBrown Dragon'
+  item: dragonwingrightbrown
+  offhand: dragonwingleftbrown
+  helmet: dragonbodybrown
   triggers:
     launch:
       cast:

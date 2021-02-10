@@ -16,9 +16,15 @@ overworld_mobs:
       probability: 0.001
       replace_type:
         bluedragon: 20
+        lightbluedragon: 10
+        cyandragon: 10
         greendragon: 20
         greydragon: 10
+        lightgreydragon: 5
+        orangedragon: 3
+        yellowdragon: 3
         mega_phantom: 50
+        whitedragon: 5
         bigbluedragon: 2
         biggreendragon: 2
         biggreydragon: 1
@@ -57,17 +63,17 @@ nether_mobs:
       probability: 0.1
       replace_type: polterghast
 
-    reddragon:
+    dragons:
       class: ReplaceRule
       target_type: ghast
       probability: 0.01
-      replace_type: reddragon
-
-    bigreddragon:
-      class: ReplaceRule
-      target_type: ghast
-      probability: 0.001
-      replace_type: bigreddragon
+      replace_type:
+        reddragon: 100
+        lightreddragon: 50
+        pinkdragon: 10
+        magentadragon: 5
+        browndragon: 50
+        bigreddragon: 1
 
     replace_blazes:
       class: ReplaceRule
@@ -84,6 +90,7 @@ end_mobs:
       target_type: enderman
       probability: 0.05
       replace_type:
+        blackdragon: 10
         purpledragon: 100
         bigpurpledragon: 1
       biomes:
