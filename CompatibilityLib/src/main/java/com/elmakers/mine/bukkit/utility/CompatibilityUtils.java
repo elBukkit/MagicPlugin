@@ -99,7 +99,10 @@ import java.util.logging.Level;
  */
 @SuppressWarnings("deprecation")
 public class CompatibilityUtils extends NMSUtils {
-    public static final int MAX_CHUNK_LOAD_TRY = 50;
+    // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
+    // (for instance when undoing a spell in an unloaded chunk that threw a ton of different falling blocks)
+    // So putting some lower number on this will trigger a lot of false-positives.
+    public static final int MAX_CHUNK_LOAD_TRY = 10000;
     public static boolean USE_MAGIC_DAMAGE = true;
     public static int BLOCK_BREAK_RANGE = 64;
     public final static int MAX_ENTITY_RANGE = 72;
