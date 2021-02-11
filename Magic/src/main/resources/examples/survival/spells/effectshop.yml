@@ -29,7 +29,7 @@ effectshop:
           cost: 2000
         - item: butterflyeffects
           unlock: butterfly
-          cost: 100000
+          cost: 9999
         - item: none
         - item: none
         - item: none
