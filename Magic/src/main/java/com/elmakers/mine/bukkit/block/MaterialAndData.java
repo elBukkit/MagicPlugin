@@ -172,6 +172,17 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         update(materialKey);
     }
 
+    public void copyTo(MaterialAndData other) {
+        other.material = material;
+        other.data = data;
+        // Note: shallow copies!
+        other.tags = tags;
+        other.extraData = extraData;
+        other.blockData = blockData;
+        other.isValid = isValid;
+        other.isTargetValid = isTargetValid;
+    }
+
     private static Gson getGson() {
         if (gson == null) {
             gson = new Gson();

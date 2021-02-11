@@ -33,7 +33,7 @@ public class FillSpell extends BrushSpell
             return SpellResult.NO_TARGET;
         }
 
-        MaterialBrush buildWith = getBrush();
+        MaterialBrush buildWith = getBrush().getCopy();
         boolean hasPermission = buildWith != null && buildWith.isErase() ? hasBreakPermission(targetBlock) : hasBuildPermission(targetBlock);
         if (!hasPermission) {
             return SpellResult.INSUFFICIENT_PERMISSION;

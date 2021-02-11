@@ -982,10 +982,11 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     @Nullable
     @Override
     public MaterialBrush getBrush() {
-        if (brush != null) {
-            return brush;
+        if (brush == null && brushSpell != null) {
+            MaterialBrush spellBrush = brushSpell.getBrush();
+            brush = spellBrush == null ? null : spellBrush.getCopy();
         }
-        return brushSpell == null ? null : brushSpell.getBrush();
+        return brush;
     }
 
     @Override

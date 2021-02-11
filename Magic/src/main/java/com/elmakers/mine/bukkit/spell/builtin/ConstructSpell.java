@@ -53,7 +53,7 @@ public class ConstructSpell extends BrushSpell
             return SpellResult.NO_TARGET;
         }
 
-        MaterialBrush buildWith = getBrush();
+        MaterialBrush buildWith = getBrush().getCopy();
         boolean hasPermission = buildWith != null && buildWith.isErase() ? hasBreakPermission(target) : hasBuildPermission(target);
         if (!hasPermission) {
             return SpellResult.INSUFFICIENT_PERMISSION;
@@ -147,7 +147,7 @@ public class ConstructSpell extends BrushSpell
             conType = testType;
         }
 
-        ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, thickness, falling, orientTo);
+        ConstructBatch batch = new ConstructBatch(this, buildWith, target.getLocation(), conType, radius, thickness, falling, orientTo);
 
         batch.setUseBrushSize(parameters.getBoolean("use_brush_size", false));
         batch.setCommit(commit);

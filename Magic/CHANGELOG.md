@@ -15,6 +15,8 @@
  - Automata can not have overlapping casts, use `allow_overlap: true` inside the `cast` block to change this
  - Automata no longer undo all their spell casts when deactivating, use `undo_all: true` inside the `cast` block to change this
  - The `/magic load` command will now update all fetched external examples before reloading. Use `/mconfig load` if you want to skip this.
+ - Brushes can no longer be modified in the middle of a cast.
+   RIP cool rainbow-striped domes, but I think this will prevent all kinds of accidental mess-ups when copying large builds
 
 ## Additions
 

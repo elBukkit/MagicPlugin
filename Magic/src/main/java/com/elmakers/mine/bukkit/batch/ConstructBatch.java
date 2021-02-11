@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 public class ConstructBatch extends BrushBatch {
     private final Location center;
+    private final MaterialBrush brush;
     private Vector orient = null;
     private int radius;
     private final ConstructionType type;
@@ -86,8 +87,9 @@ public class ConstructBatch extends BrushBatch {
     private boolean limitYAxis = false;
     // TODO.. min X, Z, etc
 
-    public ConstructBatch(BrushSpell spell, Location center, ConstructionType type, int radius, int thickness, boolean spawnFallingBlocks, Vector orientVector) {
+    public ConstructBatch(BrushSpell spell, MaterialBrush brush, Location center, ConstructionType type, int radius, int thickness, boolean spawnFallingBlocks, Vector orientVector) {
         super(spell);
+        this.brush = brush;
         this.center = center;
         this.radius = radius;
         this.type = type;
@@ -160,7 +162,6 @@ public class ConstructBatch extends BrushBatch {
         int workPerformed = 0;
 
         if (useBrushSize && bounds == null) {
-            MaterialBrush brush = spell.getBrush();
             if (!brush.isReady()) {
                 return 0;
             }
@@ -438,7 +439,6 @@ public class ConstructBatch extends BrushBatch {
 
         // Prepare material brush, it may update
         // given the current target (clone, replicate)
-        MaterialBrush brush = spell.getBrush();
         brush.update(mage, block.getLocation());
 
         if (brush.isErase()) {

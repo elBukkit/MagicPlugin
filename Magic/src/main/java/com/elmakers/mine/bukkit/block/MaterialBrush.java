@@ -91,12 +91,18 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     private boolean fillWithAir = true;
     private Vector orientVector = null;
     private Map<String, String> commandMap;
+    private MaterialBrush parent;
 
     // For the MAP brush
     private Material mapMaterialBase = null;
     private double scale = 1;
 
-    public MaterialBrush(final Mage mage, final Material material, final  byte data) {
+    private MaterialBrush(final Mage mage) {
+        this.mage = mage;
+        this.controller = mage != null ? mage.getController() : null;
+    }
+
+    public MaterialBrush(final Mage mage, final Material material, final byte data) {
         super(material, data);
         this.mage = mage;
         this.controller = mage != null ? mage.getController() : null;
@@ -125,6 +131,31 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         this.mage = null;
         this.controller = controller;
         update(materialKey);
+    }
+
+    @Override
+    public MaterialBrush getCopy() {
+        MaterialBrush newBrush = new MaterialBrush(mage);
+        newBrush.parent = this;
+        copyTo(newBrush);
+        return newBrush;
+    }
+
+    public void copyTo(MaterialBrush other) {
+        super.copyTo(other);
+        other.mode = mode;
+        other.cloneSource = cloneSource;
+        other.cloneTarget = cloneTarget;
+        other.materialTarget = materialTarget;
+        other.targetOffset = targetOffset;
+        other.targetWorldName = targetWorldName;
+        other.mapId = mapId;
+        other.mapCanvas = mapCanvas;
+        other.schematic = schematic;
+        other.schematicName = schematicName;
+        other.fillWithAir = fillWithAir;
+        other.orientVector = orientVector;
+        other.commandMap = commandMap;
     }
 
     @Override
@@ -471,6 +502,11 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
     @Override
     public boolean update(final Mage fromMage, final Location target) {
+        // Chain up to parent
+        if (parent != null) {
+            parent.update(fromMage, target);
+        }
+
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) {
             if (cloneSource == null) {
                 isTargetValid = false;

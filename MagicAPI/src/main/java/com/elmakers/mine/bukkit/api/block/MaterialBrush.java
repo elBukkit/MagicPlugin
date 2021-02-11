@@ -30,4 +30,5 @@ public interface MaterialBrush extends MaterialAndData {
     BrushMode getMode();
     boolean isEraseModifierActive();
     boolean isErase();
+    MaterialBrush getCopy();
 }
