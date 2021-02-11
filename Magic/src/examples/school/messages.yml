@@ -5,15 +5,8 @@ spells:
     name: Call For Help
     description: Please only use if you need the attention of an adult!
     cast_fail: ""
-  mars:
-    cast_player_message: ""
 
 wands:
-  spacehelmet:
-    name: SpaceX Helmet
-  airpump:
-    name: Air Pump
-    description: Keeps you alive on Mars, as long as you're in an enclosed space
   tool:
     name: Arcane Stone
     description: "Right-Click (Or swing at ground) to use\nClick on (or take) item to teleport or get other help"

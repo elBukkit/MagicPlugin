@@ -1,5 +1,0 @@
-spaceshop:
-    inherit: buyshop
-    parameters:
-        items:
-            spacehelmet: 1000

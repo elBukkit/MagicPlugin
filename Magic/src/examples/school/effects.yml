@@ -1,13 +1,1 @@
-greenhouse:
- - effectlib:
-     class: Circle
-     whole_circle: true
-     duration: 86400000
-     radius: 8
-     offset: 0,6,-2
-     particles: 8
-     particle_offset_x: 4
-     particle_offset_y: 2
-     particle_offset_z: 4
-     particle_count: 6
-     particle: falling_water
+

@@ -42,6 +42,7 @@
  - Add `give_to_caster` parameter to `Drop` action
  - Add `/mconfig example unfetch` command to completely remove previously-fetched examples
  - Added `region_tags` option to requirements
+ - Added WIP `mars` external example
 
 # 8.3.3
 

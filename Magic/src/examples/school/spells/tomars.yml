@@ -1,4 +1,0 @@
-tomars:
-  inherit: blastoff
-  parameters:
-    warp: earthtomars

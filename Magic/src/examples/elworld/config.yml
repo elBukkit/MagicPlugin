@@ -29,6 +29,7 @@ examples:
 - spawnmobs
 - chests
 - otherside
+- mars
 
 # Testing custom currencies
 custom_currency:

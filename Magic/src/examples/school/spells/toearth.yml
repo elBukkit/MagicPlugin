@@ -1,4 +1,0 @@
-toearth:
-  inherit: blastoff
-  parameters:
-    warp: earthtomars
