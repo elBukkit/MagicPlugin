@@ -46,7 +46,7 @@ dragonexplodefire:
           effectlib:
              class: AnimatedBall
              particle: end_rod
-             duration: 0
+             duration: 2000
              size: 1.25
              relative_offset: 0,0.5,0
              particle_count: 1
@@ -210,7 +210,7 @@ dragonwingblast:
            source_location: feet
            effectlib:
              class: Warp
-             duration: 0
+             duration: 2000
              particle: redstone
              color: "ffffff"
              particles: 6
@@ -226,7 +226,7 @@ dragonwingblast:
            source_location: feet
            effectlib:
              class: Warp
-             duration: 0
+             duration: 2000
              particle: sweep_attack
              particle_data: 0.0075
              particles: 4
@@ -609,7 +609,7 @@ dragonexplodewater:
            source_location: body
            effectlib:
              class: Modified
-             duration: 0
+             duration: 2000
              parameters:
                  radius: "(t/i) * -3 + 3"
                  radiusNucleus: "(t/i) * -3 + 3"
@@ -628,7 +628,7 @@ dragonexplodewater:
           effectlib:
              class: AnimatedBall
              particle: end_rod
-             duration: 0
+             duration: 2000
              size: 1.25
              relative_offset: 0,0.5,0
              particle_count: 1
@@ -705,7 +705,7 @@ dragonexplodepoison:
            source_location: body
            effectlib:
              class: Modified
-             duration: 0
+             duration: 2000
              parameters:
                  radius: "(t/i) * -3 + 3"
                  radiusNucleus: "(t/i) * -3 + 3"
@@ -724,7 +724,7 @@ dragonexplodepoison:
           effectlib:
              class: AnimatedBall
              particle: end_rod
-             duration: 0
+             duration: 2000
              size: 1.25
              relative_offset: 0,0.5,0
              particle_count: 1
@@ -800,7 +800,7 @@ dragonexplodelightning:
            source_location: body
            effectlib:
              class: Modified
-             duration: 0
+             duration: 2000
              parameters:
                  radius: "(t/i) * -3 + 3"
                  radiusNucleus: "(t/i) * -3 + 3"
@@ -819,7 +819,7 @@ dragonexplodelightning:
           effectlib:
              class: AnimatedBall
              particle: end_rod
-             duration: 0
+             duration: 2000
              size: 1.25
              relative_offset: 0,0.5,0
              particle_count: 1
@@ -895,7 +895,7 @@ dragonexplodedark:
            source_location: body
            effectlib:
              class: Modified
-             duration: 0
+             duration: 2000
              parameters:
                  radius: "(t/i) * -3 + 3"
                  radiusNucleus: "(t/i) * -3 + 3"
@@ -914,7 +914,7 @@ dragonexplodedark:
           effectlib:
              class: AnimatedBall
              particle: end_rod
-             duration: 0
+             duration: 2000
              size: 1.25
              relative_offset: 0,0.5,0
              particle_count: 1
