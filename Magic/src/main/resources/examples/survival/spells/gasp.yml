@@ -28,7 +28,7 @@ gasp:
           duration: 1000
     parameters:
       target: self
-      air: 10
+      air: 300
       cooldown: 30000
     costs:
       mana: 10
