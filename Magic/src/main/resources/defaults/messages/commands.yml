@@ -10,12 +10,17 @@ commands:
           base: "&bBase example: &3$example"
           header: "&bExamples:"
           item: "  &f- &3$example"
+        unfetch:
+          usage: "&cUsage: /mconfig example unfetch <example name>"
+          success: "&bMoved example &2$example&b to &2$backup"
+          fail: "&cExample &2$example&c not found"
         fetch:
           usage: "&cUsage: /mconfig example fetch <example name> <url>"
           unknown: "&cUnknown example: &e$example, &cuse a url to fetch it first.&r\n&cUsage: /mconfig example fetch <example name> <url>"
           fail: "&cCould not retrieve url &e$url"
           error: "&cSomething went wrong, please check logs"
           wait_all: "&bPlease wait while $count example(s) are updated"
+          skip: "&6Skipping &e$example&6 because it is not loaded, you may want to use &f/mconfig example unfetch $example&6 to remove it completely if you no longer want it"
           success_all: "&bFinished updating all examples"
           wait: "&bPlease wait, downloading &b$url..."
           success_quiet:  "&bDownloaded example &2$example&f, took &9$time &fto download &9$size MB"

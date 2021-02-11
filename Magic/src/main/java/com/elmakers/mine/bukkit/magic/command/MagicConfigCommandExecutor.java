@@ -56,7 +56,7 @@ import com.google.gson.Gson;
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
     private static final String EXAMPLES_FILE_NAME = "_examples.yml";
-    private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list", "fetch", "help");
+    private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list", "fetch", "help", "unfetch");
     private static Set<String> availableFiles = ImmutableSet.of(
             "spells", "wands", "automata", "classes", "config", "crafting", "effects", "items",
             "kits", "materials", "mobs", "paths", "attributes", "messages", "modifiers","worlds");
@@ -105,7 +105,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mconfig.", "language");
         }
         String subCommand = args[0];
-        if (args.length == 3 && subCommand.equals("example") && args[1].equals("fetch")) {
+        if (args.length == 3 && subCommand.equals("example") && (args[1].equals("fetch") || args[1].equals("unfetch"))) {
             options.addAll(controller.getExternalExamples());
         }
         if (args.length == 2 && (subCommand.equals("disable") || subCommand.equals("enable") || subCommand.equals("configure") || subCommand.equals("editor") || subCommand.equals("reset"))) {
@@ -829,6 +829,8 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             onSetExample(sender, parameters);
         } else if (action.equals("fetch")) {
             onFetchExample(sender, parameters);
+        } else if (action.equals("unfetch")) {
+            onUnFetchExample(sender, parameters);
         } else if (action.equals("list")) {
             onListExamples(sender);
         } else if (action.equals("help")) {
@@ -927,6 +929,29 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
 
         sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.wait").replace("$url", url));
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new FetchExampleRunnable(magic, sender, exampleKey, url));
+    }
+
+    protected void onUnFetchExample(CommandSender sender, String[] parameters) {
+        if (parameters.length < 1) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.unfetch.usage"));
+            return;
+        }
+        String exampleKey = parameters[0];
+        File examplesFolder = new File(controller.getPlugin().getDataFolder(), "examples");
+        examplesFolder = new File(examplesFolder, exampleKey);
+        if (!examplesFolder.exists()) {
+            sender.sendMessage(magic.getMessages().get("commands.mconfig.example.unfetch.fail").replace("$example", exampleKey));
+            return;
+        }
+        File backupFolder = new File(examplesFolder.getPath() + ".bak");
+        if (backupFolder.exists()) {
+            ConfigurationUtils.deleteDirectory(backupFolder);
+            examplesFolder.renameTo(backupFolder);
+        }
+        examplesFolder.renameTo(backupFolder);
+        sender.sendMessage(magic.getMessages().get("commands.mconfig.example.unfetch.success")
+            .replace("$example", exampleKey)
+            .replace("$backup", backupFolder.getName()));
     }
 
     protected void onSetExample(CommandSender sender, String[] parameters) {

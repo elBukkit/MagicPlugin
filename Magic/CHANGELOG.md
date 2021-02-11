@@ -37,6 +37,7 @@
  - Add attributes: target_location_x, target_location_y, target_location_z
  - Add /mauto enable/disable commands to quickly turn on/off automata
  - Add `give_to_caster` parameter to `Drop` action
+ - Add `/mconfig example unfetch` command to completely remove previously-fetched examples
 
 # 8.3.3
 
