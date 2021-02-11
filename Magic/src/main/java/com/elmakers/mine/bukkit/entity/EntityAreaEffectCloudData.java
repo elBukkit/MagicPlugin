@@ -63,7 +63,7 @@ public class EntityAreaEffectCloudData extends EntityExtraData {
         radiusOnUse = (float)parameters.getDouble("radius_on_use", 0);
         radiusPerTick = (float)parameters.getDouble("radius_per_tick", 0);
 
-        potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
+        potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger(), duration);
     }
 
     public EntityAreaEffectCloudData(AreaEffectCloud cloud) {

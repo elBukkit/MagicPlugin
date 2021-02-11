@@ -1078,10 +1078,14 @@ public class ConfigurationUtils extends ConfigUtils {
         return effects;
     }
 
-
     @Nullable
     public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log) {
          return getPotionEffectObjects(baseConfig, key, log, 3600000, 0, true, true);
+    }
+
+    @Nullable
+    public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log, int defaultDuration) {
+         return getPotionEffectObjects(baseConfig, key, log, defaultDuration, 0, true, true);
     }
 
     @Nullable
@@ -1131,7 +1135,7 @@ public class ConfigurationUtils extends ConfigUtils {
                                     log.log(Level.WARNING, "Invalid potion effect type: " + type);
                                     continue;
                                 }
-                                int amplifier = potionEffectSection.getInt("type", defaultAmplifier);
+                                int amplifier = potionEffectSection.getInt(type, defaultAmplifier);
                                 int ticks = defaultDuration / 50;
                                 potionEffects.add(new PotionEffect(effectType, effectType.isInstant() ? 1 : ticks, amplifier, defaultAmbient, defaultParticles));
                             }
