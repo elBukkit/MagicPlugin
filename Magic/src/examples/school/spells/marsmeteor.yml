@@ -1,0 +1,91 @@
+marsmeteor:
+    icon: melon_seeds{CustomModelData:18001}
+    icon_disabled: melon_seeds{CustomModelData:18002}
+    legacy_icon: spell_icon:56
+    legacy_icon_disabled: spell_icon_disabled:56
+    icon_url: http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21
+    hidden: true
+    actions:
+        cast:
+        - class: ChangeContext
+          actions:
+          - class: Multiply
+            actions:
+            - class: Delay
+            - class: CustomProjectile
+              range: 200
+              actions:
+              - class: AreaOfEffect
+                radius: 5
+                actions:
+                - class: Velocity
+                - class: PotionEffect
+                - class: Ignite
+                - class: Damage
+              -  class: Sphere
+                 actions:
+                 -  class: ModifyBlock
+    effects:
+        tick:
+        - particle: fireworks_spark
+          location: target
+          particle_count: 3
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
+        - particle: smoke_large
+          location: target
+          particle_count: 1
+          particle_offset_x: .7
+          particle_offset_y: .7
+          particle_offset_z: .7
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SphereEffect
+             particle: lava
+             iterations: 100
+             period: 3
+             particles: 4
+             particle_count: 2
+             particle_offset_x: 0.1
+             particle_offset_y: 0.1
+             particle_offset_z: 0.1
+             radius: 0.5
+        hit:
+        - class: EffectSingle
+          sound: entity_generic_explode
+          sound_volume: 2
+          location: both
+        - class: EffectSingle
+          target_offset: 0,0.5,0
+          location: target
+          color: FE2E2E
+          particle: explosion_huge
+    parameters:
+        target: block
+        range: 1
+        allow_max_range: true
+        spread: 0.5
+        first:
+          spread: 0
+          delay: 0
+        radius: 3
+        delay: rand(5000,10000)
+        multiply: rand(1,5)
+        item_speed: .5
+        living_entity_speed: .5
+        y_offset: 1
+        damage: 3
+        hitbox: true
+        size: 1
+        velocity: 50
+        undo: 10000
+        speed: 0.9
+        falling: true
+        brush: air
+        source_offset: 0,150,0
+        direction: 0,0.75,0
+        destructible: red_sand,red_sandstone,all_air
+        undo_speed: 2

@@ -1,0 +1,20 @@
+world_flat:
+  autoload: true
+  type: flat
+
+world_mars:
+    autoload: true
+    max_height: 255
+    environment: nether
+
+    entity_spawn:
+
+      meteors:
+        class: Cast
+        target_class: LivingEntity
+        not_types: armor_stand
+        allow_indoors: false
+        cooldown: 1000
+        spells:
+          none: 1
+          marsmeteor: 10000
