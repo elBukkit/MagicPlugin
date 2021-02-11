@@ -649,7 +649,7 @@ public class CustomProjectileAction extends CompoundAction
                 }
             }
         }
-        if (targetingResult == Targeting.TargetingResult.MISS) {
+        if (targetingResult.isMiss()) {
             if (hasBlockMissEffects && target != null) {
                 actionContext.setTargetLocation(target.getLocation());
                 actionContext.playEffects("blockmiss");

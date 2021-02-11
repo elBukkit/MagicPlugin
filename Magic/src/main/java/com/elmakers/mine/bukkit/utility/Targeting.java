@@ -79,7 +79,11 @@ public class Targeting {
         NONE,
         BLOCK,
         ENTITY,
-        MISS
+        MISS;
+
+        public boolean isMiss() {
+            return this == MISS || this == NONE;
+        }
     }
 
     public void reset() {
