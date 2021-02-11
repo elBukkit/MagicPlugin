@@ -26,9 +26,12 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
     public static SetFlag<String> ALLOWED_WANDS = new SetFlag<>("allowed-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> BLOCKED_WANDS = new SetFlag<>("blocked-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> SPELL_OVERRIDES = new SetFlag<>("spell-overrides", RegionGroup.ALL, new StringFlag(null));
-    public static SetFlag<String> SPAWN_TAGS = new SetFlag<>("spawn-tags", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> TAGS = new SetFlag<>("magic-tags", RegionGroup.ALL, new StringFlag(null));
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
+
+    // Deprecated, maybe should be removed in the future
+    public static SetFlag<String> SPAWN_TAGS = new SetFlag<>("spawn-tags", RegionGroup.ALL, new StringFlag(null));
 
     public WGCustomFlagsManager(Plugin wgCustomFlags) {
         customFlags = (WGCustomFlagsPlugin)wgCustomFlags;
@@ -42,6 +45,7 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
         customFlags.addCustomFlag(DESTRUCTIBLE);
         customFlags.addCustomFlag(REFLECTIVE);
         customFlags.addCustomFlag(SPAWN_TAGS);
+        customFlags.addCustomFlag(TAGS);
     }
 
     @Nullable
@@ -100,9 +104,10 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
 
     @Override
     public boolean inTaggedRegion(RegionAssociable source, ApplicableRegionSet checkSet, Set<String> tags) {
-        Set<String> regionTags = checkSet.queryValue(source, SPAWN_TAGS);
+        Set<String> regionTags = checkSet.queryValue(source, TAGS);
         if (regionTags == null) {
-            return false;
+            // Fall back to old spawn tags, but these should not really be used anymore.
+            regionTags = checkSet.queryValue(source, SPAWN_TAGS);
         }
         return regionTags.contains("*") || !Collections.disjoint(regionTags, tags);
     }
