@@ -602,9 +602,13 @@ public class TargetingSpell extends BaseSpell {
         boolean hasTargeting = parameters.contains("target");
         targeting.parseTargetType(parameters.getString("target"));
 
-        // If a range was specified but not a target type, default to other
-        if (range > 0 && !hasTargeting) {
-            targeting.setTargetType(TargetType.OTHER);
+        // If a range was specified but not a target type, default to other, otherwise default to self
+        if (!hasTargeting) {
+            if (range > 0) {
+                targeting.setTargetType(TargetType.OTHER);
+            } else {
+                targeting.setTargetType(TargetType.SELF);
+            }
         }
         TargetType targetType = targeting.getTargetType();
 

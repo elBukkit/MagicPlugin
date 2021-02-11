@@ -5,11 +5,6 @@
 ## Hot
 
  - hit/entity _count parameters don't work with EntityProjectile
-
- - Copy brush to context. It's time, it really is.
-   - Persist source locations somehow
-   - Maybe separate brush item to change source/target location?
-   - Need to make sure that the target/source locations are shared across spells
  - Targeting options for passive or hostile mobs only
 
  - Mobs should choose new targets if their top damager dies or goes far away (?)

@@ -17,6 +17,8 @@
  - The `/magic load` command will now update all fetched external examples before reloading. Use `/mconfig load` if you want to skip this.
  - Brushes can no longer be modified in the middle of a cast.
    RIP cool rainbow-striped domes, but I think this will prevent all kinds of accidental mess-ups when copying large builds
+ - The `target` parameter now defaults to `self` unless `range` is specified (instead of defaulting to `none`)
+ - Updated builtin Spanish translation (`/mconfig language ES`), thanks ChrisTVH!
 
 ## Additions
 

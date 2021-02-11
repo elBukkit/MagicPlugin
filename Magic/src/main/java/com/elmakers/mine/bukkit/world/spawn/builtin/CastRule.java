@@ -60,7 +60,6 @@ public class CastRule extends SpawnRule {
             "px", Integer.toString(entity.getLocation().getBlockX()),
             "py", Integer.toString(y),
             "pz", Integer.toString(entity.getLocation().getBlockZ()),
-            "target", "self",
             "quiet", "true"
         };
 
