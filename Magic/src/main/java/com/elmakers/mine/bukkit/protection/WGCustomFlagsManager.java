@@ -109,6 +109,9 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
             // Fall back to old spawn tags, but these should not really be used anymore.
             regionTags = checkSet.queryValue(source, SPAWN_TAGS);
         }
+        if (regionTags == null) {
+            return false;
+        }
         return regionTags.contains("*") || !Collections.disjoint(regionTags, tags);
     }
 }

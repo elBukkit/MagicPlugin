@@ -1,0 +1,12 @@
+testregions:
+  actions:
+    cast:
+      - class: CheckRequirements
+        requirements:
+          - region_tags: allowed
+        actions:
+          - class: Message
+            message: OK!
+        fail:
+          - class: Message
+            message: NOPE!

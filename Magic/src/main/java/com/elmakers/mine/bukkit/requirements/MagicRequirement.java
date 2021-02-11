@@ -44,6 +44,7 @@ public class MagicRequirement {
     private @Nullable List<PropertyRequirement> classProperties = null;
     private @Nullable List<PropertyRequirement> attributes = null;
     private @Nullable List<PropertyRequirement> variables = null;
+    private @Nullable Set<String> regionTags = null;
     private @Nullable RangedRequirement lightLevel = null;
     private @Nullable RangedRequirement timeOfDay = null;
     private @Nullable RangedRequirement height = null;
@@ -72,6 +73,10 @@ public class MagicRequirement {
         ignoreMissing = configuration.getBoolean("ignore_missing", false);
         if (activeClass != null && mageClass == null) {
             mageClass = activeClass;
+        }
+        List<String> regionTagList = ConfigurationUtils.getStringList(configuration, "region_tags");
+        if (regionTagList != null && !regionTagList.isEmpty()) {
+            regionTags = new HashSet<>(regionTagList);
         }
 
         if (configuration.contains("wands")) {
@@ -226,6 +231,10 @@ public class MagicRequirement {
             if (!hasTags(wand)) {
                 return false;
             }
+        }
+
+        if (regionTags != null && !controller.inTaggedRegion(location, regionTags)) {
+            return false;
         }
 
         if (requiredTemplate != null) {
@@ -465,6 +474,10 @@ public class MagicRequirement {
             if (!hasTags(wand)) {
                 return getMessage(context, "no_template").replace("$wand", wand.getName());
             }
+        }
+
+        if (regionTags != null && !controller.inTaggedRegion(location, regionTags)) {
+            return getMessage(context, "no_region");
         }
 
         if (mageClass != null && !mageClass.isEmpty()) {

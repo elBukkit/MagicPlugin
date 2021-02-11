@@ -42,7 +42,7 @@ public class RedProtectManager implements BlockBreakManager, BlockBuildManager, 
         "allowed-spells", "blocked-spells", "allowed-spell-categories", "blocked-spell-categories"
     };
 
-    // TODO: "allowed-wands", "blocked-wands", "spell-overrides", "spawn-tags",
+    // TODO: "allowed-wands", "blocked-wands", "spell-overrides", "magic-tags",
     //        "destructible", "reflective"
 
     @SuppressWarnings({ "unchecked" })

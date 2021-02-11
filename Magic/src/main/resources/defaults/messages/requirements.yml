@@ -5,6 +5,7 @@ requirements:
   property_min: "&r&cYour &6$property &cmust be greater than &4$value"
   no_wand: "&cYou must be holding a wand!"
   no_template: "&cYou may not learn with that $wand&c."
+  no_region: "&cYou may not do that here."
   no_path: "&cYou may not learn here."
   no_class: "&cYou must be a $class"
   no_required_path: "&cYou must be at least $path&r!"

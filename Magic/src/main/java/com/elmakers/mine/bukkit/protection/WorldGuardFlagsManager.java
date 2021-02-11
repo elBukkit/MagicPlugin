@@ -29,9 +29,12 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
     public static SetFlag<String> ALLOWED_WANDS = new SetFlag<>("allowed-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> BLOCKED_WANDS = new SetFlag<>("blocked-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> SPELL_OVERRIDES = new SetFlag<>("spell-overrides", RegionGroup.ALL, new StringFlag(null));
-    public static SetFlag<String> SPAWN_TAGS = new SetFlag<>("spawn-tags", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> TAGS = new SetFlag<>("magic-tags", RegionGroup.ALL, new StringFlag(null));
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
+
+    // These are outdated but we'll probably keep them forever anyway
+    public static SetFlag<String> SPAWN_TAGS = new SetFlag<>("spawn-tags", RegionGroup.ALL, new StringFlag(null));
 
     public WorldGuardFlagsManager(Plugin callingPlugin, WorldGuardPlugin worldGuardPlugin, Object worldGuard) {
         FlagRegistry registry = null;
@@ -60,6 +63,7 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
         registry.register(SPELL_OVERRIDES);
         registry.register(DESTRUCTIBLE);
         registry.register(REFLECTIVE);
+        registry.register(TAGS);
         registry.register(SPAWN_TAGS);
         callingPlugin.getLogger().info("Registered custom WorldGuard flags: allowed-spells, always-allowed-spells, blocked-spells, always-allowed-spell-categories, allowed-spell-categories, blocked-spell-categories, allowed-wands, always-allowed-wands, blocked-wands, spell-overrides, destructible, reflective, spawn-tags");
     }
@@ -130,7 +134,11 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
 
     @Override
     public boolean inTaggedRegion(RegionAssociable source, ApplicableRegionSet checkSet, Set<String> tags) {
-        Set<String> regionTags = checkSet.queryValue(source, SPAWN_TAGS);
+        Set<String> regionTags = checkSet.queryValue(source, TAGS);
+        if (regionTags == null) {
+            // Fall back to old spawn tags, but these should not really be used anymore.
+            regionTags = checkSet.queryValue(source, SPAWN_TAGS);
+        }
         if (regionTags == null) {
             return false;
         }
