@@ -7114,12 +7114,11 @@ public class MagicController implements MageController {
             loadConfiguration(sender);
             return;
         }
-        sender.sendMessage(getMessages().get("commands.mconfig.example.fetch.wait_all"));
+        sender.sendMessage(getMessages().get("commands.mconfig.example.fetch.wait_all").replace("$count", Integer.toString(examples.size())));
         UpdateAllExamplesCallback callback = new UpdateAllExamplesCallback(sender, this);
         for (String exampleKey : examples) {
             String url = getExternalExampleURL(exampleKey);
             if (url == null || url.isEmpty()) {
-                sender.sendMessage(getMessages().get("commands.mconfig.example.fetch.unknown").replace("$example", exampleKey));
                 continue;
             }
             callback.loading();

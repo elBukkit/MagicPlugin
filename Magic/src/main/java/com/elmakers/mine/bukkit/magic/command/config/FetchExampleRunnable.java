@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,6 +17,7 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -23,6 +26,8 @@ public class FetchExampleRunnable extends HttpGet {
     private final String exampleKey;
     private final boolean quiet;
     private final ExampleUpdatedCallback callback;
+    private final long startTime;
+    private NumberFormat fileSizeFormatter = new DecimalFormat("#0.00");
 
     public FetchExampleRunnable(MagicController controller, CommandSender sender, String exampleKey, String url) {
         this(controller, sender, exampleKey, url, null, false);
@@ -33,6 +38,7 @@ public class FetchExampleRunnable extends HttpGet {
         this.exampleKey = exampleKey;
         this.quiet = quiet;
         this.callback = callback;
+        this.startTime = System.currentTimeMillis();
     }
 
     @Override
@@ -51,15 +57,19 @@ public class FetchExampleRunnable extends HttpGet {
         if (examplesFolder.exists()) {
             File backupFolder = new File(examplesFolder.getPath() + ".bak");
             if (backupFolder.exists()) {
-                messages.add(controller.getMessages().get("commands.mconfig.example.fetch.overwrite_backup").replace("$backup", backupFolder.getName()));
+                if (!quiet) {
+                    messages.add(controller.getMessages().get("commands.mconfig.example.fetch.overwrite_backup").replace("$backup", backupFolder.getName()));
+                }
                 ConfigurationUtils.deleteDirectory(backupFolder);
                 examplesFolder.renameTo(backupFolder);
             } else {
-                messages.add(controller.getMessages().get("commands.mconfig.example.fetch.backup").replace("$backup", backupFolder.getName()));
+                if (!quiet) {
+                    messages.add(controller.getMessages().get("commands.mconfig.example.fetch.backup").replace("$backup", backupFolder.getName()));
+                }
                 examplesFolder.renameTo(backupFolder);
             }
         }
-
+        int size = 0;
         try (ZipInputStream zip = new ZipInputStream(response)) {
             ZipEntry entry;
             boolean empty = true;
@@ -88,6 +98,7 @@ public class FetchExampleRunnable extends HttpGet {
                     while ((len = zip.read(buffer)) > 0) {
                         outputBuffer.write(buffer, 0, len);
                         empty = false;
+                        size += len;
                     }
                 }
             }
@@ -115,20 +126,34 @@ public class FetchExampleRunnable extends HttpGet {
             try (OutputStreamWriter writer =
              new OutputStreamWriter(new FileOutputStream(urlFile), StandardCharsets.UTF_8)) {
                 writer.write(url);
-                messages.add(controller.getMessages().get("commands.mconfig.example.fetch.url_write").replace("$example", exampleKey));
+                if (!quiet) {
+                    messages.add(controller.getMessages().get("commands.mconfig.example.fetch.url_write").replace("$example", exampleKey));
+                }
             } catch (IOException ex) {
                 messages.add(controller.getMessages().get("commands.mconfig.example.fetch.url_write_failed").replace("$example", exampleKey));
                 controller.getLogger().log(Level.WARNING, "Error writing url file to example " + urlFile.getAbsolutePath(), ex);
             }
         }
 
-        if (!quiet) {
-            String message = controller.getMessages().get("commands.mconfig.example.fetch.success");
-            message = message.replace("$url", url).replace("$example", exampleKey);
-            success(messages, message);
+        String message = quiet ? controller.getMessages().get("commands.mconfig.example.fetch.success_quiet") : controller.getMessages().get("commands.mconfig.example.fetch.success");
+        message = message.replace("$url", url).replace("$example", exampleKey);
+        long timeSince = System.currentTimeMillis() - startTime;
+        String sinceMessage = controller.getMessages().getTimeDescription(timeSince, "description", "cooldown");
+        message = message.replace("$time", sinceMessage);
+        String fileSize = "?";
+        if (size > 0) {
+            fileSize = fileSizeFormatter.format((double)size / 1024 / 1024);
         }
+        message = message.replace("$size", fileSize);
+        success(messages, message);
         if (callback != null) {
-            callback.updated(true, exampleKey, url);
+            final Plugin plugin = controller.getPlugin();
+            plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    callback.updated(true, exampleKey, url);
+                }
+            });
         }
     }
 }

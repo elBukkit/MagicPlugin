@@ -14,6 +14,7 @@ public abstract class HttpGet extends AsyncProcessor implements Runnable {
     protected final String url;
     protected final MagicController controller;
     protected final CommandSender sender;
+    protected long contentSize;
 
     public HttpGet(MagicController controller, CommandSender sender, String url) {
         this.controller = controller;
@@ -34,6 +35,7 @@ public abstract class HttpGet extends AsyncProcessor implements Runnable {
             if (inputStream == null) {
                 throw new IllegalArgumentException("Empty response");
             }
+            contentSize = connection.getContentLengthLong();
             processResponse(inputStream);
         } catch (Exception ex) {
             fail(controller.getMessages().get("commands.mconfig.example.fetch.error"), "Error processing HTTP request", ex);
