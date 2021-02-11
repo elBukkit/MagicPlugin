@@ -3033,7 +3033,7 @@ wands:
     inventory_instructions: '&r&bUtilice la lista (Q) botón para abrir/cerrar el hechizo
       de inventario.'
 ##################################################################################
-base_sword:
+  base_sword:
     wand_instructions_header: |-
       &8&m >>====================================================<<
       &8|
@@ -3041,7 +3041,7 @@ base_sword:
       &8|
     spell_instructions: '&8| &7> &fUtilice el &6número de llaves &fpara lanzar &d$spell'
 ##################################################################################
-base_bow:
+  base_bow:
     wand_instructions_header: |-
       &8&m >>====================================================<<
       &8|
@@ -3054,22 +3054,10 @@ base_bow:
     upgrade_slot: '&3$slot'
     upgrade_item_description: Suelta tu palo de escoba para dejarlo volar para siempre
 ##################################################################################
-wand_instructions_header: |-
-      &8&m >>====================================================<<
-      &8|
-      &8|   &b&lINSTRUCCIONES DE PALO DE ESCOBA
-      &8|
-##################################################################################
   broom_booster:
     name: Potenciador de Escoba
     upgrade_slot: '&3$slot'
     upgrade_item_description: Suelta tu palo de escoba para aumentar su velocidad
-##################################################################################
-wand_instructions_header: |-
-      &8&m >>====================================================<<
-      &8|
-      &8|   &b&lINSTRUCCIONES DE LIBRO DE HECHIZOS
-      &8|
 ##################################################################################
   magicsword:
     name: Espada Magica
@@ -3086,7 +3074,7 @@ wand_instructions_header: |-
     inventory_instructions: '&r&bUtilice la lista (Q) botón para abrir/cerrar el hechizo
       de inventario.'
 ##################################################################################
- magiccrossbow:
+  magiccrossbow:
     name: Cruz Mágica
     description: $path &rCruz Mágica
 ##################################################################################
@@ -3397,6 +3385,11 @@ wand_instructions_header: |-
     enchant_instructions: ''
     spell_instructions: '&r&bUtilice su escoba para volar por el aire. La inmersión
       a la velocidad de arriba, y don"t volar demasiado tiempo!'
+    wand_instructions_header: |-
+      &8&m >>====================================================<<
+      &8|
+      &8|   &b&lINSTRUCCIONES DE PALO DE ESCOBA
+      &8|
 ##################################################################################
   crackedbroomstick:
     name: Agrietado Palo De Escoba
@@ -3452,6 +3445,11 @@ wand_instructions_header: |-
       que has puesto en la barra de acceso rápido.'
     inventory_instructions: '&r&bHaga clic derecho para abrir el hechizo de inventario
       y arrastre hechizos para la barra de acceso rápido para que los echasen.'
+    wand_instructions_header: |-
+        &8&m >>====================================================<<
+        &8|
+        &8|   &b&lINSTRUCCIONES DE LIBRO DE HECHIZOS
+        &8|
 ##################################################################################
   appearance_beginner:
     name: Aspecto Principiante de Varita
