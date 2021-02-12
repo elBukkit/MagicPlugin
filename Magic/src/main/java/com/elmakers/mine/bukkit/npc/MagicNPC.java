@@ -293,7 +293,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public Entity restore() {
         Entity entity = getEntity();
         if (entity == null || !entity.isValid()) {
+            controller.setDisableSpawnReplacement(true);
             entity = entityData.spawn(location);
+            controller.setDisableSpawnReplacement(false);
         } else {
             entityData.modify(entity);
             entity.teleport(location);
