@@ -7476,11 +7476,15 @@ public class MagicController implements MageController {
 
     @Override
     public void setDisableSpawnReplacement(boolean disable) {
-        disableSpawnReplacement = disable;
+        if (disable) {
+            disableSpawnReplacement++;
+        } else {
+            disableSpawnReplacement--;
+        }
     }
 
     public boolean isDisableSpawnReplacement() {
-        return disableSpawnReplacement;
+        return disableSpawnReplacement > 0;
     }
 
     @Override
@@ -7804,6 +7808,6 @@ public class MagicController implements MageController {
     private Map<String, String>                 builtinExternalExamples     = new HashMap<>();
     private int                                 updatingExternalExamples    = 0;
     private boolean                             showExampleInstructions     = false;
-    private boolean                             disableSpawnReplacement     = false;
+    private int                                 disableSpawnReplacement     = 0;
     private SwingType                           swingType                   = SwingType.ANIMATE_IF_ADVENTURE;
 }

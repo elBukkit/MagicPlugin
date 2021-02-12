@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.npc;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -294,7 +295,11 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         Entity entity = getEntity();
         if (entity == null || !entity.isValid()) {
             controller.setDisableSpawnReplacement(true);
-            entity = entityData.spawn(location);
+            try {
+                entity = entityData.spawn(location);
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.SEVERE, "Unexpected error spawning NPC mob", ex);
+            }
             controller.setDisableSpawnReplacement(false);
         } else {
             entityData.modify(entity);
