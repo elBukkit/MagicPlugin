@@ -1,0 +1,38 @@
+tail:
+ - location: origin
+   source_location: body
+   relative_offset: -0.6,-0.1,0
+   effectlib:
+     class: Equation
+     particle: redstone
+     particle_size: 0.5
+     color: "#dc143c"
+     duration: 10000000
+     max_steps: 300
+     y_equation: -1*(sin(-1*t/100)*sin(-3*t/100))*0.5
+     x_equation: -1*cos(t/150)
+     z_equation: 0
+     pitch: 0
+     particles: 300
+     update_directions: true
+     update_locations: true
+     orient_pitch: false
+     orient: true
+ - location: origin
+   source_location: body
+   relative_offset: -1.6,0.2,0
+   effectlib:
+     class: Equation
+     particle: redstone
+     particle_size: 0.35
+     color: "#dc143c"
+     duration: 10000000
+     x_equation: 0
+     y_equation: (13*cos(t) - 5*cos(2*t) - 2*cos(3*t) - cos(4*t))/(-50)
+     z_equation: (16*sin(t)*sin(t)*sin(t))/80
+     pitch: 0
+     particles: 75
+     update_directions: true
+     update_locations: true
+     orient_pitch: false
+     orient: true
