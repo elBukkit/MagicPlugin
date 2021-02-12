@@ -907,7 +907,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     protected void onFetchExample(CommandSender sender, String[] parameters) {
         final Plugin plugin = magic.getPlugin();
         if (parameters.length < 1) {
-            Collection<String> externalKeys = magic.getExternalExamples();
+            Collection<String> externalKeys = magic.getDownloadedExternalExamples();
             if (externalKeys.isEmpty()) {
                 sender.sendMessage(magic.getMessages().get("commands.mconfig.example.fetch.usage"));
                 return;

@@ -2072,6 +2072,10 @@ public class MagicController implements MageController {
         }
     }
 
+    public void setExampleKeyName(String exampleKey, String exampleName) {
+        exampleKeyNames.put(exampleKey, exampleName);
+    }
+
     private int getPathCount() {
         return WandUpgradePath.getPathKeys().size();
     }
@@ -7097,7 +7101,13 @@ public class MagicController implements MageController {
     @Nonnull
     @Override
     public Collection<String> getExternalExamples() {
-        Set<String> examples = new HashSet<>(builtinExternalExamples.keySet());
+        Set<String> examples = getDownloadedExternalExamples();
+        examples.addAll(builtinExternalExamples.keySet());
+        return examples;
+    }
+
+    public Set<String> getDownloadedExternalExamples() {
+        Set<String> examples = new HashSet<>();
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         if (examplesFolder.exists()) {
             for (File file : examplesFolder.listFiles()) {
@@ -7109,7 +7119,7 @@ public class MagicController implements MageController {
     }
 
     public void updateExternalExamples(CommandSender sender) {
-        Collection<String> examples = getExternalExamples();
+        Collection<String> examples = getDownloadedExternalExamples();
         if (examples.isEmpty()) {
             loadConfiguration(sender);
             return;
