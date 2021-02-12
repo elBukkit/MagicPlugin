@@ -2304,7 +2304,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     @SuppressWarnings("unchecked")
     public static boolean setAutoBlockState(Block block, Location target, BlockFace facing, boolean physics, Player originator) {
-        if (class_CraftBlock == null) return false;
+        if (class_CraftBlock == null || block == null || facing == null || target == null) return false;
         try {
             Object nmsBlock = class_CraftBlock_getNMSBlockMethod.invoke(block);
             if (nmsBlock == null) return false;
