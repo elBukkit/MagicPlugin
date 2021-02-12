@@ -68,6 +68,7 @@ public class CastRule extends BlockRule {
             spells.add(spell);
         }
         Mage mage = controller.getMage(cause);
+        boolean casted = false;
         for (CastSpell castSpell : spells) {
             if (castSpell.isEmpty()) {
                 BlockResult result = castSpell.getBlockResult();
@@ -88,9 +89,9 @@ public class CastRule extends BlockRule {
                 fullParameters[index  + standardParameters.length] = castSpell.getParameters()[index];
             }
 
-            spell.cast(fullParameters);
+            casted = spell.cast(fullParameters) || casted;
         }
 
-        return BlockResult.REMOVE_DROPS;
+        return casted ? BlockResult.REPLACED_DROPS : BlockResult.REMOVE_DROPS;
     }
 }

@@ -71,6 +71,7 @@ public class CastRule extends SpawnRule {
             spells.clear();
             spells.add(spell);
         }
+        boolean casted = false;
         for (CastSpell spell : spells) {
             if (spell.isEmpty()) {
                 SpawnResult result = spell.getSpawnResult();
@@ -88,10 +89,10 @@ public class CastRule extends SpawnRule {
                 fullParameters[index  + standardParameters.length] = spell.getParameters()[index];
             }
 
-            controller.cast(spell.getName(), fullParameters);
+            casted = controller.cast(spell.getName(), fullParameters) || casted;
             controller.info("Spawn rule casting: " + spell.getName() + " " + StringUtils.join(fullParameters, ' ') + " at " + entity.getLocation().toVector());
         }
 
-        return SpawnResult.REMOVE;
+        return casted ? SpawnResult.REPLACE : SpawnResult.REMOVE;
     }
 }

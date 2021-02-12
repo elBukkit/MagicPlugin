@@ -158,8 +158,11 @@ public abstract class SpawnRule implements Comparable<SpawnRule> {
                 return SpawnResult.SKIP;
             }
         }
-        lastSpawn = now;
-        return onProcess(plugin, entity);
+        SpawnResult result = onProcess(plugin, entity);
+        if (result == SpawnResult.REPLACE) {
+            lastSpawn = now;
+        }
+        return result;
     }
 
     @Override
