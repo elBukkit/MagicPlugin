@@ -7101,7 +7101,7 @@ public class MagicController implements MageController {
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         if (examplesFolder.exists()) {
             for (File file : examplesFolder.listFiles()) {
-                 if (!file.isDirectory() || file.getName().startsWith(".") || file.getName().endsWith(".bak")) continue;
+                 if (!file.isDirectory() || file.getName().contains(".")) continue;
                 examples.add(file.getName());
             }
         }

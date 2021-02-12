@@ -30,6 +30,7 @@ commands:
           url_write: "&bYou can update this example in the future with &6/mconfig example fetch $example&r"
           url_write_failed: "&cSomething went wrong writing the url file, please check logs"
           url_exists: "&eExample has a builtin URL file, not overwriting.\n&r&fThis may be a redirect to an updated version.\n&r&&bfYou might want to try &6/mconfig example fetch $example &bto update it"
+          outdated: "&eExample $example requires Magic version &6$version&e, not updating example files. Please update the plugin!"
         add:
           usage: "&cUsage: /mconfig example add <example>"
           duplicate: "&cThe examples &2$examples &care already loaded"

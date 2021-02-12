@@ -10,6 +10,10 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class AsyncProcessor {
     public static void success(MageController controller, CommandSender sender, String message) {
+        message(controller, sender, message);
+    }
+
+    public static void message(MageController controller, CommandSender sender, String message) {
         final Plugin plugin = controller.getPlugin();
         plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
             @Override

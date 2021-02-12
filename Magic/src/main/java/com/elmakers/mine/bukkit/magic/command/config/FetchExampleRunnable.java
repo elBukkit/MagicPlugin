@@ -17,6 +17,7 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -43,32 +44,22 @@ public class FetchExampleRunnable extends HttpGet {
 
     @Override
     public void processResponse(InputStream response) {
+        final Plugin plugin = controller.getPlugin();
         if (response == null) {
-            if (callback != null) {
-                callback.updated(false, exampleKey, url);
-            }
+            call(plugin, callback);
             return;
         }
         byte[] buffer = new byte[2048];
-        File examplesFolder = new File(controller.getPlugin().getDataFolder(), "examples");
+        File examplesFolder = new File(plugin.getDataFolder(), "examples");
         examplesFolder = new File(examplesFolder, exampleKey);
         List<String> messages = new ArrayList<>();
-
-        if (examplesFolder.exists()) {
-            File backupFolder = new File(examplesFolder.getPath() + ".bak");
-            if (backupFolder.exists()) {
-                if (!quiet) {
-                    messages.add(controller.getMessages().get("commands.mconfig.example.fetch.overwrite_backup").replace("$backup", backupFolder.getName()));
-                }
-                ConfigurationUtils.deleteDirectory(backupFolder);
-                examplesFolder.renameTo(backupFolder);
-            } else {
-                if (!quiet) {
-                    messages.add(controller.getMessages().get("commands.mconfig.example.fetch.backup").replace("$backup", backupFolder.getName()));
-                }
-                examplesFolder.renameTo(backupFolder);
-            }
+        File buildFolder = new File(examplesFolder.getPath() + ".download");
+        if (buildFolder.exists()) {
+             ConfigurationUtils.deleteDirectory(buildFolder);
         }
+
+        boolean success = true;
+        String minRequiredVersion = "";
         int size = 0;
         try (ZipInputStream zip = new ZipInputStream(response)) {
             ZipEntry entry;
@@ -87,7 +78,7 @@ public class FetchExampleRunnable extends HttpGet {
                 if (rootFolder != null) {
                     entryName = entryName.replace(rootFolder, "");
                 }
-                File filePath = new File(examplesFolder, entryName);
+                File filePath = new File(buildFolder, entryName);
                 File folder = filePath.getParentFile();
                 if (folder != null) {
                     folder.mkdirs();
@@ -101,6 +92,37 @@ public class FetchExampleRunnable extends HttpGet {
                         size += len;
                     }
                 }
+
+                if (entryName.equals("example.yml")) {
+                    YamlConfiguration exampleConfiguration = new YamlConfiguration();
+                    exampleConfiguration.load(filePath);
+                    minRequiredVersion = exampleConfiguration.getString("min_version");
+                    String[] minVersion = StringUtils.split(minRequiredVersion, ".");
+                    try {
+                        String[] pluginVersion = StringUtils.split(plugin.getDescription().getVersion(), "-");
+                        pluginVersion = StringUtils.split(pluginVersion[0], ".");
+                        for (int i = 0; i < minVersion.length; i++) {
+                            if (i >= pluginVersion.length) {
+                                success = false;
+                                break;
+                            }
+                            int pluginVersionNumber = Integer.parseInt(pluginVersion[i]);
+                            int minVersionNumber = Integer.parseInt(minVersion[i]);
+                            if (minVersionNumber > pluginVersionNumber) {
+                                success = false;
+                                break;
+                            }
+                            if (pluginVersionNumber > minVersionNumber) {
+                                break;
+                            }
+                        }
+                    } catch (Exception ex) {
+                        controller.getLogger().log(Level.WARNING, "Failed to parse plugin version requirements in example " + exampleKey, ex);
+                    }
+                    if (!success) {
+                        break;
+                    }
+                }
             }
             if (empty) {
                 throw new IllegalArgumentException("Empty zip file");
@@ -108,11 +130,37 @@ public class FetchExampleRunnable extends HttpGet {
         } catch (Exception ex) {
             fail(messages, controller.getMessages().get("commands.mconfig.example.fetch.error"), "Error reading zip file", ex);
             ex.printStackTrace();
-            if (callback != null) {
-                callback.updated(false, exampleKey, url);
-            }
+            call(plugin, callback);
             return;
         }
+
+        if (success) {
+            if (examplesFolder.exists()) {
+                File backupFolder = new File(examplesFolder.getPath() + ".bak");
+                if (backupFolder.exists()) {
+                    if (!quiet) {
+                        messages.add(controller.getMessages().get("commands.mconfig.example.fetch.overwrite_backup").replace("$backup", backupFolder.getName()));
+                    }
+                    ConfigurationUtils.deleteDirectory(backupFolder);
+                    examplesFolder.renameTo(backupFolder);
+                } else {
+                    if (!quiet) {
+                        messages.add(controller.getMessages().get("commands.mconfig.example.fetch.backup").replace("$backup", backupFolder.getName()));
+                    }
+                    examplesFolder.renameTo(backupFolder);
+                }
+            }
+            buildFolder.renameTo(examplesFolder);
+        } else {
+            ConfigurationUtils.deleteDirectory(buildFolder);
+            call(plugin, callback);
+            String message = controller.getMessages().get("commands.mconfig.example.fetch.outdated")
+                .replace("$example", exampleKey)
+                .replace("$version", minRequiredVersion);
+            message(messages, message);
+            return;
+        }
+
         try {
             response.close();
         } catch (IOException ex) {
@@ -146,8 +194,11 @@ public class FetchExampleRunnable extends HttpGet {
         }
         message = message.replace("$size", fileSize);
         success(messages, message);
+        call(plugin, callback);
+    }
+
+    private void call(Plugin plugin, ExampleUpdatedCallback callback) {
         if (callback != null) {
-            final Plugin plugin = controller.getPlugin();
             plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
                 @Override
                 public void run() {

@@ -46,6 +46,11 @@ public abstract class HttpGet extends AsyncProcessor implements Runnable {
 
     protected abstract void processResponse(InputStream response);
 
+    protected void message(List<String> messages, String message) {
+        messages.add(message);
+        message(controller, sender, StringUtils.join(messages, "\n"));
+    }
+
     protected void success(List<String> messages, String message) {
         messages.add(message);
         success(controller, sender, StringUtils.join(messages, "\n"));
