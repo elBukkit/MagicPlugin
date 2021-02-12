@@ -2,7 +2,8 @@ base_npc:
   hidden: true
   npc: true
   type: villager
-  villager_profession: random
+  use_npc_name: true
+  villager_profession: librarian
   ai: false
   invulnerable: true
   silent: true

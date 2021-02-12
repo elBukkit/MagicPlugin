@@ -305,7 +305,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             return null;
         }
         EntityMetadataUtils.instance().setString(entity, "npc_id", id.toString());
-        entity.setCustomName(getName());
+        if (entityData.useNPCName()) {
+            entity.setCustomName(getName());
+        }
         this.entityId = entity.getUniqueId();
         return entity;
     }
