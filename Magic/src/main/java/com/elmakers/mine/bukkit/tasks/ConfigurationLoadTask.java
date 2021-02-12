@@ -46,6 +46,7 @@ public class ConfigurationLoadTask implements Runnable {
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
     private final Map<String, ConfigurationSection> exampleConfigurations = new HashMap<>();
+    private final Map<String, String> exampleKeyNames = new HashMap<>();
 
     private static final Object loadLock = new Object();
 
@@ -100,9 +101,10 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     @Nonnull
-    private ConfigurationSection loadExampleConfiguration(String examplesPrefix) {
+    private ConfigurationSection loadExampleConfiguration(String examplesPrefix, String exampleKey) {
         ConfigurationSection exampleConfig = exampleConfigurations.get(examplesPrefix);
         if (exampleConfig == null) {
+            boolean isMainConfig = examplesPrefix.endsWith("config");
             String examplesFileName = examplesPrefix + ".yml";
             File externalFolder = new File(plugin.getDataFolder(), examplesPrefix);
             File externalFile = new File(plugin.getDataFolder(), examplesFileName);
@@ -121,6 +123,23 @@ public class ConfigurationLoadTask implements Runnable {
                     exampleConfig = loadConfigFolder(exampleConfig, externalFolder, false);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + examplesFileName);
+                }
+            }
+
+            // Check for meta info
+            if (isMainConfig) {
+                File metaFile = new File(plugin.getDataFolder(), "examples/" + exampleKey + "/example.yml");
+                if (metaFile.exists()) {
+                    try {
+                        YamlConfiguration exampleMetadata = new YamlConfiguration();
+                        exampleMetadata.load(metaFile);
+                        String name = exampleMetadata.getString("name", exampleKey);
+                        if (!name.equalsIgnoreCase(exampleKey)) {
+                            exampleKeyNames.put(exampleKey, name);
+                        }
+                    } catch (Exception ex) {
+                        getLogger().severe("Error loading external example meta file: " + metaFile.getPath());
+                    }
                 }
             }
             if (exampleConfig == null) {
@@ -200,7 +219,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load an example if one is specified
         if (usingExample) {
-            ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix);
+            ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, exampleDefaults);
             if (exampleConfig != null)  {
                 try {
                     info(" Using " + examplesFilePrefix);
@@ -216,7 +235,7 @@ public class ConfigurationLoadTask implements Runnable {
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 examplesFilePrefix = "examples/" + example + "/" + fileName;
-                ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix);
+                ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
                 if (exampleConfig != null)
                 {
                     try {
@@ -290,7 +309,7 @@ public class ConfigurationLoadTask implements Runnable {
             if (skip == null || !skip.contains(fileName)) {
                 for (String inheritFrom : inherits) {
                     String inheritFilePrefix = "examples/" + inheritFrom + "/" + fileName;
-                    ConfigurationSection inheritedConfig = loadExampleConfiguration(inheritFilePrefix);
+                    ConfigurationSection inheritedConfig = loadExampleConfiguration(inheritFilePrefix, inheritFrom);
                     if (inheritedConfig != null) {
                         if (isMainConfig) {
                             mainConfigurations.put(inheritFrom, ConfigurationUtils.cloneConfiguration(inheritedConfig));
@@ -388,7 +407,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load example
         if (usingExample && loadDefaults) {
-            ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix);
+            ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, exampleDefaults);
             if (exampleConfig != null) {
                 try {
                     if (disableDefaults) {
@@ -413,7 +432,7 @@ public class ConfigurationLoadTask implements Runnable {
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 examplesFilePrefix = "examples/" + example + "/" + fileName;
-                ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix);
+                ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
                 if (exampleConfig != null)
                 {
                     try {
@@ -435,7 +454,7 @@ public class ConfigurationLoadTask implements Runnable {
         // Apply language overrides, but only to the messages config
         if (fileName.equals("messages") && languageOverride != null && !languageOverride.isEmpty() && !languageOverride.equalsIgnoreCase("EN")) {
             String languageFilePrefix = "examples/localizations/messages." + languageOverride;
-            ConfigurationSection languageConfig = loadExampleConfiguration(languageFilePrefix);
+            ConfigurationSection languageConfig = loadExampleConfiguration(languageFilePrefix, "localizations");
             if (languageConfig != null) {
                 try {
                     ConfigurationUtils.addConfigurations(config, languageConfig);
@@ -894,5 +913,9 @@ public class ConfigurationLoadTask implements Runnable {
 
     public Collection<String> getAddExamples() {
         return addExamples;
+    }
+
+    public Map<String, String> getExampleKeyNames() {
+        return exampleKeyNames;
     }
 }

@@ -1797,6 +1797,10 @@ public class MagicController implements MageController {
         // Clear the equation store to flush out any equations that failed to parse
         EquationStore.clear();
 
+        // Map aliases of loaded external examples
+        exampleKeyNames.clear();
+        exampleKeyNames.putAll(loader.getExampleKeyNames());
+
         // Process loaded data
         exampleDefaults = loader.getExampleDefaults();
         addExamples = loader.getAddExamples();
@@ -2058,7 +2062,11 @@ public class MagicController implements MageController {
         Mage mage = getMage(sender);
         List<String> instructions = new ArrayList<>();
         for (String example : getLoadedExamples()) {
-            String exampleInstructions = messages.get("examples." + example + ".instructions", "");
+            String exampleKey = exampleKeyNames.get(example);
+            if (exampleKey == null || exampleKey.isEmpty()) {
+                exampleKey = example;
+            }
+            String exampleInstructions = messages.get("examples." + exampleKey + ".instructions", "");
             if (exampleInstructions != null && !exampleInstructions.isEmpty()) {
                 instructions.add(exampleInstructions);
             }
@@ -2070,10 +2078,6 @@ public class MagicController implements MageController {
             }
             mage.sendMessage(messages.get("examples.instructions_footer"));
         }
-    }
-
-    public void setExampleKeyName(String exampleKey, String exampleName) {
-        exampleKeyNames.put(exampleKey, exampleName);
     }
 
     private int getPathCount() {
@@ -7708,6 +7712,7 @@ public class MagicController implements MageController {
 
     private String                              exampleDefaults             = null;
     private Collection<String>                  addExamples                 = null;
+    private final Map<String, String>           exampleKeyNames             = new HashMap<>();
     private boolean                             loaded                      = false;
     private boolean                             shuttingDown                = false;
     private boolean                             dataLoaded                  = false;
