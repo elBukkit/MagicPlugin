@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -34,11 +36,12 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private boolean showArmorStandArms = true;
     private boolean showArmorStandBaseplate = false;
     private boolean unbreakableItems = false;
-    private ItemStack rightArmItem = null;
-    private ItemStack helmetItem = null;
-    private ItemStack chestplateItem = null;
-    private ItemStack leggingsItem = null;
-    private ItemStack bootsItem = null;
+
+    private ItemData rightArmItem = null;
+    private ItemData helmetItem = null;
+    private ItemData chestplateItem = null;
+    private ItemData leggingsItem = null;
+    private ItemData bootsItem = null;
     private VectorTransform leftArmTransform;
     private VectorTransform rightArmTransform;
     private VectorTransform leftLegTransform;
@@ -103,41 +106,11 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         }
 
         MageController controller = context.getController();
-        ItemData itemType = controller.getOrCreateItem(parameters.getString("right_arm_item"));
-        if (itemType != null) {
-            rightArmItem = itemType.getItemStack(1);
-            if (rightArmItem != null && unbreakableItems) {
-                InventoryUtils.makeUnbreakable(rightArmItem);
-            }
-        }
-        itemType = controller.getOrCreateItem(parameters.getString("helmet_item"));
-        if (itemType != null) {
-            helmetItem = itemType.getItemStack(1);
-            if (helmetItem != null && unbreakableItems) {
-                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(helmetItem));
-            }
-        }
-        itemType = controller.getOrCreateItem(parameters.getString("chestplate_item"));
-        if (itemType != null) {
-            chestplateItem = itemType.getItemStack(1);
-            if (chestplateItem != null && unbreakableItems) {
-                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(chestplateItem));
-            }
-        }
-        itemType = controller.getOrCreateItem(parameters.getString("leggings_item"));
-        if (itemType != null) {
-            leggingsItem = itemType.getItemStack(1);
-            if (leggingsItem != null && unbreakableItems) {
-                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(leggingsItem));
-            }
-        }
-        itemType = controller.getOrCreateItem(parameters.getString("boots_item"));
-        if (itemType != null) {
-            bootsItem = itemType.getItemStack(1);
-            if (bootsItem != null && unbreakableItems) {
-                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(bootsItem));
-            }
-        }
+        rightArmItem = controller.getOrCreateItem(parameters.getString("right_arm_item"));
+        helmetItem = controller.getOrCreateItem(parameters.getString("helmet_item"));
+        chestplateItem = controller.getOrCreateItem(parameters.getString("chestplate_item"));
+        leggingsItem = controller.getOrCreateItem(parameters.getString("leggings_item"));
+        bootsItem = controller.getOrCreateItem(parameters.getString("boots_item"));
     }
 
     @Override
@@ -229,31 +202,43 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
             if (wandItem != null && wandSlot == InventorySlot.HELMET) {
                 armorStand.setHelmet(wandItem);
             } else {
-                armorStand.setHelmet(helmetItem);
+                armorStand.setHelmet(getItem(helmetItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.RIGHT_ARM) {
                 armorStand.setItemInHand(wandItem);
             } else {
-                armorStand.setItemInHand(rightArmItem);
+                armorStand.setItemInHand(getItem(rightArmItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.CHESTPLATE) {
                 armorStand.setChestplate(wandItem);
             } else {
-                armorStand.setChestplate(chestplateItem);
+                armorStand.setChestplate(getItem(chestplateItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.LEGGINGS) {
                 armorStand.setLeggings(wandItem);
             } else {
-                armorStand.setLeggings(leggingsItem);
+                armorStand.setLeggings(getItem(leggingsItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.BOOTS) {
                 armorStand.setBoots(wandItem);
             } else {
-                armorStand.setBoots(bootsItem);
+                armorStand.setBoots(getItem(bootsItem));
             }
         }
         stepCount++;
         return result;
+    }
+
+    @Nullable
+    private ItemStack getItem(ItemData itemData) {
+        ItemStack itemStack = null;
+        if (itemData != null) {
+            itemStack = itemData.getItemStack(1);
+            if (itemStack != null && unbreakableItems) {
+                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(itemStack));
+            }
+        }
+        return itemStack;
     }
 
     @Override
