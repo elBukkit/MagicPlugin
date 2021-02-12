@@ -81,7 +81,9 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent event) {
-        if (controller.isDisableSpawnReplacement() || ignoreReasons.contains(event.getSpawnReason())) return;
+        if (controller.isDisableSpawnReplacement() || ignoreReasons.contains(event.getSpawnReason())) {
+            return;
+        }
 
         MagicWorld magicWorld = controller.getWorld(event.getLocation().getWorld().getName());
         if (magicWorld == null) return;

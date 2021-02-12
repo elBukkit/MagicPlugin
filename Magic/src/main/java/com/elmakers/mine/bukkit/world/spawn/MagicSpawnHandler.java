@@ -48,7 +48,7 @@ public class MagicSpawnHandler {
         if (result == SpawnResult.STOP) return false;
         if (result != SpawnResult.SKIP) return true;
         result = processRules(plugin, entity, globalRules);
-        return result != SpawnResult.STOP;
+        return result == SpawnResult.REMOVE || result == SpawnResult.REPLACE;
     }
 
     protected void addRule(SpawnRule rule) {
