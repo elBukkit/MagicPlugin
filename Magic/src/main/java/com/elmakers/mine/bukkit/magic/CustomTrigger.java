@@ -93,7 +93,7 @@ public class CustomTrigger extends Trigger {
                             // Arggggg
                             @SuppressWarnings("unchecked")
                             Map<String, ?> configMap = (Map<String, ?>)configGeneric;
-                            config = ConfigurationUtils.toConfigurationSection(configMap);
+                            config = ConfigurationUtils.toConfigurationSection(configuration, configMap);
                         }
                         if (config == null) continue;
                         String spellKey = config.getString("spell");

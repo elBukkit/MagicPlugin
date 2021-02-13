@@ -1107,7 +1107,7 @@ public class ConfigurationUtils extends ConfigUtils {
                 } else {
                     ConfigurationSection potionEffectSection = genericEntry instanceof ConfigurationSection ? (ConfigurationSection)genericEntry : null;
                     if (potionEffectSection == null && genericEntry instanceof Map) {
-                        potionEffectSection = toConfigurationSection((Map<?, ?>)genericEntry);
+                        potionEffectSection = toConfigurationSection(baseConfig, (Map<?, ?>)genericEntry);
                     }
                     if (potionEffectSection != null) {
                         if (potionEffectSection.contains("type")) {
@@ -1250,5 +1250,23 @@ public class ConfigurationUtils extends ConfigUtils {
             }
         }
         return set;
+    }
+
+    public static ConfigurationSection addSection(ConfigurationSection parent, String path, Map<?, ?> nodeMap) {
+         ConfigurationSection newSection = toConfigurationSection(parent, path, nodeMap);
+         parent.set(path, newSection);
+         return newSection;
+    }
+
+    public static ConfigurationSection toConfigurationSection(ConfigurationSection parent, Map<?, ?> nodeMap) {
+         return toConfigurationSection(parent, "", nodeMap);
+    }
+
+    public static ConfigurationSection toConfigurationSection(ConfigurationSection parent, String path, Map<?, ?> nodeMap) {
+        ConfigurationSection newSection = new TranslatingConfigurationSection(parent, path);
+        for (Map.Entry<?, ?> entry : nodeMap.entrySet()) {
+            newSection.set(entry.getKey().toString(), entry.getValue());
+        }
+        return newSection;
     }
 }

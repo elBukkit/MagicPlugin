@@ -44,7 +44,7 @@ public class MagicKit {
             } else if (itemObject instanceof ConfigurationSection || itemObject instanceof Map) {
                 ConfigurationSection itemConfig;
                 if (itemObject instanceof Map) {
-                    itemConfig = ConfigurationUtils.toConfigurationSection((Map<?,?>)itemObject);
+                    itemConfig = ConfigurationUtils.toConfigurationSection(configuration, (Map<?,?>)itemObject);
                 } else {
                     itemConfig = (ConfigurationSection)itemObject;
                 }

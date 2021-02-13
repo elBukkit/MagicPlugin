@@ -198,7 +198,7 @@ public class ShopAction extends SelectorAction {
                     if (object instanceof ConfigurationSection) {
                         itemConfigs.add((ConfigurationSection)object);
                     } else if (object instanceof Map) {
-                         itemConfigs.add(ConfigurationUtils.toConfigurationSection((Map<?, ?>)object));
+                         itemConfigs.add(ConfigurationUtils.toConfigurationSection(parameters, (Map<?, ?>)object));
                     } else if (object instanceof String) {
                         ConfigurationSection itemConfig = ConfigurationUtils.newConfigurationSection();
                         if (object.equals("none")) {

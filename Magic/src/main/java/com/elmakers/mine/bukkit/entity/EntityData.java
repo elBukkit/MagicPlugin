@@ -483,7 +483,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 if (item instanceof Map || item instanceof ConfigurationSection) {
                     ConfigurationSection table = null;
                     if (item instanceof Map) {
-                        table = ConfigurationUtils.toConfigurationSection((Map<?, ?>)item);
+                        table = ConfigurationUtils.toConfigurationSection(parameters, (Map<?, ?>)item);
                     } else {
                         table = (ConfigurationSection)item;
                     }

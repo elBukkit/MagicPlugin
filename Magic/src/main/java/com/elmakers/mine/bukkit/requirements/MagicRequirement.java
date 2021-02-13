@@ -136,7 +136,7 @@ public class MagicRequirement {
         ConfigurationSection propertyConfig = null;
         if (singleConfigObject != null) {
             if (singleConfigObject instanceof Map) {
-                propertyConfig = ConfigurationUtils.toConfigurationSection((Map<?, ?>)singleConfigObject);
+                propertyConfig = ConfigurationUtils.toConfigurationSection(configuration, (Map<?, ?>)singleConfigObject);
             } else if (singleConfigObject instanceof ConfigurationSection) {
                 propertyConfig = (ConfigurationSection) singleConfigObject;
             }

@@ -18,8 +18,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-import de.slikey.effectlib.util.ConfigUtils;
-
 @Deprecated
 public class ItemShopAction extends com.elmakers.mine.bukkit.action.BaseShopAction
 {
@@ -48,7 +46,7 @@ public class ItemShopAction extends com.elmakers.mine.bukkit.action.BaseShopActi
                     } else if (itemEntry instanceof ConfigurationSection || itemEntry instanceof Map) {
                         ConfigurationSection itemConfig = (itemEntry instanceof ConfigurationSection)
                                 ? (ConfigurationSection)itemEntry
-                                : ConfigUtils.toConfigurationSection((Map<?,?>)itemEntry);
+                                : ConfigurationUtils.toConfigurationSection(parameters, (Map<?,?>)itemEntry);
                         ShopItem shopItem = null;
                         if (itemConfig != null) {
                             double cost = itemConfig.getDouble("cost");

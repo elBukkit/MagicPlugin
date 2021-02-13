@@ -866,7 +866,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (overridesGeneric != null) {
                 castOverrides = new HashMap<>();
                 if (overridesGeneric instanceof String) {
-                    String overrides = (String) overridesGeneric;
+                    String overrides = (String)overridesGeneric;
                     if (!overrides.isEmpty()) {
                         // Support YML-List-As-String format
                         // May not really need this anymore.
