@@ -1,0 +1,39 @@
+crown:
+ - location: origin
+   source_location: head
+   relative_offset: 0,0.2,0
+   effectlib:
+     class: Equation
+     duration: 10000000
+     particle: redstone
+     particles: 500
+     max_steps: 500
+     color: "#ffd700"
+     particle_size: 0.25
+     pitch: 0
+     x_equation: sin(t)*0.5
+     z_equation: cos(t)*0.5
+     y_equation: cos(t2*300)*cos(t2*300)*0.25
+     orient: true
+     orient_pitch: false
+     update_directions: false
+     update_locations: true
+ - location: origin
+   source_location: head
+   relative_offset: 0,0.4,0
+   effectlib:
+     class: Equation
+     duration: 10000000
+     particle: redstone
+     particles: 500
+     max_steps: 500
+     color: "#ffd700"
+     particle_size: 0.25
+     pitch: 0
+     x_equation: sin(t)*0.5
+     z_equation: cos(t)*0.5
+     y_equation: cos(t2*3)*cos(t2*3)*0.3
+     orient: true
+     orient_pitch: false
+     update_directions: false
+     update_locations: true

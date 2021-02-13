@@ -30,8 +30,12 @@ effectshop:
         - item: butterflyeffects
           unlock: butterfly
           cost: 9999
-        - item: none
-        - item: none
+        - item: taileffects
+          unlock: tail
+          cost: 9999
+        - item: crowneffects
+          unlock: crown
+          cost: 9999
         - item: none
         - item: none
         - item: cleareffects

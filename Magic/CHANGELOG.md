@@ -45,6 +45,7 @@
  - Add `/mconfig example unfetch` command to completely remove previously-fetched examples
  - Added `region_tags` option to requirements
  - Added WIP `mars` external example
+ - Add tail and crown FX to wand effect shop (Thank you, Phantom!)
 
 # 8.3.3
 

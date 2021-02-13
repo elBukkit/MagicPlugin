@@ -225,6 +225,12 @@ wands:
     butterflyeffects:
         name: Butterfly Effects
         description: It gives you wiiiiiiiings
+    taileffects:
+        name: Demon Tail Effects
+        description: So pointy!
+    crowneffects:
+        name: Crown Effects
+        description: You'll always be royal
     student_upgrade:
         name: Student Upgrade
         description: Upgrade to Student level

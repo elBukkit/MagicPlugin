@@ -120,11 +120,24 @@ haloeffects:
     effect_particle_data: 0
     effect_particle_radius: 0.4
     effect_particle_offset: 0.5
+wandeffects:
+  hidden: true
+  upgrade: true
+  indestructible: false
+  icon: feather
+  effect_bubbles: false
+  effect_particle: ""
 butterflyeffects:
-    upgrade: true
-    indestructible: false
-    icon: feather
-    effect_bubbles: false
-    effect_particle: ""
-    effects:
-        activate: butterfly
+  inherit: wandeffects
+  effects:
+    activate: butterfly
+taileffects:
+  inherit: wandeffects
+  icon: leash
+  effects:
+    activate: tail
+crowneffects:
+  inherit: wandeffects
+  icon: gold_nugget
+  effects:
+      activate: crown
