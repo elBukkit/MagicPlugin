@@ -10,6 +10,7 @@
 
 ## Changes
 
+ - The default resource pack setting is now "auto" instead of "off".
  - "Not enough mana" messages will now show by default (unless your wand is set to silent)
  - Shop management tool now uses a GUI
  - The appraiser shop now sells at 50% like other shops

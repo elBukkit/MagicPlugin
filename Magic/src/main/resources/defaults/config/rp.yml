@@ -42,7 +42,7 @@ resource_pack_prompt: false
 # Players can turn it back on using `/getrp auto`
 # They will be prompted at login with the "resource_pack.off_prompt" message, which by default
 # Goes to the action bar and will tell them to use `/getrp`
-resource_pack_default_auto: false
+resource_pack_default_auto: true
 
 # Alternate resource packs can be accessed with /getrp <pack>
 alternate_resource_packs:
