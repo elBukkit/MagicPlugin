@@ -24,7 +24,7 @@ public class MageLoadTask implements Runnable {
             MageController controller = mage.getController();
             if (mage.isPlayer() && mage.isResourcePackEnabled()) {
                 controller.promptResourcePack(mage.getPlayer());
-            } else if (!mage.isResourcePackEnabledSet()) {
+            } else if (mage.isResourcePackPrompt()) {
                 controller.promptNoResourcePack(mage.getPlayer());
             }
             MageLoadEvent event = new MageLoadEvent(mage, data == null);

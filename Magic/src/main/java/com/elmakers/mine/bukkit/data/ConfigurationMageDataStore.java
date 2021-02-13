@@ -152,6 +152,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         saveFile.set("open_wand", mage.isOpenWand());
         saveFile.set("gave_welcome_wand", mage.getGaveWelcomeWand());
         saveFile.set("resource_pack_preference", mage.getResourcePackEnabled());
+        saveFile.set("resource_pack_prompt", mage.getResourcePackPrompt());
         saveFile.set("preferred_resource_pack", mage.getPreferredResourcePack());
 
         ConfigurationSection extraData = mage.getExtraData();
@@ -427,6 +428,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         if (saveFile.contains("resource_pack_preference")) {
             data.setResourcePackEnabled(saveFile.getBoolean("resource_pack_preference"));
         }
+        data.setResourcePackPrompt(saveFile.getBoolean("resource_pack_prompt", true));
         data.setPreferredResourcePack(saveFile.getString("preferred_resource_pack"));
         data.setHealth(saveFile.getDouble("health"));
 

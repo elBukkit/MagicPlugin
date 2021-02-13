@@ -40,6 +40,7 @@ public class MageData {
     private Integer storedLevel;
     private boolean openWand;
     private boolean gaveWelcomeWand;
+    private boolean resourcePackPrompt;
     private Boolean resourcePackEnabled;
     private String preferredResourcePack;
     private long created;
@@ -266,6 +267,15 @@ public class MageData {
     public void setResourcePackEnabled(Boolean resourcePackEnabled) {
         this.resourcePackEnabled = resourcePackEnabled;
     }
+
+    public boolean getResourcePackPrompt() {
+        return resourcePackPrompt;
+    }
+
+    public void setResourcePackPrompt(boolean resourcePackPrompt) {
+        this.resourcePackPrompt = resourcePackPrompt;
+    }
+
 
     public String getPreferredResourcePack() {
         return preferredResourcePack;

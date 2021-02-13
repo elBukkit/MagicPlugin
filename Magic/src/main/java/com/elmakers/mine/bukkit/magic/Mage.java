@@ -226,6 +226,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private boolean costFree = false;
     private boolean cooldownFree = false;
+    private boolean resourcePackPrompt = true;
     private Boolean resourcePackEnabled = null;
     private String preferredResourcePack = null;
 
@@ -1265,6 +1266,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             resourcePackEnabled = data.getResourcePackEnabled();
+            resourcePackPrompt = data.getResourcePackPrompt();
             preferredResourcePack = data.getPreferredResourcePack();
             gaveWelcomeWand = data.getGaveWelcomeWand();
             playerName = data.getName();
@@ -1571,6 +1573,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             data.setGaveWelcomeWand(gaveWelcomeWand);
             data.setResourcePackEnabled(resourcePackEnabled);
+            data.setResourcePackPrompt(resourcePackPrompt);
             data.setPreferredResourcePack(preferredResourcePack);
             data.setExtraData(this.data);
             data.setProperties(properties.getConfiguration());
@@ -5188,6 +5191,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setResourcePackEnabled(Boolean enable) {
         resourcePackEnabled = enable;
+    }
+
+    public void setResourcePackPrompt(boolean prompt) {
+        resourcePackPrompt = prompt;
+    }
+
+    public boolean isResourcePackPrompt() {
+        return resourcePackPrompt;
     }
 
     public void setPreferredResourcePack(String pack) {

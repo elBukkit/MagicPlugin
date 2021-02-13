@@ -71,18 +71,22 @@ public class RPCommandExecutor extends MagicTabExecutor {
 
         if (subCommand.equalsIgnoreCase("off")) {
             mage.setResourcePackEnabled(false);
+            mage.setResourcePackPrompt(false);
             sender.sendMessage(controller.getMessages().get("commands.getrp.turnoff"));
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("manual")) {
-            mage.setResourcePackEnabled(null);
+            mage.setResourcePackEnabled(false);
+            mage.setResourcePackPrompt(true);
             sender.sendMessage(controller.getMessages().get("commands.getrp.manual"));
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("default")) {
             sender.sendMessage(controller.getMessages().get("commands.getrp.default"));
+            mage.setResourcePackPrompt(true);
+            mage.setResourcePackEnabled(null);
             mage.setPreferredResourcePack(null);
             controller.sendResourcePack((Player)sender);
             return true;
