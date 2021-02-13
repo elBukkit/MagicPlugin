@@ -11,6 +11,7 @@
 ## Changes
 
  - The default resource pack setting is now "auto" instead of "off".
+   Use `/mconfig configure config resource_pack_default_auto false` to switch it back off.
  - "Not enough mana" messages will now show by default (unless your wand is set to silent)
  - Shop management tool now uses a GUI
  - The appraiser shop now sells at 50% like other shops
@@ -23,6 +24,7 @@
  - The `target` parameter now defaults to `self` unless `range` is specified (instead of defaulting to `none`)
  - Updated builtin Spanish translation (`/mconfig language ES`), thanks ChrisTVH!
  - Added `magic-tags` WorldGuard flags, should be used in place of `spawn-tags` though the latter still works
+ - Brooms are no longer bound. Use `/mconfig configure wand broomstick bound true` to turn this back on.
 
 ## Additions
 
