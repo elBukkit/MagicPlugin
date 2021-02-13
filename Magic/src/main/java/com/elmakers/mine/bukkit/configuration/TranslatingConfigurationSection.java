@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.util.NumberConversions;
 
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class TranslatingConfigurationSection extends MemorySection {
@@ -34,7 +35,7 @@ public class TranslatingConfigurationSection extends MemorySection {
         super();
     }
 
-    protected TranslatingConfigurationSection(ConfigurationSection parent, String path) {
+    public TranslatingConfigurationSection(ConfigurationSection parent, String path) {
         super(parent, path);
     }
 
@@ -192,22 +193,13 @@ public class TranslatingConfigurationSection extends MemorySection {
         return val instanceof Boolean;
     }
 
-    @SuppressWarnings("unchecked")
-    private ConfigurationSection toConfigurationSection(String path, Map<?, ?> map) {
-        ConfigurationSection newSection = createSection(this, path);
-        NMSUtils.setMap(newSection, (Map<String, Object>) map);
-        return newSection;
-    }
-
     @Nullable
     @Override
     public ConfigurationSection getConfigurationSection(String path) {
         Object val = get(path, null);
         if (val != null) {
             if (val instanceof Map) {
-                ConfigurationSection translated = toConfigurationSection(path, (Map<?, ?>)val);
-                set(path, translated);
-                return translated;
+                return ConfigurationUtils.toConfigurationSection(this, path, (Map<?, ?>)val);
             }
             return (val instanceof ConfigurationSection) ? (ConfigurationSection) val : null;
         }
@@ -226,7 +218,7 @@ public class TranslatingConfigurationSection extends MemorySection {
     @Override
     public void set(String key, Object value) {
         if (value instanceof Map) {
-            value = toConfigurationSection(key, (Map<?,?>)value);
+            value = ConfigurationUtils.toConfigurationSection(this, key, (Map<?,?>)value);
         }
         super.set(key, value);
     }
