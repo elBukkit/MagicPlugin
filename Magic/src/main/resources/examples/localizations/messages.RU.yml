@@ -45,6 +45,16 @@ slots:
   broom_upgrade:
     name: Улучшение
 
+dynmap:
+  spells_markerset: Использованные Заклинания
+  wands_markerset: Палочки
+
+logs:
+  notify_errors: "&7[Magic] &bОбнаружено &c$errors ошибок &bза последние &3$time&b, проверь логи!"
+  notify_warnings: "&7[Magic] &bОбнаружено &e$warnings предупреждений &bза последние &3$time&b, проверь логи!"
+  notify_errors_and_warnings: "&7[Magic] &bОбнаружено &c$errors ошибок &bи &e$warnings предупреждений &bза последние &3$time&b, проверь логи!"
+  notify_instructions: "&7  Убери перм &fMagic.notify &7чтобы не видеть эти сообщения"
+
 examples:
   instructions_header: |-
       &8 ----------------------------------------------------
@@ -72,18 +82,27 @@ commands:
           base: "&bБазовая конфигурация: &3$example"
           header: "&bКонфигурации:"
           item: "  &f- &3$example"
+        unfetch:
+          usage: "&cИспользование: /mconfig example unfetch <название>"
+          success: "&bПереименовываю &2$example&b в &2$backup"
+          fail: "&cКонфигурация &2$example&c не найдена"
         fetch:
           usage: "&cИспользование: /mconfig example fetch <название> <ссылка>"
           unknown: "&cНеизвестная конфигурация: &e$example, &cиспользуй команду, чтобы загрузить конфигурацию.&r\n&cИспользование: /mconfig example fetch <название> <ссылка>"
           fail: "&cНеверно указана ссылка - &e$url"
           error: "&cЧто-то пошло не так, проверь логи"
+          wait_all: "&bПодождите пока все конфигурации($count) обновятся"
+          skip: "&6Пропускаю &e$example&6, т.к конфигурация не используется, возможно ты хочешь отвязать ее - &f/mconfig example unfetch $example&6, если она тебе больше не нужна"
+          success_all: "&bВсе конфигурации были обновлены"
           wait: "&bПодождите, идет скачивание &b$url..."
+          success_quiet:  "&bСкачивание завершено - &2$example&f, заняло &9$time &fна скачивание &9$size MB"
           success: "&bСкачивание завершено - &2$example&f\n&rИспользуй &6/mconfig example add $example&f, чтобы совместить конфигурацию с текущей \n&rИспользуй &6/mconfig example set $example&f, чтобы установить как базовую конфигурацию"
           backup: "&eКонфигурация найдена, &3создаю бэкап - &f$backup"
           overwrite_backup: "&eКонфигурация и бэкап найдены, &cперезаписываю &f$backup"
           url_write: "&bТы сможешь обновить конфигурацию в будущем, используя команду &6/mconfig example fetch $example&r"
           url_write_failed: "&cЧто-то пошло не так в ходе записи файла с ссылкой, проверь логи"
           url_exists: "&eКонфигурация уже имеет загруженный файл с ссылкой.\n&r&fВозможно, вышло обновление для конфигурации.\n&r&&bfИспользуй команду &6/mconfig example fetch $example&b, чтобы обновить"
+          outdated: "&eКонфигурация $example подходит только для Magic &6$version&e, обновление приостановлено. Пожалуйста, обновите плагин!"
         add:
           usage: "&cИспользование: /mconfig example add <example>"
           duplicate: "&cКонфигурации &2$examples &cуже загружены"
@@ -163,6 +182,7 @@ commands:
       preference: "Выбран ресурс-пак &3$pack&f\nИспользуй команду &6/getrp default&f для выбора базового ресурспака."
       noauto: "Введи &6/getrp auto&f, чтобы получать ресурс-пак при входе"
       default: "Выбран базовый ресурс-пак"
+      disabled: "Эта команда недоступна, потому что владелец сервера указал ресурс-пак в файле server.properties"
 costs:
     sp_amount: $amount ОЗ
     xp_amount: $amount Опыта
@@ -181,6 +201,10 @@ costs:
     currency_singular: Доллар
     currency: Долларов
     currency_amount: "$$amount"
+
+numbers:
+  integer: #,###
+  decimal: #,###.00
 
 currency:
     item_name: "&e$amount &6$type"
@@ -340,6 +364,7 @@ requirements:
   property_min: "&r&cУровень &6$property &cдолжен быть выше $4$value"
   no_wand: "&cТы должен держать в руке палочку!"
   no_template: "&cДля палочки $wand нет заклинаний."
+  no_region: "&cТебе не разрешено делать это здесь."
   no_path: "&cТебе здесь нечего изучать."
   no_class: "&cТвой класс должен быть $class"
   no_required_path: "&cТы должен быть на уровне $path или выше!"
@@ -368,6 +393,7 @@ shops:
   selected_free: "&d&oТы выбрал &r&6$item"
   not_applicable: "У тебя уже есть $item"
   cast_fail: "&cИзвините, попробуйте позже!"
+  warp_fail: "&cИзвините, что-то пошло не так!"
   no_items: "Тебе нечего покупать здесь"
   title: "Магазин ($balance)"
   sell_title: "Продать ($balance&0)"
@@ -407,6 +433,9 @@ shops:
   attribute_max: "Нельзя больше увеличивать $attribute"
   attribute_min: "Нельзя больше уменьшать $attribute"
   full: "Твой инвентарь полон!"
+  nostock: "Прости, но этот предмет закончился!"
+  paid: "&7$owner спасибо тебе за твою работу!"
+  invalid_item: "&cПредмет неизвестен или неверно указан"
 spell:
     category: ""
     # category: "&7&o$category"
@@ -664,8 +693,8 @@ spells:
   default:
     fizzle: Заклинание ослабло!
     backfire: Заклинание отлетело в вас!
-    fail: Что-то пошло не так!
-    insufficient_permission: У тебя нет прав использовать это.
+    fail: &cЧто-то пошло не так!
+    insufficient_permission: У тебя нет прав использовать это сейчас.
     cast_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
     indirect_player_message: "a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!"
     insufficient_resources: Недостаточно $cost
@@ -696,6 +725,7 @@ spells:
     usage: Наведи мышь вверх и нажми ЛКМ, чтобы получить ключ; Шифт+ЛКМ, чтобы разблокировать
     cast: Теперь контейнер заперт - тебе нужно держать ключ, чтобы открыть его!
     acquire: Замок изменен!
+    already_key: У тебя уже есть ключ
     already: Уже заперто
     alternate_up: Получен ключ
     alternate_sneak: Контейнер разблокирован
@@ -945,6 +975,30 @@ spells:
     name: Поддержка с воздуха
     description: Убивает ближайшее существо
     cast_player_message: a:&d&o$player &r&5вызвал воздушный удар на тебя
+  bring:
+    name: Призвать
+    description: Телепортирует выбранного игрока к тебе
+    title: "Телепортировать:"
+  goto:
+    name: Телепорт к игроку
+    description: Телепортирует к выбранному игроку
+    title: "Телепортироваться к:"
+  feed:
+    name: Накормить
+    description: Восстанавливает голод и немного исцеляет игрока
+    usage: Дает 16 хлеба
+    title: "Накормить и вылечить:"
+  manageshop:
+    name: Управление магазином
+    description: Настроить свой магазин
+    moved: Выбран новый сундук
+    teleported: Обновлено имя продавца, продавец был телепортирован к тебе
+    removed: Убран Продавец
+    remove_label: Убрать продавца (НАВСЕГДА!)
+    move_label: Телепортировать Продавца Сюда
+    confirm_title: "$item"
+    selected_free: ""
+    title: "Управление магазином"
   gather:
     name: Телепорт
     description: Отправляет заявку на телепорт
@@ -956,7 +1010,7 @@ spells:
     cast_entity: Телепортирую $target к цели
     cast_player_message: a:&d&o$player &r&5разрывает пространство
     cast_friend: Телепортирую к $name
-    no_target_friend: Неизвестное имя $name
+    no_target_friend: Невозможно телепортироваться к $name
     title_friend: $name
     add_friend: "&5$name &bбыл добавлен в &6Друзья!"
     remove_friend: "&5$name &cбыл убран из &6Друзей!"
@@ -964,6 +1018,11 @@ spells:
     friend_request_title: "@tn отправил тебе запрос дружбы"
     reject: "@pn отклонил запрос ☹️"
     send_request_title: "Отправить Запрос Дружбы"
+    add_friend_name: Отправить Запрос Дружбы
+    remove_friend_name: Убрать из друзей
+    remove_friend_title: Убрать из друзей
+    cast_remove_friend: "&bТы убрал &5$name&b из друзей"
+    title_remove_friend: "$name"
   supergather:
     name: СуперТелепорт
     description: Телепортироваться к любому игроку
@@ -998,7 +1057,7 @@ spells:
   fling:
     name: Рывок
     description: Отправляет тебя в полет в указанном направлении
-    upgrade_description: Увеличена скорость, уменьшена перезарядка
+    upgrade_description: Увеличена скорость, уменьшена перезарядка\n&7Используй заклинание с зажатым шифтом для маленького прыжка"
   leap:
     name: Скачок
     description: Большой скачок
@@ -1728,7 +1787,7 @@ spells:
     no_target_spawn: Нельзя телепортироваться на спавн
     no_target_town: Ты не находишься в городе
     no_target_regions: У тебя нет друзей
-    no_target_friend: Неправильное имя $name
+    no_target_friend: Невозможно телепортироваться к $name
     title_move_marker: Переместить маркер в текущую точку
     description_move_marker: Перемещает маркер
     title_marker: "Маркер #$number"
@@ -2018,7 +2077,7 @@ spells:
     description: Показывает прогресс в улучшении заклинаний твоей палочки
     fail: Ты должен держать палочку в руке!
     upgrade_name_change: '&r&4Улучшения: &r$name'
-    level_requirement: '&r&cТребуется уровень &6$path'
+    level_requirement: '&r&cТребуется уровень &6$path\n&r&7Изучи все заклинания для повышения ранга'
     cast_requirement: '&r&cИспользований: &6$current&f из &e$required'
     tags_requirement: '&r&cТребуется: &6$tags'
     confirm_title: Изменить на $item
@@ -2123,6 +2182,9 @@ spells:
         selected: ""
         cast_fail: ""
         no_template: "&cНельзя кастомизировать $wand&c."
+  wandinstructions:
+        name: Инструкция
+        description: Информация о прокачке и о том как пользоваться палочкой
   appearanceshop:
         name: Внешний вид
         description: Измени палочку по своему вкусу!
@@ -2352,6 +2414,24 @@ spells:
   add_sharpness:
       name: Заострить меч
       description: Добавляет зачарование Острота к твоему мечу.
+  remove_protection:
+      name: Убрать защиту
+      description: "Обменять на Очки Заклинаний"
+  remove_fall_protection:
+      name: Убрать невесомость
+      description: "Обменять на Очки Заклинаний"
+  remove_fire_protection:
+      name: Убрать огнеупорность
+      description: "Обменять на Очки Заклинаний"
+  remove_physical_protection:
+      name: Убрать физ. защиту
+      description: "Обменять на Очки Заклинаний"
+  remove_projectile_protection:
+      name: Убрать защиту от снарядов
+      description: "Обменять на Очки Заклинаний"
+  remove_explosion_protection:
+      name: Убрать взрывоустойчивость
+      description: "Обменять на Очки Заклинаний"
   magictorch:
       name: Волшебный факел
       description: Свет следует за тобой!
@@ -2363,6 +2443,13 @@ spells:
       cast_fail: '&cЭтот бафф прокачан до максимального уровня!'
       selected: '&d&oТы купил &r&6$item &r&d&oза &r&a$cost'
       no_template: '&cТы не можешь добавить этот бафф к $wand.'
+  wanddebuffshop:
+      name: Рефанд
+      description: "Снимает баффы с палочки и возвращает ОЗ"
+      property_min: "&cУ тебя нет этого баффа!"
+      cast_fail: "&cУ тебя нет этого баффа!"
+      selected: "&d&oТы выбрал &r&6$item"
+      no_template: "&c$wand&c не имеет этот бафф."
   mute:
       name: Мут
       description: Запрещает писать в чат игроку
@@ -2384,6 +2471,7 @@ spells:
   decoy:
       name: Обманка
       description: Создает фальшивого двойника
+      cancel: Обманка исчезла!
   piggyback:
       name: Piggyback
       description: Who's riding what, now?
@@ -2715,6 +2803,24 @@ wand:
     # Messages can also be sent as simple titles with default fade in/out
     #hotbar_changed: "t:Switched hotbars"
 wands:
+  shoptoken:
+    name: Магазин
+    description: Создает магазин, которым ты можешь управлять
+  shoptool:
+    name: $npc_name
+    lore:
+    - "Управление магазином:"
+    - "&7Нажми правой кнопкой мыши на сундук,"
+    - "&7Чтобы продавать вещи из него"
+    - "&8Нажми на пустое место,"
+    - "&3Чтобы обновить название магазина и"
+    - "&3Телепортировать продавца к тебе"
+    - "&8Используй наковальню для изменения названия"
+  iceskates:
+    name: Коньки
+  admintool:
+    name: Инструмент Админа
+    description: Имеет множество полезных функций для модераторов и админов
   testwand:
     name: Тестовая палочка
     description: Пустая палочка для тестирования заклинаний.
@@ -2767,6 +2873,9 @@ wands:
   magicbow:
     name: Магический лук
     description: Лук ранга $path
+  magiccrossbow:
+    name: Магический Арбалет
+    description: "&rАрбалет ранга $path"
   mastersword:
     name: Меч мастера
     description: Легендарный меч борца с тьмой
@@ -2924,6 +3033,9 @@ wands:
   haloeffects:
     name: Нимб
     description: У вас над головой появляется нимб цвета вашей палочки
+  butterflyeffects:
+    name: Крылья бабочки
+    description: Анимированный эффект крыльев бабочки
   student_upgrade:
     name: Улучшение - Студент
     description: Повышение до Студента
