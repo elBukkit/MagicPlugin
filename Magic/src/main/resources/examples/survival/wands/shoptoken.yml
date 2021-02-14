@@ -1,5 +1,5 @@
 shoptoken:
-    inherit: base_undroppable
+    inherit: base_magic
     icon: nether_star{"CustomModelData":18001}
     mode: cast
     left_click: cast
