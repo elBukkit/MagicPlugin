@@ -50,16 +50,13 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     private long lastSpawn;
     private EffectContext effectContext;
     private boolean isActive;
-    private boolean enabled;
+    private boolean enabled = true;
 
     private Mage mage;
 
     public Automaton(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
         this.controller = controller;
-
-        // I messed up and added the "enabled" flag initially as defaulting to false.. rather than
-        // force everyone to clean up that mess, I'm changing it to "disabled".
-        enabled = !node.getBoolean("disabled", false);
+        enabled = node.getBoolean("enabled", true);
         templateKey = node.getString("template");
         parameters = ConfigurationUtils.getConfigurationSection(node, "parameters");
         if (templateKey != null) {
@@ -121,7 +118,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     }
 
     public void save(ConfigurationSection node) {
-        node.set("disabled", !enabled);
+        node.set("enabled", enabled);
         node.set("created", createdAt);
         node.set("creator", creatorId);
         node.set("creator_name", creatorName);
