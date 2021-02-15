@@ -17,6 +17,7 @@ public class CheckEntityAction extends CheckAction {
     private boolean allowCaster;
     private boolean onlyCaster;
     private Boolean onFire;
+    private Boolean onGround;
     private Set<EntityType> allowedTypes;
     private Set<EntityType> deniedTypes;
     private List<Class<? extends Entity>> allowedClasses;
@@ -30,6 +31,9 @@ public class CheckEntityAction extends CheckAction {
         onlyCaster = parameters.getBoolean("only_caster", false);
         if (parameters.contains("on_fire")) {
             onFire = parameters.getBoolean("on_fire");
+        }
+        if (parameters.contains("on_ground")) {
+            onGround = parameters.getBoolean("on_ground");
         }
 
         if (parameters.contains("allowed_entities")) {
@@ -104,6 +108,9 @@ public class CheckEntityAction extends CheckAction {
             return false;
         }
         if (onlyCaster && !isCaster) {
+            return false;
+        }
+        if (onGround != null && onGround != (targetEntity.isOnGround())) {
             return false;
         }
         if (onFire != null && onFire != (targetEntity.getFireTicks() > 0)) {
