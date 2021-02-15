@@ -17,6 +17,7 @@ public class CastAction extends BaseSpellAction {
     private boolean cooldownFree;
     private @Nullable ConfigurationSection spellParameters;
     private boolean asConsole;
+    private boolean asTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -27,6 +28,7 @@ public class CastAction extends BaseSpellAction {
         costFree = parameters.getBoolean("cost_free", true);
         cooldownFree = parameters.getBoolean("cooldown_free", false);
         asConsole = parameters.getBoolean("console", false);
+        asTarget = parameters.getBoolean("as_target", true);
     }
 
     @Override
@@ -38,11 +40,13 @@ public class CastAction extends BaseSpellAction {
         Mage targetMage = null;
         if (asConsole) {
             targetMage = context.getController().getConsoleMage();
-        } else {
+        } else if (asTarget) {
             Entity target = context.getTargetEntity();
             if (target != null) {
                 targetMage = context.getController().getMage(target);
             }
+        } else {
+            targetMage = context.getMage();
         }
 
         if (targetMage == null) {
@@ -72,11 +76,11 @@ public class CastAction extends BaseSpellAction {
 
     @Override
     public boolean requiresTarget() {
-        return true;
+        return asTarget;
     }
 
     @Override
     public boolean requiresTargetEntity() {
-        return true;
+        return asTarget;
     }
 }
