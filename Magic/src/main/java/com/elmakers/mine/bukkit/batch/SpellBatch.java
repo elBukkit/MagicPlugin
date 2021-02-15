@@ -47,4 +47,9 @@ public abstract class SpellBatch extends UndoableBatch implements com.elmakers.m
         spell.cancel();
         finish();
     }
+
+    @Override
+    public String toString() {
+        return "Batch from " + spell.getName() + " of " + spell.getMage().getName();
+    }
 }
