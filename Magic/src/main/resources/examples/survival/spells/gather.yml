@@ -1,4 +1,5 @@
 gather:
+  enabled: false
   icon: soul_lantern{CustomModelData:18001}
   icon_disabled: soul_lantern{CustomModelData:18002}
   legacy_icon: spell_icon:48
@@ -170,6 +171,7 @@ gather:
   parameters:
     target: none
     target_self: false
+    target_invisible: false
     cooldown: 15000
     warmup: 4000
     bypass_friendly_fire: true

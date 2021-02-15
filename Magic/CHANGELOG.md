@@ -25,6 +25,7 @@
  - Updated builtin Spanish translation (`/mconfig language ES`), thanks ChrisTVH!
  - Added `magic-tags` WorldGuard flags, should be used in place of `spawn-tags` though the latter still works
  - Brooms are no longer bound. Use `/mconfig configure wand broomstick bound true` to turn this back on.
+ - The Gather spell is now disabled by default. If you want to re-enable it, go ahead, but I can't support it anymore.
 
 ## Additions
 
