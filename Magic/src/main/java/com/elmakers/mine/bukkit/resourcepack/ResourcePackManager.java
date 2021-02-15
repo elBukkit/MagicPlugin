@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class ResourcePackManager {
@@ -53,8 +54,8 @@ public class ResourcePackManager {
 
         resourcePackPrompt = properties.getBoolean("resource_pack_prompt", false);
         enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
-        resourcePackCheckInterval = properties.getInt("resource_pack_check_interval", 0);
-        resourcePackPromptDelay = properties.getInt("resource_pack_prompt_delay", 0);
+        resourcePackCheckInterval = (int)ConfigurationUtils.getInterval(properties, "resource_pack_check_interval", 0);
+        resourcePackPromptDelay = (int)ConfigurationUtils.getInterval(properties, "resource_pack_prompt_delay", 0);
         defaultResourcePack = properties.getString("resource_pack", null);
         // For legacy configs
         defaultResourcePack = properties.getString("default_resource_pack", defaultResourcePack);
@@ -73,7 +74,7 @@ public class ResourcePackManager {
             resourcePackHash = null;
         }
 
-        resourcePackDelay = properties.getLong("resource_pack_delay", 0);
+        resourcePackDelay = ConfigurationUtils.getInterval(properties, "resource_pack_delay", 0);
         alternateResourcePacks = properties.getConfigurationSection("alternate_resource_packs");
 
         if (!firstLoad && resourcePack != null && !defaultResourcePack.equals(currentResourcePack)) {

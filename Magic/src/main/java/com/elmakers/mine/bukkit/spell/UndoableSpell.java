@@ -36,8 +36,8 @@ public class UndoableSpell extends TargetingSpell {
         undoEntityEffects = parameters.getBoolean("entity_undo", false);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
         bypassUndo = parameters.getBoolean("bu", bypassUndo);
-        autoUndo = parameters.getInt("undo", 0);
-        autoUndo = parameters.getInt("u", autoUndo);
+        autoUndo = (int)ConfigurationUtils.getInterval(parameters,"undo", 0);
+        autoUndo = (int)ConfigurationUtils.getInterval(parameters,"u", autoUndo);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
         undoSpeed = parameters.getDouble("undo_speed", 0);
         undoSorted = parameters.getBoolean("undo_sorted", true);
@@ -74,8 +74,8 @@ public class UndoableSpell extends TargetingSpell {
         {
             bypassUndo = parameters.getBoolean("bypass_undo", false);
             bypassUndo = parameters.getBoolean("bu", bypassUndo);
-            autoUndo = parameters.getInt("undo", 0);
-            autoUndo = parameters.getInt("u", autoUndo);
+            autoUndo = (int)ConfigurationUtils.getInterval(parameters,"undo", 0);
+            autoUndo = (int)ConfigurationUtils.getInterval(parameters,"u", autoUndo);
         }
     }
 

@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class IntervalAction extends CompoundAction
 {
@@ -30,9 +31,9 @@ public class IntervalAction extends CompoundAction
         if (parameters.getString("duration", "").equals("infinite")) {
             infinite = true;
         } else {
-            duration = parameters.getInt("duration", 0);
+            duration = (int)ConfigurationUtils.getInterval(parameters, "duration", 0);
         }
-        interval = parameters.getInt("interval", 0);
+        interval = (int)ConfigurationUtils.getInterval(parameters, "interval", 0);
     }
 
     @Override

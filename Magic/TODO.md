@@ -4,6 +4,13 @@
 
 ## Hot
 
+ - "Failed to save wand state for wand" message showing a lot
+ - Overrides should probably be cached
+
+ - New mob triggers? (cornelia)
+   enters water, flys/falls, walks, stands still, etc?
+
+ - spellbooks use glowing spell icons?
  - hit/entity _count parameters don't work with EntityProjectile
  - Targeting options for passive or hostile mobs only
 

@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class DelayAction extends BaseSpellAction
 {
@@ -20,8 +21,8 @@ public class DelayAction extends BaseSpellAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        delay = parameters.getInt("warmup", 1);
-        delay = parameters.getInt("delay", delay);
+        delay = (int)ConfigurationUtils.getInterval(parameters, "warmup", 1);
+        delay = (int)ConfigurationUtils.getInterval(parameters, "delay", delay);
 
         infinite = parameters.getString("delay", "").equals("infinite");
     }

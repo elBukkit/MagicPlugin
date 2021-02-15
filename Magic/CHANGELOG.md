@@ -50,6 +50,8 @@
  - Added `region_tags` option to requirements
  - Added WIP `mars` external example
  - Add tail and crown FX to wand effect shop (Thank you, Phantom!)
+ - Common time properties (such as duration, undo, interval, delay) now support suffixed formats such as "2m" for 2 minutes,
+   s, m, h are supported.
 
 # 8.3.3
 
