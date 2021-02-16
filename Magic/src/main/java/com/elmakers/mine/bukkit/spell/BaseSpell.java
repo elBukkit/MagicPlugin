@@ -1071,7 +1071,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             String earnsType = node.getString("earns_type", "sp");
             earns = Cost.parseCost(controller, node.getString("earns"), earnsType);
         }
-        earnCooldown = (int)ConfigurationUtils.getInterval(node,"earns_cooldown", 0);
+        earnCooldown = node.getInt("earns_cooldown", 0);
         double earnCooldownScale = node.getDouble("earns_cooldown_scale", 1);
         earnCooldown = (int)Math.ceil(earnCooldownScale * earnCooldown);
         category = controller.getCategory(node.getString("category"));
@@ -1424,9 +1424,9 @@ public class BaseSpell implements MageSpell, Cloneable {
         onlyFriendlyFire = workingParameters.getBoolean("only_friendly", false);
 
         // Check cooldowns
-        cooldown = (int)ConfigurationUtils.getInterval(workingParameters,"cooldown", cooldown);
-        cooldown = (int)ConfigurationUtils.getInterval(workingParameters,"cool", cooldown);
-        mageCooldown = (int)ConfigurationUtils.getInterval(workingParameters,"cooldown_mage", mageCooldown);
+        cooldown = workingParameters.getInt("cooldown", cooldown);
+        cooldown = workingParameters.getInt("cool", cooldown);
+        mageCooldown = workingParameters.getInt("cooldown_mage", mageCooldown);
 
         // Color override
         color = ConfigurationUtils.getColor(workingParameters, "color", color);
@@ -1997,11 +1997,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     public void processTemplateParameters(ConfigurationSection parameters) {
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         bypassCooldown = parameters.getBoolean("bypass_cooldown", false);
-        warmup = (int)ConfigurationUtils.getInterval(parameters,"warmup", 0);
-        cooldown = (int)ConfigurationUtils.getInterval(parameters,"cooldown", 0);
-        cooldown = (int)ConfigurationUtils.getInterval(parameters,"cool", cooldown);
-        mageCooldown = (int)ConfigurationUtils.getInterval(parameters,"cooldown_mage", 0);
-        displayCooldown = (int)ConfigurationUtils.getInterval(parameters,"display_cooldown", -1);
+        warmup = parameters.getInt("warmup", 0);
+        cooldown = parameters.getInt("cooldown", 0);
+        cooldown = parameters.getInt("cool", cooldown);
+        mageCooldown = parameters.getInt("cooldown_mage", 0);
+        displayCooldown = parameters.getInt("display_cooldown", -1);
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
         bypassPermissions = parameters.getBoolean("bypass_permissions", false);
@@ -2014,8 +2014,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassProtection = parameters.getBoolean("bypass_protection", false);
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
         bypassAll = parameters.getBoolean("bypass", false);
-        duration = (int)ConfigurationUtils.getInterval(parameters,"duration", 0);
-        totalDuration = (int)ConfigurationUtils.getInterval(parameters,"total_duration", -1);
+        duration = parameters.getInt("duration", 0);
+        totalDuration = parameters.getInt("total_duration", -1);
 
         costReduction = (float)parameters.getDouble("cost_reduction", 0);
         consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
