@@ -360,7 +360,65 @@
           "methodName": "getId",
           "elementKind": "method",
           "justification": "Map ids changed to ints"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.elmakers.mine.bukkit.api.effect.MageEffectContext com.elmakers.mine.bukkit.api.magic.Mage::getEffectContext()",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "Mage",
+          "methodName": "getEffectContext",
+          "elementKind": "method",
+          "justification": "The context hierarchy was simplified and renamed"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter java.lang.String com.elmakers.mine.bukkit.api.magic.MageController::checkRequirements(===com.elmakers.mine.bukkit.api.action.CastContext===, java.util.Collection<com.elmakers.mine.bukkit.api.requirements.Requirement>)",
+          "new": "parameter java.lang.String com.elmakers.mine.bukkit.api.magic.MageController::checkRequirements(===com.elmakers.mine.bukkit.api.magic.MageContext===, java.util.Collection<com.elmakers.mine.bukkit.api.requirements.Requirement>)",
+          "oldType": "com.elmakers.mine.bukkit.api.action.CastContext",
+          "newType": "com.elmakers.mine.bukkit.api.magic.MageContext",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MageController",
+          "methodName": "checkRequirements",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "Requirements now work with a MageContext so they can be used outside of spell casts"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter boolean com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor::checkRequirement(===com.elmakers.mine.bukkit.api.action.CastContext===, com.elmakers.mine.bukkit.api.requirements.Requirement)",
+          "new": "parameter boolean com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor::checkRequirement(===com.elmakers.mine.bukkit.api.magic.MageContext===, com.elmakers.mine.bukkit.api.requirements.Requirement)",
+          "oldType": "com.elmakers.mine.bukkit.api.action.CastContext",
+          "newType": "com.elmakers.mine.bukkit.api.magic.MageContext",
+          "package": "com.elmakers.mine.bukkit.api.requirements",
+          "classSimpleName": "RequirementsProcessor",
+          "methodName": "checkRequirement",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "Requirements now work with a MageContext so they can be used outside of spell casts"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter java.lang.String com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor::getRequirementDescription(===com.elmakers.mine.bukkit.api.action.CastContext===, com.elmakers.mine.bukkit.api.requirements.Requirement)",
+          "new": "parameter java.lang.String com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor::getRequirementDescription(===com.elmakers.mine.bukkit.api.magic.MageContext===, com.elmakers.mine.bukkit.api.requirements.Requirement)",
+          "oldType": "com.elmakers.mine.bukkit.api.action.CastContext",
+          "newType": "com.elmakers.mine.bukkit.api.magic.MageContext",
+          "package": "com.elmakers.mine.bukkit.api.requirements",
+          "classSimpleName": "RequirementsProcessor",
+          "methodName": "getRequirementDescription",
+          "parameterIndex": "0",
+          "elementKind": "parameter",
+          "justification": "Requirements now work with a MageContext so they can be used outside of spell casts"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.elmakers.mine.bukkit.api.effect.WandEffectContext com.elmakers.mine.bukkit.api.wand.Wand::getEffectContext()",
+          "package": "com.elmakers.mine.bukkit.api.wand",
+          "classSimpleName": "Wand",
+          "methodName": "getEffectContext",
+          "elementKind": "method",
+          "justification": "The context hierarchy was simplified and renamed"
         }
+
       ]
     }
   },
