@@ -328,8 +328,8 @@ public class PlayerController implements Listener {
         // We will be satisfied to only compare the metadata.
         ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
         ItemMeta droppedMeta = droppedItem.getItemMeta();
-        boolean droppedSpell = Wand.isSpell(droppedItem);
-        boolean droppedWand = droppedMeta != null && activeMeta != null && activeMeta.equals(droppedMeta);
+        final boolean droppedSpell = Wand.isSpell(droppedItem);
+        final boolean droppedWand = droppedMeta != null && activeMeta != null && activeMeta.equals(droppedMeta);
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new DropActionTask(activeWand));
