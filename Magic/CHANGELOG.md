@@ -56,6 +56,8 @@
  - Add `prevent_dismount` option to mobs
  - Add `ModifyNoDamageTicks` action, for rapidly damaging mobs and players by bypassing vanilla damage cooldowns
 
+# 8.3.4
+
 # 8.3.3
 
  - Fix PVP preventing players from targeting themselves
