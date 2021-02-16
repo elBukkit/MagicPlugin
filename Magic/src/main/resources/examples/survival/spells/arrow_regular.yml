@@ -8,6 +8,11 @@ arrow_regular:
     actions:
         cast:
         - class: Projectile
+    effects:
+      cast:
+        -  class: EffectSingle
+           sound: entity_arrow_shoot
+           location: origin
     parameters:
       target: none
       projectile: TippedArrow
