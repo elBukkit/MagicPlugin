@@ -32,6 +32,7 @@ import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.Plugin;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -335,6 +336,14 @@ public class MobController implements Listener, ChunkLoadListener {
                 mage.sendDebugMessage(ChatColor.RED + "Despawned", 4);
                 entity.remove();
             }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDismount(EntityDismountEvent event) {
+        EntityData entityData = getEntityData(event.getEntity());
+        if (entityData != null && entityData.isPreventDismount()) {
+            event.setCancelled(true);
         }
     }
 }
