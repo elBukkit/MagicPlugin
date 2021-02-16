@@ -5,6 +5,7 @@ vermillious:
     category: charms
     pvp_restricted: true
     worth: 40
+    earns_sp: 7
     actions:
         cast:
         - class: DamageAction
