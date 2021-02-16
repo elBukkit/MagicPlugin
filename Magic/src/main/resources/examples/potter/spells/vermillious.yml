@@ -12,7 +12,7 @@ vermillious:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_death
+           sound: iron_golem_death
            sound_volume: 1
         -  class: EffectSingle
            sound: shoot_arrow
@@ -31,7 +31,7 @@ vermillious:
            firework: ball
         no_target:
         -  class: EffectSingle
-           sound: irongolem_death
+           sound: iron_golem_death
            sound_volume: 1
         -  class: EffectSingle
            sound: shoot_arrow

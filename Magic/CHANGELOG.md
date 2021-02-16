@@ -61,6 +61,7 @@
  - Fix PVP preventing players from targeting themselves
  - Fix some wand dupe issues
  - Fix toggle spells instantly cancelling themselves the very first time you cast it
+ - Fix potter example progression
 
 # 8.3.2
 
