@@ -7060,14 +7060,7 @@ public class MagicController implements MageController {
         } catch (IOException ex) {
             plugin.getLogger().log(Level.WARNING, "Error scanning example files", ex);
         }
-        File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
-        if (examplesFolder.exists()) {
-            for (File file : examplesFolder.listFiles()) {
-                if (!file.isDirectory() || file.getName().startsWith(".")) continue;
-                examples.add(file.getName());
-            }
-        }
-
+        examples.addAll(getDownloadedExternalExamples());
         return examples;
     }
 
