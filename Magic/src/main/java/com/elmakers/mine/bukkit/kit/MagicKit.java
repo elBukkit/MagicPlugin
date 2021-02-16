@@ -11,12 +11,14 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MagicKit {
     private final MagicController controller;
+    private Collection<Requirement> requirements;
     private final String key;
     private final boolean isStarter;
     private final boolean isKeep;
@@ -32,11 +34,7 @@ public class MagicKit {
         isStarter = configuration.getBoolean("starter");
         isKeep = configuration.getBoolean("keep");
         isRemove = configuration.getBoolean("remove");
-
-        // TODO: Parse requirements
-        if (configuration.contains("requirements")) {
-            controller.getLogger().warning("Kit requirements not yet implemented");
-        }
+        requirements = ConfigurationUtils.getRequirements(configuration);
         List<? extends Object> itemList = configuration.getList("items");
         for (Object itemObject : itemList) {
             if (itemObject instanceof String) {
@@ -97,7 +95,17 @@ public class MagicKit {
         return isRemove;
     }
 
+    public boolean isAllowed(Mage mage) {
+        if (requirements != null && controller.checkRequirements(mage.getContext(), requirements) != null) {
+            return false;
+        }
+        return true;
+    }
+
     public void giveMissing(Mage mage) {
+        if (!isAllowed(mage)) {
+            return;
+        }
         Collection<ItemStack> giveItems = new ArrayList<>();
         if (slotItems != null) {
             for (Map.Entry<Integer, ItemData> slotItem : slotItems.entrySet()) {
