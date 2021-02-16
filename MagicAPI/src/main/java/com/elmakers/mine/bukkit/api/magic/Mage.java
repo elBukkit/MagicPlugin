@@ -720,7 +720,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     EntityType getLastProjectileType();
 
     @Nonnull
-    MageContext getEffectContext();
+    MageContext getContext();
 
     long getCreatedTime();
 

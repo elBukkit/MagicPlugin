@@ -4826,7 +4826,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     @Nonnull
-    public MageContext getEffectContext() {
+    public MageContext getContext() {
         if (effectContext == null) {
             // Lazy load or mage has changed
             effectContext = new MageContext(this);

@@ -179,7 +179,7 @@ public class CustomTrigger extends Trigger {
 
         if (effects != null) {
             for (EffectPlayer player : effects) {
-                player.start(mage.getEffectContext());
+                player.start(mage.getContext());
             }
         }
         if (spells != null && !spells.isEmpty()) {
