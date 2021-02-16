@@ -544,13 +544,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (damager == null || damager == getEntity()) return;
 
         // See if this is the same damager as last time
-        if (lastDamager == damager) {
+        Entity lastDamagerEntity = lastDamager == null ? null : lastDamager.getEntity();
+        if (lastDamagerEntity == damager) {
             lastDamager.damage += damage;
         } else {
             // See if we have been damaged by this before
             // Currently only mobs track damage history like this
             if (damagedBy != null) {
                 lastDamager = damagedBy.get(damager.getUniqueId());
+            } else {
+                lastDamager = null;
             }
             // If this is a new damager, create a new record to track it
             if (lastDamager == null) {
