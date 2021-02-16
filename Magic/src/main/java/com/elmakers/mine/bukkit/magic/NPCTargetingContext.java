@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.effect;
+package com.elmakers.mine.bukkit.magic;
 
 import javax.annotation.Nonnull;
 

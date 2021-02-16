@@ -1,16 +1,20 @@
-package com.elmakers.mine.bukkit.effect;
+package com.elmakers.mine.bukkit.magic;
 
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.google.common.base.Preconditions;
 
 public class MageContext extends EffectContext implements com.elmakers.mine.bukkit.api.magic.MageContext {
@@ -98,17 +102,56 @@ public class MageContext extends EffectContext implements com.elmakers.mine.bukk
     @Nullable
     @Override
     public Wand getWand() {
-        return mage == null ? null : mage.getActiveWand();
+        return mage.getActiveWand();
     }
 
     @Nullable
     @Override
     public Wand checkWand() {
-        return mage == null ? null : mage.checkWand();
+        return mage.checkWand();
     }
 
     @Override
     public boolean isTargetable(Block block) {
         return true;
+    }
+
+    @Override
+    public Logger getLogger() {
+        return getController().getLogger();
+    }
+
+    @Override
+    @Nonnull
+    public CasterProperties getActiveProperties() {
+        return mage.getActiveProperties();
+    }
+
+    @Nullable
+    @Override
+    public Double getAttribute(String attributeKey) {
+        return mage.getAttribute(attributeKey);
+    }
+
+    @Override
+    @Nullable
+    public Double getVariable(String variable) {
+        ConfigurationSection mageVariables = mage.getVariables();
+        if (mageVariables != null && mageVariables.contains(variable)) {
+            return mageVariables.getDouble(variable);
+        }
+        return null;
+    }
+
+    @Override
+    @Nonnull
+    public String getMessage(String key) {
+        return getMessage(key, "");
+    }
+
+    @Override
+    @Nonnull
+    public String getMessage(String key, String def) {
+        return controller.getMessages().get(key, def);
     }
 }

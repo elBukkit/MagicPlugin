@@ -28,7 +28,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.automata.Automaton;
 import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
@@ -578,7 +577,7 @@ public interface MageController {
     boolean isLightingAvailable();
     int getLightCount();
     @Nullable
-    String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements);
+    String checkRequirements(@Nonnull MageContext context, @Nullable Collection<Requirement> requirements);
     @Nonnull
     Set<String> getDamageTypes();
 

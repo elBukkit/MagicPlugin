@@ -11,7 +11,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.effect.MageContext;
 
 import de.slikey.effectlib.util.MathUtils;
 

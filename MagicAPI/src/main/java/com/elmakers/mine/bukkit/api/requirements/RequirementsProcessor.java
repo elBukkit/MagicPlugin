@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.api.requirements;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.MageContext;
 
 /**
  * Implement this and register in PreLoadEvent to provide custom requirements.
@@ -20,7 +20,7 @@ public interface RequirementsProcessor {
      * @param requirement The requirement being checked
      * @return true if the player has the requirement
      */
-    boolean checkRequirement(@Nonnull CastContext context, @Nonnull Requirement requirement);
+    boolean checkRequirement(@Nonnull MageContext context, @Nonnull Requirement requirement);
 
     /**
      * This will be called when a requirement check has failed, in order to display to the player what they are missing.
@@ -31,5 +31,5 @@ public interface RequirementsProcessor {
      * @return a player-readable description of what this requirement represents.
      */
     @Nullable
-    String getRequirementDescription(@Nonnull CastContext context, @Nonnull Requirement requirement);
+    String getRequirementDescription(@Nonnull MageContext context, @Nonnull Requirement requirement);
 }

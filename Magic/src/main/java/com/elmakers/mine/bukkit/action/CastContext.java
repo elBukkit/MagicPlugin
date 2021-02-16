@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -709,11 +708,6 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     }
 
     @Override
-    public String getMessage(String key) {
-        return getMessage(key, "");
-    }
-
-    @Override
     public String getMessage(String key, String def) {
         return baseSpell != null ? baseSpell.getMessage(key, def) : def;
     }
@@ -1066,11 +1060,6 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Override
     public void setTargetName(String name) {
         targetName = name;
-    }
-
-    @Override
-    public Logger getLogger() {
-        return getController().getLogger();
     }
 
     @Override

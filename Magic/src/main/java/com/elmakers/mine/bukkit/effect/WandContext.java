@@ -8,6 +8,7 @@ import org.bukkit.Location;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MageContext;
 
 public class WandContext extends MageContext {
     protected @Nullable Wand wand;

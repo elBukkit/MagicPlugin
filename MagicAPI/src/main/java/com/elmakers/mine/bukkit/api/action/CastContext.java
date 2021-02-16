@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,7 +25,6 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageContext;
@@ -154,9 +152,6 @@ public interface CastContext extends MageContext {
     void cancelEffects();
     @Override
     Collection<EffectPlay> getCurrentEffects();
-
-    String getMessage(String key);
-    String getMessage(String key, String def);
     @Nullable
     Location findPlaceToStand(Location target, int verticalSearchDistance);
     @Nullable
@@ -189,7 +184,6 @@ public interface CastContext extends MageContext {
     UndoList getUndoList();
     void setTargetName(String name);
     String getTargetName();
-    Logger getLogger();
     int getWorkAllowed();
     void setWorkAllowed(int work);
     void addWork(int work);
@@ -233,13 +227,8 @@ public interface CastContext extends MageContext {
     void addHandler(ActionHandler handler);
     SpellResult processHandlers();
     boolean hasHandlers();
-    @Nonnull
-    CasterProperties getActiveProperties();
     void addMessageParameter(String key, String value);
     long getStartTime();
-
-    @Nullable
-    Double getVariable(String variable);
     @Nonnull
     ConfigurationSection getVariables(VariableScope scope);
 
@@ -256,8 +245,6 @@ public interface CastContext extends MageContext {
     @Nonnull
     ConfigurationSection getAllVariables();
     ConfigurationSection getWorkingParameters();
-    @Nullable
-    Double getAttribute(String attributeKey);
     ActionHandler getRootHandler();
     void setCastData(@Nonnull String key, Object value);
     @Nullable

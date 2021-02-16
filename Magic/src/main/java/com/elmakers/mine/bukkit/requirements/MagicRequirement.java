@@ -13,10 +13,10 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
+import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
@@ -155,7 +155,7 @@ public class MagicRequirement {
         return requirements;
     }
 
-    public boolean checkRequirement(@Nonnull CastContext context) {
+    public boolean checkRequirement(@Nonnull MageContext context) {
         Mage mage = context.getMage();
         Player player = mage.getPlayer();
 
@@ -365,16 +365,16 @@ public class MagicRequirement {
         return true;
     }
 
-    protected String getMessage(CastContext context, String key) {
+    protected String getMessage(MageContext context, String key) {
         return context.getMessage(key, getDefaultMessage(context, key));
     }
 
-    protected String getDefaultMessage(CastContext context, String key) {
+    protected String getDefaultMessage(MageContext context, String key) {
         return context.getController().getMessages().get("requirements." + key);
     }
 
     @Nullable
-    public String getRequirementDescription(@Nonnull CastContext context) {
+    public String getRequirementDescription(@Nonnull MageContext context) {
         Mage mage = context.getMage();
         MageController controller = mage.getController();
         Player player = mage.getPlayer();
@@ -612,7 +612,7 @@ public class MagicRequirement {
     }
 
     @Nullable
-    protected String getRequiredProperty(CastContext context, CasterProperties properties, List<PropertyRequirement> requirements) {
+    protected String getRequiredProperty(MageContext context, CasterProperties properties, List<PropertyRequirement> requirements) {
         for (PropertyRequirement requirement : requirements) {
             String key = requirement.key;
             Double value = properties.hasProperty(key) ? properties.getProperty(key, 0.0) : null;
@@ -630,7 +630,7 @@ public class MagicRequirement {
     }
 
     @Nullable
-    protected String checkRequiredProperty(CastContext context, RangedRequirement requirement, String name, Double value) {
+    protected String checkRequiredProperty(MageContext context, RangedRequirement requirement, String name, Double value) {
         if (requirement.value != null && (value == null || !value.equals(requirement.value))) {
             return getMessage(context, "property_requirement")
                 .replace("$property", name).replace("$value", Double.toString(requirement.value));

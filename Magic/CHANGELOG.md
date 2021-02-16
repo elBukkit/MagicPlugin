@@ -6,7 +6,7 @@
 
  - Fix flying mob spawns and nether mob spawns in `spawnmobs` example
  - Fix some forms of configuring an AreaOfEffectCloud
-   The potion effect duration now defaults to the same duration as the cloud tself
+   The potion effect duration now defaults to the same duration as the cloud itself
 
 ## Changes
 

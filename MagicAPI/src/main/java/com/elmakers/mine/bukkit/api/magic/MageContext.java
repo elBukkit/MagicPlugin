@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.magic;
 
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -22,4 +23,15 @@ public interface MageContext extends EffectContext {
     Wand getWand();
     @Nullable
     Wand checkWand();
+    Logger getLogger();
+    @Nonnull
+    CasterProperties getActiveProperties();
+    @Nullable
+    Double getAttribute(String attributeKey);
+    @Nullable
+    Double getVariable(String variable);
+    @Nonnull
+    String getMessage(String key);
+    @Nonnull
+    String getMessage(String key, String def);
 }

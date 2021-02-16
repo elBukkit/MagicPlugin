@@ -79,7 +79,6 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
@@ -102,6 +101,7 @@ import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.DeathLocation;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
@@ -7000,7 +7000,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public @Nullable String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements) {
+    public @Nullable String checkRequirements(@Nonnull MageContext context, @Nullable Collection<Requirement> requirements) {
         if (requirements == null) return null;
 
         for (Requirement requirement : requirements) {

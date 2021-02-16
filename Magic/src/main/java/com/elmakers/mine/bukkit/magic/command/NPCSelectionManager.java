@@ -14,8 +14,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
-import com.elmakers.mine.bukkit.effect.NPCTargetingContext;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.NPCTargetingContext;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
