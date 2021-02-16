@@ -110,7 +110,7 @@ public class CheckEntityAction extends CheckAction {
         if (onlyCaster && !isCaster) {
             return false;
         }
-        if (onGround != null && onGround != (targetEntity.isOnGround())) {
+        if (onGround != null && onGround != targetEntity.isOnGround()) {
             return false;
         }
         if (onFire != null && onFire != (targetEntity.getFireTicks() > 0)) {

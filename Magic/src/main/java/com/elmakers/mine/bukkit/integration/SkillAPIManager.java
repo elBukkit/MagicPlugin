@@ -12,10 +12,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
@@ -118,8 +118,8 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
     }
 
     @Override
-    public boolean checkRequirement(@Nonnull CastContext castContext, @Nonnull Requirement requirement) {
-        Mage mage = castContext.getMage();
+    public boolean checkRequirement(@Nonnull MageContext context, @Nonnull Requirement requirement) {
+        Mage mage = context.getMage();
         if (!mage.isPlayer()) return false;
         ConfigurationSection configuration = requirement.getConfiguration();
         if (configuration.contains("skill")) {
@@ -133,12 +133,12 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
         return true;
     }
 
-    protected String getMessage(CastContext context, String key) {
+    protected String getMessage(MageContext context, String key) {
         return context.getMessage(key, context.getController().getMessages().get("skillapi." + key));
     }
 
     @Override
-    public @Nullable String getRequirementDescription(@Nonnull CastContext context, @Nonnull Requirement requirement) {
+    public @Nullable String getRequirementDescription(@Nonnull MageContext context, @Nonnull Requirement requirement) {
         ConfigurationSection configuration = requirement.getConfiguration();
         if (configuration.contains("skill")) {
             return getMessage(context, "required_skill").replace("$skill", configuration.getString("skill"));
