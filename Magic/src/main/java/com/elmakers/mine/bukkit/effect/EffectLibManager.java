@@ -161,16 +161,17 @@ public class EffectLibManager {
 
         try {
             effect = effectManager.getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer);
-            if (effect != null && play) {
-                effect.start();
-            }
-            if (!parameters.contains("material"))
-            {
-                MaterialAndData mat = player.getWorkingMaterial();
-                if (mat != null) {
-                    Byte data = mat.getBlockData();
-                    effect.material = mat.getMaterial();
-                    effect.materialData = data == null ? 0 : data;
+            if (effect != null) {
+                if (!parameters.contains("material")) {
+                    MaterialAndData mat = player.getWorkingMaterial();
+                    if (mat != null) {
+                        Byte data = mat.getBlockData();
+                        effect.material = mat.getMaterial();
+                        effect.materialData = data == null ? 0 : data;
+                    }
+                }
+                if (play) {
+                    effect.start();
                 }
             }
         } catch (Throwable ex) {
