@@ -50,6 +50,7 @@
  - Added `region_tags` option to requirements
  - Added WIP `mars` external example
  - Add tail and crown FX to wand effect shop (Thank you, Phantom!)
+ - You can now use "minutes", "seconds", "hours" in duration parameters for simpler configuration, e.g. "1 seconds" (yes, plural no matter what)
 
 # 8.3.3
 

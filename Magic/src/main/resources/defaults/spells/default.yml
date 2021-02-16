@@ -3,7 +3,7 @@
 #
 default:
     # Spells take 15 minutes to return to full SP earning potential
-    earns_cooldown: 15m
+    earns_cooldown: 15 minutes
     # Enable this to prevent spell casts outside the world border
     world_border_restricted: false
     effects:

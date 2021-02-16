@@ -4764,6 +4764,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case "bowpower": {
                 return (double)getLastBowPower();
             }
+            case "hours": {
+                return (double)360000;
+            }
+            case "minutes": {
+                return (double)60000;
+            }
+            case "seconds": {
+                return (double)1000;
+            }
 
             default:
                 return null;

@@ -7633,7 +7633,9 @@ public class MagicController implements MageController {
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
             "fall_distance",
             "air", "air_max", "target_air", "target_air_max",
-            "hunger", "target_hunger"
+            "hunger", "target_hunger",
+            // For interval parsing
+            "hours", "minutes", "seconds"
     );
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Set<Mage> pendingConstruction                             = new HashSet<>();
