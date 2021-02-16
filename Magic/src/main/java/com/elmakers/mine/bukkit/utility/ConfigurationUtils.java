@@ -1288,6 +1288,6 @@ public class ConfigurationUtils extends ConfigUtils {
             }
             requirements.add(new Requirement(singleConfiguration));
         }
-        return null;
+        return requirements;
     }
 }
