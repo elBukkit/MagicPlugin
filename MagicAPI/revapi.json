@@ -417,8 +417,23 @@
           "methodName": "getEffectContext",
           "elementKind": "method",
           "justification": "The context hierarchy was simplified and renamed"
+        },
+        {
+          "code": "java.class.removed",
+          "old": "interface com.elmakers.mine.bukkit.api.effect.MageEffectContext",
+          "package": "com.elmakers.mine.bukkit.api.effect",
+          "classSimpleName": "MageEffectContext",
+          "elementKind": "interface",
+          "justification": "The context hierarchy was simplified and renamed"
+        },
+        {
+          "code": "java.class.removed",
+          "old": "interface com.elmakers.mine.bukkit.api.effect.WandEffectContext",
+          "package": "com.elmakers.mine.bukkit.api.effect",
+          "classSimpleName": "WandEffectContext",
+          "elementKind": "interface",
+          "justification": "The context hierarchy was simplified and renamed"
         }
-
       ]
     }
   },
