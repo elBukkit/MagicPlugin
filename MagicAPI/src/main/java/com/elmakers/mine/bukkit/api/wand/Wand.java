@@ -15,10 +15,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.effect.WandEffectContext;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
+import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
@@ -274,7 +274,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     WandAction getSwapAction();
     boolean performAction(WandAction action);
     @Nonnull
-    WandEffectContext getEffectContext();
+    MageContext getContext();
     boolean isEnchantable();
     void setEnchantments(Map<Enchantment, Integer> enchants);
     void showInstructions();

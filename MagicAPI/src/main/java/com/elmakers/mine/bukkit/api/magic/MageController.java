@@ -577,7 +577,6 @@ public interface MageController {
     boolean updateLight(Location location);
     boolean isLightingAvailable();
     int getLightCount();
-
     @Nullable
     String checkRequirements(@Nonnull CastContext context, @Nullable Collection<Requirement> requirements);
     @Nonnull

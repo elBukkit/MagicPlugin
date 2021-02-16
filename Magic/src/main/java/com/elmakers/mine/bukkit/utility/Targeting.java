@@ -29,8 +29,8 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.effect.TargetingContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 
 public class Targeting {
@@ -239,7 +239,7 @@ public class Targeting {
         this.source = source.clone();
     }
 
-    public Target overrideTarget(TargetingContext context, Target target) {
+    public Target overrideTarget(MageContext context, Target target) {
         if (targetLocationOffset != null) {
             target.add(targetLocationOffset);
         }
@@ -257,7 +257,7 @@ public class Targeting {
         return target;
     }
 
-    public Target target(TargetingContext context, double range)
+    public Target target(MageContext context, double range)
     {
         if (source == null)
         {
@@ -297,7 +297,7 @@ public class Targeting {
      *
      * @return The target block
      */
-    protected Target findTarget(TargetingContext context, double range)
+    protected Target findTarget(MageContext context, double range)
     {
         if (targetType == TargetType.NONE) {
             return new Target(source);
@@ -396,7 +396,7 @@ public class Targeting {
         return new Target(source);
     }
 
-    protected void findTargetBlock(TargetingContext context, double range)
+    protected void findTargetBlock(MageContext context, double range)
     {
         if (source == null || !CompatibilityUtils.isChunkLoaded(source))
         {
@@ -452,7 +452,7 @@ public class Targeting {
         }
     }
 
-    public List<Target> getAllTargetEntities(TargetingContext context, double range) {
+    public List<Target> getAllTargetEntities(MageContext context, double range) {
         Entity sourceEntity = context.getEntity();
         Mage mage = context.getMage();
 
@@ -622,7 +622,7 @@ public class Targeting {
         return result;
     }
 
-    public void getTargetEntities(TargetingContext context, double range, int targetCount, Collection<WeakReference<Entity>> entities)
+    public void getTargetEntities(MageContext context, double range, int targetCount, Collection<WeakReference<Entity>> entities)
     {
         List<Target> candidates = getAllTargetEntities(context, range);
         if (targetCount < 0) {
@@ -635,9 +635,9 @@ public class Targeting {
         }
     }
 
-    protected int breakBlockRecursively(TargetingContext targetingContext, Block block, int depth) {
-        if (depth <= 0 || !(targetingContext instanceof CastContext)) return 0;
-        CastContext context = (CastContext)targetingContext;
+    protected int breakBlockRecursively(MageContext mageContext, Block block, int depth) {
+        if (depth <= 0 || !(mageContext instanceof CastContext)) return 0;
+        CastContext context = (CastContext)mageContext;
         if (!context.isBreakable(block)) return 0;
 
         // Play break FX

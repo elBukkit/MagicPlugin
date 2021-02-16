@@ -220,7 +220,7 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
         Entity sourceEntity = mage.getEntity();
         for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects)
         {
-            EffectContext context = wand.getEffectContext();
+            EffectContext context = wand.getContext();
             // Track effect plays for cancelling
             context.trackEffects(player);
 

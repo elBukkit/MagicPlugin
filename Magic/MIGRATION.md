@@ -1,5 +1,11 @@
 # Migration Notes
 
+# 8.4
+
+ - The API for interfaces between EffectContext and CastContext was restructured.
+   This will mainly effect plugins that implement custom RequirementsProcessor classes, but as far as I know no one
+   has been using that. I'm hoping this API change doens't break anyone, I really try not to ever change the API.
+
 # 8.3
 
  - The builtin economy was rebalanced, prices of items may have changed.

@@ -9,10 +9,10 @@ import org.bukkit.Location;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
-public class WandEffectContext extends TargetingContext implements com.elmakers.mine.bukkit.api.effect.WandEffectContext {
+public class WandContext extends MageContext {
     protected @Nullable Wand wand;
 
-    public WandEffectContext(@Nonnull Mage mage, @Nullable Wand wand) {
+    public WandContext(@Nonnull Mage mage, @Nullable Wand wand) {
         super(mage);
         this.wand = wand;
     }

@@ -51,7 +51,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
-import com.elmakers.mine.bukkit.effect.WandEffectContext;
+import com.elmakers.mine.bukkit.effect.WandContext;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
@@ -62,7 +62,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 
-public class CastContext extends WandEffectContext implements com.elmakers.mine.bukkit.api.action.CastContext {
+public class CastContext extends WandContext implements com.elmakers.mine.bukkit.api.action.CastContext {
     protected static Random random;
 
     private final WeakReference<Entity> entity;

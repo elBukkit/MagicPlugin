@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.effect.MageEffectContext;
+import com.elmakers.mine.bukkit.effect.MageContext;
 
 import de.slikey.effectlib.util.MathUtils;
 
@@ -122,7 +122,7 @@ public class SourceLocation {
         Location feetLocation;
         Location blockLocation;
         if (isSource) {
-            mage = context instanceof MageEffectContext ? ((MageEffectContext)context).getMage() : null;
+            mage = context instanceof MageContext ? ((MageContext)context).getMage() : null;
             eyeLocation = context.getEyeLocation();
             feetLocation = context.getLocation();
             blockLocation = context.getLocation();

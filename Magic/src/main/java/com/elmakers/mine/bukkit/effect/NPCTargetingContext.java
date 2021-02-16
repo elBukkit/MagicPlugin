@@ -7,7 +7,7 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
-public class NPCTargetingContext extends TargetingContext {
+public class NPCTargetingContext extends MageContext {
     public NPCTargetingContext(@Nonnull Mage mage) {
         super(mage);
     }

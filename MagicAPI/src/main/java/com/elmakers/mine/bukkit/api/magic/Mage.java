@@ -28,7 +28,6 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.data.MageData;
-import com.elmakers.mine.bukkit.api.effect.MageEffectContext;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.spell.CastParameter;
@@ -721,7 +720,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     EntityType getLastProjectileType();
 
     @Nonnull
-    MageEffectContext getEffectContext();
+    MageContext getEffectContext();
 
     long getCreatedTime();
 

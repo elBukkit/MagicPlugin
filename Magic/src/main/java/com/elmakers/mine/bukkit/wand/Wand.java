@@ -51,6 +51,7 @@ import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
+import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
@@ -69,7 +70,7 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
-import com.elmakers.mine.bukkit.effect.WandEffectContext;
+import com.elmakers.mine.bukkit.effect.WandContext;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.item.InventorySlot;
@@ -115,7 +116,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
      * used for off-hand casting.
      */
     protected @Nullable Mage mage;
-    protected @Nullable WandEffectContext effectContext;
+    protected @Nullable WandContext wandContext;
 
     // Cached state
     private String id = "";
@@ -4279,13 +4280,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         // Cancel effects
-        if (effectContext != null) {
+        if (wandContext != null) {
             int cancelDelay = getInt("cancel_effects_delay", 0);
             if (cancelDelay == 0) {
-                effectContext.cancelEffects();
+                wandContext.cancelEffects();
             } else {
                 Plugin plugin = controller.getPlugin();
-                plugin.getServer().getScheduler().runTaskLater(plugin, new CancelEffectsContextTask(effectContext), cancelDelay * 20 / 1000);
+                plugin.getServer().getScheduler().runTaskLater(plugin, new CancelEffectsContextTask(wandContext), cancelDelay * 20 / 1000);
             }
         }
 
@@ -5124,9 +5125,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void updated() {
-        if (effectContext != null) {
-            effectContext.cancelEffects();
-            effectContext = null;
+        if (wandContext != null) {
+            wandContext.cancelEffects();
+            wandContext = null;
         }
         if (mage != null) {
             buildInventory();
@@ -6000,15 +6001,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     @Nonnull
-    public WandEffectContext getEffectContext() {
+    public MageContext getContext() {
         checkState(mage != null, "Mage is not available");
 
-        if (effectContext == null || (effectContext.getMage() != mage)) {
+        if (wandContext == null || (wandContext.getMage() != mage)) {
             // Lazy load or mage has changed
-            effectContext = new WandEffectContext(verifyNotNull(mage), this);
+            wandContext = new WandContext(verifyNotNull(mage), this);
         }
 
-        return verifyNotNull(effectContext);
+        return verifyNotNull(wandContext);
     }
 
     @Override

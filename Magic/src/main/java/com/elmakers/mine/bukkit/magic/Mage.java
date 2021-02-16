@@ -100,7 +100,7 @@ import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
-import com.elmakers.mine.bukkit.effect.MageEffectContext;
+import com.elmakers.mine.bukkit.effect.MageContext;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
@@ -202,7 +202,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean forget = false;
     private long disableWandOpenUntil = 0;
     private long created;
-    private MageEffectContext effectContext = null;
+    private MageContext effectContext = null;
     private BossBarTracker bossBar = null;
 
     private DamagedBy topDamager;
@@ -4827,10 +4827,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     @Nonnull
-    public MageEffectContext getEffectContext() {
+    public MageContext getEffectContext() {
         if (effectContext == null) {
             // Lazy load or mage has changed
-            effectContext = new MageEffectContext(this);
+            effectContext = new MageContext(this);
         }
 
         return verifyNotNull(effectContext);
