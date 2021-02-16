@@ -36,6 +36,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.data.SerializedLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -1268,5 +1269,25 @@ public class ConfigurationUtils extends ConfigUtils {
             newSection.set(entry.getKey().toString(), entry.getValue());
         }
         return newSection;
+    }
+
+    @Nullable
+    public static Collection<Requirement> getRequirements(ConfigurationSection configuration) {
+        List<Requirement> requirements = null;
+        Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(configuration, "requirements");
+        if (requirementConfigurations != null) {
+            requirements = new ArrayList<>();
+            for (ConfigurationSection requirementConfiguration : requirementConfigurations) {
+                requirements.add(new Requirement(requirementConfiguration));
+            }
+        }
+        ConfigurationSection singleConfiguration = ConfigurationUtils.getConfigurationSection(configuration, "requirement");
+        if (singleConfiguration != null) {
+            if (requirements == null) {
+                requirements = new ArrayList<>();
+            }
+            requirements.add(new Requirement(singleConfiguration));
+        }
+        return null;
     }
 }

@@ -318,13 +318,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             selectedMessage = configuration.getString("selected", selectedMessage);
             selectedFreeMessage = configuration.getString("selected_free", selectedFreeMessage);
 
-            Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(configuration, "requirements");
-            if (requirementConfigurations != null) {
-                requirements = new ArrayList<>();
-                for (ConfigurationSection requirementConfiguration : requirementConfigurations) {
-                    requirements.add(new Requirement(requirementConfiguration));
-                }
-            }
+            requirements = ConfigurationUtils.getRequirements(configuration);
 
             if (configuration.contains("item")) {
                 items = new ArrayList<>();

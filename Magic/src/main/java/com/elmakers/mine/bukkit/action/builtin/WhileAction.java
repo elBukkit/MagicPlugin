@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -29,22 +28,14 @@ public class WhileAction extends CompoundAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         interval = parameters.getInt("interval", 0);
-        requirements = new ArrayList<>();
-        Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(parameters, "requirements");
-        if (requirementConfigurations != null) {
-            for (ConfigurationSection requirementConfiguration : requirementConfigurations) {
-                requirements.add(new Requirement(requirementConfiguration));
-            }
-        }
-        ConfigurationSection singleConfiguration = ConfigurationUtils.getConfigurationSection(parameters, "requirement");
-        if (singleConfiguration != null) {
-            requirements.add(new Requirement(singleConfiguration));
+        requirements = ConfigurationUtils.getRequirements(parameters);
+        if (requirements == null || requirements.isEmpty()) {
+            context.getLogger().warning("While action missing requirements in spell " + context.getName());
         }
     }
 
     @Override
-    public void reset(CastContext context)
-    {
+    public void reset(CastContext context) {
         super.reset(context);
         startTime = System.currentTimeMillis();
         stepTime = 0;
@@ -52,11 +43,14 @@ public class WhileAction extends CompoundAction {
 
     @Override
     public SpellResult perform(CastContext context) {
+        if (requirements == null) {
+            return SpellResult.FAIL;
+        }
         String message = context.getController().checkRequirements(context, requirements);
         if (message != null) {
             return SpellResult.NO_ACTION;
         }
-        if (stepTime > 0 && System.currentTimeMillis() < stepTime + interval) {
+        if (stepTime > 0 && System.currentTimeMillis() < startTime + interval) {
             return SpellResult.PENDING;
         }
         stepTime = System.currentTimeMillis();
@@ -70,6 +64,9 @@ public class WhileAction extends CompoundAction {
 
     @Override
     public boolean next(CastContext context) {
+        if (requirements == null) {
+            return false;
+        }
         String message = context.getController().checkRequirements(context, requirements);
         return message == null;
     }

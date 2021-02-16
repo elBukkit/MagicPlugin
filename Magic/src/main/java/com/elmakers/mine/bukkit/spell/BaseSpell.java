@@ -1140,13 +1140,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(node, "requirements");
-        if (requirementConfigurations != null) {
-            requirements = new ArrayList<>();
-            for (ConfigurationSection requirementConfiguration : requirementConfigurations) {
-                requirements.add(new Requirement(requirementConfiguration));
-            }
-        }
+        requirements = ConfigurationUtils.getRequirements(node);
         progressLevels = node.getConfigurationSection("progress_levels");
         if (progressLevels != null) {
             requiredCastsPerLevel = progressLevels.getLong("required_casts_per_level");

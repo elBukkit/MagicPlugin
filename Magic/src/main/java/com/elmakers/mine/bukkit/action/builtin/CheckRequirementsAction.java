@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,21 +18,17 @@ public class CheckRequirementsAction extends CheckAction {
     {
         super.prepare(context, parameters);
         sendMessage = parameters.getBoolean("send_message");
-        requirements = new ArrayList<>();
-        Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(parameters, "requirements");
-        if (requirementConfigurations != null) {
-            for (ConfigurationSection requirementConfiguration : requirementConfigurations) {
-                requirements.add(new Requirement(requirementConfiguration));
-            }
-        }
-        ConfigurationSection singleConfiguration = ConfigurationUtils.getConfigurationSection(parameters, "requirement");
-        if (singleConfiguration != null) {
-            requirements.add(new Requirement(singleConfiguration));
+        requirements = ConfigurationUtils.getRequirements(parameters);
+        if (requirements == null || requirements.isEmpty()) {
+            context.getLogger().warning("CheckRequirements action missing requirements in spell " + context.getName());
         }
     }
 
     @Override
     protected boolean isAllowed(CastContext context) {
+        if (requirements == null) {
+            return true;
+        }
         String message = context.getController().checkRequirements(context, requirements);
         if (sendMessage && message != null) {
             context.getMage().sendMessage(message);
