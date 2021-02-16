@@ -334,6 +334,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         // This is required to allow changes to health
         hasChangedHealth = true;
         name = parameters.getString("name");
+        if (name == null && key != null) {
+            name = controller.getMessages().get("mobs." + key + ".name");
+        }
         if (name != null) {
             name = ChatColor.translateAlternateColorCodes('&', name);
         }

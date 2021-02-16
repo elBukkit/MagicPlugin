@@ -160,12 +160,18 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             InventoryUtils.saveTagsToItem(tagSection, item);
         }
         String customName = configuration.getString("name");
+        if (customName == null) {
+            customName = controller.getMessages().get("items." + key + ".name");
+        }
         if (customName != null) {
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
             item.setItemMeta(meta);
         }
         List<String> lore = configuration.getStringList("lore");
+        if (lore == null) {
+            lore = controller.getMessages().getAll("items." + key + ".lore");
+        }
         if (lore != null && !lore.isEmpty()) {
             ItemMeta meta = item.getItemMeta();
             for (int i = 0; i < lore.size(); i++) {

@@ -26,6 +26,8 @@
  - Added `magic-tags` WorldGuard flags, should be used in place of `spawn-tags` though the latter still works
  - Brooms are no longer bound. Use `/mconfig configure wand broomstick bound true` to turn this back on.
  - The Gather spell is now disabled by default. If you want to re-enable it, go ahead, but I can't support it anymore.
+ - Items can now have a `name` and `lore` specified in messages.yml, so they can be localized
+ - Mobs can have a `name` specified in messages.yml
 
 ## Additions
 
