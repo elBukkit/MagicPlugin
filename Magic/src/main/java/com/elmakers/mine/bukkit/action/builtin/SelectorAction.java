@@ -228,10 +228,17 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nonnull String[] fallbackCostTypes = null;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
+            parseIcon(configuration);
             parse(configuration);
         }
 
         protected SelectorConfiguration() {
+        }
+
+        protected void parseIcon(ConfigurationSection configuration) {
+            iconPlaceholderKey = configuration.getString("placeholder_icon");
+            iconKey = configuration.getString("icon");
+            iconDisabledKey = configuration.getString("icon_disabled");
         }
 
         protected void parse(ConfigurationSection configuration) {
@@ -357,9 +364,6 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             MageController controller = context.getController();
-            iconPlaceholderKey = configuration.getString("placeholder_icon");
-            iconKey = configuration.getString("icon");
-            iconDisabledKey = configuration.getString("icon_disabled");
             costModifiers = parseCostModifiers(configuration, "cost_modifiers");
             earnModifiers = parseCostModifiers(configuration, "earn_modifiers");
             if (!free) {
@@ -601,6 +605,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.showFree = defaults.showFree;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<>();
 
+            parseIcon(configuration);
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
             if (placeholder) {
                 makePlaceholder();
@@ -720,7 +725,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
         private void makePlaceholder() {
             placeholder = true;
-            this.icon = parseItem(iconPlaceholderKey);
+            String placeholderKey = iconKey == null || iconKey.isEmpty() ? iconPlaceholderKey : iconKey;
+            this.icon = parseItem(placeholderKey);
             if (icon == null) {
                 this.icon = new ItemStack(Material.AIR);
             } else {
