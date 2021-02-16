@@ -1673,4 +1673,10 @@ public class CastContext extends WandEffectContext implements com.elmakers.mine.
     public void setIndestructible(MaterialSet indestructible) {
         this.indestructible = indestructible;
     }
+
+    @Override
+    @Nonnull
+    public String getName() {
+        return spell.getName() + " of " + super.getName();
+    }
 }

@@ -115,4 +115,10 @@ public class EffectContext implements com.elmakers.mine.bukkit.api.effect.Effect
     public String getEffectParticle() {
         return null;
     }
+
+    @Override
+    @Nonnull
+    public String getName() {
+        return "Unknown effects";
+    }
 }

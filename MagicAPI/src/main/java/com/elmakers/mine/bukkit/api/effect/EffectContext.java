@@ -12,6 +12,8 @@ import org.bukkit.entity.LivingEntity;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface EffectContext {
+    @Nonnull
+    String getName();
     @Nullable
     Entity getEntity();
     @Nullable

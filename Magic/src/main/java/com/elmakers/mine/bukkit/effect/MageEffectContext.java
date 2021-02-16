@@ -25,6 +25,12 @@ public class MageEffectContext extends EffectContext implements com.elmakers.min
         return this.mage;
     }
 
+    @Override
+    @Nonnull
+    public String getName() {
+        return getMage().getName();
+    }
+
     @Nullable
     @Override
     public Location getLocation() {
