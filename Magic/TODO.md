@@ -6,8 +6,6 @@
 
  - Automaton parameters don't seem to work, when applied with CreateAutomaton or a populator
 
- - Update `/magic help` , show example instructions, link to FAQ, etc
-
  - Need to move all mob names to messages file
  - "Failed to save wand state for wand" message showing a lot
  - Overrides should probably be cached
