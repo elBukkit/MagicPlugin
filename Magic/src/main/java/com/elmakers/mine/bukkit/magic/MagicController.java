@@ -164,6 +164,7 @@ import com.elmakers.mine.bukkit.integration.SkriptManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.kit.KitController;
+import com.elmakers.mine.bukkit.kit.MagicKit;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.config.FetchExampleRunnable;
@@ -575,6 +576,14 @@ public class MagicController implements MageController {
         if (mage.isPlayer()) {
             kitController.onJoin(mage);
         }
+    }
+
+    public MagicKit getKit(String key) {
+        return kitController.getKit(key);
+    }
+
+    public Collection<String> getKitKeys() {
+        return kitController.getKitKeys();
     }
 
     @Nonnull

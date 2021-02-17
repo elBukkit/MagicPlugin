@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.kit;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,5 +53,13 @@ public class KitController {
                 joinKit.giveMissing(mage);
             }
         }
+    }
+
+    public MagicKit getKit(String key) {
+        return kits.get(key);
+    }
+
+    public Collection<String> getKitKeys() {
+        return kits.keySet();
     }
 }

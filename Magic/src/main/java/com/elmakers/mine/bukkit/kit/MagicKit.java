@@ -43,26 +43,39 @@ public class MagicKit {
         cooldown = configuration.getInt("cooldown");
         requirements = ConfigurationUtils.getRequirements(configuration);
         List<? extends Object> itemList = configuration.getList("items");
-        for (Object itemObject : itemList) {
-            if (itemObject instanceof String) {
-                addItemFromString((String)itemObject);
-            } else if (itemObject instanceof ConfigurationSection || itemObject instanceof Map) {
-                ConfigurationSection itemConfig;
-                if (itemObject instanceof Map) {
-                    itemConfig = ConfigurationUtils.toConfigurationSection(configuration, (Map<?,?>)itemObject);
-                } else {
-                    itemConfig = (ConfigurationSection)itemObject;
+        if (itemList != null) {
+            for (Object itemObject : itemList) {
+                if (itemObject instanceof String) {
+                    addItemFromString((String)itemObject);
+                } else if (itemObject instanceof ConfigurationSection || itemObject instanceof Map) {
+                    ConfigurationSection itemConfig;
+                    if (itemObject instanceof Map) {
+                        itemConfig = ConfigurationUtils.toConfigurationSection(configuration, (Map<?,?>)itemObject);
+                    } else {
+                        itemConfig = (ConfigurationSection)itemObject;
+                    }
+                    String itemKey = itemConfig.getString("item");
+                    if (itemKey == null || itemKey.isEmpty()) {
+                        controller.getLogger().warning("Skipping empty item in kit " + key);
+                        continue;
+                    }
+                    Integer slot = null;
+                    if (itemConfig.contains("slot")) {
+                        slot = itemConfig.getInt("slot");
+                    }
+                    addItemFromString(itemKey, slot);
                 }
-                String itemKey = itemConfig.getString("item");
-                if (itemKey == null || itemKey.isEmpty()) {
-                    controller.getLogger().warning("Skipping empty item in kit " + key);
-                    continue;
+            }
+        } else {
+            ConfigurationSection itemsWithCounts = configuration.getConfigurationSection("items");
+            if (itemsWithCounts != null) {
+                for (String itemKey : itemsWithCounts.getKeys(false)) {
+                    int amount = itemsWithCounts.getInt(itemKey);
+                    if (amount > 1) {
+                        itemKey = itemKey + "@" + amount;
+                    }
+                    addItemFromString(itemKey, null);
                 }
-                Integer slot = null;
-                if (itemConfig.contains("slot")) {
-                    slot = itemConfig.getInt("slot");
-                }
-                addItemFromString(itemKey, slot);
             }
         }
     }

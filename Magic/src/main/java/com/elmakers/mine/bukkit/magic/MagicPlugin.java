@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicConfigCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicGiveCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicItemCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicKitCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicMapCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicMobCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicNPCCommandExecutor;
@@ -187,6 +188,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         new MagicCommandExecutor(this).register(this);
         new MageCommandExecutor(this).register(this);
         new MagicGiveCommandExecutor(this).register(this);
+        new MagicKitCommandExecutor(this).register(this);
         new MagicItemCommandExecutor(this).register(this);
         new MagicMobCommandExecutor(this).register(this);
         new MagicNPCCommandExecutor(this).register(this);

@@ -2,6 +2,18 @@
 
 # 8.4
 
+## Kits
+
+ - Item kits can now be configured in the `kits` configuration
+ - Kits can be set as:
+   starter: Given on time on join
+   keep: Given every join if players don't have the items
+   remove: Taken away on join if players are no longer allowed to use the kit
+   partial: If a starter kit has changed, players will be given the difference on join
+ - Kits can have requirements, such as permissions or attributes
+ - Kits can have cooldowns
+ - The `/mkit` command can be used to give kits
+
 ## Fixes
 
  - Fix flying mob spawns and nether mob spawns in `spawnmobs` example

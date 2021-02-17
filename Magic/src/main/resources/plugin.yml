@@ -724,6 +724,13 @@ commands:
         /mgive brush:sea_lantern
         /mgive sea_lantern 32
         /mgive NathanWolf wolf
+  mkit:
+    description: Give players items from a kit
+    permission: Magic.commands.mkit
+    usage: |
+        /mkit <Player> [kit]
+        /mgive starter
+        /mgive NathanWolf admin
   mauto:
     description: Manage Automatic Blocks, such as spawners or effects
     permission: Magic.commands.mauto
@@ -1004,6 +1011,14 @@ permissions:
     description: Player may give magic items to other players. Requires Magic.commands.mgive.
     type: boolean
     default: true
+  Magic.commands.mkit:
+    description: Player may give themselves magic kits
+    type: boolean
+    default: op
+  Magic.commands.mkit.others:
+    description: Player may give magic kits to other players. Requires Magic.commands.mkit.
+    type: boolean
+    default: op
   Magic.commands.mtrait:
     description: Player may manage Magic NPCs
     type: boolean

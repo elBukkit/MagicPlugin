@@ -2,6 +2,13 @@ commands:
     no_permission: "&cYou are not allowed to use that command."
     in_game: "&cThis command may only be used in-game."
     unknown_command: "&cUnknown command: &f$command"
+    mkit:
+      usage: "Usage: mkit [player] <kit>"
+      console_usage: "Console usage: mkit <player> <kit>"
+      unknown_kit: "&cUnknown kit: &f$kit"
+      unknown_player: "&cNo targets matched: &f$player"
+      cooldown: "You must wait $time."
+      no_requirements: "You are not allowed to use that kit"
     magic:
         help_header: |-
           &8 ----------------------------------------------------
