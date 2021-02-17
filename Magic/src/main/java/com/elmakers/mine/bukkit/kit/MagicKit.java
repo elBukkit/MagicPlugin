@@ -26,6 +26,7 @@ public class MagicKit {
     private final boolean isRemove;
     private final boolean isPartial;
     private final boolean isWelcomeWand;
+    private final int cooldown;
 
     // Items can be mapped by slot, or not, or a mix of both
     private Map<Integer, ItemData> slotItems;
@@ -39,6 +40,7 @@ public class MagicKit {
         isRemove = configuration.getBoolean("remove");
         isPartial = configuration.getBoolean("partial");
         isWelcomeWand = configuration.getBoolean("welcome_wand");
+        cooldown = configuration.getInt("cooldown");
         requirements = ConfigurationUtils.getRequirements(configuration);
         List<? extends Object> itemList = configuration.getList("items");
         for (Object itemObject : itemList) {
@@ -100,11 +102,23 @@ public class MagicKit {
         return isRemove;
     }
 
+    public long getRemainingCooldown(Mage mage) {
+        if (cooldown == 0) return 0;
+        MageKit kit = mage.getKit(key);
+        if (kit == null) return 0;
+        long lastGive = kit.getLastGiveTime();
+        lastGive = System.currentTimeMillis() - lastGive;
+        return lastGive >= cooldown ? 0 : cooldown - lastGive;
+    }
+
     public boolean isAllowed(Mage mage) {
         if (controller.checkRequirements(mage.getContext(), requirements) != null) {
             return false;
         }
         if (isWelcomeWand && mage.hasGivenWelcomeWand()) {
+            return false;
+        }
+        if (getRemainingCooldown(mage) > 0) {
             return false;
         }
         return true;
