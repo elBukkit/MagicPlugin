@@ -5,12 +5,7 @@
 # they will keep throughout their play experience.
 #
 
-# Give the player a Ticket from Ollivander to start their journey
-# This can be exchanged for a Wand Box from an NPC by doing the following:
-# /npc create Ollivander
-# /trait magic
-# /mtrait spell ollivander
-welcome_wand: ticket
+# Note: welcome_wand is no longer used, see the "ticket" kit
 
 default_wand: potterwand
 

@@ -798,6 +798,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/potter/kits.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/potter/kits">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/potter/mobs.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/potter/mobs">
                                         <include name="**/*.yml"/>

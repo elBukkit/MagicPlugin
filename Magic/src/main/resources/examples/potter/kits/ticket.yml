@@ -1,0 +1,16 @@
+ticket:
+  # Give the player a Ticket from Ollivander to start their journey
+  # This can be exchanged for a Wand Box from an NPC by doing the following:
+  # /npc create Ollivander
+  # /trait magic
+  # /mtrait spell ollivander
+
+  # This makes this kit ignore players that already received a ticket via the old
+  # welcome_wand mechanism
+  welcome_wand: true
+
+  # Give the ticket to players on join
+  starter: true
+
+  # Ticket from ollivander item
+  items: ticket

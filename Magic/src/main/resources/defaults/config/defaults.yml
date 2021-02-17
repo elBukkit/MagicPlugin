@@ -54,6 +54,8 @@ default_mage_class: ""
 
 # Give new players a wand when they join.
 # e.g. welcome_wand: wand
+# This is no longer the best way to do this, it's more flexible to add a starter kit via the kits
+# configuration.
 welcome_wand: ""
 
 # Whether or not to show any messages (in chat)
