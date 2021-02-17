@@ -4697,6 +4697,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Nullable
     private Double getBuiltinAttribute(String attributeKey) {
+        Double globalValue = controller.getBuiltinAttribute(attributeKey);
+        if (globalValue != null) {
+            return globalValue;
+        }
         switch (attributeKey) {
             case "air": {
                 LivingEntity living = getLivingEntity();
@@ -4734,8 +4738,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 Location location = getLocation();
                 return location == null ? null : (double)location.getWorld().getTime();
             }
-            case "epoch":
-                return (double)System.currentTimeMillis();
             case "moon": {
                 Location location = getLocation();
                 return location == null ? null : (double)(int)((location.getWorld().getFullTime() / 24000) % 8);
@@ -4766,15 +4768,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             case "bowpower": {
                 return (double)getLastBowPower();
-            }
-            case "hours": {
-                return (double)360000;
-            }
-            case "minutes": {
-                return (double)60000;
-            }
-            case "seconds": {
-                return (double)1000;
             }
 
             default:

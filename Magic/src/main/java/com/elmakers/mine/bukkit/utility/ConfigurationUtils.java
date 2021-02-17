@@ -41,6 +41,7 @@ import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
+import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.configuration.ParameterizedConfigurationSection;
 import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfiguration;
@@ -361,6 +362,9 @@ public class ConfigurationUtils extends ConfigUtils {
         }
         if (section instanceof MageParameters) {
             return new MageParameters((MageParameters)section);
+        }
+        if (section instanceof MagicConfiguration) {
+            return new MagicConfiguration((MagicConfiguration)section);
         }
         if (section instanceof ParameterizedConfigurationSection) {
             return new ParameterizedConfigurationSection((ParameterizedConfigurationSection)section);

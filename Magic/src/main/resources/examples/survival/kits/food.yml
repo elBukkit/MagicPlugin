@@ -1,0 +1,5 @@
+food:
+  cooldown: 2 hours
+  items:
+    bread: 16
+    carrot: 16

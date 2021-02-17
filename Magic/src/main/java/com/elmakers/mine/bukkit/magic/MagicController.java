@@ -134,6 +134,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
+import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.economy.BaseMagicCurrency;
@@ -2108,6 +2109,7 @@ public class MagicController implements MageController {
     }
 
     private void loadAutomatonTemplates(ConfigurationSection automataConfiguration) {
+        automataConfiguration = new MagicConfiguration(this, automataConfiguration);
         Set<String> keys = automataConfiguration.getKeys(false);
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         automatonTemplates.clear();
@@ -3859,6 +3861,7 @@ public class MagicController implements MageController {
     }
 
     private void finalizeAttributes() {
+        registeredAttributes.addAll(builtinMageAttributes);
         registeredAttributes.addAll(builtinAttributes);
         registeredAttributes.addAll(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {
@@ -6934,6 +6937,21 @@ public class MagicController implements MageController {
         return attributeProviders;
     }
 
+    @Nullable
+    public Double getBuiltinAttribute(String attributeKey) {
+        switch (attributeKey) {
+            case "hours": return (double)3600000;
+            case "minutes": return (double)60000;
+            case "seconds": return (double)1000;
+            case "epoch": return (double)System.currentTimeMillis();
+            default: return null;
+        }
+    }
+
+    public Set<String> getBuiltinAttributes() {
+        return builtinAttributes;
+    }
+
     @Override
     @Nullable
     public MagicAttribute getAttribute(String attributeKey) {
@@ -7631,16 +7649,19 @@ public class MagicController implements MageController {
     private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();
     private final Set<String>                   registeredAttributes        = new HashSet<>();
     private final Set<String>                   builtinAttributes           = ImmutableSet.of(
+            "epoch",
+            // For interval parsing
+            "hours", "minutes", "seconds"
+    );
+    private final Set<String>                   builtinMageAttributes       = ImmutableSet.of(
             "health", "health_max", "target_health", "target_health_max",
             "location_x", "location_y", "location_z",
             "target_location_x", "target_location_y", "target_location_z",
-            "time", "moon", "epoch",
+            "time", "moon",
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
             "fall_distance",
             "air", "air_max", "target_air", "target_air_max",
-            "hunger", "target_hunger",
-            // For interval parsing
-            "hours", "minutes", "seconds"
+            "hunger", "target_hunger"
     );
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Set<Mage> pendingConstruction                             = new HashSet<>();
