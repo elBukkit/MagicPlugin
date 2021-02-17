@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.ModifierTemplate;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -35,6 +36,7 @@ public class MagicRequirement {
     private @Nullable String requiredPath = null;
     private @Nullable String requiredTemplate = null;
     private @Nullable Set<String> requiredTemplates = null;
+    private @Nullable List<String> requiredModifiers = null;
     private @Nullable List<String> wandTags = null;
     private @Nullable String requiresCompletedPath = null;
     private @Nullable String exactPath = null;
@@ -81,6 +83,10 @@ public class MagicRequirement {
 
         if (configuration.contains("wands")) {
             requiredTemplates = new HashSet<>(ConfigurationUtils.getStringList(configuration, "wands"));
+        }
+
+        if (configuration.contains("modifiers")) {
+            requiredModifiers = ConfigurationUtils.getStringList(configuration, "modifiers");
         }
 
         wandProperties = parsePropertyRequirements(configuration, "wand_properties", "wand_property", "property");
@@ -244,9 +250,22 @@ public class MagicRequirement {
             }
         }
 
-        if (requiredTemplates != null) {
+        if (requiredTemplates != null && !requiredModifiers.isEmpty()) {
             String template = wand.getTemplateKey();
             if (template == null || !requiredTemplates.contains(template)) {
+                return false;
+            }
+        }
+
+        if (requiredModifiers != null) {
+            boolean hasAny = false;
+            for (String modifierKey : requiredModifiers) {
+                if (mage.hasModifier(modifierKey)) {
+                    hasAny = true;
+                    break;
+                }
+            }
+            if (!hasAny) {
                 return false;
             }
         }
@@ -467,6 +486,21 @@ public class MagicRequirement {
             String template = wand.getTemplateKey();
             if (template == null || !requiredTemplates.contains(template)) {
                 return getMessage(context, "no_template").replace("$wand", wand.getName());
+            }
+        }
+
+        if (requiredModifiers != null && !requiredModifiers.isEmpty()) {
+            boolean hasAny = false;
+            for (String modifierKey : requiredModifiers) {
+                if (mage.hasModifier(modifierKey)) {
+                    hasAny = true;
+                    break;
+                }
+            }
+            if (!hasAny) {
+                ModifierTemplate modifier = controller.getModifierTemplate(requiredModifiers.get(0));
+                String name = modifier == null ? "?" : modifier.getName();
+                return getMessage(context, "no_modifier").replace("$modifier", name);
             }
         }
 
