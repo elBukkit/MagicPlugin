@@ -446,6 +446,8 @@ wands:
     admintool:
         name: Admin Tool
         description: A variety of useful tools for mods and admins
+        lore:
+            - "$description"
     shoptoken:
         name: Shop Token
         description: Creates a shop that you can manage

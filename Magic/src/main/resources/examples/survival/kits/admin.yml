@@ -10,6 +10,9 @@ admin:
   keep: true
   # If they no longer meet the above requirements (permissions) any
   # items in this kit will be taken away from them.
+  # This should really only be used with kits that have special items in them items taken are *not* tracked
+  # Meaning if you use this on a kit with diamonds in it, the player will always have all of their diamonds
+  # Removed on join
   remove: true
 
   # In general items in this kit should be undroppable and probably unstashable as well.
