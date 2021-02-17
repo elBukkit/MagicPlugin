@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.world.block.builtin;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
 import javax.annotation.Nonnull;
@@ -10,25 +11,31 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.automata.Automaton;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import com.elmakers.mine.bukkit.world.BlockResult;
 import com.elmakers.mine.bukkit.world.block.BlockRule;
 
 public class AutomatonRule extends BlockRule {
-    private Deque<WeightedPair<String>> automatonProbability;
+    private MaterialSet replace;
+    private Deque<WeightedPair<String>> automatonProbability = new ArrayDeque<>();
     private ConfigurationSection parameters;
 
     @Override
     public boolean onLoad(ConfigurationSection parameters) {
         RandomUtils.populateStringProbabilityMap(automatonProbability, parameters, "automaton");
         this.parameters = parameters.getConfigurationSection("automaton_parameters");
+        replace = controller.getMaterialSetManager().fromConfig(parameters.getString("replace"));
         return !automatonProbability.isEmpty();
     }
 
     @Override
     @Nonnull
     public BlockResult onHandle(Block block, Random random, Player cause) {
+        if (replace != null && !replace.testBlock(block)) {
+            return BlockResult.SKIP;
+        }
         String automatonKey = RandomUtils.weightedRandom(automatonProbability);
 
         if (automatonKey.equalsIgnoreCase("none")) {
