@@ -41,7 +41,7 @@ public class ChestPopulator extends MagicChunkPopulator {
         // Fetch wand probabilities
         ConfigurationSection wands = config.getConfigurationSection("item_probability");
         if (wands != null) {
-            RandomUtils.populateStringProbabilityMap(itemProbability, base);
+            RandomUtils.populateStringProbabilityMap(itemProbability, wands);
         }
 
         return baseProbability.size() > 0 && itemProbability.size() > 0;
