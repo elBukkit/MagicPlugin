@@ -18,6 +18,7 @@ public class MageData {
     private ConfigurationSection data;
     private ConfigurationSection properties;
     private ConfigurationSection variables;
+    private ConfigurationSection kits;
     private Map<String, ConfigurationSection> classProperties;
     private Map<String, ConfigurationSection> modifierProperties;
     private String activeClass;
@@ -353,6 +354,14 @@ public class MageData {
 
     public void setVariables(ConfigurationSection variables) {
         this.variables = variables;
+    }
+
+    public ConfigurationSection getKits() {
+        return kits;
+    }
+
+    public void setKits(ConfigurationSection kits) {
+        this.kits = kits;
     }
 
     public long getCachedTimestamp() {

@@ -571,7 +571,7 @@ public class MagicController implements MageController {
         }
     }
 
-    public void finalizeMageLoad(Mage mage) {
+    public void finalizeMageLoad(com.elmakers.mine.bukkit.magic.Mage mage) {
         if (mage.isPlayer()) {
             kitController.onJoin(mage);
         }

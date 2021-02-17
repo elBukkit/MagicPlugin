@@ -166,6 +166,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Set<String> triggeredSpells = new HashSet<>();
     private final Set<String> triggeringSpells = new HashSet<>();
     private final Map<String, Long> lastTriggers = new HashMap<>();
+    private final Map<String, MageKit> kits = new HashMap<>();
     protected ConfigurationSection data = ConfigurationUtils.newConfigurationSection();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> playerRef;
@@ -1188,6 +1189,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this.properties.load(data.getProperties());
             this.properties.loadProperties();
             this.variables = data.getVariables();
+            this.loadKits(data.getKits());
 
             boundWands.clear();
             Map<String, ItemStack> boundWandItems = data.getBoundWands();
@@ -1580,6 +1582,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setExtraData(this.data);
             data.setProperties(properties.getConfiguration());
             data.setVariables(variables);
+            data.setKits(saveKits());
 
             Map<String, ConfigurationSection> classProperties = new HashMap<>();
             for (Map.Entry<String, MageClass> entry : classes.entrySet()) {
@@ -5347,5 +5350,40 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
+    }
+
+    public void loadKits(ConfigurationSection kitConfig) {
+        kits.clear();
+        if (kitConfig != null) {
+            for (String kitKey : kitConfig.getKeys(false)) {
+                kits.put(kitKey, MageKit.load(kitKey, kitConfig.getConfigurationSection(kitKey)));
+            }
+        }
+    }
+
+    @Nullable
+    public ConfigurationSection saveKits() {
+        ConfigurationSection kitConfig = null;
+        if (!kits.isEmpty()) {
+            kitConfig = ConfigurationUtils.newConfigurationSection();
+            for (MageKit kit : kits.values()) {
+                kit.saveTo(kitConfig);
+            }
+        }
+        return kitConfig;
+    }
+
+    @Nonnull
+    private MageKit getKit(String kitKey) {
+        MageKit kit = kits.get(kitKey);
+        if (kit == null) {
+            kit = new MageKit(kitKey);
+            kits.put(kitKey, kit);
+        }
+        return kit;
+    }
+
+    public void giveItemFromKit(String kitKey, String itemKey) {
+        getKit(kitKey).give(itemKey);
     }
 }

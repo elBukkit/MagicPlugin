@@ -4,6 +4,8 @@
 
 ## Hot
 
+ - Automaton parameters don't seem to work, when applied with CreateAutomaton or a populator
+
  - Update `/magic help` , show example instructions, link to FAQ, etc
 
  - Need to move all mob names to messages file
@@ -35,6 +37,17 @@
  - Add "melee" flag for wands to allow them to do melee damage
  - Magic mobs or automata fight without players around?
  - Direct damage option to Damage action
+
+## Kits
+
+ - Add /mkit command (give yourself or others a kit)
+ - Add cooldowns
+ - Add cooldown bypass permission
+ - GiveKit action
+
+## lucky blocks example
+
+ - Just finish it up?
 
 ## Editor
 

@@ -172,6 +172,11 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             saveFile.set("variables", variables);
         }
 
+        ConfigurationSection kits = mage.getKits();
+        if (kits != null && !kits.getKeys(false).isEmpty()) {
+            saveFile.set("kits", kits);
+        }
+
         Map<String, ConfigurationSection> classProperties = mage.getClassProperties();
         if (classProperties != null) {
             ConfigurationSection classesSection = saveFile.createSection("classes");
@@ -258,6 +263,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         // Load properties
         data.setProperties(saveFile.getConfigurationSection("properties"));
         data.setVariables(saveFile.getConfigurationSection("variables"));
+        data.setKits(saveFile.getConfigurationSection("kits"));
 
         // Load classes
         Map<String, ConfigurationSection> classProperties = new HashMap<>();

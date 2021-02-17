@@ -10,8 +10,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -115,6 +115,7 @@ public class MagicKit {
                 if (CompatibilityUtils.isEmpty(itemStack)) continue;
                 if (mage.hasItem(itemStack)) continue;
                 ItemStack existingSlot = mage.getItem(slot);
+                mage.giveItemFromKit(key, itemData.getKey());
                 if (CompatibilityUtils.isEmpty(existingSlot)) {
                     mage.setItem(slot, itemStack);
                 } else {
@@ -135,6 +136,7 @@ public class MagicKit {
                 ItemStack itemStack = itemData.getItemStack();
                 if (CompatibilityUtils.isEmpty(itemStack)) continue;
                 if (mage.hasItem(itemStack)) continue;
+                mage.giveItemFromKit(key, itemData.getKey());
                 mage.giveItem(itemStack);
             }
         }
