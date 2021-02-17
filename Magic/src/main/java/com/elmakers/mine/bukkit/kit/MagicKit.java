@@ -113,18 +113,18 @@ public class MagicKit {
     public void checkGive(Mage mage) {
         MageKit kit = mage.getKit(key);
         if (kit != null && !isPartial) return;
-        give(mage, true, kit);
+        give(mage, true, true, kit);
     }
 
     public void giveMissing(Mage mage) {
-        give(mage, true, null);
+        give(mage, true, false, null);
     }
 
     public void give(Mage mage) {
-        give(mage, false, null);
+        give(mage, false, false, null);
     }
 
-    private void give(Mage mage, boolean onlyIfMissing, MageKit givenKit) {
+    private void give(Mage mage, boolean onlyIfMissing, boolean useKit, MageKit givenKit) {
         if (!isAllowed(mage)) {
             return;
         }
@@ -136,7 +136,7 @@ public class MagicKit {
                 ItemStack itemStack = itemData.getItemStack();
                 if (CompatibilityUtils.isEmpty(itemStack)) continue;
                 if (onlyIfMissing) {
-                    itemStack = checkGiveIfMissing(itemData.getBaseKey(), itemStack, mage, givenKit);
+                    itemStack = checkGiveIfMissing(itemData.getBaseKey(), itemStack, mage, useKit, givenKit);
                     if (itemStack == null) continue;
                 }
                 ItemStack existingSlot = mage.getItem(slot);
@@ -161,7 +161,7 @@ public class MagicKit {
                 ItemStack itemStack = itemData.getItemStack();
                 if (CompatibilityUtils.isEmpty(itemStack)) continue;
                 if (onlyIfMissing) {
-                    itemStack = checkGiveIfMissing(itemData.getBaseKey(), itemStack, mage, givenKit);
+                    itemStack = checkGiveIfMissing(itemData.getBaseKey(), itemStack, mage, useKit, givenKit);
                     if (itemStack == null) continue;
                 }
                 mage.gaveItemFromKit(key, itemData.getBaseKey(), itemStack.getAmount());
@@ -171,9 +171,9 @@ public class MagicKit {
     }
 
     @Nullable
-    private ItemStack checkGiveIfMissing(String itemKey, ItemStack itemStack, Mage mage, MageKit givenKit) {
-        if (givenKit != null) {
-            int givenAmount = givenKit.getGivenAmount(itemKey);
+    private ItemStack checkGiveIfMissing(String itemKey, ItemStack itemStack, Mage mage, boolean useKit, MageKit givenKit) {
+        if (useKit) {
+            int givenAmount = givenKit == null ? 0 : givenKit.getGivenAmount(itemKey);
             if (givenAmount >= itemStack.getAmount()) {
                 return null;
             }

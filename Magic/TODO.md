@@ -5,7 +5,6 @@
 ## Hot
 
  - Automaton parameters don't seem to work, when applied with CreateAutomaton or a populator
- - Add modifier checks to MagicRequirement
 
  - Update `/magic help` , show example instructions, link to FAQ, etc
 
