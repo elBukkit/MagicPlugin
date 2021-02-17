@@ -56,6 +56,9 @@ public class WorldController implements Listener {
     }
 
     public void loadWorlds(ConfigurationSection configuration) {
+        for (MagicWorld magicWorld : magicWorlds.values()) {
+            magicWorld.remove();
+        }
         magicWorlds.clear();
 
         // This is to support backwards compatibility with MagicWorlds configuration, where the worlds

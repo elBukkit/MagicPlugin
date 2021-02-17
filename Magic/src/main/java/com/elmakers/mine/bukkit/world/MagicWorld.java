@@ -37,6 +37,7 @@ public class MagicWorld {
     private String resourcePack;
     private long seed;
     private boolean synchronizeTime = true;
+    private boolean installed = false;
     private long synchronizedTimeOffset = 0;
     private static Random random = new Random();
     private WorldState state = WorldState.UNLOADED;
@@ -99,6 +100,9 @@ public class MagicWorld {
             // Wait a few ticks to do this, to avoid errors during initialization
             Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new CheckWorldCreateTask(this), 1L);
         }
+        if (!installed) {
+            installPopulators(Bukkit.getWorld(worldName));
+        }
         spawnHandler.finalizeLoad();
     }
 
@@ -145,9 +149,19 @@ public class MagicWorld {
     }
 
     public void installPopulators(World world) {
-        if (chunkHandler.isEmpty()) return;
+        if (world == null || installed || chunkHandler.isEmpty()) return;
         controller.info("Installing Populators in " + world.getName());
         world.getPopulators().addAll(chunkHandler.getPopulators());
+        installed = true;
+    }
+
+    public void remove() {
+        if (!installed) return;
+        World world = Bukkit.getWorld(worldName);
+        if (world != null) {
+            world.getPopulators().removeAll(chunkHandler.getPopulators());
+        }
+        installed = false;
     }
 
     public boolean processEntitySpawn(Plugin plugin, LivingEntity entity) {

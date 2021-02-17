@@ -7,6 +7,7 @@
  - Fix flying mob spawns and nether mob spawns in `spawnmobs` example
  - Fix some forms of configuring an AreaOfEffectCloud
    The potion effect duration now defaults to the same duration as the cloud itself
+ - Fix chest populator (`chests` example), which I think was never working
 
 ## Changes
 
