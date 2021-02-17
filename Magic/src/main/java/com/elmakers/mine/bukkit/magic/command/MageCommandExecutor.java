@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -80,6 +82,26 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 if (player != null) {
                     argStart = 2;
                     players.add(player);
+                }
+            }
+
+            if (players.isEmpty() && subCommand.equalsIgnoreCase("reset")) {
+                // Special-case for resetting an offline player
+                if (args.length == 2) {
+                    try {
+                        UUID uuid = UUID.fromString(playerName);
+                        api.getController().deleteMage(uuid.toString());
+                        sender.sendMessage(ChatColor.RED + "Reset offline player id " + uuid.toString());
+                        return true;
+                    } catch (Exception ignore) {
+                    }
+                    OfflinePlayer offlinePlayer = DeprecatedUtils.getOfflinePlayer(playerName);
+                    if (offlinePlayer != null) {
+                        api.getController().deleteMage(offlinePlayer.getUniqueId().toString());
+                        sender.sendMessage(ChatColor.RED + "Reset offline player "
+                            + offlinePlayer.getName() + ChatColor.GRAY + " (" + offlinePlayer.getUniqueId().toString() + ")");
+                        return true;
+                    }
                 }
             }
         }

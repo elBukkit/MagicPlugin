@@ -6294,6 +6294,9 @@ public class MagicController implements MageController {
                     }
                 }
             });
+        } else {
+            info("Deleted offline mage id " + id);
+            mageDataStore.delete(id);
         }
     }
 

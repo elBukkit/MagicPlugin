@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -102,6 +103,10 @@ public class DeprecatedUtils {
             return customName;
         }
         return getName(entity.getType());
+    }
+
+    public static OfflinePlayer getOfflinePlayer(String name) {
+        return Bukkit.getOfflinePlayer(name);
     }
 
     public static Player getPlayer(String name) {
