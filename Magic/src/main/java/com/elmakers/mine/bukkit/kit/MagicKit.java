@@ -63,6 +63,9 @@ public class MagicKit {
                     if (itemConfig.contains("slot")) {
                         slot = itemConfig.getInt("slot");
                     }
+                    if (itemConfig.contains("amount")) {
+                        itemKey = itemKey + "@" + itemConfig.getInt("amount");
+                    }
                     addItemFromString(itemKey, slot);
                 }
             }
