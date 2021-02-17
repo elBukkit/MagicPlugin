@@ -75,7 +75,6 @@ import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.event.WandDeactivatedEvent;
-import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
@@ -5375,8 +5374,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return kitConfig;
     }
 
+    @Nullable
+    public MageKit getKit(String kitKey) {
+        return kits.get(kitKey);
+    }
+
     @Nonnull
-    private MageKit getKit(String kitKey) {
+    private MageKit createKit(String kitKey) {
         MageKit kit = kits.get(kitKey);
         if (kit == null) {
             kit = new MageKit(kitKey);
@@ -5385,7 +5389,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return kit;
     }
 
-    public void gaveItemFromKit(String kitKey, ItemData itemData) {
-        getKit(kitKey).give(itemData);
+    public void gaveItemFromKit(String kitKey, String itemKey, int itemAmount) {
+        createKit(kitKey).gave(itemKey, itemAmount);
+    }
+
+    public boolean hasGivenWelcomeWand() {
+        return gaveWelcomeWand;
     }
 }

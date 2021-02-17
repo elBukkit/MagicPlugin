@@ -2,16 +2,14 @@ package com.elmakers.mine.bukkit.kit;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.api.item.ItemData;
-
 public class GivenItem {
     private final String itemKey;
     private int amount;
     private long lastGive;
 
-    public GivenItem(ItemData itemData) {
-        this.itemKey = itemData.getKey();
-        this.amount = itemData.getAmount();
+    public GivenItem(String itemKey, int itemAmount) {
+        this.itemKey = itemKey;
+        this.amount = itemAmount;
         this.lastGive = System.currentTimeMillis();
     }
 
@@ -32,5 +30,9 @@ public class GivenItem {
         ConfigurationSection section = config.createSection(itemKey);
         section.set("amount", amount);
         section.set("last_give", lastGive);
+    }
+
+    public int getAmount() {
+        return amount;
     }
 }

@@ -1,11 +1,14 @@
 haunted_temple:
   world: world_desert
   seed: -803365490736064
+  autoload: true
   chunk_generate:
     desert_temple:
       class: Automaton
       replace: blue_terracotta
-      automaton: spawner
+      automaton:
+        spawner: 10
+        fountain: 20
       automaton_parameters:
         mobs:
           mutant: 10

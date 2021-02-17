@@ -5,6 +5,7 @@
 ## Hot
 
  - Automaton parameters don't seem to work, when applied with CreateAutomaton or a populator
+ - Add modifier checks to MagicRequirement
 
  - Update `/magic help` , show example instructions, link to FAQ, etc
 
@@ -40,7 +41,7 @@
 
 ## Kits
 
- - Add /mkit command (give yourself or others a kit)
+ - Add /mkit command (give yourself or others a kit .. save a kit from in-game?)
  - Add cooldowns
  - Add cooldown bypass permission
  - GiveKit action

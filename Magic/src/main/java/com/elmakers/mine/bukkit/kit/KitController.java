@@ -43,9 +43,7 @@ public class KitController {
     public void onJoin(Mage mage) {
         for (MagicKit joinKit : joinKits) {
             if (joinKit.isStarter()) {
-                // TODO: check if kit has been given already
-                controller.getLogger().warning("Starter kits not yet implemented");
-                continue;
+                joinKit.checkGive(mage);
             }
             if (joinKit.isRemove()) {
                 // TODO: Take away items

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +24,8 @@ public class MagicKit {
     private final boolean isStarter;
     private final boolean isKeep;
     private final boolean isRemove;
+    private final boolean isPartial;
+    private final boolean isWelcomeWand;
 
     // Items can be mapped by slot, or not, or a mix of both
     private Map<Integer, ItemData> slotItems;
@@ -34,6 +37,8 @@ public class MagicKit {
         isStarter = configuration.getBoolean("starter");
         isKeep = configuration.getBoolean("keep");
         isRemove = configuration.getBoolean("remove");
+        isPartial = configuration.getBoolean("partial");
+        isWelcomeWand = configuration.getBoolean("welcome_wand");
         requirements = ConfigurationUtils.getRequirements(configuration);
         List<? extends Object> itemList = configuration.getList("items");
         for (Object itemObject : itemList) {
@@ -99,18 +104,27 @@ public class MagicKit {
         if (requirements != null && controller.checkRequirements(mage.getContext(), requirements) != null) {
             return false;
         }
+        if (isWelcomeWand && mage.hasGivenWelcomeWand()) {
+            return false;
+        }
         return true;
     }
 
+    public void checkGive(Mage mage) {
+        MageKit kit = mage.getKit(key);
+        if (kit != null && !isPartial) return;
+        give(mage, true, kit);
+    }
+
     public void giveMissing(Mage mage) {
-        give(mage, true);
+        give(mage, true, null);
     }
 
     public void give(Mage mage) {
-        give(mage, false);
+        give(mage, false, null);
     }
 
-    private void give(Mage mage, boolean onlyIfMissing) {
+    private void give(Mage mage, boolean onlyIfMissing, MageKit givenKit) {
         if (!isAllowed(mage)) {
             return;
         }
@@ -121,9 +135,12 @@ public class MagicKit {
                 ItemData itemData = slotItem.getValue();
                 ItemStack itemStack = itemData.getItemStack();
                 if (CompatibilityUtils.isEmpty(itemStack)) continue;
-                if (onlyIfMissing &&  mage.hasItem(itemStack)) continue;
+                if (onlyIfMissing) {
+                    itemStack = checkGiveIfMissing(itemData.getBaseKey(), itemStack, mage, givenKit);
+                    if (itemStack == null) continue;
+                }
                 ItemStack existingSlot = mage.getItem(slot);
-                mage.gaveItemFromKit(key, itemData);
+                mage.gaveItemFromKit(key, itemData.getBaseKey(), itemStack.getAmount());
                 if (CompatibilityUtils.isEmpty(existingSlot)) {
                     mage.setItem(slot, itemStack);
                 } else {
@@ -143,10 +160,34 @@ public class MagicKit {
             for (ItemData itemData : items) {
                 ItemStack itemStack = itemData.getItemStack();
                 if (CompatibilityUtils.isEmpty(itemStack)) continue;
-                if (onlyIfMissing && mage.hasItem(itemStack)) continue;
-                mage.gaveItemFromKit(key, itemData);
+                if (onlyIfMissing) {
+                    itemStack = checkGiveIfMissing(itemData.getBaseKey(), itemStack, mage, givenKit);
+                    if (itemStack == null) continue;
+                }
+                mage.gaveItemFromKit(key, itemData.getBaseKey(), itemStack.getAmount());
                 mage.giveItem(itemStack);
             }
         }
+    }
+
+    @Nullable
+    private ItemStack checkGiveIfMissing(String itemKey, ItemStack itemStack, Mage mage, MageKit givenKit) {
+        if (givenKit != null) {
+            int givenAmount = givenKit.getGivenAmount(itemKey);
+            if (givenAmount >= itemStack.getAmount()) {
+                return null;
+            }
+            if (givenAmount > 0) {
+                if (!isPartial) {
+                    return null;
+                }
+                itemStack.setAmount(itemStack.getAmount() - givenAmount);
+            }
+        } else {
+            if (mage.hasItem(itemStack)) {
+                return null;
+            }
+        }
+        return itemStack;
     }
 }

@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.api.item.ItemData;
-
 public class MageKit {
     private final String key;
     private long lastGive;
@@ -16,19 +14,24 @@ public class MageKit {
         this.key = kitKey;
     }
 
-    public void give(ItemData itemData) {
+    public void gave(String itemKey, int itemAmount) {
         lastGive = System.currentTimeMillis();
-        GivenItem given = givenItems.get(itemData.getKey());
+        GivenItem given = givenItems.get(itemKey);
         if (given == null) {
-            given = new GivenItem(itemData);
-            givenItems.put(itemData.getKey(), given);
+            given = new GivenItem(itemKey, itemAmount);
+            givenItems.put(itemKey, given);
         } else {
-            given.add(itemData.getAmount());
+            given.add(itemAmount);
         }
     }
 
     public long getLastGiveTime() {
         return lastGive;
+    }
+
+    public int getGivenAmount(String itemKey) {
+        GivenItem item = givenItems.get(itemKey);
+        return item == null ? 0 : item.getAmount();
     }
 
     public static MageKit load(String key, ConfigurationSection kitConfig) {
