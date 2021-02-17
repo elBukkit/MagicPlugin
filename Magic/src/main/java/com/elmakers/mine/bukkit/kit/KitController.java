@@ -46,9 +46,7 @@ public class KitController {
                 joinKit.checkGive(mage);
             }
             if (joinKit.isRemove()) {
-                // TODO: Take away items
-                controller.getLogger().warning("Remove kits not yet implemented");
-                continue;
+                joinKit.checkRemoveFrom(mage);
             }
             if (joinKit.isKeep()) {
                 joinKit.giveMissing(mage);

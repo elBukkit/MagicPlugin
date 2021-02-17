@@ -94,6 +94,13 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             if (controller instanceof MagicController) {
                 ((MagicController)controller).showExampleInstructions(sender);
             }
+            if (sender instanceof Player) {
+                Mage mage = controller.getMage(sender);
+                Wand wand = mage.getActiveWand();
+                if (wand != null) {
+                    wand.showInstructions();
+                }
+            }
             sender.sendMessage(controller.getMessages().get("commands.magic.help"));
             sender.sendMessage(controller.getMessages().get("commands.magic.help_footer"));
             return true;

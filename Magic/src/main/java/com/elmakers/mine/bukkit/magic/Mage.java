@@ -5393,6 +5393,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         createKit(kitKey).gave(itemKey, itemAmount);
     }
 
+    public void tookItemFromKit(String kitKey, String itemKey) {
+        createKit(kitKey).took(itemKey);
+    }
+
     public boolean hasGivenWelcomeWand() {
         return gaveWelcomeWand;
     }

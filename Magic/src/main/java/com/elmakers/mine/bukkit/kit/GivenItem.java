@@ -6,11 +6,10 @@ public class GivenItem {
     private final String itemKey;
     private int amount;
     private long lastGive;
+    private long lastTook;
 
-    public GivenItem(String itemKey, int itemAmount) {
+    public GivenItem(String itemKey) {
         this.itemKey = itemKey;
-        this.amount = itemAmount;
-        this.lastGive = System.currentTimeMillis();
     }
 
     public GivenItem(String itemKey, ConfigurationSection config) {
@@ -18,7 +17,12 @@ public class GivenItem {
         if (config != null) {
             this.amount = config.getInt("amount");
             this.lastGive = config.getLong("last_give");
+            this.lastTook = config.getLong("last_took");
         }
+    }
+
+    public void took() {
+        this.lastTook = System.currentTimeMillis();
     }
 
     public void add(int amount) {
@@ -29,7 +33,12 @@ public class GivenItem {
     public void saveTo(ConfigurationSection config) {
         ConfigurationSection section = config.createSection(itemKey);
         section.set("amount", amount);
-        section.set("last_give", lastGive);
+        if (lastGive > 0) {
+            section.set("last_give", lastGive);
+        }
+        if (lastTook > 0) {
+            section.set("last_took", lastTook);
+        }
     }
 
     public int getAmount() {

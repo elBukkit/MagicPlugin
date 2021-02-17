@@ -101,7 +101,7 @@ public class MagicKit {
     }
 
     public boolean isAllowed(Mage mage) {
-        if (requirements != null && controller.checkRequirements(mage.getContext(), requirements) != null) {
+        if (controller.checkRequirements(mage.getContext(), requirements) != null) {
             return false;
         }
         if (isWelcomeWand && mage.hasGivenWelcomeWand()) {
@@ -189,5 +189,29 @@ public class MagicKit {
             }
         }
         return itemStack;
+    }
+
+    private void removeFrom(Mage mage) {
+        List<ItemData> removeItems = new ArrayList<>();
+        if (slotItems != null) {
+            removeItems.addAll(slotItems.values());
+        }
+        if (items != null) {
+            removeItems.addAll(items);
+        }
+        for (ItemData itemData : removeItems) {
+            ItemStack itemStack = itemData.getItemStack();
+            if (mage.hasItem(itemStack)) {
+                mage.tookItemFromKit(key, itemData.getBaseKey());
+                mage.removeItem(itemStack);
+            }
+        }
+    }
+
+    public void checkRemoveFrom(Mage mage) {
+        if (isAllowed(mage)) {
+            return;
+        }
+        removeFrom(mage);
     }
 }

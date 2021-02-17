@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 public class MageKit {
     private final String key;
     private long lastGive;
+    private long lastTook;
     private final Map<String, GivenItem> givenItems = new HashMap<>();
 
     public MageKit(String kitKey) {
@@ -18,15 +19,28 @@ public class MageKit {
         lastGive = System.currentTimeMillis();
         GivenItem given = givenItems.get(itemKey);
         if (given == null) {
-            given = new GivenItem(itemKey, itemAmount);
+            given = new GivenItem(itemKey);
             givenItems.put(itemKey, given);
-        } else {
-            given.add(itemAmount);
         }
+        given.add(itemAmount);
+    }
+
+    public void took(String itemKey) {
+        lastTook = System.currentTimeMillis();
+        GivenItem given = givenItems.get(itemKey);
+        if (given == null) {
+            given = new GivenItem(itemKey);
+            givenItems.put(itemKey, given);
+        }
+        given.took();
     }
 
     public long getLastGiveTime() {
         return lastGive;
+    }
+
+    public long getLastTookTime() {
+        return lastTook;
     }
 
     public int getGivenAmount(String itemKey) {
@@ -37,6 +51,7 @@ public class MageKit {
     public static MageKit load(String key, ConfigurationSection kitConfig) {
         MageKit kit = new MageKit(key);
         kit.lastGive = kitConfig.getLong("last_give");
+        kit.lastTook = kitConfig.getLong("last_took");
         ConfigurationSection items = kitConfig.getConfigurationSection("given_items");
         if (items != null) {
             for (String itemKey : items.getKeys(false)) {
@@ -52,10 +67,17 @@ public class MageKit {
     }
 
     public void save(ConfigurationSection kitConfig) {
-        kitConfig.set("last_give", lastGive);
-        ConfigurationSection givenSection = kitConfig.createSection("given_items");
-        for (GivenItem item : givenItems.values()) {
-            item.saveTo(givenSection);
+        if (lastGive > 0) {
+            kitConfig.set("last_give", lastGive);
+        }
+        if (lastTook > 0) {
+            kitConfig.set("last_took", lastTook);
+        }
+        if (!givenItems.isEmpty()) {
+            ConfigurationSection givenSection = kitConfig.createSection("given_items");
+            for (GivenItem item : givenItems.values()) {
+                item.saveTo(givenSection);
+            }
         }
     }
 }
