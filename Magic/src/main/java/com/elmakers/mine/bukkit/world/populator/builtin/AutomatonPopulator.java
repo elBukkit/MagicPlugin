@@ -1,25 +1,22 @@
-package com.elmakers.mine.bukkit.world.block.builtin;
+package com.elmakers.mine.bukkit.world.populator.builtin;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
-import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.automata.Automaton;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import com.elmakers.mine.bukkit.world.BlockResult;
-import com.elmakers.mine.bukkit.world.block.BlockRule;
+import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
 
-public class AutomatonRule extends BlockRule {
+public class AutomatonPopulator extends MagicBlockPopulator {
     private MaterialSet replace;
     private Deque<WeightedPair<String>> automatonProbability = new ArrayDeque<>();
     private ConfigurationSection parameters;
@@ -29,13 +26,16 @@ public class AutomatonRule extends BlockRule {
         RandomUtils.populateStringProbabilityMap(automatonProbability, parameters, "automaton");
         this.parameters = parameters.getConfigurationSection("automaton_parameters");
         replace = controller.getMaterialSetManager().fromConfig(parameters.getString("replace"));
-        logBlockRule("Creating automata " + StringUtils.join(RandomUtils.getValues(automatonProbability), ","));
+        String message = "Creating automata " + StringUtils.join(RandomUtils.getValues(automatonProbability), ",");
+        if (replace != null) {
+            message += " on generation of " + StringUtils.join(replace.getMaterials(), ",");
+        }
+        logBlockRule(message);
         return !automatonProbability.isEmpty();
     }
 
     @Override
-    @Nonnull
-    public BlockResult onHandle(Block block, Random random, Player cause) {
+    public BlockResult populate(Block block, Random random) {
         if (replace != null && !replace.testBlock(block)) {
             return BlockResult.SKIP;
         }
@@ -49,9 +49,8 @@ public class AutomatonRule extends BlockRule {
             return result;
         } catch (Exception ignore) {
         }
-        Mage mage = controller.getMage(cause);
         Location location = block.getLocation();
-        Automaton automaton = controller.addAutomaton(location, automatonKey, mage.getId(), mage.getName(), parameters);
+        Automaton automaton = controller.addAutomaton(location, automatonKey, null, null, parameters);
         String message = " automaton: " + automatonKey + " at " + location.getWorld().getName() + "," + location.toVector();
         if (automaton == null) {
             message = "Failed to create" + message;

@@ -18,4 +18,8 @@ public abstract class MagicChunkPopulator extends BlockPopulator {
     }
 
     public abstract boolean onLoad(ConfigurationSection config);
+
+    protected void logBlockRule(String message) {
+        controller.info(message);
+    }
 }

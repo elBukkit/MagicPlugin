@@ -1,12 +1,15 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -57,6 +60,15 @@ public class RandomUtils {
         }
 
         return weightList.getFirst().getValue();
+    }
+
+    @Nonnull
+    public static <T extends Object> Collection<T> getValues(Deque<WeightedPair<T>> weightList) {
+        List<T> list = new ArrayList<>();
+        for (WeightedPair<T> pair : weightList) {
+            list.add(pair.getValue());
+        }
+        return list;
     }
 
     public static void populateIntegerProbabilityMap(Deque<WeightedPair<Integer>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
