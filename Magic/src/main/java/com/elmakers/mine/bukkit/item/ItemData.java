@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -41,6 +42,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     private final MageController controller;
     private String key;
+    private String baseKey;
     private String materialKey;
     private ItemStack item;
     private double worth;
@@ -56,7 +58,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     public ItemData(ItemStack itemStack, MageController controller) {
         this.controller = controller;
         this.item = NMSUtils.getCopy(itemStack);
-        this.key = itemStack.getType().toString();
+        String itemKey = itemStack.getType().toString();
+        if (itemStack.getAmount() > 1) {
+            itemKey += "@" + itemStack.getAmount();
+        }
+        this.setKey(itemKey);
     }
 
     public ItemData(String materialKey, MageController controller) {
@@ -65,7 +71,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     public ItemData(String key, String materialKey, MageController controller) {
         this.controller = controller;
-        this.key = key;
+        this.setKey(key);
         this.materialKey = materialKey;
     }
 
@@ -104,7 +110,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         if (item == null) {
             throw new InvalidMaterialException("Invalid item configuration: " + key);
         }
-        this.key = key;
+        this.setKey(key);
         this.materialKey = key;
         worth = configuration.getDouble("worth", 0);
         if (configuration.contains("earns")) {
@@ -189,6 +195,12 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
     }
 
+    private void setKey(String key) {
+        this.key = key;
+        String[] pieces = StringUtils.split(key, "@");
+        baseKey = pieces[0];
+    }
+
     public ItemData(String key, ItemStack item, double worth, MageController controller) throws Exception {
         this.controller = controller;
         if (item == null) {
@@ -217,6 +229,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     @Override
     public String getKey() {
         return key;
+    }
+
+    @Override
+    public String getBaseKey() {
+        return baseKey;
     }
 
     @Override

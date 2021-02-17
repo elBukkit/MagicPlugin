@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
 public interface ItemData {
     String getKey();
+    String getBaseKey();
     double getWorth();
     double getEarns();
     boolean hasCustomEarns();
