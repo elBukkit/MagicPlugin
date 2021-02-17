@@ -104,9 +104,8 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         return get(key, key);
     }
 
-    @Override
     @Nullable
-    public String getIfSet(String key, String defaultValue) {
+    private String getIfSet(String key, String defaultValue) {
         if (messageMap.containsKey(key)) {
             return messageMap.get(key);
         }
@@ -119,7 +118,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     @Override
     @Nullable
     public String getIfSet(String key) {
-        return getIfSet(key, key);
+        return getIfSet(key, null);
     }
 
     @Override

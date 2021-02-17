@@ -16,8 +16,6 @@ public interface Messages {
     @Nullable
     String getIfSet(String key);
     @Nullable
-    String getIfSet(String key, String defaultValue);
-    @Nullable
     String getRandomized(String key);
     @Nullable
     List<String> getAll(String path);
