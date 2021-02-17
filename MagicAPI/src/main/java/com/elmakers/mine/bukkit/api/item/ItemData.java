@@ -30,6 +30,7 @@ public interface ItemData {
     MaterialAndData getMaterialAndData();
     boolean isLocked();
     int getDurability();
+    int getAmount();
 
     @Nullable
     @Deprecated

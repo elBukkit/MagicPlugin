@@ -326,6 +326,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         return getOrCreateItemStack().getDurability();
     }
 
+    @Override
+    public int getAmount() {
+        return getOrCreateItemStack().getAmount();
+    }
+
     @Nullable
     @Override
     public ItemMeta getItemMeta() {

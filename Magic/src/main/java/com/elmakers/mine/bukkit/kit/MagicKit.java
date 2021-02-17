@@ -103,6 +103,14 @@ public class MagicKit {
     }
 
     public void giveMissing(Mage mage) {
+        give(mage, true);
+    }
+
+    public void give(Mage mage) {
+        give(mage, false);
+    }
+
+    private void give(Mage mage, boolean onlyIfMissing) {
         if (!isAllowed(mage)) {
             return;
         }
@@ -113,9 +121,9 @@ public class MagicKit {
                 ItemData itemData = slotItem.getValue();
                 ItemStack itemStack = itemData.getItemStack();
                 if (CompatibilityUtils.isEmpty(itemStack)) continue;
-                if (mage.hasItem(itemStack)) continue;
+                if (onlyIfMissing &&  mage.hasItem(itemStack)) continue;
                 ItemStack existingSlot = mage.getItem(slot);
-                mage.giveItemFromKit(key, itemData.getKey());
+                mage.gaveItemFromKit(key, itemData);
                 if (CompatibilityUtils.isEmpty(existingSlot)) {
                     mage.setItem(slot, itemStack);
                 } else {
@@ -135,8 +143,8 @@ public class MagicKit {
             for (ItemData itemData : items) {
                 ItemStack itemStack = itemData.getItemStack();
                 if (CompatibilityUtils.isEmpty(itemStack)) continue;
-                if (mage.hasItem(itemStack)) continue;
-                mage.giveItemFromKit(key, itemData.getKey());
+                if (onlyIfMissing && mage.hasItem(itemStack)) continue;
+                mage.gaveItemFromKit(key, itemData);
                 mage.giveItem(itemStack);
             }
         }

@@ -75,6 +75,7 @@ import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.event.WandDeactivatedEvent;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
@@ -104,6 +105,7 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.item.InventorySlot;
+import com.elmakers.mine.bukkit.kit.MageKit;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -5383,7 +5385,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return kit;
     }
 
-    public void giveItemFromKit(String kitKey, String itemKey) {
-        getKit(kitKey).give(itemKey);
+    public void gaveItemFromKit(String kitKey, ItemData itemData) {
+        getKit(kitKey).give(itemData);
     }
 }

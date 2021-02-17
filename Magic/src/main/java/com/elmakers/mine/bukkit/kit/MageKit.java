@@ -1,22 +1,30 @@
-package com.elmakers.mine.bukkit.magic;
+package com.elmakers.mine.bukkit.kit;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.item.ItemData;
+
 public class MageKit {
     private final String key;
     private long lastGive;
-    private final Map<String, Long> givenItems = new HashMap<>();
+    private final Map<String, GivenItem> givenItems = new HashMap<>();
 
     public MageKit(String kitKey) {
         this.key = kitKey;
     }
 
-    public void give(String itemKey) {
+    public void give(ItemData itemData) {
         lastGive = System.currentTimeMillis();
-        givenItems.put(itemKey, lastGive);
+        GivenItem given = givenItems.get(itemData.getKey());
+        if (given == null) {
+            given = new GivenItem(itemData);
+            givenItems.put(itemData.getKey(), given);
+        } else {
+            given.add(itemData.getAmount());
+        }
     }
 
     public long getLastGiveTime() {
@@ -29,7 +37,7 @@ public class MageKit {
         ConfigurationSection items = kitConfig.getConfigurationSection("given_items");
         if (items != null) {
             for (String itemKey : items.getKeys(false)) {
-                kit.givenItems.put(itemKey, items.getLong(itemKey));
+                kit.givenItems.put(itemKey, new GivenItem(itemKey, items.getConfigurationSection(itemKey)));
             }
         }
         return kit;
@@ -42,6 +50,9 @@ public class MageKit {
 
     public void save(ConfigurationSection kitConfig) {
         kitConfig.set("last_give", lastGive);
-        kitConfig.set("given_items", givenItems);
+        ConfigurationSection givenSection = kitConfig.createSection("given_items");
+        for (GivenItem item : givenItems.values()) {
+            item.saveTo(givenSection);
+        }
     }
 }
