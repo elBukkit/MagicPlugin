@@ -1,5 +1,5 @@
 world_lucky:
-  world: world
+  world: world_lucky
   block_break:
     lucky_cobble:
       class: Cast
