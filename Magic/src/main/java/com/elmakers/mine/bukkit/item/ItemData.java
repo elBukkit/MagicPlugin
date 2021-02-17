@@ -161,7 +161,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
         String customName = configuration.getString("name");
         if (customName == null) {
-            customName = controller.getMessages().get("items." + key + ".name");
+            customName = controller.getMessages().getIfSet("items." + key + ".name");
         }
         if (customName != null) {
             ItemMeta meta = item.getItemMeta();

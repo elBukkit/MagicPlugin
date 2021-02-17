@@ -66,6 +66,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     @Override
+    @Nullable
     public List<String> getAll(String path) {
         return listMap.get(path);
     }
@@ -90,19 +91,35 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     @Override
+    @Nonnull
     public String get(String key, String defaultValue) {
+        String value = getIfSet(key, defaultValue == null ? "" : defaultValue);
+        // This actually should never happen, but I'm not sure how to suppress the @Nonnull warning
+        return value == null ? defaultValue : value;
+    }
+
+    @Override
+    @Nonnull
+    public String get(String key) {
+        return get(key, key);
+    }
+
+    @Override
+    @Nullable
+    public String getIfSet(String key, String defaultValue) {
         if (messageMap.containsKey(key)) {
             return messageMap.get(key);
         }
         if (defaultValue == null) {
-            return "";
+            return defaultValue;
         }
         return ChatColor.translateAlternateColorCodes('&', defaultValue);
     }
 
     @Override
-    public String get(String key) {
-        return get(key, key);
+    @Nullable
+    public String getIfSet(String key) {
+        return getIfSet(key, key);
     }
 
     @Override

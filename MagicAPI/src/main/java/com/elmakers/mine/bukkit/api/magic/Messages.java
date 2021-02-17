@@ -9,10 +9,17 @@ import org.bukkit.inventory.ItemStack;
 
 public interface Messages {
     boolean containsKey(String key);
+    @Nonnull
     String get(String key);
+    @Nonnull
     String get(String key, String defaultValue);
     @Nullable
+    String getIfSet(String key);
+    @Nullable
+    String getIfSet(String key, String defaultValue);
+    @Nullable
     String getRandomized(String key);
+    @Nullable
     List<String> getAll(String path);
     String getParameterized(String key, String paramName, String paramValue);
     String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2);
