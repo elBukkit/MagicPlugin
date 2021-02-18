@@ -6,6 +6,7 @@ indestructible:
 - bedrock
 - barrier
 - ender_portal_frame
+- end_portal_frame
 - pistons
 - containers
 - commands
