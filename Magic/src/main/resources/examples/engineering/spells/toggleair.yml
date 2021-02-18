@@ -1,4 +1,6 @@
 toggleair:
+  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
+  inherit: false
   icon: birch_door{CustomModelData:18001}
   icon_disabled: birch_door{CustomModelData:18002}
   quick_cast: true
@@ -6,42 +8,163 @@ toggleair:
   worth: 500
   actions:
     cast:
-      # If we have applied the ignoreair modifiers
-      - class: CheckModifiers
-        required: ignoreair
-        actions:
-        - class: CheckModifiers
-          required: onlyair
-          # If we have applied both...
-          # This is here just in case, but we shouldn't really get to this branch
-          actions:
-          - class: Modifier
-            remove_modifiers: ignoreair,onlyair
-          - class: Message
-            message_key: normal
-          fail:
-          # Otherwise, swap ignoreair for onlyair
-          - class: Modifier
-            remove_modifiers: ignoreair
-            add_modifiers: onlyair
-          - class: Message
-            message_key: onlyair
-        fail:
-        # We don't have ignoreair, do we have onlyair?
-        - class: CheckModifiers
-          required: onlyair
-          actions:
-          - class: Modifier
-            # Remove them both, just in case
-            remove_modifiers: ignoreair,onlyair
-          - class: Message
-            message_key: normal
-          fail:
-          # add ignoreair since we dont't have it
-          - class: Modifier
-            add_modifiers: ignoreair
-          - class: Message
-            message_key: ignoreair
+      - class: Selector
+        onlyair:
+        - class: Modifier
+          add_modifiers:
+            - onlyair
+          remove_modifiers:
+            - ignoreair
+            - noliquid
+            - onlyliquid
+            - nosolid
+            - onlysolid
+            - noplants
+            - onlyplants
+        noair:
+        - class: Modifier
+          add_modifiers:
+            - ignoreair
+          remove_modifiers:
+            - onlyair
+            - noliquid
+            - onlyliquid
+            - nosolid
+            - onlysolid
+            - noplants
+            - onlyplants
+        onlyliquid:
+        - class: Modifier
+          add_modifiers:
+            - onlyliquid
+          remove_modifiers:
+            - ignoreair
+            - onlyair
+            - noliquid
+            - nosolid
+            - onlysolid
+            - noplants
+            - onlyplants
+        noliquid:
+        - class: Modifier
+          add_modifiers:
+            - noliquid
+          remove_modifiers:
+            - ignoreair
+            - onlyair
+            - onlyliquid
+            - nosolid
+            - onlysolid
+            - noplants
+            - onlyplants
+        onlysolid:
+        - class: Modifier
+          add_modifiers:
+            - onlysolid
+          remove_modifiers:
+            - ignoreair
+            - onlyair
+            - noliquid
+            - onlyliquid
+            - nosolid
+            - noplants
+            - onlyplants
+        nosolid:
+        - class: Modifier
+          add_modifiers:
+            - nosolid
+          remove_modifiers:
+            - ignoreair
+            - onlyair
+            - noliquid
+            - onlyliquid
+            - onlysolid
+            - noplants
+            - onlyplants
+        onlyplants:
+        - class: Modifier
+          add_modifiers:
+            - onlyplants
+          remove_modifiers:
+            - ignoreair
+            - onlyair
+            - noliquid
+            - onlyliquid
+            - nosolid
+            - onlysolid
+            - noplants
+        noplants:
+        - class: Modifier
+          add_modifiers:
+            - noplants
+          remove_modifiers:
+            - ignoreair
+            - onlyair
+            - noliquid
+            - onlyliquid
+            - nosolid
+            - onlysolid
+            - onlyplants
+        default:
+        - class: Modifier
+          remove_modifiers:
+            - ignoreair
+            - onlyair
+            - noliquid
+            - onlyliquid
+            - nosolid
+            - onlysolid
+            - noplants
+            - onlyplants
   parameters:
+    title: "Select modifier"
+    options:
+     - actions: onlyair
+       icon: bone_meal
+       name: "&aONLY air"
+       slot: 0
+     - actions: noair
+       icon: bone_meal
+       name: "&cIGNORE air"
+       slot: 0
+       requirements:
+         - modifiers: onlyair
+     - actions: onlyliquid
+       icon: water_bucket
+       name: "&aONLY liquid"
+       slot: 1
+     - actions: noliquid
+       icon: water_bucket
+       name: "&cIGNORE liquid"
+       slot: 1
+       requirements:
+         - modifiers: onlyliquid
+     - actions: onlysolid
+       icon: stone
+       name: "&aONLY solid"
+       slot: 2
+     - actions: nosolid
+       icon: stone
+       name: "&cIGNORE solid"
+       slot: 2
+       requirements:
+         - modifiers: onlysolid
+     - actions: onlyplants
+       icon: rose_bush
+       name: "&aONLY plants"
+       slot: 3
+     - actions: noplants
+       icon: rose_bush
+       name: "&cIGNORE plants"
+       slot: 3
+       requirements:
+         - modifiers: onlyplants
+     - actions: default
+       icon: barrier
+       name: "&fDEFAULT"
+       slot: 8
+       requirements:
+       - modifiers: onlyair,ignoreair,onlyliquid,noliquid,onlysolid,nosolid,onlyplants,noplants
     target: self
+    auto_close: true
     message_type: action_bar
