@@ -1,0 +1,19 @@
+while:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: While Loop
+  description: Testing a while loop
+  icon: stick
+  actions:
+    cast:
+    - class: While
+      requirements:
+        - attribute:
+            attribute: health
+            min: 20
+      actions:
+      - class: Damage
+  parameters:
+    target: self
+    damage: 5
+    interval: 500

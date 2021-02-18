@@ -1,0 +1,51 @@
+bane:
+  creator: TheBugWhisperer
+  creator_id: 892bba3e-76c1-4cd4-97cb-bfa8221e2332
+  name: Bane
+  description: Randomize bad effects.
+  icon: black_dye{CustomModelData:18001}
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+      - class: Random
+        actions:
+          - class: PotionEffect
+            add_effects:
+              blindness: 5
+          - class: PotionEffect
+            add_effects:
+              hunger: 5
+          - class: PotionEffect
+            add_effects:
+              confusion: 5
+          - class: PotionEffect
+            add_effects:
+              levitation: 5
+          - class: PotionEffect
+            add_effects:
+              poison: 5
+          - class: PotionEffect
+            add_effects:
+             slow_digging: 5
+          - class: PotionEffect
+            add_effects:
+              slow: 4
+  effects:
+    cast:
+    - sound: magic.zap
+    hit:
+    - location: target
+      effectlib:
+        class: Atom
+        duration: 2000
+    tick:
+    - location: target
+      particle: redstone
+  parameters:
+    range: 32
+    velocity: 20
+    duration: 30000
+    cooldown: 10000
+  costs:
+     mana: 10

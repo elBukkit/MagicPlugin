@@ -1,0 +1,49 @@
+onlysolid:
+  overrides:
+    "fill.check_destructible": true
+    "fill.destructible": "solid"
+    "superblob.check_destructible": true
+    "superblob.destructible": "solid"
+    "supercube.check_destructible": true
+    "supercube.destructible": "solid"
+    "supercylinder.check_destructible": true
+    "supercylinder.destructible": "solid"
+    "superdisc.check_destructible": true
+    "superdisc.destructible": "solid"
+    "superdome.check_destructible": true
+    "superdome.destructible": "solid"
+    "superhemisphere.check_destructible": true
+    "superhemisphere.destructible": "solid"
+    "superpyramid.check_destructible": true
+    "superpyramid.destructible": "solid"
+    "superring.check_destructible": true
+    "superring.destructible": "solid"
+    "supershell.check_destructible": true
+    "supershell.destructible": "solid"
+    "superwalls.check_destructible": true
+    "superwalls.destructible": "solid"
+
+nosolid:
+  overrides:
+    "fill.check_destructible": true
+    "fill.destructible": "!solid"
+    "superblob.check_destructible": true
+    "superblob.destructible": "!solid"
+    "supercube.check_destructible": true
+    "supercube.destructible": "!solid"
+    "supercylinder.check_destructible": true
+    "supercylinder.destructible": "!solid"
+    "superdisc.check_destructible": true
+    "superdisc.destructible": "!solid"
+    "superdome.check_destructible": true
+    "superdome.destructible": "!solid"
+    "superhemisphere.check_destructible": true
+    "superhemisphere.destructible": "!solid"
+    "superpyramid.check_destructible": true
+    "superpyramid.destructible": "!solid"
+    "superring.check_destructible": true
+    "superring.destructible": "!solid"
+    "supershell.check_destructible": true
+    "supershell.destructible": "!solid"
+    "superwalls.check_destructible": true
+    "superwalls.destructible": "!solid"

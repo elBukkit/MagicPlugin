@@ -1,0 +1,49 @@
+onlyplants:
+  overrides:
+    "fill.check_destructible": true
+    "fill.destructible": "plants"
+    "superblob.check_destructible": true
+    "superblob.destructible": "plants"
+    "supercube.check_destructible": true
+    "supercube.destructible": "plants"
+    "supercylinder.check_destructible": true
+    "supercylinder.destructible": "plants"
+    "superdisc.check_destructible": true
+    "superdisc.destructible": "plants"
+    "superdome.check_destructible": true
+    "superdome.destructible": "plants"
+    "superhemisphere.check_destructible": true
+    "superhemisphere.destructible": "plants"
+    "superpyramid.check_destructible": true
+    "superpyramid.destructible": "plants"
+    "superring.check_destructible": true
+    "superring.destructible": "plants"
+    "supershell.check_destructible": true
+    "supershell.destructible": "plants"
+    "superwalls.check_destructible": true
+    "superwalls.destructible": "plants"
+
+noplants:
+  overrides:
+    "fill.check_destructible": true
+    "fill.destructible": "!plants"
+    "superblob.check_destructible": true
+    "superblob.destructible": "!plants"
+    "supercube.check_destructible": true
+    "supercube.destructible": "!plants"
+    "supercylinder.check_destructible": true
+    "supercylinder.destructible": "!plants"
+    "superdisc.check_destructible": true
+    "superdisc.destructible": "!plants"
+    "superdome.check_destructible": true
+    "superdome.destructible": "!plants"
+    "superhemisphere.check_destructible": true
+    "superhemisphere.destructible": "!plants"
+    "superpyramid.check_destructible": true
+    "superpyramid.destructible": "!plants"
+    "superring.check_destructible": true
+    "superring.destructible": "!plants"
+    "supershell.check_destructible": true
+    "supershell.destructible": "!plants"
+    "superwalls.check_destructible": true
+    "superwalls.destructible": "!plants"
