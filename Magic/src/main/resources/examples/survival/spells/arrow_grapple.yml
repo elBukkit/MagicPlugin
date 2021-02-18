@@ -12,23 +12,30 @@ arrow_grapple:
           - class: Projectile
             speed: "bowpull * 3"
             actions:
-            - class: Interval
+            - class: ChangeContext
+              target_offset: 0,2.5,0
               actions:
-              - class: AreaOfEffect
-                radius: 3
+              - class: Interval
                 actions:
-                - class: CheckEntity
-                  only_caster: true
+                - class: AreaOfEffect
+                  radius: 2.0
+                  y_radius: 0
                   actions:
-                  - class: Stop
-              - class: ChangeContext
-                target_offset: 0,2,0
-                swap_source_and_target: true
-                actions:
-                - class: FallProtection
-                  duration: 5000
-                  protection_count: 1
-                - class: Velocity
+                  - class: CheckEntity
+                    only_caster: true
+                    actions:
+                    - class: Stop
+                - class: ChangeContext
+                  swap_source_and_target: true
+                  actions:
+                  - class: CheckTrigger
+                    trigger: sneak
+                    actions:
+                      - class: Stop
+                  - class: FallProtection
+                    duration: 5000
+                    protection_count: 1
+                  - class: Velocity
     effects:
         cast:
         -  class: EffectSingle
@@ -37,9 +44,7 @@ arrow_grapple:
            sound_volume: 0.3
            location: origin
         projectile:
-        - source_location: cast
-          target_location: cast
-          effectlib:
+        - effectlib:
              class: Line
              duration: 45000
              period: 2
@@ -56,7 +61,6 @@ arrow_grapple:
       push: -1
       additive: true
       living_entity_speed: 0.125
-      repeat: infinite
       duration: 45000
       total_duration: 45000
       projectile_effects_use_target: true
