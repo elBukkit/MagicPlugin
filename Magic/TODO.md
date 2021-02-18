@@ -4,6 +4,7 @@
 
 ## Hot
 
+ - Night asking about cooldowns on dragon mount spell, shouldn't they reset at end of cast?
  - Automaton parameters don't seem to work, when applied with CreateAutomaton or a populator
 
  - Need to move all mob names to messages file

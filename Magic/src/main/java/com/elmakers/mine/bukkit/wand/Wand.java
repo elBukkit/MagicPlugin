@@ -143,6 +143,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean superProtected = false;
     private boolean superPowered = false;
     private boolean glow = false;
+    private boolean spellGlow = false;
     private boolean bound = false;
     private boolean indestructible = false;
     private boolean undroppable = false;
@@ -1812,6 +1813,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         superPowered = getBoolean("powered");
         superProtected = getBoolean("protected");
         glow = getBoolean("glow");
+        spellGlow = getBoolean("spell_glow");
         undroppable = getBoolean("undroppable");
         isHeroes = getBoolean("heroes");
         bound = getBoolean("bound");
@@ -3126,7 +3128,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Object spellNode = CompatibilityUtils.createNode(itemStack, "spell");
         CompatibilityUtils.setMeta(spellNode, "key", spell.getKey());
         CompatibilityUtils.setMeta(spellNode, "args", args);
-        if (SpellGlow) {
+        if (SpellGlow || (wand != null && wand.spellGlow)) {
             CompatibilityUtils.addGlow(itemStack);
         }
     }

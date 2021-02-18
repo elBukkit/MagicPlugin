@@ -8,6 +8,7 @@ spellbook:
     undroppable: true
     keep: true
     bound: true
+    spell_glow: true
     class: mage
     # This is so you can use the colorshop with a spellbook and have it effect your mage class color
     storage:
