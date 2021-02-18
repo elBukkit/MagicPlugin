@@ -1,12 +1,12 @@
 plants:
+- plants_double
+- flowers
+- all_crops
+- saplings
 - crimson_fungus
 - warped_fungus
 - brown_mushroom
 - red_mushroom
-- flowers
-- long_grass
 - dead_bush
-- all_crops
-- saplings
 - grass
-- tall_grass
+- fern

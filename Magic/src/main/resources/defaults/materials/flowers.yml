@@ -1,16 +1,10 @@
 flowers:
+- flowers_double
 - yellow_flower
 - red_rose
-- double_plant
-- peony
-- rose_bush
-- lilac
 - oxeye_daisy
 - blue_orchid
 - dandelion
-- dead_bush
-- fern
-- large_fern
 - orange_tulip
 - pink_tulip
 - poppy
