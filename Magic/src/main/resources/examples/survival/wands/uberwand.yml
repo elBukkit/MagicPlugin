@@ -1,5 +1,8 @@
 uberwand:
   inherit: master
+  icon: blaze_rod{CustomModelData:18006}
+  legacy_icon: wand_icon:6
+  legacy_migrate_icon: gold_pickaxe
   path: staff
   hotbar_count: 3
   protected: true
