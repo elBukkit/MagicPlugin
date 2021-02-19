@@ -122,6 +122,7 @@ mirrorshield:
     i: shield
 
 rabbitboots:
+  inherit: false
   materials:
     i: rabbit_hide
     r: rabbit_foot
