@@ -435,7 +435,12 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("add")
                 || args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("egg")
         )) {
-            options.addAll(api.getController().getMobKeys());
+            for (String mobKey : api.getController().getMobKeys()) {
+                EntityData mob = api.getController().getMob(mobKey);
+                if (mob != null && !mob.isNPC() && !mob.isHidden()) {
+                    options.add(mob.getKey());
+                }
+            }
             for (EntityType entityType : EntityType.values()) {
                 if (entityType.isAlive() && entityType.isSpawnable()) {
                     options.add(entityType.name().toLowerCase());
