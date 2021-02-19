@@ -1,5 +1,5 @@
 admintool:
-    inherit: base_undroppable
+    inherit: base_keep
     icon: nether_star{"CustomModelData":18001}
     mode: chest
     unstashable: true
