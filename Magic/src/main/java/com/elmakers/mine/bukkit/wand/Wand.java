@@ -5132,11 +5132,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             wandContext.cancelEffects();
             wandContext = null;
         }
-        if (mage != null) {
-            buildInventory();
-            if (isInventoryOpen()) {
-                updateInventory();
-            }
+
+        if (isInventoryOpen()) {
+            saveInventory();
+            updateSpellInventory();
         }
         saveState();
 
