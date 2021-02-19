@@ -21,11 +21,13 @@ public class MageLoadTask implements Runnable {
         try {
             mage.onLoad(data);
             mage.setLoading(false);
-            MageController controller = mage.getController();
-            if (mage.isPlayer() && mage.isResourcePackEnabled()) {
-                controller.promptResourcePack(mage.getPlayer());
-            } else if (mage.isResourcePackPrompt()) {
-                controller.promptNoResourcePack(mage.getPlayer());
+            if (mage.isValid()) {
+                MageController controller = mage.getController();
+                if (mage.isPlayer() && mage.isResourcePackEnabled()) {
+                    controller.promptResourcePack(mage.getPlayer());
+                } else if (mage.isResourcePackPrompt()) {
+                    controller.promptNoResourcePack(mage.getPlayer());
+                }
             }
             MageLoadEvent event = new MageLoadEvent(mage, data == null);
             Bukkit.getPluginManager().callEvent(event);
