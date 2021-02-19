@@ -125,6 +125,10 @@ worm_death:
 birth_worm:
   inherit: worm
   parameters:
+    # Spawn above location
+    pdy: 1
+    range: 16
+    target: self
     allow_max_range: true
     seed_radius: 3
     ignore_region_overrides: true

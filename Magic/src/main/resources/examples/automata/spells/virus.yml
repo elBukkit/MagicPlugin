@@ -238,6 +238,9 @@ virus_death:
 birth_virus:
   inherit: virus
   parameters:
+    # Spawn above location
+    pdy: 1
+    range: 16
     allow_max_range: true
     seed_radius: 3
     ignore_region_overrides: true

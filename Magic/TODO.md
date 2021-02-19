@@ -1,6 +1,13 @@
 # TODO
 
-## Discord Issues
+## Data/item Loss
+
+So the order of events afaik were; pick up spell to move it, hover outside spell inv to change spell,
+blink casts causing inventory to close and spell i was moving drops to the ground.
+
+running commands on wands causes spell inventory to reset (? happened in video, can't reproduce)
+
+Armor lost somehow when messing around with wand controls menu? https://streamable.com/muy1pt
 
 ## Hot
 

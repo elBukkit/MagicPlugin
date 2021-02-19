@@ -163,6 +163,9 @@ hunter_death:
 birth_hunter:
   inherit: hunter
   parameters:
+    # Spawn above location
+    pdy: 1
+    range: 16
     allow_max_range: true
     seed_radius: 2
     ignore_region_overrides: true
