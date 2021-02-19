@@ -3299,7 +3299,7 @@ public class MagicController implements MageController {
         dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
         dynmapOnlyPlayerSpells = properties.getBoolean("dynmap_only_player_spells", dynmapOnlyPlayerSpells);
         dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
-        protectLocked = properties.getBoolean("protected_locked", protectLocked);
+        protectLocked = properties.getBoolean("protect_locked", protectLocked);
         bindOnGive = properties.getBoolean("bind_on_give", bindOnGive);
         bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
         bypassBreakPermissions = properties.getBoolean("bypass_break", bypassBreakPermissions);
