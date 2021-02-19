@@ -2,7 +2,6 @@ undead_overlord:
   type: skeleton
   skeleton_type: wither
   item: iron_sword
-  name: Undead Overlord
   health: 50
   potion_effects:
   - type: increase_damage

@@ -5,7 +5,6 @@ mutant_captain:
   leggings: gold_leggings
   helmet: gold_helmet
   boots: gold_boots
-  name: Mutant Captain
   health: 40
   default_drops: false
   transformable: false

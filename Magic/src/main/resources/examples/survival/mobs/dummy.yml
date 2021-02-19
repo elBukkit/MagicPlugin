@@ -1,6 +1,5 @@
 dummy:
   type: zombie
-  name: Dummy
   health: 100
   protection:
     fire: 2

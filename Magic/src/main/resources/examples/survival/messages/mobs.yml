@@ -1,3 +1,107 @@
 mobs:
   archer:
     name: Archer
+  bigbluedragon:
+    name: '&9Big Blue Dragon'
+  biggreendragon:
+    name: '&aBig Green Dragon'
+  biggreydragon:
+    name: '&7Big Grey Dragon'
+  bigpurpledragon:
+    name: '&dBig Purple Dragon'
+  bigreddragon:
+    name: '&cBig Red Dragon'
+  boomer:
+    name: "Boomer"
+  cube:
+    name: Gelatinous Cube
+  dark_spider:
+    name: Dark Spider
+  dark_wizard:
+    name: Dark Wizard
+  bluedragon:
+    name: '&9Blue Dragon'
+  cyandragon:
+    name: '&bCyan Dragon'
+  lightbluedragon:
+    name: '&bLight Blue Dragon'
+  greendragon:
+    name: '&aGreen Dragon'
+  limedragon:
+    name: '&Lime Dragon'
+  greydragon:
+    name: '&7Grey Dragon'
+  whitedragon:
+    name: '&fWhite Dragon'
+  lightgreydragon:
+    name: '&7Light Grey Dragon'
+  purpledragon:
+    name: '&dPurple Dragon'
+  blackdragon:
+    name: '&0Black Dragon'
+  reddragon:
+    name: '&cRed Dragon'
+  lightreddragon:
+    name: '&cLight Red Dragon'
+  magentadragon:
+    name: '&cMagenta Dragon'
+  pinkdragon:
+    name: '&cPink Dragon'
+  orangedragon:
+    name: '&6Orange Dragon'
+  yellowdragon:
+    name: '&eYellow Dragon'
+  browndragon:
+    name: '&cBrown Dragon'
+  dummy:
+    name: Dummy
+  dummynoai:
+    name: Dummy
+  extraspellshop:
+    name: More Spells
+  fairy:
+    name: Fairy
+  fire_elemental:
+    name: Fire Elemental
+  healer:
+    name: Healer
+  ironman:
+    name: Iron Man
+  killer_bunny:
+    name: Killer Bunny
+  kingslime:
+    name: "King Slime"
+  madscientist:
+    name: Mad Scientist
+  magicitemshop:
+    name: Magical Items
+  mega_phantom:
+    name: "&cMega &4Phantom"
+  mega_spider:
+    name: Mega Spider
+  mutant:
+    name: Mutant
+  mutant_captain:
+    name: Mutant Captain
+  mutant_spider:
+    name: Mutant Spider
+  mutant_villager:
+    name: Mutant Villager
+  playershop:
+    name: Shop
+  polterghast:
+    name: Polterghast
+  skater:
+    name: Skater
+  spellshop:
+    name: Spell Teacher
+  totem:
+    name: Totem
+  undead_minion:
+    name: Undead Minion
+  undead_overlord:
+    name: Undead Overlord
+  warlock:
+    name: Warlock
+  werewolf:
+    name: Werewolf

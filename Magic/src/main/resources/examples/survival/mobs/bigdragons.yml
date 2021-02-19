@@ -1,7 +1,6 @@
 bigbluedragon:
   inherit: base_dragon
   hidden: false
-  name: '&9Big Blue Dragon'
   item: bigdragonwingrightblue
   offhand: bigdragonwingleftblue
   helmet: bigdragonbodyblue
@@ -18,7 +17,6 @@ bigbluedragon:
 biggreendragon:
   inherit: base_dragon
   hidden: false
-  name: '&aBig Green Dragon'
   item: bigdragonwingrightgreen
   offhand: bigdragonwingleftgreen
   helmet: bigdragonbodygreen
@@ -35,7 +33,6 @@ biggreendragon:
 biggreydragon:
   inherit: base_dragon
   hidden: false
-  name: '&7Big Grey Dragon'
   item: bigdragonwingrightgrey
   offhand: bigdragonwingleftgrey
   helmet: bigdragonbodygrey
@@ -52,7 +49,6 @@ biggreydragon:
 bigpurpledragon:
   inherit: base_dragon
   hidden: false
-  name: '&dBig Purple Dragon'
   item: bigdragonwingrightpurple
   offhand: bigdragonwingleftpurple
   helmet: bigdragonbodypurple
@@ -69,7 +65,6 @@ bigpurpledragon:
 bigreddragon:
   inherit: base_dragon
   hidden: false
-  name: '&cBig Red Dragon'
   item: bigdragonwingrightred
   offhand: bigdragonwingleftred
   helmet: bigdragonbodyred

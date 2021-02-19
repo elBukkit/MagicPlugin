@@ -1,5 +1,4 @@
 dark_wizard:
-  name: Dark Wizard
   type: zombie
   zombie_type: villager
   item: wizard_wand

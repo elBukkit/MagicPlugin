@@ -1,5 +1,4 @@
 ironman:
-  name: Iron Man
   type: zombie
   disguise:
     type: player

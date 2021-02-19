@@ -1,5 +1,4 @@
 kingslime:
-  name: "King Slime"
   type: slime
   size: 18
   interval: 3000

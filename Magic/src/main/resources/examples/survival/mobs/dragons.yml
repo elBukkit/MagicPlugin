@@ -46,7 +46,6 @@ base_dragon:
 bluedragon:
   inherit: base_dragon
   hidden: false
-  name: '&9Blue Dragon'
   item: dragonwingrightblue
   offhand: dragonwingleftblue
   helmet: dragonbodyblue
@@ -63,22 +62,19 @@ bluedragon:
 cyandragon:
   inherit: bluedragon
   hidden: false
-  name: '&bCyan Dragon'
   item: dragonwingrightcyan
   offhand: dragonwingleftcyan
   helmet: dragonbodycyan
 
 lightbluedragon:
   inherit: bluedragon
-  name: '&bLight Blue Dragon'
   item: dragonwingrightlightblue
   offhand: dragonwingleftlightblue
   helmet: dragonbodylightblue
 
 greendragon:
   inherit: base_dragon
-  hidden: false
-  name: '&aGreen Dragon'
+  hidden: falses
   item: dragonwingrightgreen
   offhand: dragonwingleftgreen
   helmet: dragonbodygreen
@@ -94,7 +90,6 @@ greendragon:
 
 limedragon:
   inherit: greendragon
-  name: '&Lime Dragon'
   item: dragonwingrightlime
   offhand: dragonwingleftlime
   helmet: dragonbodylime
@@ -102,7 +97,6 @@ limedragon:
 greydragon:
   inherit: base_dragon
   hidden: false
-  name: '&7Grey Dragon'
   item: dragonwingrightgrey
   offhand: dragonwingleftgrey
   helmet: dragonbodygrey
@@ -119,7 +113,6 @@ greydragon:
 whitedragon:
   inherit: base_dragon
   hidden: false
-  name: '&fWhite Dragon'
   item: dragonwingrightwhite
   offhand: dragonwingleftwhite
   helmet: dragonbodywhite
@@ -144,7 +137,6 @@ whitedragon:
 
 lightgreydragon:
   inherit: greydragon
-  name: '&7Light Grey Dragon'
   item: dragonwingrightlightgrey
   offhand: dragonwingleftlightgrey
   helmet: dragonbodylightgrey
@@ -152,7 +144,6 @@ lightgreydragon:
 purpledragon:
   inherit: base_dragon
   hidden: false
-  name: '&dPurple Dragon'
   item: dragonwingrightpurple
   offhand: dragonwingleftpurple
   helmet: dragonbodypurple
@@ -168,7 +159,6 @@ purpledragon:
 
 blackdragon:
   inherit: greydragon
-  name: '&0Black Dragon'
   item: dragonwingrightblack
   offhand: dragonwingleftblack
   helmet: dragonbodyblack
@@ -176,7 +166,6 @@ blackdragon:
 reddragon:
   inherit: base_dragon
   hidden: false
-  name: '&cRed Dragon'
   item: dragonwingrightred
   offhand: dragonwingleftred
   helmet: dragonbodyred
@@ -192,35 +181,30 @@ reddragon:
 
 lightreddragon:
   inherit: reddragon
-  name: '&cLight Red Dragon'
   item: dragonwingrightlightgrey
   offhand: dragonwingleftlightgrey
   helmet: dragonbodylightgrey
 
 magentadragon:
   inherit: reddragon
-  name: '&cMagenta Dragon'
   item: dragonwingrightmagenta
   offhand: dragonwingleftmagenta
   helmet: dragonbodymagenta
 
 pinkdragon:
   inherit: reddragon
-  name: '&cPink Dragon'
   item: dragonwingrightpink
   offhand: dragonwingleftpink
   helmet: dragonbodypink
 
 orangedragon:
   inherit: reddragon
-  name: '&6Orange Dragon'
   item: dragonwingrightorange
   offhand: dragonwingleftorange
   helmet: dragonbodyorange
 
 yellowdragon:
   inherit: reddragon
-  name: '&eYellow Dragon'
   item: dragonwingrightyellow
   offhand: dragonwingleftyellow
   helmet: dragonbodyyellow
@@ -228,7 +212,6 @@ yellowdragon:
 browndragon:
   inherit: base_dragon
   hidden: false
-  name: '&cBrown Dragon'
   item: dragonwingrightbrown
   offhand: dragonwingleftbrown
   helmet: dragonbodybrown

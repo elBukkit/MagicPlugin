@@ -1,6 +1,5 @@
 dark_spider:
   type: cave_spider
-  name: Dark Spider
   health: 20
   default_drops: false
   interval: 1000

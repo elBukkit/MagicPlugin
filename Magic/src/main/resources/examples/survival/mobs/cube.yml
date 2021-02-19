@@ -1,5 +1,4 @@
 cube:
-  name: Gelatinous Cube
   type: slime
   health: 25
   size: 10

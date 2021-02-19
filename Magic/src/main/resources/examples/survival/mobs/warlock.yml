@@ -7,7 +7,6 @@ warlock:
   leggings: warlock_leggings
   helmet: chainmail_helmet
   boots: warlock_boots
-  name: Warlock
   health: 50
   default_drops: false
   transformable: false

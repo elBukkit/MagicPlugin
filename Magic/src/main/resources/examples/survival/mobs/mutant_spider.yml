@@ -1,6 +1,5 @@
 mutant_spider:
   type: cave_spider
-  name: Mutant Spider
   health: 20
   drops:
   - gold_nugget@8

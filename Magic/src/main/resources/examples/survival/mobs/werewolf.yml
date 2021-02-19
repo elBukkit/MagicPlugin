@@ -3,7 +3,6 @@ werewolf:
   helmet: "skull:MHF_Wolf"
   chestplate: leather_chestplate:#000000
   leggings: leather_leggings:#000000
-  name: Werewolf
   health: 40
   default_drops: false
   drops:

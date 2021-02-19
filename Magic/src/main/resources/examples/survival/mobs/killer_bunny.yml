@@ -1,7 +1,6 @@
 killer_bunny:
   type: rabbit
   rabbit_type: the_killer_bunny
-  name: Killer Bunny
   health: 25
   default_drops: false
 

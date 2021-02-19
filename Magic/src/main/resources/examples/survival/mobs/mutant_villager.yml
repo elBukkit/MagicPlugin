@@ -1,6 +1,5 @@
 mutant_villager:
   type: piglin
-  name: Mutant Villager
   health: 10
   default_drops: false
   transformable: false

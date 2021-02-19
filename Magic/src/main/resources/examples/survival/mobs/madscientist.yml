@@ -1,5 +1,4 @@
 madscientist:
-  name: Mad Scientist
   type: zombie
   disguise:
     type: player

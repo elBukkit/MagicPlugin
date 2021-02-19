@@ -1,5 +1,4 @@
 playershop:
   inherit: base_npc
-  name: Shop
   interact_spell: playershop
   villager_profession: librarian

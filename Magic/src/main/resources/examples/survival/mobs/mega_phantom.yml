@@ -1,5 +1,4 @@
 mega_phantom:
-    name: "&cMega &4Phantom"
     type: phantom
     size: 100
     interval: 5000

@@ -1,5 +1,4 @@
 undead_minion:
   type: skeleton
   item: iron_sword
-  name: Undead Minion
   health: 25

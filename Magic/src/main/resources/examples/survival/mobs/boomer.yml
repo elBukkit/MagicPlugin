@@ -1,5 +1,4 @@
 boomer:
-  name: "Boomer"
   type: magma_cube
   size: 3
   triggers:

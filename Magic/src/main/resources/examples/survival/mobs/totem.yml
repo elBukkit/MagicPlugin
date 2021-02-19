@@ -1,5 +1,4 @@
 totem:
   type: armor_stand
-  name: Totem
   invisible: true
   helmet: totem

@@ -1,6 +1,5 @@
 fairy:
   type: villager
-  name: Fairy
   health: 100
   lifetime: 10000
   mage:

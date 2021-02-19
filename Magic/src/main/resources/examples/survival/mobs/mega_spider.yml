@@ -1,6 +1,5 @@
 mega_spider:
   type: spider
-  name: Mega Spider
   health: 25
   default_drops: false
   interval: 1000

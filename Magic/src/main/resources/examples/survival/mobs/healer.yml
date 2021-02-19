@@ -1,6 +1,5 @@
 healer:
   inherit: base_npc
-  name: Healer
   interact_spell: heal
   interact_spell_source: npc
   interact_spell_target: player
