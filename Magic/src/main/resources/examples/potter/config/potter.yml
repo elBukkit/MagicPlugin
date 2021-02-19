@@ -25,6 +25,8 @@ skip_inherited:
  - crafting
  - classes
  - mobs
+ - automata
+ - kits
 
 # Don't allow crafting
 enable_crafting: false
