@@ -29,7 +29,16 @@ base_dragon:
     generic_movement_speed: 0.22
     generic_knockback_resistance: 0.5
   drops:
-  - sp:150
+  - gold_ingot: 100
+    iron_ingot: 50
+  - diamond: 10
+    emerald: 15
+    gold_nugget@18: 50
+    gold_nugget@16: 100
+    gold_nugget@12: 50
+    gold_nugget@8: 20
+    iron_nugget@4: 10
+  - sp:50
   potion_effects:
   - type: regeneration
     amplifier: 0
