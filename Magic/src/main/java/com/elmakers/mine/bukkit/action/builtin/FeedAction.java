@@ -12,6 +12,7 @@ public class FeedAction extends BaseSpellAction
 {
     private static int MAX_FOOD_LEVEL = 20;
 
+    private Integer foodLevel;
     private int feedAmount;
     private float saturationAmount;
     private boolean clearExhaustion;
@@ -20,8 +21,17 @@ public class FeedAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        feedAmount = parameters.getInt("feed", 20);
-        saturationAmount = parameters.getInt("saturation", 20);
+        int defaultFeed = 20;
+        float defaultSaturation = 20;
+        if (parameters.contains("food_level")) {
+            defaultFeed = 0;
+            defaultSaturation = 0;
+            foodLevel = parameters.getInt("food_level");
+        } else {
+            foodLevel = null;
+        }
+        feedAmount = parameters.getInt("feed", defaultFeed);
+        saturationAmount = (float)parameters.getDouble("saturation", defaultSaturation);
         clearExhaustion = parameters.getBoolean("exhaustion", true);
     }
 
@@ -50,6 +60,9 @@ public class FeedAction extends BaseSpellAction
         if (saturationAmount != 0)
         {
             player.setSaturation(saturationAmount);
+        }
+        if (foodLevel != null) {
+            player.setFoodLevel(foodLevel);
         }
         if (feedAmount != 0)
         {

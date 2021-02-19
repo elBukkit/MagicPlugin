@@ -72,6 +72,7 @@
  - You can now use "minutes", "seconds", "hours" in duration parameters for simpler configuration, e.g. "1 seconds" (yes, plural no matter what)
  - Add `prevent_dismount` option to mobs
  - Add `ModifyNoDamageTicks` action, for rapidly damaging mobs and players by bypassing vanilla damage cooldowns
+ - Add `food_level` parameter to Feed action, for directly setting food level
 
 # 8.3.4
 
