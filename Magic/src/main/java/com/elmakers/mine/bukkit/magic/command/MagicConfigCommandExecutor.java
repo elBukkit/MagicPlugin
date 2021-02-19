@@ -967,6 +967,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         boolean setExamples = false;
         if (parameters.length == 1) {
             examples = new LinkedHashSet<>(controller.getLoadedExamples());
+            examples.remove(controller.getExample());
         } else {
             setExamples = true;
             examples = new LinkedHashSet<>();
