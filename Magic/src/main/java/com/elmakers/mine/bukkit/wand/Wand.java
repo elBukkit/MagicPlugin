@@ -5143,6 +5143,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // This will reload properties from the item, so make sure to save state first
         super.updated();
 
+        if (mage != null) {
+            buildInventory();
+            if (isInventoryOpen()) {
+                updateInventory();
+            }
+        }
+
         updateMaxMana(false);
         updateName();
         updateLore();
