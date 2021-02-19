@@ -79,6 +79,14 @@ public class MagicKit {
                     }
                     addItemFromString(itemKey, null);
                 }
+            } else {
+                // Handles CSV strings
+                Collection<String> itemStringList = ConfigurationUtils.getStringList(configuration, "items");
+                if (itemStringList != null) {
+                    for (String itemKey : itemStringList) {
+                        addItemFromString(itemKey, null);
+                    }
+                }
             }
         }
     }
