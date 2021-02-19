@@ -771,6 +771,19 @@
                                     </fileset>
                                 </concat>
 
+                                <!-- Jutsu configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/jutsu/spells.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/jutsu/spells">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/jutsu/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/jutsu/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
                                 <!-- Potter configs -->
 
                                 <concat destfile="${project.build.directory}/classes/examples/potter/classes.yml" overwrite="yes" fixlastline="yes">
