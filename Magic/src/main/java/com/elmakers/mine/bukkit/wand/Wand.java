@@ -3251,6 +3251,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             WandInventory inventory = inventories.get(openInventoryPage);
             ItemStack[] contents = inventory.getContents();
             for (int i = 0; i < contents.length; i++) {
+                if (currentOffset >= PLAYER_INVENTORY_SIZE) break;
                 ItemStack inventoryItem = contents[i];
                 updateInventoryName(inventoryItem, false);
                 targetInventory.setItem(currentOffset, inventoryItem);
