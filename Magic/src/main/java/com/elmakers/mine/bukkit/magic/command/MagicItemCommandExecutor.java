@@ -712,11 +712,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         MageController controller = api.getController();
         String template = parameters[0];
         ItemData existing = controller.getItem(template);
-        if (existing != null && !player.hasPermission("Magic.item.overwrite")) {
-            String creatorId = existing.getCreatorId();
-            boolean isCreator = creatorId != null && creatorId.equalsIgnoreCase(player.getUniqueId().toString());
+        String creatorId = existing == null ? null : existing.getCreatorId();
+        if (creatorId != null && !player.hasPermission("Magic.item.overwrite")) {
+            boolean isCreator = creatorId.equalsIgnoreCase(player.getUniqueId().toString());
             if (!player.hasPermission("Magic.item.overwrite_own") || !isCreator) {
-                sender.sendMessage(ChatColor.RED + "The " + template + " item already exists and you don't have permission to overwrite it.");
+                sender.sendMessage(ChatColor.RED + "The " + template + " item already exists and you don't have permission (Magic.item.overwrite) to overwrite it.");
                 return true;
             }
         }
