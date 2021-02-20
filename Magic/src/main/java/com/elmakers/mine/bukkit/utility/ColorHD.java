@@ -6,6 +6,7 @@ import javax.annotation.concurrent.Immutable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Color;
+import org.bukkit.configuration.ConfigurationSection;
 
 @Immutable
 public final class ColorHD {
@@ -13,6 +14,7 @@ public final class ColorHD {
     private static long BITS_PER_COMPONENT = BYTES_PER_COMPONENT * 8;
     private static long COMPONENT_SHIFT = BITS_PER_COMPONENT - 8;
     private static long BIT_MASK = (1L << BITS_PER_COMPONENT) - 1;
+    private static final int[] components = new int[3];
 
     private static Map<String, Color> colorMap;
 
@@ -26,19 +28,34 @@ public final class ColorHD {
         red = r & BIT_MASK;
         blue = b & BIT_MASK;
         green = g & BIT_MASK;
-        Color testCreate = null;
-        try {
-            testCreate = Color.fromRGB((int)(red >> COMPONENT_SHIFT), (int)(green >> COMPONENT_SHIFT), (int)(blue >> COMPONENT_SHIFT));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        color = testCreate;
+        color = createColor();
     }
 
     public ColorHD(Color color) {
         this(color.getRed() << COMPONENT_SHIFT,
                 color.getGreen() << COMPONENT_SHIFT,
                 color.getBlue() << COMPONENT_SHIFT);
+    }
+
+    public ColorHD(ConfigurationSection configuration) {
+        if (configuration.contains("r")) {
+            red = (long)configuration.getInt("r") << COMPONENT_SHIFT;
+            green = (long)configuration.getInt("g") << COMPONENT_SHIFT;
+            blue = (long)configuration.getInt("b") << COMPONENT_SHIFT;
+        } else if (configuration.contains("h")) {
+            float h = (float)configuration.getDouble("h");
+            float s = (float)configuration.getDouble("s");
+            float v = (float)configuration.getDouble("v", configuration.getDouble("b"));
+            int[] colors = convertHSBtoRGB(h, s, v);
+            red = (long)(colors[0] & 0xFF) << COMPONENT_SHIFT;
+            green = (long)(colors[1] & 0xFF) << COMPONENT_SHIFT;
+            blue = (long)(colors[2] & 0xFF) << COMPONENT_SHIFT;
+        } else {
+            red = 0;
+            green = 0;
+            blue = 0;
+        }
+        color = createColor();
     }
 
     public ColorHD(String hexColor) {
@@ -88,13 +105,59 @@ public final class ColorHD {
                 blue = (effectColor & 0xFF) << COMPONENT_SHIFT;
             }
         }
-        Color testCreate = null;
-        try {
-            testCreate = Color.fromRGB((int)(red >> COMPONENT_SHIFT), (int)(green >> COMPONENT_SHIFT), (int)(blue >> COMPONENT_SHIFT));
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        color = createColor();
+    }
+
+    // Borrowed from Sun AWT Color class
+    public static int[] convertHSBtoRGB(float hue, float saturation, float brightness) {
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        if (saturation == 0) {
+            r = g = b = (int) (brightness * 255.0f + 0.5f);
+        } else {
+            float h = (hue - (float)Math.floor(hue)) * 6.0f;
+            float f = h - (float)java.lang.Math.floor(h);
+            float p = brightness * (1.0f - saturation);
+            float q = brightness * (1.0f - saturation * f);
+            float t = brightness * (1.0f - (saturation * (1.0f - f)));
+            switch ((int) h) {
+            case 0:
+                r = (int) (brightness * 255.0f + 0.5f);
+                g = (int) (t * 255.0f + 0.5f);
+                b = (int) (p * 255.0f + 0.5f);
+                break;
+            case 1:
+                r = (int) (q * 255.0f + 0.5f);
+                g = (int) (brightness * 255.0f + 0.5f);
+                b = (int) (p * 255.0f + 0.5f);
+                break;
+            case 2:
+                r = (int) (p * 255.0f + 0.5f);
+                g = (int) (brightness * 255.0f + 0.5f);
+                b = (int) (t * 255.0f + 0.5f);
+                break;
+            case 3:
+                r = (int) (p * 255.0f + 0.5f);
+                g = (int) (q * 255.0f + 0.5f);
+                b = (int) (brightness * 255.0f + 0.5f);
+                break;
+            case 4:
+                r = (int) (t * 255.0f + 0.5f);
+                g = (int) (p * 255.0f + 0.5f);
+                b = (int) (brightness * 255.0f + 0.5f);
+                break;
+            case 5:
+                r = (int) (brightness * 255.0f + 0.5f);
+                g = (int) (p * 255.0f + 0.5f);
+                b = (int) (q * 255.0f + 0.5f);
+                break;
+            }
         }
-        color = testCreate;
+        components[0] = r;
+        components[1] = g;
+        components[2] = b;
+        return components;
     }
 
     public Color getColor() {
@@ -164,5 +227,18 @@ public final class ColorHD {
         }
 
         return colorMap.get(name.toUpperCase());
+    }
+
+    private Color createColor() {
+        Color testCreate = null;
+        try {
+            testCreate = Color.fromRGB((int)(red >> COMPONENT_SHIFT), (int)(green >> COMPONENT_SHIFT), (int)(blue >> COMPONENT_SHIFT));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (testCreate == null) {
+            testCreate = Color.BLACK;
+        }
+        return testCreate;
     }
 }
