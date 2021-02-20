@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.item;
 
+import javax.annotation.Nullable;
+
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -67,5 +71,53 @@ public enum InventorySlot {
                 return -1;
         }
         return -1;
+    }
+
+    public boolean setItem(EntityEquipment equitment, ItemStack itemStack) {
+        switch (this) {
+            case HELMET:
+                equitment.setHelmet(itemStack);
+                break;
+            case CHESTPLATE:
+                equitment.setChestplate(itemStack);
+                break;
+            case LEGGINGS:
+                equitment.setLeggings(itemStack);
+                break;
+            case BOOTS:
+                equitment.setBoots(itemStack);
+                break;
+            case MAIN_HAND:
+                equitment.setItemInMainHand(itemStack);
+                break;
+            case OFF_HAND:
+                equitment.setItemInOffHand(itemStack);
+                break;
+            case RIGHT_ARM:
+                equitment.setItemInOffHand(itemStack);
+                break;
+            default: return false;
+        }
+        return true;
+    }
+
+    @Nullable
+    public ItemStack getItem(EntityEquipment equipment) {
+        switch (this) {
+            case HELMET:
+                return equipment.getHelmet();
+            case CHESTPLATE:
+                return equipment.getChestplate();
+            case LEGGINGS:
+                return equipment.getLeggings();
+            case BOOTS:
+                return equipment.getBoots();
+            case MAIN_HAND:
+                return equipment.getItemInMainHand();
+            case OFF_HAND:
+            case RIGHT_ARM:
+                return equipment.getItemInOffHand();
+            default: return null;
+        }
     }
 }
