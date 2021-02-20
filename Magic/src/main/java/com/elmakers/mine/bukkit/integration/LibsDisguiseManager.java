@@ -59,13 +59,16 @@ public class LibsDisguiseManager {
                 DisguiseType disguiseType = DisguiseType.valueOf(disguiseName.toUpperCase());
                 switch (disguiseType) {
                     case PLAYER:
+                        String skin = configuration.getString("skin");
                         String name = configuration.getString("name", entity.getCustomName());
+                        if (name == null || name.isEmpty()) {
+                            name = skin;
+                        }
                         if (name == null || name.isEmpty()) {
                             controller.getLogger().warning("Missing disguise name in player disguise");
                             return false;
                         }
                         PlayerDisguise playerDisguise = new PlayerDisguise(name);
-                        String skin = configuration.getString("skin");
                         if (skin != null) {
                             playerDisguise.setSkin(skin);
                         }
