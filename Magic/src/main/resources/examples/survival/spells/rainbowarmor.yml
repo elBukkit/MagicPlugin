@@ -1,0 +1,28 @@
+rainbowarmor:
+    hidden: true
+    actions:
+        cast:
+        - class: ColorItem
+    parameters:
+        target: self
+        color_wand: true
+        color:
+          h: "(epoch % 255.0) / 255.0"
+          s: 1
+          v: 1
+
+rainbowchestplate:
+    inherit: rainbowarmor
+    icon: "leather_chestplate:#random"
+
+rainbowleggings:
+    inherit: rainbowarmor
+    icon: "leather_leggings:#random"
+
+rainbowboots:
+    inherit: rainbowarmor
+    icon: "leather_boots:#random"
+
+rainbowhelmet:
+    inherit: rainbowarmor
+    icon: "leather_helmet:#random"
