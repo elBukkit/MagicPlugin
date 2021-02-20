@@ -135,6 +135,12 @@ spells:
         name: Singularity
         description: Create a black hole
         cast_player_message: "a:You got sucked into a black hole"
+    singularity:
+        name: Singularity
+        description: Create a black hole
+        cast_player_message: "a:You got sucked into a black hole"
+    singularity|2:
+        upgrade_description: "Increased radius, duration and damage"
     arrow:
         name: Arrow
         description: Fire a magic arrow
@@ -279,7 +285,7 @@ spells:
     shuriken:
         name: Shuriken
         description: Throw a bouncing projectile
-        upgrade_description: "Increased damage"
+        upgrade_description: "Increased hit count and duration"
     wave:
         name: Wave
         description: Unleash a concussive wave
@@ -411,6 +417,12 @@ spells:
         description: Strike down your target
         cast: You smite $target
         upgrade_description: "Increased damage and blast radius"
+    sunstrike:
+        name: Sunstrike
+        description: Summon a sun ray, which deals high damage and puts target on fire
+        usage: Deals more damage at noon
+        cast: You summoned deadly sun ray
+        fail: "It's too dark outside!"
     nuke:
         name: Nuke
         description: Create a huge explosion
@@ -880,6 +892,7 @@ spells:
         description: Blast through blocks and multiple targets
         cast: You fire a rail at $target
         no_target: You fire off a rail
+        upgrade_description: "Increased range, goes through more targets. Decreased cooldown and manacost"
     testdummy:
         name: Test Dummy
         description: Spawn a poor test dummy
@@ -1038,6 +1051,8 @@ spells:
         upgrade_description: "Larger search radius"
     tracking|4:
         upgrade_description: "Sneak-cast to look only for players"
+    tracking|5:
+        upgrade_description: "Aim down and cast to highlight all mobs within a 16 block radius"
     enchantwand:
         name: Upgrade Wand
         description: Add levels to your wand
