@@ -766,6 +766,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             file = new File(magic.getPlugin().getDataFolder(), type + ".yml");
         } else {
             String filename = key + ".yml";
+            filename = filename.replace("|", "_");
             File typeFolder = new File(magic.getPlugin().getDataFolder(), type);
             if (!typeFolder.exists()) {
                 typeFolder.mkdir();
