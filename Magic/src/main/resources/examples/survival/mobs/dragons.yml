@@ -224,3 +224,31 @@ browndragon:
         dragonexplodefire: 30
         dragonfire: 10
         dragonwingblast: 30
+
+rainbowdragon:
+  inherit: base_dragon
+  hidden: false
+  item: dragonwingrightwhite
+  offhand: dragonwingleftwhite
+  helmet: dragonbodywhite
+  interval: 100
+  triggers:
+    interval:
+      cast: rainbowdragon
+    launch:
+      cast:
+        dragonwater: 30
+        dragonpoison: 30
+        dragonfire: 30
+        dragonlightning: 30
+    damage:
+      cast:
+        dragonexplodewater: 30
+        dragonwater: 10
+        dragonexplodepoison: 30
+        dragonpoison: 10
+        dragonexplodefire: 30
+        dragonfire: 10
+        dragonexplodelightning: 30
+        dragonlightning: 10
+        dragonwingblast: 50

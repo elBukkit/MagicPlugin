@@ -53,6 +53,8 @@ mobs:
     name: '&eYellow Dragon'
   browndragon:
     name: '&cBrown Dragon'
+  rainbowdragon:
+    name: '&fRainbow Dragon'
   dummy:
     name: Dummy
   dummynoai:

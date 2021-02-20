@@ -73,6 +73,7 @@
  - Add `prevent_dismount` option to mobs
  - Add `ModifyNoDamageTicks` action, for rapidly damaging mobs and players by bypassing vanilla damage cooldowns
  - Add `food_level` parameter to Feed action, for directly setting food level
+ - Add ColorItem action, and very-rare rainbow dragon
 
 # 8.3.4
 

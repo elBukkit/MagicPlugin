@@ -2,14 +2,31 @@
 
 ## Data/item Loss
 
+
+yeah you're opening it when you click with bubble spell (left click - cast, right click - open, e - switching spell inventory)
+https://streamable.com/wfx0gi
+https://streamable.com/2pqquj
+So how to reproduce: Place chest and place there some items, then you will use bubble spell and then you're repeatedly cast it on the chest. BUT you have to click with LEFT, RIGHT mouse buttons and E (to inventory switch) at once.
+
 So the order of events afaik were; pick up spell to move it, hover outside spell inv to change spell,
 blink casts causing inventory to close and spell i was moving drops to the ground.
+
+... or:
+1. Put a wand in left hand
+2. Aim little bit away from chest's bottom side (like a couple pixels away)
+3. Then you need to cast a spell with right click, quickly move your mouse at chest (the chest should immediately open) and you need to close the chest at the same moment you opened it
+
+Losing wizard armor on death- maybe only while cloaked? https://streamable.com/dr1gnt
 
 # Fixed (?) running commands on wands causes spell inventory to reset (? happened in video, can't reproduce)
 
 # Fixed Armor lost somehow when messing around with wand controls menu? https://streamable.com/muy1pt
 
 ## Hot
+
+ - Editor needs to escape | in filenames
+
+ - target_mana, target_mana_max attributes
 
  - Night asking about cooldowns on dragon mount spell, shouldn't they reset at end of cast?
  - Automaton parameters don't seem to work, when applied with CreateAutomaton or a populator

@@ -15,19 +15,20 @@ overworld_mobs:
         - phantom
       probability: 0.001
       replace_type:
-        bluedragon: 20
-        lightbluedragon: 10
-        cyandragon: 10
-        greendragon: 20
-        greydragon: 10
-        lightgreydragon: 5
-        orangedragon: 3
-        yellowdragon: 3
-        mega_phantom: 50
-        whitedragon: 5
-        bigbluedragon: 2
-        biggreendragon: 2
-        biggreydragon: 1
+        bluedragon: 200
+        lightbluedragon: 100
+        cyandragon: 100
+        greendragon: 200
+        greydragon: 100
+        lightgreydragon: 50
+        orangedragon: 30
+        yellowdragon: 30
+        mega_phantom: 500
+        whitedragon: 50
+        rainbowdragon: 1
+        bigbluedragon: 20
+        biggreendragon: 20
+        biggreydragon: 10
 
     replace_mobs:
       class: Replace
