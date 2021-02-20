@@ -10,6 +10,8 @@ railgun:
     brush_effects: false
     require_break: false
     require_build: false
+    upgrade_required_casts: 75
+    upgrade_required_path: master
     actions:
         cast:
         - class: CustomProjectile
@@ -125,10 +127,10 @@ railgun:
         break_durability: 1000
         allow_max_range: true
         velocity: 1000
-        range: 80
+        range: 40
         hitbox: true
-        block_hit_count: 4
-        entity_hit_count: 5
+        block_hit_count: 3
+        entity_hit_count: 2
         target_type: Damageable
         player_damage: 6
         entity_damage: 8
@@ -139,4 +141,22 @@ railgun:
         transparent: all_air,water,stationary_water
     costs:
         mana: 150
+
+railgun|2:
+    parameters:
+        range: 60
+        block_hit_count: 5
+        entity_hit_count: 3
+        cooldown: 8000
+    costs:
+        mana: 125
+
+railgun|3:
+    parameters:
+        range: 80
+        block_hit_count: 7
+        entity_hit_count: 4
+        cooldown: 6000
+    costs:
+        mana: 100
 
