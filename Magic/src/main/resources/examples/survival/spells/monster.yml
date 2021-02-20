@@ -7,6 +7,8 @@ monster:
     category: dark
     pvp_restricted: true
     worth: 150
+    upgrade_required_casts: 50
+    upgrade_required_path: student
     actions:
       cast:
       # We are going to force the spawned mob to target the entity we originally targeted
@@ -64,26 +66,52 @@ monster:
             particle_offset_y: 0.5
             particle_offset_z: 0.5
     parameters:
+        allow_replacement: false
         target_type: LivingEntity
         allow_max_range: false
         cooldown: 30000
         range: 32
-        undo: 20000
+        undo: 10000
         entity_types:
             zombie: 100
             skeleton: 100
             spider: 110
-            creeper: 30
-            witch: 20
-            blaze: 15
-            bat: 15
-            magma_cube: 10
-            pig_zombie: 10
-            cave_spider: 10
-            silverfish: 8
-            ghast: 5
-            enderman: 5
-            giant: 1
+            zombified_piglin: 50
+            zombie_villager: 80
+            husk: 30
+            stray: 30
     costs:
         mana: 40
+
+monster|2:
+  parameters:
+        undo: 15000
+        entity_types:
+            zombie: 40
+            skeleton: 60
+            spider: 45
+            zombified_piglin: 50
+            zombie_villager: 30
+            husk: 60
+            stray: 40
+            creeper: 40
+            cave_spider: 30
+
+monster|3:
+  parameters:
+        undo: 20000
+        entity_types:
+            zombie: 20
+            skeleton: 30
+            spider: 20
+            zombified_piglin: 30
+            zombie_villager: 20
+            husk: 40
+            stray: 45
+            creeper: 50
+            enderman: 20
+            cave_spider: 25
+            blaze: 25
+            ghast: 10
+            zoglin: 10
 

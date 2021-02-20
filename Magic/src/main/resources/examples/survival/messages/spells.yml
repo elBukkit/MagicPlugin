@@ -135,6 +135,7 @@ spells:
         name: Singularity
         description: Create a black hole
         cast_player_message: "a:You got sucked into a black hole"
+        upgrade_description: "Increased radius, duration and damage"
     arrow:
         name: Arrow
         description: Fire a magic arrow
@@ -279,7 +280,7 @@ spells:
     shuriken:
         name: Shuriken
         description: Throw a bouncing projectile
-        upgrade_description: "Increased damage"
+        upgrade_description: "Increased target hit count and duration"
     wave:
         name: Wave
         description: Unleash a concussive wave
@@ -308,11 +309,13 @@ spells:
         description: Call a monster to your side
         deactivate: You release your monster
         cast: You summon a monster
+        upgrade_description: "Increased duration, unlocked new mob types"
     mob:
         name: Mob
         description: Summon a mob of monsters
         deactivate: You release your mob
         cast: You summon $count monster(s)
+        upgrade_description: "Increased duration and mob count, unlocked new mob types. Decreased cooldown."
     portal:
         name: Portal
         description: Create a temporary portal
@@ -406,6 +409,11 @@ spells:
     lightning|3:
         upgrade_description: "More lightning"
         cast: Ka-POW!
+    sunstrike:
+        name: Sunstrike
+        description: Summon a focused sunbeam
+        usage: Only works during the daytime.\nDeals more damage at noon
+        cast: You summoned a sunbeam!
     smite:
         name: Smite
         description: Strike down your target
@@ -880,6 +888,7 @@ spells:
         description: Blast through blocks and multiple targets
         cast: You fire a rail at $target
         no_target: You fire off a rail
+        upgrade_description: "Increased range and target hit count. Decreased cooldown and manacost."
     testdummy:
         name: Test Dummy
         description: Spawn a poor test dummy
@@ -1038,6 +1047,8 @@ spells:
         upgrade_description: "Larger search radius"
     tracking|4:
         upgrade_description: "Sneak-cast to look only for players"
+    tracking|5:
+        upgrade_description: "Aim down and cast to highlight all mobs/players within a 16 block radius"
     enchantwand:
         name: Upgrade Wand
         description: Add levels to your wand

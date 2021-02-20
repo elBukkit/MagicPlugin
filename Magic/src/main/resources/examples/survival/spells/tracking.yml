@@ -50,19 +50,24 @@ tracking:
     costs:
         mana: 20
 
-tracking|2:
-    upgrade_required_path: apprentice
-    upgrade_required_casts: 30
-    parameters:
-        range: 64
-
-tracking|3:
-    upgrade_required_path: master
-    upgrade_required_casts: 40
-    parameters:
-        range: 128
-
 tracking|4:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     alternate_sneak_parameters:
         target_type: Player
+
+tracking|5:
+  actions:
+    alternate_down:
+      - class: AreaOfEffect
+        actions:
+          - class: PotionEffect
+  alternate_down_parameters:
+     target: self
+     target_type: LivingEntity
+     effect_glowing: 1
+     duration: 10000
+     cooldown: 15000
+     radius: 16
+     y_radius: 16
 

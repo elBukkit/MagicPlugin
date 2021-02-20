@@ -1,0 +1,80 @@
+sunstrike:
+  icon: honeycomb{CustomModelData:18001}
+  icon_disabled: honeycomb{CustomModelData:18002}
+  cast_on_no_target: false
+  category: master
+  pvp_restricted: true
+  actions:
+    cast:
+     - class: CheckRequirements
+       requirements:
+        - time:
+            min: 0
+            max: 12000
+       actions:
+        - class: Delay
+        - class: ChangeContext
+          source_at_target: true
+          source_offset: 0,100,0
+          actions:
+            - class: CustomProjectile
+              range: 255
+              actions:
+                - class: AreaOfEffect
+                  y_radius: 1
+                  actions:
+                    - class: Damage
+                    - class: Ignite
+  effects:
+    no_target: []
+    tick:
+      - location: target
+        particle: end_rod
+        particle_count: 15
+        particle_offset_x: 0.2
+        particle_offset_z: 0.2
+        particle_offset_y: 0.2
+        particle_data: 0.1
+    hit:
+      - location: target
+        sound: magic.burn
+        sound_pitch: 1.2
+        sound_volume: 0.8
+      - location: target
+        sound: magic.ignite
+        sound_pitch: 0.8
+        sound_volume: 0.5
+      - location: target
+        sound: block_beacon_deactivate
+        sound_pitch: 0.8
+        sound_volume: 1.5
+      - location: target
+        sound: entity_ender_dragon_hurt
+        sound_pitch: 0.8
+        sound_volume: 0.6
+    cast:
+    - location: target
+      effectlib:
+        class: Helix
+        radius: $radius
+        rotation: (t/i)*2
+        duration: 1000
+        iterations: 20
+      sound: magic.burn
+  parameters:
+    target: other
+    allow_max_range: true
+    cooldown: 60000
+    transparent: transparent_and_glass
+    target_type: LivingEntity
+    target_self: true
+    velocity: 500
+    radius: 2
+    delay: 1500
+    range: 16
+    duration: 5000
+    damage_type: FIRE
+    damage: max(5,sin(3.14159*time/12000)*21)
+  costs:
+    mana: 100
+
