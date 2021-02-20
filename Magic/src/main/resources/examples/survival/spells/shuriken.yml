@@ -13,9 +13,8 @@ shuriken:
         cast:
         -  class: CustomProjectile
            actions:
-           -  class: AreaOfEffect
-              actions:
-              - class: Damage
+           -  class: ModifyNoDamageTicks
+           -  class: Damage
     effects:
         tick:
         -  particle: block_crack
@@ -46,34 +45,16 @@ shuriken:
         hit_entity:
         -  sound: entity_arrow_hit
            sound_pitch: 1.6
-        hit:
-        -  class: EffectSingle
-           sound: magic.shimmer_big
-           location: target
-           material: stained_clay:15
-           effectlib:
-             class: Modified
-             iterations: 10
-             parameters:
-              radius: "(t/i)*5"
-             effect:
-               class: HelixEffect
-               particle: block_crack
-               particles: 20
-               particle_count: 4
-               particle_offset_x: 1
-               particle_offset_y: 0.05
-               particle_offset_z: 1
     parameters:
         range: 32
         target_type: Damageable
         reflective: solid
+        transparent: transparent
         cooldown: 8000
         velocity: 20
-        gravity: 0.05
-        damage: 2
-        radius: 3
-        lifetime: 10000
+        entity_hit_count: 3
+        damage: 3
+        lifetime: 8000
         hit_on_miss: true
     costs:
         mana: 80
@@ -82,11 +63,10 @@ shuriken|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        damage: 3
-        radius: 4
+        lifetime: 10000
+        entity_hit_count: 5
 
 shuriken|3:
     parameters:
-        damage: 4
-        radius: 5
-
+        lifetime: 12000
+        entity_hit_count: 7
