@@ -62,7 +62,7 @@
  - Add While action, loops until some set of requirements is met (use with a variable for for/while loop type behavior)
  - Add destructible_materials and indestructible_materials options to ChangeContext action
  - Add `until` parameter to Skip action, to skip sub-actions until some amount of time has passed
- - Add attributes: target_location_x, target_location_y, target_location_z
+ - Add attributes: target_location_x, target_location_y, target_location_z, target_mana, target_mana_max
  - Add /mauto enable/disable commands to quickly turn on/off automata
  - Add `give_to_caster` parameter to `Drop` action
  - Add `/mconfig example unfetch` command to completely remove previously-fetched examples

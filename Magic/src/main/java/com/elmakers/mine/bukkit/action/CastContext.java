@@ -1463,6 +1463,12 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     }
 
     @Nullable
+    public Mage getTargetMage() {
+        Entity entity = getTargetEntity();
+        return entity == null ? null : controller.getRegisteredMage(entity);
+    }
+
+    @Nullable
     @Override
     public Double getAttribute(String attributeKey) {
         Double value = baseSpell.getAttribute(attributeKey);
@@ -1501,6 +1507,14 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             case "target_location_z": {
                 Location location = getTargetLocation();
                 return location == null ? null : location.getZ();
+            }
+            case "target_mana": {
+                Mage targetMage = getTargetMage();
+                return targetMage == null ? null : (double)targetMage.getMana();
+            }
+            case "target_mana_max": {
+                Mage targetMage = getTargetMage();
+                return targetMage == null ? null : (double)targetMage.getManaMax();
             }
         }
         return value;

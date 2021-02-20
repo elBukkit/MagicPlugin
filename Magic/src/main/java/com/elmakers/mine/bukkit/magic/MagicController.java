@@ -7659,6 +7659,7 @@ public class MagicController implements MageController {
             "target_location_x", "target_location_y", "target_location_z",
             "time", "moon",
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
+            "target_mana", "target_mana_max",
             "fall_distance",
             "air", "air_max", "target_air", "target_air_max",
             "hunger", "target_hunger"
