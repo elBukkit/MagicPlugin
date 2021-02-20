@@ -12,57 +12,48 @@ singularity:
     upgrade_required_casts: 50
     actions:
         cast:
-        # Start with a custom projectile
-        - class: CustomProjectile
-          actions:
-            # This switches the "brush" to erase
-            # Needed since the original brush was obsidian for ThrowBlock
-          - class: Brush
-            ignore_result: true
-            brush: erase
+          - class: Sphere
             actions:
-            # First build a sphere
-            # Actions happen in order, so it stays here until
-            # the sphere finishes building
-            - class: Sphere
-              actions:
-              # Erase the block and spawn a falling block with an
-              # upward velocity
               - class: ModifyBlock
                 direction: 0,1,0
-            # Once the sphere is complete, we start a Repeat action
-            # This will perform the actions below "repeat" number of
-            # times (see parameters - repeat: 10)
-            #
-            # Note that you can mix parameters in here or in the main
-            # spell parameters. Ones in here will override.
-            # However, you can only override the ones in the base
-            # parameter list with /cast or /wand override
-            # so it's best to use those so you can tweak in-game.
-          - class: Repeat
+          - class: AreaOfEffect
             actions:
-            # Delay for a while
-            - class: Delay
-            # Do an AOE
-            - class: AreaOfEffect
-              actions:
-              # Pull (push: -1) entities inward
               - class: Velocity
-                ignore_result: true
-                push: -1
-                entity_speed: 0.7
-              - class: Damage
-              # Delay a bit more
-            - class: Delay
-              # AOE, push entities outward slightly
-            - class: AreaOfEffect
-              actions:
+          - class: Interval
+            interval: 200
+            actions:
+              - class: AreaOfEffect
+                actions:
+                  - class: Velocity
+                    speed: 0.25
+                    item_speed: 0.25
+                    entity_speed: 0.25
+          - class: AreaOfEffect
+            actions:
               - class: Velocity
-                ignore_result: true
-                push: 1
-                entity_speed: 0.1
+                push: 3
               - class: Damage
     effects:
+        cast_finish:
+        -  sound: entity_iron_golem_death
+           sound_pitch: 0.3
+           sound_volume: 0.2
+        -  sound: block_conduit_deactivate
+           sound_pitch: 0.7
+           sound_volume: 0.5
+           effectlib:
+             class: Modified
+             iterations: 3
+             duration: 150
+             parameters:
+               radius: 1.5 + (t/i) * 5
+             effect:
+               class: Sphere
+               particle: redstone
+               color: "#000000"
+               particle_size: 0.6
+               radius: 0.6
+               particles: 150
         cast:
         -  sound: entity_wither_shoot
            sound_pitch: 0.4
@@ -71,75 +62,72 @@ singularity:
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
-        tick:
-        - location: target
-          particle: smoke_normal
-          particle_count: 8
-          particle_offset_x: 0.4
-          particle_offset_y: 0.4
-          particle_offset_z: 0.4
-        - location: target
-          particle: block_crack
-          material: obsidian
-          particle_count: 10
-          particle_offset_x: 0.6
-          particle_offset_y: 0.6
-          particle_offset_z: 0.6
-        hit:
-        - sound: block_conduit_deactivate
-          sound_pitch: 0.7
-          sound_volume: 0.5
+        -  sound: block_conduit_deactivate
+           sound_pitch: 0.7
+           sound_volume: 0.5
         -  sound: entity_bee_loop
            sound_pitch: 2
            location: target
         -  sound: entity_wither_death
            sound_pitch: 0.5
            location: target
+           target_location: block_center
+           effectlib:
+             class: Sphere
+             duration: $duration
+             iterations: $duration / 50
+             particle: redstone
+             color: "#000000"
+             particle_size: 1.5
+             radius: 1.5
+             particles: 250
         -  class: EffectSingle
            location: target
-           sound: magic.hit
-           effectlib:
-             class: SphereEffect
-             duration: $duration
-             particle: redstone
-             color: 010101
-             radius: 1
-             particles: 20
-        -  location: target
-           material: obsidian
+           target_location: block_center
            effectlib:
              class: Modified
              duration: $duration
+             iterations: $duration / 50
+             period: 3
              parameters:
-               radius: "sin(t/50)*5"
+               radius: "8(1-(t/i))"
+               rotation: t/10
              effect:
-               class: Sphere
-               particle: block_crack
-               color: 010101
-               particles: 20
-               particle_count: 4
-               particle_offset_x: 1
-               particle_offset_y: 1
-               particle_offset_z: 1
+               class: Helix
+               particle: redstone
+               color: "#000000"
+               particle_size: 0.6
+               particles: 70
+               curve: -2
     parameters:
       target_type: Entity
-      velocity: 10
-      gravity: 0.02
-      hitbox_size: 2
+      range: 12
+      target: block
+      allow_max_range: true
+      destructible: destructible,destructible2,destructible3
       undo: 15000
-      repeat: 15
-      delay: 250
       duration: 7000
       damage: 3
+      speed: 0.75
+      item_speed: 0.75
+      entity_speed: 0.75
+      brush: air
+      player_damage: 10
+      entity_damage: 15
       target_self_timeout: 2000
-      speed: 0.5
-      item_speed: 0.5
-      entity_speed: 0.5
+      target_self: true
+      push: -1
       falling: true
-      radius: 5
-      destructible: destructible,destructible2,destructible3
-      destructible_override: true
+      radius: 4
+      y_radius: 4
       cooldown: 30000
     costs:
         mana: 50
 
+singularity|2:
+  parameters:
+      radius: 6
+      y_radius: 6
+      player_damage: 15
+      entity_damage: 20
+      duration: 10000
