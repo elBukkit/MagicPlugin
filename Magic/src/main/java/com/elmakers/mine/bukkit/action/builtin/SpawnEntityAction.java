@@ -36,6 +36,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -71,6 +72,7 @@ public class SpawnEntityAction extends CompoundAction
     private boolean hasSpawnActions = false;
     private boolean hasDeathActions = false;
     private boolean hasAnyActions = false;
+    private boolean useWandName = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -86,6 +88,7 @@ public class SpawnEntityAction extends CompoundAction
         dyOffset = parameters.getDouble("dy_offset", 0);
         onBlock = parameters.getBoolean("on_block", true);
         allowReplacement = parameters.getBoolean("allow_replacement", true);
+        useWandName = parameters.getBoolean("use_wand_name", false);
 
         String disguiseTarget = parameters.getString("disguise_target");
         if (disguiseTarget != null) {
@@ -319,6 +322,12 @@ public class SpawnEntityAction extends CompoundAction
             Player owner = context.getMage().getPlayer();
             if (owner != null) {
                 tameable.setOwner(owner);
+            }
+        }
+        if (useWandName) {
+            Wand wand = context.getWand();
+            if (wand != null) {
+                spawnedEntity.setCustomName(wand.getName());
             }
         }
         entity = new WeakReference<>(spawnedEntity);

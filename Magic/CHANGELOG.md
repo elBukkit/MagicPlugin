@@ -71,6 +71,8 @@
  - Add `ModifyNoDamageTicks` action, for rapidly damaging mobs and players by bypassing vanilla damage cooldowns
  - Add `food_level` parameter to Feed action, for directly setting food level
  - Add ColorItem action, and very-rare rainbow dragon
+ - Add `auto_absorb_sp` option to turn off automatically absorbing SP items on pickup
+ - Add `use_wand_name` option to SpawnEntity action
 
 # 8.3.4
 
@@ -153,7 +155,6 @@
  - Villager NPCs can't be traded with (by default, set cancel_interact to false to change)
  - Turn off "undo on world save" feature in world_other to avoid automata self-destructing on save
  - The Wolf House item was removed from the magic item shop. (It's from engineering configs, is OP and semi-broken)
- - Add `auto_absorb_sp` option to turn off automatically absorbing SP items on pickup
 
 ## Additions
 
