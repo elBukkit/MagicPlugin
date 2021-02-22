@@ -3621,7 +3621,7 @@ public class MagicController implements MageController {
         worldController.load(properties.getConfigurationSection("world_modification"));
 
         // Link to generic protection plugins
-        protectionManager.initialize(plugin, properties.getStringList("generic_protection"));
+        protectionManager.initialize(plugin, ConfigurationUtils.getStringList(properties, "generic_protection"));
     }
 
     @Nullable
