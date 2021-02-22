@@ -21,7 +21,7 @@ nuke:
             - class: Serial
               actions:
               - class: Repeat
-                repeat: 4
+                repeat: 6
                 actions:
                 - class: Delay
                   delay: 1000
@@ -35,7 +35,7 @@ nuke:
                   - class: Velocity
                     ignore_result: true
               - class: Repeat
-                repeat: 4
+                repeat: 6
                 actions:
                 - class: Delay
                   delay: 1000
