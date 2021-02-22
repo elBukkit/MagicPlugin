@@ -232,6 +232,7 @@ rainbowdragon:
   offhand: dragonwingleftwhite
   helmet: dragonbodywhite
   interval: 100
+  interval_requires_target: false
   triggers:
     interval:
       cast: rainbowdragon
