@@ -951,7 +951,6 @@ public class MagicController implements MageController {
                 throw new FileNotFoundException();
             }
         } catch (Exception ignored) {
-            getLogger().warning("Could not load schematic: " + schematicName);
             inputSchematic = null;
         }
         return inputSchematic;
@@ -1006,6 +1005,9 @@ public class MagicController implements MageController {
                 ex.printStackTrace();
             }
         });
+        if (schematic == null) {
+            getLogger().warning("Could not load schematic: " + schematicName);
+        }
 
         return schematic;
     }
