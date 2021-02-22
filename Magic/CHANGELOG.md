@@ -23,9 +23,6 @@
 
 ## Changes
 
- - The Secure spell has been disabled, and locked containers can be broken.
-   Unfortunately Minecraft changed how these locks worked. Until Spigot accepts my PR to fix the new behavior, Secure
-   will not work.
  - Cast spawn rules no longer force self-targeting, you may need to adjust spells to account for this
  - The default resource pack setting is now "auto" instead of "off".
    Use `/mconfig configure config resource_pack_default_auto false` to switch it back off.

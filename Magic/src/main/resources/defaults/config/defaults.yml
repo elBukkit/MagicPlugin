@@ -400,10 +400,7 @@ click_cooldown: 150
 open_cooldown: 500
 
 # Whether or not allow players breaking locked containers they don't own
-# This is used with the Secure spell.
-# However, since this functionality was completely broken by a Minecraft update, until Spigot allows a patch
-# Secure and this feature are turned off.
-protect_locked: false
+protect_locked: true
 
 # Visible particle max range
 # Decrease this if you find you have client or server performance issues

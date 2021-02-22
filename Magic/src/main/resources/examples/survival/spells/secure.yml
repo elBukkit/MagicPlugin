@@ -1,5 +1,4 @@
 secure:
-    enabled: false
     icon: trapped_chest{CustomModelData:18001}
     icon_disabled: trapped_chest{CustomModelData:18002}
     legacy_icon: spell_icon:183
