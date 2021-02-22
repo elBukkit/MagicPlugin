@@ -18,7 +18,7 @@ attributes:
     description: Время мира Майнкрафт, выраженное в тиках - от 0 до 23999
   moon:
     name: Фаза луны
-    description: 0 = Полнолуние, 1 = Убывающая луна, 4 = Новолуние, 7 = Растущая луна
+    description: 0 = Полнолуние, 1 = Стареющая луна, 4 = Новолуние, 7 = Растущая луна
   location_x:
     name: X-Координата
     description: X-Координата, на которой находится игрок или моб
@@ -74,6 +74,27 @@ commands:
     no_permission: "&cУ тебя нет права на использование этой команды."
     in_game: "&cЭта команда может быть использована только в игре."
     unknown_command: "&cНеизвестная команда: &f$command"
+    mkit:
+      usage: "&cИспользование: /mkit [игрок] <название>"
+      console_usage: "&cИспользование (консоль): mkit [игрок] <название>"
+      unknown_kit: "&cНеправильное название: &f$kit"
+      unknown_player: "&cИгрок не найден: &f$player"
+      cooldown: "Подожди $time."
+      no_requirements: "Тебе не разрешено использовать этот набор предметов"
+    magic:
+        help_header: |-
+          &8 ----------------------------------------------------
+          &8|
+          &8|   &b&lПЛАГИН MAGIC
+          &8|
+        help_footer: |-
+          &8|
+          &8 ----------------------------------------------------
+        help: |-
+          &8| &7> &fПомощь по командам в плагине - &6/help magic
+          &8| &7> &fЧаВо: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
+          &8| &7> &fПомощь: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
+          &8| &7> &fДискорд: &6https://discord.com/invite/Vk5nK5h
     mconfig:
       write_failed: "&cОшибка записи $file"
       example:
