@@ -247,7 +247,10 @@ public class BlockController implements Listener, ChunkLoadListener {
                     downBlock = downBlock.getRelative(BlockFace.DOWN);
                 }
             }
-            DeprecatedUtils.setTypeAndData(targetBlock, Material.AIR, (byte) 0, false);
+            if (!CompatibilityUtils.isWaterLoggable(targetBlock)) {
+                NMSUtils.clearItems(targetBlock.getLocation());
+                DeprecatedUtils.setTypeAndData(targetBlock, Material.AIR, (byte) 0, false);
+            }
             event.setCancelled(true);
         }
     }

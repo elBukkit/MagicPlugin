@@ -2090,6 +2090,22 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static boolean isWaterLoggable(Block block) {
+        if (class_Waterlogged == null || class_Waterlogged_setWaterloggedMethod == null
+            || class_Block_setBlockDataMethod == null || class_Block_getBlockDataMethod == null) {
+            return false;
+        }
+
+        try {
+            Object blockData = class_Block_getBlockDataMethod.invoke(block);
+            if (blockData == null) return false;
+            return class_Waterlogged.isAssignableFrom(blockData.getClass());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     public static boolean setWaterlogged(Block block, boolean waterlogged) {
         if (class_Waterlogged == null || class_Waterlogged_setWaterloggedMethod == null
             || class_Block_setBlockDataMethod == null || class_Block_getBlockDataMethod == null) {
