@@ -50,6 +50,7 @@ netherside_mobs:
         zombified_piglin: 5
         hoglin: 2
         zoglin: 4
+        remove: 1000
 
     rabbit:
       class: Replace

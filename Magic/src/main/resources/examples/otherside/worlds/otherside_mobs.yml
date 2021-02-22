@@ -32,6 +32,7 @@ otherside_mobs:
         werewolf: 10
         madscientist: 1
         enderman: 1000
+        remove: 10000
 
     rabbit:
       class: Replace
