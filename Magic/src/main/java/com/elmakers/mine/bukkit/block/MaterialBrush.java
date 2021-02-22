@@ -758,6 +758,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public void setTarget(Location target, Location center) {
         if (target == null || center == null || mage == null) return;
+        if (parent != null) {
+            parent.setTarget(target, center);
+        }
         orientVector = target.toVector().subtract(center.toVector());
         orientVector.setX(Math.abs(orientVector.getX()));
         orientVector.setY(Math.abs(orientVector.getY()));

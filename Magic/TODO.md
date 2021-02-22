@@ -7,6 +7,7 @@ Losing wizard armor on death- maybe only while cloaked? https://streamable.com/d
 ## Hot
 
  - SpawnEntity option to use the name of the wand that summons it as the entity name
+ - Passives don't upgrade (see critical)
 
  - Night asking about cooldowns on dragon mount spell, shouldn't they reset at end of cast?
  - Automaton parameters don't seem to work, when applied with CreateAutomaton or a populator
