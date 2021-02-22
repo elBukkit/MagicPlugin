@@ -51,11 +51,10 @@ public class CastRule extends BlockRule {
     @Nonnull
     public BlockResult onHandle(Block block, Random random, Player cause) {
         String[] standardParameters = {
-            "pworld", block.getLocation().getWorld().getName(),
-            "px", Integer.toString(block.getLocation().getBlockX()),
-            "py", Integer.toString(block.getLocation().getBlockY()),
-            "pz", Integer.toString(block.getLocation().getBlockZ()),
-            "target", "self",
+            "tworld", block.getLocation().getWorld().getName(),
+            "tx", Integer.toString(block.getLocation().getBlockX()),
+            "ty", Integer.toString(block.getLocation().getBlockY()),
+            "tz", Integer.toString(block.getLocation().getBlockZ()),
             "quiet", "true"
         };
 
