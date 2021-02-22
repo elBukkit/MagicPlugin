@@ -1,11 +1,45 @@
 world_lucky:
-  world: world_lucky
+  world: world
   block_break:
     lucky_cobble:
       class: Cast
-      type: cobblestone
+      type: cobblestone,stone
       spells:
         lucky_loot: 10
         lucky_potion: 20
         lucky_block: 30
+        none: 100
+    lucky_dirt:
+      class: Cast
+      types: dirt,grass_block
+      spells:
+        lucky_loot: 10
+        lucky_potion: 20
+        lucky_block: 30
+        none: 100
+
+world_nether_lucky:
+  world: world_nether
+  block_break:
+    lucky_cobble:
+      class: Cast
+      type: netherrack
+      spells:
+        lucky_loot: 10
+        lucky_potion: 20
+        lucky_block: 30
+        unlucky_potion: 1
+        none: 100
+
+world_the_end_lucky:
+  world: world_the_end
+  block_break:
+    lucky_cobble:
+      class: Cast
+      type: end_stone
+      spells:
+        lucky_loot: 10
+        lucky_potion: 20
+        lucky_block: 30
+        unlucky_potion: 1
         none: 100

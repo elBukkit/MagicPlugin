@@ -1,20 +1,128 @@
-lucky_loot:
-  actions:
+lucky_block_base:
+  hidden: false
+  effects:
     cast:
-      - class: Message
+    - location: target
+      use_block_location: true
+      effectlib:
+        class: Modified
+        iterations: 30
+        color_override: effect.color
+        parameters:
+          edge_length: "(1-(t/i)) * 0.5"
+        effect:
+          class: CubeEffect
+          particle: redstone
+          enable_rotation: false
+          offset: 0.5,0.5,0.5
+          duration: 1000
   parameters:
-    message: "Loot!"
+    target: self
 
 lucky_potion:
+  inherit: lucky_block_base
   actions:
     cast:
-      - class: Message
+     - class: ChangeContext
+       target_caster: true
+       actions:
+       - class: Random
+         actions:
+         - class: PotionEffect
+           add_effects: absorption
+         - class: PotionEffect
+           add_effects: conduit_power
+         - class: PotionEffect
+           add_effects: damage_resistance
+         - class: PotionEffect
+           add_effects: dolphins_grace
+         - class: PotionEffect
+           add_effects: fast_digging
+         - class: PotionEffect
+           add_effects: fire_resistance
+         - class: PotionEffect
+           add_effects: heal
+         - class: PotionEffect
+           add_effects: health_boost
+         - class: PotionEffect
+           add_effects: increase_damage
+         - class: PotionEffect
+           add_effects: invisibility
+         - class: PotionEffect
+           add_effects: jump
+         - class: PotionEffect
+           add_effects: levitation
+         - class: PotionEffect
+           add_effects: luck
+         - class: PotionEffect
+           add_effects: night_vision
+         - class: PotionEffect
+           add_effects: regeneration
+         - class: PotionEffect
+           add_effects: saturation
+         - class: PotionEffect
+           add_effects: slow_falling
+         - class: PotionEffect
+           add_effects: speed
+         - class: PotionEffect
+           add_effects: water_breathing
   parameters:
-    message: "Potion!"
+    color: "#00FFAA"
+
+unlucky_potion:
+  inherit: lucky_block_base
+  actions:
+    cast:
+     - class: ChangeContext
+       target_caster: true
+       actions:
+     - class: Random
+       actions:
+       - class: PotionEffect
+         add_effects: blindness
+       - class: PotionEffect
+         add_effects: confusion
+       - class: PotionEffect
+         add_effects: harm
+       - class: PotionEffect
+         add_effects: poison
+       - class: PotionEffect
+         add_effects: slow
+       - class: PotionEffect
+         add_effects: slow_digging
+       - class: PotionEffect
+         add_effects: unluck
+       - class: PotionEffect
+         add_effects: weakness
+       - class: PotionEffect
+         add_effects: wither
+  parameters:
+    color: "#FF0000"
 
 lucky_block:
+  inherit: lucky_block_base
   actions:
     cast:
-      - class: Message
+      - class: Random
+        actions:
+        - class: DropItem
+          item: iron_ore
+        - class: DropItem
+          item: gold_ore
   parameters:
-    message: "Block!"
+    color: "#FFFFFF"
+
+lucky_loot:
+  inherit: lucky_block_base
+  actions:
+    cast:
+      - class: Random
+        actions:
+        - class: DropItem
+          item: sp:5
+        - class: DropItem
+          item: gold_nugget
+        - class: DropItem
+          item: iron_nugget
+  parameters:
+    color: "#FFFF00"

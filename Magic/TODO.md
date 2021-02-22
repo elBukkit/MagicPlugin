@@ -6,7 +6,8 @@
 yeah you're opening it when you click with bubble spell (left click - cast, right click - open, e - switching spell inventory)
 https://streamable.com/wfx0gi
 https://streamable.com/2pqquj
-So how to reproduce: Place chest and place there some items, then you will use bubble spell and then you're repeatedly cast it on the chest. BUT you have to click with LEFT, RIGHT mouse buttons and E (to inventory switch) at once.
+So how to reproduce: Place chest and place there some items, then you will use bubble spell and then you're repeatedly cast it on the chest.
+BUT you have to click with LEFT, RIGHT mouse buttons and E (to inventory switch) at once.
 
 So the order of events afaik were; pick up spell to move it, hover outside spell inv to change spell,
 blink casts causing inventory to close and spell i was moving drops to the ground.
@@ -23,6 +24,9 @@ Losing wizard armor on death- maybe only while cloaked? https://streamable.com/d
 # Fixed Armor lost somehow when messing around with wand controls menu? https://streamable.com/muy1pt
 
 ## Hot
+
+ - SpawnEntity option to use the name of the wand that summons it as the entity name
+ - Option to automatically absorb SP pickups
 
  - Editor needs to escape | in filenames
 
