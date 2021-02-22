@@ -544,10 +544,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     extendedBlockData = CompatibilityUtils.getBlockData(block);
                 }
 
-                if (material == Material.AIR) {
-                    // Clear chests and flower pots so they don't dump their contents.
-                    clearItems(blockState);
-                }
+                // Clear chests and flower pots so they don't dump their contents.
+                clearItems(blockState);
 
                 DeprecatedUtils.setTypeAndData(block, material, blockData, applyPhysics);
                 if (extendedBlockData != null) {
