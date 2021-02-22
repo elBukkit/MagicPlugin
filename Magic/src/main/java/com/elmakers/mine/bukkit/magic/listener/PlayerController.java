@@ -81,6 +81,7 @@ public class PlayerController implements Listener {
     private boolean cancelInteractOnLeftClick = true;
     private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
+    private boolean autoAbsorbSP = true;
     private long lastDropWarn = 0;
     private int logoutDelay = 0;
 
@@ -102,6 +103,7 @@ public class PlayerController implements Listener {
         cancelInteractOnLeftClick = properties.getBoolean("cancel_interact_on_left_click", true);
         cancelInteractOnRightClick = properties.getBoolean("cancel_interact_on_right_click", false);
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
+        autoAbsorbSP = properties.getBoolean("auto_absorb_sp", true);
     }
 
     private void trigger(Player player, String trigger) {
@@ -1049,7 +1051,7 @@ public class PlayerController implements Listener {
         }
 
         // Auto-absorb SP items
-        if (Wand.isSP(pickup)) {
+        if (autoAbsorbSP && Wand.isSP(pickup)) {
             if (mage.getActiveProperties().addItem(pickup)) {
                 event.getItem().remove();
                 event.setCancelled(true);

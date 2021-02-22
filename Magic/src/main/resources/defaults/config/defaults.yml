@@ -368,6 +368,9 @@ sp_max: 9999
 # The amount of SP that new players start with
 sp_default: 0
 
+# Set to false if you don't want SP items to automatically absorb on pickup
+auto_absorb_sp: true
+
 # This controls what players will see when interacting with an enchantment table
 # These spells must exit in your configuration for this to work, and "enchant_block" needs to be set.
 # enchant_click: progressmenu

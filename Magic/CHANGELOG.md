@@ -153,6 +153,7 @@
  - Villager NPCs can't be traded with (by default, set cancel_interact to false to change)
  - Turn off "undo on world save" feature in world_other to avoid automata self-destructing on save
  - The Wolf House item was removed from the magic item shop. (It's from engineering configs, is OP and semi-broken)
+ - Add `auto_absorb_sp` option to turn off automatically absorbing SP items on pickup
 
 ## Additions
 
