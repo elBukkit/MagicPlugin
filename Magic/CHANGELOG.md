@@ -152,6 +152,7 @@
  - Wands now must have an explicit "craftable: true" parameter to be allowed as a crafting ingredient
  - Villager NPCs can't be traded with (by default, set cancel_interact to false to change)
  - Turn off "undo on world save" feature in world_other to avoid automata self-destructing on save
+ - The Wolf House item was removed from the magic item shop. (It's from engineering configs, is OP and semi-broken)
 
 ## Additions
 

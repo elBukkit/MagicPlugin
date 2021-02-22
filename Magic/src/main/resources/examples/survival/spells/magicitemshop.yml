@@ -55,9 +55,5 @@ magicitemshop:
         - item: none
         - item: wand|invisiblecloak
           cost: 100000
-        - item: none
-        - item: none
-        - item: none
-        - item: wand|wolfhouse
-          cost: 1000000
+
 
