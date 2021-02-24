@@ -202,3 +202,15 @@ cat:
     class: OcelotSpell
     parameters:
         max_ocelots: 5
+
+harden|2:
+    parameters:
+        brush: smooth_brick
+
+harden|3:
+    parameters:
+        brush: smooth_brick
+
+harden|4:
+    parameters:
+        brush: smooth_brick

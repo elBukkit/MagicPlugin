@@ -94,3 +94,15 @@ superfly:
         -  class: EffectSingle
            sound: entity_enderdragon_flap
            sound_pitch: 0.2
+
+harden|2:
+    parameters:
+        brush: smooth_brick
+
+harden|3:
+    parameters:
+        brush: smooth_brick
+
+harden|4:
+    parameters:
+        brush: smooth_brick
