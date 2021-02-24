@@ -9,6 +9,8 @@ workbench:
     quick_cast: true
     worth: 80
     show_undoable: false
+    upgrade_required_casts: 50
+    upgrade_required_path: apprentice
     actions:
         cast:
         - class: Inventory
@@ -27,7 +29,31 @@ workbench:
             particle_offset_y: 1
     parameters:
         target: none
-        cooldown: 5000
+        cooldown: 20000
         type: workbench
     costs:
-        mana: 30
+        mana: 80
+
+workbench|2:
+    upgrade_required_casts: 50
+    upgrade_required_path: student
+    parameters:
+        cooldown: 10000
+    costs:
+        mana: 40
+
+workbench|3:
+    upgrade_required_casts: 50
+    upgrade_required_path: student
+    parameters:
+        cooldown: 5000
+    costs:
+        mana: 20
+
+workbench|4:
+    upgrade_required_casts: 100
+    upgrade_required_path: master
+    parameters:
+        cooldown: 0
+    costs:
+        mana: 0
