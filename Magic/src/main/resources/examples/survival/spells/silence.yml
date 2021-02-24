@@ -7,6 +7,8 @@ silence:
     category: dark
     worth: 750
     earns_sp: 10
+    upgrade_required_casts: 50
+    upgrade_required_path: master
     actions:
         cast:
         - class: CustomProjectile
@@ -56,13 +58,27 @@ silence:
              radius: 1
              particles: 20
     costs:
-        mana: 80
+        mana: 140
     parameters:
         range: 16
         cooldown: 20000
-        duration: 5000
+        duration: 6000
         target_type: LivingEntity
         target_breakables: 1
         target: other
         hitbox: true
+
+silence|2:
+    costs:
+        mana: 120
+    parameters:
+        cooldown: 18000
+        duration: 8000
+
+silence|3:
+    costs:
+        mana: 100
+    parameters:
+        cooldown: 16000
+        duration: 10000
 
