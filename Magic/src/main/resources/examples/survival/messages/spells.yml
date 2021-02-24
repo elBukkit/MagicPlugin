@@ -46,6 +46,7 @@ spells:
         name: Silence
         description: Prevent your target from casting spells
         cast: You silence $target
+        upgrade_description: "Decreased manacost and cooldown, increased duration"
     curse:
         name: Curse
         description: Slows down and weakens the target
@@ -216,7 +217,13 @@ spells:
         description: Make the target blocks stronger
         cast: Hardened $count blocks
     harden|2:
-        upgrade_description: "Now converts to obsidian"
+        upgrade_description: "Increased duration. Now converts to stone bricks"
+    harden|3:
+        upgrade_description: "Increased duration. Now converts to smooth"
+    harden|4:
+        upgrade_description: "Increased duration. Now converts to polished blackstone"
+    harden|5:
+        upgrade_description: "Increased duration. Now converts to obsidian"
     disarm:
         name: Disarm
         description: Disarm your opponent
@@ -280,7 +287,7 @@ spells:
     shuriken:
         name: Shuriken
         description: Throw a bouncing projectile
-        upgrade_description: "Increased target hit count and duration"
+        upgrade_description: "Increased duration"
     wave:
         name: Wave
         description: Unleash a concussive wave
@@ -387,6 +394,7 @@ spells:
         name: Meteor Shower
         description: Fire death from above
         cast: You rain fire from the heavens
+        upgrade_description: "Decreased cooldown, increased shards count"
     bomb:
         name: Carpet Bomb
         description: Rain death from above
@@ -414,6 +422,7 @@ spells:
         description: Summon a focused sunbeam
         usage: Only works during the daytime.\nDeals more damage at noon
         cast: You summoned a sunbeam!
+        upgrade_description: "Increased max damage, decreased delay"
     smite:
         name: Smite
         description: Strike down your target
@@ -650,6 +659,7 @@ spells:
         name: Workbench
         description: Crafting on the go
         cast: Get to work!
+        upgrade_description: "Decreased cooldown and manacost"
     superlaser:
         name: SuperLaser
         description: Permanently destroy a line of blocks
@@ -714,8 +724,7 @@ spells:
         description: Teleport you to other players
         usage: Aim down and cast to manage friends
         alternate_down_no_target: "&4No one is around"
-        no_target: |2-
-
+        no_target: |-
           &4No one is around to teleport to
           &3Aim down and cast to send friend requests!
         cast_to_player: Teleporting you to $target
@@ -888,7 +897,7 @@ spells:
         description: Blast through blocks and multiple targets
         cast: You fire a rail at $target
         no_target: You fire off a rail
-        upgrade_description: "Increased range and target hit count. Decreased cooldown and manacost."
+        upgrade_description: "Increased range and target hit count. Decreased cooldown and manacost"
     testdummy:
         name: Test Dummy
         description: Spawn a poor test dummy
@@ -986,7 +995,7 @@ spells:
         name: Petrify
         description: Immobilize your target
         cast: You petrify $target.
-        upgrade_description: "Increased duration"
+        upgrade_description: "Increased duration, decreased manacost"
     polymorph:
         name: Polymorph
         description: Turn your target into a sheep
