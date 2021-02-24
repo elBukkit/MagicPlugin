@@ -71,26 +71,31 @@ petrify:
              duration: $duration
              radius: 1
     costs:
-        mana: 100
+        mana: 120
     parameters:
         velocity: 150
         range: 48
         target_type: LivingEntity
         target_breakables: 1
         target: other
-        duration: 3000
+        duration: 4000
         effect_slow: 20
         effect_jump: -20
         effect_weakness: 5
+        effect_slow_digging: 5
         protection_count: 1000
         hitbox: true
         cooldown: 10000
 
 petrify|2:
     parameters:
-      duration: 5000
+        duration: 6000
+    costs:
+        mana: 100
 
 petrify|3:
     parameters:
-      duration: 7000
+        duration: 8000
+    costs:
+        mana: 80
 
