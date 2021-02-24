@@ -4,27 +4,31 @@ sunstrike:
   cast_on_no_target: false
   category: master
   pvp_restricted: true
+  upgrade_required_casts: 50
+  upgrade_required_path: master
   actions:
     cast:
      - class: CheckRequirements
-       requirements:
-        - time:
-            min: 0
-            max: 12000
        actions:
         - class: Delay
         - class: ChangeContext
-          source_at_target: true
+          source_is_target: true
           source_offset: 0,100,0
           actions:
             - class: CustomProjectile
               range: 255
+              target_self: true
               actions:
                 - class: AreaOfEffect
                   y_radius: 1
+                  target_self: true
                   actions:
                     - class: Damage
                     - class: Ignite
+       requirements:
+        - time:
+            min: 0
+            max: 12000
   effects:
     no_target: []
     tick:
@@ -58,23 +62,40 @@ sunstrike:
         class: Helix
         radius: $radius
         rotation: (t/i)*2
-        duration: 1000
-        iterations: 20
+        duration: 500
+        iterations: 10
       sound: magic.burn
   parameters:
-    target: other
+    target: block
     allow_max_range: true
     cooldown: 60000
     transparent: transparent_and_glass
     target_type: LivingEntity
-    target_self: true
     velocity: 500
     radius: 2
-    delay: 1500
+    delay: 2500
     range: 16
     duration: 5000
     damage_type: FIRE
-    damage: max(5,sin(3.14159*time/12000)*21)
+    damage: max(4,sin(3.14159*time/12000)*10)
   costs:
     mana: 100
+
+sunstrike|2:
+  upgrade_required_casts: 75
+  upgrade_required_path: master
+  parameters:
+    delay: 1500
+    damage: max(4,sin(3.14159*time/12000)*20)
+  costs:
+    mana: 150
+
+sunstrike|3:
+  upgrade_required_casts: 100
+  upgrade_required_path: master
+  parameters:
+    delay: 500
+    damage: max(4,sin(3.14159*time/12000)*40)
+  costs:
+    mana: 200
 
