@@ -16,16 +16,12 @@ import javax.annotation.Nullable;
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 
 public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
-
-    protected BoundingBox               area;
-    protected @Nullable String          worldName;
-
+    protected final Map<String,BoundingBox> areas = new HashMap<>();
     protected final Deque<BlockData>    blockList = new ArrayDeque<>();
     protected final Map<Long, BlockData> blockIdMap = new HashMap<>();
 
@@ -36,7 +32,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
     public BlockList(BlockList other)
     {
-        this.worldName = other.worldName;
         for (BlockData block : other)
         {
             BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(block);
@@ -77,33 +72,27 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockIdMap.get(id);
     }
 
-    public boolean contain(BlockData blockData)
-    {
+    @Override
+    public boolean contain(BlockData block) {
         // First do a sanity check with the map
         // Currently, we don't replace blocks!
-        if (contains(blockData)) return false;
-
-        // Check the world name
-        if (worldName != null && !worldName.equals(blockData.getWorldName())) return false;
-
-        // Set a world name if this block list doesn't have one yet
-        if (worldName == null || worldName.length() == 0) worldName = blockData.getWorldName();
-
-        BlockVector blockLocation = blockData.getPosition();
-        contain(blockLocation);
-
+        if (contains(block)) return false;
+        BoundingBox area = areas.get(block.getWorldName());
+        if (area == null) {
+            area = new BoundingBox(block.getPosition(), block.getPosition());
+            areas.put(block.getWorldName(), area);
+        } else {
+            area.contain(block.getPosition());
+        }
         return true;
     }
 
     @Override
+    @Deprecated
     public void contain(Vector vector)
     {
-        if (area == null)
-        {
-            area = new BoundingBox(vector, vector);
-        }
-        else
-        {
+        BoundingBox area = areas.values().iterator().next();
+        if (area != null) {
             area.contain(vector);
         }
     }
@@ -184,7 +173,12 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public BoundingBox getArea()
     {
-        return area;
+        return areas.values().iterator().next();
+    }
+
+    @Override
+    public Map<String, BoundingBox> getAreas() {
+        return areas;
     }
 
     public Collection<BlockData> getBlockList()
@@ -248,11 +242,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList.retainAll(arg0);
     }
 
-    public void setArea(BoundingBox area)
-    {
-        this.area = area;
-    }
-
     @Override
     @Nullable
     public Object[] toArray() {
@@ -267,13 +256,11 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
     @Override
     public void load(ConfigurationSection node) {
-        worldName = node.getString("world");
         List<String> blockData = node.getStringList("blocks");
         if (blockData != null) {
             for (String blockString : blockData) {
                 BlockData deserialized = com.elmakers.mine.bukkit.block.BlockData.fromString(blockString);
                 if (deserialized == null) continue;
-                if (worldName == null) worldName = deserialized.getWorldName();
                 add(deserialized);
             }
         }
@@ -281,7 +268,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
     @Override
     public void save(ConfigurationSection node) {
-        node.set("world", worldName);
         synchronized (blockList) {
             if (!blockList.isEmpty()) {
                 List<String> blockData = new ArrayList<>();
@@ -297,8 +283,9 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
     @Override
     @Nullable
+    @Deprecated
     public String getWorldName() {
-        return worldName;
+        return areas.keySet().iterator().next();
     }
 
     @Override
