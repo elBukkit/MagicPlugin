@@ -357,7 +357,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         if (parameters.contains("remove_when_far_away")) {
             removeWhenFarAway = parameters.getBoolean("remove_when_far_away");
-        } else if (persist) {
+        } else if (persist != null && persist) {
             removeWhenFarAway = false;
         }
         isDocile = parameters.getBoolean("docile");
