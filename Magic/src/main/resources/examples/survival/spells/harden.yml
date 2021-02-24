@@ -50,10 +50,10 @@ harden:
         size: 2
         destructible_override: true
         destructible: destructible,hardenable
-        brush: smooth_brick
+        brush: stone
         transparent: transparent_to_construction
         undo: 4000
-        cooldown: 1000
+        cooldown: 1500
         bypass_backfire: true
         select_self: false
         replace: true
@@ -62,7 +62,22 @@ harden:
 
 harden|2:
     parameters:
-        size: 3
+        undo: 5000
+        brush: stone_bricks
+
+harden|3:
+    parameters:
         undo: 6000
+        brush: smooth_stone
+
+harden|4:
+    parameters:
+        size: 3
+        undo: 7000
+        brush: polished_blackstone
+
+harden|5:
+    parameters:
+        undo: 8000
         brush: obsidian
 
