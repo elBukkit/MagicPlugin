@@ -451,6 +451,9 @@ public class EntityController implements Listener {
     {
         if (disableItemSpawn || com.elmakers.mine.bukkit.block.BlockData.undoing)
         {
+            controller.getLogger().info("*** Trying to spawn item but skipping due to disableItemSpawn?" + disableItemSpawn
+                    + " undoing?" + com.elmakers.mine.bukkit.block.BlockData.undoing
+                    + ": " + nameItem(event.getEntity().getItemStack()));
             event.setCancelled(true);
             return;
         }
@@ -458,6 +461,7 @@ public class EntityController implements Listener {
         Item itemEntity = event.getEntity();
         ItemStack spawnedItem = itemEntity.getItemStack();
         if (InventoryUtils.isTemporary(spawnedItem)) {
+            controller.getLogger().info("*** Trying to drop a temporary item: " + nameItem(event.getEntity().getItemStack()));
             event.setCancelled(true);
             return;
         }
@@ -503,6 +507,7 @@ public class EntityController implements Listener {
         */
         if (Wand.isSkill(spawnedItem))
         {
+            controller.getLogger().info("*** Trying to drop a skill item: " + nameItem(event.getEntity().getItemStack()));
             event.setCancelled(true);
             return;
         }
