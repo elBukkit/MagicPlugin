@@ -66,17 +66,17 @@ public class EffectLibManager {
     }
 
     @Nullable
-    public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap) {
-        return loadEffect(true, configuration, player, origin, target, parameterMap);
+    public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, String logContext) {
+        return loadEffect(true, configuration, player, origin, target, parameterMap, logContext);
     }
 
     @Nullable
-    public EffectLibPlay validate(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap) {
-        return loadEffect(false, configuration, player, origin, target, parameterMap);
+    public EffectLibPlay validate(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, String logContext) {
+        return loadEffect(false, configuration, player, origin, target, parameterMap, logContext);
     }
 
     @Nullable
-    public EffectLibPlay loadEffect(boolean play, ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap) {
+    public EffectLibPlay loadEffect(boolean play, ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, String logContext) {
         // Check visibility type
         Player targetPlayer = null;
         switch (player.getVisibility()) {
@@ -160,7 +160,7 @@ public class EffectLibManager {
         }
 
         try {
-            effect = effectManager.getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer);
+            effect = effectManager.getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer, logContext);
             if (effect != null) {
                 if (!parameters.contains("material")) {
                     MaterialAndData mat = player.getWorkingMaterial();

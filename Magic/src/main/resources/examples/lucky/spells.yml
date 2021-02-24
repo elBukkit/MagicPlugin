@@ -4,10 +4,10 @@ lucky_block_base:
     cast:
     - location: target
       use_block_location: true
+      color_override: effect.color
       effectlib:
         class: Modified
         iterations: 30
-        color_override: effect.color
         parameters:
           edge_length: "(1-(t/i)) * 0.5"
         effect:

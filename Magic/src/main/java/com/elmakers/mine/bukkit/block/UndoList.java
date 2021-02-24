@@ -269,14 +269,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         if (entity == null) return;
         if (spawnedEntities == null) spawnedEntities = new HashMap<>();
-        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
 
         spawnedEntities.put(entity.getUniqueId(), new SpawnedEntity(entity));
         if (this.isScheduled()) {
             EntityMetadataUtils.instance().setBoolean(entity, "magicspawned", true);
         }
         watch(entity);
-        contain(entity.getLocation().toVector());
+        contain(entity.getLocation());
         modifiedTime = System.currentTimeMillis();
     }
 
@@ -703,9 +702,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void watch(Entity entity)
     {
         if (entity == null) return;
-        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return;
-        if (worldName == null) worldName = entity.getWorld().getName();
-
         setUndoList(entity, this);
         modifiedTime = System.currentTimeMillis();
     }
@@ -715,8 +711,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public EntityData modify(Entity entity) {
         EntityData entityData = null;
         if (entity == null || EntityMetadataUtils.instance().getBoolean(entity, "notarget")) return entityData;
-        if (worldName != null && !entity.getWorld().getName().equals(worldName)) return entityData;
-        if (worldName == null) worldName = entity.getWorld().getName();
 
         // Check to see if this is something we spawned, and has now been destroyed
         UUID entityId = entity.getUniqueId();
@@ -895,10 +889,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public boolean contains(Location location, int threshold)
     {
-        if (location == null || area == null || worldName == null) return false;
-        if (!location.getWorld().getName().equals(worldName)) return false;
-
-        return area.contains(location.toVector(), threshold);
+        BoundingBox area = areas.get(location.getWorld().getName());
+        return area != null && area.contains(location.toVector(), threshold);
     }
 
     @Override

@@ -4586,7 +4586,9 @@ public class MagicController implements MageController {
     public void update(com.elmakers.mine.bukkit.api.block.BlockList blockList)
     {
         if (blockList != null) {
-            update(blockList.getWorldName(), blockList.getArea());
+            for (Map.Entry<String, ? extends BoundingBox> entry : blockList.getAreas().entrySet()) {
+                update(entry.getKey(), entry.getValue());
+            }
         }
     }
 

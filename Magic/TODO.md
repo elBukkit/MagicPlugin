@@ -3,10 +3,13 @@
 ## Data/item Loss
 
 Losing wizard armor on death- maybe only while cloaked? https://streamable.com/dr1gnt
+Bug with test.yml spell and changing worlds via warp, undo breaks
 
 ## Hot
 
- - SpawnEntity option to use the name of the wand that summons it as the entity name
+ - Wand modifiers should be merged in as part of Mage.updatePassiveEffects, not in wand activate/deactivate
+   Need modifiers to work on wand armor and offhand
+ - CheckTrigger should be able to use a full trigger config, not just a key name
  - Passives don't upgrade (see critical)
 
  - Night asking about cooldowns on dragon mount spell, shouldn't they reset at end of cast?
@@ -16,6 +19,7 @@ Losing wizard armor on death- maybe only while cloaked? https://streamable.com/d
 
  - New mob triggers? (cornelia)
    enters water, flys/falls, walks, stands still, etc?
+ - New plyaer triggers (NeoFalcon) for blocking/stop blocking
 
  - spellbooks use glowing spell icons?
  - hit/entity _count parameters don't work with EntityProjectile
