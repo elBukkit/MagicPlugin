@@ -1085,7 +1085,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     @Nullable
     public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log) {
-         return getPotionEffectObjects(baseConfig, key, log, 3600000, 0, true, true);
+         return getPotionEffectObjects(baseConfig, key, log, Integer.MAX_VALUE, 0, true, true);
     }
 
     @Nullable
