@@ -297,6 +297,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
     }
 
+    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
+        return loadEffects(plugin, root, key, null, null);
+    }
+
     public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, Logger logger, String logContext) {
         List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
         Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
@@ -782,10 +786,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             }
             currentEffects.clear();
         }
-    }
-
-    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
-        return loadEffects(plugin, root, key, null, null);
     }
 
     @SuppressWarnings("deprecation")
