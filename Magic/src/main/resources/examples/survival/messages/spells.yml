@@ -219,7 +219,7 @@ spells:
     harden|2:
         upgrade_description: "Increased duration. Now converts to stone bricks"
     harden|3:
-        upgrade_description: "Increased duration. Now converts to smooth"
+        upgrade_description: "Increased duration. Now converts to smooth stone"
     harden|4:
         upgrade_description: "Increased duration. Now converts to polished blackstone"
     harden|5:
