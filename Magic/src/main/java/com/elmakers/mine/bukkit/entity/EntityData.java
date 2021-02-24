@@ -127,6 +127,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isHidden;
     protected boolean useNPCName;
     protected boolean preventDismount;
+    protected Boolean invisible = null;
     protected Boolean persist = null;
     protected Boolean removeWhenFarAway = null;
     protected int fireTicks;
@@ -193,6 +194,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.type = entity.getType();
         this.fireTicks = entity.getFireTicks();
         this.isSilent = CompatibilityUtils.isSilent(entity);
+        this.invisible = CompatibilityUtils.isInvisible(entity);
         // This will actually always be true so we need a better way to track this.
         // this.persist = CompatibilityUtils.isPersist(entity);
         this.canPickupItems = (entity instanceof Creature) ? ((Creature)entity).getCanPickupItems() : false;
@@ -359,6 +361,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             removeWhenFarAway = parameters.getBoolean("remove_when_far_away");
         } else if (persist != null && persist) {
             removeWhenFarAway = false;
+        }
+        if (parameters.contains("invisible")) {
+            invisible = parameters.getBoolean("invisible");
         }
         isDocile = parameters.getBoolean("docile");
         transformable = parameters.getBoolean("transformable", true);
@@ -861,6 +866,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (persist != null) {
             CompatibilityUtils.setPersist(entity, persist);
         }
+        if (invisible != null) {
+            CompatibilityUtils.setInvisible(entity, invisible);
+        }
         if (removeWhenFarAway != null) {
             CompatibilityUtils.setRemoveWhenFarAway(entity, removeWhenFarAway);
         }
@@ -1056,7 +1064,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         } else if (entity instanceof ItemFrame) {
             ItemFrame itemFrame = (ItemFrame)entity;
-            itemFrame.setItem(item);
+            if (item != null) {
+                itemFrame.setItem(item);
+            }
             if (facing != null) {
                 itemFrame.setFacingDirection(facing, true);
             }

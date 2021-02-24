@@ -1,0 +1,5 @@
+invisible_item_frame:
+  item: item_frame
+  tags:
+    EntityTag:
+      Invisible: 1

@@ -950,6 +950,27 @@ public class CompatibilityUtils extends NMSUtils {
         return 0;
     }
 
+    public static void setInvisible(Entity entity, boolean invisible) {
+        if (class_Entity_setInvisible == null) return;
+        try {
+            Object handle = getHandle(entity);
+            class_Entity_setInvisible.invoke(handle, invisible);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static Boolean isInvisible(Entity entity) {
+        if (class_Entity_isInvisible == null) return null;
+        try {
+            Object handle = getHandle(entity);
+            return (boolean)class_Entity_isInvisible.invoke(handle);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public static void setYawPitch(Entity entity, float yaw, float pitch) {
         try {
             Object handle = getHandle(entity);

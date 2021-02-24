@@ -260,6 +260,8 @@ public class NMSUtils {
     protected static Method class_ChestLock_getString;
     protected static Method class_ArmorStand_setInvisible;
     protected static Method class_ArmorStand_setGravity;
+    protected static Method class_Entity_setInvisible;
+    protected static Method class_Entity_isInvisible;
     protected static Method class_Entity_setNoGravity;
     protected static Method class_CraftPlayer_getHandleMethod;
     protected static Method class_CraftPlayer_getProfileMethod;
@@ -703,6 +705,15 @@ public class NMSUtils {
                 logger.info("Async chunk loading API found");
             } catch (Throwable ignore) {
                 class_World_getChunkAtAsyncMethod = null;
+            }
+
+            try {
+                class_Entity_setInvisible = class_Entity.getDeclaredMethod("setInvisible", Boolean.TYPE);
+                class_Entity_isInvisible = class_Entity.getDeclaredMethod("isInvisible");
+            } catch (Throwable ignore) {
+                getLogger().warning("Entity.setInvisible method not found, can't set every entity type invisible");
+                class_Entity_setInvisible = null;
+                class_Entity_isInvisible = null;
             }
 
             try {
