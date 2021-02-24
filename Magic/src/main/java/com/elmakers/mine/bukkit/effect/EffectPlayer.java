@@ -297,11 +297,49 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
     }
 
-    @Override
-    public void validate() {
-        if (effectLib != null && effectLibConfig != null) {
-            effectLib.validate(effectLibConfig, this, null, null, parameterMap);
+    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, Logger logger, String logContext) {
+        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
+        Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
+        if (effectNodes != null)
+        {
+            for (ConfigurationSection effectValues : effectNodes)
+            {
+                String effectClass = effectValues.getString("class", "EffectSingle");
+                try {
+                    if (!effectClass.contains(".")) {
+                        if (!effectClass.startsWith("Effect")) {
+                            effectClass = "Effect" + effectClass;
+                        }
+                        effectClass = EFFECT_BUILTIN_CLASSPATH + "." + effectClass;
+                    }
+                    Class<?> genericClass = effectClasses.get(effectClass);
+                    if (genericClass == null) {
+                        genericClass = Class.forName(effectClass);
+                        effectClasses.put(effectClass, genericClass);
+                    }
+                    if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
+                        throw new Exception("Must extend EffectPlayer");
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
+                    EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
+                    player.load(plugin, effectValues, logger, logContext);
+                    players.add(player);
+                } catch (ClassNotFoundException unknown) {
+                    if (logger != null) {
+                        logger.warning("Unknown effect class in " + logContext + ": " + effectClass);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    if (logger != null) {
+                        logger.warning("Error creating effect class in " + logContext + ": " + effectClass + " " + ex.getMessage());
+                    }
+                }
+            }
         }
+
+        return players;
     }
 
     public void setLocationType(String locationType) {
@@ -432,53 +470,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
-    @SuppressWarnings("deprecation")
-    protected void performEffects(DynamicLocation source, DynamicLocation target) {
-        Location sourceLocation = source == null ? null : source.getLocation();
-        if (sourceLocation == null) return;
-        Entity sourceEntity = source == null ? null : source.getEntity();
-        if (requireEntity && sourceEntity == null) return;
-
+    @Override
+    public void validate() {
         if (effectLib != null && effectLibConfig != null) {
-            EffectLibPlay play = effectLib.play(effectLibConfig, this, source, target, parameterMap);
-            if (currentEffects != null && play != null)
-            {
-                currentEffects.add(play);
-            }
-        }
-        if (effect != null) {
-            int data = effectData == null ? 0 : effectData;
-            if ((effect == Effect.STEP_SOUND) && effectData == null) {
-                Material material = getWorkingMaterial().getMaterial();
-
-                // Check for potential bad materials, this can get really hairy (client crashes)
-                if (!material.isSolid()) {
-                    return;
-                }
-                sourceLocation.getWorld().playEffect(sourceLocation, effect, material);
-            } else {
-                sourceLocation.getWorld().playEffect(sourceLocation, effect, data);
-            }
-        }
-        if (entityEffect != null && sourceEntity != null) {
-            sourceEntity.playEffect(entityEffect);
-        }
-        if (sound != null) {
-            if (broadcastSound) {
-                sound.play(plugin, getLogger(), sourceLocation);
-            } else if (sourceEntity != null) {
-                sound.play(plugin, getLogger(), sourceEntity);
-            }
-        }
-        if (fireworkEffect != null) {
-            EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower, fireworkSilent);
-        }
-
-        if (particleType != null) {
-            Particle useEffect = overrideParticle(particleType);
-            Material material = getWorkingMaterial().getMaterial();
-            Short data = getWorkingMaterial().getData();
-            displayParticle(useEffect, sourceLocation, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, particleSize, getColor1(), material, data == null ? 0 : (byte)(short)data, PARTICLE_RANGE);
+            effectLib.validate(effectLibConfig, this, null, null, parameterMap, logContext);
         }
     }
 
@@ -793,49 +788,54 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return loadEffects(plugin, root, key, null, null);
     }
 
-    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, Logger logger, String logContext) {
-        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
-        Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
-        if (effectNodes != null)
-        {
-            for (ConfigurationSection effectValues : effectNodes)
-            {
-                String effectClass = effectValues.getString("class", "EffectSingle");
-                try {
-                    if (!effectClass.contains(".")) {
-                        if (!effectClass.startsWith("Effect")) {
-                            effectClass = "Effect" + effectClass;
-                        }
-                        effectClass = EFFECT_BUILTIN_CLASSPATH + "." + effectClass;
-                    }
-                    Class<?> genericClass = effectClasses.get(effectClass);
-                    if (genericClass == null) {
-                        genericClass = Class.forName(effectClass);
-                        effectClasses.put(effectClass, genericClass);
-                    }
-                    if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
-                        throw new Exception("Must extend EffectPlayer");
-                    }
+    @SuppressWarnings("deprecation")
+    protected void performEffects(DynamicLocation source, DynamicLocation target) {
+        Location sourceLocation = source == null ? null : source.getLocation();
+        if (sourceLocation == null) return;
+        Entity sourceEntity = source == null ? null : source.getEntity();
+        if (requireEntity && sourceEntity == null) return;
 
-                    @SuppressWarnings("unchecked")
-                    Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
-                    EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
-                    player.load(plugin, effectValues, logger, logContext);
-                    players.add(player);
-                } catch (ClassNotFoundException unknown) {
-                    if (logger != null) {
-                        logger.warning("Unknown effect class: " + effectClass);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    if (logger != null) {
-                        logger.warning("Error creating effect class: " + effectClass + " " + ex.getMessage());
-                    }
-                }
+        if (effectLib != null && effectLibConfig != null) {
+            EffectLibPlay play = effectLib.play(effectLibConfig, this, source, target, parameterMap, logContext);
+            if (currentEffects != null && play != null)
+            {
+                currentEffects.add(play);
             }
         }
+        if (effect != null) {
+            int data = effectData == null ? 0 : effectData;
+            if ((effect == Effect.STEP_SOUND) && effectData == null) {
+                Material material = getWorkingMaterial().getMaterial();
 
-        return players;
+                // Check for potential bad materials, this can get really hairy (client crashes)
+                if (!material.isSolid()) {
+                    return;
+                }
+                sourceLocation.getWorld().playEffect(sourceLocation, effect, material);
+            } else {
+                sourceLocation.getWorld().playEffect(sourceLocation, effect, data);
+            }
+        }
+        if (entityEffect != null && sourceEntity != null) {
+            sourceEntity.playEffect(entityEffect);
+        }
+        if (sound != null) {
+            if (broadcastSound) {
+                sound.play(plugin, getLogger(), sourceLocation);
+            } else if (sourceEntity != null) {
+                sound.play(plugin, getLogger(), sourceEntity);
+            }
+        }
+        if (fireworkEffect != null) {
+            EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower, fireworkSilent);
+        }
+
+        if (particleType != null) {
+            Particle useEffect = overrideParticle(particleType);
+            Material material = getWorkingMaterial().getMaterial();
+            Short data = getWorkingMaterial().getData();
+            displayParticle(useEffect, sourceLocation, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, particleSize, getColor1(), material, data == null ? 0 : (byte)(short)data, PARTICLE_RANGE);
+        }
     }
 
     @Override
