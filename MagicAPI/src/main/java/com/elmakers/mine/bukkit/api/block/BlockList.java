@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
@@ -43,6 +44,12 @@ public interface BlockList extends Collection<BlockData> {
      */
     @Deprecated
     void contain(Vector vector);
+    void contain(Location location);
+
+    /**
+     * Expands the area to contain the block.
+     * Returns false if this block is already a part of this list.
+     */
     boolean contain(BlockData block);
     boolean contains(Block block);
     @Nonnull

@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
@@ -70,6 +71,17 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         long id = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
         add(block);
         return blockIdMap.get(id);
+    }
+
+    @Override
+    public void contain(Location location) {
+        BoundingBox area = areas.get(location.getWorld().getName());
+        if (area == null) {
+            area = new BoundingBox(location.toVector(), location.toVector());
+            areas.put(location.getWorld().getName(), area);
+        } else {
+            area.contain(location.toVector());
+        }
     }
 
     @Override
@@ -171,6 +183,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     // the blockList.
 
     @Override
+    @Deprecated
     public BoundingBox getArea()
     {
         return areas.values().iterator().next();
