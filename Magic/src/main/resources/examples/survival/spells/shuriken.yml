@@ -1,6 +1,4 @@
 shuriken:
-    # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
-    inherit: false
     icon: emerald{CustomModelData:18002}
     icon_disabled: emerald{CustomModelData:18003}
     legacy_icon: spell_icon:194
@@ -14,14 +12,16 @@ shuriken:
     actions:
         cast:
         -  class: CustomProjectile
-           actions:
-           -  class: ModifyNoDamageTicks
-           -  class: Damage
+           tick_size: 0.1
+           tick:
+           -  class: AreaOfEffect
+              actions:
+              -  class: Damage
     effects:
         tick:
         -  particle: block_crack
            material: iron_block
-           particle_count: 4
+           particle_count: 1
            particle_offset_x: 0.01
            particle_offset_y: 0.01
            particle_offset_z: 0.01
@@ -45,31 +45,37 @@ shuriken:
             sound: magic.bonk
             sound_volume: 0.2
         hit_entity:
-        -  sound: entity_arrow_hit
+        -  sound: entity_player_hurt_sweet_berry_bush
            sound_pitch: 1.6
     parameters:
+        target: block
+        target_self: true
+        target_self_timeout: 1500
         range: 32
-        target_type: Damageable
+        radius: 0.6
+        y_radius: 1.5
+        target_type: LivingEntity
         reflective: solid
         transparent: transparent
-        cooldown: 8000
+        cooldown: 10000
         velocity: 20
-        entity_hit_count: 3
         damage: 3
-        lifetime: 8000
-        hit_on_miss: true
+        lifetime: 5000
     costs:
-        mana: 80
+        mana: 120
 
 shuriken|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
         lifetime: 10000
-        entity_hit_count: 5
+    costs:
+        mana: 100
 
 shuriken|3:
     parameters:
-        lifetime: 12000
-        entity_hit_count: 7
+        lifetime: 15000
+    costs:
+        mana: 80
+
 
