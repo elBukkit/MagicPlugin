@@ -7,24 +7,62 @@ meteor:
     category: combat
     worth: 1500
     earns_sp: 5
+    upgrade_required_casts: 75
+    upgrade_required_path: master
     actions:
         cast:
         - class: ChangeContext
+          source_offset: 0,50,0
+          relative_source_offset: -15,0,0
           actions:
-          - class: Multiply
+          - class: CustomProjectile
+            tick_effects: big
+            projectile_effects: projectile_big
+            hit_effects: hit_big
+            spread: 0.1
+            range: 128
             actions:
-            - class: Delay
-            - class: CustomProjectile
+            - class: AreaOfEffect
+              radius: 16
+              y_radius: 16
               actions:
-              - class: AreaOfEffect
-                radius: 5
+              - class: Ignite
+              - class: Velocity
+                push: 3
+                velocity_max_distance: 24
+              - class: Damage
+                damage_multiplier: 5
+                damage_min_distance: 8
+                damage_max_distance: 24
+            - class: Sphere
+              radius: 10
+              actions:
+              - class: Skip
                 actions:
-                - class: Velocity
-                - class: Ignite
-                - class: Damage
-              -  class: Sphere
-                 actions:
-                 -  class: ModifyBlock
+                  - class: Delay
+              - class: ModifyBlock
+            tick:
+            - class: Skip
+              actions:
+                - class: Multiply
+                  actions:
+                  - class: ChangeContext
+                    source_at_target: true
+                    actions:
+                    - class: Asynchronous
+                      actions:
+                      - class: CustomProjectile
+                        gravity: 0.1
+                        range: 128
+                        actions:
+                          - class: AreaOfEffect
+                            actions:
+                              - class: Ignite
+                              - class: Velocity
+                              - class: Damage
+                          - class: Sphere
+                            actions:
+                              - class: ModifyBlock
     effects:
         cast:
         -  sound: ambient_nether_wastes_mood
@@ -37,6 +75,9 @@ meteor:
         -  class: EffectSingle
            custom_sound: magic.burn
            location: both
+        -  sound: entity_lightning_bolt_thunder
+           sound_pitch: 0.6
+           sound_volume: 1.8
         -  class: EffectSingle
            location: target
            target_offset: 0,.15,0
@@ -46,10 +87,44 @@ meteor:
              iterations: 5
              radius: 5
              particle: drip_lava
-        tick:
-        - particle: fireworks_spark
+        projectile:
+        - location: origin
+          effectlib:
+            class: Sphere
+            duration: $lifetime
+            radius: 0.1
+            particle: lava
+            particles: 8
+        projectile_big:
+        - location: origin
+          effectlib:
+            class: Sphere
+            duration: $lifetime
+            radius: 3
+            particle: lava
+            particles: 20
+            particle_count: 3
+            particle_offset_x: 0.5
+            particle_offset_y: 0.5
+            particle_offset_z: 0.5
+        big:
+        - particle: campfire_signal_smoke
           location: target
-          particle_count: 3
+          particle_count: 5
+          particle_data: 0.006
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+        - particle: smoke_large
+          location: target
+          particle_count: 15
+          particle_offset_x: 3
+          particle_offset_y: 3
+          particle_offset_z: 3
+        tick:
+        - particle: campfire_cosy_smoke
+          location: target
+          particle_count: 1
           particle_offset_x: 0.1
           particle_offset_y: 0.1
           particle_offset_z: 0.1
@@ -59,65 +134,93 @@ meteor:
           particle_offset_x: .7
           particle_offset_y: .7
           particle_offset_z: .7
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: SphereEffect
-             particle: lava
-             iterations: 100
-             period: 3
-             particles: 4
-             particle_count: 2
-             particle_offset_x: 0.1
-             particle_offset_y: 0.1
-             particle_offset_z: 0.1
-             radius: 0.5
-        hit:
-        - class: EffectSingle
-          location: target
-          color: FE2E2E
-          firework: ball_large
-        - class: EffectSingle
+        hit_big:
+        - location: target
           sound: entity_generic_explode
-          sound_volume: 2
-          location: both
-        - class: EffectSingle
-          target_offset: 0,0.5,0
-          location: target
-          color: FE2E2E
-          firework: burst
+          sound_pitch: 0.3
+          sound_volume: 2.0
           particle: explosion_huge
+          particle_count: 3
+          particle_offset_x: 2.5
+          particle_offset_y: 2.5
+          particle_offset_z: 2.5
+        - location: target
+          sound: entity_firework_rocket_large_blast
+          sound_pitch: 0.7
+          sound_volume: 2.0
+          effectlib:
+            class: Modified
+            duration: 400
+            iterations: 8
+            parameters:
+              radius: 3 + 10*(t/i)
+            effect:
+              class: Sphere
+              particle: explosion_normal
+              particles: 25
+              particle_data: 0.1
+              particle_count: 2
+              particle_offset_x: 1.5
+              particle_offset_y: 1.5
+              particle_offset_z: 1.5
+        hit:
+        - location: target
+          sound: entity_generic_explode
+          sound_pitch: 0.6
+          sound_volume: 1.5
+          particle: explosion_large
+          particle_count: 3
+          particle_offset_x: 2.5
+          particle_offset_y: 2.5
+          particle_offset_z: 2.5
+        - location: target
+          sound: entity_firework_rocket_large_blast
+          sound_pitch: 1.0
+          sound_volume: 1.5
+          effectlib:
+            class: Modified
+            duration: 400
+            iterations: 8
+            parameters:
+              radius: 5*(t/i)
+            effect:
+              class: Sphere
+              particle: explosion_normal
+              particles: 5
+              particle_data: 0.1
+              particle_count: 2
+              particle_offset_x: 1.5
+              particle_offset_y: 1.5
+              particle_offset_z: 1.5
     parameters:
-        spread: 0.5
-        first:
-          spread: 0
-          delay: 0
+        multiply: 2
+        spread: 1.5
+        skip: 25
         radius: 3
-        delay: rand(0,2000)
-        multiply: rand(3,5)
-        target: other
-        item_speed: .5
-        living_entity_speed: .5
-        y_offset: 1
-        player_damage: 3
-        entity_damage: 3
+        y_radius: 4
+        push: 1
+        speed: 0.75
+        damage: 3
+        lifetime: 6000
         target_breakables: 1
-        range: 64
+        range: 32
         allow_max_range: true
-        hitbox: true
-        size: 1
-        velocity: 50
-        bypass_backfire: false
+        target_type: LivingEntity
+        target_self: true
+        delay: 50
         undo: 10000
+        duration: 5000
         cooldown: 45000
-        speed: 0.9
         falling: true
         brush: air
-        source_offset: 0,50,0
         direction: 0,0.75,0
         destructible: destructible,destructible2,destructible3
         destructible_override: true
         undo_speed: 2
     costs:
         mana: 200
+
+meteor|2:
+    parameters:
+        multiply: 3
+        cooldown: 30000
