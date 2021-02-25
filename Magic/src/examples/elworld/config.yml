@@ -30,7 +30,7 @@ examples:
 - chests
 - otherside
 - mars
-- lucky
+# - lucky
 
 # Testing custom currencies
 custom_currency:
