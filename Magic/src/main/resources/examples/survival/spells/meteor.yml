@@ -193,6 +193,8 @@ meteor:
               particle_offset_y: 1.5
               particle_offset_z: 1.5
     parameters:
+        target: block
+        falling_probability: 0.3
         multiply: 2
         spread: 1.5
         skip: 25
@@ -210,7 +212,7 @@ meteor:
         delay: 50
         undo: 10000
         duration: 5000
-        cooldown: 45000
+        cooldown: 60000
         falling: true
         brush: air
         direction: 0,0.75,0
@@ -223,4 +225,4 @@ meteor:
 meteor|2:
     parameters:
         multiply: 3
-        cooldown: 30000
+        cooldown: 45000
