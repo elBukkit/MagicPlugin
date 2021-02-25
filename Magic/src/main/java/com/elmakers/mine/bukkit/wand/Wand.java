@@ -1000,7 +1000,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public void takeOwnership(Player player) {
         boolean setMage = false;
         if (mage == null) {
-            mage = controller.getMage(player);
+            setMage(controller.getMage(player), false, null);
             setMage = true;
         }
 
@@ -4846,8 +4846,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setProperty("id", null);
         }
 
+        if (!setMage(mage, offhand, player)) {
+            return false;
+        }
         isActive = true;
-        this.mage = mage;
         this.isInOffhand = offhand;
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
 
@@ -4860,36 +4862,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         discoverRecipes("discover_recipes");
-
-        if (mageClassKeys != null && !mageClassKeys.isEmpty()) {
-            MageClass mageClass = null;
-
-            for (String mageClassKey : mageClassKeys) {
-                mageClass = mage.getClass(mageClassKey);
-                if (mageClass != null) break;
-            }
-
-            if (mageClass == null) {
-                Integer lastSlot = mage.getLastActivatedSlot();
-                if (!offhand && (lastSlot == null || lastSlot != player.getInventory().getHeldItemSlot())) {
-                    mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
-                    mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", getName()));
-                }
-                return false;
-            }
-            setMageClass(mageClass);
-            if (!offhand) {
-                mage.setActiveClass(mageClass.getKey());
-            }
-        }
-
-        MageParameters wrapped = new MageParameters(mage, "Wand " + getTemplateKey());
-        wrapped.wrap(configuration);
-        load(wrapped);
-
-        // This double-load here is not really ideal.
-        // Seems hard to prevent without merging Wand construction and activation, though.
-        loadProperties();
 
         // Add vanilla attributes
         // This is done here instead of in the Wand constructor because it will modify the ItemStack
@@ -5027,6 +4999,42 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             DeprecatedUtils.updateInventory(player);
         }
 
+        return true;
+    }
+
+    private boolean setMage(Mage mage, boolean offhand, Player player) {
+        this.mage = mage;
+        if (mageClassKeys != null && !mageClassKeys.isEmpty()) {
+            MageClass mageClass = null;
+
+            for (String mageClassKey : mageClassKeys) {
+                mageClass = mage.getClass(mageClassKey);
+                if (mageClass != null) break;
+            }
+
+            if (mageClass == null) {
+                if (player != null) {
+                    Integer lastSlot = mage.getLastActivatedSlot();
+                    if (!offhand && (lastSlot == null || lastSlot != player.getInventory().getHeldItemSlot())) {
+                        mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
+                        mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", getName()));
+                    }
+                }
+                return false;
+            }
+            setMageClass(mageClass);
+            if (!offhand && player != null) {
+                mage.setActiveClass(mageClass.getKey());
+            }
+        }
+
+        MageParameters wrapped = new MageParameters(mage, "Wand " + getTemplateKey());
+        wrapped.wrap(configuration);
+        load(wrapped);
+
+        // This double-load here is not really ideal.
+        // Seems hard to prevent without merging Wand construction and activation, though.
+        loadProperties();
         return true;
     }
 
