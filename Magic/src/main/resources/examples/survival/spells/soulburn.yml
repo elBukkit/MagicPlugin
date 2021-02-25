@@ -1,0 +1,98 @@
+soulburn:
+  icon: rotten_flesh{CustomModelData:18001}
+  icon_disabled: rotten_flesh{CustomModelData:18002}
+  earns_sp: 4
+  upgrade_required_casts: 50
+  upgrade_required_path: student
+  worth: 800
+  actions:
+    cast:
+    - class: CustomProjectile
+      actions:
+        - class: Damage
+  effects:
+    tick:
+      - location: target
+        particle: soul_fire_flame
+        particle_count: 2
+        particle_offset_x: 0.1
+        particle_offset_y: 0.1
+        particle_offset_z: 0.1
+      - location: target
+        particle: crit_magic
+        particle_count: 4
+        particle_offset_x: 0.3
+        particle_offset_y: 0.3
+        particle_offset_z: 0.3
+      - location: target
+        particle: bubble_pop
+        particle_count: 4
+        particle_offset_x: 0.3
+        particle_offset_y: 0.3
+        particle_offset_z: 0.3
+    hit:
+      - location: target
+        target_location: head
+        particle: bubble_pop
+        particle_count: 10
+        particle_data: 0.05
+        particle_offset_x: 0.3
+        particle_offset_y: 0.3
+        particle_offset_z: 0.3
+    hit_entity:
+      - location: target
+        sound: entity_generic_burn
+        sound_pitch: 0.8
+        sound_volume: 1.2
+        target_location: head
+        particle: soul_fire_flame
+        particle_count: 10
+        particle_data: 0.05
+        particle_offset_x: 0.3
+        particle_offset_y: 0.3
+        particle_offset_z: 0.3
+      - location: target
+        target_location: head
+        particle: soul
+        particle_count: 10
+        particle_data: 0.05
+        particle_offset_x: 0.5
+        particle_offset_y: 0.5
+        particle_offset_z: 0.5
+    cast:
+    - sound: magic.zap
+      sound_pitch: 1.2
+      sound_volume: 0.4
+    - sound: magic.burn
+      sound_pitch: 1.0
+      sound_volume: 0.8
+  parameters:
+    cooldown: 30000
+    hitbox: true
+    hitbox_size: 1.3
+    range: 16
+    target: other
+    target_type: LivingEntity
+    player_damage: max(4,0.25*target_health_max*((target_mana_max - target_mana)/max(1,target_mana_max)))
+    entity_damage: 4
+  costs:
+    mana: 150
+
+soulburn|2:
+  parameters:
+    cooldown: 26000
+    player_damage: max(4,0.5*target_health_max*((target_mana_max - target_mana)/max(1,target_mana_max)))
+    entity_damage: 6
+
+soulburn|3:
+  parameters:
+    cooldown: 22000
+    player_damage: max(4,0.75*target_health_max*((target_mana_max - target_mana)/max(1,target_mana_max)))
+    entity_damage: 8
+
+soulburn|4:
+  parameters:
+    cooldown: 18000
+    player_damage: max(4,1.0*target_health_max*((target_mana_max - target_mana)/max(1,target_mana_max)))
+    entity_damage: 10
+
