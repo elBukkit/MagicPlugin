@@ -23,6 +23,8 @@
 
 ## Changes
 
+ - Resource packs now all come from a different URL. The S3 links may stop working at some point in the future,
+   so it is a good idea to update if you're using your own configured URLs!
  - Cast spawn rules no longer force self-targeting, you may need to adjust spells to account for this
  - The default resource pack setting is now "auto" instead of "off".
    Use `/mconfig configure config resource_pack_default_auto false` to switch it back off.
@@ -542,7 +544,7 @@
    the command.
  - Add cast_spell requirement, can be used for making spell combos (see combo example spell)
  - Update painterly example to use modern RP. To use the old one:
-   resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-8-1.zip"
+   resource_pack: "http://rp.elmakers.com/Magic-painterly-RP-8-1.zip"
 
 # 7.10.6
 
@@ -2009,7 +2011,7 @@ I hope you enjoy! Please let me know if you run into any issues.
    - Fix the Heroes Wand
    - Add "example: heroes" configs with craftable Heroes wand
    - Add Magic Skill Pack, all default Magic spells packaged as skills:
-     https://s3-us-west-2.amazonaws.com/elmakers/Magic/MagicHeroesSkills.zip
+     http://rp.elmakers.com/MagicHeroesSkills.zip
    - Support pass-through parameters from skill configs to Magic spell skills
    - Add Skill Book item, craftable in heroes example configs
    - Allow "tier" in a skill config to use a levelled-up version of a spell as a skill.

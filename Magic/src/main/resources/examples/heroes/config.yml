@@ -18,7 +18,7 @@ show_cast_messages: false
 url_icons_enabled: true
 
 # Use the flat skull RP if you're using skull icons
-default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/flat-skulls.zip"
+default_resource_pack: "http://rp.elmakers.com/flat-skulls.zip"
 
 # The chances of this RP ever updating are very slim, so skip checking for updates
 resource_pack_check_interval: 0
@@ -44,7 +44,7 @@ heroes_skill_prefix: ""
 # Skip loading configs if you want
 # Though you may want to keep wands for the Heroes wand
 # and spells for the Heroes skill pack, available at
-# https://s3-us-west-2.amazonaws.com/elmakers/Magic/MagicHeroesSkills.zip
+# http://rp.elmakers.com/MagicHeroesSkills.zip
 # load_default_wands: false
 # load_default_paths: false
 # load_default_spells: false

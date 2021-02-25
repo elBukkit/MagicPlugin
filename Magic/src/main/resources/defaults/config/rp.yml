@@ -1,6 +1,6 @@
 # This resource pack will automatically be used if none is defined in your server.properties
 # Set this to "" if you have some other plugin or Bungee managing resource packs.
-resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-8-1.16.zip"
+resource_pack: "http://rp.elmakers.com/Magic-RP-8-1.16.zip"
 
 # Use this to turn off all resource pack functionality
 enable_resource_pack: true
@@ -47,11 +47,11 @@ resource_pack_default_auto: true
 # Alternate resource packs can be accessed with /getrp <pack>
 alternate_resource_packs:
   borders:
-    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-potter-RP-8-1.16.zip"
+    url: "http://rp.elmakers.com/Magic-potter-RP-8-1.16.zip"
   painterly:
-    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-painterly-RP-8-1.16.zip"
+    url: "http://rp.elmakers.com/Magic-painterly-RP-8-1.16.zip"
   lowres:
-    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-lowres-RP-8-1.16.zip"
+    url: "http://rp.elmakers.com/Magic-lowres-RP-8-1.16.zip"
   skulls:
-    url: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-skulls-RP-8-1.16.zip"
+    url: "http://rp.elmakers.com/Magic-skulls-RP-8-1.16.zip"
     url_icons_enabled: true

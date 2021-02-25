@@ -438,7 +438,7 @@ Just in case anyone is actually using the API:
   was made to support the official Magic resource pack, which are free to use- simply add the following to your server.properties file:
 
 ```  
-resource-pack=https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP.zip
+resource-pack=http://rp.elmakers.com/Magic-RP.zip
 ```
 
 ## 2.9.9

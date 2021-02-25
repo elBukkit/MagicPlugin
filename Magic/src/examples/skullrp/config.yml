@@ -1,5 +1,5 @@
 # Enable the 6.0 resource pack
-default_resource_pack: "https://s3-us-west-2.amazonaws.com/elmakers/Magic/Magic-RP-6.zip"
+default_resource_pack: "http://rp.elmakers.com/Magic-RP-6.zip"
 
 # Turn on player-skull-based spell icons
 url_icons_enabled: true
