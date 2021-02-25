@@ -96,6 +96,7 @@ import com.elmakers.mine.bukkit.api.entity.TeamProvider;
 import com.elmakers.mine.bukkit.api.event.LoadEvent;
 import com.elmakers.mine.bukkit.api.event.PreLoadEvent;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
+import com.elmakers.mine.bukkit.api.integration.ClientPlatform;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
@@ -155,6 +156,7 @@ import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BattleArenaManager;
 import com.elmakers.mine.bukkit.integration.GenericMetadataNPCSupplier;
+import com.elmakers.mine.bukkit.integration.GeyserManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
 import com.elmakers.mine.bukkit.integration.LogBlockManager;
@@ -1145,399 +1147,7 @@ public class MagicController implements MageController {
         resourcePacks.startResourcePackChecks();
     }
 
-    protected void finalizeIntegration() {
-        final PluginManager pluginManager = plugin.getServer().getPluginManager();
-
-        // Check for SkillAPI
-        Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
-        if (skillAPIPlugin != null && skillAPIEnabled && skillAPIPlugin.isEnabled()) {
-            skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
-            if (skillAPIManager.initialize()) {
-                getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
-                if (useSkillAPIAllies) {
-                    getLogger().info("SKillAPI allies will be respected in friendly fire checks");
-                }
-                if (useSkillAPIMana) {
-                    getLogger().info("SkillAPI mana will be used by spells and wands");
-                }
-            } else {
-                skillAPIManager = null;
-                getLogger().warning("SkillAPI integration failed");
-            }
-        } else if (!skillAPIEnabled) {
-            skillAPIManager = null;
-            getLogger().info("SkillAPI integration disabled");
-        }
-
-        // Check for BattleArenas
-        Plugin battleArenaPlugin = pluginManager.getPlugin("BattleArena");
-        if (battleArenaPlugin != null) {
-            if (useBattleArenaTeams) {
-                try {
-                    battleArenaManager = new BattleArenaManager();
-                } catch (Throwable ex) {
-                    getLogger().log(Level.SEVERE, "Error integrating with BattleArena", ex);
-                }
-                getLogger().info("BattleArena found, teams will be respected in friendly fire checks");
-            } else {
-                battleArenaManager = null;
-                getLogger().info("BattleArena integration disabled");
-            }
-        }
-
-        // Check for WildStacker
-        if (pluginManager.isPluginEnabled("WildStacker")) {
-            if (useWildStacker) {
-                getLogger().info("Wild Stacker integration enabled");
-                pluginManager.registerEvents(new WildStackerListener(), plugin);
-            } else {
-                getLogger().info("Wild Stacker found, but integration disabled");
-            }
-        }
-
-        // Try to link to Heroes:
-        try {
-            Plugin heroesPlugin = pluginManager.getPlugin("Heroes");
-            if (heroesPlugin != null) {
-                heroesManager = new HeroesManager(plugin, heroesPlugin);
-            } else {
-                heroesManager = null;
-            }
-        } catch (Throwable ex) {
-            getLogger().warning(ex.getMessage());
-        }
-
-        // Vault integration
-        if (!vaultEnabled) {
-            getLogger().info("Vault integration disabled");
-        } else {
-            Plugin vaultPlugin = pluginManager.getPlugin("Vault");
-            if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
-                getLogger().info("Vault not found, 'currency' cost types unavailable");
-            } else {
-                if (!VaultController.initialize(plugin, vaultPlugin)) {
-                    getLogger().warning("Vault integration failed");
-                }
-            }
-        }
-
-        // Check for Minigames
-        Plugin minigamesPlugin = pluginManager.getPlugin("Minigames");
-        if (minigamesPlugin != null && minigamesPlugin.isEnabled()) {
-            pluginManager.registerEvents(new MinigamesListener(this), plugin);
-            getLogger().info("Minigames found, wands will deactivate before joining a minigame");
-        }
-
-        // Check for LibsDisguise
-        Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
-        if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
-            getLogger().info("LibsDisguises not found, magic mob disguises will not be available");
-        } else if (libsDisguiseEnabled) {
-            libsDisguiseManager = new LibsDisguiseManager(this, libsDisguisePlugin);
-            if (libsDisguiseManager.initialize()) {
-                getLogger().info("LibsDisguises found, mob disguises and disguise_restricted features enabled");
-            } else {
-                getLogger().warning("LibsDisguises integration failed");
-            }
-        } else {
-            libsDisguiseManager = null;
-            getLogger().info("LibsDisguises integration disabled");
-        }
-
-        // Check for MobArena
-        Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");
-        if (mobArenaPlugin == null) {
-            getLogger().info("MobArena not found");
-        } else if (mobArenaConfiguration.getBoolean("enabled", true)) {
-            try {
-                mobArenaManager = new MobArenaManager(this, mobArenaPlugin, mobArenaConfiguration);
-                getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
-            } catch (Throwable ex) {
-                getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
-            }
-        } else {
-            getLogger().info("MobArena integration disabled");
-        }
-
-        // Check for LogBlock
-        Plugin logBlockPlugin = pluginManager.getPlugin("LogBlock");
-        if (logBlockPlugin == null || !logBlockPlugin.isEnabled()) {
-            getLogger().info("LogBlock not found");
-        } else if (logBlockEnabled) {
-            try {
-                logBlockManager = new LogBlockManager(plugin, logBlockPlugin);
-                getLogger().info("Integrated with LogBlock, engineering magic will be logged");
-            } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "LogBlock integration failed", ex);
-            }
-        } else {
-            getLogger().info("LogBlock integration disabled");
-        }
-
-        // Try to link to Essentials:
-        Plugin essentials = pluginManager.getPlugin("Essentials");
-        essentialsController = null;
-        hasEssentials = essentials != null && essentials.isEnabled();
-        if (hasEssentials) {
-            essentialsController = EssentialsController.initialize(essentials);
-            if (essentialsController == null) {
-                getLogger().warning("Error integrating with Essentials");
-            } else {
-                getLogger().info("Integrating with Essentials for vanish detection");
-            }
-            if (warpController.setEssentials(essentials)) {
-                getLogger().info("Integrating with Essentials for Recall warps");
-            }
-            try {
-                mailer = new Mailer(essentials);
-            } catch (Exception ex) {
-                getLogger().warning("Essentials found, but failed to hook up to Mailer");
-                mailer = null;
-            }
-        }
-
-        if (essentialsSignsEnabled) {
-            final MagicController me = this;
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new EssentialsItemIntegrationTask(this), 5);
-        }
-
-        // Try to link to CommandBook
-        hasCommandBook = false;
-        try {
-            Plugin commandBookPlugin = plugin.getServer().getPluginManager().getPlugin("CommandBook");
-            if (commandBookPlugin != null && commandBookPlugin.isEnabled()) {
-                if (warpController.setCommandBook(commandBookPlugin)) {
-                    getLogger().info("CommandBook found, integrating for Recall warps");
-                    hasCommandBook = true;
-                } else {
-                    getLogger().warning("CommandBook integration failed");
-                }
-            }
-        } catch (Throwable ignored) {
-
-        }
-
-        // Link to factions
-        factionsManager.initialize(plugin);
-
-        // Try to (dynamically) link to WorldGuard:
-        worldGuardManager.initialize(plugin);
-
-        // Link to PvpManager
-        pvpManager.initialize(plugin);
-
-        // Link to Multiverse
-        multiverseManager.initialize(plugin);
-
-        // Link to DeadSouls
-        Plugin deadSoulsPlugin = plugin.getServer().getPluginManager().getPlugin("DeadSouls");
-        if (deadSoulsPlugin != null) {
-            try {
-                deadSoulsController = new DeadSoulsManager(this);
-            } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Error integrating with DeadSouls, is it up to date? Version 1.6 or higher required.", ex);
-            }
-        }
-
-        // Link to PreciousStones
-        preciousStonesManager.initialize(plugin);
-
-        // Link to Towny
-        townyManager.initialize(plugin);
-
-        // Link to Lockette
-        locketteManager.initialize(plugin);
-
-        // Link to GriefPrevention
-        griefPreventionManager.initialize(plugin);
-
-        // Link to NoCheatPlus
-        ncpManager.initialize(plugin);
-
-        // Try to link to dynmap:
-        try {
-            Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
-            if (dynmapPlugin != null && dynmapPlugin.isEnabled()) {
-                dynmap = new DynmapController(plugin, dynmapPlugin, messages);
-            } else {
-                dynmap = null;
-            }
-        } catch (Throwable ex) {
-            getLogger().warning(ex.getMessage());
-        }
-
-        if (dynmap == null) {
-            getLogger().info("dynmap not found, not integrating.");
-        } else {
-            getLogger().info("dynmap found, integrating.");
-        }
-
-        // Try to link to Elementals:
-        try {
-            Plugin elementalsPlugin = plugin.getServer().getPluginManager().getPlugin("Splateds_Elementals");
-            if (elementalsPlugin != null && elementalsPlugin.isEnabled()) {
-                elementals = new ElementalsController(elementalsPlugin);
-            } else {
-                elementals = null;
-            }
-        } catch (Throwable ex) {
-            getLogger().warning(ex.getMessage());
-        }
-
-        if (elementals != null) {
-            getLogger().info("Elementals found, integrating.");
-        }
-
-        // Check for Shopkeepers, this is an optimization to avoid scanning for metadata if the plugin is not
-        // present
-        hasShopkeepers = pluginManager.isPluginEnabled("Shopkeepers");
-        if (hasShopkeepers) {
-            npcSuppliers.register(new GenericMetadataNPCSupplier("shopkeeper"));
-        }
-
-        // Try to link to Citizens
-        try {
-            Plugin citizensPlugin = plugin.getServer().getPluginManager().getPlugin("Citizens");
-            if (citizensPlugin != null && citizensPlugin.isEnabled()) {
-                citizens = new CitizensController(citizensPlugin, this, citizensEnabled);
-            } else {
-                citizens = null;
-                getLogger().info("Citizens not found, Magic trait unavailable.");
-            }
-        } catch (Throwable ex) {
-            citizens = null;
-            getLogger().warning("Error integrating with Citizens");
-            getLogger().warning(ex.getMessage());
-        }
-
-        if (citizens != null) {
-            npcSuppliers.register(citizens);
-        }
-
-        // Placeholder API
-        if (placeholdersEnabled) {
-            if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
-               try {
-                   // Can only register this once
-                   if (placeholderAPIManager == null) {
-                       placeholderAPIManager = new PlaceholderAPIManager(this);
-                   }
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with PlaceholderAPI", ex);
-                }
-            }
-        } else {
-            getLogger().info("PlaceholderAPI integration disabled.");
-        }
-
-        // Light API
-        if (lightAPIEnabled) {
-            if (pluginManager.isPluginEnabled("LightAPI")) {
-                try {
-                    lightAPIManager = new LightAPIManager(plugin);
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with LightAPI", ex);
-                }
-            } else {
-                getLogger().info("LightAPI not found, Light action will not work");
-            }
-        } else {
-            lightAPIManager = null;
-            getLogger().info("LightAPI integration disabled.");
-        }
-
-        // Skript
-        if (skriptEnabled) {
-            if (pluginManager.isPluginEnabled("Skript")) {
-                try {
-                    new SkriptManager(this);
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with Skript", ex);
-                }
-            }
-        } else {
-            getLogger().info("Skript integration disabled.");
-        }
-
-        // ajParkour
-        if (ajParkourConfiguration.getBoolean("enabled")) {
-            if (pluginManager.isPluginEnabled("ajParkour")) {
-                try {
-                    ajParkourManager = new AJParkourManager(this);
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with ajParkour", ex);
-                }
-            }
-        } else {
-            getLogger().info("ajParkour integration disabled.");
-        }
-
-        // Citadel
-        if (citadelConfiguration.getBoolean("enabled")) {
-            if (pluginManager.isPluginEnabled("Citadel")) {
-                try {
-                    citadelManager = new CitadelManager(this, citadelConfiguration);
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with Citadel", ex);
-                }
-            }
-        } else {
-            getLogger().info("Citadel integration disabled.");
-        }
-
-        // Residence
-        if (residenceConfiguration.getBoolean("enabled")) {
-            if (pluginManager.isPluginEnabled("Residence")) {
-                try {
-                    residenceManager = new ResidenceManager(pluginManager.getPlugin("Residence"), this, residenceConfiguration);
-                    getLogger().info("Integrated with residence for build/break/pvp/target checks");
-                    getLogger().info("Disable warping to residences in recall config with allow_residence: false");
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with Residence", ex);
-                }
-            }
-        } else {
-            getLogger().info("Residence integration disabled.");
-        }
-
-        // RedProtect
-        if (redProtectConfiguration.getBoolean("enabled")) {
-            if (pluginManager.isPluginEnabled("RedProtect")) {
-                try {
-                    redProtectManager = new RedProtectManager(pluginManager.getPlugin("RedProtect"), this, redProtectConfiguration);
-                    getLogger().info("Integrated with RedProtect for build/break/pvp/target checks");
-                    getLogger().info("Disable warping to fields in recall config with allow_redprotect: false");
-                    if (redProtectManager.isFlagsEnabled()) {
-                        getLogger().info("Added custom flags: " + StringUtils.join(RedProtectManager.flags, ','));
-                    }
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with RedProtect", ex);
-                }
-            }
-        } else {
-            getLogger().info("RedProtect integration disabled.");
-        }
-
-        // Activate Metrics
-        activateMetrics();
-
-        // Set up the Mage update timer
-        final MageUpdateTask mageTask = new MageUpdateTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
-
-        // Set up the Block update timer
-        final BatchUpdateTask blockTask = new BatchUpdateTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, workFrequency);
-
-        // Set up the Automata timer
-        final AutomataUpdateTask automataTaks = new AutomataUpdateTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, automataTaks, 0, automataUpdateFrequency);
-
-        // Set up the Update check timer
-        final UndoUpdateTask undoTask = new UndoUpdateTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
-        registerListeners();
-    }
+    private GeyserManager                       geyserManager               = null;
 
     protected void postLoadIntegration() {
         if (mobArenaManager != null) {
@@ -7540,6 +7150,409 @@ public class MagicController implements MageController {
         return warpController.getMagicWarps();
     }
 
+    protected void finalizeIntegration() {
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
+
+        // Check for SkillAPI
+        Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
+        if (skillAPIPlugin != null && skillAPIEnabled && skillAPIPlugin.isEnabled()) {
+            skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
+            if (skillAPIManager.initialize()) {
+                getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
+                if (useSkillAPIAllies) {
+                    getLogger().info("SKillAPI allies will be respected in friendly fire checks");
+                }
+                if (useSkillAPIMana) {
+                    getLogger().info("SkillAPI mana will be used by spells and wands");
+                }
+            } else {
+                skillAPIManager = null;
+                getLogger().warning("SkillAPI integration failed");
+            }
+        } else if (!skillAPIEnabled) {
+            skillAPIManager = null;
+            getLogger().info("SkillAPI integration disabled");
+        }
+
+        // Check for BattleArenas
+        Plugin battleArenaPlugin = pluginManager.getPlugin("BattleArena");
+        if (battleArenaPlugin != null) {
+            if (useBattleArenaTeams) {
+                try {
+                    battleArenaManager = new BattleArenaManager();
+                } catch (Throwable ex) {
+                    getLogger().log(Level.SEVERE, "Error integrating with BattleArena", ex);
+                }
+                getLogger().info("BattleArena found, teams will be respected in friendly fire checks");
+            } else {
+                battleArenaManager = null;
+                getLogger().info("BattleArena integration disabled");
+            }
+        }
+
+        // Check for WildStacker
+        if (pluginManager.isPluginEnabled("WildStacker")) {
+            if (useWildStacker) {
+                getLogger().info("Wild Stacker integration enabled");
+                pluginManager.registerEvents(new WildStackerListener(), plugin);
+            } else {
+                getLogger().info("Wild Stacker found, but integration disabled");
+            }
+        }
+
+        // Try to link to Heroes:
+        try {
+            Plugin heroesPlugin = pluginManager.getPlugin("Heroes");
+            if (heroesPlugin != null) {
+                heroesManager = new HeroesManager(plugin, heroesPlugin);
+            } else {
+                heroesManager = null;
+            }
+        } catch (Throwable ex) {
+            getLogger().warning(ex.getMessage());
+        }
+
+        // Vault integration
+        if (!vaultEnabled) {
+            getLogger().info("Vault integration disabled");
+        } else {
+            Plugin vaultPlugin = pluginManager.getPlugin("Vault");
+            if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
+                getLogger().info("Vault not found, 'currency' cost types unavailable");
+            } else {
+                if (!VaultController.initialize(plugin, vaultPlugin)) {
+                    getLogger().warning("Vault integration failed");
+                }
+            }
+        }
+
+        // Check for Minigames
+        Plugin minigamesPlugin = pluginManager.getPlugin("Minigames");
+        if (minigamesPlugin != null && minigamesPlugin.isEnabled()) {
+            pluginManager.registerEvents(new MinigamesListener(this), plugin);
+            getLogger().info("Minigames found, wands will deactivate before joining a minigame");
+        }
+
+        // Check for LibsDisguise
+        Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
+        if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
+            getLogger().info("LibsDisguises not found, magic mob disguises will not be available");
+        } else if (libsDisguiseEnabled) {
+            libsDisguiseManager = new LibsDisguiseManager(this, libsDisguisePlugin);
+            if (libsDisguiseManager.initialize()) {
+                getLogger().info("LibsDisguises found, mob disguises and disguise_restricted features enabled");
+            } else {
+                getLogger().warning("LibsDisguises integration failed");
+            }
+        } else {
+            libsDisguiseManager = null;
+            getLogger().info("LibsDisguises integration disabled");
+        }
+
+        // Check for MobArena
+        Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");
+        if (mobArenaPlugin == null) {
+            getLogger().info("MobArena not found");
+        } else if (mobArenaConfiguration.getBoolean("enabled", true)) {
+            try {
+                mobArenaManager = new MobArenaManager(this, mobArenaPlugin, mobArenaConfiguration);
+                getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
+            } catch (Throwable ex) {
+                getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
+            }
+        } else {
+            getLogger().info("MobArena integration disabled");
+        }
+
+        // Check for LogBlock
+        Plugin logBlockPlugin = pluginManager.getPlugin("LogBlock");
+        if (logBlockPlugin == null || !logBlockPlugin.isEnabled()) {
+            getLogger().info("LogBlock not found");
+        } else if (logBlockEnabled) {
+            try {
+                logBlockManager = new LogBlockManager(plugin, logBlockPlugin);
+                getLogger().info("Integrated with LogBlock, engineering magic will be logged");
+            } catch (Throwable ex) {
+                getLogger().log(Level.WARNING, "LogBlock integration failed", ex);
+            }
+        } else {
+            getLogger().info("LogBlock integration disabled");
+        }
+
+        // Try to link to Essentials:
+        Plugin essentials = pluginManager.getPlugin("Essentials");
+        essentialsController = null;
+        hasEssentials = essentials != null && essentials.isEnabled();
+        if (hasEssentials) {
+            essentialsController = EssentialsController.initialize(essentials);
+            if (essentialsController == null) {
+                getLogger().warning("Error integrating with Essentials");
+            } else {
+                getLogger().info("Integrating with Essentials for vanish detection");
+            }
+            if (warpController.setEssentials(essentials)) {
+                getLogger().info("Integrating with Essentials for Recall warps");
+            }
+            try {
+                mailer = new Mailer(essentials);
+            } catch (Exception ex) {
+                getLogger().warning("Essentials found, but failed to hook up to Mailer");
+                mailer = null;
+            }
+        }
+
+        if (essentialsSignsEnabled) {
+            final MagicController me = this;
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new EssentialsItemIntegrationTask(this), 5);
+        }
+
+        // Try to link to CommandBook
+        hasCommandBook = false;
+        try {
+            Plugin commandBookPlugin = plugin.getServer().getPluginManager().getPlugin("CommandBook");
+            if (commandBookPlugin != null && commandBookPlugin.isEnabled()) {
+                if (warpController.setCommandBook(commandBookPlugin)) {
+                    getLogger().info("CommandBook found, integrating for Recall warps");
+                    hasCommandBook = true;
+                } else {
+                    getLogger().warning("CommandBook integration failed");
+                }
+            }
+        } catch (Throwable ignored) {
+
+        }
+
+        // Link to factions
+        factionsManager.initialize(plugin);
+
+        // Try to (dynamically) link to WorldGuard:
+        worldGuardManager.initialize(plugin);
+
+        // Link to PvpManager
+        pvpManager.initialize(plugin);
+
+        // Link to Multiverse
+        multiverseManager.initialize(plugin);
+
+        // Link to DeadSouls
+        Plugin deadSoulsPlugin = plugin.getServer().getPluginManager().getPlugin("DeadSouls");
+        if (deadSoulsPlugin != null) {
+            try {
+                deadSoulsController = new DeadSoulsManager(this);
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error integrating with DeadSouls, is it up to date? Version 1.6 or higher required.", ex);
+            }
+        }
+
+        // Link to PreciousStones
+        preciousStonesManager.initialize(plugin);
+
+        // Link to Towny
+        townyManager.initialize(plugin);
+
+        // Link to Lockette
+        locketteManager.initialize(plugin);
+
+        // Link to GriefPrevention
+        griefPreventionManager.initialize(plugin);
+
+        // Link to NoCheatPlus
+        ncpManager.initialize(plugin);
+
+        // Try to link to dynmap:
+        try {
+            Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
+            if (dynmapPlugin != null && dynmapPlugin.isEnabled()) {
+                dynmap = new DynmapController(plugin, dynmapPlugin, messages);
+            } else {
+                dynmap = null;
+            }
+        } catch (Throwable ex) {
+            getLogger().warning(ex.getMessage());
+        }
+
+        if (dynmap == null) {
+            getLogger().info("dynmap not found, not integrating.");
+        } else {
+            getLogger().info("dynmap found, integrating.");
+        }
+
+        // Try to link to Elementals:
+        try {
+            Plugin elementalsPlugin = plugin.getServer().getPluginManager().getPlugin("Splateds_Elementals");
+            if (elementalsPlugin != null && elementalsPlugin.isEnabled()) {
+                elementals = new ElementalsController(elementalsPlugin);
+            } else {
+                elementals = null;
+            }
+        } catch (Throwable ex) {
+            getLogger().warning(ex.getMessage());
+        }
+
+        if (elementals != null) {
+            getLogger().info("Elementals found, integrating.");
+        }
+
+        // Check for Shopkeepers, this is an optimization to avoid scanning for metadata if the plugin is not
+        // present
+        hasShopkeepers = pluginManager.isPluginEnabled("Shopkeepers");
+        if (hasShopkeepers) {
+            npcSuppliers.register(new GenericMetadataNPCSupplier("shopkeeper"));
+        }
+
+        // Try to link to Citizens
+        try {
+            Plugin citizensPlugin = plugin.getServer().getPluginManager().getPlugin("Citizens");
+            if (citizensPlugin != null && citizensPlugin.isEnabled()) {
+                citizens = new CitizensController(citizensPlugin, this, citizensEnabled);
+            } else {
+                citizens = null;
+                getLogger().info("Citizens not found, Magic trait unavailable.");
+            }
+        } catch (Throwable ex) {
+            citizens = null;
+            getLogger().warning("Error integrating with Citizens");
+            getLogger().warning(ex.getMessage());
+        }
+
+        if (citizens != null) {
+            npcSuppliers.register(citizens);
+        }
+
+        // Placeholder API
+        if (placeholdersEnabled) {
+            if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
+               try {
+                   // Can only register this once
+                   if (placeholderAPIManager == null) {
+                       placeholderAPIManager = new PlaceholderAPIManager(this);
+                   }
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with PlaceholderAPI", ex);
+                }
+            }
+        } else {
+            getLogger().info("PlaceholderAPI integration disabled.");
+        }
+
+        // Light API
+        if (lightAPIEnabled) {
+            if (pluginManager.isPluginEnabled("LightAPI")) {
+                try {
+                    lightAPIManager = new LightAPIManager(plugin);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with LightAPI", ex);
+                }
+            } else {
+                getLogger().info("LightAPI not found, Light action will not work");
+            }
+        } else {
+            lightAPIManager = null;
+            getLogger().info("LightAPI integration disabled.");
+        }
+
+        // Geyser
+        if (pluginManager.isPluginEnabled("Geyser-Spigot")) {
+            try {
+                geyserManager = new GeyserManager(this);
+            } catch (Throwable ex) {
+                getLogger().log(Level.WARNING, "Error integrating with Geyser", ex);
+            }
+        }
+
+        // Skript
+        if (skriptEnabled) {
+            if (pluginManager.isPluginEnabled("Skript")) {
+                try {
+                    new SkriptManager(this);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with Skript", ex);
+                }
+            }
+        } else {
+            getLogger().info("Skript integration disabled.");
+        }
+
+        // ajParkour
+        if (ajParkourConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("ajParkour")) {
+                try {
+                    ajParkourManager = new AJParkourManager(this);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with ajParkour", ex);
+                }
+            }
+        } else {
+            getLogger().info("ajParkour integration disabled.");
+        }
+
+        // Citadel
+        if (citadelConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("Citadel")) {
+                try {
+                    citadelManager = new CitadelManager(this, citadelConfiguration);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with Citadel", ex);
+                }
+            }
+        } else {
+            getLogger().info("Citadel integration disabled.");
+        }
+
+        // Residence
+        if (residenceConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("Residence")) {
+                try {
+                    residenceManager = new ResidenceManager(pluginManager.getPlugin("Residence"), this, residenceConfiguration);
+                    getLogger().info("Integrated with residence for build/break/pvp/target checks");
+                    getLogger().info("Disable warping to residences in recall config with allow_residence: false");
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with Residence", ex);
+                }
+            }
+        } else {
+            getLogger().info("Residence integration disabled.");
+        }
+
+        // RedProtect
+        if (redProtectConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("RedProtect")) {
+                try {
+                    redProtectManager = new RedProtectManager(pluginManager.getPlugin("RedProtect"), this, redProtectConfiguration);
+                    getLogger().info("Integrated with RedProtect for build/break/pvp/target checks");
+                    getLogger().info("Disable warping to fields in recall config with allow_redprotect: false");
+                    if (redProtectManager.isFlagsEnabled()) {
+                        getLogger().info("Added custom flags: " + StringUtils.join(RedProtectManager.flags, ','));
+                    }
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with RedProtect", ex);
+                }
+            }
+        } else {
+            getLogger().info("RedProtect integration disabled.");
+        }
+
+        // Activate Metrics
+        activateMetrics();
+
+        // Set up the Mage update timer
+        final MageUpdateTask mageTask = new MageUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
+
+        // Set up the Block update timer
+        final BatchUpdateTask blockTask = new BatchUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, workFrequency);
+
+        // Set up the Automata timer
+        final AutomataUpdateTask automataTaks = new AutomataUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, automataTaks, 0, automataUpdateFrequency);
+
+        // Set up the Update check timer
+        final UndoUpdateTask undoTask = new UndoUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
+        registerListeners();
+    }
+
     /*
      * Private data
      */
@@ -7835,6 +7848,10 @@ public class MagicController implements MageController {
     private BattleArenaManager                  battleArenaManager          = null;
     private PlaceholderAPIManager               placeholderAPIManager       = null;
     private LightAPIManager                     lightAPIManager             = null;
+
+    public ClientPlatform getClientPlatform(Player player) {
+        return geyserManager != null && geyserManager.isBedrock(player.getUniqueId()) ? ClientPlatform.BEDROCk : ClientPlatform.JAVA;
+    }
     private MobArenaManager                     mobArenaManager             = null;
     private LogBlockManager                     logBlockManager             = null;
     private EssentialsController                essentialsController        = null;

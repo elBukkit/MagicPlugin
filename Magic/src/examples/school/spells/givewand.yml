@@ -1,0 +1,31 @@
+givewand:
+  actions:
+    cast:
+      - class: CheckRequirements
+        requirements:
+        - client_platform: java
+        actions:
+        - class: CheckInventory
+          item: wand
+          actions:
+            - class: Message
+              message: You already have a wand!
+          fail:
+            - class: Message
+              message: Here you go! Use it wisely.
+            - class: GiveItem
+              item: wand
+        fail:
+          - class: CheckInventory
+            item: spellbook
+            actions:
+              - class: Message
+                message: You already have a spellbook!
+            fail:
+              - class: Message
+                message: Here you go! Use it wisely.
+              - class: GiveItem
+                item: spellbook
+  parameters:
+    target: self
+

@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.integration.ClientPlatform;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -53,6 +54,7 @@ public class MagicRequirement {
     private @Nullable RangedRequirement currency = null;
     private @Nullable String weather = null;
     private @Nullable String castSpell = null;
+    private @Nullable ClientPlatform clientPlatform = null;
     private int castTimeout = 0;
     private @Nonnull String currencyType = "currency";
     private boolean requireWand = false;
@@ -112,6 +114,14 @@ public class MagicRequirement {
         if (requiredTemplate != null || requiredTemplates != null || wandProperties != null || wandTags != null) {
             requireWand = true;
         }
+        String clientPlatformKey = configuration.getString("client_platform");
+        if (clientPlatformKey != null && !clientPlatformKey.isEmpty()) {
+            try {
+                clientPlatform = ClientPlatform.valueOf(clientPlatformKey.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid client_platform in requirement: " + clientPlatformKey);
+            }
+        }
     }
 
     @Nullable
@@ -169,6 +179,9 @@ public class MagicRequirement {
             return false;
         }
         if (notPermissionNode != null && player != null && player.hasPermission(notPermissionNode)) {
+            return false;
+        }
+        if (clientPlatform != null && mage.getClientPlatform() != clientPlatform) {
             return false;
         }
         Wand wand = context.getWand();
@@ -401,9 +414,11 @@ public class MagicRequirement {
         if (permissionNode != null && (player == null || !player.hasPermission(permissionNode))) {
             return context.getMessage(SpellResult.INSUFFICIENT_PERMISSION.name().toLowerCase());
         }
-
         if (notPermissionNode != null && player != null && player.hasPermission(notPermissionNode)) {
             return context.getMessage(SpellResult.INSUFFICIENT_PERMISSION.name().toLowerCase());
+        }
+        if (clientPlatform != null && mage.getClientPlatform() != clientPlatform) {
+            return context.getMessage("no_client_platform");
         }
         Wand wand = context.getWand();
         if (wand == null && requireWand) {

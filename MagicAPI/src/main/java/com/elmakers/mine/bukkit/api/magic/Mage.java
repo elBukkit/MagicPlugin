@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.integration.ClientPlatform;
 import com.elmakers.mine.bukkit.api.spell.CastParameter;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -785,4 +786,5 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean canCraft(String recipeKey);
     String parameterizeMessage(String command);
     String parameterize(String command, String prefix);
+    ClientPlatform getClientPlatform();
 }

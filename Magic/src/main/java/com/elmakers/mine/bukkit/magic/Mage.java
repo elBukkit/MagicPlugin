@@ -75,6 +75,7 @@ import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.event.WandDeactivatedEvent;
+import com.elmakers.mine.bukkit.api.integration.ClientPlatform;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
@@ -5392,5 +5393,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public boolean hasGivenWelcomeWand() {
         return gaveWelcomeWand;
+    }
+
+    public ClientPlatform getClientPlatform() {
+        Player player = getPlayer();
+        if (player == null) {
+            return ClientPlatform.JAVA;
+        }
+        return controller.getClientPlatform(player);
     }
 }

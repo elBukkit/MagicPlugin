@@ -21,6 +21,8 @@ Bug with test.yml spell and changing worlds via warp, undo breaks
    enters water, flys/falls, walks, stands still, etc?
  - New plyaer triggers (NeoFalcon) for blocking/stop blocking
 
+ - Allow enchantable wands to use an anvil/book
+
  - spellbooks use glowing spell icons?
  - hit/entity _count parameters don't work with EntityProjectile
  - Targeting options for passive or hostile mobs only

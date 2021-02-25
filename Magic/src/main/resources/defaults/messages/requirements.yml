@@ -13,6 +13,7 @@ requirements:
   no_path_exact: "&cYou must be at $path&r!"
   no_path_end: "&cYou must be ready to advance from $path&r!"
   no_weather: "The weather is not right for that"
+  no_client_platform: "You're not on the right platform for that"
   light: "Light Level"
   time: "Time of Day"
   height: "Height"
