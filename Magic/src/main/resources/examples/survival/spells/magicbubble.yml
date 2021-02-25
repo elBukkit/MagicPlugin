@@ -1,0 +1,107 @@
+magicbubble:
+  cancel_effects: true
+  icon: shield{CustomModelData:18020}
+  icon_disabled: shield{CustomModelData:18021}
+  earns_sp: 6
+  worth: 400
+  upgrade_required_casts: 50
+  upgrade_required_path: student
+  actions:
+    cast:
+      - class: PotionEffect
+      - class: Interval
+        actions:
+          - class: CheckTrigger
+            trigger: damage
+            actions:
+              - class: Retarget
+                actions:
+                  - class: PlayEffects
+                    effects: damaged
+                    ignore_result: true
+                  - class: ModifyVariable
+                  - class: CheckRequirements
+                    actions:
+                      - class: AreaOfEffect
+                        actions:
+                        - class: Damage
+                      - class: Stop
+  effects:
+    cast_finish:
+    - location: source
+      sound: magic.shield_boom
+      sound_pitch: 1.0
+      sound_volume: 0.8
+      source_location: body
+      effectlib:
+        class: Modified
+        duration: 750
+        iterations: 15
+        parameters:
+          radius: 1.5+2*(t/i)
+        effect:
+          class: Sphere
+          particle: crit_magic
+          particles: 75
+    damaged:
+    - location: target
+      offset: 0,-1.75,0
+      sound: magic.shield_boom
+      sound_pitch: 1.6
+      sound_volume: 0.8
+      effectlib:
+        class: Modified
+        duration: 750
+        iterations: 15
+        parameters:
+          radius: 1.2*(1+sin(t/i*3.14159))
+        effect:
+          class: Sphere
+          particle: crit_magic
+          particles: 75
+    cast:
+    - location: origin
+      sound: magic.shield
+      sound_pitch: 1.6
+      sound_volume: 0.8
+      source_location: body
+      effectlib:
+        class: Atom
+        particle_nucleus: crit_magic
+        particle_orbital: crit_magic
+        particles_nucleus: 125
+        particles_orbital: 15
+        orbitals: 3
+        radius: 1.5
+        radius_nucleus: 0.8
+        duration: $duration
+        orient: false
+        pitch: 45
+  parameters:
+    requirements:
+      - attributes:
+        - attribute: bubble
+          min: 8
+    variable: bubble
+    value: bubble + damage
+    damage: 0.4*bubble
+    radius: 3
+    y_radius: 3
+    target: self
+    target_type: LivingEntity
+    duration: 5000
+    effect_absorption: 2
+  costs:
+    mana: 80
+
+magicbubble|2:
+  upgrade_required_casts: 75
+  upgrade_required_path: apprentice
+  parameters:
+    damage: 0.6*bubble
+
+magicbubble|3:
+  upgrade_required_casts: 100
+  upgrade_required_path: master
+  parameters:
+    damage: 0.8*bubble
