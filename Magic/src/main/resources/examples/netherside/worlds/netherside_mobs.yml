@@ -21,6 +21,21 @@ netherside_mobs:
       class: Replace
       replace_type: stop
 
+    fallback_flying:
+      priority: -400
+      y_offset: 32
+      highest_block: true
+      class: Replace
+      target_class: LivingEntity
+      not_types: armor_stand
+      replace_type:
+        mega_phantom: 5
+        polterghast: 15
+        fire_elemental: 15
+        ghast: 20
+        blaze: 10
+        none: 10000
+
     # This will run if nothing else does, we make sure to replace every mob here.
     fallback:
       priority: -500
@@ -37,20 +52,17 @@ netherside_mobs:
         dark_spider: 20
         mega_spider: 1
         mutant_spider: 20
-        mega_phantom: 5
-        polterghast: 15
         cube: 20
         fire_elemental: 15
         werewolf: 10
         madscientist: 1
         strider: 20
         blaze: 20
-        ghast: 20
         piglin: 5
         zombified_piglin: 5
         hoglin: 2
         zoglin: 4
-        remove: 1000
+        remove: 5000
 
     rabbit:
       class: Replace
