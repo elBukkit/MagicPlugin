@@ -159,18 +159,18 @@ public class TorchAction extends BaseSpellAction
         context.getController().disableItemSpawn();
         try {
             targetMaterial.modify(target);
+            if (direction != BlockFace.SELF) {
+                BlockState state = target.getState();
+                Object data = state.getData();
+                if (data instanceof Torch) {
+                    Torch torchData = (Torch)data;
+                    torchData.setFacingDirection(direction.getOppositeFace());
+                    state.setData(torchData);
+                    state.update();
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        if (direction != BlockFace.SELF) {
-            BlockState state = target.getState();
-            Object data = state.getData();
-            if (data instanceof Torch) {
-                Torch torchData = (Torch)data;
-                torchData.setFacingDirection(direction.getOppositeFace());
-                state.setData(torchData);
-                state.update();
-            }
         }
 
         context.getController().enableItemSpawn();
