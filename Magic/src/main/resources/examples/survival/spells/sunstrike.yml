@@ -4,6 +4,8 @@ sunstrike:
   cast_on_no_target: false
   category: master
   pvp_restricted: true
+  earns_sp: 9
+  worth: 3000
   upgrade_required_casts: 50
   upgrade_required_path: master
   actions:
