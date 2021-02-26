@@ -319,6 +319,14 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     long seconds = (timeout - System.currentTimeMillis()) / 1000;
                     sender.sendMessage(ChatColor.GREEN + "Physics handler active for another " + ChatColor.DARK_GREEN + seconds + ChatColor.GREEN + " seconds");
                 }
+                int spawnsProcessed = controller.getWorlds().getSpawnListener().getProcessedSpawns();
+                if (spawnsProcessed > 0) {
+                    sender.sendMessage(ChatColor.AQUA + "Spawns Replaced: " + ChatColor.LIGHT_PURPLE + spawnsProcessed);
+                }
+                int chunkSpawnsProcessed = controller.getWorlds().getSpawnListener().getProcessedChunkSpawns();
+                if (chunkSpawnsProcessed > 0) {
+                    sender.sendMessage(ChatColor.AQUA + "Chunk Gen Spawns Replaced: " + ChatColor.LIGHT_PURPLE + chunkSpawnsProcessed);
+                }
             }
 
             Collection<Mage> mages = controller.getMages();

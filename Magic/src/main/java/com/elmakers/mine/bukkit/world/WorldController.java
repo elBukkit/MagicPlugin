@@ -140,4 +140,8 @@ public class WorldController implements Listener {
     public boolean isDisableSpawnReplacement() {
         return controller.isDisableSpawnReplacement();
     }
+
+    public WorldSpawnListener getSpawnListener() {
+        return spawnListener;
+    }
 }

@@ -27,6 +27,8 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
 {
     private final WorldController controller;
     private Set<SpawnReason> ignoreReasons = new HashSet<>();
+    private int processedSpawns = 0;
+    private int processedChunkSpawns = 0;
 
     public WorldSpawnListener(final WorldController controller) {
         this.controller = controller;
@@ -59,6 +61,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
             LivingEntity entity = (LivingEntity)testEntity;
             try {
                 if (magicWorld.processEntitySpawn(plugin, entity)) {
+                    processedChunkSpawns++;
                     entity.remove();
                 }
             } catch (Exception ex) {
@@ -95,10 +98,19 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
             if (magicWorld.processEntitySpawn(plugin, entity)) {
                 entity.remove();
                 event.setCancelled(true);
+                processedSpawns++;
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error replacing mob", ex);
         }
         controller.setDisableSpawnReplacement(false);
+    }
+
+    public int getProcessedSpawns() {
+        return processedSpawns;
+    }
+
+    public int getProcessedChunkSpawns() {
+        return processedChunkSpawns;
     }
 }

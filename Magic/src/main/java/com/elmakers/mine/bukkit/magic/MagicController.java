@@ -7115,6 +7115,10 @@ public class MagicController implements MageController {
         return worldController.getWorld(name);
     }
 
+    public WorldController getWorlds() {
+        return worldController;
+    }
+
     @Override
     public int getMaxHeight(World world) {
         MagicWorld magicWorld = getMagicWorld(world.getName());
