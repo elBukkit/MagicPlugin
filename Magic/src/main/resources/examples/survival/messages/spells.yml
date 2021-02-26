@@ -1458,3 +1458,9 @@ spells:
       confirm_title: "$item"
       selected_free: ""
       title: "Shop Management"
+    vengeance:
+        name: Vengeance
+        description: Absorb damage taken and then deal it back in full
+    soulburn:
+        name: Soulburn
+        description: Your opponent's mana supply burns them to the core

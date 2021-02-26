@@ -50,6 +50,7 @@
  - Added LOTS more dragons! Thanks to Flamegirl and Cornelia for donating them, and thanks again to Night for the original idea
    Night's original dragons are still present but will spawn much less frequently (in spawnmobs configs) and renamed to "big__dragon"
  - Add `jutsu` example (Naruto jutsus, thanks to Tof!)
+ - Added 3 more survival spells (thanks to Phantom) - sunstrike, soulburn and vengeance
  - Add warp option to selectors
  - Add `damage_source: direct` option to Damage action, will bypass vanilla damage cooldowns (bypasses everything)
  - Allow using @attributes in custom wand lore

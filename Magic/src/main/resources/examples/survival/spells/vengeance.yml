@@ -1,4 +1,4 @@
-magicbubble:
+vengeance:
   icon: shield{CustomModelData:18020}
   icon_disabled: shield{CustomModelData:18021}
   earns_sp: 6
@@ -95,13 +95,13 @@ magicbubble:
   costs:
     mana: 80
 
-magicbubble|2:
+vengeance|2:
   upgrade_required_casts: 75
   upgrade_required_path: apprentice
   parameters:
     damage: 0.6*bubble
 
-magicbubble|3:
+vengeance|3:
   upgrade_required_casts: 100
   upgrade_required_path: master
   parameters:
