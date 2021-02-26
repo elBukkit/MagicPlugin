@@ -2341,7 +2341,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     @Nullable
     public Cost getCost() {
-        return new Cost(cost);
+        return cost == null ? null : new Cost(cost);
     }
 
     @Override
