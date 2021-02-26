@@ -58,7 +58,7 @@ mobs:
   dummy:
     name: Dummy
   dummynoai:
-    name: Dummy
+    name: Dumber Dummy
   extraspellshop:
     name: More Spells
   fairy:

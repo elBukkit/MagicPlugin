@@ -22,6 +22,7 @@ Bug with test.yml spell and changing worlds via warp, undo breaks
  - New plyaer triggers (NeoFalcon) for blocking/stop blocking
 
  - Allow enchantable wands to use an anvil/book
+ - Capture doesn't work on piglin brutes
 
  - spellbooks use glowing spell icons?
  - hit/entity _count parameters don't work with EntityProjectile
