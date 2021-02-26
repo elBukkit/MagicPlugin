@@ -30,6 +30,7 @@ import org.bukkit.entity.Ageable;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -285,6 +286,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityParrotData(entity);
         } else if (entity instanceof EnderDragon) {
             extraData = new EntityEnderDragonData(entity);
+        } else if (entity instanceof Creeper) {
+            extraData = new EntityCreeperData(entity);
         } else if (entity.getType().name().equals("FOX")) {
             extraData = new EntityFoxData(entity);
         } else if (entity.getType().name().equals("LLAMA")) {
@@ -549,6 +552,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 extraData = new EntityParrotData(parameters, controller);
             } else if (type == EntityType.ENDER_DRAGON) {
                 extraData = new EntityEnderDragonData(parameters, controller);
+            } else if (type == EntityType.CREEPER) {
+                extraData = new EntityCreeperData(parameters);
             } else if (type != null && type.name().equals("FOX")) {
                 extraData = new EntityFoxData(parameters, controller);
             } else if (type != null && type.name().equals("LLAMA")) {
