@@ -101,6 +101,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean hasMoved = false;
     protected boolean hasChangedHealth = false;
     protected boolean isTemporary = false;
+    protected boolean cancelExplosion = false;
     protected boolean magicSpawned = false;
     private boolean respawn = false;
     protected String name = null;
@@ -189,6 +190,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.location = CompatibilityUtils.getHangingLocation(entity);
         this.magicSpawned = EntityMetadataUtils.instance().getBoolean(entity, "magicspawned");
         this.respawn = !EntityMetadataUtils.instance().getBoolean(entity, "norespawn");
+        this.cancelExplosion = EntityMetadataUtils.instance().getBoolean(entity, "cancel_explosion");
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
@@ -374,6 +376,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         preventMelee = parameters.getBoolean("prevent_melee", false);
         bossBar = BossBarConfiguration.parse(controller, parameters, "$pn");
         preventDismount = parameters.getBoolean("prevent_dismount", false);
+        cancelExplosion = parameters.getBoolean("cancel_explosion", false);
 
         String entityName = parameters.contains("type") ? parameters.getString("type") : key;
         if (entityName != null && !entityName.isEmpty()) {
@@ -1075,6 +1078,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             if (facing != null) {
                 itemFrame.setFacingDirection(facing, true);
             }
+        }
+        if (cancelExplosion) {
+            EntityMetadataUtils.instance().setBoolean(entity, "cancel_explosion", true);
         }
 
         if (this.key != null) {

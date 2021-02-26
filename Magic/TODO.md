@@ -5,6 +5,13 @@
 Losing wizard armor on death- maybe only while cloaked? https://streamable.com/dr1gnt
 Bug with test.yml spell and changing worlds via warp, undo breaks
 
+## Kits
+
+- Add requirement for play_time
+- Add optional message sent to player when getting a kit
+- Add example of "loyalty" kit
+- TODO: consecutive days played?
+
 ## Hot
 
  - Wand modifiers should be merged in as part of Mage.updatePassiveEffects, not in wand activate/deactivate

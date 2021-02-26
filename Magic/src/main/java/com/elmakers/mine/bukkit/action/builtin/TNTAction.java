@@ -82,7 +82,7 @@ public class TNTAction extends BaseProjectileAction
             grenade.setFuseTicks(fuse);
             grenade.setIsIncendiary(useFire);
             if (!breakBlocks) {
-                EntityMetadataUtils.instance().setBoolean(grenade, "cancel_explosion", true);
+                EntityMetadataUtils.instance().setBoolean(grenade, "cancel_explosion_blocks", true);
             }
             track(context, grenade);
         }

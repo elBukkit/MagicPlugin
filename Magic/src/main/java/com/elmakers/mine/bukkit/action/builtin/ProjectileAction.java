@@ -181,7 +181,7 @@ public class ProjectileAction  extends BaseProjectileAction
                     }
                 }
                 if (!breakBlocks) {
-                    EntityMetadataUtils.instance().setBoolean(projectile, "cancel_explosion", true);
+                    EntityMetadataUtils.instance().setBoolean(projectile, "cancel_explosion_blocks", true);
                 }
                 track(context, projectile);
             } catch (Exception ex) {

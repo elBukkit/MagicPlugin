@@ -56,7 +56,7 @@ public class GrenadeSpell extends BlockSpell
             grenade.setIsIncendiary(useFire);
             registerForUndo(grenade);
             if (!breakBlocks) {
-                EntityMetadataUtils.instance().setBoolean(grenade, "cancel_explosion", true);
+                EntityMetadataUtils.instance().setBoolean(grenade, "cancel_explosion_blocks", true);
             }
         }
 

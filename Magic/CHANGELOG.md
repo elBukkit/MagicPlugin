@@ -77,6 +77,7 @@
  - Add ColorItem action, and very-rare rainbow dragon
  - Add `auto_absorb_sp` option to turn off automatically absorbing SP items on pickup
  - Add `use_wand_name` option to SpawnEntity action
+ - Add `cancel_explosion` and `powered` flags for creeper mobs
 
 # 8.3.4
 
