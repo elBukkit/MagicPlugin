@@ -1,0 +1,6 @@
+ghost:
+  type: creeper
+  powered: true
+  cancel_explosion: true
+  potion_effects:
+    - invisibility

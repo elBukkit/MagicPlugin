@@ -107,3 +107,5 @@ mobs:
     name: Warlock
   werewolf:
     name: Werewolf
+  ghost:
+    name: Ghost
