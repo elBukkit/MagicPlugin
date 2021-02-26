@@ -1434,7 +1434,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             if (controller.isMage(targetEntity)) {
                 Mage targetMage = controller.getMage(targetEntity);
                 command = command
-                        .replace(prefix + "d", targetMage.getDisplayName())
+                        .replace(prefix + "td", targetMage.getDisplayName())
                         .replace(prefix + "tn", targetMage.getName())
                         .replace(prefix + "tuuid", targetMage.getId())
                         .replace(prefix + "t", targetMage.getName());
