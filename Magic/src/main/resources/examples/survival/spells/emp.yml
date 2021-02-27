@@ -47,9 +47,9 @@ emp:
         radius: 8
         cooldown: 5000
         check_destructible: true
-        destructible: lever,buttons
+        destructible: powerable
         physics: true
-        undo: 200
+        undo: 500
         entity_undo_types: ""
     costs:
         mana: 45
