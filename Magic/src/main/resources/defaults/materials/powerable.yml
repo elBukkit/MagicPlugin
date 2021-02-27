@@ -1,7 +1,13 @@
 powerable:
-- stone_button
-- wood_button
+- buttons
 - lever
+- pressure_plates
+- repeater
+- comparator
+- lectern
+- observer
 - redstone_block
+- powered_rail
+- detector_rail
 - tnt
 
