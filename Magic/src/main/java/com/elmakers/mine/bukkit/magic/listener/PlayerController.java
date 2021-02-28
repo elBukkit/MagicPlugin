@@ -332,6 +332,7 @@ public class PlayerController implements Listener {
         ItemMeta droppedMeta = droppedItem.getItemMeta();
         final boolean droppedSpell = Wand.isSpell(droppedItem);
         final boolean droppedWand = droppedMeta != null && activeMeta != null && activeMeta.equals(droppedMeta);
+        boolean inSpellInventory = activeWand != null && activeWand.isInventoryOpen();
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new DropActionTask(activeWand));
@@ -354,7 +355,7 @@ public class PlayerController implements Listener {
                         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR, 1));
                     }
                 }
-            } else if (activeWand.isInventoryOpen() && droppedSpell) {
+            } else if (inSpellInventory && droppedSpell) {
                 if (!controller.isSpellDroppingEnabled()) {
                     cancelEvent = true;
                     // This will happen if you graph an item, change pages, and then drop the item- it would disappear
@@ -383,15 +384,17 @@ public class PlayerController implements Listener {
         }
         if (cancelEvent) {
             // Work around a Spigot bug that would make the item disappear if the player's inventory is full
-            boolean isFull = true;
-            ItemStack[] items = player.getInventory().getStorageContents();
-            for (int i = items.length - 1; i >= 0; i--) {
-                if (CompatibilityUtils.isEmpty(items[i])) {
-                    isFull = false;
-                    break;
+            if (!inSpellInventory || !droppedSpell) {
+                boolean isFull = true;
+                ItemStack[] items = player.getInventory().getStorageContents();
+                for (int i = items.length - 1; i >= 0; i--) {
+                    if (CompatibilityUtils.isEmpty(items[i])) {
+                        isFull = false;
+                        break;
+                    }
                 }
+                if (isFull) return;
             }
-            if (isFull) return;
 
             if (droppedWand) {
                 activeWand.setItem(droppedItem);
