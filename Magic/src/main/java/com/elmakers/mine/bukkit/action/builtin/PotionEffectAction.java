@@ -32,12 +32,27 @@ public class PotionEffectAction extends BaseSpellAction
     private int amplifier = 0;
 
     @Override
-    public void initialize(Spell spell, ConfigurationSection parameters)
+    public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.initialize(spell, parameters);
+        super.prepare(context, parameters);
+
+        // Parse common properties
         ambient = parameters.getBoolean("effects_ambient", true);
         particles = parameters.getBoolean("effects_particles", true);
         amplifier = parameters.getInt("amplifier", 0);
+
+        if (parameters.contains("duration")) {
+            duration = parameters.getInt("duration");
+            if (parameters.contains("duration_multiplier")) {
+                duration = (int)Math.ceil(parameters.getDouble("duration_multiplier") * duration);
+            }
+        }
+        else
+        {
+            duration = null;
+        }
+
+        // Parse remove_effects
         if (parameters.contains("remove_effects"))
         {
             removeEffects = new HashSet<>();
@@ -50,7 +65,7 @@ public class PotionEffectAction extends BaseSpellAction
                         removeEffects.add(removeType);
                     }
                 } catch (Exception ex) {
-                    spell.getController().getLogger().log(Level.WARNING, "Invalid potion effect type: " + removeKey, ex);
+                    context.getController().getLogger().log(Level.WARNING, "Invalid potion effect type: " + removeKey, ex);
                 }
             }
         }
@@ -59,38 +74,9 @@ public class PotionEffectAction extends BaseSpellAction
             removeEffects = null;
         }
 
-        if (parameters.contains("duration"))
-        {
-            duration = parameters.getInt("duration");
-            if (parameters.contains("duration_multiplier")) {
-                duration = (int)Math.ceil(parameters.getDouble("duration_multiplier") * duration);
-            }
-        }
-        else
-        {
-            duration = null;
-        }
+        // Parse add_effects
+        // This is done twice to support potion effects as a list or a map (or both.. for some reason)
         addEffects = BaseSpell.getPotionEffects(parameters, duration, ambient, particles);
-    }
-
-    @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
-    {
-        super.prepare(context, parameters);
-        ambient = parameters.getBoolean("effects_ambient", true);
-        particles = parameters.getBoolean("effects_particles", true);
-        amplifier = parameters.getInt("amplifier", 0);
-        if (parameters.contains("duration"))
-        {
-            int durationOverride = parameters.getInt("duration");
-            if (parameters.contains("duration_multiplier")) {
-                durationOverride = (int)Math.ceil(parameters.getDouble("duration_multiplier") * durationOverride);
-            }
-            if (duration == null || durationOverride != duration)
-            {
-                addEffects = BaseSpell.getPotionEffects(parameters, durationOverride, ambient, particles);
-            }
-        }
         if (addEffects == null) {
             addEffects = Collections.emptyList();
         }
