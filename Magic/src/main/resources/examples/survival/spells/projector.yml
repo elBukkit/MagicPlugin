@@ -6,6 +6,7 @@ projector:
   icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
   category: engineering
   worth: 300
+  earns_sp: 5
   effects:
       cast:
       -  class: EffectTrail
