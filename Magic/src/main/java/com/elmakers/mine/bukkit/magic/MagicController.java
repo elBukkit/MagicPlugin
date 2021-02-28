@@ -135,7 +135,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
-import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.economy.BaseMagicCurrency;
@@ -1721,7 +1720,6 @@ public class MagicController implements MageController {
     }
 
     private void loadAutomatonTemplates(ConfigurationSection automataConfiguration) {
-        automataConfiguration = new MagicConfiguration(this, automataConfiguration);
         Set<String> keys = automataConfiguration.getKeys(false);
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         automatonTemplates.clear();

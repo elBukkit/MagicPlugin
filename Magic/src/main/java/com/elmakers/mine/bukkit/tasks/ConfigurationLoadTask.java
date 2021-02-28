@@ -24,6 +24,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -774,7 +775,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load main configuration
         try {
-            mainConfiguration = loadMainConfiguration();
+            mainConfiguration = new MagicConfiguration(controller, loadMainConfiguration());
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading config.yml", ex);
             success = false;
@@ -793,7 +794,7 @@ public class ConfigurationLoadTask implements Runnable {
                     configuration = mapSpells(configuration);
                 }
 
-                loadedConfigurations.put(configurationFile, configuration);
+                loadedConfigurations.put(configurationFile, new MagicConfiguration(controller, configuration));
             } catch (Exception ex) {
                 logger.log(Level.WARNING, "Error loading " + configurationFile, ex);
                 loadedConfigurations.put(configurationFile, ConfigurationUtils.newConfigurationSection());

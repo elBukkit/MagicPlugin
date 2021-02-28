@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -24,7 +23,6 @@ public class KitController {
     }
 
     public void load(ConfigurationSection configuration) {
-        configuration = new MagicConfiguration(controller, configuration);
         kits.clear();
         joinKits.clear();
         Set<String> keys = configuration.getKeys(false);

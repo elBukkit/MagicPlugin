@@ -4,4 +4,4 @@
 
 default:
     # Spells take 1 minute to return to full SP earning potential
-    earns_cooldown: 60000
+    earns_cooldown: 1 minutes
