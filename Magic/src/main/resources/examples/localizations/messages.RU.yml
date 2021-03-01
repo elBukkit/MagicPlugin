@@ -70,6 +70,122 @@ examples:
       &8|   &fПроверь свой список рецептов или введи &6/mgive wand &r
       &8|   &fИспользуй команду &6/mgive uberwand &fдля выдачи сверхсильной палочки для тестирования заклинаний &r
 
+mobs:
+  archer:
+    name: Лучник
+  bigbluedragon:
+    name: '&1Большой Синий Дракон'
+  biggreendragon:
+    name: '&2Большой Зеленый Дракон'
+  biggreydragon:
+    name: '&7Большой Серый Дракон'
+  bigpurpledragon:
+    name: '&dБольшой Фиолетовый Дракон'
+  bigreddragon:
+    name: '&4Большой Красный Дракон'
+  boomer:
+    name: "Взрывной слизень"
+  cube:
+    name: Желатиновый куб
+  dark_spider:
+    name: Темный Паук
+  dark_wizard:
+    name: Темный Волшебник
+  bluedragon:
+    name: '&1Синий Дракон'
+  cyandragon:
+    name: '&bБирюзовый Дракон'
+  lightbluedragon:
+    name: '&9Голубой Дракон'
+  greendragon:
+    name: '&2Зеленый Дракон'
+  limedragon:
+    name: '&aЛаймовый Дракон'
+  greydragon:
+    name: '&8Серый Дракон'
+  whitedragon:
+    name: '&fБелый Дракон'
+  lightgreydragon:
+    name: '&7Светло-серый Дракон'
+  purpledragon:
+    name: '&dФиолетовый Дракон'
+  blackdragon:
+    name: '&0Черный Дракон'
+  reddragon:
+    name: '&4Красный Дракон'
+  lightreddragon:
+    name: '&cСветло-красный Дракон'
+  magentadragon:
+    name: '&5Пурпурный Дракон'
+  pinkdragon:
+    name: '&cРозовый Дракон'
+  orangedragon:
+    name: '&6Оранжевый Дракон'
+  yellowdragon:
+    name: '&eЖелтый Дракон'
+  browndragon:
+    name: '&cКоричневый Дракон'
+  rainbowdragon:
+    name: '&cРа&6ду&eжн&aый&b Дра&dКон'
+  dummy:
+    name: Мишень
+  dummynoai:
+    name: Глупая Мишень
+  extraspellshop:
+    name: Дополнительные заклинания
+  fairy:
+    name: Фея
+  fire_elemental:
+    name: Огненный Элементаль
+  healer:
+    name: Лекарь
+  ironman:
+    name: Железный Человек
+  killer_bunny:
+    name: Кролик-убийца
+  kingslime:
+    name: "Королевский Слизень"
+  madscientist:
+    name: Безумный Ученый
+  magicitemshop:
+    name: Магические предметы
+  mega_phantom:
+    name: "&cМега &4Фантом"
+  mega_spider:
+    name: Мега Паук
+  mutant:
+    name: Мутант
+  mutant_captain:
+    name: Мутант-Капитан
+  mutant_spider:
+    name: Паук-мутант
+  mutant_villager:
+    name: Житель-мутант
+  playershop:
+    name: Магазин
+  polterghast:
+    name: ПолтерГаст
+  skater:
+    name: Продавец коньков
+  spellshop:
+    name: Великий Маг
+  totem:
+    name: Тотем
+  undead_minion:
+    name: Нежить
+  undead_overlord:
+    name: Король Нежити
+  warlock:
+    name: Чернокнижник
+  werewolf:
+    name: Оборотень
+  ghost:
+    name: Призрак
+
+items:
+  emerald_sword:
+    name: Изумрудный меч
+
 commands:
     no_permission: "&cУ тебя нет права на использование этой команды."
     in_game: "&cЭта команда может быть использована только в игре."
@@ -712,7 +828,7 @@ paths:
     description: Заклинания лучника
 spells:
   default:
-    fizzle: Заклинание ослабло!
+    fizzle: Неудача!
     backfire: Заклинание отлетело в вас!
     fail: &cЧто-то пошло не так!
     insufficient_permission: У тебя нет прав использовать это сейчас.
@@ -737,11 +853,16 @@ spells:
     cast: Впусти меня!
   admission|2:
     upgrade_description: Теперь открывает железные двери
+  collapse:
+    name: Обвал
+    description: Заставляет блоки проваливаться вниз
+    cast_finish: Обрушено $count блоков
+    upgrade_description: Увеличен радиус, теперь ломает больше типов блоков
   sparkle:
     name: Искра
     description: "Дает случайный эффект: положительный или отрицательный"
   secure:
-    name: Обезопасить
+    name: Замок
     description: Защищает контейнеры
     usage: Наведи мышь вверх и нажми ЛКМ, чтобы получить ключ; Шифт+ЛКМ, чтобы разблокировать
     cast: Теперь контейнер заперт - тебе нужно держать ключ, чтобы открыть его!
@@ -756,7 +877,7 @@ spells:
       &eКлюч &6$name
       Необходим для открытия запертых контейнеров
     fail: Невозможно запереть это!
-    upgrade_description: Теперь запирает печки и другие контейнеры
+    upgrade_description: Теперь защищает печки и другие контейнеры
   lockpick:
     name: Отмычка
     description: Открывает запертые контейнеры
@@ -775,6 +896,7 @@ spells:
     name: Безмолвие
     description: Запрещает вашей цели произосить заклинания
     cast: $target обезмолвлен
+    upgrade_description: "Уменьшена стоимость и перезарядка, увеличена длительность"
   curse:
     name: Проклятие
     description: Замедляет и ослабляет жертву
@@ -790,12 +912,14 @@ spells:
     cursed: Ты слишком сильно ударился, чтобы лететь!
     upgrade_description: Увеличена продолжительность, скорость и управляемость
     nospace: "&cНужно свободное место для того чтобы взлететь!"
+    reactivate: "Метла активирована"
   superbroom:
     name: СуперМетла
     cast: Твоя палочка превратилась в метлу!
     deactivate: Твоя палочка успокаивается.
     crash: АВАРИЯ!
     fail: Недостаточно места!
+    reactivate: "Метла активирована"
   boon:
     name: Дар
     description: Временно наделяет тебя сверхсилами
@@ -809,7 +933,7 @@ spells:
     upgrade_description: Теперь дает ночное зрение
   blessing:
     name: Благословление
-    description: Исцеляет и накладывает эффекты на большую площадь
+    description: Исцеляет и накладывает эффекты в радиусе
     cast: ""
   holylight:
     name: Священный свет
@@ -837,7 +961,7 @@ spells:
   platform|4:
     upgrade_description: Теперь строит выбранным материалом
   reflect:
-    name: Отражение
+    name: Зеркало
     description: Отражает направленные заклинания
     upgrade_description: Увеличен размер и отражательная способность
   shell:
@@ -943,7 +1067,13 @@ spells:
     description: Делает блоки твердыми
     cast: Укреплено $count блоков
   harden|2:
-    upgrade_description: Теперь превращает в обсидиан
+    upgrade_description: "Увеличена длительность. Теперь превращает в каменный кирпич"
+  harden|3:
+    upgrade_description: "Увеличена длительность. Теперь превращает в гладкий камень"
+  harden|4:
+    upgrade_description: "Увеличена длительность. Теперь превращает в полированный чернит"
+  harden|5:
+    upgrade_description: "Увеличена длительность. Теперь превращает в обсидиан"
   tree:
     name: Дерево
     description: Мгновенно выращивает дерево
@@ -959,9 +1089,9 @@ spells:
     description: Обезоруживает твоего оппонента
     cast: Ты обезоружил $target
     cast_self: Ты обезоружил сам себя
-    upgrade_description: Уменьшен шанс провала
+    upgrade_description: Уменьшен шанс неудачи
   disarm|3:
-    upgrade_description: Убран шанс провала
+    upgrade_description: Убран шанс неудачи
   heal:
     name: Лечение
     description: Лечит тебя или твою цель
@@ -1065,7 +1195,7 @@ spells:
   shuriken:
     name: Сюрикен
     description: Бросает рикошетящий снаряд
-    upgrade_description: Увеличен урон
+    upgrade_description: "Увеличена длительность"
   wave:
     name: Волна
     description: Испускает ударную волну
@@ -1168,11 +1298,13 @@ spells:
     description: Призывает монстра на твою сторону
     deactivate: Ты освободил своего монстра
     cast: Ты призвал монстра
+    upgrade_description: "Увеличена длительность, теперь доступны новый типы существ"
   mob:
     name: Орда
     description: Призывает орду монстров
     deactivate: Ты распустил орду
     cast: Призвано $count монстров
+    upgrade_description: "Увеличена длительность и количество монстров, теперь доступны новый типы существ. Уменьшена перезарядка."
   portal:
     name: Портал
     description: Создает временный портал
@@ -1243,7 +1375,8 @@ spells:
   meteor:
     name: Метеоритный дождь
     description: Смерть свыше
-    cast: Ты вызвал огненный дождь небес
+    cast: Ты призвал метеоритный дождь
+    upgrade_description: "Уменьшена перезарядка, увеличено количество осколков"
   bomb:
     name: Ковровая бомбардировка
     description: Воздушная поддержка
@@ -1266,6 +1399,14 @@ spells:
   lightning|3:
     upgrade_description: Больше молний!
     cast: Ба-Бах!
+  sunstrike:
+    name: Солнечный удар
+    description: Призывает сфокусированный солнечный луч
+    usage: |-
+      Работает только днем
+      Наносит максимум урона в полдень
+    cast: Ты призвал солнечный луч!
+    upgrade_description: "Увеличен максимальный урон, уменьшена задержка"
   smite:
     name: Яростный удар
     description: Сражает вашу цель наповал
@@ -1309,11 +1450,6 @@ spells:
     description: Конвертирует сферическую область блоков
     usage: Не заполняет пустые блоки
     cast_finish: $count было конвертировано в $material
-  collapse:
-    name: Обвал
-    description: Заставляет блоки проваливаться вниз
-    cast_finish: Обрушено $count блоков
-    upgrade_description: Увеличен радиус, теперь ломает больше типов блоков
   superconvert:
     name: СуперКонвертация
     description: Конвертирует большую область блоков
@@ -1491,7 +1627,7 @@ spells:
     alternate: Get away!
     upgrade_description: Толкает с большей силой
   push|4:
-    upgrade_description: Наведи курсор вниз и нажми ЛКМ, чтобы применить альтернативную способность
+    upgrade_description: Наведи прицел вниз и нажми ЛКМ, чтобы применить альтернативную способность
   farm:
     name: Ферма
     description: Призывает животных
@@ -1523,7 +1659,7 @@ spells:
     cast_finish: Срублено!
     upgrade_description: Добывает больше блоков дерева
   peek:
-    name: Подсмотреть
+    name: Окно
     description: Временно заменяет область стеклом
     cast_finish: $count блоков было обращено в стекло
     upgrade_description: Увеличен размер стекла
@@ -1719,6 +1855,7 @@ spells:
     name: Верстак
     description: Крафт в пути
     cast: Работай!
+    upgrade_description: "Уменьшена перезарядка и стоимость"
   superlaser:
     name: СуперЛазер
     description: Навсегда разрушает блоки перед собой
@@ -1809,7 +1946,7 @@ spells:
     no_target_town: Ты не находишься в городе
     no_target_regions: У тебя нет друзей
     no_target_friend: Невозможно телепортироваться к $name
-    title_move_marker: Переместить маркер в текущую точку
+    title_move_marker: Переместить маркер #$number в текущую точку
     description_move_marker: Перемещает маркер
     title_marker: "Маркер #$number"
     description_marker: Наведи курсор вниз, чтобы переместить маркер
@@ -1927,7 +2064,7 @@ spells:
     name: Торнадо
     description: Призывает разрушительный воздушный вихрь
     cast: Прячься под стол!
-    upgrade_description: Разрушает структуры
+    upgrade_description: Разрушает натуральные структуры
   transmute:
     name: Трансмутация
     description: Изменяет твою последнюю конструкцию
@@ -1947,10 +2084,11 @@ spells:
     no_target: Промах
     upgrade_description: Увеличен урон и дальность
   railgun:
-    name: Пушка Гаусса
+    name: Рельсотрон
     description: Выстрел, пронзающий блоки и мобов насквозь
     cast: Ты выстрелил в $target
-    no_target: Ты выстрелил из пушки Гаусса
+    no_target: Ты выстрелил из рельсотрона
+    upgrade_description: "Увеличена дальность, выстрел поражает больше целей. Уменьшена перезарядка и стоимость"
   testdummy:
     name: Тестовая мишень
     description: Призывает мишень для заклинаний
@@ -2010,7 +2148,7 @@ spells:
     description: Наносит летальный урон цели
     cast_player_message: ''
     cast: УМРИ!
-    upgrade_description: Увеличен скорость и размер снаряда, уменьшено время подготовки
+    upgrade_description: Увеличена скорость и размер снаряда, уменьшено время подготовки
   superkill:
     name: Мгновенное убийство
     description: Молниеносно убивает вашу цель
@@ -2049,8 +2187,8 @@ spells:
   petrify:
     name: Застынь!
     description: Лишает цель возможности двигаться
-    cast: Ты превратил $target в камень.
-    upgrade_description: Увеличена длительность
+    cast: Ты превратил $target в статую.
+    upgrade_description: Увеличена длительность, уменьшена стоимость
   polymorph:
     name: Превращение
     description: Превращает цель в овцу
@@ -2094,11 +2232,13 @@ spells:
     name: Скиллы
     descriptions: Показывает доступные скиллы, перетаскивай заклинания, чтобы применять их
   upgrades:
-    name: Просмотреть прогресс заклинаний
+    name: Прогресс заклинаний
     description: Показывает прогресс в улучшении заклинаний твоей палочки
     fail: Ты должен держать палочку в руке!
     upgrade_name_change: '&r&4Улучшения: &r$name'
-    level_requirement: '&r&cТребуется уровень &6$path\n&r&7Изучи все заклинания для повышения ранга'
+    level_requirement: |-
+      &r&cТребуется уровень &6$path
+      &r&7Изучи все заклинания для повышения ранга
     cast_requirement: '&r&cИспользований: &6$current&f из &e$required'
     tags_requirement: '&r&cТребуется: &6$tags'
     confirm_title: Изменить на $item
@@ -2124,6 +2264,8 @@ spells:
     upgrade_description: Увеличен радиус
   tracking|4:
     upgrade_description: Шифт+ЛКМ, чтобы искать только игроков
+  tracking|5:
+    upgrade_description: Наведи прицел вниз и используй заклиинание, чтобы подсветить всех мобов в радиусе 16 блоков
   enchantwand:
     name: Улучшение палочки
     description: Add levels to your wand
@@ -2198,8 +2340,8 @@ spells:
         confirm_title: "Получить $item"
         deducted: "&d&oТы получил &r&6$item"
   progressmenu:
-        name: Прогресс заклинаний
-        title: "Прогресс заклинаний"
+        name: Магия
+        title: "Магия"
         selected: ""
         cast_fail: ""
         no_template: "&cНельзя кастомизировать $wand&c."
@@ -2515,6 +2657,15 @@ spells:
       name: Крит
       description: Шанс нанести дополнительный урон
       upgrade_description: "Увеличен шанс нанести критический урон"
+  vengeance:
+      name: Месть
+      description: Поглощает полученный урон, затем высвобождает его в виде взрыва
+      upgrade_description: Увеличен урон
+  soulburn:
+      name: Ожог Души
+      description: Наносит урон, зависящий от количества отсутствующей маны у цели
+      usage: Наносит постоянный урон мобам
+      upgrade_description: Увеличен максимальный урон, уменьшена перезарядка
 wand:
     default_name: Палочка
     upgrade_default_description: Улучшит твою палочку.
