@@ -112,7 +112,7 @@ public class ModifyLoreAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
 
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore();
+        List<String> lore = meta == null ? null : meta.getLore();
         if (lore == null)
             lore = new ArrayList<>();
 
@@ -183,5 +183,15 @@ public class ModifyLoreAction extends BaseSpellAction
     public boolean isUndoable()
     {
         return false;
+    }
+
+    @Override
+    public boolean requiresTargetEntity() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTarget() {
+        return true;
     }
 }

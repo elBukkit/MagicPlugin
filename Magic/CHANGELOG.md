@@ -78,6 +78,7 @@
  - Add `auto_absorb_sp` option to turn off automatically absorbing SP items on pickup
  - Add `use_wand_name` option to SpawnEntity action
  - Add `cancel_explosion` and `powered` flags for creeper mobs
+ - Add `CheckLore` action
 
 # 8.3.4
 
