@@ -124,6 +124,9 @@ public class BlockSpell extends UndoableSpell {
         if (!getVariables().contains("count") && !mage.getVariables().contains("count")) {
             return message.replace("$count", Integer.toString(getModifiedCount()));
         }
+        if (!getVariables().contains("blocks") && !mage.getVariables().contains("blocks")) {
+            return message.replace("@blocks", Integer.toString(getModifiedCount()));
+        }
         return message;
     }
 

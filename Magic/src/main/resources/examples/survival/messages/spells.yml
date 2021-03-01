@@ -8,7 +8,7 @@ spells:
     collapse:
         name: Collapse
         description: Collapse a spherical area of blocks
-        cast_finish: Collapsed $count blocks
+        cast_finish: Collapsed @blocks blocks
         upgrade_description: "Increased radius, breaks more types of blocks"
     sparkle:
         name: Sparkle
@@ -105,7 +105,7 @@ spells:
     platform:
         name: Platform
         description: Create a platform in front of you
-        cast_finish: Filled $count blocks with $material
+        cast_finish: Filled @blocks blocks with $material
     platform|2:
         upgrade_description: "Increased size"
     platform|4:
@@ -202,20 +202,20 @@ spells:
     permafrost:
         name: PermaFrost
         description: Make it permanently snowy!
-        cast_finish: Permafrosted $count blocks
+        cast_finish: Permafrosted @blocks blocks
     permamelt:
         name: PermaMelt
         description: Raise the temperature
-        cast_finish: Permamelted $count blocks
+        cast_finish: Permamelted @blocks blocks
     frost:
         name: Frost
         description: Freeze water and create snow
-        cast_finish: Frosted $count blocks
+        cast_finish: Frosted @blocks blocks
         upgrade_description: "Larger radius, increased slow duration"
     harden:
         name: Harden
         description: Make the target blocks stronger
-        cast: Hardened $count blocks
+        cast: Hardened @blocks blocks
     harden|2:
         upgrade_description: "Increased duration. Now converts to stone bricks"
     harden|3:
@@ -321,7 +321,7 @@ spells:
         name: Mob
         description: Summon a mob of monsters
         deactivate: You release your mob
-        cast: You summon $count monster(s)
+        cast: You summon some monsters
         upgrade_description: "Increased duration and mob count, unlocked new mob types. Decreased cooldown."
     portal:
         name: Portal
@@ -355,7 +355,7 @@ spells:
     inferno:
         name: Inferno
         description: Burn a wide area
-        cast: You burn $count blocks
+        cast: You burn @blocks blocks
     bubble:
         name: Bubble
         description: Create a safety bubble
@@ -468,12 +468,12 @@ spells:
     blast:
         name: Blast
         description: Explode weaker objects
-        cast_finish: Blasted $count blocks
+        cast_finish: Blasted @blocks blocks
         upgrade_description: "Increased radius, breaks stronger blocks"
     earthquake:
         name: Earthquake
         description: Create an earthquake
-        cast_finish: Quaked $count blocks
+        cast_finish: Quaked @blocks blocks
     cloak:
         name: Cloak
         description: Make yourself invisible
@@ -499,11 +499,11 @@ spells:
         name: Herd
         description: Create a herd
         deactivate: You release your herd
-        cast: You summon $count farm animals
+        cast: You summon some farm animals
     breach:
         name: Breach
         description: Temporarily destroy the target surface
-        cast_finish: Breached $count blocks
+        cast_finish: Breached @blocks blocks
         upgrade_description: "Size increased"
     tesseract:
         name: Tesseract
@@ -528,12 +528,12 @@ spells:
     peek:
         name: Peek
         description: Temporarily glass the target surface
-        cast_finish: Glassed $count blocks
+        cast_finish: Glassed @blocks blocks
         upgrade_description: "Window size increased"
     sandblast:
         name: Sandblast
         description: Drop a big block of sand
-        cast_finish: Created $count falling sand blocks
+        cast_finish: Created @blocks falling sand blocks
         upgrade_description: "Drops more sand"
     fire:
         name: Fire
@@ -550,7 +550,7 @@ spells:
     blob:
         name: Blob
         description: Create a solid blob
-        cast_finish: Blobbed $count blocks with $material
+        cast_finish: Blobbed @blocks blocks with $material
     blob|2:
         upgrade_description: "Now builds with clay"
     blob|3:
@@ -560,18 +560,18 @@ spells:
     walls:
         name: Walls
         description: Create some walls around your target
-        cast_finish: Filled $count blocks with $material
+        cast_finish: Filled @blocks blocks with $material
     tendril:
         name: Tendril
         description: Summon a tendril of darkness
     repair:
         name: Repair
         description: Repair an area saved with Backup
-        cast_finish: Repaired $count blocks
+        cast_finish: Repaired @blocks blocks
     emp:
         name: EMP
         description: Electrify the area
-        cast_finish: Electrified $count blocks
+        cast_finish: Electrified @blocks blocks
     ghast:
         name: Ghast
         description: Summon a menacing Ghast
@@ -663,12 +663,12 @@ spells:
     superlaser:
         name: SuperLaser
         description: Permanently destroy a line of blocks
-        cast_finish: Lasered $count blocks
+        cast_finish: Lasered @blocks blocks
         upgrade_description: "Longer beam duration, breaks more types of blocks"
     laser:
         name: Laser
         description: Destroy a line of blocks
-        cast_finish: Lasered $count blocks
+        cast_finish: Lasered @blocks blocks
         upgrade_description: "Larger radius, increased damage"
     stream:
         name: Stream
@@ -948,7 +948,7 @@ spells:
         name: Paste
         description: Pastes a full schematic
         usage: For use with schematic brushes
-        cast_finish: Pasted $count blocks
+        cast_finish: Pasted @blocks blocks
         no_action: Schematic loading, please try again!
     kill:
         name: Kill
