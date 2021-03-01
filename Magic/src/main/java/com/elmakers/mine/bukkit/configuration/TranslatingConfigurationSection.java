@@ -50,6 +50,10 @@ public class TranslatingConfigurationSection extends MemorySection {
         }
     }
 
+    public TranslatingConfigurationSection newSection(String key) {
+        return createSection(this, key);
+    }
+
     protected TranslatingConfigurationSection createSection(TranslatingConfigurationSection parent, String key) {
         return new TranslatingConfigurationSection(parent, key);
     }

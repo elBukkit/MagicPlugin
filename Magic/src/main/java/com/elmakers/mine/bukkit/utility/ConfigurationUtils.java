@@ -1268,24 +1268,41 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     public static ConfigurationSection toConfigurationSection(ConfigurationSection parent, String path, Map<?, ?> nodeMap) {
-        ConfigurationSection newSection = new TranslatingConfigurationSection(parent, path);
+        ConfigurationSection newSection = newSection(parent, path);
         for (Map.Entry<?, ?> entry : nodeMap.entrySet()) {
             newSection.set(entry.getKey().toString(), entry.getValue());
         }
         return newSection;
     }
 
+    public static ConfigurationSection newSection(ConfigurationSection parent, String path) {
+         if (parent instanceof TranslatingConfigurationSection) {
+             return ((TranslatingConfigurationSection)parent).newSection(path);
+         }
+         return new TranslatingConfigurationSection(parent, path);
+    }
+
+    public static Collection<ConfigurationSection> getNodeList(ConfigurationSection node, String path) {
+        Collection<ConfigurationSection> results = new ArrayList<ConfigurationSection>();
+        List<Map<?, ?>> mapList = node.getMapList(path);
+        for (Map<?, ?> map : mapList) {
+            results.add(toConfigurationSection(node, map));
+        }
+
+        return results;
+    }
+
     @Nullable
     public static Collection<Requirement> getRequirements(ConfigurationSection configuration) {
         List<Requirement> requirements = null;
-        Collection<ConfigurationSection> requirementConfigurations = ConfigurationUtils.getNodeList(configuration, "requirements");
+        Collection<ConfigurationSection> requirementConfigurations = getNodeList(configuration, "requirements");
         if (requirementConfigurations != null) {
             requirements = new ArrayList<>();
             for (ConfigurationSection requirementConfiguration : requirementConfigurations) {
                 requirements.add(new Requirement(requirementConfiguration));
             }
         }
-        ConfigurationSection singleConfiguration = ConfigurationUtils.getConfigurationSection(configuration, "requirement");
+        ConfigurationSection singleConfiguration = getConfigurationSection(configuration, "requirement");
         if (singleConfiguration != null) {
             if (requirements == null) {
                 requirements = new ArrayList<>();
