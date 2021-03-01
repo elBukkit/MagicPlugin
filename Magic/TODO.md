@@ -7,8 +7,6 @@ Bug with test.yml spell and changing worlds via warp, undo breaks
 
 ## Kits
 
-- Add optional message sent to player when getting a kit
-- Add example of "loyalty" kit
 - TODO: consecutive days played?
 
 ## Hot
@@ -16,6 +14,7 @@ Bug with test.yml spell and changing worlds via warp, undo breaks
  - target_hit_timeout for CustomProjectile (Phantom)
  - Auto-level up skill items when spell levels... ?
    ... honestly the whole levelling system could use some changes, like spells should just use the right level when cast
+   - spell levels also seem wonky with spellbook (or maybe wands in general?), have to let go and hold again to get the upgrade
  - Wand modifiers should be merged in as part of Mage.updatePassiveEffects, not in wand activate/deactivate
    Need modifiers to work on wand armor and offhand
  - CheckTrigger should be able to use a full trigger config, not just a key name

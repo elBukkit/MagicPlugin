@@ -178,6 +178,7 @@ public class MagicKit {
         if (!isAllowed(mage)) {
             return;
         }
+        boolean gave = false;
         Collection<ItemStack> giveItems = new ArrayList<>();
         if (slotItems != null) {
             for (Map.Entry<Integer, ItemData> slotItem : slotItems.entrySet()) {
@@ -193,6 +194,7 @@ public class MagicKit {
                 mage.gaveItemFromKit(key, itemData.getBaseKey(), itemStack.getAmount());
                 if (CompatibilityUtils.isEmpty(existingSlot)) {
                     mage.setItem(slot, itemStack);
+                    gave = true;
                 } else {
                     if (giveItems == null) {
                         giveItems = new ArrayList<>();
@@ -204,6 +206,7 @@ public class MagicKit {
         if (giveItems != null) {
             for (ItemStack giveItem : giveItems) {
                 mage.giveItem(giveItem);
+                gave = true;
             }
         }
         if (items != null) {
@@ -216,7 +219,11 @@ public class MagicKit {
                 }
                 mage.gaveItemFromKit(key, itemData.getBaseKey(), itemStack.getAmount());
                 mage.giveItem(itemStack);
+                gave = true;
             }
+        }
+        if (gave) {
+            mage.sendMessage(controller.getMessages().get("kits." + key + ".give", ""));
         }
     }
 

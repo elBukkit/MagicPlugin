@@ -1,0 +1,14 @@
+kits:
+  admin:
+    name: Admin Toolkit
+  welcome:
+    name: Welcome Wand
+    give: Have a wand!
+  starter:
+    name: Starter Kit
+  food:
+    name: Food Kit
+    give: Eat, eat!
+  loyalty:
+    name: Loyalty Kit
+    give: "&6Congratulations! &3You have been on our server for a week. &aHave this &3Mana Talisman &aas a reward!"
