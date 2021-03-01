@@ -942,7 +942,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (!isValid()) return "";
 
         String materialName = material == null ? "?" : material.name();
-
+        if (messages != null && material != null) {
+            materialName = messages.get("material." + material, materialName);
+        }
         if (data == null && messages != null) {
             materialName = materialName + messages.get("material.wildcard");
         }
