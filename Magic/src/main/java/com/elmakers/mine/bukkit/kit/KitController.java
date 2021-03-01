@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -29,6 +30,7 @@ public class KitController {
         for (String key : keys) {
             ConfigurationSection kitConfiguration = configuration.getConfigurationSection(key);
             if (!ConfigurationUtils.isEnabled(kitConfiguration)) continue;
+            kitConfiguration = MagicConfiguration.getKeyed(controller, kitConfiguration, "kit", key);
             MagicKit kit = new MagicKit(controller, key, kitConfiguration);
             kits.put(key, kit);
             if (kit.isKeep() || kit.isRemove() || kit.isStarter()) {

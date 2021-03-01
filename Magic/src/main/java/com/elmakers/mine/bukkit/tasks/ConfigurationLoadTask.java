@@ -775,7 +775,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Load main configuration
         try {
-            mainConfiguration = new MagicConfiguration(controller, loadMainConfiguration());
+            mainConfiguration = new MagicConfiguration(controller, loadMainConfiguration(), "config");
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading config.yml", ex);
             success = false;
@@ -794,7 +794,7 @@ public class ConfigurationLoadTask implements Runnable {
                     configuration = mapSpells(configuration);
                 }
 
-                loadedConfigurations.put(configurationFile, new MagicConfiguration(controller, configuration));
+                loadedConfigurations.put(configurationFile, configuration);
             } catch (Exception ex) {
                 logger.log(Level.WARNING, "Error loading " + configurationFile, ex);
                 loadedConfigurations.put(configurationFile, ConfigurationUtils.newConfigurationSection());

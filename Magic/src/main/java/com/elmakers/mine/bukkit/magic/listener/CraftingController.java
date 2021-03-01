@@ -29,6 +29,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.CraftWandEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicRecipe;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -64,6 +65,7 @@ public class CraftingController implements Listener {
         {
             ConfigurationSection parameters = configuration.getConfigurationSection(key);
             if (!ConfigurationUtils.isEnabled(parameters)) continue;
+            parameters = MagicConfiguration.getKeyed(controller, parameters, "recipe", key);
 
             MagicRecipe recipe = new MagicRecipe(key, controller);
             try {

@@ -135,6 +135,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
+import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.economy.BaseMagicCurrency;
@@ -1728,6 +1729,7 @@ public class MagicController implements MageController {
             ConfigurationSection config = resolveConfiguration(key, automataConfiguration, templateConfigurations);
             if (!ConfigurationUtils.isEnabled(config)) continue;
 
+            config = MagicConfiguration.getKeyed(this, automataConfiguration, "automaton", key);
             AutomatonTemplate template = new AutomatonTemplate(this, key, config);
             automatonTemplates.put(key, template);
         }
@@ -1822,6 +1824,7 @@ public class MagicController implements MageController {
         Collection<String> effectKeys = effectsNode.getKeys(false);
         for (String effectKey : effectKeys) {
             logger.setContext("effects." + effectKey);
+            effectsNode = MagicConfiguration.getKeyed(this, effectsNode, "effect", effectKey);
             effects.put(effectKey, loadEffects(effectsNode, effectKey));
         }
     }
@@ -2559,6 +2562,7 @@ public class MagicController implements MageController {
             logger.setContext("spells." + key);
 
             ConfigurationSection spellNode = spellConfigs.getConfigurationSection(key);
+            spellNode = MagicConfiguration.getKeyed(this, spellNode, "spell", key);
             Spell newSpell = null;
             try {
                 newSpell = loadSpell(key, spellNode, this);
@@ -4622,7 +4626,9 @@ public class MagicController implements MageController {
         for (String key : classKeys)
         {
             logger.setContext("classes." + key);
-            loadMageClassTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
+            ConfigurationSection classConfig = resolveConfiguration(key, properties, templateConfigurations);
+            classConfig = MagicConfiguration.getKeyed(this, classConfig, "class", key);
+            loadMageClassTemplate(key, classConfig);
         }
 
         // Resolve parents, we don't check for an inherited "parent" property, so it's important
@@ -4659,7 +4665,9 @@ public class MagicController implements MageController {
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         for (String key : modifierKeys) {
             logger.setContext("modifiers." + key);
-            loadModifierTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
+            ConfigurationSection modifierConfig = resolveConfiguration(key, properties, templateConfigurations);
+            modifierConfig = MagicConfiguration.getKeyed(this, modifierConfig, "modifier", key);
+            loadModifierTemplate(key, modifierConfig);
         }
 
         // Resolve parents, we don't check for an inherited "parent" property, so it's important
@@ -4735,7 +4743,9 @@ public class MagicController implements MageController {
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         for (String key : mobKeys) {
             logger.setContext("mobs." + key);
-            mobs.load(key, resolveConfiguration(key, properties, templateConfigurations));
+            ConfigurationSection mobConfig = resolveConfiguration(key, properties, templateConfigurations);
+            mobConfig = MagicConfiguration.getKeyed(this, mobConfig, "mob", key);
+            mobs.load(key, mobConfig);
         }
     }
 
@@ -4745,7 +4755,9 @@ public class MagicController implements MageController {
         for (String key : worldKeys) {
             if (key.equalsIgnoreCase("worlds")) continue;
             logger.setContext("worlds." + key);
-            properties.set(key, resolveConfiguration(key, properties, templateConfigurations));
+            ConfigurationSection worldConfig = resolveConfiguration(key, properties, templateConfigurations);
+            worldConfig = MagicConfiguration.getKeyed(this, worldConfig, "world", key);
+            properties.set(key, worldConfig);
         }
         worldController.loadWorlds(properties);
     }
@@ -4770,6 +4782,7 @@ public class MagicController implements MageController {
     @Override
     public void loadWandTemplate(String key, ConfigurationSection wandNode) {
         if (ConfigurationUtils.isEnabled(wandNode)) {
+            wandNode = MagicConfiguration.getKeyed(this, wandNode, "wand", key);
             wandTemplates.put(key, new com.elmakers.mine.bukkit.wand.WandTemplate(this, key, wandNode));
         }
     }

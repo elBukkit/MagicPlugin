@@ -37,6 +37,8 @@ import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -355,11 +357,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return paths.get(key);
     }
 
-    public static void loadPaths(MageController controller, ConfigurationSection configuration) {
+    public static void loadPaths(MagicController controller, ConfigurationSection configuration) {
         paths.clear();
         Set<String> pathKeys = configuration.getKeys(false);
         for (String key : pathKeys)
         {
+            configuration = MagicConfiguration.getKeyed(controller, configuration, "path", key);
             getPath(controller, key, configuration);
         }
     }

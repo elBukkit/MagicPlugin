@@ -10,19 +10,23 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 public class MagicConfiguration extends ParameterizedConfiguration {
     private final MagicController controller;
 
-    public MagicConfiguration(MagicController controller, ConfigurationSection copy) {
-        this(controller);
+    public MagicConfiguration(MagicController controller, ConfigurationSection copy, String logContext) {
+        this(controller, logContext);
         ConfigurationUtils.addConfigurations(this, copy);
     }
 
-    public MagicConfiguration(MagicController controller) {
-        super("magic controller");
+    public MagicConfiguration(MagicController controller, String logContext) {
+        super(logContext);
         this.controller = controller;
     }
 
     public MagicConfiguration(MagicConfiguration copy) {
         super(copy);
         this.controller = copy.controller;
+    }
+
+    public static MagicConfiguration getKeyed(MagicController controller, ConfigurationSection copy, String logPrefix, String key) {
+        return new MagicConfiguration(controller, copy, logPrefix + "." + key);
     }
 
     @Override
