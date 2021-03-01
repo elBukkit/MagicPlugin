@@ -7,7 +7,6 @@ Bug with test.yml spell and changing worlds via warp, undo breaks
 
 ## Kits
 
-- Add requirement for play_time
 - Add optional message sent to player when getting a kit
 - Add example of "loyalty" kit
 - TODO: consecutive days played?

@@ -4770,6 +4770,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case "bowpower": {
                 return (double)getLastBowPower();
             }
+            case "play_time": {
+                Player player = getPlayer();
+                if (player == null) return null;
+                return (double)(System.currentTimeMillis() - player.getFirstPlayed());
+            }
 
             default:
                 return null;
