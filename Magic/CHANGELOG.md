@@ -70,7 +70,8 @@
  - Added `region_tags` option to requirements
  - Added WIP `mars` external example
  - Add tail and crown FX to wand effect shop (Thank you, Phantom!)
- - You can now use "minutes", "seconds", "hours" in duration parameters for simpler configuration, e.g. "1 seconds" (yes, plural no matter what)
+ - You can now use "minutes", "seconds", "hours", "days", "weeks" in duration parameters for simpler configuration
+   e.g. "1 seconds" (yes, plural no matter what)
  - Add `prevent_dismount` option to mobs
  - Add `ModifyNoDamageTicks` action, for rapidly damaging mobs and players by bypassing vanilla damage cooldowns
  - Add `food_level` parameter to Feed action, for directly setting food level

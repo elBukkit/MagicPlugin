@@ -6549,16 +6549,11 @@ public class MagicController implements MageController {
         return attributeProviders;
     }
 
-    @Nullable
-    public Double getBuiltinAttribute(String attributeKey) {
-        switch (attributeKey) {
-            case "hours": return (double)3600000;
-            case "minutes": return (double)60000;
-            case "seconds": return (double)1000;
-            case "epoch": return (double)System.currentTimeMillis();
-            default: return null;
-        }
-    }
+    private final Set<String>                   builtinAttributes           = ImmutableSet.of(
+            "epoch",
+            // For interval parsing
+            "hours", "minutes", "seconds", "days", "weeks"
+    );
 
     public Set<String> getBuiltinAttributes() {
         return builtinAttributes;
@@ -7667,11 +7662,19 @@ public class MagicController implements MageController {
     private final Map<String, SpellCategory>    categories                  = new HashMap<>();
     private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();
     private final Set<String>                   registeredAttributes        = new HashSet<>();
-    private final Set<String>                   builtinAttributes           = ImmutableSet.of(
-            "epoch",
-            // For interval parsing
-            "hours", "minutes", "seconds"
-    );
+
+    @Nullable
+    public Double getBuiltinAttribute(String attributeKey) {
+        switch (attributeKey) {
+            case "weeks": return (double)604800000;
+            case "days": return (double)86400000;
+            case "hours": return (double)3600000;
+            case "minutes": return (double)60000;
+            case "seconds": return (double)1000;
+            case "epoch": return (double)System.currentTimeMillis();
+            default: return null;
+        }
+    }
     private final Set<String>                   builtinMageAttributes       = ImmutableSet.of(
             "health", "health_max", "target_health", "target_health_max",
             "location_x", "location_y", "location_z",
