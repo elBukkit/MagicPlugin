@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
@@ -128,6 +129,9 @@ public class MagicKit {
 
     public long getRemainingCooldown(Mage mage) {
         if (cooldown == 0) return 0;
+        if (bypasses(mage, "Magic.bypass_kit_cooldowns")) {
+            return 0;
+        }
         MageKit kit = mage.getKit(key);
         if (kit == null) return 0;
         long lastGive = kit.getLastGiveTime();
@@ -135,8 +139,16 @@ public class MagicKit {
         return lastGive >= cooldown ? 0 : cooldown - lastGive;
     }
 
+    private boolean bypasses(Mage mage, String node) {
+        if (mage.isBypassEnabled()) {
+            return true;
+        }
+        Player player = mage.getPlayer();
+        return player != null && (player.hasPermission(node) || player.hasPermission("Magic.bypass"));
+    }
+
     public boolean isAllowed(Mage mage) {
-        if (controller.checkRequirements(mage.getContext(), requirements) != null) {
+        if (!bypasses(mage, "Magic.bypass_kit_requirements") && controller.checkRequirements(mage.getContext(), requirements) != null) {
             return false;
         }
         if (isWelcomeWand && mage.hasGivenWelcomeWand()) {

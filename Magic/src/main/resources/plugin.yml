@@ -1875,6 +1875,14 @@ permissions:
     description: A player sees hidden spells in /spells and tab-complete
     default: op
     type: boolean
+  Magic.bypass_kit_cooldown:
+    description: A player bypasses kit cooldowns
+    default: false
+    type: boolean
+  Magic.bypass_kit_requirements:
+    description: A player bypasses kit bypass_kit_requirements
+    default: false
+    type: boolean
   Magic.bypass:
     description: A player always bypasses other permission checks
     default: false
