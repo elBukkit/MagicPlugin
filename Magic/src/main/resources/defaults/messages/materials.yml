@@ -1,0 +1,4 @@
+# You can add localized names to materials here, using the Bukkit enum key for that material.
+# The "wildcard" definition is a special case for wildcard brushes (e.g. nether_brick_stairs:*)
+materials:
+  wildcard: "(Any Subtype)"
