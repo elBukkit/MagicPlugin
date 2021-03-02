@@ -75,7 +75,6 @@ singularity:
            effectlib:
              class: Sphere
              duration: $duration
-             iterations: $duration / 50
              particle: redstone
              color: "#000000"
              particle_size: 1.5
@@ -87,7 +86,6 @@ singularity:
            effectlib:
              class: Modified
              duration: $duration
-             iterations: $duration / 50
              period: 3
              parameters:
                radius: "8(1-(t/i))"

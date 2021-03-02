@@ -58,7 +58,7 @@ arrow_ice:
              duration: $undo
              period: 4
              particle: snowball
-             radius: $radius
+             radius: 4
     parameters:
       target: none
       projectile: TippedArrow

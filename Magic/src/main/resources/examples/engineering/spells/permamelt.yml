@@ -34,7 +34,7 @@ permamelt:
           target_offset: 0,0.2,0
           effectlib:
              class: Shield
-             duration: $undo
+             duration: 5000
              period: 4
              particle: snowball
              radius: $radius

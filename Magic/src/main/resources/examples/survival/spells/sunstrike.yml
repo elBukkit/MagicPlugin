@@ -61,11 +61,14 @@ sunstrike:
     cast:
     - location: target
       effectlib:
-        class: Helix
-        radius: $radius
-        rotation: (t/i)*2
-        duration: 500
-        iterations: 10
+        class: Modified
+        parameters:
+          rotation: "(t/i)*2"
+        effect:
+          class: Helix
+          radius: $radius
+          duration: 500
+          iterations: 10
       sound: magic.burn
   parameters:
     target: block

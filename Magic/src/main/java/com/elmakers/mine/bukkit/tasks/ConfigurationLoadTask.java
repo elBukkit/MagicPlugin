@@ -149,7 +149,7 @@ public class ConfigurationLoadTask implements Runnable {
                     try {
                         exampleConfig = CompatibilityUtils.loadConfiguration(input);
                     } catch (Exception ex) {
-                        getLogger().severe("Error loading: " + examplesFileName + " from builtin resources");
+                        getLogger().log(Level.SEVERE, "Error loading: " + examplesFileName + " from builtin resources", ex);
                     }
                 }
             }
