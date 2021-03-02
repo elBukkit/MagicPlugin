@@ -941,16 +941,23 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public String getName(Messages messages) {
         if (!isValid()) return "";
 
+        boolean localized = false;
         String materialName = material == null ? "?" : material.name();
         if (messages != null && material != null) {
-            materialName = messages.get("materials." + material, materialName);
+            String localizedName = messages.get("materials." + material.name().toLowerCase(), "");
+            if (!localizedName.isEmpty()) {
+                materialName = localizedName;
+                localized = true;
+            }
         }
         if (data == null && messages != null) {
             materialName = materialName + messages.get("materials.wildcard");
         }
 
-        materialName = materialName.toLowerCase().replace('_', ' ');
-        materialName = WordUtils.capitalize(materialName);
+        if (!localized) {
+            materialName = materialName.toLowerCase().replace('_', ' ');
+            materialName = WordUtils.capitalize(materialName);
+        }
         return materialName;
     }
 

@@ -172,7 +172,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         }
         if (displayName == null || displayName.isEmpty()) {
             MaterialAndData material = new MaterialAndData(item);
-            displayName = material.getName();
+            displayName = material.getName(this);
         }
 
         return displayName;
