@@ -1,0 +1,6 @@
+dailykit:
+  inherit: base_npc
+  interact_spell: dailykit
+  villager_profession: librarian
+  dialog:
+    - Come get your daily rewards!

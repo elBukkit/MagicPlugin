@@ -1464,3 +1464,6 @@ spells:
     soulburn:
         name: Soulburn
         description: Your opponent's mana supply burns them to the core
+    dailykit:
+        name: Daily Kit
+        description: Gives some items once a day

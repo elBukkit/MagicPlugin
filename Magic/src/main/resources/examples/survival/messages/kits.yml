@@ -12,3 +12,6 @@ kits:
   loyalty:
     name: Loyalty Kit
     give: "&6Congratulations! &3You have been on our server for a week. &aHave this &3Mana Talisman &aas a reward!"
+  daily:
+    name: Daily Kit
+    give: "Come back tomorrow for another!"

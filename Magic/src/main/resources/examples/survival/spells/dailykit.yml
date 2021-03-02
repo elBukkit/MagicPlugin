@@ -1,0 +1,8 @@
+dailykit:
+  actions:
+    cast:
+      - class: GiveKit
+  parameters:
+    target: self
+    kit: daily
+

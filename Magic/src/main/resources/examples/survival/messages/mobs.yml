@@ -109,3 +109,5 @@ mobs:
     name: Werewolf
   ghost:
     name: Ghost
+  dailykit:
+    name: Daily Rewards!

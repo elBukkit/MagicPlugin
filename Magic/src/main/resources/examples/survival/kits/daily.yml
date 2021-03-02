@@ -1,0 +1,6 @@
+daily:
+  cooldown: 1 days
+  items:
+    bread: 16
+    gold_nugget: 5
+    oak_planks: 8
