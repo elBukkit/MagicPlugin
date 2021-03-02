@@ -310,6 +310,14 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                     options.add(key);
                 }
             }
+            if (fileType.equals("kits")) {
+                // No Kit API..
+                MagicController controller = (MagicController)api.getController();
+                Collection<String> list = controller.getKitKeys();
+                for (String key : list) {
+                    options.add(key);
+                }
+            }
         }
         return options;
     }
