@@ -359,8 +359,9 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         }
 
         String creatorName = automaton.getCreatorName();
-        creatorName = (creatorName == null || creatorName.isEmpty()) ? ChatColor.YELLOW + "(Unknown)" : ChatColor.GREEN + creatorName;
-        sender.sendMessage(ChatColor.DARK_GREEN + "  Created by: " + creatorName);
+        if (creatorName != null && !creatorName.isEmpty()) {
+            sender.sendMessage(ChatColor.DARK_GREEN + "  Created by: " + ChatColor.GREEN + creatorName);
+        }
         ConfigurationSection parameters = automaton.getParameters();
         Set<String> parameterKeys = null;
         if (parameters == null) {
