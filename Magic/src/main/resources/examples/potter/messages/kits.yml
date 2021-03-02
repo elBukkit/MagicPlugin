@@ -1,4 +1,4 @@
 kits:
   ticket:
     name: Tickit
-    give: "&6You have been given a &bTicket from Ollivander&6!\n&6You should take a trip to &9Diagon Alley&6 to exchange it for a &dWand"
+    give: "&6You have been given a &bTicket from Ollivander&6!\n&6Take a trip to &9Diagon Alley&6 to exchange it for a &dWand"

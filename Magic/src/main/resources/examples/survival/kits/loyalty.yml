@@ -4,8 +4,8 @@ loyalty:
   # This kit rewards players who have been on the server for a week
   starter: true
   requirements:
-    attribute:
-      attribute: play_time
-      min: 1 weeks
+    - attribute:
+        attribute: play_time
+        min: 1 weeks
   items:
     - talisman
