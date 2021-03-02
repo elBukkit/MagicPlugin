@@ -12,13 +12,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.kit.Kit;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class MagicKit {
+public class MagicKit implements Kit {
     private final MagicController controller;
     private Collection<Requirement> requirements;
     private final String key;
@@ -127,9 +128,11 @@ public class MagicKit {
         return isRemove;
     }
 
-    public long getRemainingCooldown(Mage mage) {
+    @Override
+    public long getRemainingCooldown(com.elmakers.mine.bukkit.api.magic.Mage apiMage) {
+        Mage mage = (Mage)apiMage;
         if (cooldown == 0) return 0;
-        if (bypasses(mage, "Magic.bypass_kit_cooldowns")) {
+        if (bypasses(mage, "Magic.bypass_kit_cooldown")) {
             return 0;
         }
         MageKit kit = mage.getKit(key);
@@ -147,7 +150,9 @@ public class MagicKit {
         return player != null && (player.hasPermission(node) || player.hasPermission("Magic.bypass"));
     }
 
-    public boolean isAllowed(Mage mage) {
+    @Override
+    public boolean isAllowed(com.elmakers.mine.bukkit.api.magic.Mage apiMage) {
+        Mage mage = (Mage)apiMage;
         if (!bypasses(mage, "Magic.bypass_kit_requirements") && controller.checkRequirements(mage.getContext(), requirements) != null) {
             return false;
         }
@@ -170,7 +175,9 @@ public class MagicKit {
         give(mage, true, false, null);
     }
 
-    public void give(Mage mage) {
+    @Override
+    public void give(com.elmakers.mine.bukkit.api.magic.Mage apiMage) {
+        Mage mage = (Mage)apiMage;
         give(mage, false, false, null);
     }
 

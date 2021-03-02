@@ -311,9 +311,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 }
             }
             if (fileType.equals("kits")) {
-                // No Kit API..
-                MagicController controller = (MagicController)api.getController();
-                Collection<String> list = controller.getKitKeys();
+                Collection<String> list = api.getController().getKitKeys();
                 for (String key : list) {
                     options.add(key);
                 }

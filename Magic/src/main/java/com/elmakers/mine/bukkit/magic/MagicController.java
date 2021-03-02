@@ -581,11 +581,13 @@ public class MagicController implements MageController {
         }
     }
 
+    @Override
     public MagicKit getKit(String key) {
         return kitController.getKit(key);
     }
 
-    public Collection<String> getKitKeys() {
+    @Override
+    public Set<String> getKitKeys() {
         return kitController.getKitKeys();
     }
 

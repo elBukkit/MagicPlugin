@@ -40,6 +40,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
+import com.elmakers.mine.bukkit.api.kit.Kit;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
@@ -764,4 +765,8 @@ public interface MageController {
     Collection<? extends Warp> getMagicWarps();
     @Nullable
     Automaton addAutomaton(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters);
+    @Nonnull
+    Set<String> getKitKeys();
+    @Nullable
+    Kit getKit(String key);
 }

@@ -11,10 +11,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.kit.Kit;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.kit.MagicKit;
-import com.elmakers.mine.bukkit.magic.Mage;
-import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
@@ -25,9 +24,6 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // TODO: Expose kits to API?
-        MagicController controller = (MagicController)this.controller;
-
         if (!api.hasPermission(sender, getPermissionNode())) {
             sendNoPermission(sender);
             return true;
@@ -54,7 +50,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        MagicKit kit = controller.getKit(kitName);
+        Kit kit = controller.getKit(kitName);
         if (kit == null) {
             sender.sendMessage(controller.getMessages().get("commands.mkit.unknown_kit"));
             return true;
@@ -109,8 +105,6 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
         Set<String> options = new HashSet<>();
         if (!sender.hasPermission("Magic.commands.mkit")) return options;
 
-        // TODO: Expose kits to API?
-        MagicController controller = (MagicController)this.controller;
         if (args.length == 1 && sender.hasPermission("Magic.commands.mkit.others")) {
             options.addAll(api.getPlayerNames());
         }
@@ -118,7 +112,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
         Mage mage = controller.getMage(sender);
         if (args.length == 1 || args.length == 2) {
             for (String key : controller.getKitKeys()) {
-                MagicKit kit = controller.getKit(key);
+                Kit kit = controller.getKit(key);
                 if (kit != null && kit.isAllowed(mage)) {
                     options.add(key);
                 }

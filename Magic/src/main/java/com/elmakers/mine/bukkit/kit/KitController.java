@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.kit;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +60,7 @@ public class KitController {
         return kits.get(key);
     }
 
-    public Collection<String> getKitKeys() {
+    public Set<String> getKitKeys() {
         return kits.keySet();
     }
 }
