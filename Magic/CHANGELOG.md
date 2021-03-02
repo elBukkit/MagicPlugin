@@ -13,6 +13,7 @@
  - Kits can have requirements, such as permissions or attributes
  - Kits can have cooldowns
  - The `/mkit` command can be used to give kits
+ - Kits can be given in spells via the GiveKit action
 
 ## Fixes
 
