@@ -1838,10 +1838,16 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey, String logContext) {
+        return loadEffects(configuration, effectKey, null, null);
+    }
+
+    @Override
+    @Nullable
+    public Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey, String logContext, ConfigurationSection parameterMap) {
         if (configuration.isString(effectKey)) {
             return getEffects(configuration.getString(effectKey));
         }
-        return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey, getLogger(), logContext);
+        return com.elmakers.mine.bukkit.effect.EffectPlayer.loadEffects(getPlugin(), configuration, effectKey, getLogger(), logContext, parameterMap);
     }
 
     public void resetLoading(CommandSender sender) {

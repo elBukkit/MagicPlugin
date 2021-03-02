@@ -687,6 +687,9 @@ public interface MageController {
     @Nullable
     Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey, String logContext);
 
+    @Nullable
+    Collection<EffectPlayer> loadEffects(ConfigurationSection configuration, String effectKey, String logContext, ConfigurationSection parameterMap);
+
     void logBlockChange(@Nonnull Mage mage, @Nonnull BlockState priorState, @Nonnull BlockState newState);
 
     boolean inTaggedRegion(Location location, Set<String> tags);

@@ -28,6 +28,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.tasks.PlayEffectTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -162,10 +163,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
-    public void load(Plugin plugin, ConfigurationSection configuration, Logger logger, String logContext) {
-        this.logContext = logContext;
-        this.logger = logger;
-        load(plugin, configuration);
+    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
+        return loadEffects(plugin, root, key, null, null, null);
     }
 
     public void load(Plugin plugin, ConfigurationSection configuration) {
@@ -297,11 +296,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
     }
 
-    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key) {
-        return loadEffects(plugin, root, key, null, null);
-    }
-
-    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, Logger logger, String logContext) {
+    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, Logger logger, String logContext, ConfigurationSection parameterMap) {
         List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
         Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
         if (effectNodes != null)
@@ -328,7 +323,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                     @SuppressWarnings("unchecked")
                     Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
                     EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
-                    player.load(plugin, effectValues, logger, logContext);
+                    player.load(plugin, effectValues, logger, logContext, parameterMap);
                     players.add(player);
                 } catch (ClassNotFoundException unknown) {
                     if (logger != null) {
@@ -344,6 +339,18 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         return players;
+    }
+
+    public void load(Plugin plugin, ConfigurationSection configuration, Logger logger, String logContext, ConfigurationSection parameterMap) {
+        this.logContext = logContext;
+        this.logger = logger;
+        this.parameterMap = parameterMap;
+        if (!(configuration instanceof TranslatingConfigurationSection)) {
+            configuration = TranslatingConfigurationSection.getWrapped(configuration);
+        }
+        ((TranslatingConfigurationSection)configuration).setParameterMap(parameterMap);
+        load(plugin, configuration);
+        ((TranslatingConfigurationSection)configuration).setParameterMap(null);
     }
 
     public void setLocationType(String locationType) {

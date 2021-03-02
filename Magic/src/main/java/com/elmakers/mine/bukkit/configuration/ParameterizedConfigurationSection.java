@@ -14,7 +14,7 @@ public class ParameterizedConfigurationSection extends TranslatingConfigurationS
         super(parent, path);
     }
 
-    public ParameterizedConfigurationSection(ParameterizedConfigurationSection copy) {
+    public ParameterizedConfigurationSection(ConfigurationSection copy) {
         super(copy.getParent(), copy.getName());
     }
 

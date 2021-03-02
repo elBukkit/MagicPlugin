@@ -367,13 +367,13 @@ public class ConfigurationUtils extends ConfigUtils {
             return new MagicConfiguration((MagicConfiguration)section);
         }
         if (section instanceof ParameterizedConfigurationSection) {
-            return new ParameterizedConfigurationSection((ParameterizedConfigurationSection)section);
+            return new ParameterizedConfigurationSection(section);
         }
         if (section instanceof TranslatingConfiguration) {
             return new TranslatingConfiguration();
         }
         if (section instanceof TranslatingConfigurationSection) {
-            return new TranslatingConfigurationSection((TranslatingConfigurationSection)section);
+            return new TranslatingConfigurationSection(section);
         }
         return ConfigurationUtils.newConfigurationSection();
     }

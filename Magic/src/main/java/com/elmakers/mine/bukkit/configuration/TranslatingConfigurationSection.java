@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class TranslatingConfigurationSection extends MemorySection {
     private static Logger logger;
+    private ConfigurationSection parameterMap;
 
     public static void setLogger(Logger log) {
         logger = log;
@@ -39,8 +40,14 @@ public class TranslatingConfigurationSection extends MemorySection {
         super(parent, path);
     }
 
-    public TranslatingConfigurationSection(TranslatingConfigurationSection copy) {
+    public TranslatingConfigurationSection(ConfigurationSection copy) {
         super(copy.getParent(), copy.getName());
+    }
+
+    public static TranslatingConfigurationSection getWrapped(ConfigurationSection wrap) {
+        TranslatingConfigurationSection newSection = new TranslatingConfigurationSection(wrap);
+        newSection.wrap(wrap);
+        return newSection;
     }
 
     public void wrap(ConfigurationSection wrap) {
@@ -92,6 +99,22 @@ public class TranslatingConfigurationSection extends MemorySection {
             return result;
         }
         return section.createSection(key);
+    }
+
+    public Object get(String path, Object def) {
+        if (parameterMap != null) {
+            Object rawValue = super.get(path, def);
+            if (rawValue != null && rawValue instanceof String) {
+                String stringValue = (String)rawValue;
+                if (stringValue.startsWith("$")) {
+                    stringValue = stringValue.substring(1);
+                    if (parameterMap.contains(stringValue)) {
+                        return parameterMap.get(stringValue);
+                    }
+                }
+            }
+        }
+        return super.get(path, def);
     }
 
     @Override
@@ -233,5 +256,9 @@ public class TranslatingConfigurationSection extends MemorySection {
             return Arrays.asList(StringUtils.split(getString(path), ','));
         }
         return super.getStringList(path);
+    }
+
+    public void setParameterMap(ConfigurationSection parameterMap) {
+        this.parameterMap = parameterMap;
     }
 }
