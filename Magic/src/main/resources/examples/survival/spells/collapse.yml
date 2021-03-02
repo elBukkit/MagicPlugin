@@ -23,7 +23,7 @@ collapse:
            sound_volume: 0.9
         -  sound: entity_generic_explode
            sound_pitch: 2
-           sound_volume: 0.3]4
+           sound_volume: 0.3
         -  class: EffectSingle
            sound: magic.ignite
            sound_volume: 1
