@@ -75,7 +75,7 @@ superjump:
         speed: 4
 
         falling: true
-        radius: "min(5, 4 * (fall_distance - 5) / 64)"
+        radius: 5
         break_durability: 1000
         destructible_durability: 5000
         durability_max_distance: 5
