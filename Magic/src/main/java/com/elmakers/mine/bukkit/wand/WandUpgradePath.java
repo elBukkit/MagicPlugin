@@ -316,13 +316,13 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     }
 
     @Nullable
-    protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration) {
+    protected static WandUpgradePath getPath(MagicController controller, String key, ConfigurationSection configuration) {
         resolvingKeys.clear();
         return getPath(controller, key, configuration, resolvingKeys);
     }
 
     @Nullable
-    protected static WandUpgradePath getPath(MageController controller, String key, ConfigurationSection configuration, Set<String> resolving) {
+    protected static WandUpgradePath getPath(MagicController controller, String key, ConfigurationSection configuration, Set<String> resolving) {
         // Catch circular dependencies
         if (resolving.contains(key)) {
             controller.getLogger().log(Level.WARNING, "Circular dependency detected in paths: " + StringUtils.join(resolving, " -> ") + " -> " + key);
@@ -335,6 +335,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             if (!ConfigurationUtils.isEnabled(parameters)) {
                 return null;
             }
+            parameters = MagicConfiguration.getKeyed(controller, parameters, "path", key);
             String inheritKey = parameters.getString("inherit");
             if (inheritKey != null && !inheritKey.isEmpty()) {
                 WandUpgradePath inherit = getPath(controller, inheritKey, configuration, resolving);
@@ -360,9 +361,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     public static void loadPaths(MagicController controller, ConfigurationSection configuration) {
         paths.clear();
         Set<String> pathKeys = configuration.getKeys(false);
-        for (String key : pathKeys)
-        {
-            configuration = MagicConfiguration.getKeyed(controller, configuration, "path", key);
+        for (String key : pathKeys) {
             getPath(controller, key, configuration);
         }
     }

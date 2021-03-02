@@ -1728,8 +1728,7 @@ public class MagicController implements MageController {
             logger.setContext("automata." + key);
             ConfigurationSection config = resolveConfiguration(key, automataConfiguration, templateConfigurations);
             if (!ConfigurationUtils.isEnabled(config)) continue;
-
-            config = MagicConfiguration.getKeyed(this, automataConfiguration, "automaton", key);
+            config = MagicConfiguration.getKeyed(this, config, "automaton", key);
             AutomatonTemplate template = new AutomatonTemplate(this, key, config);
             automatonTemplates.put(key, template);
         }
@@ -1821,10 +1820,10 @@ public class MagicController implements MageController {
 
     private void loadEffects(ConfigurationSection effectsNode) {
         effects.clear();
+        effectsNode = MagicConfiguration.getKeyed(this, effectsNode, "effects");
         Collection<String> effectKeys = effectsNode.getKeys(false);
         for (String effectKey : effectKeys) {
             logger.setContext("effects." + effectKey);
-            effectsNode = MagicConfiguration.getKeyed(this, effectsNode, "effect", effectKey);
             effects.put(effectKey, loadEffects(effectsNode, effectKey));
         }
     }

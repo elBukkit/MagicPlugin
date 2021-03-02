@@ -29,6 +29,10 @@ public class MagicConfiguration extends ParameterizedConfiguration {
         return new MagicConfiguration(controller, copy, logPrefix + "." + key);
     }
 
+    public static MagicConfiguration getKeyed(MagicController controller, ConfigurationSection copy, String logContext) {
+        return new MagicConfiguration(controller, copy, logContext);
+    }
+
     @Override
     protected double getParameter(String parameter) {
         Double value = controller.getBuiltinAttribute(parameter);
