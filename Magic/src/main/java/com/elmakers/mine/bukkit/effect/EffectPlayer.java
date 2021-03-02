@@ -484,7 +484,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Override
     public void validate() {
         if (effectLib != null && effectLibConfig != null) {
+            ((TranslatingConfigurationSection)effectLibConfig).setParameterMap(parameterMap);
             effectLib.validate(effectLibConfig, this, null, null, parameterMap, logContext);
+            ((TranslatingConfigurationSection)effectLibConfig).setParameterMap(null);
         }
     }
 
