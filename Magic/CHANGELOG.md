@@ -81,6 +81,7 @@
  - Add `use_wand_name` option to SpawnEntity action
  - Add `cancel_explosion` and `powered` flags for creeper mobs
  - Add `CheckLore` action
+ - Add `consume` trigger, fires when eating an item
 
 # 8.3.4
 

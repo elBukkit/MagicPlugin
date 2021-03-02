@@ -1081,6 +1081,9 @@ public class PlayerController implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
+        Mage mage = controller.getMage(event.getPlayer());
+        mage.trigger("consume");
+
         ItemStack item = event.getItem();
         if (!item.hasItemMeta()) return;
 
@@ -1089,7 +1092,6 @@ public class PlayerController implements Listener {
 
         String consumeSpell = controller.getWandProperty(item, "consume_spell", "");
         if (!consumeSpell.isEmpty()) {
-            Mage mage = controller.getMage(event.getPlayer());
             Spell spell = mage.getSpell(consumeSpell);
             if (spell != null) {
                 if (Wand.isWand(item)) {
