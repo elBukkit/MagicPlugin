@@ -60,15 +60,17 @@ sunstrike:
         sound_volume: 0.6
     cast:
     - location: target
+      duration: 500
+      iterations: 10
       effectlib:
+        offset: 0,4,0
         class: Modified
+        variable_a: $radius
         parameters:
           rotation: "(t/i)*2"
+          radius: "a"
         effect:
           class: Helix
-          radius: $radius
-          duration: 500
-          iterations: 10
       sound: magic.burn
   parameters:
     target: block
