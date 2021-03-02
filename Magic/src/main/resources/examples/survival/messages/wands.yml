@@ -459,3 +459,5 @@ wands:
             - "&8Otherwise, &3update shop name and"
             - "&3Teleport your shopkeeper to your current location"
             - "&8Use an anvil to rename your shop tool"
+    foxhelmet:
+        name: Fox Helmet

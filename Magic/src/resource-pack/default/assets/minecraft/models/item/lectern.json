@@ -2,6 +2,7 @@
   "parent": "minecraft:block/lectern",
 
   "overrides": [
-    {"predicate": {"custom_model_data": 18017}, "model": "item/custom/magic_hat"}
+    {"predicate": {"custom_model_data": 18017}, "model": "item/custom/magic_hat"},
+    {"predicate": {"custom_model_data": 18018}, "model": "item/custom/foxhelmet"}
   ]
 }

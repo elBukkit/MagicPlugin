@@ -82,6 +82,7 @@
  - Add `cancel_explosion` and `powered` flags for creeper mobs
  - Add `CheckLore` action
  - Add `consume` trigger, fires when eating an item
+ - Add `foxhelmet` item (from Night, thank you!) Not currently craftable, WIP
 
 # 8.3.4
 

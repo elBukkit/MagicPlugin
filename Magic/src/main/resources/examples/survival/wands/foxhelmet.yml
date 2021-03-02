@@ -1,0 +1,5 @@
+foxhelmet:
+    icon: lectern{CustomModelData:18018}
+    worn: true
+    wearable: helmet
+
