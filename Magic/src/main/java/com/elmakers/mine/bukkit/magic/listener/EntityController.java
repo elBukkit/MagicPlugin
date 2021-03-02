@@ -48,6 +48,7 @@ import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.Targeting;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class EntityController implements Listener {
@@ -290,6 +291,8 @@ public class EntityController implements Listener {
         if (wand != null) {
             // Retrieve stored inventory before deactivating the wand
             if (mage.hasStoredInventory()) {
+                controller.info("** Wand inventory was open, clearing drops: " + drops.size(), 15);
+
                 // Remove the wand inventory from drops
                 drops.clear();
 
@@ -307,12 +310,16 @@ public class EntityController implements Listener {
                         }
                     }
                 }
+                controller.info("** Restored inventory added to drops: " + drops.size(), 15);
             } else {
                 wand.deactivate();
             }
         }
 
-        if (isKeepInventory) return;
+        if (isKeepInventory) {
+            controller.info("** Keep inventory is set,", 15);
+            return;
+        }
 
         // Now check for undroppable items.
         // Remove them from the inventory and drops list, and store them to give back on respawn
@@ -328,6 +335,7 @@ public class EntityController implements Listener {
             // Remove temporary items from inventory and drops
             if (NMSUtils.isTemporary(itemStack)) {
                 drops.remove(itemStack);
+                controller.info("** Removing temporary item from drops: " + TextUtils.nameItem(itemStack) + ", drops now: " + drops.size(), 15);
                 contents[index] = null;
                 continue;
             }
@@ -339,12 +347,15 @@ public class EntityController implements Listener {
                 mage.addToRespawnInventory(index, itemStack);
                 contents[index] = null;
                 drops.remove(itemStack);
+                controller.info("** Removing keep item from drops: " + TextUtils.nameItem(itemStack) + ", drops now: " + drops.size(), 15);
             } else if (Wand.isSkill(itemStack)) {
                 drops.remove(itemStack);
                 contents[index] = null;
+                controller.info("** Removing skill item from drops: " + TextUtils.nameItem(itemStack) + ", drops now: " + drops.size(), 15);
             }
         }
         inventory.setContents(contents);
+        controller.info("** Done processing death with drops remaining: " + drops.size(), 15);
     }
 
     /**
@@ -354,6 +365,13 @@ public class EntityController implements Listener {
     public void onEntityDeath(EntityDeathEvent event)
     {
         Entity entity = event.getEntity();
+        boolean isPlayer = entity instanceof Player;
+        if (isPlayer) {
+            EntityDamageEvent.DamageCause cause = entity.getLastDamageCause() == null ? null : entity.getLastDamageCause().getCause();
+            controller.info("* Processing death of " + entity.getName()
+                + " from " + cause
+                + " with drops: " + event.getDrops().size(), 15);
+        }
         Long spawnerId = EntityMetadataUtils.instance().getLong(entity, "automaton");
         if (spawnerId != null) {
             Automaton automaton = controller.getActiveAutomaton(spawnerId);
@@ -364,10 +382,16 @@ public class EntityController implements Listener {
         if (EntityMetadataUtils.instance().getBoolean(entity, "nodrops")) {
             event.setDroppedExp(0);
             event.getDrops().clear();
+            if (isPlayer) {
+                controller.info("** Player had nodrops tag!", 5);
+            }
         } else {
             UndoList pendingUndo = controller.getEntityUndo(entity);
             if (pendingUndo != null && pendingUndo.isUndoType(entity.getType())) {
                 event.getDrops().clear();
+                if (isPlayer) {
+                    controller.info("** Player was in undoEntityTypes list on death!", 5);
+                }
             }
         }
         EntityDamageEvent damageEvent = event.getEntity().getLastDamageCause();
@@ -387,6 +411,9 @@ public class EntityController implements Listener {
 
         mage.deactivateAllSpells();
         mage.onDeath(event);
+        if (isPlayer) {
+            controller.info("* Mage class handled death, drops now: " + event.getDrops().size(), 15);
+        }
         if (event instanceof PlayerDeathEvent) {
             PlayerDeathEvent playerDeath = (PlayerDeathEvent)event;
             handlePlayerDeath(playerDeath.getEntity(), mage, playerDeath.getDrops(), playerDeath.getKeepInventory());
@@ -415,6 +442,9 @@ public class EntityController implements Listener {
     {
         if (disableItemSpawn || com.elmakers.mine.bukkit.block.BlockData.undoing)
         {
+            controller.info("*** Trying to spawn item but skipping due to disableItemSpawn?" + disableItemSpawn
+                    + " undoing?" + com.elmakers.mine.bukkit.block.BlockData.undoing
+                    + ": " + TextUtils.nameItem(event.getEntity().getItemStack()), 18);
             event.setCancelled(true);
             return;
         }
@@ -422,6 +452,7 @@ public class EntityController implements Listener {
         Item itemEntity = event.getEntity();
         ItemStack spawnedItem = itemEntity.getItemStack();
         if (InventoryUtils.isTemporary(spawnedItem)) {
+            controller.info("*** Trying to drop a temporary item: " + TextUtils.nameItem(event.getEntity().getItemStack()), 18);
             event.setCancelled(true);
             return;
         }
@@ -467,6 +498,7 @@ public class EntityController implements Listener {
         */
         if (Wand.isSkill(spawnedItem))
         {
+            controller.info("*** Trying to drop a skill item: " + TextUtils.nameItem(event.getEntity().getItemStack()), 18);
             event.setCancelled(true);
             return;
         }

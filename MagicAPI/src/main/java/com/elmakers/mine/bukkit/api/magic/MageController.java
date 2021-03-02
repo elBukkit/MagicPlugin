@@ -72,6 +72,7 @@ public interface MageController {
      * @param debug The message to log
      */
     void info(String debug);
+    void info(String debug, int debugLevel);
 
     /**
      * Retrieve the Plugin that owns this controller.

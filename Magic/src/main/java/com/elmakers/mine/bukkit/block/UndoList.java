@@ -29,6 +29,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Hanging;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -50,6 +51,7 @@ import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.google.common.base.Preconditions;
 
 /**
@@ -269,6 +271,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         if (entity == null) return;
         if (spawnedEntities == null) spawnedEntities = new HashMap<>();
+        if (entity instanceof Item) {
+            controller.info("** Dropped item " + TextUtils.nameItem(((Item)entity).getItemStack()) + " added to undo queue of " + getName(), 15);
+        }
 
         spawnedEntities.put(entity.getUniqueId(), new SpawnedEntity(entity));
         if (this.isScheduled()) {

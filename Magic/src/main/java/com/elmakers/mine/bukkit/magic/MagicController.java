@@ -606,6 +606,7 @@ public class MagicController implements MageController {
         info(message, 1);
     }
 
+    @Override
     public void info(String message, int verbosity)
     {
         if (loading && !reloadVerboseLogging) {

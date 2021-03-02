@@ -1,5 +1,5 @@
 # This IS a dev server, after all!
-log_verbosity: 10
+log_verbosity: 20
 debug_effects: true
 debug_effects_stack_traces: true
 

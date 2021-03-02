@@ -11,6 +11,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 public class TextUtils
@@ -171,5 +173,13 @@ public class TextUtils
                 sender.sendMessage(fullMessage);
             }
         }
+    }
+
+    public static String nameItem(ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta != null && meta.hasDisplayName()) {
+            return meta.getDisplayName();
+        }
+        return itemStack.getType().name();
     }
 }
