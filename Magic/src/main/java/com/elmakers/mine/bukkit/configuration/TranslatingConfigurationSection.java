@@ -101,6 +101,7 @@ public class TranslatingConfigurationSection extends MemorySection {
         return section.createSection(key);
     }
 
+    @Override
     public Object get(String path, Object def) {
         if (parameterMap != null) {
             Object rawValue = super.get(path, def);

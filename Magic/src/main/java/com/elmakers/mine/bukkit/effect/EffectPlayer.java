@@ -167,6 +167,51 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return loadEffects(plugin, root, key, null, null, null);
     }
 
+    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, Logger logger, String logContext, ConfigurationSection parameterMap) {
+        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
+        Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
+        if (effectNodes != null)
+        {
+            for (ConfigurationSection effectValues : effectNodes)
+            {
+                String effectClass = effectValues.getString("class", "EffectSingle");
+                try {
+                    if (!effectClass.contains(".")) {
+                        if (!effectClass.startsWith("Effect")) {
+                            effectClass = "Effect" + effectClass;
+                        }
+                        effectClass = EFFECT_BUILTIN_CLASSPATH + "." + effectClass;
+                    }
+                    Class<?> genericClass = effectClasses.get(effectClass);
+                    if (genericClass == null) {
+                        genericClass = Class.forName(effectClass);
+                        effectClasses.put(effectClass, genericClass);
+                    }
+                    if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
+                        throw new Exception("Must extend EffectPlayer");
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
+                    EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
+                    player.load(plugin, effectValues, logger, logContext, parameterMap);
+                    players.add(player);
+                } catch (ClassNotFoundException unknown) {
+                    if (logger != null) {
+                        logger.warning("Unknown effect class in " + logContext + ": " + effectClass);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    if (logger != null) {
+                        logger.warning("Error creating effect class in " + logContext + ": " + effectClass + " " + ex.getMessage());
+                    }
+                }
+            }
+        }
+
+        return players;
+    }
+
     public void load(Plugin plugin, ConfigurationSection configuration) {
         this.plugin = plugin;
 
@@ -294,51 +339,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         sourceLocation = new SourceLocation(configuration);
         targetLocation = new SourceLocation(configuration, "target_location", false);
         sampleTarget = configuration.getString("sample", "").equalsIgnoreCase("target");
-    }
-
-    public static Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> loadEffects(Plugin plugin, ConfigurationSection root, String key, Logger logger, String logContext, ConfigurationSection parameterMap) {
-        List<com.elmakers.mine.bukkit.api.effect.EffectPlayer> players = new ArrayList<>();
-        Collection<ConfigurationSection> effectNodes = ConfigurationUtils.getNodeList(root, key);
-        if (effectNodes != null)
-        {
-            for (ConfigurationSection effectValues : effectNodes)
-            {
-                String effectClass = effectValues.getString("class", "EffectSingle");
-                try {
-                    if (!effectClass.contains(".")) {
-                        if (!effectClass.startsWith("Effect")) {
-                            effectClass = "Effect" + effectClass;
-                        }
-                        effectClass = EFFECT_BUILTIN_CLASSPATH + "." + effectClass;
-                    }
-                    Class<?> genericClass = effectClasses.get(effectClass);
-                    if (genericClass == null) {
-                        genericClass = Class.forName(effectClass);
-                        effectClasses.put(effectClass, genericClass);
-                    }
-                    if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
-                        throw new Exception("Must extend EffectPlayer");
-                    }
-
-                    @SuppressWarnings("unchecked")
-                    Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
-                    EffectPlayer player = playerClass.getDeclaredConstructor().newInstance();
-                    player.load(plugin, effectValues, logger, logContext, parameterMap);
-                    players.add(player);
-                } catch (ClassNotFoundException unknown) {
-                    if (logger != null) {
-                        logger.warning("Unknown effect class in " + logContext + ": " + effectClass);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    if (logger != null) {
-                        logger.warning("Error creating effect class in " + logContext + ": " + effectClass + " " + ex.getMessage());
-                    }
-                }
-            }
-        }
-
-        return players;
     }
 
     public void load(Plugin plugin, ConfigurationSection configuration, Logger logger, String logContext, ConfigurationSection parameterMap) {
