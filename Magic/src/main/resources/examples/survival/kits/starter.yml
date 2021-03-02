@@ -8,7 +8,6 @@ starter:
     - wooden_pickaxe
     - wooden_shovel
     - wooden_axe
-    - wooden_pickaxe
     - item: bread@32
       slot: 8
     - item: leather_helmet

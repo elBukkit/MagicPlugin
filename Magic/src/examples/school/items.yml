@@ -1,0 +1,30 @@
+phome:
+  worth: 10000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: SEA_LANTERN
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_aqua","text":"Home
+        Protection"}],"text":""}'
+      lore:
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"This
+        will protect a 16x16x16 area"}],"text":""}'
+      - '{"extra":[{"text":"Use /ps allow <player> to add members"}],"text":""}'
+
+pshop:
+  worth: 8000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BOOKSHELF
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"dark_aqua","text":"Shop
+        Protection"}],"text":""}'
+      lore:
+      - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"yellow","text":"This
+        will protect a 6x12x6 area"}],"text":""}'

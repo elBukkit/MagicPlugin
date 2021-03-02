@@ -1,4 +1,35 @@
 students:
   keep: true
+  requirements:
+    - not_permission: orla.mod
   items:
     - tool
+
+admins:
+  keep: true
+  requirements:
+    - permission: orla.mod
+  items:
+    - admintool
+
+newstudents:
+  starter: true
+  items:
+    - wooden_sword
+    - wooden_pickaxe
+    - wooden_shovel
+    - wooden_axe
+    - item: torch@32
+      slot: 7
+    - item: bread@32
+      slot: 8
+    - item: shoptoken
+      slot: 9
+    - item: pshop
+      slot: 10
+    - item: phome
+      slot: 17
+    - item: white_bed
+      slot: 16
+    - item: oak_planks@64
+      slot: 15
