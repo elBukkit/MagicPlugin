@@ -21,6 +21,7 @@
    The potion effect duration now defaults to the same duration as the cloud itself
  - Fix chest populator (`chests` example), which I think was never working
  - Fix mobs overrunning the other side and nether side (hopefully)
+ - Fix losing armor on death while cloaked
 
 ## Changes
 

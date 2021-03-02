@@ -264,6 +264,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean hologramIsVisible = false;
     private boolean isNPC = false;
 
+    private List<ItemStack> respawnItems;
     private Map<Integer, ItemStack> respawnInventory;
     private Map<Integer, ItemStack> respawnArmor;
     private List<ItemStack> restoreInventory;
@@ -2682,8 +2683,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean setItem(int slot, ItemStack item) {
+        Player player = getPlayer();
+        if (player != null && player.isDead() && !CompatibilityUtils.isEmpty(item)) {
+            controller.info("** Giving item while dead (slot " + slot + "): " + TextUtils.nameItem(item));
+            addToRespawnInventory(slot, item);
+            return true;
+        }
         if (slot >= InventorySlot.BOOTS.getSlot()) {
-            Player player = getPlayer();
             if (player != null) {
                 player.getInventory().setItem(slot, item);
                 return true;
@@ -3641,8 +3647,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void clearRespawnInventories() {
+        respawnItems = null;
         respawnArmor = null;
         respawnInventory = null;
+    }
+
+    public void addRespawnInventories(List<ItemStack> items) {
+        if (respawnArmor != null) {
+            items.addAll(respawnArmor.values());
+        }
+        if (respawnInventory != null) {
+            items.addAll(respawnInventory.values());
+        }
+        if (respawnItems != null) {
+            items.addAll(respawnItems);
+        }
     }
 
     public void restoreRespawnInventories() {
@@ -3653,56 +3672,72 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         boolean updated = false;
         PlayerInventory inventory = player.getInventory();
         List<ItemStack> addToInventory = null;
+        if (respawnItems != null) {
+            controller.info("** Restoring " + respawnItems.size() + " items", 15);
+            addToInventory = respawnItems;
+        }
         if (respawnArmor != null) {
+            controller.info("** Restoring " + respawnArmor.size() + " armor items", 15);
             ItemStack[] armor = inventory.getArmorContents();
             for (Map.Entry<Integer, ItemStack> entry : respawnArmor.entrySet()) {
                 ItemStack item = entry.getValue();
-                if (!CompatibilityUtils.isEmpty(item)) {
-                    updated = true;
-                    int index = entry.getKey();
-                    if (!CompatibilityUtils.isEmpty(armor[index])) {
-                        if (addToInventory == null) {
-                            addToInventory = new ArrayList<>();
-                        }
-                        addToInventory.add(armor[index]);
-                    }
-                    armor[index] = item;
+                if (CompatibilityUtils.isEmpty(item)) {
+                    continue;
                 }
+                int index = entry.getKey();
+                ItemStack existing = armor[index];
+                if (!CompatibilityUtils.isEmpty(existing)) {
+                    controller.info("*** Restoring armor " + TextUtils.nameItem(item)
+                        + " in slot " + index + " but found item " + TextUtils.nameItem(existing), 18);
+                    if (addToInventory == null) {
+                        addToInventory = new ArrayList<>();
+                    }
+                    addToInventory.add(existing);
+                }
+                updated = true;
+                armor[index] = item;
             }
             if (updated) {
                 player.getInventory().setArmorContents(armor);
             }
         }
         if (respawnInventory != null) {
+            controller.info("** Restoring " + respawnInventory.size() + " inventory items", 15);
             for (Map.Entry<Integer, ItemStack> entry : respawnInventory.entrySet()) {
                 int slot = entry.getKey();
                 ItemStack item = entry.getValue();
-                if (CompatibilityUtils.isEmpty(item)) {
-                    continue;
-                }
-                updated = true;
-                if (slot >= 0) {
-                    int index = entry.getKey();
-                    ItemStack existing = inventory.getItem(index);
-                    inventory.setItem(index, item);
-                    if (!CompatibilityUtils.isEmpty(existing)) {
-                        item = existing;
-                    } else {
-                        item = null;
-                    }
-                }
-                if (item != null) {
+                if (slot < 0) {
                     if (addToInventory == null) {
                         addToInventory = new ArrayList<>();
                     }
                     addToInventory.add(item);
+                    continue;
                 }
+                if (CompatibilityUtils.isEmpty(item)) {
+                    continue;
+                }
+                updated = true;
+                ItemStack existing = inventory.getItem(slot);
+                if (!CompatibilityUtils.isEmpty(existing)) {
+                    controller.info("*** Restoring item " + TextUtils.nameItem(item)
+                        + " in slot " + slot + " but found item " + TextUtils.nameItem(existing), 18);
+                    if (addToInventory == null) {
+                        addToInventory = new ArrayList<>();
+                    }
+                    addToInventory.add(existing);
+                }
+                inventory.setItem(slot, item);
             }
         }
         if (addToInventory != null) {
             for (ItemStack item : addToInventory) {
+                if (CompatibilityUtils.isEmpty(item)) {
+                    continue;
+                }
                 Map<Integer, ItemStack> returned = inventory.addItem(item);
                 if (!returned.isEmpty()) {
+                    controller.info("*** Restoring item " + TextUtils.nameItem(item)
+                        + " but inventory was full, dropping", 18);
                     player.getWorld().dropItem(player.getLocation(), item);
                 }
             }
@@ -3720,21 +3755,32 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void addToRespawnInventory(ItemStack item) {
-        addToRespawnInventory(-1, item);
+        if (respawnItems == null) {
+            respawnItems = new ArrayList<>();
+        }
+        respawnItems.add(item);
     }
 
     public void addToRespawnInventory(int slot, ItemStack item) {
         if (respawnInventory == null) {
             respawnInventory = new HashMap<>();
         }
-        respawnInventory.put(slot, item);
+        if (respawnInventory.containsKey(slot)) {
+            addToRespawnInventory(item);
+        } else {
+            respawnInventory.put(slot, item);
+        }
     }
 
     public void addToRespawnArmor(int slot, ItemStack item) {
         if (respawnArmor == null) {
             respawnArmor = new HashMap<>();
         }
-        respawnArmor.put(slot, item);
+        if (respawnArmor.containsKey(slot)) {
+            addToRespawnInventory(item);
+        } else {
+            respawnArmor.put(slot, item);
+        }
     }
 
     @Override
@@ -3785,6 +3831,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (player == null) return true;
 
             if (player.isDead()) {
+                controller.info("** Giving item while dead: " + TextUtils.nameItem(itemStack));
                 addToRespawnInventory(itemStack);
                 return true;
             }
@@ -3836,6 +3883,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         if (player.isDead()) {
+            controller.info("** Giving item while dead: " + TextUtils.nameItem(itemStack));
             addToRespawnInventory(itemStack);
             return true;
         }

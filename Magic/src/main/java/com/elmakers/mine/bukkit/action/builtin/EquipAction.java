@@ -90,11 +90,7 @@ public class EquipAction extends BaseSpellAction
             ItemStack currentItem = targetMage.getItem(slotNumber);
             if (NMSUtils.isTemporary(currentItem)) {
                 ItemStack replacement = NMSUtils.getReplacement(currentItem);
-                if (player.isDead()) {
-                    targetMage.giveItem(replacement);
-                } else {
-                    targetMage.setItem(slotNumber, replacement);
-                }
+                targetMage.setItem(slotNumber, replacement);
             }
             if (targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 com.elmakers.mine.bukkit.magic.Mage implMage = ((com.elmakers.mine.bukkit.magic.Mage)targetMage);

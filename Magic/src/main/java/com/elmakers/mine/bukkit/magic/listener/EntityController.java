@@ -320,6 +320,13 @@ public class EntityController implements Listener {
             controller.info("** Keep inventory is set,", 15);
             return;
         }
+        // The Equip action and other temporary item-giving spells will have given items to the respawn inventory
+        // on death. Let's take those items out and add them to drops
+        int dropSize = drops.size();
+        mage.addRespawnInventories(drops);
+        mage.restoreRespawnInventories();
+        dropSize = drops.size() - dropSize;
+        controller.info("** Dropping " + dropSize + " items that were given on death, drops now: " + drops.size(), 15);
 
         // Now check for undroppable items.
         // Remove them from the inventory and drops list, and store them to give back on respawn

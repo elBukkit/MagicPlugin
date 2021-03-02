@@ -1,14 +1,5 @@
 # TODO
 
-## Data/item Loss
-
-Losing wizard armor on death- maybe only while cloaked? https://streamable.com/dr1gnt
-Bug with test.yml spell and changing worlds via warp, undo breaks
-
-## Kits
-
-- TODO: consecutive days played?
-
 ## Hot
 
  - target_hit_timeout for CustomProjectile (Phantom)
@@ -22,6 +13,7 @@ Bug with test.yml spell and changing worlds via warp, undo breaks
 
  - Night asking about cooldowns on dragon mount spell, shouldn't they reset at end of cast?
  - Automaton parameters don't seem to work, when applied with CreateAutomaton or a populator
+ - Consecutive days played attribute?
 
  - Overrides should probably be cached
 
@@ -32,11 +24,9 @@ Bug with test.yml spell and changing worlds via warp, undo breaks
  - Allow enchantable wands to use an anvil/book
  - Capture doesn't work on piglin brutes
 
- - spellbooks use glowing spell icons?
  - hit/entity _count parameters don't work with EntityProjectile
  - Targeting options for passive or hostile mobs only
 
- - Mobs should choose new targets if their top damager dies or goes far away (?)
  - Consider revamping the "work" mechanic, maybe just allow some # of ms per tick?
  - Check smallairpump, overrides didn't work?
  - block-based automaton, more official features... interact actions
