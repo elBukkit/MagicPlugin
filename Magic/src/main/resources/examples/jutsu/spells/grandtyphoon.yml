@@ -119,7 +119,6 @@ grandtyphoon:
     item_speed: 0.5
     entity_speed: 0.5
     radius: 10
-    destructible: destructible,destructible2,destructible3
     destructible_override: true
     cooldown: 1400
   costs:

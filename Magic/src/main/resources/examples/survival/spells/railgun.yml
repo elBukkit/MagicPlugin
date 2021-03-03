@@ -122,7 +122,6 @@ railgun:
     headshot_parameters:
       damage_multiplier: 2
     parameters:
-        destructible: destructible,destructible2,destructible3,transparent
         destructible_durability: 10000
         break_durability: 1000
         allow_max_range: true

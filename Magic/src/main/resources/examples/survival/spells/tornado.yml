@@ -88,8 +88,6 @@ tornado:
 
 tornado|2:
     parameters:
-        destructible: destructible,destructible2,destructible3
-        transparent: all_air,destructible,destructible2,destructible3
         target_offset: 0,5,0
         x_size: 1
         z_size: 1

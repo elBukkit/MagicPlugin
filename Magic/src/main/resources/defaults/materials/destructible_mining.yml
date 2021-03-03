@@ -1,23 +1,16 @@
 # Destructible list minus ores, for mining spells.
 #
-destructible_mining:
-- log
-- all_stone
-- grass
-- grass_block
-- grass_path
-- dirt
-- cobblestone
-- sand
-- gravel
-- netherrack
-- soul_sand
-- snow
-- leaves
-- sandstone
-- stained_clay
-- mycel
-- ender_stone
-- hard_clay
-- plants
+non_destructible_mining:
+- "!destructible"
+- ores
+- planks
+- logs
+- buttons
+- gates
+- fences
+- rails
+- trees
+- stained_glass
+- glass
 
+destructible_mining: "!non_destructible_mining"

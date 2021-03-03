@@ -157,6 +157,5 @@ nuke:
 
 nuke|2:
   parameters:
-    destructible: destructible,destructible2,destructible3
     radius: 12
 

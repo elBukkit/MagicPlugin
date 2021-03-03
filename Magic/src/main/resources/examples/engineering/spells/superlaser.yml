@@ -91,7 +91,6 @@ superlaser:
         start_at_target: true
         increment_data: false
         check_destructible: true
-        destructible: destructible
         transparent: all_air
         brush: air
         radius: 1.5
@@ -107,12 +106,10 @@ superlaser:
 superlaser|2:
     upgrade_required_casts: 20
     parameters:
-        destructible: destructible,destructible2,transparent
         repeat: 11
 
 superlaser|3:
     parameters:
-        destructible: destructible,destructible2,destructible3,transparent
         player_damage: 1
         entity_damage: 3
         repeat: 12

@@ -44,7 +44,6 @@ rubberize:
         bypass_backfire: true
         select_self: false
         replace: true
-        destructible: destructible,destructible2,destructible3
     costs:
         mana: 50
 

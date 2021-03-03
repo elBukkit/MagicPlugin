@@ -102,7 +102,6 @@ singularity:
       range: 12
       target: block
       allow_max_range: true
-      destructible: destructible,destructible2,destructible3
       undo: 15000
       duration: 7000
       damage: 3

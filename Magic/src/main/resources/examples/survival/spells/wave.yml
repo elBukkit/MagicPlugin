@@ -99,5 +99,4 @@ wave|2:
         item_speed: 0.4
         living_entity_speed: 0.6
         speed: 0.8
-        destructible: destructible,destructible2,destructible3
 

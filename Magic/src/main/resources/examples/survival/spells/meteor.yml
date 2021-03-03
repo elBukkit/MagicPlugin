@@ -216,7 +216,6 @@ meteor:
         falling: true
         brush: air
         direction: 0,0.75,0
-        destructible: destructible,destructible2,destructible3
         destructible_override: true
         undo_speed: 2
     costs:

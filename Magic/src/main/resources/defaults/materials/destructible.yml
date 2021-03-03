@@ -3,44 +3,4 @@
 # Most construction spells will use this material list for destructibility tests by
 # default.
 destructible:
-- logs
-- all_leaves
-- all_stone
-- grass
-- grass_block
-- dirt
-- soil
-- cobblestone
-- mossy_cobblestone
-- clay
-- hard_clay
-- stained_clays
-- fire
-- sand
-- gravel
-- netherrack
-- ender_stone
-- mycel
-- soul_sand
-- snow
-- sandstone
-- gold_ore
-- iron_ore
-- coal_ore
-- lapis_ore
-- diamond_ore
-- redstone_ore
-- glowing_redstone_ore
-- emerald_ore
-- quartz_ore
-- melon_block
-- pumpkin
-- huge_mushroom_1
-- huge_mushroom_2
-- ice
-- packed_ice
-- grass_path
-- frosted_ice
-- magma
-- plants
-
+- solid

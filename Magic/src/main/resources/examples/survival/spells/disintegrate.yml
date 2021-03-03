@@ -87,7 +87,6 @@ disintegrate:
         brush: erase
         player_damage: 6
         entity_damage: 15
-        destructible: destructible,destructible2,destructible3
         undo: 5000
         cooldown: 1500
     costs:

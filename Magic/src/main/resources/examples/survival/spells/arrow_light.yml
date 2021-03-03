@@ -124,7 +124,6 @@ arrow_light:
     headshot_parameters:
       damage_multiplier: 2
     parameters:
-        destructible: destructible,destructible2,destructible3,transparent
         allow_max_range: true
         velocity: 1000
         range: 80

@@ -47,6 +47,7 @@
  - Items can now have a `name` and `lore` specified in messages.yml, so they can be localized
  - Mobs can have a `name` specified in messages.yml
  - Spell book spell icons glow
+ - Removed the destructible2 and destructible3 lists, most spells break all solid blocks by default
 
 ## Additions
 

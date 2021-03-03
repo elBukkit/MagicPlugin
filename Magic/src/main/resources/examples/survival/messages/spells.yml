@@ -9,7 +9,7 @@ spells:
         name: Collapse
         description: Collapse a spherical area of blocks
         cast_finish: Collapsed @blocks blocks
-        upgrade_description: "Increased radius, breaks more types of blocks"
+        upgrade_description: "Increased radius"
     sparkle:
         name: Sparkle
         description: Gives you a random effect, bad or good
@@ -664,7 +664,7 @@ spells:
         name: SuperLaser
         description: Permanently destroy a line of blocks
         cast_finish: Lasered @blocks blocks
-        upgrade_description: "Longer beam duration, breaks more types of blocks"
+        upgrade_description: "Longer beam duration"
     laser:
         name: Laser
         description: Destroy a line of blocks
@@ -878,7 +878,7 @@ spells:
         name: Tornado
         description: Spawn a destructive whirlwind
         cast: Duck and cover!
-        upgrade_description: "Now destroys structures"
+        upgrade_description: "Increased size"
     masterattack:
         name: Master Blast
         description: "A long-range attack that can only be performed when your health is full"

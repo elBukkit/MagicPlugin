@@ -161,7 +161,6 @@ defender_attack:
         check_destructible: true
         radius: 2
         transparent: transparent_to_construction
-        destructible: destructible,destructible2,destructible3
         undo: 5000
         brush: stained_glass|9
         bypass_backfire: true

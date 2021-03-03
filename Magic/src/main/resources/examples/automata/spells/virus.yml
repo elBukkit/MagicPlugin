@@ -226,13 +226,10 @@ virus_death:
         item_speed: 0.5
         living_entity_speed: 0.5
         y_offset: 1
-        player_damage: 3
-        entity_damage: 3
         speed: 0.9
         falling: true
         brush: air
         direction: 0,0.75,0
-        destructible: destructible,destructible2,destructible3
         undo_speed: 2
 
 birth_virus:

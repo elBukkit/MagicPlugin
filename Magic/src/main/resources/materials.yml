@@ -28,12 +28,6 @@
 # - grass
 # - dirt
 
-# destructible2:
-# - cobblestone
-
-# destructible3:
-# - stone
-
 # Change which blocks are considered transparent, to only air:
 # transparent:
 # - air

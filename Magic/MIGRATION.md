@@ -5,6 +5,8 @@
  - The API for interfaces between EffectContext and CastContext was restructured.
    This will mainly effect plugins that implement custom RequirementsProcessor classes, but as far as I know no one
    has been using that. I'm hoping this API change doens't break anyone, I really try not to ever change the API.
+ - Removed the destructible2 and destructible3 lists, most spells break all solid blocks by default.
+   The original destructible list can be found in git if you want it back
 
 # 8.3
 
