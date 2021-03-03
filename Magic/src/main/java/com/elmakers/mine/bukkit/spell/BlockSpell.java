@@ -122,11 +122,10 @@ public class BlockSpell extends UndoableSpell {
         String message = super.getMessage(messageKey, def);
         // Don't stomp on variables here
         if (!getVariables().contains("count") && !mage.getVariables().contains("count")) {
-            return message.replace("$count", Integer.toString(getModifiedCount()));
+            message = message.replace("$count", Integer.toString(getModifiedCount()));
         }
-        if (!getVariables().contains("blocks") && !mage.getVariables().contains("blocks")) {
-            return message.replace("@blocks", Integer.toString(getModifiedCount()));
-        }
+        // This one *will* stomp on variables
+        message = message.replace("@blocks", Integer.toString(getModifiedCount()));
         return message;
     }
 
