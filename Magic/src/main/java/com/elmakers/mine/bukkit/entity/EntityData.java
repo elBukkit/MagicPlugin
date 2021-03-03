@@ -612,7 +612,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                     attributes.put(attribute, attributeConfiguration.getDouble(attributeKey));
                 } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, "Invalid attribute type: " + attributeKey, ex);
+                    controller.getLogger().log(Level.WARNING, "Invalid attribute type: " + attributeKey);
                 }
             }
         }
