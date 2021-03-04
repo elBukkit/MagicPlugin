@@ -2,6 +2,9 @@ bring:
   inherit: goto
   icon: soul_lantern{CustomModelData:18001}
   icon_disabled: soul_lantern{CustomModelData:18002}
+  legacy_icon: spell_icon:48
+  legacy_icon_disabled: spell_icon_disabled:48
+  icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
   actions:
     cast:
       - class: PlayerSelect

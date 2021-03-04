@@ -1,6 +1,9 @@
 sunstrike:
   icon: honeycomb{CustomModelData:18001}
   icon_disabled: honeycomb{CustomModelData:18002}
+  legacy_icon: spell_icon:48
+  legacy_icon_disabled: spell_icon_disabled:48
+  icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
   cast_on_no_target: false
   category: master
   pvp_restricted: true
