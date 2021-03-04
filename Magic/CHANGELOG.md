@@ -4,6 +4,8 @@
 
 # 8.4.1
 
+ - Fix reloading configs setting SP earn cooldown to zero for all online players
+
 # 8.4
 
 ## Kits
