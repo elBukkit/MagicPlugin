@@ -149,3 +149,155 @@ emerald_sword:
       display-name: Emerald Sword
       Unbreakable: true
 
+dragonbodyblue:
+  item: feather
+
+dragonbodybrown:
+  item: feather
+
+dragonbodycyan:
+  item: feather
+
+dragonbodygrey:
+  item: feather
+
+dragonbodyblack:
+  item: feather
+
+dragonbodygreen:
+  item: feather
+
+dragonbodylightblue:
+  item: feather
+
+dragonbodylightgrey:
+  item: feather
+
+dragonbodylightred:
+  item: feather
+
+dragonbodylime:
+  item: feather
+
+dragonbodymagenta:
+  item: feather
+
+dragonbodyorange:
+  item: feather
+
+dragonbodypink:
+  item: feather
+
+dragonbodypurple:
+  item: feather
+
+dragonbodyred:
+  item: feather
+
+dragonbodywhite:
+  item: feather
+
+dragonbodyyellow:
+  item: feather
+
+dragonleftgreen:
+  item: feather
+
+dragonwingleftblack:
+  item: feather
+
+dragonwingleftblue:
+  item: feather
+
+dragonwingleftbrown:
+  item: feather
+
+dragonwingleftcyan:
+  item: feather
+
+dragonwingleftgrey:
+  item: feather
+
+dragonwingleftgreen:
+  item: feather
+
+dragonwingleftlightblue:
+  item: feather
+
+dragonwingleftlightgrey:
+  item: feather
+
+dragonwingleftlime:
+  item: feather
+
+dragonwingleftmagenta:
+  item: feather
+
+dragonwingleftorange:
+  item: feather
+
+dragonwingleftpink:
+  item: feather
+
+dragonwingleftpurple:
+  item: feather
+
+dragonwingleftred:
+  item: feather
+
+dragonwingleftwhite:
+  item: feather
+
+dragonwingleftyellow:
+  item: feather
+
+dragonwingrightblack:
+  item: feather
+
+dragonwingrightgrey:
+  item: feather
+
+dragonwingrightblue:
+  item: feather
+
+dragonwingrightbrown:
+  item: feather
+
+dragonwingrightcyan:
+  item: feather
+
+dragonwingrightgreen:
+  item: feather
+
+dragonwingrightlightblue:
+  item: feather
+
+dragonwingrightlightgrey:
+  item: feather
+
+dragonwingrightlightgreen:
+  item: feather
+
+dragonwingrightlime:
+  item: feather
+
+dragonwingrightmagenta:
+  item: feather
+
+dragonwingrightorange:
+  item: feather
+
+dragonwingrightpink:
+  item: feather
+
+dragonwingrightpurple:
+  item: feather
+
+dragonwingrightred:
+  item: feather
+
+dragonwingrightwhite:
+  item: feather
+
+dragonwingrightyellow:
+  item: feather
