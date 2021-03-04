@@ -4932,6 +4932,10 @@ public class MagicController implements MageController {
             }
         }
 
+        String localizedName = messages.get("entities." + target.getType().name().toLowerCase(), "");
+        if (!localizedName.isEmpty()) {
+            return localizedName;
+        }
         return target.getType().name().toLowerCase().replace('_', ' ');
     }
 

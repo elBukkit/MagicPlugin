@@ -225,10 +225,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        String name = spawned.getName();
-        if (name == null) {
-            name = mobKey;
-        }
+        String name = controller.getEntityName(spawned);
         sender.sendMessage(ChatColor.AQUA + "Spawned mob: " + ChatColor.LIGHT_PURPLE + name);
         return true;
     }

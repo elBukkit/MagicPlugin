@@ -116,6 +116,9 @@ public class ProjectileAction  extends BaseProjectileAction
 
         // Prepare parameters
         Location location = sourceLocation.getLocation(context);
+        if (location == null) {
+            return SpellResult.LOCATION_REQUIRED;
+        }
         Vector direction = location.getDirection();
 
         if (startDistance > 0) {

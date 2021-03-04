@@ -384,7 +384,11 @@ public class CustomProjectileAction extends CompoundAction
         Location projectileLocation = null;
         if (velocity == null)
         {
-            projectileLocation = sourceLocation.getLocation(context).clone();
+            projectileLocation = sourceLocation.getLocation(context);
+            if (projectileLocation == null) {
+                return SpellResult.LOCATION_REQUIRED;
+            }
+            projectileLocation = projectileLocation.clone();
 
             /* This feels confusing however...
              * Looking straight down in Minecraft gives a pitch of 90

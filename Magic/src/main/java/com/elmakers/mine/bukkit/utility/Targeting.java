@@ -269,11 +269,14 @@ public class Targeting {
         Mage mage = context.getMage();
         if (mage.getDebugLevel() > 15) {
             Location targetLocation = target.getLocation();
-            String message = ChatColor.GREEN + "Targeted from " + ChatColor.GRAY + source.getBlockX()
-                    + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
-                    + ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ()
-                    + ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range + ChatColor.DARK_GREEN + ": "
-                    + ChatColor.GOLD + result;
+            String message = "";
+            if (source != null) {
+                message = message +  ChatColor.GREEN + "Targeted from " + ChatColor.GRAY + source.getBlockX()
+                        + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()
+                        + ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ()
+                        + ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range + ChatColor.DARK_GREEN + ": "
+                        + ChatColor.GOLD + result;
+            }
 
             Entity targetEntity = target.getEntity();
             if (targetEntity != null) {
@@ -507,7 +510,7 @@ public class Targeting {
             }
         }
 
-        if (debugMessage && mage.getDebugLevel() > 17) {
+        if (debugMessage && mage.getDebugLevel() > 17 && source != null) {
             mage.sendDebugMessage(ChatColor.GREEN + "Targeting entities from "
                     + ChatColor.GRAY + source.getBlockX()
                     + ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY()

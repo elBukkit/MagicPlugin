@@ -551,7 +551,7 @@ spells:
   collapse:
     name: Bombarda
     description: Rompe Una Zona
-    cast_finish: $count Bloques Rotos
+    cast_finish: "@blocks Bloques Rotos"
     upgrade_description: '&r&b• &6Aumenta Radio Y Rompe Mas Tipos De Bloques'
 ##################################################################################
   sparkle:
@@ -666,7 +666,7 @@ spells:
   platform:
     name: Plataforma
     description: Crear una plataforma en frente de usted
-    cast_finish: Lleno de $count los bloques con $material
+    cast_finish: Lleno de @blocks los bloques con $material
   platform|2:
     upgrade_description: El aumento de tamaño
   platform|4:
@@ -784,12 +784,12 @@ spells:
   permafrost:
     name: El PermaFrost
     description: Realizar permanentemente cubierto de nieve!
-    cast_finish: Permafrosted $count bloques
+    cast_finish: Permafrosted @blocks bloques
 ##################################################################################
   permamelt:
     name: PermaMelt
     description: Elevar la temperatura
-    cast_finish: Permamelted $count bloques
+    cast_finish: Permamelted @blocks bloques
 ##################################################################################
   frost:
     name: Las Heladas Requo
@@ -800,7 +800,7 @@ spells:
   harden:
     name: Harden
     description: Que el objetivo de los bloques más fuertes
-    cast: Hardened $count bloques
+    cast: Hardened @blocks bloques
   harden|2:
     upgrade_description: Ahora se convierte en obsidiana
 ##################################################################################
@@ -819,7 +819,7 @@ spells:
     usage: Puede ser interrumpido por los daños!
     cast: Has Curado A $target
     cast_self: Te Has Curado
-    upgrade_description: '&r&b• &6Aumenta La Cantidad De Vida'+
+    upgrade_description: '&r&b• &6Aumenta La Cantidad De Vida'
 ##################################################################################
   healing:
     name: La curación
@@ -946,7 +946,7 @@ spells:
     name: Los mobs
     description: Convocar a una multitud de monstruos
     deactivate: Suelte su mobs
-    cast: Convocar a $count monstruo(s)
+    cast: Convocar a @blocks monstruo(s)
 ##################################################################################
   portal:
     name: Portal
@@ -985,7 +985,7 @@ spells:
   inferno:
     name: Inferno
     description: Quemar una amplia área de
-    cast: Usted se quema $count bloques
+    cast: Usted se quema @blocks bloques
 ##################################################################################
   bubble:
     name: Aguamenti
@@ -1113,13 +1113,13 @@ spells:
   blast:
     name: Reducto
     description: Explota Una Zona Pequeña
-    cast_finish: $count Bloques Rotos
+    cast_finish: "@blocks Bloques Rotos"
     upgrade_description: '&r&b• &6Aumenta Radio Y Rompe Mas Tipos De Bloques'
 ##################################################################################
   earthquake:
     name: Terremoto
     description: Crear un terremoto
-    cast_finish: Tembló $count bloques
+    cast_finish: Tembló @blocks bloques
 ##################################################################################
   cloak:
     name: Evanesco
@@ -1149,12 +1149,12 @@ spells:
     name: Manada
     description: Crear una manada
     deactivate: Suelte su manada
-    cast: Convocar a $count de los animales de la granja
+    cast: Convocar a @blocks de los animales de la granja
 ##################################################################################
   breach:
     name: Incumplimiento
     description: Temporalmente destruir el objetivo de la superficie
-    cast_finish: Violado $count bloques
+    cast_finish: Violado @blocks bloques
     upgrade_description: Aumentar el tamaño del hechizo
 ##################################################################################
   tesseract:
@@ -1183,13 +1183,13 @@ spells:
   peek:
     name: Peek
     description: Temporalmente de vidrio de la superficie de destino
-    cast_finish: Acristalado $count bloques
+    cast_finish: Acristalado @blocks bloques
     upgrade_description: El aumento de tamaño de la ventana
 ##################################################################################
   sandblast:
     name: Chorro de arena
     description: Caída de un gran bloque de arena
-    cast_finish: Creado $count la caída de bloques de arena
+    cast_finish: Creado @blocks la caída de bloques de arena
     upgrade_description: Las gotas más de arena
 ##################################################################################
   fire:
@@ -1210,7 +1210,7 @@ spells:
   blob:
     name: Blob
     description: Crear una nota
-    cast_finish: Blobbed $count bloques con $material
+    cast_finish: Blobbed @blocks bloques con $material
   blob|2:
     upgrade_description: Ahora se construye con la arcilla
   blob|3:
@@ -1221,7 +1221,7 @@ spells:
   walls:
     name: Muros
     description: Crear algunas de las paredes alrededor de su objetivo
-    cast_finish: Lleno de $count los bloques with $material
+    cast_finish: Lleno de @blocks los bloques with $material
 ##################################################################################
   tendril:
     name: Zarcillo
@@ -1230,12 +1230,12 @@ spells:
   repair:
     name: Repair
     description: Reparación de un área de guardado con Copia de seguridad
-    cast_finish: Reparado $count de los bloques
+    cast_finish: Reparado @blocks de los bloques
 ##################################################################################
   emp:
     name: EMP
     description: La electrificación de la zona
-    cast_finish: Electrificado $count bloques
+    cast_finish: Electrificado @blocks bloques
 ##################################################################################
   ghast:
     name: Ghast
@@ -1343,13 +1343,13 @@ spells:
   superlaser:
     name: Super Laser
     description: Destruye de forma permanente una línea de bloques
-    cast_finish: Lanza rayo láser a $count bloques
+    cast_finish: Lanza rayo láser a @blocks bloques
     upgrade_description: No haz de duración, se rompe más tipos de bloques
 ##################################################################################
   laser:
     name: Laser
     description: Destruir una línea de bloques
-    cast_finish: Lanza rayo láser a $count bloques
+    cast_finish: Lanza rayo láser a @blocks bloques
     upgrade_description: Radio mayor, el aumento de daño
 ##################################################################################
   stream:
@@ -1485,7 +1485,7 @@ spells:
   recall|5:
     upgrade_description: Permite un tercer marcador
 ##################################################################################
-recall_death:
+  recall_death:
     name: Recordar a la última muerte
     description: Te lleva directamente al último lugar donde moriste.
     cast_death: Devolviendote a tu última ubicación de muerte
@@ -1577,8 +1577,8 @@ recall_death:
   missile:
     name: Estupefacto
     description: Lanza Un Misil Magico
-    cast_target: Su misil Magico $damage Daño a $target
-    cast_player_message: $caster Lanzo $damage daño a usted con $spell
+    cast_target: Su misil Magico @damage_dealt Daño a $target
+    cast_player_message: $caster Lanzo @damage_dealt daño a usted con $spell
     cast: Estupefacto
     no_target: Usted dispara un misil
     upgrade_description: '&r&b• &6Aumenta Rango Y Daño'
@@ -1648,7 +1648,7 @@ recall_death:
     name: Pegar
     description: Pega un esquema completo
     usage: Para el uso con esquemático pinceles
-    cast_finish: Pegado $count bloques
+    cast_finish: Pegado @blocks bloques
     no_action: Esquemático de la carga, por favor, vuelve a intentarlo!
 ##################################################################################
   kill:
@@ -1887,7 +1887,7 @@ recall_death:
     not_applicable: Su arco ya se ve como $item
     no_template: '&cUsted no puede modificar la apariencia de $wand&c.'
 ##################################################################################
-swordappearanceshop:
+  swordappearanceshop:
     name: Apariencias de Espada
     description: Cambia el aspecto de tu espada
     title: Apariencia de Espada ($balance&0)
@@ -2150,7 +2150,7 @@ swordappearanceshop:
     name: Afilar La Espada
     description: Agregar la nitidez de encantamiento de su espada mágica.
 ##################################################################################
-remove_protection:
+  remove_protection:
     name: Reembolsar Protección
     description: Reembolsa parte de tu Protección General por Puntos de Hechizo
 ##################################################################################
@@ -2187,7 +2187,7 @@ remove_protection:
     selected: '&d&oUsted compró &r&6$item &r&d&opor &r&a$cost'
     no_template: '&cUsted no puede agregar este beneficio a su $wand&c.'
 ##################################################################################
-wanddebuffshop:
+  wanddebuffshop:
     name: Reembolsos de Varitas
     description: Elimina los buffs de tu varita a cambio de Puntos de Hechizo
     property_min: '&c¡No tienes ese beneficio!'
@@ -2252,7 +2252,7 @@ wanddebuffshop:
     description: Una oportunidad de causar un daño adicional
     upgrade_description: Mejores posibilidades de críticas
 ##################################################################################
-bring:
+  bring:
     name: Traer
     description: Teletransporta a otros jugadores a ti
     title: 'Teletransportandose a Usted:'
@@ -2371,7 +2371,7 @@ bring:
     name: Túnel
     description: La mina de un túnel en frente de usted
     no_target: Usted necesita estar de pie en algo!
-    cast: Perforan a través de $count bloques
+    cast: Perforan a través de @blocks bloques
 ##################################################################################
   bridge:
     name: Puente
@@ -2384,7 +2384,7 @@ bring:
     name: Convertir
     description: Convertir un área esférica de bloques
     usage: No se llene de aire
-    cast_finish: Convierte $count de los bloques de $material
+    cast_finish: Convierte @blocks de los bloques de $material
 ##################################################################################
   superconvert:
     name: Super Convertir
@@ -2393,7 +2393,7 @@ bring:
     cancel: Super Convertir cancelado
     target_selected: Lanzó de nuevo a convertir $target
     fail: Demasiado grande!
-    cast_finish: Convertidos $count los bloques de $material
+    cast_finish: Convertidos @blocks los bloques de $material
 ##################################################################################
   supercollapse:
     name: SuperColapso
@@ -2402,7 +2402,7 @@ bring:
     cancel: Super Colapso cancelado
     target_selected: Lanzó de nuevo al colapso
     fail: Demasiado grande!
-    cast_finish: Se derrumbó $count bloques
+    cast_finish: Se derrumbó @blocks bloques
 ##################################################################################
   superblob:
     name: SuperBlob
@@ -2411,7 +2411,7 @@ bring:
     cancel: SuperBlob cancelado
     target_selected: Lanzó de nuevo a construir la esfera
     fail: Demasiado grande!
-    cast_finish: Llena $count bloques con $material
+    cast_finish: Llena @blocks bloques con $material
 ##################################################################################
   superhemisphere:
     name: Super Hemisferio
@@ -2420,7 +2420,7 @@ bring:
     cancel: Super Hemisferio cancelado
     target_selected: Lanzó de nuevo a construir hemisferio
     fail: Demasiado grande!
-    cast_finish: Llena $count bloques con $material
+    cast_finish: Llena @blocks bloques con $material
 ##################################################################################
   supercylinder:
     name: Super Cilindro
@@ -2429,7 +2429,7 @@ bring:
     cancel: Super Cilindro cancelado
     target_selected: Lanzó de nuevo a construir cilindro
     fail: Demasiado grande!
-    cast_finish: Llena $count bloques con $material
+    cast_finish: Llena @blocks bloques con $material
 ##################################################################################
   superrepair:
     name: Super Reparación
@@ -2438,7 +2438,7 @@ bring:
     cancel: Super Reparación cancelado
     target_selected: Lanzó de nuevo a la reparación
     fail: Demasiado grande!
-    cast_finish: Reparado $count bloques
+    cast_finish: Reparado @blocks bloques
 ##################################################################################
   backup:
     name: Copia de seguridad
@@ -2461,7 +2461,7 @@ bring:
     usage: Lanzo dos veces para electrificar
     cancel: SuperEMP cancelado
     fail: Demasiado grande!
-    cast_finish: Electrificado $count bloques
+    cast_finish: Electrificado @blocks bloques
     target_selected: Lanzó de nuevo a la electrificación de la esfera
 ##################################################################################
   supershell:
@@ -2471,7 +2471,7 @@ bring:
     cancel: Super De Shell cancelado
     target_selected: Lanzó de nuevo a construir shell
     fail: Demasiado grande!
-    cast_finish: LLena $count bloques con $material
+    cast_finish: LLena @blocks bloques con $material
 ##################################################################################
   superdisc:
     name: Super Disco
@@ -2480,7 +2480,7 @@ bring:
     cancel: Super Disco cancelado
     target_selected: Lanzó de nuevo a construir disco
     fail: Demasiado grande!
-    cast_finish: LLena $count bloques con $material
+    cast_finish: LLena @blocks bloques con $material
 ##################################################################################
   superring:
     name: Super Anillo
@@ -2489,7 +2489,7 @@ bring:
     cancel: Super Anillo cancelado
     target_selected: Lanzó de nuevo a construir anillo
     fail: Demasiado grande!
-    cast_finish: LLena $count bloques con $material
+    cast_finish: LLena @blocks bloques con $material
 ##################################################################################
   superdome:
     name: Super Domo
@@ -2498,7 +2498,7 @@ bring:
     cancel: Super Domo cancelado
     target_selected: Lanzó de nuevo a construir la cúpula
     fail: Demasiado grande!
-    cast_finish: LLena $count bloques con $material
+    cast_finish: LLena @blocks bloques con $material
 ##################################################################################
   superpyramid:
     name: Super Pirámide
@@ -2507,7 +2507,7 @@ bring:
     cancel: SuperPyramid cancelado
     target_selected: Lanzó de nuevo a construir la pirámide
     fail: Demasiado grande!
-    cast_finish: LLena $count bloques con $material
+    cast_finish: LLena @blocks bloques con $material
 ##################################################################################
   superbox:
     name: Super Caja
@@ -2516,7 +2516,7 @@ bring:
     cancel: Super Caja cancelado
     target_selected: Lanzó de nuevo a construir el cuadro de
     fail: Demasiado grande!
-    cast_finish: LLena $count bloques con $material
+    cast_finish: LLena @blocks bloques con $material
 ##################################################################################
   supercube:
     name: Super Cubo
@@ -2525,12 +2525,12 @@ bring:
     cancel: Super Cubo cancelado
     target_selected: Lanzó de nuevo a construir un cubo
     fail: ¡Demasiado grande!
-    cast_finish: Llena $count bloques con $material
+    cast_finish: Llena @blocks bloques con $material
 ##################################################################################
   superblast:
     name: Super Blast
     description: Mina de un área muy grande
-    cast_finish: Criticó $count bloques
+    cast_finish: Criticó @blocks bloques
   rollback:
     name: Rollback
     description: Deshacer el objetivo de hechizos
@@ -2557,7 +2557,7 @@ bring:
     cancel: Llenar cancelado
     target_selected: Lanzó de nuevo a llenar con $material
     fail: No puedo llenar mucho!
-    cast_finish: LLena $count bloques con $material
+    cast_finish: LLena @blocks bloques con $material
 ##################################################################################
   superregenerate:
     name: Super Regenerar
@@ -2566,7 +2566,7 @@ bring:
     fail: No se puede regenerar que mucho!
     cast: La regeneración de trozos
     target_selected: Lanzó de nuevo a regenerar trozos
-    cast_finish: Regenerado $count bloques
+    cast_finish: Regenerado @blocks bloques
     cancel: Super Regenerar cancelado
 ##################################################################################
   regenerate:
@@ -2576,18 +2576,18 @@ bring:
     usage: Cast dos veces para regenerar
     cast: La regeneración de la zona
     target_selected: Lanzó de nuevo a regenerar la zona
-    cast_finish: Regenerado $count bloques
+    cast_finish: Regenerado @blocks bloques
     cancel: Regenerar cancelado
 ##################################################################################
   recurse:
     name: Recurse
     description: De forma recursiva relleno de bloques de
-    cast_finish: Llena $count bloques con $material
+    cast_finish: Llena @blocks bloques con $material
 ##################################################################################
   floodfill:
     name: Llenar
     description: Llenar un agujero
-    cast_finish: Inundado $count bloques con $material
+    cast_finish: Inundado @blocks bloques con $material
 ##################################################################################
   alter:
     name: Alterar
@@ -2601,7 +2601,7 @@ bring:
     name: Super Alterar
     description: Alter objects recursively
     usage: Uso en la lana, escaleras, etc
-    cast: Alteración de $count bloques
+    cast: Alteración de @blocks bloques
     fail: No se puede ajustar que
 ##################################################################################
   sphere:
@@ -2620,12 +2620,12 @@ bring:
     name: Iterar
     description: Construir una línea de bloques
     usage: Debe ser el objetivo de un bloque de destino
-    cast: LLena $count bloques
+    cast: LLena @blocks bloques
 ##################################################################################
   column:
     name: Columna
     description: Construir una gran columna de bloques
-    cast: LLena $count bloques
+    cast: LLena @blocks bloques
 ##################################################################################
   wolfhouse:
     name: Lobo De La Casa
@@ -2959,7 +2959,7 @@ wand:
     hechizos. Repita moldes de ganar menos SP''s, trate de mezclar una vez que usted
     tiene más hechizos!'
 ##################################################################################
-currency_instructions: |-
+  currency_instructions: |-
     &8| &7> &fUsted ha ganado algunos &6$currency!
     &8| &7> &fTu &6$currency &fse muestra por encima de la barra de maná
     &8| &7> &6$currency &fPuede ser gastado en una mesa de &eencantamientos &fPara aprender nuevos hechizos
@@ -3923,6 +3923,1216 @@ paths:
 slots:
   broom_upgrade:
     name: Mejora de Escoba
+##################################################################################
+# Converted from MC vanilla lang files
+materials:
+  "acacia_button": "Botón de acacia"
+  "acacia_door": "Puerta de acacia"
+  "acacia_fence": "Valla de acacia"
+  "acacia_fence_gate": "Puerta de valla de acacia"
+  "acacia_leaves": "Hojas de acacia"
+  "acacia_log": "Tronco de acacia"
+  "acacia_planks": "Tablones de acacia"
+  "acacia_pressure_plate": "Placa de presión de acacia"
+  "acacia_sapling": "Brote de acacia"
+  "acacia_sign": "Cartel de acacia"
+  "acacia_slab": "Losa de acacia"
+  "acacia_stairs": "Escaleras de acacia"
+  "acacia_trapdoor": "Trampilla de acacia"
+  "acacia_wall_sign": "Cartel de acacia en pared"
+  "acacia_wood": "Leño de acacia"
+  "activator_rail": "Raíl activador"
+  "air": "Aire"
+  "allium": "Allium"
+  "ancient_debris": "Escombros ancestrales"
+  "andesite": "Andesita"
+  "andesite_slab": "Losa de andesita"
+  "andesite_stairs": "Escaleras de andesita"
+  "andesite_wall": "Muro de andesita"
+  "anvil": "Yunque"
+  "attached_melon_stem": "Tallo de sandía unido"
+  "attached_pumpkin_stem": "Tallo de calabaza unido"
+  "azure_bluet": "Azure bluet"
+  "bamboo": "Bambú"
+  "bamboo_sapling": "Esqueje de bambú"
+  "barrel": "Barril"
+  "barrier": "Barrera"
+  "basalt": "Basalto"
+  "beacon": "Faro"
+  "beacon.primary": "Poder principal"
+  "beacon.secondary": "Poder secundario"
+  "bedrock": "Piedra base"
+  "bee_nest": "Colmena"
+  "beehive": "Apiario"
+  "beetroots": "Remolachas"
+  "bell": "Campana"
+  "birch_button": "Botón de abedul"
+  "birch_door": "Puerta de abedul"
+  "birch_fence": "Valla de abedul"
+  "birch_fence_gate": "Puerta de valla de abedul"
+  "birch_leaves": "Hojas de abedul"
+  "birch_log": "Tronco de abedul"
+  "birch_planks": "Tablones de abedul"
+  "birch_pressure_plate": "Placa de presión de abedul"
+  "birch_sapling": "Brote de abedul"
+  "birch_sign": "Cartel de abedul"
+  "birch_slab": "Losa de abedul"
+  "birch_stairs": "Escaleras de abedul"
+  "birch_trapdoor": "Trampilla de abedul"
+  "birch_wall_sign": "Cartel de abedul en pared"
+  "birch_wood": "Leño de abedul"
+  "black_banner": "Estandarte negro"
+  "black_bed": "Cama negra"
+  "black_carpet": "Alfombra negra"
+  "black_concrete": "Hormigón negro"
+  "black_concrete_powder": "Cemento negro"
+  "black_glazed_terracotta": "Azulejo negro"
+  "black_shulker_box": "Caja de shulker negra"
+  "black_stained_glass": "Cristal tintado de negro"
+  "black_stained_glass_pane": "Panel de cristal tintado de negro"
+  "black_terracotta": "Terracota negra"
+  "black_wool": "Lana negra"
+  "blackstone": "Piedra negra"
+  "blackstone_slab": "Losa de piedra negra"
+  "blackstone_stairs": "Escaleras de piedra negra"
+  "blackstone_wall": "Muro de piedra negra"
+  "blast_furnace": "Alto horno"
+  "blue_banner": "Estandarte azul"
+  "blue_bed": "Cama azul"
+  "blue_carpet": "Alfombra azul"
+  "blue_concrete": "Hormigón azul"
+  "blue_concrete_powder": "Cemento azul"
+  "blue_glazed_terracotta": "Azulejo azul"
+  "blue_ice": "Hielo azul"
+  "blue_orchid": "Orquídea azul"
+  "blue_shulker_box": "Caja de shulker azul"
+  "blue_stained_glass": "Cristal tintado de azul"
+  "blue_stained_glass_pane": "Panel de cristal tintado de azul"
+  "blue_terracotta": "Terracota azul"
+  "blue_wool": "Lana azul"
+  "bone_block": "Bloque de huesos"
+  "bookshelf": "Librería"
+  "brain_coral": "Coral de cerebro"
+  "brain_coral_block": "Bloque de coral de cerebro"
+  "brain_coral_fan": "Gorgonia de cerebro"
+  "brain_coral_wall_fan": "Gorgonia de cerebro en pared"
+  "brewing_stand": "Soporte para pociones"
+  "brick_slab": "Losa de ladrillos"
+  "brick_stairs": "Escaleras de ladrillos"
+  "brick_wall": "Muro de ladrillos"
+  "bricks": "Ladrillos"
+  "brown_banner": "Estandarte marrón"
+  "brown_bed": "Cama marrón"
+  "brown_carpet": "Alfombra marrón"
+  "brown_concrete": "Hormigón marrón"
+  "brown_concrete_powder": "Cemento marrón"
+  "brown_glazed_terracotta": "Azulejo marrón"
+  "brown_mushroom": "Champiñón marrón"
+  "brown_mushroom_block": "Bloque de champiñón marrón"
+  "brown_shulker_box": "Caja de shulker marrón"
+  "brown_stained_glass": "Cristal tintado de marrón"
+  "brown_stained_glass_pane": "Panel de cristal tintado de marrón"
+  "brown_terracotta": "Terracota marrón"
+  "brown_wool": "Lana marrón"
+  "bubble_column": "Columna de burbujas"
+  "bubble_coral": "Coral de burbuja"
+  "bubble_coral_block": "Bloque de coral de burbuja"
+  "bubble_coral_fan": "Gorgonia de burbuja"
+  "bubble_coral_wall_fan": "Gorgonia de burbuja en pared"
+  "cactus": "Cactus"
+  "cake": "Tarta"
+  "campfire": "Hoguera"
+  "carrots": "Zanahorias"
+  "cartography_table": "Mesa de cartografía"
+  "carved_pumpkin": "Calabaza tallada"
+  "cauldron": "Caldero"
+  "cave_air": "Aire de cueva"
+  "chain": "Cadena"
+  "chain_command_block": "Bloque de comandos en cadena"
+  "chest": "Cofre"
+  "chipped_anvil": "Yunque dañado"
+  "chiseled_nether_bricks": "Ladrillos del Nether cincelados"
+  "chiseled_polished_blackstone": "Piedra negra pulida cincelada"
+  "chiseled_quartz_block": "Cuarzo cincelado"
+  "chiseled_red_sandstone": "Arenisca roja cincelada"
+  "chiseled_sandstone": "Arenisca cincelada"
+  "chiseled_stone_bricks": "Ladrillos de piedra cincelados"
+  "chorus_flower": "Flor coral"
+  "chorus_plant": "Planta coral"
+  "clay": "Arcilla"
+  "coal_block": "Bloque de carbón"
+  "coal_ore": "Mena de carbón"
+  "coarse_dirt": "Tierra estéril"
+  "cobblestone": "Roca"
+  "cobblestone_slab": "Losa de roca"
+  "cobblestone_stairs": "Escaleras de roca"
+  "cobblestone_wall": "Muro de roca"
+  "cobweb": "Telaraña"
+  "cocoa": "Cacao"
+  "command_block": "Bloque de comandos"
+  "comparator": "Comparador de redstone"
+  "composter": "Compostador"
+  "conduit": "Canalizador"
+  "cornflower": "Aciano"
+  "cracked_nether_bricks": "Ladrillos del Nether agrietados"
+  "cracked_polished_blackstone_bricks": "Ladrillos de piedra negra pulida agrietados"
+  "cracked_stone_bricks": "Ladrillos de piedra agrietados"
+  "crafting_table": "Mesa de trabajo"
+  "creeper_head": "Cabeza de creeper"
+  "creeper_wall_head": "Cabeza de creeper en pared"
+  "crimson_button": "Botón de madera carmesí"
+  "crimson_door": "Puerta de madera carmesí"
+  "crimson_fence": "Valla de madera carmesí"
+  "crimson_fence_gate": "Puerta de valla de madera carmesí"
+  "crimson_fungus": "Hongo carmesí"
+  "crimson_hyphae": "Hifas carmesí"
+  "crimson_nylium": "Necelio carmesí"
+  "crimson_planks": "Madera carmesí"
+  "crimson_pressure_plate": "Placa de presión carmesí"
+  "crimson_roots": "Raíces carmesí"
+  "crimson_sign": "Cartel de madera carmesí"
+  "crimson_slab": "Losa de madera carmesí"
+  "crimson_stairs": "Escaleras de madera carmesí"
+  "crimson_stem": "Tallo carmesí"
+  "crimson_trapdoor": "Trampilla de madera carmesí"
+  "crimson_wall_sign": "Cartel de madera carmesí en pared"
+  "crying_obsidian": "Obsidiana llorosa"
+  "cut_red_sandstone": "Arenisca roja cortada"
+  "cut_red_sandstone_slab": "Losa de arenisca roja cortada"
+  "cut_sandstone": "Arenisca cortada"
+  "cut_sandstone_slab": "Losa de arenisca cortada"
+  "cyan_banner": "Estandarte cian"
+  "cyan_bed": "Cama cian"
+  "cyan_carpet": "Alfombra cian"
+  "cyan_concrete": "Hormigón cian"
+  "cyan_concrete_powder": "Cemento cian"
+  "cyan_glazed_terracotta": "Azulejo cian"
+  "cyan_shulker_box": "Caja de shulker cian"
+  "cyan_stained_glass": "Cristal tintado de cian"
+  "cyan_stained_glass_pane": "Panel de cristal tintado de cian"
+  "cyan_terracotta": "Terracota cian"
+  "cyan_wool": "Lana cian"
+  "damaged_anvil": "Yunque muy dañado"
+  "dandelion": "Diente de león"
+  "dark_oak_button": "Botón de roble oscuro"
+  "dark_oak_door": "Puerta de roble oscuro"
+  "dark_oak_fence": "Valla de roble oscuro"
+  "dark_oak_fence_gate": "Puerta de valla de roble oscuro"
+  "dark_oak_leaves": "Hojas de roble oscuro"
+  "dark_oak_log": "Tronco de roble oscuro"
+  "dark_oak_planks": "Tablones de roble oscuro"
+  "dark_oak_pressure_plate": "Placa de presión de roble oscuro"
+  "dark_oak_sapling": "Brote de roble oscuro"
+  "dark_oak_sign": "Cartel de roble oscuro"
+  "dark_oak_slab": "Losa de roble oscuro"
+  "dark_oak_stairs": "Escaleras de roble oscuro"
+  "dark_oak_trapdoor": "Trampilla de roble oscuro"
+  "dark_oak_wall_sign": "Cartel de roble oscuro en pared"
+  "dark_oak_wood": "Leño de roble oscuro"
+  "dark_prismarine": "Prismarina oscura"
+  "dark_prismarine_slab": "Losa de prismarina oscura"
+  "dark_prismarine_stairs": "Escaleras de prismarina oscura"
+  "daylight_detector": "Sensor de luz solar"
+  "dead_brain_coral": "Coral de cerebro muerto"
+  "dead_brain_coral_block": "Bloque de coral de cerebro muerto"
+  "dead_brain_coral_fan": "Gorgonia de cerebro muerta"
+  "dead_brain_coral_wall_fan": "Gorgonia de cerebro muerta en pared"
+  "dead_bubble_coral": "Coral de burbuja muerto"
+  "dead_bubble_coral_block": "Bloque de coral de burbuja muerto"
+  "dead_bubble_coral_fan": "Gorgonia de burbuja muerta"
+  "dead_bubble_coral_wall_fan": "Gorgonia de burbuja muerta en pared"
+  "dead_bush": "Arbusto muerto"
+  "dead_fire_coral": "Coral de fuego muerto"
+  "dead_fire_coral_block": "Bloque de coral de fuego muerto"
+  "dead_fire_coral_fan": "Gorgonia de fuego muerta"
+  "dead_fire_coral_wall_fan": "Gorgonia de fuego muerta en pared"
+  "dead_horn_coral": "Coral de cuerno muerto"
+  "dead_horn_coral_block": "Bloque de coral de cuerno muerto"
+  "dead_horn_coral_fan": "Gorgonia de cuerno muerta"
+  "dead_horn_coral_wall_fan": "Gorgonia de cuerno muerta en pared"
+  "dead_tube_coral": "Coral de tubo muerto"
+  "dead_tube_coral_block": "Bloque de coral de tubo muerto"
+  "dead_tube_coral_fan": "Gorgonia de tubo muerta"
+  "dead_tube_coral_wall_fan": "Gorgonia de tubo muerta en pared"
+  "detector_rail": "Raíl detector"
+  "diamond_block": "Bloque de diamante"
+  "diamond_ore": "Mena de diamante"
+  "diorite": "Diorita"
+  "diorite_slab": "Losa de diorita"
+  "diorite_stairs": "Escaleras de diorita"
+  "diorite_wall": "Muro de diorita"
+  "dirt": "Tierra"
+  "dispenser": "Dispensador"
+  "dragon_egg": "Huevo de dragón"
+  "dragon_head": "Cabeza de dragón"
+  "dragon_wall_head": "Cabeza de dragón en pared"
+  "dried_kelp_block": "Bloque de algas secas"
+  "dropper": "Soltador"
+  "emerald_block": "Bloque de esmeralda"
+  "emerald_ore": "Mena de esmeralda"
+  "enchanting_table": "Mesa de encantamientos"
+  "end_gateway": "Acceso al End"
+  "end_portal": "Marco del portal del End"
+  "end_portal_frame": "Marco del portal del End"
+  "end_rod": "Vara del End"
+  "end_stone": "Piedra del End"
+  "end_stone_brick_slab": "Losa de ladrillos de piedra del End"
+  "end_stone_brick_stairs": "Escaleras de ladrillos de piedra del End"
+  "end_stone_brick_wall": "Muro de ladrillos de piedra del End"
+  "end_stone_bricks": "Ladrillos de piedra del End"
+  "ender_chest": "Cofre de ender"
+  "farmland": "Tierra de cultivo"
+  "fern": "Helecho"
+  "fire": "Fuego"
+  "fire_coral": "Coral de fuego"
+  "fire_coral_block": "Bloque de coral de fuego"
+  "fire_coral_fan": "Gorgonia de fuego"
+  "fire_coral_wall_fan": "Gorgonia de fuego en pared"
+  "fletching_table": "Mesa de flechas"
+  "flower_pot": "Maceta"
+  "frosted_ice": "Escarcha"
+  "furnace": "Horno"
+  "gilded_blackstone": "Piedra negra áurea"
+  "glass": "Cristal"
+  "glass_pane": "Panel de cristal"
+  "glowstone": "Piedra luminosa"
+  "gold_block": "Bloque de oro"
+  "gold_ore": "Mena de oro"
+  "granite": "Granito"
+  "granite_slab": "Losa de granito"
+  "granite_stairs": "Escaleras de granito"
+  "granite_wall": "Muro de granito"
+  "grass": "Hierba"
+  "grass_block": "Césped"
+  "grass_path": "Camino de césped"
+  "gravel": "Grava"
+  "gray_banner": "Estandarte gris"
+  "gray_bed": "Cama gris"
+  "gray_carpet": "Alfombra gris"
+  "gray_concrete": "Hormigón gris"
+  "gray_concrete_powder": "Cemento gris"
+  "gray_glazed_terracotta": "Azulejo gris"
+  "gray_shulker_box": "Caja de shulker gris"
+  "gray_stained_glass": "Cristal tintado de gris"
+  "gray_stained_glass_pane": "Panel de cristal tintado de gris"
+  "gray_terracotta": "Terracota gris"
+  "gray_wool": "Lana gris"
+  "green_banner": "Estandarte verde"
+  "green_bed": "Cama verde"
+  "green_carpet": "Alfombra verde"
+  "green_concrete": "Hormigón verde"
+  "green_concrete_powder": "Cemento verde"
+  "green_glazed_terracotta": "Azulejo verde"
+  "green_shulker_box": "Caja de shulker verde"
+  "green_stained_glass": "Cristal tintado de verde"
+  "green_stained_glass_pane": "Panel de cristal tintado de verde"
+  "green_terracotta": "Terracota verde"
+  "green_wool": "Lana verde"
+  "grindstone": "Afiladora"
+  "hay_block": "Bala de heno"
+  "heavy_weighted_pressure_plate": "Placa de presión para peso elevado"
+  "honey_block": "Bloque de miel"
+  "honeycomb_block": "Bloque de panal"
+  "hopper": "Tolva"
+  "horn_coral": "Coral de cuerno"
+  "horn_coral_block": "Bloque de coral de cuerno"
+  "horn_coral_fan": "Gorgonia de cuerno"
+  "horn_coral_wall_fan": "Gorgonia de cuerno en pared"
+  "ice": "Hielo"
+  "infested_chiseled_stone_bricks": "Ladrillos de piedra cincelados infestados"
+  "infested_cobblestone": "Roca infestada"
+  "infested_cracked_stone_bricks": "Ladrillos de piedra agrietados infestados"
+  "infested_mossy_stone_bricks": "Ladrillos de piedra musgosos infestados"
+  "infested_stone": "Piedra infestada"
+  "infested_stone_bricks": "Ladrillos de piedra infestados"
+  "iron_bars": "Barrotes de hierro"
+  "iron_block": "Bloque de hierro"
+  "iron_door": "Puerta de hierro"
+  "iron_ore": "Mena de hierro"
+  "iron_trapdoor": "Trampilla de hierro"
+  "jack_o_lantern": "Calabaza de Halloween"
+  "jigsaw": "Bloque rompecabezas"
+  "jukebox": "Tocadiscos"
+  "jungle_button": "Botón de jungla"
+  "jungle_door": "Puerta de jungla"
+  "jungle_fence": "Valla de jungla"
+  "jungle_fence_gate": "Puerta de valla de jungla"
+  "jungle_leaves": "Hojas de jungla"
+  "jungle_log": "Tronco de jungla"
+  "jungle_planks": "Tablones de jungla"
+  "jungle_pressure_plate": "Placa de presión de jungla"
+  "jungle_sapling": "Brote de jungla"
+  "jungle_sign": "Cartel de jungla"
+  "jungle_slab": "Losa de jungla"
+  "jungle_stairs": "Escaleras de jungla"
+  "jungle_trapdoor": "Trampilla de jungla"
+  "jungle_wall_sign": "Cartel de jungla en pared"
+  "jungle_wood": "Leño de jungla"
+  "kelp": "Alga"
+  "kelp_plant": "Tallo de alga"
+  "ladder": "Escalera de mano"
+  "lantern": "Farol"
+  "lapis_block": "Bloque de lapislázuli"
+  "lapis_ore": "Mena de lapislázuli"
+  "large_fern": "Helecho grande"
+  "lava": "Lava"
+  "lectern": "Atril"
+  "lever": "Palanca"
+  "light_blue_banner": "Estandarte azul claro"
+  "light_blue_bed": "Cama azul claro"
+  "light_blue_carpet": "Alfombra azul claro"
+  "light_blue_concrete": "Hormigón azul claro"
+  "light_blue_concrete_powder": "Cemento azul claro"
+  "light_blue_glazed_terracotta": "Azulejo azul claro"
+  "light_blue_shulker_box": "Caja de shulker azul claro"
+  "light_blue_stained_glass": "Cristal tintado de azul claro"
+  "light_blue_stained_glass_pane": "Panel de cristal tintado de azul claro"
+  "light_blue_terracotta": "Terracota azul claro"
+  "light_blue_wool": "Lana azul claro"
+  "light_gray_banner": "Estandarte gris claro"
+  "light_gray_bed": "Cama gris claro"
+  "light_gray_carpet": "Alfombra gris claro"
+  "light_gray_concrete": "Hormigón gris claro"
+  "light_gray_concrete_powder": "Cemento gris claro"
+  "light_gray_glazed_terracotta": "Azulejo gris claro"
+  "light_gray_shulker_box": "Caja de shulker gris claro"
+  "light_gray_stained_glass": "Cristal tintado de gris claro"
+  "light_gray_stained_glass_pane": "Panel de cristal tintado de gris claro"
+  "light_gray_terracotta": "Terracota gris claro"
+  "light_gray_wool": "Lana gris claro"
+  "light_weighted_pressure_plate": "Placa de presión para peso ligero"
+  "lilac": "Lila"
+  "lily_of_the_valley": "Convalaria"
+  "lily_pad": "Nenúfar"
+  "lime_banner": "Estandarte verde lima"
+  "lime_bed": "Cama verde lima"
+  "lime_carpet": "Alfombra verde lima"
+  "lime_concrete": "Hormigón verde lima"
+  "lime_concrete_powder": "Cemento verde lima"
+  "lime_glazed_terracotta": "Azulejo verde lima"
+  "lime_shulker_box": "Caja de shulker verde lima"
+  "lime_stained_glass": "Cristal tintado de verde lima"
+  "lime_stained_glass_pane": "Panel de cristal tintado de verde lima"
+  "lime_terracotta": "Terracota verde lima"
+  "lime_wool": "Lana lima"
+  "lodestone": "Magnetita"
+  "loom": "Telar"
+  "magenta_banner": "Estandarte magenta"
+  "magenta_bed": "Cama magenta"
+  "magenta_carpet": "Alfombra magenta"
+  "magenta_concrete": "Hormigón magenta"
+  "magenta_concrete_powder": "Cemento magenta"
+  "magenta_glazed_terracotta": "Azulejo magenta"
+  "magenta_shulker_box": "Caja de shulker magenta"
+  "magenta_stained_glass": "Cristal tintado de magenta"
+  "magenta_stained_glass_pane": "Panel de cristal tintado de magenta"
+  "magenta_terracotta": "Terracota magenta"
+  "magenta_wool": "Lana magenta"
+  "magma_block": "Bloque de magma"
+  "melon": "Sandía"
+  "melon_stem": "Tallo de sandía"
+  "mossy_cobblestone": "Roca musgosa"
+  "mossy_cobblestone_slab": "Losa de roca musgosa"
+  "mossy_cobblestone_stairs": "Escaleras de roca musgosa"
+  "mossy_cobblestone_wall": "Muro de roca musgosa"
+  "mossy_stone_brick_slab": "Losa de ladrillos de piedra musgosos"
+  "mossy_stone_brick_stairs": "Escaleras de ladrillos de piedra musgosos"
+  "mossy_stone_brick_wall": "Muro de ladrillos de piedra musgosos"
+  "mossy_stone_bricks": "Ladrillos de piedra musgosos"
+  "moving_piston": "Pistón en movimiento"
+  "mushroom_stem": "Tallo de champiñón"
+  "mycelium": "Micelio"
+  "nether_brick_fence": "Valla de ladrillos del Nether"
+  "nether_brick_slab": "Losa de ladrillos del Nether"
+  "nether_brick_stairs": "Escaleras de ladrillos del Nether"
+  "nether_brick_wall": "Muro de ladrillos del Nether"
+  "nether_bricks": "Ladrillos del Nether"
+  "nether_gold_ore": "Mena de oro del Nether"
+  "nether_portal": "Portal al Nether"
+  "nether_quartz_ore": "Mena de cuarzo del Nether"
+  "nether_sprouts": "Rastrojo del Nether"
+  "nether_wart": "Verruga del Nether"
+  "nether_wart_block": "Bloque de verrugas del Nether"
+  "netherite_block": "Bloque de netherita"
+  "netherrack": "Netherrack"
+  "note_block": "Bloque musical"
+  "oak_button": "Botón de roble"
+  "oak_door": "Puerta de roble"
+  "oak_fence": "Valla de roble"
+  "oak_fence_gate": "Puerta de valla de roble"
+  "oak_leaves": "Hojas de roble"
+  "oak_log": "Tronco de roble"
+  "oak_planks": "Tablones de roble"
+  "oak_pressure_plate": "Placa de presión de roble"
+  "oak_sapling": "Brote de roble"
+  "oak_sign": "Cartel de roble"
+  "oak_slab": "Losa de roble"
+  "oak_stairs": "Escaleras de roble"
+  "oak_trapdoor": "Trampilla de roble"
+  "oak_wall_sign": "Cartel de roble en pared"
+  "oak_wood": "Leño de roble"
+  "observer": "Observador"
+  "obsidian": "Obsidiana"
+  "ominous_banner": "Estandarte repugnante"
+  "orange_banner": "Estandarte naranja"
+  "orange_bed": "Cama naranja"
+  "orange_carpet": "Alfombra naranja"
+  "orange_concrete": "Hormigón naranja"
+  "orange_concrete_powder": "Cemento naranja"
+  "orange_glazed_terracotta": "Azulejo naranja"
+  "orange_shulker_box": "Caja de shulker naranja"
+  "orange_stained_glass": "Cristal tintado de naranja"
+  "orange_stained_glass_pane": "Panel de cristal tintado de naranja"
+  "orange_terracotta": "Terracota naranja"
+  "orange_tulip": "Tulipán naranja"
+  "orange_wool": "Lana naranja"
+  "oxeye_daisy": "Margarita"
+  "packed_ice": "Hielo compacto"
+  "peony": "Peonía"
+  "petrified_oak_slab": "Losa de roble petrificada"
+  "pink_banner": "Estandarte rosa"
+  "pink_bed": "Cama rosa"
+  "pink_carpet": "Alfombra rosa"
+  "pink_concrete": "Hormigón rosa"
+  "pink_concrete_powder": "Cemento rosa"
+  "pink_glazed_terracotta": "Azulejo rosa"
+  "pink_shulker_box": "Caja de shulker rosa"
+  "pink_stained_glass": "Cristal tintado de rosa"
+  "pink_stained_glass_pane": "Panel de cristal tintado de rosa"
+  "pink_terracotta": "Terracota rosa"
+  "pink_tulip": "Tulipán rosa"
+  "pink_wool": "Lana rosa"
+  "piston": "Pistón"
+  "piston_head": "Cabeza de pistón"
+  "player_head": "Cabeza de jugador"
+  "player_head.named": "Cabeza de %s"
+  "player_wall_head": "Cabeza de jugador en pared"
+  "podzol": "Podsol"
+  "polished_andesite": "Andesita pulida"
+  "polished_andesite_slab": "Losa de andesita pulida"
+  "polished_andesite_stairs": "Escaleras de andesita pulida"
+  "polished_basalt": "Basalto pulido"
+  "polished_blackstone": "Piedra negra pulida"
+  "polished_blackstone_brick_slab": "Losa de ladrillos de piedra negra pulida"
+  "polished_blackstone_brick_stairs": "Escaleras de ladrillos de piedra negra pulida"
+  "polished_blackstone_brick_wall": "Muro de ladrillos de piedra negra pulida"
+  "polished_blackstone_bricks": "Ladrillos de piedra negra pulida"
+  "polished_blackstone_button": "Botón de piedra negra pulida"
+  "polished_blackstone_pressure_plate": "Placa de presión de piedra negra pulida"
+  "polished_blackstone_slab": "Losa de piedra negra pulida"
+  "polished_blackstone_stairs": "Escaleras de piedra negra pulida"
+  "polished_blackstone_wall": "Muro de piedra negra pulida"
+  "polished_diorite": "Diorita pulida"
+  "polished_diorite_slab": "Losa de diorita pulida"
+  "polished_diorite_stairs": "Escaleras de diorita pulida"
+  "polished_granite": "Granito pulido"
+  "polished_granite_slab": "Losa de granito pulido"
+  "polished_granite_stairs": "Escaleras de granito pulido"
+  "poppy": "Amapola"
+  "potatoes": "Patatas"
+  "potted_acacia_sapling": "Maceta con brote de acacia"
+  "potted_allium": "Maceta con allium"
+  "potted_azure_bluet": "Maceta con azure bluet"
+  "potted_bamboo": "Maceta con bambú"
+  "potted_birch_sapling": "Maceta con brote de abedul"
+  "potted_blue_orchid": "Maceta con orquídea azul"
+  "potted_brown_mushroom": "Maceta con champiñón marrón"
+  "potted_cactus": "Maceta con cactus"
+  "potted_cornflower": "Maceta con aciano"
+  "potted_crimson_fungus": "Maceta con hongo carmesí"
+  "potted_crimson_roots": "Maceta con raíces carmesí"
+  "potted_dandelion": "Maceta con diente de león"
+  "potted_dark_oak_sapling": "Maceta con brote de roble oscuro"
+  "potted_dead_bush": "Maceta con arbusto seco"
+  "potted_fern": "Maceta con helecho"
+  "potted_jungle_sapling": "Maceta con brote de jungla"
+  "potted_lily_of_the_valley": "Maceta con convalaria"
+  "potted_oak_sapling": "Maceta con brote de roble"
+  "potted_orange_tulip": "Maceta con tulipán naranja"
+  "potted_oxeye_daisy": "Maceta con margarita"
+  "potted_pink_tulip": "Maceta con tulipán rosa"
+  "potted_poppy": "Maceta con amapola"
+  "potted_red_mushroom": "Maceta con champiñón rojo"
+  "potted_red_tulip": "Maceta con tulipán rojo"
+  "potted_spruce_sapling": "Maceta con brote de abeto"
+  "potted_warped_fungus": "Maceta con hongo distorsionado"
+  "potted_warped_roots": "Maceta con raíces distorsionadas"
+  "potted_white_tulip": "Maceta con tulipán blanco"
+  "potted_wither_rose": "Maceta con rosa de Wither"
+  "powered_rail": "Raíl propulsor"
+  "prismarine": "Prismarina"
+  "prismarine_brick_slab": "Losa de ladrillos de prismarina"
+  "prismarine_brick_stairs": "Escaleras de ladrillos de prismarina"
+  "prismarine_bricks": "Ladrillos de prismarina"
+  "prismarine_slab": "Losa de prismarina"
+  "prismarine_stairs": "Escaleras de prismarina"
+  "prismarine_wall": "Muro de prismarina"
+  "pumpkin": "Calabaza"
+  "pumpkin_stem": "Tallo de calabaza"
+  "purple_banner": "Estandarte morado"
+  "purple_bed": "Cama morada"
+  "purple_carpet": "Alfombra lila"
+  "purple_concrete": "Hormigón morado"
+  "purple_concrete_powder": "Cemento morado"
+  "purple_glazed_terracotta": "Azulejo morado"
+  "purple_shulker_box": "Caja de shulker morada"
+  "purple_stained_glass": "Cristal tintado de morado"
+  "purple_stained_glass_pane": "Panel de cristal tintado de morado"
+  "purple_terracotta": "Terracota morada"
+  "purple_wool": "Lana lila"
+  "purpur_block": "Bloque de púrpur"
+  "purpur_pillar": "Pilar de púrpur"
+  "purpur_slab": "Losa de púrpur"
+  "purpur_stairs": "Escaleras de púrpur"
+  "quartz_block": "Cuarzo"
+  "quartz_bricks": "Ladrillos de cuarzo"
+  "quartz_pillar": "Pilar de cuarzo"
+  "quartz_slab": "Losa de cuarzo"
+  "quartz_stairs": "Escaleras de cuarzo"
+  "rail": "Raíl"
+  "red_banner": "Estandarte rojo"
+  "red_bed": "Cama roja"
+  "red_carpet": "Alfombra roja"
+  "red_concrete": "Hormigón rojo"
+  "red_concrete_powder": "Cemento rojo"
+  "red_glazed_terracotta": "Azulejo rojo"
+  "red_mushroom": "Champiñón rojo"
+  "red_mushroom_block": "Bloque de champiñón rojo"
+  "red_nether_brick_slab": "Losa de ladrillos del Nether rojos"
+  "red_nether_brick_stairs": "Escaleras de ladrillos del Nether rojos"
+  "red_nether_brick_wall": "Muro de ladrillos del Nether rojos"
+  "red_nether_bricks": "Ladrillos del Nether rojos"
+  "red_sand": "Arena roja"
+  "red_sandstone": "Arenisca roja"
+  "red_sandstone_slab": "Losa de arenisca roja"
+  "red_sandstone_stairs": "Escaleras de arenisca roja"
+  "red_sandstone_wall": "Muro de arenisca roja"
+  "red_shulker_box": "Caja de shulker roja"
+  "red_stained_glass": "Cristal tintado de rojo"
+  "red_stained_glass_pane": "Panel de cristal tintado de rojo"
+  "red_terracotta": "Terracota roja"
+  "red_tulip": "Tulipán rojo"
+  "red_wool": "Lana roja"
+  "redstone_block": "Bloque de redstone"
+  "redstone_lamp": "Lámpara de redstone"
+  "redstone_ore": "Mena de redstone"
+  "redstone_torch": "Antorcha de redstone"
+  "redstone_wall_torch": "Antorcha de redstone en pared"
+  "redstone_wire": "Cable de redstone"
+  "repeater": "Repetidor de redstone"
+  "repeating_command_block": "Bloque de comando de repetición"
+  "respawn_anchor": "Nexo de reaparición"
+  "rose_bush": "Rosal"
+  "sand": "Arena"
+  "sandstone": "Arenisca"
+  "sandstone_slab": "Losa de arenisca"
+  "sandstone_stairs": "Escaleras de arenisca"
+  "sandstone_wall": "Muro de arenisca"
+  "scaffolding": "Andamio"
+  "sea_lantern": "Linterna marina"
+  "sea_pickle": "Pepino de mar"
+  "seagrass": "Hierba marina"
+  "set_spawn": "Se ha establecido el punto de reaparición"
+  "shroomlight": "Brillongo"
+  "shulker_box": "Caja de shulker"
+  "skeleton_skull": "Calavera de esqueleto"
+  "skeleton_wall_skull": "Calavera de esqueleto en pared"
+  "slime_block": "Bloque de slime"
+  "smithing_table": "Mesa de herrería"
+  "smoker": "Ahumador"
+  "smooth_quartz": "Bloque de cuarzo liso"
+  "smooth_quartz_slab": "Losa de cuarzo liso"
+  "smooth_quartz_stairs": "Escaleras de cuarzo liso"
+  "smooth_red_sandstone": "Arenisca roja lisa"
+  "smooth_red_sandstone_slab": "Losa de arenisca roja lisa"
+  "smooth_red_sandstone_stairs": "Escaleras de arenisca roja lisa"
+  "smooth_sandstone": "Arenisca lisa"
+  "smooth_sandstone_slab": "Losa de arenisca lisa"
+  "smooth_sandstone_stairs": "Escaleras de arenisca lisa"
+  "smooth_stone": "Piedra lisa"
+  "smooth_stone_slab": "Losa de piedra lisa"
+  "snow": "Capa de nieve"
+  "snow_block": "Bloque de nieve"
+  "soul_campfire": "Hoguera de almas"
+  "soul_fire": "Fuego de almas"
+  "soul_lantern": "Farol de almas"
+  "soul_sand": "Arena de almas"
+  "soul_soil": "Tierra de almas"
+  "soul_torch": "Antorcha de almas"
+  "soul_wall_torch": "Antorcha de almas en pared"
+  "spawn.not_valid": "No tienes una cama o nexo de reaparición establecido, o pueden estar obstruidos"
+  "spawner": "Generador"
+  "sponge": "Esponja"
+  "spruce_button": "Botón de abeto"
+  "spruce_door": "Puerta de abeto"
+  "spruce_fence": "Valla de abeto"
+  "spruce_fence_gate": "Puerta de valla de abeto"
+  "spruce_leaves": "Hojas de abeto"
+  "spruce_log": "Tronco de abeto"
+  "spruce_planks": "Tablones de abeto"
+  "spruce_pressure_plate": "Placa de presión de abeto"
+  "spruce_sapling": "Brote de abeto"
+  "spruce_sign": "Cartel de abeto"
+  "spruce_slab": "Losa de abeto"
+  "spruce_stairs": "Escaleras de abeto"
+  "spruce_trapdoor": "Trampilla de abeto"
+  "spruce_wall_sign": "Cartel de abeto en pared"
+  "spruce_wood": "Leño de abeto"
+  "sticky_piston": "Pistón pegajoso"
+  "stone": "Piedra"
+  "stone_brick_slab": "Losa de ladrillos de piedra"
+  "stone_brick_stairs": "Escaleras de ladrillos de piedra"
+  "stone_brick_wall": "Muro de ladrillos de piedra"
+  "stone_bricks": "Ladrillos de piedra"
+  "stone_button": "Botón de piedra"
+  "stone_pressure_plate": "Placa de presión de piedra"
+  "stone_slab": "Losa de piedra"
+  "stone_stairs": "Escaleras de piedra"
+  "stonecutter": "Cortapiedras"
+  "stripped_acacia_log": "Tronco de acacia sin corteza"
+  "stripped_acacia_wood": "Leño de acacia sin corteza"
+  "stripped_birch_log": "Tronco de abedul sin corteza"
+  "stripped_birch_wood": "Leño de abedul sin corteza"
+  "stripped_crimson_hyphae": "Hifas carmesí sin corteza"
+  "stripped_crimson_stem": "Tallo carmesí sin corteza"
+  "stripped_dark_oak_log": "Tronco de roble oscuro sin corteza"
+  "stripped_dark_oak_wood": "Leño de roble oscuro sin corteza"
+  "stripped_jungle_log": "Tronco de jungla sin corteza"
+  "stripped_jungle_wood": "Leño de jungla sin corteza"
+  "stripped_oak_log": "Tronco de roble sin corteza"
+  "stripped_oak_wood": "Leño de roble sin corteza"
+  "stripped_spruce_log": "Tronco de abeto sin corteza"
+  "stripped_spruce_wood": "Leño de abeto sin corteza"
+  "stripped_warped_hyphae": "Hifas distorsionadas sin corteza"
+  "stripped_warped_stem": "Tallo distorsionado sin corteza"
+  "structure_block": "Bloque estructural"
+  "structure_void": "Vacío estructural"
+  "sugar_cane": "Caña de azúcar"
+  "sunflower": "Girasol"
+  "sweet_berry_bush": "Arbusto de bayas dulces"
+  "tall_grass": "Hierba alta"
+  "tall_seagrass": "Hierba marina alta"
+  "target": "Diana"
+  "terracotta": "Terracota"
+  "tnt": "Dinamita"
+  "torch": "Antorcha"
+  "trapped_chest": "Cofre trampa"
+  "tripwire": "Hilo trampa"
+  "tripwire_hook": "Gancho de cuerda"
+  "tube_coral": "Coral de tubo"
+  "tube_coral_block": "Bloque de coral de tubo"
+  "tube_coral_fan": "Gorgonia de tubo"
+  "tube_coral_wall_fan": "Gorgonia de tubo en pared"
+  "turtle_egg": "Huevo de tortuga"
+  "twisting_vines": "Enredaderas retorcidas"
+  "twisting_vines_plant": "Enredaderas retorcidas"
+  "vine": "Enredadera"
+  "void_air": "Aire de vacío"
+  "wall_torch": "Antorcha en pared"
+  "warped_button": "Botón distorsionado"
+  "warped_door": "Puerta distorsionada"
+  "warped_fence": "Valla distorsionada"
+  "warped_fence_gate": "Puerta de valla distorsionada"
+  "warped_fungus": "Hongo distorsionado"
+  "warped_hyphae": "Hifas distorsionadas"
+  "warped_nylium": "Necelio distorsionado"
+  "warped_planks": "Madera distorsionada"
+  "warped_pressure_plate": "Placa de presión distorsionada"
+  "warped_roots": "Raíces distorsionadas"
+  "warped_sign": "Cartel distorsionado"
+  "warped_slab": "Losa distorsionada"
+  "warped_stairs": "Escaleras distorsionadas"
+  "warped_stem": "Tallo distorsionado"
+  "warped_trapdoor": "Trampilla distorsionada"
+  "warped_wall_sign": "Cartel distorsionado en pared"
+  "warped_wart_block": "Bloque de verrugas distorsionadas"
+  "water": "Agua"
+  "weeping_vines": "Enredaderas lacrimosas"
+  "weeping_vines_plant": "Enredaderas lacrimosas"
+  "wet_sponge": "Esponja mojada"
+  "wheat": "Cultivo de trigo"
+  "white_banner": "Estandarte blanco"
+  "white_bed": "Cama blanca"
+  "white_carpet": "Alfombra blanca"
+  "white_concrete": "Hormigón blanco"
+  "white_concrete_powder": "Cemento blanco"
+  "white_glazed_terracotta": "Azulejo blanco"
+  "white_shulker_box": "Caja de shulker blanca"
+  "white_stained_glass": "Cristal tintado de blanco"
+  "white_stained_glass_pane": "Panel de cristal tintado de blanco"
+  "white_terracotta": "Terracota blanca"
+  "white_tulip": "Tulipán blanco"
+  "white_wool": "Lana blanca"
+  "wither_rose": "Rosa de Wither"
+  "wither_skeleton_skull": "Calavera de esqueleto Wither"
+  "wither_skeleton_wall_skull": "Calavera de esqueleto Wither en pared"
+  "yellow_banner": "Estandarte amarillo"
+  "yellow_bed": "Cama amarilla"
+  "yellow_carpet": "Alfombra amarilla"
+  "yellow_concrete": "Hormigón amarillo"
+  "yellow_concrete_powder": "Cemento amarillo"
+  "yellow_glazed_terracotta": "Azulejo amarillo"
+  "yellow_shulker_box": "Caja de shulker amarilla"
+  "yellow_stained_glass": "Cristal tintado de amarillo"
+  "yellow_stained_glass_pane": "Panel de cristal tintado de amarillo"
+  "yellow_terracotta": "Terracota amarilla"
+  "yellow_wool": "Lana amarilla"
+  "zombie_head": "Cabeza de zombi"
+  "zombie_wall_head": "Cabeza de zombi en pared"
+
+  # Start of items- duplicates removed, preferring block name from above
+  "acacia_boat": "Barca de acacia"
+  "apple": "Manzana"
+  "armor_stand": "Soporte para armadura"
+  "arrow": "Flecha"
+  "baked_potato": "Patata cocida"
+  "bat_spawn_egg": "Generar murciélago"
+  "bee_spawn_egg": "Generar abeja"
+  "beef": "Filete crudo"
+  "beetroot": "Remolacha"
+  "beetroot_seeds": "Semillas de remolacha"
+  "beetroot_soup": "Estofado de remolacha"
+  "birch_boat": "Barca de abedul"
+  "black_dye": "Tinte negro"
+  "blaze_powder": "Polvo de blaze"
+  "blaze_rod": "Vara de blaze"
+  "blaze_spawn_egg": "Generar blaze"
+  "blue_dye": "Tinte azul"
+  "bone": "Hueso"
+  "bone_meal": "Polvo de hueso"
+  "book": "Libro"
+  "bow": "Arco"
+  "bowl": "Cuenco"
+  "bread": "Pan"
+  "brick": "Ladrillo"
+  "brown_dye": "Tinte marrón"
+  "bucket": "Cubo"
+  "carrot": "Zanahoria"
+  "carrot_on_a_stick": "Caña con zanahoria"
+  "cat_spawn_egg": "Generar gato"
+  "cave_spider_spawn_egg": "Generar araña de cueva"
+  "chainmail_boots": "Botas de cota de mallas"
+  "chainmail_chestplate": "Peto de cota de mallas"
+  "chainmail_helmet": "Casco de cota de mallas"
+  "chainmail_leggings": "Grebas de cota de mallas"
+  "charcoal": "Carbón vegetal"
+  "chest_minecart": "Vagoneta con cofre"
+  "chicken": "Pollo crudo"
+  "chicken_spawn_egg": "Generar pollo"
+  "chorus_fruit": "Fruta coral"
+  "clay_ball": "Bola de arcilla"
+  "clock": "Reloj"
+  "coal": "Carbón"
+  "cocoa_beans": "Semillas de cacao"
+  "cod": "Bacalao crudo"
+  "cod_bucket": "Cubo con bacalao"
+  "cod_spawn_egg": "Generar bacalao"
+  "command_block_minecart": "Vagoneta con bloque de comandos"
+  "compass": "Brújula"
+  "cooked_beef": "Filete cocinado"
+  "cooked_chicken": "Pollo cocinado"
+  "cooked_cod": "Bacalao cocinado"
+  "cooked_mutton": "Cordero cocinado"
+  "cooked_porkchop": "Chuleta de cerdo cocinada"
+  "cooked_rabbit": "Conejo cocinado"
+  "cooked_salmon": "Salmón cocinado"
+  "cookie": "Galleta"
+  "cow_spawn_egg": "Generar vaca"
+  "creeper_banner_pattern": "Diseño de estandarte"
+  "creeper_banner_pattern.desc": "Estampado de creeper"
+  "creeper_spawn_egg": "Generar creeper"
+  "crossbow": "Ballesta"
+  "crossbow.projectile": "Proyectil:"
+  "cyan_dye": "Tinte cian"
+  "dark_oak_boat": "Barca de roble oscuro"
+  "debug_stick": "Palo de desarrollo"
+  "debug_stick.empty": "%s no tiene propiedades"
+  "debug_stick.select": "se ha seleccionado '%s' (%s)"
+  "debug_stick.update": "«%s» a %s"
+  "diamond": "Diamante"
+  "diamond_axe": "Hacha de diamante"
+  "diamond_boots": "Botas de diamante"
+  "diamond_chestplate": "Peto de diamante"
+  "diamond_helmet": "Casco de diamante"
+  "diamond_hoe": "Azada de diamante"
+  "diamond_horse_armor": "Armadura de diamante para caballo"
+  "diamond_leggings": "Grebas de diamante"
+  "diamond_pickaxe": "Pico de diamante"
+  "diamond_shovel": "Pala de diamante"
+  "diamond_sword": "Espada de diamante"
+  "dolphin_spawn_egg": "Generar delfín"
+  "donkey_spawn_egg": "Generar burro"
+  "dragon_breath": "Aliento de dragón"
+  "dried_kelp": "Algas secas"
+  "drowned_spawn_egg": "Generar ahogado"
+  "egg": "Huevo"
+  "elder_guardian_spawn_egg": "Generar guardián anciano"
+  "elytra": "Élitros"
+  "emerald": "Esmeralda"
+  "enchanted_book": "Libro encantado"
+  "enchanted_golden_apple": "Manzana dorada encantada"
+  "end_crystal": "Cristal del End"
+  "ender_eye": "Ojo de ender"
+  "ender_pearl": "Perla de ender"
+  "enderman_spawn_egg": "Generar enderman"
+  "endermite_spawn_egg": "Generar endermite"
+  "evoker_spawn_egg": "Generar invocador"
+  "experience_bottle": "Frasco con experiencia"
+  "feather": "Pluma"
+  "fermented_spider_eye": "Ojo de araña fermentado"
+  "filled_map": "Mapa"
+  "fire_charge": "Carga ígnea"
+  "firework_rocket": "Cohete de fuegos artificiales"
+  "firework_star": "Estrella de fuegos artificiales"
+  "fishing_rod": "Caña de pescar"
+  "flint": "Pedernal"
+  "flint_and_steel": "Mechero"
+  "flower_banner_pattern": "Diseño de estandarte"
+  "flower_banner_pattern.desc": "Estampado de flor"
+  "fox_spawn_egg": "Generar zorro"
+  "furnace_minecart": "Vagoneta con horno"
+  "ghast_spawn_egg": "Generar ghast"
+  "ghast_tear": "Lágrima de ghast"
+  "glass_bottle": "Frasco de cristal"
+  "glistering_melon_slice": "Rodaja de sandía reluciente"
+  "globe_banner_pattern": "Estandarte con diseño de planeta"
+  "globe_banner_pattern.desc": "Estampado de planeta"
+  "glowstone_dust": "Polvo de piedra luminosa"
+  "gold_ingot": "Lingote de oro"
+  "gold_nugget": "Pepita de oro"
+  "golden_apple": "Manzana dorada"
+  "golden_axe": "Hacha de oro"
+  "golden_boots": "Botas de oro"
+  "golden_carrot": "Zanahoria dorada"
+  "golden_chestplate": "Peto de oro"
+  "golden_helmet": "Casco de oro"
+  "golden_hoe": "Azada de oro"
+  "golden_horse_armor": "Armadura de oro para caballo"
+  "golden_leggings": "Grebas de oro"
+  "golden_pickaxe": "Pico de oro"
+  "golden_shovel": "Pala de oro"
+  "golden_sword": "Espada de oro"
+  "gray_dye": "Tinte gris"
+  "green_dye": "Tinte verde"
+  "guardian_spawn_egg": "Generar guardián"
+  "gunpowder": "Pólvora"
+  "heart_of_the_sea": "Corazón del mar"
+  "hoglin_spawn_egg": "Generar hoglin"
+  "honey_bottle": "Frasco con miel"
+  "honeycomb": "Panal"
+  "hopper_minecart": "Vagoneta con tolva"
+  "horse_spawn_egg": "Generar caballo"
+  "husk_spawn_egg": "Generar zombi momificado"
+  "ink_sac": "Saco de tinta"
+  "iron_axe": "Hacha de hierro"
+  "iron_boots": "Botas de hierro"
+  "iron_chestplate": "Peto de hierro"
+  "iron_helmet": "Casco de hierro"
+  "iron_hoe": "Azada de hierro"
+  "iron_horse_armor": "Armadura de hierro para caballo"
+  "iron_ingot": "Lingote de hierro"
+  "iron_leggings": "Grebas de hierro"
+  "iron_nugget": "Pepita de hierro"
+  "iron_pickaxe": "Pico de hierro"
+  "iron_shovel": "Pala de hierro"
+  "iron_sword": "Espada de hierro"
+  "item_frame": "Marco"
+  "jungle_boat": "Barca de jungla"
+  "knowledge_book": "Enciclopedia"
+  "lapis_lazuli": "Lapislázuli"
+  "lava_bucket": "Cubo con lava"
+  "lead": "Rienda"
+  "leather": "Cuero"
+  "leather_boots": "Botas de cuero"
+  "leather_chestplate": "Túnica de cuero"
+  "leather_helmet": "Sombrero de cuero"
+  "leather_horse_armor": "Armadura de cuero para caballo"
+  "leather_leggings": "Pantalones de cuero"
+  "light_blue_dye": "Tinte azul claro"
+  "light_gray_dye": "Tinte gris claro"
+  "lime_dye": "Tinte verde lima"
+  "lingering_potion": "Poción persistente"
+  "llama_spawn_egg": "Generar llama"
+  "lodestone_compass": "Brújula imantada"
+  "magenta_dye": "Tinte magenta"
+  "magma_cream": "Crema de magma"
+  "magma_cube_spawn_egg": "Generar cubo de magma"
+  "map": "Mapa en blanco"
+  "melon_seeds": "Semillas de sandía"
+  "melon_slice": "Rodaja de sandía"
+  "milk_bucket": "Cubo con leche"
+  "minecart": "Vagoneta"
+  "mojang_banner_pattern": "Diseño de estandarte"
+  "mojang_banner_pattern.desc": "Estampado de Mojang"
+  "mooshroom_spawn_egg": "Generar champiñaca"
+  "mule_spawn_egg": "Generar mula"
+  "mushroom_stew": "Estofado de champiñones"
+  "music_disc_11": "Disco de música"
+  "music_disc_11.desc": "C418 - 11"
+  "music_disc_13": "Disco de música"
+  "music_disc_13.desc": "C418 - 13"
+  "music_disc_blocks": "Disco de música"
+  "music_disc_blocks.desc": "C418 - blocks"
+  "music_disc_cat": "Disco de música"
+  "music_disc_cat.desc": "C418 - cat"
+  "music_disc_chirp": "Disco de música"
+  "music_disc_chirp.desc": "C418 - chirp"
+  "music_disc_far": "Disco de música"
+  "music_disc_far.desc": "C418 - far"
+  "music_disc_mall": "Disco de música"
+  "music_disc_mall.desc": "C418 - mall"
+  "music_disc_mellohi": "Disco de música"
+  "music_disc_mellohi.desc": "C418 - mellohi"
+  "music_disc_pigstep": "Disco de música"
+  "music_disc_pigstep.desc": "Lena Raine - Pigstep"
+  "music_disc_stal": "Disco de música"
+  "music_disc_stal.desc": "C418 - stal"
+  "music_disc_strad": "Disco de música"
+  "music_disc_strad.desc": "C418 - strad"
+  "music_disc_wait": "Disco de música"
+  "music_disc_wait.desc": "C418 - wait"
+  "music_disc_ward": "Disco de música"
+  "music_disc_ward.desc": "C418 - ward"
+  "mutton": "Cordero crudo"
+  "name_tag": "Etiqueta"
+  "nautilus_shell": "Caparazón de nautilo"
+  "nether_brick": "Ladrillo del Nether"
+  "nether_star": "Estrella del Nether"
+  "netherite_axe": "Hacha de netherita"
+  "netherite_boots": "Botas de netherita"
+  "netherite_chestplate": "Peto de netherita"
+  "netherite_helmet": "Casco de netherita"
+  "netherite_hoe": "Azada de netherita"
+  "netherite_ingot": "Lingote de netherita"
+  "netherite_leggings": "Grebas de netherita"
+  "netherite_pickaxe": "Pico de netherita"
+  "netherite_scrap": "Fragmentos de netherita"
+  "netherite_shovel": "Pala de netherita"
+  "netherite_sword": "Espada de netherita"
+  "oak_boat": "Barca de roble"
+  "ocelot_spawn_egg": "Generar ocelote"
+  "orange_dye": "Tinte naranja"
+  "painting": "Cuadro"
+  "panda_spawn_egg": "Generar panda"
+  "paper": "Papel"
+  "parrot_spawn_egg": "Generar loro"
+  "phantom_membrane": "Membrana de fantasma"
+  "phantom_spawn_egg": "Generar fantasma"
+  "pig_spawn_egg": "Generar cerdo"
+  "piglin_brute_spawn_egg": "Generar piglin bruto"
+  "piglin_spawn_egg": "Generar piglin"
+  "pillager_spawn_egg": "Generar saqueador"
+  "pink_dye": "Tinte rosa"
+  "poisonous_potato": "Patata venenosa"
+  "polar_bear_spawn_egg": "Generar oso polar"
+  "popped_chorus_fruit": "Fruta coral horneada"
+  "porkchop": "Chuleta de cerdo cruda"
+  "potato": "Patata"
+  "potion": "Poción"
+  "prismarine_crystals": "Cristales de prismarina"
+  "prismarine_shard": "Fragmento de prismarina"
+  "pufferfish": "Pez globo"
+  "pufferfish_bucket": "Cubo con pez globo"
+  "pufferfish_spawn_egg": "Generar pez globo"
+  "pumpkin_pie": "Tarta de calabaza"
+  "pumpkin_seeds": "Semillas de calabaza"
+  "purple_dye": "Tinte morado"
+  "quartz": "Cuarzo del Nether"
+  "rabbit": "Conejo crudo"
+  "rabbit_foot": "Pata de conejo"
+  "rabbit_hide": "Piel de conejo"
+  "rabbit_spawn_egg": "Generar conejo"
+  "rabbit_stew": "Estofado de conejo"
+  "ravager_spawn_egg": "Generar devastador"
+  "red_dye": "Tinte rojo"
+  "redstone": "Polvo de redstone"
+  "rotten_flesh": "Carne podrida"
+  "saddle": "Montura"
+  "salmon": "Salmón crudo"
+  "salmon_bucket": "Cubo con salmón"
+  "salmon_spawn_egg": "Generar salmón"
+  "scute": "Escama de tortuga"
+  "shears": "Tijeras"
+  "sheep_spawn_egg": "Generar oveja"
+  "shield": "Escudo"
+  "shulker_shell": "Caparazón de shulker"
+  "shulker_spawn_egg": "Generar shulker"
+  "sign": "Cartel"
+  "silverfish_spawn_egg": "Generar lepisma"
+  "skeleton_horse_spawn_egg": "Generar caballo esqueleto"
+  "skeleton_spawn_egg": "Generar esqueleto"
+  "skull_banner_pattern": "Diseño de estandarte"
+  "skull_banner_pattern.desc": "Estampado de calavera"
+  "slime_ball": "Bola de slime"
+  "slime_spawn_egg": "Generar slime"
+  "snowball": "Bola de nieve"
+  "spectral_arrow": "Flecha espectral"
+  "spider_eye": "Ojo de araña"
+  "spider_spawn_egg": "Generar araña"
+  "splash_potion": "Poción arrojadiza"
+  "spruce_boat": "Barca de abeto"
+  "squid_spawn_egg": "Generar calamar"
+  "stick": "Palo"
+  "stone_axe": "Hacha de piedra"
+  "stone_hoe": "Azada de piedra"
+  "stone_pickaxe": "Pico de piedra"
+  "stone_shovel": "Pala de piedra"
+  "stone_sword": "Espada de piedra"
+  "stray_spawn_egg": "Generar esqueleto glacial"
+  "strider_spawn_egg": "Generar lavagante"
+  "string": "Hilo"
+  "sugar": "Azúcar"
+  "suspicious_stew": "Estofado sospechoso"
+  "sweet_berries": "Bayas dulces"
+  "tipped_arrow": "Flecha con efecto"
+  "tnt_minecart": "Vagoneta con dinamita"
+  "totem_of_undying": "Tótem de inmortalidad"
+  "trader_llama_spawn_egg": "Generar llama ambulante"
+  "trident": "Tridente"
+  "tropical_fish": "Pez tropical"
+  "tropical_fish_bucket": "Cubo con pez tropical"
+  "tropical_fish_spawn_egg": "Generar pez tropical"
+  "turtle_helmet": "Caparazón de tortuga"
+  "turtle_spawn_egg": "Generar tortuga"
+  "vex_spawn_egg": "Generar ánima"
+  "villager_spawn_egg": "Generar aldeano"
+  "vindicator_spawn_egg": "Generar vindicador"
+  "wandering_trader_spawn_egg": "Generar vendedor ambulante"
+  "warped_fungus_on_a_stick": "Caña con hongo distorsionado"
+  "water_bucket": "Cubo con agua"
+  "wheat_seeds": "Semillas de trigo"
+  "white_dye": "Tinte blanco"
+  "witch_spawn_egg": "Generar bruja"
+  "wither_skeleton_spawn_egg": "Generar esqueleto Wither"
+  "wolf_spawn_egg": "Generar lobo"
+  "wooden_axe": "Hacha de madera"
+  "wooden_hoe": "Azada de madera"
+  "wooden_pickaxe": "Pico de madera"
+  "wooden_shovel": "Pala de madera"
+  "wooden_sword": "Espada de madera"
+  "writable_book": "Libro y pluma"
+  "written_book": "Libro escrito"
+  "yellow_dye": "Tinte amarillo"
+  "zoglin_spawn_egg": "Generar zoglin"
+  "zombie_horse_spawn_egg": "Generar caballo zombi"
+  "zombie_spawn_egg": "Generar zombi"
+  "zombie_villager_spawn_egg": "Generar aldeano zombi"
+  "zombified_piglin_spawn_egg": "Generar piglin zombificado"
+
+entities:
+  "area_effect_cloud": "Nube de efecto persistente"
+  "armor_stand": "Soporte para armadura"
+  "arrow": "Flecha"
+  "bat": "Murciélago"
+  "bee": "Abeja"
+  "blaze": "Blaze"
+  "boat": "Barca"
+  "cat": "Gato"
+  "cave_spider": "Araña de cueva"
+  "chest_minecart": "Vagoneta con cofre"
+  "chicken": "Pollo"
+  "cod": "Bacalao"
+  "command_block_minecart": "Vagoneta con bloque de comandos"
+  "cow": "Vaca"
+  "creeper": "Creeper"
+  "dolphin": "Delfín"
+  "donkey": "Burro"
+  "dragon_fireball": "Bola de fuego de dragón"
+  "drowned": "Ahogado"
+  "egg": "Huevo lanzado"
+  "elder_guardian": "Guardián anciano"
+  "end_crystal": "Cristal del End"
+  "ender_dragon": "Enderdragón"
+  "ender_pearl": "Perla de ender lanzada"
+  "enderman": "Enderman"
+  "endermite": "Endermite"
+  "evoker": "Invocador"
+  "evoker_fangs": "Colmillos de invocador"
+  "experience_bottle": "Frasco con experiencia lanzado"
+  "experience_orb": "Orbe de experiencia"
+  "eye_of_ender": "Ojo de ender"
+  "falling_block": "Bloque en caída"
+  "fireball": "Bola de fuego"
+  "firework_rocket": "Cohete de fuegos artificiales"
+  "fishing_bobber": "Anzuelo"
+  "fox": "Zorro"
+  "furnace_minecart": "Vagoneta con horno"
+  "ghast": "Ghast"
+  "giant": "Zombi gigante"
+  "guardian": "Guardián"
+  "hoglin": "Hoglin"
+  "hopper_minecart": "Vagoneta con tolva"
+  "horse": "Caballo"
+  "husk": "Zombi momificado"
+  "illusioner": "Ilusionista"
+  "iron_golem": "Gólem de hierro"
+  "item": "Objeto"
+  "item_frame": "Marco"
+  "killer_bunny": "El conejo asesino"
+  "leash_knot": "Nudo de rienda"
+  "lightning_bolt": "Rayo"
+  "llama": "Llama"
+  "llama_spit": "Escupitajo de llama"
+  "magma_cube": "Cubo de magma"
+  "minecart": "Vagoneta"
+  "mooshroom": "Champiñaca"
+  "mule": "Mula"
+  "ocelot": "Ocelote"
+  "painting": "Cuadro"
+  "panda": "Panda"
+  "parrot": "Loro"
+  "phantom": "Fantasma"
+  "pig": "Cerdo"
+  "piglin": "Piglin"
+  "piglin_brute": "Piglin bruto"
+  "pillager": "Saqueador"
+  "player": "Jugador"
+  "polar_bear": "Oso polar"
+  "potion": "Poción"
+  "pufferfish": "Pez globo"
+  "rabbit": "Conejo"
+  "ravager": "Devastador"
+  "salmon": "Salmón"
+  "sheep": "Oveja"
+  "shulker": "Shulker"
+  "shulker_bullet": "Proyectil de shulker"
+  "silverfish": "Lepisma"
+  "skeleton": "Esqueleto"
+  "skeleton_horse": "Caballo esqueleto"
+  "slime": "Slime"
+  "small_fireball": "Bola de fuego pequeña"
+  "snow_golem": "Gólem de nieve"
+  "snowball": "Bola de nieve"
+  "spawner_minecart": "Vagoneta con generador"
+  "spectral_arrow": "Flecha espectral"
+  "spider": "Araña"
+  "squid": "Calamar"
+  "stray": "Esqueleto glacial"
+  "strider": "Lavagante"
+  "tnt": "Dinamita activada"
+  "tnt_minecart": "Vagoneta con dinamita"
+  "trader_llama": "Llama ambulante"
+  "trident": "Tridente"
+  "tropical_fish": "Pez tropical"
+  "turtle": "Tortuga"
+  "vex": "Ánima"
+  "villager": "Aldeano"
+  "vindicator": "Vindicador"
+  "wandering_trader": "Vendedor ambulante"
+  "witch": "Bruja"
+  "wither": "Wither"
+  "wither_skeleton": "Esqueleto Wither"
+  "wither_skull": "Calavera de Wither"
+  "wolf": "Lobo"
+  "zoglin": "Zoglin"
+  "zombie": "Zombi"
+  "zombie_horse": "Caballo zombi"
+  "zombie_villager": "Aldeano zombi"
+  "zombified_piglin": "Piglin zombificado"
+
+##################################################################################
+
+
 ##################################################################################
 # Notas de la traducción V3
 # Mejoras para la visibilidad de la traducción
