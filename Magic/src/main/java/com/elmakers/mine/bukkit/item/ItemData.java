@@ -11,11 +11,13 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -185,6 +187,19 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             }
             meta.setLore(lore);
             item.setItemMeta(meta);
+        }
+        ConfigurationSection color = configuration.getConfigurationSection("color");
+        if (color != null) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta instanceof LeatherArmorMeta) {
+                int red = color.getInt("red");
+                int green = color.getInt("green");
+                int blue = color.getInt("blue");
+                LeatherArmorMeta leather = (LeatherArmorMeta)meta;
+                leather.setColor(Color.fromRGB(red, green, blue));
+                item.setItemMeta(meta);
+            }
+
         }
         locked = configuration.getBoolean("locked");
         replaceOnEquip = configuration.getBoolean("replace_on_equip");
