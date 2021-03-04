@@ -59,6 +59,7 @@ public class BlockController implements Listener, ChunkLoadListener {
     private int creativeBreakFrequency = 0;
     private boolean dropOriginalBlock = true;
     private boolean applySpawnerData = true;
+    private boolean disableSpawnerData = false;
 
     // This is used only for the BlockBurn event, in other cases we get a source block to check.
     static final List<BlockFace> blockBurnDirections = Arrays.asList(
@@ -76,10 +77,16 @@ public class BlockController implements Listener, ChunkLoadListener {
         creativeBreakFrequency = properties.getInt("prevent_creative_breaking", 0);
         dropOriginalBlock = properties.getBoolean("drop_original_block", true);
         applySpawnerData = properties.getBoolean("apply_spawner_data", true);
+        if (disableSpawnerData) {
+            applySpawnerData = false;
+        }
+    }
 
+    public void finalizeIntegration() {
         final PluginManager pluginManager = controller.getPlugin().getServer().getPluginManager();
         if (pluginManager.isPluginEnabled("SilkSpawners")) {
             applySpawnerData = false;
+            disableSpawnerData = true;
             controller.getLogger().info("SilkSpawners detected, forcing apply_spawner_data to false");
         }
     }

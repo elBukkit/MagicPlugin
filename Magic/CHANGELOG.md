@@ -2,6 +2,8 @@
 
 # 8.5
 
+ - Magic now loads at server startup, so world gen modifications to default worlds catch spawn chunks
+
 # 8.4.1
 
  - Fix reloading configs setting SP earn cooldown to zero for all online players

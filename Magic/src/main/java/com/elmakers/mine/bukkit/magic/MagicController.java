@@ -152,6 +152,7 @@ import com.elmakers.mine.bukkit.elementals.ElementalsController;
 import com.elmakers.mine.bukkit.entity.PermissionsTeamProvider;
 import com.elmakers.mine.bukkit.entity.ScoreboardTeamProvider;
 import com.elmakers.mine.bukkit.essentials.EssentialsController;
+import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BattleArenaManager;
@@ -219,7 +220,7 @@ import com.elmakers.mine.bukkit.tasks.ChangeServerTask;
 import com.elmakers.mine.bukkit.tasks.ConfigCheckTask;
 import com.elmakers.mine.bukkit.tasks.ConfigurationLoadTask;
 import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
-import com.elmakers.mine.bukkit.tasks.EssentialsItemIntegrationTask;
+import com.elmakers.mine.bukkit.tasks.FinalizeIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.LoadDataTask;
 import com.elmakers.mine.bukkit.tasks.LogNotifyTask;
@@ -1446,7 +1447,9 @@ public class MagicController implements MageController {
         // Finalize integrations, we only do this one time at startup.
         logger.setContext("integration");
         if (!loaded) {
-            finalizeIntegration();
+            activateMetrics();
+            registerListeners();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new FinalizeIntegrationTask(this), 1);
         }
 
         // Register currencies and other preload integrations
@@ -7144,8 +7147,9 @@ public class MagicController implements MageController {
         return warpController.getMagicWarps();
     }
 
-    protected void finalizeIntegration() {
+    public void finalizeIntegration() {
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
+        blockController.finalizeIntegration();
 
         // Check for SkillAPI
         Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
@@ -7296,8 +7300,19 @@ public class MagicController implements MageController {
         }
 
         if (essentialsSignsEnabled) {
-            final MagicController me = this;
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new EssentialsItemIntegrationTask(this), 5);
+            try {
+                if (essentials != null) {
+                    Class<?> essentialsClass = essentials.getClass();
+                    essentialsClass.getMethod("getItemDb");
+                    if (MagicItemDb.register(this, essentials)) {
+                        getLogger().info("Essentials found, hooked up custom item handler");
+                    } else {
+                        getLogger().warning("Essentials found, but something went wrong hooking up the custom item handler");
+                    }
+                }
+            } catch (Throwable ex) {
+                getLogger().warning("Essentials found, but is not up to date. Magic item integration will not work with this version of Magic. Please upgrade EssentialsX or downgrade Magic to 7.6.19");
+            }
         }
 
         // Try to link to CommandBook
@@ -7526,9 +7541,6 @@ public class MagicController implements MageController {
             getLogger().info("RedProtect integration disabled.");
         }
 
-        // Activate Metrics
-        activateMetrics();
-
         // Set up the Mage update timer
         final MageUpdateTask mageTask = new MageUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
@@ -7544,7 +7556,6 @@ public class MagicController implements MageController {
         // Set up the Update check timer
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
-        registerListeners();
     }
 
     /*
