@@ -192,7 +192,7 @@ public class EquipAction extends BaseSpellAction
                 }
 
                 equipItem = material.getItemStack(1);
-                materialName = material.getName();
+                materialName = material.getName(context.getController().getMessages());
             }
 
             if (DefaultMaterials.isAir(equipItem.getType())) {

@@ -117,7 +117,7 @@ public class RaiseBlockAction extends BaseSpellAction
                 ItemStack requires = new ItemStack(material);
                 if (!mage.hasItem(requires, consumeVariants)) {
                     String requiresMessage = context.getMessage("insufficient_resources");
-                    context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", MaterialAndData.getMaterialName(requires)));
+                    context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", MaterialAndData.getMaterialName(requires, context.getController().getMessages())));
                     return SpellResult.STOP;
                 }
                 mage.removeItem(requires, consumeVariants);

@@ -441,7 +441,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             MaterialAndData mat = new MaterialAndData(material);
             items.put(mat.getKey(), mat);
 
-            String baseName = mat.getName();
+            String baseName = mat.getName(controller.getMessages());
             for (short data = 1; data < 32; data++) {
                 testItem = new ItemStack(material, 1, data);
                 inventory.setItem(itemSlot, testItem);

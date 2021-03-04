@@ -561,7 +561,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             String brushKey = api.getBrush(itemInHand);
             sender.sendMessage(ChatColor.GRAY + "Brush: " + brushKey);
             MaterialAndData brush = new MaterialAndData(brushKey);
-            sender.sendMessage(" " + ChatColor.GRAY + brush.getName());
+            sender.sendMessage(" " + ChatColor.GRAY + brush.getName(controller.getMessages()));
         } else if (api.isWand(itemInHand) || api.isUpgrade(itemInHand)) {
             Wand wand = api.getWand(itemInHand);
             if (parameters.length == 0) {
@@ -665,7 +665,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             return false;
         }
         if (api.isWand(heldItem) || api.isSpell(heldItem) || api.isBrush(heldItem)) {
-            sender.sendMessage(api.getMessages().getParameterized("wand.already_enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
+            sender.sendMessage(api.getMessages().getParameterized("wand.already_enchanted", "$item", MaterialAndData.getMaterialName(heldItem, controller.getMessages())));
             return false;
         }
 
@@ -673,11 +673,11 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         player.getInventory().setItemInMainHand(wand.getItem());
         mage.checkWand();
 
-        mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
+        mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialAndData.getMaterialName(heldItem, controller.getMessages())));
 
         if (sender != player) {
             sender.sendMessage(api.getMessages().getParameterized("wand.player_enchanted",
-                    "$item", MaterialAndData.getMaterialName(heldItem),
+                    "$item", MaterialAndData.getMaterialName(heldItem, controller.getMessages()),
                     "$name", player.getName()
             ));
         }

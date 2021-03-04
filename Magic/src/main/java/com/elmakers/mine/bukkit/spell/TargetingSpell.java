@@ -117,7 +117,7 @@ public class TargetingSpell extends BaseSpell {
                         MaterialAndData material = target.getTargetedMaterial();
                         if (material != null)
                         {
-                            useTargetName = material.getName();
+                            useTargetName = material.getName(controller.getMessages());
                         }
                     }
                 }
@@ -782,7 +782,7 @@ public class TargetingSpell extends BaseSpell {
     {
         Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
-            return MaterialBrush.getMaterialName(target.getBlock());
+            return MaterialBrush.getMaterialName(target.getBlock(), controller.getMessages());
         }
 
         return super.getDisplayMaterialName();

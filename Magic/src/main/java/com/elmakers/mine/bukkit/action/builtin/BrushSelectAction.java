@@ -262,7 +262,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 
     private String getBaseName(MaterialAndData material) {
         // Bit of a hack to get a base material name
-        String materialName = material.getName();
+        String materialName = material.getName(context == null ? null : context.getController().getMessages());
         materialName = materialName.replace("White ", "");
         materialName = materialName.replace("oak ", "");
         materialName = materialName.replace("cobblestone ", "");

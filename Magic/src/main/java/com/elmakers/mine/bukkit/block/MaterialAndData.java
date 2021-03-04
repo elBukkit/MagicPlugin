@@ -928,14 +928,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return isValid;
     }
 
-    public static String getMaterialName(ItemStack item) {
+    public static String getMaterialName(ItemStack item, Messages messages) {
         MaterialAndData material = new MaterialAndData(item);
-        return material.getName();
+        return material.getName(messages);
     }
 
-    public static String getMaterialName(Block block) {
+    public static String getMaterialName(Block block, Messages messages) {
         MaterialAndData material = new MaterialAndData(block);
-        return material.getName();
+        return material.getName(messages);
     }
 
     @Nullable

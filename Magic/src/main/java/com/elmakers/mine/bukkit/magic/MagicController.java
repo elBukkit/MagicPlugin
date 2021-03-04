@@ -4928,7 +4928,7 @@ public class MagicController implements MageController {
                 }
 
                 MaterialAndData material = new MaterialAndData(itemStack);
-                return material.getName();
+                return material.getName(getMessages());
             }
         }
 
