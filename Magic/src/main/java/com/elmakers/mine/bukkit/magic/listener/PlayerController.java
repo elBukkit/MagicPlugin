@@ -703,6 +703,23 @@ public class PlayerController implements Listener {
             mage.sendDebugMessage("INTERACT " + event.getAction()  + " with " + event.getHand() + " using: " + (item == null ? "(Nothing)" : item.getType().name())
                 + ", block: " + (block == null ? "(Nothing)" : block.getType().name()), DEBUG_LEVEL);
         }
+
+        // Check for offhand casting
+        if (isRightClick && allowOffhandCasting && mage.offhandCast()) {
+            // Kind of weird but the intention is to avoid normal "left click" actions,
+            // which in the offhand case are right-click actions.
+            if (cancelInteractOnLeftClick) {
+                event.setCancelled(true);
+            }
+            return;
+        }
+
+        // Check for offhand items
+        ItemStack offhandItem = player.getInventory().getItemInOffHand();
+        if (controller.isOffhandMaterial(offhandItem)) {
+            return;
+        }
+
         if (!mage.canUse(itemInHand)) {
             mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
             event.setCancelled(true);
@@ -804,19 +821,6 @@ public class PlayerController implements Listener {
             }
             event.setCancelled(true);
             return;
-        }
-
-        // Check for offhand casting
-        if (isRightClick)
-        {
-            if (allowOffhandCasting && mage.offhandCast()) {
-                // Kind of weird but the intention is to avoid normal "left click" actions,
-                // which in the offhand case are right-click actions.
-                if (cancelInteractOnLeftClick) {
-                    event.setCancelled(true);
-                }
-                return;
-            }
         }
 
         // Check for wearing via right-click

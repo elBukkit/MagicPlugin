@@ -48,6 +48,7 @@
  - Mobs can have a `name` specified in messages.yml
  - Spell book spell icons glow
  - Removed the destructible2 and destructible3 lists, most spells break all solid blocks by default
+ - Wands will not trigger right-click actions if a shield or torch is in the offhand (/mconfig editor material offhand)
 
 ## Additions
 

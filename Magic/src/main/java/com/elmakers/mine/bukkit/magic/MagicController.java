@@ -830,6 +830,8 @@ public class MagicController implements MageController {
         return destructibleMaterials.testBlock(block);
     }
 
+    private @Nonnull MaterialSet                offhandMaterials                = MaterialSets.empty();
+
     @Override
     public boolean isUndoable(Material material) {
         return undoableMaterials.testMaterial(material);
@@ -2691,41 +2693,8 @@ public class MagicController implements MageController {
         return worldGuardManager.getSpellOverrides(mage.getPlayer(), location);
     }
 
-    protected void loadMaterials(ConfigurationSection materialNode) {
-        if (materialNode == null)
-            return;
-
-        materialSetManager.loadMaterials(materialNode);
-        DefaultMaterials defaultMaterials = DefaultMaterials.getInstance();
-        defaultMaterials.initialize(materialSetManager);
-        defaultMaterials.loadColors(materialColors);
-        defaultMaterials.loadVariants(materialVariants);
-        defaultMaterials.loadBlockItems(blockItems);
-        defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
-        defaultMaterials.setPlayerSkullWallBlock(skullWallBlocks.get(EntityType.PLAYER));
-        defaultMaterials.setSkeletonSkullItem(skullItems.get(EntityType.SKELETON));
-
-        buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
-        indestructibleMaterials = materialSetManager
-                .getMaterialSetEmpty("indestructible");
-        restrictedMaterials = materialSetManager
-                .getMaterialSetEmpty("restricted");
-        destructibleMaterials = materialSetManager
-                .getMaterialSetEmpty("destructible");
-        interactibleMaterials = materialSetManager
-                .getMaterialSetEmpty("interactible");
-        containerMaterials = materialSetManager
-                .getMaterialSetEmpty("containers");
-        climbableMaterials = materialSetManager.getMaterialSetEmpty("climbable");
-        undoableMaterials = materialSetManager.getMaterialSetEmpty("undoable");
-        wearableMaterials = materialSetManager.getMaterialSetEmpty("wearable");
-        meleeMaterials = materialSetManager.getMaterialSetEmpty("melee");
-        com.elmakers.mine.bukkit.block.UndoList.attachables = materialSetManager
-                .getMaterialSetEmpty("attachable");
-        com.elmakers.mine.bukkit.block.UndoList.attachablesWall = materialSetManager
-                .getMaterialSetEmpty("attachable_wall");
-        com.elmakers.mine.bukkit.block.UndoList.attachablesDouble = materialSetManager
-                .getMaterialSetEmpty("attachable_double");
+    public boolean isOffhandMaterial(ItemStack itemStack) {
+        return (!CompatibilityUtils.isEmpty(itemStack) && offhandMaterials.testItem(itemStack));
     }
 
     public boolean hasAddedExamples() {
@@ -7594,6 +7563,44 @@ public class MagicController implements MageController {
     private @Nonnull MaterialSet                meleeMaterials                  = MaterialSets.empty();
     private @Nonnull MaterialSet                climbableMaterials              = MaterialSets.empty();
     private @Nonnull MaterialSet                undoableMaterials               = MaterialSets.wildcard();
+
+    protected void loadMaterials(ConfigurationSection materialNode) {
+        if (materialNode == null)
+            return;
+
+        materialSetManager.loadMaterials(materialNode);
+        DefaultMaterials defaultMaterials = DefaultMaterials.getInstance();
+        defaultMaterials.initialize(materialSetManager);
+        defaultMaterials.loadColors(materialColors);
+        defaultMaterials.loadVariants(materialVariants);
+        defaultMaterials.loadBlockItems(blockItems);
+        defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
+        defaultMaterials.setPlayerSkullWallBlock(skullWallBlocks.get(EntityType.PLAYER));
+        defaultMaterials.setSkeletonSkullItem(skullItems.get(EntityType.SKELETON));
+
+        buildingMaterials = materialSetManager.getMaterialSetEmpty("building");
+        indestructibleMaterials = materialSetManager
+                .getMaterialSetEmpty("indestructible");
+        restrictedMaterials = materialSetManager
+                .getMaterialSetEmpty("restricted");
+        destructibleMaterials = materialSetManager
+                .getMaterialSetEmpty("destructible");
+        interactibleMaterials = materialSetManager
+                .getMaterialSetEmpty("interactible");
+        containerMaterials = materialSetManager
+                .getMaterialSetEmpty("containers");
+        climbableMaterials = materialSetManager.getMaterialSetEmpty("climbable");
+        undoableMaterials = materialSetManager.getMaterialSetEmpty("undoable");
+        wearableMaterials = materialSetManager.getMaterialSetEmpty("wearable");
+        meleeMaterials = materialSetManager.getMaterialSetEmpty("melee");
+        offhandMaterials = materialSetManager.getMaterialSetEmpty("offhand");
+        com.elmakers.mine.bukkit.block.UndoList.attachables = materialSetManager
+                .getMaterialSetEmpty("attachable");
+        com.elmakers.mine.bukkit.block.UndoList.attachablesWall = materialSetManager
+                .getMaterialSetEmpty("attachable_wall");
+        com.elmakers.mine.bukkit.block.UndoList.attachablesDouble = materialSetManager
+                .getMaterialSetEmpty("attachable_double");
+    }
 
     private boolean                             backupInventories               = true;
     private int                                    undoTimeWindow                    = 6000;
