@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 8.5
+
+# 8.4.1
+
 # 8.4
 
 ## Kits
@@ -87,8 +91,6 @@
  - Add `consume` trigger, fires when eating an item
  - Add `foxhelmet` item (from Night, thank you!) Not currently craftable, WIP
  - Items with custom model data can be given with a shorthand, e.g. `feather{18001}`
-
-# 8.3.4
 
 # 8.3.3
 
