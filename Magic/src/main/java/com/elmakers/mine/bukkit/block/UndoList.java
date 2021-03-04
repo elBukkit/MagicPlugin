@@ -209,22 +209,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean clearAttachables(Block block, BlockFace direction, @Nonnull MaterialSet materials)
     {
         Block testBlock = block.getRelative(direction);
-        long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
-
-        if (!materials.testBlock(testBlock))
-        {
-            return false;
-        }
-
-        // Don't clear it if we've already modified it
-        if (blockIdMap != null && blockIdMap.containsKey(blockId))
-        {
+        if (!materials.testBlock(testBlock)) {
             return false;
         }
 
         add(testBlock);
         MaterialAndData.clearItems(testBlock.getState());
         DeprecatedUtils.setTypeAndData(testBlock, Material.AIR, (byte)0, false);
+        if (direction == BlockFace.DOWN || direction == BlockFace.UP) {
+            clearAttachables(testBlock, direction, materials);
+        }
 
         return true;
     }
