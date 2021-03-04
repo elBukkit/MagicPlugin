@@ -459,7 +459,6 @@ public interface MageController {
 
     /**
      * Will not return hidden mobs
-     * @return
      */
     Set<String> getMobKeys();
     Set<String> getMobKeys(boolean includeHidden);
