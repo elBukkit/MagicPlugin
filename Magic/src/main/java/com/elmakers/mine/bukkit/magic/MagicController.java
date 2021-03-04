@@ -1547,7 +1547,7 @@ public class MagicController implements MageController {
         }
 
         if (!(sender instanceof ConsoleCommandSender)) {
-            getLogger().info("Finished reloading configuration");
+            getLogger().info("Finished loading configuration");
         }
         if (sender != null && logger.isCapturing() && isLoaded()) {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, new ValidateSpellsTask(this, sender));
