@@ -12,3 +12,6 @@ riot_police:
 
 soldier:
   type: pig_zombie
+
+mutant_villager:
+  type: pig_zombie
