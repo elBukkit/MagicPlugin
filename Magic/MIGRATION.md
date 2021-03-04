@@ -7,6 +7,7 @@
    has been using that. I'm hoping this API change doens't break anyone, I really try not to ever change the API.
  - Removed the destructible2 and destructible3 lists, most spells break all solid blocks by default.
    The original destructible list can be found in git if you want it back
+ - The message key $damage should be replaced by @damage_dealt (only used in magic missile in survival configs)
 
 # 8.3
 
