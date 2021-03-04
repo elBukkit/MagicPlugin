@@ -105,8 +105,14 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
             }
         }
+
+        String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
         if (players.isEmpty()) {
             if (!(sender instanceof Player)) {
+                if (subCommand.equalsIgnoreCase("debug")) {
+                    onMageDebug(sender, sender, args2);
+                    return true;
+                }
                 if (playerName == null) {
                     sender.sendMessage("Must specify a player name");
                 } else {
@@ -117,7 +123,6 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             players.add((Player)sender);
         }
 
-        String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
         boolean handled = false;
         for (Player player : players) {
             if (subCommand.equalsIgnoreCase("check"))
@@ -529,7 +534,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         return true;
     }
 
-    public boolean onMageDebug(CommandSender sender, Player player, String[] args)
+    public boolean onMageDebug(CommandSender sender, CommandSender player, String[] args)
     {
         Mage mage = controller.getMage(player);
         if (args.length > 0) {
@@ -541,18 +546,18 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 } else {
                     mage.setDebugger(null);
                 }
-                sender.sendMessage(ChatColor.GOLD + "Setting debug level for  " + ChatColor.AQUA + player.getDisplayName() + ChatColor.GOLD + " to " + ChatColor.GREEN + Integer.toString(level));
+                sender.sendMessage(ChatColor.GOLD + "Setting debug level for  " + ChatColor.AQUA + player.getName() + ChatColor.GOLD + " to " + ChatColor.GREEN + Integer.toString(level));
             } catch (Exception ex) {
                 sender.sendMessage("Expecting integer, got: " + args[0]);
             }
             return true;
         }
         if (mage.getDebugLevel() > 0) {
-            sender.sendMessage(ChatColor.GOLD + "Disabling debug for " + ChatColor.AQUA + player.getDisplayName());
+            sender.sendMessage(ChatColor.GOLD + "Disabling debug for " + ChatColor.AQUA + player.getName());
             mage.setDebugLevel(0);
             mage.setDebugger(null);
         } else {
-            sender.sendMessage(ChatColor.AQUA + "Enabling debug for " + ChatColor.AQUA + player.getDisplayName());
+            sender.sendMessage(ChatColor.AQUA + "Enabling debug for " + ChatColor.AQUA + player.getName());
             mage.setDebugLevel(1);
             mage.setDebugger(sender);
         }
