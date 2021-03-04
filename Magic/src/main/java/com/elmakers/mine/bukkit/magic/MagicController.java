@@ -2572,7 +2572,10 @@ public class MagicController implements MageController {
             logger.setContext("spells." + key);
 
             ConfigurationSection spellNode = spellConfigs.getConfigurationSection(key);
-            spellNode = MagicConfiguration.getKeyed(this, spellNode, "spell", key);
+            if (!(spellNode instanceof MagicConfiguration)) {
+                spellNode = MagicConfiguration.getKeyed(this, spellNode, "spell", key);
+                spellConfigs.set(key, spellNode);
+            }
             Spell newSpell = null;
             try {
                 newSpell = loadSpell(key, spellNode, this);
