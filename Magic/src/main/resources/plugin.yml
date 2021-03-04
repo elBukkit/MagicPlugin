@@ -36,9 +36,9 @@ softdepend:
   - DeadSouls
   - ajParkour
   - WildStacker
+  - SilkSpawners
 loadbefore:
   - Scavenger
-  - SilkSpawners
   - Quests
   - Heroes
   - MobArena

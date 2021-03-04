@@ -35,6 +35,7 @@ import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
@@ -57,6 +58,7 @@ public class BlockController implements Listener, ChunkLoadListener {
     private boolean undoOnWorldSave = false;
     private int creativeBreakFrequency = 0;
     private boolean dropOriginalBlock = true;
+    private boolean applySpawnerData = true;
 
     // This is used only for the BlockBurn event, in other cases we get a source block to check.
     static final List<BlockFace> blockBurnDirections = Arrays.asList(
@@ -73,6 +75,13 @@ public class BlockController implements Listener, ChunkLoadListener {
         undoOnWorldSave = properties.getBoolean("undo_on_world_save", false);
         creativeBreakFrequency = properties.getInt("prevent_creative_breaking", 0);
         dropOriginalBlock = properties.getBoolean("drop_original_block", true);
+        applySpawnerData = properties.getBoolean("apply_spawner_data", true);
+
+        final PluginManager pluginManager = controller.getPlugin().getServer().getPluginManager();
+        if (pluginManager.isPluginEnabled("SilkSpawners")) {
+            applySpawnerData = false;
+            controller.getLogger().info("SilkSpawners detected, forcing apply_spawner_data to false");
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -181,7 +190,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                     CompatibilityUtils.setWaterlogged(block, false);
                 }
             }
-            if (DefaultMaterials.isMobSpawner(block.getType()) && event.getItemInHand() != null && DefaultMaterials.isMobSpawner(event.getItemInHand().getType()) && player.hasPermission("Magic.spawners")) {
+            if (applySpawnerData && DefaultMaterials.isMobSpawner(block.getType()) && event.getItemInHand() != null && DefaultMaterials.isMobSpawner(event.getItemInHand().getType()) && player.hasPermission("Magic.spawners")) {
                 CompatibilityUtils.applyItemData(event.getItemInHand(), block);
             }
         }

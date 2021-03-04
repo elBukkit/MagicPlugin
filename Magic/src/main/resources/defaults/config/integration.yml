@@ -132,6 +132,11 @@ placeholder_api_enabled: true
 # Enable the Light action using Light API
 light_api_enabled: true
 
+# Set spawner data from spawner item in hand when placing
+# This requires the Magic.spawners permission, which only ops have by default
+# Turn this off if having issues with placing spawners. This is forced off if SilkSpawners is detected
+apply_spawner_data: true
+
 # MobArena integration
 mobarena:
   # Use this to disable all MobArena integration
