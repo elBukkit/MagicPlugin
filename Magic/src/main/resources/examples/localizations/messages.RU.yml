@@ -196,16 +196,15 @@ commands:
       wait: '&bПодождите, создаю новую сессию...'
       server_error: '&cЧто-то пошло не так: &e$message'
       new_session: |-
-         &3Открой эту ссылку: &f$url
-         &3 в своем браузере, чтобы начать редактировать
+        &3Открой эту ссылку: &f$url
+        &3 в своем браузере, чтобы начать редактировать
       new_item: '&3Сюздаю &2$type.&b$item'
       edit_item: '&3Редактирую &2$type.&b$item'
   modifier:
     usage: 'Использование: /mage modifier <add|remove> <модификатор> [длительность]'
     add:
       success: Добавлен модификатор &3$name &fдля игрока &6$player
-      success_duration: |-
-        Добавлен модификатор &3$name &fдля игрока &6$player &fна $duration
+      success_duration: Добавлен модификатор &3$name &fдля игрока &6$player &fна $duration
       fail: |-
         &cНевозможно добавить модификатор &3$name
         &f для игрока &6$player, так как он уже его имеет
@@ -348,9 +347,9 @@ item:
   skull: Твоя книга превратилась в голову
   skull_no_book: Ты должен держать книгу с записанной в ней информацией
   skull_invalid_book: |-
-     В этой книге нет информации о текстуре!
-     Вставь в нее текст из 'Textures.Value',
-      это длинная строка символов заканчивающаяся на ==
+    В этой книге нет информации о текстуре!
+    Вставь в нее текст из 'Textures.Value',
+     это длинная строка символов заканчивающаяся на ==
 logs:
   notify_errors: |-
     &7[Magic] &bОбнаружено:
@@ -370,7 +369,7 @@ logs:
               &bПроверь логи!
   notify_instructions: |-
     &7        Убери перм &fMagic.notify
-    &7         чтобы не видеть эти сообщения'
+    &7         чтобы не видеть эти сообщения
 mage:
   removed_property: Убрано свойство $name
   no_property: Игрок не имеет свойства $name
@@ -407,7 +406,7 @@ books:
   all:
     title: Книга Заклинаний Мастера
   spell:
-    title: $spell Spell Book
+    title: Информация - $spell
   learnspell:
     name: '&eArcane Spellbook &7(&6$spell&7)'
     description: Right-click to read about the spell, left-click to learn it
@@ -484,7 +483,7 @@ requirements:
   property_min: '&r&cУровень &6$property &cдолжен быть выше $4$value'
   no_wand: '&cТы должен держать в руке палочку!'
   no_template: '&cДля палочки $wand нет заклинаний.'
-  no_modifier: '&cYou must have &6$modifier &cto do that.'
+  no_modifier: '&cТебе нужно иметь модификатор &6$modifier &cдля этого.'
   no_region: '&cТебе не разрешено делать это здесь.'
   no_path: '&cТебе здесь нечего изучать.'
   no_class: '&cТвой класс должен быть $class'
@@ -492,7 +491,7 @@ requirements:
   no_path_exact: '&cТы должен быть на уровне $path!'
   no_path_end: '&cТы должен изучить все заклинания ранга $path!'
   no_weather: Неподходящая погода
-  no_client_platform: You're not on the right platform for that
+  no_client_platform: Ты не на правильной версии!
   light: Уровень освещенности
   time: Время
   height: Высота
@@ -500,7 +499,7 @@ requirements:
   no_cast: '&cТы должен сначала использовать заклинание $spell'
 shops:
   no_wand: '&cТы должен держать палочку в руке!'
-  no_template: '&cН.'
+  no_template: '&cНельзя применить это к $wand.'
   no_path: '&cТебе нечего изучать здесь.'
   no_class: '&cТвой класс должен быть $class'
   no_required_path: '&cТвой ранг должен быть выше $path&r!'
@@ -1122,8 +1121,8 @@ spells:
     upgrade_description: Толкает с большей силой
   push|4:
     upgrade_description: |-
-     Наведи прицел вниз и нажми ЛКМ,
-      чтобы применить альтернативную способность
+      Наведи прицел вниз и нажми ЛКМ,
+       чтобы применить альтернативную способность
   farm:
     name: Ферма
     description: Призывает животных
@@ -1402,7 +1401,7 @@ spells:
     cast_friend: Перемещение к $name
     no_target_death: Нету точки смерти
     no_target_wand: Нету потерянных палочек
-    no_target_soul: No recorded lost souls
+    no_target_soul: Потерянная душа не найдена
     no_target_home: Нету доступных точек дома
     no_target_warp: Неправильный варп $name
     no_target_marker: Нет установленных маркеров
@@ -1410,8 +1409,8 @@ spells:
     no_target_town: Ты не находишься в городе
     no_target_regions: У тебя нет друзей
     no_target_friend: Невозможно телепортироваться к $name
-    title_move_marker: Переместить маркер
-    description_move_marker: Перемещает маркер
+    title_move_marker: "Переместить маркер #$number"
+    description_move_marker: Перемещает маркер к тебе
     title_marker: 'Маркер #$number'
     description_marker: Наведи курсор вниз, чтобы переместить маркер
     title_death: Последняя смерть
@@ -1422,7 +1421,7 @@ spells:
     description_spawn: Текущая точка спавна
     title_home: Дом
     description_home: Место, где ты последний раз спал
-    title_wand: Потеряная палочка
+    title_wand: Потерянная палочка
     description_wand: Твоя палочка, лежащая на земле
     title_town: Город
     description_town: Центр города
@@ -1437,12 +1436,9 @@ spells:
     unlock_warp: '&bТы разблокировал &5$name &bкак &6Направление &bдля Телепортации!'
     add_friend: '&bТы добавил друга &5$name &bкак &6Направление &bдля Телепортации!'
     remove_friend: '&cТы удалил &5$name &cкак &4Направление &cдля Телепортации!'
-    invalid_description: |-
-      &cНеправильная локация
-    unavailable_description: |-
-      &eДоступно при повышении уровня
-    unavailable_warp_description: |-
-      &eНайди это место, чтобы разблокировать!
+    invalid_description: '&cНеправильная локация'
+    unavailable_description: '&eДоступно при повышении уровня'
+    unavailable_warp_description: '&eНайди это место, чтобы разблокировать!'
     unavailable_name: '&c$name'
   recall|2:
     upgrade_description: Разблокирована точка последней смерти
@@ -1711,6 +1707,7 @@ spells:
   tracking|4:
     upgrade_description: Шифт+ЛКМ, чтобы искать только игроков
   tracking|5:
+    cast: Найдено $count мобов
     upgrade_description: |-
       Наведи прицел вниз и используй заклинание,
       чтобы подсветить всех мобов в радиусе 16 блоков
@@ -2027,7 +2024,9 @@ spells:
       Эта защита действует только тогда, когда ты держишь свою палочку.
   add_damage:
     name: Увеличить урон
-    description: Увеличивает урон, наносимый при ударе при помощью оружия (а не заклинания).
+    description: |-
+      Увеличивает урон, наносимый при ударе при помощью оружия
+       (а не заклинания).
   add_sharpness:
     name: Заострить меч
     description: Добавляет зачарование Острота к твоему мечу.
@@ -2083,8 +2082,8 @@ spells:
     currency_prefix: '&7&l'
     value_prefix: '&0'
   kamikaze:
-    name: Kamikaze
-    description: Spawn a mob that explodes on death
+    name: Камикадзе
+    description: Призывает моба, который взрывается после смерти
   decoy:
     name: Обманка
     description: Создает фальшивого двойника
@@ -2144,6 +2143,9 @@ spells:
     description: Наносит урон, зависящий от количества отсутствующей маны у цели
     usage: Наносит постоянный урон мобам
     upgrade_description: Увеличен максимальный урон, уменьшена перезарядка
+  dailykit:
+    name: Daily Kit
+    description: Gives some items once a day
   wolfhouse:
     name: База
     description: Создает самостроющуюся базу
@@ -2396,7 +2398,7 @@ spells:
   floodfill:
     name: Заполнить водой
     description: Заполняет водой
-    cast_finish: "Заполнено @blocks блоков, используя $material"
+    cast_finish: Заполнено @blocks блоков, используя $material
   absorb:
     name: Поглощение
     description: Поглощает материал
@@ -2441,7 +2443,10 @@ spells:
     cast: Выкопано @blocks блоков
   toggleair:
     name: Изменить модификатор
-    description: "Изменяет поведение некоторых заклинаний (Заполнить, СуперСфера и т.д), выбирая какой тип блоков они могут изменить"
+    description: |-
+      Изменяет поведение некоторых заклинаний:
+       Заполнить, СуперСфера и т.д,
+       выбирая какой тип блоков они могут изменить
     ignoreair: '&fВоздух &cтеперь не будет изменяться &bзаклинаниями строительства'
     onlyair: '&fТолько воздух &aтеперь будет изменяться &bзаклинаниями строительства'
     normal: '&fВсе типы блоков &aтеперь будут изменяться &bзаклинаниями строительства'
@@ -2778,7 +2783,7 @@ wand:
   wand_instructions_header: |-
     &8 ----------------------------------------------------
     &8|
-    &8|   &b&lКАК ИСПОЛЬЗОВАТЬ ПАЛОЧКУ
+    &8|   &b&lИНФОРМИАЦИЯ
     &8|
   wand_instructions_footer: |-
     &8|
@@ -2870,10 +2875,14 @@ wands:
     name: Палочка подмастерья
     description: Для демонстрационных целей
   rage:
-    name: Rage Sword
-    description: Gathers energy when hitting an enemy
-    spell_instructions: '&r&bUse the hotbar buttons to cast spells. Spells require mana, shown in the XP bar.'
-    inventory_instructions: '&r&bUse the drop (Q) button to open/close the spell inventory.'
+    name: Меч Ярости
+    description: Получает энергию во время удара по врагу
+    spell_instructions: |-
+      &8| &7> &fИспользуй &6цифры на клавиатуре&f, чтобы применить заклинание
+      &8| &7> &fЗаклинания требуют &6ману
+      &8| &7> &fОна отображается над хотбаром в виде &5полосы опыта
+    inventory_instructions: |-
+      &8| &7> &fНажми &6$toggle, &fчтобы открыть/закрыть &eинвентарь заклинаний
   base_sword:
     wand_instructions_header: |-
       &8 ----------------------------------------------------
@@ -2890,7 +2899,7 @@ wands:
     wand_instructions_header: |-
       &8 ----------------------------------------------------
       &8|
-      &8|   &b&lКАК ПОЛЬЗОВАТЬСЯ ЛУКОМ
+      &8|   &b&lИНФОРМИАЦИЯ
       &8|
     spell_instructions: |-
       &8| &7> &6Выпусти стрелу&f, чтобы применить заклинание &d$spell
@@ -2917,21 +2926,21 @@ wands:
     wand_instructions_header: |-
       &8 ----------------------------------------------------
       &8|
-      &8|   &b&lКАК ПОЛЬЗОВАТЬСЯ МЕТЛОЙ
+      &8|   &b&lИНФОРМИАЦИЯ
       &8|
     spell_instructions: |-
       &8| &7> &fИспользуй метлу, чтобы быстро перемещаться!
       &8| &7> &fПикируй вниз, чтобы набрать скорость. Не летай слишком долго!
       &8| &7> &fТвои способности летать на &6метле &fможно улучшить. Практикуйся!
     bound_instructions: |-
-      &8| &7> &fТвоя &a$wand &9привязана &fк тебе
+      &8| &7> &a$wand &9привязан(а) &fк тебе
   spellbook:
     name: Книга заклинаний
     description: Книга заклинаний ранга $path
     wand_instructions_header: |-
       &8 ----------------------------------------------------
       &8|
-      &8|   &b&lКАК ПОЛЬЗОВАТЬСЯ КНИГОЙ ЗАКЛИНАНИЙ
+      &8|   &b&lИНФОРМИАЦИЯ
       &8|
     spell_instructions: |-
       &8| &7> &fИспользуй &6цифры на клавиатуре&f, чтобы применить
@@ -3341,6 +3350,8 @@ wands:
     - '&3Чтобы обновить название магазина и'
     - '&3Телепортировать продавца к тебе'
     - '&8Используй наковальню для изменения названия'
+  foxhelmet:
+    name: Шапка из Лисы
   wolf:
     name: Волк
     description: Посох/палочка NathanWolf
@@ -3578,6 +3589,9 @@ kits:
       &6Поздравляю!
       &3Ты уже неделю играешь на нашем сервере.
       &aДержи за это &3Талисман Маны!
+  daily:
+    name: Ежедневный набор
+    give: Следующий набор будет доступен через сутки!
 mobs:
   archer:
     name: Лучник
@@ -3689,6 +3703,8 @@ mobs:
     name: Оборотень
   ghost:
     name: Призрак
+  dailykit:
+    name: Ежедневный Бонус!
 modifiers:
   antiknockback:
     name: Анти-отбрасывание
@@ -3708,7 +3724,7 @@ paths:
     description: Могучий заклинатель
     required_spell: |-
       &cСейчас нечего больше изучать!
-      &4Кто знает, какие тайны ждут тебя впереди?'
+      &4Кто знает, какие тайны ждут тебя впереди?
   battle:
     name: Рекрут
     description: Слабые боевые заклинания
@@ -3739,7 +3755,9 @@ paths:
   architect:
     name: Архитектор
     description: Бесконечное могущество
-    required_spell: '&b$path &d&ois next... but how?'
+    required_spell: |-
+      &d&oCледующий ранг - &b$path&d&o...
+      &d&oНо как его получить?'
   conduit:
     name: Магистр
     description: Создает материю из чистой энергии
