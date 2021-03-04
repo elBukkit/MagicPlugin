@@ -214,13 +214,23 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 materialKey += json.substring(jsonEnd + 1);
                 json = json.substring(0, jsonEnd + 1);
             }
-            try {
-                JsonReader reader = new JsonReader(new StringReader(json));
-                reader.setLenient(true);
-                tags = getGson().fromJson(reader, Map.class);
-                InventoryUtils.convertIntegers(tags);
-            } catch (Throwable ex) {
-                Bukkit.getLogger().warning("[Magic] Error parsing item json: " + json + " : " + ex.getMessage());
+            if (!json.contains(":")) {
+                try {
+                    int customData = Integer.parseInt(json.substring(1, json.length() - 1));
+                    tags = new HashMap<>();
+                    tags.put("CustomModelData", customData);
+                } catch (Exception ex) {
+                    Bukkit.getLogger().warning("[Magic] Error parsing item custom model data: " + json + " : " + ex.getMessage());
+                }
+            } else {
+                try {
+                    JsonReader reader = new JsonReader(new StringReader(json));
+                    reader.setLenient(true);
+                    tags = getGson().fromJson(reader, Map.class);
+                    InventoryUtils.convertIntegers(tags);
+                } catch (Throwable ex) {
+                    Bukkit.getLogger().warning("[Magic] Error parsing item json: " + json + " : " + ex.getMessage());
+                }
             }
         }
         String[] pieces = splitMaterialKey(materialKey);

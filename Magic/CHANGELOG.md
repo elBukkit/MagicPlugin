@@ -86,6 +86,7 @@
  - Add `CheckLore` action
  - Add `consume` trigger, fires when eating an item
  - Add `foxhelmet` item (from Night, thank you!) Not currently craftable, WIP
+ - Items with custom model data can be given with a shorthand, e.g. `feather{18001}`
 
 # 8.3.4
 
