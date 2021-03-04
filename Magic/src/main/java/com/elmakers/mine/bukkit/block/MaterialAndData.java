@@ -209,6 +209,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             String fullKey = materialKey;
             materialKey = fullKey.substring(0, jsonStart);
             String json = fullKey.substring(jsonStart);
+            int jsonEnd = json.lastIndexOf('}');
+            if (jsonEnd != json.length() - 1) {
+                materialKey += json.substring(jsonEnd + 1);
+                json = json.substring(0, jsonEnd + 1);
+            }
             try {
                 JsonReader reader = new JsonReader(new StringReader(json));
                 reader.setLenient(true);
