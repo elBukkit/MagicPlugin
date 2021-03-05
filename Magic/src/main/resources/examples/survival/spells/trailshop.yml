@@ -1,0 +1,33 @@
+trailshop:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      -  class: Selector
+  parameters:
+    confirm: true
+    auto_close: true
+    placeholder_icon: gray
+    confirm_filler: gray
+    unlock_section: trails
+    lock_classes:
+      - butterfly
+      - crown
+      - tail
+    options:
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
+    - unlock_class: butterfly
+      unlock: butterfly
+      cost: 1000
+    - unlock_class: crown
+      unlock: crown
+      cost: 1000
+    - unlock_class: tail
+      unlock: tail
+      cost: 1000
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true

@@ -18,6 +18,7 @@ crown:
      orient_pitch: false
      update_directions: false
      update_locations: true
+     disappear_with_origin_entity: true
  - location: origin
    source_location: head
    relative_offset: 0,0.4,0
@@ -37,3 +38,4 @@ crown:
      orient_pitch: false
      update_directions: false
      update_locations: true
+     disappear_with_origin_entity: true

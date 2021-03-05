@@ -1139,6 +1139,12 @@ spells:
     wandinstructions:
         name: Wand Instructions
         description: Show wand usage and progression information
+    trailshop:
+        name: Trails
+        description: Make yoruself look fancy
+        title: "Trails ($balance&0)"
+        selected: "You changed to $item"
+        not_applicable: "You already have $item"
     appearanceshop:
         name: Wand Appearances
         description: Change the look of your wand

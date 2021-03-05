@@ -1,0 +1,20 @@
+butterfly:
+  icon: feather
+  passive: true
+  triggers:
+    join:
+      effects: butterfly
+
+crown:
+  icon: gold_nugget
+  passive: true
+  triggers:
+    join:
+      effects: crown
+
+tail:
+  icon: leash
+  passive: true
+  triggers:
+    join:
+      effects: tail

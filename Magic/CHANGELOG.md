@@ -9,6 +9,7 @@
 ## Additions
 
  - Added builtin Japanese translation (JP) (Thank you, LazyGon!)
+ - Added trailshop example, for players to unlock trail effects
 
 # 8.4.1
 

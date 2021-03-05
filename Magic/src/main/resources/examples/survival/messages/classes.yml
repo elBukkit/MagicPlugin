@@ -11,3 +11,13 @@ classes:
   archer_mage:
     name: "Archer Mage"
     description: "Skilled with magic bows"
+
+  butterfly:
+    name: Butterfly Wings
+    description: It gives you wiiiiiiiings
+  tail:
+    name: Demon Tail
+    description: So pointy!
+  crown:
+    name: Crown
+    description: You'll always be royal

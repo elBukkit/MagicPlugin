@@ -18,6 +18,7 @@ tail:
      update_locations: true
      orient_pitch: false
      orient: true
+     disappear_with_origin_entity: true
  - location: origin
    source_location: body
    relative_offset: -1.6,0.2,0
@@ -36,3 +37,4 @@ tail:
      update_locations: true
      orient_pitch: false
      orient: true
+     disappear_with_origin_entity: true
