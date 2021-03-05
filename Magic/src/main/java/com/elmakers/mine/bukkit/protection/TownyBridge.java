@@ -101,8 +101,17 @@ public class TownyBridge
 
     public boolean canTarget(Entity entity, Entity target) {
         if (target != null && entity != null) {
-            // TODO: Handle non-entity casts (automata...)?
-            return !CombatUtil.preventDamageCall(towny, entity, target);
+            TownBlock defenderTB = TownyAPI.getInstance().getTownBlock(target.getLocation());
+            TownBlock attackerTB = TownyAPI.getInstance().getTownBlock(entity.getLocation());
+            TownyWorld townyWorld = null;
+            try {
+                townyWorld = TownyAPI.getInstance().getDataSource().getWorld(target.getWorld().getName());
+            } catch (NotRegisteredException ignored) {
+            }
+            if (townyWorld == null) {
+                return true;
+            }
+            return !CombatUtil.preventPvP(townyWorld, attackerTB) || CombatUtil.preventPvP(townyWorld, defenderTB);
         }
 
         return true;
