@@ -412,6 +412,10 @@
             </snapshots>
         </repository>
         <repository>
+            <id>Central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
             <id>dynmap</id>
             <url>http://repo.mikeprimm.com/</url>
         </repository>
