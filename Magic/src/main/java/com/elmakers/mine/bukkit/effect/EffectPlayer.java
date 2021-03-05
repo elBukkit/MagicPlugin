@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.effect;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -790,10 +791,14 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Override
     public void cancel() {
         if (currentEffects != null) {
-            for (EffectPlay effect : currentEffects) {
-                effect.cancel();
+            Iterator<EffectPlay> iterator = currentEffects.iterator();
+            while (iterator.hasNext()) {
+                EffectPlay play = iterator.next();
+                if (play.isPlayer(this)) {
+                    play.cancel();
+                    iterator.remove();
+                }
             }
-            currentEffects.clear();
         }
     }
 
@@ -808,6 +813,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             EffectLibPlay play = effectLib.play(effectLibConfig, this, source, target, parameterMap, logContext);
             if (currentEffects != null && play != null)
             {
+                play.setPlayer(this);
                 currentEffects.add(play);
             }
         }

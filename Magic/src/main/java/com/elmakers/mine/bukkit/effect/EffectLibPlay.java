@@ -8,6 +8,7 @@ import de.slikey.effectlib.Effect;
 
 public class EffectLibPlay implements EffectPlay {
     private final Effect effect;
+    private EffectPlayer player;
 
     public EffectLibPlay(Effect effect) {
         this.effect = effect;
@@ -20,5 +21,14 @@ public class EffectLibPlay implements EffectPlay {
         } catch (Exception ex) {
             org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error cancelling EffectLib effect", ex);
         }
+    }
+
+    @Override
+    public boolean isPlayer(com.elmakers.mine.bukkit.api.effect.EffectPlayer player) {
+        return player == this.player;
+    }
+
+    public void setPlayer(EffectPlayer player) {
+        this.player = player;
     }
 }
