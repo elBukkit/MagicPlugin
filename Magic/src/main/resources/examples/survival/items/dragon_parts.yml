@@ -29,9 +29,9 @@ dragonbodygrey:
 dragonbodyblack:
   item: leather_horse_armor{18001}
   color:
-    red: 71
-    blue: 82
-    green: 79
+    red: 29
+    blue: 33
+    green: 29
 
 dragonbodygreen:
   item: leather_horse_armor{18001}
