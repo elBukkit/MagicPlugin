@@ -64,7 +64,6 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
         }
         takeItems();
         cancelTrigger("unlock");
-        cancelTrigger("join");
         trigger("lock");
     }
 

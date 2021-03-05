@@ -4902,6 +4902,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return entityData.trigger(this, trigger);
         }
 
+        // Class and modifier common triggers
+        for (MageClass mageClass : classes.values()) {
+            if ((mageClass.isPassive() || mageClass == activeClass) && !mageClass.isLocked()) {
+                mageClass.trigger(trigger);
+            }
+        }
+        for (MageModifier mageModifier : modifiers.values()) {
+            mageModifier.trigger(trigger);
+        }
+
         List<TriggeredSpell> spells = triggers.get(trigger.toLowerCase());
         if (spells == null || spells.isEmpty()) {
             return false;

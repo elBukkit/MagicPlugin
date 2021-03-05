@@ -79,6 +79,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
 
     public void activate() {
         activateAttributes();
+        trigger("join");
     }
 
     protected void activateAttributes() {
@@ -128,6 +129,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
 
     public void deactivate() {
         deactivateAttributes();
+        cancelTrigger("join");
     }
 
     protected void deactivateAttributes() {
