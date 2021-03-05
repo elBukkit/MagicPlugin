@@ -1,0 +1,2955 @@
+#
+# This is the localization file for the Magic plugin.
+#
+# All in-game text can be controlled from this file.
+#
+# You can also add individual files to the messages/ folder
+#
+# The default will always be loaded first, so the English messages will be used for any
+# keys you do not provide in this file.
+#
+# To see the current default builtin configs, look in this folder:
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/messages
+#
+# For customization help see:
+# https://github.com/elBukkit/MagicPlugin/wiki/Customization
+#
+
+#
+# Examples:
+# Note that a "#" character means the line is commented out and has no effect.
+# Make sure to not comment out the lines you add, there should not be a space in front of the name, indentation is important.
+# Use http://www.yamllint.com if you have issues with your config, make sure not to use tabs!
+#
+
+# Change name of Spell Points
+# sp:
+#     name: "&e$amount &6Academic Credits"
+# costs:
+#     sp_amount: $amount AC
+#     sp: Academic Credits
+
+# Change name/description of Magic Missile spell
+# spells:
+#   missile:
+#     name: Zap
+#     description: Zap somebody!
+
+attributes:
+  bowpull:
+    name: 弓引き
+    description: プレイヤーが弓をどれだけ引き絞ったかどうか。弓スペルにのみ適応される。
+  health:
+    name: HP
+    description: プレイヤーまたはモブの体力 (ハート x 2)
+  health_max:
+    name: 最大HP
+    description: プレイヤーまたはモブのHPの最大値
+  time:
+    name: 時刻
+    description: Minecraftのワールド時間。Tick (=0.05秒) という単位で 0 から 23999 までの値を取る。
+  moon:
+    name: 月齢
+    description: 0 = 満月, 1 = 十六夜の月, 4 = 新月, 7 = 十三夜の月
+  location_x:
+    name: X座標
+    description: プレイヤーまたはモブのいる地点のX座標 (東西、値が大きいほど東)
+  location_y:
+    name: Y座標
+    description: プレイヤーまたはモブのいる地点のY座標 (高さ)
+  location_z:
+    name: Z座標
+    description: プレイヤーまたはモブのいる地点のZ座標 (南北、値が大きいほど南)
+  level:
+    name: 経験値レベル
+    description: プレイヤーの経験値レベル
+  xp:
+    name: 経験値
+    description: プレイヤーの経験値。レベルを経験値に換算し、それと現在の経験値を足し合わせたもの。
+  mana:
+    name: MP
+    description: プレイヤーの現在の魔力の量
+  mana_max:
+    name: 最大MP
+    description: プレイヤーの魔力の最大値
+commands:
+  no_permission: '&cそのコマンドを使う権限がありません。'
+  in_game: '&cこのコマンドはゲーム内でのみ使用できます。'
+  unknown_command: '&c未知のコマンド: &f$command'
+  mconfig:
+    write_failed: '&c$fileに書き込めませんでした'
+    example:
+      usage: '&c使用法: /mconfig example [$actions]'
+      list:
+        base: '&bベースの設定例: &3$example'
+        header: '&bExamples:'
+        item: '  &f- &3$example'
+      fetch:
+        usage: '&c使用法: /mconfig example fetch <example name> <url>'
+        unknown: |-
+          &c未知の設定例: &e$example, &cその名前の設定例を読み込むためにはまずURLを指定してください。&r
+          &c使用法: /mconfig example fetch <example name> <url>
+        fail: '&c以下のURLの取得できませんでした: &e$url'
+        error: '&c未知のエラーが発生しました。ログを確認してください。'
+        wait: '&bしばらくお待ち下さい、以下のURLからダウンロードしています: &b$url'
+        success: |-
+          &b設定例 &2$example &bをダウンロードしました&f
+          &r現在のconfigにこの設定例を組み合わせる場合は &6/mconfig example add $example&r
+          &rこの設定例をベースにして新しく設定を始める場合は &6/mconfig example set $example&r
+        backup: '&eすでに設定例がダウンロード済みです。&f$backup&3にバックアップ中。'
+        overwrite_backup: '&eすでに設定例がダウンロード済みかつ、バックアップも存在しました。&cバックアップ&f$backup&cを上書きしています。'
+        url_write: '&bいつかこの設定例をアップデートするときは &6/mconfig example fetch $example&r'
+        url_write_failed: '&cURLファイルの書き込み中に未知のエラーが発生しました。ログを確認してください。'
+        url_exists: |-
+          &e設定例に組み込みのURLファイルが含まれています。上書きを行いません。
+          &r&fこれは新版にリダイレクトされているかもしれません。
+          &r&b新版にアップデートを行う場合は &6/mconfig example fetch $example
+      add:
+        usage: '&c使用法: /mconfig example add <example>'
+        duplicate: '&2$examples&cはすでに読み込まれています。'
+        success: '&b設定例 &2$examples を追加しました'
+      remove:
+        usage: '&c使用法: /mconfig example remove <example>'
+        missing: '&2$example&cは読み込まれていません。'
+        all: |-
+          &bベースになっている設定例を含め、すべての設定例を削除しました。
+          &r&bデフォルトのサバイバル設定を削除したくない場合は &6/mconfig example set survival none&b
+          &r&bまたは今のまっさらな設定を適応するには &6/magic load&b
+        success: '&b設定例 &2$example &bを削除しました'
+      set:
+        success: '&b設定例 &2$example を設定しました'
+        multiple: |-
+          &2$example&bをベースの設定例にしました&f
+          &r&bまた、&2$examples&bに追加してある設定例を組み込みました
+        clear_added: |-
+          &2$example&bをベースの設定例にしました&f
+          &r&bその他の追加してある設定例は削除されました
+        clear: |-
+          &bベースの設定例を削除しました。&f
+          &r&b他に削除したい追加済みの設定例がある場合は &f/mconfig example remove all&f
+    disable:
+      usage: '&c使用法: /mconfig disable [$options] [key]'
+      nokey: '&c不正なタイプ: $type, オプション: $options'
+      success: '&3$type.$key&bを無効にしました、保留中の変更を適応するには &f/magic load'
+    enable:
+      usage: '&c使用法: /mconfig enable [$options] [key]'
+      nokey: '&c不正なタイプ: $type, オプション: $options'
+      success: '&3$type.$key&bを有効にしました、保留中の変更を適応するには &f/magic load'
+    configure:
+      usage: '&c使用法: /mconfig configure [$options] [key] [property] [value]'
+      nokey: '&c不正なタイプ: $type, オプション: $options'
+      success: '&3$type.$key&bを変更しました、保留中の変更を適応するには &f/magic load'
+    reset:
+      usage: '&c使用法: /mconfig reset [$options] [key] '
+      nokey: '&c不正なタイプ: $type, オプション: $options'
+      missing: '&f$file&cが存在しなかったのでリセットを中止しました。'
+      nothing: '&f$file&cが存在せず、&f$key&cのキーがカスタマイズファイルに存在しませんでした。'
+      none: '&cリセットするためのカスタマイズが存在しませんでした。'
+      removed: '&bカスタマイズファイルの&3$key&bキーを削除しました。'
+      success: '&3$file&bを削除しました'
+      backup: '&7この変更を戻せるようにバックアップファイルが&f$backupに保存されました。'
+      load_prompt: '&7保留中の変更を適応するには &f/magic load'
+    apply:
+      usage: '&c使用法: /mconfig apply [session id]'
+      wait: '&b設定を読み込んでいます...。'
+      error: '&c未知のエラーが発生しました。ログを確認してください。'
+      error_saving: '&c$fileへの書き込みに失敗しました'
+      overwrote: '&a$file&bが&e上書き&bされました。'
+      created: '&a$file&bが作成されました。'
+      missing: '&c$fieldフィールドがサーバーの応答にありません。'
+      load_prompt: '&7変更を適応するには &f/magic load'
+      invalid: '&cファイルの解析中にエラーが見つかりました。修正してもう一度お試しください。'
+    load:
+      usage: '&c使用法: /mconfig load [session id]'
+      wait: '&b設定を読み込んでいます...。'
+      error: '&c未知のエラーが発生しました。ログを確認してください。'
+      missing: '&c$fieldフィールドがサーバーの応答にありません。'
+      error_saving: '&c$fileへの書き込みに失敗しました'
+      overwrote: '&a$file&bが&e上書き&bされました。'
+      created: '&a$file&bが作成されました。'
+      invalid: '&cファイルの解析中にエラーが見つかりました。修正してもう一度お試しください。'
+    editor:
+      usage: '&c使用法: /mconfig editor [$options]'
+      error: '&c未知のエラーが発生しました。ログを確認してください。'
+      wait: '&bしばらくお待ち下さい、新しいセッションを開始しています...。'
+      server_error: '&c未知のエラーが発生しました: &e$message'
+      new_session: '&3webブラウザで &f$url &3にアクセスしてください。'
+      new_item: '&3新しく&2$type.&b$item&3を作成しました。'
+      edit_item: '&2$type.&b$item&3を編集します。'
+  modifier:
+    usage: '使用法: /mage modifier <add|remove> <modifier> [duration]'
+    add:
+      success: '&3$name修飾子&fを &6$player &fへ与えました。'
+      success_duration: '&3$name修飾子&fを&6$player&fに$duration間与えました。'
+      fail: '&cすでに持っているため、&3$name修飾子&cを&6$player&cに与えることができませんでした。'
+      invalid: '&c不正な期間: &4$input'
+    remove:
+      success: '&3$name修飾子&fを&6$player&fから削除しました。'
+      fail: '&c持っていないため、&3$name修飾子&cを&6$player&cから削除できませんでした。'
+  getrp:
+    auto: ログイン時にリソースパックが自動で適応されるようになりました。
+    manual: リソースパックの適応設定が手動になりました。ログイン時に適応されるかどうかを尋ねられます。
+    turnoff: |-
+      リソースパックは自動的に適応されず、適応されるか尋ねられることもなくなりました。
+      &rリソースパックを入手するには &6/getrp&f
+      &rURLを指定してリソースパックを入手するには &6/getrp url&f
+    sending: |-
+      自動的にリソースパックを入手するには &6/getrp auto&f
+      &rあるいは &6/getrp off&f でログイン時に尋ねられることがなくなります。
+    preference: |-
+      リソースパックの設定が&3$pack&rに変更されました&f
+      &6/getrp default&f でリソースパックを変更できます。
+    noauto: '&fこのリソースパックをログイン時に自動で適応するには &6/getrp auto&f'
+    default: リソースパック設定がデフォルトになりました。
+    disabled: このサーバーはserver.propertiesでリソースパックが指定してあるため、このコマンドは無効化されています。
+costs:
+  sp_amount: $amountSP
+  xp_amount: $amountXP
+  levels_amount: $amountXPLevel
+  mana_amount: $amountMP
+  mana: 魔力
+  xp: 経験値
+  levels: 経験値レベル
+  sp: スペルポイント
+  sp_short: SP
+  hunger: 満腹度
+  health: HP
+  health_amount: $amountHP
+  hunger_amount: $amount満腹度
+  heroes_mana: $amountMP
+  currency_singular: ￥
+  currency: 円
+  currency_amount: $amount円
+currency:
+  item_name: '&e$amount&6$type'
+  description: 右クリックで預け入れます。
+  limit: a:&6$type&eの限界量は&c$amount&eです。
+  deposited: 'a:&a預け入れました: &2$amount&6$type&a, 現在: &2$balance'
+  earned: a:&6+&e$earned
+sp:
+  name: '&e$amount&6スペルポイント'
+  description: 右クリックでスペルポイントを稼ぎます。
+  limit: a:&6スペルポイント&eの限界量は&c$amount&eです。
+  deposited: 'a:&a預け入れました: &2$amount&6スペルポイント&a, 現在: &2$balance'
+dynmap:
+  spells_markerset: スペルキャスト
+  wands_markerset: 杖
+examples:
+  instructions_header: |-
+    &8 ----------------------------------------------------
+    &8|
+    &8|   &b&l設定例の使い方
+    &8|
+  instructions_footer: |-
+    &8|
+    &8 ----------------------------------------------------
+  survival:
+    instructions: |-
+      &8| &3&nSURVIVAL &r
+      &8|   &f新しいクラフトレシピを確認するか、&6/mgive wand を使いましょう&r
+      &8|   &fOP用のテスト杖を入手するには &6/mgive uberwand&r
+item:
+  duplicated: アイテムが複製されました。
+  destroyed: アイテムが破棄されました。
+  cleaned: アイテムからすべての魔法データが削除されました。
+  no_item: アイテムを手に持ってください。
+  renamed: アイテム名が変更されました。
+  rename_clear: アイテムからカスタム名を削除しました。
+  flag_added: $flagフラグをアイテムに追加しました。
+  flag_removed: $flagフラグをアイテムから削除しました。
+  no_flags: アイテムにはフラグがありません。
+  no_flag: アイテムには$flagフラグがありません。
+  lore_added: '説明文を追加しました: $lore'
+  lore_removed: '説明文を削除しました: $lore'
+  no_lore: アイテムに説明文がありません。
+  not_unbreakable: このアイテムは不可壊ではありません。
+  already_unbreakable: このアイテムはすでに不可壊です。
+  add_unbreakable: このアイテムは不可壊になりました。
+  remove_unbreakable: このアイテムは不可壊ではなくなりました。
+  not_unplaceable: このアイテムは設置可能ではありません。
+  already_unplaceable: このアイテムはすでに設置可能です。
+  add_unplaceable: このアイテムは設置可能になりました。
+  remove_unplaceable: このアイテムは設置可能ではなくなりました。
+  no_enchants: このアイテムはエンチャントが付与されていません。
+  no_enchant: このアイテムは$enchantのエンチャントが付与されていません。
+  enchant_removed: このアイテムから$enchantのエンチャントを削除しました。
+  enchant_added: このアイテムに$enchantのエンチャントを追加しました。
+  enchant_not_added: このアイテムに$enchant は付与されませんでした。
+  enchant_unsafe: 限界を超えたエンチャントを付与する権限がありません。
+  no_attribute: このアイテムには$attribute属性がありません。
+  attribute_removed: このアイテムから$attribute属性を削除しました。
+  attribute_added: $valueの$attribute属性をこのアイテムの$slotスロットに設定しました。($operation)
+  attribute_not_added: このアイテムに$attribute属性を設定できませんでした。
+  skull: 本が頭に変わりました。
+  skull_no_book: 頭のデータを書かれた本を持っている必要があります。
+  skull_invalid_book: この本には頭のデータが書かれていません。'Textures.Value'の文字列を貼り付けましょう。文字列は長いランダムな文字で構成され、最後が==で終わるものです。
+logs:
+  notify_errors: '&7[Magic] &c$errors&b回のエラーが過去&3$time&bの間に発生しています。ログを確認してください。'
+  notify_warnings: '&7[Magic] &e$warnings&b回の警告が過去&3$time&bの間に発生しています。ログを確認してください。'
+  notify_errors_and_warnings: '&7[Magic] &c$errors&b回のエラーと&e$warnings&b回の警告が&3$time&bの間に発生しています。ログを確認してください。'
+  notify_instructions: '&fMagic.notify&7の権限を剥奪するか、設定でこれらのメッセージを無効化できます。'
+mage:
+  removed_property: $nameプロパティを削除しました
+  no_property: 魔法使いは$nameプロパティを持っていません
+  player_reconfigured: $nameの魔法使いデータが再設定されました。
+  player_not_reconfigured: $nameの魔法使いデータは再設定されませんでした。
+  player_spells_levelled: $count個の$nameのスペルがレベルアップしました。
+  player_spells_not_levelled: $nameのどのスペルもレベルアップしませんでした。
+  spells_levelled: $count個のスペルがレベルアップしました。
+  spells_not_levelled: どのスペルもレベルアップしませんでした。
+  reconfigured: 魔法使いが再設定されました。
+  not_reconfigured: 魔法使いが再設定されませんでした。
+  earned_sp: a:&6+&e$amount&6SP
+  no_class: $nameを使うには訓練が足りません。
+  no_spell: $nameを使うには訓練が足りません。
+  player_spell_upgraded: $playersの&r&6$name&d&oがレベル&3$level&d&oにアップグレードされました！
+  spell_upgraded: '&r&6$name&d&oはレベル&3$level&d&oにアップグレードされました！'
+  spell_added: '&r&6$name&d&oを習得した！'
+  brush_added: '&r&7$nameブラシ&d&oを手に入れた！'
+  instructions_header: |-
+    &8 ----------------------------------------------------
+    &8|
+    &8|   &b&l魔法の使い方
+    &8|
+  instructions_footer: |-
+    &8|
+    &8 ----------------------------------------------------
+general:
+  locked_chest: そのチェストはロックされているので壊せません。
+  spawn_egg_title: $entityのスポーンエッグ
+books:
+  default:
+    author: NathanWolf
+    title: $categoryの魔法書
+  all:
+    title: 全知の魔法書
+  spell:
+    title: $spellの魔法書
+  learnspell:
+    name: '&e秘伝の魔法書 &7(&6$spell&7)'
+    description: 右クリックでこの本を読み、左クリックで習得します。
+material:
+  wildcard: ' (ブロックデータを保持)'
+economy:
+  missing: '&c閉店しています、ごめんね！'
+  insufficient: 'コスト: &6$cost'
+  deducted: '割引: &6$cost'
+  requires: $1必要です。
+worlds:
+  world:
+    name: オーバーワールド
+  world_nether:
+    name: ネザー
+  world_the_end:
+    name: エンド
+cooldown:
+  description: '&eクールダウン: &6$time'
+  mage_description: '&c疲労回復まで: &6$time'
+warmup:
+  description: '&7ウォームアップ: &6$time'
+duration:
+  lasts_seconds: $seconds秒持続
+  lasts_minutes: $minutes分持続
+  lasts_hours: $hours時間持続
+  lasts_second: $seconds秒持続
+  lasts_minute: $minutes分持続
+  lasts_hour: $hours時間持続
+skills:
+  inventory_title: スキル
+  inventory_title_heroes: $classのスキル ($page/$pages)
+  inventory_title_heroes_secondary: $class-$class2のスキル ($page/$pages)
+  item_name: $skill
+  item_name_unavailable: '&c$skill'
+  item_description: $description
+  passive_description: '&1PASSIVE'
+  none: スキルがありません！
+  none_on_page: $pageページにはスキルがありません。
+resource_pack:
+  prompt: 'リソースパックをダウンロードするには /getrp'
+  off_prompt: 'a:&eリソースパックをダウンロードするには /getrp'
+  sending: |-
+    t:&3お待ち下さい。
+    &bリソースパックを送信しています。
+controls:
+  drop: ドロップ(Q)
+  right_click: 右クリック
+  left_click: 左クリック
+  swap: 持ち替え(F)
+skillapi:
+  required_skill: '&c必要スキル: &4$skill'
+  required_class: '&c必要クラス: &4$class'
+damage_types:
+  explosion: 爆発
+  fall: 落下
+  fire: 火炎
+  physical: 物理
+  projectile: 飛び道具
+npc:
+  dialog: '&7[$speaker&7]&8: &f$line'
+  insufficient: '&c$cost かかります。'
+  deducted: '&c$cost 割引きます。'
+  no_permission: '&r&4私に触らないで！'
+numbers: {}
+path:
+  level_up: |-
+    t:&r&b*** &r&5$path &b***
+    &5進学
+requirements:
+  unknown: '&c許されません'
+  property_requirement: '&r&c条件: &4$valueの&6$property'
+  property_max: '&r&6$property&cは条件の範囲より大きな値達しています！'
+  property_min: '&r&6$property&cは&4$value以上である必要があります。'
+  no_wand: '&c杖を手に持っている必要があります！'
+  no_template: 'その$wand&cでは学んでいません。'
+  no_path: '&cこの課程では学べません'
+  no_class: '&c$classクラスである必要があります。'
+  no_required_path: '&c$path課程&cである必要があります！'
+  no_path_exact: '&c$path課程&cである必要があります！'
+  no_path_end: '&c$path課程&cの魔法をすべて集め終わっている必要があります！'
+  no_weather: 天候が条件を満たしていません。
+  light: 明るさ
+  time: 時刻
+  height: 高さ
+  currency: 通貨
+  no_cast: '&cまず$spellを詠唱する必要があります。'
+shops:
+  no_wand: '&c杖を手に持っている必要があります！'
+  no_template: '&cその$wand&cでは学んでいません。'
+  no_path: '&cこの課程では学べません'
+  no_class: '&cクラス$classである必要があります。'
+  no_required_path: '&c$path課程&cである必要があります！'
+  no_path_exact: '&c$path課程&cである必要があります！'
+  no_path_end: '&c$path課程&cの魔法をすべて集め終わっている必要があります！'
+  insufficient: '&c$costかかります。'
+  confirm_title: $itemを購入します。
+  unlock_confirm_title: $itemをアンロックします。
+  deducted: '&r&a$cost&r&d&oで&r&6$item&r&d&oを購入しました！'
+  selected: '&r&a$cost&r&d&oで&r&6$item&r&d&oを選択しました！'
+  sold: '&r&a$earn&r&d&oで&r&6$item&r&d&oを売却しました！'
+  unlocked: '&r&a$cost&r&d&oで&r&6$item&r&d&oをアンロックしました！'
+  selected_free: '&r&6$item&d&oを選択しました。'
+  not_applicable: すでに$itemを持っています。
+  cast_fail: '&c申し訳ありませんが、もう一度お試しください。'
+  no_items: 買えるものがありません。
+  title: ショップ ($balance&0)
+  sell_title: 売却 ($balance&0)
+  sell_icon_name: '&6アイテム売却'
+  buy_icon_name: '&aアイテム購入'
+  extra_spell: '&a不要(? Not Required)'
+  no_upgrade: これ以上学べることはありません。
+  upgrade_name_change: '&r&4アップグレード: &r$name'
+  level_requirement: '&r&c条件: &6$path'
+  tags_requirement: '&r&c条件: &6$tags'
+  cast_requirement: '&r&c条件: &6$current&f/&e$required'
+  prerequisite_spell_level: '&6$name'
+  prerequisite_spell_progress_level: ' (現在 $level/$max_level)'
+  required_spells: '&r&c条件: $spells'
+  cast_spell: $spell
+  unlock_class: $class
+  nothing: 無料
+  cost_lore: '&6コスト: &e$cost'
+  earn_lore: '&6収入: &e$earn'
+  earn_heading: ''
+  cost_heading: ''
+  unlock_cost_lore: '&6アンロックコスト: &e$cost'
+  locked: '&cロックされています, &e寄付ショップ(?)でアンロックしましょう。'
+  required_cost_lore: '&cコスト: &4$cost'
+  required_unlock_cost_lore: '&cアンロックコスト: &4$cost'
+  has_class: あなたはすでに$classクラスです。
+  at_limit: すでに限界値である$limitに到達しています。
+  unlocked_lore: '&aアンロック'
+  property_requirement: '&r&c条件: $4$value&cの&6$property'
+  property_max: '&r&6$property&cが条件の範囲より大きな値に達しています！'
+  property_min: '&r&6$property&cが$4$valueを超える必要があります。'
+  item_amount: $name x$amount
+  attribute: '&6$attribute &f(&b$amount&f)'
+  increase_attribute: $attributeが$amount増加しました。
+  decrease_attribute: $attributeが$amount減少しました。
+  attribute_max: これ以上$attributeを増加させることはできません。
+  attribute_min: これ以上$attributeを減少させることはできません。
+  full: インベントリがいっぱいです！
+  nostock: そのアイテムは売り切れです。
+  paid: '&7$owner、ご利用いただきありがとうございました。'
+  invalid_item: '&c未知の、あるいは不正なアイテムです。'
+spell:
+  category: ''
+  brush: マテリアルブラシの使用
+  undoable: ''
+  not_undoable: '&4アンドゥ不可'
+  available_path: $path課程の&rlevelレベルで利用可能です。
+  required_path: $path課程の魔法をすべて集め終わっている必要があります。
+  levels_available: '最大レベル: &r&5$levels'
+  required_spell: '&b$path課程&d&oに進むには&r&4$spell&d&oを学ぶ必要があります。'
+  prerequisite_spell_level: '&6$levelレベルの$name&cを学ふ必要があります。'
+  prerequisite_spell_progress_level: ' &6(現在 $level/$max_level)'
+  level_description: レベル $level
+  progress_description: '&6現在: &b$level&6/&3$max_level'
+  quick_cast: '&2高速詠唱'
+  earns: '&2最大&6$earns&2稼げます'
+  description_lore: '&b$description'
+  level_lore: '&6$level'
+  toggle: '&a詠唱してon・offを切り替えます'
+  upgrade_description_prefix: '&r&b&bull; &6'
+  passive: '&2パッシブ'
+  disabled: '&e解除'
+  creator: ''
+spells:
+  default:
+    fizzle: 魔法は不発でした！
+    backfire: 魔法は失敗し、反動を受けました！
+    fail: '&cなぜだか失敗しました！'
+    insufficient_permission: '&e今はそれはできません！'
+    cast_player_message: a:&d&o$player&r&5があなたに対して&3&o$spell&r&5を詠唱しています！
+    indirect_player_message: a:&d&o$player&r&5があなたに対して&3&o$spell&r&5を詠唱しています！
+    insufficient_resources: '$costが足りません'
+    insufficient: '&4$cost&cが必要です。'
+    cooldown: $time待つ必要があります。
+    cancelled: 魔法がキャンセルされました。
+    cancel: ''
+    cancel_selection: a:&6$spell&cをキャンセルしました。
+    entity_required: エンティティである必要があります。
+    living_entity_required: 生きているエンティティである必要があります。
+    player_required: プレイヤーである必要があります。
+    location_required: 地点である必要があります。
+    world_required: ワールドである必要があります。
+    invalid_world: 不正なワールドが指定されました。
+    cast_finish: ''
+  admission:
+    name: アドミッション
+    description: 視線の先のドアを開きます。
+    cast: 行く手を遮る扉を開け。
+  admission|2:
+    upgrade_description: 鉄のドアも開けます。
+  collapse:
+    name: コラプス
+    description: 球形の範囲のブロックを崩落させます。
+    cast_finish: $count個のブロックを崩落させました。
+    upgrade_description: さらに広範囲で、さらなる種類のブロックを崩壊させられます。
+  sparkle:
+    name: スパークル
+    description: あなたにランダムなポーションエフェクトを付与します。効果の良し悪しもランダムとなります。
+  secure:
+    name: セキュア
+    description: チェストなどのコンテナをロックします。
+    usage: |-
+      コンテナを見て詠唱することでロックされ、キーが得られます。
+      キーを持ってスニークしながら詠唱するとアンロックできます。
+      真上を向いて詠唱すると自分のキーが得られます。
+    cast: コンテナがロックされました。開くにはキーを持っている必要があります！
+    acquire: ロックしている人が変わりました！
+    already_key: すでにキーを持っています。
+    already: そのコンテナはすでにロックされています。
+    alternate_up: キーを手に入れました。
+    alternate_sneak: コンテナがアンロックされました。
+    key_name: '&6&k$uuid'
+    key_name_alternate: '&6$name&eのキー'
+    key_description: |-
+      &6$name&eのキー
+      あなたがロックしたコンテナを開くために必要になります。
+    fail: ロックできませんでした。
+    upgrade_description: かまどやその他のコンテナをロックできます。
+  lockpick:
+    name: ピッキング
+    description: セキュアでロックされたチェストなどのコンテナをアンロックします。
+    cast: 開けゴマ！
+    fail: アンロックできませんでした！
+  snoop:
+    name: スヌープ
+    description: チェストの中身を覗き見ます。
+    cast: 何が入っているか見てみよう。
+    no_target: チェストを見ている必要があります。
+  anvil:
+    name: アンヴィル
+    description: 金床を召喚します
+    cast: 重い！
+  silence:
+    name: サイレンス
+    description: 標的が魔法を詠唱できなくします。
+    cast: $targetを黙らせた。
+  curse:
+    name: カース
+    description: 対象の動きを遅くし、弱体化します。
+    cast: $targetを呪った。
+    upgrade_description: 吐き気の効果を追加します。
+  broom:
+    name: ほうき術
+    cast: ほうきに命を！
+    deactivate: ほうきは大人しくなりました。
+    crash: 衝突した！
+    fail: 狭すぎて離陸できません！
+    creative_fail: クリエイティブモードでは空飛ぶほうきを使えません。
+    cursed: 意識がおぼつかないため、飛び立てません。
+    upgrade_description: 飛べる時間が伸び、ほうきの操作が簡単になります。
+    nospace: '&cほうきに乗るには何もない場所で乗ってください。'
+    reactivate: もう一度空飛ぶほうきを有効にします。
+  superbroom:
+    name: スーパーほうき術
+    cast: 杖に命を！
+    deactivate: 杖が大人しくなりました。
+    crash: 衝突した！
+    fail: 狭すぎて離陸できません！
+    reactivate: もう一度飛行の付与魔法を有効にしています。
+  boon:
+    name: ブーン
+    description: あなたを一時的に超人にします。
+    cast_self: 自らに超人的な力を与えた。
+    cast: $targetに超人的な力を与えよ。
+  boon|2:
+    upgrade_description: ジャンプ力を向上します。
+  boon|3:
+    upgrade_description: 移動速度をさらに向上します。
+  boon|4:
+    upgrade_description: 暗視効果を付与します。
+  blessing:
+    name: ブレッシング
+    description: 広範囲のフォロワーを祝福します。
+    cast: その領域にいるものに祝福を与えた。
+  holylight:
+    name: ホーリーナイト
+    description: 一定の範囲内で、プレイヤーを治癒して敵にダメージを与えます。
+    cast: 聖なる光が煌めいた。
+  mount:
+    name: マウント
+    description: 標的に乗ります。
+    cast: $targetに騎乗した。
+  horse:
+    name: ホース
+    description: 馬を召喚して騎乗します。
+    cast: ハイヤー！
+    nospace: '&cなにもないところで馬を召喚してください。'
+  tame:
+    name: テイム
+    description: 標的を手懐けます。
+    cast: $targetを手懐けた。
+  platform:
+    name: プラットフォーム
+    description: 目の前に土台を作り出します。
+    cast_finish: $count個のブロックを$materialに変化させました。
+  platform|2:
+    upgrade_description: 大きくします。
+  platform|4:
+    upgrade_description: ブラシで建築できます。
+  reflect:
+    name: リフレクト
+    description: あなたに対して詠唱された魔法を反射します。
+    upgrade_description: 範囲と反射率を向上します。
+  shell:
+    name: シェル
+    description: あなたへの物理攻撃を反射する殻を作り出します。
+    upgrade_description: 範囲と反射率を向上します。
+  tag:
+    name: タグ
+    description: あなたの名前で看板を残します。
+    usage: 看板を1個消費します。
+    fail: 看板に置換するのを失敗しました！
+    cast: タグを残した。
+    cast_player: $targetにメッセージを送った。
+    cast_give: 看板を!
+    cast_player_message: '&c&o$player&r&5から神秘的な声が届きました...曰く...Hi!'
+    sign_message: がここにいました
+  flashbang:
+    name: フラッシュバン
+    description: 大きな光と音を発する弾を投げます。
+    cast_player_message: a:$player のフラッシュバンを食らいました！
+  singularity:
+    name: シンギュラリティ
+    description: 特異点に見立てた大穴を作り出します。
+    cast_player_message: a:ブラックホールに吸い込まれました！
+  arrow:
+    name: アロー
+    description: 魔法の矢を発射します。
+    upgrade_description: ダメージと正確性が増します。
+  arrow_light:
+    name: ライトアロー
+    description: 光の矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  arrow_bomb:
+    name: ボムアロー
+    description: 爆発する矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  arrow_poison:
+    name: ポイズンアロー
+    description: 毒の霧を吹き出す矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  arrow_regular:
+    name: ノーマルアロー
+    description: ただの矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  arrow_blink:
+    name: ブリンクアロー
+    description: 着弾地点にテレポートする矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  arrow_fire:
+    name: ファイアアロー
+    description: 着弾地点を発火させる矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  arrow_ice:
+    name: アイスアロー
+    description: 着弾地点を凍らせる矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  arrow_shock:
+    name: ショックアロー
+    description: 対象を感電させる矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  arrow_grapple:
+    name: グラップルアロー
+    description: 対象を引き寄せる矢を発射します。
+    cast_player_message: a:$playerがあなたに$spellを発射しました！
+  toss:
+    name: トス
+    description: ブロックを投げます。
+    fail: ブロックは不発でした。
+    cast: ブロックを投げました。
+  volley:
+    name: ボレー
+    description: 大量のブロックを斉射します。
+    fail: ブロックは不発でした。
+    cast: ブロックをいくつか投げました。
+  sniper:
+    name: スナイパー
+    description: 超高速の矢を打ち出します。
+  pull:
+    name: プル
+    description: ものをあなたに引き寄せます。
+    alternate: よこせ！
+    cast: ひょいっ！
+  grab:
+    name: グラブ
+    description: アイテムをあなたに引き寄せます。
+    cast: ひょいっ！
+  permafrost:
+    name: パーマフロスト
+    description: 対象地点を永久凍土と化します。
+    cast_finish: $count個のブロックが永久凍土と化しました。
+  permamelt:
+    name: パーマメルト
+    description: 温度を上昇させます。
+    cast_finish: $count個のブロックの温度が上昇した。
+  frost:
+    name: フロスト
+    description: 水を凍らせ、雪を作り出します。
+    cast_finish: $count個のブロックを凍らせました。
+    upgrade_description: 広範囲になり、凍っている時間が伸びます。
+  harden:
+    name: ハーデン
+    description: 標的のブロックをより硬くします。
+    cast: $count個のブロックがより硬くなりました。
+  harden|2:
+    upgrade_description: 黒曜石に変化するようになります。
+  disarm:
+    name: ディスアーム
+    description: 対象の武器を弾き、別のスロットに移動させます。
+    cast: 標的の武器を弾き飛ばした。
+    cast_self: 自らの武器が弾き飛ばされた。
+    upgrade_description: 失敗したり、反動を受ける確率が減ります。
+  disarm|3:
+    upgrade_description: 失敗したり、反動を受けなくなります。
+  heal:
+    name: ヒール
+    description: 自分や他のプレイヤーの傷を治します。
+    usage: ダメージを受けると中断されます。
+    cast: $targetの傷を癒やした。
+    cast_self: 自らの傷を癒やした。
+    upgrade_description: クールダウンが短くなります。
+  healing:
+    name: ヒーリング
+    description: 自分の周りにいる人々の傷を治します。
+    cast: $targetの傷を癒やした。
+  cure:
+    name: キュア
+    description: 負のポーション効果を打ち消します。
+    cast: $targetを快癒させた
+    cast_self: 自らを快癒させた
+    upgrade_description: 空腹の効果も打ち消せるようになります。
+  cure|2:
+    upgrade_description: ウィザーと弱体化も打ち消せるようになります。
+  cure|3:
+    upgrade_description: 沈黙も打ち消せるようになります。
+  cure|4:
+    upgrade_description: 空腹も打ち消せるようになります。
+  cure|5:
+    upgrade_description: ゾンビ村人をも癒します。
+  music:
+    name: ミュージック
+    description: 音楽を流します。
+    cast_player: $nameに音楽を聴かせた。
+    cast_self: 音楽を流した。
+  airstrike:
+    name: エアストライク
+    description: 周囲のエンティティ付近に空爆を呼び出します。
+    cast_player_message: a:&d&o$player &r&5があなた付近に空爆を呼び出しました。
+  supergather:
+    name: スーパーギャザー
+    description: プレイヤーテレポートさせます。
+    usage: 真下を見て目標を選択肢、上を見てテレポートします。
+    cast_to_player: $targetにテレポートしています。
+    cast_entity: $targetをあなたへテレポートしています。
+    cast_player_message: a:&d&o$player&r&5が空間を歪曲させた！
+    target_selected: $targetに狙いを定めました。
+    cancel: 狙いを外しました。
+  icbm:
+    name: ICBM
+    description: 爆発する火球を発射します。
+    cast: 外を見ろ！
+  neutron:
+    name: ニュートロンボム
+    description: 広範囲のエンティティにダメージを与え、スタンさせます。
+    cast: あらゆるものを殺戮せよ！
+    upgrade_description: 範囲が広がります。
+  shuriken:
+    name: シュリケン
+    description: 跳ね回る飛び道具を投げます。
+    upgrade_description: ダメージを増やします。
+  wave:
+    name: ウェイブ
+    description: 衝撃波を放ちます。
+    upgrade_description: 大きさと攻撃力を増やします。
+  weather:
+    name: ウェザー
+    description: 天候を変化させます。
+    cast: 世界をかき回し、嵐を作り出した。
+    alternate: 嵐を鎮めよ。
+  fling:
+    name: フリング
+    description: 指定した方向にあなたを吹き飛ばします。
+    upgrade_description: |-
+      速度が上がり、クールダウンが短くなります。
+      &7スニークしながらキャストすると、小さくジャンプします。
+  leap:
+    name: リープ
+    description: 大きく飛びます。
+    cast: うぇーい！
+  torch:
+    name: トーチ
+    description: 松明またはグロウストーンを作り出します。
+    no_target: そこには松明を設置できません。
+    cast: 燃え上がれ！
+    upgrade_description: クールダウンが短くなります。
+  monster:
+    name: モンスター
+    description: そばにモンスターを召喚します。
+    deactivate: 召喚したモンスターをリリースします。
+    cast: モンスターを召喚しました。
+  mob:
+    name: モブ
+    description: 複数のモンスターを召喚します。
+    deactivate: 召喚したモンスターをリリースします。
+    cast: $count体のモンスターを召喚しました。
+  portal:
+    name: ポータル
+    description: 一時的なポータルを作り出します。
+    no_target: そこにはポータルを作成できません。
+    cast: 一時的にポータルを作り出しました。
+  phase:
+    name: フェーズ
+    description: 異なるディメンションに移動します。
+    cancel: 移動が妨げられました。
+    cast: ''
+    teleport: $world_nameに移動しました。
+    teleport_failed: ここから$world_nameへはいけません。
+  superphase:
+    name: スーパーフェーズ
+    description: 自分か他の人を異なる次元に移動させます。
+    cast: ''
+    teleport: $targetを$world_nameに移動させました。
+    teleport_failed: $targetをここから$world_nameに移動させることはできません。
+  phasebackup:
+    name: フェーズ・トゥ・バックアップ
+    description: バックアップワールドに移動します。
+    cast: ''
+    teleport: $world_nameに移動しました。
+    teleport_failed: ここから$world_nameへはいけません。
+  invincible:
+    name: インヴィンシブル
+    description: ダメージを受けなくします。
+    cast: 無敵になった気分だ。
+    deactivate: 無敵化が解除されました。
+  inferno:
+    name: インフェルノ
+    description: 広範囲を焼きます。
+    cast: $count個のブロックを焼きました。
+  bubble:
+    name: バブル
+    description: 落下ダメージを防ぐ安全な泡を作り出します。
+    usage: 落下中に真下に詠唱します。
+    cast: スプラーッシュ。
+    upgrade_description: さらに大きい泡を作り出します。
+  paint:
+    name: ペイント
+    description: 一個のブロックを埋めます。
+  gills:
+    name: ダイビングヘルメット
+    description: 水中でも自由に活動できます。
+    cast: ダイビングヘルメットを被った。
+    hat_name: ダイビングヘルメット
+    hat_lore: クリックすると消えます。
+  gasp:
+    name: ギャスプ
+    description: 水に入る前に深呼吸します。
+    cast: すー、はー。
+  glide:
+    name: グライド
+    description: ポケットの中のエリトラです。
+    cast: 滑空の時間だ。
+    wear_name: 脆い滑空翼
+    war_lore: クリックすると消えます。
+  arrowrain:
+    name: アローレイン
+    description: 大量の矢を発射します。
+  arrowrain|2:
+    upgrade_description: さらに多くの矢をフレイム付きで発射します。
+  gatling:
+    name: ガトリングガン
+    description: 滝のような勢いで矢を発射します。
+    upgrade_description: 発射している時間が伸び、ウォームアップが短くなります。
+  meteor:
+    name: メテオールシャワー
+    description: 上空から死の火炎を降らせます。
+    cast: 天から火の雨を降らせた。
+  bomb:
+    name: カーペットボム
+    description: 死の雨を降らせます。
+    cast: 空爆を呼んだ。
+    upgrade_description: さらに大量の爆弾を降らせます。
+  poison:
+    name: ポイズン
+    description: 対象に毒エフェクトを付与します。
+    cast: $targetに毒を与えた。
+    upgrade_description: 毒の効果時間が伸びます。
+  light:
+    name: ライト
+    description: 闇を照らします。
+  lightning:
+    name: ライトニング
+    description: 対象に雷を落とします。
+    cast: どかーん。
+  lightning|2:
+    upgrade_description: 正確性が上がります。
+  lightning|3:
+    upgrade_description: さらにたくさん雷を落とします。
+    cast: ちゅどーん。
+  smite:
+    name: スマイト
+    description: ターゲットを打ち倒します。
+    cast: $targetに強撃を与えた。
+    upgrade_description: 効果範囲と攻撃力が増えます。
+  nuke:
+    name: ヌーク
+    description: 大爆発を起こします。
+    cast: うわぁ！
+    upgrade_description: 広範囲に、さらなる破壊をもたらします。
+  day:
+    name: サニーデイ
+    description: 晴れた日中に変更します。
+    cast: なんて素敵な日だ！
+  night:
+    name: ダークストーミーナイト
+    description: 嵐の真夜中に変更します。
+    cast: 不気味。
+  time:
+    name: タイム
+    description: 一日の時刻を変化させます。
+    cast: 時刻を$newtimeに変化させた。
+  grenade:
+    name: グレネード
+    description: 着火済みの爆弾を投げつけます。
+  grenade|2:
+    upgrade_description: ダメージと火を増やします。
+  cluster:
+    name: クラスターボム
+    description: 分裂する爆弾を投げつけます。
+    cast: クラスター爆弾を投げつけた。
+    upgrade_description: 分割数が増え、さらにたくさんの爆弾になります。
+  repairitem:
+    name: リペアアイテム
+    description: 目標のドロップアイテムの耐久を完全回復します。
+    no_target: それは直せません。
+    cast: アイテムが直った！
+  repairequipment:
+    name: リペアイクイップメント
+    description: 目標のプレイヤーの装備品の耐久を完全回復します。
+    no_target: 回復するものがありません。
+    cast: 装備品が治った！
+  blast:
+    name: ブラスト
+    description: やわらかいものを爆発させます。
+    cast_finish: $count個のブロックが爆破されました。
+    upgrade_description: 広範囲を爆発させ、より硬いブロックを破壊できます。
+  earthquake:
+    name: アースクエイク
+    description: 地震を起こします。
+    cast_finish: $count個のブロックを揺らしました。
+  cloak:
+    name: クローク
+    description: あなたを透明にします。
+    cast: 目標を透明にしました。
+    cast_self: 自分を透明にしました。
+  counterspell:
+    name: カウンタースペル
+    description: 目標のプレイヤーが発動した魔法に呪い返しを行います。
+    usage: 最近発動した魔法に対してのみ効果があります。
+    cast: '&d&o$target&5の&r&6$spell&5を跳ね返しました。'
+    cast_player_message: a:&d&o$player&r&5があなたの&3&o$spell&r&5を跳ね返しました！
+    fail: 跳ね返す魔法がありません。
+  counterspell|2:
+    upgrade_description: 失敗しなくなります。
+  push:
+    name: プッシュ
+    description: あなたの近くにあるものをどこかへ追いやります。
+    alternate: どっかいけ！
+    upgrade_description: さらに強い力で追いやります。
+  push|4:
+    upgrade_description: 真下を見て詠唱すると、広範囲に効果を及ぼすようになります。
+  farm:
+    name: ハード
+    description: 群れを作り出します。
+    deactivate: 群れを放しました。
+    cast: $count頭の家畜を召喚しました。
+  breach:
+    name: ブリーチ
+    description: 対象の表面のブロックを破壊します。
+    cast_finish: $count個のブロックを破壊しました。
+    upgrade_description: サイズが大きくなります。
+  tesseract:
+    name: テッセラクト
+    description: 短距離転移を行います。
+    no_target: そこには行けません。
+  mine:
+    name: マイン
+    description: 目標の鉱石を採掘します。
+    cast_finish: 鉱石が採掘されました。
+    upgrade_description: さらに多くのブロックを採掘できます。
+  mine|4:
+    upgrade_description: すべての鉱石を採掘します。
+  mine|5:
+    upgrade_description: ボーナスアイテムをドロップします。
+  mine|6:
+    upgrade_description: さらなるボーナスをドロップします。
+  chop:
+    name: チョップ
+    description: 木を切り倒します。
+    cast_finish: ティンバー！
+    upgrade_description: さらに多くのアイテムをドロップします。
+  peek:
+    name: ピーク
+    description: 対象の表面のブロックを一時的にガラスにして中身を覗き見ます。
+    cast_finish: $count個のブロックをガラスにしました。
+    upgrade_description: 作られる窓が大きくなります。
+  sandblast:
+    name: サンドブラスト
+    description: 大きな砂の塊を落下させます。
+    cast_finish: $count個の落下する砂を作り出しました。
+    upgrade_description: さらに多くの砂を落下させます。
+  fire:
+    name: ファイア
+    description: 遠くで着火させます。
+    cast: 火を着けました。
+    upgrade_description: 範囲が増え、燃える時間が長くなります。
+  growth:
+    name: グロース
+    description: 植物・作物・苗木が即座に成長します。
+    upgrade_description: 広範囲になります。
+  rainbow:
+    name: レインボー
+    description: 虹色の愛を送ります！
+  blob:
+    name: ブロブ
+    description: 個体ブロックの雫を作り出します。
+    cast_finish: $count個のブロックからなる$materialの雫を作り出しました。
+  blob|2:
+    upgrade_description: 粘土で構築します。
+  blob|3:
+    upgrade_description: 黒曜石で構築します。
+  blob|4:
+    upgrade_description: あなたのブラシで構築します。
+  walls:
+    name: ウォール
+    description: 対象の近くにいくつかの壁を作り出します。
+    cast_finish: $count個のブロックを$materialで埋め尽くしました。
+  tendril:
+    name: テンドリル
+    description: 漆黒の渦巻きを召喚します。
+  repair:
+    name: リペア
+    description: 保存されたバックアップを使って、一定の領域を元に戻します。
+    cast_finish: $count個のブロックが元に戻りました。
+  emp:
+    name: EMP
+    description: 一定範囲を電化させ、動力源となるブロックをONにします。
+    cast_finish: $count個のブロックを導通させました。
+  ghast:
+    name: ガスト
+    description: 威嚇するガストを召喚します。
+  familiar:
+    name: ファミリア
+    description: 身近な動物を一定時間召喚します。
+    cast: 身近な動物を召喚しました。
+    deactivate: 召喚した動物がいなくなりました。
+  disintegrate:
+    name: ディスインテグレート
+    description: 対象にダメージを与えます。
+    usage: 標的のブロックやエンティティを破壊します。
+    cast_entity: バチッ！
+    cast: バン！
+  blink:
+    name: ブリンク
+    description: 標的のもとへテレポートします。
+    no_target: そこにはテレポートできません。
+    teleport_failed: そこにはテレポートできません。
+    teleport: ぱっ！
+    cast: ''
+  blink|2:
+    upgrade_description: 範囲を広げます。
+  blink|3:
+    upgrade_description: 範囲を広げます。さらに、目標位置の地上にすり抜けてテレポートできます。
+  blink|4:
+    upgrade_description: 範囲を広げます。さらに、目標位置の地下にすり抜けてテレポートできます。
+  blink|5:
+    upgrade_description: 範囲を広げます。さらに、固体ブロックを通り抜けるてテレポートできます。
+  blink|6:
+    upgrade_description: 空中にテレポートできるようになります。
+  hat:
+    name: ハット
+    description: 見ているブロックを被ります。
+    cast: 頭に$materialを被った。
+    removed: 魔法の帽子を脱ぎました。
+    hat_name: $hatの帽子
+    hat_lore: クリックすると消えます。
+    upgrade_description: 効果時間が伸びます。
+  wear:
+    name: ウェア
+    description: 右クリックで着用します。
+    cast: 杖を背中に背負いました。
+  magichat:
+    name: マジックハット
+    cast: ''
+    cast_nightvision: 帽子が周囲を照らしています。
+    cast_absorption: 帽子があなたにブーストをかけています。
+    cast_bunny: 兎が飛び出した！
+    cast_killer_bunny: うわー、逃げろー！！
+    alternate: 魔法の帽子が飛び回り、頭に乗っかった。
+  invisiblecloak:
+    name: インビジブルクローク
+    cast: 煙にまぎれて姿を隠しました。
+  stalactite:
+    name: スタラクタイト
+    description: 下向きの柱を作り出します。
+    cast: $materialの柱を作り出しました。
+    no_target: これ以上柱を降ろすことができません。
+  lava:
+    name: ラヴァ
+    description: 溶岩流を発射します。
+    cast: 溶岩流を発射しました。
+    upgrade_description: さらに多くの溶岩を出現させます。
+  earth:
+    name: アース
+    description: 一時的にブロックの線を構築します。
+    cast: 地面の線を召喚しました。
+  flamethrower:
+    name: フレームスロワー
+    description: バーン・ベイビー・バーン！
+    cast: 火炎放射を行います。
+    upgrade_description: さらに遠くまで炎が届きます。
+  stash:
+    name: スタッシュ
+    description: あなたのものを保管する場所です。
+    cast: 自分のエンダーチェストの中を見た。
+    cast_player: $targetのエンダーチェストの中を見た。
+  pickpocket:
+    name: ピックポケット
+    description: 近くのプレイヤーからアイテムを盗みます。
+    cast_player: $targetのインベントリの中を見た。
+    cast_player_message: ''
+  workbench:
+    name: ワークベンチ
+    description: いつでも作業台を開けます。
+    cast: 仕事の時間だ！
+  superlaser:
+    name: スーパーレーザー
+    description: 永久に線状にブロックを破壊します。
+    cast_finish: $count個のブロックが線状に破壊されました。
+    upgrade_description: ビームの時間が伸び、さらなる種類のブロックを破壊できます。
+  laser:
+    name: レーザー
+    description: 線状にブロックを破壊します。
+    cast_finish: $count個のブロックが線状に破壊されました。
+    upgrade_description: 広範囲になり、ダメージが向上します。
+  stream:
+    name: ストリーム
+    description: 水流を拡散します。
+    cast: 水流を拡散せよ。
+    upgrade_description: 広範囲になり、ダメージが向上します。
+  wolf:
+    name: ウルフ
+    description: オオカミを作り出します。
+    cast: ウルフィー！
+    fail: 生み出したオオカミはすでに亡くなっていました...
+  tent:
+    name: テント
+    description: 小さな家を作り出します。
+    cast: 小さな家を作り出せ。
+  cage:
+    name: ケージ
+    description: 一時的に標的を閉じ込めます。
+    cast: 標的を一時的に閉じ込めました
+  cat:
+    name: キャット
+    description: ネコを作り出します。
+    cast: ネコを召喚した！
+    fail: 生み出したネコはすでに亡くなっていました...
+  shrink:
+    name: シュリンク
+    description: 様々なものを傷つけ、縮めます。
+    usage: 一度使えば子どもになり、倒せば頭をドロップします。
+    cast: シュリン！
+    cast_entity: $targetを縮めました。
+  capture:
+    name: キャプチャー
+    description: 標的のエンティティをスポーンエッグにして捕まえます。
+    cast: 捕まえた！
+    cast_entity: $targetを捕まえました！
+  grow:
+    name: グロー
+    description: 標的のエンティティを光らせます。
+    cast: グロー！
+    cast_entity: $targetを光らせました。
+    no_target: それを光らせることはできません。
+  flare:
+    name: フレア
+    description: 炎を打ち出します。
+    cast: 魔法の炎を発射しました。
+    upgrade_description: よりたくさん花火が出ます。
+  respawn:
+    name: リスポーン
+    description: スポーン地点に戻ります。
+    cast: 安全地帯にテレポートして戻りました。
+  gather:
+    name: ギャザー
+    description: 他のプレイヤーへテレポートします。
+    usage: 下を見ながら詠唱してフレンドを管理します。
+    alternate_down_no_target: '&4誰もいません！'
+    no_target: |2-
+
+      &4テレポートできる人がいません。
+      &3下を向いて詠唱し、フレンドリクエストを送ってください。
+    cast_to_player: $targetにテレポートしています。
+    cast_entity: $targetを目標にテレポートしています。
+    cast_player_message: a:&d&o$player&r&5が空間を折り畳みました！
+    cast_friend: あなたを$nameにテレポートしています。
+    no_target_friend: $nameにテレポートできません。
+    title_friend: $name
+    add_friend: '&5$name&bを&6フレンド&bに追加しました！'
+    remove_friend: '&5$name&cを&6フレンド&cから削除しました！'
+    recall_title: 'テレポート先:'
+    friend_request_title: '@tnがフレンドになりたがっています。'
+    reject: '@pnが拒否しました ;('
+    send_request_title: フレンドリクエスト送信
+    add_friend_name: フレンドリクエスト送信
+    remove_friend_name: フレンド削除
+    remove_friend_title: フレンド削除
+    cast_remove_friend: '&5$name&bをフレンドから削除しました。'
+    title_remove_friend: $name
+  recall_death:
+    name: リコール・ラストデス
+    description: 前回死んだ場所にテレポートします。
+    cast_death: 前回死亡した場所に戻っています。
+    no_target_death: 前回死んだ場所が記録されていません。
+  recall:
+    name: リコール
+    cancel: リコールが中断されました。
+    description: マーカーを設置した場所へテレポートします。
+    usage: テレポート時後の5秒間は保護されます。
+    teleport: ''
+    teleport_failed: リコールに失敗しました。
+    no_target: そこにはマーカーを設置できません。
+    cast_marker_place: リコールマーカーを設置しました。
+    cast_marker_move: リコールマーカーを移動しました。
+    cast_marker: リコールマーカーに移動しました。
+    cast_death: 前回の死亡場所に移動しました。
+    cast_spawn: スポーン地点に移動しました。
+    cast_home: ホーム地点に移動しました。
+    cast_wand: 杖を失った場所に移動しました。
+    cast_soul: 魂を失った場所に移動しました。
+    cast_warp: $nameに移動しました。
+    cast_town: あなたのホームタウンに移動しました。
+    cast_regions: あなたの保護領域に移動しました。
+    cast_friend: $nameの所に移動しました。
+    no_target_death: 死亡場所が記録されていません。
+    no_target_wand: 杖を失った場所が記録されていません。
+    no_target_soul: 魂を失った場所が記録されていません。
+    no_target_home: ホームがセットされていません。
+    no_target_warp: $nameというワープが存在しません。
+    no_target_marker: マーカーがセットされていません。
+    no_target_spawn: スポーン地点に戻れません。
+    no_target_town: あなたはタウンにいません。
+    no_target_regions: ホームがありません。
+    no_target_friend: $nameに移動できません。
+    title_move_marker: 'マーカー#$numberをここに移動しました。'
+    description_move_marker: マーカーをこの場所に置き換えます。
+    title_marker: 'マーカー #$number'
+    description_marker: マーカーを移動するには、マーカーを見てください。
+    title_death: 前回の死
+    description_death: 前回の死亡場所
+    title_friend: $name
+    title_warp: $name
+    title_spawn: スポーン
+    description_spawn: このワールドのスポーン地点
+    title_home: ホーム
+    description_home: 前回眠った場所
+    title_wand: 杖を失った場所
+    description_wand: 杖を地面に落とした場所
+    title_town: タウンの中心
+    description_town: あなたのホームタウンの中心
+    title_soul: 魂を失った場所
+    description_soul: |-
+      前回魂を失った場所。
+      &d$items&f個のアイテムと&b$xp&f経験値があります。
+    description_regions: 保護領域
+    cross_world_disallowed: 別のワールドにテレポートするのは許可されていません。
+    title: 行き先選択
+    move_marker_title: マーカー移動
+    unlock_warp: '&5$name&bが&6リコールの行き先&bとして使えるようになりました！'
+    add_friend: '&5$name&bが&6リコールの行き先&bとして使えるようになりました！'
+    remove_friend: '&5$name&bを&6リコールの行き先&bから削除しました！'
+    invalid_description: |2-
+
+      &c場所がありません。
+    unavailable_description: |2-
+
+      &eこれをアンロックするにはレベルを上げる必要があります。
+    unavailable_warp_description: |2-
+
+      &eこれをアンロックするにはこの場所を見つける必要があります。
+    unavailable_name: '&c$name'
+  recall|2:
+    upgrade_description: 前回の死亡場所へのテレポートを開放します。
+  recall|3:
+    upgrade_description: マーカーと、場所をみてマーカーをセットする機能を開放します。
+    usage: 5秒のウォームアップがあります。下を向いて詠唱してマーカーをセットします。
+  recall|4:
+    upgrade_description: 2つ目のマーカーをアンロックします。
+  recall|5:
+    upgrade_description: 3つめのマーカーをアンロックします。
+  warpunlock:
+    name: ワープをアンロックします。
+    description: コマンドブロックやregion commandによって、プレイヤーがその場所を発見したときにマーカーが開放される仕組みを作るのに便利です。
+    cooldown: ''
+  warpmenu:
+    name: ワープメニュー
+    description: 様々な場所に直接ワープします。
+  levitate:
+    name: レヴィテート
+    description: あなたを宙に浮かべます。
+    cast: 体が軽くなりました。
+    cancel: 体が重くなりました。
+    upgrade_description: 飛ぶのが早く、そして高くなります。またクールダウンが減ります。
+    reactivate: レヴィテートを再度有効化しました。
+  levitate|6:
+    upgrade_description: 高さ無制限になり、みやすさのために雲が消えます。
+  boom:
+    name: ドカーン
+    description: 爆発を起こします。
+    cast: ドカーン！
+  boom|2:
+    upgrade_description: ダメージが増加し、ブロックを破壊するようになります。
+  force:
+    name: フォース
+    description: テレキネシス（念力）を使います。
+    usage: 詠唱することでエンティティを選択肢、投げ飛ばします。
+    cancel: 標的をリリースしました。
+    target_selected: $target を掴みました。
+  dragonball:
+    name: ドラゴンボール
+    description: エンダードラゴンのファイアーボールを発射します。
+    usage: ドラゴンブレスに落ちないように気をつけましょう。
+  fireball:
+    name: ファイアーボール
+    description: 爆発する火球を発射します。
+  fireball|2:
+    upgrade_description: 正確性が増します。
+  fireball|3:
+    upgrade_description: 正確性とスピードが増します。
+  fireball|4:
+    upgrade_description: ものを燃やすようになります。
+  wither:
+    name: ウィザー
+    description: ウィザースカルを発射します。
+    upgrade_description: 更に多くのウィザースカルを発射します。
+  map:
+    name: マップ
+    description: マップを生成します。
+    cast: これがマップです。
+  camera:
+    name: カメラ
+    description: あなたやその他のポートレート（肖像画）を撮ります。
+    cast_target: $targetの写真を取りました。
+    fail: 写真を読み込めませんでした。
+    cast: パシャ！
+    cast_self: セルフィー！
+    cooldown: カメラは充電中です。
+  tornado:
+    name: トルネード
+    description: 破壊的な竜巻を召喚します。
+    cast: 伏せろ！
+    upgrade_description: 構造物を破壊するようになります。
+  masterattack:
+    name: マスターブラスト
+    description: HPが満タンのときだけ使える広範囲攻撃です。
+    insufficient_resources: ''
+    cooldown: ''
+  missile:
+    name: マジックミサイル
+    description: 純粋な魔力の塊を発射します。
+    cast_target: a:ミサイルは$targetに$damageのダメージを与えました。
+    cast_player_message: a:$casterの$spellによって$damageのダメージを受けました。
+    cast: ミサイル発射！
+    no_target: ミサイル発射！
+    upgrade_description: ダメージとその範囲が増します。
+  railgun:
+    name: レールガン
+    description: ブロックと複数のターゲットを貫通して攻撃します。
+    cast: $targetにレールガンを構え、発射した。
+    no_target: レールガンを構え、発射した。
+  testdummy:
+    name: テストダミー
+    description: テスト用の弱いダミーエンティティを召喚します。
+  projectile:
+    name: プロジェクトI.L.E.
+    description: プロジェクタイルをテストするための魔法です。
+    cast: 飛び道具を発射しました。
+    cast_finish: 飛び道具が命中しました。
+    no_target_finish: 飛び道具は外れました。
+  whip:
+    name: ウィップ
+    description: 純粋な力で構成された魔法の鞭です。
+    cast: パシィン！
+  sticky:
+    name: スティッキーボム
+    description: 5秒後に爆発する粘着手榴弾を投擲します。
+    cast: 粘着手榴弾を投げました。
+    upgrade_description: 正確性と爆発範囲が増します。
+  homing:
+    name: ホーミングミサイル
+    description: 標的を追尾する純粋な魔力の塊を発射します。
+    cast: $target にホーミングミサイルを発射した。
+    lock_on: '&d&o$player&r&5があなたに狙いを定めました！'
+    cast_player_message: a:&d&o$player&r&5の$spellがあなたに当たりました！
+    upgrade_description: 飛行速度とダメージが増します。
+  fury:
+    name: フューリー
+    description: 標的を追尾する純粋な魔力の塊を複数発射します。
+    cast: たくさんのホーミングミサイルを発射しました。
+    cast_player_message: a:&d&o$player&r&5の$spellがあなたに当たりました！
+    upgrade_description: 更にミサイルが増えます。
+  chainlightning:
+    name: チェインライトニング
+    description: 複数の標的に連鎖的に命中する雷の弾丸を発射します。
+    cast: 連鎖する雷撃を発生させました。
+    cast_player_message: a:&d&o$player&r&5の$spellがあなたに当たった！
+    upgrade_description: 更にたくさんの標的に当たります。
+  blind:
+    name: ブラインド
+    description: 標的を盲目にします。
+    cast: $targetを盲目にせよ。
+    upgrade_description: 更に長時間盲目にします。
+  pollinate:
+    name: ポリネイト
+    description: 花を植えます！
+    cast: ポリネイト！
+  paste:
+    name: ペースト
+    description: スケマティクを貼り付けます。
+    usage: スケマティクブラシと一緒に使えます。
+    cast_finish: $count個のブロックを貼り付けました。
+    no_action: スケマティクを読み込んでいます。もう少ししたらもう一度お試しください。
+  kill:
+    name: キル
+    description: 対象に致命的なダメージを与える弾丸を発射します。
+    cast_player_message: ''
+    cast: 死を。
+    upgrade_description: さらに高速で飛ぶ、さらに大きな飛び道具をより短時間のウォームアップで使用できます。
+  superkill:
+    name: スーパーキル
+    description: 対象を問答無用で殺します。
+    cast: 死を。
+  damage:
+    name: ダメージ
+    description: |-
+      異なるタイプのダメージを与えるテスト魔法です。
+      プラグインが詠唱者の代わりにダメージを与えるため、ダメージソースが失われて魔法を発動した人にクレジットが表示されません。
+  torture:
+    name: トーチャー
+    description: 敵を容赦なく拷問します。
+    cast: 我が怒りを見よ。
+    upgrade_description: ダメージと効果時間が伸びます。
+  boomstown:
+    name: ブームタウン・ワンウェイチケット
+    description: 標的を梱包して爆発的な行き先へ送りつけます。
+  rubberize:
+    name: ラバライズ
+    description: 目標地点をトランポリンのように跳ねるようにします。
+    cast: あの場所を柔くせよ。
+  count:
+    name: エンティティカウンター
+    description: 近くのエンティティを確認する管理者ツールです。
+  debugger:
+    name: デバッガー
+    description: 魔法をデバッグする管理者ツールです。
+    cast: $targetをデバッグしています。
+    deactivate: $targetへのデバッグを無効化しました。
+    alternate_up: すべてのエンティティへのデバッグを無効化しました。
+    alternate_down: 自分自身をデバッグしています。
+  superfly:
+    name: スーパーフライ
+    description: 動画撮影者のための魔法です。
+    cast: 体が軽くなりました。
+    cost_free: 体が重くなりました。
+    reactivate: スーパーフライを再度有効化しました。
+  petrify:
+    name: ペトリファイ
+    description: 標的を固定します。
+    cast: $targetを固定しました。
+    upgrade_description: 効果時間が伸びます。
+  polymorph:
+    name: ポリモーフ
+    description: 対象を羊に変身させます。
+    cast: $targetを羊に変身させました。
+    upgrade_description: 効果時間を伸ばします。
+  entangle:
+    name: エンタングル
+    description: 対象をロープの罠にかけます。
+    cast: $targetをトラップに掛けました。
+  wound:
+    name: ウーンド
+    description: 対象に物理的なダメージを与えます。
+    cast: $targetを斬りつけました。
+    upgrade_description: ダメージが増します。
+  stun:
+    name: スタン
+    description: '対象にダメージを与え、スタンさせます。'
+    cast: スタンの弾丸を投げました。
+    upgrade_description: ダメージとエフェクトの効果時間が伸びます。
+  webbing:
+    name: ウェブアタック
+    description: いらいらするクモ糸攻撃です。
+    cast_player_message: a:&d&o$player&r&5のクモ糸に引っかかりました。
+  lift:
+    name: リフト
+    description: 対象を持ち上げます。
+    cast: $targetを持ち上げました。
+  rocket:
+    name: ロケット
+    description: ワイルドライドに行こう。
+    cast: 打ち上げ！
+  sponge:
+    name: スポンジ
+    description: 一定の範囲内の水を吸い取ります。
+    cast: ズズッ！
+  extinguish:
+    name: エクスティングイッシュ
+    description: 一定の範囲内の火を消します。
+    cast: 消化しました。
+  skills:
+    name: スキル
+    descriptions: 使用可能なスキルの一覧を表示します。ホットバーにドラッグすることでスキルを使用できます。
+  upgrades:
+    name: チェック・スペルプログレス
+    description: 現在の魔法のアップグレードの進捗を表示します。
+    fail: 杖を持っている必要があります。
+    upgrade_name_change: '&r&4アップグレード: &r$name'
+    level_requirement: |-
+      &r&c条件の課程: &6$path
+      &r&7ランクアップするためにすべての魔法を収集してください。
+    cast_requirement: '&r&cコスト: &6$current&f/&e$required'
+    tags_requirement: '&r&c必要: &6$tags'
+    confirm_title: $itemに変化します。
+    title: 魔法の進捗
+  tracking:
+    name: トラッキングセンス
+    description: 近くの生き物を見つけます。
+    cast: 近くにいた$targetを感知しました
+    no_target: 静かだ...静かすぎる！
+    upgrade_description: 更に広範囲の生き物を感知できます。
+  tracking|4:
+    upgrade_description: スニークしながら使うことでプレイヤーのみを感知できます。
+  enchantwand:
+    name: アップグレードワンド
+    description: 杖のレベルを上げます。
+    no_wand: 杖を持っている必要があります。
+    fail: ''
+  addspell:
+    name: アッドスペル
+    description: 杖に魔法を追加します。
+    no_upgrade: $wandはその魔法を学べません。
+    no_path: $path&rにいる必要があります。
+    no_path_end: '&c$path課程&cの魔法をすべて集め終わっている必要があります！'
+    no_wand: 杖を持っている必要があります。
+    no_target: すでにその魔法を知っています。
+    fail: ''
+  giveitem:
+    name: ギヴアイテム
+    description: プレイヤーにアイテムを与えます。
+    cast: $itemを受け取りました。
+    cast_player_message: a:$playerから$itemを受け取りました。
+    fail: ''
+  fillwand:
+    name: フィルワンド
+    description: 杖をすべての魔法で埋めます。
+    no_wand: 杖を持っている必要があります。
+    fail: ''
+  spellshop:
+    name: 魔法習得
+    title: $path &rSpells ($balance&0)
+    description: |-
+      SPを消費して魔法を杖に追加します。
+      現在の課程におけるすべての魔法を学習したら、次の課程にランクアップできます。
+    no_items: ここであなたが追加できる魔法はありません。
+    no_path: ここではあなたは学べません。
+    no_upgrade: これ以上はここにはありません。
+    no_required_path: $path&r にいる必要があります！
+    no_path_end: '&c$path課程&cの魔法をすべて集め終わっている必要があります！'
+    no_wand: 杖を持っている必要があります！
+    confirm_title: $item を学習します。
+    selected: |-
+      t:&r&6$item
+      &d&oLearned
+      a:&r&d&o-&r&a$cost
+    fail: ''
+  engineershop:
+    name: エンジニアショップ
+    title: ロールバック ($balance&0)
+    description: エンジニアリングレベルをアンロックします。
+    confirm_title: エンジニア課程へアップグレードします。
+    fail: ''
+  architectshop:
+    name: アーキテクトショップ
+    title: アブソーブ ($balance&0)
+    description: アーキテクトレベルをアンロックします。
+    confirm_title: アーキテクトへアップグレードします。
+    fail: ''
+  conduitshop:
+    name: コンジットショップ
+    title: バックアップ ($balance&0)
+    description: コンジットレベルをアンロックします。
+    confirm_title: コンジットへアップグレードします。
+    fail: ''
+  bookshop:
+    name: スペルブックショップ
+    title: 魔法書
+    description: スペルブックを手に入れます。
+    cost_lore: 無料！
+    confirm_title: $item を手に入れます。
+    deducted: '&r&6$item &d&oを手に入れました。'
+  tweakshop:
+    name: ワンドツィークショップ
+    title: 杖制御・魔法並べ替え
+    description: 杖の設定変更や魔法の並び替えをします
+    cost_lore: 無料！
+    not_applicable: 杖はすでに$itemを持っています。
+    confirm_title: $itemを手に入れます。
+    deducted: '&r&6$item&d&oを手に入れました。'
+  progressmenu:
+    name: マジックプログレス
+    title: 魔法の進捗
+    selected: ''
+    cast_fail: ''
+    no_template: '&c$wand&cをカスタマイズすることはできません。'
+  appearanceshop:
+    name: ワンドアピアランス
+    description: 杖の見た目を変更します。
+    title: 杖の外観 ($balance&0)
+    selected: $itemに変更しました。
+    not_applicable: その杖はすでに$itemの見た目をしています。
+    no_template: '&c$wand&cの見た目を変更することはできません。'
+  bowappearanceshop:
+    name: ボウアピアランス
+    description: 魔法弓の見た目を変更します。
+    title: 魔法弓の外観 ($balance&0)
+    selected: $itemに変更しました。
+    not_applicable: その魔法弓はすでに$itemの見た目をしています。
+    no_template: '&c$wand&cの見た目を変更することはできません。'
+  swordappearanceshop:
+    name: ソードアピアランス
+    description: 魔法剣の見た目を変更します。
+    title: 魔法剣の外観 ($balance&0)
+    selected: $itemに変更しました。
+    not_applicable: その魔法剣はすでに$itemの見た目をしています。
+    no_template: '&c$wand&cの見た目を変更することはできません。'
+  controlsmenu:
+    name: ワンドコントロール
+    description: 杖の設定変更を行います。
+    title: 杖制御
+    confirm_title: $itemに変更します。
+    selected: '&r&6$item&d&oに変更しました。'
+    no_template: '&c$wand&cの挙動を変更することはできません。'
+  colorshop:
+    name: エフェクトカラー
+    description: 魔法のエフェクトの色を変更します。
+    title: エフェクトカラー ($balance&0)
+    selected: $itemに変更しました。
+  effectshop:
+    name: ワンドエフェクト
+    description: 杖にパーティクルエフェクトを追加します。
+    title: ワンドエフェクト ($balance&0)
+    selected: $itemに変更しました。
+    confirm_title: $item
+  upgradeshop:
+    name: ワンドアップグレードショップ
+    title: ワンドアップグレード ($balance&0)
+    description: 杖をアップグレードします。
+    not_applicable: 杖はすでに$itemを持っています。
+  emeraldshop:
+    name: エメラルド・エクスチェンジ
+    title: エメラルド ($balance&0)
+    description: XPとエメラルドを交換します。
+  withdrawals:
+    name: ウィズドロー
+    description: お金を貴重な金属とジェムに交換します。
+    cost_lore: ウィズドロー $cost
+    deducted: '&r&a$cost&r&d&o分の&r&6$item&r&dを引き出しました。'
+  deposits:
+    name: デポジット
+    description: 貴重な金属やジェムと引き換えにお金を稼ぎます。
+    cost_lore: デポジット $cost
+    deducted: '&r&a$cost&r&d&o分の&r&6$itemを預け入れました。'
+  spshop:
+    name: SPショップ
+    description: スペルポイントとお金を交換します。
+  lootshop:
+    name: ルートショップ
+    description: モブのドロップアイテムと引き換えにお金を稼ぎます。
+    title: ドロップアイテムを売る ($balance&0)
+  wandshop:
+    name: ワンドショップ
+    title: ワンド ($balance&0)
+    description: 杖を買います。
+  mobshop:
+    name: モブショップ
+    title: モブ ($balance&0)
+    description: モブエッグを買います。
+  spawnershop:
+    name: スポナーショップ
+    title: スポナー ($balance&0)
+    description: モブスポナーを買います。
+  broomshop:
+    name: ほうきショップ
+    title: ほうき ($balance&0)
+    description: 空飛ぶほうきを買います。
+  magicitemshop:
+    name: マジックアイテムショップ
+    title: マジックアイテム ($balance&0)
+    description: マジックアイテムを買います。
+  itemshop:
+    name: アイテムショップ
+    title: ショップ ($balance&0)
+    description: 買え買え買え!
+  buyshop:
+    name: バイショップ
+    title: ショップ ($balance&0)
+    description: 買え買え買え!
+  sellshop:
+    name: セールショップ
+    title: セール ($balance&0)
+    description: 売れ売れ売れ!
+    insufficient: '&c必要: &4$cost'
+    confirm_title: $itemを売ります。
+    deducted: '&r&a$earn円で&r&6$item&r&d&oを売りました。'
+  fxdemo:
+    name: FXデモ
+    description: 様々なEffectLibのエフェクトを表示します。
+  soundtest:
+    name: カスタムサウンドデモ
+    description: Magicリソースパックに含まれているすべてのカスタムサウンドエフェクトを聞きます。
+  fx:
+    name: FX パーティクル
+    description: '特定のパーティクルを表示します。以下のコマンドで使えます: /cast fx particle redstone'
+  randomtp:
+    name: ランダムテレポート
+    description: あなたをランダムな場所にテレポートします。
+  note01:
+    name: 1 Note C Middle（ド）
+  note02:
+    name: 2 Note C#（ド#）
+  note03:
+    name: 3 Note D（レ）
+  note04:
+    name: 4 Note D#（レ#）
+  note05:
+    name: 5 Note E（ミ）
+  note06:
+    name: 6 Note F（ファ）
+  note07:
+    name: 7 Note F#（ファ#）
+  note08:
+    name: 8 Note G（ソ）
+  note09:
+    name: 9 Note G#（ソ#）
+  note10:
+    name: 10 Note A（ラ）
+  note11:
+    name: 11 Note A#（ラ#）
+  note12:
+    name: 12 Note B（シ）
+  note13:
+    name: 13 Note C Octave（ド）
+  note14:
+    name: 14 Note C#（ド#）
+  note15:
+    name: 15 Note D（レ）
+  note16:
+    name: 16 Note D#（レ#）
+  note17:
+    name: 17 Note E（ミ）
+  note18:
+    name: 18 Note F（ファ）
+  note19:
+    name: 19 Note F#（ファ#）
+  note20:
+    name: 20 Note G（ソ）
+  note21:
+    name: 21 Note G#（ソ#）
+  note22:
+    name: 22 Note A（ラ）
+  note23:
+    name: 23 Note A#（ラ#）
+  note24:
+    name: 24 Note B（シ）
+  trinketshop:
+    title: 小物 ($balance&0)
+  airscooter:
+    name: エアスクーター
+    description: 空気のクッションに乗って旅に出ましょう！
+  disposal:
+    name: ディスポーザル
+    description: いらないアイテムを破棄します。
+  projector:
+    name: プロジェクター
+    description: It's-a Me!
+  sweep:
+    name: スウィープ
+    description: 強力な全方位攻撃です。
+  dash:
+    name: ダッシュ
+    description: 通り道にダメージを与えつつ前方に駆け抜けます。
+  throwsword:
+    name: スローソード
+    description: 敵に剣を投げつけます。
+  boomerang:
+    name: ブーメラン
+    description: ブーメランを投げつけます。毎回ちゃんと戻ってきます！
+  evade:
+    name: イヴェイド
+    description: 近くのどこかにランダムにテレポートします。
+  backflip:
+    name: バックフリップ
+    description: 素早く後ろに下がって敵を避けます。
+    fail: a:行ける場所がありません！
+  equation:
+    name: イクエーションテスター
+    description: |-
+      以下のセクションをspell.ymlに追記してあなたの方程式が正しいかテストします:
+        parameters:
+          equation: "attribute * 5"
+  add_protection:
+    name: プロテクション
+    description: |-
+      あらゆるダメージタイプに対する保護を杖に追加します。
+      この保護は杖を持っているときのみ有効です。
+  add_fall_protection:
+    name: フォールプロテクション
+    description: |-
+      落下ダメージに対する保護を杖に追加します。
+      この保護は杖を持っているときのみ有効です。
+  add_fire_protection:
+    name: ファイアプロテクション
+    description: |-
+      火炎ダメージに対する保護を杖に追加します。
+      この保護は杖を持っているときのみ有効です。
+  add_physical_protection:
+    name: フィジカルプロテクション
+    description: |-
+      物理ダメージに対する保護を杖に追加します。
+      この保護は杖を持っているときのみ有効です。
+  add_projectile_protection:
+    name: プロジェクタイルプロテション
+    description: |-
+      飛び道具による攻撃に対する保護を杖に追加します。
+      この保護は杖を持っているときのみ有効です。
+  add_explosion_protection:
+    name: エクスプロージョンプロテクション
+    description: |-
+      爆破ダメージに対する保護を杖に追加します。
+      この保護は杖を持っているときのみ有効です。
+  add_damage:
+    name: インクリースダメージ
+    description: 何かをあなたの武器で攻撃したときのダメージ量を増加させます。（魔法詠唱なし）
+  add_sharpness:
+    name: シャーペンソード
+    description: 魔法剣にダメージ増加のエンチャントを付与します。
+  remove_protection:
+    name: リファンド・プロテクション
+    description: あらゆるダメージタイプに対する保護を取り消してスペルポイントを戻します。
+  remove_fall_protection:
+    name: リファンド・フォールプロテクション
+    description: 落下ダメージに対する保護を取り消してスペルポイントを戻します。
+  remove_fire_protection:
+    name: リファンド・ファイアプロテクション
+    description: 火炎ダメージに対する保護を取り消してスペルポイントを戻します。
+  remove_physical_protection:
+    name: リファンド・フィジカルプロテクション
+    description: 物理ダメージに対する保護を取り消してスペルポイントを戻します。
+  remove_projectile_protection:
+    name: リファンド・プロジェクタイルプロテクション
+    description: 飛び道具攻撃に対する保護を取り消してスペルポイントを戻します。
+  remove_explosion_protection:
+    name: リファンド・エクスプロージョンプロテクション
+    description: 爆破ダメージに対する保護を取り消してスペルポイントを戻します。
+  magictorch:
+    name: マジックトーチ
+    description: あなたの周囲を常に照らします。
+  wandbuffshop:
+    name: ワンドバフ
+    description: |-
+      杖にバフ（正のエフェクト）を追加します。
+      杖を持っているときのみ有効です。
+    cast_fail: '&cすでにその種類のバフを追加できるレベル以上で保持しています！'
+    selected: '&r&6$item&r&d&oを&r&a$cost&r&d&oで購入しました。'
+    no_template: '&c$wand&cにはこのバフを追加することはできません。'
+  wanddebuffshop:
+    name: ワンドリファンド
+    description: 杖のバフを取り消してスペルポイントを戻します。
+    property_min: '&cそのバフを持っていません！'
+    cast_fail: '&cそのバフを持っていません！'
+    selected: '&r&6$item&d&oを選択しました。'
+    no_template: '&c$wand&cはこのバフを持っていません。'
+  mute:
+    name: ミュート
+    description: 特定のプレイヤーをミュートにします。
+  nobabies:
+    name: ノーベイビーズ
+    description: すべての子どものモブを大人にします。
+  vanish:
+    name: バニッシュ
+    description: あなたを他のプレイヤーから完全に見えなくします。
+  ledger:
+    name: レジャー
+    title: Ledger
+    header: '&2&lBalances'
+    currency_prefix: '&7&l'
+    value_prefix: '&0'
+  kamikaze:
+    name: カミカゼ
+    description: 死亡時に爆発するモブを召喚します。
+  decoy:
+    name: デコイ
+    description: クローンを作り出して、その影に隠れます。
+    cancel: デコイが倒されました！
+  piggyback:
+    name: ピギーバック
+    description: 今誰が何に乗っているの？
+  snap:
+    name: ザ・スナップ
+    descrition: このワールドの生物の半数を一掃します。
+  powerstone:
+    name: パワーストーン
+    description: 壊滅的な波動を解き放ちます。
+  reset:
+    name: プレイヤーリセット
+    title: プレイヤーデータをリセットしますか？
+    selected_free: あなたのプレイヤーデータをリセットします
+    confirm_title: 本当にいいですか？
+  aqualung:
+    name: アクアラング
+    description: 一度大きく息を吸います。
+    usage: 水中で空気が尽きたときに空気を補充します。
+  critical:
+    name: クリティカル
+    description: 確率でいくらかの追加ダメージを与えます。
+    upgrade_description: クリティカルが発生する確率を向上します。
+  bring:
+    name: ブリング
+    description: 他のプレイヤーをあなたにテレポートさせます。
+    title: 'テレポートする人:'
+  goto:
+    name: ゴートゥ
+    description: あなたを他のプレイヤーのもとにテレポートします。
+    title: 'テレポート先:'
+  feed:
+    name: フィード
+    description: プレイヤーに食べ物を与え、回復を促します。
+    usage: パンを16個与えます。
+    title: '食べ物を与え、回復させる人:'
+  manageshop:
+    name: マネージショップ
+    description: プレイヤーショップを設定します。
+    moved: ショップチェストの場所を編集します。
+    teleported: 店員の名前と位置を更新しました。
+time:
+  wait_seconds: もう$seconds秒
+  wait_minutes: もう$minutes分
+  wait_hours: もう$hours時間
+  wait_moment: 一瞬
+  wait_second: 1秒
+  wait_minute: 1分
+  wait_hour: 1時間
+  description_hour: 1時間
+  description_hours: $hours時間
+  description_minute: 1分
+  description_minutes: $minutes分
+  description_second: 1秒
+  description_seconds: $seconds秒
+  description_moment: 一瞬
+  description: '&eクールダウン: &6$time'
+  mage_description: '&c疲労回復まで: &6$time'
+wand:
+  default_name: 杖
+  upgrade_default_description: 杖をアップグレードします。
+  upgrade_item_description: '&e杖の上にドロップすることでアップグレードできます。'
+  spell_item_description: ''
+  brush_item_description: ''
+  copy_material_name: コピー
+  copy_material_description: 目標のブロックで置換します。
+  erase_material_name: イレース
+  erase_material_description: 空気で置換します。
+  clone_material_name: クローン
+  clone_material_description: ブロックを対象からコピーします。
+  replicate_material_name: レプリケート
+  replicate_material_description: クローンの対象を複製します。
+  clone_material_activated: a:クローン元が選択されました。
+  replicate_material_activated: a:レプリケート元が選択されました。
+  erase_modifier_activated: a:イレースのモディファイアがアクティブになりました。
+  map_material_name: マップ $id
+  map_material_name_scaled: マップ $id ($sizex$size)
+  map_material_description: 最後に持っていたマップからピクセルアートを作成します。
+  schematic_material_description: 建築に$schematicを使います。
+  building_material_description: $materialで建築します。
+  upgrade_uses: '&a$count回分の使用可能回数を追加しました。'
+  upgrade_uses_singular: '&a$count回分の使用可能回数を追加しました。'
+  uses_remaining_brief: '&c$count回分の使用可能回数'
+  uses_remaining_singular: '&c$count回分の使用可能回数'
+  uses_remaining: $count回分の使用可能回数が残っています。
+  enchantment_level_1: I
+  enchantment_level_2: II
+  enchantment_level_3: III
+  enchantment_level_4: IV
+  enchantment_level_5: V
+  enchantment_level_max: X
+  spell_count: $count個の魔法を覚えています。
+  material_count: $count個のマテリアルを持っています。
+  upgrade_spell_count: $count個の魔法を追加します。
+  upgrade_material_count: $count個のマテリアル魔法を追加します。
+  mana_max: '&e魔力: $amount'
+  mana_amount: '&e魔力: $amount'
+  mana_amount_boosted: '&e魔力: $amount &f(&b$mana&f)'
+  mana_regeneration: '&e魔力回復速度: $amount/秒'
+  mana_per_damage: '&e魔法攻撃力: $amount/HP'
+  mana_regeneration_boosted: '&e魔力回復速度（ブースト後）: $amount &f(&b$mana&f)&d/s'
+  mana_boost: '&e魔力ブースト: $percent%'
+  mana_regeneration_boost: '&e魔力回復速度ブースト: $percent%'
+  earn_multiplier: '&6$type収入ブースト: $percent%'
+  block_chance: '&b防御率 $roman'
+  reflect_chance: '&b反射率 $roman'
+  cost_reduction: '&6コスト減 $roman'
+  consume_reduction: '&6Manifestation'
+  cooldown_reduction: '&6クールダウン短縮 $roman'
+  power: '&6力 $roman'
+  attributes: '&d$attribute $value'
+  property_stack: +$property
+  property_stack_negative: '&c$property'
+  property_value: $property
+  property_value_negative: '&c$property'
+  upgrade_slot: '&6以下のスロットへ&7: &3$slot'
+  slots_header: '&6アップグレード&7:'
+  empty_slot: ' &8- &7(&2空スロット &6$slot&7)'
+  slotted: ' &8- &7$slotted'
+  item_attributes:
+    GENERIC_ATTACK_DAMAGE: 攻撃ダメージ
+  prefixes:
+    protection: '&2'
+    strength: '&2'
+    weakness: '&2'
+    enchantment: '&7'
+  protection:
+    overall: プロテクション $roman
+    physical: フィジカルプロテクション $roman
+    projectile: プロジェクタイルプロテクション $roman
+    fall: フォールプロテクション $roman
+    fire: ファイアプロテクション $roman
+    explosion: ブラストプロテクション $roman
+    magic: マジカルプロテクション $roman
+    unknown: $typeプロテクション $roman
+  strength:
+    overall: ダメージ $roman
+    physical: 物理ダメージ $roman
+    projectile: 飛び道具ダメージ $roman
+    fall: 落下ダメージ $roman
+    fire: 火炎ダメージ $roman
+    explosion: 爆破ダメージ $roman
+    magic: 魔法ダメージ $roman
+    unknown: $typeダメージ $roman
+  weakness:
+    overall: 対全ダメージ弱体化 $roman
+    physical: 対物理ダメージ弱体化 $roman
+    projectile: 対飛び道具ダメージ弱体化 $roman
+    fall: 対落下ダメージ弱体化 $roman
+    fire: 対火炎ダメージ弱体化 $roman
+    explosion: 対爆破ダメージ弱体化 $roman
+    magic: 対魔法ダメージ弱体化 $roman
+    unknown: 対$type弱体化 $roman
+  enchantment:
+    arrow_damage: 射撃ダメージ増加 $roman
+    arrow_fire: フレイム
+    arrow_infinite: 無限
+    arrow_knockback: パンチ $roman
+    binding_curse: 束縛の呪い
+    channeling: 招雷
+    damage_all: ダメージ増加 $roman
+    damage_arthropods: 虫特攻 $roman
+    damage_undead: アンデッド特攻 $roman
+    depth_strider: 水中歩行 $roman
+    dig_speed: 効率強化 $roman
+    durability: 耐久力 $roman
+    fire_aspect: 火属性
+    frost_walker: 氷渡り $roman
+    impaling: 水性特攻
+    knockback: ノックバック $roman
+    loot_bonus_blocks: 幸運 $roman
+    loot_bonus_mobs: ドロップ増加 $roman
+    loyalty: 忠誠
+    luck: 宝釣り $roman
+    lure: 入れ食い $roman
+    mending: 修繕
+    multishot: マルチショット
+    oxygen: 水中呼吸 $roman
+    protection_environmental: ダメージ軽減 $roman
+    protection_explosions: 爆発耐性 $roman
+    protection_fall: 落下耐性 $roman
+    protection_fire: 火炎耐性 $roman
+    protection_projectile: 飛び道具耐性 $roman
+    riptide: 激流
+    silk_touch: シルクタッチ
+    sweeping_edge: 範囲ダメージ増加 $roman
+    thorns: 棘の鎧 $roman
+    vanishing_curse: 消滅の呪い
+    water_worker: 水中採掘
+  potion_effect: '&b$effect $roman'
+  super_powered: '&3超人'
+  super_protected: '&3無敵'
+  spell_aura: '&bオーラ: &6$spell'
+  costs_description: $description&rを消費します
+  active_costs_description: 1秒ごとに$description&rを消費します
+  range_description: '&9範囲: &6$range&9メートル'
+  owner_description: '&2&o$nameの杖'
+  bound_description: '&3&o紐付け: $name'
+  unmodifiable: その杖は編集できません。
+  player_unmodifiable: $nameの杖は編集できません。
+  bound_to_other: その杖はあなたに紐付けられていません。
+  bound: その杖は$nameに紐付けられています。
+  spell_added: 魔法 &r&6$name &d&oを学びました！
+  brush_added: ブラシ &r&7$name &d&oを学びました！
+  player_spell_upgraded: $playersの&r&6$name&d&oは&3$level&d&oにアップグレードされました！
+  spell_upgraded: '&r&6$name&d&oは&3$level&d&oにアップグレードされました！'
+  spell_override_upgraded: '&r&6$name&d&oはアップグレードされました！'
+  upgraded_property: '&r&dあなたは&r&b$name&r&dにアップグレードされました。'
+  spell_progression: '&r&6$name&d&oは進歩しました: &3$level&d&o/&3$max_level'
+  mana_added: '&r&d現在の魔力量は $value'
+  hotbar_count: $amount個のホットバー
+  player_upgraded: $nameの杖はアップグレードされました
+  player_not_upgraded: $nameの杖はアップグレードされませんでした
+  player_spells_levelled: $count個の$nameの魔法がレベルアップしました
+  player_spells_not_levelled: $nameの魔法は1個もレベルアップしませんでした
+  spells_levelled: $count個のあなたの魔法がレベルアップしました
+  spells_not_levelled: あなたの魔法は1個もレベルアップしませんでした
+  no_wand: 手に杖を持ってください
+  player_no_wand: $nameは手に杖を持っていません
+  no_item: 手にアイテムを持ってください
+  player_no_item: $nameは手にアイテムを持っていません
+  reorganized: $wand&bを整理しました
+  player_reorganized: $nameの杖を整理しました
+  alphabetized: $wand&bをアルファベット順に並び替えました
+  player_alphabetized: $nameの杖をアルファベット順に並び替えました
+  already_enchanted: その$itemはすでに杖です
+  enchanted: $itemはすでに杖になっています
+  player_enchanted: $nameの$itemは杖になりました
+  unenchanted: 杖はただのアイテムに戻りました
+  player_unenchanted: $nameの杖はただのアイテムに戻りました
+  no_path: '&r&4$wand&4はエンチャントできません'
+  max_enchanted: '&r&4$wand&4はこれ以上エンチャントできません'
+  duplicated: あなたの杖は複製されました
+  player_duplicated: $nameの杖は複製されました
+  restored: あなたの杖が復元されました
+  player_restored: $nameの杖が復元されました
+  not_restored: あなたは杖を失っていません
+  player_not_restored: $nameの杖は失われていません
+  setbound: あなたの杖は紐付けられました
+  player_setbound: $nameの杖は紐付けられました
+  unbound: あなたの杖の紐付けは解除されました
+  player_unbound: $nameの杖の紐付けは解除されました
+  unboundall: すべて杖は忘れ去られ、紐付けが解除されました
+  player_unboundall: $nameののすべて杖は忘れ去られ、紐付けが解除されました。ただし杖インベントリの中身はそのままです。
+  notunbound: あなたは紐付けられた杖 $wand を持っていません
+  player_notunbound: $nameは紐付けられた杖 $wand を持っていません
+  unlocked: あなたの杖はアンロックされました
+  player_unlocked: $nameの杖はアンロックされました
+  unknown_template: '未知の杖名: $name'
+  reconfigured: 杖は再設定されました
+  not_reconfigured: 杖は再設定されませんでした
+  removed_property: $name属性を消去しました
+  no_property: 杖は$name属性を持っていません
+  player_reconfigured: $nameの杖は再設定されました
+  player_not_reconfigured: $nameの杖は再設定されませんでした
+  filled: '&b$wand &bは今すべてのあなたの魔法を含んでいます'
+  player_filled: $nameの杖は埋めつくされました
+  renamed: 杖の名前が変更されました
+  player_renamed: $nameの杖の名前が変更されました
+  self_destruct: 古代のアーティファクトがあなたの手の中で崩れ去りました
+  no_permission: '&r&4$wand&r&4はここでは使えません。'
+  single_spell: $spellの杖
+  fully_enchanted: '&c限界まで進歩したため、今以上は進歩しません'
+  need_more_levels: '&d&oエンチャントするためには最低でも&r&4$levels&d&oレベル必要です'
+  require_more_levels: もっと高レベルになってからエンチャントしてください
+  randomized_lore: 何の杖をあなたは手に入れますか？
+  randomized_name: 杖ボックス
+  upgrade_name: $nameアップグレード
+  randomized_description: '&o&2$description'
+  description_lore: '&o&a$description'
+  path_lore: ''
+  wand_instructions_header: |-
+    &8 ----------------------------------------------------
+    &8|
+    &8|   &b&l杖の使用方法
+    &8|
+  wand_instructions_footer: |-
+    &8|
+    &8 ----------------------------------------------------
+  sp_instructions: |-
+    &8| &7> &6スペルポイント（SP）&fを獲得しました！
+    &8| &7> &6SP&fは魔力バー（XPバー）の上に表示されます
+    &8| &7> &6SP&fは&eエンチャントテーブル&fで魔法を覚えるときに消費します
+    &8| &7> &f同じ魔法を連続して詠唱すると獲得&6SP&fが下がります
+    &8| &7> &f魔法を手に入れたら&d複数の魔法を組み合わせて&f使いましょう
+  currency_instructions: |-
+    &8| &7> &6$currency&fを手に入れました！
+    &8| &7> &6$currency&fは魔力バー（XPバー）の上に表示されます
+    &8| &7> &6$currency&fは&eエンチャントテーブル&fで魔法を覚えるときに消費します
+    &8| &7> &f同じ魔法を連続して詠唱すると獲得&6SP&fが下がります
+    &8| &7> &f魔法を手に入れたら&d複数の魔法を組み合わせて&f使いましょう
+  bound_instructions: |-
+    &8| &7> &a$wand&fはあなたに&9紐付け&fされました
+    &8| &7> &f紐付けした杖は&9ドロップできなく&fなります
+  spell_instructions: |-
+    &8| &7> &a$wand&fの呪文&d$spell&fを詠唱するには杖を
+    &8| &7> &6振って&fください（右クリック）
+  mana_instructions: '&8| &7> &f魔法を使うには&6魔力&fが必要です。魔力の残量は&5XPバー&fと連動しています'
+  enchant_instructions: |-
+    &8| &7> &f魔法を詠唱して&6スペルポイント&fを稼ぎましょう
+    &8| &7> &eエンチャントテーブル&fで&6SP&fを消費して魔法を覚えられます
+  path_instructions: |-
+    &8| &7> &f次の過程である&a$nextpath&fにランクアップして
+    &8| &7> &fさらなる&6魔力&fを得るには&a$path&f課程の
+    &8| &7> &fすべての魔法を修めましょう
+  page_instructions: |-
+    &8| &7> &a$wand&fは1ページ分以上の魔法を覚えています
+    &8| &7> &fインベントリ画面の外側を&6クリック&fするとページを変えられます
+  hotbar_count_usage: |-
+    &8| &7> &e別のホットバーを手に入れました
+    &8| &7> &fホットバーを入れ替えるためには&6$cycle_hotbar&fします
+  inventory_instructions: |-
+    &8| &7> &f魔法インベントリに切り替えるには&6$toggle&fします
+    &8| &7> &f次に、ホットバーに魔法を追加または削除するために
+    &8| &7> &6インベントリを開きます（E）
+    &8| &7> &fそして、&6数字キー&fを押すことで使う魔法を選択できます
+  chest_instructions: |-
+    &8| &7> &f魔法インベントリに切り替えるには&6$toggle&fします
+    &8| &7> &6インベントリを開いて魔法をクリック&fして使う魔法を選べます
+  skills_instructions: |-
+    &8| &7> &f魔法インベントリに切り替えるには&6$toggle&fします
+    &8| &7> &f魔法をホットバーに移動してアクティブにしましょう
+    &8| &7> &fそして、&6数字キー&fを押すことで魔法を使えます
+  cycle_instructions: '&8| &7> &fアクティブな魔法を切り替えるには&6$cycle&fします'
+  brush_instructions: |-
+    &8| &7> &6マテリアルブラシ&fが&a$wand&fに追加されました
+    &8| &7> &6Shift+$toggle&fでブラシを選択できます。
+  hotbar_changed: ''
+  spell_activated: $spell
+  upgrade_prefix: '&6'
+  single_use_prefix: '&4'
+  bound_prefix: '&3'
+  unbound_prefix: '&b'
+  has_path_prefix: '&d'
+  unmodifiable_prefix: '&6'
+  spell_prefix: '&6'
+  brush_prefix: '&7'
+  chest_inventory_title: 杖
+wands:
+  testwand:
+    name: テスト用杖
+    description: 魔法をテストするための空の杖。
+  default:
+    name: 杖
+    description: $path課程&rの魔法の杖
+  wand:
+    name: 杖
+    description: $path課程&rの魔法の杖
+  starter:
+    name: はじまりの杖
+    description: ポテンシャルが制限された杖
+  beginner:
+    name: (古い) 初心者の杖
+    description: これを使わないでください...代わりに「杖(wand)」を使ってください。
+  master:
+    name: 修士の杖
+    description: デモンストレーション向け
+  student:
+    name: 生徒の杖
+    description: デモンストレーション向け
+  apprentice:
+    name: 見習いの杖
+    description: デモンストレーション向け
+  rage:
+    name: 怒りの剣
+    description: 敵を攻撃することでエネルギーを集める剣
+  base_sword:
+    wand_instructions_header: |-
+      &8 ----------------------------------------------------
+      &8|
+      &8|   &b&l剣の使用方法
+      &8|
+    spell_instructions: '&8| &7> &6数字キー&fを押すことで&d$spell&fを使用できます'
+  magicsword:
+    name: 魔法剣
+    description: $path課程&rの魔法剣
+  base_bow:
+    wand_instructions_header: |-
+      &8 ----------------------------------------------------
+      &8|
+      &8|   &b&l弓の使用方法
+      &8|
+    spell_instructions: '&8| &7> &6矢を放つ&fことで&d$spell&fを使用できます'
+  broom_glider:
+    name: ほうき用グライダー
+    upgrade_slot: '&3$slot'
+    upgrade_item_description: 空飛ぶほうきにドロップすることでずっと飛行できるようになります
+  broom_booster:
+    name: ほうき用ブースター
+    upgrade_slot: '&3$slot'
+    upgrade_item_description: 空飛ぶほうきにドロップすることで飛行速度が上がります
+  broomstick:
+    name: 空飛ぶほうき
+    description: |-
+      &r&b空を飛ぶために使えるほうきです
+      &b高度を下げるとスピードが上がります
+    enchant_instructions: ''
+    wand_instructions_header: |-
+      &8 ----------------------------------------------------
+      &8|
+      &8|   &b&l空飛ぶほうきの使い方
+      &8|
+    spell_instructions: |-
+      &8| &7> &f空飛ぶほうきを使って空を飛べます！
+      &8| &7> &f高度を下げるとスピードが上がりますが
+      &8| &7> &fずっと飛び続けすぎないようにしましょう！
+      &8| &7> &6ほうきの扱い&fは使えば使うほど上達するのでよく練習しましょう！
+    bound_instructions: '&8| &7> &a$wand&fはあなたに&9紐付け&fられています'
+  spellbook:
+    name: 魔法書
+    description: $path課程&rの魔法書
+    wand_instructions_header: |-
+      &8 ----------------------------------------------------
+      &8|
+      &8|   &b&l魔法書の使い方
+      &8|
+    spell_instructions: '&8| &7> &6数字キー&fを押すことで&d$spell&fを使用できます'
+    inventory_instructions: |-
+      &8| &7> &f魔法インベントリに切り替えるには&6$toggle&fします
+      &8| &7> &f魔法を&6ドラッグ&fしてホットバーに移動してアクティブにしましょう
+      &8| &7> &fそして、&6数字キー&fを押すことで魔法を使えます
+  skillbook:
+    name: スキルの書
+    description: 右クリックでスキルを閲覧でき、ホットバーにスキルをドラッグすれば使用できます
+  magicbow:
+    name: 魔法弓
+    description: $path課程&rの魔法弓
+  magiccrossbow:
+    name: 魔法のクロスボウ
+    description: $path課程&rの魔法のクロスボウ
+  mastersword:
+    name: マスターソード
+    description: 闇を封じる伝説の剣
+  staff:
+    name: 長杖
+    description: 賢く使って！
+  admin:
+    name: シュッシャー
+    description: 管理者限定
+  developer:
+    name: コーダー
+    description: マトリックスを閲覧します
+  camera:
+    name: カメラ
+    description: あなたやその他のポートレート（肖像画）を撮ります。
+  magichat:
+    name: 魔法の帽子
+    description: 真のウィザードハットです！真上を見て右クリックすることで着用します。
+  wizardhelmet:
+    name: 魔法使いのスカーフ
+  wizardchestplate:
+    name: 魔法使いのローブ
+  wizardleggings:
+    name: 魔法使いのズボン
+  wizardboots:
+    name: 魔法使いの靴
+  apprenticehelmet:
+    name: 見習いの帽子
+    description: 新たな魔法使いへ
+  apprenticechestplate:
+    name: 見習いの服
+    description: 新たな魔法使いへ
+  apprenticeleggings:
+    name: 見習いのズボン
+    description: 新たな魔法使いへ
+  apprenticeboots:
+    name: 見習いの靴
+    description: 新たな魔法使いへ
+  clericchestplate:
+    name: 聖職者のローブ
+    description: 近くのプレイヤーを回復します
+  magneticleggings:
+    name: マグネティックレギンス
+    description: 近くに落ちているアイテムやXPを吸着します
+  rabbitboots:
+    name: うさぎの靴
+    description: うさぎの気持ちになります
+  flashboots:
+    name: フラッシュブーツ
+    description: ズーーーム
+  rocketboots:
+    name: ロケットブーツ
+    description: 一足飛びに駆けつけます！
+  hulkboots:
+    name: ハルクの靴
+    description: ジャンプ！
+  goggles:
+    name: 暗視ゴーグル
+    description: 見えないものを見ます
+  invisiblecloak:
+    name: 透明マント
+    description: 伝説の秘宝の一つです
+  minister:
+    # unsure
+    name: 大臣の飛行杖
+    description: 魔法のために！
+  miniwolf:
+    name: ミニウルフ
+    description: ネーサン・ウルフのすごい杖。
+  borealis:
+    name: ボレアリス
+    description: オーロラの杖。
+  redeffects:
+    name: 赤色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  greeneffects:
+    name: 緑色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  blueeffects:
+    name: 青色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  whiteeffects:
+    name: 白色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  blackeffects:
+    name: 黒色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  purpleeffects:
+    name: 紫色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  yelloweffects:
+    name: 黄色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  aquaeffects:
+    name: 水色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  orangeeffects:
+    name: 橙色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  magentaeffects:
+    name: 赤紫色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  grayeffects:
+    name: 灰色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  lightgrayeffects:
+    name: 薄灰色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  lightblueeffects:
+    name: 空色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  pinkeffects:
+    name: 桃色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  browneffects:
+    name: 茶色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  darkgreeneffects:
+    name: 緑色の杖エフェクト
+    description: 杖のエフェクトに色を付けます！
+  randomeffects:
+    name: ランダムな色の杖エフェクト
+    description: あなたは運がいいですか？ 杖のエフェクトにランダムな色をつけます！
+  bubbleeffects:
+    name: 泡の杖エフェクト
+    description: ポーションっぽい泡のエフェクトを杖に付加します
+  rainboweffects:
+    name: 虹の杖エフェクト
+    description: 色が変化するパーティクルです
+  cleareffects:
+    name: 空白の杖エフェクト
+    description: 杖のパーティクルや泡のエフェクトを消します
+  haloeffects:
+    name: 後光のエフェクト
+    description: 自身の背後から差す後光のエフェクトです
+  butterflyeffects:
+    name: バタフライエフェクト
+    description: 翼を授ける。
+  student_upgrade:
+    name: 生徒アップグレード
+    description: 生徒レベルにアップグレードします
+  apprentice_upgrade:
+    name: 見習いアップグレード
+    description: 見習いレベルにアップグレードします
+  master_upgrade:
+    name: 修士アップグレード
+    description: 修士レベルにアップグレードします
+  hotbar1:
+    name: ホットバーリセット
+    description: あなたの杖を単一のホットバーにリセットします
+  hotbar2:
+    name: ホットバーレベル2
+    description: 杖に新たなホットバーを追加します！
+  hotbar3:
+    name: ホットバーレベル3
+    description: 2個より3個のほうがいいよね？
+  antihunger:
+    name: 抗空腹アップグレード
+    description: もう二度と空腹になりません！
+  undroppable:
+    name: ドロップ不可アップグレード
+    description: あなたの杖をドロップ不可にします
+  chestmode:
+    name: チェストモード
+    description: よりシンプルな杖のメカニズムに変更します
+  cyclemode:
+    name: サイクルモード
+    description: 最もシンプルな杖のメカニズムに変更します
+  inventorymode:
+    name: インベントリモード
+    description: エキスパートな魔法使い向け
+  quickcast_enable:
+    name: 高速詠唱（全）
+    description: 高速詠唱をすべての魔法で有効にします
+  quickcast_disable:
+    name: 高速詠唱（無）
+    description: 高速詠唱をすべての魔法で無効にします
+  quickcast_normal:
+    name: 高速詠唱（普）
+    description: 高速詠唱をいくつかの選択済みの魔法について有効にします
+  quickcast_manual:
+    name: 高速詠唱（手動）
+    description: 高速詠唱をインベントリでQキーを押した時だけ有効にします
+  mode_drop:
+    name: ドロップモード
+    description: |-
+      &a魔法インベントリに切り替えるキーをドロップ(Q)キー
+      &aホットバーの切り替えは持ち替え(F)キーにし
+      &a左クリックで魔法を詠唱するようになります。
+  mode_rightclick:
+    name: 右クリックモード
+    description: |-
+      &a魔法インベントリに切り替えるのを右クリック
+      &aホットバーの切り替えはドロップ(Q)キーにし
+      &a左クリックで魔法を詠唱するようになります。
+  mode_sword:
+    name: ソードモード
+    description: |-
+      &a魔法インベントリに切り替えるキーをドロップ(Q)キー
+      &aホットバーの切り替えは持ち替え(F)キーにし
+      &aホットバーボタン(0～9)で魔法を詠唱するようになります。
+  mode_swap:
+    name: 持ち替えモード
+    description: |-
+      &a魔法インベントリに切り替えるキーを持ち替え(F)キーにし
+      &aホットバーの切り替えはドロップ(Q)キーにし
+      &a右クリックで魔法を詠唱するようになります。
+  loud:
+    name: 喧しい杖
+    description: すべての杖のチャットメッセージをオンにします
+  quiet:
+    name: 静かな杖
+    description: 魔法詠唱のメッセージをオフにします
+  silent:
+    name: 無音の杖
+    description: すべての杖のチャットメッセージをオフにします
+  organizer:
+    name: オーガナイザー
+    description: 杖の魔法インベントリを整理します
+  alphabetizer:
+    name: アルファベタイザー
+    description: 杖の魔法インベントリをアルファベット順にします
+  recalltoken:
+    name: リコールトークン
+    description: ウェイポイントにテレポートします
+  respawntoken:
+    name: リスポーントークン
+    description: これを持って詠唱するとスポーン地点に帰れます
+  cursedmeat:
+    name: 呪われた肉塊
+    description: 触るだけでもいけない！
+  crackedbroomstick:
+    name: 壊れた空飛ぶほうき
+    description: 昔は気持ちよく空を飛べた。今となってはいい思い出です。
+  spleef:
+    name: スプリーフ
+    description: ウィザードスプリーフを遊ぶための杖です
+  divinghelmet:
+    name: ダイビングヘルメット
+    description: 水の中で自由に動くための帽子です
+  heroes:
+    name: 杖
+    description: Qボタンでスキルインベントリを開けます
+  ledger:
+    name: 原簿
+    description: 銀行の残高を確認できます
+  questscompass:
+    name: クエストコンパス
+    description: 次に何をすべきか教えてくれるコンパスです
+  ocarina:
+    name: オカリナ
+    description: 右クリックとホットバーボタン(0～9)で音を鳴らします
+    spell_count: $count の音階を持っています
+  mirrorshield:
+    name: ミラーシールド
+    description: 魔法を防御または反射できます
+  empty:
+    name: エンプティ
+    description: スクラッチからインゲームアイテムを作成できます
+  talisman:
+    name: 魔力のタリスマン
+    description: 持っていると魔力量のボーナスが付加されます
+  magicheart:
+    name: マジックハート
+    description: マジックアイテムをクラフトするのに使います
+  appearance_beginner:
+    name: 初心者の杖の外観
+    description: これから始めるのに良い杖
+  appearance_student:
+    name: 生徒の杖の外観
+    description: その魔法が成長を始めた
+  appearance_apprentice:
+    name: 見習いの杖の外観
+    description: 変形した！
+  appearance_master:
+    name: 魔法使いの杖の外観
+    description: 高度に魔法的な器材
+  appearance_magicka:
+    name: マギカの杖の外観
+    description: 魔法的な力に満ちた三日月がモチーフの大きな杖
+  appearance_moon:
+    name: 月の杖の外観
+    description: その昔、船乗りが使っていた杖
+  appearance_book:
+    name: 本杖の外観
+    description: 巧みに本のような外装をしている杖
+  appearance_green:
+    name: 緑の杖の外観
+    description: 毒のような危険な見た目の杖
+  appearance_bow1:
+    name: エジプトの弓の外観
+  appearance_bow2:
+    name: 細身の弓の外観
+  appearance_longbow:
+    name: ロングボウの外観
+  appearance_spire:
+    name: 杖槍の外観
+    description: 手に持てる大きさの魔法使いの塔のような杖
+  appearance_claw:
+    name: 鉤爪の杖の外観
+    description: 邪悪な鉤爪が力ある魔法のオーブを掴んでいる外観の杖
+  appearance_orb:
+    name: 魔法珠の杖の外観
+    description: 力ある魔法のオーブを備えた杖
+  appearance_magma:
+    name: マグマの杖の外観
+    description: 純粋なマグマのエッセンスを含んだ杖
+  appearance_valk:
+    name: 戦乙女の剣の外観
+  appearance_whitedagger:
+    name: 短剣の外観
+  appearance_demon:
+    name: 悪魔の剣の外観Demon Sword Appearance
+  appearance_felm:
+    name: 火剣の外観
+  appearance_riven:
+    # unsure
+    name: リヴェンソードの外観
+  appearance_silver:
+    name: 銀の槌の外観
+  appearance_lava:
+    name: 溶岩の剣の外観
+  glow_upgrade:
+    name: 輝きの素
+    description: 杖を光らせます
+  noglow_upgrade:
+    name: 艶消しの素
+    description: Take away that shimmer
+  uberwand:
+    name: 超越の杖
+    description: 究極の杖
+  extinguisher:
+    name: 火消し
+    description: 火を消し止めます
+  science:
+    name: フォー・サイエンス
+    description: オートマタのテスト向け
+  potion_sp100:
+    name: SPポーション
+    description: 飲むと100スペルポイント獲得できます
+  purger:
+    name: パージ
+    description: オートマタと戦うための杖
+  magictorch:
+    name: 魔法の松明
+    description: 持っている限り周りを照らす明かりを作り出します
+  gauntlet:
+    name: 無限のガントレット
+    description: 宇宙のすべての力を集めたガントレット
+  rainbowhelmet:
+    name: テクニカラーなヘルメット
+    spell_aura: ''
+  rainbowchestplate:
+    name: テクニカラーなチェストプレート
+    spell_aura: ''
+  rainbowleggings:
+    name: テクニカラーなレギンス
+    spell_aura: ''
+  rainbowboots:
+    name: テクニカラーなブーツ
+    spell_aura: ''
+  iceskates:
+    name: アイススケート
+  admintool:
+    name: アドミンツール
+    description: 管理者やモデレーターのための様々な便利ツール
+  shoptoken:
+    name: ショップトークン
+    description: あなた自身で管理できるショップを作成します
+  shoptool:
+    name: $npc_name
+    lore:
+    - 'ショップの管理:'
+    - '&7ショップインベントリとして設定するには、チェストを見て右クリックします'
+    - '&8あるいは、&3ショップ名を更新するか'
+    - '&3店員を今あなたがいる場所にテレポートします'
+    - '&8ショップ名を変えるにはショップツールを金床で改名しましょう'
+automata:
+  awaken: '&c&o$name&r&5が目を覚ました'
+  default_name: オートマトン
+  level: レベル $roman
+  good:
+    prefixes:
+    - Holy
+    - Light
+    - Shiny
+    - Shimmering
+    - Stalwart
+    - Bright
+    - Savior
+    - Blessed
+    - Magic
+    - Enchanted
+    - Enlightened
+    - Magnificent
+    - Magnamous
+    - Brave
+    - Loyal
+    - Glorious
+    suffixes:
+    - of Holiness
+    - of Honor
+    - of Light
+    - of Lightness
+    - of Protection
+    - of The Sun
+    - of Magic
+    - of The Blessed
+    - of Forgiveness
+    - of Loyalty
+    - of Retribution
+    - of Resilience
+    - of Hope
+    - of Glory
+    - of Absolution
+  evil:
+    prefixes:
+    - Evil
+    - Dark
+    - Slimy
+    - Dreadful
+    - Dread
+    - Cursed
+    - Magic
+    - Enchanted
+    - Harbringer
+    - Nether
+    - Infamous
+    - Nefarious
+    - Distastrous
+    - Eldritch
+    - Disgusting
+    - Abominable
+    - Horrifying
+    - Calamity
+    - Calamitous
+    - Otherworldly
+    - Deplorable
+    - Apocalyptic
+    - Despicable
+    - Vile
+    - Wretched
+    - Loathsome
+    - Monstrous
+    - Dread
+    suffixes:
+    - of Darkness
+    - of Evil
+    - of the Night
+    - of Death
+    - of Doom
+    - of the Nether
+    - of Magic
+    - of Destruction
+    - of Desolation
+    - of Infamy
+    - of Horror
+    - of the Dark
+    - of the End
+    - of Domination
+    - of the Apocalypse
+    - of Devastation
+    - of the Wilds
+    - of Terror
+    - of Blight
+    - of the Plague
+tags:
+  noduel:
+    name: 非デュエル
+    description: デュエルエリアで使えない魔法
+  nojail:
+    name: 非ジェイル
+    description: 牢獄で使うことができない魔法
+categories:
+  combat:
+    name: コンバットマジック
+    description: 基本的に戦闘用魔法です
+  automata:
+    name: オートマタ
+    description: 生命を作り出します！
+    color: FFA500
+  electrical:
+    name: エレクトリカル
+    description: マッドな科学です
+    color: '888800'
+  master:
+    name: マスター
+    description: 本当に強力な魔法です
+    color: 00AACC
+  utility:
+    name: ユーティリティ
+    description: ユーティリティと移動系の魔法です
+  demolition:
+    name: デモリション
+    description: 非常に破壊的な解体用魔法です
+    color: FF0000
+  dark:
+    name: ダークマジック
+    description: 邪悪な魔法です！
+    color: '010101'
+  light:
+    name: ライトマジック
+    description: 良い魔法です！
+    color: DDDDDD
+  engineering:
+    name: エンジニアリング
+    description: 魔法的な建築のための魔法です
+    color: 00FFFF
+  elemental:
+    name: エレメンタル
+    description: 自然を操ります
+  mining:
+    name: マイニング
+    description: 採掘を補助する魔法です
+  skills:
+    name: Heroesスキル
+    descriptions: Heroesで使われるスキルです
+  staff:
+    name: スタッフ
+    description: スタッフ限定の魔法です
+  specialty:
+    name: スペシャル
+    description: アイテムやNPCが使う魔法です
+  music:
+    name: ミュージック
+    description: 音楽を再生する魔法です
+classes:
+  battle_mage:
+    name: 魔法戦士
+    description: 魔法剣を振るう戦士です
+  mage:
+    name: 魔法使い
+    description: 魔法を詠唱する人々です
+  archer_mage:
+    name: 魔法弓士
+    description: 魔法弓を使う技術がある魔法使いです
+modifiers:
+  antiknockback:
+    name: アンチノックバック
+    description: ノックバックされるのを防ぎます
+paths:
+  beginner:
+    name: '&7初心者'
+    description: 魔法に触り始めた人です
+  student:
+    name: '&2研修生'
+    description: 魔法を学び始めた人です
+  apprentice:
+    name: '&a見習い'
+    description: そこそこ魔法を覚え始めた人です
+  master:
+    name: '&6修士'
+    description: かなり魔法を覚えた人です
+  battle:
+    name: '&7戦奴'
+    description: 低級なコンバットマジックを扱う人です
+  squire:
+    name: '&2見習い戦士'
+    description: 中級のコンバットマジックを扱う人です
+  soldier:
+    name: '&a兵士'
+    description: 高級なコンバットマジックを扱う人です
+  knight:
+    name: '&6騎士'
+    description: 兵士よりさらに高度なコンバットマジックを扱う人です
+  broom:
+    name: ほうき
+    description: 空飛ぶほうきのアップグレードです
+  blaster:
+    name: ブラスター
+    description: ブラスターのアップグレードです
+  staff:
+    name: '&bスタッフ'
+    description: スタッフ限定の魔法です
+  archer:
+    name: '&6アーチャー'
+    description: 弓魔法使いの魔法です
+slots:
+  broom_upgrade:
+    name: ほうきアップグレード

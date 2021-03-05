@@ -2,7 +2,13 @@
 
 # 8.5
 
+## Changes
+
  - Magic now loads at server startup, so world gen modifications to default worlds catch spawn chunks
+
+## Additions
+
+ - Added builtin Japanese translation (JP) (Thank you, LazyGon!)
 
 # 8.4.1
 
