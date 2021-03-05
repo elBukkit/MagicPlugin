@@ -187,7 +187,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable String warpKey = null;
         protected @Nullable ConfigurationSection castSpellParameters = null;
         protected @Nullable String unlockClass = null;
-        protected @Nullable String lockClass = null;
+        protected @Nullable List<String> lockClasses = null;
         protected @Nullable String selectedMessage = null;
         protected @Nullable String selectedFreeMessage = null;
         protected @Nullable String unlockKey = null;
@@ -251,7 +251,18 @@ public class SelectorAction extends CompoundAction implements GUIAction
             castSpellParameters = configuration.isConfigurationSection("cast_spell_parameters")
                 ? configuration.getConfigurationSection("cast_spell_parameters") : castSpellParameters;
             unlockClass = configuration.getString("unlock_class", unlockClass);
-            lockClass = configuration.getString("lock_class", lockClass);
+            lockClasses = ConfigurationUtils.getStringList(configuration, "lock_classes", lockClasses);
+            String lockClass = configuration.getString("lock_class");
+            if (lockClass != null && !lockClass.isEmpty()) {
+                if (lockClasses == null) {
+                    lockClasses = new ArrayList<>();
+                }
+                lockClasses.add(lockClass);
+            }
+            if (lockClasses != null && unlockClass != null && !unlockClass.isEmpty()) {
+                lockClasses = new ArrayList<>(lockClasses);
+                lockClasses.remove(unlockClass);
+            }
             nameIcon = configuration.getBoolean("apply_name_to_icon", nameIcon);
             autoClose = configuration.getBoolean("auto_close", autoClose);
             showFree = configuration.getBoolean("show_free", showFree);
@@ -571,7 +582,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.attributeAmount = defaults.attributeAmount;
             this.allowAttributeReduction = defaults.allowAttributeReduction;
             this.unlockClass = defaults.unlockClass;
-            this.lockClass = defaults.lockClass;
+            this.lockClasses = defaults.lockClasses;
             this.switchClass = defaults.switchClass;
             this.putInHand = defaults.putInHand;
             this.limit = defaults.limit;
@@ -1087,8 +1098,12 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     mage.lockClass(activeClass.getKey());
                 }
                 mage.unlockClass(unlockClass);
-                if (lockClass != null && !lockClass.isEmpty()) {
-                    mage.lockClass(lockClass);
+                if (lockClasses != null) {
+                    for (String lockClass : lockClasses) {
+                        if (lockClass != null && !lockClass.isEmpty()) {
+                            mage.lockClass(lockClass);
+                        }
+                    }
                 }
                 if (switchClass) {
                     mage.setActiveClass(unlockClass);
