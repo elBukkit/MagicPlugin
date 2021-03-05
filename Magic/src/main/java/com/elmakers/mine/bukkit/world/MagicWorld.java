@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
 import com.elmakers.mine.bukkit.world.tasks.CheckWorldCreateTask;
+import com.elmakers.mine.bukkit.world.tasks.CopyWorldTask;
 
 public class MagicWorld {
     private enum WorldState { UNLOADED, LOADING, LOADED }
@@ -190,7 +191,8 @@ public class MagicWorld {
         }
 
         // See if this is a world we want to make a copy of
-        copyWorld(initWorld);
+        // Delay this one tick to avoid issues at startup
+        Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new CopyWorldTask(this, initWorld), 1L);
     }
 
     public void copyWorld(World targetWorld) {
