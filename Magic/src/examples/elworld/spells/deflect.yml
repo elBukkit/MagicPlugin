@@ -29,7 +29,7 @@ deflect:
         angular_velocity_z: 0
         angular_velocity_y: 0
         y_rotation: pi/2
-        particle_offset: 0.01,0.01,0.01
+        particle_offset: 0.01
         particles: 10
         particle_count: 2
   parameters:
