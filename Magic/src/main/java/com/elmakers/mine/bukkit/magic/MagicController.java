@@ -6556,7 +6556,9 @@ public class MagicController implements MageController {
     private final Set<String>                   builtinAttributes           = ImmutableSet.of(
             "epoch",
             // For interval parsing
-            "hours", "minutes", "seconds", "days", "weeks"
+            "hours", "minutes", "seconds", "days", "weeks",
+            // Other constants
+            "pi"
     );
 
     public Set<String> getBuiltinAttributes() {
@@ -7722,6 +7724,7 @@ public class MagicController implements MageController {
             case "minutes": return (double)60000;
             case "seconds": return (double)1000;
             case "epoch": return (double)System.currentTimeMillis();
+            case "pi" : return Math.PI;
             default: return null;
         }
     }

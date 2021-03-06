@@ -10,6 +10,7 @@
 
  - Added builtin Japanese translation (JP) (Thank you, LazyGon!)
  - Added trailshop example, for players to unlock trail effects
+ - Added "pi" attribute constant
 
 # 8.4.1
 

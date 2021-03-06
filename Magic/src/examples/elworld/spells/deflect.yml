@@ -1,0 +1,37 @@
+deflect:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Deflect
+  description: Push Everyone Away
+  legacy_icon: spell_icon:32
+  legacy_icon_disabled: spell_icon_disabled:32
+  icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
+  actions:
+    cast:
+    - class: ConeOfEffect
+      actiosn:
+      - class: Velocity
+  effects:
+    cast:
+    - effectlib:
+        class: Circle
+        relative_offset: 2,-0.5,0
+        radius: 2
+        max_angle: pi
+        particle: flame
+        duration: 20 seconds
+        orient: true
+        whole_circle: true
+        reset_circle: true
+        update_directions: false
+        update_locations: false
+        angular_velocity_x: 0
+        angular_velocity_z: 0
+        angular_velocity_y: 0
+        y_rotation: pi/2
+        particle_offset: 0.01,0.01,0.01
+        particles: 10
+        particle_count: 2
+  parameters:
+    range: 8
+    push: 2
