@@ -6,11 +6,11 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.integration.VaultController;
 
 public class VaultCurrency extends BaseMagicCurrency {
-    private final boolean isValid;
+    private final MageController controller;
 
     public VaultCurrency(MageController controller) {
         super(controller, "currency", 1);
-        isValid = controller.isVaultCurrencyEnabled();
+        this.controller = controller;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class VaultCurrency extends BaseMagicCurrency {
 
     @Override
     public boolean isValid() {
-        return isValid;
+        return controller.isVaultCurrencyEnabled();
     }
 
     @Override
