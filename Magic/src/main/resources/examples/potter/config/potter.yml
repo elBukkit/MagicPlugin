@@ -39,7 +39,7 @@ currency:
     name_plural: Galleons
 
 # Use the potter RP
-resource_pack: "http://rp.elmakers.com/Magic-potter-RP-8-1.16.zip"
+resource_pack: "http://rp.elmakers.com/Magic-potter-RP-8.5-1.16.zip"
 
 # Default class
 default_mage_class: wizard
@@ -57,4 +57,4 @@ custom_currency:
 
 alternate_resource_packs:
   potter:
-    url: "http://rp.elmakers.com/Magic-potter-RP-8-1.16.zip"
+    url: "http://rp.elmakers.com/Magic-potter-RP-8.5-1.16.zip"
