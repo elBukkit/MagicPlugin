@@ -8,11 +8,11 @@ engineer:
     icon: blaze_rod{CustomModelData:18005}
     legacy_icon: wand_icon:5
     legacy_migrate_icon: gold_axe
-    mana_regeneration: 90
-    mana_max: 400
-    mana: 400
-    organize: true
+    mana_regeneration: 45
+    mana_max: 250
+    mana: 250
     spells:
+      - levitate|4
       - rollback
       - alter
       - blob
@@ -30,28 +30,14 @@ engineer:
       - levitate
     brushes:
       - erase
-      - map
       - stone
       - dirt
       - sand
+      - grass
       - gravel
       - glass
       - glowstone
-      - stained_clay
-      - stained_glass
-      - stained_glass_pane
-      - soul_sand
-      - grass
-      - wood
-      - log
-      - vine
-      - mycel
-      - quartz_block
-      - leaves
-      - ice
-      - packed_ice
-      - obsidian
-      - redstone_block
-      - schematic|rainbow_blocks
-      - schematic|creeper_rug
+      - white_terracotta
+      - white_stained_glass
+      - white_stained_glass_pane:*
 

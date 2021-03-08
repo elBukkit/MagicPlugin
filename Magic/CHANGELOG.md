@@ -2,6 +2,10 @@
 
 # 8.5
 
+## Engineering Re-Work
+
+ - Conduits now have Cost Reduction X, don't have to worry about mana
+
 ## Changes
 
  - Magic now loads at server startup, so world gen modifications to default worlds catch spawn chunks

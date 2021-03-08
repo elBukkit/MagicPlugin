@@ -2,18 +2,15 @@ conduit:
     inherit: architect
     path: conduit
     consume_reduction: 1
+    cost_reduction: 1
     icon: blaze_rod{CustomModelData:18006}
     legacy_icon: wand_icon:6
     legacy_migrate_icon: gold_pickaxe
     effect_color: '8B008B'
-    mana_max: 600
-    mana: 600
-    mana_regeneration: 120
     effect_bubbles: true
-    organize: true
     active_spell: levitate
     spells:
-        - levitate
+        - levitate|6
         - paint
         - alter
         - torch
@@ -47,44 +44,137 @@ conduit:
         - backup
         - superrepair
     brushes:
-        - stone
-        - wood
-        - glass
-        - dirt
         - erase
-        - copy
+        - stone
+        - dirt
+        - sand
+        - grass
+        - gravel
+        - glass
+        - glowstone
+        - white_terracotta
+        - white_stained_glass
+        - white_stained_glass_pane:*
+
         - clone
         - replicate
         - map
-        - glowstone
-        - sand
-        - cobblestone
-        - stained_glass
-        - thin_glass
-        - stained_glass_pane
-        - stained_clay
+        - copy
+        - lava
+        - water
+        - soul_sand
+        - wood
+        - log
+        - vine
+        - mycel
         - quartz_block
-        - quartz_block:1
-        - quartz_block:2
-        - lapis_block
-        - iron_block
-        - diamond_block
-        - gold_block
-        - emerald_block
-        - redstone_block
+        - leaves
+        - ice
+        - packed_ice
         - obsidian
-        - schematic:rainbow_blocks
-        - schematic:creeper_rug
-        - schematic:church
-        - schematic:blacksmith
-        - schematic:compact_house
-        - schematic:small_house
-        - schematic:elder_tree
-        - schematic:garden_house
-        - schematic:beacon
-        - schematic:cage
-        - schematic:tent
-        - schematic:stash_chest
-        - schematic:lantern
-        - schematic:tech_tower
+        - redstone_block
+        - schematic|rainbow_blocks
+        - schematic|creeper_rug
+        - schematic|rainbow_blocks
+        - schematic|lantern
+        - schematic|creeper_rug
+        - schematic|elder_tree
+        - schematic|church
+        - schematic|blacksmith
+        - schematic|garden_house
+        - schematic|compact_house
+        - schematic|small_house
+        - schematic|nathanwolf
+        - schematic|warped_house
 
+        - black_wool
+        - blue_wool
+        - brown_wool
+        - cyan_wool
+        - gray_wool
+        - green_wool
+        - light_blue_wool
+        - light_gray_wool
+        - lime_wool
+        - magenta_wool
+        - orange_wool
+        - pink_wool
+        - purple_wool
+        - red_wool
+        - white_wool
+        - yellow_wool
+        - black_terracotta
+        - blue_terracotta
+        - brown_terracotta
+        - cyan_terracotta
+        - gray_terracotta
+        - green_terracotta
+        - light_blue_terracotta
+        - light_gray_terracotta
+        - lime_terracotta
+        - magenta_terracotta
+        - orange_terracotta
+        - pink_terracotta
+        - purple_terracotta
+        - red_terracotta
+        - white_terracotta
+        - yellow_terracotta
+        - black_stained_glass
+        - blue_stained_glass
+        - brown_stained_glass
+        - cyan_stained_glass
+        - gray_stained_glass
+        - green_stained_glass
+        - light_blue_stained_glass
+        - light_gray_stained_glass
+        - lime_stained_glass
+        - magenta_stained_glass
+        - orange_stained_glass
+        - pink_stained_glass
+        - purple_stained_glass
+        - red_stained_glass_pane
+        - white_stained_glass
+        - yellow_stained_glass
+        - black_stained_glass_pane:*
+        - blue_stained_glass_pane:*
+        - brown_stained_glass_pane:*
+        - cyan_stained_glass_pane:*
+        - gray_stained_glass_pane:*
+        - green_stained_glass_pane:*
+        - light_blue_stained_glass_pane:*
+        - light_gray_stained_glass_pane:*
+        - lime_stained_glass_pane:*
+        - magenta_stained_glass_pane:*
+        - orange_stained_glass_pane:*
+        - pink_stained_glass_pane:*
+        - purple_stained_glass_pane:*
+        - red_stained_glass_pane:*
+        - white_stained_glass_pane:*
+        - yellow_stained_glass_pane:*
+        - black_concrete
+        - blue_concrete
+        - brown_concrete
+        - cyan_concrete
+        - gray_concrete
+        - green_concrete
+        - light_blue_concrete
+        - light_gray_concrete
+        - lime_concrete
+        - magenta_concrete
+        - orange_concrete
+        - pink_concrete
+        - purple_concrete
+        - red_concrete
+        - white_concrete
+        - yellow_concrete
+
+        - schematic|rainbow_blocks
+        - schematic|lantern
+        - schematic|creeper_rug
+        - schematic|elder_tree
+        - schematic|church
+        - schematic|blacksmith
+        - schematic|garden_house
+        - schematic|compact_house
+        - schematic|small_house
+        - schematic|nathanwolf

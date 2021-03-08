@@ -19,11 +19,7 @@ conduit:
       - capture
       - commit
       - forest
-    materials:
-      - clone
-      - replicate
-      - lava
-      - water
+    brushes:
       - schematic|rainbow_blocks
       - schematic|lantern
       - schematic|creeper_rug

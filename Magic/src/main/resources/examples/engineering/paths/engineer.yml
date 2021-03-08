@@ -34,12 +34,12 @@ engineer:
       - raise
       - flatten
     # Engineer wands can gain material brushes, they get some number of them per spell purchase as below
-    material_count:
+    brush_count:
       2: 100
       3: 50
       4: 20
       5: 10
-    materials:
+    brushes:
       - erase
       - stone
       - dirt

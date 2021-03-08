@@ -36,14 +36,18 @@ architect:
       - tunnel
       - light
       - toggleair
-    material_count:
+    brush_count:
       7:  100
       10:  60
       12:  30
       15:  10
-    materials:
-      - copy
+    brushes:
+      - clone
+      - replicate
       - map
+      - copy
+      - lava
+      - water
       - soul_sand
       - wood
       - log
