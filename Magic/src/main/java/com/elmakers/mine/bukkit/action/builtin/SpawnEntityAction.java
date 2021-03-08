@@ -60,6 +60,7 @@ public class SpawnEntityAction extends CompoundAction
     private boolean setOwner = true;
     private boolean onBlock = true;
     private boolean allowReplacement = true;
+    private boolean parameterizeName = true;
 
     private Vector direction = null;
     private double speed;
@@ -89,6 +90,7 @@ public class SpawnEntityAction extends CompoundAction
         onBlock = parameters.getBoolean("on_block", true);
         allowReplacement = parameters.getBoolean("allow_replacement", true);
         useWandName = parameters.getBoolean("use_wand_name", false);
+        parameterizeName = parameters.getBoolean("parameterize_name", true);
 
         String disguiseTarget = parameters.getString("disguise_target");
         if (disguiseTarget != null) {
@@ -330,6 +332,14 @@ public class SpawnEntityAction extends CompoundAction
                 spawnedEntity.setCustomName(wand.getName());
             }
         }
+        if (parameterizeName) {
+            String name = spawnedEntity.getCustomName();
+            if (name != null) {
+                name = context.parameterizeMessage(name);
+                spawnedEntity.setCustomName(name);
+            }
+        }
+
         entity = new WeakReference<>(spawnedEntity);
         return SpellResult.CAST;
 

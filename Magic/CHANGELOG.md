@@ -11,6 +11,7 @@
  - Added builtin Japanese translation (JP) (Thank you, LazyGon!)
  - Added trailshop example, for players to unlock trail effects
  - Added "pi" attribute constant
+ - The SpawnEntity action can use $pn, $pd and other placeholders in the `name` parameter
 
 # 8.4.1
 
