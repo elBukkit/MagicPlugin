@@ -171,7 +171,11 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         }
         sendMessage(key + "_usage");
         setProperty(key, value);
+        propertyUpgraded(key, currentValue, value);
         return true;
+    }
+
+    protected void propertyUpgraded(String key, Object previousValue, Object newValue) {
     }
 
     protected void addPotionEffects(Map<PotionEffectType, Integer> effects, Object effectsObject) {
