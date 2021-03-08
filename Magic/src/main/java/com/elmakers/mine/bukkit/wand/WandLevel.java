@@ -53,7 +53,8 @@ public class WandLevel {
 
         // Fetch material probabilities, filter out invalid materials (important for backwards compatibility)
         Deque<WeightedPair<String>> brushes = new ArrayDeque<>();
-        RandomUtils.populateStringProbabilityMap(brushes, template, "materials", levelIndex, nextLevelIndex, distance);
+        String materialKey = template.contains("brushes") ? "brushes" : "materials";
+        RandomUtils.populateStringProbabilityMap(brushes, template, materialKey, levelIndex, nextLevelIndex, distance);
         for (WeightedPair<String> brushValue : brushes) {
             MaterialBrush brush = new MaterialBrush(brushValue.getValue());
             if (brush.isValid(false)) {
@@ -61,7 +62,8 @@ public class WandLevel {
             }
         }
         // Fetch material count probabilities
-        RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
+        String materialCountKey = template.contains("brush_count") ? "brush_count" : "material_count";
+        RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection(materialCountKey), levelIndex, nextLevelIndex, distance);
 
         // Fetch uses
         RandomUtils.populateIntegerProbabilityMap(useProbability, template, "uses", levelIndex, nextLevelIndex, distance);
