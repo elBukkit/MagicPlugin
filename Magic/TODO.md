@@ -1,8 +1,34 @@
 # TODO
 
+# Engineering Improvements
+
+ - Support some special entries in wand spell list:
+   - none
+   - page
+ - Make engineering/architect/conduit wands with categorized pages and hotbars
+   - No survival spells except levitate, blink and fling (anything else?)
+   - Adding/removing hotbars should not re-arrange spell inventory
+     - Convert wand inventory saving to separate list of hotbars and pages (?)
+ - Equivalent exchange
+   - enable_currency_exchange: true by default
+   - return_currency, Undo action parameter, true by default but always false if enable_currency_exchange is false
+   - Consume blocks first, then currency
+   - Print message at end of spell showing how much money was consumed (and blocks?)
+ - Fill out worth values for all blocks (and items, for shops)
+
+# Player Shops
+
+ - Add cost scale buttons to shop management UI (maybe 9 buttons for +- 75,50,25,10% and "market value")
+
 ## Hot
 
+ - Recall to bed not working? (Kit reported)
+ - Need a way to add spells to a path
  - target_hit_timeout for CustomProjectile (Phantom)
+ - Crown FX very laggy
+
+## Older
+
  - Auto-level up skill items when spell levels... ?
    ... honestly the whole levelling system could use some changes, like spells should just use the right level when cast
    - spell levels also seem wonky with spellbook (or maybe wands in general?), have to let go and hold again to get the upgrade
@@ -71,7 +97,6 @@
 
 ## RPG
 
- - Need a way to add spells to a path
  - Support for simple list of string triggers
 
 ## List is too long
