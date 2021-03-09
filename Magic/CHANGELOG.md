@@ -4,8 +4,6 @@
 
 # 8.4.2
 
-# 8.4.2
-
  - Update/Fix Towny integration
  - Fix brushes being able to be dropped out of a wand inventory (dupe issue)
 
