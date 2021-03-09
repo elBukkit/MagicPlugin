@@ -330,7 +330,7 @@ public class PlayerController implements Listener {
         // We will be satisfied to only compare the metadata.
         ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
         ItemMeta droppedMeta = droppedItem.getItemMeta();
-        final boolean droppedSpell = Wand.isSpell(droppedItem);
+        final boolean droppedSpell = Wand.isSpell(droppedItem) || Wand.isBrush(droppedItem);
         final boolean droppedWand = droppedMeta != null && activeMeta != null && activeMeta.equals(droppedMeta);
         boolean inSpellInventory = activeWand != null && activeWand.isInventoryOpen();
         if (droppedWand && activeWand.isUndroppable()) {
