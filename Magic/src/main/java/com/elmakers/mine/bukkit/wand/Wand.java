@@ -6196,4 +6196,25 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         return controller != null ? controller.isInteractible(block) : false;
     }
+
+    @Override
+    protected void propertyUpgraded(String key, Object previousValue, Object newValue) {
+        switch (key) {
+            case "hotbar_count": {
+                List<WandInventory> pages = new ArrayList<>(inventories);
+                int slotOffset = getInt("hotbar_count") * HOTBAR_INVENTORY_SIZE;
+                int index = 0;
+                for (WandInventory inventory : pages) {
+                    for (ItemStack itemStack : inventory.items) {
+                        updateSlot(index + slotOffset, itemStack);
+                        index++;
+                    }
+                }
+                updateHotbarCount();
+                updateSpellInventory();
+                updateBrushInventory();
+            }
+            break;
+        }
+    }
 }
