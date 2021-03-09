@@ -9,6 +9,7 @@
 ## Changes
 
  - Magic now loads at server startup, so world gen modifications to default worlds catch spawn chunks
+ - Hotbar upgrades will now start out empty and not mess up the inventory pages
 
 ## Additions
 
