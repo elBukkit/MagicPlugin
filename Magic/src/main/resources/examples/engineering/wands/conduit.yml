@@ -9,42 +9,84 @@ conduit:
     effect_color: '8B008B'
     effect_bubbles: true
     active_spell: levitate
+    hotbar_count: 4
     spells:
-        - levitate|6
+        # Hotbar 1, engineering
+        - levitate|5
+        - fling|4
+        - blink|6
+        - place
         - paint
         - alter
-        - torch
-        - fill
+        - commit
+        - rollback
+
+        # Hotbar 2, brushes
+        - toggleair
+        - newpage
+
+        # Hotbar 3, architect
         - absorb
+        - fill
+        - superblob
+        - superconvert
+        - supershell
+        - superbox
+        - superdisc
+        - floodfill
+
+        # Hotbar 4, conduit
+        - backup
+        - repair
+        - superrepair
+        - superbackup
+        - paste
+        - day
+        - night
+        - capture
+
+        # Page 1, Engineering
         - bridge
         - pillar
-        - place
-        - recurse
-        - undo
-        - commit
-        - blob
-        - shell
-        - iterate
-        - box
-        - dome
-        - disc
         - convert
-        - superblob
-        - superbox
-        - supershell
-        - superconvert
-        - superpyramid
+        - recurse
+        - toss
+        - iterate
+        - tunnel
+        - supertorch
+        - raise
+        - flatten
+        - tree
+
+        - newpage
+
+        # Page 2, Architect
         - superdome
-        - superdisc
+        - supercube
         - superring
-        - column
-        - levitate
+        - superpyramid
+        - superwalls
+        - supercylinder
         - superalter
-        - repair
-        - backup
-        - superrepair
+        - superlaser
+        - volley
+        - light
+
+        - newpage
+
+        # Page 4, Conduit
+        - portal
+        - anvil
+        - forest
+        - weather
     brushes:
-        - erase
+        - erase@9
+        - copy@10
+        - clone@11
+        - replicate@12
+        - map@13
+        - map:128@14
+
         - stone
         - dirt
         - sand
@@ -56,10 +98,6 @@ conduit:
         - white_stained_glass
         - white_stained_glass_pane:*
 
-        - clone
-        - replicate
-        - map
-        - copy
         - lava
         - water
         - soul_sand
@@ -178,3 +216,7 @@ conduit:
         - schematic|compact_house
         - schematic|small_house
         - schematic|nathanwolf
+
+# For easier /mgive'ing, since we'll give a vanilla conduit instead
+conduitwand:
+    inherit: conduit

@@ -11,25 +11,36 @@ engineer:
     mana_regeneration: 45
     mana_max: 250
     mana: 250
+    hotbar_count: 2
     spells:
+      # Hotbar 1, Engineering
       - levitate|4
-      - rollback
+      - fling|4
+      - blink|6
+      - place
+      - paint
       - alter
-      - blob
+      - commit
+      - rollback
+
+      # Hotbar 2, brushes
+      # This is a blank hotbar to be filled in by the brushes list below
+      - newpage
+
+      # Page 1, Engineering
       - bridge
+      - pillar
       - convert
       - recurse
-      - paint
       - toss
       - iterate
-      - repair
       - tunnel
-      - commit
-      - pillar
-      - place
-      - levitate
+      - supertorch
+      - raise
+      - flatten
+      - tree
     brushes:
-      - erase
+      - erase@8
       - stone
       - dirt
       - sand

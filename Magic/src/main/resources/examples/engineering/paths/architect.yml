@@ -45,6 +45,7 @@ architect:
       - clone
       - replicate
       - map
+      - map:128
       - copy
       - lava
       - water
