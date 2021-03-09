@@ -1294,11 +1294,43 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         spells.clear();
     }
 
+    private int getMaxSlot() {
+        int maxSlot = -1;
+        for (Map.Entry<String, Integer> brush : brushInventory.entrySet()) {
+            maxSlot = Math.max(maxSlot, brush.getValue());
+        }
+        for (Map.Entry<String, Integer> spell : spellInventory.entrySet()) {
+            maxSlot = Math.max(maxSlot, spell.getValue());
+        }
+        return maxSlot;
+    }
+
     protected void loadSpells(Collection<String> spellKeys) {
         clearSpells();
         WandUpgradePath path = getPath();
+        int maxSlot = -1;
+        int hotbarCount = getInt("hotbar_count");
+        int pageStart = hotbarCount * HOTBAR_INVENTORY_SIZE;
         for (String spellName : spellKeys)
         {
+            if (spellName.equalsIgnoreCase("none")) {
+                if (maxSlot < 0) {
+                    maxSlot = getMaxSlot();
+                }
+                maxSlot++;
+                continue;
+            }
+            if (spellName.equalsIgnoreCase("newpage")) {
+                if (maxSlot < 0) {
+                    maxSlot = getMaxSlot();
+                }
+                if (maxSlot < pageStart) {
+                    maxSlot = (((maxSlot + 1) / HOTBAR_INVENTORY_SIZE) + 1) * HOTBAR_INVENTORY_SIZE - 1;
+                } else {
+                    maxSlot = ((((maxSlot + 1) - pageStart) / INVENTORY_SIZE) + 1) * INVENTORY_SIZE + pageStart - 1;
+                }
+                continue;
+            }
             String[] pieces = StringUtils.split(spellName, '@');
             Integer slot = parseSlot(pieces);
 
@@ -1322,9 +1354,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (spellKey.getLevel() > 1 && (currentLevel == null || currentLevel < spellKey.getLevel())) {
                     setSpellLevel(spellKey.getBaseKey(), spellKey.getLevel());
                 }
-                if (slot != null) {
-                    spellInventory.put(spellKey.getBaseKey(), slot);
+                if (slot == null) {
+                    if (maxSlot < 0) {
+                        maxSlot = getMaxSlot();
+                    }
+                    slot = maxSlot + 1;
+                    if (slot > pageStart && (slot - pageStart) % INVENTORY_SIZE > INVENTORY_SIZE - INVENTORY_ORGANIZE_BUFFER) {
+                        slot = (((slot - pageStart) / INVENTORY_SIZE) + 1) * INVENTORY_SIZE + pageStart;
+                    }
                 }
+                maxSlot = Math.max(slot, maxSlot);
+                spellInventory.put(spellKey.getBaseKey(), slot);
                 spells.add(spellKey.getBaseKey());
                 if (activeSpell == null || activeSpell.length() == 0)
                 {
