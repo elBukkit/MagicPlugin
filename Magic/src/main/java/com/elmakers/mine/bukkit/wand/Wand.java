@@ -7,7 +7,6 @@ import static com.google.common.base.Verify.verifyNotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
@@ -6199,35 +6197,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return controller != null ? controller.isInteractible(block) : false;
     }
 
-    private TreeMap<Integer, String> getSlots() {
-        TreeMap<Integer, String> slotMap = new TreeMap();
-        for (Map.Entry<String, Integer> brush : brushInventory.entrySet()) {
-            slotMap.put(brush.getValue(), brush.getKey());
-        }
-        for (Map.Entry<String, Integer> spell : spellInventory.entrySet()) {
-            slotMap.put(spell.getValue(), spell.getKey());
-        }
-        return slotMap;
-    }
-
     @Override
     protected void propertyUpgraded(String key, Object previousValue, Object newValue) {
         switch (key) {
             case "hotbar_count": {
-                int previousCount = (int)previousValue;
-                int newCount = (int)newValue;
-                if (newCount > previousCount) {
-                    // Shift inventory up so new hotbars are empty and pages remain unchanged
-                    int addHotbars = previousCount - newCount;
-                    int addSlots = addHotbars * HOTBAR_INVENTORY_SIZE;
-                    int startSlot = previousCount * HOTBAR_INVENTORY_SIZE + 1;
-                    TreeMap<Integer, String> slotMap = getSlots();
-                    if (!slotMap.isEmpty()) {
-                        for (Map.Entry<Integer, String> slotEntry : slotMap.entrySet()) {
-                            spellInventory.
-                        }
+                List<WandInventory> pages = new ArrayList<>(inventories);
+                int slotOffset = getInt("hotbar_count") * HOTBAR_INVENTORY_SIZE;
+                int index = 0;
+                for (WandInventory inventory : pages) {
+                    for (ItemStack itemStack : inventory.items) {
+                        updateSlot(index + slotOffset, itemStack);
+                        index++;
                     }
                 }
+                updateHotbarCount();
+                updateSpellInventory();
+                updateBrushInventory();
             }
             break;
         }
