@@ -8,3 +8,4 @@ examples:
       &8|   &fneed to customize your configuration using &r
       &8|   &7/mconfig configure world overworld_mobs world yourworld &r
       &8|   &7/mconfig configure world nether_mobs world yournether &r
+      &8|   &7/mconfig configure world end_mobs world yourend &r
