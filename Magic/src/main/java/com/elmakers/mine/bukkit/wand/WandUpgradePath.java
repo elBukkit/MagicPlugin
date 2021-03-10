@@ -78,6 +78,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private boolean earnsSP = true;
     private MaterialAndData icon;
     private MaterialAndData migrateIcon;
+    private ConfigurationSection properties;
 
     private boolean matchSpellMana = true;
 
@@ -130,6 +131,13 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         {
             this.upgradeCommands = new ArrayList<>();
             this.upgradeCommands.addAll(inherit.upgradeCommands);
+        }
+        if (inherit.properties != null) {
+            if (this.properties == null) {
+                this.properties = ConfigurationUtils.cloneConfiguration(inherit.properties);
+            } else {
+                ConfigurationUtils.addConfigurations(this.properties, inherit.properties, false);
+            }
         }
     }
 
@@ -293,6 +301,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
             levelMap.put(level, wandLevel);
         }
+
+        properties = template.getConfigurationSection("properties");
     }
 
     @Override
@@ -825,6 +835,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
         this.upgraded(controller, wand, mage);
         newPath.upgradeTo(mage != null ? mage.getActiveProperties() : wand);
+    }
+
+    @Override
+    public ConfigurationSection getProperties() {
+        return properties;
     }
 
     @Override

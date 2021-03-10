@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -1040,5 +1041,28 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     public boolean isPassive() {
         return getBoolean("passive");
+    }
+
+    @Nullable
+    public ConfigurationSection getPathPropertyConfiguration(String key) {
+        if (key.equals("path")) return null;
+        ProgressionPath path = getPath();
+        if (path != null) {
+            ConfigurationSection pathProperties = path.getProperties();
+            if (pathProperties != null && pathProperties.contains(key)) {
+                return pathProperties;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @Nonnull
+    public ConfigurationSection getPropertyConfiguration(String key) {
+        ConfigurationSection pathConfiguration = getPathPropertyConfiguration(key);
+        if (pathConfiguration != null) {
+            return pathConfiguration;
+        }
+        return super.getPropertyConfiguration(key);
     }
 }

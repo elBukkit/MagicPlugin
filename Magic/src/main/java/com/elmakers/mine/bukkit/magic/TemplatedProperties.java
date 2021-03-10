@@ -96,6 +96,13 @@ public abstract class TemplatedProperties extends CasterProperties {
         if (storage != null && storage != this) {
             return storage.getPropertyConfiguration(key);
         }
+
+        // Path properties override everything else, though we don't remove the values so
+        // They are still there if path properties get removed.
+        ConfigurationSection pathConfiguration = getPathPropertyConfiguration(key);
+        if (pathConfiguration != null) {
+            return pathConfiguration;
+        }
         if (configuration.contains(key) || template == null) {
             return configuration;
         }
