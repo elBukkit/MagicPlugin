@@ -1,5 +1,11 @@
 # Migration Notes
 
+# 8.5
+
+ - Mana and hotbar count are now read from paths directly and not stored on classes.
+   If you have a setup where hotbars can be added or mana can be increased, you will need to
+   `/mconfig editor class base` and change all of the `path` routes back to `class`.
+
 # 8.4
 
  - The API for interfaces between EffectContext and CastContext was restructured.

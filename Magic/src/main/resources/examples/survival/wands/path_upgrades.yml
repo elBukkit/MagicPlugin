@@ -8,21 +8,18 @@ student_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
-    hotbar_count: 2
 apprentice_upgrade:
     legacy_icon: wand_icon:3
     icon: stick{CustomModelData:18003}
     upgrade: true
     hidden: true
     indestructible: false
-    hotbar_count: 2
 master_upgrade:
     legacy_icon: wand_icon:4
     icon: stick{CustomModelData:18004}
     upgrade: true
     hidden: true
     indestructible: false
-    hotbar_count: 3
 
 squire_upgrade:
     upgrade: true

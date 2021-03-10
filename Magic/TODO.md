@@ -1,5 +1,17 @@
 # TODO
 
+# Reported Bugs
+
+10.03 15:42:42 [Server] INFO Removed example extramobs
+10.03 15:42:42 [Server] WARN Error loading config.yml
+10.03 15:42:42 [Server] INFO java.lang.NullPointerException: null
+10.03 15:42:42 [Server] INFO at java.io.Reader.<init>(Reader.java:78) ~[?:1.8.0_211]
+10.03 15:42:42 [Server] INFO at java.io.InputStreamReader.<init>(InputStreamReader.java:97) ~[?:1.8.0_211]
+10.03 15:42:42 [Server] INFO at com.elmakers.mine.bukkit.utility.CompatibilityUtils.loadConfiguration(CompatibilityUtils.java:717) ~[?:?]
+
+
+ - When replacing a temporarily-destroyed block by hand, cancel the place but restore the destroyed block instantly .. ?
+
 # Engineering Improvements
 
  - Support some special entries in wand spell list:

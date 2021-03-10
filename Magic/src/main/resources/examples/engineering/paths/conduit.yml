@@ -3,8 +3,12 @@ conduit:
     legacy_icon: wood_hoe:6
     legacy_migrate_icon: gold_pickaxe
     inherit: architect
-    mana_regeneration: 100
-    mana_max: 500
+    properties:
+      mana_regeneration: 100
+      mana_max: 500
+      hotbar_count: 4
+      consume_reduction: 1
+      cost_reduction: 1
     spells:
       - portal
       - backup

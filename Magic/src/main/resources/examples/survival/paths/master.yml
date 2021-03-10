@@ -3,8 +3,10 @@ master:
     legacy_icon: wood_hoe:4
     legacy_migrate_icon: gold_axe
     inherit: apprentice
-    mana_regeneration: 35
-    mana_max: 200
+    properties:
+      mana_regeneration: 35
+      mana_max: 200
+      hotbar_count: 3
     extra_spells:
       - mount
       - cage

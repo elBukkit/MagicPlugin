@@ -9,6 +9,9 @@ beginner:
     upgrade: student
     upgrade_item: student_upgrade
     inherit: default
+    properties:
+      mana_max: 50
+      mana_regeneration: 5
     # For the old randomized enchanting system, a wand will gain 1 spell per enchant
     spell_count: 1
     # These are spells that are optional, appear in the spell shop but are not required for progression.

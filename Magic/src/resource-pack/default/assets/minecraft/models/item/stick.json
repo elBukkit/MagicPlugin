@@ -38,7 +38,7 @@
     {"predicate": {"custom_model_data": 18032}, "model": "item/custom/extinguisher"},
     {"predicate": {"custom_model_data": 18033}, "model": "item/bending/air_glider"},
     {"predicate": {"custom_model_data": 18034}, "model": "item/bending/air_staff"},
-    {"predicate": {"custom_model_data": 18035}, "model": "item/custom/riverglow"},
+    {"predicate": {"custom_model_data": 18035}, "model": "item/custom/rivenglow"},
     {"predicate": {"custom_model_data": 18036}, "model": "item/custom/lixwglow"},
     {"predicate": {"custom_model_data": 18037}, "model": "item/custom/wandb"},
     {"predicate": {"custom_model_data": 18038}, "model": "item/custom/sortinghat"},

@@ -1,9 +1,9 @@
 base:
   storage:
-    mana: class
-    mana_max: class
-    mana_regeneration: class
-    mana_timestamp: class
+    mana: subclass
+    mana_max: subclass
+    mana_regeneration: subclass
+    mana_timestamp: subclass
     spell_levels: class
     spells: class
     brushes: class
