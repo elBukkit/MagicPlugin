@@ -83,4 +83,5 @@ public interface CasterProperties extends MagicConfigurable {
     Color getEffectColor();
     @Nullable
     String getEffectParticleName();
+    void sendMessageKey(String messageKey, String... parameters);
 }

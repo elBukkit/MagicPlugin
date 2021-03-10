@@ -9,8 +9,9 @@
 10.03 15:42:42 [Server] INFO at java.io.InputStreamReader.<init>(InputStreamReader.java:97) ~[?:1.8.0_211]
 10.03 15:42:42 [Server] INFO at com.elmakers.mine.bukkit.utility.CompatibilityUtils.loadConfiguration(CompatibilityUtils.java:717) ~[?:?]
 
+# Path properties
 
- - When replacing a temporarily-destroyed block by hand, cancel the place but restore the destroyed block instantly .. ?
+ - might need to re-work wand inventories after all
 
 # Engineering Improvements
 

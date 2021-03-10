@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.NumberConversions;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.event.PathUpgradeEvent;
@@ -780,6 +781,21 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             message = message.replace("$wand", wand.getName());
         }
         mage.sendMessage(message);
+        if (newPath.properties != null) {
+            CasterProperties activeProperties = mage.getActiveProperties();
+            ConfigurationSection currentProperties = this.properties;
+            Set<String> keys = newPath.properties.getKeys(false);
+            for (String key : keys) {
+                Object newProperty = newPath.properties.get(key);
+                Object currentProperty = currentProperties == null ? null : currentProperties.get(key);
+                if (currentProperty == null || currentProperty != newProperty) {
+                    if (newProperty instanceof Number) {
+                        activeProperties.sendMessageKey("upgraded_property", "$name", controller.getMessages().getLevelString("wand." + key, NumberConversions.toFloat(newProperty)));
+                    }
+                    activeProperties.sendMessageKey(key + "_usage");
+                }
+            }
+        }
 
         WandUpgradeEvent legacyEvent = new WandUpgradeEvent(mage, wand, this, newPath);
         Bukkit.getPluginManager().callEvent(legacyEvent);

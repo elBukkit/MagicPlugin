@@ -663,6 +663,19 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
+    public void sendMessageKey(String messageKey, String... parameters) {
+        Mage mage = getMage();
+        if (mage == null || messageKey == null || messageKey.isEmpty()) return;
+        String message = getMessage(messageKey);
+        if (parameters != null) {
+            for (int i = 0; i < parameters.length - 1; i++) {
+                message = message.replace(parameters[i], parameters[i + 1]);
+            }
+        }
+        mage.sendMessage(message);
+    }
+
+    @Override
     protected void sendDebug(String debugMessage) {
         Mage mage = getMage();
         if (mage != null) {
