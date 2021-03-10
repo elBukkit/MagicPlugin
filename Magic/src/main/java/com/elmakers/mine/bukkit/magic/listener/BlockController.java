@@ -35,6 +35,7 @@ import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
@@ -46,6 +47,7 @@ import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
+import com.elmakers.mine.bukkit.tasks.UndoBlockTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -160,7 +162,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event)
     {
         Player player = event.getPlayer();
@@ -191,13 +193,22 @@ public class BlockController implements Listener, ChunkLoadListener {
             Block block = event.getBlock();
             com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
             if (modifiedBlock != null) {
-                com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
-                // Prevent creating waterlogged blocks accidentally, since these can be exploited for water, even in the nether
-                if (event.getBlockReplacedState().getType() == Material.WATER) {
-                    CompatibilityUtils.setWaterlogged(block, false);
+                // Replacing a permanently-changed block will act as normal while silently
+                // committing the change.
+                // Replacing a temporarily-changed block will force the block to undo while preventing the place
+                if (modifiedBlock.getUndoList().isScheduled()) {
+                    event.setCancelled(true);
+                    Plugin plugin = controller.getPlugin();
+                    plugin.getServer().getScheduler().runTaskLater(plugin, new UndoBlockTask(modifiedBlock), 1);
+                } else {
+                    com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
+                    // Prevent creating waterlogged blocks accidentally, since these can be exploited for water, even in the nether
+                    if (event.getBlockReplacedState().getType() == Material.WATER) {
+                        CompatibilityUtils.setWaterlogged(block, false);
+                    }
                 }
             }
-            if (applySpawnerData && DefaultMaterials.isMobSpawner(block.getType()) && event.getItemInHand() != null && DefaultMaterials.isMobSpawner(event.getItemInHand().getType()) && player.hasPermission("Magic.spawners")) {
+            if (!event.isCancelled() && applySpawnerData && DefaultMaterials.isMobSpawner(block.getType()) && event.getItemInHand() != null && DefaultMaterials.isMobSpawner(event.getItemInHand().getType()) && player.hasPermission("Magic.spawners")) {
                 CompatibilityUtils.applyItemData(event.getItemInHand(), block);
             }
         }
