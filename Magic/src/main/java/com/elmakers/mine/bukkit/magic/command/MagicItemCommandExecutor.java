@@ -391,7 +391,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             if (args.length > 0) {
                 Object target = configuration.get(args[0]);
                 if (target == null) {
-                    itemString += ChatColor.AQUA + args[0] + ChatColor.GRAY + ": " + ChatColor.RED + "(Not Set)";
+                    itemString = ChatColor.AQUA + args[0] + ChatColor.GRAY + ": " + ChatColor.RED + "(Not Set)";
                 } else  {
                     configuration = new YamlConfiguration();
                     configuration.set(args[0], target);
