@@ -1,0 +1,548 @@
+{
+  "__comment": "Created by Droobledore of Potterworld. Used with permission in NathanWolf's Magic plugin.",
+  "parent" : "item/custom/lit",
+  "display": {
+    "gui": {
+      "scale": [1.5, 1.5, 1.5],
+      "translation": [0, 0, 0],
+      "rotation": [24, 34, 0]
+    },
+    "firstperson_lefthand": {
+      "scale": [1, 1, 1],
+      "translation": [0, 1.32, 0],
+      "rotation": [0, 86, 3]
+    },
+    "firstperson_righthand": {
+      "scale": [1, 1, 1],
+      "translation": [0, 1.32, 0],
+      "rotation": [0, 86, 3]
+    },
+    "fixed": {
+      "scale": [1.6, 1.6, 1.6],
+      "translation": [0, 0, -1.13],
+      "rotation": [0, 90, 0]
+    },
+    "ground": {
+      "scale": [1, 1, 1],
+      "translation": [0, 0, 0],
+      "rotation": [0, 0, 0]
+    },
+    "head": {
+      "scale": [2, 2, 2],
+      "translation": [0, 10.2, 0],
+      "rotation": [0, 0, 0]
+    },
+    "thirdperson_lefthand": {
+      "scale": [1, 1, 1],
+      "translation": [0, 2.27, 0],
+      "rotation": [0, 0, 0]
+    },
+    "thirdperson_righthand": {
+      "scale": [1, 1, 1],
+      "translation": [0, 2.27, 0],
+      "rotation": [0, 0, 0]
+    }
+  },
+  "elements": [
+    {
+      "faces": {
+        "east": {
+          "texture": "#animated2",
+          "uv": [16, 0, 0, 16]
+        },
+        "west": {
+          "texture": "#animated2",
+          "uv": [0, 0, 16, 16]
+        }
+      },
+      "to": [8.0625, 13.5, 13],
+      "from": [8, 2.5, 3],
+      "__comment": "lightning"
+    }, {
+      "faces": {
+        "south": {
+          "texture": "#animated2",
+          "uv": [16, 0, 0, 16]
+        },
+        "north": {
+          "texture": "#animated2",
+          "uv": [0, 0, 16, 16]
+        }
+      },
+      "to": [13, 13.25, 8.0625],
+      "from": [3, 2.25, 8],
+      "__comment": "lightning"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [6.5, 7, 9.5, 9]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [6.5, 7, 9.5, 9]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [6, 7, 10, 9]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [6, 7, 10, 9]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [6, 6.5, 10, 9.5]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [10, 9.5, 6, 6.5]
+        }
+      },
+      "to": [10, 9, 9.5],
+      "from": [6, 7, 6.5],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [7, 9, 9, 9.5]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [7, 9, 9, 9.5]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [6, 9, 10, 9.5]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [6, 9, 10, 9.5]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [10, 9, 6, 7]
+        }
+      },
+      "to": [10, 7, 9],
+      "from": [6, 6.5, 7],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [7, 6.5, 9, 7]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [7, 6.5, 9, 7]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [6, 6.5, 10, 7]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [6, 6.5, 10, 7]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [6, 7, 10, 9]
+        }
+      },
+      "to": [10, 9.5, 9],
+      "from": [6, 9, 7],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [9.5, 7, 10, 9]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [6, 7, 6.5, 9]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [6.5, 7, 9.5, 9]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [6.5, 6, 9.5, 6.5]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9.5, 6.5, 6.5, 6]
+        }
+      },
+      "to": [9.5, 9, 6.5],
+      "from": [6.5, 7, 6],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [9, 9, 9.5, 9.5]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [6.5, 9, 7, 9.5]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [6.5, 9, 9.5, 9.5]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9.5, 7, 6.5, 6.5]
+        }
+      },
+      "to": [9.5, 7, 7],
+      "from": [6.5, 6.5, 6.5],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [9, 6.5, 9.5, 7]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [6.5, 6.5, 7, 7]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [6.5, 6.5, 9.5, 7]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [6.5, 6.5, 9.5, 7]
+        }
+      },
+      "to": [9.5, 9.5, 7],
+      "from": [6.5, 9, 6.5],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [7, 9.5, 9, 10]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [7, 9.5, 9, 10]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [6.5, 9.5, 9.5, 10]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [6.5, 9.5, 9.5, 10]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9.5, 9, 6.5, 7]
+        }
+      },
+      "to": [9.5, 6.5, 9],
+      "from": [6.5, 6, 7],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [7, 6, 9, 6.5]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [7, 6, 9, 6.5]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [6.5, 6, 9.5, 6.5]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [6.5, 6, 9.5, 6.5]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [6.5, 7, 9.5, 9]
+        }
+      },
+      "to": [9.5, 10, 9],
+      "from": [6.5, 9.5, 7],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [6.5, 9, 7, 9.5]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [9, 9, 9.5, 9.5]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [6.5, 9, 9.5, 9.5]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9.5, 9.5, 6.5, 9]
+        }
+      },
+      "to": [9.5, 7, 9.5],
+      "from": [6.5, 6.5, 9],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [6.5, 6.5, 7, 7]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [9, 6.5, 9.5, 7]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [6.5, 6.5, 9.5, 7]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [6.5, 9, 9.5, 9.5]
+        }
+      },
+      "to": [9.5, 9.5, 9.5],
+      "from": [6.5, 9, 9],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [6, 7, 6.5, 9]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [9.5, 7, 10, 9]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [6.5, 7, 9.5, 9]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [6.5, 9.5, 9.5, 10]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9.5, 10, 6.5, 9.5]
+        }
+      },
+      "to": [9.5, 9, 10],
+      "from": [6.5, 7, 9.5],
+      "__comment": "DroobledoreLLC"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [9.5, 9, 10, 9.5]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [6, 9, 6.5, 9.5]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [7, 9, 9, 9.5]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9, 6.5, 7, 6]
+        }
+      },
+      "to": [9, 7, 6.5],
+      "from": [7, 6.5, 6],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [9.5, 6.5, 10, 7]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [6, 6.5, 6.5, 7]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [7, 6.5, 9, 7]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [7, 6, 9, 6.5]
+        }
+      },
+      "to": [9, 9.5, 6.5],
+      "from": [7, 9, 6],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [9, 9.5, 9.5, 10]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [6.5, 9.5, 7, 10]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [7, 9.5, 9, 10]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9, 7, 7, 6.5]
+        }
+      },
+      "to": [9, 6.5, 7],
+      "from": [7, 6, 6.5],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [9, 6, 9.5, 6.5]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [6.5, 6, 7, 6.5]
+        },
+        "north": {
+          "texture": "#texture",
+          "uv": [7, 6, 9, 6.5]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [7, 6.5, 9, 7]
+        }
+      },
+      "to": [9, 10, 7],
+      "from": [7, 9.5, 6.5],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [6.5, 9.5, 7, 10]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [9, 9.5, 9.5, 10]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [7, 9.5, 9, 10]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9, 9.5, 7, 9]
+        }
+      },
+      "to": [9, 6.5, 9.5],
+      "from": [7, 6, 9],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [6.5, 6, 7, 6.5]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [9, 6, 9.5, 6.5]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [7, 6, 9, 6.5]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [7, 9, 9, 9.5]
+        }
+      },
+      "to": [9, 10, 9.5],
+      "from": [7, 9.5, 9],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [6, 9, 6.5, 9.5]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [9.5, 9, 10, 9.5]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [7, 9, 9, 9.5]
+        },
+        "down": {
+          "texture": "#texture",
+          "uv": [9, 10, 7, 9.5]
+        }
+      },
+      "to": [9, 7, 10],
+      "from": [7, 6.5, 9.5],
+      "__comment": "RHJvb2JsZWRvcmVMTEM="
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#texture",
+          "uv": [6, 6.5, 6.5, 7]
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [9.5, 6.5, 10, 7]
+        },
+        "south": {
+          "texture": "#texture",
+          "uv": [7, 6.5, 9, 7]
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [7, 9.5, 9, 10]
+        }
+      },
+      "to": [9, 9.5, 10],
+      "from": [7, 9, 9.5],
+      "__comment": "Ball"
+    }, {
+      "faces": {
+        "east": {
+          "texture": "#animated1",
+          "uv": [0, 0, 16, 16]
+        },
+        "west": {
+          "texture": "#animated1",
+          "uv": [0, 0, 16, 16]
+        }
+      },
+      "to": [7.9375, 16, 16],
+      "from": [7.875, 0, 0],
+      "__comment": "Glow"
+    }
+  ],
+  "textures": {
+    "animated1": "item/custom/animated1",
+    "texture": "item/custom/glass_white",
+    "animated2": "item/custom/animated2",
+    "particle": "item/custom/glass_white"
+  },
+  "ambientocclusion": false
+}
