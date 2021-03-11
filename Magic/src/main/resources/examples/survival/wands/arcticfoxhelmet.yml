@@ -1,0 +1,5 @@
+arcticfoxhelmet:
+    icon: lectern{CustomModelData:18019}
+    worn: true
+    wearable: helmet
+
