@@ -534,8 +534,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         super.load(configuration);
     }
 
+    // Update the hotbars inventory list to match the most recently configured value
+    // This will be followed with checkHotbarCount, after the inventories have been built
+    // This catches the case of the hotbar count having changed so we can preserve the location
+    // of spells in the main inventories.
     protected void updateHotbarCount() {
-        int hotbarCount = Math.max(1, getInt("hotbar_count", 1));
+        int hotbarCount = 0;
+        if (hasProperty("hotbar_inventory_count")) {
+            hotbarCount = Math.max(1, getInt("hotbar_inventory_count", 1));
+        } else {
+            hotbarCount = Math.max(1, getInt("hotbar_count", 1));
+        }
         if (hotbarCount != hotbars.size()) {
             if (isInventoryOpen()) {
                 closeInventory();
@@ -548,6 +557,34 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 hotbars.remove(0);
             }
         }
+    }
+
+    // This catches the hotbar_count having changed since the last time the inventory was built
+    // in which case we want to add a new hotbar inventory without re-arranging the main inventories
+    // newly added hotbars will be empty, spells in removed hotbars will be added to the end of the inventories.
+    protected void checkHotbarCount() {
+        int hotbarCount = Math.max(1, getInt("hotbar_count", 1));
+        if (hotbarCount != hotbars.size()) {
+            while (hotbars.size() < hotbarCount) {
+                hotbars.add(new WandInventory(HOTBAR_INVENTORY_SIZE));
+            }
+            while (hotbars.size() > hotbarCount) {
+                hotbars.remove(0);
+            }
+
+            List<WandInventory> pages = new ArrayList<>(inventories);
+            int slotOffset = getInt("hotbar_count") * HOTBAR_INVENTORY_SIZE;
+            int index = 0;
+            for (WandInventory inventory : pages) {
+                for (ItemStack itemStack : inventory.items) {
+                    updateSlot(index + slotOffset, itemStack);
+                    index++;
+                }
+            }
+            updateSpellInventory();
+            updateBrushInventory();
+        }
+        setProperty("hotbar_inventory_count", hotbarCount);
     }
 
     @Override
@@ -1277,6 +1314,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (openInventoryPage >= inventories.size() && openInventoryPage != 0 && hasInventory) {
             setOpenInventoryPage(0);
         }
+
+        checkHotbarCount();
     }
 
     protected void parseSpells(String spellString) {
