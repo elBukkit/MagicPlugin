@@ -5,6 +5,9 @@
  - Mana and hotbar count are now read from paths directly and not stored on classes.
    If you have a setup where hotbars can be added or mana can be increased, you will need to
    `/mconfig editor class base` and change all of the `path` routes back to `class`.
+ - The lores, painterly and slimefun examples no longer implicity include survival.
+   If you were using one of these examples you may need to add the survival example back
+   in, e.g. `/mconfig example set survival painterly`
 
 # 8.4
 
