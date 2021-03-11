@@ -30,7 +30,7 @@ $fromFolder = $argv[1];
 $toFolder = $argv[2];
 
 // First collect all textures, we're only looking at "custom" folders
-$customTextureFolder = $fromFolder . '/assets/minecraft/textures/item';
+$customTextureFolder = $fromFolder . '/assets/minecraft/textures';
 
 function collectTextures($folder, $path = '') {
     $dir = new DirectoryIterator($folder . $path);
@@ -53,7 +53,7 @@ function collectTextures($folder, $path = '') {
 $textures = collectTextures($customTextureFolder);
 
 // Iterate over all models
-$customModelFolder = $fromFolder . '/assets/minecraft/models/item';
+$customModelFolder = $fromFolder . '/assets/minecraft/models';
 function collectModelTextures($folder){
     global $textures;
     $dir = new DirectoryIterator($folder);
@@ -71,13 +71,9 @@ function collectModelTextures($folder){
         if (isset($model['textures'])) {
             $modelTextures = $model['textures'];
             foreach ($modelTextures as $key => $texture) {
-                if (!startsWith($texture, 'item/')) {
-                    // echo "WARN: Custom model $filename uses non-item texture: $texture\n";
-                    continue;
-                }
-                $texture = str_replace('item/', '', $texture) . '.png';
-                if (!isset($textures[$texture])) {
-                    echo "Custom model $filename uses missing (or vanilla?) texture: $texture\n";
+                $texture = $texture . '.png';
+                if (!isset($textures[$texture]) && !startsWith($texture, 'minecraft:')) {
+                    echo "Custom model $filename uses missing texture: $texture\n";
                     continue;
                 }
                 $used[$texture] = true;
@@ -91,10 +87,12 @@ $used = collectModelTextures($customModelFolder);
 $relocate = array_diff_key($textures, $used);
 if (count($relocate) > 0) {
     echo "Relocating " . count($relocate) . " textures\n";
+} else {
+    echo "Nothing to relocate!\n";
 }
 
-$toTextureFolder = $toFolder . '/assets/minecraft/textures/item/';
-$fromTextureFolder = $fromFolder . '/assets/minecraft/textures/item/';
+$toTextureFolder = $toFolder . '/assets/minecraft/textures/';
+$fromTextureFolder = $fromFolder . '/assets/minecraft/textures/';
 foreach ($relocate as $filename => $nothing) {
     $fromFilename = $fromTextureFolder . $filename;
     $toFilename = $toTextureFolder . $filename;
