@@ -105,3 +105,22 @@ tail -n +2 ../../war/assets/minecraft/sounds.json >> assets/minecraft/sounds.jso
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-all-RP-8.5-1.16.zip *
 cd ..
+
+echo "** BUILDING HIRES **"
+
+mkdir hires
+cd hires
+cp -R ../../default/* .
+cp -R ../../chainmail/assets/minecraft/textures/* assets/minecraft/textures/
+cp -R ../../war/assets/minecraft/sounds/* assets/minecraft/sounds/
+cp -R ../../war/assets/minecraft/models/item/* assets/minecraft/models/item/
+cp -R ../../war/assets/minecraft/textures/misc assets/minecraft/textures/
+cp -R ../../war/assets/minecraft/textures/item/custom/* assets/minecraft/textures/item/custom/
+cp -R ../../hires/assets/minecraft/models/item/* assets/minecraft/models/item/
+cp -R ../../hires/assets/minecraft/textures/item/* assets/minecraft/textures/item/
+sed -e '$ d' ../../default/assets/minecraft/sounds.json > assets/minecraft/sounds.json
+echo , >> assets/minecraft/sounds.json
+tail -n +2 ../../war/assets/minecraft/sounds.json >> assets/minecraft/sounds.json
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-hires-RP-8.5-1.16.zip *
+cd ..

@@ -2,6 +2,12 @@
 
 # 8.5
 
+## New Resource Pack
+
+ - Lower-res, blockier, more Minecrafty
+ - Use `/getrp hires` for the old models, or `/mconfig example add hires` to set it server-wide
+ - Painterly, lores and slimefun examples can now be used without survival (see migration notes if this caused you issues)
+
 ## Engineering Re-Work
 
  - Conduits now have Cost Reduction X, don't have to worry about mana

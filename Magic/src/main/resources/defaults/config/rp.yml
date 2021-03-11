@@ -52,6 +52,8 @@ alternate_resource_packs:
     url: "http://rp.elmakers.com/Magic-painterly-RP-8.5-1.16.zip"
   lowres:
     url: "http://rp.elmakers.com/Magic-lowres-RP-8.5-1.16.zip"
+  hires:
+    url: "http://rp.elmakers.com/Magic-hires-RP-8.5-1.16.zip"
   skulls:
     url: "http://rp.elmakers.com/Magic-skulls-RP-8.5-1.16.zip"
     url_icons_enabled: true
