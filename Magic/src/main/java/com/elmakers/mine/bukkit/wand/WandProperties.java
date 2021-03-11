@@ -18,7 +18,8 @@ public abstract class WandProperties extends TemplatedProperties {
     public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
         .addAll(BaseMagicProperties.PROPERTY_KEYS)
         .add(
-            "modifiers", "enchantments", "item_attributes", "auto_absorb",
+            "modifiers", "enchantments", "item_attributes", "item_attribute_slot",
+                "auto_absorb",
             "active_spell", "active_brush", "worn",
             "alternate_spell", "alternate_spell2", "alternate_spell3", "alternate_spell4",
             "alternate_spell5", "alternate_spell6", "alternate_spell7",
@@ -36,7 +37,7 @@ public abstract class WandProperties extends TemplatedProperties {
             "active_effects", "cancel_effects_delay",
             "brush_mode", "currency_display",
             "keep", "locked", "quiet", "force", "rename", "rename_description",
-            "power", "item_attributes", "heroes",
+            "power", "heroes",
             "enchant_count", "max_enchant_count", "cast_location",
             "quick_cast",
             "left_click", "right_click", "drop", "swap",
