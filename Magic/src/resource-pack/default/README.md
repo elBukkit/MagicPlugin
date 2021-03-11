@@ -7,12 +7,13 @@ https://github.com/elBukkit/MagicPlugin/wiki
 ## RP Credits
 
 - 3D Artists:
+  - realflamegirl
   - Dr00bles
-  - Lix3nn (https://sketchfab.com/Lix3nn/models)
-  - Toffy
-  - VelVoxel Raptor (https://www.youtube.com/watch?v=5QId3rMv89o)
+  - Phantom
   - Night
-  - Famegirl
+  - Toffy
+  - Lix3nn (https://sketchfab.com/Lix3nn/models)
+  - VelVoxel Raptor (https://www.youtube.com/watch?v=5QId3rMv89o)
 - 2D Artists:
   - Dr00bles
   - eleazzaar
