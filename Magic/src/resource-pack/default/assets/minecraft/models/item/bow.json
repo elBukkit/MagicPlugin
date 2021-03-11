@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "item/bow"
+    "layer0": "minecraft:item/bow"
   },
   "display": {
       "thirdperson_righthand": {

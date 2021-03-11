@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench by PhvntxmX",
 	"textures": {
-		"1": "block/terracotta",
-		"2": "block/flower_pot",
-		"3": "block/light_blue_stained_glass",
-		"particle": "block/terracotta"
+		"1": "minecraft:block/terracotta",
+		"2": "minecraft:block/flower_pot",
+		"3": "minecraft:block/light_blue_stained_glass",
+		"particle": "minecraft:block/terracotta"
 	},
 	"elements": [
 		{

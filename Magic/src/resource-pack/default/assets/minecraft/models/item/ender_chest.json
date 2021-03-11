@@ -1,7 +1,7 @@
 {
     "parent": "item/chest",
     "textures": {
-        "particle": "block/obsidian"
+        "particle": "minecraft:block/obsidian"
     },
 
     "overrides": [

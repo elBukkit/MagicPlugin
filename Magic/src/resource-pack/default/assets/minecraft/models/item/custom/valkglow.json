@@ -2,7 +2,7 @@
 	"credit": "Designed by Lix3nn with Cubik studio - https://cubik.studio. Edited by PhvntxmX using BlockBench.",
 	"parent": "item/custom/lit",
 	"textures": {
-		"texture1": "block/black_terracotta",
+		"texture1": "minecraft:block/black_terracotta",
 		"texture2": "item/spells/sharpen_sword",
 		"texture": "item/custom/e_texture",
 		"texture3": "item/custom/elfaura"

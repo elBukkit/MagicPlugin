@@ -1,7 +1,7 @@
 {
     "parent" : "item/generated",
     "textures": {
-        "particle": "item/arrow",
-        "texture": "item/arrow"
+        "particle": "minecraft:item/arrow",
+        "texture": "minecraft:item/arrow"
     }
 }

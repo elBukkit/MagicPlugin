@@ -3,7 +3,7 @@
 	"parent" : "item/custom/lit",
 	"textures": {
 		"particle": "item/custom/bow2/bow_pulling_2",
-		"texture": "items/custom/bow2/bow_pulling_2"
+		"texture": "item/custom/bow2/bow_pulling_2"
 	},
 	"elements": [ 	 
 		{

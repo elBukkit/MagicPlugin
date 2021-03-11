@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "item/cod"
+        "layer0": "minecraft:item/cod"
     },
     "display": {
         "head": {

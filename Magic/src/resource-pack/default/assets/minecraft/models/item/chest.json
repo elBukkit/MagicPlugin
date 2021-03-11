@@ -1,7 +1,7 @@
 {
     "parent": "builtin/entity",
     "textures": {
-        "particle": "block/oak_planks"
+        "particle": "minecraft:block/oak_planks"
     },
     "display": {
         "gui": {

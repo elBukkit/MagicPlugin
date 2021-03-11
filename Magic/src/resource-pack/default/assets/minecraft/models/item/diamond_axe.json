@@ -2,7 +2,7 @@
   "__comment": "Max diamond durability is 1562, delta is 0.000640204865557",
   "parent": "item/handheld",
   "textures": {
-    "layer0": "item/diamond_axe"
+    "layer0": "minecraft:item/diamond_axe"
   },
   "overrides": [
     {"predicate": {"damaged": 0, "damage": 0.000640204865557}, "model": "item/brushes/erase"},

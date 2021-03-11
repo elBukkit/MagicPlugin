@@ -3,10 +3,10 @@
 	"parent" : "item/custom/lit",
 	"textures": {
 		"particle": "item/custom/e_particle",
-		"texture": "block/gray_wool",
+		"texture": "minecraft:block/gray_wool",
 		"texture1": "item/spells/boom",
 		"texture2": "item/spells/singularity",
-		"texture3": "block/white_wool"
+		"texture3": "minecraft:block/white_wool"
 	},
 	"elements": [
 		{

@@ -3,8 +3,7 @@
 "parent" : "item/custom/lit",
 "ambientocclusion": false,
 "textures": {
-    "texture": "item/custom/lightsaber",
-    "lightsaber_glow": "item/custom/glow_flow"
+    "texture": "item/custom/lightsaber"
 },
 "elements": [ 
 {
