@@ -27,9 +27,6 @@ overworld_mobs:
         mega_phantom: 500
         whitedragon: 50
         rainbowdragon: 1
-        bigbluedragon: 20
-        biggreendragon: 20
-        biggreydragon: 10
 
     replace_mobs:
       class: Replace
@@ -76,7 +73,6 @@ nether_mobs:
         pinkdragon: 10
         magentadragon: 5
         browndragon: 50
-        bigreddragon: 1
 
     replace_blazes:
       class: ReplaceRule
@@ -96,7 +92,6 @@ end_mobs:
       replace_type:
         blackdragon: 10
         purpledragon: 100
-        bigpurpledragon: 1
       biomes:
         - small_end_islands
         - end_midlands
