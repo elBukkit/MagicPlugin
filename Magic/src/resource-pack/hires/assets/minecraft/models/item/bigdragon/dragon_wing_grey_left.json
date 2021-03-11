@@ -1,0 +1,9 @@
+{
+	"__comment": "Minecraft model dragon_wing by NightScythe1",
+	"parent": "item/bigdragon/dragon_wing_base_left",
+	"textures": {
+		"particle": "items/particle",
+		"texture": "items/texture",
+		"voxels_palette": "bigdragon/dragon_wing_grey_left"
+	}
+}
