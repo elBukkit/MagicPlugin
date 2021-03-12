@@ -95,7 +95,7 @@ $toTextureFolder = $toFolder . '/assets/minecraft/textures/';
 $fromTextureFolder = $fromFolder . '/assets/minecraft/textures/';
 foreach ($relocate as $filename => $nothing) {
     if (strpos($filename, '_e.png') > 0) {
-        echo "  Skipping $filename, appears to be an emissive texture\n";
+        // echo "  Skipping $filename, appears to be an emissive texture\n";
         continue;
     }
     $fromFilename = $fromTextureFolder . $filename;

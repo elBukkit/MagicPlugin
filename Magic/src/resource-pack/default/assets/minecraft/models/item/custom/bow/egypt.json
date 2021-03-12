@@ -4,7 +4,7 @@
 	"textures": {
 		"1": "item/custom/egypt",
 		"particle": "item/custom/egypt",
-		"texture3": "block/white_wool"
+		"texture3": "minecraft:block/white_wool"
 	},
 	"elements": [
 		{

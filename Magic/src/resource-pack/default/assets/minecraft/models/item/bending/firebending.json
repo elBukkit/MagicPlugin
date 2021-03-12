@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench, by realflamegirl- Do not use without permission. Discord is Flamegirl#0464",
 	"ambientocclusion": false,
 	"textures": {
-		"1": "block/campfire_fire"
+		"1": "minecraft:block/campfire_fire"
 	},
 	"elements": [
 		{

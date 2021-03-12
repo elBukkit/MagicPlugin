@@ -4,7 +4,7 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"0": "item/custom/bow2",
-		"1": "block/white_wool",
+		"1": "minecraft:block/white_wool",
 		"particle": "item/custom/bow2"
 	},
 	"elements": [
