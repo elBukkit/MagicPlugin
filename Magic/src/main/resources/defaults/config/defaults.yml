@@ -532,7 +532,7 @@ head_sizes:
   vindicator: 0.2
   illusioner: 0.2
   evoker: 0.2
-  enderman: 0.2
+  enderman: 0.25
   giant: 4
   pig_zombie: 0.2
   blaze: 0.2
@@ -540,6 +540,15 @@ head_sizes:
   witch: 0.2
   snowman: 0.2
   iron_golem: 0.2
+  drowned: 0.2
+  stray: 0.2
+  pillager: 0.2
+  illager: 0.2
+  piglin: 0.2
+  piglin_brute: 0.2
+  wither_skeleton: 0.25
+  wandering_trader: 0.2
+  zombified_piglin: 0.2
 
 # Entity-specific hitboxes for targeting purposes
 # Magic uses the vanilla hitboxes by default, but you
