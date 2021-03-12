@@ -1,5 +1,6 @@
 mirrorshield:
-    icon: shield:1
+    icon: shield{18001}
+    legecy_icon: shield:1
     indestructible: true
     mode: none
     bound: true
