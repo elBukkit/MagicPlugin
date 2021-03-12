@@ -461,3 +461,5 @@ wands:
             - "&8Use an anvil to rename your shop tool"
     foxhelmet:
         name: Fox Helmet
+    arcticfoxhelmet:
+        name: Arctic Fox Helmet

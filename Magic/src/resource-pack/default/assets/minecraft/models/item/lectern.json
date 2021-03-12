@@ -4,6 +4,6 @@
   "overrides": [
     {"predicate": {"custom_model_data": 18017}, "model": "item/custom/magic_hat"},
     {"predicate": {"custom_model_data": 18018}, "model": "item/custom/foxhelmet"},
-    {"predicate": {"custom_model_data": 18018}, "model": "item/custom/arcticfoxhelmet"}
+    {"predicate": {"custom_model_data": 18019}, "model": "item/custom/arcticfoxhelmet"}
   ]
 }
