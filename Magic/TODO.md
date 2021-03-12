@@ -19,7 +19,9 @@
 
 ## Hot
 
- - Recall to bed not working? (Kit reported)
+ - Cure does heal the caster now, right?
+ - Weird behavior spamming (holding) right-click: https://youtu.be/FJfDqyCgztE
+ - Recall to bed not working? (Kit reported) ("Not home set" ... "or something" lol)
  - Need a way to add spells to a path
  - target_hit_timeout for CustomProjectile (Phantom)
  - Crown FX very laggy
